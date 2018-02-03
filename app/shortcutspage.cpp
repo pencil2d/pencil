@@ -14,41 +14,37 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "shortcutspage.h"
+#include "ui_shortcutspage.h"
+
 #include <QDebug>
-#include <QMap>
 #include <QStringRef>
 #include <QSettings>
-#include <QGroupBox>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QTreeView>
 #include <QStandardItemModel>
 #include <QKeyEvent>
 #include <QKeySequence>
 #include <QMessageBox>
 #include "pencilsettings.h"
-#include "shortcutspage.h"
-#include "keycapturelineedit.h"
-#include "ui_shortcutspage.h"
+
 
 static const int ACT_NAME_COLUMN = 0;
 static const int KEY_SEQ_COLUMN  = 1;
 
-ShortcutsPage::ShortcutsPage( QWidget* parent ) : QWidget(parent),
-    m_treeModel( NULL ),
+ShortcutsPage::ShortcutsPage( QWidget* parent )
+    : QWidget(parent),
     ui( new Ui::ShortcutsPage )
 {
     ui->setupUi(this);
     m_treeModel = new QStandardItemModel(this);
-
+    m_treeModel->setColumnCount(2);
+    m_treeModel->setHorizontalHeaderLabels({ "Action", "Shortcut" });
     treeModelLoadShortcutsSetting();
 
     ui->treeView->setModel(m_treeModel);
     ui->treeView->resizeColumnToContents(0);
 
     connect( ui->treeView, &QTreeView::clicked, this, &ShortcutsPage::tableItemClicked );
-    connect( ui->keySeqLineEdit, &KeyCaptureLineEdit::keyCaptured, this, &ShortcutsPage::keyCapLineEditTextChanged );
+    connect( ui->keySequenceEdit, &QKeySequenceEdit::editingFinished, this, &ShortcutsPage::keyCapLineEditTextChanged );
     connect( ui->restoreShortcutsButton, &QPushButton::clicked, this, &ShortcutsPage::restoreShortcutsButtonClicked );
     connect( ui->clearButton, &QPushButton::clicked, this, &ShortcutsPage::clearButtonClicked );
 }
@@ -63,18 +59,19 @@ void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
 
     // extract key sequence
     QStandardItem* keyseqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
-    ui->keySeqLineEdit->setText(keyseqItem->text());
+    ui->keySequenceEdit->setKeySequence(keyseqItem->text());
 
     qDebug() << "Command Selected:" << actionItem->text();
 
     m_currentItemIndex = modelIndex;
 
-    ui->keySeqLineEdit->setFocus();
+    ui->keySequenceEdit->setFocus();
 }
 
-void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
+void ShortcutsPage::keyCapLineEditTextChanged()
 {
-    if ( !m_currentItemIndex.isValid() )
+    QKeySequence keySeqence = ui->keySequenceEdit->keySequence();
+    if (!m_currentItemIndex.isValid())
     {
         return;
     }
@@ -102,7 +99,7 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
 
         if ( result != QMessageBox::Yes )
         {
-            ui->keySeqLineEdit->setText( keyseqItem->text() );
+            ui->keySequenceEdit->setKeySequence( keyseqItem->text() );
             return;
         }
         removeDuplicateKeySequence(&setting, keySeqence);
@@ -133,12 +130,6 @@ bool ShortcutsPage::isKeySequenceExist(const QSettings& settings, QString strTar
         }
 
         QString strCmdKeySeq = settings.value(strCmdName).toString();
-        /*
-        qDebug() << "Compare:"
-        << QKeySequence(strCmdKeySeq).toString()
-        << "|"
-        << targetkeySeq.toString();
-        */
         if (QKeySequence(strCmdKeySeq) == targetkeySeq)
         {
             return true;
@@ -166,10 +157,8 @@ void ShortcutsPage::treeModelLoadShortcutsSetting()
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.beginGroup("shortcuts");
 
-    m_treeModel->clear(); // release all existing items.
-
-    m_treeModel->setRowCount( settings.allKeys().size() );
-    m_treeModel->setColumnCount( 2 );
+    m_treeModel->setRowCount(settings.allKeys().size());
+    Q_ASSERT(m_treeModel->columnCount() == 2);
 
     int row = 0;
     foreach (QString strCmdName, settings.allKeys())
@@ -182,14 +171,15 @@ void ShortcutsPage::treeModelLoadShortcutsSetting()
         // strip the first 3 chars "Cmd"
         QStringRef strHumanReadCmdName (&strCmdName, 3, strCmdName.size() - 3);
 
-        QStandardItem* nameItem = new QStandardItem(strHumanReadCmdName.toString());
-        QStandardItem* keyseqItem = new QStandardItem(strKeySequence);
+        if (m_treeModel->item(row , ACT_NAME_COLUMN) == nullptr)
+            m_treeModel->setItem(row, ACT_NAME_COLUMN, new QStandardItem());
+        if (m_treeModel->item(row, KEY_SEQ_COLUMN) == nullptr)
+            m_treeModel->setItem(row, KEY_SEQ_COLUMN, new QStandardItem());
 
-        m_treeModel->setItem(row, 0, nameItem);
-        m_treeModel->setItem(row, 1, keyseqItem);
-
-        m_treeModel->item(row, 0)->setEditable(false);
-        m_treeModel->item(row, 1)->setEditable(false);
+        m_treeModel->item(row, ACT_NAME_COLUMN)->setText(strHumanReadCmdName.toString());
+        m_treeModel->item(row, ACT_NAME_COLUMN)->setEditable(false);
+        m_treeModel->item(row, KEY_SEQ_COLUMN)->setText(strKeySequence);
+        m_treeModel->item(row, KEY_SEQ_COLUMN)->setEditable(false);
 
         row++;
     }
@@ -214,7 +204,7 @@ void ShortcutsPage::clearButtonClicked()
     setting.setValue( strCmdName, "" );
     setting.sync();
 
-    ui->keySeqLineEdit->setText("");
+    ui->keySequenceEdit->clear();
 
     treeModelLoadShortcutsSetting();
 }

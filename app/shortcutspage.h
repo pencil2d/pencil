@@ -44,7 +44,7 @@ public:
 
 private slots:
     void tableItemClicked(const QModelIndex&);
-    void keyCapLineEditTextChanged(QKeySequence);
+    void keyCapLineEditTextChanged();
     void restoreShortcutsButtonClicked();
     void clearButtonClicked();
 
