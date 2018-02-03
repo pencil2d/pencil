@@ -136,8 +136,6 @@ GeneralPage::~GeneralPage()
     delete ui;
 }
 
-
-
 void GeneralPage::updateValues()
 {
     int index = ui->languageCombo->findData( mManager->getString( SETTING::LANGUAGE ) );
@@ -145,9 +143,7 @@ void GeneralPage::updateValues()
     if ( index >= 0 )
     {
         SignalBlocker b(ui->languageCombo);
-        ui->languageCombo->blockSignals( true );
-        ui->languageCombo->setCurrentIndex( index );
-        ui->languageCombo->blockSignals( false );
+        ui->languageCombo->setCurrentIndex(index);
     }
 
     SignalBlocker b1(ui->curveSmoothingLevel);
@@ -172,18 +168,16 @@ void GeneralPage::updateValues()
 
     SignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
-    if (bgName == "checkerboard")
-        ui->backgroundButtons->button(1)->setChecked(true);
-    else if (bgName == "white")
-        ui->backgroundButtons->button(2)->setChecked(true);
-    else if (bgName == "grey")
-        ui->backgroundButtons->button(3)->setChecked(true);
-    else if (bgName == "dots")
-        ui->backgroundButtons->button(4)->setChecked(true);
-    else if (bgName == "weave")
-        ui->backgroundButtons->button(5)->setChecked(true);
-    else
-        Q_ASSERT(false);
+
+    int buttonIdx = 1;
+    if (bgName == "checkerboard") buttonIdx = 1;
+    else if (bgName == "white")   buttonIdx = 2;
+    else if (bgName == "grey")    buttonIdx = 3;
+    else if (bgName == "dots")    buttonIdx = 4;
+    else if (bgName == "weave")   buttonIdx = 5;
+    else Q_ASSERT(false);
+
+    ui->backgroundButtons->button(buttonIdx)->setChecked(true);
 }
 
 void GeneralPage::languageChanged( int i )
@@ -191,9 +185,9 @@ void GeneralPage::languageChanged( int i )
     QString strLocale = ui->languageCombo->itemData( i ).toString();
     mManager->set( SETTING::LANGUAGE, strLocale );
 
-    QMessageBox::warning( this,
-                          tr( "Restart Required" ),
-                          tr( "The language change will take effect after a restart of Pencil2D" ) );
+    QMessageBox::warning(this,
+                         tr("Restart Required"),
+                         tr("The language change will take effect after a restart of Pencil2D"));
 }
 
 void GeneralPage::backgroundChange(int value)
@@ -201,21 +195,11 @@ void GeneralPage::backgroundChange(int value)
     QString brushName = "white";
     switch (value)
 	{
-    case 1:
-        brushName = "checkerboard";
-        break;
-    case 2:
-        brushName = "white";
-        break;
-    case 3:
-        brushName = "grey";
-        break;
-    case 4:
-        brushName = "dots";
-        break;
-    case 5:
-        brushName = "weave";
-        break;
+    case 1: brushName = "checkerboard"; break;
+    case 2: brushName = "white"; break;
+    case 3: brushName = "grey"; break;
+    case 4: brushName = "dots"; break;
+    case 5: brushName = "weave"; break;
     default:
         break;
     }
@@ -281,7 +265,7 @@ TimelinePage::~TimelinePage()
 
 void TimelinePage::updateValues()
 {
-    SignalBlocker b1(ui->scrubBox);
+    SignalBlocker b1(ui->scrubBox); 
     ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
 
     int frameSize = mManager->getInt(SETTING::FRAME_SIZE);
@@ -366,7 +350,6 @@ ToolsPage::ToolsPage(QWidget* parent) :
     connect(ui->onionPrevFramesNumBox, spinBoxChanged, this, &ToolsPage::onionPrevFramesNumChange);
     connect(ui->onionNextFramesNumBox, spinBoxChanged, this, &ToolsPage::onionNextFramesNumChange);
     connect(ui->useQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange);
-
 }
 
 ToolsPage::~ToolsPage()

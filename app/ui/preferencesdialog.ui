@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>469</width>
+    <width>563</width>
     <height>445</height>
    </rect>
   </property>
@@ -24,6 +24,18 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QListWidget" name="contentsWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>128</width>
