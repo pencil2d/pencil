@@ -1,5 +1,5 @@
 #include "doubleprogressdialog.h"
-#include "ui_DoubleProgressDialog.h"
+#include "ui_doubleprogressdialog.h"
 
 #include <QtMath>
 
