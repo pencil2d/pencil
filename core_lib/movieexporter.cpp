@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 #include "movieexporter.h"
 
+#include <ctime>
 #include <vector>
 #include <cstdint>
 #include <QDir>
