@@ -21,31 +21,29 @@ GNU General Public License for more details.
 
 ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
 {
-	setWindowTitle( tr( "Color Wheel", "Color Wheel's window title" ) );
-
-    QVBoxLayout* layout = new QVBoxLayout();
+    setWindowTitle(tr("Color Wheel", "Color Wheel's window title"));
 
     mColorWheel = new ColorWheel(this);
     mColorInspector = new ColorInspector(this);
 
-    layout->setContentsMargins(5,5,5,5);
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setContentsMargins(5, 5, 5, 5);
     layout->addWidget(mColorWheel);
     layout->addWidget(mColorInspector);
-
+    layout->setStretch(0, 1);
+    layout->setStretch(1, 0);
     QWidget* mainWidget = new QWidget;
     mainWidget->setLayout(layout);
+    setWidget(mainWidget);
 
-    setWidget( mainWidget );
-
-    connect( mColorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove );
-    connect( mColorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange );
-    connect( mColorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease );
+    connect(mColorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove);
+    connect(mColorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange);
+    connect(mColorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease);
 
     QColor defaultColor;
     defaultColor.setHsv(0, 0, 0);
     mColorWheel->setColor(defaultColor);
     mColorInspector->setColor(defaultColor);
-    mColorWheel->setMinimumSize(100,100);
 }
 
 ColorBox::~ColorBox()
@@ -54,12 +52,10 @@ ColorBox::~ColorBox()
 
 void ColorBox::initUI()
 {
-
 }
 
 void ColorBox::updateUI()
 {
-
 }
 
 QColor ColorBox::color()

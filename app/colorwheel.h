@@ -24,49 +24,47 @@ class ColorWheel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ColorWheel(QWidget *parent = 0);
+    explicit ColorWheel(QWidget* parent);
 
-    virtual QSize sizeHint () const;
-    virtual QSize minimumSizeHint () const;
     QColor color();
 
-    
 signals:
-    void colorSelected(const QColor &color);
-    void colorChanged(const QColor &color);
+    void colorSelected(const QColor& color);
+    void colorChanged(const QColor& color);
     
 public slots:
-    void setColor(const QColor &color);
+    void setColor(const QColor& color);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *);
-    void resizeEvent(QResizeEvent *event);
-    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+    void resizeEvent(QResizeEvent*);
+    void paintEvent(QPaintEvent*);
 
 private:
-    void changeColor(const QColor &color);
-    void hueChanged(const int &hue);
-    void saturationChanged(const int &sat);
-    void valueChanged(const int &value);
-    void redChanged(const int &red);
-    void greenChanged(const int &green);
-    void blueChanged(const int &blue);
-    void alphaChanged(const int &alpha);
+    void changeColor(const QColor&);
+    void hueChanged(const int& hue);
+    void saturationChanged(const int& sat);
+    void valueChanged(const int& value);
+    void redChanged(const int& red);
+    void greenChanged(const int& green);
+    void blueChanged(const int& blue);
+    void alphaChanged(const int& alpha);
 
-    void changeRgbColors(const QColor &color);
-    void changeHsvColors(const QColor &color);
+    void changeRgbColors(const QColor& color);
+    void changeHsvColors(const QColor& color);
 
-    QColor pickColor(const QPoint &point);
+    QColor pickColor(const QPoint& point);
     
-    void drawHueIndicator(const int &hue);
-    void drawPicker(const QColor &color);
+    void drawHueIndicator(const int& hue);
+    void drawPicker(const QColor& color);
 
-    void drawWheelImage(const QSize &newSize);
-    void drawSquareImage(const int &hue);
+    void drawWheelImage(const QSize& newSize);
+    void drawSquareImage(const int& hue);
     void composeWheel(QPixmap& pixmap);
 
+private:
     QSize mInitSize{ 20, 20 };
     QImage mWheelImage;
     QImage mSquareImage;

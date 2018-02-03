@@ -55,8 +55,6 @@ GNU General Public License for more details.
 #include "timeline2.h"
 #include "errordialog.h"
 #include "importimageseqdialog.h"
-
-#include "colorbox.h"
 #include "util.h"
 
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -141,7 +139,6 @@ void MainWindow2::createDockWidgets()
     mColorWheel = new ColorBox(this);
     mColorWheel->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
     mColorWheel->setObjectName("ColorWheel");
-    mColorWheel->setMaximumHeight(390);
 
     mColorPalette = new ColorPaletteWidget(this);
     mColorPalette->setObjectName("ColorPalette");
