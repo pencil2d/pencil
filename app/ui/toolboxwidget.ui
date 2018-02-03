@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>ToolBoxWidget</class>
  <widget class="QDockWidget" name="ToolBoxWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>90</width>
+    <height>217</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string comment="Window title of tool box">Tools</string>
   </property>
@@ -341,200 +349,7 @@
   <include location="../../pencil.qrc"/>
   <include location="../../pencil.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>pencilButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>pencilOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>381</x>
-     <y>111</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>selectButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>selectOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>381</x>
-     <y>77</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>moveButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>moveOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>381</x>
-     <y>60</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>handButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>handOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>17</x>
-     <y>130</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>penButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>penOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>183</x>
-     <y>130</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>eraserButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>eraserOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>215</x>
-     <y>175</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>polylineButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>polylineOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>381</x>
-     <y>99</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>bucketButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>bucketOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>269</x>
-     <y>156</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>brushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>brushOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>269</x>
-     <y>99</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>eyedropperButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>eyedropperOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>127</x>
-     <y>185</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>smudgeButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>smudgeOn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>269</x>
-     <y>100</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ToolBoxWidget</sender>
-   <signal>dockLocationChanged(Qt::DockWidgetArea)</signal>
-   <receiver>ToolBoxWidget</receiver>
-   <slot>getDockLocation(Qt::DockWidgetArea)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>36</x>
-     <y>108</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>36</x>
-     <y>108</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>pencilOn()</slot>
   <slot>selectOn()</slot>

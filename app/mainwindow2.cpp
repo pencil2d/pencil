@@ -762,7 +762,6 @@ void MainWindow2::preferences()
     mPrefDialog->setAttribute(Qt::WA_DeleteOnClose);
     mPrefDialog->init(mEditor->preference());
 
-    connect(mPrefDialog, &PreferencesDialog::clearRecentList, this, &MainWindow2::clearRecentFilesList);
     connect(mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity);
     connect(mPrefDialog, &PreferencesDialog::finished, [&]
     {

@@ -127,6 +127,19 @@ void ToolBoxWidget::initUI()
         .arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
 
     connect(ui->clearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked);
+    connect(ui->pencilButton, &QToolButton::clicked, this, &ToolBoxWidget::pencilOn);
+    connect(ui->eraserButton, &QToolButton::clicked, this, &ToolBoxWidget::eraserOn);
+    connect(ui->selectButton, &QToolButton::clicked, this, &ToolBoxWidget::selectOn);
+    connect(ui->moveButton, &QToolButton::clicked, this, &ToolBoxWidget::moveOn);
+    connect(ui->penButton, &QToolButton::clicked, this, &ToolBoxWidget::penOn);
+    connect(ui->handButton, &QToolButton::clicked, this, &ToolBoxWidget::handOn);
+    connect(ui->polylineButton, &QToolButton::clicked, this, &ToolBoxWidget::polylineOn);
+    connect(ui->bucketButton, &QToolButton::clicked, this, &ToolBoxWidget::bucketOn);
+    connect(ui->eyedropperButton, &QToolButton::clicked, this, &ToolBoxWidget::eyedropperOn);
+    connect(ui->brushButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn);
+    connect(ui->smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
+
+    connect(this, &QDockWidget::dockLocationChanged, this, &ToolBoxWidget::getDockLocation);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     this->restoreGeometry(settings.value("ToolBoxGeom").toByteArray());

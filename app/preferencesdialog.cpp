@@ -58,15 +58,14 @@ void PreferencesDialog::init(PreferenceManager* m)
     connect(ui->general, &GeneralPage::windowOpacityChange, this, &PreferencesDialog::windowOpacityChange);
     connect(ui->filesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::close);
-    connect(this, &PreferencesDialog::updateRecentFileListBtn, ui->filesPage, &FilesPage::updateClearRecentListButton);
 
     auto onCurrentItemChanged = static_cast<void (QListWidget::*)(QListWidgetItem*, QListWidgetItem*)>(&QListWidget::currentItemChanged);
     connect(ui->contentsWidget, onCurrentItemChanged, this, &PreferencesDialog::changePage);
 }
 
-void PreferencesDialog::closeEvent(QCloseEvent *)
+void PreferencesDialog::closeEvent(QCloseEvent*)
 {
-    done( QDialog::Accepted );
+    done(QDialog::Accepted);
 }
 
 void PreferencesDialog::changePage(QListWidgetItem* current, QListWidgetItem* previous)
@@ -268,10 +267,11 @@ TimelinePage::TimelinePage(QWidget* parent) :
     ui(new Ui::TimelinePage)
 {
     ui->setupUi(this);
-
-    QIntValidator* lengthSizeValidator = new QIntValidator(this);
-    lengthSizeValidator->setBottom(2);
-    ui->lengthSize->setValidator( lengthSizeValidator );
+    
+    auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    connect(ui->frameSize, &QSlider::valueChanged, this, &TimelinePage::frameSizeChange);
+    connect(ui->timelineLength, spinBoxValueChange, this, &TimelinePage::timelineLengthChanged);
+    connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChange);
 }
 
 TimelinePage::~TimelinePage()
@@ -281,17 +281,25 @@ TimelinePage::~TimelinePage()
 
 void TimelinePage::updateValues()
 {
+    SignalBlocker b1(ui->scrubBox);
     ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
-    ui->frameSize->setValue(mManager->getInt(SETTING::FRAME_SIZE));
-    if (mManager->getString(SETTING::FRAME_SIZE).toInt()==0) ui->frameSize->setValue(6);
-    ui->lengthSize->setText(mManager->getString(SETTING::TIMELINE_SIZE));
-    if (mManager->getString(SETTING::TIMELINE_SIZE).toInt()==0) ui->lengthSize->setText("240");
+
+    int frameSize = mManager->getInt(SETTING::FRAME_SIZE);
+    if (frameSize <= 0)
+        frameSize = 6;
+
+    SignalBlocker b2(ui->frameSize);
+    ui->frameSize->setValue(frameSize);
+    
+    SignalBlocker b3(ui->timelineLength);
+    ui->timelineLength->setValue(mManager->getInt(SETTING::TIMELINE_SIZE));
+    if (mManager->getString(SETTING::TIMELINE_SIZE).toInt() <= 0)
+        ui->timelineLength->setValue(240);
 }
 
-void TimelinePage::lengthSizeChange(QString value)
+void TimelinePage::timelineLengthChanged(int value)
 {
-    int length = value.toInt();
-    mManager->set(SETTING::TIMELINE_SIZE, length);
+    mManager->set(SETTING::TIMELINE_SIZE, value);
 }
 
 void TimelinePage::fontSizeChange(int value)
@@ -319,6 +327,10 @@ FilesPage::FilesPage(QWidget* parent) :
     ui(new Ui::FilesPage)
 {
     ui->setupUi(this);
+
+    auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    connect(ui->autosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange);
+    connect(ui->autosaveNumberBox, spinBoxValueChange, this, &FilesPage::autosaveNumberChange);
 }
 
 FilesPage::~FilesPage()
@@ -332,12 +344,6 @@ void FilesPage::updateValues()
     ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
 }
 
-void FilesPage::updateClearRecentListButton()
-{
-    ui->clearRecentFilesBtn->setEnabled(false);
-    ui->clearRecentFilesBtn->setText(tr("List is empty"));
-}
-
 void FilesPage::autosaveChange(int b)
 {
     mManager->set(SETTING::AUTO_SAVE, b != Qt::Unchecked);
@@ -348,16 +354,19 @@ void FilesPage::autosaveNumberChange(int number)
     mManager->set(SETTING::AUTO_SAVE_NUMBER, number);
 }
 
-void FilesPage::clearRecentFilesList()
-{
-    emit clearRecentList();
-}
-
 ToolsPage::ToolsPage(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::ToolsPage)
 {
     ui->setupUi(this);
+
+    auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    connect(ui->onionMaxOpacityBox, spinBoxChanged, this, &ToolsPage::onionMaxOpacityChange);
+    connect(ui->onionMinOpacityBox, spinBoxChanged, this, &ToolsPage::onionMinOpacityChange);
+    connect(ui->onionPrevFramesNumBox, spinBoxChanged, this, &ToolsPage::onionPrevFramesNumChange);
+    connect(ui->onionNextFramesNumBox, spinBoxChanged, this, &ToolsPage::onionNextFramesNumChange);
+    connect(ui->useQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange);
+
 }
 
 ToolsPage::~ToolsPage()

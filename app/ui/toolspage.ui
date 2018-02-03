@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>ToolsPage</class>
  <widget class="QWidget" name="ToolsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>278</width>
+    <height>330</height>
+   </rect>
+  </property>
   <layout class="QVBoxLayout" name="lay2">
    <item>
     <widget class="QGroupBox" name="onionSkinBox">
@@ -143,93 +151,18 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
     </spacer>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>onionMaxOpacityBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ToolsPage</receiver>
-   <slot>onionMaxOpacityChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>50</x>
-     <y>264</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>onionMinOpacityBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ToolsPage</receiver>
-   <slot>onionMinOpacityChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>50</x>
-     <y>264</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>onionPrevFramesNumBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ToolsPage</receiver>
-   <slot>onionPrevFramesNumChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>50</x>
-     <y>264</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>onionNextFramesNumBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ToolsPage</receiver>
-   <slot>onionNextFramesNumChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>50</x>
-     <y>264</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useQuickSizingBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>ToolsPage</receiver>
-   <slot>quickSizingChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>203</x>
-     <y>261</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>onionMaxOpacityChange(int)</slot>
   <slot>onionMinOpacityChange(int)</slot>

@@ -131,7 +131,7 @@ public:
 public slots:
     void updateValues();
 
-    void lengthSizeChange(QString);
+    void timelineLengthChanged(int);
     void fontSizeChange(int);
     void frameSizeChange(int);
     void labelChange(bool);
@@ -155,8 +155,6 @@ public slots:
     void updateValues();
     void autosaveChange(int b);
     void autosaveNumberChange(int number);
-    void clearRecentFilesList();
-    void updateClearRecentListButton();
 
 Q_SIGNALS:
     void clearRecentList();

@@ -125,7 +125,7 @@ bool PreferenceManager::isOn( SETTING option )
 
 int PreferenceManager::getInt( SETTING option )
 {
-    int optionId = static_cast< int >( option );
+    int optionId = static_cast<int>(option);
     return mIntegerSet.value(optionId, -1);
 }
 

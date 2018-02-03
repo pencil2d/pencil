@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>FilesPage</class>
  <widget class="QWidget" name="FilesPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>316</width>
+    <height>234</height>
+   </rect>
+  </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <item>
     <widget class="QGroupBox" name="autosaveBox">
@@ -49,88 +57,22 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="clearRecentFilesBox">
-     <property name="title">
-      <string comment="Clear Recent Files (Preference)">Clear recent files list</string>
-     </property>
-     <layout class="QVBoxLayout" name="clearRecentChangesLay">
-      <item>
-       <widget class="QLabel" name="clearRecentFilesLbl">
-        <property name="text">
-         <string comment="Clear Recent Files (Preference)">This will clear your list of recently opened files</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="clearRecentFilesBtn">
-        <property name="text">
-         <string comment="Clear Recent Files (Preference)">Clear</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
      </property>
     </spacer>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>autosaveCheckBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>FilesPage</receiver>
-   <slot>autosaveChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>226</x>
-     <y>41</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>autosaveNumberBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>FilesPage</receiver>
-   <slot>autosaveNumberChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>50</x>
-     <y>105</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>clearRecentFilesBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>FilesPage</receiver>
-   <slot>clearRecentFilesList()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>203</x>
-     <y>206</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>autosaveChange(int)</slot>
   <slot>autosaveNumberChange(int)</slot>

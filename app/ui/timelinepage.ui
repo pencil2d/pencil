@@ -2,7 +2,18 @@
 <ui version="4.0">
  <class>TimelinePage</class>
  <widget class="QWidget" name="TimelinePage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>315</width>
+    <height>262</height>
+   </rect>
+  </property>
   <layout class="QVBoxLayout" name="lay2">
+   <property name="spacing">
+    <number>7</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="timeLineBox">
      <property name="title">
@@ -30,27 +41,37 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="lengthSizeLabel">
-        <property name="text">
-         <string>Timeline size in Frames</string>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="topMargin">
+         <number>5</number>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lengthSize">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
+        <property name="bottomMargin">
+         <number>5</number>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
+        <item>
+         <widget class="QLabel" name="lengthSizeLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string comment="Preferences">Timeline length:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="timelineLength">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QCheckBox" name="scrubBox">
@@ -67,61 +88,18 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
     </spacer>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>frameSize</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>TimelinePage</receiver>
-   <slot>frameSizeChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>203</x>
-     <y>269</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lengthSize</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>TimelinePage</receiver>
-   <slot>lengthSizeChange(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>50</x>
-     <y>261</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>scrubBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimelinePage</receiver>
-   <slot>scrubChange(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>203</x>
-     <y>267</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>frameSizeChange(int)</slot>
   <slot>lengthSizeChange(QString)</slot>
