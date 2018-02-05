@@ -58,7 +58,7 @@ public:
 private:
     int mFrame       = -1;
     int mLength      =  1;
-    bool mIsModified = false;
+    bool mIsModified = true;
     bool mIsSelected = false;
     QString mAttachedFileName;
 

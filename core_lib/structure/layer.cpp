@@ -267,6 +267,12 @@ bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, nee
         addNewEmptyKeyAt(position2);
     }
 
+    if (pFirstFrame)
+        pFirstFrame->modification();
+
+    if (pSecondFrame)
+        pSecondFrame->modification();
+
     return true;
 }
 
