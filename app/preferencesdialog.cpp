@@ -92,21 +92,24 @@ GeneralPage::GeneralPage(QWidget* parent) :
 
     QSettings settings( PENCIL2D, PENCIL2D );
 
-    ui->languageCombo->addItem( tr( "Czech" ), "cs" );
-    ui->languageCombo->addItem( tr( "Danish" ), "da" );
-    ui->languageCombo->addItem( tr( "English" ), "en" );
-    ui->languageCombo->addItem( tr( "German" ), "de" );
-    ui->languageCombo->addItem( tr( "Spanish" ), "es" );
-    ui->languageCombo->addItem( tr( "French" ), "fr" );
-    ui->languageCombo->addItem( tr( "Hungarian" ), "hu-HU" );
-    ui->languageCombo->addItem( tr( "Italian" ), "it" );
-    ui->languageCombo->addItem( tr( "Japanese" ), "ja" );
-    ui->languageCombo->addItem( tr( "Portuguese - Brazil" ), "pt-BR" );
-    ui->languageCombo->addItem( tr( "Russian" ), "ru" );
-    ui->languageCombo->addItem( tr( "Chinese - Taiwan" ), "zh-TW" );
+    ui->languageCombo->addItem(tr("Czech"), "cs");
+    ui->languageCombo->addItem(tr("Danish"), "da");
+    ui->languageCombo->addItem(tr("German"), "de");
+    ui->languageCombo->addItem(tr("English"), "en");
+    ui->languageCombo->addItem(tr("Spanish"), "es");
+    ui->languageCombo->addItem(tr("French"), "fr");
+    ui->languageCombo->addItem(tr("Hebrew"), "he");
+    ui->languageCombo->addItem(tr("Hungarian"), "hu-HU");
+    ui->languageCombo->addItem(tr("Indonesian"), "id");
+    ui->languageCombo->addItem(tr("Italian"), "it");
+    ui->languageCombo->addItem(tr("Japanese"), "ja");
+    ui->languageCombo->addItem(tr("Portuguese - Brazil"), "pt-BR");
+    ui->languageCombo->addItem(tr("Russian"), "ru");
+    ui->languageCombo->addItem(tr("Vietnamese "), "vi");
+    ui->languageCombo->addItem(tr("Chinese - Taiwan"), "zh-TW");
 
     int value = settings.value("windowOpacity").toInt();
-    ui->windowOpacityLevel->setValue( 100 - value );
+    ui->windowOpacityLevel->setValue(100 - value);
 
     QPixmap previewCheckerboard( ":background/checkerboard.png" );
     QPixmap previewWhite(32,32);
