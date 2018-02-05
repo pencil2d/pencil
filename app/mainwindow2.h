@@ -40,6 +40,7 @@ class RecentFileMenu;
 class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
+class BackupElement;
 
 
 

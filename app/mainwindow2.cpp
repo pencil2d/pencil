@@ -45,6 +45,7 @@ GNU General Public License for more details.
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
+#include "backupelement.h"
 
 // app headers
 #include "scribblearea.h"
@@ -915,7 +916,7 @@ void MainWindow2::setupKeyboardShortcuts()
 
 void MainWindow2::clearKeyboardShortcuts()
 {
-    QList<QAction*> actionList = this->findChildren<QAction*>();
+    QList<QAction*> actionList = findChildren<QAction*>();
     for (QAction* action : actionList)
     {
         action->setShortcut(QKeySequence(0));
@@ -924,7 +925,7 @@ void MainWindow2::clearKeyboardShortcuts()
 
 void MainWindow2::undoActSetText(void)
 {
-    if (this->mEditor->mBackupIndex < 0)
+    if (mEditor->mBackupIndex < 0)
     {
         ui->actionUndo->setText(tr("Undo"));
         ui->actionUndo->setEnabled(false);
@@ -932,16 +933,16 @@ void MainWindow2::undoActSetText(void)
     else
     {
         ui->actionUndo->setText(tr("Undo   %1 %2")
-                                .arg(QString::number(this->mEditor->mBackupIndex + 1))
-                                .arg(this->mEditor->mBackupList.at(this->mEditor->mBackupIndex)->undoText));
+                                .arg(QString::number(mEditor->mBackupIndex + 1))
+                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex)->undoText));
         ui->actionUndo->setEnabled(true);
     }
 
-    if (this->mEditor->mBackupIndex + 2 < this->mEditor->mBackupList.size())
+    if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
     {
         ui->actionRedo->setText(tr("Redo   %1 %2")
-                                .arg(QString::number(this->mEditor->mBackupIndex + 2))
-                                .arg(this->mEditor->mBackupList.at(this->mEditor->mBackupIndex + 1)->undoText));
+                                .arg(QString::number(mEditor->mBackupIndex + 2))
+                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
         ui->actionRedo->setEnabled(true);
     }
     else

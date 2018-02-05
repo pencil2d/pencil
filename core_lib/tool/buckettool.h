@@ -19,7 +19,6 @@ GNU General Public License for more details.
 #define BUCKETTOOL_H
 
 #include "stroketool.h"
-#include "qpainterpath.h"
 
 class Layer;
 class VectorImage;

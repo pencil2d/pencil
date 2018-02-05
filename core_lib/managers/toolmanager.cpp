@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 #include "toolmanager.h"
 
+#include <cmath>
 #include "pentool.h"
 #include "penciltool.h"
 #include "brushtool.h"

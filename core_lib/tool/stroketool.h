@@ -22,9 +22,7 @@ GNU General Public License for more details.
 
 #include <QList>
 #include <QPointF>
-#include <QPair>
 
-typedef QPair<QPointF, QPointF> QSegment;
 
 class StrokeTool : public BaseTool
 {
