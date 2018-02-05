@@ -92,21 +92,21 @@ GeneralPage::GeneralPage(QWidget* parent) :
 
     QSettings settings( PENCIL2D, PENCIL2D );
 
-    ui->languageCombo->addItem(tr("Czech"), "cs");
-    ui->languageCombo->addItem(tr("Danish"), "da");
-    ui->languageCombo->addItem(tr("German"), "de");
-    ui->languageCombo->addItem(tr("English"), "en");
-    ui->languageCombo->addItem(tr("Spanish"), "es");
-    ui->languageCombo->addItem(tr("French"), "fr");
-    ui->languageCombo->addItem(tr("Hebrew"), "he");
-    ui->languageCombo->addItem(tr("Hungarian"), "hu-HU");
-    ui->languageCombo->addItem(tr("Indonesian"), "id");
-    ui->languageCombo->addItem(tr("Italian"), "it");
-    ui->languageCombo->addItem(tr("Japanese"), "ja");
-    ui->languageCombo->addItem(tr("Portuguese - Brazil"), "pt-BR");
-    ui->languageCombo->addItem(tr("Russian"), "ru");
-    ui->languageCombo->addItem(tr("Vietnamese "), "vi");
-    ui->languageCombo->addItem(tr("Chinese - Taiwan"), "zh-TW");
+    ui->languageCombo->addItem(tr("Czech") + " (Czech)", "cs");
+    ui->languageCombo->addItem(tr("Danish") + " (Danish)", "da");
+    ui->languageCombo->addItem(tr("German") + " (German)", "de");
+    ui->languageCombo->addItem(tr("English") + " (English)", "en");
+    ui->languageCombo->addItem(tr("Spanish") + " (Spanish)", "es");
+    ui->languageCombo->addItem(tr("French") + " (French)", "fr");
+    ui->languageCombo->addItem(tr("Hebrew") + " (Hebrew)", "he");
+    ui->languageCombo->addItem(tr("Hungarian") + " (Hungarian)", "hu-HU");
+    ui->languageCombo->addItem(tr("Indonesian") + " (Indonesian)", "id");
+    ui->languageCombo->addItem(tr("Italian") + " (Italian)", "it");
+    ui->languageCombo->addItem(tr("Japanese") + " (Japanese)", "ja");
+    ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt-BR");
+    ui->languageCombo->addItem(tr("Russian") + " (Russian)", "ru");
+    ui->languageCombo->addItem(tr("Vietnamese ") + " (Vietnamese)", "vi");
+    ui->languageCombo->addItem(tr("Chinese - Taiwan") + " (Chinese - Taiwan)", "zh-TW");
 
     int value = settings.value("windowOpacity").toInt();
     ui->windowOpacityLevel->setValue(100 - value);
@@ -198,8 +198,8 @@ void GeneralPage::updateValues()
 
 void GeneralPage::languageChanged( int i )
 {
-    QString strLocale = ui->languageCombo->itemData( i ).toString();
-    mManager->set( SETTING::LANGUAGE, strLocale );
+    QString strLocale = ui->languageCombo->itemData(i).toString();
+    mManager->set(SETTING::LANGUAGE, strLocale);
 
     QMessageBox::warning(this,
                          tr("Restart Required"),
