@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #define VECTORIMAGE_H
 
 
-#include <QtXml>
+//#include <QtXml>
 #include <QTransform>
 #include <QImage>
 #include <QStringList>
@@ -47,6 +47,8 @@ public:
 
     Status createDomElement(QXmlStreamWriter& doc);
     void loadDomElement(QDomElement element);
+
+    BezierCurve& curve(int i);
 
     void insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts);
     void addCurve(BezierCurve& newCurve, qreal factor, bool interacts = true);
@@ -137,7 +139,6 @@ public:
 
     QPainterPath getStrokedPath() { return mGetStrokedPath; }
 
-    QList<BezierCurve> mCurves;
     QList<BezierArea> mArea;
     QList<int> mCurveDisplayOrders;
 
@@ -155,6 +156,8 @@ private:
     QPainterPath mGetStrokedPath;
 
 private:
+    QList<BezierCurve> mCurves;
+
     Object* mObject = nullptr;
     QRectF mSelectionRect;
     QTransform mSelectionTransformation;
