@@ -22,14 +22,17 @@ app.depends      = core_lib
 tests.depends    = core_lib
 
 TRANSLATIONS += translations/pencil.ts \
-                translations/Language.cs.ts \
-                translations/Language.da.ts \
-                translations/Language.de.ts \
-                translations/Language.es.ts \
-                translations/Language.fr.ts \
-                translations/Language.hu_HU.ts \
-                translations/Language.it.ts \
-                translations/Language.ja.ts \
-                translations/Language.pt_BR.ts \
-                translations/Language.ru.ts \
-                translations/Language.zh_TW.ts
+                translations/pencil_cs.ts \
+                translations/pencil_da.ts \
+                translations/pencil_de.ts \
+                translations/pencil_es.ts \
+                translations/pencil_fr.ts \
+				translations/pencil_he.ts \
+                translations/pencil_hu_HU.ts \
+				translations/pencil_id.ts \
+                translations/pencil_it.ts \
+                translations/pencil_ja.ts \
+                translations/pencil_pt_BR.ts \
+                translations/pencil_ru.ts \
+				translations/pencil_vi.ts \
+                translations/pencil_zh_TW.ts

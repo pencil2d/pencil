@@ -1,15 +1,18 @@
 <RCC>
     <qresource prefix="/qm">
-        <file>Language.cs.qm</file>
-        <file>Language.da.qm</file>
-        <file>Language.de.qm</file>
-        <file>Language.es.qm</file>
-        <file>Language.fr.qm</file>
-        <file>Language.hu_HU.qm</file>
-        <file>Language.it.qm</file>
-        <file>Language.ja.qm</file>
-        <file>Language.pt_BR.qm</file>
-        <file>Language.ru.qm</file>
-        <file>Language.zh_TW.qm</file>
+        <file>pencil_cs.qm</file>
+        <file>pencil_da.qm</file>
+        <file>pencil_de.qm</file>
+        <file>pencil_es.qm</file>
+        <file>pencil_fr.qm</file>
+        <file>pencil_he.qm</file>
+        <file>pencil_hu_HU.qm</file>
+        <file>pencil_id.qm</file>
+        <file>pencil_it.qm</file>
+        <file>pencil_ja.qm</file>
+        <file>pencil_pt_BR.qm</file>
+        <file>pencil_ru.qm</file>
+        <file>pencil_vi.qm</file>
+        <file>pencil_zh_TW.qm</file>
     </qresource>
 </RCC>
