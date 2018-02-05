@@ -41,7 +41,7 @@ protected:
     Status saveKeyFrame(KeyFrame*, QString strPath) override;
 
 private:
-    QString fileName(int index) const;
+    QString fileName(KeyFrame* key) const;
 };
 
 #endif

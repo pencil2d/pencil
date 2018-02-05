@@ -458,6 +458,12 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
+Status BitmapImage::write(const QString& filename)
+{
+    bool b = image()->save(filename);
+    return (b) ? Status::OK : Status::FAIL;
+}
+
 void BitmapImage::clear()
 {
     mImage = std::make_shared< QImage >(); // null image

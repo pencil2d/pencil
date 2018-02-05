@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include "filemanager.h"
 #include "util.h"
 #include "object.h"
+#include "bitmapimage.h"
+#include "layerbitmap.h"
 
 
 TEST_CASE("FileManager Initial Test")
@@ -256,5 +258,32 @@ TEST_CASE("FileManager Load-a-zip Test")
         Layer* layer = o->getLayer(0);
         REQUIRE(layer->name() == "MyBitmapLayer");
         REQUIRE(layer->id() == 5);
+    }
+}
+
+TEST_CASE("FileManager Lazy loading test")
+{
+    SECTION("")
+    {
+        Object* o = new Object;
+        o->init();
+        o->createDefaultLayers();
+
+        LayerBitmap* layer = static_cast<LayerBitmap*>(o->getLayer(2));
+        //qDebug() << "LayerType:" << layer->type();
+
+        REQUIRE(layer->addNewEmptyKeyAt(2));
+        BitmapImage* b2 = layer->getBitmapImageAtFrame(2);
+        //qDebug() << b2->bounds();
+        b2->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
+        //b2->image()->save("C:/temp/test1.png");
+
+        QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
+        REQUIRE(testDir.isValid());
+
+        FileManager fm;
+        fm.save(o, testDir.path() + "/abc.pclx");
+
+        delete o;
     }
 }
