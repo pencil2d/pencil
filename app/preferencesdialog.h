@@ -91,7 +91,6 @@ public:
     ~GeneralPage();
     void setManager( PreferenceManager* p ) { mManager = p; }
 
-
 public slots:
     void updateValues();
     void gridSizeChange(int value);

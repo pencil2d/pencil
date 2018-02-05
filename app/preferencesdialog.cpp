@@ -128,7 +128,20 @@ GeneralPage::GeneralPage(QWidget* parent) :
     ui->backgroundButtons->setId(ui->dotsBackgroundButton, 4);
     ui->backgroundButtons->setId(ui->weaveBackgroundButton, 5);
 
+    auto buttonClicked = static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked);
+    auto curIndexChagned = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
+    auto spinValueChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    connect(ui->languageCombo,curIndexChagned, this, &GeneralPage::languageChanged);
     connect(ui->windowOpacityLevel, &QSlider::valueChanged, this, &GeneralPage::windowOpacityChange);
+    connect(ui->backgroundButtons, buttonClicked, this, &GeneralPage::backgroundChange);
+    connect(ui->shadowsBox, &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged);
+    connect(ui->toolCursorsBox, &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged);
+    connect(ui->antialiasingBox, &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged);
+    connect(ui->curveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChange);
+    connect(ui->highResBox, &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged);
+    connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
+    connect(ui->gridSizeInput, spinValueChanged, this, &GeneralPage::gridSizeChange);
+    connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
 }
 
 GeneralPage::~GeneralPage()
