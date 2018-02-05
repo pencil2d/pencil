@@ -23,11 +23,12 @@ GNU General Public License for more details.
 class ShortcutFilter : public QObject
 {
     Q_OBJECT
-    public:
-        ShortcutFilter( ScribbleArea* _mScribbleArea, QObject* parent = 0 );
-    protected:
-        bool eventFilter(QObject* obj, QEvent* event);
-        ScribbleArea* mScribbleArea;
+
+public:
+    ShortcutFilter(ScribbleArea* scribbleArea, QObject* parent);
+protected:
+    bool eventFilter(QObject* obj, QEvent* event);
+    ScribbleArea* mScribbleArea = nullptr;
 };
 
 #endif

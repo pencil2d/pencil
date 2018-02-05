@@ -28,3 +28,8 @@ BaseManager::~BaseManager()
 {
     mEditor = nullptr;
 }
+
+Object* BaseManager::object() const
+{
+    return mEditor->object();
+}

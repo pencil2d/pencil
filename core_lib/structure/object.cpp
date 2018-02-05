@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "util.h"
 #include "editor.h"
 #include "bitmapimage.h"
+#include "vectorimage.h"
 #include "fileformat.h"
 
 Object::Object(QObject* parent) : QObject(parent)

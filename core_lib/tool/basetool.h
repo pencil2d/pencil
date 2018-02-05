@@ -21,15 +21,14 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QString>
 #include <QCursor>
-#include <QMouseEvent>
 #include <QPointF>
 #include <QPixmap>
-#include <QPen>
 #include "pencildef.h"
 
 class Editor;
 class ScribbleArea;
 class QKeyEvent;
+class QMouseEvent;
 class StrokeManager;
 
 class Properties

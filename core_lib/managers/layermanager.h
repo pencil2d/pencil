@@ -19,8 +19,8 @@ GNU General Public License for more details.
 #define LAYER_MANAGER_H
 
 #include "basemanager.h"
+#include "layer.h"
 
-class Layer;
 class LayerBitmap;
 class LayerVector;
 class LayerCamera;

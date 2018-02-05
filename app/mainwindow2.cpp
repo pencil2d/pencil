@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include <QFileIconProvider>
 
+// core_lib headers
 #include "pencildef.h"
 #include "pencilsettings.h"
 #include "object.h"
@@ -42,7 +43,10 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "soundmanager.h"
 #include "actioncommands.h"
+#include "fileformat.h"     //contains constants used by Pencil File Format
+#include "util.h"
 
+// app headers
 #include "scribblearea.h"
 #include "colorbox.h"
 #include "colorpalettewidget.h"
@@ -51,17 +55,12 @@ GNU General Public License for more details.
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
-#include "preview.h"
+//#include "preview.h"
 #include "timeline2.h"
 #include "errordialog.h"
 #include "importimageseqdialog.h"
-#include "util.h"
-
-#include "fileformat.h"     //contains constants used by Pencil File Format
 #include "recentfilemenu.h"
-
 #include "shortcutfilter.h"
-#include "movieexporter.h"
 #include "app_util.h"
 
 #define STRINGIFY(x) #x

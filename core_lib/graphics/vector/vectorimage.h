@@ -20,7 +20,6 @@ GNU General Public License for more details.
 
 #include <QtXml>
 #include <QTransform>
-#include <QDebug>
 #include <QImage>
 #include <QStringList>
 

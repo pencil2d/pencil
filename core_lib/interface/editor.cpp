@@ -44,7 +44,9 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layersound.h"
+#include "layercamera.h"
 #include "keyframefactory.h"
+#include "backupelement.h"
 
 #include "colormanager.h"
 #include "toolmanager.h"

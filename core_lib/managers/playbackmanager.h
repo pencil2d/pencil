@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "basemanager.h"
 
 class QTimer;
+class QElapsedTimer;
 
 
 class PlaybackManager : public BaseManager

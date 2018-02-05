@@ -32,7 +32,6 @@ GNU General Public License for more details.
 
 #include "log.h"
 #include "pencildef.h"
-#include "vectorimage.h"
 #include "bitmapimage.h"
 #include "colourref.h"
 #include "vectorselection.h"

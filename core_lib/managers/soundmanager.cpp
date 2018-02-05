@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 
 #include <QString>
+#include "editor.h"
 #include "object.h"
 #include "layersound.h"
 #include "soundclip.h"

@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "pencilapplication.h"
 #include "layermanager.h"
+#include "layercamera.h"
 
 
 void installTranslator( PencilApplication& app )

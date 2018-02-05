@@ -20,13 +20,13 @@ GNU General Public License for more details.
 #include <QPixmap>
 #include <QPainter>
 
-#include "scribblearea.h"
-#include "pencilsettings.h"
-#include "strokemanager.h"
-#include "layermanager.h"
 #include "editor.h"
 #include "blitrect.h"
+#include "scribblearea.h"
+#include "strokemanager.h"
+#include "layermanager.h"
 #include "layervector.h"
+#include "vectorimage.h"
 
 
 EraserTool::EraserTool( QObject *parent ) 

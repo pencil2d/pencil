@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define PREFERENCEMANAGER_H
 
 #include <bitset>
+#include <QHash>
 #include "basemanager.h"
 #include "pencildef.h"
 

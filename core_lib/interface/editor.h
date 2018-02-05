@@ -20,14 +20,14 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QList>
-#include "layercamera.h"
-#include "backupelement.h"
 #include "pencilerror.h"
 
 
 class QDragEnterEvent;
 class QDropEvent;
 class Object;
+class KeyFrame;
+class LayerCamera;
 class MainWindow2;
 class BaseManager;
 class ColorManager;
@@ -39,6 +39,7 @@ class PreferenceManager;
 class SoundManager;
 class ScribbleArea;
 class TimeLine;
+class BackupElement;
 
 enum class SETTING;
 

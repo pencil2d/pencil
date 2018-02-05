@@ -18,9 +18,9 @@ GNU General Public License for more details.
 #ifndef MAINWINDOW2_H
 #define MAINWINDOW2_H
 
-#include <QDomElement>
 #include <QMainWindow>
-#include "backgroundwidget.h"
+#include "preferencemanager.h"
+
 
 template<typename T> class QList;
 class QActionGroup;

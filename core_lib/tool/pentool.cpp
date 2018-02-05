@@ -18,11 +18,11 @@ GNU General Public License for more details.
 
 #include <QPixmap>
 
+#include "vectorimage.h"
 #include "layervector.h"
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
-#include "pencilsettings.h"
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"

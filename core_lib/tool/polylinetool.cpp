@@ -25,6 +25,7 @@ GNU General Public License for more details.
 
 #include "layervector.h"
 #include "layerbitmap.h"
+#include "vectorimage.h"
 
 
 PolylineTool::PolylineTool( QObject *parent ) :
@@ -108,8 +109,8 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
         {
             if ( layer->type() == Layer::VECTOR )
             {
-                ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deselectAll();
-                if ( mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+                if (mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
                 {
                     mScribbleArea->toggleThinLines();
                 }

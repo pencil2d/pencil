@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 #include "selecttool.h"
 
+#include "vectorimage.h"
 #include "editor.h"
 #include "layervector.h"
 #include "scribblearea.h"

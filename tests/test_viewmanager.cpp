@@ -16,6 +16,7 @@ GNU General Public License for more details.
 #include "catch.hpp"
 
 #include "viewmanager.h"
+#include "editor.h"
 #include "object.h"
 #include "camera.h"
 #include "layercamera.h"

@@ -28,8 +28,9 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "editor.h"
 #include "scribblearea.h"
-#include "pencilsettings.h"
 #include "blitrect.h"
+#include "vectorimage.h"
+
 
 PencilTool::PencilTool( QObject* parent ) : StrokeTool( parent )
 {

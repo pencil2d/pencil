@@ -21,8 +21,7 @@ GNU General Public License for more details.
 #include <QPixmap>
 #include <QBitmap>
 
-#include "pencilsettings.h"
-#include "layer.h"
+#include "vectorimage.h"
 #include "layervector.h"
 #include "layerbitmap.h"
 #include "colormanager.h"

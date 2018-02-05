@@ -17,10 +17,10 @@ GNU General Public License for more details.
 
 #include "shortcutfilter.h"
 
-ShortcutFilter::ShortcutFilter(ScribbleArea* _mScribbleArea , QObject* parent) :
+ShortcutFilter::ShortcutFilter(ScribbleArea* scribbleArea , QObject* parent) :
     QObject(parent)
 {
-    mScribbleArea = _mScribbleArea;
+    mScribbleArea = scribbleArea;
 }
 
 bool ShortcutFilter::eventFilter(QObject* obj, QEvent* event)

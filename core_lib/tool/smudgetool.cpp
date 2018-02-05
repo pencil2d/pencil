@@ -17,9 +17,9 @@ GNU General Public License for more details.
 #include "smudgetool.h"
 
 #include <QPixmap>
+#include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
-
 #include "layermanager.h"
 #include "colormanager.h"
 #include "layerbitmap.h"

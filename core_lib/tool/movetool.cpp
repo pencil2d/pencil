@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
+#include "vectorimage.h"
 
 
 MoveTool::MoveTool(QObject* parent) :

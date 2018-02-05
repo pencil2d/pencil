@@ -18,7 +18,8 @@ GNU General Public License for more details.
 #ifndef BASEMANAGER_H
 #define BASEMANAGER_H
 
-#include "editor.h"
+#include <QObject>
+#include "pencilerror.h"
 
 class Object;
 class Layer;
@@ -32,7 +33,7 @@ public:
     virtual ~BaseManager();
 
     Editor* editor() const { return mEditor; }
-    Object* object() const { return mEditor->object(); }
+    Object* object() const;
 
     virtual bool init() = 0;
     virtual Status load(Object* o) = 0;

@@ -28,7 +28,8 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 #include "bitmapimage.h"
-#include "pencilsettings.h"
+#include "vectorimage.h"
+
 #include "toolmanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"

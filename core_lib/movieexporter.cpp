@@ -139,6 +139,8 @@ Status MovieExporter::run(const Object* obj,
     minorProgress(0.f);
     progressMessage(QApplication::tr("Checking environment..."));
 
+    clock_t t1 = clock();
+
     QString ffmpegPath = ffmpegLocation();
     qDebug() << ffmpegPath;
     if (!QFile::exists(ffmpegPath))
@@ -176,12 +178,12 @@ Status MovieExporter::run(const Object* obj,
         minorProgress(1.f);
     }
     majorProgress(0.1f, 0.5f);
-    qDebug() << "Time:" << clock();
+    //qDebug() << "Time:" << clock();
     progressMessage(QApplication::tr("Generating frames..."));
     minorProgress(0.f);
 
     STATUS_CHECK(generateImageSequence(obj, minorProgress));
-    qDebug() << "Time:" << clock();
+    //qDebug() << "Time:" << clock();
     minorProgress(1.f);
 
     minorProgress(0.f);
@@ -203,10 +205,13 @@ Status MovieExporter::run(const Object* obj,
         majorProgress(0.5f, 1.f);
         combineVideoAndAudio(ffmpegPath, desc.strFileName, minorProgress);
     }
-    qDebug() << "Time:" << clock();
+
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
     progressMessage(QApplication::tr("Done"));
+    
+    clock_t t2 = clock() - t1;
+    qDebug("MOVIE = %.1f sec", float(t2) / CLOCKS_PER_SEC);
 
     return Status::OK;
 }

@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include "selecttool.h"
 #include "smudgetool.h"
 #include "editor.h"
-#include "pencilsettings.h"
 
 
 ToolManager::ToolManager(Editor* editor) : BaseManager(editor)
