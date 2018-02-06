@@ -137,14 +137,14 @@
    <item>
     <widget class="QCheckBox" name="usePressureBox">
      <property name="text">
-      <string>Pressure</string>
+      <string comment="Brush">Pressure</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="useAABox">
      <property name="text">
-      <string>Anti-Aliasing</string>
+      <string comment="Brush AA">Anti-Aliasing</string>
      </property>
     </widget>
    </item>
@@ -174,7 +174,7 @@
       <string>Merge vector lines when they are close together</string>
      </property>
      <property name="text">
-      <string>Merge</string>
+      <string comment="Vector line merge">Merge</string>
      </property>
     </widget>
    </item>
@@ -197,17 +197,17 @@
       <widget class="QComboBox" name="inpolLevelsCombo">
        <item>
         <property name="text">
-         <string>None</string>
+         <string comment="Stabilizer option">None</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Simple</string>
+         <string comment="Stabilizer option">Simple</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Strong</string>
+         <string comment="Stabilizer option">Strong</string>
         </property>
        </item>
       </widget>

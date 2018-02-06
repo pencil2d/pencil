@@ -927,12 +927,12 @@ void MainWindow2::undoActSetText(void)
 {
     if (mEditor->mBackupIndex < 0)
     {
-        ui->actionUndo->setText(tr("Undo"));
+        ui->actionUndo->setText(tr("Undo", "Menu item text"));
         ui->actionUndo->setEnabled(false);
     }
     else
     {
-        ui->actionUndo->setText(tr("Undo   %1 %2")
+        ui->actionUndo->setText(QString("%1   %2 %3").arg(tr("Undo", "Menu item text"))
                                 .arg(QString::number(mEditor->mBackupIndex + 1))
                                 .arg(mEditor->mBackupList.at(mEditor->mBackupIndex)->undoText));
         ui->actionUndo->setEnabled(true);
@@ -940,14 +940,14 @@ void MainWindow2::undoActSetText(void)
 
     if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
     {
-        ui->actionRedo->setText(tr("Redo   %1 %2")
+        ui->actionRedo->setText(QString("%1   %2 %3").arg("Redo", "Menu item text")
                                 .arg(QString::number(mEditor->mBackupIndex + 2))
                                 .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
         ui->actionRedo->setEnabled(true);
     }
     else
     {
-        ui->actionRedo->setText(tr("Redo"));
+        ui->actionRedo->setText(tr("Redo", "Menu item text"));
         ui->actionRedo->setEnabled(false);
     }
 }

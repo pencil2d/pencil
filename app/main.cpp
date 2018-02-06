@@ -177,13 +177,13 @@ int handleArguments( PencilApplication& app )
             endFrame = parser.value( endOption ).toInt( &ok );
             if ( !ok )
             {
-                err << PencilApplication::tr( "Warning: end value %1 is not an integer, last or last-sound, ignoring." ).arg(parser.value( endOption )) << endl;
+                err << PencilApplication::tr("Warning: end value %1 is not an integer, last or last-sound, ignoring.").arg(parser.value(endOption)) << endl;
                 endFrame = -1;
             }
         }
         if (endFrame > -1 && endFrame < startFrame)
         {
-            err << PencilApplication::tr( "Warning: end value %1 is smaller than start value %2, ignoring." ).arg(endFrame).arg(startFrame) << endl;
+            err << PencilApplication::tr("Warning: end value %1 is smaller than start value %2, ignoring.").arg(endFrame).arg(startFrame) << endl;
             endFrame = startFrame;
         }
     }
@@ -194,19 +194,19 @@ int handleArguments( PencilApplication& app )
         if ( inputPath.isEmpty() )
         {
             // Error if there are output paths without an input path
-            err << PencilApplication::tr( "Error: No input file specified." ) << endl;
+            err << PencilApplication::tr("Error: No input file specified.") << endl;
             return 1;
         }
 
         QFileInfo inputFileInfo(inputPath);
         if(!inputFileInfo.exists())
         {
-            err << PencilApplication::tr( "Error: the input file at '%1' does not exist" ).arg(inputPath) << endl;
+            err << PencilApplication::tr("Error: the input file at '%1' does not exist", "Command line error").arg(inputPath) << endl;
             return 1;
         }
         if ( !inputFileInfo.isFile() )
         {
-            err << PencilApplication::tr( "Error: the input path '%1' is not a file" ).arg(inputPath) << endl;
+            err << PencilApplication::tr("Error: the input path '%1' is not a file", "Command line error").arg(inputPath) << endl;
             return 1;
         }
     }
@@ -264,7 +264,7 @@ int handleArguments( PencilApplication& app )
         }
         else
         {
-            err << PencilApplication::tr( "Warning: Output format is not specified or unsupported. Using PNG." ) << endl;
+            err << PencilApplication::tr("Warning: Output format is not specified or unsupported. Using PNG.", "Command line warning") << endl;
             format = "PNG";
         }
 
@@ -284,16 +284,16 @@ int handleArguments( PencilApplication& app )
         {
             if ( transparency )
             {
-                err << PencilApplication::tr( "Warning: Transparency is not currenty supported in movie files" ) << endl;
+                err << PencilApplication::tr("Warning: Transparency is not currently supported in movie files", "Command line warning") << endl;
             }
-            out << PencilApplication::tr( "Exporting movie..." ) << endl;
+            out << PencilApplication::tr("Exporting movie...", "Command line task progress") << endl;
             mainWindow.mEditor->exportMovieCLI( outputPaths[i], cameraLayer, width, height, startFrame, endFrame );
-            out << PencilApplication::tr( "Done." ) << endl;
+            out << PencilApplication::tr("Done.", "Command line task done") << endl;
         }
         else {
-            out << PencilApplication::tr( "Exporting image sequence..." ) << endl;
+            out << PencilApplication::tr("Exporting image sequence...", "Command line task progress") << endl;
             mainWindow.mEditor->exportSeqCLI( outputPaths[i], cameraLayer, format, width, height, startFrame, endFrame, transparency );
-            out << PencilApplication::tr( "Done." ) << endl;
+            out << PencilApplication::tr("Done.", "Command line task done") << endl;
         }
     }
 
