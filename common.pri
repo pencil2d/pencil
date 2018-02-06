@@ -14,7 +14,7 @@ win32-msvc* {
 
 macx {
    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
-   LIBS += -lobjc -framework AppKit -framework Carbon
+   LIBS += -lobjc -framework Carbon
 }
 
 unix:!macx {
@@ -22,6 +22,3 @@ unix:!macx {
     QMAKE_LINK = $$QMAKE_CXX
     QMAKE_LINK_SHLIB = $$QMAKE_CXX
 }
-
-DEFINES += QUAZIP_BUILD
-DEFINES += QUAZIP_STATIC
