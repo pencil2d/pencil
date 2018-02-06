@@ -71,7 +71,6 @@ void TimeLine::initUI()
     QToolBar* layerButtons = new QToolBar( this );
     QLabel* layerLabel = new QLabel( tr( "Layers:" ) );
     layerLabel->setIndent( 5 );
-    layerLabel->setFont( QFont( "Helvetica", 10 ) );
 
     QToolButton* addLayerButton = new QToolButton( this );
     addLayerButton->setIcon( QIcon( ":icons/add.png" ) );
@@ -117,7 +116,6 @@ void TimeLine::initUI()
     // --------- key buttons ---------
     QToolBar* timelineButtons = new QToolBar( this );
     QLabel* keyLabel = new QLabel( tr( "Keys:" ) );
-    keyLabel->setFont( QFont( "Helvetica", 10 ) );
     keyLabel->setIndent( 5 );
 
     QToolButton* addKeyButton = new QToolButton( this );
@@ -136,7 +134,6 @@ void TimeLine::initUI()
     duplicateKeyButton->setFixedSize( 24, 24 );
 
     QLabel* onionLabel = new QLabel( tr( "Onion skin:" ) );
-    onionLabel->setFont( QFont( "Helvetica", 10 ) );
 
     QToolButton* onionTypeButton = new QToolButton( this );
     onionTypeButton->setIcon( QIcon( ":icons/onion_type.png" ) );

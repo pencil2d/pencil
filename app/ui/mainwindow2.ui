@@ -17,11 +17,6 @@
    <string notr="true">this-&gt;setStyleSheet(&quot;background-color:yellow;&quot;);</string>
   </property>
   <widget class="BackgroundWidget" name="background">
-   <property name="font">
-    <font>
-     <family>Trebuchet MS</family>
-    </font>
-   </property>
    <layout class="QVBoxLayout" name="layout">
     <property name="spacing">
      <number>0</number>

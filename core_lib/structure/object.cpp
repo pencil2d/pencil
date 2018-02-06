@@ -584,7 +584,6 @@ bool Object::exportX(int frameStart, int frameEnd, QTransform view, QSize export
             xPainter.resetMatrix();
             xPainter.setClipping(false);
             xPainter.setPen(Qt::black);
-            xPainter.setFont(QFont("helvetica", 50));
             xPainter.drawRect(target);
             xPainter.drawText(QPoint((y % 3) * 800 + 35, (y / 3) * 680 + 65 - page * 3400), QString::number(i));
             y++;

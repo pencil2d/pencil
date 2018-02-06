@@ -315,7 +315,6 @@ Status Layer::save(QString strDataFolder, ProgressCallback progressStep)
 
 void Layer::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
 {
-    painter.setFont(QFont("helvetica", height / 2));
     if (mVisible)
     {
         QColor col;
@@ -410,7 +409,6 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, in
     if (type() == SOUND) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-sound.png"));
     if (type() == CAMERA) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-camera.png"));
 
-    painter.setFont(QFont("helvetica", height / 2));
     painter.setPen(Qt::black);
     painter.drawText(QPoint(45, y + (2 * height) / 3), mName);
 }
