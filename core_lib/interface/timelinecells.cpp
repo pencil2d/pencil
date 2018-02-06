@@ -263,7 +263,6 @@ void TimeLineCells::drawContent()
         // --- draw ticks
         painter.setPen( QColor( 70, 70, 70, 255 ) );
         painter.setBrush( Qt::darkGray );
-        painter.setFont( QFont( "helvetica", 10 ) );
         int incr = 0;
         int fps = mEditor->playback()->fps();
         for ( int i = mFrameOffset; i < mFrameOffset + ( width() - mOffsetX ) / mFrameSize; i++ )
@@ -393,7 +392,6 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
         {
             painter.setBrush( QColor( 255, 0, 0, 128 ) );
             painter.setPen( Qt::NoPen );
-            painter.setFont( QFont( "helvetica", 10 ) );
             //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
             QRect scrubRect;
             scrubRect.setTopLeft( QPoint( getFrameX( mEditor->currentFrame() - 1 ), 0 ) );

@@ -488,8 +488,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
 
                 //painter.fillRect(QRectF(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth), colour);
 
-                /*painter.setFont( QFont("Arial", floor(12.0/painter.matrix().m11()), -1, false) );
-                //painter.drawText(myCurve.getVertex(i)+QPointF(4.0,0.0), QString::number(i)+"-"+QString::number(myCurve.getVertex(i).x())+","+QString::number(myCurve.getVertex(i).y()));
+                /*painter.drawText(myCurve.getVertex(i)+QPointF(4.0,0.0), QString::number(i)+"-"+QString::number(myCurve.getVertex(i).x())+","+QString::number(myCurve.getVertex(i).y()));
                 QPointF normale = QPointF(4.0, 0.0);
                 if (i>-1) { normale = (myCurve.getVertex(i)-myCurve.getC2(i)); } else { normale = (myCurve.getC1(i+1)-myCurve.getVertex(i)); }
                 normale = QPointF(-normale.y(), normale.x());

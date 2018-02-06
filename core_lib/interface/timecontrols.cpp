@@ -40,7 +40,6 @@ void TimeControls::initUI()
     QSettings settings(PENCIL2D, PENCIL2D);
 
     mFpsBox = new QSpinBox(this);
-    mFpsBox->setFont(QFont("Helvetica", 10));
     mFpsBox->setFixedHeight(24);
     mFpsBox->setValue(settings.value("fps").toInt());
     mFpsBox->setMinimum(1);
@@ -50,7 +49,6 @@ void TimeControls::initUI()
     mFpsBox->setFocusPolicy(Qt::WheelFocus);
 
     mLoopStartSpinBox = new QSpinBox(this);
-    mLoopStartSpinBox->setFont(QFont("Helvetica", 10));
     mLoopStartSpinBox->setFixedHeight(24);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
     mLoopStartSpinBox->setMinimum(1);
@@ -58,7 +56,6 @@ void TimeControls::initUI()
     mLoopStartSpinBox->setFocusPolicy(Qt::WheelFocus);
 
     mLoopEndSpinBox = new QSpinBox(this);
-    mLoopEndSpinBox->setFont(QFont("Helvetica", 10));
     mLoopEndSpinBox->setFixedHeight(24);
     mLoopEndSpinBox->setValue(settings.value("loopEnd").toInt());
     mLoopEndSpinBox->setMinimum(2);
@@ -66,7 +63,6 @@ void TimeControls::initUI()
     mLoopEndSpinBox->setFocusPolicy(Qt::WheelFocus);
 
     mPlaybackRangeCheckBox = new QCheckBox(tr("Range"));
-    mPlaybackRangeCheckBox->setFont(QFont("Helvetica", 10));
     mPlaybackRangeCheckBox->setFixedHeight(24);
     mPlaybackRangeCheckBox->setToolTip(tr("Playback range"));
 
