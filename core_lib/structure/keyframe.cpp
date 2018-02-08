@@ -33,26 +33,26 @@ KeyFrame::KeyFrame(const KeyFrame& k2)
 
 KeyFrame::~KeyFrame()
 {
-    for ( KeyFrameEventListener* listener : mEventListeners )
+    for (KeyFrameEventListener* listener : mEventListeners)
     {
-        listener->onKeyFrameDestroy( this );
+        listener->onKeyFrameDestroy(this);
     }
 }
 
-void KeyFrame::addEventListener( KeyFrameEventListener* listener )
+void KeyFrame::addEventListener(KeyFrameEventListener* listener)
 {
-    auto it = std::find( mEventListeners.begin(), mEventListeners.end(), listener );
-    if ( it != mEventListeners.end() )
+    auto it = std::find(mEventListeners.begin(), mEventListeners.end(), listener);
+    if (it != mEventListeners.end())
     {
-        mEventListeners.push_back( listener );
+        mEventListeners.push_back(listener);
     }
 }
 
-void KeyFrame::removeEventListner( KeyFrameEventListener* listener )
+void KeyFrame::removeEventListner(KeyFrameEventListener* listener)
 {
-    auto it = std::find( mEventListeners.begin(), mEventListeners.end(), listener );
-    if ( it != mEventListeners.end() )
+    auto it = std::find(mEventListeners.begin(), mEventListeners.end(), listener);
+    if (it != mEventListeners.end())
     {
-        mEventListeners.erase( it );
+        mEventListeners.erase(it);
     }
 }

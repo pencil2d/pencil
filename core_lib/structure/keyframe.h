@@ -33,31 +33,30 @@ public:
     explicit KeyFrame(const KeyFrame& k2);
     virtual ~KeyFrame();
 
-    int  pos() { return mFrame; }
-    void setPos( int position ) { mFrame = position; }
+    int  pos() const { return mFrame; }
+    void setPos(int position) { mFrame = position; }
 
-    int length() { return mLength; }
-    void setLength( int len )  { mLength = len; }
-    
+    int length() const { return mLength; }
+    void setLength(int len) { mLength = len; }
+
     void modification() { mIsModified = true; }
-    void setModified( bool b ) { mIsModified = b; }
-    bool isModified() { return mIsModified; };
-   
-    void setSelected( bool b ) { mIsSelected = b; }
-    bool isSelected() { return mIsSelected; }
+    void setModified(bool b) { mIsModified = b; }
+    bool isModified() const { return mIsModified; };
 
-    QString fileName() { return mAttachedFileName; }
-    void    setFileName( QString strFileName ) { mAttachedFileName = strFileName; }
+    void setSelected(bool b) { mIsSelected = b; }
+    bool isSelected() const { return mIsSelected; }
 
-    void addEventListener( KeyFrameEventListener* );
-    void removeEventListner( KeyFrameEventListener* );
+    QString fileName() const { return mAttachedFileName; }
+    void    setFileName(QString strFileName) { mAttachedFileName = strFileName; }
 
-	virtual bool isNull() { return false; }
+    void addEventListener(KeyFrameEventListener*);
+    void removeEventListner(KeyFrameEventListener*);
+
     virtual KeyFrame* clone() { return nullptr; }
 
 private:
-    int mFrame       = -1;
-    int mLength      =  1;
+    int mFrame = -1;
+    int mLength = 1;
     bool mIsModified = true;
     bool mIsSelected = false;
     QString mAttachedFileName;
@@ -65,12 +64,10 @@ private:
     std::vector< KeyFrameEventListener* > mEventListeners;
 };
 
-typedef std::shared_ptr< KeyFrame > KeyFramePtr;
-
 class KeyFrameEventListener
 {
 public:
-    virtual void onKeyFrameDestroy( KeyFrame* ) = 0;
+    virtual void onKeyFrameDestroy(KeyFrame*) = 0;
 };
 
 #endif // KeyFrame_H
