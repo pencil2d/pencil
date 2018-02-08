@@ -50,7 +50,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
     loadKey(pKeyFrame);
 }
 
-Status LayerBitmap::saveKeyFrame(KeyFrame* keyframe, QString path)
+Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
 {
     QString theFileName = fileName(keyframe);
     QString strFilePath = QDir(path).filePath(theFileName);
@@ -78,7 +78,7 @@ Status LayerBitmap::saveKeyFrame(KeyFrame* keyframe, QString path)
 
 QString LayerBitmap::fileName(KeyFrame* key) const
 {
-    return QString::asprintf("%03d.%05d.png", id(), key->pos());
+    return QString::asprintf("%03d.%03d.png", id(), key->pos());
 }
 
 QDomElement LayerBitmap::createDomElement(QDomDocument& doc)

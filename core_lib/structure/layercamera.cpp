@@ -216,7 +216,7 @@ void LayerCamera::loadImageAtFrame( int frameNumber, float dx, float dy, float r
     loadKey(camera);
 }
 
-Status LayerCamera::saveKeyFrame( KeyFrame*, QString )
+Status LayerCamera::saveKeyFrameFile(KeyFrame*, QString)
 {
     return Status::OK;
 }

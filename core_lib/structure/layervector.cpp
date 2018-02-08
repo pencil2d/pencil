@@ -96,7 +96,7 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
     addKeyFrame(frameNumber, vecImg);
 }
 
-Status LayerVector::saveKeyFrame(KeyFrame* keyFrame, QString path)
+Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
 {    
     QString theFileName = fileName(keyFrame);
     QString strFilePath = QDir(path).filePath(theFileName);
@@ -131,7 +131,7 @@ Status LayerVector::saveKeyFrame(KeyFrame* keyFrame, QString path)
 
 QString LayerVector::fileName(KeyFrame* key)
 {
-    return QString::asprintf("%03d.%05d.vec", id(), key->pos());
+    return QString::asprintf("%03d.%03d.vec", id(), key->pos());
 }
 
 QDomElement LayerVector::createDomElement(QDomDocument& doc)

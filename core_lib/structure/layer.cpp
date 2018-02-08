@@ -298,7 +298,7 @@ Status Layer::save(QString strDataFolder, ProgressCallback progressStep)
     for (auto pair : mKeyFrames)
     {
         KeyFrame* pKeyFrame = pair.second;
-        Status st = saveKeyFrame(pKeyFrame, strDataFolder);
+        Status st = saveKeyFrameFile(pKeyFrame, strDataFolder);
         if (!st.ok())
         {
             isOkay = false;

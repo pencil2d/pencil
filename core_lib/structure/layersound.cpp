@@ -129,7 +129,7 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath, Progre
     }
 }
 
-Status LayerSound::saveKeyFrame(KeyFrame* key, QString path)
+Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
 {
     Q_ASSERT(key);
 
