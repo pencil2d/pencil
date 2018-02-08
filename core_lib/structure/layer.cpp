@@ -599,14 +599,13 @@ bool Layer::moveSelectedFrames(int offset)
             if (mSelectedFrames_byPosition[0] + offset < 1) return false;
         }
 
-
         while (indexInSelection > -1 && indexInSelection < mSelectedFrames_byPosition.count())
         {
             int fromPos = mSelectedFrames_byPosition[indexInSelection];
             int toPos = fromPos + offset;
 
             // Get the frame to move
-            KeyFrame *selectedFrame = getKeyFrameAt(fromPos);
+            KeyFrame* selectedFrame = getKeyFrameAt(fromPos);
 
             if (selectedFrame != nullptr)
             {
@@ -614,7 +613,6 @@ bool Layer::moveSelectedFrames(int offset)
 
                 // Slide back every frame between fromPos to toPos
                 // to avoid having 2 frames in the same position
-                //
                 bool isBetween = true;
                 int targetPosition = fromPos;
 
@@ -622,13 +620,14 @@ bool Layer::moveSelectedFrames(int offset)
                 {
                     int framePosition = targetPosition - step;
 
-                    KeyFrame *frame = getKeyFrameAt(framePosition);
+                    KeyFrame* frame = getKeyFrameAt(framePosition);
 
                     if (frame != nullptr)
                     {
                         mKeyFrames.erase(framePosition);
 
                         frame->setPos(targetPosition);
+                        frame->modification();
                         mKeyFrames.insert(std::make_pair(targetPosition, frame));
                     }
 
@@ -647,14 +646,13 @@ bool Layer::moveSelectedFrames(int offset)
 
                 // Update the position of the selected frame
                 selectedFrame->setPos(toPos);
+                selectedFrame->modification();
                 mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
             }
             indexInSelection = indexInSelection + step;
         }
 
-
         // Update selection lists
-        //
         for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
         {
             mSelectedFrames_byPosition[i] = mSelectedFrames_byPosition[i] + offset;
