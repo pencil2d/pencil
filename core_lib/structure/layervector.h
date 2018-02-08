@@ -44,7 +44,10 @@ public:
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
+
+private:
     QString fileName(KeyFrame* key);
+    bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 };
 
 #endif

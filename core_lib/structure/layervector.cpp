@@ -28,39 +28,6 @@ LayerVector::~LayerVector()
 {
 }
 
-// ------
-/*
-QImage* LayerVector::getImageAtIndex( int index,
-                                      QSize size,
-                                      bool simplified,
-                                      bool showThinLines,
-                                      bool antialiasing)
-{
-    if ( index < 0 || index >= framesImage.size() )
-    {
-        return NULL;
-    }
-    else
-    {
-        VectorImage* vectorImage = getVectorImageAtIndex(index);
-        QImage* image = framesImage.at(index);
-        if (vectorImage->isModified() || size != image->size() )
-        {
-            if ( image->size() != size)
-            {
-                delete image;
-                framesImage[index] = image = new QImage(size, QImage::Format_ARGB32_Premultiplied);
-            }
-            vectorImage->outputImage(image, size, myView,
-                                     simplified, showThinLines,
-                                     antialiasing );
-            vectorImage->setModified(false);
-        }
-        return image;
-    }
-}
-*/
-
 bool LayerVector::usesColour(int colorIndex)
 {
     bool bUseColor = false;
@@ -103,8 +70,12 @@ Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
 
     VectorImage* vecImage = static_cast<VectorImage*>(keyFrame);
 
-    if (QFile::exists(theFileName) && !vecImage->isModified())
+    if (needSaveFrame(keyFrame, strFilePath) == false)
+    {
         return Status::SAFE;
+    }
+
+    qDebug() << "write: " << strFilePath;
 
     Status st = vecImage->write(strFilePath, "VEC");
     if (!st.ok())
@@ -124,7 +95,7 @@ Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
         return Status(Status::FAIL, debugInfo);
     }
 
-    vecImage->setFileName(theFileName);
+    vecImage->setFileName(strFilePath);
     vecImage->setModified(false);
     return Status::OK;
 }
@@ -132,6 +103,17 @@ Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
 QString LayerVector::fileName(KeyFrame* key)
 {
     return QString::asprintf("%03d.%03d.vec", id(), key->pos());
+}
+
+bool LayerVector::needSaveFrame(KeyFrame* key, const QString& strSavePath)
+{
+    if (key->isModified()) // keyframe was modified
+        return true;
+    if (QFile::exists(strSavePath) == false) // hasn't been saved before
+        return true;
+    if (strSavePath == key->fileName()) // key frame moved
+        return true;
+    return false;
 }
 
 QDomElement LayerVector::createDomElement(QDomDocument& doc)
