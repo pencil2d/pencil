@@ -129,7 +129,7 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath, Progre
     }
 }
 
-Status LayerSound::saveKeyFrame(KeyFrame* key, QString path)
+Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
 {
     Q_ASSERT(key);
 
@@ -146,10 +146,9 @@ Status LayerSound::saveKeyFrame(KeyFrame* key, QString path)
         bool bOK = QFile::copy(key->fileName(), sDestFileLocation);
         Q_ASSERT(bOK);
 
-        if (bOK)
-            key->setFileName(sDestFileLocation);
-        else
-            return Status::FAIL;
+        if (!bOK) return Status::FAIL;
+        
+        key->setFileName(sDestFileLocation);
     }
     return Status::OK;
 }

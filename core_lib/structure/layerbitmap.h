@@ -38,10 +38,11 @@ public:
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
 protected:
-    Status saveKeyFrame(KeyFrame*, QString strPath) override;
+    Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
 
 private:
-    QString fileName(int index) const;
+    QString fileName(KeyFrame* key) const;
+    bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 };
 
 #endif

@@ -207,23 +207,23 @@ void BezierCurve::setC2(int i, const QPointF& point)
 
 void BezierCurve::setVertex(int i, const QPointF& point)
 {
-    if (i==-1) { origin = point; }
+    if (i == -1)
+    {
+        origin = point;
+    }
+    else if (i >= 0 && i < vertex.size())
+    {
+        vertex[i] = point;
+    }
     else
     {
-        if ( i >= 0 || i < vertex.size() )
-        {
-            vertex[i] = point;
-        }
-        else
-        {
-            qDebug() << "BezierCurve::setVertex! index out of bounds:" << i;
-        }
+        qDebug() << "BezierCurve::setVertex! index out of bounds:" << i;
     }
 }
 
 void BezierCurve::setLastVertex(const QPointF& point)
 {
-    if (vertex.size()>0)
+    if (vertex.size() > 0)
     {
         vertex[vertex.size()-1] = point;
     }

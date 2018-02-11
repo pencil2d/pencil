@@ -54,10 +54,9 @@ bool VectorImage::read(QString filePath)
         return false;
     }
 
-    QFile file{ filePath };
+    QFile file(filePath);
     if (!file.open(QFile::ReadOnly))
     {
-        //QMessageBox::warning(this, "Warning", "Cannot read file");
         return false;
     }
 
@@ -69,12 +68,14 @@ bool VectorImage::read(QString filePath)
     QDomElement element = doc.documentElement();
     if (element.tagName() == "image")
     {
-        // --- vector image ---
         if (element.attribute("type") == "vector")
         {
             loadDomElement(element);
         }
     }
+
+    setFileName(filePath);
+    setModified(false);
     return true;
 }
 
@@ -86,8 +87,12 @@ bool VectorImage::read(QString filePath)
  */
 Status VectorImage::write(QString filePath, QString format)
 {
-    QStringList debugInfo = QStringList() << "VectorImage::write" << QString("filePath = ").append(filePath) << QString("format = ").append(format);
-    QFile file{ filePath };
+    QStringList debugInfo;
+    debugInfo << "VectorImage::write";
+    debugInfo << QString("filePath = ").append(filePath);
+    debugInfo << QString("format = ").append(format);
+    
+    QFile file(filePath);
     bool result = file.open(QIODevice::WriteOnly);
     if (!result)
     {
@@ -95,32 +100,30 @@ Status VectorImage::write(QString filePath, QString format)
         return Status(Status::FAIL, debugInfo << QString("file.error() = ").append(file.errorString()));
     }
 
-    if (format == "VEC")
-    {
-        QXmlStreamWriter xmlStream(&file);
-        xmlStream.setAutoFormatting(true);
-        xmlStream.writeStartDocument();
-        xmlStream.writeDTD("<!DOCTYPE PencilVectorImage>");
-
-        xmlStream.writeStartElement("image");
-        xmlStream.writeAttribute("type", "vector");
-        Status st = createDomElement(xmlStream);
-        if (!st.ok())
-        {
-            const QString xmlDetails = st.detailsList().join("&nbsp;&nbsp;");
-            return Status(Status::FAIL, debugInfo << "- xml creation failed" << xmlDetails);
-        }
-
-        xmlStream.writeEndElement(); // Close image element
-        xmlStream.writeEndDocument();
-
-        return Status::OK;
-    }
-    else
+    if (format != "VEC")
     {
         qDebug() << "--- Not the VEC format!";
         return Status(Status::FAIL, debugInfo << "Unrecognized format");
     }
+
+    QXmlStreamWriter xmlStream(&file);
+    xmlStream.setAutoFormatting(true);
+    xmlStream.writeStartDocument();
+    xmlStream.writeDTD("<!DOCTYPE PencilVectorImage>");
+
+    xmlStream.writeStartElement("image");
+    xmlStream.writeAttribute("type", "vector");
+    Status st = createDomElement(xmlStream);
+    if (!st.ok())
+    {
+        const QString xmlDetails = st.detailsList().join("&nbsp;&nbsp;");
+        return Status(Status::FAIL, debugInfo << "- xml creation failed" << xmlDetails);
+    }
+    xmlStream.writeEndElement(); // Close image element
+    xmlStream.writeEndDocument();
+
+    setFileName(filePath);
+    return Status::OK;
 }
 
 /**
@@ -180,7 +183,11 @@ void VectorImage::loadDomElement(QDomElement element)
         atomTag = atomTag.nextSibling();
     }
     clean();
-    modification();
+}
+
+BezierCurve& VectorImage::curve(int i)
+{
+    return mCurves[i];
 }
 
 /**
@@ -225,6 +232,7 @@ void VectorImage::addPoint(int curveNumber, int vertexNumber, qreal fraction)
             }
         }
     }
+    modification();
 }
 
 /**
@@ -243,6 +251,7 @@ void VectorImage::removeCurveAt(int i)
     }
     // then remove curve
     mCurves.removeAt(i);
+    modification();
 }
 
 /**
@@ -254,15 +263,10 @@ void VectorImage::removeCurveAt(int i)
  */
 void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts)
 {
-    if (newCurve.getVertexSize() < 1) {
-
-        // security - a new curve should have a least 2 vertices
+    if (newCurve.getVertexSize() < 1) // security - a new curve should have a least 2 vertices
         return;
-    }
-
 
     // Does the curve interact with others or with itself?
-    //
     if (interacts)
     {
         // tolerance for taking the intersection as an existing vertex on a curve
@@ -275,7 +279,8 @@ void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor,
 
 
     // Append or insert the curve in the list
-    if (position < 0 || position > mCurves.size() - 1) {
+    if (position < 0 || position > mCurves.size() - 1)
+    {
         mCurves.append(newCurve);
     }
     else
@@ -292,8 +297,6 @@ void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor,
         }
         mCurves.insert(position, newCurve);
     }
-
-
     updateImageSize(newCurve);
     modification();
 }
@@ -323,6 +326,7 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
     {
         newCurve.setVertex(newCurve.getVertexSize() - 1, P);
     }
+
     // finds if the first or last point of the new curve is close to other curves
     for (int i = 0; i < mCurves.size(); i++)   // for each other curve
     {
@@ -356,11 +360,9 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
                         {
                             newCurve.setOrigin(nearestPoint); //qDebug() << "--d " << nearestPoint;
                             addPoint(i, j, t);
-                            //j++;
                         }
                     }
                 }
-                //qDebug() << "Modif first";
             }
 
             dist1 = BezierCurve::eLength(Q - P1);
@@ -377,7 +379,7 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
                 }
                 else
                 {
-                    if (dist1 + dist2 <= 3 * tol3)   // preselection, to speed up
+                    if (dist1 + dist2 <= 3 * tol3)   // pre-selection, to speed up
                     {
                         QPointF nearestPoint = Q;
                         qreal t = -1.0;;
@@ -386,7 +388,6 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
                         {
                             newCurve.setLastVertex(nearestPoint); //qDebug() << "--g " << nearestPoint;
                             addPoint(i, j, t);
-                            //j++;
                         }
                     }
                 }
@@ -394,6 +395,7 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
             }
         }
     }
+    modification();
 }
 
 /**
@@ -403,7 +405,6 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
  */
 void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance)
 {
-
     // finds if the new curve intersects itself
     for (int k = 0; k < newCurve.getVertexSize(); k++)   // for each cubic section of the new curve
     {
@@ -434,9 +435,6 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
         //L1 = QLineF(P1 + extension1, Q1 - extension1);
         for (int i = 0; i < mCurves.size(); i++)   // for each other curve // TO DO: should only loop on "nearby" curves instead of all
         {
-            //BezierCurve otherCurve;
-            //if (i==-1) { otherCurve = newCurve; } else {  otherCurve = curve.at(i); }
-
             // ---- finds if the first or last point of the other curve is close to the current cubic section of the new curve
             QPointF P = mCurves.at(i).getVertex(-1);
             QPointF Q = mCurves.at(i).getVertex(mCurves.at(i).getVertexSize() - 1);
@@ -567,25 +565,14 @@ void VectorImage::select(QRectF rectangle)
 {
     for (int i = 0; i < mCurves.size(); i++)
     {
-        if (mCurves[i].intersects(rectangle))
-        {
-            setSelected(i, true);
-        }
-        else
-        {
-            setSelected(i, false);
-        }
+        bool bSelected = mCurves[i].intersects(rectangle);
+        setSelected(i, bSelected);
     }
+
     for (int i = 0; i < mArea.size(); i++)
     {
-        if (rectangle.contains(mArea[i].mPath.boundingRect()))
-        {
-            setAreaSelected(i, true);
-        }
-        else
-        {
-            setAreaSelected(i, false);
-        }
+        bool b = rectangle.contains(mArea[i].mPath.boundingRect());
+        setAreaSelected(i, b);
     }
     modification();
 }
@@ -598,8 +585,11 @@ void VectorImage::select(QRectF rectangle)
 void VectorImage::setSelected(int curveNumber, bool YesOrNo)
 {
     if (mCurves.isEmpty()) return;
+
     mCurves[curveNumber].setSelected(YesOrNo);
-    if (YesOrNo) mSelectionRect |= mCurves[curveNumber].getBoundingRect();
+    
+    if (YesOrNo) 
+        mSelectionRect |= mCurves[curveNumber].getBoundingRect();
     modification();
 }
 
@@ -615,6 +605,7 @@ void VectorImage::setSelected(int curveNumber, int vertexNumber, bool YesOrNo)
     mCurves[curveNumber].setSelected(vertexNumber, YesOrNo);
     QPointF vertex = getVertex(curveNumber, vertexNumber);
     if (YesOrNo) mSelectionRect |= QRectF(vertex.x(), vertex.y(), 0.0, 0.0);
+
     modification();
 }
 
@@ -684,17 +675,13 @@ bool VectorImage::isPathFilled()
 {
     bool filled = false;
     QList<int> curveNumbers = getSelectedCurveNumbers();
-    for (int curveNum : curveNumbers) {
-        qDebug() << mCurves[curveNum].isFilled();
-        if (mCurves[curveNum].isSelected()) {
-            if (mCurves[curveNum].isFilled())
-            {
-                filled = true;
-            }
-            else {
-                filled = false;
-            }
-
+    for (int curveNum : curveNumbers)
+    {
+        //qDebug() << mCurves[curveNum].isFilled();
+        if (mCurves[curveNum].isSelected())
+        {
+            // FIXME: something wrong here.
+            filled = mCurves[curveNum].isFilled();
         }
     }
     return filled;
@@ -852,7 +839,8 @@ void VectorImage::calculateSelectionRect()
     mSelectionRect = QRectF(0, 0, 0, 0);
     for (int i = 0; i < mCurves.size(); i++)
     {
-        if (mCurves.at(i).isPartlySelected()) mSelectionRect |= mCurves[i].getBoundingRect();
+        if (mCurves.at(i).isPartlySelected())
+            mSelectionRect |= mCurves[i].getBoundingRect();
     }
 }
 
@@ -892,7 +880,10 @@ void VectorImage::deleteSelection()
                 for (int k = 0; k < mArea.at(j).mVertex.size(); k++)
                 {
                     if (mArea.at(j).mVertex[k].curveNumber == i) { toBeDeleted = true; }
-                    if (mArea.at(j).mVertex[k].curveNumber > i) { mArea[j].mVertex[k].curveNumber = mArea[j].mVertex[k].curveNumber - 1; }
+                    if (mArea.at(j).mVertex[k].curveNumber > i)
+                    {
+                        mArea[j].mVertex[k].curveNumber = mArea[j].mVertex[k].curveNumber - 1;
+                    }
                 }
                 if (toBeDeleted)
                 {
@@ -902,14 +893,6 @@ void VectorImage::deleteSelection()
             }
             mCurves.removeAt(i);
             i--;
-        }
-        else
-        {
-            /*for(int j=-1; j<curve.at(i).size(); j++) {
-                if (curve.at(i).isSelected(j)) {
-                    curve.at(i).removeVertex(j);
-                }
-            }*/
         }
     }
     modification();
@@ -940,10 +923,6 @@ void VectorImage::removeVertex(int curve, int vertex)
     // then eliminates the point
     if (mCurves[curve].getVertexSize() > 1)
     {
-        // first possibility: we just remove the point in the curve
-        /*
-        curve[i].removeVertex(m);
-        m--;*/
         // second possibility: we split the curve into two parts:
         if (vertex == -1 || vertex == getCurveSize(curve) - 1)   // we just remove the first or last point
         {
@@ -994,7 +973,6 @@ void VectorImage::removeVertex(int curve, int vertex)
     }
     else     // there are just two points left, so we remove the whole curve
     {
-        //curve.removeAt(i);
         removeCurveAt(curve);
         curve--;
     }
@@ -1033,7 +1011,6 @@ void VectorImage::paste(VectorImage& vectorImage)
     for (int i = 0; i < vectorImage.mCurves.size(); i++)
     {
         // If nothing is selected, paste everything
-        //
         if (!hasSelection || vectorImage.mCurves.at(i).isSelected())
         {
             mCurves.append(vectorImage.mCurves.at(i));
@@ -1179,9 +1156,6 @@ void VectorImage::paintImage(QPainter& painter,
     }
 
     // ---- draw curves ----
-    //simplified = true;
-    //painter.setClipRect( viewRect );
-    //painter.setClipping(true);
     for (BezierCurve curve : mCurves)
     {
         curve.drawPath(painter, mObject, mSelectionTransformation, simplified, showThinCurves);
@@ -1198,10 +1172,10 @@ void VectorImage::paintImage(QPainter& painter,
  * @param antialiasing: bool
  */
 void VectorImage::outputImage(QImage* image,
-    QTransform myView,
-    bool simplified,
-    bool showThinCurves,
-    bool antialiasing)
+                              QTransform myView,
+                              bool simplified,
+                              bool showThinCurves,
+                              bool antialiasing)
 {
     image->fill(qRgba(0, 0, 0, 0));
     QPainter painter(image);
@@ -1228,7 +1202,6 @@ void VectorImage::clean()
     {
         if (mCurves.at(i).getVertexSize() == 0)
         {
-            qDebug() << "CLEAN " << i;
             mCurves.removeAt(i);
             i--;
         }
@@ -1251,7 +1224,8 @@ void VectorImage::applySelectionTransformation(QTransform transf)
 {
     for (int i = 0; i < mCurves.size(); i++)
     {
-        if (mCurves.at(i).isPartlySelected()) {
+        if (mCurves.at(i).isPartlySelected())
+        {
             mCurves[i].transform(transf);
         }
     }

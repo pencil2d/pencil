@@ -52,6 +52,7 @@ void Camera::assign(const Camera& rhs)
     mRotate = rhs.mRotate;
     mScale = rhs.mScale;
     updateViewTransform();
+    modification();
 }
 
 QTransform Camera::getView()
@@ -67,6 +68,7 @@ void Camera::reset()
     mRotate = 0.f;
     mScale = 1.f;
     mNeedUpdateView = true;
+    modification();
 }
 
 void Camera::updateViewTransform()
@@ -93,6 +95,7 @@ void Camera::translate(float dx, float dy)
     mTranslate.setY(dy);
 
     mNeedUpdateView = true;
+    modification();
 }
 
 void Camera::translate(const QPointF pt)
@@ -114,6 +117,7 @@ void Camera::rotate(float degree)
     mRotate = degree;
 
     mNeedUpdateView = true;
+    modification();
 }
 
 void Camera::scale(float scaleValue)
@@ -121,6 +125,7 @@ void Camera::scale(float scaleValue)
     mScale = scaleValue;
 
     mNeedUpdateView = true;
+    modification();
 }
 
 bool Camera::operator==(const Camera& rhs) const

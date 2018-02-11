@@ -39,7 +39,7 @@ public:
     void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);
 
-    QImage* image() { return mImage.get(); }
+    QImage* image();
     void    setImage(QImage* pImg);
 
     BitmapImage copy();
@@ -72,7 +72,6 @@ public:
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
-    static int pow(int);
     static bool compareColor(QRgb color1, QRgb color2, int tolerance);
     static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb oldColor, QRgb newColor, int tolerance);
 
@@ -93,6 +92,8 @@ public:
     int height() { return mBounds.height(); }
 
     QRect& bounds() { return mBounds; }
+
+    Status write(const QString& filename);
 
 private:
     std::shared_ptr< QImage > mImage;

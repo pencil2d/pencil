@@ -190,7 +190,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
 #endif
 
     qCDebug(mLog) << "Paint Onion skin bitmap, Frame = " << nFrame;
-    BitmapImage* paintedImage;
+    BitmapImage* paintedImage = nullptr;
     if (useLastKeyFrame)
     {
         paintedImage = bitmapLayer->getLastBitmapImageAtFrame(nFrame, 0);
@@ -204,6 +204,9 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     {
         return;
     }
+
+    paintedImage->image(); // Critical! force the BitmapImage to load the image
+    qCDebug(mLog) << "Paint Image Size:" << paintedImage->image()->size();
 
     BitmapImage paintToImage;
     paintToImage.paste(paintedImage);
@@ -229,7 +232,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     }
 
     // If the current frame on the current layer has a transformation, we apply it.
-    if (mRenderTransform && nFrame == mFrameNumber && layer == mObject->getLayer(mCurrentLayerIndex)) // FIXME:
+    if (mRenderTransform && nFrame == mFrameNumber && layer == mObject->getLayer(mCurrentLayerIndex))
     {
         paintToImage.clear(mSelection);
         paintTransformedSelection(painter);
@@ -251,12 +254,13 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
     // to our (not yet) scaled bitmap
     mScaledBitmap = origImage.copy();
 
-    if (mOptions.scaling >= 1.0) {
+    if (mOptions.scaling >= 1.0)
+    {
         // TODO: Qt doesn't handle huge upscaled qimages well...
         // possible solution, myPaintLib canvas renderer splits its canvas up in chunks.
     }
-    else {
-
+    else
+    {
         // map to correct matrix
         QRectF mappedOrigImage = mViewTransform.mapRect(QRectF(origImage.rect()));
         mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size().toSize(),
@@ -347,22 +351,15 @@ void CanvasPainter::paintTransformedSelection(QPainter& painter)
 
 void CanvasPainter::paintCurrentFrame(QPainter& painter)
 {
-    bool isCamera = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
+    //bool isCamera = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
+    painter.setOpacity(1.0);
+
     for (int i = 0; i < mObject->getLayerCount(); ++i)
     {
         Layer* layer = mObject->getLayer(i);
 
         if (layer->visible() == false)
             continue;
-
-        if (i == mCurrentLayerIndex || mOptions.nShowAllLayers != 1)
-        {
-            painter.setOpacity(1.0);
-        }
-        else if (!isCamera)
-        {
-            //painter.setOpacity(0.8);
-        }
 
         if (i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0)
         {

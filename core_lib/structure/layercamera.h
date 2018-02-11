@@ -69,7 +69,7 @@ public:
     QSize getViewSize();
 
 protected:
-    Status saveKeyFrame( KeyFrame*, QString path ) override;
+    Status saveKeyFrameFile(KeyFrame*, QString path) override;
 
     QRect viewRect;
     CameraPropertiesDialog* dialog = nullptr;

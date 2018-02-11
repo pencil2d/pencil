@@ -67,7 +67,7 @@ public:
     int getMaxKeyFramePosition() const;
     int firstKeyFramePosition() const;
 
-    virtual Status saveKeyFrame(KeyFrame*, QString path) = 0;
+    virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) = 0;
 

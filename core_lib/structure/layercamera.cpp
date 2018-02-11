@@ -216,14 +216,10 @@ void LayerCamera::loadImageAtFrame( int frameNumber, float dx, float dy, float r
     loadKey(camera);
 }
 
-
-Status LayerCamera::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
+Status LayerCamera::saveKeyFrameFile(KeyFrame*, QString)
 {
-    Q_UNUSED( path );
-    Q_UNUSED( pKeyFrame );
     return Status::OK;
 }
-
 
 void LayerCamera::editProperties()
 {

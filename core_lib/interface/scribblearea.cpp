@@ -1460,11 +1460,11 @@ void ScribbleArea::displaySelectionProperties()
             int selectedCurve = vectorImage->getFirstSelectedCurve();
             if (selectedCurve != -1)
             {
-                mEditor->tools()->setWidth(vectorImage->mCurves[selectedCurve].getWidth());
-                mEditor->tools()->setFeather(vectorImage->mCurves[selectedCurve].getFeather());
-                mEditor->tools()->setInvisibility(vectorImage->mCurves[selectedCurve].isInvisible());
-                mEditor->tools()->setPressure(vectorImage->mCurves[selectedCurve].getVariableWidth());
-                mEditor->color()->setColorNumber(vectorImage->mCurves[selectedCurve].getColourNumber());
+                mEditor->tools()->setWidth(vectorImage->curve(selectedCurve).getWidth());
+                mEditor->tools()->setFeather(vectorImage->curve(selectedCurve).getFeather());
+                mEditor->tools()->setInvisibility(vectorImage->curve(selectedCurve).isInvisible());
+                mEditor->tools()->setPressure(vectorImage->curve(selectedCurve).getVariableWidth());
+                mEditor->color()->setColorNumber(vectorImage->curve(selectedCurve).getColourNumber());
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
