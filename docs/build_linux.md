@@ -19,7 +19,7 @@ Pencil2D relies on the Qt application framework so you must install it before yo
 - Click Next. It will give you the option to log in with your Qt developer account. You can skip this if you don't have an account and do not want to register.
 - Next specify a location for Qt, put it somewhere you can find it in case you ever need to navigate to the Qt files manually.
 - Next you can select the components you wish to install. At the very least you should have Desktop gcc selected under the latest Qt version. Also make sure Qt Creator under the Tools section is being installed (at the time of writing there is no option to uncheck this, but it's worth double checking!)
--  Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press Done and it will launch Qt Creator for you.
+- Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press Done and it will launch Qt Creator for you.
 
 #### Command-line method
 
@@ -79,4 +79,4 @@ You can then open Pencil2D by running this from the build directory:
 
 ## Next steps
 
-Now that you can build Pencil2D, the next step is to learn about {navigating the source code} (coming soon).
+Now that you can build Pencil2D, the next step is to learn about [navigating the source code](https://github.com/pencil2d/pencil/wiki/Dive-into-code).

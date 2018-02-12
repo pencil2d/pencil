@@ -13,9 +13,9 @@ There are 4 steps in total:
 
 ## TL;DR
 
-If you are an *experienced Qt developer*, compiling Pencil2D would be extremely easy for you. Just open up `pencil.pro` and compile, that's it.
+If you are an *experienced Qt developer*, compiling Pencil2D would be extremely easy for you. Just open up `pencil.pro` in Qt Creator and compile, that's it.
 
-## Install Xcode
+## 1. Install Xcode
 
 ### From App Store (Recommended)
 
@@ -55,12 +55,12 @@ And also run the following commands to install Qt Creator:
     brew tap caskroom/cask
     brew cask install qt-creator
 
-## Get Source Code
+## 3. Get Source Code
 
-- You can simply download the source code [here](https://github.com/pencil2d/pencil/archive/master.zip).
+- You can simply download the source code archive [here](https://github.com/pencil2d/pencil/archive/master.zip).
 - Or get the source via [Git](https://github.com/pencil2d/pencil.git) if you plan to contribute to the Pencil2D project.
 
-## Building the application
+## 4. Building the application
 
 Now it's time to build the application.
 
@@ -90,4 +90,4 @@ You can then open Pencil2D by opening Pencil2D.app in app or by running:
 
 ## Next steps
 
-Now that you can build Pencil2D, the next step is to learn about {navigating the source code} (coming soon).
+Now that you can build Pencil2D, the next step is to learn about [navigating the source code](https://github.com/pencil2d/pencil/wiki/Dive-into-code).
