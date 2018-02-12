@@ -55,7 +55,7 @@ public:
 	int  getMarkOutFrameNumber() const { return mMarkOutFrame; }
 
 private:
-	int mCurrentFrame = 0;
+	int mCurrentFrame = 1;
 	QColor mCurrentColor{ 0, 0, 0, 255 };
 	int mCurrentLayer = 2; // Layers are counted bottom up
                            // 0 - Camera Layer

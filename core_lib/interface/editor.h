@@ -140,7 +140,7 @@ public: //slots
     void moveFrameForward();
     void moveFrameBackward();
 
-    void setCurrentLayer(int layerNumber);
+    //void setCurrentLayer(int layerNumber);
     void switchVisibilityOfLayer(int layerNumber);
     void moveLayer(int i, int j);
 

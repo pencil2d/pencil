@@ -649,10 +649,7 @@ Status Editor::setObject(Object* newObject)
 void Editor::updateObject()
 {
     scrubTo(mObject->data()->getCurrentFrame());
-    if (layers() != NULL)
-    {
-        layers()->setCurrentLayer(mObject->data()->getCurrentLayer());
-    }
+    setCurrentLayerIndex(mObject->data()->getCurrentLayer());
 
     clearUndoStack();
 
@@ -850,9 +847,10 @@ void Editor::setCurrentLayerIndex(int i)
 {
     mCurrentLayerIndex = i;
 
+    Layer* layer = mObject->getLayer(i);
     for (auto mgr : mAllManagers)
     {
-        mgr->workingLayerChanged(mObject->getLayer(i));
+        mgr->workingLayerChanged(layer);
     }
 }
 
@@ -991,12 +989,6 @@ void Editor::scrubPreviousKeyFrame()
 
     int prevPosition = layer->getPreviousKeyFramePosition(currentFrame());
     scrubTo(prevPosition);
-}
-
-void Editor::setCurrentLayer(int layerNumber)
-{
-    layers()->setCurrentLayer(layerNumber);
-    mScribbleArea->updateAllFrames();
 }
 
 void Editor::switchVisibilityOfLayer(int layerNumber)

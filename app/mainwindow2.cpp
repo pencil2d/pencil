@@ -496,7 +496,7 @@ bool MainWindow2::openObject(QString strFilePath)
         progress.show();
     }
 
-    mEditor->setCurrentLayer(0);
+    mEditor->layers()->setCurrentLayer(0);
 
     FileManager fm(this);
     connect(&fm, &FileManager::progressChanged, [&progress](int p)
@@ -533,12 +533,6 @@ bool MainWindow2::openObject(QString strFilePath)
     // Refresh the Palette
     mColorPalette->refreshColorList();
     mEditor->color()->setColorNumber(0);
-
-    progress.setValue(progress.value() + 1);
-
-    // Reset view
-    mEditor->scrubTo(0);
-    mEditor->view()->resetView();
     mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.setValue(progress.maximum());

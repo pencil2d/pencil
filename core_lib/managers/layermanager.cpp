@@ -46,9 +46,9 @@ Status LayerManager::load(Object* o)
     return Status::OK;
 }
 
-Status LayerManager::save(Object*)
+Status LayerManager::save(Object* o)
 {
-	//o->data()->setCurrentLayer( mCurrentLayerIndex );
+	o->data()->setCurrentLayer(editor()->currentLayerIndex());
 	return Status::OK;
 }
 
@@ -101,13 +101,13 @@ void LayerManager::setCurrentLayer( int layerIndex )
     Q_ASSERT(layerIndex >= 0);
 
     Object* o = object();
-    if ( layerIndex >= o->getLayerCount() )
+    if (layerIndex >= o->getLayerCount())
     {
         Q_ASSERT( false );
         return;
     }
 
-    if (editor()->currentLayerIndex() != layerIndex )
+    if (editor()->currentLayerIndex() != layerIndex)
     {
         editor()->setCurrentLayerIndex(layerIndex);
         Q_EMIT currentLayerChanged(layerIndex);
