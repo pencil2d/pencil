@@ -424,17 +424,14 @@ QDomElement FileManager::saveProjectData(ObjectData* data, QDomDocument& xmlDoc)
     tagIsLoop.setAttribute("value", data->isLooping() ? "true" : "false");
     rootTag.appendChild(tagIsLoop);
 
-    // Current Layer
     QDomElement tagRangedPlayback = xmlDoc.createElement("isRangedPlayback");
     tagRangedPlayback.setAttribute("value", data->isRangedPlayback() ? "true" : "false");
     rootTag.appendChild(tagRangedPlayback);
 
-    // Current Layer
     QDomElement tagMarkInFrame = xmlDoc.createElement("markInFrame");
     tagMarkInFrame.setAttribute("value", data->getMarkInFrameNumber());
     rootTag.appendChild(tagMarkInFrame);
 
-    // Current Layer
     QDomElement tagMarkOutFrame = xmlDoc.createElement("markOutFrame");
     tagMarkOutFrame.setAttribute("value", data->getMarkOutFrameNumber());
     rootTag.appendChild(tagMarkOutFrame);

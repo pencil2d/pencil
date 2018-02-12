@@ -504,17 +504,7 @@ void ActionCommands::removeKey()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->keyFrameCount() == 0)
     {
-        switch (layer->type())
-        {
-        case Layer::BITMAP:
-        case Layer::VECTOR:
-        case Layer::SOUND:
-        case Layer::CAMERA:
-            layer->addNewEmptyKeyAt(1);
-            break;
-        default:
-            break;
-        }
+        layer->addNewEmptyKeyAt(1);
     }
 }
 

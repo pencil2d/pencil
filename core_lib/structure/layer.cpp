@@ -636,10 +636,10 @@ bool Layer::moveSelectedFrames(int offset)
                         isBetween = false;
                 }
 
-                // If the first frame is moving, we need to create a new first frame
                 if (fromPos == 1)
                 {
-                    addNewEmptyKeyAt(1);
+                    // If the first frame is moving, we need to create a new first frame
+                    //addNewEmptyKeyAt(1);
                 }
 
                 // Update the position of the selected frame
