@@ -176,7 +176,10 @@ bool FileManager::isOldForamt(const QString& fileName)
 
 Status FileManager::save(Object* object, QString strFileName)
 {
-    QStringList debugDetails = QStringList() << "FileManager::save" << QString("strFileName = ").append(strFileName);
+    QStringList debugDetails;
+    debugDetails << "FileManager::save";
+    debugDetails << QString("strFileName = ").append(strFileName);
+
     if (object == nullptr)
     {
         return Status(Status::INVALID_ARGUMENT, debugDetails << "object parameter is null");
@@ -267,7 +270,7 @@ Status FileManager::save(Object* object, QString strFileName)
     int layerCount = object->getLayerCount();
     debugDetails << QString("layerCount = %1").arg(layerCount);
 
-    bool isOkay = true;
+    bool saveLayerOK = true;
     for (int i = 0; i < layerCount; ++i)
     {
         Layer* layer = object->getLayer(i);
@@ -276,20 +279,13 @@ Status FileManager::save(Object* object, QString strFileName)
         Status st = layer->save(strDataFolder, [this] { progressForward(); });
         if (!st.ok())
         {
-            isOkay = false;
+            saveLayerOK = false;
             QStringList layerDetails = st.detailsList();
             for (QString& detail : layerDetails)
             {
                 detail.prepend("&nbsp;&nbsp;");
             }
             debugDetails << QString("- Layer[%1] failed to save").arg(i) << layerDetails;
-        }
-        if (!isOkay)
-        {
-            return Status(Status::FAIL, 
-                          debugDetails,
-                          tr("Internal Error"),
-                          tr("An internal error occurred. Your file may not be saved successfully."));
         }
     }
 
@@ -335,7 +331,9 @@ Status FileManager::save(Object* object, QString strFileName)
         bool ok = MiniZ::compressFolder(strFileName, strTempWorkingFolder);
         if (!ok)
         {
-            return Status::FAIL;
+            return Status(Status::ERROR_MINIZ_FAIL, debugDetails, 
+                          tr("Internal Error"),
+                          tr("An internal error occurred. Your file may not be saved successfully."));
         }
         qCDebug(mLog) << "Compressed. File saved.";
     }
@@ -344,6 +342,14 @@ Status FileManager::save(Object* object, QString strFileName)
     object->setModified(false);
 
     progressForward();
+
+    if (!saveLayerOK)
+    {
+        return Status(Status::FAIL,
+                      debugDetails,
+                      tr("Internal Error"),
+                      tr("An internal error occurred. Your file may not be saved successfully."));
+    }
 
     return Status::OK;
 }

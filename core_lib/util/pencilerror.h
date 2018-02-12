@@ -35,10 +35,11 @@ public:
         INVALID_ARGUMENT,
         NOT_IMPLEMENTED_YET,
 
-        // for Object loading
+        // for Object load/save
         ERROR_FILE_CANNOT_OPEN,
         ERROR_INVALID_XML_FILE,
         ERROR_INVALID_PENCIL_FILE,
+        ERROR_MINIZ_FAIL,
 
         // General
         ERROR_INVALID_LAYER_TYPE,
