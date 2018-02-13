@@ -207,7 +207,7 @@ void ViewManager::scaleUp()
 
 void ViewManager::scaleDown()
 {
-    for (size_t i = mZoomLevels.size() - 1; i >= 0; --i)
+    for (int i = mZoomLevels.size() - 1; i >= 0; --i)
     {
         if (mZoomLevels[i] < scaling())
         {
