@@ -199,8 +199,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             ui->gridLayout->addWidget(ui->eraserButton, 3, 2);
         }
         else if (geom.width() > buttonSize.width() * 3
-                 || mAreaLocation == Qt::TopDockWidgetArea
-                 || mAreaLocation == Qt::BottomDockWidgetArea )
+                 || mAreaLocation & (Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea))
         {
             ui->gridLayout->addWidget(ui->clearButton, 0, 0);
             ui->gridLayout->addWidget(ui->moveButton, 0, 1);
@@ -221,9 +220,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             ui->gridLayout->addWidget(ui->eraserButton, 5, 1);
 
         }
-        else if (mAreaLocation != Qt::TopDockWidgetArea
-                 || mAreaLocation != Qt::BottomDockWidgetArea
-                 || mIsFloating)
+        else if (mIsFloating)
         {
             ui->gridLayout->addWidget(ui->clearButton, 0, 0);
             ui->gridLayout->addWidget(ui->moveButton, 1, 0);
@@ -262,8 +259,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             ui->gridLayout->addWidget(ui->eraserButton, 2, 3);
         }
         else if (geom.height() > buttonSize.height() * 3 ||
-                 mAreaLocation == Qt::LeftDockWidgetArea
-                 || mAreaLocation == Qt::RightDockWidgetArea)
+                 mAreaLocation & (Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea))
         {
             ui->gridLayout->addWidget(ui->clearButton, 0, 0);
             ui->gridLayout->addWidget(ui->moveButton, 1, 0);
@@ -283,9 +279,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             ui->gridLayout->addWidget(ui->eyedropperButton, 0, 5);
             ui->gridLayout->addWidget(ui->eraserButton, 1, 5);
         }
-        else if (mAreaLocation != Qt::LeftDockWidgetArea
-                 || mAreaLocation != Qt::RightDockWidgetArea
-                 || mIsFloating)
+        else if (mIsFloating)
         {
             ui->gridLayout->addWidget(ui->clearButton, 0, 0);
             ui->gridLayout->addWidget(ui->moveButton, 0, 1);
