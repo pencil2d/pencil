@@ -114,7 +114,6 @@ void ViewManager::updateViewTransforms()
         if (mCurrentCamera)
         {
             mCurrentCamera->updateViewTransform();
-            qDebug() << "S=" << mCurrentCamera->scaling();
         }
         mView = mCameraLayer->getViewAtFrame(frame);
     }
