@@ -148,5 +148,8 @@ after_success:
   # Deploy doxygen documentation to github pages
   - 'if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_OS_NAME" == "linux" ]; then
       cd "$TRAVIS_BUILD_DIR/util";
+      for i in core svg xmlpatterns; do
+        curl -fsSLO "https://doc.qt.io/qt-5/qt$i.tags";
+      done;
       ./documentation-deploy.sh;
     fi'
