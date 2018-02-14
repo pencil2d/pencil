@@ -17,6 +17,8 @@ GNU General Public License for more details.
 
 #include "movetool.h"
 
+#include <QMouseEvent>
+
 #include "editor.h"
 #include "toolmanager.h"
 #include "scribblearea.h"

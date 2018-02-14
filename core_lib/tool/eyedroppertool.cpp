@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPixmap>
 #include <QBitmap>
+#include <QMouseEvent>
 
 #include "vectorimage.h"
 #include "layervector.h"

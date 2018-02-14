@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QFileIconProvider>
+#include <QTabletEvent>
 
 // core_lib headers
 #include "pencildef.h"

@@ -16,6 +16,8 @@ GNU General Public License for more details.
 */
 #include "selecttool.h"
 
+#include <QMouseEvent>
+
 #include "vectorimage.h"
 #include "editor.h"
 #include "layervector.h"
