@@ -20,6 +20,8 @@ GNU General Public License for more details.
 #include <cmath>
 #include <QPixmap>
 #include <QVector2D>
+#include <QMouseEvent>
+
 #include "layer.h"
 #include "layercamera.h"
 #include "editor.h"

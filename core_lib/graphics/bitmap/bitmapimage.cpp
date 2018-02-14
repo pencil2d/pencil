@@ -415,7 +415,7 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
                            QPainter::CompositionMode cm, bool antialiasing)
 {
     int width = pen.width();
-    qreal inc = 1.0 + width / 20.0;
+    // qreal inc = 1.0 + width / 20.0;
 
     extend(path.controlPointRect().adjusted(-width, -width, width, width).toRect());
 
