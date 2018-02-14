@@ -127,7 +127,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
 
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
-    
+
     // linear interpolation
     qreal c2 = ( frameNumber - frame1) / ( frame2 - frame1 );
     qreal c1 = 1.0 - c2;
@@ -143,13 +143,13 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
                        interpolation( camera1->view.m22(), camera2->view.m22() ),
                        interpolation( camera1->view.dx(),  camera2->view.dx() ),
                        interpolation( camera1->view.dy(),  camera2->view.dy() ) );
-   
+
 }
 
 void LayerCamera::LinearInterpolateTransform(Camera* cam)
 {
     Q_ASSERT(keyFrameCount() > 0);
-    
+
     int frameNumber = cam->pos();
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
 
@@ -243,7 +243,7 @@ void LayerCamera::editProperties()
 QDomElement LayerCamera::createDomElement( QDomDocument& doc )
 {
     QDomElement layerTag = doc.createElement("layer");
-    
+
     layerTag.setAttribute("name", name());
     layerTag.setAttribute("visibility", visible());
     layerTag.setAttribute("type", type());
@@ -262,13 +262,14 @@ QDomElement LayerCamera::createDomElement( QDomDocument& doc )
         keyTag.setAttribute( "dy",  camera->translation().y() );
         layerTag.appendChild( keyTag );
     } );
-    
+
     return layerTag;
 }
 
 void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
 {
     Q_UNUSED(dataDirPath);
+    Q_UNUSED(progressStep);
 
     setName( element.attribute("name") );
     setVisible( true );

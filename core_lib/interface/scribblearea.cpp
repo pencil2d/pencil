@@ -718,7 +718,7 @@ void ScribbleArea::paintBitmapBuffer()
     mBufferImg->clear();
 }
 
-void ScribbleArea::paintBitmapBufferRect(QRect rect)
+void ScribbleArea::paintBitmapBufferRect(QRect /*rect*/)
 {
     /*
     int frameNumber = mEditor->currentFrame();
