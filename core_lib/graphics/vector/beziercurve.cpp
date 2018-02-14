@@ -440,6 +440,9 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
         if (simplified)
         {
             renderedWidth = 1.0/painter.matrix().m11();
+
+            // Make sure the line width is positive.
+            renderedWidth = fabs(renderedWidth);
         }
         painter.setBrush(Qt::NoBrush);
         if ( invisible )
@@ -476,6 +479,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
         colour = QColor(100,150,255);  // highlight colour
         painter.setBrush(Qt::NoBrush);
         qreal lineWidth = 1.5/painter.matrix().m11();
+        lineWidth = fabs(lineWidth); // make sure line width is positive, otherwise nothing is drawn
         painter.setPen(QPen(QBrush(colour), lineWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         if (isSelected()) painter.drawPath(myCurve.getSimplePath());
 
