@@ -352,6 +352,8 @@ Status MovieExporter::generateMovie(
     centralizeCamera.translate(camSize.width() / 2, camSize.height() / 2);
 
     int failCounter = 0;
+    // Set max frame window size to take up about 1GB of memory
+    int frameWindow = (int) (1e9 / (camSize.width() * camSize.height() * 4.0));
 
     // Build FFmpeg command
 
@@ -396,7 +398,7 @@ Status MovieExporter::generateMovie(
             return false;
         }
 
-        if((currentFrame - frameStart <= framesProcessed + 10 || failCounter > 10) && currentFrame <= frameEnd)
+        if((currentFrame - frameStart <= framesProcessed + frameWindow || failCounter > 10) && currentFrame <= frameEnd)
         {
             QImage imageToExport = imageToExportBase.copy();
             QPainter painter(&imageToExport);
@@ -412,7 +414,7 @@ Status MovieExporter::generateMovie(
             Q_ASSERT(bSave);
             ffmpeg.write(imgData);
 
-            qDebug() << "Current frame" << currentFrame;
+            qDebug() << clock() << "Current frame" << currentFrame;
 
             currentFrame++;
             failCounter = 0;
