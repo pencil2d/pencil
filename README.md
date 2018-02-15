@@ -6,7 +6,7 @@
 
 ### Pencil2D 0.6  (1 December 2017)
 
-[What's new?](https://pencil2d.github.io/2017/12/introducing-pencil2d-0.6.html)
+[What's new?](https://www.pencil2d.org/2017/12/introducing-pencil2d-0.6.html)
 
 | Windows 64 bit   | Windows 32 bit    | Mac             | Linux             |
 | :--------------: | :---------------: | :-------------: | :---------------: |
@@ -45,7 +45,7 @@ The link will direct you to Google Drive, please right-click a file and select D
 
 ## Links
 
-* Pencil2D Official Website: [http://pencil2d.github.io/](http://pencil2d.github.io/)
+* Pencil2D Official Website: <https://www.pencil2d.org/>
 * Report a bug or Request features in [Issue tracker](https://github.com/pencil2d/pencil/issues)
 * You can help translate Pencil2D on [transifex](https://www.transifex.com/pencil2d/)!
 * [Developer Guide](https://github.com/pencil2d/pencil/wiki)
