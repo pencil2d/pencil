@@ -45,7 +45,7 @@ For a more pleasant development experience, you might want to install Qt Creator
 
 ### Make and GCC/Clang
 
-You will need GNU Make and either GCC or CLANG to build Pencil2D. 
+You will need GNU Make and either GCC or CLANG to build Pencil2D.
 
 #### Ubuntu
 
@@ -53,7 +53,7 @@ These are usually installed by default, so you don't have to worry about them. I
 
 - GNU Make and GCC:
 
-      sudo apt install make g++-5
+      sudo apt install make g++
 
 - GNU Make and Clang:
 
