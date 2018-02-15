@@ -621,13 +621,13 @@ Status ActionCommands::deleteCurrentLayer()
 
 void ActionCommands::help()
 {
-    QString url = "http://www.pencil2d.org/documentation/";
+    QString url = "http://www.pencil2d.org/doc/";
     QDesktopServices::openUrl(QUrl(url));
 }
 
 void ActionCommands::website()
 {
-    QString url = "http://pencil2d.github.io/";
+    QString url = "https://www.pencil2d.org/";
     QDesktopServices::openUrl(QUrl(url));
 }
 
