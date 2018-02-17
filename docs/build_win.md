@@ -12,7 +12,7 @@ There are 3 steps in total:
 
 ## TL;DR
 
-If you are an *experienced Qt developer*, compiling Pencil2D would be extremely easy for you. Just open up `pencil.pro` in Qt Creator and compile, that's it.
+If you are an *experienced Qt developer*, compiling Pencil2D would be extremely easy for you. Just open up `pencil2d.pro` in Qt Creator and compile, that's it.
 
 ## Install Qt SDK
 
@@ -38,7 +38,7 @@ Now it's time to build the application.
 ### With Qt Creator (recommended)
 
 - Open up the Qt Creator application.
-- From the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root source folder and open the `pencil.pro` file. 
+- From the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root source folder and open the `pencil2d.pro` file. 
 - Next, you'll be asked to configure your kits for the project. Kits determine compilers, target environment, and various build settings among other things. The Desktop option should be the only one checked. Click Configure Project to complete the kit selection.
 - Now all you have to do to is click the plain **green arrow** in the bottom left corner or press `Ctrl+r`. A small progress bar will show up on the bottom right and console output will appear in the bottom section.
 - If everything goes well then the Pencil2D application that you build will open up automatically and you're done!
@@ -55,7 +55,7 @@ Yes, you can compile Pencil2D with Visual Studio if you like.
 
 ```
 cd your/pencil2d/src/folder
-qmake -tp vc -r pencil.pro
+qmake -tp vc -r pencil2d.pro
 ```
 
 It will create a Visual Studio solution `pencil.sln` for you in the folder, double click on it and build. 

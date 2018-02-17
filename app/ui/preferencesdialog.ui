@@ -68,7 +68,7 @@
          <set>AlignCenter</set>
         </property>
         <property name="icon">
-         <iconset resource="../../pencil.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/icons/prefspencil.png</normaloff>:/icons/prefspencil.png</iconset>
         </property>
         <property name="flags">
@@ -83,7 +83,7 @@
          <set>AlignCenter</set>
         </property>
         <property name="icon">
-         <iconset resource="../../pencil.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/icons/prefs-files.png</normaloff>:/icons/prefs-files.png</iconset>
         </property>
         <property name="flags">
@@ -98,7 +98,7 @@
          <set>AlignCenter</set>
         </property>
         <property name="icon">
-         <iconset resource="../../pencil.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/icons/prefstimeline.png</normaloff>:/icons/prefstimeline.png</iconset>
         </property>
         <property name="flags">
@@ -113,7 +113,7 @@
          <set>AlignCenter</set>
         </property>
         <property name="icon">
-         <iconset resource="../../pencil.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/icons/prefs-files.png</normaloff>:/icons/prefs-files.png</iconset>
         </property>
         <property name="flags">
@@ -128,7 +128,7 @@
          <set>AlignCenter</set>
         </property>
         <property name="icon">
-         <iconset resource="../../pencil.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/icons/prefs-shortcuts.png</normaloff>:/icons/prefs-shortcuts.png</iconset>
         </property>
         <property name="flags">
@@ -199,8 +199,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../pencil.qrc"/>
-  <include location="../../pencil.qrc"/>
+  <include location="../data/app.qrc"/>
  </resources>
  <connections/>
  <slots>

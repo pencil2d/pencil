@@ -20,6 +20,3 @@
 *.PDF  diff=astextplain
 *.rtf  diff=astextplain
 *.RTF  diff=astextplain
-
-# Code in 3rdlib/ is not part of Pencil itself
-3rdlib/** linguist-vendored

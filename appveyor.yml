@@ -48,14 +48,14 @@ before_build:
   - md build
   - cd build
   - call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM_%
-  - if NOT %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" CONFIG+=GIT CONFIG+=NIGHTLY
-  - if %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE
+  - if NOT %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" CONFIG+=GIT CONFIG+=NIGHTLY
+  - if %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE
   - echo %PLATFORM_%
 
 build_script:
   - set BUILDTYPE=/t:Build
-  - set SOLUTIONFILE32="%APPVEYOR_BUILD_FOLDER%\build\pencil.sln"
-  - set SOLUTIONFILE64="%APPVEYOR_BUILD_FOLDER%\build\pencil.sln"
+  - set SOLUTIONFILE32="%APPVEYOR_BUILD_FOLDER%\build\pencil2d.sln"
+  - set SOLUTIONFILE64="%APPVEYOR_BUILD_FOLDER%\build\pencil2d.sln"
   - set BUILDTARGET32="/p:Configuration=Release,Platform=Win32"
   - set BUILDTARGET64="/p:Configuration=Release,Platform=x64"
   - if %PLATFORM_%==x86   call msbuild %SOLUTIONFILE32% %BUILDTYPE% %BUILDTARGET32%
@@ -78,7 +78,7 @@ after_build:
     move /y bin\plugins\ffmpeg-3.4.1-win32-static\bin\ffmpeg.exe bin\plugins &
     rmdir /q /s bin\plugins\ffmpeg-3.4.1-win32-static &
     echo "copying qt libraries" &
-    windeployqt bin\Pencil2D.exe &
+    windeployqt bin\pencil2d.exe &
     echo "zipping" &
     Rename bin Pencil2D &
     call 7z.exe a "pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" Pencil2D\ &
@@ -104,7 +104,7 @@ after_build:
     move /y bin\plugins\ffmpeg-3.4.1-win64-static\bin\ffmpeg.exe bin\plugins &
     rmdir /q /s bin\plugins\ffmpeg-3.4.1-win64-static &
     echo "copying qt libraries" &
-    windeployqt bin\Pencil2D.exe &
+    windeployqt bin\pencil2d.exe &
     echo "zipping" &
     Rename bin Pencil2D &
     call 7z.exe a "pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" Pencil2D\ &

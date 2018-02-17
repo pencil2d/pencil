@@ -222,7 +222,7 @@
   </widget>
   <action name="actionNew">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new.png</normaloff>:/icons/new.png</iconset>
    </property>
    <property name="text">
@@ -231,7 +231,7 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
    </property>
    <property name="text">
@@ -240,7 +240,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
    </property>
    <property name="text">
@@ -249,7 +249,7 @@
   </action>
   <action name="actionSave_as">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/saveas.png</normaloff>:/icons/saveas.png</iconset>
    </property>
    <property name="text">
@@ -258,7 +258,7 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
    </property>
    <property name="text">
@@ -318,7 +318,7 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
    </property>
    <property name="text">
@@ -330,7 +330,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
    </property>
    <property name="text">
@@ -339,7 +339,7 @@
   </action>
   <action name="actionCut">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
    </property>
    <property name="text">
@@ -348,7 +348,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
    </property>
    <property name="text">
@@ -357,7 +357,7 @@
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
    </property>
    <property name="text">
@@ -386,7 +386,7 @@
   </action>
   <action name="actionClearFrame">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
    </property>
    <property name="text">
@@ -408,7 +408,7 @@
   </action>
   <action name="actionZoom_In">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
    </property>
    <property name="text">
@@ -417,7 +417,7 @@
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
    </property>
    <property name="text">
@@ -478,7 +478,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../resource/app.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/onionPrev.png</normaloff>:/app/icons/onionPrev.png</iconset>
    </property>
    <property name="text">
@@ -493,7 +493,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../resource/app.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/onionNext.png</normaloff>:/app/icons/onionNext.png</iconset>
    </property>
    <property name="text">
@@ -505,7 +505,7 @@
   </action>
   <action name="actionPlay">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/controls/play.png</normaloff>:/icons/controls/play.png</iconset>
    </property>
    <property name="text">
@@ -517,7 +517,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/controls/loop.png</normaloff>:/icons/controls/loop.png</iconset>
    </property>
    <property name="text">
@@ -526,7 +526,7 @@
   </action>
   <action name="actionNext_Frame">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
    </property>
    <property name="text">
@@ -535,7 +535,7 @@
   </action>
   <action name="actionPrevious_Frame">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/prev.png</normaloff>:/icons/prev.png</iconset>
    </property>
    <property name="text">
@@ -549,7 +549,7 @@
   </action>
   <action name="actionAdd_Frame">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
    </property>
    <property name="text">
@@ -558,7 +558,7 @@
   </action>
   <action name="actionDuplicate_Frame">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/controls/duplicate.png</normaloff>:/icons/controls/duplicate.png</iconset>
    </property>
    <property name="text">
@@ -567,7 +567,7 @@
   </action>
   <action name="actionRemove_Frame">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
    </property>
    <property name="text">
@@ -576,7 +576,7 @@
   </action>
   <action name="actionMove">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/arrow.svg</normaloff>:/icons/new/svg/arrow.svg</iconset>
    </property>
    <property name="text">
@@ -585,7 +585,7 @@
   </action>
   <action name="actionClear">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
    </property>
    <property name="text">
@@ -594,7 +594,7 @@
   </action>
   <action name="actionSelect">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/selection.svg</normaloff>:/icons/new/svg/selection.svg</iconset>
    </property>
    <property name="text">
@@ -603,7 +603,7 @@
   </action>
   <action name="actionBrush">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/brush_detailed.svg</normaloff>:/icons/new/svg/brush_detailed.svg</iconset>
    </property>
    <property name="text">
@@ -612,7 +612,7 @@
   </action>
   <action name="actionPolyline">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/line.svg</normaloff>:/icons/new/svg/line.svg</iconset>
    </property>
    <property name="text">
@@ -621,7 +621,7 @@
   </action>
   <action name="actionSmudge">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/smudge_detailed.svg</normaloff>:/icons/new/svg/smudge_detailed.svg</iconset>
    </property>
    <property name="text">
@@ -630,7 +630,7 @@
   </action>
   <action name="actionPen">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/pen_detailed.svg</normaloff>:/icons/new/svg/pen_detailed.svg</iconset>
    </property>
    <property name="text">
@@ -639,7 +639,7 @@
   </action>
   <action name="actionHand">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/hand_detailed.svg</normaloff>:/icons/new/svg/hand_detailed.svg</iconset>
    </property>
    <property name="text">
@@ -648,7 +648,7 @@
   </action>
   <action name="actionPencil">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/pencil_detailed.svg</normaloff>:/icons/new/svg/pencil_detailed.svg</iconset>
    </property>
    <property name="text">
@@ -657,7 +657,7 @@
   </action>
   <action name="actionBucket">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/bucket_detailed.svg</normaloff>:/icons/new/svg/bucket_detailed.svg</iconset>
    </property>
    <property name="text">
@@ -666,7 +666,7 @@
   </action>
   <action name="actionEyedropper">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/eyedropper_detailed.svg</normaloff>:/icons/new/svg/eyedropper_detailed.svg</iconset>
    </property>
    <property name="text">
@@ -675,7 +675,7 @@
   </action>
   <action name="actionEraser">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/new/svg/eraser_detailed.svg</normaloff>:/icons/new/svg/eraser_detailed.svg</iconset>
    </property>
    <property name="text">
@@ -684,7 +684,7 @@
   </action>
   <action name="actionNew_Bitmap_Layer">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/layer-bitmap.png</normaloff>:/icons/layer-bitmap.png</iconset>
    </property>
    <property name="text">
@@ -693,7 +693,7 @@
   </action>
   <action name="actionNew_Vector_Layer">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/layer-vector.png</normaloff>:/icons/layer-vector.png</iconset>
    </property>
    <property name="text">
@@ -702,7 +702,7 @@
   </action>
   <action name="actionNew_Sound_Layer">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/layer-sound.png</normaloff>:/icons/layer-sound.png</iconset>
    </property>
    <property name="text">
@@ -711,7 +711,7 @@
   </action>
   <action name="actionNew_Camera_Layer">
    <property name="icon">
-    <iconset resource="../../pencil.qrc">
+    <iconset resource="../data/app.qrc">
      <normaloff>:/icons/layer-camera.png</normaloff>:/icons/layer-camera.png</iconset>
    </property>
    <property name="text">
@@ -883,10 +883,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../pencil.qrc"/>
-  <include location="../resource/app.qrc"/>
-  <include location="../../pencil.qrc"/>
-  <include location="../resource/app.qrc"/>
+  <include location="../data/app.qrc"/>
  </resources>
  <connections/>
  <slots>

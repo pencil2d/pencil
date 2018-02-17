@@ -19,35 +19,34 @@ MOC_DIR = .moc
 OBJECTS_DIR = .obj
 
 INCLUDEPATH += \
-    ../core_lib/graphics \
-    ../core_lib/graphics/bitmap \
-    ../core_lib/graphics/vector \
-    ../core_lib/interface \
-    ../core_lib/structure \
-    ../core_lib/tool \
-    ../core_lib/util \
+    ../core_lib/src/graphics \
+    ../core_lib/src/graphics/bitmap \
+    ../core_lib/src/graphics/vector \
+    ../core_lib/src/interface \
+    ../core_lib/src/structure \
+    ../core_lib/src/tool \
+    ../core_lib/src/util \
     ../core_lib/ui \
-    ../core_lib/managers
+    ../core_lib/src/managers
 
 HEADERS += \
-    catch.hpp
+    src/catch.hpp
 
 SOURCES += \
-    main.cpp \
-    test_layer.cpp \
-    test_layermanager.cpp \
-    test_object.cpp \
-    test_filemanager.cpp \
-    test_bitmapimage.cpp \
-    test_viewmanager.cpp
+    src/main.cpp \
+    src/test_layer.cpp \
+    src/test_layermanager.cpp \
+    src/test_object.cpp \
+    src/test_filemanager.cpp \
+    src/test_bitmapimage.cpp \
+    src/test_viewmanager.cpp
 
 # --- CoreLib ---
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -lcore_lib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core_lib/debug/ -lcore_lib
 else:unix: LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
 
-INCLUDEPATH += $$PWD/../core_lib
-DEPENDPATH += $$PWD/../core_lib
+INCLUDEPATH += $$PWD/../core_lib/src
 
 win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/libcore_lib.a
 else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/libcore_lib.a
