@@ -77,7 +77,7 @@ Now it's time to build the application. If you do not already have the Pencil2D 
 
 ### With Qt Creator (recommended)
 
-- Open up the Qt Creator application, and from the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root git folder and open the *pencil.pro* file.
+- Open up the Qt Creator application, and from the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root git folder and open the *pencil2d.pro* file.
 - Next you'll be asked to configure your kits for the project. Kits determine compilers, target environment, and various build settings among other things. The Desktop option should be the only one checked. Click Configure Project to complete the kit selection.
 - Now all you have to do to build is click the plain **green arrow** in the bottom left corner of the window or press `Ctrl+r` keys. A small progress bar will show up on the bottom right and console output will appear in the bottom section.
 - If everything goes well then the version of Pencil2D that you build will open up automatically and you're done!
@@ -103,7 +103,7 @@ Next you have to use GNU Make to actually compile the source code. Run the comma
 
 You can then open Pencil2D by running this from the source directory:
 
-    ./build/bin/Pencil2D
+    ./build/bin/pencil2d
 
 ## Next steps
 

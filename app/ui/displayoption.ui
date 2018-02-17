@@ -44,7 +44,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../resource/app.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/app/icons/onionNext.png</normaloff>:/app/icons/onionNext.png</iconset>
         </property>
         <property name="iconSize">
@@ -70,7 +70,7 @@
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset resource="../resource/app.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
         </property>
         <property name="iconSize">
@@ -102,7 +102,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../resource/app.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
         </property>
         <property name="iconSize">
@@ -134,7 +134,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../resource/app.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/app/icons/onionPrev.png</normaloff>:/app/icons/onionPrev.png</iconset>
         </property>
         <property name="iconSize">
@@ -166,7 +166,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../resource/app.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/app/icons/thinlines5.png</normaloff>:/app/icons/thinlines5.png</iconset>
         </property>
         <property name="iconSize">
@@ -192,7 +192,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../resource/app.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/app/icons/outlines5.png</normaloff>:/app/icons/outlines5.png</iconset>
         </property>
         <property name="iconSize">
@@ -221,7 +221,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../resource/app.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/app/icons/onion-red.png</normaloff>:/app/icons/onion-red.png</iconset>
         </property>
         <property name="iconSize">
@@ -259,7 +259,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../resource/app.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/app/icons/onion-blue.png</normaloff>:/app/icons/onion-blue.png</iconset>
         </property>
         <property name="iconSize">
@@ -295,7 +295,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="../resource/app.qrc"/>
+  <include location="../data/app.qrc"/>
  </resources>
  <connections/>
  <slots>

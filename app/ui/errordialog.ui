@@ -40,7 +40,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../resource/app.qrc">:/app/icons/dialog-error.svg</pixmap>
+        <pixmap resource="../data/app.qrc">:/app/icons/dialog-error.svg</pixmap>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -102,7 +102,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resource/app.qrc"/>
+  <include location="../data/app.qrc"/>
  </resources>
  <connections>
   <connection>

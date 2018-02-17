@@ -45,7 +45,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/trash_detailed.svg</normaloff>:/icons/new/svg/trash_detailed.svg</iconset>
       </property>
       <property name="autoRaise">
@@ -68,7 +68,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/pen_detailed.svg</normaloff>:/icons/new/svg/pen_detailed.svg</iconset>
       </property>
       <property name="checkable">
@@ -94,7 +94,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/line.svg</normaloff>:/icons/new/svg/line.svg</iconset>
       </property>
       <property name="checkable">
@@ -120,7 +120,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/hand_detailed.svg</normaloff>:/icons/new/svg/hand_detailed.svg</iconset>
       </property>
       <property name="checkable">
@@ -146,7 +146,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/eraser_detailed.svg</normaloff>:/icons/new/svg/eraser_detailed.svg</iconset>
       </property>
       <property name="checkable">
@@ -172,7 +172,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/arrow.svg</normaloff>:/icons/new/svg/arrow.svg</iconset>
       </property>
       <property name="checkable">
@@ -198,7 +198,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/bucket_detailed.svg</normaloff>:/icons/new/svg/bucket_detailed.svg</iconset>
       </property>
       <property name="checkable">
@@ -224,7 +224,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/pencil_detailed.svg</normaloff>:/icons/new/svg/pencil_detailed.svg</iconset>
       </property>
       <property name="checkable">
@@ -253,7 +253,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/eyedropper_detailed.svg</normaloff>:/icons/new/svg/eyedropper_detailed.svg</iconset>
       </property>
       <property name="checkable">
@@ -279,7 +279,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/selection.svg</normaloff>:/icons/new/svg/selection.svg</iconset>
       </property>
       <property name="checkable">
@@ -305,7 +305,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/brush_detailed.svg</normaloff>:/icons/new/svg/brush_detailed.svg</iconset>
       </property>
       <property name="checkable">
@@ -331,7 +331,7 @@
        </size>
       </property>
       <property name="icon">
-       <iconset resource="../../pencil.qrc">
+       <iconset resource="../data/app.qrc">
         <normaloff>:/icons/new/svg/smudge_detailed.svg</normaloff>:/icons/new/svg/smudge_detailed.svg</iconset>
       </property>
       <property name="checkable">
@@ -346,8 +346,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="../../pencil.qrc"/>
-  <include location="../../pencil.qrc"/>
+  <include location="../data/app.qrc"/>
  </resources>
  <connections/>
  <slots>

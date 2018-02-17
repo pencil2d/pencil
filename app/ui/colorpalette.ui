@@ -50,7 +50,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../pencil.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
         </property>
         <property name="flat">
@@ -79,7 +79,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../pencil.qrc">
+         <iconset resource="../data/app.qrc">
           <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
         </property>
         <property name="flat">
@@ -243,8 +243,7 @@
   </actiongroup>
  </widget>
  <resources>
-  <include location="../../pencil.qrc"/>
-  <include location="../../pencil.qrc"/>
+  <include location="../data/app.qrc"/>
  </resources>
  <connections>
   <connection>

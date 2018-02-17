@@ -109,7 +109,7 @@ after_success:
       mv bin Pencil2D;
       echo "Fixing info.plist";
       cd Pencil2D;
-      plutil -replace CFBundleExecutable -string Pencil2D Pencil2D.app/Contents/Info.plist;
+      plutil -replace CFBundleExecutable -string pencil2d Pencil2D.app/Contents/Info.plist;
       plutil -replace CFBundleIdentifier -string org.pencil2d.Pencil2D Pencil2D.app/Contents/Info.plist;
 
       echo "Copying ffmpeg plugin";

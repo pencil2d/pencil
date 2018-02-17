@@ -302,6 +302,8 @@ int handleArguments( PencilApplication& app )
 
 int main(int argc, char* argv[])
 {
+    Q_INIT_RESOURCE(core_lib);
+
     PencilApplication app( argc, argv );
 
     installTranslator( app );
