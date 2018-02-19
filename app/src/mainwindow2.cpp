@@ -263,7 +263,6 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
     connect(ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
-    connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets);
     connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
     connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
     connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
@@ -316,7 +315,7 @@ void MainWindow2::createMenus()
 
     /// --- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
-
+    winMenu->clear();
     QAction* actions[] =
     {
         mToolBox->toggleViewAction(),
@@ -326,7 +325,7 @@ void MainWindow2::createMenus()
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction()
     };
-    winMenu->clear();
+
     for (QAction* action : actions)
     {
         action->setMenuRole(QAction::NoRole);
@@ -334,11 +333,14 @@ void MainWindow2::createMenus()
     }
 
     winMenu->addSeparator();
-    QAction *lockWidgets = new QAction(tr("Lock Windows"), winMenu);
+    QAction* lockWidgets = new QAction(tr("Lock Windows"), winMenu);
     lockWidgets->setCheckable(true);
     winMenu->addAction(lockWidgets);
+    winMenu->addAction(ui->actionReset_Windows);
+
     connect(lockWidgets, &QAction::toggled, this, &MainWindow2::lockWidgets);
     bindActionWithSetting(lockWidgets, SETTING::LAYOUT_LOCK);
+    connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
 
     // -------------- Help Menu ---------------
     connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
@@ -766,14 +768,13 @@ void MainWindow2::preferences()
     mPrefDialog->show();
 }
 
-void MainWindow2::dockAllSubWidgets()
+void MainWindow2::resetAndDockAllSubWidgets()
 {
-    mToolBox->setFloating(false);
-    mToolOptions->setFloating(false);
-    mDisplayOptionWidget->setFloating(false);
-    mTimeLine->setFloating(false);
-    mColorPalette->setFloating(false);
-    mColorWheel->setFloating(false);
+    for (BaseDockWidget* dock : mDockWidgets)
+    {
+        dock->setFloating(false);
+        dock->show();
+    }
 }
 
 void MainWindow2::readSettings()

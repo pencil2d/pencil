@@ -95,7 +95,7 @@ protected:
     void closeEvent(QCloseEvent*) override;
 
 private slots:
-    void dockAllSubWidgets();
+    void resetAndDockAllSubWidgets();
 
 private:
     bool openObject(QString strFilename);
