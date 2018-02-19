@@ -539,6 +539,30 @@ void ActionCommands::duplicateKey()
     mEditor->layers()->notifyAnimationLengthChanged();
 }
 
+void ActionCommands::moveFrameForward()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer)
+    {
+        if (layer->moveKeyFrameForward(mEditor->currentFrame()))
+        {
+            mEditor->scrubForward();
+        }
+    }
+}
+
+void ActionCommands::moveFrameBackward()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer)
+    {
+        if (layer->moveKeyFrameBackward(mEditor->currentFrame()))
+        {
+            mEditor->scrubBackward();
+        }
+    }
+}
+
 Status ActionCommands::addNewBitmapLayer()
 {
     bool ok;

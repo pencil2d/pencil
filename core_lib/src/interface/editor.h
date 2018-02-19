@@ -138,10 +138,6 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
-    void moveFrameForward();
-    void moveFrameBackward();
-
-    //void setCurrentLayer(int layerNumber);
     void switchVisibilityOfLayer(int layerNumber);
     void moveLayer(int i, int j);
 

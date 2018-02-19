@@ -63,6 +63,8 @@ public:
     Status addNewKey();
     void removeKey();
     void duplicateKey();
+    void moveFrameForward();
+    void moveFrameBackward();
 
     // Layer
     Status addNewBitmapLayer();
