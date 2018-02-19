@@ -919,20 +919,16 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
 void Editor::removeKey()
 {
     Layer* layer = layers()->currentLayer();
-
     if (!layer->keyExistsWhichCovers(currentFrame()))
     {
         return;
     }
 
     backup(tr("Remove frame"));
-    if (layer != NULL)
-    {
-        layer->removeKeyFrame(currentFrame());
 
-        scrubBackward();
-        mScribbleArea->updateCurrentFrame();
-    }
+    layer->removeKeyFrame(currentFrame());
+
+    scrubBackward();
     Q_EMIT layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
 }
 
