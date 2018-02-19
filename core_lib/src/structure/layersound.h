@@ -48,6 +48,7 @@ public:
 
 protected:
     Status saveKeyFrameFile( KeyFrame*, QString path ) override;
+    KeyFrame* createKeyFrame(int position, Object*) override;
 };
 
 #endif

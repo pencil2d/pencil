@@ -153,6 +153,13 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
     return Status::OK;
 }
 
+KeyFrame* LayerSound::createKeyFrame(int position, Object*)
+{
+    SoundClip* s = new SoundClip;
+    s->setPos(position);
+    return s;
+}
+
 SoundClip* LayerSound::getSoundClipWhichCovers(int frameNumber)
 {
     KeyFrame* key = getKeyFrameWhichCovers(frameNumber);

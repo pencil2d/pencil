@@ -125,6 +125,7 @@ public:
 
 protected:
     void setId(int LayerId) { mId = LayerId; }
+    virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
     LAYER_TYPE meType = UNDEFINED;

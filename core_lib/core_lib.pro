@@ -62,7 +62,6 @@ HEADERS +=  \
     src/structure/layercamera.h \
     src/structure/layersound.h \
     src/structure/layervector.h \
-    src/structure/keyframefactory.h \
     src/structure/soundclip.h \
     src/structure/object.h \
     src/structure/objectdata.h \
@@ -126,7 +125,6 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/structure/layersound.cpp \
     src/structure/layervector.cpp \
     src/structure/object.cpp \
-    src/structure/keyframefactory.cpp \
     src/structure/soundclip.cpp \
     src/structure/objectdata.cpp \
     src/structure/filemanager.cpp \

@@ -18,7 +18,6 @@ GNU General Public License for more details.
 
 #include <QDebug>
 #include "keyframe.h"
-#include "keyframefactory.h"
 #include "object.h"
 #include "timeline.h"
 #include "timelinecells.h"
@@ -168,15 +167,9 @@ int Layer::getMaxKeyFramePosition() const
 
 bool Layer::addNewKeyFrameAt(int position)
 {
-    if (position <= 0)
-    {
-        return false;
-    }
-    KeyFrame* key = KeyFrameFactory::create(meType, mObject);
-    if (key == nullptr)
-    {
-        return false;
-    }
+    if (position <= 0) return false;
+   
+    KeyFrame* key = createKeyFrame(position, mObject);
     return addKeyFrame(position, key);
 }
 

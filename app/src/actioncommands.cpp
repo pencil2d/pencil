@@ -40,7 +40,6 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "camera.h"
 
-#include "keyframefactory.h"
 #include "movieexporter.h"
 #include "filedialogex.h"
 #include "exportmoviedialog.h"

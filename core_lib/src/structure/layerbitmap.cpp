@@ -79,6 +79,13 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
     return Status::OK;
 }
 
+KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
+{
+    BitmapImage* b = new BitmapImage;
+    b->setPos(position);
+    return b;
+}
+
 QString LayerBitmap::fileName(KeyFrame* key) const
 {
     return QString::asprintf("%03d.%03d.png", id(), key->pos());

@@ -100,6 +100,14 @@ Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
     return Status::OK;
 }
 
+KeyFrame* LayerVector::createKeyFrame(int position, Object* obj)
+{
+    VectorImage* v = new VectorImage;
+    v->setPos(position);
+    v->setObject(obj);
+    return v;
+}
+
 QString LayerVector::fileName(KeyFrame* key)
 {
     return QString::asprintf("%03d.%03d.vec", id(), key->pos());

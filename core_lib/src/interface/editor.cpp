@@ -45,7 +45,6 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layersound.h"
 #include "layercamera.h"
-#include "keyframefactory.h"
 #include "backupelement.h"
 
 #include "colormanager.h"
@@ -149,7 +148,9 @@ void Editor::dropEvent(QDropEvent* event)
             QUrl url = event->mimeData()->urls()[i];
             QString filePath = url.toLocalFile();
             if (filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
+            {
                 importImage(filePath);
+            }
             //if ( filePath.endsWith( ".aif" ) || filePath.endsWith( ".mp3" ) || filePath.endsWith( ".wav" ) )
                 //importSound( filePath );
         }
@@ -902,29 +903,17 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         return nullptr;
     }
 
-    bool isOK = false;
-
     while (layer->keyExists(frameIndex))
     {
         frameIndex += 1;
     }
 
-    KeyFrame* keyFrame = KeyFrameFactory::create(layer->type(), mObject.get());
-    if (keyFrame != nullptr)
-    {
-        isOK = layer->addKeyFrame(frameIndex, keyFrame);
-    }
-    else
-    {
-        Q_ASSERT(false);
-    }
-
-    if (isOK)
+    bool ok = layer->addNewKeyFrameAt(frameIndex);
+    if (ok)
     {
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
     }
-
-    return keyFrame;
+    return layer->getKeyFrameAt(frameIndex);
 }
 
 void Editor::removeKey()

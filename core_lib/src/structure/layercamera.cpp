@@ -221,6 +221,13 @@ Status LayerCamera::saveKeyFrameFile(KeyFrame*, QString)
     return Status::OK;
 }
 
+KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
+{
+    Camera* c = new Camera;
+    c->setPos(position);
+    return c;
+}
+
 void LayerCamera::editProperties()
 {
     if ( dialog == NULL )
