@@ -56,26 +56,13 @@ public slots:
     void brushOn();
     void smudgeOn();
 
-    void getDockLocation(Qt::DockWidgetArea area);
-
 signals:
     void clearButtonClicked();
-
-protected:
-    void resizeEvent(QResizeEvent* event) override;
 
 private:
     void deselectAllTools();
 
     Ui::ToolBoxWidget* ui = nullptr;
-
-    Qt::DockWidgetArea mAreaLocation;
-
-    // hack:
-    // isFloating is not set until resizeEvent has been executed.
-    // and is therefore true initially, which causes some UI resize problems.
-    bool mIsFloating = false;
-    bool mHasResizedOnce = false;
 };
 
 #endif

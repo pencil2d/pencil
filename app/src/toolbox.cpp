@@ -15,15 +15,17 @@ GNU General Public License for more details.
 
 */
 
+#include "toolbox.h"
+#include "ui_toolboxwidget.h"
+
 #include <cmath>
 
 #include <QToolButton>
 #include <QGridLayout>
 #include <QKeySequence>
 
+#include "flowlayout.h"
 #include "spinslider.h"
-#include "toolbox.h"
-#include "ui_toolboxwidget.h"
 #include "editor.h"
 #include "toolmanager.h"
 #include "pencilsettings.h"
@@ -47,8 +49,6 @@ ToolBoxWidget::~ToolBoxWidget()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("ToolBoxGeom", this->saveGeometry());
-    settings.setValue("toolBoxDockLocation", (int)mAreaLocation);
-    settings.setValue("isToolBoxFloating", isFloating());
     delete ui;
 }
 
@@ -139,176 +139,29 @@ void ToolBoxWidget::initUI()
     connect(ui->brushButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn);
     connect(ui->smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
 
-    connect(this, &QDockWidget::dockLocationChanged, this, &ToolBoxWidget::getDockLocation);
+    delete ui->toolGroup->layout();
+    FlowLayout* flowlayout = new FlowLayout;
+
+    flowlayout->addWidget(ui->clearButton);
+    flowlayout->addWidget(ui->pencilButton);
+    flowlayout->addWidget(ui->eraserButton);
+    flowlayout->addWidget(ui->selectButton);
+    flowlayout->addWidget(ui->moveButton);
+    flowlayout->addWidget(ui->penButton);
+    flowlayout->addWidget(ui->handButton);
+    flowlayout->addWidget(ui->polylineButton);
+    flowlayout->addWidget(ui->bucketButton);
+    flowlayout->addWidget(ui->eyedropperButton);
+    flowlayout->addWidget(ui->brushButton);
+    flowlayout->addWidget(ui->smudgeButton);
+    ui->toolGroup->setLayout(flowlayout);
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    this->restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
-    mAreaLocation = (Qt::DockWidgetArea)settings.value("toolBoxDockLocation").toInt();
-    mIsFloating = settings.value("isToolBoxFloating").toBool();
+    restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
 }
 
 void ToolBoxWidget::updateUI()
 {
-}
-
-void ToolBoxWidget::resizeEvent(QResizeEvent* event)
-{
-    QWidget::resizeEvent(event);
-
-    QRect geom = geometry();
-    QSize buttonSize = ui->clearButton->size(); // all buttons share same size
-
-    if (mIsFloating)
-    {
-        mAreaLocation = Qt::AllDockWidgetAreas;
-    }
-
-    // disable certain areas when width is >= number of buttons.
-    int NUMOFBUTTONS = 12;
-    if (geometry().width() >= buttonSize.width()*NUMOFBUTTONS)
-    {
-        setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
-    }
-    else
-    { // otherwise allow all areas
-        setAllowedAreas(Qt::AllDockWidgetAreas);
-    }
-
-
-    // Horizontal Layout
-    if (geom.width() < geom.height())
-    {
-        if (geom.width() > buttonSize.width() * 5)
-        {
-            ui->gridLayout->addWidget(ui->clearButton, 0, 0);
-            ui->gridLayout->addWidget(ui->moveButton, 0, 1);
-
-            ui->gridLayout->addWidget(ui->selectButton, 0, 2);
-            ui->gridLayout->addWidget(ui->brushButton, 1, 0);
-
-            ui->gridLayout->addWidget(ui->polylineButton, 1, 1);
-            ui->gridLayout->addWidget(ui->smudgeButton, 1, 2);
-
-            ui->gridLayout->addWidget(ui->penButton, 2, 0);
-            ui->gridLayout->addWidget(ui->handButton, 2, 1);
-
-            ui->gridLayout->addWidget(ui->pencilButton, 2, 2);
-            ui->gridLayout->addWidget(ui->bucketButton, 3, 0);
-
-            ui->gridLayout->addWidget(ui->eyedropperButton, 3, 1);
-            ui->gridLayout->addWidget(ui->eraserButton, 3, 2);
-        }
-        else if (geom.width() > buttonSize.width() * 3
-                 || mAreaLocation & (Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea))
-        {
-            ui->gridLayout->addWidget(ui->clearButton, 0, 0);
-            ui->gridLayout->addWidget(ui->moveButton, 0, 1);
-
-            ui->gridLayout->addWidget(ui->selectButton, 1, 0);
-            ui->gridLayout->addWidget(ui->brushButton, 1, 1);
-
-            ui->gridLayout->addWidget(ui->polylineButton, 2, 0);
-            ui->gridLayout->addWidget(ui->smudgeButton, 2, 1);
-
-            ui->gridLayout->addWidget(ui->penButton, 3, 0);
-            ui->gridLayout->addWidget(ui->handButton, 3, 1);
-
-            ui->gridLayout->addWidget(ui->pencilButton, 4, 0);
-            ui->gridLayout->addWidget(ui->bucketButton, 4, 1);
-
-            ui->gridLayout->addWidget(ui->eyedropperButton, 5, 0);
-            ui->gridLayout->addWidget(ui->eraserButton, 5, 1);
-
-        }
-        else if (mIsFloating)
-        {
-            ui->gridLayout->addWidget(ui->clearButton, 0, 0);
-            ui->gridLayout->addWidget(ui->moveButton, 1, 0);
-            ui->gridLayout->addWidget(ui->selectButton, 2, 0);
-            ui->gridLayout->addWidget(ui->brushButton, 3, 0);
-            ui->gridLayout->addWidget(ui->polylineButton, 4, 0);
-            ui->gridLayout->addWidget(ui->smudgeButton, 5, 0);
-            ui->gridLayout->addWidget(ui->penButton, 6, 0);
-            ui->gridLayout->addWidget(ui->handButton, 7, 0);
-            ui->gridLayout->addWidget(ui->pencilButton, 8, 0);
-            ui->gridLayout->addWidget(ui->bucketButton, 9, 0);
-            ui->gridLayout->addWidget(ui->eyedropperButton, 10, 0);
-            ui->gridLayout->addWidget(ui->eraserButton, 11, 0);
-        }
-    }
-    else
-    { // Vertical
-        if (geom.height() > buttonSize.height() * 5)
-        {
-            ui->gridLayout->addWidget(ui->clearButton, 0, 0);
-            ui->gridLayout->addWidget(ui->moveButton, 1, 0);
-
-            ui->gridLayout->addWidget(ui->selectButton, 2, 0);
-            ui->gridLayout->addWidget(ui->brushButton, 0, 1);
-
-            ui->gridLayout->addWidget(ui->polylineButton, 1, 1);
-            ui->gridLayout->addWidget(ui->smudgeButton, 2, 1);
-
-            ui->gridLayout->addWidget(ui->penButton, 0, 2);
-            ui->gridLayout->addWidget(ui->handButton, 1, 2);
-
-            ui->gridLayout->addWidget(ui->pencilButton, 2, 2);
-            ui->gridLayout->addWidget(ui->bucketButton, 0, 3);
-
-            ui->gridLayout->addWidget(ui->eyedropperButton, 1, 3);
-            ui->gridLayout->addWidget(ui->eraserButton, 2, 3);
-        }
-        else if (geom.height() > buttonSize.height() * 3 ||
-                 mAreaLocation & (Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea))
-        {
-            ui->gridLayout->addWidget(ui->clearButton, 0, 0);
-            ui->gridLayout->addWidget(ui->moveButton, 1, 0);
-
-            ui->gridLayout->addWidget(ui->selectButton, 0, 1);
-            ui->gridLayout->addWidget(ui->brushButton, 1, 1);
-
-            ui->gridLayout->addWidget(ui->polylineButton, 0, 2);
-            ui->gridLayout->addWidget(ui->smudgeButton, 1, 2);
-
-            ui->gridLayout->addWidget(ui->penButton, 0, 3);
-            ui->gridLayout->addWidget(ui->handButton, 1, 3);
-
-            ui->gridLayout->addWidget(ui->pencilButton, 0, 4);
-            ui->gridLayout->addWidget(ui->bucketButton, 1, 4);
-
-            ui->gridLayout->addWidget(ui->eyedropperButton, 0, 5);
-            ui->gridLayout->addWidget(ui->eraserButton, 1, 5);
-        }
-        else if (mIsFloating)
-        {
-            ui->gridLayout->addWidget(ui->clearButton, 0, 0);
-            ui->gridLayout->addWidget(ui->moveButton, 0, 1);
-            ui->gridLayout->addWidget(ui->selectButton, 0, 2);
-            ui->gridLayout->addWidget(ui->brushButton, 0, 3);
-            ui->gridLayout->addWidget(ui->polylineButton, 0, 4);
-            ui->gridLayout->addWidget(ui->smudgeButton, 0, 5);
-            ui->gridLayout->addWidget(ui->penButton, 0, 6);
-            ui->gridLayout->addWidget(ui->handButton, 0, 7);
-            ui->gridLayout->addWidget(ui->pencilButton, 0, 8);
-            ui->gridLayout->addWidget(ui->bucketButton, 0, 9);
-            ui->gridLayout->addWidget(ui->eyedropperButton, 0, 10);
-            ui->gridLayout->addWidget(ui->eraserButton, 0, 11);
-        }
-    }
-
-    if (mHasResizedOnce)
-    {
-        mIsFloating = isFloating();
-    }
-    else
-    {
-        mHasResizedOnce = true;
-    }
-}
-
-void ToolBoxWidget::getDockLocation(Qt::DockWidgetArea area)
-{
-    mAreaLocation = area;
 }
 
 void ToolBoxWidget::pencilOn()
