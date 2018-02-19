@@ -64,12 +64,12 @@ SCENARIO("Add key frames into a Layer", "[Layer]")
     {
         Layer* layer = new LayerBitmap(object);
 
-        REQUIRE(layer->addNewEmptyKeyAt(0) == false); // first key position is 1.
+        REQUIRE(layer->addNewKeyFrameAt(0) == false); // first key position is 1.
         REQUIRE(layer->keyFrameCount() == 0);
 
         WHEN("Add a keyframe")
         {
-            REQUIRE(layer->addNewEmptyKeyAt(1) == true);
+            REQUIRE(layer->addNewKeyFrameAt(1) == true);
 
             THEN("keyframe can be found in the layer")
             {
@@ -81,8 +81,8 @@ SCENARIO("Add key frames into a Layer", "[Layer]")
 
         WHEN("Add 2 keyframes")
         {
-            REQUIRE(layer->addNewEmptyKeyAt(1) == true);
-            REQUIRE(layer->addNewEmptyKeyAt(3) == true);
+            REQUIRE(layer->addNewKeyFrameAt(1) == true);
+            REQUIRE(layer->addNewKeyFrameAt(3) == true);
 
             THEN("2 keyframes are in the layer")
             {
@@ -98,12 +98,12 @@ SCENARIO("Add key frames into a Layer", "[Layer]")
     {
         Layer* layer = new LayerVector(object);
 
-        REQUIRE(layer->addNewEmptyKeyAt(0) == false); // first key position is 1.
+        REQUIRE(layer->addNewKeyFrameAt(0) == false); // first key position is 1.
         REQUIRE(layer->keyFrameCount() == 0);
 
         WHEN("Add a keyframe")
         {
-            REQUIRE(layer->addNewEmptyKeyAt(1) == true);
+            REQUIRE(layer->addNewKeyFrameAt(1) == true);
 
             THEN("keyframe can be found in the layer")
             {
@@ -119,12 +119,12 @@ SCENARIO("Add key frames into a Layer", "[Layer]")
     {
         Layer* layer = new LayerCamera(object);
 
-        REQUIRE(layer->addNewEmptyKeyAt(0) == false); // first key position is 1.
+        REQUIRE(layer->addNewKeyFrameAt(0) == false); // first key position is 1.
         REQUIRE(layer->keyFrameCount() == 0);
 
         WHEN("Add a keyframe")
         {
-            REQUIRE(layer->addNewEmptyKeyAt(1) == true);
+            REQUIRE(layer->addNewKeyFrameAt(1) == true);
 
             THEN("keyframe can be found in the layer")
             {
@@ -151,7 +151,7 @@ TEST_CASE("Test Layer::keyExists()", "[Layer]")
     SECTION("Key exists at 15")
     {
         Layer* layer = obj->addNewBitmapLayer();
-        REQUIRE(layer->addNewEmptyKeyAt(15));
+        REQUIRE(layer->addNewKeyFrameAt(15));
         REQUIRE(layer->keyExists(16) == false);
         REQUIRE(layer->keyExists(15) == true);
         REQUIRE(layer->keyExists(14) == false);
@@ -162,13 +162,13 @@ TEST_CASE("Test Layer::keyExists()", "[Layer]")
     {
         Layer* layer = obj->addNewBitmapLayer();
 
-        REQUIRE(layer->addNewEmptyKeyAt(10));
+        REQUIRE(layer->addNewKeyFrameAt(10));
         REQUIRE(layer->keyExists(10) == true);
 
-        REQUIRE(layer->addNewEmptyKeyAt(20));
+        REQUIRE(layer->addNewKeyFrameAt(20));
         REQUIRE(layer->keyExists(20) == true);
 
-        REQUIRE(layer->addNewEmptyKeyAt(30));
+        REQUIRE(layer->addNewKeyFrameAt(30));
         REQUIRE(layer->keyExists(30) == true);
 
         // test false case
@@ -191,7 +191,7 @@ TEST_CASE("Layer::firstKeyFramePosition()")
         Layer* layer = obj->addNewBitmapLayer();
         REQUIRE(layer->firstKeyFramePosition() == 1);
         
-        layer->addNewEmptyKeyAt(99);
+        layer->addNewKeyFrameAt(99);
         REQUIRE(layer->firstKeyFramePosition() == 1);
 
         layer->moveKeyFrameForward(1);
@@ -212,16 +212,16 @@ TEST_CASE("Layer::getMaxKeyFramePosition()")
         // 1 at beginning.
         REQUIRE(layer->getMaxKeyFramePosition() == 1);
 
-        CHECK(layer->addNewEmptyKeyAt(3));
+        CHECK(layer->addNewKeyFrameAt(3));
         REQUIRE(layer->getMaxKeyFramePosition() == 3);
 
-        CHECK(layer->addNewEmptyKeyAt(8));
+        CHECK(layer->addNewKeyFrameAt(8));
         REQUIRE(layer->getMaxKeyFramePosition() == 8);
 
-        CHECK(layer->addNewEmptyKeyAt(100));
+        CHECK(layer->addNewKeyFrameAt(100));
         REQUIRE(layer->getMaxKeyFramePosition() == 100);
 
-        CHECK(layer->addNewEmptyKeyAt(80));
+        CHECK(layer->addNewKeyFrameAt(80));
         REQUIRE(layer->getMaxKeyFramePosition() == 100);
     }
 
@@ -242,7 +242,7 @@ TEST_CASE("Layer::removeKeyFrame()")
 
         for (int i = 2; i <= 20; ++i)
         {
-            CHECK(layer->addNewEmptyKeyAt(i));
+            CHECK(layer->addNewKeyFrameAt(i));
         }
 
         REQUIRE(layer->keyExists(20) == true);
@@ -276,14 +276,14 @@ TEST_CASE("Layer::getPreviousKeyFramePosition()")
         REQUIRE(layer->getPreviousKeyFramePosition(100) == 1);
         REQUIRE(layer->getPreviousKeyFramePosition(1000) == 1);
 
-        layer->addNewEmptyKeyAt(2);
-        layer->addNewEmptyKeyAt(8);
+        layer->addNewKeyFrameAt(2);
+        layer->addNewKeyFrameAt(8);
         REQUIRE(layer->getPreviousKeyFramePosition(2) == 1);
         REQUIRE(layer->getPreviousKeyFramePosition(8) == 2);
 
         REQUIRE(layer->getPreviousKeyFramePosition(-5) == 1);
 
-        layer->addNewEmptyKeyAt(15);
+        layer->addNewKeyFrameAt(15);
         REQUIRE(layer->getPreviousKeyFramePosition(16) == 15);
         REQUIRE(layer->getPreviousKeyFramePosition(17) == 15);
 
@@ -304,7 +304,7 @@ TEST_CASE("Layer::getNextKeyFramePosition()")
         REQUIRE(layer->getNextKeyFramePosition(10) == 1);
         REQUIRE(layer->getNextKeyFramePosition(100) == 1);
 
-        CHECK(layer->addNewEmptyKeyAt(5));
+        CHECK(layer->addNewKeyFrameAt(5));
         REQUIRE(layer->getNextKeyFramePosition(1) == 5);
         REQUIRE(layer->getNextKeyFramePosition(2) == 5);
     }

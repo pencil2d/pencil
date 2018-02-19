@@ -167,7 +167,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath, Progr
                 else
                 {
                     int frame = imageElement.attribute("frame").toInt();
-                    addNewEmptyKeyAt(frame);
+                    addNewKeyFrameAt(frame);
                     getVectorImageAtFrame(frame)->loadDomElement(imageElement);
                 }
                 progressStep();

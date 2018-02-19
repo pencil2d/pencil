@@ -79,7 +79,7 @@ public:
 
     int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
 
-    bool addNewEmptyKeyAt(int position);
+    bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);

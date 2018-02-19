@@ -504,7 +504,7 @@ void ActionCommands::removeKey()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->keyFrameCount() == 0)
     {
-        layer->addNewEmptyKeyAt(1);
+        layer->addNewKeyFrameAt(1);
     }
 }
 

@@ -166,7 +166,7 @@ int Layer::getMaxKeyFramePosition() const
     return 0;
 }
 
-bool Layer::addNewEmptyKeyAt(int position)
+bool Layer::addNewKeyFrameAt(int position)
 {
     if (position <= 0)
     {
@@ -254,7 +254,7 @@ bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, nee
     }
     else if (position1 == 1)
     {
-        addNewEmptyKeyAt(position1);
+        addNewKeyFrameAt(position1);
     }
 
     if (keyPosition1)
@@ -264,7 +264,7 @@ bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, nee
     }
     else if (position2 == 1)
     {
-        addNewEmptyKeyAt(position2);
+        addNewKeyFrameAt(position2);
     }
 
     if (pFirstFrame)
@@ -639,7 +639,7 @@ bool Layer::moveSelectedFrames(int offset)
                 if (fromPos == 1)
                 {
                     // If the first frame is moving, we need to create a new first frame
-                    //addNewEmptyKeyAt(1);
+                    //addNewKeyFrameAt(1);
                 }
 
                 // Update the position of the selected frame

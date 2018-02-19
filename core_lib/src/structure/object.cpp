@@ -111,7 +111,7 @@ LayerBitmap* Object::addNewBitmapLayer()
     LayerBitmap* layerBitmap = new LayerBitmap(this);
     mLayers.append(layerBitmap);
 
-    layerBitmap->addNewEmptyKeyAt(1);
+    layerBitmap->addNewKeyFrameAt(1);
 
     return layerBitmap;
 }
@@ -121,7 +121,7 @@ LayerVector* Object::addNewVectorLayer()
     LayerVector* layerVector = new LayerVector(this);
     mLayers.append(layerVector);
 
-    layerVector->addNewEmptyKeyAt(1);
+    layerVector->addNewKeyFrameAt(1);
 
     return layerVector;
 }
@@ -141,7 +141,7 @@ LayerCamera* Object::addNewCameraLayer()
     LayerCamera* layerCamera = new LayerCamera(this);
     mLayers.append(layerCamera);
 
-    layerCamera->addNewEmptyKeyAt(1);
+    layerCamera->addNewKeyFrameAt(1);
 
     return layerCamera;
 }

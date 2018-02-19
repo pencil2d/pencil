@@ -272,7 +272,7 @@ TEST_CASE("FileManager Lazy loading test")
         LayerBitmap* layer = static_cast<LayerBitmap*>(o->getLayer(2));
         //qDebug() << "LayerType:" << layer->type();
 
-        REQUIRE(layer->addNewEmptyKeyAt(2));
+        REQUIRE(layer->addNewKeyFrameAt(2));
         BitmapImage* b2 = layer->getBitmapImageAtFrame(2);
         //qDebug() << b2->bounds();
         b2->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
