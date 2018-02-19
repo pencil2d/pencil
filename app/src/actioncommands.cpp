@@ -484,10 +484,6 @@ Status ActionCommands::addNewKey()
     Camera* cam = dynamic_cast<Camera*>(key);
     if (cam)
     {
-        auto camLayer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-        Q_ASSERT(camLayer);
-
-        camLayer->LinearInterpolateTransform(cam);
         mEditor->view()->updateViewTransforms();
     }
 

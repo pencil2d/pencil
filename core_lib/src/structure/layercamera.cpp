@@ -146,9 +146,10 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
 
 }
 
-void LayerCamera::LinearInterpolateTransform(Camera* cam)
+void LayerCamera::linearInterpolateTransform(Camera* cam)
 {
-    Q_ASSERT(keyFrameCount() > 0);
+    if (keyFrameCount() == 0)
+        return;
 
     int frameNumber = cam->pos();
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
@@ -225,6 +226,7 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
 {
     Camera* c = new Camera;
     c->setPos(position);
+    linearInterpolateTransform(c);
     return c;
 }
 
