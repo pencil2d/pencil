@@ -85,6 +85,14 @@ BitmapImage* BitmapImage::clone()
     return new BitmapImage(*this);
 }
 
+void BitmapImage::unload()
+{
+    if (isModified() == false)
+    {
+        mImage.reset();
+    }
+}
+
 void BitmapImage::paintImage(QPainter& painter)
 {
     painter.drawImage(topLeft(), *image());

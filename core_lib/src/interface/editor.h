@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <deque>
 #include <memory>
 #include <QObject>
 #include <QList>
@@ -206,6 +207,10 @@ private:
     bool clipboardBitmapOk = true;
     bool clipboardVectorOk = true;
     bool clipboardSoundClipOk = true;
+
+    // Memory management
+    void checkAndUnloadFrames();
+    std::deque<int> mHotspot;
 };
 
 #endif
