@@ -646,6 +646,9 @@ bool MainWindow2::autoSave()
     if (mEditor->autoSaveNeverAskAgain())
         return false;
 
+    if(mIsImportingImageSequence)
+        return false;
+
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setWindowTitle("AutoSave Reminder");
@@ -699,6 +702,9 @@ void MainWindow2::importImageSequence()
         return;
     }
 
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = true;
+
     QStringList files = imageSeqDialog->getFilePaths();
     int number = imageSeqDialog->getSpace();
 
@@ -743,6 +749,8 @@ void MainWindow2::importImageSequence()
     mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.close();
+
+    mIsImportingImageSequence = false;
 }
 
 void MainWindow2::importMovie()
