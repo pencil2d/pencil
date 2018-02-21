@@ -166,9 +166,12 @@ void TimeControls::makeConnections()
 
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick);
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon);
-    connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsClick);
-
-
+    auto connection = connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsClick);
+    if(!connection)
+    {
+        // Use "editingFinished" if the "spinBoxValueChanged" signal doesn't work...
+        connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
+    }
 }
 
 void TimeControls::playButtonClicked()
@@ -263,6 +266,11 @@ void TimeControls::updateSoundIcon(bool soundEnabled)
     {
         mSoundButton->setIcon(QIcon(":icons/controls/sound-disabled.png"));
     }
+}
+
+void TimeControls::onFpsEditingFinished()
+{
+    emit fpsClick(mFpsBox->value());
 }
 
 void TimeControls::updateLength(int frameLength)
