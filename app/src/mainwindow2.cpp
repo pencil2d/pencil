@@ -701,6 +701,17 @@ void MainWindow2::importImageSequence()
 
     QStringList files = imageSeqDialog->getFilePaths();
     int number = imageSeqDialog->getSpace();
+
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progress(tr("Importing image sequence..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
+    int totalImagesToImport = files.count();
+    int imagesImportedSoFar = 0;
+    int progressMax = 100;
+
     for (QString strImgFile : files)
     {
         if (strImgFile.endsWith(".png") ||
@@ -715,9 +726,23 @@ void MainWindow2::importImageSequence()
             {
                 mEditor->scrubForward();
             }
+
+            imagesImportedSoFar++;
+            if (totalImagesToImport != 0) // Avoid dividing by zero.
+            {
+                progress.setValue((imagesImportedSoFar + 1)*progressMax / totalImagesToImport);
+                QApplication::processEvents();  // Required to make progress bar update on-screen.
+            }
+
+            if (progress.wasCanceled())
+            {
+                break;
+            }
         }
     }
     mEditor->layers()->notifyAnimationLengthChanged();
+
+    progress.close();
 }
 
 void MainWindow2::importMovie()
