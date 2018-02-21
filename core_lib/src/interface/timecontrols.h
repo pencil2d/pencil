@@ -52,6 +52,9 @@ public slots:
     void toggleLoop(bool);
     void toggleLoopControl(bool);
 
+    /// Work-around in case the FPS spin-box "valueChanged" signal doesn't work.
+    void onFpsEditingFinished();
+
 private:
     void makeConnections();
 
