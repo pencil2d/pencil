@@ -51,7 +51,7 @@ PROJECT_BRIEF          = "Pencil2D is an animation software for both bitmap and 
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = pencil2d.png
+PROJECT_LOGO           = util/docs/pencil2d.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -2118,9 +2118,9 @@ SKIP_FUNCTION_MACROS   = YES
 # the path). If a tag file is not located in the directory in which doxygen is
 # run, you must also specify the path to the tagfile here.
 
-TAGFILES               = util/qtcore.tags=https://doc.qt.io/qt-5/ \
-                         util/qtsvg.tags=https://doc.qt.io/qt-5/ \
-                         util/qtxmlpatterns.tags=https://doc.qt.io/qt-5/ \
+TAGFILES               = util/docs/qtcore.tags=https://doc.qt.io/qt-5/ \
+                         util/docs/qtsvg.tags=https://doc.qt.io/qt-5/ \
+                         util/docs/qtxmlpatterns.tags=https://doc.qt.io/qt-5/ \
                          /usr/share/qt5/doc/qtcore/qtcore.tags=/usr/share/qt5/doc/qtcore/ \
                          /usr/share/qt5/doc/qtsvg/qtsvg.tags=/usr/share/qt5/doc/qtsvg/ \
                          /usr/share/qt5/doc/qtxmlpatterns/qtxmlpatterns.tags=/usr/share/qt5/doc/qtxmlpatterns/ \
