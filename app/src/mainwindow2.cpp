@@ -715,8 +715,8 @@ void MainWindow2::importImageSequence()
     progress.show();
 
     int totalImagesToImport = files.count();
+    progress.setMaximum(totalImagesToImport);
     int imagesImportedSoFar = 0;
-    int progressMax = 100;
 
     for (QString strImgFile : files)
     {
@@ -734,11 +734,8 @@ void MainWindow2::importImageSequence()
             }
 
             imagesImportedSoFar++;
-            if (totalImagesToImport != 0) // Avoid dividing by zero.
-            {
-                progress.setValue((imagesImportedSoFar + 1)*progressMax / totalImagesToImport);
-                QApplication::processEvents();  // Required to make progress bar update on-screen.
-            }
+            progress.setValue(imagesImportedSoFar);
+            QApplication::processEvents();  // Required to make progress bar update on-screen.
 
             if (progress.wasCanceled())
             {
