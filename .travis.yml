@@ -17,7 +17,7 @@ os:
 
 env:
   global:
-    - DOXYFILE: $TRAVIS_BUILD_DIR/util/Doxyfile-Travis
+    - DOXYFILE: $TRAVIS_BUILD_DIR/util/docs/Doxyfile-Travis
     - GH_REPO_REF: github.com/pencil2d/pencil-docs.git
     - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
 
@@ -147,7 +147,7 @@ after_success:
 
   # Deploy doxygen documentation to github pages
   - 'if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_OS_NAME" == "linux" ]; then
-      cd "$TRAVIS_BUILD_DIR/util";
+      cd "$TRAVIS_BUILD_DIR/util/docs";
       for i in core svg xmlpatterns; do
         curl -fsSLO "https://doc.qt.io/qt-5/qt$i.tags";
       done;
