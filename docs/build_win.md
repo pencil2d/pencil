@@ -1,6 +1,6 @@
 # Building Pencil2D on Windows
 
-These are instructions for building Pencil2D on a Windows PC. If you are using Mac go [here](build_mac.md), and Linux please go [here](build_linux.md).
+These are instructions for building Pencil2D on a Windows PC. If you are using Mac go [here](docs/build_mac.md), and Linux please go [here](docs/build_linux.md).
 
 This guide is primarily targeted towards developers. If you just want to use the latest version, download it from our [nightly builds](https://drive.google.com/drive/folders/0BxdcdOiOmg-CcWhLazdKR1oydHM). This tutorial was made with Windows 10 in mind, however this will work with Windows 7 and up.
 
@@ -62,4 +62,4 @@ It will create a Visual Studio solution `pencil.sln` for you in the folder, doub
 
 ## Next steps
 
-Now that you can build Pencil2D, the next step is to learn about [navigating the source code](https://github.com/pencil2d/pencil/wiki/Dive-into-code).
+Now that you can build Pencil2D, the next step is to learn about [navigating the source code](docs/dive-into-code.md).
