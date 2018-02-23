@@ -41,13 +41,12 @@ public:
     Status exportImage();
 
     // edit
-
+    void flipSelectionX();
+    void flipSelectionY();
 
     // view
     void ZoomIn();
     void ZoomOut();
-    void flipSelectionX();
-    void flipSelectionY();
     void rotateClockwise();
     void rotateCounterClockwise();
     void toggleMirror();

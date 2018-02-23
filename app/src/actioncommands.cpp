@@ -370,16 +370,6 @@ Status ActionCommands::exportImage()
     return Status::OK;
 }
 
-void ActionCommands::ZoomIn()
-{
-    mEditor->view()->scaleUp();
-}
-
-void ActionCommands::ZoomOut()
-{
-    mEditor->view()->scaleDown();
-}
-
 void ActionCommands::flipSelectionX()
 {
     bool flipVertical = false;
@@ -390,6 +380,16 @@ void ActionCommands::flipSelectionY()
 {
     bool flipVertical = true;
     mEditor->flipSelection(flipVertical);
+}
+
+void ActionCommands::ZoomIn()
+{
+    mEditor->view()->scaleUp();
+}
+
+void ActionCommands::ZoomOut()
+{
+    mEditor->view()->scaleDown();
 }
 
 void ActionCommands::rotateClockwise()

@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 
-static auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
 
 TimeControls::TimeControls(TimeLine* parent) : QToolBar(parent)
 {
@@ -67,10 +66,10 @@ void TimeControls::initUI()
     mPlaybackRangeCheckBox->setToolTip(tr("Playback range"));
 
     mPlayButton = new QPushButton(this);
-    mLoopButton = new QPushButton();
-    mSoundButton = new QPushButton();
-    mJumpToEndButton = new QPushButton();
-    mJumpToStartButton = new QPushButton();
+    mLoopButton = new QPushButton(this);
+    mSoundButton = new QPushButton(this);
+    mJumpToEndButton = new QPushButton(this);
+    mJumpToStartButton = new QPushButton(this);
 
     mLoopIcon = QIcon(":icons/controls/loop.png");
     mSoundIcon = QIcon(":icons/controls/sound.png");
@@ -113,7 +112,7 @@ void TimeControls::updateUI()
 {
     PlaybackManager* playback = mEditor->playback();
 
-    mPlaybackRangeCheckBox->setChecked(playback->isRangedPlaybackOn()); // don't block this signal
+    mPlaybackRangeCheckBox->setChecked(playback->isRangedPlaybackOn()); // don't block this signal since it enables start/end range spinboxes.
 
     SignalBlocker b1(mLoopStartSpinBox);
     mLoopStartSpinBox->setValue(playback->markInFrame());
@@ -158,6 +157,7 @@ void TimeControls::makeConnections()
     connect(mLoopButton, &QPushButton::clicked, this, &TimeControls::loopButtonClicked);
     connect(mPlaybackRangeCheckBox, &QCheckBox::clicked, this, &TimeControls::playbackRangeClicked);
 
+    auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartValueChanged);
     connect(mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndValueChanged);
 
