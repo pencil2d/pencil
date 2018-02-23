@@ -129,6 +129,32 @@ MovieExporter::~MovieExporter()
 {
 }
 
+/** Begin exporting the movie described by exportDesc.
+ *
+ * @param[in] obj An Object containing the animation to export.
+ * @param[in] desc A structure containing all the export parameters.
+ *            See ExportMovieDesc.
+ * @param[out] majorProgress A function to update the major progress bar.
+ *                          The major progress bar goes from 0-100% only
+ *                          one time, representing the overall progress of
+ *                          the export. The first float parameter is
+ *                          the current progress %, and the second is
+ *                          the desired progress when the next sub-task
+ *                          completes. This should only be called at the
+ *                          beginning of a subtask.
+ * @param[out] minorProgress A function to update the minor progress bar.
+ *                           The minor progress bar goes from 0-100% for
+ *                           each sub-task of the exporting process.
+ *                           It is up to minor progress to update the
+ *                           major progress bar to reflect the sub-task
+ *                           progress.
+ * @param[out] progressMessage A function ot update the progres bar
+ *                             message. The messages will describe
+ *                             the current sub-task of the exporting
+ *                             process.
+ *
+ * @return Returns Status:OK on success, or Status::FAIL on error.
+ */
 Status MovieExporter::run(const Object* obj,
                           const ExportMovieDesc& desc,
                           std::function<void(float, float)> majorProgress,
@@ -193,7 +219,7 @@ Status MovieExporter::run(const Object* obj,
     progressMessage(QApplication::tr("Done"));
     
     clock_t t2 = clock() - t1;
-    qDebug("MOVIE = %.1f sec", float(t2) / CLOCKS_PER_SEC);
+    qDebug("MOVIE = %.1f sec", static_cast<float>(t2) / CLOCKS_PER_SEC);
 
     return Status::OK;
 }
@@ -203,6 +229,18 @@ QString MovieExporter::error()
     return QString();
 }
 
+/** Combines all audio tracks in obj into a single file.
+ *
+ *  @param[in] obj
+ *  @param[in] ffmpegPath
+ *  @param[out] progress A function that takes one float argument
+ *              (the percentage of the audio assembly complete) and
+ *              may display the output to the user in any way it
+ *              sees fit.
+ *
+ *  @return Returns the final status of the operation. Ok if successful,
+ *          or safe if there was intentionally no output.
+ */
 Status MovieExporter::assembleAudio(const Object* obj,
                                     QString ffmpegPath,
                                     std::function<void(float)> progress)
@@ -317,6 +355,22 @@ Status MovieExporter::assembleAudio(const Object* obj,
     return Status::OK;
 }
 
+/** Exports obj to a movie image at strOut using FFmpeg.
+ *
+ *  @param[in]  obj An Object containing the animation to export.
+ *  @param[in]  ffmpegPath The path to the FFmpeg binary.
+ *  @param[in]  strOutputFile The output path. Should end with .gif.
+ *  @param[out] progress A function that takes one float argument
+ *              (the percentage of the gif generation complete) and
+ *              may display the output to the user in any way it
+ *              sees fit.
+ *
+ *  The movie formats supported by this operation are any file
+ *  formats that the referenced FFmpeg binary supports and that have
+ *  the required features (ex. video and audio support)
+ *
+ *  @return Returns the final status of the operation (ok or canceled)
+ */
 Status MovieExporter::generateMovie(
         const Object* obj,
         QString ffmpegPath,
@@ -343,6 +397,11 @@ Status MovieExporter::generateMovie(
     }
     int currentFrame = frameStart;
 
+    /* We create an image with the correct dimensions and background
+     * color here and then copy this and draw over top of it to
+     * generate each frame. This is faster than having to generate
+     * a new background image for each frame.
+     */
     QImage imageToExportBase(exportSize, QImage::Format_ARGB32_Premultiplied);
     QColor bgColor = Qt::white;
     if (transparency)
@@ -358,7 +417,13 @@ Status MovieExporter::generateMovie(
     centralizeCamera.translate(camSize.width() / 2, camSize.height() / 2);
 
     int failCounter = 0;
-    // Set max frame window size to take up about 1GB of memory
+    /* Movie export uses a "sliding window" to reduce memory usage
+     * while having a relatively small impact on speed. This basically
+     * means that there is a maximum number of frames that can be waiting
+     * to be encoded by ffmpeg at any one time. The limit is set by the
+     * frameWindow variable which is designed to take up a maximum of
+     * about 1GB of memory
+     */
     int frameWindow = (int) (1e9 / (camSize.width() * camSize.height() * 4.0));
 
     // Build FFmpeg command
@@ -416,6 +481,7 @@ Status MovieExporter::generateMovie(
 
             QByteArray imgData;
             QBuffer buffer(&imgData);
+            // BMPs are used because QT encodes them faster than other formats (less compression)
             bool bSave = imageToExport.save(&buffer, "BMP", 100);
             Q_ASSERT(bSave);
             ffmpeg.write(imgData);
@@ -431,6 +497,18 @@ Status MovieExporter::generateMovie(
     return Status::OK;
 }
 
+/** Exports obj to a gif image at strOut using FFmpeg.
+ *
+ *  @param[in]  obj An Object containing the animation to export.
+ *  @param[in]  ffmpegPath The path to the FFmpeg binary.
+ *  @param[in]  strOut The output path. Should end with .gif.
+ *  @param[out] progress A function that takes one float argument
+ *              (the percentage of the gif generation complete) and
+ *              may display the output to the user in any way it
+ *              sees fit.
+ *
+ *  @return Returns the final status of the operation (ok or canceled)
+ */
 Status MovieExporter::generateGif(
         const Object* obj,
         QString ffmpegPath,
@@ -458,6 +536,11 @@ Status MovieExporter::generateGif(
     }
     int currentFrame = frameStart;
 
+    /* We create an image with the correct dimensions and background
+     * color here and then copy this and draw over top of it to
+     * generate each frame. This is faster than having to generate
+     * a new background image for each frame.
+     */
     QImage imageToExportBase(exportSize, QImage::Format_ARGB32_Premultiplied);
     QColor bgColor = Qt::white;
     if (transparency)
@@ -492,6 +575,14 @@ Status MovieExporter::generateGif(
 
     STATUS_CHECK(executeFFMpegPipe(strCmd, progress, [&](QProcess& ffmpeg, int framesProcessed)
     {
+        /* The GIF FFmpeg command requires the entires stream to be
+         * written before FFmpeg can encode the GIF. This is because
+         * the generated pallete is based off of the colors in all
+         * frames. The only way to avoid this would be to generate
+         * all the frames twice and run two separate commands, which
+         * would likely have unacceptable speed costs.
+         */
+
         Q_UNUSED(framesProcessed);
         if(currentFrame > frameEnd)
         {
@@ -509,6 +600,7 @@ Status MovieExporter::generateGif(
 
         QByteArray imgData;
         QBuffer buffer(&imgData);
+        // BMPs are used because QT encodes them faster than other formats (less compression)
         bool bSave = imageToExport.save(&buffer, "BMP", 100);
         Q_ASSERT(bSave);
         ffmpeg.write(imgData);
@@ -521,6 +613,21 @@ Status MovieExporter::generateGif(
     return Status::OK;
 }
 
+/** Runs the specified command (should be ffmpeg) and allows for progress feedback.
+ *
+ *  @param[in]  strCmd A string containing the command to execute and
+ *              all of its arguments
+ *  @param[out] progress A function that takes one float argument
+ *              (the percentage of the ffmpeg operation complete) and
+ *              may display the output to the user in any way it
+ *              sees fit.
+ *
+ *  executeFFMpeg does not allow for writing direct input, the only
+ *  input through the "-i" argument to specify input files on the disk.
+ *
+ *  @return Returns Status::OK if everything went well, and Status::FAIL
+ *  and error is detected (usually a non-zero exit code for ffmpeg).
+ */
 Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> progress)
 {
     qDebug() << strCmd;
@@ -557,6 +664,12 @@ Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> p
         {
             qDebug() << "[ffmpeg]" << s;
         }
+
+        if(ffmpeg.exitStatus() != QProcess::NormalExit)
+        {
+            qDebug() << "ERROR: FFmpeg crashed";
+            return Status::FAIL;
+        }
     }
     else
     {
@@ -566,6 +679,48 @@ Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> p
     return Status::OK;
 }
 
+/** Runs the specified command (should be ffmpeg), and lets
+ *  writeFrame pipe data into it 1 frame at a time.
+ *
+ *  @param[in]  strCmd A string containing the command to execute and
+ *              all of its arguments
+ *  @param[out] progress A function that takes one float argument
+ *              (the percentage of the ffmpeg operation complete) and
+ *              may display the output to the user in any way it
+ *              sees fit.
+ *  @param[in]  writeFrame A function that takes two arguments, a
+ *              process (the ffmpeg process) and an integer
+ *              (frames processed or -1, see full description).
+ *              This function should write a single frame to the
+ *              process. The function returns true value if it
+ *              actually wrote a frame.
+ *
+ *  This function operates generally as follows:
+ *  1. Spawn process with the command from strCmd
+ *  2. Check ffmpeg's output for a progress update.
+ *  3. Add frames with writeFrame until it returns false.
+ *  4. Repeat from step 2 until all frames have been written.
+ *
+ *  The idea is that there are two forms of processing occuring
+ *  simultaneously, generating frames to send to ffmpeg, and ffmpeg
+ *  encoding those frames. Whether these this actually occur
+ *  concurrently or one after another appears to depend on the environment.
+ *
+ *  The writeFrame function deserves a bit of extra details. It does
+ *  not only return false when there is an error in generating or
+ *  writing a frame, it also does it when it wants to "return control"
+ *  to the rest of the executeFFMpegPipe function for the purposes of
+ *  reading updates from ffmpeg's output. This should be done every
+ *  once in a while if possible, but with some formats (specifically gif),
+ *  all frames must be loaded before any processing can continue, so
+ *  there is no point returning false for it until all frames have
+ *  been written. writeFrame is also responsible for closing the writeChannel
+ *  of the process when it has finished writing all frames. This indicates
+ *  to executeFFMpegPipe that it no longer needs to call writeFrame.
+ *
+ *  @return Returns Status::OK if everything went well, and Status::FAIL
+ *  and error is detected (usually a non-zero exit code for ffmpeg).
+ */
 Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<bool(QProcess&, int)> writeFrame)
 {
     qDebug() << strCmd;
