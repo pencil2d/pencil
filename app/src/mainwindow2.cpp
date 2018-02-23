@@ -512,6 +512,8 @@ bool MainWindow2::openObject(QString strFilePath)
         progress.setRange(0, max + 3);
     });
 
+    strFilePath = QFileInfo(strFilePath).absoluteFilePath();
+
     Object* object = fm.load(strFilePath);
 
     if (object == nullptr || !fm.error().ok())
