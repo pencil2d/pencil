@@ -414,8 +414,6 @@ Status MovieExporter::generateMovie(
             Q_ASSERT(bSave);
             ffmpeg.write(imgData);
 
-            qDebug() << clock() << "Current frame" << currentFrame;
-
             currentFrame++;
             failCounter = 0;
             return true;
@@ -509,8 +507,6 @@ Status MovieExporter::generateGif(
         Q_ASSERT(bSave);
         ffmpeg.write(imgData);
 
-        qDebug() << "Current frame" << currentFrame;
-
         currentFrame++;
 
         return true;
@@ -586,7 +582,7 @@ Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float
             // Check FFmpeg progress
 
             int framesProcessed = -1;
-            if(ffmpeg.waitForReadyRead(100))
+            if(ffmpeg.waitForReadyRead(10))
             {
                 QString output(ffmpeg.readAll());
                 QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
