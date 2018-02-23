@@ -2118,7 +2118,17 @@ SKIP_FUNCTION_MACROS   = YES
 # the path). If a tag file is not located in the directory in which doxygen is
 # run, you must also specify the path to the tagfile here.
 
-TAGFILES               =
+TAGFILES               = $(TRAVIS_BUILD_DIR)/util/qtcore.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/qtsvg.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/qtxmlpatterns.tags=https://doc.qt.io/qt-5/ \
+                         /usr/share/qt5/doc/qtcore/qtcore.tags=/usr/share/qt5/doc/qtcore/ \
+                         /usr/share/qt5/doc/qtsvg/qtsvg.tags=/usr/share/qt5/doc/qtsvg/ \
+                         /usr/share/qt5/doc/qtxmlpatterns/qtxmlpatterns.tags=/usr/share/qt5/doc/qtxmlpatterns/ \
+                         /usr/share/doc/qt/qtcore/qtcore.tags=/usr/share/doc/qt/qtcore/ \
+                         /usr/share/doc/qt/qtsvg/qtsvg.tags=/usr/share/doc/qt/qtsvg/ \
+                         /usr/share/doc/qt/qtxmlpatterns/qtxmlpatterns.tags=/usr/share/doc/qt/qtxmlpatterns/
+                         # Currently Qt Multimedia isn't configured to generate a tagfile, see
+                         # https://github.com/qt/qtmultimedia/blob/5.9/src/multimedia/doc/qtmultimedia.qdocconf
 
 # When a file name is specified after GENERATE_TAGFILE, doxygen will create a
 # tag file that is based on the input files it reads. See section "Linking to

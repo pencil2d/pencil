@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ToolsPage</class>
+ <widget class="QWidget" name="ToolsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>278</width>
+    <height>330</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="lay2">
+   <item>
+    <widget class="QGroupBox" name="onionSkinBox">
+     <property name="title">
+      <string>Onion skin</string>
+     </property>
+     <layout class="QVBoxLayout" name="lay">
+      <item>
+       <widget class="QLabel" name="onionMaxOpacityLabel">
+        <property name="text">
+         <string>Maximum onion opacity %</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="onionMaxOpacityBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="onionMinOpacityLabel">
+        <property name="text">
+         <string>Minimum onion opacity %</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="onionMinOpacityBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="onionPrevFramesNumLabel">
+        <property name="text">
+         <string>Number of previous onion frames shown</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="onionPrevFramesNumBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="onionNextFramesNumLabel">
+        <property name="text">
+         <string>Number of next onion frames shown</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="onionNextFramesNumBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="brushBox">
+     <property name="title">
+      <string>Brush Tools</string>
+     </property>
+     <layout class="QVBoxLayout" name="brushBoxLayout">
+      <item>
+       <widget class="QCheckBox" name="useQuickSizingBox">
+        <property name="text">
+         <string>Use Quick Sizing</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+ <slots>
+  <slot>onionMaxOpacityChange(int)</slot>
+  <slot>onionMinOpacityChange(int)</slot>
+  <slot>onionPrevFramesNumChange(int)</slot>
+  <slot>onionNextFramesNumChange(int)</slot>
+  <slot>quickSizingChange(int)</slot>
+ </slots>
+</ui>

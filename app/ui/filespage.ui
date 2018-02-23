@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FilesPage</class>
+ <widget class="QWidget" name="FilesPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>316</width>
+    <height>234</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="autosaveBox">
+     <property name="title">
+      <string comment="Preference">Autosave documents</string>
+     </property>
+     <layout class="QVBoxLayout" name="lay">
+      <item>
+       <widget class="QCheckBox" name="autosaveCheckBox">
+        <property name="text">
+         <string comment="Preference">Enable autosave</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="autosaveNumberLabel">
+        <property name="text">
+         <string comment="Preference">Number of modifications before autosaving:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="autosaveNumberBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="minimum">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+ <slots>
+  <slot>autosaveChange(int)</slot>
+  <slot>autosaveNumberChange(int)</slot>
+  <slot>clearRecentFilesList()</slot>
+ </slots>
+</ui>
