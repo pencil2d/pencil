@@ -257,6 +257,7 @@ int handleArguments( PencilApplication& app )
         extensionMapping[ "avi" ] = "AVI";
         extensionMapping[ "gif" ] = "GIF";
         extensionMapping[ "webm" ] = "WEBM";
+        extensionMapping[ "apng" ] = "APNG";
         QString extension = outputPaths[i].mid( outputPaths[i].lastIndexOf( "." ) + 1 ).toLower();
         if ( inputPath.contains(".") && extensionMapping.contains( extension ) )
         {
@@ -278,6 +279,7 @@ int handleArguments( PencilApplication& app )
         formatMapping[ "AVI" ] = true;
         formatMapping[ "GIF" ] = true;
         formatMapping[ "WEBM" ] = true;
+        formatMapping[ "APNG" ] = true;
         asMovie = formatMapping[format];
 
         if ( asMovie )

@@ -172,7 +172,7 @@ QString FileDialog::saveFileFilters( FileType fileType )
         case FileType::ANIMATION: return PFF_SAVE_ALL_FILE_FILTER;
         case FileType::IMAGE: return "";
         case FileType::IMAGE_SEQUENCE: return "";
-        case FileType::MOVIE: return tr( "MP4 (*.mp4);;AVI (*.avi);; WebM (*.webm);; GIF (*.gif)" );
+        case FileType::MOVIE: return tr( "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; GIF (*.gif);; APNG (*.apng)" );
         case FileType::SOUND: return "";
         case FileType::PALETTE: return tr( "Palette (*.xml)" );
         default: Q_ASSERT( false );
