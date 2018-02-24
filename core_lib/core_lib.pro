@@ -91,7 +91,8 @@ HEADERS +=  \
     src/soundplayer.h \
     src/movieexporter.h \
     src/miniz.h \
-    src/qminiz.h
+    src/qminiz.h \
+    src/activeframepool.h
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
@@ -152,7 +153,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/soundmanager.cpp \
     src/movieexporter.cpp \
     src/miniz.cpp \
-    src/qminiz.cpp
+    src/qminiz.cpp \
+    src/activeframepool.cpp
 
 win32 {
     CONFIG -= flat

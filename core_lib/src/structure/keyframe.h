@@ -62,7 +62,7 @@ private:
     bool mIsSelected = false;
     QString mAttachedFileName;
 
-    std::vector< KeyFrameEventListener* > mEventListeners;
+    std::vector<KeyFrameEventListener*> mEventListeners;
 };
 
 class KeyFrameEventListener

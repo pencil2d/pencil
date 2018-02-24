@@ -42,6 +42,7 @@ class SoundManager;
 class ScribbleArea;
 class TimeLine;
 class BackupElement;
+class ActiveFramePool;
 
 enum class SETTING;
 
@@ -209,8 +210,7 @@ private:
     bool clipboardSoundClipOk = true;
 
     // Memory management
-    void checkAndUnloadFrames();
-    std::deque<int> mHotspot;
+    ActiveFramePool* mActiveFramePool = nullptr;
 };
 
 #endif

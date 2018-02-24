@@ -37,6 +37,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 #include "backupelement.h"
+#include "activeframepool.h"
 
 #include "colormanager.h"
 #include "toolmanager.h"
@@ -104,6 +105,8 @@ bool Editor::init()
 
     mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
     mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+
+    mActiveFramePool = new ActiveFramePool;
 
     return true;
 }
@@ -485,39 +488,6 @@ void Editor::updateAutoSaveCounter()
     }
 }
 
-void Editor::checkAndUnloadFrames()
-{
-    if (mHotspot.size() < 10)
-        return;
-
-    int lastUsedFrame = mHotspot.front();
-    mHotspot.pop_front();
-
-    QString s = "[";
-    for (int f : mHotspot)
-    {
-        s += QString::number(f) + ", ";
-    }
-    qDebug() << s << "]";
-
-    if (lastUsedFrame == currentFrame())
-        return;
-
-    Object* obj = object();
-    int layerCount = obj->getLayerCount();
-
-    for (int i = 0; i < layerCount; ++i)
-    {
-        Layer* layer = obj->getLayer(i);
-        if (layer->type() == Layer::BITMAP)
-        {
-            KeyFrame* key = layer->getKeyFrameAt(lastUsedFrame);
-            if (key)
-                key->unload();
-        }
-    }
-}
-
 void Editor::cut()
 {
     copy();
@@ -662,6 +632,7 @@ Status Editor::setObject(Object* newObject)
         m->load(mObject.get());
     }
 
+    mActiveFramePool->clear();
     g_clipboardVectorImage.setObject(newObject);
 
     updateObject();
@@ -899,10 +870,11 @@ void Editor::scrubTo(int frame)
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
 
-    if (mHotspot.size() == 0 || mHotspot.back() != frame)
+    Layer* curLayer = mObject->getLayer(mCurrentLayerIndex);
+    if (curLayer)
     {
-        mHotspot.push_back(frame);
-        checkAndUnloadFrames();
+        KeyFrame* key = curLayer->getKeyFrameAt(mFrame);
+        mActiveFramePool->put(key);
     }
 }
 
