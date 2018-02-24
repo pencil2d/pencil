@@ -389,6 +389,7 @@ Status MovieExporter::generateMovie(
     const QSize exportSize = mDesc.exportSize;
     bool transparency = false;
     QString strCameraName = mDesc.strCameraName;
+    bool loop = mDesc.loop;
     int bytesWritten;
 
     auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
@@ -447,6 +448,10 @@ Status MovieExporter::generateMovie(
     }
 
     strCmd += QString(" -s %1x%2").arg(exportSize.width()).arg(exportSize.height());
+    if(strOutputFile.endsWith(".apng"))
+    {
+        strCmd += QString(" -plays %1").arg(loop ? "0" : "1");
+    }
 
     if (strOutputFile.endsWith("mp4", Qt::CaseInsensitive))
     {
@@ -527,6 +532,7 @@ Status MovieExporter::generateGif(
     const QSize exportSize = mDesc.exportSize;
     bool transparency = false;
     QString strCameraName = mDesc.strCameraName;
+    bool loop = mDesc.loop;
     int bytesWritten;
 
     auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
@@ -569,6 +575,8 @@ Status MovieExporter::generateGif(
     strCmd += QString(" -s %1x%2").arg(exportSize.width()).arg(exportSize.height());
 
     strCmd += " -filter_complex \"[0:v]palettegen [p]; [0:v][p] paletteuse\"";
+
+    strCmd += QString(" -loop %1").arg(loop ? "0" : "-1");
     strCmd += QString(" \"%1\"").arg(strOut);
 
     // Run FFmpeg command

@@ -40,6 +40,9 @@ public:
     QString getFilePath();
     QStringList getFilePaths();
 
+signals:
+    void filePathsChanged(QStringList filePaths);
+
 protected:
     QGroupBox* getOptionsGroupBox();
     void setFileExtension(QString extension);

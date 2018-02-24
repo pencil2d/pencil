@@ -63,6 +63,8 @@ void ImportExportDialog::init()
             Q_ASSERT(false);
     }
     ui->fileEdit->setText("\"" + m_filePaths.first() + "\"");
+
+    emit filePathsChanged(m_filePaths);
 }
 
 QGroupBox* ImportExportDialog::getOptionsGroupBox()
@@ -78,6 +80,8 @@ void ImportExportDialog::setFileExtension(QString extension)
         m_filePaths.replace(i, info.path() + "/" + info.baseName() + "." + extension);
     }
     ui->fileEdit->setText("\"" + m_filePaths.join("\" \"") + "\"");
+
+    emit filePathsChanged(m_filePaths);
 }
 
 void ImportExportDialog::browse()
@@ -107,4 +111,6 @@ void ImportExportDialog::browse()
 
     m_filePaths = filePaths;
     ui->fileEdit->setText("\"" + filePaths.join("\" \"") + "\"");
+
+    emit filePathsChanged(m_filePaths);
 }

@@ -25,6 +25,7 @@ namespace Ui {
 class ExportMovieOptions;
 }
 
+
 class ExportMovieDialog : public ImportExportDialog
 {
     Q_OBJECT
@@ -43,9 +44,12 @@ public:
 
     int getStartFrame();
     int getEndFrame();
+
+    bool getLoop();
     
 private:
     void frameCheckboxClicked(bool checked);
+    void onFilePathsChanged(QStringList filePaths);
     
     int mEndFrameWithSounds = 0;
     int mEndFrame = 0;
