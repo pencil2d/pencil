@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QFileInfo>
 #include <QFileDialog>
+#include <QDebug>
 
 #include "fileformat.h"
 #include "pencildef.h"
@@ -56,11 +57,13 @@ QStringList FileDialog::openFiles(FileType fileType)
     QString strTitle = openDialogTitle( fileType );
     QString strInitialFilePath = getLastOpenPath( fileType );
     QString strFilter = openFileFilters( fileType );
+    QString strSelectedFilter = getFilterForFile(strFilter, strInitialFilePath);
 
     QStringList filePaths = QFileDialog::getOpenFileNames( mRoot,
                                                            strTitle,
                                                            strInitialFilePath,
-                                                           strFilter );
+                                                           strFilter,
+                                                           strSelectedFilter.isNull() ? Q_NULLPTR : &strSelectedFilter );
     if ( !filePaths.isEmpty() && !filePaths.first().isEmpty() )
     {
         setLastOpenPath( fileType, filePaths.first() );
@@ -74,11 +77,13 @@ QString FileDialog::saveFile( FileType fileType )
     QString strTitle = saveDialogTitle( fileType );
     QString strInitialFilePath = getLastSavePath( fileType );
     QString strFilter = saveFileFilters( fileType );
+    QString strSelectedFilter = getFilterForFile(strFilter, strInitialFilePath);
 
     QString filePath = QFileDialog::getSaveFileName( mRoot,
                                                      strTitle,
                                                      strInitialFilePath,
-                                                     strFilter );
+                                                     strFilter,
+                                                     strSelectedFilter.isNull() ? Q_NULLPTR : &strSelectedFilter );
     if ( !filePath.isEmpty() )
     {
         setLastSavePath( fileType, filePath );
@@ -178,6 +183,36 @@ QString FileDialog::saveFileFilters( FileType fileType )
         default: Q_ASSERT( false );
     }
     return "";
+}
+
+QString FileDialog::getFilterForFile(QString filters, QString filePath)
+{
+    qDebug() << "Getfilterforfile" << filters << filePath;
+    if(!filePath.contains("."))
+    {
+        return QString();
+    }
+    QString fileExt = filePath.remove(0, filePath.lastIndexOf(".")).prepend("*");
+
+    QStringList filtersSplit = filters.split(";;");
+    for(QString filter : filtersSplit)
+    {
+        int start = filter.indexOf("(");
+        int end = filter.indexOf(")");
+        if(start < 0 || end < 0)
+        {
+            continue;
+        }
+        start++;
+        QStringList filterExts = filter.mid(start, end - start).split(" ");
+        if(filterExts.contains(fileExt))
+        {
+            qDebug() << "Found" << filter;
+            return filter.trimmed();
+        }
+    }
+
+    return QString();
 }
 
 QString FileDialog::defaultFileName( FileType fileType )
