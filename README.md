@@ -1,3 +1,6 @@
+
+[![Build Status](https://travis-ci.org/pencil2d/pencil.svg?branch=master)](https://travis-ci.org/pencil2d/pencil)
+
 # Pencil2D Animation
 
 **Pencil2D** is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics. Pencil2D is free and open source.
@@ -55,4 +58,3 @@ The link will direct you to Google Drive, please right-click a file and select D
 * Github: [https://github.com/pencil2d/pencil](https://github.com/pencil2d/pencil)
 * Bitbucket: [https://bitbucket.org/chchwy/pencil2d](https://bitbucket.org/chchwy/pencil2d) (Mirror)
 
-[![Build Status](https://travis-ci.org/chchwy/pencil2d.svg?branch=master)](https://travis-ci.org/chchwy/pencil2d)
