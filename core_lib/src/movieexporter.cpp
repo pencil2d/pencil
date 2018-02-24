@@ -389,6 +389,7 @@ Status MovieExporter::generateMovie(
     const QSize exportSize = mDesc.exportSize;
     bool transparency = false;
     QString strCameraName = mDesc.strCameraName;
+    int bytesWritten;
 
     auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
     if (cameraLayer == nullptr)
@@ -402,7 +403,7 @@ Status MovieExporter::generateMovie(
      * generate each frame. This is faster than having to generate
      * a new background image for each frame.
      */
-    QImage imageToExportBase(exportSize, QImage::Format_RGBA8888);
+    QImage imageToExportBase(exportSize, QImage::Format_ARGB32_Premultiplied);
     QColor bgColor = Qt::white;
     if (transparency)
     {
@@ -432,7 +433,7 @@ Status MovieExporter::generateMovie(
     const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += QString(" -f rawvideo -pixel_format rgba");
+    strCmd += QString(" -f rawvideo -pixel_format bgra");
     strCmd += QString(" -video_size %1x%2").arg(exportSize.width()).arg(exportSize.height());
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
@@ -481,7 +482,8 @@ Status MovieExporter::generateMovie(
 
             // Should use sizeInBytes instead of byteCount to support large images,
             // but this is only supported in QT 5.10+
-            ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
+            bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
+            Q_ASSERT(bytesWritten == imageToExport.byteCount());
 
             currentFrame++;
             failCounter = 0;
@@ -525,6 +527,7 @@ Status MovieExporter::generateGif(
     const QSize exportSize = mDesc.exportSize;
     bool transparency = false;
     QString strCameraName = mDesc.strCameraName;
+    int bytesWritten;
 
     auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
     if (cameraLayer == nullptr)
@@ -538,7 +541,7 @@ Status MovieExporter::generateGif(
      * generate each frame. This is faster than having to generate
      * a new background image for each frame.
      */
-    QImage imageToExportBase(exportSize, QImage::Format_RGBA8888);
+    QImage imageToExportBase(exportSize, QImage::Format_ARGB32_Premultiplied);
     QColor bgColor = Qt::white;
     if (transparency)
     {
@@ -555,7 +558,7 @@ Status MovieExporter::generateGif(
     // Build FFmpeg command
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += QString(" -f rawvideo -pixel_format rgba");
+    strCmd += QString(" -f rawvideo -pixel_format bgra");
     strCmd += QString(" -video_size %1x%2").arg(exportSize.width()).arg(exportSize.height());
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
@@ -595,12 +598,8 @@ Status MovieExporter::generateGif(
 
         obj->paintImage(painter, currentFrame, false, true);
 
-        QByteArray imgData;
-        QBuffer buffer(&imgData);
-        // BMPs are used because QT encodes them faster than other formats (less compression)
-        bool bSave = imageToExport.save(&buffer, "BMP", 100);
-        Q_ASSERT(bSave);
-        ffmpeg.write(imgData);
+        bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
+        Q_ASSERT(bytesWritten == imageToExport.byteCount());
 
         currentFrame++;
 
