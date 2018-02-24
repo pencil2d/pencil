@@ -29,8 +29,6 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "soundclip.h"
 
-#define IMAGE_FILENAME "/test_img_%05d.bmp"
-
 // refs
 // http://www.topherlee.com/software/pcm-tut-wavformat.html
 // http://soundfile.sapp.org/doc/WaveFormat/
@@ -432,7 +430,7 @@ Status MovieExporter::generateMovie(
     const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += QString(" -f image2pipe -vcodec bmp");
+    strCmd += QString(" -f bmp_pipe");
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
     strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
@@ -558,7 +556,7 @@ Status MovieExporter::generateGif(
     // Build FFmpeg command
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += " -f image2pipe -vcodec bmp";
+    strCmd += " -f bmp_pipe";
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
     strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
