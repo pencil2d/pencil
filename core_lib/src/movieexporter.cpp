@@ -402,7 +402,7 @@ Status MovieExporter::generateMovie(
      * generate each frame. This is faster than having to generate
      * a new background image for each frame.
      */
-    QImage imageToExportBase(exportSize, QImage::Format_ARGB32_Premultiplied);
+    QImage imageToExportBase(exportSize, QImage::Format_RGBA8888);
     QColor bgColor = Qt::white;
     if (transparency)
     {
@@ -432,10 +432,10 @@ Status MovieExporter::generateMovie(
     const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += QString(" -f image2pipe -vcodec bmp");
+    strCmd += QString(" -f rawvideo -pixel_format rgba");
+    strCmd += QString(" -video_size %1x%2").arg(exportSize.width()).arg(exportSize.height());
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
-    strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
     //strCmd += QString( " -r %1").arg( exportFps );
     strCmd += QString(" -i -");
     strCmd += QString(" -threads %1").arg(QThread::idealThreadCount() == 1 ? 0 : QThread::idealThreadCount());
@@ -479,12 +479,9 @@ Status MovieExporter::generateMovie(
 
             obj->paintImage(painter, currentFrame, false, true);
 
-            QByteArray imgData;
-            QBuffer buffer(&imgData);
-            // BMPs are used because QT encodes them faster than other formats (less compression)
-            bool bSave = imageToExport.save(&buffer, "BMP", 100);
-            Q_ASSERT(bSave);
-            ffmpeg.write(imgData);
+            // Should use sizeInBytes instead of byteCount to support large images,
+            // but this is only supported in QT 5.10+
+            ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
 
             currentFrame++;
             failCounter = 0;
@@ -541,7 +538,7 @@ Status MovieExporter::generateGif(
      * generate each frame. This is faster than having to generate
      * a new background image for each frame.
      */
-    QImage imageToExportBase(exportSize, QImage::Format_ARGB32_Premultiplied);
+    QImage imageToExportBase(exportSize, QImage::Format_RGBA8888);
     QColor bgColor = Qt::white;
     if (transparency)
     {
@@ -558,10 +555,10 @@ Status MovieExporter::generateGif(
     // Build FFmpeg command
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += " -f image2pipe -vcodec bmp";
+    strCmd += QString(" -f rawvideo -pixel_format rgba");
+    strCmd += QString(" -video_size %1x%2").arg(exportSize.width()).arg(exportSize.height());
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
-    strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
     strCmd += " -i -";
 
     strCmd += " -y";
