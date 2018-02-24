@@ -435,7 +435,7 @@ Status MovieExporter::generateMovie(
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
     strCmd += QString(" -f rawvideo -pixel_format bgra");
-    strCmd += QString(" -video_size %1x%2").arg(exportSize.width()).arg(exportSize.height());
+    strCmd += QString(" -video_size %1x%2").arg(camSize.width()).arg(camSize.height());
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
     //strCmd += QString( " -r %1").arg( exportFps );
@@ -565,7 +565,7 @@ Status MovieExporter::generateGif(
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
     strCmd += QString(" -f rawvideo -pixel_format bgra");
-    strCmd += QString(" -video_size %1x%2").arg(exportSize.width()).arg(exportSize.height());
+    strCmd += QString(" -video_size %1x%2").arg(camSize.width()).arg(camSize.height());
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
     strCmd += " -i -";
