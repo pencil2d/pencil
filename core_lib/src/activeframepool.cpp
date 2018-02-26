@@ -3,8 +3,10 @@
 #include <QDebug>
 
 
-ActiveFramePool::ActiveFramePool()
+ActiveFramePool::ActiveFramePool(int maxSize)
 {
+    Q_ASSERT(maxSize > 10);
+    mMaxSize = maxSize;
 }
 
 void ActiveFramePool::put(KeyFrame* key)

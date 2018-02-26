@@ -65,6 +65,8 @@ Editor::Editor(QObject* parent) : QObject(parent)
     clipboardBitmapOk = false;
     clipboardVectorOk = false;
     clipboardSoundClipOk = false;
+
+    mActiveFramePool.reset(new ActiveFramePool(200));
 }
 
 Editor::~Editor()
@@ -105,8 +107,6 @@ bool Editor::init()
 
     mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
     mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
-
-    mActiveFramePool = new ActiveFramePool;
 
     return true;
 }

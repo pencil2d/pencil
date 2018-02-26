@@ -207,7 +207,7 @@ private:
     bool clipboardSoundClipOk = true;
 
     // Memory management
-    ActiveFramePool* mActiveFramePool = nullptr;
+    std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
 #endif

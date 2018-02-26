@@ -8,7 +8,7 @@
 class ActiveFramePool : public KeyFrameEventListener
 {
 public:
-    ActiveFramePool();
+    ActiveFramePool(int maxSize);
 
     void put(KeyFrame* key);
     size_t size() const;
