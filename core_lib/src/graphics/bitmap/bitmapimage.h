@@ -35,7 +35,8 @@ public:
     BitmapImage& operator=(const BitmapImage& a);
 
     BitmapImage* clone() override;
-    void unload() override;
+    void loadFile() override;
+    void unloadFile() override;
 
     void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);

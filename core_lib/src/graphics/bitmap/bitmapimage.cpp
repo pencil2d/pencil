@@ -75,7 +75,7 @@ void BitmapImage::setImage(QImage* img)
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
     mBounds = a.mBounds;
-    mImage = std::make_shared< QImage >(*a.mImage);
+    mImage = std::make_shared<QImage>(*a.mImage);
     modification();
     return *this;
 }
@@ -85,7 +85,14 @@ BitmapImage* BitmapImage::clone()
     return new BitmapImage(*this);
 }
 
-void BitmapImage::unload()
+void BitmapImage::loadFile()
+{
+    mImage = std::make_shared<QImage>(fileName());
+    mBounds.setSize(mImage->size());
+    qDebug() << "Load file=" << fileName();
+}
+
+void BitmapImage::unloadFile()
 {
     if (isModified() == false)
     {
@@ -109,9 +116,7 @@ QImage* BitmapImage::image()
 {
     if (mImage == nullptr)
     {
-        mImage = std::make_shared< QImage >(fileName());
-        mBounds.setSize(mImage->size());
-        qDebug() << "Load file=" << fileName();
+        loadFile();
     }
     return mImage.get();
 }

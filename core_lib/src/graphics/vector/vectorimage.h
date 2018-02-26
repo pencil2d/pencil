@@ -17,10 +17,7 @@ GNU General Public License for more details.
 #ifndef VECTORIMAGE_H
 #define VECTORIMAGE_H
 
-
-//#include <QtXml>
 #include <QTransform>
-#include <QImage>
 #include <QStringList>
 
 #include "bezierarea.h"
@@ -30,6 +27,8 @@ GNU General Public License for more details.
 
 class Object;
 class QPainter;
+class QImage;
+
 
 class VectorImage : public KeyFrame
 {

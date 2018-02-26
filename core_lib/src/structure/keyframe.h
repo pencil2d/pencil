@@ -53,7 +53,8 @@ public:
     void removeEventListner(KeyFrameEventListener*);
 
     virtual KeyFrame* clone() { return nullptr; }
-    virtual void unload() {}
+    virtual void loadFile() {};
+    virtual void unloadFile() {}
 
 private:
     int mFrame = -1;

@@ -69,5 +69,5 @@ void ActiveFramePool::onKeyFrameDestroy(KeyFrame* key)
 void ActiveFramePool::unloadFrame(KeyFrame* key)
 {
     qDebug() << "Unload :" << key->pos() << key->fileName();
-    key->unload();
+    key->unloadFile();
 }
