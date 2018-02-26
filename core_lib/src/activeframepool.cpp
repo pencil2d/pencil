@@ -22,6 +22,7 @@ void ActiveFramePool::put(KeyFrame* key)
         mCacheFramesMap.erase(it);
     }
     mCacheFramesMap[key] = mCacheFramesList.begin();
+    key->addEventListener(this);
 
     if (mCacheFramesMap.size() > mMaxSize)
     {
@@ -33,6 +34,8 @@ void ActiveFramePool::put(KeyFrame* key)
 
         mCacheFramesMap.erase(lastKeyFrame);
         mCacheFramesList.pop_back();
+
+        lastKeyFrame->removeEventListner(this);
     }
 }
 
@@ -43,6 +46,10 @@ size_t ActiveFramePool::size() const
 
 void ActiveFramePool::clear()
 {
+    for (KeyFrame* key : mCacheFramesList)
+    {
+        key->removeEventListner(this);
+    }
     mCacheFramesList.clear();
     mCacheFramesMap.clear();
 }
