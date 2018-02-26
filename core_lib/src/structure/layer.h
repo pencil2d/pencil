@@ -140,7 +140,7 @@ private:
     // and by position.
     // Both should be pre-sorted on each selection for optimization purpose when moving frames.
     //
-    QList<int> mSelectedFrames_byLast; // Used to hadle selection range (based on last selected
+    QList<int> mSelectedFrames_byLast; // Used to handle selection range (based on last selected
     QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
 };
 
