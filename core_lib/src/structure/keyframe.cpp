@@ -42,7 +42,7 @@ KeyFrame::~KeyFrame()
 void KeyFrame::addEventListener(KeyFrameEventListener* listener)
 {
     auto it = std::find(mEventListeners.begin(), mEventListeners.end(), listener);
-    if (it != mEventListeners.end())
+    if (it == mEventListeners.end())
     {
         mEventListeners.push_back(listener);
     }
