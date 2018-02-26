@@ -51,7 +51,7 @@ PROJECT_BRIEF          = "Pencil2D is an animation software for both bitmap and 
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = $(TRAVIS_BUILD_DIR)pencil2d.png
+PROJECT_LOGO           = $(TRAVIS_BUILD_DIR)/util/docs/pencil2d.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -790,7 +790,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = $(TRAVIS_BUILD_DIR)/app $(TRAVIS_BUILD_DIR)/core_lib $(TRAVIS_BUILD_DIR)/tests $(TRAVIS_BUILD_DIR)/README.md
+INPUT                  = $(TRAVIS_BUILD_DIR)/app $(TRAVIS_BUILD_DIR)/core_lib $(TRAVIS_BUILD_DIR)/tests $(TRAVIS_BUILD_DIR)/docs $(TRAVIS_BUILD_DIR)/README.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1138,7 +1138,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            =
+HTML_HEADER            = $(TRAVIS_BUILD_DIR)/util/docs/header.html
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1173,7 +1173,7 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  =
+HTML_EXTRA_STYLESHEET  = $(TRAVIS_BUILD_DIR)/util/docs/extra.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -2118,9 +2118,9 @@ SKIP_FUNCTION_MACROS   = YES
 # the path). If a tag file is not located in the directory in which doxygen is
 # run, you must also specify the path to the tagfile here.
 
-TAGFILES               = $(TRAVIS_BUILD_DIR)/util/qtcore.tags=https://doc.qt.io/qt-5/ \
-                         $(TRAVIS_BUILD_DIR)/util/qtsvg.tags=https://doc.qt.io/qt-5/ \
-                         $(TRAVIS_BUILD_DIR)/util/qtxmlpatterns.tags=https://doc.qt.io/qt-5/ \
+TAGFILES               = $(TRAVIS_BUILD_DIR)/util/docs/qtcore.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/docs/qtsvg.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/docs/qtxmlpatterns.tags=https://doc.qt.io/qt-5/ \
                          /usr/share/qt5/doc/qtcore/qtcore.tags=/usr/share/qt5/doc/qtcore/ \
                          /usr/share/qt5/doc/qtsvg/qtsvg.tags=/usr/share/qt5/doc/qtsvg/ \
                          /usr/share/qt5/doc/qtxmlpatterns/qtxmlpatterns.tags=/usr/share/qt5/doc/qtxmlpatterns/ \

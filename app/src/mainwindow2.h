@@ -150,6 +150,9 @@ private:
 
     // a hack for MacOS because closeEvent fires twice
     bool m2ndCloseEvent = false;
+
+    // whether we are currently importing an image sequence.
+    bool mIsImportingImageSequence = false;
     
     Ui::MainWindow2* ui = nullptr;
 };

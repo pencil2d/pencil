@@ -1,6 +1,6 @@
 # Building Pencil2D on Linux
 
-These are instructions for building Pencil2D on Linux. If you are using Windows go [here](build_win.md), and if you are using macOS go [here](build_mac.md). This guide is primarily targeted towards developers. If you just want to use the latest version you can just download one of our [nightly builds](https://drive.google.com/drive/folders/0BxdcdOiOmg-CcWhLazdKR1oydHM).
+These are instructions for building Pencil2D on Linux. If you are using Windows go [here](docs/build_win.md), and if you are using macOS go [here](docs/build_mac.md). This guide is primarily targeted towards developers. If you just want to use the latest version you can just download one of our [nightly builds](https://drive.google.com/drive/folders/0BxdcdOiOmg-CcWhLazdKR1oydHM).
 
 This tutorial was made with Ubuntu Xenial Xerus (16.04) and Arch Linux in mind, however you should be able to adapt this guide to other versions or distributions if necessary.
 
@@ -107,4 +107,4 @@ You can then open Pencil2D by running this from the source directory:
 
 ## Next steps
 
-Now that you can build Pencil2D, the next step is to learn about [navigating the source code](https://github.com/pencil2d/pencil/wiki/Dive-into-code).
+Now that you can build Pencil2D, the next step is to learn about [navigating the source code](docs/dive-into-code.md).

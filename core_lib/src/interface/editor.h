@@ -112,7 +112,6 @@ Q_SIGNALS:
 
     void objectLoaded();
 
-    void selectAll();
     void changeThinLinesButton(bool);
     void currentFrameChanged(int n);
 
@@ -122,8 +121,6 @@ public: //slots
     void clearCurrentFrame();
 
     void cut();
-
-    void deselectAll();
 
     bool importImage(QString filePath);
     void updateFrame(int frameNumber);

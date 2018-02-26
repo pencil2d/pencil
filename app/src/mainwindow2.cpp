@@ -247,8 +247,8 @@ void MainWindow2::createMenus()
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
-    connect(ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll);
-    connect(ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll);
+    connect(ui->actionSelect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::selectAll);
+    connect(ui->actionDeselect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     /// --- Layer Menu ---
@@ -512,6 +512,8 @@ bool MainWindow2::openObject(QString strFilePath)
         progress.setRange(0, max + 3);
     });
 
+    strFilePath = QFileInfo(strFilePath).absoluteFilePath();
+
     Object* object = fm.load(strFilePath);
 
     if (object == nullptr || !fm.error().ok())
@@ -646,6 +648,9 @@ bool MainWindow2::autoSave()
     if (mEditor->autoSaveNeverAskAgain())
         return false;
 
+    if(mIsImportingImageSequence)
+        return false;
+
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setWindowTitle("AutoSave Reminder");
@@ -699,8 +704,22 @@ void MainWindow2::importImageSequence()
         return;
     }
 
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = true;
+
     QStringList files = imageSeqDialog->getFilePaths();
     int number = imageSeqDialog->getSpace();
+
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progress(tr("Importing image sequence..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
+    int totalImagesToImport = files.count();
+    progress.setMaximum(totalImagesToImport);
+    int imagesImportedSoFar = 0;
+
     for (QString strImgFile : files)
     {
         if (strImgFile.endsWith(".png") ||
@@ -715,9 +734,22 @@ void MainWindow2::importImageSequence()
             {
                 mEditor->scrubForward();
             }
+
+            imagesImportedSoFar++;
+            progress.setValue(imagesImportedSoFar);
+            QApplication::processEvents();  // Required to make progress bar update on-screen.
+
+            if (progress.wasCanceled())
+            {
+                break;
+            }
         }
     }
     mEditor->layers()->notifyAnimationLengthChanged();
+
+    progress.close();
+
+    mIsImportingImageSequence = false;
 }
 
 void MainWindow2::importMovie()
@@ -994,7 +1026,6 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames);
 
     connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
-    connect(editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll);
 
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
     //connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );

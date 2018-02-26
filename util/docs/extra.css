@@ -1,0 +1,245 @@
+.wrapper {
+    max-width: -webkit-calc(54em - (30px * 2));
+    max-width: calc(54em - (30px * 2));
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 30px;
+    padding-left: 30px
+}
+
+@media screen and (max-width: 54em) {
+    .wrapper {
+        max-width:-webkit-calc(54em - (30px));
+        max-width: calc(54em - (30px));
+        padding-right: 15px;
+        padding-left: 15px
+    }
+}
+
+.wrapper:after {
+    content: "";
+    display: table;
+    clear: both
+}
+
+.site-header {
+    border-bottom: 1px solid #e8e8e8;
+    min-height: 55.95px;
+    position: relative
+}
+
+.site-title {
+    font-size: 22.4px;
+    font-weight: 300;
+    line-height: 54px;
+    letter-spacing: -1px;
+    margin-bottom: 0;
+    float: left;
+    text-decoration: none
+}
+
+.site-title,.site-title:visited,.site-title:hover {
+    color: #005cc0;
+    text-decoration: none
+}
+
+.site-nav {
+    float: right;
+    line-height: 54px
+}
+
+.site-nav .nav-trigger {
+    display: none
+}
+
+.site-nav .menu-icon {
+    display: none
+}
+
+.site-nav .page-link {
+    color: #005cc0;
+    line-height: 1.5
+}
+
+.site-nav .page-link:not(:last-child) {
+    margin-right: 20px
+}
+
+@media screen and (max-width: 38em) {
+    .site-nav {
+        position:absolute;
+        top: 9px;
+        right: 15px;
+        background-color: #fdfdfd;
+        border: 1px solid #e8e8e8;
+        border-radius: 5px;
+        text-align: right
+    }
+
+    .site-nav label[for="nav-trigger"] {
+        display: block;
+        float: right;
+        width: 36px;
+        height: 36px;
+        z-index: 2;
+        cursor: pointer
+    }
+
+    .site-nav .menu-icon {
+        display: block;
+        float: right;
+        width: 36px;
+        height: 26px;
+        line-height: 0;
+        padding-top: 10px;
+        text-align: center
+    }
+
+    .site-nav .menu-icon>svg path {
+        fill: #424242
+    }
+
+    .site-nav input ~ .trigger {
+        clear: both;
+        display: none
+    }
+
+    .site-nav input:checked ~ .trigger {
+        display: block;
+        padding-bottom: 5px
+    }
+
+    .site-nav .trigger {
+        padding-top: 20px
+    }
+
+    .site-nav .page-link {
+        display: block;
+        padding: 10px 10px;
+        margin-right: 10px;
+        margin-left: 10px
+    }
+
+    .site-nav .page-link:last-child {
+        margin-bottom: 10px
+    }
+}
+
+.page-header {
+    color: #fff;
+    text-align: center;
+    background-color: #159957;
+    background-image: linear-gradient(120deg, #155799, #159957)
+}
+
+@media screen and (min-width: 64em) {
+    .page-header {
+        padding:5rem 6rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .page-header {
+        padding:3rem 4rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .page-header {
+        padding:2rem 1rem
+    }
+}
+
+.project-name {
+    margin-top: 0;
+    margin-bottom: 0.1rem
+}
+
+@media screen and (min-width: 64em) {
+    .project-name {
+        font-size:3.25rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .project-name {
+        font-size:2.25rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .project-name {
+        font-size:1.75rem
+    }
+}
+
+.project-tagline {
+    margin-bottom: 2rem;
+    font-weight: normal;
+    opacity: 0.7
+}
+
+@media screen and (min-width: 64em) {
+    .project-tagline {
+        font-size:1.25rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .project-tagline {
+        font-size:1.15rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .project-tagline {
+        font-size:1rem
+    }
+}
+
+.page-header {
+    background-color: #005cc0;
+    background-image: linear-gradient(120deg, #005cc0, #004699)
+}
+
+/* Doxygen-specific */
+
+.site-header, .page-header {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.site-header, .site-header * {
+    box-sizing: border-box
+}
+
+.site-header div {
+    font: inherit
+}
+
+@media screen and (min-width: 64em) {
+    .page-header {
+        padding: .5rem 6rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .page-header {
+        padding: .5rem 4rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .page-header {
+        padding: .5rem 1rem
+    }
+}
+
+.project-name {
+    margin: 0 0 .1rem
+}
+
+.project-tagline {
+    margin: 0 0 1rem
+}
