@@ -119,7 +119,7 @@ bool LayerVector::needSaveFrame(KeyFrame* key, const QString& strSavePath)
         return true;
     if (QFile::exists(strSavePath) == false) // hasn't been saved before
         return true;
-    if (strSavePath == key->fileName()) // key frame moved
+    if (strSavePath != key->fileName()) // key frame moved
         return true;
     return false;
 }
