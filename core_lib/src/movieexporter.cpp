@@ -387,6 +387,8 @@ Status MovieExporter::generateMovie(
     const QSize exportSize = mDesc.exportSize;
     bool transparency = false;
     QString strCameraName = mDesc.strCameraName;
+    bool loop = mDesc.loop;
+    int bytesWritten;
 
     auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
     if (cameraLayer == nullptr)
@@ -430,10 +432,10 @@ Status MovieExporter::generateMovie(
     const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += QString(" -f bmp_pipe");
+    strCmd += QString(" -f rawvideo -pixel_format bgra");
+    strCmd += QString(" -video_size %1x%2").arg(camSize.width()).arg(camSize.height());
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
-    strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
     //strCmd += QString( " -r %1").arg( exportFps );
     strCmd += QString(" -i -");
     strCmd += QString(" -threads %1").arg(QThread::idealThreadCount() == 1 ? 0 : QThread::idealThreadCount());
@@ -444,6 +446,10 @@ Status MovieExporter::generateMovie(
     }
 
     strCmd += QString(" -s %1x%2").arg(exportSize.width()).arg(exportSize.height());
+    if(strOutputFile.endsWith(".apng"))
+    {
+        strCmd += QString(" -plays %1").arg(loop ? "0" : "1");
+    }
 
     if (strOutputFile.endsWith("mp4", Qt::CaseInsensitive))
     {
@@ -477,12 +483,10 @@ Status MovieExporter::generateMovie(
 
             obj->paintImage(painter, currentFrame, false, true);
 
-            QByteArray imgData;
-            QBuffer buffer(&imgData);
-            // BMPs are used because QT encodes them faster than other formats (less compression)
-            bool bSave = imageToExport.save(&buffer, "BMP", 100);
-            Q_ASSERT(bSave);
-            ffmpeg.write(imgData);
+            // Should use sizeInBytes instead of byteCount to support large images,
+            // but this is only supported in QT 5.10+
+            bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
+            Q_ASSERT(bytesWritten == imageToExport.byteCount());
 
             currentFrame++;
             failCounter = 0;
@@ -526,6 +530,8 @@ Status MovieExporter::generateGif(
     const QSize exportSize = mDesc.exportSize;
     bool transparency = false;
     QString strCameraName = mDesc.strCameraName;
+    bool loop = mDesc.loop;
+    int bytesWritten;
 
     auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
     if (cameraLayer == nullptr)
@@ -556,10 +562,10 @@ Status MovieExporter::generateGif(
     // Build FFmpeg command
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += " -f bmp_pipe";
+    strCmd += QString(" -f rawvideo -pixel_format bgra");
+    strCmd += QString(" -video_size %1x%2").arg(camSize.width()).arg(camSize.height());
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
-    strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
     strCmd += " -i -";
 
     strCmd += " -y";
@@ -567,6 +573,8 @@ Status MovieExporter::generateGif(
     strCmd += QString(" -s %1x%2").arg(exportSize.width()).arg(exportSize.height());
 
     strCmd += " -filter_complex \"[0:v]palettegen [p]; [0:v][p] paletteuse\"";
+
+    strCmd += QString(" -loop %1").arg(loop ? "0" : "-1");
     strCmd += QString(" \"%1\"").arg(strOut);
 
     // Run FFmpeg command
@@ -596,12 +604,8 @@ Status MovieExporter::generateGif(
 
         obj->paintImage(painter, currentFrame, false, true);
 
-        QByteArray imgData;
-        QBuffer buffer(&imgData);
-        // BMPs are used because QT encodes them faster than other formats (less compression)
-        bool bSave = imageToExport.save(&buffer, "BMP", 100);
-        Q_ASSERT(bSave);
-        ffmpeg.write(imgData);
+        bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
+        Q_ASSERT(bytesWritten == imageToExport.byteCount());
 
         currentFrame++;
 

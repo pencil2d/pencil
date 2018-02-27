@@ -182,6 +182,7 @@ Status ActionCommands::exportMovie()
     desc.fps = mEditor->playback()->fps();
     desc.exportSize = dialog->getExportSize();
     desc.strCameraName = dialog->getSelectedCameraName();
+    desc.loop = dialog->getLoop();
 
     DoubleProgressDialog progressDlg;
     progressDlg.setWindowModality(Qt::WindowModal);

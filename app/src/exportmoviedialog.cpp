@@ -25,6 +25,7 @@ ExportMovieDialog::ExportMovieDialog(QWidget *parent) :
 {
     ui->setupUi(getOptionsGroupBox());
     setWindowTitle(tr("Export Movie"));
+    connect(this, &ExportMovieDialog::filePathsChanged, this, &ExportMovieDialog::onFilePathsChanged);
 }
 
 ExportMovieDialog::~ExportMovieDialog()
@@ -95,8 +96,19 @@ int ExportMovieDialog::getEndFrame()
     return ui->endSpinBox->value();
 }
 
+bool ExportMovieDialog::getLoop()
+{
+    return ui->loopCheckBox->isChecked();
+}
+
 void ExportMovieDialog::frameCheckboxClicked(bool checked)
 {
     int e = (checked) ? mEndFrameWithSounds : mEndFrame;
     ui->endSpinBox->setValue(e);
+}
+
+void ExportMovieDialog::onFilePathsChanged(QStringList filePaths)
+{
+    QString filePath = filePaths.first().toLower();
+    ui->loopCheckBox->setEnabled(filePath.endsWith(".apng") || filePath.endsWith(".gif"));
 }

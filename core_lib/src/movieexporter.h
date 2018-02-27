@@ -35,6 +35,7 @@ struct ExportMovieDesc
     int     fps = 12;
     QSize   exportSize{ 0, 0 };
     QString strCameraName;
+    bool loop = false;
 };
 
 class MovieExporter
