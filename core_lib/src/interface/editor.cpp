@@ -489,6 +489,21 @@ void Editor::updateAutoSaveCounter()
     }
 }
 
+void Editor::updateActiveFrames(int frame)
+{
+    int beginFrame = std::max(frame - 3, 1);
+    int endFrame = frame + 4;
+    for (int i = 0; i < mObject->getLayerCount(); ++i)
+    {
+        Layer* layer = mObject->getLayer(i);
+        for (int k = beginFrame; k < endFrame; ++k)
+        {
+            KeyFrame* key = layer->getKeyFrameAt(k);
+            mActiveFramePool->put(key);
+        }
+    }
+}
+
 void Editor::cut()
 {
     copy();
@@ -866,12 +881,7 @@ void Editor::scrubTo(int frame)
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
 
-    Layer* curLayer = mObject->getLayer(mCurrentLayerIndex);
-    if (curLayer)
-    {
-        KeyFrame* key = curLayer->getKeyFrameAt(mFrame);
-        mActiveFramePool->put(key);
-    }
+    updateActiveFrames(frame);
 }
 
 void Editor::scrubForward()
