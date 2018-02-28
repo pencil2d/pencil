@@ -24,6 +24,7 @@ void ActiveFramePool::put(KeyFrame* key)
     }
     mCacheFramesMap[key] = mCacheFramesList.begin();
     key->addEventListener(this);
+    key->loadFile();
 
     if (mCacheFramesMap.size() > mMaxSize)
     {
