@@ -21,7 +21,6 @@ void ActiveFramePool::put(KeyFrame* key)
     if (it != mCacheFramesMap.end())
     {
         mCacheFramesList.erase(it->second);
-        mCacheFramesMap.erase(it);
     }
     mCacheFramesMap[key] = mCacheFramesList.begin();
     key->addEventListener(this);
@@ -68,6 +67,5 @@ void ActiveFramePool::onKeyFrameDestroy(KeyFrame* key)
 
 void ActiveFramePool::unloadFrame(KeyFrame* key)
 {
-    qDebug() << "Unload :" << key->pos() << key->fileName();
     key->unloadFile();
 }
