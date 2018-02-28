@@ -87,9 +87,13 @@ BitmapImage* BitmapImage::clone()
 
 void BitmapImage::loadFile()
 {
-    mImage = std::make_shared<QImage>(fileName());
-    mBounds.setSize(mImage->size());
-    qDebug() << "Load file=" << fileName();
+    if (mImage == nullptr)
+    {
+        Q_ASSERT(isModified() == false);
+        mImage = std::make_shared<QImage>(fileName());
+        mBounds.setSize(mImage->size());
+        //qDebug() << "Load file=" << fileName();
+    }
 }
 
 void BitmapImage::unloadFile()
@@ -114,10 +118,7 @@ void BitmapImage::paintImage(QPainter& painter, QImage& image, QRect sourceRect,
 
 QImage* BitmapImage::image()
 {
-    if (mImage == nullptr)
-    {
-        loadFile();
-    }
+    loadFile();
     return mImage.get();
 }
 
