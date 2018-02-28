@@ -23,7 +23,7 @@ private:
 
     std::list<KeyFrame*> mCacheFramesList;
     std::unordered_map<KeyFrame*, list_iterator_t> mCacheFramesMap;
-    size_t mMaxSize = 10;
+    size_t mMaxSize = 200;
 };
 
 #endif // ACTIVEFRAMEPOOL_H
