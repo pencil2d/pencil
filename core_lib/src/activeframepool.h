@@ -5,6 +5,12 @@
 #include <unordered_map>
 #include "keyframe.h"
 
+
+/** 
+ * ActiveFramePool implemented a LRU cache to keep tracking the most recent accessed key frames
+ * A key frame will be unloaded if it's not accessed for a while (at the end of cache list)
+ * The ActiveFramePool will be updated whenever Editor::scrubTo() gets called.
+ */
 class ActiveFramePool : public KeyFrameEventListener
 {
 public:
