@@ -205,7 +205,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
         return;
     }
 
-    paintedImage->image(); // Critical! force the BitmapImage to load the image
+    paintedImage->loadFile(); // Critical! force the BitmapImage to load the image
     qCDebug(mLog) << "Paint Image Size:" << paintedImage->image()->size();
 
     BitmapImage paintToImage;

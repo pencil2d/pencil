@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 #include <cmath>
+#include <QImage>
 #include "object.h"
 
 

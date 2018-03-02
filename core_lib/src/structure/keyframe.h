@@ -53,6 +53,8 @@ public:
     void removeEventListner(KeyFrameEventListener*);
 
     virtual KeyFrame* clone() { return nullptr; }
+    virtual void loadFile() {};
+    virtual void unloadFile() {}
 
 private:
     int mFrame = -1;
@@ -61,7 +63,7 @@ private:
     bool mIsSelected = false;
     QString mAttachedFileName;
 
-    std::vector< KeyFrameEventListener* > mEventListeners;
+    std::vector<KeyFrameEventListener*> mEventListeners;
 };
 
 class KeyFrameEventListener

@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <deque>
 #include <memory>
 #include <QObject>
 #include <QList>
@@ -41,6 +42,7 @@ class SoundManager;
 class ScribbleArea;
 class TimeLine;
 class BackupElement;
+class ActiveFramePool;
 
 enum class SETTING;
 
@@ -203,6 +205,10 @@ private:
     bool clipboardBitmapOk = true;
     bool clipboardVectorOk = true;
     bool clipboardSoundClipOk = true;
+
+    // Memory management
+    void updateActiveFrames(int frame);
+    std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
 #endif

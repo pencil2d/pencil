@@ -57,7 +57,6 @@ BitmapImage::BitmapImage(const QString& path, const QPoint& topLeft)
 
     mBounds = QRect(topLeft, QSize(1,1));
     setModified(false);
-    setModified(false);
 }
 
 BitmapImage::~BitmapImage()
@@ -75,7 +74,7 @@ void BitmapImage::setImage(QImage* img)
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
     mBounds = a.mBounds;
-    mImage = std::make_shared< QImage >(*a.mImage);
+    mImage = std::make_shared<QImage>(*a.mImage);
     modification();
     return *this;
 }
@@ -83,6 +82,25 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 BitmapImage* BitmapImage::clone()
 {
     return new BitmapImage(*this);
+}
+
+void BitmapImage::loadFile()
+{
+    if (mImage == nullptr)
+    {
+        Q_ASSERT(isModified() == false);
+        mImage = std::make_shared<QImage>(fileName());
+        mBounds.setSize(mImage->size());
+        //qDebug() << "Load file=" << fileName();
+    }
+}
+
+void BitmapImage::unloadFile()
+{
+    if (isModified() == false)
+    {
+        mImage.reset();
+    }
 }
 
 void BitmapImage::paintImage(QPainter& painter)
@@ -99,12 +117,7 @@ void BitmapImage::paintImage(QPainter& painter, QImage& image, QRect sourceRect,
 
 QImage* BitmapImage::image()
 {
-    if (mImage == nullptr)
-    {
-        mImage = std::make_shared< QImage >(fileName());
-        mBounds.setSize(mImage->size());
-        qDebug() << "Load file=" << fileName();
-    }
+    loadFile();
     return mImage.get();
 }
 
