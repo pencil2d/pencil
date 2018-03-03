@@ -49,13 +49,18 @@ addons:
       - python3-pip
 
 before_install:
-  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    brew update;
-    brew install p7zip;
-    brew install python3;
-    brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/13d52537d1e0e5f913de46390123436d220035f6/Formula/qt.rb;
-    brew link qt --force;
-  fi'
+  - | 
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+        brew update;
+        ver=$(python -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/');
+        python -V
+        if [ "$ver" -le "27" ]; then
+            brew upgrade python;
+        fi
+        brew install p7zip;
+        brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/13d52537d1e0e5f913de46390123436d220035f6/Formula/qt.rb;
+        brew link qt --force;
+    fi
 
 install:
   - pip3 freeze > requirements.txt
