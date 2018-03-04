@@ -940,6 +940,7 @@ void MainWindow2::setupKeyboardShortcuts()
     mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
+    ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
 }
 
 void MainWindow2::clearKeyboardShortcuts()
