@@ -722,12 +722,13 @@ void MainWindow2::importImageSequence()
 
     for (QString strImgFile : files)
     {
-        if (strImgFile.endsWith(".png") ||
-            strImgFile.endsWith(".jpg") ||
-            strImgFile.endsWith(".jpeg") ||
-            strImgFile.endsWith(".tif") ||
-            strImgFile.endsWith(".tiff") ||
-            strImgFile.endsWith(".bmp"))
+        QString strImgFileLower = strImgFile.toLower();
+        if (strImgFileLower.endsWith(".png") ||
+            strImgFileLower.endsWith(".jpg") ||
+            strImgFileLower.endsWith(".jpeg") ||
+            strImgFileLower.endsWith(".tif") ||
+            strImgFileLower.endsWith(".tiff") ||
+            strImgFileLower.endsWith(".bmp"))
         {
             mEditor->importImage(strImgFile);
             for (int i = 1; i < number; i++)
