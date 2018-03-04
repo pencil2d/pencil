@@ -10,7 +10,11 @@ The whole project is organized into 3 sub-projects:
  - `core_lib`: the engine of Pencil2D, mostly about animation, drawing things and tool manipulations.
  - `tests`: a collection of unit tests.
 
-You will be able to see these 3 sub-projects in QtCreator when you open the Pencil2D project, and you will find the identical folder names in the repository.
+You will be able to see these 3 sub-projects in QtCreator when you open the Pencil2D project, and you will find the identical folder names in the repository. Each sub-project folder is further divided into several directories containing different kinds of sources:
+
+ - `src`: holds the C++ source code that controls the program logic
+ - `ui`: Qt Designer GUI definitions (*.ui).
+ - `data`: contains other resources such as images or support files for OS integration which are distributed with the program. Many of these are compiled into the program as Qt resources.
 
 # Where to start with?
 
