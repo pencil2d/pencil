@@ -675,7 +675,9 @@ void ScribbleArea::paintBitmapBuffer()
 
     int frameNumber = mEditor->currentFrame();
 
-    if (layer->getKeyFrameAt(frameNumber) == nullptr)
+    // If there is no keyframe at or before the current position,
+    // just return (since we have nothing to paint on).
+    if (layer->getLastKeyFrameAtPosition(frameNumber) == nullptr)
     {
         updateCurrentFrame();
         return;
@@ -711,8 +713,10 @@ void ScribbleArea::paintBitmapBuffer()
     drawCanvas(frameNumber, rect.adjusted(-1, -1, 1, 1));
     update(rect);
 
-    QPixmapCache::remove(mPixmapCacheKeys[frameNumber]);
-    mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+    // Update the cache for the last key-frame.
+    auto lastKeyFramePosition = mEditor->layers()->LastFrameAtFrame(frameNumber);
+    QPixmapCache::remove(mPixmapCacheKeys[lastKeyFramePosition]);
+    mPixmapCacheKeys[lastKeyFramePosition] = QPixmapCache::Key();
     layer->setModified(frameNumber, true);
 
     mBufferImg->clear();
