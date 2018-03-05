@@ -95,7 +95,7 @@ public:
 
     QRect& bounds() { return mBounds; }
 
-    Status write(const QString& filename);
+    Status writeFile(const QString& filename);
 
 private:
     std::shared_ptr< QImage > mImage;

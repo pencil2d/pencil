@@ -62,7 +62,7 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
     qDebug() << "write: " << strFilePath;
 
     BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
-    Status st = bitmapImage->write(strFilePath);
+    Status st = bitmapImage->writeFile(strFilePath);
     if (!st.ok())
     {
         QStringList debugInfo;

@@ -471,10 +471,9 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
-Status BitmapImage::write(const QString& filename)
+Status BitmapImage::writeFile(const QString& filename)
 {
-    Q_ASSERT(mImage.get() != nullptr);
-    if (!mImage->isNull())
+    if (mImage && !mImage->isNull())
     {
         bool b = mImage->save(filename);
         return (b) ? Status::OK : Status::FAIL;
