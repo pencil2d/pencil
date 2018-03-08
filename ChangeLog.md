@@ -6,6 +6,13 @@
 * Re-added zoom levels, now available via View->Zoom in/out or their respective shortcuts.
 * Be able to set the pen width to 2 decimal places.
 * Auto extend Timeline length when users reach the end of Timeline.
+* Greatly reduced the memory usage.
+* Speeding up project save and load significantly.
+* Greatly speed up the movie export and reduce temporary used disk space during exporting.
+* Updated app icons.
+* Allowing export APNG (Animated PNG) format.
+* #857 Importing image sequence now has progress bar.
+* #852 Fixed the FPS spinbox didn't work on Ubuntu 14.04.
 * #836 Improved the canvas quality when the zoom level is greater than 100%.
 * #810 Export video via command line.
 * #818 Improved Gif exporting quality.
