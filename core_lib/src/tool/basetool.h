@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QCursor>
 #include <QPointF>
 #include <QPixmap>
+#include <QHash>
 #include "pencildef.h"
 
 class Editor;
