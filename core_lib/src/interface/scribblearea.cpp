@@ -718,16 +718,14 @@ void ScribbleArea::paintBitmapBuffer()
     mBufferImg->clear();
 }
 
-void ScribbleArea::paintBitmapBufferRect(QRect /*rect*/)
+void ScribbleArea::paintBitmapBufferRect(QRect rect)
 {
-    /*
-    int frameNumber = mEditor->currentFrame();
     if (allowSmudging() || mEditor->playback()->isPlaying())
     {
         Layer* layer = mEditor->layers()->currentLayer();
         Q_ASSERT(layer);
 
-        BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        BitmapImage* targetImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
 
         if (targetImage != NULL)
         {
@@ -754,6 +752,7 @@ void ScribbleArea::paintBitmapBufferRect(QRect /*rect*/)
         // Clear the buffer
         mBufferImg->clear();
 
+        int frameNumber = mEditor->currentFrame();
         layer->setModified(frameNumber, true);
 
         QPixmapCache::remove(mPixmapCacheKeys[frameNumber]);
@@ -762,7 +761,6 @@ void ScribbleArea::paintBitmapBufferRect(QRect /*rect*/)
         drawCanvas(frameNumber, rect.adjusted(-1, -1, 1, 1));
         update(rect);
     }
-    */
 }
 
 void ScribbleArea::clearBitmapBuffer()

@@ -278,7 +278,7 @@ void SmudgeTool::drawStroke()
     QPointF b = getCurrentPoint();
 
 
-    if (toolMode == 0) // liquify hard (default)
+    if (toolMode == 1) // liquify hard
     {
         qreal brushStep = 2;
         qreal distance = QLineF(b, a).length()/2.0;
@@ -290,12 +290,12 @@ void SmudgeTool::drawStroke()
         {
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            mScribbleArea->liquifyBrush( targetImage,
-                                                sourcePoint,
-                                                targetPoint,
-                                                brushWidth,
-                                                offset,
-                                                opacity);
+            mScribbleArea->liquifyBrush(targetImage,
+                                        sourcePoint,
+                                        targetPoint,
+                                        brushWidth,
+                                        offset,
+                                        opacity);
 
             if (i == (steps - 1))
             {
@@ -318,12 +318,12 @@ void SmudgeTool::drawStroke()
         {
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            mScribbleArea->blurBrush( targetImage,
-                                                sourcePoint,
-                                                targetPoint,
-                                                brushWidth,
-                                                offset,
-                                                opacity);
+            mScribbleArea->blurBrush(targetImage,
+                                     sourcePoint,
+                                     targetPoint,
+                                     brushWidth,
+                                     offset,
+                                     opacity);
 
             if (i == (steps - 1))
             {
