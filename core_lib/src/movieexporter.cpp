@@ -460,6 +460,8 @@ Status MovieExporter::generateMovie(
 
     // Run FFmpeg command
 
+    // Attention: Lots of unnecessary code duplication ahead because Microsoft’s preprocessor is stupid
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     STATUS_CHECK(executeFFMpegPipe(strCmd, progress, [&](QProcess& ffmpeg, int framesProcessed)
     {
         if(framesProcessed < 0)
@@ -495,6 +497,41 @@ Status MovieExporter::generateMovie(
 
         return false;
     }));
+#else
+    STATUS_CHECK(executeFFMpegPipe(strCmd, progress, [&](QProcess& ffmpeg, int framesProcessed)
+    {
+        if(framesProcessed < 0)
+        {
+            failCounter++;
+        }
+
+        if(currentFrame > frameEnd)
+        {
+            ffmpeg.closeWriteChannel();
+            return false;
+        }
+
+        if((currentFrame - frameStart <= framesProcessed + frameWindow || failCounter > 10) && currentFrame <= frameEnd)
+        {
+            QImage imageToExport = imageToExportBase.copy();
+            QPainter painter(&imageToExport);
+
+            painter.setWorldTransform(view * centralizeCamera);
+            painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
+
+            obj->paintImage(painter, currentFrame, false, true);
+
+            bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.sizeInBytes());
+            Q_ASSERT(bytesWritten == imageToExport.sizeInBytes());
+
+            currentFrame++;
+            failCounter = 0;
+            return true;
+        }
+
+        return false;
+    }));
+#endif
 
     return Status::OK;
 }
@@ -579,6 +616,8 @@ Status MovieExporter::generateGif(
 
     // Run FFmpeg command
 
+    // Attention: Lots of unnecessary code duplication ahead because Microsoft’s preprocessor is stupid
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     STATUS_CHECK(executeFFMpegPipe(strCmd, progress, [&](QProcess& ffmpeg, int framesProcessed)
     {
         /* The GIF FFmpeg command requires the entires stream to be
@@ -611,6 +650,40 @@ Status MovieExporter::generateGif(
 
         return true;
     }));
+#else
+    STATUS_CHECK(executeFFMpegPipe(strCmd, progress, [&](QProcess& ffmpeg, int framesProcessed)
+    {
+        /* The GIF FFmpeg command requires the entires stream to be
+         * written before FFmpeg can encode the GIF. This is because
+         * the generated pallete is based off of the colors in all
+         * frames. The only way to avoid this would be to generate
+         * all the frames twice and run two separate commands, which
+         * would likely have unacceptable speed costs.
+         */
+
+        Q_UNUSED(framesProcessed);
+        if(currentFrame > frameEnd)
+        {
+            ffmpeg.closeWriteChannel();
+            return false;
+        }
+
+        QImage imageToExport = imageToExportBase.copy();
+        QPainter painter(&imageToExport);
+
+        painter.setWorldTransform(view * centralizeCamera);
+        painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
+
+        obj->paintImage(painter, currentFrame, false, true);
+
+        bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.sizeInBytes());
+        Q_ASSERT(bytesWritten == imageToExport.sizeInBytes());
+
+        currentFrame++;
+
+        return true;
+    }));
+#endif
 
     return Status::OK;
 }
