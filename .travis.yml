@@ -105,7 +105,7 @@ after_success:
       install -Dm755 /usr/bin/ffmpeg Pencil2D/usr/plugins/ffmpeg;
       curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage;
       chmod 755 linuxdeployqt-continuous-x86_64.AppImage;
-      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -appimage;
+      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -extra-plugins=iconengines/libqsvgicon.so -appimage;
       mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
