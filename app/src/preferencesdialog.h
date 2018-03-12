@@ -135,6 +135,7 @@ public slots:
     void frameSizeChange(int);
     void labelChange(bool);
     void scrubChange(int);
+    void radioButtonToggled(bool);
 
 private:
     Ui::TimelinePage* ui = nullptr;

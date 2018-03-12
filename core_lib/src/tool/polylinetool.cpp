@@ -107,6 +107,8 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
         {
+            mScribbleArea->handleDrawingOnEmptyFrame();
+
             if ( layer->type() == Layer::VECTOR )
             {
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();

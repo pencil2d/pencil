@@ -92,6 +92,12 @@ void SmudgeTool::setPressure( const bool pressure )
     settings.sync();
 }
 
+bool SmudgeTool::emptyFrameActionEnabled()
+{
+    // Disabled till we get it working for vector layers...
+    return false;
+}
+
 QCursor SmudgeTool::cursor()
 {
     qDebug() << "smudge tool";
@@ -161,6 +167,13 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
 
             if (mScribbleArea->mClosestVertices.size() > 0 || mScribbleArea->mClosestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
+                // Since startStroke() isn't called, handle empty frame behaviour here.
+                // Commented out for now - leads to segfault on mouse-release event.
+//                if(emptyFrameActionEnabled())
+//                {
+//                    mScribbleArea->handleDrawingOnEmptyFrame();
+//                }
+
                 //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
                 VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 

@@ -43,6 +43,9 @@ public:
     void setFeather( const qreal feather );
     void setPressure( const bool pressure );
 
+protected:
+    bool emptyFrameActionEnabled() override;
+
 private:
     QPointF mLastBrushPoint;
 };

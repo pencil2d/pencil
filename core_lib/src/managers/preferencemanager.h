@@ -59,7 +59,16 @@ enum class SETTING
     MULTILAYER_ONION,
     LANGUAGE,
     LAYOUT_LOCK,
+    DRAW_ON_EMPTY_FRAME_ACTION,
     COUNT, // COUNT must always be the last one.
+};
+
+// Actions for drawing on an empty frame.
+enum DrawOnEmptyFrameAction
+{
+    CREATE_NEW_KEY,
+    DUPLICATE_PREVIOUS_KEY,
+    KEEP_DRAWING_ON_PREVIOUS_KEY
 };
 
 class PreferenceManager : public BaseManager

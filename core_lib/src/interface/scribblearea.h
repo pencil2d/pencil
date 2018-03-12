@@ -179,6 +179,10 @@ public:
 
     void updateCanvasCursor();
 
+    /// Call this when starting to use a paint tool. Checks whether we are drawing
+    /// on an empty frame, and if so, takes action according to use preference.
+    void handleDrawingOnEmptyFrame();
+
     BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
     BitmapImage* mStrokeImg = nullptr; // used for brush strokes before they are finalized
 

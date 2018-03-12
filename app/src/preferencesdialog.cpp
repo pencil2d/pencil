@@ -272,6 +272,9 @@ TimelinePage::TimelinePage(QWidget* parent) :
     connect(ui->frameSize, &QSlider::valueChanged, this, &TimelinePage::frameSizeChange);
     connect(ui->timelineLength, spinBoxValueChange, this, &TimelinePage::timelineLengthChanged);
     connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChange);
+    connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
+    connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
+    connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
 }
 
 TimelinePage::~TimelinePage()
@@ -295,6 +298,24 @@ void TimelinePage::updateValues()
     ui->timelineLength->setValue(mManager->getInt(SETTING::TIMELINE_SIZE));
     if (mManager->getString(SETTING::TIMELINE_SIZE).toInt() <= 0)
         ui->timelineLength->setValue(240);
+
+    SignalBlocker b4(ui->radioButtonAddNewKey);
+    SignalBlocker b5(ui->radioButtonDuplicate);
+    SignalBlocker b6(ui->radioButtonDrawOnPrev);
+    int action = mManager->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
+    switch (action) {
+    case CREATE_NEW_KEY:
+        ui->radioButtonAddNewKey->setChecked(true);
+        break;
+    case DUPLICATE_PREVIOUS_KEY:
+        ui->radioButtonDuplicate->setChecked(true);
+        break;
+    case KEEP_DRAWING_ON_PREVIOUS_KEY:
+        ui->radioButtonDrawOnPrev->setChecked(true);
+        break;
+    default:
+        break;
+    }
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -320,6 +341,22 @@ void TimelinePage::labelChange(bool value)
 void TimelinePage::scrubChange(int value)
 {
     mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
+}
+
+void TimelinePage::radioButtonToggled(bool)
+{
+    if(ui->radioButtonAddNewKey->isChecked())
+    {
+        mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, CREATE_NEW_KEY);
+    }
+    else if(ui->radioButtonDuplicate->isChecked())
+    {
+        mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, DUPLICATE_PREVIOUS_KEY);
+    }
+    else if(ui->radioButtonDrawOnPrev->isChecked())
+    {
+        mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, KEEP_DRAWING_ON_PREVIOUS_KEY);
+    }
 }
 
 FilesPage::FilesPage(QWidget* parent) :

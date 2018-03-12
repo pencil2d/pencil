@@ -47,6 +47,13 @@ protected:
     qreal mCurrentWidth    = 0.0;
     qreal mCurrentPressure = 0.5;
 
+    /// Whether to enable the "drawing on empty frame" preference.
+    /// If true, then the user preference is honored.
+    /// If false, then the stroke is drawn on the previous key-frame (i.e. the
+    /// "old" Pencil behaviour).
+    /// Returns true by default.
+    virtual bool emptyFrameActionEnabled();
+
 private:
 	QPointF mLastPixel = { 0, 0 };
 };

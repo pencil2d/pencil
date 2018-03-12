@@ -130,7 +130,38 @@ void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
         QRectF selectionRect = mScribbleArea->myTransformedSelection;
         if (!selectionRect.isEmpty())
         {
+            // Hack to "carry over" the selected part of the drawing.
+            // Commented out for now, since it doesn't work right for
+            // vector layers.
+
+//            bool onEmptyFrame = layer->getKeyFrameAt(mEditor->currentFrame()) == nullptr;
+//            bool preferCreateNewKey = mEditor->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION) == CREATE_NEW_KEY;
+//            bool preferDuplicate = mEditor->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION) == DUPLICATE_PREVIOUS_KEY;
+
+//            if(onEmptyFrame)
+//            {
+//                if(preferCreateNewKey)
+//                {
+//                    mEditor->copy();
+//                    mScribbleArea->deleteSelection();
+//                }
+//                else if(preferDuplicate)
+//                {
+//                    mEditor->copy();
+//                }
+//            }
+
+//            mScribbleArea->handleDrawingOnEmptyFrame();
             mEditor->backup(typeName());
+
+            // Hack to "carry over" the selected part of the drawing.
+//            if(onEmptyFrame)
+//            {
+//                if(preferCreateNewKey || preferDuplicate)
+//                {
+//                    mEditor->paste();
+//                }
+//            }
         }
 
         if (mScribbleArea->somethingSelected) // there is an area selection
