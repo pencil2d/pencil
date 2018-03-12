@@ -82,6 +82,9 @@ void PreferenceManager::loadPrefs()
     set(SETTING::DRAW_LABEL,               settings.value(SETTING_DRAW_LABEL,             false ).toBool());
     set(SETTING::LABEL_FONT_SIZE,          settings.value(SETTING_LABEL_FONT_SIZE,        12).toInt());
 
+    set( SETTING::DRAW_ON_EMPTY_FRAME_ACTION, settings.value( SETTING_DRAW_ON_EMPTY_FRAME_ACTION,
+                                                              KEEP_DRAWING_ON_PREVIOUS_KEY).toInt() );
+
     // Onion Skin
     set(SETTING::PREV_ONION,               settings.value(SETTING_PREV_ONION,             false).toBool());
     set(SETTING::NEXT_ONION,               settings.value(SETTING_NEXT_ONION,             false).toBool());
@@ -208,6 +211,9 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::GRID_SIZE:
         settings.setValue(SETTING_GRID_SIZE, value);
+        break;
+    case SETTING::DRAW_ON_EMPTY_FRAME_ACTION:
+        settings.setValue( SETTING_DRAW_ON_EMPTY_FRAME_ACTION, value);
         break;
     default:
         Q_ASSERT(false);

@@ -854,6 +854,73 @@ void ScribbleArea::updateCanvasCursor()
 
 }
 
+void ScribbleArea::handleDrawingOnEmptyFrame()
+{
+    auto layer = mEditor->layers()->currentLayer();
+
+    if(!layer  ||  !layer->isPaintable())
+    {
+        return;
+    }
+
+    int frameNumber = mEditor->currentFrame();
+    auto previousKeyFrame = layer->getLastKeyFrameAtPosition(frameNumber);
+
+    if(layer->getKeyFrameAt(frameNumber) == nullptr)
+    {
+        // Drawing on an empty frame; take action based on preference.
+        int action = mPrefs->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
+
+        switch(action)
+        {
+        case CREATE_NEW_KEY:
+            mEditor->addNewKey();
+            mEditor->scrubTo(frameNumber);  // Refresh timeline.
+
+            // Hack to clear previous frame's content.
+            if(layer->type() == Layer::BITMAP  &&  previousKeyFrame)
+            {
+                auto asBitmapImage = dynamic_cast<BitmapImage *> (previousKeyFrame);
+
+                if(asBitmapImage)
+                {
+                    drawCanvas(frameNumber, asBitmapImage->bounds());
+                }
+            }
+
+            if(layer->type() == Layer::VECTOR)
+            {
+                auto asVectorImage = dynamic_cast<VectorImage *> (previousKeyFrame);
+
+                if(asVectorImage)
+                {
+                    auto copy(*asVectorImage);
+                    copy.selectAll();
+
+                    drawCanvas(frameNumber, copy.getSelectionRect().toRect());
+                }
+            }
+
+            break;
+        case DUPLICATE_PREVIOUS_KEY:
+        {
+            if(previousKeyFrame)
+            {
+                KeyFrame* dupKey = previousKeyFrame->clone();
+                layer->addKeyFrame(frameNumber, dupKey);
+                mEditor->scrubTo(frameNumber);  // Refresh timeline.
+            }
+            break;
+        }
+        case KEEP_DRAWING_ON_PREVIOUS_KEY:
+            // No action needed.
+            break;
+        default:
+            break;
+        }
+    }
+}
+
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
     if (!mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND || mMouseRightButtonInUse)
