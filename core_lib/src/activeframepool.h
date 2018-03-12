@@ -25,7 +25,7 @@ public:
 private:
     void unloadFrame(KeyFrame* key);
 
-    typedef typename std::list<KeyFrame*>::iterator list_iterator_t;
+    typedef std::list<KeyFrame*>::iterator list_iterator_t;
 
     std::list<KeyFrame*> mCacheFramesList;
     std::unordered_map<KeyFrame*, list_iterator_t> mCacheFramesMap;

@@ -24,6 +24,14 @@ GNU General Public License for more details.
 const static float mMinScale = 0.01f;
 const static float mMaxScale = 100.0f;
 
+const std::vector<float> gZoomLevels
+{
+    0.01f, 0.02f, 0.04f, 0.06f, 0.08f, 0.12f,
+    0.16f, 0.25f, 0.33f, 0.5f, 0.75f, 1.0f,
+    1.5f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f,
+    8.0f, 16.0f, 32.f, 48.f, 64.f, 96.0f
+};
+
 
 ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
 {
@@ -191,11 +199,11 @@ float ViewManager::scaling()
 
 void ViewManager::scaleUp()
 {
-    for (size_t i = 0; i < mZoomLevels.size(); i++)
+    for (size_t i = 0; i < gZoomLevels.size(); i++)
     {
-        if (mZoomLevels[i] > scaling())
+        if (gZoomLevels[i] > scaling())
         {
-            scale(mZoomLevels[i]);
+            scale(gZoomLevels[i]);
             return;
         }
     }
@@ -206,11 +214,11 @@ void ViewManager::scaleUp()
 
 void ViewManager::scaleDown()
 {
-    for (int i = mZoomLevels.size() - 1; i >= 0; --i)
+    for (int i = gZoomLevels.size() - 1; i >= 0; --i)
     {
-        if (mZoomLevels[i] < scaling())
+        if (gZoomLevels[i] < scaling())
         {
-            scale(mZoomLevels[i]);
+            scale(gZoomLevels[i]);
             return;
         }
     }

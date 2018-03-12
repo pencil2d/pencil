@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #ifndef SOUNDMANAGER_H
 #define SOUNDMANAGER_H
 
-
+#include <cstdint>
 #include "basemanager.h"
 
 class Layer;

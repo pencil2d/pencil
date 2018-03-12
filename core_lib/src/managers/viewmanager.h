@@ -95,11 +95,6 @@ private:
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
 
-    const std::vector<float> mZoomLevels{ 0.01f, 0.02f, 0.04f, 0.06f,  0.08f, 0.12f,
-                                          0.16f, 0.25f, 0.33f,  0.5f,  0.75f,  1.0f,
-                                          1.5f,   2.0f,  3.0f,  4.0f,   5.0f,  6.0f,
-                                          8.0f,  16.0f,  32.f,  48.f,   64.f, 96.0f };
-
     LayerCamera* mCameraLayer = nullptr;
 };
 
