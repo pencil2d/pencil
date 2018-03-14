@@ -49,16 +49,10 @@ If any error occurred, the issues tab will open up at the bottom and display err
 
 Yes, you can compile Pencil2D with Visual Studio if you like. 
 
-- First check your Visual Studio version, Pencil2D requires minimal VS2015.
-- Next, install the corresponding Qt SDK (e.g. msvc2015 64bit if you have VS2015).
-- Open up Qt console (you can find it in Start menu) and run the following command in the console:
-
-```
-cd your/pencil2d/src/folder
-qmake -tp vc -r pencil2d.pro
-```
-
-It will create a Visual Studio solution `pencil.sln` for you in the folder, double click on it and build. 
+- First, make sure you have Visual Studio 2015 or later versions installed.
+- Next, install the Qt SDK which matches your VS version (e.g. Qt 5.6 msvc2015 64bit if you use VS2015).
+- Download and install the [Qt Visual Studio Add-in](http://doc.qt.io/archives/vs-addin/index.html).
+- Open Visual Studio, from the Menu bar -> Qt VS Tools -> Open Qt Project File (.pro), navigate to the Pencil2D source folder and select `pencil2d.pro`.
 
 ## Next steps
 
