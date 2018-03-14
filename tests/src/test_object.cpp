@@ -101,21 +101,25 @@ TEST_CASE("Object::addXXXLayer()")
     delete obj;
 }
 
-/*
 
-void TestObject::testLayerID()
+
+TEST_CASE("Object::getUniqueLayerID()")
 {
-    std::unique_ptr< Object > obj( new Object );
+    SECTION("getUniqueLayerID")
+    {
+        std::unique_ptr<Object> obj(new Object);
 
-    Layer* bitmapLayer = obj->addNewBitmapLayer();
-    QCOMPARE( bitmapLayer->id(), 1 );
-    QCOMPARE( obj->getUniqueLayerID(), 2 );
+        Layer* bitmapLayer = obj->addNewBitmapLayer();
+        REQUIRE(bitmapLayer->id() == 1);
+        REQUIRE(obj->getUniqueLayerID() == 2);
 
-    Layer* vectorLayer = obj->addNewVectorLayer();
-    QCOMPARE( vectorLayer->id(), 2 );
-    QCOMPARE( obj->getUniqueLayerID(), 3 );
+        Layer* vectorLayer = obj->addNewVectorLayer();
+        REQUIRE(vectorLayer->id() == 2);
+        REQUIRE(obj->getUniqueLayerID() == 3);
+    }
 }
 
+/*
 void TestObject::testMoveLayer()
 {
     std::unique_ptr< Object > obj( new Object );
