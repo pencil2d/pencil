@@ -67,6 +67,7 @@ ipch
 *.VC.db
 *.opendb
 .vs
+*.rc
 
 tests/tests
 bin/*
