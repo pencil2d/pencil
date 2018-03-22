@@ -85,7 +85,7 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
-    TimeLine* timeLine;
+    TimeLine* mTimeLine;
     Editor* mEditor; // the editor for which this timeLine operates
     PreferenceManager* mPrefs;
 
