@@ -121,7 +121,6 @@ int Layer::getPreviousFrameNumber(int position, bool isAbsolute) const
     else
         prevNumber = position - 1;
 
-
     if (prevNumber == position)
     {
         return -1; // There is no previous keyframe

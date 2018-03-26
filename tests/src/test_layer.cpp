@@ -207,7 +207,7 @@ TEST_CASE("Layer::getMaxKeyFramePosition()")
 
     SECTION("Bitmap")
     {
-        Layer* layer = obj->addNewBitmapLayer();;
+        Layer* layer = obj->addNewBitmapLayer();
 
         // 1 at beginning.
         REQUIRE(layer->getMaxKeyFramePosition() == 1);
@@ -234,7 +234,7 @@ TEST_CASE("Layer::removeKeyFrame()")
     Object* obj = new Object;
     SECTION("Bitmap")
     {
-        Layer* layer = obj->addNewBitmapLayer();;
+        Layer* layer = obj->addNewBitmapLayer();
 
         // there is always a key at position 1 at beginning
         CHECK(layer->removeKeyFrame(1));
@@ -267,28 +267,45 @@ TEST_CASE("Layer::removeKeyFrame()")
 TEST_CASE("Layer::getPreviousKeyFramePosition()")
 {
     Object* obj = new Object;
-    SECTION("Bitmap")
+    SECTION("KeyFrame 1")
     {
-        Layer* layer = obj->addNewBitmapLayer();;
+        Layer* layer = obj->addNewBitmapLayer();
+        CHECK(layer->keyFrameCount() == 1);
 
         REQUIRE(layer->getPreviousKeyFramePosition(1) == 1);
         REQUIRE(layer->getPreviousKeyFramePosition(10) == 1);
         REQUIRE(layer->getPreviousKeyFramePosition(100) == 1);
         REQUIRE(layer->getPreviousKeyFramePosition(1000) == 1);
+    }
 
+    SECTION("KeyFrame 1, 2, 8")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
         layer->addNewKeyFrameAt(2);
         layer->addNewKeyFrameAt(8);
         REQUIRE(layer->getPreviousKeyFramePosition(2) == 1);
         REQUIRE(layer->getPreviousKeyFramePosition(8) == 2);
+    }
 
+    SECTION("KeyFrame 1, 15")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
         REQUIRE(layer->getPreviousKeyFramePosition(-5) == 1);
 
         layer->addNewKeyFrameAt(15);
         REQUIRE(layer->getPreviousKeyFramePosition(16) == 15);
         REQUIRE(layer->getPreviousKeyFramePosition(17) == 15);
+    }
 
-        layer->removeKeyFrame(15);
-        REQUIRE(layer->getPreviousKeyFramePosition(16) == 8);
+    SECTION("KeyFrame 1, 10, Add 20 Remove 20")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(10);
+        layer->addNewKeyFrameAt(20);
+
+        REQUIRE(layer->getPreviousKeyFramePosition(21) == 20);
+        layer->removeKeyFrame(20);
+        REQUIRE(layer->getPreviousKeyFramePosition(21) == 10);
     }
     delete obj;
 }
@@ -296,9 +313,9 @@ TEST_CASE("Layer::getPreviousKeyFramePosition()")
 TEST_CASE("Layer::getNextKeyFramePosition()")
 {
     Object* obj = new Object;
-    SECTION("Bitmap")
+    SECTION("KeyFrame 1, 5")
     {
-        Layer* layer = obj->addNewBitmapLayer();;
+        Layer* layer = obj->addNewBitmapLayer();
 
         REQUIRE(layer->getNextKeyFramePosition(1) == 1);
         REQUIRE(layer->getNextKeyFramePosition(10) == 1);
@@ -307,6 +324,20 @@ TEST_CASE("Layer::getNextKeyFramePosition()")
         CHECK(layer->addNewKeyFrameAt(5));
         REQUIRE(layer->getNextKeyFramePosition(1) == 5);
         REQUIRE(layer->getNextKeyFramePosition(2) == 5);
+    }
+    delete obj;
+}
+
+TEST_CASE("Layer::getPreviousFrameNumber()")
+{
+    Object* obj = new Object;
+    SECTION("KeyFrame 1")
+    {
+        Layer* layer = obj->addNewVectorLayer();
+        REQUIRE(layer->getPreviousFrameNumber(1, true) == -1); // couldn't find previous frame
+
+        REQUIRE(layer->getPreviousFrameNumber(3, true) == 1);
+        REQUIRE(layer->getPreviousFrameNumber(3, false) == 2);
     }
     delete obj;
 }
