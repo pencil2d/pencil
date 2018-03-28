@@ -31,7 +31,7 @@ Fixes:
 * #830 Can't save .pcl multiple times after importing sound layers.
 * #845 The framerate wasn't accurate when playing animation. 
 * #828 The app stalled when using dotted cursor and zooming-in very much.
-- #739, #889 Vector outlines are not drawn when Horizontal Flip and Show Outlines Only are activated. -- [Martin van Zijl](https://github.com/martinvanzijl]
+- #739, #889 Vector outlines are not drawn when Horizontal Flip and Show Outlines Only are activated. -- [Martin van Zijl](https://github.com/martinvanzijl)
 - #735, #913 Some shortcuts are broken, file extensions are case-sensitive in image sequence import -- [Nick](https://github.com/Spark01)
 
 ## Pencil2D v0.6 - 1 December 2017
