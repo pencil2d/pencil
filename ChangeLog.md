@@ -20,6 +20,7 @@
 * #434 Give more information in about dialog.
 * #530, #850 Migrate the internal zip engine from Quazip to Miniz.
 * #747 Can turn each sound layer on/off separately by switching visibility.
+* Added languages: Indonesia, Hebrew, Vietnamese, Slovenian and Portugal Portuguese.
 
 Fixes:
 
@@ -31,8 +32,9 @@ Fixes:
 * #830 Can't save .pcl multiple times after importing sound layers.
 * #845 The framerate wasn't accurate when playing animation. 
 * #828 The app stalled when using dotted cursor and zooming-in very much.
-- #739, #889 Vector outlines are not drawn when Horizontal Flip and Show Outlines Only are activated. -- [Martin van Zijl](https://github.com/martinvanzijl)
-- #735, #913 Some shortcuts are broken, file extensions are case-sensitive in image sequence import -- [Nick](https://github.com/Spark01)
+* #739, #889 Vector outlines are not drawn when Horizontal Flip and Show Outlines Only are activated. -- [Martin van Zijl](https://github.com/martinvanzijl)
+* #735, #913 Some shortcuts are broken, file extensions are case-sensitive in image sequence import -- [Nick](https://github.com/Spark01)
+
 
 ## Pencil2D v0.6 - 1 December 2017
 
