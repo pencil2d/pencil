@@ -103,9 +103,11 @@ GeneralPage::GeneralPage(QWidget* parent) :
     ui->languageCombo->addItem(tr("Indonesian") + " (Indonesian)", "id");
     ui->languageCombo->addItem(tr("Italian") + " (Italian)", "it");
     ui->languageCombo->addItem(tr("Japanese") + " (Japanese)", "ja");
+    ui->languageCombo->addItem(tr("Portuguese - Portugal") + "(Portuguese - Portugal)", "pt");
     ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt-BR");
     ui->languageCombo->addItem(tr("Russian") + " (Russian)", "ru");
-    ui->languageCombo->addItem(tr("Vietnamese ") + " (Vietnamese)", "vi");
+    ui->languageCombo->addItem(tr("Slovenian") + " (Slovenian)", "sl");
+    ui->languageCombo->addItem(tr("Vietnamese") + " (Vietnamese)", "vi");
     ui->languageCombo->addItem(tr("Chinese - Taiwan") + " (Chinese - Taiwan)", "zh-TW");
 
     int value = settings.value("windowOpacity").toInt();
