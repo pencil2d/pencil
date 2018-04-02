@@ -134,6 +134,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case INTERPOLATION: setInpolLevel(p.inpolLevel); break;
     case TOLERANCE: setTolerance(p.tolerance); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
+    case BEZIER: setBezier(p.bezier_state); break;
     default:
         Q_ASSERT(false);
         break;
@@ -315,6 +316,12 @@ void ToolOptionWidget::setFillContour(int useFill)
     SignalBlocker b(ui->fillContourBox);
     ui->fillContourBox->setEnabled(true);
     ui->fillContourBox->setChecked(useFill > 0);
+}
+
+void ToolOptionWidget::setBezier(bool useBezier)
+{
+    SignalBlocker b(ui->useBezierBox);
+    ui->useBezierBox->setChecked(useBezier);
 }
 
 void ToolOptionWidget::disableAllOptions()

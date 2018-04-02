@@ -64,6 +64,7 @@ private:
     void setInpolLevel(int);
     void setTolerance(int);
     void setFillContour(int);
+    void setBezier(bool);
 
     void disableAllOptions();
     void createUI();
