@@ -3321,50 +3321,50 @@ Gostaria de salvar agora?</translation>
         <translation>Você está desenhando em uma camada oculta! Por favor, selecione outra camada (ou torne a camada atual visível).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1635"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1633"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Apagar seleção</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1651"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1659"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1649"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1657"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Limpar Imagem</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1686"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1684"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Há um espaço no seu desenho (ou talvez você tenha aumentado o zoom demais).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1687"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1685"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Desculpe! Isto nem sempre funciona. Por favor tente novamente (aumente um pouco o zoom, clique em outro lugar... )&lt;br&gt;Caso não funcione, aumente um pouco o zoom e tenha a certeza que os caminhos estão conectados pressionando F1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1691"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1689"/>
         <source>Out of bound.</source>
         <translation>Fora do limite</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1690"/>
         <source>Could not find a closed path.</source>
         <translation>Não encontro um caminho fechado.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1693"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1691"/>
         <source>Could not find the root index.</source>
         <translation>Não encontro o índice principal</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1694"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Erro: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1694"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
         <source>Flood fill error</source>
         <translation>Erro de preenchimento</translation>
     </message>
@@ -3569,12 +3569,12 @@ Gostaria de salvar agora?</translation>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="692"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="686"/>
         <source>Layer Properties</source>
         <translation>Propriedades da camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="693"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="687"/>
         <source>Layer name:</source>
         <translation>Nome da camada:</translation>
     </message>

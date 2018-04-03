@@ -3322,50 +3322,50 @@
         <translation>אתה מצייר על שכבה נסתרת! בחר בבקשה שכבה אחרת (או הפוך את השכבה הנוכחית לנראית)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1635"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1633"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>מחק את הבחירה</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1651"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1659"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1649"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1657"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>מחק תמונה</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1686"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1684"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>יש רווח בציור שלך (או אולי אתה ברמת הגדלה גבוהה מדי)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1687"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1685"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>מצטערים! זה לא תמיד עובד. אנא נסה שוב (הגדל מעט, לחץ במקום אחר...) &lt;br&gt; אם זה לא עובד, הגדל מעט ובדוק שהקווים מחוברים על ידי לחיצה על F1).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1691"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1689"/>
         <source>Out of bound.</source>
         <translation>מחוץ לגבולות.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1690"/>
         <source>Could not find a closed path.</source>
         <translation>לא ניתן למצא קו סגור.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1693"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1691"/>
         <source>Could not find the root index.</source>
         <translation>לא ניתן למצוא את אינדקס השורש.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1694"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt; שגיאה: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1694"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
         <source>Flood fill error</source>
         <translation>שגיאה במילוי שטף</translation>
     </message>
@@ -3570,12 +3570,12 @@
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="692"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="686"/>
         <source>Layer Properties</source>
         <translation>מאפייני שכבה</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="693"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="687"/>
         <source>Layer name:</source>
         <translation>שם שכבה:</translation>
     </message>

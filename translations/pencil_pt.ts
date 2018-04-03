@@ -10,7 +10,7 @@
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
         <source>Official site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Thanks to Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</source>
-        <translation>Site Oficial: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Desenvolvido por: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Agradecimentos a: Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distribuído através de: &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</translation>
+        <translation>Site Oficial: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Desenvolvido por: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Agradecimentos a: Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distribuído através de: &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, versão 2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="46"/>
@@ -22,7 +22,7 @@
         <location filename="../app/src/aboutdialog.cpp" line="58"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
-        <translation>Copiar para a área de transferência</translation>
+        <translation>Copiar para área de transferência</translation>
     </message>
 </context>
 <context>
@@ -30,23 +30,23 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="67"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
-        <translation>Não há uma camada de som para importar. Criar uma nova?</translation>
+        <translation>Não existe uma camada de som para importar o ficheiro. Criar uma nova?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="68"/>
         <source>Create sound layer</source>
-        <translation>Criar camada de som</translation>
+        <translation>Criar Camada de Som</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="69"/>
         <source>Don&apos;t create layer</source>
-        <translation>Não criar camada</translation>
+        <translation>Não Criar Camada</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="79"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
-        <translation>Propriedades da camada</translation>
+        <translation>Propriedades da Camada</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="81"/>
@@ -71,7 +71,7 @@
         <location filename="../app/src/actioncommands.cpp" line="592"/>
         <location filename="../app/src/actioncommands.cpp" line="606"/>
         <source>Layer Properties</source>
-        <translation>Propriedades da camada</translation>
+        <translation>Propriedades da Camada</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="80"/>
@@ -80,7 +80,7 @@
         <location filename="../app/src/actioncommands.cpp" line="593"/>
         <location filename="../app/src/actioncommands.cpp" line="607"/>
         <source>Layer name:</source>
-        <translation>Nome da camada:</translation>
+        <translation>Nome da Camada:</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="107"/>
@@ -195,7 +195,7 @@
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
         <source>Eyedropper</source>
-        <translation>Pipeta</translation>
+        <translation>Conta-gotas</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
@@ -208,7 +208,7 @@
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="6"/>
         <source>Camera Properties</source>
-        <translation>Propriedades da câmara</translation>
+        <translation>Propriedades da Câmara</translation>
     </message>
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
@@ -388,7 +388,7 @@
         <location filename="../app/ui/displayoption.ui" line="14"/>
         <source>Display</source>
         <comment>Window title of display options like .</comment>
-        <translation>Ecrã</translation>
+        <translation>Tela</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="125"/>
@@ -399,7 +399,7 @@
     <message>
         <location filename="../app/ui/displayoption.ui" line="163"/>
         <source>Show invisible lines</source>
-        <translation>Mostrar linhas invisíveis</translation>
+        <translation>Mostrar linhas ocultas</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="250"/>
@@ -411,7 +411,7 @@
         <location filename="../app/ui/displayoption.ui" line="38"/>
         <location filename="../app/ui/displayoption.ui" line="41"/>
         <source>Onion skin next frame</source>
-        <translation>Transparência nos próximos quadros</translation>
+        <translation>Transparência nos quadros seguintes</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="215"/>
@@ -590,7 +590,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="204"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Último quadro é colocado como quadro-chave pintável (útil quando somente queira exportar até o último quadro de animação) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Último quadro é colocado como quadro-chave editável (útil quando queira exportar somente até o último quadro animado) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="210"/>
@@ -704,12 +704,12 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="201"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
-        <translation>O caminho (&quot;%1&quot;) aponta para um diretório.</translation>
+        <translation>O caminho (&quot;%1&quot;) aponta para um directório.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="210"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
-        <translation>O diretório (&quot;%1&quot;) não existe.</translation>
+        <translation>O directório (&quot;%1&quot;) não existe.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="218"/>
@@ -725,7 +725,7 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="257"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
-        <translation>Falha na criação do diretório &quot;%1&quot;. Verifique se tem permissões suficientes.</translation>
+        <translation>Falha na criação do directório &quot;%1&quot;. Verifique se tem permissões suficientes.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="266"/>
@@ -742,7 +742,7 @@
         <location filename="../core_lib/src/structure/filemanager.cpp" line="336"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="351"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
-        <translation>Um erro interno ocorreu. O seu ficheiro pode não ter sido gravado com sucesso.</translation>
+        <translation>Um erro interno ocorreu. O ficheiro pode não ter sido gravado com sucesso.</translation>
     </message>
 </context>
 <context>
@@ -905,7 +905,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="113"/>
         <source>Tool Cursors</source>
-        <translation>Cursores de ferramentas</translation>
+        <translation>Cursores de Ferramentas</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="180"/>
@@ -925,12 +925,12 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="209"/>
         <source>Vector curve smoothing</source>
-        <translation>Suavização da camada vetorial</translation>
+        <translation>Suavização da camada vectorial</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="229"/>
         <source>Tablet high-resolution position</source>
-        <translation>Posição de alta resolução do tablet</translation>
+        <translation>Alta resolução para tablet</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="205"/>
@@ -940,7 +940,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="206"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
-        <translation>A mudança de idioma tomará efeito depois de reiniciar Pencil2D</translation>
+        <translation>A mudança de idioma tomará efeito após reiniciar Pencil2D</translation>
     </message>
 </context>
 <context>
@@ -982,7 +982,7 @@
     <message>
         <location filename="../core_lib/src/structure/layer.cpp" line="38"/>
         <source>Undefined Layer</source>
-        <translation>Camada indefinida</translation>
+        <translation>Camada Indefinida</translation>
     </message>
 </context>
 <context>
@@ -998,7 +998,7 @@
     <message>
         <location filename="../core_lib/src/structure/layercamera.cpp" line="79"/>
         <source>Camera Layer</source>
-        <translation>Camada da câmara</translation>
+        <translation>Camada da Câmara</translation>
     </message>
 </context>
 <context>
@@ -1014,7 +1014,7 @@
     <message>
         <location filename="../core_lib/src/structure/layervector.cpp" line="24"/>
         <source>Vector Layer</source>
-        <translation>Camada Vetorial</translation>
+        <translation>Camada Vectorial</translation>
     </message>
 </context>
 <context>
@@ -1173,7 +1173,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="374"/>
         <source>Crop To Selection</source>
-        <translation>Recortar para a selecção</translation>
+        <translation>Ajustar à selecção</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="379"/>
@@ -1259,12 +1259,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="500"/>
         <source>Next</source>
-        <translation>Próximo</translation>
+        <translation>Seguinte</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="503"/>
         <source>Show next onion skin</source>
-        <translation>Mostrar próxima transparência</translation>
+        <translation>Mostra transparência seguinte</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="512"/>
@@ -1280,7 +1280,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="533"/>
         <source>Next Frame</source>
-        <translation>Próximo Quadro</translation>
+        <translation>Quadro seguinte</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="542"/>
@@ -1355,7 +1355,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="673"/>
         <source>Eyedropper</source>
-        <translation>Pipeta</translation>
+        <translation>Conta-gotas</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="682"/>
@@ -1365,17 +1365,17 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="691"/>
         <source>New Bitmap Layer</source>
-        <translation>Nova camada bitmap</translation>
+        <translation>Nova Camada Bitmap</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="700"/>
         <source>New Vector Layer</source>
-        <translation>Nova camada vectorial</translation>
+        <translation>Nova Camada Vectorial</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="709"/>
         <source>New Sound Layer</source>
-        <translation>Nova camada de som</translation>
+        <translation>Nova Camada de Som</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="718"/>
@@ -1385,7 +1385,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="723"/>
         <source>Delete Current Layer</source>
-        <translation>Excluir camada actual</translation>
+        <translation>Excluir Camada Actual</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="733"/>
@@ -1401,7 +1401,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="778"/>
         <source>MultiLayer Onion Skin</source>
-        <translation>Transparência multicamadas</translation>
+        <translation>Transparência Multicamadas</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="789"/>
@@ -1422,7 +1422,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="751"/>
         <location filename="../app/ui/mainwindow2.ui" line="754"/>
         <source>Next KeyFrame</source>
-        <translation>Próximo quadro-chave</translation>
+        <translation>Quadro-chave seguinte</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="764"/>
@@ -1453,7 +1453,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="837"/>
         <source>Display Options</source>
-        <translation>Opções do ecrã</translation>
+        <translation>Opções da tela</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="842"/>
@@ -1478,7 +1478,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="141"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
-        <translation>Paleta de cores:&lt;br&gt;Use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;para alternar no cursor</translation>
+        <translation>Paleta de cores:&lt;br&gt;Utilize &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;para alternar no cursor</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="336"/>
@@ -1532,20 +1532,20 @@ Acabou de limpar a lista com sucesso</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="591"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;Um erro ocorreu e seu arquivo pode não ter sido gravado com sucesso. Se você achar que é um problema com Pencil2D, por favor crie um tópico em: &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Por favor, certifique-se de incluir os seguintes detalhes:</translation>
+        <translation>&lt;br&gt;&lt;br&gt;Ocorreu um erro e seu ficheiro pode não ter sido gravado com sucesso. Se você achar que é um problema com Pencil2D, por favor crie um tópico em: &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Por favor, certifique-se de incluir os seguintes detalhes:</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="629"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Esta animação foi modificada. 
-Você deseja gravar as alterações?</translation>
+Deseja gravar as alterações?</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="657"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
-        <translation>A animação não foi gravada. Quer grava-la agora?</translation>
+        <translation>A animação não foi gravada. Quer gravá-la agora?</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="658"/>
@@ -1556,7 +1556,7 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="688"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>Impossível importar imagem. &lt;br&gt;&lt;b&gt;DICA:&lt;/b&gt; Use uma camada Bitmap para importar bitmaps.</translation>
+        <translation>Não é possível importar imagem. &lt;br&gt;&lt;b&gt;DICA:&lt;/b&gt; Use uma Camada Bitmap para importar bitmaps.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="714"/>
@@ -1710,7 +1710,7 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="69"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation>Pencil2D é um software de animação/desenho para Mac OS X, Windows e Linux. Permite criar animações tradicionais feitas a mão (desenhos animados) utilizando bitmaps e gráficos vetoriais.</translation>
+        <translation>Pencil2D é um programa de animação/desenho para Mac OS X, Windows e Linux. Permite criar animações tradicionais feitas a mão (desenhos animados) utilizando bitmaps e vectores gráficos.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="72"/>
@@ -1721,7 +1721,7 @@ Você deseja gravar as alterações?</translation>
         <location filename="../app/src/main.cpp" line="75"/>
         <location filename="../app/src/main.cpp" line="81"/>
         <source>Render the file to &lt;output_path&gt;</source>
-        <translation>Renderizar o ficheiro no &lt;caminho_saída&gt;</translation>
+        <translation>Renderizar o ficheiro no  &lt;output_path&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="76"/>
@@ -1732,12 +1732,12 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="89"/>
         <source>Name of the camera layer to use</source>
-        <translation>Nome da câmara a utilizar</translation>
+        <translation>Nome da Câmara a utilizar</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="90"/>
         <source>layer_name</source>
-        <translation>Nome_camada</translation>
+        <translation>Nome_Camada</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="94"/>
@@ -1748,7 +1748,7 @@ Você deseja gravar as alterações?</translation>
         <location filename="../app/src/main.cpp" line="95"/>
         <location filename="../app/src/main.cpp" line="100"/>
         <source>integer</source>
-        <translation>Inteiro</translation>
+        <translation>Número Inteiro</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="99"/>
@@ -1758,7 +1758,7 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="104"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation>O primeiro quadro a ser incluído na exportação do filme</translation>
+        <translation>Primeiro quadro a ser incluído na exportação do filme</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="105"/>
@@ -1769,7 +1769,7 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="109"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation>Último quadro que queira incluir na exportação do filme. Poderá ser utilizado automaticamente por um quadro contendo uma animação ou som</translation>
+        <translation>Último quadro a ser incluído na exportação do filme. Poderá ser utilizado automaticamente por um quadro contendo uma animação ou som</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="116"/>
@@ -1779,12 +1779,12 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="135"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation>Aviso: valor da largura %1 não é um inteiro, ignorando.</translation>
+        <translation>Aviso: valor da largura %1 não é um número inteiro. Ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="145"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation>Aviso: valor da altura %1 não é um inteiro, ignorando.</translation>
+        <translation>Aviso: valor da altura %1 não é um número inteiro. Ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="155"/>
@@ -1799,7 +1799,7 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="180"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation>Aviso: valor final %1 não é um número inteiro, último ou último-som. Ignorando.</translation>
+        <translation>Aviso: valor final %1 não é um número inteiro. Ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="186"/>
@@ -1826,19 +1826,19 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="237"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation>Aviso: a camada de câmara especificada %1 não foi encontrada. Ignorando.</translation>
+        <translation>Aviso: a camada da câmara especificada %1 não foi encontrada. Ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="268"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
-        <translation>Aviso: O formato de saída não foi especificado ou não é suportado. A utilizar PNG.</translation>
+        <translation>Aviso: O formato de saída não foi especificado ou não é suportado. Utilizar PNG.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="289"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
-        <translation>Aviso: A transparência não é actualmente suportada em ficheiros de filme</translation>
+        <translation>Aviso: Transparência não é actualmente suportada em ficheiros de filme</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="291"/>
@@ -1946,17 +1946,17 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="26"/>
         <source>The file is not valid pencil document.</source>
-        <translation>O ficheiro não é um documento Pencil válido.</translation>
+        <translation>O ficheiro não é um documento Pencil2D válido.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="29"/>
         <source>All Pencil Files PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</source>
-        <translation>Todos os ficheiros Pencil PCLX &amp; PCL(*.pclx *.pcl);;Ficheiro de Animação Pencil PCLX(*.pclx);;Ficheiro Antigo de Animação Pencil PCL(*.pcl);;Qualquer ficheiro(*)</translation>
+        <translation>Todos os ficheiros Pencil PCLX &amp; PCL(*.pclx *.pcl);;Ficheiro de Animação Pencil PCLX(*.pclx);;Antigo Ficheiro de Animação Pencil PCL(*.pcl);;Qualquer ficheiro(*)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</source>
-        <translation>Ficheiro de Animação Pencil PCLX(*.pclx);;Ficheiro Antigo de Animação Pencil PCL(*.pcl)</translation>
+        <translation>Ficheiro de Animação Pencil PCLX(*.pclx);;Antigo Ficheiro de Animação Pencil PCL(*.pcl)</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="279"/>
@@ -1971,7 +1971,7 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="281"/>
         <source>Deep Pink</source>
-        <translation>Cor de Rosa Escuro</translation>
+        <translation>Cor de Rosa Intenso</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="282"/>
@@ -2001,12 +2001,12 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="287"/>
         <source>Pinkish White</source>
-        <translation>Branco Rosado</translation>
+        <translation>Branco Rosáceo</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="288"/>
         <source>Pinkish Gray</source>
-        <translation>Cinzento Rosado</translation>
+        <translation>Cinzento Rosáceo</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="289"/>
@@ -2021,7 +2021,7 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="291"/>
         <source>Deep Red</source>
-        <translation>Vermelho Profundo</translation>
+        <translation>Vermelho Intenso</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="292"/>
@@ -2096,8 +2096,7 @@ Você deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="306"/>
         <source>Light Yellowish Pink</source>
-        <translation>R
-Rosa Amarelado Suave</translation>
+        <translation>Rosa Amarelado Suave</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="307"/>
@@ -2212,7 +2211,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="329"/>
         <source>Deep Orange</source>
-        <translation>Laranja Profundo</translation>
+        <translation>Laranja Intenso</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="330"/>
@@ -2237,7 +2236,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="334"/>
         <source>Deep Brown</source>
-        <translation>Castanho Profundo</translation>
+        <translation>Castanho Intenso</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="335"/>
@@ -2302,7 +2301,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="347"/>
         <source>Deep Orange Yellow</source>
-        <translation>Amarelo-Laranja Profundo</translation>
+        <translation>Amarelo-Laranja Intenso</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="348"/>
@@ -2332,7 +2331,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="353"/>
         <source>Deep Yellowish Brown</source>
-        <translation>Castanho Amarelado Profundo</translation>
+        <translation>Castanho Amarelado Intenso</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="354"/>
@@ -2382,7 +2381,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="363"/>
         <source>Deep Yellow</source>
-        <translation>Amarelo Profundo</translation>
+        <translation>Amarelo Intenso</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="364"/>
@@ -2547,7 +2546,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="396"/>
         <source>Deep Yellow Green</source>
-        <translation>Verde Amarelo Forte</translation>
+        <translation>Verde Amarelo Intenso</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="397"/>
@@ -3305,7 +3304,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="31"/>
         <source>Clear</source>
-        <translation>Claro</translation>
+        <translation>Limpar</translation>
     </message>
 </context>
 <context>
@@ -3318,53 +3317,53 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="536"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation>Você está desenhando em uma camada oculta! Por favor, selecione outra camada (ou torne a camada atual visível).</translation>
+        <translation>Você está desenhando em uma camada oculta! Por favor, seleccione outra camada (ou torne a camada actual visível).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1635"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1633"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
-        <translation>Excluindo selecção</translation>
+        <translation>Excluir selecção</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1651"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1659"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1649"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1657"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Limpar Imagem</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1686"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1684"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
-        <translation>Há um espaço no seu desenho (ou talvez você tenha aumentado o zoom demais).</translation>
+        <translation>Há uma abertura no seu desenho (ou talvez tenha aumentado o zoom demasiado).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1687"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1685"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
-        <translation>Desculpe! Isto nem sempre funciona. Por favor tente novamente (aumente um pouco o zoom, clique em outro lugar... )&lt;br&gt;Caso não funcione, aumente um pouco o zoom e tenha a certeza que os caminhos estão conectados pressionando F1</translation>
+        <translation>Desculpe! Isto nem sempre funciona. Por favor tente novamente (aumente um pouco o zoom, clique em outro lugar... )&lt;br&gt;Caso não funcione, aumente um pouco o zoom e certifique-se que os caminhos estão conectados pressionando F1).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1691"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1689"/>
         <source>Out of bound.</source>
         <translation>Fora do limite</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1690"/>
         <source>Could not find a closed path.</source>
-        <translation>Não encontro um caminho fechado.</translation>
+        <translation>Não é possível encontrar um caminho fechado.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1693"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1691"/>
         <source>Could not find the root index.</source>
-        <translation>Não encontro o índice principal</translation>
+        <translation>Não é possível encontrar o índice principal</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1694"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Erro: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1694"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
         <source>Flood fill error</source>
         <translation>Erro de preenchimento</translation>
     </message>
@@ -3379,7 +3378,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="47"/>
         <source>Action:</source>
-        <translation>Ação:</translation>
+        <translation>Acção:</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="54"/>
@@ -3409,7 +3408,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="93"/>
         <source>%1 is already used, overwrite?</source>
-        <translation>%1 já está utilizada, sobrescrever?</translation>
+        <translation>%1 já está utilizada, substituir?</translation>
     </message>
 </context>
 <context>
@@ -3491,22 +3490,22 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="80"/>
         <source>Remove Layer</source>
-        <translation>Remover Camada</translation>
+        <translation>Excluir Camada</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="93"/>
         <source>New Bitmap Layer</source>
-        <translation>Nova camada Bitmap</translation>
+        <translation>Nova Camada Bitmap</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
         <source>New Vector Layer</source>
-        <translation>Nova camada Vetorial</translation>
+        <translation>Nova Camada Vectorial</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
         <source>New Sound Layer</source>
-        <translation>Nova camada de Som</translation>
+        <translation>Nova Camada de Som</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
@@ -3553,7 +3552,7 @@ Rosa Amarelado Suave</translation>
         <location filename="../core_lib/src/interface/timeline.cpp" line="275"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation>Excluir camada</translation>
+        <translation>Excluir Camada</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="285"/>
@@ -3569,14 +3568,14 @@ Rosa Amarelado Suave</translation>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="692"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="686"/>
         <source>Layer Properties</source>
-        <translation>Propriedades da camada</translation>
+        <translation>Propriedades da Camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="693"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="687"/>
         <source>Layer name:</source>
-        <translation>Nome da camada</translation>
+        <translation>Nome da Camada:</translation>
     </message>
 </context>
 <context>
@@ -3609,7 +3608,7 @@ Rosa Amarelado Suave</translation>
         <location filename="../app/ui/timelinepage.ui" line="60"/>
         <source>Timeline length:</source>
         <comment>Preferences</comment>
-        <translation>Comprimento da Linha do Tempo</translation>
+        <translation>Comprimento Linha do Tempo</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>
@@ -3633,32 +3632,32 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="77"/>
         <source>Pencil Tool (%1): Sketch with pencil</source>
-        <translation>Ferramenta Lápis (%1): Esboço com lápis</translation>
+        <translation>Ferramenta Lápis (%1): Esboça com lápis</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="79"/>
         <source>Select Tool (%1): Select an object</source>
-        <translation>Ferramenta Selecção (%1): Seleccionar objecto</translation>
+        <translation>Ferramenta Selecção (%1): Selecciona objecto</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="81"/>
         <source>Move Tool (%1): Move an object</source>
-        <translation>Ferramenta Mover (%1): Mover objecto</translation>
+        <translation>Ferramenta Mover (%1): Move objecto</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="83"/>
         <source>Hand Tool (%1): Move the canvas</source>
-        <translation>Ferramenta Mão (%1): Mover tela</translation>
+        <translation>Ferramenta Mão (%1): Move tela</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="85"/>
         <source>Pen Tool (%1): Sketch with pen</source>
-        <translation>Ferramenta Caneta (%1): Esboço com caneta</translation>
+        <translation>Ferramenta Caneta (%1): Esboça com caneta</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="87"/>
         <source>Eraser Tool (%1): Erase</source>
-        <translation>Ferramenta Borracha (%1): Borracha</translation>
+        <translation>Ferramenta Borracha (%1): Apaga</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="89"/>
@@ -3673,52 +3672,52 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="93"/>
         <source>Brush Tool (%1): Paint smooth stroke with a brush</source>
-        <translation>Ferramenta Pincel (%1): Pinta suaves pinceladas com pincel</translation>
+        <translation>Ferramenta Pincel (%1): Pinta suaves pinceladas</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="95"/>
         <source>Eyedropper Tool (%1): Set color from the stage&lt;br&gt;[ALT] for instant access</source>
-        <translation>Ferramenta Pipeta (%1): Coloca cor da etapa&lt;br&gt;[ALT] para acesso instantâneo</translation>
+        <translation>Ferramenta Conta-gotas (%1): Recolhe amostra de cor de uma área&lt;br&gt;[ALT] para acesso instantâneo</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="98"/>
         <source>Clear Frame (%1): Erases content of selected frame</source>
-        <translation>Limpar quadro (%1): Apaga conteúdo do quadro seleccionado</translation>
+        <translation>Limpar Quadro (%1): Apaga conteúdo do quadro seleccionado</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="100"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
-        <translation>Ferramenta espalhar (%1):&lt;br&gt;Editar polilinha/curvas&lt;br&gt;Fundir bitmap pixels&lt;br&gt; (%1)+[Alt]: Suavizar</translation>
+        <translation>Ferramenta Espalhar (%1):&lt;br&gt;Edita polilinhas/curvas&lt;br&gt;Funde bitmap pixels&lt;br&gt; (%1)+[Alt]: Suaviza</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="104"/>
         <source>Pencil Tool (%1)</source>
-        <translation>Lápis (%1)</translation>
+        <translation>Ferramenta Lápis (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="106"/>
         <source>Select Tool (%1)</source>
-        <translation>Seleccionar (%1)</translation>
+        <translation>Ferramenta Seleccionar (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="108"/>
         <source>Move Tool (%1)</source>
-        <translation>Mover (%1)</translation>
+        <translation>Ferramenta Mover (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="110"/>
         <source>Hand Tool (%1)</source>
-        <translation>Mão (%1)</translation>
+        <translation>Ferramenta Mão (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="112"/>
         <source>Pen Tool (%1)</source>
-        <translation>Caneta (%1)</translation>
+        <translation>Ferramenta Caneta (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="114"/>
         <source>Eraser Tool (%1)</source>
-        <translation>Borracha (%1)</translation>
+        <translation>Ferramenta Borracha (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="116"/>
@@ -3728,27 +3727,27 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="118"/>
         <source>Paint Bucket Tool (%1)</source>
-        <translation>Balde de Tinta (%1)</translation>
+        <translation>Ferramenta Balde de Tinta (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="120"/>
         <source>Brush Tool (%1)</source>
-        <translation>Pincel (%1)</translation>
+        <translation>Ferramenta Pincel (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="122"/>
         <source>Eyedropper Tool (%1)</source>
-        <translation>Conta-gotas (%1)</translation>
+        <translation>Ferramenta Conta-gotas (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="124"/>
         <source>Clear Tool (%1)</source>
-        <translation>Limpar (%1)</translation>
+        <translation>Ferramenta Limpar (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="126"/>
         <source>Smudge Tool (%1)</source>
-        <translation>Ferramenta espalhar (%1)</translation>
+        <translation>Ferramenta Espalhar (%1)</translation>
     </message>
 </context>
 <context>
@@ -3825,7 +3824,7 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="114"/>
         <source>The extend to which the color variation will be treated as being equal</source>
-        <translation>A forma pela qual a variação de cor será tratada como sendo igual</translation>
+        <translation>Intervalo que ajusta a expansão da cor por igual</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
@@ -3871,12 +3870,12 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="154"/>
         <source>Make invisible</source>
-        <translation>Tornar visível</translation>
+        <translation>Tornar oculto</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
         <source>Invisible</source>
-        <translation>Invisível</translation>
+        <translation>Oculto</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
@@ -3919,12 +3918,12 @@ Rosa Amarelado Suave</translation>
     <message>
         <location filename="../app/ui/toolspage.ui" line="75"/>
         <source>Number of previous onion frames shown</source>
-        <translation>Número de transparências de quadros anteriores a serem mostradas</translation>
+        <translation>Mostra número de transparências nos quadros anteriores</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="104"/>
         <source>Number of next onion frames shown</source>
-        <translation>Mostrar número de transparências nos próximos quadros</translation>
+        <translation>Mostra número de transparências nos quadros seguintes</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="136"/>
