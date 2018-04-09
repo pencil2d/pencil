@@ -25,11 +25,10 @@ class BlitRect : public QRect
 {
 public:
     explicit BlitRect();
-
     void extend(QPoint p);
 
-protected:
-    int points;
+private:
+    bool mInitialized = false;
 };
 
 #endif // BLITRECT_H
