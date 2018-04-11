@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include <QApplication>
 #include <QDesktopServices>
+#include <QStandardPaths>
 
 #include "pencildef.h"
 #include "editor.h"
@@ -643,6 +644,17 @@ void ActionCommands::help()
 {
     QString url = "http://www.pencil2d.org/doc/";
     QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::quickGuide()
+{
+    QString sDocPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    QString sCopyDest = QDir(sDocPath).filePath("pencil2d_quick_guide.pdf");
+
+    QFile quickGuideFile(":/app/pencil2d_quick_guide.pdf");
+    quickGuideFile.copy(sCopyDest);
+
+    QDesktopServices::openUrl(QUrl::fromLocalFile(sCopyDest));
 }
 
 void ActionCommands::website()

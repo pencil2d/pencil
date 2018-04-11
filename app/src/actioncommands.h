@@ -73,10 +73,11 @@ public:
     Status deleteCurrentLayer();
 
     // Help
-    void about();
     void help();
+    void quickGuide();
     void website();
     void reportbug();
+    void about();
 
 private:
     Editor* mEditor = nullptr;

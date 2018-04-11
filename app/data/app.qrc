@@ -61,5 +61,6 @@
         <file>icons/mirror.png</file>
         <file>icons/mirrorV.png</file>
         <file>icons/dialog-error.svg</file>
+        <file>pencil2d_quick_guide.pdf</file>
     </qresource>
 </RCC>

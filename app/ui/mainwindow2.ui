@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -199,6 +199,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionHelp"/>
+    <addaction name="actionQuick_Guide"/>
     <addaction name="separator"/>
     <addaction name="actionWebsite"/>
     <addaction name="actionReport_Bug"/>
@@ -865,6 +866,14 @@
   <action name="actionReport_Bug">
    <property name="text">
     <string>Report a Bug</string>
+   </property>
+  </action>
+  <action name="actionQuick_Guide">
+   <property name="text">
+    <string>Quick Reference Guide</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
  </widget>
