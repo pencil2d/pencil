@@ -1367,7 +1367,7 @@ QList<int> VectorImage::getCurvesCloseTo(QPointF P1, qreal maxDistance)
  * @param thePoint: QPointF
  * @return VertexRef of the closest point in the selected curve
  */
-VertexRef VectorImage::getClosestVertexTo(BezierCurve curve, int curveNum, QPointF thePoint)
+VertexRef VectorImage::getClosestVertexTo(const BezierCurve& curve, int curveNum, QPointF thePoint)
 {
     VertexRef result;
     result = VertexRef(-1, -1);  // result = [-1, -1]

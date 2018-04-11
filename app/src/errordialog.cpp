@@ -23,7 +23,7 @@ ErrorDialog::ErrorDialog( QString title, QString description, QString details, Q
 {
     ui->setupUi( this );
 
-    this->setWindowTitle( title );
+    setWindowTitle( title );
     ui->title->setText( QString( "<h3>%1</h3>" ).arg( title ) );
     ui->description->setText( description );
     if ( details.isEmpty() )

@@ -28,10 +28,11 @@ class Editor;
 class BaseManager : public QObject
 {
     Q_OBJECT
-public:
+protected:
     explicit BaseManager(Editor* editor = 0);
     virtual ~BaseManager();
 
+public:
     Editor* editor() const { return mEditor; }
     Object* object() const;
 

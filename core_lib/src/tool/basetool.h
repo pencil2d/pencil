@@ -35,16 +35,16 @@ class StrokeManager;
 class Properties
 {
 public:
-    qreal width       = 1.f;
-    qreal feather     = 1.f;
-    bool pressure     = 1;
-    int invisibility  = 0;
+    qreal width = 1.f;
+    qreal feather = 1.f;
+    bool pressure = 1;
+    int invisibility = 0;
     int preserveAlpha = 0;
     bool vectorMergeEnabled = false;
     bool bezier_state = false;
-    bool useFeather   = true;
-    int useAA        = 0;
-    int inpolLevel    = 0;
+    bool useFeather = true;
+    int useAA = 0;
+    int inpolLevel = 0;
     qreal tolerance = 0;
     bool useFillContour = 0;
 };
@@ -57,36 +57,38 @@ const int DISABLED = -1;
 class BaseTool : public QObject
 {
     Q_OBJECT
+protected:
+    explicit BaseTool(QObject* parent);
+
 public:
-    static QString TypeName( ToolType );
+    static QString TypeName(ToolType);
 
     static ToolPropertyType assistedSettingType; // dynamic cursor adjustment
     static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
 
-    explicit BaseTool( QObject* parent = 0 );
-    void initialize( Editor* editor );
+    void initialize(Editor* editor);
 
-    QString typeName() { return TypeName( type() ); }
+    QString typeName() { return TypeName(type()); }
 
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
 
-    virtual void mousePressEvent( QMouseEvent* ) = 0;
-    virtual void mouseMoveEvent( QMouseEvent* ) = 0;
-    virtual void mouseReleaseEvent( QMouseEvent* ) = 0;
-    virtual void mouseDoubleClickEvent( QMouseEvent* );
+    virtual void mousePressEvent(QMouseEvent*) = 0;
+    virtual void mouseMoveEvent(QMouseEvent*) = 0;
+    virtual void mouseReleaseEvent(QMouseEvent*) = 0;
+    virtual void mouseDoubleClickEvent(QMouseEvent*);
 
     // return true if handled
-    virtual bool keyPressEvent( QKeyEvent* ) { return false; }
-    virtual bool keyReleaseEvent( QKeyEvent* ) { return false; }
+    virtual bool keyPressEvent(QKeyEvent*) { return false; }
+    virtual bool keyReleaseEvent(QKeyEvent*) { return false; }
 
     // dynamic cursor adjustment
-    virtual void startAdjusting( ToolPropertyType argSettingType, qreal argStep );
+    virtual void startAdjusting(ToolPropertyType argSettingType, qreal argStep);
     virtual void stopAdjusting();
-    virtual void adjustCursor( qreal argOffsetX, ToolPropertyType type );
+    virtual void adjustCursor(qreal argOffsetX, ToolPropertyType type);
 
-    virtual void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
+    virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
     virtual void clear() {}
 
@@ -94,21 +96,21 @@ public:
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
     static QPixmap quickSizeCursor(float brushWidth, float brushFeather, float scalingFac);
 
-    virtual void setWidth( const qreal width );
-    virtual void setFeather( const qreal feather );
-    virtual void setInvisibility( const bool invisibility );
-    virtual void setBezier( const bool bezier_state );
-    virtual void setPressure( const bool pressure );
-    virtual void setUseFeather( const bool usingFeather );
-    virtual void setPreserveAlpha( const bool preserveAlpha );
-    virtual void setVectorMergeEnabled( const bool vectorMergeEnabled );
-    virtual void setAA(const int useAA );
-    virtual void setInpolLevel( const int level );
+    virtual void setWidth(const qreal width);
+    virtual void setFeather(const qreal feather);
+    virtual void setInvisibility(const bool invisibility);
+    virtual void setBezier(const bool bezier_state);
+    virtual void setPressure(const bool pressure);
+    virtual void setUseFeather(const bool usingFeather);
+    virtual void setPreserveAlpha(const bool preserveAlpha);
+    virtual void setVectorMergeEnabled(const bool vectorMergeEnabled);
+    virtual void setAA(const int useAA);
+    virtual void setInpolLevel(const int level);
     virtual void setTolerance(const int tolerance);
     virtual void setUseFillContour(const bool useFillContour);
 
-    virtual void leavingThisTool(){}
-    virtual void switchingLayers(){}
+    virtual void leavingThisTool() {}
+    virtual void switchingLayers() {}
 
     Properties properties;
 
@@ -119,7 +121,7 @@ public:
     QPointF getLastPressPixel();
     QPointF getLastPressPoint();
 
-    bool isPropertyEnabled( ToolPropertyType t ) { return m_enabledProperties[ t ]; }
+    bool isPropertyEnabled(ToolPropertyType t) { return m_enabledProperties[t]; }
 
 protected:
     QHash<ToolPropertyType, bool> m_enabledProperties;

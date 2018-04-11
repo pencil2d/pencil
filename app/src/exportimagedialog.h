@@ -32,7 +32,7 @@ public:
     explicit ExportImageDialog(QWidget* parent, FileType eType);
     ~ExportImageDialog();
 
-	void setCamerasInfo(const std::vector<std::pair<QString, QSize>>);
+	void setCamerasInfo(const std::vector<std::pair<QString, QSize>>& camInfo);
 
     void  setExportSize( QSize size );
     QSize getExportSize();

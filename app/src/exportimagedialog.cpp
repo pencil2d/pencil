@@ -41,7 +41,7 @@ ExportImageDialog::~ExportImageDialog()
     delete ui;
 }
 
-void ExportImageDialog::setCamerasInfo(const std::vector<std::pair<QString, QSize>> cameraInfo)
+void ExportImageDialog::setCamerasInfo(const std::vector<std::pair<QString, QSize>>& cameraInfo)
 {
 	Q_ASSERT(ui->cameraCombo);
 

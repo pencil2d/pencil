@@ -65,7 +65,7 @@ void initialise()
 
 void Editor::importMovie( QString filePath, int fps )
 {
-    int i;
+    int i = 0;
     QSettings settings( PENCIL2D, PENCIL2D );
 
     qDebug() << "-------IMPORT VIDEO------" << filePath;

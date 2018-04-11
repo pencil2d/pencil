@@ -119,7 +119,7 @@ public:
     QList<BezierCurve> getSelectedCurves();
     QList<int> getSelectedCurveNumbers();
     BezierArea getSelectedArea(QPointF currentPoint);
-    VertexRef getClosestVertexTo(BezierCurve curve, int curveNum, QPointF thisPoint);
+    VertexRef getClosestVertexTo(const BezierCurve& curve, int curveNum, QPointF thisPoint);
     QList<VertexRef> getCurveVertices(int curveNumber);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance, QList<VertexRef>* listOfPoints);

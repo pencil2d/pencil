@@ -26,10 +26,11 @@ class Editor;
 class BaseDockWidget : public QDockWidget
 {
     Q_OBJECT
-public:
+protected:
     explicit BaseDockWidget( QWidget* pParent );
     virtual  ~BaseDockWidget();
 
+public:
     virtual void initUI() = 0;
     virtual void updateUI() = 0;
 
