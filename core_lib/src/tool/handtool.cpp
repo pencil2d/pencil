@@ -99,7 +99,7 @@ void HandTool::mouseMoveEvent( QMouseEvent* evt )
     }
     else if ( isScale )
     {
-        float delta = ( getCurrentPixel().y() - mLastPixel.y() ) / 100.f ;
+        float delta = ( getCurrentPixel().y() - mLastPixel.y() ) / 100.f;
         float scaleValue = viewMgr->scaling() * (1.f + delta);
         viewMgr->scale(scaleValue);
     }

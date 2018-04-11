@@ -333,7 +333,7 @@ void Editor::restoreKey()
         BackupSoundElement* lastBackupSoundElement = (BackupSoundElement*)lastBackupElement;
         layerIndex = lastBackupSoundElement->layer;
         frame = lastBackupSoundElement->frame;
-        layer = object()->getLayer(layerIndex);
+
         strSoundFile = lastBackupSoundElement->fileName;
         KeyFrame* key = addKeyFrame(layerIndex, frame);
         SoundClip* clip = dynamic_cast<SoundClip*>(key);

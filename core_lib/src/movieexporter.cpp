@@ -388,7 +388,6 @@ Status MovieExporter::generateMovie(
     bool transparency = false;
     QString strCameraName = mDesc.strCameraName;
     bool loop = mDesc.loop;
-    int bytesWritten;
 
     auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
     if (cameraLayer == nullptr)
@@ -485,7 +484,7 @@ Status MovieExporter::generateMovie(
 
             // Should use sizeInBytes instead of byteCount to support large images,
             // but this is only supported in QT 5.10+
-            bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
+            int bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
             Q_ASSERT(bytesWritten == imageToExport.byteCount());
 
             currentFrame++;

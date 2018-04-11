@@ -194,4 +194,3 @@ VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increme
 {
     return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
-

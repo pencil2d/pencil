@@ -27,10 +27,10 @@ QTransform RectMapTransform( QRectF source, QRectF target );
 class ScopeGuard
 {
 public:
-    ScopeGuard( std::function< void() > onScopeExit ) { m_onScopeExit = onScopeExit; }
+    explicit ScopeGuard(std::function< void() > onScopeExit) { m_onScopeExit = onScopeExit; }
     ~ScopeGuard() { m_onScopeExit(); }
 private:
-    std::function< void() > m_onScopeExit;
+    std::function<void()> m_onScopeExit;
 };
 
 #define SCOPEGUARD_LINENAME_CAT(name, line) name##line
@@ -47,7 +47,7 @@ private:
 class SignalBlocker
 {
 public:
-    SignalBlocker( QObject* o );
+    explicit SignalBlocker(QObject* o);
     ~SignalBlocker();
 private:
     QObject* mObject = nullptr;

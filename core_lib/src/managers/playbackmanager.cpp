@@ -374,5 +374,3 @@ void PlaybackManager::enableSound(bool b)
         mCheckForSoundsHalfway = true;
     }
 }
-
-

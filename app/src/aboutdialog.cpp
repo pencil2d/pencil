@@ -39,14 +39,14 @@ void AboutDialog::init()
 {
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
-#define S__GIT_TIMESTAMP__ TOSTRING(GIT_TIMESTAMP)
-#define S__GIT_COMMIT_HASH__ TOSTRING(GIT_CURRENT_SHA1)
+#define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
+#define S__GIT_COMMIT_HASH TOSTRING(GIT_CURRENT_SHA1)
 
 	QStringList devText;
 	devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
 #if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
-    devText << "commit: " S__GIT_COMMIT_HASH__ ;
-	devText << "date: " S__GIT_TIMESTAMP__ ;
+    devText << "commit: " S__GIT_COMMIT_HASH ;
+	devText << "date: " S__GIT_TIMESTAMP ;
 #endif
 #if !defined(PENCIL2D_RELEASE)
     devText << "Development build";

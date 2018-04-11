@@ -580,7 +580,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         if (currentTool()->isAdjusting)
         {
             ToolPropertyType tool_type;
-            tool_type = event->modifiers() & Qt::ControlModifier ? FEATHER : WIDTH;
+            tool_type = (event->modifiers() & Qt::ControlModifier) ? FEATHER : WIDTH;
             currentTool()->adjustCursor(mOffset.x(), tool_type); //updates cursors given org width or feather and x
             updateCanvasCursor();
             return;

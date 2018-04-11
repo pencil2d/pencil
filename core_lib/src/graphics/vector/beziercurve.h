@@ -32,9 +32,9 @@ struct Intersection
 class BezierCurve
 {
 public:
-    BezierCurve();
-    BezierCurve(QList<QPointF> pointList);
-    BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, double tol);
+    explicit BezierCurve();
+    explicit BezierCurve(QList<QPointF> pointList);
+    explicit BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, double tol);
 
     Status createDomElement(QXmlStreamWriter &xmlStream);
     void loadDomElement(QDomElement element);

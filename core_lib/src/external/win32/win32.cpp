@@ -29,7 +29,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layersound.h"
 
-#define MIN(a,b) ((a)>(b)?(b):(a))
+#define MIN(a, b) ((a)>(b) ? (b) : (a))
 
 
 

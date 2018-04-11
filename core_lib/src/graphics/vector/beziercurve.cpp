@@ -42,7 +42,7 @@ BezierCurve::BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, do
 
     // Simplify path
     QList<bool> markList;
-    for(int i=0; i<n; i++) { markList.append(false); }
+    for (int i=0; i<n; i++) { markList.append(false); }
     markList.replace(0, true);
     markList.replace(n-1, true);
     BezierCurve::simplify(tol, pointList, 0, n-1, markList);

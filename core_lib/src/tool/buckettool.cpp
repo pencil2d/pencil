@@ -130,7 +130,7 @@ void BucketTool::mouseMoveEvent(QMouseEvent* evt)
         if (evt->buttons() & Qt::LeftButton)
         {
             drawStroke();
-            qDebug() << "DrawStroke" << evt->pos() ;
+            qDebug() << "DrawStroke" << evt->pos();
         }
     }
 }

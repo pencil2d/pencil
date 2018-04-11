@@ -67,10 +67,10 @@ GNU General Public License for more details.
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
-#define S__GIT_TIMESTAMP__ TOSTRING(GIT_TIMESTAMP)
+#define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
 
 #ifdef GIT_TIMESTAMP
-#define BUILD_DATE S__GIT_TIMESTAMP__
+#define BUILD_DATE S__GIT_TIMESTAMP
 #else
 #define BUILD_DATE __DATE__
 #endif

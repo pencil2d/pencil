@@ -33,9 +33,7 @@ GNU General Public License for more details.
 #include "blitrect.h"
 
 
-
-BrushTool::BrushTool( QObject *parent ) :
-StrokeTool( parent )
+BrushTool::BrushTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
