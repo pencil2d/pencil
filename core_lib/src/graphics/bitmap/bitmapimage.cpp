@@ -22,20 +22,20 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    mImage = std::make_shared< QImage >(); // null image
-    mBounds = QRect(0, 0, 0, 0);
+    mImage = std::make_shared<QImage>(1, 1, QImage::Format_ARGB32_Premultiplied); // don't create null image
+    mBounds = QRect(0, 0, 1, 1);
 }
 
 BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
 {
     mBounds = a.mBounds;
-    mImage = std::make_shared< QImage >(*a.mImage);
+    mImage = std::make_shared<QImage>(*a.mImage);
 }
 
 BitmapImage::BitmapImage(const QRect& rectangle, const QColor& colour)
 {
     mBounds = rectangle;
-    mImage = std::make_shared< QImage >(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
+    mImage = std::make_shared<QImage>(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
     mImage->fill(colour.rgba());
 }
 
@@ -483,8 +483,8 @@ Status BitmapImage::writeFile(const QString& filename)
 
 void BitmapImage::clear()
 {
-    mImage = std::make_shared< QImage >(); // null image
-    mBounds = QRect(0, 0, 0, 0);
+    mImage = std::make_shared<QImage>(1, 1, QImage::Format_ARGB32_Premultiplied); // null image
+    mBounds = QRect(0, 0, 1, 1);
     modification();
 }
 
