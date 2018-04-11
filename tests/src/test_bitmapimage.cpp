@@ -22,10 +22,10 @@ TEST_CASE("BitmapImage")
     SECTION("Init an Bitmap Image")
     {
         auto b = std::make_shared<BitmapImage>();
-        REQUIRE(b->image()->isNull());
+        REQUIRE(b->image()->isNull() == false);
 
-        REQUIRE(b->width() == 0);
-        REQUIRE(b->height() == 0);
+        REQUIRE(b->width() == 1);
+        REQUIRE(b->height() == 1);
         REQUIRE(b->top() == 0);
         REQUIRE(b->left() == 0);
     }
