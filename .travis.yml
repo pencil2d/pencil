@@ -10,7 +10,6 @@ language: cpp
 compiler: g++
 sudo: required
 dist: trusty
-group: deprecated-2017Q3
 osx_sdk: macosx10.12
 os:
   - linux
@@ -18,57 +17,63 @@ os:
 
 env:
   global:
-    - DOXYFILE: $TRAVIS_BUILD_DIR/util/Doxyfile-Travis
+    - DOXYFILE: $TRAVIS_BUILD_DIR/util/docs/Doxyfile-Travis
     - GH_REPO_REF: github.com/pencil2d/pencil-docs.git
     - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
 
 python:
- - "3.4"
+  - "3.4"
+
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
-    - ubuntu-sdk-team
-    - trusty-media
-    - sourceline: 'ppa:beineri/opt-qt591-trusty'
+      - ubuntu-toolchain-r-test
+      - ubuntu-sdk-team
+      - trusty-media
+      - sourceline: 'ppa:beineri/opt-qt591-trusty'
     packages:
-    - g++-5
-    - build-essential
-    - qt59tools
-    - qt59base
-    - qt59multimedia
-    - qt59svg
-    - qt59xmlpatterns
-    - bsdtar
-    - ffmpeg
-    - doxygen
-    - doxygen-doc
-    - doxygen-latex
-    - doxygen-gui
-    - graphviz
-    - squashfs-tools
+      - build-essential
+      - qt59tools
+      - qt59base
+      - qt59multimedia
+      - qt59svg
+      - qt59xmlpatterns
+      - bsdtar
+      - ffmpeg
+      - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
+      - python3
+      - python3-pip
 
 before_install:
-  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    brew update;
-    brew install p7zip;
-    brew install python3;
-    brew install qt@5.9;
-    brew link qt@5.9 --force;
-  fi'
+  - | 
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+        brew update;
+        ver=$(python -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/');
+        python -V
+        if [ "$ver" -le "27" ]; then
+            brew upgrade python;
+        fi
+        brew install p7zip;
+        brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/13d52537d1e0e5f913de46390123436d220035f6/Formula/qt.rb;
+        brew link qt --force;
+    fi
 
 install:
-  - pip freeze > requirements.txt
-  - pip install -r requirements.txt
-  - pip install -U setuptools
-  - pip install -U virtualenvwrapper
-  - pip install -U google-api-python-client
+  - pip3 freeze > requirements.txt
+  - pip3 install -r requirements.txt
+  - sudo pip3 install google-api-python-client
   - python3 -V
-  - pip -V
+  - pip3 -V
 
 before_script:
   - echo "are changes related to source code?"
-# - bash $TRAVIS_BUILD_DIR/util/checkchanges.sh
+  - 'if [ "$TRAVIS_BRANCH" != "release" ]; then
+    bash $TRAVIS_BUILD_DIR/util/checkchanges.sh;
+  fi'
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     . /opt/qt59/bin/qt59-env.sh;
     export DISPLAY=:99.0;
@@ -81,7 +86,11 @@ before_script:
 
 script:
   - mkdir "build" && cd build
-  - qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT
+  - 'if [ "$TRAVIS_BRANCH" == "release" ]; then
+    qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE;
+  else
+    qmake ../ PREFIX=/usr CONFIG+=GIT CONFIG+=NIGHTLY;
+  fi'
   - make;
   - "$TRAVIS_BUILD_DIR/build/tests/tests"
 
@@ -92,21 +101,11 @@ after_success:
       make INSTALL_ROOT="${PWD}/Pencil2D" install;
       rm -rf Pencil2D/usr/lib;
       echo "Creating AppImage...";
+      sed -i "/^Keywords\(\[[a-zA-Z_.@]\+\]\)\?=/d;/^Version=/cVersion=1.0" Pencil2D/usr/share/applications/pencil2d.desktop;
       install -Dm755 /usr/bin/ffmpeg Pencil2D/usr/plugins/ffmpeg;
       curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage;
       chmod 755 linuxdeployqt-continuous-x86_64.AppImage;
-      ./linuxdeployqt-continuous-x86_64.AppImage --appimage-extract;
-      curl -fsSLO http://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.23.tar.xz;
-      bsdtar xf desktop-file-utils-0.23.tar.xz;
-      cd desktop-file-utils-0.23;
-      ./configure;
-      make;
-      cd ../;
-      cp desktop-file-utils-0.23/src/desktop-file-validate squashfs-root/usr/bin/desktop-file-validate;
-      curl -fsSLO https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage;
-      chmod a+x appimagetool-x86_64.AppImage;
-      ./appimagetool-x86_64.AppImage squashfs-root linuxdeployqt-fixed.AppImage;
-      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-fixed.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -appimage;
+      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -extra-plugins=iconengines/libqsvgicon.so -appimage;
       mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
@@ -115,7 +114,7 @@ after_success:
       mv bin Pencil2D;
       echo "Fixing info.plist";
       cd Pencil2D;
-      plutil -replace CFBundleExecutable -string Pencil2D Pencil2D.app/Contents/Info.plist;
+      plutil -replace CFBundleExecutable -string pencil2d Pencil2D.app/Contents/Info.plist;
       plutil -replace CFBundleIdentifier -string org.pencil2d.Pencil2D Pencil2D.app/Contents/Info.plist;
 
       echo "Copying ffmpeg plugin";
@@ -143,16 +142,19 @@ after_success:
     echo "Initiate deployment on Google Drive";
     cd "$TRAVIS_BUILD_DIR/util";
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      python nightly-build-upload.py "$LINUX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
+      python3 nightly-build-upload.py "$LINUX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
     fi;
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      python nightly-build-upload.py "$OSX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
+      python3 nightly-build-upload.py "$OSX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
     fi;
     echo "Operation done";
   fi'
 
   # Deploy doxygen documentation to github pages
   - 'if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_OS_NAME" == "linux" ]; then
-      cd "$TRAVIS_BUILD_DIR/util";
+      cd "$TRAVIS_BUILD_DIR/util/docs";
+      for i in core svg xmlpatterns; do
+        curl -fsSLO "https://doc.qt.io/qt-5/qt$i.tags";
+      done;
       ./documentation-deploy.sh;
     fi'

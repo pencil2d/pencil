@@ -1,14 +1,53 @@
-## Pencil2D v0.6 - 2017
+## Pencil2D 0.6.1 - (WIP)
 
-### Features
+* #821 Brand new tool icons.
+* #849 Allowing nested dock panels.
+* The layout of tool buttons will change automatically by its width and height.
+* Re-added zoom levels, now available via View->Zoom in/out or their respective shortcuts.
+* Be able to set the pen width to 2 decimal places.
+* Auto extend Timeline length when users reach the end of Timeline.
+* #905 Greatly reduced the memory usage.
+* Speeding up project save and load significantly.
+* #876, #904 Greatly speed up the movie export and reduce temporary used disk space during exporting.
+* Updated app icons.
+* #513, #904 Allowing export APNG (Animated PNG) format.
+* #857, #899 Importing image sequence now has progress bar. -- [Martin van Zijl](https://github.com/martinvanzijl)
+* #851, #898 Fixed the FPS spinbox didn't work on Ubuntu 14.04. -- [Martin van Zijl](https://github.com/martinvanzijl)
+* #836 Improved the canvas quality when the zoom level is less than 100%.
+* #810, #813 Export video via command line.
+* #818, #835 Improved Gif exporting quality.
+* #288 Added `webm` format for video exporting.
+* #434 Give more information in about dialog.
+* #530, #850 Migrate the internal zip engine from Quazip to Miniz.
+* #747 Can turn each sound layer on/off separately by switching visibility.
+* Added languages: Indonesia, Hebrew, Vietnamese, Slovenian and Portugal Portuguese.
+
+Fixes:
+
+* #816, #819 Not able to type correct values into HSV and RGB boxes.
+* #826 The save dialog showed twice on OSX when quitting from dock.
+* #826 "Cancel" button of save dialog was ignored.
+* #412, #814 Duplicate key wasn't working in some cases.
+* #831 App crashed when duplicating a sound key.
+* #830 Can't save .pcl multiple times after importing sound layers.
+* #845 The framerate wasn't accurate when playing animation. 
+* #828 The app stalled when using dotted cursor and zooming-in very much.
+* #739, #889 Vector outlines are not drawn when Horizontal Flip and Show Outlines Only are activated. -- [Martin van Zijl](https://github.com/martinvanzijl)
+* #735, #913 Some shortcuts are broken, file extensions are case-sensitive in image sequence import -- [Nick](https://github.com/Spark01)
+
+
+## Pencil2D v0.6 - 1 December 2017
 
 User Interface:
+
 * New graphic Colour Wheel
+* Show palette as a grid, with 3 sizes of the swatches.
+* Coloured Onion-Skin capability (blue, red). Basically can be used for making a differentiation between "previous frames" and "next frames".
+* Implementation of relative/absolute Onion Skin functionality (allowing matching frames or keyframes).
 * Grid Panel Display (G)
-* Coloured Onion-Skin capability (blue, red). Basically can be used for making a differentiation between “previous frames” and “next frames” (Improved)
-* Implementation of relative/absolute Onion Skin functionality (allowing matching frames or keyframes)
 
 Timeline keyframe manipulation:
+
 * To select/deselect a single frame (LMB)
 * To select a range of frames (Shift + LMB). It needs to be improved (buggy)
 * To select/deselect individual frames (Ctrl +LMB)
@@ -16,15 +55,50 @@ Timeline keyframe manipulation:
 * To move a single frame (LMB Selected + Drag)
 * To move a frame and all the frames at its right (Alt + LMB +Drag)
 
-Other Improvements:
-* Fast HandTool (keep pressing SpaceBar). Shortcut (H) works as a fix Hand
-* Dynamic Control Size (Shift + Drag Left/Right)
-* Fast Eyedropper (Alt). Shortcut (I) works as a fix Eyedropper
-* Rotate within a selection (CTRL + Drag Left/Right): Left rotate anticlockwise, right rotate clockwise. The Movetool(Q) should be selected before applying this hotkey
-* Smudge Hard (A). For creating colouring effects similar to oil painting. Bitmap only.
-* Smudge Smooth (keep pressing Alt). The Smudge-tool (A) should be selected before applying this hotkey
-* Added Alpha Channel to colour palette
-* The standard Shortcut list can be found in: Edit -> Preferences -> Shortcuts.
+Drawing Tool Improvements:
+
+* Brush quick-sizing (Shift + Drag Left/Right)
+* Brush feather quick-sizing (Ctrl + Drag Left/Right)
+* Fast Hand Tool (holding Space bar).
+* Fast Eyedropper (Alt).
+* Move tool can rotate selection area by Ctrl + Drag Left/Right.
+* Smudge tool is now working on bitmap layers for creating oil painting-like effects. Hold Alt to get liquify effects.
+* 3-level stroke stablizer.
+* Dotted Cursor available in prefrences.
+* Improved Fill Tool bitmap algorithm and added a threshold slider.
+* Removed Fill Tool bleeding into other layers.
+
+More Features and Improvements:
+
+* Added alpha channel to color palette.
+* Added .pcl/.pclx file associations and icons on mac OS.
+* Added command line interface (run with the -h flag for details)
+* Color selection behavior was separated Bitmap & Vector Layers (Using the color wheel on bitmap layers will only affect the active color and not the Color Palette swatches. In Vector Layers, changing any swatch will affect only vector colors)
+* Implemented canvas “freehand” rotation. (ALT + RMB and drag)
+* Implemented persistent camera frame (“passepartout”) to preview canvas & export size (Can be hidden by hiding the camera layer)
+* Implemented selection horizontal & vertical mirroring (“Flipping”)
+* Export movies in a given range.
+
+Fixes:
+
+* Export animations to mp4, avi, wmv, and animated gif.
+* Re-implemented Camera Motion Interpolation (“tweening”).
+* Removed unused gradient background option from preferences.
+* Fixed sound import and timeline playback.
+* Fixed auto-save feature.
+* Fixed shortcut mappings.
+* Misc bug fixes.
+
+Known Issues:
+
+* Vector Engine is being reworked, the functionalities are limited and it’s not yet ready for production use.
+* You will be able to undo a “delete frame”, but cannot redo it.
+* Smudge tool (Bitmap) fills the background with white color, which should be fully transparent. Plus you cannot undo it’s behavior properly, yet.
+* Polyline Tool: Bezier mode is experimental and does not create proper splines in Bitmap Layers. In vector layers, it’s working by default and cannot be disabled.
+* Preview mode is currently disabled since it’s pending implementation.
+* Multi-Layer Onion Skin option is not working, pending implementation.
+* The original Pencil PDF manual has been removed. We will work to create a new online user manual accessible for everyone.
+
 
 ## Pencil2D v0.5.4 - July 26th 2013
 

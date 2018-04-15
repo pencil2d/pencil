@@ -1,6 +1,6 @@
 # Building Pencil2D on macOS
 
-These are instructions for building Pencil2D on a Mac. If you are using Windows go [here](build_win.md), and Linux please go [here](build_linux.md).
+These are instructions for building Pencil2D on a Mac. If you are using Windows go [here](docs/build_win.md), and Linux please go [here](docs/build_linux.md).
 
 This guide is primarily targeted towards developers. If you just want to use the latest version, download it from our [nightly builds](https://drive.google.com/drive/folders/0BxdcdOiOmg-CcWhLazdKR1oydHM). This tutorial was made with macOS Sierra (10.12) in mind, however this will probably work with all versions Mountain Lion (10.8) and up.
 
@@ -13,9 +13,9 @@ There are 4 steps in total:
 
 ## TL;DR
 
-If you are an *experienced Qt developer*, compiling Pencil2D would be extremely easy for you. Just open up `pencil.pro` and compile, that's it.
+If you are an *experienced Qt developer*, compiling Pencil2D would be extremely easy for you. Just open up `pencil2d.pro` in Qt Creator and compile, that's it.
 
-## Install Xcode
+## 1. Install Xcode
 
 ### From App Store (Recommended)
 
@@ -55,19 +55,19 @@ And also run the following commands to install Qt Creator:
     brew tap caskroom/cask
     brew cask install qt-creator
 
-## Get Source Code
+## 3. Get Source Code
 
-- You can simply download the source code [here](https://github.com/pencil2d/pencil/archive/master.zip).
+- You can simply download the source code archive [here](https://github.com/pencil2d/pencil/archive/master.zip).
 - Or get the source via [Git](https://github.com/pencil2d/pencil.git) if you plan to contribute to the Pencil2D project.
 
-## Building the application
+## 4. Building the application
 
 Now it's time to build the application.
 
 ### With Qt Creator (recommended)
 
 - Open up the Qt Creator application.
-- From the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root source folder and open the `pencil.pro` file. 
+- From the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root source folder and open the `pencil2d.pro` file. 
 - Next, you'll be asked to configure your kits for the project. Kits determine compilers, target environment, and various build settings among other things. The Desktop option should be the only one checked. Click Configure Project to complete the kit selection.
 - Now all you have to do to build is click the plain **green arrow** in the bottom left corner of the window or press `Command+r`. A small progress bar will show up on the bottom right and console output will appear in the bottom section.
 - If everything goes well then the version of Pencil2D that you build will open up automatically and you're done!
@@ -78,7 +78,7 @@ If there is an error, the issues tab will open up at the bottom and display erro
 
 If you do not have or do not want to use Qt Creator for some reason then you can follow this two step process. First you have to use QMake to let Qt do its preprocessing and generate the Makefiles. Make sure that the qmake executable that came with Qt is in your PATH. Then cd to the root git directory for Pencil2d and run:
 
-    qmake pencil.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug && /usr/bin/make qmake_all
+    qmake pencil2d.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug && /usr/bin/make qmake_all
 
 Next you have to use GNU Make to actually compile the source code (this tool comes with XCode Developer Tools so you should already have it). Run the command:
 
@@ -90,4 +90,4 @@ You can then open Pencil2D by opening Pencil2D.app in app or by running:
 
 ## Next steps
 
-Now that you can build Pencil2D, the next step is to learn about {navigating the source code} (coming soon).
+Now that you can build Pencil2D, the next step is to learn about [navigating the source code](docs/dive-into-code.md).

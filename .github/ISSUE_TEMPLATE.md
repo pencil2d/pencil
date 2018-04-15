@@ -1,13 +1,13 @@
 <!--
-This template utilizes the Markdown language for styling.
-To style your comment please refer to Github's Markdown Guide https://guides.github.com/features/mastering-markdown/
-Please use the SEARCH function before opening a new issue and look for your problem to avoid duplicates!
+Use Markdown language for styling.
+Github's Markdown Guide https://guides.github.com/features/mastering-markdown/
+Please use the SEARCH function before opening a new issue!
 -->
 
 ### --Issue Summary--
 <!-- (Optional) A brief overview of your issue (i.e When I use the paint bucket in a vector layer everything goes red) -->
 
-### --Actual Results
+### --Actual Results--
 <!-- Explain what you actually got and how different it is from your expectations. -->
 
 ### --Expected Results--
@@ -34,7 +34,7 @@ Please use the SEARCH function before opening a new issue and look for your prob
 
 ---
 <!--
---For Code Contributors--
+### --For Code Contributors--
 (Optional) You can use this space to point out relevant code chunks that are suspected to be causing the issue.
 
 ```C++

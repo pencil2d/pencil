@@ -65,7 +65,7 @@
       <item row="1" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="KeyCaptureLineEdit" name="keySeqLineEdit"/>
+         <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
         </item>
         <item>
          <widget class="QPushButton" name="clearButton">
@@ -105,13 +105,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KeyCaptureLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>keycapturelineedit.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

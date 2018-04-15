@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GeneralPage</class>
+ <widget class="QWidget" name="GeneralPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>369</width>
+    <height>377</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="outerLay">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="minimumSize">
+      <size>
+       <width>128</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>400</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="contents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>332</width>
+        <height>510</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="lay">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string comment="GroupBox title in Preference">Language</string>
+         </property>
+         <layout class="QGridLayout" name="langLayout">
+          <item row="0" column="0">
+           <widget class="QComboBox" name="languageCombo">
+            <property name="currentText">
+             <string comment="First item of the language list">[System-Language]</string>
+            </property>
+            <item>
+             <property name="text">
+              <string comment="First item of the language list">[System-Language]</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="windowOpacityBox">
+         <property name="title">
+          <string comment="GroupBox title in Preference">Window opacity</string>
+         </property>
+         <layout class="QGridLayout" name="windowOpacityLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="windowOpacityLabel">
+            <property name="text">
+             <string>Opacity</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSlider" name="windowOpacityLevel">
+            <property name="minimum">
+             <number>30</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="appearanceBox">
+         <property name="title">
+          <string comment="GroupBox title in Preference">Appearance</string>
+         </property>
+         <layout class="QVBoxLayout" name="appearanceLayout">
+          <item>
+           <widget class="QCheckBox" name="shadowsBox">
+            <property name="text">
+             <string>Shadows</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="toolCursorsBox">
+            <property name="text">
+             <string>Tool Cursors</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="dottedCursorBox">
+            <property name="text">
+             <string>Dotted Cursor</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="backgroundBox">
+         <property name="title">
+          <string comment="GroupBox title in Preference">Background</string>
+         </property>
+         <layout class="QHBoxLayout" name="backgroundLayout">
+          <item>
+           <widget class="QRadioButton" name="checkerBackgroundButton">
+            <attribute name="buttonGroup">
+             <string notr="true">backgroundButtons</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="whiteBackgroundButton">
+            <attribute name="buttonGroup">
+             <string notr="true">backgroundButtons</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="greyBackgroundButton">
+            <attribute name="buttonGroup">
+             <string notr="true">backgroundButtons</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="dotsBackgroundButton">
+            <attribute name="buttonGroup">
+             <string notr="true">backgroundButtons</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="weaveBackgroundButton">
+            <attribute name="buttonGroup">
+             <string notr="true">backgroundButtons</string>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="displayBox">
+         <property name="title">
+          <string comment="GroupBox title in Preference">Canvas</string>
+         </property>
+         <layout class="QGridLayout" name="displayLayout">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="antialiasingBox">
+            <property name="text">
+             <string>Antialiasing</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="editingBox">
+         <property name="title">
+          <string comment="GroupBox title in Preference">Editing</string>
+         </property>
+         <layout class="QGridLayout" name="editingLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="curveSmoothingLabel">
+            <property name="text">
+             <string>Vector curve smoothing</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QSlider" name="curveSmoothingLevel">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="highResBox">
+            <property name="text">
+             <string>Tablet high-resolution position</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="gridBox">
+         <property name="title">
+          <string comment="groupBox title in Preference">Grid</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QSpinBox" name="gridSizeInput">
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>512</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="gridCheckBox">
+            <property name="text">
+             <string>Enable Grid</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+ <slots>
+  <signal>windowOpacityChange(int)</signal>
+  <slot>gridSizeChange(int)</slot>
+  <slot>languageChanged(int)</slot>
+  <slot>shadowsCheckboxStateChanged(int)</slot>
+  <slot>toolCursorsCheckboxStateChanged(int)</slot>
+  <slot>antiAliasCheckboxStateChanged(int)</slot>
+  <slot>curveSmoothingChange(int)</slot>
+  <slot>highResCheckboxStateChanged(int)</slot>
+  <slot>dottedCursorCheckboxStateChanged(int)</slot>
+  <slot>gridCheckBoxStateChanged(int)</slot>
+  <slot>backgroundChange(int)</slot>
+ </slots>
+ <buttongroups>
+  <buttongroup name="backgroundButtons"/>
+ </buttongroups>
+</ui>

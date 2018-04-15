@@ -9,82 +9,83 @@
 QT += core widgets gui xml multimedia svg
 
 TEMPLATE = app
-TARGET = Pencil2D
+TARGET = pencil2d
+QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
 CONFIG += qt
 
 DESTDIR = ../bin
 
 RESOURCES += \
-    resource/app.qrc \
-    ../translations/translations.qrc\
-    ../pencil.qrc
+    data/app.qrc \
+    ../translations/translations.qrc
 
 INCLUDEPATH += \
-    ../core_lib/graphics \
-    ../core_lib/graphics/bitmap \
-    ../core_lib/graphics/vector \
-    ../core_lib/interface \
-    ../core_lib/structure \
-    ../core_lib/tool \
-    ../core_lib/util \
+    src \
+    ../core_lib/src/graphics \
+    ../core_lib/src/graphics/bitmap \
+    ../core_lib/src/graphics/vector \
+    ../core_lib/src/interface \
+    ../core_lib/src/structure \
+    ../core_lib/src/tool \
+    ../core_lib/src/util \
     ../core_lib/ui \
-    ../core_lib/managers
+    ../core_lib/src/managers
 
 HEADERS += \
-    mainwindow2.h \
-    shortcutfilter.h \
-    timeline2.h \
-    actioncommands.h \
-    preferencesdialog.h \
-    shortcutspage.h \
-    preview.h \
-    colorbox.h \
-    colorgrid.h \
-    colorgriditem.h \
-    colorinspector.h \
-    colorpalettewidget.h \
-    colorwheel.h \
-	colordictionary.h \
-    filedialogex.h \
-    displayoptionwidget.h \
-    pencilapplication.h \
-    exportmoviedialog.h \
-    app_util.h \
-    errordialog.h \
-    aboutdialog.h \
-    toolbox.h \
-    tooloptionwidget.h \
-    importexportdialog.h \
-    exportimagedialog.h \
-    importimageseqdialog.h
+    src/mainwindow2.h \
+    src/shortcutfilter.h \
+    src/timeline2.h \
+    src/actioncommands.h \
+    src/preferencesdialog.h \
+    src/shortcutspage.h \
+    src/preview.h \
+    src/colorbox.h \
+    src/colorinspector.h \
+    src/colorpalettewidget.h \
+    src/colorwheel.h \
+    src/colordictionary.h \
+    src/filedialogex.h \
+    src/displayoptionwidget.h \
+    src/pencilapplication.h \
+    src/exportmoviedialog.h \
+    src/app_util.h \
+    src/errordialog.h \
+    src/aboutdialog.h \
+    src/toolbox.h \
+    src/tooloptionwidget.h \
+    src/importexportdialog.h \
+    src/exportimagedialog.h \
+    src/importimageseqdialog.h \
+    src/spinslider.h \
+    src/doubleprogressdialog.h
 
 SOURCES += \
-    main.cpp \
-    mainwindow2.cpp \
-    shortcutfilter.cpp \
-    timeline2.cpp \
-    actioncommands.cpp \
-    preferencesdialog.cpp \
-    shortcutspage.cpp \
-    preview.cpp \
-    colorbox.cpp \
-    colorgrid.cpp \
-    colorgriditem.cpp \
-    colorinspector.cpp \
-    colorpalettewidget.cpp \
-    colorwheel.cpp \
-    filedialogex.cpp \
-    displayoptionwidget.cpp \
-    pencilapplication.cpp \
-    exportmoviedialog.cpp \
-    errordialog.cpp \
-    aboutdialog.cpp \
-    toolbox.cpp \
-    tooloptionwidget.cpp \
-    importexportdialog.cpp \
-    exportimagedialog.cpp \
-    importimageseqdialog.cpp
+    src/main.cpp \
+    src/mainwindow2.cpp \
+    src/shortcutfilter.cpp \
+    src/timeline2.cpp \
+    src/actioncommands.cpp \
+    src/preferencesdialog.cpp \
+    src/shortcutspage.cpp \
+    src/preview.cpp \
+    src/colorbox.cpp \
+    src/colorinspector.cpp \
+    src/colorpalettewidget.cpp \
+    src/colorwheel.cpp \
+    src/filedialogex.cpp \
+    src/displayoptionwidget.cpp \
+    src/pencilapplication.cpp \
+    src/exportmoviedialog.cpp \
+    src/errordialog.cpp \
+    src/aboutdialog.cpp \
+    src/toolbox.cpp \
+    src/tooloptionwidget.cpp \
+    src/importexportdialog.cpp \
+    src/exportimagedialog.cpp \
+    src/importimageseqdialog.cpp \
+    src/spinslider.cpp \
+    src/doubleprogressdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -97,12 +98,18 @@ FORMS += \
     ui/importexportdialog.ui \
     ui/exportmovieoptions.ui \
     ui/exportimageoptions.ui \
-    ui/importimageseqoptions.ui
+    ui/importimageseqoptions.ui \
+    ui/tooloptions.ui \
+    ui/aboutdialog.ui \
+    ui/doubleprogressdialog.ui \
+    ui/preferencesdialog.ui \
+    ui/generalpage.ui \
+    ui/timelinepage.ui \
+    ui/filespage.ui \
+    ui/toolspage.ui \
+    ui/toolboxwidget.ui
 
-DEPENDPATH += .
 
-VERSION = "0.6.0"
-DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 GIT {
     DEFINES += GIT_EXISTS \
@@ -110,39 +117,33 @@ GIT {
     "GIT_TIMESTAMP=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ log -n 1 --pretty=format:"%cd" --date=format:"%Y-%m-%d_%H:%M:%S")"
 }
 
-NIGHTLY {
-    DEFINES += NIGHTLY_BUILD
-}
-
-
 macx {
-    RC_FILE = ../pencil.icns
+    RC_FILE = data/pencil2d.icns
 
     # Use custom Info.plist
-    QMAKE_INFO_PLIST = ../Info.plist
+    QMAKE_INFO_PLIST = data/Info.plist
 
     # Add file icons into the application bundle resources
-    FILE_ICONS.files = ../icons/mac_pcl_icon.icns ../icons/mac_pclx_icon.icns
+    FILE_ICONS.files = data/icons/mac_pcl_icon.icns data/icons/mac_pclx_icon.icns
     FILE_ICONS.path = Contents/Resources
     QMAKE_BUNDLE_DATA += FILE_ICONS
 }
 
 win32 {
     CONFIG -= flat
-    CONFIG += grouped
-    RC_FILE = $$PWD/../pencil.rc
+    RC_FILE = data/pencil2d.rc
 }
 
 linux {
     target.path = $${PREFIX}/bin
 
-    mimepackage.files = ../pencil2d.xml
+    mimepackage.files = data/pencil2d.xml
     mimepackage.path = $${PREFIX}/share/mime/packages
 
-    desktopentry.files = ../pencil2d.desktop
+    desktopentry.files = data/pencil2d.desktop
     desktopentry.path = $${PREFIX}/share/applications
 
-    icon.files = ../pencil2d.png
+    icon.files = data/pencil2d.png
     icon.path = $${PREFIX}/share/icons/hicolor/128x128/apps
 
     INSTALLS += target mimepackage desktopentry icon
@@ -155,40 +156,10 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core_lib/debug/ -lcore_lib
 else:unix: LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
 
-INCLUDEPATH += $$PWD/../core_lib
-DEPENDPATH += $$PWD/../core_lib
+INCLUDEPATH += $$PWD/../core_lib/src
 
 win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/libcore_lib.a
 else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/libcore_lib.a
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/core_lib.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/core_lib.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
-
-
-# --- QuaZip ---
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../3rdlib/quazip/release/ -lquazip
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../3rdlib/quazip/debug/ -lquazip
-else:unix: LIBS += -L$$OUT_PWD/../3rdlib/quazip/ -lquazip
-
-INCLUDEPATH += $$PWD/../3rdlib/quazip
-DEPENDPATH += $$PWD/../3rdlib/quazip
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/release/libquazip.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/debug/libquazip.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/release/quazip.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/debug/quazip.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/libquazip.a
-
-# --- zlib ---
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../3rdlib/zlib/release/ -lzlib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../3rdlib/zlib/debug/ -lzlib
-else:unix: LIBS += -L$$OUT_PWD/../3rdlib/zlib/ -lzlib
-
-INCLUDEPATH += $$PWD/../3rdlib/zlib
-DEPENDPATH += $$PWD/../3rdlib/zlib
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/zlib/release/libzlib.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/zlib/debug/libzlib.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/zlib/release/zlib.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/zlib/debug/zlib.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/zlib/libzlib.a

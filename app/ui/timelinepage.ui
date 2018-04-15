@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TimelinePage</class>
+ <widget class="QWidget" name="TimelinePage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>315</width>
+    <height>262</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="lay2">
+   <property name="spacing">
+    <number>7</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="timeLineBox">
+     <property name="title">
+      <string>Timeline</string>
+     </property>
+     <layout class="QVBoxLayout" name="lay">
+      <item>
+       <widget class="QLabel" name="frameSizeLabel">
+        <property name="text">
+         <string>Frame size</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSlider" name="frameSize">
+        <property name="minimum">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <number>20</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lengthSizeLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string comment="Preferences">Timeline length:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="timelineLength">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="scrubBox">
+        <property name="text">
+         <string>Short scrub</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+ <slots>
+  <slot>frameSizeChange(int)</slot>
+  <slot>lengthSizeChange(QString)</slot>
+  <slot>scrubChange(int)</slot>
+ </slots>
+</ui>
