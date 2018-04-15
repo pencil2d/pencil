@@ -874,21 +874,31 @@
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="106"/>
+        <source>Portuguese - Portugal</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Portuguese - Brazil</source>
         <translation>Portugiesisch – Brasilien</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Russian</source>
         <translation>Russisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
-        <source>Vietnamese </source>
+        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <source>Slovenian</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <source>Vietnamese</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Chinese - Taiwan</source>
         <translation>Chinesisch – Taiwan</translation>
     </message>
@@ -933,12 +943,12 @@
         <translation>Hochauflösende Tablet-Position</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="205"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="207"/>
         <source>Restart Required</source>
         <translation>Neustart erforderlich</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="206"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="208"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Die Sprachänderung wird nach einem Neustart von Pencil2D wirksam werden.</translation>
     </message>
@@ -3779,12 +3789,12 @@ Sie haben die Liste erfolgreich geleert</translation>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="182"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="183"/>
         <source>Stroke Thickness</source>
         <translation>Strichstärke</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="187"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="188"/>
         <source>Width</source>
         <translation>Breite</translation>
     </message>

@@ -874,21 +874,31 @@
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="106"/>
-        <source>Portuguese - Brazil</source>
+        <source>Portuguese - Portugal</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="107"/>
-        <source>Russian</source>
+        <source>Portuguese - Brazil</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="108"/>
-        <source>Vietnamese </source>
+        <source>Russian</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <source>Slovenian</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <source>Vietnamese</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Chinese - Taiwan</source>
         <translation type="unfinished"/>
     </message>
@@ -933,12 +943,12 @@
         <translation>Tegnebræts høj-opløsnings position</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="205"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="207"/>
         <source>Restart Required</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="206"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="208"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation type="unfinished"/>
     </message>
@@ -3772,12 +3782,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="182"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="183"/>
         <source>Stroke Thickness</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="187"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="188"/>
         <source>Width</source>
         <translation type="unfinished"/>
     </message>

@@ -874,21 +874,31 @@
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="106"/>
+        <source>Portuguese - Portugal</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Portuguese - Brazil</source>
         <translation>Португальский - Бразилия</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Russian</source>
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
-        <source>Vietnamese </source>
+        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <source>Slovenian</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <source>Vietnamese</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Chinese - Taiwan</source>
         <translation>Китайский - Тайвань</translation>
     </message>
@@ -933,12 +943,12 @@
         <translation>Повышенная точность позиционирования для графического планшета</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="205"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="207"/>
         <source>Restart Required</source>
         <translation>Необходим перезапуск</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="206"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="208"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Изменение языка вступит в силу после перезапуска Pencil2D</translation>
     </message>
@@ -3777,12 +3787,12 @@
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="182"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="183"/>
         <source>Stroke Thickness</source>
         <translation>Толщина штриха</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="187"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="188"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>

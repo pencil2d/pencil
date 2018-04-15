@@ -10,7 +10,7 @@
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
         <source>Official site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Thanks to Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Site officiel : &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt; Développé par: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt; Remerciements à Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt; &lt;br&gt;Distribué sous la &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="46"/>
@@ -601,12 +601,12 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="233"/>
         <source>GIF and APNG only</source>
-        <translation type="unfinished"/>
+        <translation>GIF et APNG seulement</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="236"/>
         <source>Loop</source>
-        <translation type="unfinished"/>
+        <translation>Boucle</translation>
     </message>
 </context>
 <context>
@@ -685,7 +685,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="180"/>
         <source>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; GIF (*.gif);; APNG (*.apng)</source>
-        <translation type="unfinished"/>
+        <translation>MP4 (*.mp4);;AVI (*.avi);; WebM (*.webm);; GIF (*.gif);; APNG (*.apng)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="222"/>
@@ -851,7 +851,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Hebrew</source>
-        <translation type="unfinished"/>
+        <translation>Hébreu</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="102"/>
@@ -861,7 +861,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="103"/>
         <source>Indonesian</source>
-        <translation type="unfinished"/>
+        <translation>Indonésien</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="104"/>
@@ -875,21 +875,31 @@
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="106"/>
+        <source>Portuguese - Portugal</source>
+        <translation>Portugais - Portugal</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Portuguese - Brazil</source>
         <translation>Portugais - Brésil</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Russian</source>
         <translation>Russe</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
-        <source>Vietnamese </source>
-        <translation type="unfinished"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <source>Slovenian</source>
+        <translation>Slovaque</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <source>Vietnamese</source>
+        <translation>Vietnamien</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Chinese - Taiwan</source>
         <translation>Chinois - Taïwan</translation>
     </message>
@@ -934,12 +944,12 @@
         <translation>Position haute résolution de la tablette</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="205"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="207"/>
         <source>Restart Required</source>
         <translation>Redémarrage requis</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="206"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="208"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Le changement de langue prendra effet après un redémarrage de Pencil2D</translation>
     </message>
@@ -1033,27 +1043,27 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="61"/>
         <source>Import</source>
-        <translation>Import</translation>
+        <translation>Importer</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="73"/>
         <source>Export</source>
-        <translation>Export</translation>
+        <translation>Exporter</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="95"/>
         <source>Edit</source>
-        <translation>Edite</translation>
+        <translation>Édition</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="99"/>
         <source>Selection</source>
-        <translation>Séléction</translation>
+        <translation>Sélection</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="121"/>
         <source>View</source>
-        <translation>Vue</translation>
+        <translation>Affichage</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="125"/>
@@ -1085,7 +1095,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="210"/>
         <source>Windows</source>
-        <translation>Fenêtre</translation>
+        <translation>Fenêtres</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="229"/>
@@ -1100,12 +1110,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="247"/>
         <source>Save</source>
-        <translation>Sauver</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="256"/>
         <source>Save As ..</source>
-        <translation>Sauver comme...</translation>
+        <translation>Enregistrer sous...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="265"/>
@@ -1144,12 +1154,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="325"/>
         <source>Undo</source>
-        <translation>Undo</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="337"/>
         <source>Redo</source>
-        <translation>Redo</translation>
+        <translation>Rétablir</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="346"/>
@@ -1564,20 +1574,20 @@ Voulez-vous enregistrer maintenant?</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="714"/>
         <source>Importing image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>Importation de la séquence d&apos;image...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="960"/>
         <location filename="../app/src/mainwindow2.cpp" line="965"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="980"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>Rétablir</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1122"/>
@@ -1847,20 +1857,20 @@ Voulez-vous enregistrer maintenant?</translation>
         <location filename="../app/src/main.cpp" line="291"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Exportation du film...</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="293"/>
         <location filename="../app/src/main.cpp" line="298"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished"/>
+        <translation>Terminé.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="296"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Exportation de la séquence d&apos;images...</translation>
     </message>
 </context>
 <context>
@@ -1924,7 +1934,7 @@ Voulez-vous enregistrer maintenant?</translation>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="21"/>
         <source>Everything ok.</source>
-        <translation>OK pour tout</translation>
+        <translation>Tout est OK.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="22"/>
@@ -3519,7 +3529,7 @@ Voulez-vous enregistrer maintenant?</translation>
         <location filename="../core_lib/src/interface/timeline.cpp" line="98"/>
         <source>&amp;Layer</source>
         <comment>Timeline add-layer menu</comment>
-        <translation type="unfinished"/>
+        <translation>&amp;Calque</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="116"/>
@@ -3529,17 +3539,17 @@ Voulez-vous enregistrer maintenant?</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="121"/>
         <source>Add Frame</source>
-        <translation>Ajouter un cadre</translation>
+        <translation>Ajouter une image</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="126"/>
         <source>Remove Frame</source>
-        <translation>Supprimer le cadre</translation>
+        <translation>Supprimer l&apos;image</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="131"/>
         <source>Duplicate Frame</source>
-        <translation>Dupliquer le cadre</translation>
+        <translation>Dupliquer l&apos;image</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="134"/>
@@ -3650,7 +3660,7 @@ Voulez-vous enregistrer maintenant?</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="83"/>
         <source>Hand Tool (%1): Move the canvas</source>
-        <translation>Outil Main (%1): Déplacez la toile</translation>
+        <translation>Outil Main (%1): Déplacer la toile</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="85"/>
@@ -3777,12 +3787,12 @@ Voulez-vous enregistrer maintenant?</translation>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="182"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="183"/>
         <source>Stroke Thickness</source>
         <translation>Épaisseur du trait</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="187"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="188"/>
         <source>Width</source>
         <translation>Largeur</translation>
     </message>
@@ -3850,7 +3860,7 @@ Voulez-vous enregistrer maintenant?</translation>
         <location filename="../app/ui/tooloptions.ui" line="177"/>
         <source>Merge</source>
         <comment>Vector line merge</comment>
-        <translation type="unfinished"/>
+        <translation>Fusionner</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="200"/>
