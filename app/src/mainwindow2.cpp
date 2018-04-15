@@ -721,21 +721,18 @@ void MainWindow2::importImageSequence()
     progress.setMaximum(totalImagesToImport);
     int imagesImportedSoFar = 0;
 
+    QString failedFiles;
+    bool failedImport = false;
     for (QString strImgFile : files)
     {
         QString strImgFileLower = strImgFile.toLower();
+
         if (strImgFileLower.endsWith(".png") ||
             strImgFileLower.endsWith(".jpg") ||
             strImgFileLower.endsWith(".jpeg") ||
-            strImgFileLower.endsWith(".tif") ||
-            strImgFileLower.endsWith(".tiff") ||
             strImgFileLower.endsWith(".bmp"))
         {
             mEditor->importImage(strImgFile);
-            for (int i = 1; i < number; i++)
-            {
-                mEditor->scrubForward();
-            }
 
             imagesImportedSoFar++;
             progress.setValue(imagesImportedSoFar);
@@ -745,8 +742,29 @@ void MainWindow2::importImageSequence()
             {
                 break;
             }
+        } else {
+            failedFiles += strImgFile + "\n";
+            if (!failedImport)
+            {
+                failedImport = true;
+            }
         }
     }
+
+    if (failedImport)
+    {
+        QMessageBox::warning(this,
+                             tr("Warning"),
+                             tr("was unable to import") + failedFiles,
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
+
+    for (int i = 1; i < number; i++)
+    {
+        mEditor->scrubForward();
+    }
+
     mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.close();
