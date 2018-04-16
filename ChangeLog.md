@@ -1,4 +1,6 @@
-## Pencil2D 0.6.1 - (WIP)
+## Pencil2D 0.6.2 - (WIP)
+
+## Pencil2D 0.6.1 - 15 April 2018
 
 * #821 Brand new tool icons.
 * #849 Allowing nested dock panels.

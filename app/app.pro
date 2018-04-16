@@ -144,7 +144,7 @@ linux {
     desktopentry.path = $${PREFIX}/share/applications
 
     icon.files = data/pencil2d.png
-    icon.path = $${PREFIX}/share/icons/hicolor/128x128/apps
+    icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps
 
     INSTALLS += target mimepackage desktopentry icon
 }

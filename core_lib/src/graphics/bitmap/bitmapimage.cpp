@@ -23,6 +23,7 @@ GNU General Public License for more details.
 BitmapImage::BitmapImage()
 {
     mImage = std::make_shared<QImage>(1, 1, QImage::Format_ARGB32_Premultiplied); // don't create null image
+    mImage->fill(QColor(0,0,0,0));
     mBounds = QRect(0, 0, 1, 1);
 }
 
@@ -485,6 +486,7 @@ void BitmapImage::clear()
 {
     mImage = std::make_shared<QImage>(1, 1, QImage::Format_ARGB32_Premultiplied); // null image
     mBounds = QRect(0, 0, 1, 1);
+    mImage->fill(QColor(0,0,0,0));
     modification();
 }
 
