@@ -1041,7 +1041,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     o.bAntiAlias           = mPrefs->isOn(SETTING::ANTIALIAS);
     o.bGrid                = mPrefs->isOn(SETTING::GRID);
     o.nGridSize            = mPrefs->getInt(SETTING::GRID_SIZE);
-    o.bAxis                = mPrefs->isOn(SETTING::AXIS);
+    o.bAxis                = false;
     o.bThinLines           = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines            = mPrefs->isOn(SETTING::OUTLINES);
     o.nShowAllLayers       = mShowAllLayers;

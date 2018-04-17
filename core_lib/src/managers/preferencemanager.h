@@ -31,7 +31,6 @@ enum class SETTING
     SHADOW,
     PREV_ONION,
     NEXT_ONION,
-    AXIS,
     INVISIBLE_LINES,
     OUTLINES,
     ONION_BLUE,

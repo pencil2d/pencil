@@ -34,14 +34,14 @@ bool PreferenceManager::init()
     return true;
 }
 
-Status PreferenceManager::load( Object* )
+Status PreferenceManager::load(Object*)
 {
     return Status::OK;
 }
 
-Status PreferenceManager::save( Object * )
+Status PreferenceManager::save(Object*)
 {
-	return Status::OK;
+    return Status::OK;
 }
 
 void PreferenceManager::loadPrefs()
@@ -57,7 +57,6 @@ void PreferenceManager::loadPrefs()
     set(SETTING::GRID_SIZE,                settings.value(SETTING_GRID_SIZE,               50).toInt());
 
     // General
-    //
     set(SETTING::ANTIALIAS,                settings.value(SETTING_ANTIALIAS,              true).toBool());
     set(SETTING::TOOL_CURSOR,              settings.value(SETTING_TOOL_CURSOR,            true).toBool());
     set(SETTING::DOTTED_CURSOR,            settings.value(SETTING_DOTTED_CURSOR,          true).toBool());
@@ -142,9 +141,6 @@ QString PreferenceManager::getString(SETTING option)
     return mStringSet.value(optionId);
 }
 
-
-// Set string value
-//
 void PreferenceManager::set(SETTING option, QString value)
 {
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -171,8 +167,6 @@ void PreferenceManager::set(SETTING option, QString value)
     }
 }
 
-// Set int value
-//
 void PreferenceManager::set(SETTING option, int value)
 {
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -252,9 +246,6 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::MULTILAYER_ONION:
         settings.setValue(SETTING_MULTILAYER_ONION, value);
-        break;
-    case SETTING::AXIS:
-        settings.setValue(SETTING_AXIS, value);
         break;
     case SETTING::INVISIBLE_LINES:
         settings.setValue(SETTING_INVISIBLE_LINES, value);
