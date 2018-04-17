@@ -49,9 +49,19 @@ void ColorPaletteWidget::initUI()
     // "Remove color" feature is disabled because
     // vector strokes that are linked to palette
     // colors don't handle color removal from palette
-    mIconSize = QSize(34, 34);
     ui->removeColorButton->hide();
-    updateUI();
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    int colorGridSize = settings.value("PreferredColorGridSize", 34).toInt();
+
+    mIconSize = QSize(colorGridSize, colorGridSize);
+
+    QString sViewMode = settings.value("ColorPaletteViewMode", "ListMode").toString();
+    if (sViewMode == "ListMode")
+        setListMode();
+    else
+        setGridMode();
+
     palettePreferences();
 
     connect(ui->colorListWidget, &QListWidget::currentItemChanged, this, &ColorPaletteWidget::colorListCurrentItemChanged);
@@ -192,7 +202,7 @@ void ColorPaletteWidget::palettePreferences()
     ui->colorListWidget->setMinimumWidth(ui->colorListWidget->sizeHintForColumn(0));
 
     // Let's pretend this button is a separator
-    mSeparator = new QAction(tr(""), this);
+    mSeparator = new QAction("", this);
     mSeparator->setSeparator(true);
 
     // Add to UI
@@ -202,6 +212,15 @@ void ColorPaletteWidget::palettePreferences()
     ui->palettePref->addAction(ui->smallSwatchAction);
     ui->palettePref->addAction(ui->mediumSwatchAction);
     ui->palettePref->addAction(ui->largeSwatchAction);
+
+    if (mIconSize.width() > 30) ui->largeSwatchAction->setChecked(true);
+    else if (mIconSize.width() > 20) ui->mediumSwatchAction->setChecked(true);
+    else ui->smallSwatchAction->setChecked(true);
+
+    if (ui->colorListWidget->viewMode() == QListView::ListMode)
+        ui->listModeAction->setChecked(true);
+    else
+        ui->gridModeAction->setChecked(true);
 
     connect(ui->listModeAction, &QAction::triggered, this, &ColorPaletteWidget::setListMode);
     connect(ui->gridModeAction, &QAction::triggered, this, &ColorPaletteWidget::setGridMode);
@@ -216,6 +235,9 @@ void ColorPaletteWidget::setListMode()
     ui->colorListWidget->setMovement(QListView::Static);
     ui->colorListWidget->setGridSize(QSize(-1, -1));
     updateUI();
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("ColorPaletteViewMode", "ListMode");
 }
 
 void ColorPaletteWidget::setGridMode()
@@ -225,6 +247,9 @@ void ColorPaletteWidget::setGridMode()
     ui->colorListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->colorListWidget->setGridSize(mIconSize);
     updateUI();
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("ColorPaletteViewMode", "GridMode");
 }
 
 void ColorPaletteWidget::resizeEvent(QResizeEvent* event)
@@ -259,8 +284,11 @@ void ColorPaletteWidget::setSwatchSizeSmall()
     if (mIconSize.width() > 18)
     {
         mIconSize = QSize(14, 14);
+        updateUI();
+
+        QSettings settings(PENCIL2D, PENCIL2D);
+        settings.setValue("PreferredColorGridSize", 14);
     }
-    updateUI();
 }
 
 void ColorPaletteWidget::setSwatchSizeMedium()
@@ -269,6 +297,9 @@ void ColorPaletteWidget::setSwatchSizeMedium()
     {
         mIconSize = QSize(26, 26);
         updateUI();
+
+        QSettings settings(PENCIL2D, PENCIL2D);
+        settings.setValue("PreferredColorGridSize", 26);
     }
 }
 
@@ -278,13 +309,16 @@ void ColorPaletteWidget::setSwatchSizeLarge()
     {
         mIconSize = QSize(34, 34);
         updateUI();
+
+        QSettings settings(PENCIL2D, PENCIL2D);
+        settings.setValue("PreferredColorGridSize", 34);
     }
 }
 
 void ColorPaletteWidget::updateGridUI()
 {
     if (ui->colorListWidget->viewMode() == QListView::IconMode)
-        ui->colorListWidget->setGridSize(QSize(mIconSize.width(), mIconSize.height()));
+        ui->colorListWidget->setGridSize(mIconSize);
     else
         ui->colorListWidget->setGridSize(QSize(-1, -1));
 
