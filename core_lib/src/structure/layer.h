@@ -113,10 +113,6 @@ public:
     void paintFrames(QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
-
-    void mousePress(QMouseEvent*, int frameNumber);
-    void mouseMove(QMouseEvent*, int frameNumber);
-    void mouseRelease(QMouseEvent*, int frameNumber);
     void mouseDoubleClick(QMouseEvent*, int frameNumber);
 
     virtual void editProperties();

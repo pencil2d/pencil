@@ -424,25 +424,7 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
     painter.drawRect(x, y, width, height - 1);
 }
 
-void Layer::mousePress(QMouseEvent* event, int frameNumber)
-{
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
-}
-
 void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
-{
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
-}
-
-void Layer::mouseMove(QMouseEvent* event, int frameNumber)
-{
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
-}
-
-void Layer::mouseRelease(QMouseEvent* event, int frameNumber)
 {
     Q_UNUSED(event);
     Q_UNUSED(frameNumber);

@@ -529,7 +529,6 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         mCanMoveFrame = true;
                     }
 
-                    currentLayer->mousePress(event, frameNumber);
                     mTimeLine->updateContent();
                 }
                 else
@@ -606,7 +605,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                         }
                         mLastFrameNumber = frameNumber;
                     }
-                    currentLayer->mouseMove(event, frameNumber);
                 }
             }
         }
@@ -638,8 +636,6 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
         }
-
-        currentLayer->mouseRelease(event, frameNumber);
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {
