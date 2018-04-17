@@ -29,39 +29,6 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layersound.h"
 
-#define MIN(a, b) ((a)>(b) ? (b) : (a))
-
-
-
-
-int16_t safeSum( int16_t a, int16_t b )
-{
-    if ( ( ( int )a + ( int )b ) > 32767 )
-        return 32767;
-    if ( ( ( int )a + ( int )b ) < -32768 )
-        return -32768;
-    return a + b;
-}
-
-void initialise()
-{
-    //qDebug() << "Initialize win32: <nothing, for now>";
-
-    // QImageReader capabilities
-    QList<QByteArray> formats = QImageReader::supportedImageFormats();
-    foreach( QString format, formats )
-    {
-        //qDebug() << "QImageReader capability: " << format;
-    }
-
-    // QImageWriter capabilities
-    formats = QImageWriter::supportedImageFormats();
-    foreach( QString format, formats )
-    {
-        //qDebug() << "QImageWriter capability: " << format;
-    }
-}
-
 
 void Editor::importMovie( QString filePath, int fps )
 {
