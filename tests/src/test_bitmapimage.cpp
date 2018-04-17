@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 #include "bitmapimage.h"
 
-TEST_CASE("BitmapImage")
+TEST_CASE("BitmapImage constructors")
 {
     SECTION("Init an Bitmap Image")
     {
@@ -60,5 +60,22 @@ TEST_CASE("BitmapImage")
         QImage* img2 = b2->image();
         REQUIRE(img1 != img2);
         REQUIRE((*img1) == (*img2));
+    }
+
+    SECTION("#947 Initial Color")
+    {
+        // A new bitmap image must be fully transparent
+        // otherwise a pixel dot will appear in center of canvas
+        // ref: https://github.com/pencil2d/pencil/pull/947
+
+        auto b = std::make_shared<BitmapImage>();
+        for (int x = 0; x < b->width(); ++x)
+        {
+            for (int y = 0; y < b->height(); ++y)
+            {
+                QRgb color = b->pixel(x, y);
+                REQUIRE(qAlpha(color) == 0);
+            }
+        }
     }
 }
