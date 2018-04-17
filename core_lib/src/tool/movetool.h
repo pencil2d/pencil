@@ -49,6 +49,8 @@ private:
     void actionOnVector(QMouseEvent *event, Layer *layer);
     void storeClosestVectorCurve();
     QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
+
+    QPointF anchorOriginPoint;
 };
 
 #endif

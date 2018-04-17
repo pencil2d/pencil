@@ -25,11 +25,6 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 
-
-// Store selection origin so we can calculate
-// the selection rectangle in mousePressEvent.
-static QPointF gSelectionOrigin;
-
 SelectTool::SelectTool(QObject* parent) :
     BaseTool(parent)
 {
@@ -57,13 +52,16 @@ void SelectTool::mousePressEvent(QMouseEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
-        gSelectionOrigin = getLastPoint();  // Store original click position for help with selection rectangle.
+        if (!mScribbleArea->somethingSelected)
+        {
+            anchorOriginPoint = getLastPoint();  // Store original click position for help with selection rectangle.
+        }
 
-        if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
+        if (layer->isPaintable())
         {
             if (layer->type() == Layer::VECTOR)
             {
-                ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+                static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
             }
             mScribbleArea->setMoveMode(ScribbleArea::NONE);
 
@@ -72,18 +70,22 @@ void SelectTool::mousePressEvent(QMouseEvent* event)
                 if (BezierCurve::mLength(getLastPoint() - mScribbleArea->myTransformedSelection.topLeft()) < 6)
                 {
                     mScribbleArea->setMoveMode(ScribbleArea::TOPLEFT);
+                    anchorOriginPoint = mScribbleArea->mySelection.bottomRight();
                 }
                 if (BezierCurve::mLength(getLastPoint() - mScribbleArea->myTransformedSelection.topRight()) < 6)
                 {
                     mScribbleArea->setMoveMode(ScribbleArea::TOPRIGHT);
+                    anchorOriginPoint = mScribbleArea->mySelection.bottomLeft();
                 }
                 if (BezierCurve::mLength(getLastPoint() - mScribbleArea->myTransformedSelection.bottomLeft()) < 6)
                 {
                     mScribbleArea->setMoveMode(ScribbleArea::BOTTOMLEFT);
+                    anchorOriginPoint = mScribbleArea->mySelection.topRight();
                 }
                 if (BezierCurve::mLength(getLastPoint() - mScribbleArea->myTransformedSelection.bottomRight()) < 6)
                 {
                     mScribbleArea->setMoveMode(ScribbleArea::BOTTOMRIGHT);
+                    anchorOriginPoint = mScribbleArea->mySelection.topLeft();
                 }
 
                 // the user did not click on one of the corners
@@ -121,7 +123,7 @@ void SelectTool::mouseReleaseEvent(QMouseEvent* event)
         {
             mEditor->tools()->setCurrentTool(MOVE);
 
-            VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             mScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
             if (mScribbleArea->mySelection.width() <= 0 && mScribbleArea->mySelection.height() <= 0)
             {
@@ -147,70 +149,20 @@ void SelectTool::mouseMoveEvent(QMouseEvent* event)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
-    if ((event->buttons() & Qt::LeftButton) && mScribbleArea->somethingSelected && (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR))
+    if ((event->buttons() & Qt::LeftButton) &&
+        mScribbleArea->somethingSelected &&
+        layer->isPaintable())
     {
-        switch (mScribbleArea->getMoveMode())
-        {
-        case ScribbleArea::NONE:
-        {
-            // Resize the selection rectangle so it goes from the origin point
-            // (i.e. where the mouse was clicked) to the current mouse
-            // position.
-            int mouseX = getCurrentPoint().x();
-            int mouseY = getCurrentPoint().y();
-            QRectF& selectRect = mScribbleArea->mySelection;
-
-            if (mouseX < gSelectionOrigin.x())
-            {
-                selectRect.setLeft(mouseX);
-                selectRect.setRight(gSelectionOrigin.x());
-            }
-            else
-            {
-                selectRect.setLeft(gSelectionOrigin.x());
-                selectRect.setRight(mouseX);
-            }
-
-            if (mouseY < gSelectionOrigin.y())
-            {
-                selectRect.setTop(mouseY);
-                selectRect.setBottom(gSelectionOrigin.y());
-            }
-            else
-            {
-                selectRect.setTop(gSelectionOrigin.y());
-                selectRect.setBottom(mouseY);
-            }
-
-            break;
-        }
-
-        case ScribbleArea::TOPLEFT:
-            mScribbleArea->mySelection.setTopLeft(getCurrentPoint());
-            break;
-
-        case ScribbleArea::TOPRIGHT:
-            mScribbleArea->mySelection.setTopRight(getCurrentPoint());
-            break;
-
-        case ScribbleArea::BOTTOMLEFT:
-            mScribbleArea->mySelection.setBottomLeft(getCurrentPoint());
-            break;
-
-        case ScribbleArea::BOTTOMRIGHT:
-            mScribbleArea->mySelection.setBottomRight(getCurrentPoint());
-            break;
-
-        default:
-            break;
-        }
+        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
 
         mScribbleArea->myTransformedSelection = mScribbleArea->mySelection.adjusted(0, 0, 0, 0);
         mScribbleArea->myTempTransformedSelection = mScribbleArea->mySelection.adjusted(0, 0, 0, 0);
 
         if (layer->type() == Layer::VECTOR)
         {
-            ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->select(mScribbleArea->mySelection);
+            static_cast<LayerVector*>(layer)->
+                    getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->
+                    select(mScribbleArea->mySelection);
         }
         mScribbleArea->update();
     }

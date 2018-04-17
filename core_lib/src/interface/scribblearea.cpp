@@ -1482,6 +1482,56 @@ void ScribbleArea::setSelection(QRectF rect, bool trueOrFalse)
     // displaySelectionProperties();
 }
 
+/**
+ * @brief ScribbleArea::manageSelectionOrigin
+ * switches anchor point when crossing threshold
+ */
+void ScribbleArea::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint)
+{
+    int mouseX = currentPoint.x();
+    int mouseY = currentPoint.y();
+
+    QRectF selectRect;
+    if (currentTool()->type() == ToolType::SELECT) {
+        selectRect = mySelection;
+    }
+    else // MOVE
+    {
+        selectRect = myTempTransformedSelection;
+    }
+
+    if (mouseX <= originPoint.x())
+    {
+        selectRect.setLeft(mouseX);
+        selectRect.setRight(originPoint.x());
+    }
+    else
+    {
+        selectRect.setLeft(originPoint.x());
+        selectRect.setRight(mouseX);
+    }
+
+    if (mouseY <= originPoint.y())
+    {
+        selectRect.setTop(mouseY);
+        selectRect.setBottom(originPoint.y());
+    }
+    else
+    {
+        selectRect.setTop(originPoint.y());
+        selectRect.setBottom(mouseY);
+    }
+
+    if (currentTool()->type() == ToolType::SELECT) {
+        mySelection = selectRect;
+    }
+    else // MOVE
+    {
+        myTempTransformedSelection = selectRect;
+    }
+
+}
+
 void ScribbleArea::displaySelectionProperties()
 {
     Layer* layer = mEditor->layers()->currentLayer();
