@@ -71,29 +71,28 @@ public:
     ~PreferenceManager();
 
     virtual bool init() override;
-    Status load( Object* ) override;
-	Status save( Object* ) override;
+    Status load(Object*) override;
+    Status save(Object*) override;
 
     void loadPrefs();
-    void set(SETTING option, QString value );
-    void set(SETTING option, int value );
-    void set(SETTING option, bool value );
+    void set(SETTING option, QString value);
+    void set(SETTING option, int value);
+    void set(SETTING option, bool value);
 
-    void turnOn(SETTING option );
-    void turnOff(SETTING option );
-    bool isOn(SETTING option );
+    void turnOn(SETTING option);
+    void turnOff(SETTING option);
+    bool isOn(SETTING option);
 
     QString getString(SETTING option);
     int     getInt(SETTING option);
 
 Q_SIGNALS:
-    void optionChanged( SETTING e );
-
+    void optionChanged(SETTING e);
 
 private:
-    QHash< int, QString > mStringSet;
-    QHash< int, int > mIntegerSet;
-    QHash< int, bool > mBooleanSet;
+    QHash<int, QString> mStringSet;
+    QHash<int, int> mIntegerSet;
+    QHash<int, bool> mBooleanSet;
 };
 
 #endif // PREFERENCEMANAGER_H
