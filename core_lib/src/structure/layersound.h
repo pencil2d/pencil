@@ -33,16 +33,7 @@ public:
     void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
 
     Status loadSoundClipAtFrame( const QString& sSoundClipName, const QString& filePathString, int frame );
-
     void updateFrameLengths(int fps);
-
-    // These functions will be removed later.
-    // Don't use them!!
-    int getSoundSize() { return 0; }
-    bool soundIsNotNull( int ) { return true; }
-    QString getSoundFilepathAt( int ) { return ""; }
-    bool isEmpty() { return true; }
-    // These functions will be removed.
 
     SoundClip* getSoundClipWhichCovers(int frameNumber);
 
