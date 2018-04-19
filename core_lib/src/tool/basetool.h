@@ -37,7 +37,7 @@ class Properties
 public:
     qreal width = 1.f;
     qreal feather = 1.f;
-    bool pressure = 1;
+    bool pressure = true;
     int invisibility = 0;
     int preserveAlpha = 0;
     bool vectorMergeEnabled = false;
@@ -46,7 +46,7 @@ public:
     int useAA = 0;
     int inpolLevel = 0;
     qreal tolerance = 0;
-    bool useFillContour = 0;
+    bool useFillContour = false;
 };
 
 const int ON = 1;

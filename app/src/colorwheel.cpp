@@ -313,13 +313,12 @@ void ColorWheel::drawSquareImage(const int &hue)
     qreal m2 = (height() / 2) - (ir / qSqrt(2));
 
     QImage square(255, 255, QImage::Format_ARGB32_Premultiplied);
-    QColor color;
 
     for (int i = 0; i < 255; ++i)
     {
         for (int j = 0; j < 255; ++j)
         {
-            color = QColor::fromHsv(hue, i, 255 - j);
+            QColor color = QColor::fromHsv(hue, i, 255 - j);
             QRgb rgb = qRgb(color.red(), color.green(), color.blue());
             square.setPixel(i, j, rgb);
         }

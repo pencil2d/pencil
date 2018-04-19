@@ -63,7 +63,7 @@ void EraserTool::loadSettings()
     {
         setWidth(25);
         setFeather(50);
-        setPressure(1);
+        setPressure(true);
     }
 }
 
@@ -285,8 +285,8 @@ void EraserTool::drawStroke()
         QPen pen( Qt::white, brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
         int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
-        if ( p.size() == 4 ) {
-            QSizeF size( 2, 2 );
+        if ( p.size() == 4 )
+        {
             QPainterPath path( p[ 0 ] );
             path.cubicTo( p[ 1 ],
                           p[ 2 ],

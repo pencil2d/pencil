@@ -1,5 +1,8 @@
 
 
+#ifndef _COLOR_DICTIONARY_H_
+#define _COLOR_DICTIONARY_H_
+
 // Initialize NBS/ISCC Color dictionary, John Foster version (http://tx4.us/nbs-iscc.htm), converted to CIE L*u*v with D65 white point and rounded.
 const int dictSize = 267;
 
@@ -544,3 +547,5 @@ static const QString nameDict[dictSize] =
     QObject::tr("Dark Gray"),
     QObject::tr("Black")
 };
+
+#endif

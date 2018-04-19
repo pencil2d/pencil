@@ -36,11 +36,11 @@ public slots:
     void setColor(const QColor& color);
 
 protected:
-    void mousePressEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
-    void mouseReleaseEvent(QMouseEvent*);
-    void resizeEvent(QResizeEvent*);
-    void paintEvent(QPaintEvent*);
+    void mousePressEvent(QMouseEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
+    void paintEvent(QPaintEvent*) override;
 
 private:
     void changeColor(const QColor&);

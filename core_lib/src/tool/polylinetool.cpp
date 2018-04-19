@@ -50,7 +50,7 @@ void PolylineTool::loadSettings()
 
     properties.width = settings.value( "polyLineWidth" ).toDouble();
     properties.feather = -1;
-    properties.pressure = 0;
+    properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value( "brushAA").toBool();

@@ -25,16 +25,16 @@ class SmudgeTool : public StrokeTool
     Q_OBJECT
 public:
     explicit SmudgeTool(QObject *parent = 0);
-    ToolType type();
+    ToolType type() override;
     uint toolMode;  // 0=normal/smooth 1=smudge - todo: move to basetool? could be useful
-    void loadSettings();
-    QCursor cursor();
+    void loadSettings() override;
+    QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    bool keyPressEvent(QKeyEvent *);
-    bool keyReleaseEvent(QKeyEvent *);
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    bool keyPressEvent(QKeyEvent *) override;
+    bool keyReleaseEvent(QKeyEvent *) override;
 
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
     void drawStroke();

@@ -136,7 +136,7 @@ private:
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;
-    TimeLine*             mTimeLine; // be public temporary
+    TimeLine*             mTimeLine = nullptr; // be public temporary
 
     // backup
     BackupElement* mBackupAtSave = nullptr;

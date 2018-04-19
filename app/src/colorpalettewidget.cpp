@@ -120,13 +120,10 @@ void ColorPaletteWidget::refreshColorList()
     swatchPainter.end();
     QPixmap colourSwatch;
 
-    QListWidgetItem* colourItem;
-    ColourRef colourRef;
     for (int i = 0; i < editor()->object()->getColourCount(); i++)
     {
-        colourRef = editor()->object()->getColour(i);
-
-        colourItem = new QListWidgetItem(ui->colorListWidget);
+        const ColourRef colourRef = editor()->object()->getColour(i);
+        QListWidgetItem* colourItem = new QListWidgetItem(ui->colorListWidget);
 
         if (ui->colorListWidget->viewMode() != QListView::IconMode)
         {
@@ -356,10 +353,9 @@ QString ColorPaletteWidget::getDefaultColorName(QColor c)
     {
         // The color is grayscale so only compare to gray centroids so there is no 'false hue'
         qreal minDist = pow(colorDict[dictSize - 5][0] - l, 2) + pow(colorDict[dictSize - 5][1] - u, 2) + pow(colorDict[dictSize - 5][2] - v, 2);
-        qreal curDist;
         for (int i = dictSize - 4; i < dictSize; i++)
         {
-            curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
+            qreal curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
             if (curDist < minDist)
             {
                 minDist = curDist;
@@ -370,10 +366,9 @@ QString ColorPaletteWidget::getDefaultColorName(QColor c)
     else
     {
         qreal minDist = pow(colorDict[0][0] - l, 2) + pow(colorDict[0][1] - u, 2) + pow(colorDict[0][2] - v, 2);
-        qreal curDist;
         for (int i = 1; i < dictSize; i++)
         {
-            curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
+            qreal curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
             if (curDist < minDist)
             {
                 minDist = curDist;

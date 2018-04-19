@@ -328,7 +328,6 @@ void PencilTool::drawStroke()
 
         if (p.size() == 4)
         {
-            QSizeF size(2, 2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],
                          p[2],

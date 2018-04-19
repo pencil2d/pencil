@@ -87,8 +87,8 @@ void Editor::importMovie( QString filePath, int fps )
         QDir dir( tempPath );
         QStringList filtername( "*.*" );
         QStringList entries = dir.entryList( filtername, QDir::Files, QDir::Type );
-        for ( int i = 0; i < entries.size(); i++ )
-            dir.remove( entries[ i ] );
+        for ( int e = 0; e < entries.size(); e++ )
+            dir.remove( entries[ e ] );
     }
     else
     {

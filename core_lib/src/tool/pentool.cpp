@@ -54,7 +54,7 @@ void PenTool::loadSettings()
     if ( properties.width <= 0 )
     {
         setWidth(1.5);
-        setPressure(1);
+        setPressure(true);
     }
 
     mCurrentWidth = properties.width;

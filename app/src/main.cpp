@@ -269,7 +269,6 @@ int handleArguments( PencilApplication& app )
             format = "PNG";
         }
 
-        bool asMovie;
         QMap<QString, bool> formatMapping;
         formatMapping[ "PNG" ] = false;
         formatMapping[ "JPG" ] = false;
@@ -280,7 +279,7 @@ int handleArguments( PencilApplication& app )
         formatMapping[ "GIF" ] = true;
         formatMapping[ "WEBM" ] = true;
         formatMapping[ "APNG" ] = true;
-        asMovie = formatMapping[format];
+        bool asMovie = formatMapping[format];
 
         if ( asMovie )
         {

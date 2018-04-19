@@ -49,7 +49,7 @@ void SmudgeTool::loadSettings()
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value("smudgeWidth").toDouble();
     properties.feather = settings.value("smudgeFeather").toDouble();
-    properties.pressure = 0;
+    properties.pressure = false;
     properties.inpolLevel = -1;
 
     // First run
@@ -57,7 +57,7 @@ void SmudgeTool::loadSettings()
     {
         setWidth(25);
         setFeather(200);
-        setPressure(0);
+        setPressure(false);
     }
 }
 

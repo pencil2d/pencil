@@ -976,7 +976,7 @@ void MainWindow2::clearKeyboardShortcuts()
     }
 }
 
-void MainWindow2::undoActSetText(void)
+void MainWindow2::undoActSetText()
 {
     if (mEditor->mBackupIndex < 0)
     {
@@ -1005,7 +1005,7 @@ void MainWindow2::undoActSetText(void)
     }
 }
 
-void MainWindow2::undoActSetEnabled(void)
+void MainWindow2::undoActSetEnabled()
 {
     ui->actionUndo->setEnabled(true);
     ui->actionRedo->setEnabled(true);
