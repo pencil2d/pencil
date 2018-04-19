@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <array>
 #include "editor.h"
+#include "viewmanager.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"

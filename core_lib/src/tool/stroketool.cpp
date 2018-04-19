@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 #include "strokemanager.h"
+#include "viewmanager.h"
 #include "editor.h"
 
 #ifdef Q_OS_MAC

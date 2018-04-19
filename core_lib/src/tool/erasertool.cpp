@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "viewmanager.h"
 #include "layervector.h"
 #include "vectorimage.h"
 

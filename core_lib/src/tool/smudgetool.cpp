@@ -20,11 +20,13 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
+
 #include "layermanager.h"
-#include "colormanager.h"
+#include "strokemanager.h"
+#include "viewmanager.h"
+
 #include "layerbitmap.h"
 #include "layervector.h"
-#include "strokemanager.h"
 #include "blitrect.h"
 
 SmudgeTool::SmudgeTool(QObject *parent) :

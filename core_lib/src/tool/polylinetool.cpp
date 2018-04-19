@@ -22,6 +22,8 @@ GNU General Public License for more details.
 
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "colormanager.h"
+#include "viewmanager.h"
 
 #include "layervector.h"
 #include "layerbitmap.h"

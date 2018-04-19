@@ -35,14 +35,17 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "pencilsettings.h"
 #include "object.h"
-#include "filemanager.h"
 #include "editor.h"
+
+#include "filemanager.h"
 #include "colormanager.h"
 #include "layermanager.h"
-#include "layercamera.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
 #include "soundmanager.h"
+#include "viewmanager.h"
+
+#include "layercamera.h"
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
@@ -57,6 +60,7 @@ GNU General Public License for more details.
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
+
 //#include "preview.h"
 #include "timeline2.h"
 #include "errordialog.h"

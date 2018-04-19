@@ -30,10 +30,12 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 
+#include "colormanager.h"
 #include "toolmanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
+#include "viewmanager.h"
 
 
 ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent),
@@ -59,7 +61,7 @@ bool ScribbleArea::init()
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
 
-    int curveSmoothingLevel = mPrefs->getInt(SETTING::CURVE_SMOOTHING);
+    const int curveSmoothingLevel = mPrefs->getInt(SETTING::CURVE_SMOOTHING);
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
 
     mQuickSizing = mPrefs->isOn(SETTING::QUICK_SIZING);
@@ -722,7 +724,7 @@ void ScribbleArea::paintBitmapBuffer()
     mBufferImg->clear();
 }
 
-void ScribbleArea::paintBitmapBufferRect(QRect rect)
+void ScribbleArea::paintBitmapBufferRect(const QRect& rect)
 {
     if (allowSmudging() || mEditor->playback()->isPlaying())
     {
@@ -1130,10 +1132,10 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     return;
 }
 
-void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal mOffset)
+void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
 {
-    if (mOffset < 0) { mOffset = 0; }
-    if (mOffset > 100) { mOffset = 100; }
+    if (offset < 0) { offset = 0; }
+    if (offset > 100) { offset = 100; }
 
     int r = colour.red();
     int g = colour.green();
@@ -1143,11 +1145,11 @@ void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal
     int mainColorAlpha = qRound(a * 255 * opacity);
 
     // the more feather (offset), the more softness (opacity)
-    int alphaAdded = qRound((mainColorAlpha * mOffset) / 100);
+    int alphaAdded = qRound((mainColorAlpha * offset) / 100);
 
     gradient.setColorAt(0.0, QColor(r, g, b, mainColorAlpha - alphaAdded));
     gradient.setColorAt(1.0, QColor(r, g, b, 0));
-    gradient.setColorAt(1.0 - (mOffset / 100.0), QColor(r, g, b, mainColorAlpha - alphaAdded));
+    gradient.setColorAt(1.0 - (offset / 100.0), QColor(r, g, b, mainColorAlpha - alphaAdded));
 }
 
 void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA)
@@ -1168,7 +1170,7 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, 
     QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
     BitmapImage gradientImg;
-    if (usingFeather == true)
+    if (usingFeather)
     {
         QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
         setGaussianGradient(radialGrad, fillColour, opacity, mOffset);
@@ -1198,7 +1200,7 @@ void ScribbleArea::flipSelection(bool flipVertical)
     QTransform _translate = QTransform::fromTranslate(-centerPoints[1].x(), -centerPoints[1].y());
     QTransform scale = QTransform::fromScale(-scaleX, scaleY);
 
-    if (flipVertical == true)
+    if (flipVertical)
     {
         scale = QTransform::fromScale(scaleX, -scaleY);
     }
@@ -1220,7 +1222,7 @@ void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF
     QRectF trgRect(thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_);
 
     BitmapImage bmiSrcClip = bmiSource_->copy(srcRect.toRect());
-    BitmapImage bmiTmpClip = bmiSrcClip; // todo: find a shorter way
+    BitmapImage bmiTmpClip = bmiSrcClip; // TODO: find a shorter way
 
     bmiTmpClip.drawRect(srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, mPrefs->isOn(SETTING::ANTIALIAS));
     bmiSrcClip.bounds().moveTo(trgRect.topLeft().toPoint());
@@ -1237,23 +1239,22 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
     setGaussianGradient(radialGrad, QColor(255, 255, 255, 255), opacity_, mOffset_);
 
     // Create gradient brush
-    BitmapImage* bmiTmpClip = new BitmapImage;
-    bmiTmpClip->drawRect(trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, mPrefs->isOn(SETTING::ANTIALIAS));
+    BitmapImage bmiTmpClip;
+    bmiTmpClip.drawRect(trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, mPrefs->isOn(SETTING::ANTIALIAS));
 
     // Slide texture/pixels of the source image
     qreal factor, factorGrad;
-    int xb, yb, xa, ya;
 
-    for (yb = bmiTmpClip->bounds().top(); yb < bmiTmpClip->bounds().bottom(); yb++)
+    for (int yb = bmiTmpClip.top(); yb < bmiTmpClip.bottom(); yb++)
     {
-        for (xb = bmiTmpClip->bounds().left(); xb < bmiTmpClip->bounds().right(); xb++)
+        for (int xb = bmiTmpClip.left(); xb < bmiTmpClip.right(); xb++)
         {
             QColor color;
-            color.setRgba(bmiTmpClip->pixel(xb, yb));
+            color.setRgba(bmiTmpClip.pixel(xb, yb));
             factorGrad = color.alphaF(); // any from r g b a is ok
 
-            xa = xb - factorGrad*delta.x();
-            ya = yb - factorGrad*delta.y();
+            int xa = xb - factorGrad*delta.x();
+            int ya = yb - factorGrad*delta.y();
 
             color.setRgba(bmiSource_->pixel(xa, ya));
             factor = color.alphaF();
@@ -1270,15 +1271,15 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
                 color.setBlue(color.blue()*factorGrad);
                 color.setAlpha(255 * factorGrad); // Premultiplied color
 
-                bmiTmpClip->setPixel(xb, yb, color.rgba());
+                bmiTmpClip.setPixel(xb, yb, color.rgba());
             }
-            else {
-                bmiTmpClip->setPixel(xb, yb, qRgba(255, 255, 255, 255));
+            else
+            {
+                bmiTmpClip.setPixel(xb, yb, qRgba(255, 255, 255, 255));
             }
         }
     }
-    mBufferImg->paste(bmiTmpClip);
-    delete bmiTmpClip;
+    mBufferImg->paste(&bmiTmpClip);
 }
 
 void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)

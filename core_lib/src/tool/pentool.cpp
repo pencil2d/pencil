@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "viewmanager.h"
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"

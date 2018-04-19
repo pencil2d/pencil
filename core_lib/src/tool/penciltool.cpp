@@ -21,12 +21,15 @@ GNU General Public License for more details.
 #include <QMouseEvent>
 
 #include "layermanager.h"
-#include "layervector.h"
 #include "colormanager.h"
 #include "strokemanager.h"
+#include "viewmanager.h"
+#include "preferencemanager.h"
+
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
+#include "layervector.h"
 #include "vectorimage.h"
 
 
@@ -271,7 +274,7 @@ void PencilTool::drawStroke()
     {
         qreal opacity = 1.0;
         mCurrentWidth = properties.width;
-        if (properties.pressure == true)
+        if (properties.pressure)
         {
             opacity = mCurrentPressure / 2;
             mCurrentWidth = properties.width * mCurrentPressure;
@@ -361,7 +364,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
 
     vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), properties.vectorMergeEnabled);
 
-    if (properties.useFillContour == true)
+    if (properties.useFillContour)
     {
         vectorImage->fillContour(mStrokePoints,
                                  mEditor->color()->frontColorNumber());

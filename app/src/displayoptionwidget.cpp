@@ -17,10 +17,11 @@ GNU General Public License for more details.
 #include "displayoptionwidget.h"
 #include "ui_displayoption.h"
 
-#include <QFrame>
 #include <QToolButton>
 #include <QGridLayout>
+
 #include "preferencemanager.h"
+#include "viewmanager.h"
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"

@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
+#include "viewmanager.h"
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"

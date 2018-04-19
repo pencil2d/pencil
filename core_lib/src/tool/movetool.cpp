@@ -21,6 +21,7 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "toolmanager.h"
+#include "viewmanager.h"
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
