@@ -89,8 +89,6 @@ public:
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode( MoveMode moveMode ) { mMoveMode = moveMode; }
 
-    QTransform getView();
-    QRectF getViewRect();
     QRectF getCameraRect();
     QPointF getCentralPoint();
 

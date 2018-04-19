@@ -1297,40 +1297,6 @@ void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
 /************************************************************************************/
 // view handling
 
-QTransform ScribbleArea::getView()
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL)
-    {
-        Q_ASSERT(false);
-        return QTransform(); // TODO: error
-    }
-
-    if (layer->type() == Layer::CAMERA)
-    {
-        return ((LayerCamera *)layer)->getViewAtFrame(mEditor->currentFrame());
-    }
-    else
-    {
-        return mEditor->view()->getView();
-    }
-}
-
-QRectF ScribbleArea::getViewRect()
-{
-    QRectF rect = QRectF(-width() / 2, -height() / 2, width(), height());
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return rect; }
-    if (layer->type() == Layer::CAMERA)
-    {
-        return ((LayerCamera *)layer)->getViewRect();
-    }
-    else
-    {
-        return rect;
-    }
-}
-
 QRectF ScribbleArea::getCameraRect()
 {
     return mCanvasPainter.getCameraRect();
