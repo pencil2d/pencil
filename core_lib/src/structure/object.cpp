@@ -91,7 +91,7 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if (element.tagName() == "layer")
         {
-            switch (element.attribute("type").toInt() )
+            switch (element.attribute("type").toInt())
             {
             case Layer::BITMAP: addNewBitmapLayer(); break;
             case Layer::VECTOR: addNewVectorLayer(); break;
@@ -158,7 +158,7 @@ void Object::createWorkingDir()
         QFileInfo fileInfo(mFilePath);
         strFolderName = fileInfo.completeBaseName();
     }
-    QString strWorkingDir = QDir::tempPath()
+    const QString strWorkingDir = QDir::tempPath()
         + "/Pencil2D/"
         + strFolderName
         + PFF_TMP_DECOMPRESS_EXT
@@ -273,7 +273,7 @@ void Object::deleteLayer(Layer* layer)
     }
 }
 
-ColourRef Object::getColour(int i)
+ColourRef Object::getColour(int i) const
 {
     ColourRef result(Qt::white, "error");
     if (i > -1 && i < mPalette.size())
@@ -281,6 +281,12 @@ ColourRef Object::getColour(int i)
         result = mPalette.at(i);
     }
     return result;
+}
+
+void Object::setColour(int index, QColor newColour)
+{
+    Q_ASSERT(index >= 0);
+    mPalette[index].colour = newColour;
 }
 
 void Object::addColour(QColor colour)
@@ -295,7 +301,7 @@ bool Object::removeColour(int index)
         Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
-            LayerVector* layerVector = ((LayerVector*)layer);
+            LayerVector* layerVector = (LayerVector*)layer;
             if (layerVector->usesColour(index)) return false;
         }
     }
@@ -304,7 +310,7 @@ bool Object::removeColour(int index)
         Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
-            LayerVector* layerVector = ((LayerVector*)layer);
+            LayerVector* layerVector = (LayerVector*)layer;
             layerVector->removeColour(index);
         }
     }
@@ -498,7 +504,7 @@ bool Object::exportFrames(int frameStart, int frameEnd,
                           QString format,
                           bool transparency,
                           bool antialiasing,
-                          QProgressDialog* progress = NULL,
+                          QProgressDialog* progress = nullptr,
                           int progressMax = 50)
 {
     Q_ASSERT(cameraLayer);
@@ -530,13 +536,13 @@ bool Object::exportFrames(int frameStart, int frameEnd,
 
     for (int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++)
     {
-        if (progress != NULL)
+        if (progress != nullptr)
         {
             int totalFramesToExport = (frameEnd - frameStart) + 1;
             if (totalFramesToExport != 0) // Avoid dividing by zero.
             {
-                progress->setValue((currentFrame - frameStart + 1)*progressMax / totalFramesToExport);
-                QApplication::processEvents();  // Required to make progress bar update on-screen.
+                progress->setValue((currentFrame - frameStart + 1) * progressMax / totalFramesToExport);
+                QApplication::processEvents(); // Required to make progress bar update on-screen.
             }
 
             if (progress->wasCanceled())
@@ -593,7 +599,8 @@ bool Object::exportX(int frameStart, int frameEnd, QTransform view, QSize export
         {
             filePath.chop(4);
         }
-        if (!xImg.save(filePath + QString::number(page) + ".jpg", "JPG", 60)) {
+        if (!xImg.save(filePath + QString::number(page) + ".jpg", "JPG", 60))
+        {
             return false;
         }
         page++;

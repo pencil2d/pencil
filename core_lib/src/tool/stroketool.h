@@ -29,7 +29,7 @@ class StrokeTool : public BaseTool
     Q_OBJECT
 
 public:
-    explicit StrokeTool(QObject* parent = 0);
+    explicit StrokeTool(QObject* parent);
     
     void startStroke();
     void drawStroke();

@@ -27,14 +27,14 @@ class BaseDockWidget : public QDockWidget
 {
     Q_OBJECT
 protected:
-    explicit BaseDockWidget( QWidget* pParent );
+    explicit BaseDockWidget(QWidget* pParent);
     virtual  ~BaseDockWidget();
 
 public:
     virtual void initUI() = 0;
     virtual void updateUI() = 0;
 
-    Editor* editor() { return mEditor; }
+    Editor* editor() const { return mEditor; }
     void setEditor( Editor* e ) { mEditor = e; }
 
 private:

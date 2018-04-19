@@ -35,13 +35,13 @@ public:
 	void setCamerasInfo(const std::vector<std::pair<QString, QSize>>& camInfo);
 
     void  setExportSize( QSize size );
-    QSize getExportSize();
-    bool getTransparency();
-    QString getExportFormat();
-	QString getCameraLayerName();
+    QSize getExportSize() const;
+    bool getTransparency() const;
+    QString getExportFormat() const;
+	QString getCameraLayerName() const;
 
 private slots:
-    void formatChanged(QString format);
+    void formatChanged(const QString& format);
 	void cameraComboChanged(int index);
 
 private:

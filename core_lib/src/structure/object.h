@@ -82,12 +82,8 @@ public:
     QString copyFileToDataFolder( QString strFilePath );
 
     // Color palette
-    ColourRef getColour( int i );
-    void setColour( int index, QColor newColour )
-    {
-        Q_ASSERT( index >= 0 );
-        mPalette[ index ].colour = newColour;
-    }
+    ColourRef getColour( int i ) const;
+    void setColour(int index, QColor newColour);
     void addColour( QColor );
     void addColour( ColourRef newColour ) { mPalette.append( newColour ); }
     bool removeColour( int index );

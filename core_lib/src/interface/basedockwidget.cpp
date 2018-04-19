@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include "basedockwidget.h"
 
 BaseDockWidget::BaseDockWidget(QWidget* pParent) 
-: QDockWidget(pParent, Qt::Tool )
+: QDockWidget(pParent, Qt::Tool)
 {
 }
 
