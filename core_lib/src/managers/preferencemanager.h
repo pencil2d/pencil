@@ -94,6 +94,7 @@ public:
     QString getString(SETTING option);
     int     getInt(SETTING option);
 
+
 Q_SIGNALS:
     void optionChanged(SETTING e);
 

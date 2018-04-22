@@ -27,6 +27,7 @@ class LayerBitmap : public Layer
 
 public:
     LayerBitmap(Object* object);
+    LayerBitmap(int id, Object* object);
     ~LayerBitmap();
 
     void loadImageAtFrame(QString strFilePath, QPoint topLeft, int frameNumber);

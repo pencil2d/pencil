@@ -40,6 +40,11 @@ GNU General Public License for more details.
 #include "filemanager.h"
 #include "colormanager.h"
 #include "layermanager.h"
+
+#include "backupmanager.h"
+#include "historyviewerwidget.h"
+#include "layercamera.h"
+
 #include "toolmanager.h"
 #include "playbackmanager.h"
 #include "soundmanager.h"
@@ -113,6 +118,23 @@ MainWindow2::MainWindow2(QWidget *parent) :
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
 
+    ui->menuEdit->removeAction(ui->actionUndo);
+    ui->menuEdit->removeAction(ui->actionRedo);
+
+    QIcon undoIcon;
+    undoIcon.addFile(QStringLiteral(":/icons/undo.png"), QSize(), QIcon::Normal, QIcon::Off);
+    ui->actionUndo = mEditor->backups()->undoStack()->createUndoAction(this, tr("&Undo"));
+    ui->actionUndo->setIcon(undoIcon);
+
+    QIcon redoIcon;
+    redoIcon.addFile(QStringLiteral(":/icons/redo.png"), QSize(), QIcon::Normal, QIcon::Off);
+    ui->actionRedo = mEditor->backups()->undoStack()->createRedoAction(this, tr("&Redo"));
+    ui->actionRedo->setIcon(redoIcon);
+
+    ui->menuEdit->insertAction(ui->actionCut, ui->actionUndo);
+    ui->menuEdit->insertAction(ui->actionCut, ui->actionRedo);
+    ui->menuEdit->insertSeparator(ui->actionCut);
+
     createDockWidgets();
     createMenus();
     setupKeyboardShortcuts();
@@ -157,6 +179,9 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
+    mHistoryView = new HistoryViewerWidget(this);
+    mHistoryView->setObjectName("History");
+
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -169,7 +194,8 @@ void MainWindow2::createDockWidgets()
         << mColorPalette
         << mDisplayOptionWidget
         << mToolOptions
-        << mToolBox;
+        << mToolBox
+        << mHistoryView;
 
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
@@ -192,6 +218,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
+    addDockWidget(Qt::RightDockWidgetArea, mHistoryView);
     setDockNestingEnabled(true);
     //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
@@ -243,8 +270,6 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
 
     /// --- Edit Menu ---
-    connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
-    connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::cut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
     connect(ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste);
@@ -360,7 +385,6 @@ void MainWindow2::createMenus()
 
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
 
-    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
     connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
@@ -378,7 +402,9 @@ void MainWindow2::setOpacity(int opacity)
 
 void MainWindow2::updateSaveState()
 {
-    setWindowModified(mEditor->currentBackup() != mBackupAtSave);
+    bool hasBeenModified = mEditor->backups()->currentBackup() != mBackupAtSave;
+
+    setWindowModified(hasBeenModified);
 }
 
 void MainWindow2::clearRecentFilesList()
@@ -434,6 +460,9 @@ void MainWindow2::newDocument()
         // Refresh the palette
         mColorPalette->refreshColorList();
         mEditor->color()->setColorNumber(0);
+
+        // clear backup stack
+        mEditor->backups()->undoStack()->clear();
 
         setWindowTitle(PENCIL_WINDOW_TITLE);
         updateSaveState();
@@ -545,6 +574,9 @@ bool MainWindow2::openObject(QString strFilePath)
     mEditor->color()->setColorNumber(0);
     mEditor->layers()->notifyAnimationLengthChanged();
 
+    // clear backup stack
+    mEditor->backups()->undoStack()->clear();
+
     progress.setValue(progress.maximum());
 
     return true;
@@ -610,7 +642,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     mTimeLine->updateContent();
 
     setWindowTitle(strSavedFileName.prepend("[*]"));
-    mBackupAtSave = mEditor->currentBackup();
+    mBackupAtSave = mEditor->backups()->currentBackup();
     updateSaveState();
 
     progress.setValue(progress.maximum());
@@ -628,7 +660,7 @@ bool MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if (mEditor->currentBackup() != mBackupAtSave)
+    if (mEditor->backups()->currentBackup() != mBackupAtSave)
     {
         int ret = QMessageBox::warning(this, tr("Warning"),
                                        tr("This animation has been modified.\n Do you want to save your changes?"),
@@ -685,7 +717,8 @@ void MainWindow2::importImage()
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
 
-    bool ok = mEditor->importImage(strFilePath);
+    bool isSequence = false;
+    bool ok = mEditor->importImage(strFilePath, isSequence);
     if (!ok)
     {
         QMessageBox::warning(this,
@@ -736,7 +769,7 @@ void MainWindow2::importImageSequence()
             strImgFileLower.endsWith(".jpeg") ||
             strImgFileLower.endsWith(".bmp"))
         {
-            mEditor->importImage(strImgFile);
+            mEditor->importImage(strImgFile, mIsImportingImageSequence);
 
             imagesImportedSoFar++;
             progress.setValue(imagesImportedSoFar);
@@ -976,35 +1009,6 @@ void MainWindow2::clearKeyboardShortcuts()
     }
 }
 
-void MainWindow2::undoActSetText()
-{
-    if (mEditor->mBackupIndex < 0)
-    {
-        ui->actionUndo->setText(tr("Undo", "Menu item text"));
-        ui->actionUndo->setEnabled(false);
-    }
-    else
-    {
-        ui->actionUndo->setText(QString("%1   %2 %3").arg(tr("Undo", "Menu item text"))
-                                .arg(QString::number(mEditor->mBackupIndex + 1))
-                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex)->undoText));
-        ui->actionUndo->setEnabled(true);
-    }
-
-    if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
-    {
-        ui->actionRedo->setText(QString("%1   %2 %3").arg("Redo", "Menu item text")
-                                .arg(QString::number(mEditor->mBackupIndex + 2))
-                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
-        ui->actionRedo->setEnabled(true);
-    }
-    else
-    {
-        ui->actionRedo->setText(tr("Redo", "Menu item text"));
-        ui->actionRedo->setEnabled(false);
-    }
-}
-
 void MainWindow2::undoActSetEnabled()
 {
     ui->actionUndo->setEnabled(true);
@@ -1035,7 +1039,7 @@ void MainWindow2::importPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
-    connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
+    connect(editor->backups(), &BackupManager::updateBackup, this, &MainWindow2::updateSaveState);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1071,6 +1075,8 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer);
     connect(pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer);
     connect(pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer);
+    connect(pTimeline, &TimeLine::deleteCurrentLayer, mCommands, &ActionCommands::deleteCurrentLayer);
+    connect(pTimeline, &TimeLine::modifiedCamera, mCommands, &ActionCommands::editCameraProperties);
 
     connect(pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType);
 

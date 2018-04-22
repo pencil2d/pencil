@@ -27,6 +27,20 @@ LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
     setName(tr("Bitmap Layer"));
 }
 
+/**
+ * @brief LayerBitmap::LayerBitmap
+ * @param layer
+ * @param object
+ *
+ * Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerBitmap::LayerBitmap(int id, Object* object) : Layer(object, Layer::BITMAP)
+{
+    setName(tr("Bitmap Layer"));
+    setId(id);
+}
+
 LayerBitmap::~LayerBitmap()
 {
 }

@@ -59,11 +59,12 @@ public:
     void GotoPrevFrame();
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
-    Status addNewKey();
     void removeKey();
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
+
+    Status addNewKey();
 
     // Layer
     Status addNewBitmapLayer();
@@ -71,6 +72,7 @@ public:
     Status addNewCameraLayer();
     Status addNewSoundLayer();
     Status deleteCurrentLayer();
+    void editCameraProperties();
 
     // Help
     void help();

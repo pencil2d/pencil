@@ -23,7 +23,9 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
+
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
@@ -142,7 +144,6 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
 {
     if ( event->button() == Qt::LeftButton )
     {
-        mEditor->backup(typeName());
 
         Layer* layer = mEditor->layers()->currentLayer();
         if ( mScribbleArea->isLayerPaintable() )
@@ -156,12 +157,19 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
             {
                 drawStroke();
             }
-        }
 
-        if ( layer->type() == Layer::BITMAP )
-            paintBitmapStroke();
-        else if (layer->type() == Layer::VECTOR )
-            paintVectorStroke( layer );
+            mEditor->backups()->prepareBackup();
+            if ( layer->type() == Layer::BITMAP )
+            {
+                paintBitmapStroke();
+                mEditor->backups()->bitmap("Bitmap: Pen");
+            }
+            else if (layer->type() == Layer::VECTOR )
+            {
+                paintVectorStroke(layer);
+                mEditor->backups()->vector("Vector: Pen");
+            }
+        }
     }
     endStroke();
 }

@@ -52,11 +52,11 @@ class LayerCamera : public Layer
 public:
     // constructor
     LayerCamera(Object* object);
+    LayerCamera(const int layerId, Object *object);
     ~LayerCamera();
 
     void loadImageAtFrame(int frame, float dx, float dy, float rotate, float scale);
     
-    void editProperties() override;
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
 
@@ -67,6 +67,8 @@ public:
     QRect getViewRect();
     QSize getViewSize();
 
+    void setViewRect(QRect newRect) {viewRect = newRect; }
+
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
     KeyFrame* createKeyFrame(int position, Object*) override;
@@ -75,7 +77,6 @@ private:
     void linearInterpolateTransform(Camera*);
 
     QRect viewRect;
-    CameraPropertiesDialog* dialog = nullptr;
 };
 
 #endif

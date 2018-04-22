@@ -23,10 +23,13 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+
 #include "layermanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
+
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
@@ -113,12 +116,21 @@ void BucketTool::mouseReleaseEvent(QMouseEvent* event)
 
     if ( event->button() == Qt::LeftButton )
     {
-        mEditor->backup(typeName());
 
-        if ( layer->type() == Layer::BITMAP )
-            paintBitmap(layer);
-        else if( layer->type() == Layer::VECTOR )
-            paintVector(event, layer);
+        if ( mScribbleArea->isLayerPaintable() )
+        {
+            mEditor->backups()->prepareBackup();
+            if ( layer->type() == Layer::BITMAP )
+            {
+                paintBitmap(layer);
+                mEditor->backups()->bitmap("Bitmap: Bucket");
+            }
+            else if (layer->type() == Layer::VECTOR )
+            {
+                paintVector(event, layer);
+                mEditor->backups()->vector("Vector: Bucket");
+            }
+        }
     }
     endStroke();
 }

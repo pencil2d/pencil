@@ -210,9 +210,10 @@ void TimeLine::initUI()
     connect(newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer);
     connect(removeLayerButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayer);
 
-    connect(mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY);
-    connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
-    connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
+    connect( mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY );
+    connect( mLayerList, &TimeLineCells::mouseMovedY, mTracks,    &TimeLineCells::setMouseMoveY );
+    connect( mLayerList, &TimeLineCells::modifiedCamera, this, &TimeLine::modifiedCamera );
+    connect( mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength );
 
     connect(editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame);
 
@@ -266,28 +267,7 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     }
 }
 
-void TimeLine::deleteCurrentLayer()
-{
-    LayerManager* layerMgr = editor()->layers();
-    QString strLayerName = layerMgr->currentLayer()->name();
-
-    int ret = QMessageBox::warning(this,
-                                   tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: ") + strLayerName + " ?",
-                                   QMessageBox::Ok | QMessageBox::Cancel,
-                                   QMessageBox::Ok);
-    if (ret == QMessageBox::Ok)
-    {
-        Status st = layerMgr->deleteLayer(editor()->currentLayerIndex());
-        if (st == Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER)
-        {
-            QMessageBox::information(this, "",
-                                     tr("Please keep at least one camera layer in project"));
-        }
-    }
-}
-
-void TimeLine::updateFrame(int frameNumber)
+void TimeLine::updateFrame( int frameNumber )
 {
     Q_ASSERT(mTracks);
 

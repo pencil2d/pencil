@@ -78,7 +78,13 @@ LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
     setName(tr("Camera Layer"));
     viewRect = QRect(QPoint(-400, -300), QSize(800, 600));
-    dialog = NULL;
+}
+
+LayerCamera::LayerCamera(const int layerId, Object* object ) : Layer( object, Layer::CAMERA )
+{
+    setName(tr("Camera Layer"));
+    setId(layerId);
+    viewRect = QRect(QPoint(-400, -300), QSize(800, 600));
 }
 
 LayerCamera::~LayerCamera()
@@ -228,25 +234,6 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
     c->setPos(position);
     linearInterpolateTransform(c);
     return c;
-}
-
-void LayerCamera::editProperties()
-{
-    if ( dialog == NULL )
-    {
-        dialog = new CameraPropertiesDialog( name(), viewRect.width(), viewRect.height() );
-    }
-    dialog->setName( name() );
-    dialog->setWidth(viewRect.width());
-    dialog->setHeight(viewRect.height());
-    int result = dialog->exec();
-    if (result == QDialog::Accepted)
-    {
-        setName( dialog->getName() );
-        viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
-
-        //setUpdated();
-    }
 }
 
 QDomElement LayerCamera::createDomElement( QDomDocument& doc )

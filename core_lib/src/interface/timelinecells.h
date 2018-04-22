@@ -63,6 +63,7 @@ Q_SIGNALS:
     void mouseMovedY(int);
     void lengthChanged(int);
     void offsetChanged(int);
+    void modifiedCamera();
 
 public slots:
     void updateContent();
@@ -121,6 +122,9 @@ private:
 
     const static int mOffsetX = 0;
     const static int mOffsetY = 20;
+
+    int mNumOfFramesOffset = 0;
+
 };
 
 #endif // TIMELINECELLS_H

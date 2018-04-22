@@ -41,6 +41,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class HistoryViewerWidget;
 
 
 
@@ -60,7 +61,6 @@ public:
     Editor* mEditor = nullptr;
 
     public slots:
-    void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
@@ -135,11 +135,12 @@ private:
     Timeline2*            mTimeline2 = nullptr;
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
+    HistoryViewerWidget* mHistoryView = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr; // be public temporary
 
     // backup
-    BackupElement* mBackupAtSave = nullptr;
+    const BackupElement* mBackupAtSave = nullptr;
 
 private:
     ActionCommands* mCommands = nullptr;

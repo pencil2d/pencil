@@ -28,6 +28,7 @@ class LayerVector : public Layer
 
 public:
     LayerVector(Object* object);
+    LayerVector(const int layerId, Object* object);
     ~LayerVector();
 
     // method from layerImage

@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layervector.h"
 #include "scribblearea.h"
+#include "backupmanager.h"
 #include "layermanager.h"
 #include "toolmanager.h"
 
@@ -66,6 +67,8 @@ void SelectTool::mousePressEvent(QMouseEvent* event)
                 ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
             }
             mScribbleArea->setMoveMode(ScribbleArea::NONE);
+
+            mEditor->backups()->prepareBackup();
 
             if (mScribbleArea->somethingSelected)      // there is something selected
             {
@@ -114,6 +117,8 @@ void SelectTool::mouseReleaseEvent(QMouseEvent* event)
     if (layer == NULL) return;
 
     if (event->button() != Qt::LeftButton) return;
+
+    BackupManager* backup = mEditor->backups();
     
     if (layer->type() == Layer::VECTOR)
     {
@@ -139,6 +144,11 @@ void SelectTool::mouseReleaseEvent(QMouseEvent* event)
         }
         mScribbleArea->updateCurrentFrame();
         mScribbleArea->setAllDirty();
+    }
+
+    if (!mScribbleArea->mySelection.isEmpty())
+    {
+        backup->selection();
     }
 }
 

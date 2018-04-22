@@ -24,6 +24,12 @@ LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
     setName(tr("Vector Layer"));
 }
 
+LayerVector::LayerVector(int layerId, Object* object) : Layer(object, Layer::VECTOR)
+{
+    setName(tr("Vector Layer"));
+    setId(layerId);
+}
+
 LayerVector::~LayerVector()
 {
 }

@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include "brushtool.h"
 
-#include <cmath>
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
@@ -29,6 +28,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
 #include "scribblearea.h"
 #include "blitrect.h"
@@ -214,7 +214,6 @@ void BrushTool::mouseReleaseEvent( QMouseEvent* event )
 {
     if ( event->button() == Qt::LeftButton )
     {
-        mEditor->backup(typeName());
 
         Layer* layer = mEditor->layers()->currentLayer();
         if ( mScribbleArea->isLayerPaintable() )
@@ -228,12 +227,19 @@ void BrushTool::mouseReleaseEvent( QMouseEvent* event )
             {
                 drawStroke();
             }
-        }
 
-        if ( layer->type() == Layer::BITMAP ) 
-            paintBitmapStroke();
-        else if (layer->type() == Layer::VECTOR )
-            paintVectorStroke();
+            mEditor->backups()->prepareBackup();
+            if ( layer->type() == Layer::BITMAP )
+            {
+                paintBitmapStroke();
+                mEditor->backups()->bitmap("Bitmap: Brush");
+            }
+            else if (layer->type() == Layer::VECTOR )
+            {
+                paintVectorStroke();
+                mEditor->backups()->vector("Vector: Brush");
+            }
+        }
     }
     endStroke();
 }

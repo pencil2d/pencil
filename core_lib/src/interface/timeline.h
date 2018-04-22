@@ -66,10 +66,14 @@ Q_SIGNALS:
     void newSoundLayer();
     void newCameraLayer();
 
+    void deleteCurrentLayer();
+
     void soundClick( bool );
     void fpsClick( int );
     void onionPrevClick();
     void onionNextClick();
+
+    void modifiedCamera();
 
 public:
     bool scrubbing = false;
@@ -79,7 +83,6 @@ protected:
     void wheelEvent( QWheelEvent* ) override;
 
 private:
-    void deleteCurrentLayer();
 
     QScrollBar* mHScrollbar = nullptr;
     QScrollBar* mVScrollbar = nullptr;

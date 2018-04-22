@@ -116,6 +116,15 @@ LayerBitmap* Object::addNewBitmapLayer()
     return layerBitmap;
 }
 
+LayerBitmap* Object::bitmapLayerContaining(const int layerId, const int layerIndex)
+{
+    LayerBitmap* layerBitmap = new LayerBitmap(layerId, this);
+    mLayers.insert(layerIndex, layerBitmap);
+
+    layerBitmap->addNewKeyFrameAt(1);
+    return layerBitmap;
+}
+
 LayerVector* Object::addNewVectorLayer()
 {
     LayerVector* layerVector = new LayerVector(this);
@@ -123,6 +132,15 @@ LayerVector* Object::addNewVectorLayer()
 
     layerVector->addNewKeyFrameAt(1);
 
+    return layerVector;
+}
+
+LayerVector* Object::vectorLayerContaining(const int layerId, const int layerIndex)
+{
+    LayerVector* layerVector = new LayerVector(layerId, this);
+    mLayers.insert(layerIndex, layerVector);
+
+    layerVector->addNewKeyFrameAt(1);
     return layerVector;
 }
 
@@ -136,6 +154,14 @@ LayerSound* Object::addNewSoundLayer()
     return layerSound;
 }
 
+LayerSound* Object::addSoundLayerContaining(const int layerId, const int layerIndex)
+{
+    LayerSound* layerSound = new LayerSound(layerId, this);
+    mLayers.insert(layerIndex, layerSound);
+
+    return layerSound;
+}
+
 LayerCamera* Object::addNewCameraLayer()
 {
     LayerCamera* layerCamera = new LayerCamera(this);
@@ -143,6 +169,15 @@ LayerCamera* Object::addNewCameraLayer()
 
     layerCamera->addNewKeyFrameAt(1);
 
+    return layerCamera;
+}
+
+LayerCamera* Object::addCameraLayerContaining(const int layerId, const int layerIndex)
+{
+    LayerCamera* layerCamera = new LayerCamera(layerId, this);
+    mLayers.insert(layerIndex, layerCamera);
+
+    layerCamera->addNewKeyFrameAt(1);
     return layerCamera;
 }
 
@@ -217,6 +252,24 @@ Layer* Object::getLayer(int i) const
     return mLayers.at(i);
 }
 
+int Object::getLastLayerIndex() const
+{
+    return mLayers.indexOf(mLayers.last()); // begin is the highest layer position
+}
+
+Layer* Object::findLayerById(int layerId) const
+{
+    for(Layer* layer : mLayers)
+    {
+        if (layer->id() == layerId)
+        {
+            return layer;
+        }
+    }
+    return nullptr;
+}
+
+
 Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
 {
     bool bCheckType = (type != Layer::UNDEFINED);
@@ -261,16 +314,28 @@ void Object::deleteLayer(int i)
     }
 }
 
-void Object::deleteLayer(Layer* layer)
+void Object::deleteLayerWithId(int layerId)
 {
-    auto it = std::find(mLayers.begin(), mLayers.end(), layer);
+//    auto it = std::find(mLayers.begin(), mLayers.end(), layer);
 
-    if (it != mLayers.end())
+//    if (it != mLayers.end())
+//    {
+//        qDebug() << "type to be deleted " <<layer->type();
+//        disconnect(layer, 0, 0, 0);
+//        delete layer;
+//        mLayers.erase(it);
+//    }
+
+    for (int i = 0; i < mLayers.size(); i++)
     {
-        disconnect(layer, 0, 0, 0);
-        delete layer;
-        mLayers.erase(it);
+        if (mLayers.at(i)->id() == layerId)
+        {
+            disconnect(mLayers[i], 0, 0, 0);
+            delete mLayers.takeAt(i);
+            break;
+        }
     }
+
 }
 
 ColourRef Object::getColour(int i) const

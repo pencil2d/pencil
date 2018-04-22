@@ -36,7 +36,7 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layercamera.h"
-#include "backupelement.h"
+
 #include "activeframepool.h"
 
 #include "colormanager.h"
@@ -46,6 +46,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "preferencemanager.h"
 #include "soundmanager.h"
+#include "backupmanager.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -61,7 +62,6 @@ static VectorImage g_clipboardVectorImage;
 
 Editor::Editor(QObject* parent) : QObject(parent)
 {
-    mBackupIndex = -1;
     clipboardBitmapOk = false;
     clipboardVectorOk = false;
     clipboardSoundClipOk = false;
@@ -72,7 +72,6 @@ Editor::Editor(QObject* parent) : QObject(parent)
 Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
-    clearUndoStack();
     mActiveFramePool->clear();
 }
 
@@ -86,6 +85,7 @@ bool Editor::init()
     mViewManager = new ViewManager(this);
     mPreferenceManager = new PreferenceManager(this);
     mSoundManager = new SoundManager(this);
+    mBackupManager = new BackupManager(this);
 
     mAllManagers =
     {
@@ -95,7 +95,8 @@ bool Editor::init()
         mPlaybackManager,
         mViewManager,
         mPreferenceManager,
-        mSoundManager
+        mSoundManager,
+        mBackupManager
     };
 
     for (BaseManager* pManager : mAllManagers)
@@ -144,7 +145,8 @@ void Editor::dropEvent(QDropEvent* event)
             QString filePath = url.toLocalFile();
             if (filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
             {
-                importImage(filePath);
+                bool isSequence = (i > 1) ? true : false;
+                importImage(filePath, isSequence);
             }
             //if ( filePath.endsWith( ".aif" ) || filePath.endsWith( ".mp3" ) || filePath.endsWith( ".wav" ) )
                 //importSound( filePath );
@@ -168,325 +170,6 @@ void Editor::settingUpdated(SETTING setting)
         break;
     default:
         break;
-    }
-}
-
-BackupElement* Editor::currentBackup()
-{
-    if (mBackupIndex >= 0)
-    {
-        return mBackupList[mBackupIndex];
-    }
-    else
-    {
-        return nullptr;
-    }
-}
-
-void Editor::backup(QString undoText)
-{
-    KeyFrame* frame = nullptr;
-    if (mLastModifiedLayer > -1 && mLastModifiedFrame > 0)
-    {
-        if (layers()->currentLayer()->type() == Layer::SOUND)
-        {
-            frame = layers()->currentLayer()->getKeyFrameWhichCovers(mLastModifiedFrame);
-            if (frame != nullptr) {
-                backup(mLastModifiedLayer, frame->pos(), undoText);
-            }
-        }
-        else
-        {
-            backup(mLastModifiedLayer, mLastModifiedFrame, undoText);
-        }
-    }
-    if (mLastModifiedLayer != layers()->currentLayerIndex() || mLastModifiedFrame != currentFrame())
-    {
-        if (layers()->currentLayer()->type() == Layer::SOUND)
-        {
-            frame = layers()->currentLayer()->getKeyFrameWhichCovers(currentFrame());
-
-            if (frame != nullptr)
-            {
-                backup(layers()->currentLayerIndex(), frame->pos(), undoText);
-            }
-        }
-        else
-        {
-            backup(layers()->currentLayerIndex(), currentFrame(), undoText);
-        }
-    }
-}
-
-void Editor::backup(int backupLayer, int backupFrame, QString undoText)
-{
-    while (mBackupList.size() - 1 > mBackupIndex && mBackupList.size() > 0)
-    {
-        delete mBackupList.takeLast();
-    }
-    while (mBackupList.size() > 19)   // we authorize only 20 levels of cancellation
-    {
-        delete mBackupList.takeFirst();
-        mBackupIndex--;
-    }
-    Layer* layer = mObject->getLayer(backupLayer);
-    if (layer != NULL)
-    {
-        if (layer->type() == Layer::BITMAP)
-        {
-            BitmapImage* bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(backupFrame, 0);
-            if (currentFrame() == 1) {
-                int previous = layer->getPreviousKeyFramePosition(backupFrame);
-                bitmapImage = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(previous);
-            }
-            if (bitmapImage != NULL)
-            {
-                BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
-                element->layer = backupLayer;
-                element->frame = backupFrame;
-                element->undoText = undoText;
-                element->somethingSelected = getScribbleArea()->somethingSelected;
-                element->mySelection = getScribbleArea()->mySelection;
-                element->myTransformedSelection = getScribbleArea()->myTransformedSelection;
-                element->myTempTransformedSelection = getScribbleArea()->myTempTransformedSelection;
-                mBackupList.append(element);
-                mBackupIndex++;
-            }
-        }
-        else if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(backupFrame, 0);
-            if (vectorImage != NULL)
-            {
-                BackupVectorElement* element = new BackupVectorElement(vectorImage);
-                element->layer = backupLayer;
-                element->frame = backupFrame;
-                element->undoText = undoText;
-                element->somethingSelected = getScribbleArea()->somethingSelected;
-                element->mySelection = getScribbleArea()->mySelection;
-                element->myTransformedSelection = getScribbleArea()->myTransformedSelection;
-                element->myTempTransformedSelection = getScribbleArea()->myTempTransformedSelection;
-                mBackupList.append(element);
-                mBackupIndex++;
-            }
-        }
-        else if (layer->type() == Layer::SOUND)
-        {
-            int previous = layer->getPreviousKeyFramePosition(backupFrame);
-            KeyFrame* key = layer->getLastKeyFrameAtPosition(backupFrame);
-
-            // in case tracks overlap, get previous frame
-            if (key == nullptr)
-            {
-                KeyFrame* previousKey = layer->getKeyFrameAt(previous);
-                key = previousKey;
-            }
-            if (key != nullptr) {
-                SoundClip* clip = static_cast<SoundClip*>(key);
-                if (clip)
-                {
-                    BackupSoundElement* element = new BackupSoundElement(clip);
-                    element->layer = backupLayer;
-                    element->frame = backupFrame;
-                    element->undoText = undoText;
-                    element->fileName = clip->fileName();
-                    mBackupList.append(element);
-                    mBackupIndex++;
-                }
-            }
-        }
-    }
-
-    updateAutoSaveCounter();
-
-    emit updateBackup();
-}
-
-void Editor::restoreKey()
-{
-    BackupElement* lastBackupElement = mBackupList[mBackupIndex];
-
-    Layer* layer = nullptr;
-    int frame = 0;
-    int layerIndex = 0;
-    if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
-    {
-        BackupBitmapElement* lastBackupBitmapElement = (BackupBitmapElement*)lastBackupElement;
-        layerIndex = lastBackupBitmapElement->layer;
-        frame = lastBackupBitmapElement->frame;
-        layer = object()->getLayer(layerIndex);
-        addKeyFrame(layerIndex, frame);
-        dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(&lastBackupBitmapElement->bitmapImage);
-    }
-    if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
-    {
-        BackupVectorElement* lastBackupVectorElement = (BackupVectorElement*)lastBackupElement;
-        layerIndex = lastBackupVectorElement->layer;
-        frame = lastBackupVectorElement->frame;
-        layer = object()->getLayer(layerIndex);
-        addKeyFrame(layerIndex, frame);
-        dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(lastBackupVectorElement->vectorImage);
-    }
-    if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
-    {
-        QString strSoundFile;
-        BackupSoundElement* lastBackupSoundElement = (BackupSoundElement*)lastBackupElement;
-        layerIndex = lastBackupSoundElement->layer;
-        frame = lastBackupSoundElement->frame;
-
-        strSoundFile = lastBackupSoundElement->fileName;
-        KeyFrame* key = addKeyFrame(layerIndex, frame);
-        SoundClip* clip = dynamic_cast<SoundClip*>(key);
-        if (clip)
-        {
-            if (strSoundFile.isEmpty())
-            {
-                return;
-            }
-            else
-            {
-                //Status st = sound()->pasteSound(clip, strSoundFile);
-                //Q_ASSERT(st.ok());
-            }
-        }
-    }
-}
-
-void BackupBitmapElement::restore(Editor* editor)
-{
-    Layer* layer = editor->object()->getLayer(this->layer);
-    editor->getScribbleArea()->somethingSelected = this->somethingSelected;
-    editor->getScribbleArea()->mySelection = this->mySelection;
-    editor->getScribbleArea()->myTransformedSelection = this->myTransformedSelection;
-    editor->getScribbleArea()->myTempTransformedSelection = this->myTempTransformedSelection;
-
-    editor->updateFrame(this->frame);
-    editor->scrubTo(this->frame);
-
-    if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
-    {
-        editor->restoreKey();
-    }
-    else
-    {
-        if (layer != NULL)
-        {
-            if (layer->type() == Layer::BITMAP)
-            {
-                auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
-                *pLayerBitmap->getLastBitmapImageAtFrame(this->frame, 0) = this->bitmapImage;  // restore the image
-            }
-        }
-    }
-}
-
-void BackupVectorElement::restore(Editor* editor)
-{
-    Layer* layer = editor->object()->getLayer(this->layer);
-    editor->getScribbleArea()->somethingSelected = this->somethingSelected;
-    editor->getScribbleArea()->mySelection = this->mySelection;
-    editor->getScribbleArea()->myTransformedSelection = this->myTransformedSelection;
-    editor->getScribbleArea()->myTempTransformedSelection = this->myTempTransformedSelection;
-
-    editor->updateFrameAndVector(this->frame);
-    editor->scrubTo(this->frame);
-    if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
-    {
-        editor->restoreKey();
-    }
-    else
-    {
-        if (layer != NULL)
-        {
-            if (layer->type() == Layer::VECTOR)
-            {
-                auto pVectorImage = static_cast<LayerVector*>(layer);
-                *pVectorImage->getLastVectorImageAtFrame(this->frame, 0) = this->vectorImage;  // restore the image
-            }
-        }
-    }
-}
-
-void BackupSoundElement::restore(Editor* editor)
-{
-    Layer* layer = editor->object()->getLayer(this->layer);
-    editor->updateFrame(this->frame);
-    editor->scrubTo(this->frame);
-
-    // TODO: soundclip won't restore if overlapping on first frame
-    if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
-    {
-        editor->restoreKey();
-    }
-}
-
-void Editor::undo()
-{
-    if (mBackupList.size() > 0 && mBackupIndex > -1)
-    {
-        if (mBackupIndex == mBackupList.size() - 1)
-        {
-            BackupElement* lastBackupElement = mBackupList[mBackupIndex];
-            if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
-            {
-                BackupBitmapElement* lastBackupBitmapElement = (BackupBitmapElement*)lastBackupElement;
-                backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp");
-                mBackupIndex--;
-            }
-            if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
-            {
-                BackupVectorElement* lastBackupVectorElement = (BackupVectorElement*)lastBackupElement;
-                backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp");
-                mBackupIndex--;
-            }
-            if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
-            {
-                BackupSoundElement* lastBackupSoundElement = (BackupSoundElement*)lastBackupElement;
-                backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp");
-                mBackupIndex--;
-            }
-        }
-
-        mBackupList[mBackupIndex]->restore(this);
-        mBackupIndex--;
-        mScribbleArea->cancelTransformedSelection();
-        mScribbleArea->calculateSelectionRect(); // really ugly -- to improve
-        emit updateBackup();
-    }
-}
-
-void Editor::redo()
-{
-    if (mBackupList.size() > 0 && mBackupIndex < mBackupList.size() - 2)
-    {
-        mBackupIndex++;
-
-        mBackupList[mBackupIndex + 1]->restore(this);
-        emit updateBackup();
-    }
-}
-
-void Editor::clearUndoStack()
-{
-    mBackupIndex = -1;
-    while (!mBackupList.isEmpty())
-    {
-        delete mBackupList.takeLast();
-    }
-    mLastModifiedLayer = -1;
-    mLastModifiedFrame = -1;
-}
-
-void Editor::updateAutoSaveCounter()
-{
-    if (mIsAutosave == false)
-        return;
-
-    mAutosaveCounter++;
-    if (mAutosaveCounter >= mAutosaveNumber)
-    {
-        mAutosaveCounter = 0;
-        emit needSave();
     }
 }
 
@@ -543,11 +226,12 @@ void Editor::paste()
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
     if (layer != NULL)
     {
+        backups()->prepareBackup();
         if (layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != NULL)
         {
-            backup(tr("Paste"));
-
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
+
+            // TODO: paste doesn't remember location, will always paste on top of old image.
             qDebug() << "to be pasted --->" << tobePasted.image()->size();
             if (mScribbleArea->somethingSelected)
             {
@@ -563,14 +247,16 @@ void Editor::paste()
             }
             auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
             pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->paste(&tobePasted); // paste the clipboard
+
+            backups()->bitmap("Bitmap: Paste");
         }
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
-            backup(tr("Paste"));
             mScribbleArea->deselectAll();
             VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             mScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
+            backups()->vector("Vector: Paste");
         }
     }
     mScribbleArea->updateCurrentFrame();
@@ -658,8 +344,6 @@ void Editor::updateObject()
 {
     scrubTo(mObject->data()->getCurrentFrame());
     setCurrentLayerIndex(mObject->data()->getCurrentLayer());
-
-    clearUndoStack();
 
     mAutosaveCounter = 0;
     mAutosaveNerverAskAgain = false;
@@ -755,7 +439,7 @@ QString Editor::workingDir() const
     return mObject->workingDir();
 }
 
-bool Editor::importBitmapImage(QString filePath)
+bool Editor::importBitmapImage(QString filePath, bool isSequence)
 {
     QImageReader reader(filePath);
 
@@ -768,34 +452,51 @@ bool Editor::importBitmapImage(QString filePath)
         return false;
     }
 
+    bool keyExisted = layer->keyExists(currentFrame());
+    qDebug("frame %d and exist %d", currentFrame(), keyExisted);
     while (reader.read(&img))
     {
-        if (!layer->keyExists(currentFrame()))
+        bool keyAdded = false;
+        if (!keyExisted)
         {
             addNewKey();
+            keyAdded = true;
         }
         BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(currentFrame());
 
         QRect boundaries = img.rect();
         boundaries.moveTopLeft(mScribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width() / 2, boundaries.height() / 2));
 
+        backups()->prepareBackup();
+
         BitmapImage importedBitmapImage{ boundaries, img };
         bitmapImage->paste(&importedBitmapImage);
 
-        scrubTo(currentFrame() + 1);
+        if (!keyExisted)
+        {
+            backups()->keyAdded(isSequence, keyExisted, "Import: Image+Key");
+        }
+        else
+        {
+            backups()->bitmap("Import: Image");
+        }
 
-        backup(tr("Import Image"));
+        if (isSequence)
+        {
+            scrubTo(currentFrame() + 1);
+        }
     }
 
     return true;
 }
 
-bool Editor::importVectorImage(QString filePath)
+bool Editor::importVectorImage(QString filePath, bool /*isSequence*/)
 {
     Q_ASSERT(layers()->currentLayer()->type() == Layer::VECTOR);
 
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
 
+    backups()->prepareBackup();
     VectorImage* vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
     if (vectorImage == NULL)
     {
@@ -810,23 +511,23 @@ bool Editor::importVectorImage(QString filePath)
         importedVectorImage.selectAll();
         vectorImage->paste(importedVectorImage);
 
-        backup(tr("Import Image"));
+        backups()->vector("Vector: Import");
     }
 
     return ok;
 }
 
-bool Editor::importImage(QString filePath)
+bool Editor::importImage(QString filePath, bool isSequence)
 {
     Layer* layer = layers()->currentLayer();
 
     switch (layer->type())
     {
     case Layer::BITMAP:
-        return importBitmapImage(filePath);
+        return importBitmapImage(filePath, isSequence);
 
     case Layer::VECTOR:
-        return importVectorImage(filePath);
+        return importVectorImage(filePath, isSequence);
 
     default:
     {
@@ -903,9 +604,16 @@ KeyFrame* Editor::addNewKey()
     return addKeyFrame(layers()->currentLayerIndex(), currentFrame());
 }
 
-KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
+/**
+ * @brief Editor::addKeyFrame
+ * @param layerIndex
+ * @param frameIndex
+ * @param isLastFrame Set true if no more frames will be added, otherwise false.
+ * @return KeyFrame*
+ */
+KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex)
 {
-    Layer* layer = mObject->getLayer(layerNumber);
+    Layer* layer = mObject->getLayer(layerIndex);
     if (layer == NULL)
     {
         Q_ASSERT(false);
@@ -922,23 +630,129 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
     {
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
     }
+
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
+
     return layer->getKeyFrameAt(frameIndex);
 }
 
-void Editor::removeKey()
+KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex)
 {
-    Layer* layer = layers()->currentLayer();
-    if (!layer->keyExistsWhichCovers(currentFrame()))
+    Layer* layer = layers()->findLayerById(layerId);
+    int layerIndex = layers()->getLayerIndex(layer);
+    if (layer == NULL)
+    {
+        Q_ASSERT(false);
+        return nullptr;
+    }
+
+    while (layer->keyExists(frameIndex) && frameIndex > 1)
+    {
+        frameIndex += 1;
+    }
+
+    bool ok = layer->addNewKeyFrameAt(frameIndex);
+    if (ok)
+    {
+        scrubTo(frameIndex); // currentFrameChanged() emit inside.
+    }
+
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
+
+    return layer->getKeyFrameAt(frameIndex);
+}
+
+
+/**
+ * @brief Editor::addKeyContaining
+ * Add a keyframe to the timeline which contains a keyframe
+ * @param layerIndex
+ * @param frameIndex
+ * @param key
+ *
+ */
+void Editor::addKeyContaining(int layerId, int frameIndex, KeyFrame* key)
+{
+    Layer* layer = layers()->findLayerById(layerId);
+    int layerIndex = layers()->getLayerIndex(layer);
+    while (layer->keyExistsWhichCovers(frameIndex))
+    {
+        frameIndex += 1;
+    }
+
+    bool ok = layer->addKeyFrame(frameIndex, key);
+    if (ok)
+    {
+        scrubTo(frameIndex); // currentFrameChanged() emit inside.
+    }
+
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
+
+}
+
+void Editor::removeKeyAt(int layerIndex, int frameIndex)
+{
+    Layer* layer = layers()->getLayer(layerIndex);
+    if (!layer->keyExistsWhichCovers(frameIndex))
     {
         return;
     }
 
-    backup(tr("Remove frame"));
+    layer->removeKeyFrame(frameIndex);
 
-    layer->removeKeyFrame(currentFrame());
+    while (!layer->keyExists(frameIndex) && frameIndex > 1)
+    {
+        frameIndex -= 1;
+    }
 
-    scrubBackward();
-    Q_EMIT layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+    scrubPreviousKeyFrame();
+
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
+
+    Q_EMIT layers()->currentLayerChanged(layerIndex); // trigger timeline repaint.
+}
+
+void Editor::removeKeyAtLayerId(int layerId, int frameIndex)
+{
+    Layer* layer = layers()->findLayerById(layerId);
+    int layerIndex = layers()->getLayerIndex(layer);
+    if (!layer->keyExistsWhichCovers(frameIndex))
+    {
+        return;
+    }
+
+    layer->removeKeyFrame(frameIndex);
+
+    while (!layer->keyExists(frameIndex) && frameIndex > 1)
+    {
+        frameIndex -= 1;
+    }
+
+    scrubTo(frameIndex);
+
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
+
+    Q_EMIT layers()->currentLayerChanged(layerIndex); // trigger timeline repaint.
+}
+
+void Editor::removeCurrentKey()
+{
+    removeKeyAt(currentLayerIndex(), currentFrame());
 }
 
 void Editor::scrubNextKeyFrame()
@@ -977,7 +791,7 @@ void Editor::moveLayer(int i, int j)
     }
     else
     {
-        layers()->setCurrentLayer(j - 1);
+        layers()->setCurrentLayer(j);
     }
     emit updateTimeLine();
     mScribbleArea->updateAllFrames();

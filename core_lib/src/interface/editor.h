@@ -42,7 +42,10 @@ class SoundManager;
 class ScribbleArea;
 class TimeLine;
 class BackupElement;
+
+class BackupManager;
 class ActiveFramePool;
+
 
 enum class SETTING;
 
@@ -58,6 +61,7 @@ class Editor : public QObject
         Q_PROPERTY(ViewManager*     view     READ view)
         Q_PROPERTY(PreferenceManager* preference READ preference)
         Q_PROPERTY(SoundManager*    sound    READ sound)
+        Q_PROPERTY(BackupManager*   backups  READ backups)
 
 public:
     explicit Editor(QObject* parent = nullptr);
@@ -75,6 +79,7 @@ public:
     ViewManager*       view() const { return mViewManager; }
     PreferenceManager* preference() const { return mPreferenceManager; }
     SoundManager*      sound() const { return mSoundManager; }
+    BackupManager*     backups() const { return mBackupManager; }
 
     Object* object() const { return mObject.get(); }
     Status setObject(Object* object);
@@ -100,15 +105,9 @@ public:
 
     void importMovie(QString filePath, int fps);
 
-    // backup
-    int mBackupIndex;
-    BackupElement* currentBackup();
-    QList<BackupElement*> mBackupList;
-
 Q_SIGNALS:
     void updateTimeLine();
     void updateLayerCount();
-    void updateBackup();
 
     void objectLoaded();
 
@@ -122,7 +121,10 @@ public: //slots
 
     void cut();
 
-    bool importImage(QString filePath);
+    void deselectAll();
+
+    bool importImage(QString filePath, bool isSequence);
+
     void updateFrame(int frameNumber);
     void restoreKey();
 
@@ -135,18 +137,22 @@ public: //slots
     void scrubBackward();
 
     KeyFrame* addNewKey();
+    KeyFrame* addKeyFrame(int layerIndex, int frameIndex);
+    KeyFrame* addKeyFrameToLayerId(int layerId, int frameIndex);
+    void addKeyContaining(int layerId, int frameIndex, KeyFrame* key);
+
+
     void removeKey();
+    void removeCurrentKey();
+    void removeKeyAt(int layerIndex, int frameIndex);
+    void removeKeyAtLayerId(int layerId, int frameIndex);
 
     void switchVisibilityOfLayer(int layerNumber);
     void moveLayer(int i, int j);
 
-    void backup(QString undoText);
-    void backup(int layerNumber, int frameNumber, QString undoText);
-    void undo();
-    void redo();
     void copy();
-
     void paste();
+
     void clipboardChanged();
     void toggleShowAllLayers();
     void flipSelection(bool flipVertical);
@@ -164,8 +170,8 @@ protected:
     void dropEvent(QDropEvent*);
 
 private:
-    bool importBitmapImage(QString);
-    bool importVectorImage(QString);
+    bool importBitmapImage(QString, bool isSequence);
+    bool importVectorImage(QString, bool);
 
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
@@ -182,6 +188,7 @@ private:
     ViewManager*       mViewManager = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
     SoundManager*      mSoundManager = nullptr;
+    BackupManager*     mBackupManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 
@@ -193,13 +200,6 @@ private:
     bool mAutosaveNerverAskAgain = false;
 
     void makeConnections();
-    KeyFrame* addKeyFrame(int layerNumber, int frameNumber);
-
-    // backup
-    void clearUndoStack();
-    void updateAutoSaveCounter();
-    int mLastModifiedFrame = -1;
-    int mLastModifiedLayer = -1;
 
     // clipboard
     bool clipboardBitmapOk = true;

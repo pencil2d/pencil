@@ -454,6 +454,16 @@ bool Layer::isFrameSelected(int position)
     return false;
 }
 
+int Layer::getFirstFrameInSelection()
+{
+    return mSelectedFrames_byPosition.last();
+}
+
+int Layer::getLastFrameInSelection()
+{
+    return mSelectedFrames_byPosition.first();
+}
+
 void Layer::setFrameSelected(int position, bool isSelected)
 {
     KeyFrame* keyFrame = getKeyFrameWhichCovers(position);

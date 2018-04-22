@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "backupmanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
 
@@ -139,7 +140,6 @@ void PolylineTool::mouseMoveEvent(QMouseEvent*)
 
 void PolylineTool::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    mEditor->backup(typeName());
 
     if ( BezierCurve::eLength( m_pStrokeManager->getLastPressPixel() - event->pos() ) < 2.0 )
     {
@@ -244,6 +244,7 @@ void PolylineTool::endPolyline( QList<QPointF> points )
 
     Layer* layer = mEditor->layers()->currentLayer();
 
+    mEditor->backups()->prepareBackup();
     if ( layer->type() == Layer::VECTOR )
     {
         BezierCurve curve = BezierCurve( points );
@@ -260,12 +261,14 @@ void PolylineTool::endPolyline( QList<QPointF> points )
         curve.setInvisibility( mScribbleArea->makeInvisible() );
 
         ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, mEditor->view()->scaling() );
+        mEditor->backups()->vector("Vector: Polyline");
     }
     if ( layer->type() == Layer::BITMAP )
     {
         drawPolyline( points, points.last() );
         BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
         bitmapImage->paste( mScribbleArea->mBufferImg );
+        mEditor->backups()->bitmap("Bitmap: Polyline");
     }
     mScribbleArea->mBufferImg->clear();
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );

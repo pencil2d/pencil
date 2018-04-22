@@ -71,6 +71,7 @@ public:
     QList<int> mClosestCurves;
 
     bool areLayersSane() const;
+    bool isKeySane() const;
     bool isLayerPaintable() const;
     bool allowSmudging();
 
@@ -124,6 +125,7 @@ public slots:
     void clearImage();
     void calculateSelectionRect();
     QTransform getSelectionTransformation() const { return selectionTransformation; }
+
     void calculateSelectionTransformation();
     void paintTransformedSelection();
     void applyTransformedSelection();

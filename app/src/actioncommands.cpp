@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
+#include "backupmanager.h"
 #include "util.h"
 #include "app_util.h"
 
@@ -80,10 +81,12 @@ Status ActionCommands::importSound()
         QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties", "Dialog title on creating a sound layer"),
                                                      tr("Layer name:"), QLineEdit::Normal,
                                                      tr("Sound Layer", "Default name on creating a sound layer"), &ok);
+        mEditor->backups()->prepareBackup();
         if (ok && !strLayerName.isEmpty())
         {
             Layer* newLayer = mEditor->layers()->createSoundLayer(strLayerName);
             mEditor->layers()->setCurrentLayer(newLayer);
+            mEditor->backups()->layerAdded();
         }
         else
         {
@@ -115,6 +118,7 @@ Status ActionCommands::importSound()
         layer->addKeyFrame(currentFrame, key);
     }
 
+    mEditor->backups()->prepareBackup();
     FileDialog fileDialog(mParent);
     QString strSoundFile = fileDialog.openFile(FileType::SOUND);
 
@@ -124,6 +128,7 @@ Status ActionCommands::importSound()
     }
 
     Status st = mEditor->sound()->loadSound(key, strSoundFile);
+    mEditor->backups()->keyAdded();
 
     if (!st.ok())
     {
@@ -139,7 +144,7 @@ Status ActionCommands::exportMovie()
     OnScopeExit(dialog->deleteLater());
 
     dialog->init();
-    
+
     std::vector< std::pair<QString, QSize> > camerasInfo;
     auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
     for (LayerCamera* i : cameraLayers)
@@ -169,7 +174,7 @@ Status ActionCommands::exportMovie()
 
     dialog->setDefaultRange(1, length, lengthWithSounds);
     dialog->exec();
-    
+
     if (dialog->result() == QDialog::Rejected)
     {
         return Status::SAFE;
@@ -241,7 +246,7 @@ Status ActionCommands::exportImageSequence()
 {
     auto dialog = new ExportImageDialog(mParent, FileType::IMAGE_SEQUENCE);
     OnScopeExit(dialog->deleteLater());
-    
+
     dialog->init();
 
     std::vector< std::pair<QString, QSize> > camerasInfo;
@@ -408,14 +413,22 @@ void ActionCommands::rotateCounterClockwise()
 
 void ActionCommands::toggleMirror()
 {
-    bool flipX = mEditor->view()->isFlipHorizontal();
-    mEditor->view()->flipHorizontal(!flipX);
+    BackupManager* backup = mEditor->backups();
+
+    bool flipX = !mEditor->view()->isFlipHorizontal();
+    mEditor->view()->flipHorizontal(flipX);
+
+    backup->flipView(flipX, DIRECTION::HORIZONTAL);
 }
 
 void ActionCommands::toggleMirrorV()
 {
-    bool flipY = mEditor->view()->isFlipVertical();
-    mEditor->view()->flipVertical(!flipY);
+    BackupManager* backup = mEditor->backups();
+
+    bool flipY = !mEditor->view()->isFlipVertical();
+    mEditor->view()->flipVertical(flipY);
+
+    backup->flipView(flipY, DIRECTION::VERTICAL);
 }
 
 void ActionCommands::showGrid(bool bShow)
@@ -462,8 +475,11 @@ void ActionCommands::GotoPrevKeyFrame()
 
 Status ActionCommands::addNewKey()
 {
+    BackupManager* backups = mEditor->backups();
+
     KeyFrame* key = mEditor->addNewKey();
 
+    backups->prepareBackup();
     SoundClip* clip = dynamic_cast<SoundClip*>(key);
     if (clip)
     {
@@ -489,6 +505,7 @@ Status ActionCommands::addNewKey()
         mEditor->view()->updateViewTransforms();
     }
 
+    backups->keyAdded();
     mEditor->layers()->notifyAnimationLengthChanged();
 
     return Status::OK;
@@ -496,9 +513,15 @@ Status ActionCommands::addNewKey()
 
 void ActionCommands::removeKey()
 {
-    mEditor->removeKey();
+    BackupManager* backups = mEditor->backups();
 
     Layer* layer = mEditor->layers()->currentLayer();
+
+    mEditor->backups()->prepareBackup();
+
+    mEditor->removeCurrentKey();
+
+    backups->keyRemoved();
     if (layer->keyFrameCount() == 0)
     {
         layer->addNewKeyFrameAt(1);
@@ -507,6 +530,8 @@ void ActionCommands::removeKey()
 
 void ActionCommands::duplicateKey()
 {
+    BackupManager* backups = mEditor->backups();
+
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) return;
 
@@ -515,6 +540,7 @@ void ActionCommands::duplicateKey()
 
     KeyFrame* dupKey = key->clone();
 
+    backups->prepareBackup();
     int nextEmptyFrame = mEditor->currentFrame() + 1;
     while (layer->keyExistsWhichCovers(nextEmptyFrame))
     {
@@ -532,6 +558,7 @@ void ActionCommands::duplicateKey()
     {
         key->setFileName(""); // don't share filename
     }
+    backups->keyAdded();
 
     mEditor->layers()->notifyAnimationLengthChanged();
 }
@@ -563,25 +590,35 @@ void ActionCommands::moveFrameBackward()
 Status ActionCommands::addNewBitmapLayer()
 {
     bool ok;
+
+    BackupManager* backups = mEditor->backups();
+    backups->prepareBackup();
+
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
                                          tr("Bitmap Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createBitmapLayer(text);
+        backups->layerAdded();
     }
+
     return Status::OK;
 }
 
 Status ActionCommands::addNewVectorLayer()
 {
     bool ok;
+    BackupManager* backups = mEditor->backups();
+    backups->prepareBackup();
+
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
                                          tr("Vector Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
+        backups->layerAdded();
     }
 
     return Status::OK;
@@ -590,12 +627,16 @@ Status ActionCommands::addNewVectorLayer()
 Status ActionCommands::addNewCameraLayer()
 {
     bool ok;
+    BackupManager* backups = mEditor->backups();
+    backups->prepareBackup();
+
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
                                          tr("Camera Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createCameraLayer(text);
+        backups->layerAdded();
     }
 
     return Status::OK;
@@ -604,6 +645,9 @@ Status ActionCommands::addNewCameraLayer()
 Status ActionCommands::addNewSoundLayer()
 {
     bool ok = false;
+    BackupManager* backups = mEditor->backups();
+    backups->prepareBackup();
+
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
                                                  tr("Sound Layer"), &ok);
@@ -612,6 +656,7 @@ Status ActionCommands::addNewSoundLayer()
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
         mEditor->layers()->setCurrentLayer(layer);
 
+        backups->layerAdded();
         return Status::OK;
     }
     return Status::FAIL;
@@ -620,25 +665,63 @@ Status ActionCommands::addNewSoundLayer()
 Status ActionCommands::deleteCurrentLayer()
 {
     LayerManager* layerMgr = mEditor->layers();
-    QString strLayerName = layerMgr->currentLayer()->name();
+    BackupManager* backups = mEditor->backups();
+    Layer* layer = mEditor->layers()->currentLayer();
+    QString layerName = layer->name();
+    int layerIndex = mEditor->currentLayerIndex();
+
+    backups->prepareBackup();
+    std::map<int, KeyFrame*, std::greater<int>> keyFrames;
+    for(auto map : layer->getKeysInLayer())
+    {
+        keyFrames.insert(std::make_pair(map.first, map.second->clone()));
+    }
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: ") + strLayerName + " ?",
+                                   tr("Are you sure you want to delete layer: ") + layerName + " ?",
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)
     {
-        Status st = layerMgr->deleteLayer(mEditor->currentLayerIndex());
+        Status st = layerMgr->deleteLayer(layerIndex);
         if (st == Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER)
         {
             QMessageBox::information(mParent, "",
                                      tr("Please keep at least one camera layer in project", "text when failed to delete camera layer"));
+            return Status::CANCELED;
         }
+        backups->layerDeleted(keyFrames);
     }
     return Status::OK;
 }
 
+void ActionCommands::editCameraProperties()
+{
+    CameraPropertiesDialog* dialog = nullptr;
+    LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+
+    QRect viewRect = layer->getViewRect();
+    mEditor->backups()->prepareBackup();
+
+    if ( dialog == NULL )
+    {
+        dialog = new CameraPropertiesDialog( layer->name(), viewRect.width(), viewRect.height() );
+    }
+    dialog->setName( layer->name() );
+    dialog->setWidth(viewRect.width());
+    dialog->setHeight(viewRect.height());
+    int result = dialog->exec();
+    if (result == QDialog::Accepted)
+    {
+        layer->setName( dialog->getName() );
+        layer->setViewRect(QRect(-dialog->getWidth()/2,
+                                -dialog->getHeight()/2,
+                                dialog->getWidth(),
+                                dialog->getHeight()));
+        mEditor->backups()->cameraProperties(viewRect);
+    }
+}
 
 void ActionCommands::help()
 {

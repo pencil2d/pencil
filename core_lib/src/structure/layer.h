@@ -92,11 +92,14 @@ public:
     KeyFrame *getKeyFrameWhichCovers(int frameNumber);
     bool getVisibility() { return mVisible; }
 
+    std::map<int, KeyFrame*, std::greater<int>> getKeysInLayer() { return mKeyFrames; }
     void foreachKeyFrame(std::function<void(KeyFrame*)>);
 
     void setModified(int position, bool isModified);
 
     // Handle selection
+    int getFirstFrameInSelection();
+    int getLastFrameInSelection();
     bool isFrameSelected(int position);
     void setFrameSelected(int position, bool isSelected);
     void toggleFrameSelected(int position, bool allowMultiple = false);

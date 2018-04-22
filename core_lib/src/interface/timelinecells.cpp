@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
+#include "backupmanager.h"
 #include "toolmanager.h"
 
 
@@ -418,9 +419,11 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
 
 void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
-    if (primaryButton != Qt::NoButton) return;
-    int frameNumber = getFrameNumber(event->pos().x());
-    int layerNumber = getLayerNumber(event->pos().y());
+    if ( primaryButton != Qt::NoButton ) return;
+
+    int frameNumber = getFrameNumber( event->pos().x() );
+    int layerNumber = getLayerNumber( event->pos().y() );
+
 
     mStartY = event->pos().y();
     mStartLayerNumber = layerNumber;
@@ -591,6 +594,9 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             mMovingFrames = true;
 
                             int offset = frameNumber - mLastFrameNumber;
+
+                            mEditor->backups()->prepareBackup();
+                            mNumOfFramesOffset += offset;
                             currentLayer->moveSelectedFrames(offset);
                             mEditor->updateCurrentFrame();
                         }
@@ -636,10 +642,17 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
         }
+
+        if (frameNumber != mStartFrameNumber && mCanMoveFrame)
+        {
+            mEditor->backups()->frameDragged(mNumOfFramesOffset);
+            mNumOfFramesOffset = 0;
+        }
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {
-        mEditor->moveLayer(mStartLayerNumber, layerNumber);
+        mEditor->moveLayer( mStartLayerNumber, layerNumber );
+        mEditor->backups()->layerMoved(layerNumber);
     }
     mTimeLine->updateContent();
 }
@@ -667,10 +680,11 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         {
             if (layer->type() == Layer::CAMERA)
             {
-                layer->editProperties();
+                emit modifiedCamera();
             }
             else
             {
+                mEditor->backups()->prepareBackup();
                 QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
                 bool ok;
@@ -679,8 +693,10 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
                                                      layer->name(), &ok);
                 if (ok && !text.isEmpty())
                 {
+
                     text.replace(regex, "");
                     mEditor->layers()->renameLayer(layer, text);
+                    mEditor->backups()->layerRenamed();
                 }
             }
         }

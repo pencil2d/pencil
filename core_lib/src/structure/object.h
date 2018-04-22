@@ -100,13 +100,20 @@ public:
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
 
-	int  getLayerCount() const ;
+    LayerBitmap* bitmapLayerContaining(const int layerId, const int layerIndex);
+    LayerVector* vectorLayerContaining(const int layerId, const int layerIndex);
+    LayerSound* addSoundLayerContaining(const int layerId, const int layerIndex);
+    LayerCamera* addCameraLayerContaining(const int layerId, const int layerIndex);
+
+    int getLayerCount() const;
+    int getLastLayerIndex() const;
     Layer* getLayer( int i ) const;
 	Layer* findLayerByName( QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED ) const;
+    Layer* findLayerById(int layerId) const;
 
 	bool moveLayer( int i, int j );
     void deleteLayer( int i );
-    void deleteLayer( Layer* );
+    void deleteLayerWithId(int layerId);
 	
 	template< typename T >
 	std::vector< T* > getLayersByType() const

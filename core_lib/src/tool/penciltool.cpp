@@ -21,6 +21,11 @@ GNU General Public License for more details.
 #include <QMouseEvent>
 
 #include "layermanager.h"
+
+#include "layervector.h"
+#include "layerbitmap.h"
+
+#include "backupmanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "viewmanager.h"
@@ -193,7 +198,6 @@ void PencilTool::mouseReleaseEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        mEditor->backup(typeName());
 
         Layer* layer = mEditor->layers()->currentLayer();
         if (mScribbleArea->isLayerPaintable())
@@ -207,12 +211,19 @@ void PencilTool::mouseReleaseEvent(QMouseEvent* event)
             {
                 drawStroke();
             }
-        }
 
-        if (layer->type() == Layer::BITMAP)
-            paintBitmapStroke();
-        else if (layer->type() == Layer::VECTOR)
-            paintVectorStroke(layer);
+           mEditor->backups()->prepareBackup();
+           if ( layer->type() == Layer::BITMAP )
+           {
+               paintBitmapStroke();
+               mEditor->backups()->bitmap("Bitmap: Pencil");
+           }
+           else if (layer->type() == Layer::VECTOR )
+           {
+               paintVectorStroke(layer);
+               mEditor->backups()->vector("Vector: Pencil");
+           }
+        }
     }
     endStroke();
 }

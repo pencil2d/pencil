@@ -35,6 +35,7 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
 
 
@@ -428,6 +429,10 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
 
 bool ScribbleArea::isLayerPaintable() const
 {
+    // FIXME: this may not be a good solution..
+//    if (!isKeySane())
+//        return false;
+
     if (!areLayersSane())
         return false;
 
@@ -440,6 +445,7 @@ bool ScribbleArea::areLayersSane() const
     Layer* layer = mEditor->layers()->currentLayer();
     // ---- checks ------
     if (layer == NULL) { return false; }
+
     if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
@@ -453,6 +459,19 @@ bool ScribbleArea::areLayersSane() const
     // ---- end checks ------
 
     return true;
+}
+
+bool ScribbleArea::isKeySane() const
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (!layer->keyExists(mEditor->currentFrame()))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 bool ScribbleArea::allowSmudging()
@@ -563,6 +582,9 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
+//    if (!isKeySane())
+//        return;
+
     if (!areLayersSane())
     {
         return;
@@ -870,6 +892,8 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
     if(layer->getKeyFrameAt(frameNumber) == nullptr)
     {
+
+        mEditor->backups()->prepareBackup();
         // Drawing on an empty frame; take action based on preference.
         int action = mPrefs->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
 
@@ -902,6 +926,8 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
                     drawCanvas(frameNumber, copy.getSelectionRect().toRect());
                 }
             }
+            qDebug() << "test";
+            mEditor->backups()->keyAdded();
 
             break;
         case DUPLICATE_PREVIOUS_KEY:
@@ -911,6 +937,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
                 KeyFrame* dupKey = previousKeyFrame->clone();
                 layer->addKeyFrame(frameNumber, dupKey);
                 mEditor->scrubTo(frameNumber);  // Refresh timeline.
+                mEditor->backups()->keyAdded();
             }
             break;
         }
@@ -1584,14 +1611,20 @@ void ScribbleArea::deselectAll()
 
 void ScribbleArea::toggleThinLines()
 {
-    bool previousValue = mPrefs->isOn(SETTING::INVISIBLE_LINES);
-    setEffect(SETTING::INVISIBLE_LINES, !previousValue);
+//    BackupManager* backup = editor()->backups();
+
+    bool previousValue = !mPrefs->isOn(SETTING::INVISIBLE_LINES);
+    setEffect(SETTING::INVISIBLE_LINES, previousValue);
+//    backup->toggleSetting(previousValue, SETTING::INVISIBLE_LINES);
 }
 
 void ScribbleArea::toggleOutlines()
 {
+//    BackupManager* backup = editor()->backups();
     mIsSimplified = !mIsSimplified;
     setEffect(SETTING::OUTLINES, mIsSimplified);
+
+//    backup->toggleSetting(mIsSimplified, SETTING::OUTLINES);
 }
 
 void ScribbleArea::toggleShowAllLayers()
@@ -1668,11 +1701,20 @@ void ScribbleArea::deleteSelection()
         Layer* layer = mEditor->layers()->currentLayer();
         if (layer == NULL) { return; }
 
-        mEditor->backup(tr("Delete Selection", "Undo Step: clear the selection area."));
+        mEditor->backups()->prepareBackup();
 
         mClosestCurves.clear();
-        if (layer->type() == Layer::VECTOR) { ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deleteSelection(); }
-        if (layer->type() == Layer::BITMAP) { ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear(mySelection); }
+        if (layer->type() == Layer::VECTOR)
+        {
+            static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deleteSelection();
+            mEditor->backups()->vector("Vector: Clear Selection");
+        }
+        if (layer->type() == Layer::BITMAP)
+        {
+            static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear(mySelection);
+            mEditor->backups()->bitmap("Bitmap: Clear Selection");
+
+        }
         updateAllFrames();
     }
 }
@@ -1682,19 +1724,22 @@ void ScribbleArea::clearImage()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
+    mEditor->backups()->prepareBackup();
     if (layer->type() == Layer::VECTOR)
     {
-        mEditor->backup(tr("Clear Image", "Undo step text"));
-
-        ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->clear();
+        mEditor->backups()->prepareBackup();
+        static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->clear();
+        
         mClosestCurves.clear();
         mClosestVertices.clear();
+        
+        mEditor->backups()->vector("Vector: Clear frame");
     }
     else if (layer->type() == Layer::BITMAP)
     {
-        mEditor->backup(tr("Clear Image", "Undo step text"));
+        static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear();
 
-        ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear();
+        mEditor->backups()->bitmap("Bitmap: Clear frame");
     }
     else
     {

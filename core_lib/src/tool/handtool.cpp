@@ -17,15 +17,17 @@ GNU General Public License for more details.
 
 #include "handtool.h"
 
-#include <cmath>
-#include <QPixmap>
 #include <QVector2D>
 #include <QMouseEvent>
 
+#include "viewmanager.h"
+#include "layermanager.h"
+
 #include "layer.h"
 #include "layercamera.h"
+
 #include "editor.h"
-#include "viewmanager.h"
+#include "backupmanager.h"
 #include "scribblearea.h"
 
 
@@ -53,6 +55,8 @@ void HandTool::mousePressEvent( QMouseEvent* )
     mLastPixel = getLastPressPixel();
     ++mButtonsDown;
     mScribbleArea->updateToolCursor();
+
+    mEditor->backups()->prepareBackup();
 }
 
 void HandTool::mouseReleaseEvent( QMouseEvent* event )
@@ -65,6 +69,13 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
     }
     --mButtonsDown;
     mScribbleArea->updateToolCursor();
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA)
+    {
+        BackupManager* backup = mEditor->backups();
+        backup->cameraMotion();
+    }
 }
 
 void HandTool::mouseMoveEvent( QMouseEvent* evt )

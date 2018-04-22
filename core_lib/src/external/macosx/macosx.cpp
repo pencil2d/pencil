@@ -107,7 +107,8 @@ void Editor::importMovie (QString filePath, int fps)
     {
         progress.setValue(50+i*50/nFiles);
         if(i>1) scrubForward();
-        importImage(tempPath+"tmp_import"+frameNumberString+".png");
+        bool isSequence = (i > 1) ? true : false;
+        importImage(tempPath+"tmp_import"+frameNumberString+".png", isSequence);
         i++;
         frameNumberString = QString::number(i);
         while( frameNumberString.length() < 4) frameNumberString.prepend("0");
