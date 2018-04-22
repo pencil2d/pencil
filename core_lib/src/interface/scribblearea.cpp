@@ -1120,6 +1120,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     o.nShowAllLayers       = mShowAllLayers;
     o.bIsOnionAbsolute     = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     o.scaling              = mEditor->view()->scaling();
+    o.isPlaying = mEditor->playback()->isPlaying() ? true : false;
     mCanvasPainter.setOptions(o);
 
     mCanvasPainter.setCanvas(&mCanvas);
