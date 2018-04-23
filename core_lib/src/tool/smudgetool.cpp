@@ -50,7 +50,7 @@ void SmudgeTool::loadSettings()
     properties.width = settings.value("smudgeWidth").toDouble();
     properties.feather = settings.value("smudgeFeather").toDouble();
     properties.pressure = false;
-    properties.inpolLevel = -1;
+    properties.stabilizerLevel = -1;
 
     // First run
     if (properties.width <= 0)

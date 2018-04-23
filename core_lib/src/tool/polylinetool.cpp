@@ -54,7 +54,7 @@ void PolylineTool::loadSettings()
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value( "brushAA").toBool();
-    properties.inpolLevel = -1;
+    properties.stabilizerLevel = -1;
 
     // First run
     if ( properties.width <= 0 )

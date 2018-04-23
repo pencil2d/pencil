@@ -65,7 +65,7 @@ public slots:
     void setBezier(bool);
     void setPressure(bool);
     void setAA(int);
-    void setInpolLevel(int);
+    void setStabilizerLevel(int);
     void setTolerance(int);
     void setUseFillContour(bool);
 

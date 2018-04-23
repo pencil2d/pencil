@@ -53,7 +53,7 @@ enum ToolPropertyType
     USEFEATHER,
     VECTORMERGE,
     ANTI_ALIASING,
-    INTERPOLATION,
+    STABILIZATION,
     TOLERANCE,
     FILLCONTOUR
 };
@@ -61,6 +61,13 @@ enum ToolPropertyType
 enum BackgroundStyle
 {
 
+};
+
+enum StabilizationLevel
+{
+    NONE,
+    SIMPLE,
+    STRONG
 };
 
 // shortcuts command code

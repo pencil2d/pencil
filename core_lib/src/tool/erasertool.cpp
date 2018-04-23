@@ -45,7 +45,7 @@ void EraserTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[FEATHER] = true;
     m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[INTERPOLATION] = true;
+    m_enabledProperties[STABILIZATION] = true;
 
 
     QSettings settings( PENCIL2D, PENCIL2D );
@@ -100,12 +100,12 @@ void EraserTool::setPressure( const bool pressure )
     settings.sync();
 }
 
-void EraserTool::setInpolLevel(const int level)
+void EraserTool::setStabilizerLevel(const int level)
 {
-    properties.inpolLevel = level;
+    properties.stabilizerLevel = level;
 
     QSettings settings( PENCIL2D, PENCIL2D);
-    settings.setValue("lineInpol", level);
+    settings.setValue("stabilizerLevel", level);
     settings.sync();
 }
 
@@ -170,8 +170,8 @@ void EraserTool::mouseMoveEvent( QMouseEvent *event )
         if ( mScribbleArea->isLayerPaintable() )
         {
             updateStrokes();
-            if (properties.inpolLevel != m_pStrokeManager->getInpolLevel()) {
-                m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel()) {
+                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
             }
         }
     }
