@@ -50,7 +50,7 @@ void BrushTool::loadSettings()
     m_enabledProperties[USEFEATHER] = true;
     m_enabledProperties[PRESSURE] = true;
     m_enabledProperties[INVISIBILITY] = true;
-    m_enabledProperties[INTERPOLATION] = true;
+    m_enabledProperties[STABILIZATION] = true;
     m_enabledProperties[ANTI_ALIASING] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
@@ -135,12 +135,12 @@ void BrushTool::setPressure( const bool pressure )
     settings.sync();
 }
 
-void BrushTool::setInpolLevel(const int level)
+void BrushTool::setStabilizerLevel(const int level)
 {
-    properties.inpolLevel = level;
+    properties.stabilizerLevel = level;
 
     QSettings settings( PENCIL2D, PENCIL2D);
-    settings.setValue("lineInpol", level);
+    settings.setValue("brushStabilization", level);
     settings.sync();
 }
 
@@ -245,8 +245,8 @@ void BrushTool::mouseMoveEvent( QMouseEvent* event )
         if ( event->buttons() & Qt::LeftButton )
         {
             drawStroke();
-            if (properties.inpolLevel != m_pStrokeManager->getInpolLevel())
-                m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
         }
     }
 }

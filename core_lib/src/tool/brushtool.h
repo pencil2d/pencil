@@ -47,7 +47,7 @@ public:
     void setPressure( const bool pressure ) override;
     void setInvisibility( const bool invisibility) override;
     void setAA( const int useAA ) override;
-    void setInpolLevel( const int level ) override;
+    void setStabilizerLevel( const int level ) override;
 
 protected:
     QPointF mLastBrushPoint;

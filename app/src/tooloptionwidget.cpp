@@ -77,7 +77,7 @@ void ToolOptionWidget::updateUI()
     setPreserveAlpha(p.preserveAlpha);
     setVectorMergeEnabled(p.vectorMergeEnabled);
     setAA(p.useAA);
-    setInpolLevel(p.inpolLevel);
+    setStabilizerLevel(p.stabilizerLevel);
     setTolerance(p.tolerance);
     setFillContour(p.useFillContour);
 }
@@ -106,7 +106,7 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(ui->vectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled);
     connect(ui->useAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA);
 
-    connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setInpolLevel);
+    connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
 
     connect(ui->toleranceSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setTolerance);
     connect(ui->toleranceSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setTolerance);
@@ -131,7 +131,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case PRESERVEALPHA: setPreserveAlpha(p.preserveAlpha); break;
     case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
     case ANTI_ALIASING: setAA(p.useAA); break;
-    case INTERPOLATION: setInpolLevel(p.inpolLevel); break;
+    case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case TOLERANCE: setTolerance(p.tolerance); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case BEZIER: setBezier(p.bezier_state); break;
@@ -153,8 +153,8 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
     ui->preserveAlphaBox->setVisible(tool->isPropertyEnabled(PRESERVEALPHA));
     ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
-    ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(INTERPOLATION));
-    ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(INTERPOLATION));
+    ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
+    ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->toleranceSlider->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->toleranceSpinBox->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
@@ -295,7 +295,7 @@ void ToolOptionWidget::setAA(int x)
     }
 }
 
-void ToolOptionWidget::setInpolLevel(int x)
+void ToolOptionWidget::setStabilizerLevel(int x)
 {
     ui->inpolLevelsCombo->setCurrentIndex(qBound(0, x, ui->inpolLevelsCombo->count() - 1));
 }
