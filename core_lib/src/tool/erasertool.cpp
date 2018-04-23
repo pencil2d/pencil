@@ -56,7 +56,7 @@ void EraserTool::loadSettings()
     properties.pressure = settings.value( "eraserPressure" ).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
-    properties.inpolLevel = 0;
+    properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
 
     // First run
     if ( properties.width <= 0 )

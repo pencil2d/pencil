@@ -47,8 +47,8 @@ void BucketTool::loadSettings()
 {
     properties.width = 4;
     properties.feather = 10;
-    properties.inpolLevel = 0;
-    properties.useAA = -1;
+    properties.stabilizerLevel = StabilizationLevel::NONE;
+    properties.useAA = DISABLED;
     properties.tolerance = 10;
 
     m_enabledProperties[TOLERANCE] = true;

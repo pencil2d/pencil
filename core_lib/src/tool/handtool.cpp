@@ -39,7 +39,7 @@ void HandTool::loadSettings()
     properties.width = -1;
     properties.feather = -1;
     properties.useFeather = false;
-    properties.inpolLevel = -1;
+    properties.stabilizerLevel = -1;
     properties.useAA = -1;
 }
 

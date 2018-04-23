@@ -61,8 +61,8 @@ void BrushTool::loadSettings()
     properties.pressure = settings.value( "brushPressure", false ).toBool();
     properties.invisibility = settings.value("brushInvisibility", true).toBool();
     properties.preserveAlpha = OFF;
-    properties.inpolLevel = 0;
-    properties.useAA = 1;
+    properties.stabilizerLevel = settings.value("brushStabilization").toInt();
+    properties.useAA = settings.value("brushAA").toInt();
 
     if (properties.useFeather == true) {
         properties.useAA = -1;
