@@ -50,6 +50,7 @@ struct CanvasPainterOptions
     bool  bIsOnionAbsolute = false;
     float scaling = 1.0f;
     bool isPlaying = false;
+    bool onionWhilePlayback = false;
 };
 
 

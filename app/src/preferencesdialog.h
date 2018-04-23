@@ -135,6 +135,7 @@ public slots:
     void frameSizeChange(int);
     void labelChange(bool);
     void scrubChange(int);
+    void playbackStateChanged(int);
     void radioButtonToggled(bool);
 
 private:

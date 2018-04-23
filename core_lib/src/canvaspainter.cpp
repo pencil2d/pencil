@@ -108,7 +108,7 @@ void CanvasPainter::paintBackground()
 
 void CanvasPainter::paintOnionSkin(QPainter& painter)
 {
-    if (mOptions.isPlaying) { return; }
+    if (!mOptions.onionWhilePlayback && mOptions.isPlaying) { return; }
 
     Layer* layer = mObject->getLayer(mCurrentLayerIndex);
 

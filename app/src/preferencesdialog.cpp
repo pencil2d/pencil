@@ -277,6 +277,7 @@ TimelinePage::TimelinePage(QWidget* parent) :
     connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
     connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
     connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
+    connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &TimelinePage::playbackStateChanged);
 }
 
 TimelinePage::~TimelinePage()
@@ -318,6 +319,9 @@ void TimelinePage::updateValues()
     default:
         break;
     }
+
+    SignalBlocker b7(ui->onionWhilePlayback);
+    ui->onionWhilePlayback->setChecked(mManager->getInt(SETTING::ONION_WHILE_PLAYBACK));
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -343,6 +347,11 @@ void TimelinePage::labelChange(bool value)
 void TimelinePage::scrubChange(int value)
 {
     mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
+}
+
+void TimelinePage::playbackStateChanged(int value)
+{
+    mManager->set(SETTING::ONION_WHILE_PLAYBACK, value);
 }
 
 void TimelinePage::radioButtonToggled(bool)

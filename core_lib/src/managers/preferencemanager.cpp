@@ -96,6 +96,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::ONION_MIN_OPACITY,        settings.value(SETTING_ONION_MIN_OPACITY,      20).toInt());
     set(SETTING::ONION_PREV_FRAMES_NUM,    settings.value(SETTING_ONION_PREV_FRAMES_NUM,  5).toInt());
     set(SETTING::ONION_NEXT_FRAMES_NUM,    settings.value(SETTING_ONION_NEXT_FRAMES_NUM,  5).toInt());
+    set(SETTING::ONION_WHILE_PLAYBACK,     settings.value(SETTING_ONION_WHILE_PLAYBACK,   0).toInt());
     set(SETTING::ONION_TYPE,               settings.value(SETTING_ONION_TYPE,             "relative").toString());
 
     set(SETTING::LANGUAGE,                 settings.value(SETTING_LANGUAGE).toString());
@@ -214,6 +215,9 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::DRAW_ON_EMPTY_FRAME_ACTION:
         settings.setValue( SETTING_DRAW_ON_EMPTY_FRAME_ACTION, value);
+        break;
+    case SETTING::ONION_WHILE_PLAYBACK:
+        settings.setValue(SETTING_ONION_WHILE_PLAYBACK, value);
         break;
     default:
         Q_ASSERT(false);
