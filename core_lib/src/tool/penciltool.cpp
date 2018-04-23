@@ -50,8 +50,8 @@ void PencilTool::loadSettings()
     properties.width = settings.value("pencilWidth").toDouble();
     properties.feather = 50;
     properties.pressure = settings.value("pencilPressure").toBool();
-    properties.inpolLevel = 0;
-    properties.useAA = -1;
+    properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
+    properties.useAA = DISABLED;
     properties.useFeather = true;
     properties.useFillContour = false;
 

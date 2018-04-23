@@ -48,7 +48,7 @@ void PenTool::loadSettings()
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value( "brushAA").toBool();
-    properties.inpolLevel = 0;
+    properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
 
     // First run
     if ( properties.width <= 0 )
