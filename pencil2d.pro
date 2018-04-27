@@ -26,6 +26,7 @@ TRANSLATIONS += translations/pencil.ts \
                 translations/pencil_da.ts \
                 translations/pencil_de.ts \
                 translations/pencil_es.ts \
+                translations/pencil_et.ts \
                 translations/pencil_fr.ts \
                 translations/pencil_he.ts \
                 translations/pencil_hu_HU.ts \
