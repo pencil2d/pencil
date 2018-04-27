@@ -96,19 +96,21 @@ GeneralPage::GeneralPage(QWidget* parent) :
     ui->languageCombo->addItem(tr("Danish") + " (Danish)", "da");
     ui->languageCombo->addItem(tr("German") + " (German)", "de");
     ui->languageCombo->addItem(tr("English") + " (English)", "en");
+    ui->languageCombo->addItem(tr("Estonian") + " (Estonian)", "et");
     ui->languageCombo->addItem(tr("Spanish") + " (Spanish)", "es");
     ui->languageCombo->addItem(tr("French") + " (French)", "fr");
     ui->languageCombo->addItem(tr("Hebrew") + " (Hebrew)", "he");
-    ui->languageCombo->addItem(tr("Hungarian") + " (Hungarian)", "hu-HU");
+    ui->languageCombo->addItem(tr("Hungarian") + " (Hungarian)", "hu_HU");
     ui->languageCombo->addItem(tr("Indonesian") + " (Indonesian)", "id");
     ui->languageCombo->addItem(tr("Italian") + " (Italian)", "it");
     ui->languageCombo->addItem(tr("Japanese") + " (Japanese)", "ja");
+    ui->languageCombo->addItem(tr("Polish") + " (Polish)", "pl");
     ui->languageCombo->addItem(tr("Portuguese - Portugal") + "(Portuguese - Portugal)", "pt");
-    ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt-BR");
+    ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt_BR");
     ui->languageCombo->addItem(tr("Russian") + " (Russian)", "ru");
     ui->languageCombo->addItem(tr("Slovenian") + " (Slovenian)", "sl");
     ui->languageCombo->addItem(tr("Vietnamese") + " (Vietnamese)", "vi");
-    ui->languageCombo->addItem(tr("Chinese - Taiwan") + " (Chinese - Taiwan)", "zh-TW");
+    ui->languageCombo->addItem(tr("Chinese - Taiwan") + " (Chinese - Taiwan)", "zh_TW");
 
     int value = settings.value("windowOpacity").toInt();
     ui->windowOpacityLevel->setValue(100 - value);
