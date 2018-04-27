@@ -32,6 +32,7 @@ TRANSLATIONS += translations/pencil.ts \
                 translations/pencil_id.ts \
                 translations/pencil_it.ts \
                 translations/pencil_ja.ts \
+                translations/pencil_pl.ts \
                 translations/pencil_pt.ts \
                 translations/pencil_pt_BR.ts \
                 translations/pencil_ru.ts \
