@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 #include "catch.hpp"
 
+#include <cmath>
 #include "viewmanager.h"
 #include "editor.h"
 #include "object.h"
@@ -164,8 +165,8 @@ TEST_CASE("ViewManager::scale")
         QPointF p1 = v.mapCanvasToScreen(QPointF(1, 1));
         QPointF p2 = QPointF(0.01, 0.01);
 
-        REQUIRE(std::abs(p1.x() - p2.x()) < 0.000001);
-        REQUIRE(std::abs(p1.y() - p2.y()) < 0.000001);
+        REQUIRE(std::fabs(p1.x() - p2.x()) < 0.000001);
+        REQUIRE(std::fabs(p1.y() - p2.y()) < 0.000001);
     }
 
     delete editor;
