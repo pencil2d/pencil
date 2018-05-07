@@ -244,7 +244,7 @@ void BaseTool::stopAdjusting()
 
 void BaseTool::adjustCursor(qreal argOffsetX, ToolPropertyType propertyType) //offsetx x-lastx ...
 {
-    qreal inc = pow(OriginalSettingValue * 100, 0.5);
+    qreal inc = qPow(OriginalSettingValue * 100, 0.5);
     qreal newValue = inc + argOffsetX;
     int max = (propertyType == FEATHER) ? 64 : 200;
     int min = (propertyType == FEATHER) ? 2 : 1;
@@ -254,7 +254,7 @@ void BaseTool::adjustCursor(qreal argOffsetX, ToolPropertyType propertyType) //o
         newValue = 0;
     }
 
-    newValue = pow(newValue, 2) / 100;
+    newValue = qPow(newValue, 2) / 100;
     if (mAdjustmentStep > 0)
     {
         int tempValue = (int)(newValue / mAdjustmentStep); // + 0.5 ?
