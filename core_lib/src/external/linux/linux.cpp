@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QImageReader>
 #include <QProgressDialog>
 #include <QDebug>
+#include <QSettings>
 #include "object.h"
 #include "editor.h"
 #include "layersound.h"

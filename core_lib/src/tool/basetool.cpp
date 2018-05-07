@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "basetool.h"
 
 #include <array>
+#include <QtMath>
 #include "editor.h"
 #include "viewmanager.h"
 #include "toolmanager.h"
