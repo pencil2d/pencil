@@ -17,9 +17,9 @@ GNU General Public License for more details.
 #include "layer.h"
 
 #include <QDebug>
+#include <QSettings>
 #include "keyframe.h"
 #include "object.h"
-#include "timeline.h"
 #include "timelinecells.h"
 
 

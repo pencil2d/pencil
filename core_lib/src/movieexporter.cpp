@@ -24,6 +24,8 @@ GNU General Public License for more details.
 #include <QProcess>
 #include <QApplication>
 #include <QStandardPaths>
+#include <QThread>
+
 #include "object.h"
 #include "layercamera.h"
 #include "layersound.h"

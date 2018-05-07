@@ -15,14 +15,16 @@ GNU General Public License for more details.
 
 */
 #include "preferencesdialog.h"
+
+#include <QComboBox>
+#include <QMessageBox>
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
 #include "ui_filespage.h"
 #include "ui_toolspage.h"
-#include <QComboBox>
-#include <QMessageBox>
 #include "util.h"
+
 
 PreferencesDialog::PreferencesDialog( QWidget* parent ) :
     QDialog(parent),
