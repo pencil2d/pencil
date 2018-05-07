@@ -18,31 +18,13 @@ GNU General Public License for more details.
 #define _PREFERENCES_H_
 
 #include <QDialog>
-#include <QListWidget>
-#include <QStackedWidget>
-#include <QButtonGroup>
-#include <QGroupBox>
-#include <QCheckBox>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QRadioButton>
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QScrollArea>
-#include <QLabel>
-#include <QPushButton>
 
 #include "pencildef.h"
 #include "scribblearea.h"
-#include "shortcutspage.h"
 #include "preferencemanager.h"
 
-class QListWidget;
 class QListWidgetItem;
-class QStackedWidget;
-class QComboBox;
 class PreferenceManager;
-class FilesPage;
 
 namespace Ui {
 class PreferencesDialog;

@@ -17,11 +17,10 @@ GNU General Public License for more details.
 #ifndef CANVASPAINTER_H
 #define CANVASPAINTER_H
 
-
+#include <memory>
 #include <QObject>
 #include <QTransform>
 #include <QPainter>
-#include <memory>
 #include "log.h"
 
 

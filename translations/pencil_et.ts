@@ -1,28 +1,28 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_TW" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="et" version="2.1">
 <context>
     <name>AboutDialog</name>
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="26"/>
         <source>About</source>
         <comment>About Dialog Window Title</comment>
-        <translation>關於</translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
         <source>Official site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Thanks to Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ametlik veebisait: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Arendaja: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Suur tänu Qt Frameworkile &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Levitatakse &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt; alusel</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="46"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
-        <translation>版本 %1</translation>
+        <translation>Versioon: %1</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="58"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
-        <translation>複製到剪貼簿</translation>
+        <translation>Kopeeri lõikelauale</translation>
     </message>
 </context>
 <context>
@@ -30,40 +30,40 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="68"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
-        <translation>目前沒有音效層可供匯入音效，要創建新的音效層嗎？</translation>
+        <translation>Importimise sihtkohas pole helikihti. Kas loon uue helikihi?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="69"/>
         <source>Create sound layer</source>
-        <translation>建立音效層</translation>
+        <translation>Loo helikiht</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="70"/>
         <source>Don&apos;t create layer</source>
-        <translation>不建立圖層</translation>
+        <translation>Ära loo kihti</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="80"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
-        <translation>圖層屬性</translation>
+        <translation>Kihi omadused</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="82"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
-        <translation>音效層</translation>
+        <translation>Helikiht</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="190"/>
         <source>Exporting movie</source>
-        <translation>正在輸出影片</translation>
+        <translation>Video eksportimine</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="231"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
-        <translation>輸出完成。要打開影片嗎？</translation>
+        <translation>Lõpetatud. Kas avada video?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="566"/>
@@ -71,7 +71,7 @@
         <location filename="../app/src/actioncommands.cpp" line="593"/>
         <location filename="../app/src/actioncommands.cpp" line="607"/>
         <source>Layer Properties</source>
-        <translation>圖層屬性</translation>
+        <translation>Kihi omadused</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="81"/>
@@ -80,69 +80,69 @@
         <location filename="../app/src/actioncommands.cpp" line="594"/>
         <location filename="../app/src/actioncommands.cpp" line="608"/>
         <source>Layer name:</source>
-        <translation>圖層名稱:</translation>
+        <translation>Kihi nimi:</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="108"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
-        <translation>目前畫格已經有一個音效了! 請選擇另一個畫格或圖層</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="287"/>
         <source>Exporting image sequence...</source>
-        <translation>輸出連續圖片中...</translation>
+        <translation>Pildiseeria importimine...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="287"/>
         <source>Abort</source>
-        <translation>關於</translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="367"/>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation>Hoiatus</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="368"/>
         <source>Unable to export image.</source>
-        <translation>無法匯出圖片</translation>
+        <translation>Pildi eksportimine ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="568"/>
         <source>Bitmap Layer</source>
-        <translation>點陣圖層</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="581"/>
         <source>Vector Layer</source>
-        <translation>向量圖層</translation>
+        <translation>Vektorkiht</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="595"/>
         <source>Camera Layer</source>
-        <translation>相機層</translation>
+        <translation>Kaamera kiht</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="609"/>
         <source>Sound Layer</source>
-        <translation>音效層</translation>
+        <translation>Helikiht</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="626"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation>刪除圖層</translation>
+        <translation>Kustuta kiht</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="627"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation>確定要刪除圖層嗎</translation>
+        <translation>Oled sa kindel, et soovid kusutada kihti:</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="636"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
-        <translation>請至少保留一個相機層</translation>
+        <translation>Palun hoia projektis alles vähemalt üks kaamerakiht</translation>
     </message>
 </context>
 <context>
@@ -150,57 +150,57 @@
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="39"/>
         <source>Pencil</source>
-        <translation>鉛筆</translation>
+        <translation>Pliiats</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
         <source>Eraser</source>
-        <translation>橡皮擦</translation>
+        <translation>Kustukumm</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Select</source>
-        <translation>全選</translation>
+        <translation>Valimine</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Move</source>
-        <translation>移動</translation>
+        <translation>Liigutamine</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Hand</source>
-        <translation>手</translation>
+        <translation>Käsi</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Smudge</source>
-        <translation>塗抹</translation>
+        <translation>Hägustamine</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
         <source>Pen</source>
-        <translation>鋼筆</translation>
+        <translation>Pliiats</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
         <source>Polyline</source>
-        <translation>多邊形工具</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
         <source>Bucket</source>
-        <translation>油漆桶</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
         <source>Eyedropper</source>
-        <translation>吸管</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
         <source>Brush</source>
-        <translation>刷子</translation>
+        <translation>Pintsel</translation>
     </message>
 </context>
 <context>
@@ -208,17 +208,17 @@
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="6"/>
         <source>Camera Properties</source>
-        <translation>相機屬性</translation>
+        <translation>Kaamera omadused</translation>
     </message>
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
         <source>Camera name:</source>
-        <translation>攝影機名稱：</translation>
+        <translation>Kaamera nimi:</translation>
     </message>
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="38"/>
         <source>Camera size:</source>
-        <translation>攝影機大小：</translation>
+        <translation>Kaamera suurus:</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@
         <location filename="../app/src/colorbox.cpp" line="24"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation>色輪 </translation>
+        <translation>Värvi ratas</translation>
     </message>
 </context>
 <context>
@@ -246,41 +246,41 @@
         <location filename="../app/ui/colorinspector.ui" line="68"/>
         <location filename="../app/src/colorinspector.cpp" line="89"/>
         <source>Red</source>
-        <translation>紅</translation>
+        <translation>Punane</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="82"/>
         <location filename="../app/src/colorinspector.cpp" line="90"/>
         <source>Green</source>
-        <translation>綠</translation>
+        <translation>Roheline</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="96"/>
         <location filename="../app/src/colorinspector.cpp" line="91"/>
         <source>Blue</source>
-        <translation>藍</translation>
+        <translation>Sinine</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="110"/>
         <location filename="../app/src/colorinspector.cpp" line="92"/>
         <location filename="../app/src/colorinspector.cpp" line="113"/>
         <source>Alpha</source>
-        <translation>Alpha</translation>
+        <translation>Alfa</translation>
     </message>
     <message>
         <location filename="../app/src/colorinspector.cpp" line="110"/>
         <source>Hue</source>
-        <translation>色相</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/colorinspector.cpp" line="111"/>
         <source>Saturation</source>
-        <translation>飽和度</translation>
+        <translation>Küllastus</translation>
     </message>
     <message>
         <location filename="../app/src/colorinspector.cpp" line="112"/>
         <source>Value</source>
-        <translation>明度</translation>
+        <translation>Väärtus</translation>
     </message>
 </context>
 <context>
@@ -289,72 +289,72 @@
         <location filename="../app/ui/colorpalette.ui" line="6"/>
         <source>Color Palette</source>
         <comment>Window title of color palette.</comment>
-        <translation>調色盤</translation>
+        <translation>Värvipalett</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="47"/>
         <source>Add Color</source>
-        <translation>增加顏色</translation>
+        <translation>Lisa värv</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="76"/>
         <source>Remove Color</source>
-        <translation>刪除顏色</translation>
+        <translation>Eemalda värv</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="118"/>
         <source>... </source>
-        <translation>...</translation>
+        <translation>... </translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="188"/>
         <source>List Mode</source>
-        <translation>列表模式</translation>
+        <translation>Nimekirjarežiim</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="191"/>
         <source>Show palette as a list</source>
-        <translation>列表方式顯示調色盤</translation>
+        <translation>Näita paletti nimekirjana</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="199"/>
         <source>Grid Mode</source>
-        <translation>色塊模式</translation>
+        <translation>Võrgustiku režiim</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="202"/>
         <source>Show palette as icons</source>
-        <translation>方格方式顯示調色盤</translation>
+        <translation>Näita palette ikoonidena</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="212"/>
         <source>Small swatch</source>
-        <translation>小色塊</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="215"/>
         <source>Sets swatch size to: 16x16px</source>
-        <translation>設定色塊尺寸: 16x16</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="223"/>
         <source>Medium Swatch</source>
-        <translation>中色塊</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="226"/>
         <source>Sets swatch size to: 26x26px</source>
-        <translation>設定色塊尺寸: 26x26</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="237"/>
         <source>Large Swatch</source>
-        <translation>大色塊</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="240"/>
         <source>Sets swatch size to: 36x36px</source>
-        <translation>設定色塊尺寸: 36x36</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -363,7 +363,7 @@
         <location filename="../app/src/colorpalettewidget.cpp" line="152"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="153"/>
         <source>Colour name</source>
-        <translation>顏色名稱</translation>
+        <translation>Värvi nimi</translation>
     </message>
 </context>
 <context>
@@ -371,7 +371,7 @@
     <message>
         <location filename="../app/ui/displayoption.ui" line="67"/>
         <source>Horizontal flip</source>
-        <translation>水平翻轉</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="44"/>
@@ -388,46 +388,46 @@
         <location filename="../app/ui/displayoption.ui" line="14"/>
         <source>Display</source>
         <comment>Window title of display options like .</comment>
-        <translation>顯示設定</translation>
+        <translation>Vaade</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="125"/>
         <location filename="../app/ui/displayoption.ui" line="128"/>
         <source>Onion skin previous frame</source>
-        <translation>描圖紙：先前畫格</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="163"/>
         <source>Show invisible lines</source>
-        <translation>顯示虛線</translation>
+        <translation>Näita nähtamatuid jooni</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="250"/>
         <location filename="../app/ui/displayoption.ui" line="253"/>
         <source>Onion skin color: blue</source>
-        <translation>藍色描圖紙</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="38"/>
         <location filename="../app/ui/displayoption.ui" line="41"/>
         <source>Onion skin next frame</source>
-        <translation>描圖紙：後續畫格</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="215"/>
         <location filename="../app/ui/displayoption.ui" line="218"/>
         <source>Onion skin color: red</source>
-        <translation>紅色描圖紙</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="189"/>
         <source>Show outlines only</source>
-        <translation>只顯示輪廓</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="99"/>
         <source>Vertical flip</source>
-        <translation>垂直翻轉</translation>
+        <translation>Vertikaalne peegeldamine</translation>
     </message>
 </context>
 <context>
@@ -435,12 +435,12 @@
     <message>
         <location filename="../app/ui/doubleprogressdialog.ui" line="27"/>
         <source>Loading...</source>
-        <translation>讀取中...</translation>
+        <translation>Laadimine...</translation>
     </message>
     <message>
         <location filename="../app/ui/doubleprogressdialog.ui" line="56"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>LOobu</translation>
     </message>
 </context>
 <context>
@@ -449,18 +449,18 @@
         <location filename="../core_lib/src/interface/editor.cpp" line="548"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="569"/>
         <source>Paste</source>
-        <translation>貼上</translation>
+        <translation>Aseta</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="936"/>
         <source>Remove frame</source>
-        <translation>刪除關鍵格</translation>
+        <translation>Eemalda kaader</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="787"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="813"/>
         <source>Import Image</source>
-        <translation>匯入圖像</translation>
+        <translation>Impordi pilt</translation>
     </message>
 </context>
 <context>
@@ -468,17 +468,17 @@
     <message>
         <location filename="../app/ui/errordialog.ui" line="20"/>
         <source>Dialog</source>
-        <translation>對話框</translation>
+        <translation>Dialoog</translation>
     </message>
     <message>
         <location filename="../app/ui/errordialog.ui" line="55"/>
         <source>&lt;h3&gt;Title&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;標題&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Pealkiri&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/errordialog.ui" line="68"/>
         <source>Description</source>
-        <translation>敘述</translation>
+        <translation>Kirjeldus</translation>
     </message>
 </context>
 <context>
@@ -486,12 +486,12 @@
     <message>
         <location filename="../app/src/exportimagedialog.cpp" line="28"/>
         <source>Export image sequence</source>
-        <translation>匯出連續圖像</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/exportimagedialog.cpp" line="32"/>
         <source>Export image</source>
-        <translation>匯出圖片</translation>
+        <translation>Ekspordi pilt</translation>
     </message>
 </context>
 <context>
@@ -499,17 +499,17 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="23"/>
         <source>Camera</source>
-        <translation>攝影機</translation>
+        <translation>Kaamera</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="35"/>
         <source>Resolution</source>
-        <translation>解析度</translation>
+        <translation>Resolutsioon</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="76"/>
         <source>Format</source>
-        <translation>格式</translation>
+        <translation>Vorming</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="83"/>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="101"/>
         <source>Transparency</source>
-        <translation>透明背景</translation>
+        <translation>Läbipaistvus</translation>
     </message>
 </context>
 <context>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="27"/>
         <source>Export Movie</source>
-        <translation>匯出影片</translation>
+        <translation>Ekspordi video</translation>
     </message>
 </context>
 <context>
@@ -545,67 +545,67 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="29"/>
         <source>Camera</source>
-        <translation>相機</translation>
+        <translation>Kaamera</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="41"/>
         <source>Resolution</source>
-        <translation>解析度</translation>
+        <translation>Resolutsioon</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="59"/>
         <source>Width</source>
-        <translation>寬度</translation>
+        <translation>Laius</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="88"/>
         <source>Height</source>
-        <translation>高度</translation>
+        <translation>Kõrgus</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="108"/>
         <source>Range</source>
-        <translation>範圍</translation>
+        <translation>Vahemik</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="154"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation>影片輸出的最終畫格</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="157"/>
         <source>End Frame</source>
-        <translation>結束畫格</translation>
+        <translation>Lõpukaader</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="176"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation>影片輸出的起始畫格</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="179"/>
         <source>Start Frame</source>
-        <translation>起始畫格</translation>
+        <translation>Alguse kaader</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="204"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用最後一個繪圖畫格作為最終畫格&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="210"/>
         <source>To the end of sound clips</source>
-        <translation>到聲音結束</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="233"/>
         <source>GIF and APNG only</source>
-        <translation>GIF 和 APNG</translation>
+        <translation>Ainult GIF ja APNG</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="236"/>
         <source>Loop</source>
-        <translation>循環 </translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -613,73 +613,73 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="132"/>
         <source>Open animation</source>
-        <translation>開啟動畫</translation>
+        <translation>Ava animatsioon</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="133"/>
         <source>Import image</source>
-        <translation>匯入圖像</translation>
+        <translation>Impordi pilt</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="134"/>
         <source>Import image sequence</source>
-        <translation>匯入連續圖像</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="135"/>
         <source>Import movie</source>
-        <translation>匯入影片</translation>
+        <translation>Impordi video</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="136"/>
         <source>Import sound</source>
-        <translation>匯入音效</translation>
+        <translation>Impordi heli</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="137"/>
         <source>Import palette</source>
-        <translation>匯入調色盤</translation>
+        <translation>Impordi palett</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="147"/>
         <source>Save animation</source>
-        <translation>儲存動畫</translation>
+        <translation>Salvesta animatsioon</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="148"/>
         <source>Export image</source>
-        <translation>匯出圖像</translation>
+        <translation>Ekspordi pilt</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="149"/>
         <source>Export image sequence</source>
-        <translation>匯出連續圖片</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="150"/>
         <source>Export movie</source>
-        <translation>匯出影片</translation>
+        <translation>Ekspordi video</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="151"/>
         <source>Export sound</source>
-        <translation>匯出音效</translation>
+        <translation>Ekspordi heli</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="152"/>
         <source>Export palette</source>
-        <translation>匯出調色盤</translation>
+        <translation>Ekspordi palett</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="166"/>
         <source>Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</source>
-        <translation>音效 (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</translation>
+        <translation>Helifailid (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="167"/>
         <location filename="../app/src/filedialogex.cpp" line="182"/>
         <source>Palette (*.xml)</source>
-        <translation>調色盤 (*.xml)</translation>
+        <translation>Palett (*.xml)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="180"/>
@@ -689,7 +689,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="222"/>
         <source>MyAnimation.pclx</source>
-        <translation>我的動畫.pclx</translation>
+        <translation>MinuAnimatsioon.pclx</translation>
     </message>
 </context>
 <context>
@@ -699,33 +699,33 @@
         <location filename="../core_lib/src/structure/filemanager.cpp" line="209"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="217"/>
         <source>Invalid Save Path</source>
-        <translation>無效的路徑</translation>
+        <translation>Vigane salvestamise asukoht</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="201"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
-        <translation>該路徑是一個目錄 (&quot;%1&quot;)</translation>
+        <translation>Asukoht (&quot;%1&quot;) viitab kaustale.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="210"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
-        <translation>目錄不存在 (&quot;%1&quot;)</translation>
+        <translation>Kausta (&quot;%1&quot;) pole olemas.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="218"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
-        <translation>沒有寫入權限 (&quot;%1&quot;)</translation>
+        <translation>Kaust (&quot;%1&quot;) pole kirjutatav.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="256"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="265"/>
         <source>Cannot Create Data Directory</source>
-        <translation>無法建立資料目錄</translation>
+        <translation>Andmete kausta loomine ebaõnnestus</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="257"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
-        <translation>無法創建目錄 &quot;%1&quot;，請確定您有足夠權限。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="266"/>
@@ -736,13 +736,13 @@
         <location filename="../core_lib/src/structure/filemanager.cpp" line="335"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="350"/>
         <source>Internal Error</source>
-        <translation>內部錯誤</translation>
+        <translation>Sisemine tõrge</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="336"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="351"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
-        <translation>發生內部錯誤，您的檔案可能沒有儲存成功。</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -751,19 +751,19 @@
         <location filename="../app/ui/filespage.ui" line="17"/>
         <source>Autosave documents</source>
         <comment>Preference</comment>
-        <translation>自動儲存檔案</translation>
+        <translation>Salvesta dokumendid automaatselt</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="23"/>
         <source>Enable autosave</source>
         <comment>Preference</comment>
-        <translation>啟用自動儲存</translation>
+        <translation>Luba automaatne salvestamine</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="30"/>
         <source>Number of modifications before autosaving:</source>
         <comment>Preference</comment>
-        <translation>自動存檔步驟數</translation>
+        <translation>Muudatuste arv enne automaatset salvestamist:</translation>
     </message>
 </context>
 <context>
@@ -772,185 +772,185 @@
         <location filename="../app/ui/generalpage.ui" line="50"/>
         <source>Language</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>語言</translation>
+        <translation>Keel</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="71"/>
         <source>Window opacity</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>視窗不透明度</translation>
+        <translation>Akna läbipaistvus</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="130"/>
         <source>Background</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>背景</translation>
+        <translation>Taust</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="100"/>
         <source>Appearance</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>外觀</translation>
+        <translation>Välimus</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="56"/>
         <location filename="../app/ui/generalpage.ui" line="60"/>
         <source>[System-Language]</source>
         <comment>First item of the language list</comment>
-        <translation>[系統語言]</translation>
+        <translation>[Süsteemi keel]</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="174"/>
         <source>Canvas</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>畫布</translation>
+        <translation>Lõuend</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="203"/>
         <source>Editing</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>編輯</translation>
+        <translation>Muutmine</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="239"/>
         <source>Grid</source>
         <comment>groupBox title in Preference</comment>
-        <translation>格線</translation>
+        <translation>Võrgustik</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="95"/>
         <source>Czech</source>
-        <translation>捷克語</translation>
+        <translation>Tšehhi</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="96"/>
         <source>Danish</source>
-        <translation>丹麥語</translation>
+        <translation>Taani</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="98"/>
         <source>English</source>
-        <translation>英語</translation>
+        <translation>Inglise</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="97"/>
         <source>German</source>
-        <translation>德語</translation>
+        <translation>Saksa</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="99"/>
         <source>Spanish</source>
-        <translation>西班牙語</translation>
+        <translation>Hispaania</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="100"/>
         <source>French</source>
-        <translation>法語</translation>
+        <translation>Prantsuse</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Hebrew</source>
-        <translation>希伯來語</translation>
+        <translation>eebrea</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="102"/>
         <source>Hungarian</source>
-        <translation>匈牙利語</translation>
+        <translation>Ungari</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="103"/>
         <source>Indonesian</source>
-        <translation>印尼語</translation>
+        <translation>Indoneesia</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="104"/>
         <source>Italian</source>
-        <translation>義大利語</translation>
+        <translation>Itaalia</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="105"/>
         <source>Japanese</source>
-        <translation>日語</translation>
+        <translation>Jaapani</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="106"/>
         <source>Portuguese - Portugal</source>
-        <translation type="unfinished"/>
+        <translation>Portugali - Portugal</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Portuguese - Brazil</source>
-        <translation>葡萄牙語 - 巴西</translation>
+        <translation>Portugali - Brasiilia</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Russian</source>
-        <translation>俄語</translation>
+        <translation>Vene</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Slovenian</source>
-        <translation type="unfinished"/>
+        <translation>Sloveenia</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Vietnamese</source>
-        <translation type="unfinished"/>
+        <translation>Vietnami</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Chinese - Taiwan</source>
-        <translation>中文 - 台灣</translation>
+        <translation>Hiina - Taivani</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="77"/>
         <source>Opacity</source>
-        <translation>不透明度</translation>
+        <translation>Läbipasitmatus</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="106"/>
         <source>Shadows</source>
-        <translation>陰影</translation>
+        <translation>Varjud</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="113"/>
         <source>Tool Cursors</source>
-        <translation>工具游標</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="180"/>
         <source>Antialiasing</source>
-        <translation>反鋸齒</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="120"/>
         <source>Dotted Cursor</source>
-        <translation>點狀游標</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="267"/>
         <source>Enable Grid</source>
-        <translation>啟用格線</translation>
+        <translation>Võrgustiku kasutamine</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="209"/>
         <source>Vector curve smoothing</source>
-        <translation>向量曲線圓滑度</translation>
+        <translation>Vektori kaare sujuvaks muutmine</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="229"/>
         <source>Tablet high-resolution position</source>
-        <translation>高解析度繪圖板</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="207"/>
         <source>Restart Required</source>
-        <translation>需要重新啟動</translation>
+        <translation>Nõutud on taaskäivitamine</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="208"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
-        <translation>會在下次打開 Pencil2D 時改變顯示語言</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -958,17 +958,17 @@
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="32"/>
         <source>File</source>
-        <translation>檔案</translation>
+        <translation>Fail</translation>
     </message>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="48"/>
         <source>Browse...</source>
-        <translation>瀏覽...</translation>
+        <translation>Sirvi...</translation>
     </message>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="58"/>
         <source>Options</source>
-        <translation>選項</translation>
+        <translation>Valikud</translation>
     </message>
 </context>
 <context>
@@ -976,7 +976,7 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="28"/>
         <source>Import image sequence</source>
-        <translation>匯入連續圖像</translation>
+        <translation>Impordi pildiseeria</translation>
     </message>
 </context>
 <context>
@@ -984,7 +984,7 @@
     <message>
         <location filename="../app/ui/importimageseqoptions.ui" line="15"/>
         <source>Import an image every # frame</source>
-        <translation>每 # 格匯入圖像</translation>
+        <translation>Impordi pilt iga # kaadri kohta</translation>
     </message>
 </context>
 <context>
@@ -992,7 +992,7 @@
     <message>
         <location filename="../core_lib/src/structure/layer.cpp" line="38"/>
         <source>Undefined Layer</source>
-        <translation>未定義圖層</translation>
+        <translation>Määramata kiht</translation>
     </message>
 </context>
 <context>
@@ -1000,7 +1000,7 @@
     <message>
         <location filename="../core_lib/src/structure/layerbitmap.cpp" line="27"/>
         <source>Bitmap Layer</source>
-        <translation>點陣圖層</translation>
+        <translation>Pildifaili kiht</translation>
     </message>
 </context>
 <context>
@@ -1008,7 +1008,7 @@
     <message>
         <location filename="../core_lib/src/structure/layercamera.cpp" line="79"/>
         <source>Camera Layer</source>
-        <translation>相機層</translation>
+        <translation>Kaamera kiht</translation>
     </message>
 </context>
 <context>
@@ -1016,7 +1016,7 @@
     <message>
         <location filename="../core_lib/src/structure/layersound.cpp" line="27"/>
         <source>Sound Layer</source>
-        <translation>音效層</translation>
+        <translation>Helikiht</translation>
     </message>
 </context>
 <context>
@@ -1024,7 +1024,7 @@
     <message>
         <location filename="../core_lib/src/structure/layervector.cpp" line="24"/>
         <source>Vector Layer</source>
-        <translation>向量圖層</translation>
+        <translation>Vektorkiht</translation>
     </message>
 </context>
 <context>
@@ -1032,468 +1032,468 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="14"/>
         <source>MainWindow</source>
-        <translation>主視窗</translation>
+        <translation>PeamineAken</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="57"/>
         <source>File</source>
-        <translation>檔案</translation>
+        <translation>Fail</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="61"/>
         <source>Import</source>
-        <translation>匯入</translation>
+        <translation>Impordi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="73"/>
         <source>Export</source>
-        <translation>匯出</translation>
+        <translation>Ekspordi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="95"/>
         <source>Edit</source>
-        <translation>編輯</translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="99"/>
         <source>Selection</source>
-        <translation>選擇</translation>
+        <translation>Valik</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="121"/>
         <source>View</source>
-        <translation>檢視</translation>
+        <translation>Vaade</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="125"/>
         <source>Onion Skin</source>
-        <translation>描圖紙</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="150"/>
         <source>Animation</source>
-        <translation>動畫</translation>
+        <translation>Animatsioon</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="170"/>
         <location filename="../app/ui/mainwindow2.ui" line="798"/>
         <source>Tools</source>
-        <translation>工具</translation>
+        <translation>Tööriistad</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="188"/>
         <source>Layer</source>
-        <translation>圖層</translation>
+        <translation>Kiht</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="199"/>
         <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>Help</source>
-        <translation>幫助</translation>
+        <translation>Aviinfo</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="211"/>
         <source>Windows</source>
-        <translation>視窗</translation>
+        <translation>Aken</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="230"/>
         <source>New</source>
-        <translation>新增</translation>
+        <translation>Uus</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="239"/>
         <source>Open</source>
-        <translation>開啟</translation>
+        <translation>Ava</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="248"/>
         <source>Save</source>
-        <translation>儲存</translation>
+        <translation>Salvesta</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="257"/>
         <source>Save As ..</source>
-        <translation>另存為..</translation>
+        <translation>Salvesta kui ...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="266"/>
         <source>Exit</source>
-        <translation>離開</translation>
+        <translation>Välju</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="271"/>
         <location filename="../app/ui/mainwindow2.ui" line="299"/>
         <source>Image Sequence...</source>
-        <translation>連續圖像...</translation>
+        <translation>Pildiseeria...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="276"/>
         <location filename="../app/ui/mainwindow2.ui" line="294"/>
         <source>Image...</source>
-        <translation>圖像...</translation>
+        <translation>Pilt...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="281"/>
         <location filename="../app/ui/mainwindow2.ui" line="304"/>
         <source>Movie...</source>
-        <translation>影片...</translation>
+        <translation>Video...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="289"/>
         <location filename="../app/ui/mainwindow2.ui" line="317"/>
         <source>Palette...</source>
-        <translation>調色盤...</translation>
+        <translation>Palett...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="312"/>
         <source>Sound...</source>
-        <translation>音效...</translation>
+        <translation>Heli...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="326"/>
         <source>Undo</source>
-        <translation>復原</translation>
+        <translation>Samm tagasi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="338"/>
         <source>Redo</source>
-        <translation>重做</translation>
+        <translation>Korda</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="347"/>
         <source>Cut</source>
-        <translation>剪下</translation>
+        <translation>Lõika</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="356"/>
         <source>Copy</source>
-        <translation>複製</translation>
+        <translation>Kopeeri</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="365"/>
         <source>Paste</source>
-        <translation>貼上</translation>
+        <translation>Aseta</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="370"/>
         <source>Crop</source>
-        <translation>裁剪</translation>
+        <translation>Kärbi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="375"/>
         <source>Crop To Selection</source>
-        <translation>裁剪至選擇區域</translation>
+        <translation>Kärbi valiku järgi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="380"/>
         <source>Select All</source>
-        <translation>全選</translation>
+        <translation>Vali kõik</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="385"/>
         <source>Deselect All</source>
-        <translation>取消全選</translation>
+        <translation>Tühista valik</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="394"/>
         <location filename="../app/ui/mainwindow2.ui" line="593"/>
         <source>Clear Frame</source>
-        <translation>清除畫格</translation>
+        <translation>Tühjenda kaader</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="399"/>
         <source>Preferences</source>
-        <translation>偏好設定</translation>
+        <translation>Eelistused</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="407"/>
         <source>Reset Windows</source>
-        <translation>重設視窗</translation>
+        <translation>Nulli aknad</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="416"/>
         <source>Zoom In</source>
-        <translation>放大</translation>
+        <translation>Suumi sisse</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="425"/>
         <source>Zoom Out</source>
-        <translation>縮小</translation>
+        <translation>Suumi välja</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="430"/>
         <source>Rotate Clockwise</source>
-        <translation>順時針旋轉</translation>
+        <translation>Pööra päripäeva</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="435"/>
         <source>Rotate AntiClosewise</source>
-        <translation>逆時針旋轉</translation>
+        <translation>Pööra vastupäeva</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="440"/>
         <source>Reset Zoom/Rotate</source>
-        <translation>重設縮放/旋轉</translation>
+        <translation>Nulli suurendus/pööramine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="449"/>
         <source>Horizontal Flip</source>
-        <translation>水平翻轉</translation>
+        <translation>Horisontaalne peegeldamine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="458"/>
         <source>Vertical Flip</source>
-        <translation>垂直翻轉</translation>
+        <translation>Vertikaalne peegeldamine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="466"/>
         <source>Preview</source>
-        <translation>預覽</translation>
+        <translation>Eelvaade</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="474"/>
         <source>Grid</source>
-        <translation>格線</translation>
+        <translation>Võrgustik</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="486"/>
         <source>Previous</source>
-        <translation>前一個</translation>
+        <translation>Eelmine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="489"/>
         <source>Show previous onion skin</source>
-        <translation>顯示先前描圖紙</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="501"/>
         <source>Next</source>
-        <translation>下一個</translation>
+        <translation>Järgmine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="504"/>
         <source>Show next onion skin</source>
-        <translation>顯示後續描圖紙</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="513"/>
         <location filename="../app/src/mainwindow2.cpp" line="1128"/>
         <source>Play</source>
-        <translation>播放</translation>
+        <translation>Esita</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="525"/>
         <source>Loop</source>
-        <translation>循環</translation>
+        <translation>Kordamine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="534"/>
         <source>Next Frame</source>
-        <translation>下一個畫格</translation>
+        <translation>Järgmine kaader</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="543"/>
         <source>Previous Frame</source>
-        <translation>前一個畫格</translation>
+        <translation>Eelmine kaader</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="548"/>
         <source>Extend Frame</source>
-        <translation>延伸畫格</translation>
+        <translation>Laienda kaadrit</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="557"/>
         <source>Add Frame</source>
-        <translation>加入畫格</translation>
+        <translation>Lisa kaader</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="566"/>
         <source>Duplicate Frame</source>
-        <translation>重製畫格</translation>
+        <translation>Tee kaadrist koopia</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="575"/>
         <source>Remove Frame</source>
-        <translation>移除畫格</translation>
+        <translation>Eemalda kaader</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="584"/>
         <source>Move</source>
-        <translation>移動</translation>
+        <translation>Liigutamine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="602"/>
         <source>Select</source>
-        <translation>選擇</translation>
+        <translation>Valimine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="611"/>
         <source>Brush</source>
-        <translation>筆刷</translation>
+        <translation>Pintsel</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="620"/>
         <source>Polyline</source>
-        <translation>折線</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="629"/>
         <source>Smudge</source>
-        <translation>塗抹</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="638"/>
         <source>Pen</source>
-        <translation>鋼筆</translation>
+        <translation>Pliiats</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="647"/>
         <source>Hand</source>
-        <translation>手</translation>
+        <translation>Käsi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="656"/>
         <source>Pencil</source>
-        <translation>鉛筆</translation>
+        <translation>Pliiats</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="665"/>
         <source>Bucket</source>
-        <translation>顏料桶</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="674"/>
         <source>Eyedropper</source>
-        <translation>取色器</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="683"/>
         <source>Eraser</source>
-        <translation>橡皮擦</translation>
+        <translation>Kustukumm</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="692"/>
         <source>New Bitmap Layer</source>
-        <translation>新增點陣圖層</translation>
+        <translation>Uus pildifaili kiht</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="701"/>
         <source>New Vector Layer</source>
-        <translation>新增向量圖層</translation>
+        <translation>Uus vektorkiht</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="710"/>
         <source>New Sound Layer</source>
-        <translation>新增音效層</translation>
+        <translation>Uus helikiht</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="719"/>
         <source>New Camera Layer</source>
-        <translation>新增攝影機層</translation>
+        <translation>Uus kaamera kiht</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="724"/>
         <source>Delete Current Layer</source>
-        <translation>刪除目前圖層</translation>
+        <translation>Kustuta praegune kiht</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="734"/>
         <source>About</source>
-        <translation>關於</translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="739"/>
         <location filename="../app/ui/mainwindow2.ui" line="742"/>
         <source>Reset to default</source>
-        <translation>重設為預設值</translation>
+        <translation>Taasta vaikeväärtused</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="779"/>
         <source>MultiLayer Onion Skin</source>
-        <translation>多重圖層描圖紙</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="790"/>
         <source>Range</source>
-        <translation>範圍</translation>
+        <translation>Vahemik</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="863"/>
         <source>Pencil2D Website</source>
-        <translation>Pencil2D 網站</translation>
+        <translation>Pencil2D veebisait</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="868"/>
         <source>Report a Bug</source>
-        <translation>回報 BUG</translation>
+        <translation>Teavita veast</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="873"/>
         <source>Quick Reference Guide</source>
-        <translation type="unfinished"/>
+        <translation>Kiirjuhend</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="876"/>
         <source>F1</source>
-        <translation type="unfinished"/>
+        <translation>F1</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="752"/>
         <location filename="../app/ui/mainwindow2.ui" line="755"/>
         <source>Next KeyFrame</source>
-        <translation>下一個關鍵影格</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="765"/>
         <location filename="../app/ui/mainwindow2.ui" line="768"/>
         <source>Previous KeyFrame</source>
-        <translation>前一個關鍵影格</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="806"/>
         <source>Timeline</source>
-        <translation>時間軸</translation>
+        <translation>Ajatelg</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="814"/>
         <source>Options</source>
-        <translation>選項</translation>
+        <translation>Valikud</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="822"/>
         <source>Color Wheel</source>
-        <translation>色輪</translation>
+        <translation>Värviratas</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="830"/>
         <source>Color Palette</source>
-        <translation>顏色調色盤</translation>
+        <translation>Värvipalett</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="838"/>
         <source>Display Options</source>
-        <translation>顯示選項</translation>
+        <translation>Vaate valikud</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="843"/>
         <source>Flip X</source>
-        <translation>X翻轉</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="848"/>
         <source>Flip Y</source>
-        <translation>Y翻轉</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="853"/>
         <source>Move Frame Forward</source>
-        <translation>影格前移</translation>
+        <translation>Liigut akaadrit edasi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="858"/>
         <source>Move Frame Backward</source>
-        <translation>影格後移</translation>
+        <translation>Liiguta kaadrit tagasi</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="141"/>
@@ -1503,19 +1503,21 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="336"/>
         <source>Lock Windows</source>
-        <translation>鎖定視窗</translation>
+        <translation>Lukusta aknad</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="353"/>
         <source>Open Recent</source>
-        <translation>最近開啟的</translation>
+        <translation>Ava hiljutised</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="387"/>
         <source>
 
  You have successfully cleared the list</source>
-        <translation>成功清除清單</translation>
+        <translation>
+
+Nimekiri on tühjendatud</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="458"/>
@@ -1523,58 +1525,58 @@
         <location filename="../app/src/mainwindow2.cpp" line="629"/>
         <location filename="../app/src/mainwindow2.cpp" line="688"/>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation>Hoiatus</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="458"/>
         <location filename="../app/src/mainwindow2.cpp" line="486"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
-        <translation>Pencil 無法讀取這個檔案。如果您想要匯入影像，請使用指令匯入。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="493"/>
         <source>Opening document...</source>
-        <translation>開啟文件...</translation>
+        <translation>Dokumendi avamine...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="493"/>
         <location filename="../app/src/mainwindow2.cpp" line="551"/>
         <location filename="../app/src/mainwindow2.cpp" line="715"/>
         <source>Abort</source>
-        <translation>中止</translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="551"/>
         <source>Saving document...</source>
-        <translation>儲存文件...</translation>
+        <translation>Dokumendi salvestamine...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="592"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;發現錯誤，你的檔案可能並未成功保存。如果你看見這個訊息，請到&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;協助回報錯誤&lt;br&gt;並附上以下錯誤細節訊息:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="630"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
-        <translation>動畫已經修改。你想要儲存檔案嗎?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="658"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
-        <translation>您的動畫還沒儲存。要現在儲存嗎?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="659"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
-        <translation>不要再問我</translation>
+        <translation>Ära küsi kunagi uuesti</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="689"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>無法匯入圖片。&lt;br&gt;&lt;b&gt;提示&lt;/b&gt; 使用點陣圖層來匯入點陣圖</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="715"/>
@@ -1586,18 +1588,18 @@
         <location filename="../app/src/mainwindow2.cpp" line="966"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>Samm tagasi</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="981"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>Korda</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1123"/>
         <source>Stop</source>
-        <translation>停止</translation>
+        <translation>Peata</translation>
     </message>
 </context>
 <context>
@@ -1605,122 +1607,122 @@
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="394"/>
         <source>Black</source>
-        <translation>黑色</translation>
+        <translation>Must</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="395"/>
         <source>Red</source>
-        <translation>紅色</translation>
+        <translation>Punane</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="396"/>
         <source>Dark Red</source>
-        <translation>深紅色</translation>
+        <translation>Tumepunane</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="397"/>
         <source>Orange</source>
-        <translation>橙色</translation>
+        <translation>Oraanž</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="398"/>
         <source>Dark Orange</source>
-        <translation>深橙色</translation>
+        <translation>Tumeoraanž</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="399"/>
         <source>Yellow</source>
-        <translation>黃色</translation>
+        <translation>Kollane</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="400"/>
         <source>Dark Yellow</source>
-        <translation>深黃色</translation>
+        <translation>Tumekollane</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="401"/>
         <source>Green</source>
-        <translation>綠色</translation>
+        <translation>Roheline</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="402"/>
         <source>Dark Green</source>
-        <translation>深綠色</translation>
+        <translation>Tumeroheline</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="403"/>
         <source>Cyan</source>
-        <translation>青色</translation>
+        <translation>Tsüaan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="404"/>
         <source>Dark Cyan</source>
-        <translation>深青色</translation>
+        <translation>Tume tsüaan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="405"/>
         <source>Blue</source>
-        <translation>藍色</translation>
+        <translation>Sinine</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="406"/>
         <source>Dark Blue</source>
-        <translation>深藍色</translation>
+        <translation>Tumesinine</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="407"/>
         <source>White</source>
-        <translation>白色</translation>
+        <translation>Valge</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="408"/>
         <source>Very Light Grey</source>
-        <translation>很淺灰色</translation>
+        <translation>Väga hele hall</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="409"/>
         <source>Light Grey</source>
-        <translation>淺灰色</translation>
+        <translation>Helehall</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="410"/>
         <source>Grey</source>
-        <translation>灰色</translation>
+        <translation>Hall</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="411"/>
         <source>Dark Grey</source>
-        <translation>深灰色</translation>
+        <translation>Tumehall</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="412"/>
         <source>Light Skin</source>
-        <translation>淺膚色</translation>
+        <translation>Hele nahk</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="413"/>
         <source>Light Skin - shade</source>
-        <translation type="unfinished"/>
+        <translation>Hele nahk - varjuga</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="414"/>
         <source>Skin</source>
-        <translation>膚色</translation>
+        <translation>Nahk</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="415"/>
         <source>Skin - shade</source>
-        <translation type="unfinished"/>
+        <translation>Nahk - varjuga</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="416"/>
         <source>Dark Skin</source>
-        <translation>深膚色</translation>
+        <translation>Tume nahk</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="417"/>
         <source>Dark Skin - shade</source>
-        <translation>線</translation>
+        <translation>Tume nahk - varjuga</translation>
     </message>
 </context>
 <context>
@@ -1728,12 +1730,12 @@
     <message>
         <location filename="../app/src/main.cpp" line="69"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation>Pencil2D 是一款2D動畫軟體，可用點陣圖與向量圖兩種格式來製作傳統手繪動畫。Pencil2D 能在Windows, Mac OS 與 Linux下運行。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="72"/>
         <source>Path to the input pencil file.</source>
-        <translation>輸入的 Pencil2D 檔案路徑</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="75"/>
@@ -1750,12 +1752,12 @@
     <message>
         <location filename="../app/src/main.cpp" line="89"/>
         <source>Name of the camera layer to use</source>
-        <translation>使用的相機層名稱</translation>
+        <translation>Kasutatava kaamera kihi nimi</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="90"/>
         <source>layer_name</source>
-        <translation type="unfinished"/>
+        <translation>kihi_nimi</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="94"/>
@@ -1766,12 +1768,12 @@
         <location filename="../app/src/main.cpp" line="95"/>
         <location filename="../app/src/main.cpp" line="100"/>
         <source>integer</source>
-        <translation type="unfinished"/>
+        <translation>täisarv</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="99"/>
         <source>Height of the output frames</source>
-        <translation type="unfinished"/>
+        <translation>Väljundkaadrite kõrgus</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="104"/>
@@ -1782,7 +1784,7 @@
         <location filename="../app/src/main.cpp" line="105"/>
         <location filename="../app/src/main.cpp" line="112"/>
         <source>frame</source>
-        <translation type="unfinished"/>
+        <translation>kaader</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="109"/>
@@ -1792,27 +1794,27 @@
     <message>
         <location filename="../app/src/main.cpp" line="116"/>
         <source>Render transparency when possible</source>
-        <translation type="unfinished"/>
+        <translation>Kui võimalik, siis säilita läbipaistvus</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="135"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Hoiatus: %1 laiuse väärtus pole täisarv. Seda ignoreeritakse.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="145"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Hoiatus: %1 kõrguse väärtus pole täisarv. Seda ignoreeritakse.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="155"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Hoiatus: %1 alguse väärtus pole täisarv. Seda ignoreeritakse.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="160"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Hoiatus: alguse väärtus peab olema vähemalt 1. Seda ignoreeritakse.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="180"/>
@@ -1827,7 +1829,7 @@
     <message>
         <location filename="../app/src/main.cpp" line="197"/>
         <source>Error: No input file specified.</source>
-        <translation type="unfinished"/>
+        <translation>Tõrge: Sisendfaili pole määratud.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="204"/>
@@ -1862,14 +1864,14 @@
         <location filename="../app/src/main.cpp" line="291"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Video eksportimine...</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="293"/>
         <location filename="../app/src/main.cpp" line="298"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished"/>
+        <translation>Valmis.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="296"/>
@@ -1883,32 +1885,32 @@
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="20"/>
         <source>Preferences</source>
-        <translation>偏好設定</translation>
+        <translation>Eelistused</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="65"/>
         <source>General</source>
-        <translation>一般設定</translation>
+        <translation>Üldine</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="80"/>
         <source>Files</source>
-        <translation>檔案</translation>
+        <translation>Failid</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="95"/>
         <source>Timeline</source>
-        <translation>時間軸</translation>
+        <translation>Ajatelg</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="110"/>
         <source>Tools</source>
-        <translation>工具</translation>
+        <translation>Tööriistad</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="125"/>
         <source>Shortcuts</source>
-        <translation>快捷鍵</translation>
+        <translation>Otseteed</translation>
     </message>
 </context>
 <context>
@@ -1916,12 +1918,12 @@
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="164"/>
         <source>Checking environment...</source>
-        <translation type="unfinished"/>
+        <translation>Keskkonna kontrollimine...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="217"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Valmis</translation>
     </message>
 </context>
 <context>
@@ -1934,37 +1936,37 @@
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="25"/>
         <source>Images (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)</source>
-        <translation type="unfinished"/>
+        <translation>Pildid (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="37"/>
         <source>Everything ok.</source>
-        <translation>正常</translation>
+        <translation>Kõik on OK.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="38"/>
         <source>Ooops, Something went wrong.</source>
-        <translation>歐，好像出錯了!</translation>
+        <translation>Oih, midagi läks valesti.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="39"/>
         <source>File doesn&apos;t exist.</source>
-        <translation>檔案不存在</translation>
+        <translation>Faili pole olemas.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="40"/>
         <source>Cannot open file.</source>
-        <translation>無法開啟檔案</translation>
+        <translation>Faili ei saa avada.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="41"/>
         <source>The file is not a valid xml document.</source>
-        <translation>無效的 XML 檔案</translation>
+        <translation>Fail pole korrektne XML dokument.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="42"/>
         <source>The file is not valid pencil document.</source>
-        <translation>無效的 Pencil 檔案格式</translation>
+        <translation>Fail pole korrektne pencil dokument.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="29"/>
@@ -1979,122 +1981,122 @@
     <message>
         <location filename="../app/src/colordictionary.h" line="279"/>
         <source>Vivid Pink</source>
-        <translation>亮粉紅</translation>
+        <translation>Erk roosa</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="280"/>
         <source>Strong Pink</source>
-        <translation type="unfinished"/>
+        <translation>Tugev roosa</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="281"/>
         <source>Deep Pink</source>
-        <translation type="unfinished"/>
+        <translation>Sügav roosa</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="282"/>
         <source>Light Pink</source>
-        <translation type="unfinished"/>
+        <translation>Heleroosa</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="283"/>
         <source>Moderate Pink</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine roosa</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="284"/>
         <source>Dark Pink</source>
-        <translation type="unfinished"/>
+        <translation>Tumeroosa</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="285"/>
         <source>Pale Pink</source>
-        <translation type="unfinished"/>
+        <translation>Kahvatu roosa</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="286"/>
         <source>Grayish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Hallikasroosa</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="287"/>
         <source>Pinkish White</source>
-        <translation type="unfinished"/>
+        <translation>Roosakasvalge</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="288"/>
         <source>Pinkish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Roosakashall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="289"/>
         <source>Vivid Red</source>
-        <translation type="unfinished"/>
+        <translation>Erk punane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="290"/>
         <source>Strong Red</source>
-        <translation type="unfinished"/>
+        <translation>Tugev punane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="291"/>
         <source>Deep Red</source>
-        <translation type="unfinished"/>
+        <translation>Sügav punane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="292"/>
         <source>Very Deep Red</source>
-        <translation type="unfinished"/>
+        <translation>Väga sügav punane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="293"/>
         <source>Moderate Red</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine punane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="294"/>
         <source>Dark Red</source>
-        <translation type="unfinished"/>
+        <translation>Tumepunane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="295"/>
         <source>Very Dark Red</source>
-        <translation type="unfinished"/>
+        <translation>Väga tume punane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="296"/>
         <source>Light Grayish Red</source>
-        <translation type="unfinished"/>
+        <translation>Hele hallikaspunane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="297"/>
         <source>Grayish Red</source>
-        <translation type="unfinished"/>
+        <translation>Hallikas-punane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="298"/>
         <source>Dark Grayish Red</source>
-        <translation type="unfinished"/>
+        <translation>Tume hallikaspunane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="299"/>
         <source>Blackish Red</source>
-        <translation type="unfinished"/>
+        <translation>Mustjaspunane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="300"/>
         <source>Reddish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Punakas-hall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="301"/>
         <source>Dark Reddish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Tume punakashall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="302"/>
         <source>Reddish Black</source>
-        <translation type="unfinished"/>
+        <translation>Punakasmust</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="303"/>
@@ -2514,7 +2516,7 @@
     <message>
         <location filename="../app/src/colordictionary.h" line="386"/>
         <source>Dark Olive</source>
-        <translation type="unfinished"/>
+        <translation>Tume oliiv</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="387"/>
@@ -2524,7 +2526,7 @@
     <message>
         <location filename="../app/src/colordictionary.h" line="388"/>
         <source>Grayish Olive</source>
-        <translation type="unfinished"/>
+        <translation>Hallikas oliiv</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="389"/>
@@ -3289,27 +3291,27 @@
     <message>
         <location filename="../app/src/colordictionary.h" line="541"/>
         <source>White</source>
-        <translation type="unfinished"/>
+        <translation>Valge</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="542"/>
         <source>Light Gray</source>
-        <translation type="unfinished"/>
+        <translation>Helehall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="543"/>
         <source>Medium Gray</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine hall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="544"/>
         <source>Dark Gray</source>
-        <translation type="unfinished"/>
+        <translation>Tumehall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="545"/>
         <source>Black</source>
-        <translation type="unfinished"/>
+        <translation>Must</translation>
     </message>
 </context>
 <context>
@@ -3317,12 +3319,12 @@
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.h" line="38"/>
         <source>Open Recent</source>
-        <translation>最近開啟</translation>
+        <translation>Ava hiljutised</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="31"/>
         <source>Clear</source>
-        <translation>清除清單</translation>
+        <translation>Tühjenda</translation>
     </message>
 </context>
 <context>
@@ -3330,25 +3332,25 @@
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="535"/>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation>Hoiatus</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="536"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation>您在隱藏的圖層上繪製！請選擇其他圖層（或使目前圖層可看見）。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1633"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
-        <translation>刪除選擇</translation>
+        <translation>Kustuta valik</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1649"/>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1657"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
-        <translation>清除</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1684"/>
@@ -3363,7 +3365,7 @@
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1689"/>
         <source>Out of bound.</source>
-        <translation>超出界線</translation>
+        <translation>Piiridest väljas.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1690"/>
@@ -3383,7 +3385,7 @@
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
         <source>Flood fill error</source>
-        <translation>填滿功能錯誤</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3396,37 +3398,37 @@
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="47"/>
         <source>Action:</source>
-        <translation>動作：</translation>
+        <translation>Tegevus:</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="54"/>
         <source>None</source>
-        <translation>無</translation>
+        <translation>Pole</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="61"/>
         <source>Shortcuts:</source>
-        <translation>快捷鍵：</translation>
+        <translation>Otseteed:</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>clear</source>
-        <translation>清除</translation>
+        <translation>tühjenda</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
         <source>Restore Default Shortcuts</source>
-        <translation>還原預設快捷鍵</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="92"/>
         <source>Shortcut Conflict!</source>
-        <translation>快捷鍵衝突!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="93"/>
         <source>%1 is already used, overwrite?</source>
-        <translation>%1 已經被使用。要覆蓋嗎?</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3434,58 +3436,58 @@
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="64"/>
         <source>Range</source>
-        <translation>範圍</translation>
+        <translation>Vahemik</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="47"/>
         <source>Frames per second</source>
-        <translation>每秒畫格</translation>
+        <translation>Kaadrit sekundis</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="54"/>
         <source>Start of playback loop</source>
-        <translation>範圍起點</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="61"/>
         <source>End of playback loop</source>
-        <translation>範圍終點</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="66"/>
         <source>Playback range</source>
-        <translation>播放範圍</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="86"/>
         <source>Play</source>
-        <translation>播放</translation>
+        <translation>Esita</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
         <source>Loop</source>
-        <translation>循環</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>
         <source>Sound on/off</source>
-        <translation>聲音開/關</translation>
+        <translation>Heli sees või väljas</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="89"/>
         <source>End</source>
-        <translation>結束</translation>
+        <translation>Lõpp</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="90"/>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="200"/>
         <source>Start</source>
-        <translation>開始</translation>
+        <translation>Algus</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="195"/>
         <source>Stop</source>
-        <translation>停止</translation>
+        <translation>Peata</translation>
     </message>
 </context>
 <context>
@@ -3493,94 +3495,94 @@
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="45"/>
         <source>Timeline</source>
-        <translation>時間軸</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="70"/>
         <source>Layers:</source>
-        <translation>圖層：</translation>
+        <translation>Kihid:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="75"/>
         <source>Add Layer</source>
-        <translation>新增圖層</translation>
+        <translation>Lisa kiht</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="80"/>
         <source>Remove Layer</source>
-        <translation>刪除圖層</translation>
+        <translation>Eemalda kiht</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="93"/>
         <source>New Bitmap Layer</source>
-        <translation>新增點陣圖層</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
         <source>New Vector Layer</source>
-        <translation>新增向量圖層</translation>
+        <translation>Uus vektorkiht</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
         <source>New Sound Layer</source>
-        <translation>新增音效層</translation>
+        <translation>Uus helikiht</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
         <source>New Camera Layer</source>
-        <translation>新增攝影機層</translation>
+        <translation>Uus kaamerakiht</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="98"/>
         <source>&amp;Layer</source>
         <comment>Timeline add-layer menu</comment>
-        <translation type="unfinished"/>
+        <translation>&amp;Kiht</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="116"/>
         <source>Keys:</source>
-        <translation>關鍵畫格</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="121"/>
         <source>Add Frame</source>
-        <translation>加入畫格</translation>
+        <translation>Lisa kaader</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="126"/>
         <source>Remove Frame</source>
-        <translation>刪除畫格</translation>
+        <translation>Eemalda kaader</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="131"/>
         <source>Duplicate Frame</source>
-        <translation>複製畫格</translation>
+        <translation>Tee kaadrist koopia</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="134"/>
         <source>Onion skin:</source>
-        <translation>描圖紙</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="138"/>
         <source>Toggle match keyframes</source>
-        <translation>切換描圖紙畫格模式</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="275"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation>刪除圖層</translation>
+        <translation>Kustuta kiht</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="285"/>
         <source>Please keep at least one camera layer in project</source>
-        <translation>請至少保留一個相機層</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="276"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation>你確定要刪除圖層嗎： </translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3588,12 +3590,12 @@
     <message>
         <location filename="../core_lib/src/interface/timelinecells.cpp" line="681"/>
         <source>Layer Properties</source>
-        <translation>圖層屬性</translation>
+        <translation>Kihi omadused</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timelinecells.cpp" line="682"/>
         <source>Layer name:</source>
-        <translation>圖層名稱：</translation>
+        <translation>Kihi nimi:</translation>
     </message>
 </context>
 <context>
@@ -3601,12 +3603,12 @@
     <message>
         <location filename="../app/ui/timeline2.ui" line="14"/>
         <source>Timeline</source>
-        <translation>時間軸</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/timeline2.ui" line="54"/>
         <source>Layers</source>
-        <translation>圖層</translation>
+        <translation>Kihid</translation>
     </message>
     <message>
         <location filename="../app/ui/timeline2.ui" line="68"/>
@@ -3620,18 +3622,18 @@
     <message>
         <location filename="../app/ui/timelinepage.ui" line="20"/>
         <source>Timeline</source>
-        <translation>時間軸</translation>
+        <translation>Ajatelg</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="60"/>
         <source>Timeline length:</source>
         <comment>Preferences</comment>
-        <translation>時間軸長度:</translation>
+        <translation>Ajatelje pikkus:</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>
         <source>Frame size</source>
-        <translation>畫格寬度</translation>
+        <translation>Kaadri suurus</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="79"/>
@@ -3645,7 +3647,7 @@
         <location filename="../app/ui/toolboxwidget.ui" line="20"/>
         <source>Tools</source>
         <comment>Window title of tool box</comment>
-        <translation>工具箱</translation>
+        <translation>Tööriistad</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="77"/>
@@ -3655,7 +3657,7 @@
     <message>
         <location filename="../app/src/toolbox.cpp" line="79"/>
         <source>Select Tool (%1): Select an object</source>
-        <translation>選擇工具 (%1) : 選擇物件或區域</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="81"/>
@@ -3710,32 +3712,32 @@
     <message>
         <location filename="../app/src/toolbox.cpp" line="104"/>
         <source>Pencil Tool (%1)</source>
-        <translation>鉛筆工具 (%1)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="106"/>
         <source>Select Tool (%1)</source>
-        <translation>選擇工具 (%1)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="108"/>
         <source>Move Tool (%1)</source>
-        <translation>移動工具 (%1)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="110"/>
         <source>Hand Tool (%1)</source>
-        <translation>手工具 (%1)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="112"/>
         <source>Pen Tool (%1)</source>
-        <translation>鋼筆工具 (%1)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="114"/>
         <source>Eraser Tool (%1)</source>
-        <translation>橡皮擦工具 (%1)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="116"/>
@@ -3765,7 +3767,7 @@
     <message>
         <location filename="../app/src/toolbox.cpp" line="126"/>
         <source>Smudge Tool (%1)</source>
-        <translation>塗抹工具 (%1)</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3773,12 +3775,12 @@
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="48"/>
         <source>Brush</source>
-        <translation>筆刷</translation>
+        <translation>Pintsel</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="52"/>
         <source>Feather</source>
-        <translation>柔邊</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="56"/>
@@ -3789,17 +3791,17 @@
         <location filename="../app/src/tooloptionwidget.cpp" line="32"/>
         <source>Options</source>
         <comment>Window title of tool option panel like pen width, feather etc..</comment>
-        <translation>選項</translation>
+        <translation>Valikud</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="183"/>
         <source>Stroke Thickness</source>
-        <translation>筆刷寬度</translation>
+        <translation>Joone paksus</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="188"/>
         <source>Width</source>
-        <translation>寬度</translation>
+        <translation>Laius</translation>
     </message>
 </context>
 <context>
@@ -3827,7 +3829,7 @@
     <message>
         <location filename="../app/ui/tooloptions.ui" line="95"/>
         <source>Use Feather</source>
-        <translation>柔邊</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="102"/>
@@ -3847,73 +3849,73 @@
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
-        <translation>貝茲曲線</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Pressure</source>
         <comment>Brush</comment>
-        <translation type="unfinished"/>
+        <translation>Surve</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="147"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
-        <translation>反鋸齒 </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="177"/>
         <source>Merge</source>
         <comment>Vector line merge</comment>
-        <translation>合併 </translation>
+        <translation>Liida</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="200"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
-        <translation>無</translation>
+        <translation>Pole</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="205"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
-        <translation>輕</translation>
+        <translation>Lihtne</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="210"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
-        <translation>強</translation>
+        <translation>Tugev</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="154"/>
         <source>Make invisible</source>
-        <translation type="unfinished"/>
+        <translation>Tee nähtamatuks</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
         <source>Invisible</source>
-        <translation>隱藏</translation>
+        <translation>Nähtamatu</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
         <source>Preserve Alpha</source>
-        <translation>保存 Alpha</translation>
+        <translation>Säilita alfakanal</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="167"/>
         <source>Alpha</source>
-        <translation>Alpha</translation>
+        <translation>Alfa</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
         <source>Merge vector lines when they are close together</source>
-        <translation>當線條非常靠近時合併向量線條</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>
         <source>Stabilizer</source>
-        <translation>防手抖</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3921,37 +3923,37 @@
     <message>
         <location filename="../app/ui/toolspage.ui" line="17"/>
         <source>Onion skin</source>
-        <translation>描圖紙</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="23"/>
         <source>Maximum onion opacity %</source>
-        <translation>最大透明度</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="49"/>
         <source>Minimum onion opacity %</source>
-        <translation>最小透明度</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="75"/>
         <source>Number of previous onion frames shown</source>
-        <translation>描圖紙: 顯示前方張數</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="104"/>
         <source>Number of next onion frames shown</source>
-        <translation>描圖紙: 顯示後方張數</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="136"/>
         <source>Brush Tools</source>
-        <translation>筆刷工具</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="142"/>
         <source>Use Quick Sizing</source>
-        <translation>筆刷寬度快速調整</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

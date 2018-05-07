@@ -18,7 +18,6 @@ GNU General Public License for more details.
 
 #include <QDomDocument>
 #include <QTextStream>
-#include <QMessageBox>
 #include <QProgressDialog>
 #include <QApplication>
 

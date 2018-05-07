@@ -36,6 +36,11 @@ public:
     void mouseMoveEvent(QMouseEvent*) override;
 
     bool keyPressEvent(QKeyEvent *event) override;
+
+
+    // Store selection origin so we can calculate
+    // the selection rectangle in mousePressEvent.
+    QPointF anchorOriginPoint;
 };
 
 #endif

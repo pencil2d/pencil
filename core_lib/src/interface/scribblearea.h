@@ -116,6 +116,8 @@ public:
 
     bool isMouseInUse() const { return mMouseInUse; }
 
+    void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
+
 signals:
     void modification( int );
     void multiLayerOnionSkinChanged( bool );

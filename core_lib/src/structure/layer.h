@@ -19,9 +19,10 @@ GNU General Public License for more details.
 
 #include <map>
 #include <functional>
+#include <QObject>
 #include <QString>
 #include <QPainter>
-#include <QtXml>
+#include <QDomElement>
 
 class QMouseEvent;
 class KeyFrame;

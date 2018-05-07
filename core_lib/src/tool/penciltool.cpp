@@ -48,15 +48,15 @@ void PencilTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
     m_enabledProperties[VECTORMERGE] = false;
-    m_enabledProperties[INTERPOLATION] = true;
+    m_enabledProperties[STABILIZATION] = true;
     m_enabledProperties[FILLCONTOUR] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
     properties.width = settings.value("pencilWidth").toDouble();
     properties.feather = 50;
     properties.pressure = settings.value("pencilPressure").toBool();
-    properties.inpolLevel = 0;
-    properties.useAA = -1;
+    properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
+    properties.useAA = DISABLED;
     properties.useFeather = true;
     properties.useFillContour = false;
 
@@ -124,12 +124,12 @@ void PencilTool::setPreserveAlpha(const bool preserveAlpha)
     properties.preserveAlpha = 0;
 }
 
-void PencilTool::setInpolLevel(const int level)
+void PencilTool::setStabilizerLevel(const int level)
 {
-    properties.inpolLevel = level;
+    properties.stabilizerLevel = level;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("lineInpol", level);
+    settings.setValue("stabilizerLevel", level);
     settings.sync();
 }
 
@@ -186,9 +186,9 @@ void PencilTool::mouseMoveEvent(QMouseEvent* event)
         if (event->buttons() & Qt::LeftButton)
         {
             drawStroke();
-            if (properties.inpolLevel != m_pStrokeManager->getInpolLevel())
+            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
             {
-                m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
             }
         }
     }

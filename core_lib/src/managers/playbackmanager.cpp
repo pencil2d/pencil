@@ -18,13 +18,14 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 
 #include <QTimer>
+#include <QElapsedTimer>
+#include <QDebug>
 #include "object.h"
 #include "editor.h"
 #include "layersound.h"
 #include "layermanager.h"
-#include "soundmanager.h"
 #include "soundclip.h"
-#include "soundplayer.h"
+
 
 PlaybackManager::PlaybackManager(Editor* editor) : BaseManager(editor)
 {

@@ -26,12 +26,14 @@ TRANSLATIONS += translations/pencil.ts \
                 translations/pencil_da.ts \
                 translations/pencil_de.ts \
                 translations/pencil_es.ts \
+                translations/pencil_et.ts \
                 translations/pencil_fr.ts \
                 translations/pencil_he.ts \
                 translations/pencil_hu_HU.ts \
                 translations/pencil_id.ts \
                 translations/pencil_it.ts \
                 translations/pencil_ja.ts \
+                translations/pencil_pl.ts \
                 translations/pencil_pt.ts \
                 translations/pencil_pt_BR.ts \
                 translations/pencil_ru.ts \

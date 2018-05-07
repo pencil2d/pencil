@@ -39,10 +39,10 @@ public:
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
     void setPressure(float pressure);
-    void setInpolLevel(int level);
+    void setStabilizerLevel(int level);
 
     float getPressure() { return mTabletPressure; }
-    int getInpolLevel() { return mInpolLevel; }
+    int getStabilizerLevel() { return mStabilizerLevel; }
     bool isTabletInUse() { return mTabletInUse; }
 
     QList<QPointF> interpolateStroke();
@@ -91,7 +91,7 @@ private:
 
     bool    mTabletInUse = false;
     float   mTabletPressure = 1.f;
-    int     mInpolLevel = 0;
+    int     mStabilizerLevel = 0;
     QPointF mTabletPosition;
     qreal mMeanPressure;
 

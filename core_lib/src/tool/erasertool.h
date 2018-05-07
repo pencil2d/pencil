@@ -46,7 +46,7 @@ public:
     void setWidth( const qreal width ) override;
     void setFeather( const qreal feather ) override;
     void setPressure( const bool pressure ) override;
-    void setInpolLevel(const int level) override;
+    void setStabilizerLevel(const int level) override;
 
 protected:
     QPointF mLastBrushPoint;

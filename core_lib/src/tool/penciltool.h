@@ -49,7 +49,7 @@ public:
     void setInvisibility( const bool invisibility ) override;
     void setPressure( const bool pressure ) override;
     void setPreserveAlpha( const bool preserveAlpha ) override;
-    void setInpolLevel(const int level) override;
+    void setStabilizerLevel(const int level) override;
     void setUseFillContour(const bool useFillContour) override;
 
 private:

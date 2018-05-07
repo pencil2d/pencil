@@ -44,7 +44,7 @@ void MoveTool::loadSettings()
     properties.width = -1;
     properties.feather = -1;
     properties.useFeather = false;
-    properties.inpolLevel = -1;
+    properties.stabilizerLevel = -1;
     properties.useAA = -1;
 }
 
@@ -152,6 +152,8 @@ void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
 
             mScribbleArea->setSelection(mScribbleArea->myTransformedSelection, true);
             resetSelectionProperties();
+        } else {
+            anchorOriginPoint = getLastPoint();
         }
 
         if (mScribbleArea->getMoveMode() == ScribbleArea::MIDDLE)
@@ -220,18 +222,22 @@ void MoveTool::whichTransformationPoint()
     if (QLineF(getLastPoint(), transformPoint.topLeft()).length() < 10)
     {
         mScribbleArea->setMoveMode(ScribbleArea::TOPLEFT);
+        anchorOriginPoint = mScribbleArea->mySelection.bottomRight();
     }
     if (QLineF(getLastPoint(), transformPoint.topRight()).length() < 10)
     {
         mScribbleArea->setMoveMode(ScribbleArea::TOPRIGHT);
+        anchorOriginPoint = mScribbleArea->mySelection.bottomLeft();
     }
     if (QLineF(getLastPoint(), transformPoint.bottomLeft()).length() < 10)
     {
         mScribbleArea->setMoveMode(ScribbleArea::BOTTOMLEFT);
+        anchorOriginPoint = mScribbleArea->mySelection.topRight();
     }
     if (QLineF(getLastPoint(), transformPoint.bottomRight()).length() < 10)
     {
         mScribbleArea->setMoveMode(ScribbleArea::BOTTOMRIGHT);
+        anchorOriginPoint = mScribbleArea->mySelection.topLeft();
     }
 }
 
@@ -248,30 +254,45 @@ void MoveTool::transformSelection(qreal offsetX, qreal offsetY)
         break;
 
     case ScribbleArea::TOPRIGHT:
+    {
         mScribbleArea->myTempTransformedSelection =
             mScribbleArea->myTransformedSelection.adjusted(0, offsetY, offsetX, 0);
-        break;
 
+        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
+        break;
+    }
     case ScribbleArea::TOPLEFT:
+    {
         mScribbleArea->myTempTransformedSelection =
             mScribbleArea->myTransformedSelection.adjusted(offsetX, offsetY, 0, 0);
-        break;
 
+        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
+        break;
+    }
     case ScribbleArea::BOTTOMLEFT:
+    {
         mScribbleArea->myTempTransformedSelection =
             mScribbleArea->myTransformedSelection.adjusted(offsetX, 0, 0, offsetY);
-        break;
 
+        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
+        break;
+    }
     case ScribbleArea::BOTTOMRIGHT:
+    {
         mScribbleArea->myTempTransformedSelection =
             mScribbleArea->myTransformedSelection.adjusted(0, 0, offsetX, offsetY);
+
+        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
         break;
 
+    }
     case ScribbleArea::ROTATION:
+    {
         mScribbleArea->myTempTransformedSelection =
             mScribbleArea->myTransformedSelection; // @ necessary?
         mScribbleArea->myRotatedAngle = getCurrentPixel().x() - getLastPressPixel().x();
         break;
+    }
     default:
         break;
     }

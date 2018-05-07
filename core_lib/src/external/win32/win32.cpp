@@ -24,6 +24,8 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include <QImageReader>
 #include <QImageWriter>
+#include <QSettings>
+#include <QDebug>
 
 #include "object.h"
 #include "editor.h"

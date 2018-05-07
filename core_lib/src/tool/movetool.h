@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 class Layer;
 
+
 class MoveTool : public BaseTool
 {
     Q_OBJECT
@@ -49,6 +50,8 @@ private:
     void actionOnVector(QMouseEvent *event, Layer *layer);
     void storeClosestVectorCurve();
     QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
+
+    QPointF anchorOriginPoint;
 };
 
 #endif
