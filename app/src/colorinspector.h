@@ -16,20 +16,32 @@ GNU General Public License for more details.
 #ifndef COLORSPINBOXGROUP_H
 #define COLORSPINBOXGROUP_H
 
-#include <QWidget>
+#include <QPaintEvent>
+#include "basedockwidget.h"
 
 namespace Ui {
 class ColorInspector;
 }
 
-class ColorInspector : public QWidget
+class ColorInspector : public BaseDockWidget
 {
     Q_OBJECT
+
+    friend class ColorSliders;
     
 public:
+
     explicit ColorInspector(QWidget *parent = 0);
     ~ColorInspector();
     QColor color();
+
+    void initUI() override;
+    void updateUI() override;
+
+
+protected:
+    void paintEvent(QPaintEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
 signals:
     void colorChanged(const QColor& c);
     void modeChange(const bool& isRgb);
@@ -40,12 +52,14 @@ public slots:
 private slots:
     void onModeChanged();
     void onColorChanged();
+    void onSliderChanged(QColor color);
     
 private:
+
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;
     bool noColorUpdate = false;
-    QColor m_color;
+    QColor mCurrentColor;
 };
 
 #endif // COLORSPINBOXGROUP_H

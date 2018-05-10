@@ -36,6 +36,7 @@ class ToolBoxWidget;
 class PreferencesDialog;
 class PreviewWidget;
 class ColorBox;
+class ColorInspector;
 class RecentFileMenu;
 class Timeline2;
 class ActionCommands;
@@ -117,7 +118,8 @@ private:
     void changePlayState(bool isPlaying);
 
     void makeConnections(Editor*);
-    void makeConnections(Editor*, ColorBox*);
+    void makeConnections(Editor*, ColorBox* colorBox);
+    void makeConnections(Editor*, ColorInspector*);
     void makeConnections(Editor*, ScribbleArea*);
     void makeConnections(Editor*, ColorPaletteWidget*);
     void makeConnections(Editor*, TimeLine*);
@@ -127,7 +129,7 @@ private:
     void bindActionWithSetting(QAction*, SETTING);
 
     // UI: Dock widgets
-    ColorBox*             mColorWheel = nullptr;
+    ColorBox*           mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
@@ -137,6 +139,7 @@ private:
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr; // be public temporary
+    ColorInspector*       mColorInspector = nullptr;
 
     // backup
     BackupElement* mBackupAtSave = nullptr;

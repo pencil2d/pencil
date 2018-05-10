@@ -50,6 +50,7 @@
         <file>icons/new/svg/selection.svg</file>
         <file>icons/new/svg/smudge_detailed.svg</file>
         <file>icons/new/svg/trash_detailed.svg</file>
+        <file>icons/new/checkerboard_smaller</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>
@@ -62,5 +63,7 @@
         <file>icons/mirrorV.png</file>
         <file>icons/dialog-error.svg</file>
         <file>pencil2d_quick_guide.pdf</file>
+        <file>icons/new/svg/color-dialog.svg</file>
+        <file>icons/new/svg/more_options.svg</file>
     </qresource>
 </RCC>

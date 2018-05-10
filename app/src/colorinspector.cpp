@@ -16,20 +16,53 @@ GNU General Public License for more details.
 #include "colorinspector.h"
 #include "ui_colorinspector.h"
 
+#include <QSettings>
+#include <QStyleOption>
 #include <QDebug>
+#include <QStylePainter>
+
+#include "colorslider.h"
+#include "pencildef.h"
 
 ColorInspector::ColorInspector(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ColorInspector)
+    BaseDockWidget(parent)
 {
-    ui->setupUi(this);
+
+    QWidget* innerWidget = new QWidget;
+    setWindowTitle(tr("Color Inspector", "Window title of color inspector"));
+
+    ui = new Ui::ColorInspector;
+    ui->setupUi(innerWidget);
+    setWidget(innerWidget);
+
+    QButtonGroup* colorModeChangeGroup = new QButtonGroup();
+
+    colorModeChangeGroup->addButton(ui->hsvButton);
+    colorModeChangeGroup->addButton(ui->rgbButton);
+    colorModeChangeGroup->setExclusive(true);
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    isRgbColors = settings.value("isRgb").toBool();
+
+    if (isRgbColors) {
+        ui->rgbButton->setChecked(true);
+    } else {
+        ui->hsvButton->setChecked(true);
+    }
+    onModeChanged();
 
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
     connect(ui->GreenspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
     connect(ui->BluespinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
     connect(ui->AlphaspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
-    connect(ui->rgb, &QRadioButton::toggled, this, &ColorInspector::onModeChanged);
+    connect(ui->rgbButton, &QPushButton::clicked, this, &ColorInspector::onModeChanged);
+    connect(ui->hsvButton, &QPushButton::clicked, this, &ColorInspector::onModeChanged);
+
+    connect(ui->red_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
+    connect(ui->green_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
+    connect(ui->blue_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
+    connect(ui->alpha_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
 }
 
 ColorInspector::~ColorInspector()
@@ -37,16 +70,65 @@ ColorInspector::~ColorInspector()
     delete ui;
 }
 
+void ColorInspector::initUI()
+{
+    if (isRgbColors) {
+        ui->red_slider->init(ColorSlider::ColorType::RED, QColor(255,255,255,255), 0.0, 255.0);
+        ui->green_slider->init(ColorSlider::ColorType::GREEN, QColor(255,255,255,255), 0.0, 255.0);
+        ui->blue_slider->init(ColorSlider::ColorType::BLUE, QColor(255,255,255,255), 0.0, 255.0);
+        ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, QColor(0,255,255,255), 0.0, 255.0);
+    } else {
+        ui->red_slider->init(ColorSlider::ColorType::HUE, QColor(359,255,255,255), 0.0, 359.0);
+        ui->green_slider->init(ColorSlider::ColorType::SAT, QColor(255,255,255,255), 0.0, 255.0);
+        ui->blue_slider->init(ColorSlider::ColorType::VAL, QColor(255,255,255,255), 0.0, 255.0);
+        ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, QColor(0,255,255,255), 0.0, 255.0);
+    }
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    QColor savedColor;
+    savedColor.setRgba(settings.value("colorOfSliders").toUInt());
+    setColor(savedColor);
+}
+
+void ColorInspector::updateUI()
+{
+}
+
+void ColorInspector::onSliderChanged(QColor color)
+{
+
+    if (isRgbColors) {
+        ui->red_slider->setRgb(color);
+        ui->green_slider->setRgb(color);
+        ui->blue_slider->setRgb(color);
+        ui->alpha_slider->setRgb(color);
+    } else {
+        ui->red_slider->setHsv(color);
+        ui->green_slider->setHsv(color);
+        ui->blue_slider->setHsv(color);
+        ui->alpha_slider->setHsv(color);
+    }
+
+    emit colorChanged(color);
+}
+
 void ColorInspector::setColor(const QColor &newColor)
 {
-    if (newColor == m_color)
+    if (newColor == mCurrentColor)
     {
         return;
     }
     noColorUpdate = true;
 
+    qDebug() << "set color";
     if(isRgbColors)
     {
+        ui->red_slider->setRgb(newColor);
+        ui->green_slider->setRgb(newColor);
+        ui->blue_slider->setRgb(newColor);
+        ui->alpha_slider->setRgb(newColor);
+
         ui->RedspinBox->setValue(newColor.red());
         ui->GreenspinBox->setValue(newColor.green());
         ui->BluespinBox->setValue(newColor.blue());
@@ -54,42 +136,73 @@ void ColorInspector::setColor(const QColor &newColor)
     }
     else
     {
+        ui->red_slider->setHsv(newColor);
+        ui->green_slider->setHsv(newColor);
+        ui->blue_slider->setHsv(newColor);
+        ui->alpha_slider->setHsv(newColor);
+
         ui->RedspinBox->setValue(newColor.hsvHue());
         ui->GreenspinBox->setValue(qRound(newColor.hsvSaturation() / 2.55));
         ui->BluespinBox->setValue(qRound(newColor.value() / 2.55));
         ui->AlphaspinBox->setValue(qRound(newColor.alpha() / 2.55));
     }
-    m_color = newColor;
+
+    mCurrentColor = newColor;
 
     QPalette p1 = ui->colorWrapper->palette(), p2 = ui->color->palette();
     p1.setBrush(QPalette::Background, QBrush(QImage(":/background/checkerboard.png")));
-    p2.setColor(QPalette::Background, m_color);
+    p2.setColor(QPalette::Background, mCurrentColor);
     ui->colorWrapper->setPalette(p1);
     ui->color->setPalette(p2);
     noColorUpdate = false;
+    update();
 }
 
 QColor ColorInspector::color()
 {
-    return m_color;
+    return mCurrentColor;
+}
+
+void ColorInspector::paintEvent(QPaintEvent*)
+{
+
+    // HACK: possible bug in 5.9
+    // title style is not set when window is not docked
+    // this enforces the style again. This is what QDockWidget
+    // should be doing behind the scene
+    QStyleOptionDockWidget opt;
+    initStyleOption(&opt);
+
+    QStylePainter p(this);
+    p.drawControl(QStyle::CE_DockWidgetTitle, opt);
+}
+
+void ColorInspector::mouseReleaseEvent(QMouseEvent*)
+{
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("colorOfSliders", mCurrentColor.rgba());
+
 }
 
 void ColorInspector::onModeChanged()
 {
-    bool newValue = ui->rgb->isChecked();
-    if (isRgbColors == newValue)
-    {
-        return;
-    }
+
+    // assume hsv if not checked
+    bool newValue = ui->rgbButton->isChecked();
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("isRgb", newValue);
+
     isRgbColors = newValue;
     noColorUpdate = true;
 
     if (isRgbColors)
     {
-        ui->red->setText(tr("Red"));
-        ui->green->setText(tr("Green"));
-        ui->blue->setText(tr("Blue"));
-        ui->alpha->setText(tr("Alpha"));
+        ui->red->setText("R");
+        ui->green->setText("G");
+        ui->blue->setText("B");
+        ui->alpha->setText("A");
 
         ui->RedspinBox->setRange(0,255);
         ui->RedspinBox->setSuffix("");
@@ -99,18 +212,39 @@ void ColorInspector::onModeChanged()
         ui->BluespinBox->setSuffix("");
         ui->AlphaspinBox->setRange(0,255);
         ui->AlphaspinBox->setSuffix("");
-        m_color = m_color.toRgb();
-        ui->RedspinBox->setValue(m_color.red());
-        ui->GreenspinBox->setValue(m_color.green());
-        ui->BluespinBox->setValue(m_color.blue());
-        ui->AlphaspinBox->setValue(m_color.alpha());
+        mCurrentColor = mCurrentColor.toRgb();
+
+        ui->red_slider->setMax(255);
+        ui->red_slider->setColorType(ColorSlider::ColorType::RED);
+        ui->red_slider->setColorSpecType(ColorSlider::ColorSpecType::RGB);
+        ui->green_slider->setColorSpecType(ColorSlider::ColorSpecType::RGB);
+        ui->green_slider->setColorType(ColorSlider::ColorType::GREEN);
+        ui->blue_slider->setColorSpecType(ColorSlider::ColorSpecType::RGB);
+        ui->blue_slider->setColorType(ColorSlider::ColorType::BLUE);
+        ui->alpha_slider->setColorSpecType(ColorSlider::ColorSpecType::RGB);
+        ui->alpha_slider->setColorType(ColorSlider::ColorType::ALPHA);
+
+        ui->RedspinBox->setValue(mCurrentColor.red());
+        ui->GreenspinBox->setValue(mCurrentColor.green());
+        ui->BluespinBox->setValue(mCurrentColor.blue());
+        ui->AlphaspinBox->setValue(mCurrentColor.alpha());
     }
     else
     {
-        ui->red->setText(tr("Hue"));
-        ui->green->setText(tr("Saturation"));
-        ui->blue->setText(tr("Value"));
-        ui->alpha->setText(tr("Alpha"));
+        ui->red->setText("H");
+        ui->green->setText("S");
+        ui->blue->setText("V");
+        ui->alpha->setText("A");
+
+        ui->red_slider->setMax(359);
+        ui->red_slider->setColorType(ColorSlider::ColorType::HUE);
+        ui->red_slider->setColorSpecType(ColorSlider::ColorSpecType::HSV);
+        ui->green_slider->setColorType(ColorSlider::ColorType::SAT);
+        ui->green_slider->setColorSpecType(ColorSlider::ColorSpecType::HSV);
+        ui->blue_slider->setColorType(ColorSlider::ColorType::VAL);
+        ui->blue_slider->setColorSpecType(ColorSlider::ColorSpecType::HSV);
+        ui->alpha_slider->setColorType(ColorSlider::ColorType::ALPHA);
+        ui->alpha_slider->setColorSpecType(ColorSlider::ColorSpecType::HSV);
 
         ui->RedspinBox->setRange(0,359);
         ui->RedspinBox->setSuffix("°");
@@ -121,12 +255,14 @@ void ColorInspector::onModeChanged()
         ui->AlphaspinBox->setRange(0,100);
         ui->AlphaspinBox->setSuffix("%");
 
-        m_color = m_color.toHsv();
-        ui->RedspinBox->setValue(m_color.hue());
-        ui->GreenspinBox->setValue(m_color.saturation());
-        ui->BluespinBox->setValue(m_color.value());
-        ui->AlphaspinBox->setValue(m_color.alpha());
+        qreal bound = 100.0/255.0; // from 255 to 100
+        mCurrentColor = mCurrentColor.toHsv();
+        ui->RedspinBox->setValue(mCurrentColor.hsvHue());
+        ui->GreenspinBox->setValue(qRound(mCurrentColor.hsvSaturation()*bound));
+        ui->BluespinBox->setValue(qRound(mCurrentColor.value()*bound));
+        ui->AlphaspinBox->setValue(qRound(mCurrentColor.alpha()*bound));
     }
+
     noColorUpdate = false;
     emit modeChange(isRgbColors);
 }
@@ -137,18 +273,18 @@ void ColorInspector::onColorChanged()
 
     QColor c;
     if (isRgbColors) {
-        c = QColor::fromRgb(
+        c.setRgb(
             ui->RedspinBox->value(),
             ui->GreenspinBox->value(),
             ui->BluespinBox->value(),
             ui->AlphaspinBox->value());
 
     } else {
-        c = QColor::fromHsv(
+        c.setHsv(
             ui->RedspinBox->value(),
-            ui->GreenspinBox->value() * 2.555,
-            ui->BluespinBox->value() * 2.555,
-            ui->AlphaspinBox->value() * 2.555);
+            ui->GreenspinBox->value()* 2.55,
+            ui->BluespinBox->value()* 2.55,
+            ui->AlphaspinBox->value()* 2.55);
     }
 
     emit colorChanged(c);

@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QColorDialog>
 #include "ui_colorpalette.h"
+#include "qtoolbar.h"
 
 #include "colordictionary.h"
 #include "colourref.h"
@@ -62,6 +63,25 @@ void ColorPaletteWidget::initUI()
     else
         setGridMode();
 
+    QColor savedColor;
+    savedColor.setRgba(settings.value("colorOfSliders").toUInt());
+
+    buttonStylesheet = "::menu-indicator{ image: none; }"
+                             "QPushButton { border: 0px; }"
+                             "QPushButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
+                             "QPushButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
+
+
+    // color number need to be set to add new color to palette
+    // in cases where the last color was saved
+    // otherwise first color will be black.
+    editor()->color()->setColorNumber(0);
+    editor()->color()->setColor(savedColor);
+
+    ui->addColorButton->setStyleSheet(buttonStylesheet);
+    ui->removeColorButton->setStyleSheet(buttonStylesheet);
+    ui->colorDialogButton->setStyleSheet(buttonStylesheet);
+
     palettePreferences();
 
     connect(ui->colorListWidget, &QListWidget::currentItemChanged, this, &ColorPaletteWidget::colorListCurrentItemChanged);
@@ -70,6 +90,7 @@ void ColorPaletteWidget::initUI()
     connect(ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange);
 
     connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
+    connect(ui->colorDialogButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickColorDialogButton);
     connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
 }
 
@@ -90,6 +111,7 @@ void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
         emit colorChanged(newColor);
     }
 }
+
 
 void ColorPaletteWidget::selectColorNumber(int colorNumber)
 {
@@ -202,7 +224,17 @@ void ColorPaletteWidget::palettePreferences()
     mSeparator = new QAction("", this);
     mSeparator->setSeparator(true);
 
+    buttonStylesheet = "::menu-indicator{ image: none; }"
+                             "QToolButton { border: 0px; }"
+                             "QToolButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
+                             "QToolButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
+
+
     // Add to UI
+    ui->palettePref->setIcon(QIcon(":/app/icons/new/svg/more_options.svg"));
+    ui->palettePref->setIconSize(QSize(15,15));
+    ui->palettePref->setArrowType(Qt::ArrowType::NoArrow);
+    ui->palettePref->setStyleSheet(buttonStylesheet);
     ui->palettePref->addAction(ui->listModeAction);
     ui->palettePref->addAction(ui->gridModeAction);
     ui->palettePref->addAction(mSeparator);
@@ -379,16 +411,32 @@ QString ColorPaletteWidget::getDefaultColorName(QColor c)
     return nameDict[minLoc];
 }
 
+void ColorPaletteWidget::clickColorDialogButton()
+{
+    mIsColorDialog = true;
+    clickAddColorButton();
+    mIsColorDialog = false;
+}
+
 void ColorPaletteWidget::clickAddColorButton()
 {
     QColor prevColor = Qt::white;
 
-    if (currentColourNumber() > -1)
+    if (editor()->object()->getLayer(editor()->currentLayerIndex())->type() == Layer::VECTOR)
     {
-        prevColor = editor()->object()->getColour(currentColourNumber()).colour;
+        if (currentColourNumber() > -1)
+        {
+             prevColor = editor()->object()->getColour(currentColourNumber()).colour;
+        }
     }
 
-    QColor newColour = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
+    QColor newColour;
+    if (mIsColorDialog) {
+        newColour = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
+    } else {
+        newColour = editor()->color()->frontColor();
+    }
+
     if (!newColour.isValid())
     {
         // User canceled operation

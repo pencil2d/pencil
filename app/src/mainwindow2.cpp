@@ -54,6 +54,7 @@ GNU General Public License for more details.
 // app headers
 #include "scribblearea.h"
 #include "colorbox.h"
+#include "colorinspector.h"
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
 #include "tooloptionwidget.h"
@@ -141,9 +142,13 @@ void MainWindow2::createDockWidgets()
     mTimeLine = new TimeLine(this);
     mTimeLine->setObjectName("TimeLine");
 
-    mColorWheel = new ColorBox(this);
-    mColorWheel->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
-    mColorWheel->setObjectName("ColorWheel");
+    mColorBox = new ColorBox(this);
+    mColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
+    mColorBox->setObjectName("ColorWheel");
+
+    mColorInspector = new ColorInspector(this);
+    mColorInspector->setToolTip(tr("Color inspector"));
+    mColorInspector->setObjectName("Color Inspector");
 
     mColorPalette = new ColorPaletteWidget(this);
     mColorPalette->setObjectName("ColorPalette");
@@ -165,12 +170,14 @@ void MainWindow2::createDockWidgets()
 
     mDockWidgets
         << mTimeLine
-        << mColorWheel
+        << mColorBox
+        << mColorInspector
         << mColorPalette
         << mDisplayOptionWidget
         << mToolOptions
         << mToolBox;
 
+//    mColorInspector->setFloating(true);
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
 
@@ -186,12 +193,13 @@ void MainWindow2::createDockWidgets()
         qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
-    addDockWidget(Qt::RightDockWidgetArea, mColorWheel);
+    addDockWidget(Qt::RightDockWidgetArea, mColorBox);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
     addDockWidget(Qt::RightDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
+//    addDockWidget(Qt::LeftDockWidgetArea, mColorInspector);
     setDockNestingEnabled(true);
     //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
@@ -205,7 +213,8 @@ void MainWindow2::createDockWidgets()
 
     makeConnections(mEditor);
     makeConnections(mEditor, mTimeLine);
-    makeConnections(mEditor, mColorWheel);
+    makeConnections(mEditor, mColorBox);
+    makeConnections(mEditor, mColorInspector);
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
 
@@ -324,7 +333,7 @@ void MainWindow2::createMenus()
     {
         mToolBox->toggleViewAction(),
         mToolOptions->toggleViewAction(),
-        mColorWheel->toggleViewAction(),
+        mColorBox->toggleViewAction(),
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction()
@@ -791,7 +800,7 @@ void MainWindow2::lockWidgets(bool shouldLock)
 {
     QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
 
-    mColorWheel->setFeatures(feat);
+    mColorBox->setFeatures(feat);
     mColorPalette->setFeatures(feat);
     mDisplayOptionWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
@@ -958,7 +967,7 @@ void MainWindow2::setupKeyboardShortcuts()
 
     mToolBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOLBOX));
     mToolOptions->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOL_OPTIONS));
-    mColorWheel->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
+    mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
     mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
@@ -1042,6 +1051,12 @@ void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
 {
     connect(colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor);
     connect(editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor);
+}
+
+void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector)
+{
+    connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setColor);
+    connect(editor->color(), &ColorManager::colorChanged, colorInspector, &ColorInspector::setColor);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
