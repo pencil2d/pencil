@@ -203,6 +203,7 @@ void TimeLine::initUI()
     connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);
     connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick);
     connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::updateLength);
+    connect(mTimeControls, &TimeControls::playButtonTriggered, this, &TimeLine::playButtonTriggered);
 
     connect(newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer);
     connect(newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer);

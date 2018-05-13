@@ -15,14 +15,17 @@ GNU General Public License for more details.
 
 */
 #include "colorpalettewidget.h"
+#include "ui_colorpalette.h"
+
+#include <cmath>
 
 #include <QDebug>
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QInputDialog>
 #include <QColorDialog>
-#include "ui_colorpalette.h"
-#include "qtoolbar.h"
+#include <QToolBar>
+#include <QSettings>
 
 #include "colordictionary.h"
 #include "colourref.h"
@@ -356,6 +359,8 @@ void ColorPaletteWidget::updateGridUI()
 
 QString ColorPaletteWidget::getDefaultColorName(QColor c)
 {
+    using std::pow;
+
     // Separate rgb values for convenience
     const int r = c.red();
     const int g = c.green();
@@ -370,7 +375,7 @@ QString ColorPaletteWidget::getDefaultColorName(QColor c)
     // Convert XYZ to CEI L*u*v
     // (algorithm source: https://www.cs.rit.edu/~ncs/color/t_convert.html#XYZ%20to%20CIE%20L*a*b*%20(CIELAB)%20&%20CIELAB%20to%20XYZ)
     // Helper function for the conversion
-    auto f = [](const double a) { return a > 0.008856 ? cbrt(a) : 7.787 * a + 16 / 116; };
+    auto f = [](const double a) { return a > 0.008856 ? std::cbrt(a) : 7.787 * a + 16 / 116; };
     // XYZ tristimulus values for D65 (taken from: https://en.wikipedia.org/wiki/Illuminant_D65#Definition)
     const qreal xn = 95.047,
         yn = 100,

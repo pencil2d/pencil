@@ -16,8 +16,10 @@ GNU General Public License for more details.
 */
 #include "layersound.h"
 
-#include <QtDebug>
+#include <QDebug>
 #include <QMediaPlayer>
+#include <QFileInfo>
+#include <QDir>
 #include "object.h"
 #include "soundclip.h"
 

@@ -18,6 +18,10 @@ GNU General Public License for more details.
 #ifndef PENCILDEF_H
 #define PENCILDEF_H
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 #define PENCIL_MOVIE_EXT \
     QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 
@@ -189,6 +193,7 @@ enum StabilizationLevel
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
 #define SETTING_ONION_PREV_FRAMES_NUM   "OnionPrevFramesNum"
 #define SETTING_ONION_NEXT_FRAMES_NUM   "OnionNextFramesNum"
+#define SETTING_ONION_WHILE_PLAYBACK    "OnionWhilePlayback"
 #define SETTING_ONION_TYPE              "OnionType"
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"

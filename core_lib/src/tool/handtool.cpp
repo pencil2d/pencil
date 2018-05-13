@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "handtool.h"
 
 #include <cmath>
+#include <QtMath>
 #include <QPixmap>
 #include <QVector2D>
 #include <QMouseEvent>

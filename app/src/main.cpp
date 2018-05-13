@@ -19,6 +19,10 @@ GNU General Public License for more details.
 #include <QLibraryInfo>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QSettings>
+#include <QFileInfo>
+#include <QDebug>
+
 #include "editor.h"
 #include "mainwindow2.h"
 #include "pencilapplication.h"

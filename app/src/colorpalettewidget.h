@@ -89,7 +89,7 @@ private:
     QAction* mSmallSwatchAction = nullptr;
     QAction* mMediumSwatchAction = nullptr;
     QAction* mLargeSwatchAction = nullptr;
-    QAction* mSeparator;
+    QAction* mSeparator = nullptr;
 
     QSize mIconSize{ 34, 34 };
     QMenu* mToolMenu = nullptr;
