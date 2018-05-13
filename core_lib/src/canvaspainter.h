@@ -48,6 +48,8 @@ struct CanvasPainterOptions
     int   nShowAllLayers = 3;
     bool  bIsOnionAbsolute = false;
     float scaling = 1.0f;
+    bool isPlaying = false;
+    bool onionWhilePlayback = false;
 };
 
 

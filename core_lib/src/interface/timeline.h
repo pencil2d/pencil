@@ -70,6 +70,7 @@ Q_SIGNALS:
     void fpsClick( int );
     void onionPrevClick();
     void onionNextClick();
+    void playButtonTriggered();
 
 public:
     bool scrubbing = false;

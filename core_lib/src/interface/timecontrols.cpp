@@ -176,15 +176,7 @@ void TimeControls::makeConnections()
 
 void TimeControls::playButtonClicked()
 {
-    if (mEditor->playback()->isPlaying())
-    {
-        mEditor->playback()->stop();
-    }
-    else
-    {
-        mEditor->playback()->play();
-    }
-    updatePlayState();
+    emit playButtonTriggered();
 }
 
 void TimeControls::updatePlayState()

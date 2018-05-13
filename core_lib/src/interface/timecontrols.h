@@ -47,6 +47,7 @@ public:
 Q_SIGNALS:
     void soundClick(bool);
     void fpsClick(int);
+    void playButtonTriggered();
 
 public slots:
     void toggleLoop(bool);
