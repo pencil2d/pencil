@@ -71,8 +71,6 @@ bool ScribbleArea::init()
     mIsSimplified = mPrefs->isOn(SETTING::OUTLINES);
     mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
 
-    mShowAllLayers = 1;
-
     mBufferImg = new BitmapImage;
 
     QRect newSelection(QPoint(0, 0), QSize(0, 0));
@@ -82,7 +80,7 @@ bool ScribbleArea::init()
     mOffset.setX(0);
     mOffset.setY(0);
     selectionTransformation.reset();
-    selectionTolerance = 8.0;
+
     updateCanvasCursor();
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
@@ -1130,8 +1128,6 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 
     mCanvasPainter.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect);
-
-    return;
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
