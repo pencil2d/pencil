@@ -33,6 +33,7 @@ public:
 
     QColor color();
     void setColor(const QColor&);
+    void loadColor(const QColor&);
 
 Q_SIGNALS:
     void colorChanged(const QColor&);
@@ -42,6 +43,8 @@ private:
     void onWheelRelease(const QColor&);
 
     ColorWheel* mColorWheel = nullptr;
+
+    bool mColorLoaded = false;
 //    ColorInspector* mColorInspector = nullptr;
 };
 

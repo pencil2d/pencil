@@ -1052,6 +1052,7 @@ void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
 {
     connect(colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor);
     connect(editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor);
+    connect(editor->color(), &ColorManager::colorLoaded, colorBox, &ColorBox::loadColor);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector)

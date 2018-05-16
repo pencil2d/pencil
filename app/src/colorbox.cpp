@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "colorwheel.h"
 #include "colorinspector.h"
 #include "colorbox.h"
-#include "qsettings.h"
 #include "pencildef.h"
 
 ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
@@ -38,7 +37,6 @@ ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
 
     connect(mColorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove);
     connect(mColorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease);
-//    connect(this, &ColorBox::colorChanged, mColorWheel, &ColorWheel::setColor);
 }
 
 ColorBox::~ColorBox()
@@ -47,15 +45,11 @@ ColorBox::~ColorBox()
 
 void ColorBox::initUI()
 {
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    QColor savedColor;
-    savedColor.setRgba(settings.value("colorOfSliders").toUInt());
-    setColor(savedColor);
 }
 
 void ColorBox::updateUI()
 {
+    mColorLoaded = true;
 }
 
 QColor ColorBox::color()
@@ -63,8 +57,22 @@ QColor ColorBox::color()
     return mColorWheel->color();
 }
 
+/**
+ * @brief ColorBox::loadColor
+ *
+ * This value is only to be used once
+ * for further color modifications, use setColor
+ */
+void ColorBox::loadColor(const QColor& color)
+{
+    mColorLoaded = false;
+    mColorWheel->setColor(color);
+}
+
 void ColorBox::setColor(const QColor& newColor)
 {
+    if (!mColorLoaded) { return; }
+
     if ( newColor != mColorWheel->color() )
     {
         mColorWheel->setColor(newColor);

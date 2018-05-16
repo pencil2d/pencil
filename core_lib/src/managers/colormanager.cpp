@@ -38,6 +38,9 @@ Status ColorManager::load(Object* o)
 {
     mCurrentColorIndex = 0;
     mCurrentFrontColor = o->data()->getCurrentColor();
+
+    emit colorLoaded(mCurrentFrontColor);
+
     return Status::OK;
 }
 

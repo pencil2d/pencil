@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QStylePainter>
 #include <QRect>
 #include <QDebug>
-#include "qsettings.h"
 #include "pencildef.h"
 
 #include "colorwheel.h"
@@ -232,8 +231,6 @@ void ColorWheel::mouseMoveEvent(QMouseEvent* event)
 
 void ColorWheel::mouseReleaseEvent(QMouseEvent *)
 {
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("colorOfSliders", mCurrentColor.rgba());
     mIsInWheel = false;
     mIsInSquare = false;
     emit colorSelected(mCurrentColor);

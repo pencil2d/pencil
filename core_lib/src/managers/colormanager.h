@@ -43,6 +43,7 @@ public:
 Q_SIGNALS:
     void colorChanged(QColor, int); // new color and color index
     void colorNumberChanged(int);
+    void colorLoaded(QColor);
 
 private:
     QColor mCurrentFrontColor{ 33, 33, 33 };
