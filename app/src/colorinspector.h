@@ -47,7 +47,7 @@ signals:
     void modeChange(const bool& isRgb);
 
 public slots:
-    void setColor(const QColor &c);
+    void setColor(QColor newColor);
 
 private slots:
     void onModeChanged();
@@ -58,7 +58,6 @@ private:
 
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;
-    bool noColorUpdate = false;
     QColor mCurrentColor;
 };
 

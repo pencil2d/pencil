@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "colorslider.h"
 #include "pencildef.h"
 
+
 ColorInspector::ColorInspector(QWidget *parent) :
     BaseDockWidget(parent)
 {
@@ -97,7 +98,6 @@ void ColorInspector::updateUI()
 
 void ColorInspector::onSliderChanged(QColor color)
 {
-
     if (isRgbColors) {
         ui->red_slider->setRgb(color);
         ui->green_slider->setRgb(color);
@@ -113,21 +113,33 @@ void ColorInspector::onSliderChanged(QColor color)
     emit colorChanged(color);
 }
 
-void ColorInspector::setColor(const QColor &newColor)
+void ColorInspector::setColor(QColor newColor)
 {
+    // compare under the same color spec
+    newColor = (isRgbColors) ? newColor.toRgb() : newColor.toHsv();
+
     if (newColor == mCurrentColor)
     {
         return;
     }
-    noColorUpdate = true;
 
     qDebug() << "set color";
     if(isRgbColors)
     {
+        QSignalBlocker b1(ui->red_slider); 
+        QSignalBlocker b2(ui->green_slider);
+        QSignalBlocker b3(ui->blue_slider);
+        QSignalBlocker b4(ui->alpha_slider);
+
         ui->red_slider->setRgb(newColor);
         ui->green_slider->setRgb(newColor);
         ui->blue_slider->setRgb(newColor);
         ui->alpha_slider->setRgb(newColor);
+
+        QSignalBlocker b5(ui->RedspinBox);
+        QSignalBlocker b6(ui->GreenspinBox);
+        QSignalBlocker b7(ui->BluespinBox);
+        QSignalBlocker b8(ui->AlphaspinBox);
 
         ui->RedspinBox->setValue(newColor.red());
         ui->GreenspinBox->setValue(newColor.green());
@@ -136,10 +148,20 @@ void ColorInspector::setColor(const QColor &newColor)
     }
     else
     {
+        QSignalBlocker b1(ui->red_slider);
+        QSignalBlocker b2(ui->green_slider);
+        QSignalBlocker b3(ui->blue_slider);
+        QSignalBlocker b4(ui->alpha_slider);
+
         ui->red_slider->setHsv(newColor);
         ui->green_slider->setHsv(newColor);
         ui->blue_slider->setHsv(newColor);
         ui->alpha_slider->setHsv(newColor);
+
+        QSignalBlocker b5(ui->RedspinBox);
+        QSignalBlocker b6(ui->GreenspinBox);
+        QSignalBlocker b7(ui->BluespinBox);
+        QSignalBlocker b8(ui->AlphaspinBox);
 
         ui->RedspinBox->setValue(newColor.hsvHue());
         ui->GreenspinBox->setValue(qRound(newColor.hsvSaturation() / 2.55));
@@ -154,7 +176,7 @@ void ColorInspector::setColor(const QColor &newColor)
     p2.setColor(QPalette::Background, mCurrentColor);
     ui->colorWrapper->setPalette(p1);
     ui->color->setPalette(p2);
-    noColorUpdate = false;
+
     update();
 }
 
@@ -187,7 +209,6 @@ void ColorInspector::mouseReleaseEvent(QMouseEvent*)
 
 void ColorInspector::onModeChanged()
 {
-
     // assume hsv if not checked
     bool newValue = ui->rgbButton->isChecked();
 
@@ -195,10 +216,16 @@ void ColorInspector::onModeChanged()
     settings.setValue("isRgb", newValue);
 
     isRgbColors = newValue;
-    noColorUpdate = true;
 
     if (isRgbColors)
     {
+        // Spinboxes may emit unwanted valueChanged signals when setting ranges
+        // so block them all first
+        QSignalBlocker b1(ui->RedspinBox);
+        QSignalBlocker b2(ui->GreenspinBox);
+        QSignalBlocker b3(ui->BluespinBox);
+        QSignalBlocker b4(ui->AlphaspinBox);
+
         ui->red->setText("R");
         ui->green->setText("G");
         ui->blue->setText("B");
@@ -212,6 +239,7 @@ void ColorInspector::onModeChanged()
         ui->BluespinBox->setSuffix("");
         ui->AlphaspinBox->setRange(0,255);
         ui->AlphaspinBox->setSuffix("");
+
         mCurrentColor = mCurrentColor.toRgb();
 
         ui->red_slider->setMax(255);
@@ -231,6 +259,11 @@ void ColorInspector::onModeChanged()
     }
     else
     {
+        QSignalBlocker b1(ui->RedspinBox);
+        QSignalBlocker b2(ui->GreenspinBox);
+        QSignalBlocker b3(ui->BluespinBox);
+        QSignalBlocker b4(ui->AlphaspinBox);
+
         ui->red->setText("H");
         ui->green->setText("S");
         ui->blue->setText("V");
@@ -255,22 +288,21 @@ void ColorInspector::onModeChanged()
         ui->AlphaspinBox->setRange(0,100);
         ui->AlphaspinBox->setSuffix("%");
 
-        qreal bound = 100.0/255.0; // from 255 to 100
         mCurrentColor = mCurrentColor.toHsv();
+
+        const qreal bound = 100.0 / 255.0; // from 255 to 100
+        
         ui->RedspinBox->setValue(mCurrentColor.hsvHue());
         ui->GreenspinBox->setValue(qRound(mCurrentColor.hsvSaturation()*bound));
         ui->BluespinBox->setValue(qRound(mCurrentColor.value()*bound));
         ui->AlphaspinBox->setValue(qRound(mCurrentColor.alpha()*bound));
     }
 
-    noColorUpdate = false;
     emit modeChange(isRgbColors);
 }
 
 void ColorInspector::onColorChanged()
 {
-    if(noColorUpdate) return;
-
     QColor c;
     if (isRgbColors) {
         c.setRgb(
