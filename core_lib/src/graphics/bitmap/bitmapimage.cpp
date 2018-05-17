@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QDebug>
+#include <QtMath>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -528,34 +529,36 @@ void BitmapImage::clear(QRect rectangle)
     modification();
 }
 
-bool BitmapImage::compareColor(QRgb color1, QRgb color2, int tolerance)
+/** Compare colors for the purposes of flood filling
+ *
+ *  Calculates the Eulcidian difference of the RGB channels
+ *  of the image and compares it to the tolerance
+ *
+ *  @param[in] newColor The first color to compare
+ *  @param[in] oldColor The second color to compare
+ *  @param[in] tolerance The threshold limit between a matching and non-matching color
+ *
+ *  @return Returns true if the colors have a similarity below the tolerance level
+ *          (i.e. if Eulcidian distance squared is <= tolerance)
+ */
+bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance)
 {
-    if (color1 == color2) return true;
+    // Handle trivial case
+    if (newColor == oldColor) return true;
 
-    int red1 = qRed(color1);
-    int green1 = qGreen(color1);
-    int blue1 = qBlue(color1);
-    int alpha1 = qAlpha(color1);
+    // Get Eulcidian distance between colors
+    // Not an accurate representation of human perception,
+    // but it's the best any image editing program ever does
+    int diffRed = qPow(qRed(oldColor) - qRed(newColor), 2);
+    int diffGreen = qPow(qGreen(oldColor) - qGreen(newColor), 2);
+    int diffBlue = qPow(qBlue(oldColor) - qBlue(newColor), 2);
+    // This may not be the best way to handle alpha since the other channels become less relevant as
+    // the alpha is reduces (ex. QColor(0,0,0,0) is the same as QColor(255,255,255,0))
+    int diffAlpha = qPow(qAlpha(oldColor) - qAlpha(newColor), 2);
 
-    int red2 = qRed(color2);
-    int green2 = qGreen(color2);
-    int blue2 = qBlue(color2);
-    int alpha2 = qAlpha(color2);
+    bool isSimilar = (diffRed + diffGreen + diffBlue + diffAlpha) <= tolerance;
 
-    int diffRed = abs(red2 - red1);
-    int diffGreen = abs(green2 - green1);
-    int diffBlue = abs(blue2 - blue1);
-    int diffAlpha = abs(alpha2 - alpha1);
-
-    if (diffRed > tolerance ||
-        diffGreen > tolerance ||
-        diffBlue > tolerance ||
-        diffAlpha > tolerance)
-    {
-        return false;
-    }
-
-    return true;
+    return isSimilar;
 }
 
 // Flood fill
@@ -572,6 +575,8 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         return;
     }
 
+    // Square tolerance for use with compareColor
+    tolerance = qPow(tolerance, 2);
 
     QRgb oldColor = targetImage->pixel(point);
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
