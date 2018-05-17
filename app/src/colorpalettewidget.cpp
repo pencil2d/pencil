@@ -66,9 +66,6 @@ void ColorPaletteWidget::initUI()
     else
         setGridMode();
 
-    QColor savedColor;
-    savedColor.setRgba(settings.value("colorOfSliders").toUInt());
-
     buttonStylesheet = "::menu-indicator{ image: none; }"
                              "QPushButton { border: 0px; }"
                              "QPushButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
@@ -79,7 +76,7 @@ void ColorPaletteWidget::initUI()
     // in cases where the last color was saved
     // otherwise first color will be black.
     editor()->color()->setColorNumber(0);
-    editor()->color()->setColor(savedColor);
+    editor()->color()->setColor(editor()->color()->frontColor());
 
     ui->addColorButton->setStyleSheet(buttonStylesheet);
     ui->removeColorButton->setStyleSheet(buttonStylesheet);

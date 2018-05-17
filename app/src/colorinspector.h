@@ -41,7 +41,6 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *) override;
-    void mouseReleaseEvent(QMouseEvent *) override;
 signals:
     void colorChanged(const QColor& c);
     void modeChange(const bool& isRgb);
