@@ -566,6 +566,13 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
                             QRgb newColor,
                             int tolerance)
 {
+    // If the point we are supposed to fill is outside the image and camera bounds, do nothing
+    if(!cameraRect.united(targetImage->bounds()).contains(point))
+    {
+        return;
+    }
+
+
     QRgb oldColor = targetImage->pixel(point);
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
 
