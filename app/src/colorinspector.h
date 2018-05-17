@@ -47,7 +47,7 @@ signals:
     void modeChange(const bool& isRgb);
 
 public slots:
-    void setColor(const QColor &c);
+    void setColor(QColor newColor);
 
 private slots:
     void onModeChanged();

@@ -113,8 +113,11 @@ void ColorInspector::onSliderChanged(QColor color)
     emit colorChanged(color);
 }
 
-void ColorInspector::setColor(const QColor &newColor)
+void ColorInspector::setColor(QColor newColor)
 {
+    // compare under the same color spec
+    newColor = (isRgbColors) ? newColor.toRgb() : newColor.toHsv();
+
     if (newColor == mCurrentColor)
     {
         return;
@@ -187,7 +190,6 @@ void ColorInspector::mouseReleaseEvent(QMouseEvent*)
 
 void ColorInspector::onModeChanged()
 {
-
     // assume hsv if not checked
     bool newValue = ui->rgbButton->isChecked();
 
