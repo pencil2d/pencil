@@ -328,7 +328,9 @@ void ColorWheel::drawSquareImage(const int &hue)
 
     QLinearGradient colorGradient = QLinearGradient(0, 0, square.width(), 0);
     colorGradient.setColorAt(0, QColor(255,255,255));
-    colorGradient.setColorAt(1, QColor::fromHsv(color().hsvHue(), color().hsvSaturation(), color().value()));
+
+    // color square should always use full value and saturation
+    colorGradient.setColorAt(1, QColor::fromHsv(color().hsvHue(), 255, 255));
 
     QLinearGradient blackGradient = QLinearGradient(0, 0, 0, square.height());
     blackGradient.setColorAt(0, QColor(0,0,0,0));
