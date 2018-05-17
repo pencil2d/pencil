@@ -84,12 +84,6 @@ void ColorInspector::initUI()
         ui->blue_slider->init(ColorSlider::ColorType::VAL, QColor(255,255,255,255), 0.0, 255.0);
         ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, QColor(0,255,255,255), 0.0, 255.0);
     }
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    QColor savedColor;
-    savedColor.setRgba(settings.value("colorOfSliders").toUInt());
-    setColor(savedColor);
 }
 
 void ColorInspector::updateUI()
@@ -123,7 +117,6 @@ void ColorInspector::setColor(QColor newColor)
         return;
     }
 
-    qDebug() << "set color";
     if(isRgbColors)
     {
         QSignalBlocker b1(ui->red_slider); 
@@ -197,14 +190,6 @@ void ColorInspector::paintEvent(QPaintEvent*)
 
     QStylePainter p(this);
     p.drawControl(QStyle::CE_DockWidgetTitle, opt);
-}
-
-void ColorInspector::mouseReleaseEvent(QMouseEvent*)
-{
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("colorOfSliders", mCurrentColor.rgba());
-
 }
 
 void ColorInspector::onModeChanged()
