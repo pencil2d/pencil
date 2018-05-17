@@ -185,11 +185,14 @@ void ColorInspector::paintEvent(QPaintEvent*)
     // title style is not set when window is not docked
     // this enforces the style again. This is what QDockWidget
     // should be doing behind the scene
-    QStyleOptionDockWidget opt;
-    initStyleOption(&opt);
+    if (!this->isFloating()) {
 
-    QStylePainter p(this);
-    p.drawControl(QStyle::CE_DockWidgetTitle, opt);
+        QStyleOptionDockWidget opt;
+        initStyleOption(&opt);
+
+        QStylePainter p(this);
+        p.drawControl(QStyle::CE_DockWidgetTitle, opt);
+    }
 }
 
 void ColorInspector::onModeChanged()

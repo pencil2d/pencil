@@ -199,7 +199,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
-//    addDockWidget(Qt::LeftDockWidgetArea, mColorInspector);
+    addDockWidget(Qt::LeftDockWidgetArea, mColorInspector);
     setDockNestingEnabled(true);
     //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
