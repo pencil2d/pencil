@@ -151,7 +151,7 @@ void BucketTool::paintBitmap(Layer* layer)
                             cameraRect,
                             point,
                             qPremultiply( mEditor->color()->frontColor().rgba() ),
-                            properties.tolerance * 2.55 );
+                            properties.tolerance );
 
     mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
