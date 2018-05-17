@@ -58,7 +58,6 @@ private:
 
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;
-    bool noColorUpdate = false;
     QColor mCurrentColor;
 };
 
