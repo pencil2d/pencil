@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- Converted with SVG Converter - Version 0.9.6 (Compiled Thu Aug 31 04:01:04 2017) - Copyright (C) 2011 Nokia -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 16 16" xml:space="preserve" baseProfile="tiny" height="100%" width="100%">
+ <g id="Artboard1" transform="matrix(1.06667,0,0,1.06667,0,0)">
+  <rect style="fill:none;" y="0" x="0" height="15" width="15"/>
+  <g transform="matrix(1.3125,0,0,1.64062,-4.3125,-8.90625)">
+   <path d="M14,14L4,14L4,6L14,6L14,14ZM13.286,7.714L4.714,7.714L4.714,13.429L13.286,13.429L13.286,7.714Z" style="fill:url(#_Linear1);"/>
+  </g>
+  <g transform="matrix(1.04167,0,0,1.07143,-0.3125,-0.669643)">
+   <rect style="fill:url(#_Linear2);" y="5" x="3" height="7" width="9"/>
+  </g>
+  <g transform="matrix(-0.00876788,0.833287,-1.33921,-0.0140912,18.9099,2.35673)">
+   <path d="M11.881,4.942L2.882,5.001L3,12L11.999,11.941L11.881,4.942Z" style="fill:url(#_Linear3);"/>
+  </g>
+ </g>
+ <defs>
+  <linearGradient y2="0" id="_Linear1" y1="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.002173,9.84615,-12.3077,0.0017384,9,5.38462)" x2="1" x1="0">
+   <stop style="stop-color:rgb(174,174,174);stop-opacity:1" offset="0.0"/>
+   <stop style="stop-color:rgb(118,118,118);stop-opacity:1" offset="0.1"/>
+   <stop style="stop-color:rgb(71,71,71);stop-opacity:1" offset="0.3"/>
+   <stop style="stop-color:rgb(54,54,54);stop-opacity:1" offset="1.0"/>
+  </linearGradient>
+  <linearGradient y2="0" id="_Linear2" y1="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(9,0,0,9,3,8)" x2="1" x1="0">
+   <stop style="stop-color:rgb(255,8,8);stop-opacity:1" offset="0.0"/>
+   <stop style="stop-color:rgb(177,177,83);stop-opacity:1" offset="0.2"/>
+   <stop style="stop-color:rgb(40,166,244);stop-opacity:1" offset="0.5"/>
+   <stop style="stop-color:rgb(176,86,185);stop-opacity:1" offset="0.9"/>
+   <stop style="stop-color:rgb(231,59,50);stop-opacity:1" offset="1.0"/>
+  </linearGradient>
+  <linearGradient y2="0" id="_Linear3" y1="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(9,1.38778e-17,0,9,3,8)" x2="1" x1="0">
+   <stop style="stop-color:white;stop-opacity:0.5" offset="0.0"/>
+   <stop style="stop-color:rgb(235,235,235);stop-opacity:0.394118" offset="0.3"/>
+   <stop style="stop-color:rgb(158,158,158);stop-opacity:0" offset="0.5"/>
+   <stop style="stop-color:rgb(42,42,42);stop-opacity:0.366667" offset="0.8"/>
+   <stop style="stop-color:black;stop-opacity:0.5" offset="1.0"/>
+  </linearGradient>
+ </defs>
+</svg>

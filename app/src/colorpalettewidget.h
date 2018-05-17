@@ -66,6 +66,7 @@ private slots:
     void changeColourName(QListWidgetItem*);
     void onActiveColorNameChange(QString name);
     void clickAddColorButton();
+    void clickColorDialogButton();
     void clickRemoveColorButton();
     void palettePreferences();
     void setListMode();
@@ -93,6 +94,10 @@ private:
     QSize mIconSize{ 34, 34 };
     QMenu* mToolMenu = nullptr;
     int stepper = 0;
+
+    QString buttonStylesheet;
+
+    bool mIsColorDialog = false;
 
 };
 
