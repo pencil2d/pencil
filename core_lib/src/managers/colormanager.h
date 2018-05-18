@@ -46,7 +46,7 @@ Q_SIGNALS:
     void colorLoaded(QColor);
 
 private:
-    QColor mCurrentFrontColor{ 33, 33, 33 };
+    QColor mCurrentFrontColor{ 33, 33, 33, 255 };
     int  mCurrentColorIndex = 0;
     bool mIsWorkingOnVectorLayer = false;
 };

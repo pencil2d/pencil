@@ -26,7 +26,6 @@ void ColorSlider::init(ColorType type, QColor color, qreal min, float max)
 
 void ColorSlider::init(ColorType type, QColor color, qreal min, float max, QSize size)
 {
-
     mMin = min;
     mMax = max;
     mColor = color;
@@ -47,7 +46,6 @@ void ColorSlider::paintEvent(QPaintEvent *)
 
 }
 
-
 void ColorSlider::resizeEvent(QResizeEvent *event)
 {
     mSize = event->size();
@@ -56,7 +54,6 @@ void ColorSlider::resizeEvent(QResizeEvent *event)
 
 QLinearGradient ColorSlider::setColorSpec(QColor color)
 {
-
     if (mSpecType == ColorSpecType::HSV)
     {
        return hsvGradient(color);
@@ -65,6 +62,8 @@ QLinearGradient ColorSlider::setColorSpec(QColor color)
     {
         return rgbGradient(color);
     }
+    Q_ASSERT(false);
+    return QLinearGradient();
 }
 
 QLinearGradient ColorSlider::rgbGradient(QColor color)

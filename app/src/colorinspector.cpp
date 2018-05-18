@@ -23,12 +23,13 @@ GNU General Public License for more details.
 
 #include "colorslider.h"
 #include "pencildef.h"
+#include "editor.h"
+#include "colormanager.h"
 
 
 ColorInspector::ColorInspector(QWidget *parent) :
     BaseDockWidget(parent)
 {
-
     QWidget* innerWidget = new QWidget;
     setWindowTitle(tr("Color Inspector", "Window title of color inspector"));
 
@@ -36,11 +37,21 @@ ColorInspector::ColorInspector(QWidget *parent) :
     ui->setupUi(innerWidget);
     setWidget(innerWidget);
 
-    QButtonGroup* colorModeChangeGroup = new QButtonGroup();
+    QButtonGroup* colorModeChangeGroup = new QButtonGroup;
 
     colorModeChangeGroup->addButton(ui->hsvButton);
     colorModeChangeGroup->addButton(ui->rgbButton);
     colorModeChangeGroup->setExclusive(true);
+}
+
+ColorInspector::~ColorInspector()
+{
+    delete ui;
+}
+
+void ColorInspector::initUI()
+{
+    mCurrentColor = editor()->color()->frontColor();
 
     QSettings settings(PENCIL2D, PENCIL2D);
     isRgbColors = settings.value("isRgb").toBool();
@@ -51,6 +62,27 @@ ColorInspector::ColorInspector(QWidget *parent) :
         ui->hsvButton->setChecked(true);
     }
     onModeChanged();
+
+    QPalette p1 = ui->colorWrapper->palette(), p2 = ui->color->palette();
+    p1.setBrush(QPalette::Background, QBrush(QImage(":/background/checkerboard.png")));
+    p2.setColor(QPalette::Background, mCurrentColor);
+    ui->colorWrapper->setPalette(p1);
+    ui->color->setPalette(p2);
+
+    if (isRgbColors)
+    {
+        ui->red_slider->init(ColorSlider::ColorType::RED, mCurrentColor, 0.0, 255.0);
+        ui->green_slider->init(ColorSlider::ColorType::GREEN, mCurrentColor, 0.0, 255.0);
+        ui->blue_slider->init(ColorSlider::ColorType::BLUE, mCurrentColor, 0.0, 255.0);
+        ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
+    }
+    else
+    {
+        ui->red_slider->init(ColorSlider::ColorType::HUE, mCurrentColor, 0.0, 359.0);
+        ui->green_slider->init(ColorSlider::ColorType::SAT, mCurrentColor, 0.0, 255.0);
+        ui->blue_slider->init(ColorSlider::ColorType::VAL, mCurrentColor, 0.0, 255.0);
+        ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
+    }
 
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
@@ -64,26 +96,6 @@ ColorInspector::ColorInspector(QWidget *parent) :
     connect(ui->green_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
     connect(ui->blue_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
     connect(ui->alpha_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
-}
-
-ColorInspector::~ColorInspector()
-{
-    delete ui;
-}
-
-void ColorInspector::initUI()
-{
-    if (isRgbColors) {
-        ui->red_slider->init(ColorSlider::ColorType::RED, QColor(255,255,255,255), 0.0, 255.0);
-        ui->green_slider->init(ColorSlider::ColorType::GREEN, QColor(255,255,255,255), 0.0, 255.0);
-        ui->blue_slider->init(ColorSlider::ColorType::BLUE, QColor(255,255,255,255), 0.0, 255.0);
-        ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, QColor(0,255,255,255), 0.0, 255.0);
-    } else {
-        ui->red_slider->init(ColorSlider::ColorType::HUE, QColor(359,255,255,255), 0.0, 359.0);
-        ui->green_slider->init(ColorSlider::ColorType::SAT, QColor(255,255,255,255), 0.0, 255.0);
-        ui->blue_slider->init(ColorSlider::ColorType::VAL, QColor(255,255,255,255), 0.0, 255.0);
-        ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, QColor(0,255,255,255), 0.0, 255.0);
-    }
 }
 
 void ColorInspector::updateUI()
@@ -180,13 +192,12 @@ QColor ColorInspector::color()
 
 void ColorInspector::paintEvent(QPaintEvent*)
 {
-
     // HACK: possible bug in 5.9
     // title style is not set when window is not docked
     // this enforces the style again. This is what QDockWidget
     // should be doing behind the scene
-    if (!this->isFloating()) {
-
+    if (!this->isFloating())
+    {
         QStyleOptionDockWidget opt;
         initStyleOption(&opt);
 
