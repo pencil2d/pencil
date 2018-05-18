@@ -57,42 +57,6 @@ void ColorWheel::setColor(QColor color)
     update();
 }
 
-void ColorWheel::changeRgbColors(const QColor& color)
-{
-    if (color.red() != mCurrentColor.red())
-    {
-        redChanged(color.red());
-    }
-
-    if (color.green() != mCurrentColor.green())
-    {
-        greenChanged(color.green());
-    }
-
-    if (color.blue() != mCurrentColor.blue())
-    {
-        blueChanged(color.blue());
-    }
-}
-
-void ColorWheel::changeHsvColors(const QColor& color)
-{
-    if (color.hue() != mCurrentColor.hue())
-    {
-        hueChanged(color.hue());
-    }
-
-    if (color.saturation() != mCurrentColor.saturation())
-    {
-        saturationChanged(color.saturation());
-    }
-
-    if (color.value() != mCurrentColor.value())
-    {
-        valueChanged(color.value());
-    }
-}
-
 QColor ColorWheel::pickColor(const QPoint& point)
 {
     if (!mWheelPixmap.rect().contains(point))
@@ -220,7 +184,6 @@ void ColorWheel::resizeEvent(QResizeEvent* event)
 
 void ColorWheel::paintEvent(QPaintEvent*)
 {
-
     QPainter painter;
 
     painter.begin(this);
@@ -386,58 +349,6 @@ void ColorWheel::composeWheel(QPixmap& pixmap)
     drawPicker(mCurrentColor);
 }
 
-void ColorWheel::redChanged(const int &red)
-{
-    int g = mCurrentColor.green();
-    int b = mCurrentColor.blue();
-    int a = mCurrentColor.alpha();
-
-    mCurrentColor.setRgb(red, g, b, a);
-
-    if (!isVisible())
-    {
-        return;
-    }
-
-    update();
-    emit colorChanged(mCurrentColor);
-}
-
-void ColorWheel::greenChanged(const int &green)
-{
-    int r = mCurrentColor.red();
-    int b = mCurrentColor.blue();
-    int a = mCurrentColor.alpha();
-
-    mCurrentColor.setRgb(r, green, b, a);
-
-    if (!isVisible())
-    {
-        return;
-    }
-
-    update();
-    emit colorChanged(mCurrentColor);
-}
-
-void ColorWheel::blueChanged(const int &blue)
-{
-    int r = mCurrentColor.red();
-    int g = mCurrentColor.green();
-    int a = mCurrentColor.alpha();
-
-    mCurrentColor.setRgb(r, g, blue, a);
-
-    if (!isVisible())
-    {
-        return;
-    }
-
-    update();
-    emit colorChanged(mCurrentColor);
-}
-
-
 void ColorWheel::hueChanged(const int &hue)
 {
     if (hue < 0 || hue > 359)
@@ -481,17 +392,5 @@ void ColorWheel::valueChanged(const int &value)
     mCurrentColor.setHsv(hue, sat, value, alpha);
 
     update();
-    emit colorChanged(mCurrentColor);
-}
-
-void ColorWheel::alphaChanged(const int &alpha)
-{
-    mCurrentColor.setAlpha(alpha);
-
-    if (!isVisible())
-    {
-        return;
-    }
-
     emit colorChanged(mCurrentColor);
 }
