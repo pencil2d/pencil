@@ -16,17 +16,25 @@ GNU General Public License for more details.
 
 #include <QVBoxLayout>
 #include "colorwheel.h"
-#include "colorinspector.h"
 #include "colorbox.h"
-#include "pencildef.h"
+#include "editor.h"
+#include "colormanager.h"
+
 
 ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
 {
     setWindowTitle(tr("Color Box", "Color Box window title"));
+}
 
+ColorBox::~ColorBox()
+{
+}
+
+void ColorBox::initUI()
+{
     mColorWheel = new ColorWheel(this);
 
-    QVBoxLayout* layout = new QVBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout;
     layout->setContentsMargins(5, 5, 5, 5);
     layout->addWidget(mColorWheel);
     layout->setStretch(0, 1);
@@ -37,19 +45,14 @@ ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
 
     connect(mColorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove);
     connect(mColorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease);
-}
 
-ColorBox::~ColorBox()
-{
-}
-
-void ColorBox::initUI()
-{
+    connect(editor(), &Editor::objectLoaded, this, &ColorBox::updateUI);
 }
 
 void ColorBox::updateUI()
 {
-    mColorLoaded = true;
+    QColor newColor = editor()->color()->frontColor();
+    setColor(newColor);
 }
 
 QColor ColorBox::color()
@@ -57,21 +60,9 @@ QColor ColorBox::color()
     return mColorWheel->color();
 }
 
-/**
- * @brief ColorBox::loadColor
- *
- * This value is only to be used once
- * for further color modifications, use setColor
- */
-void ColorBox::loadColor(const QColor& color)
+void ColorBox::setColor(QColor newColor)
 {
-    mColorLoaded = false;
-    mColorWheel->setColor(color);
-}
-
-void ColorBox::setColor(const QColor& newColor)
-{
-    if (!mColorLoaded) { return; }
+    newColor = newColor.toHsv();
 
     if ( newColor != mColorWheel->color() )
     {

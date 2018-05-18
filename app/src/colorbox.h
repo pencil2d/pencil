@@ -32,8 +32,7 @@ public:
     void updateUI() override;
 
     QColor color();
-    void setColor(const QColor&);
-    void loadColor(const QColor&);
+    void setColor(QColor);
 
 Q_SIGNALS:
     void colorChanged(const QColor&);
@@ -44,7 +43,6 @@ private:
 
     ColorWheel* mColorWheel = nullptr;
 
-    bool mColorLoaded = false;
 //    ColorInspector* mColorInspector = nullptr;
 };
 

@@ -39,50 +39,22 @@ QColor ColorWheel::color()
     return mCurrentColor;
 }
 
-void ColorWheel::changeColor(const QColor& color)
+void ColorWheel::setColor(QColor color)
 {
-    if (color.toHsv() == mCurrentColor)
+    // this is a UI updating function, never emit any signals
+    // and don't call any functions that will emit signals
+
+    color = color.toHsv();
+
+    if (color == mCurrentColor)
     {
         return;
     }
 
-    if (color.spec() == QColor::Spec::Rgb)
-        changeRgbColors(color);
-    else
-        changeHsvColors(color);
-
-    if (color.alpha() != mCurrentColor.alpha())
-    {
-        alphaChanged(color.alpha());
-    }
-    update();
-}
-
-void ColorWheel::setColor(const QColor& color)
-{
-    if (color.toHsv() == mCurrentColor)
-    {
-        return;
-    }
-
-    if (color.spec() == QColor::Spec::Rgb)
-        changeRgbColors(color);
-    else if (color.spec() == QColor::Spec::Hsv)
-        changeHsvColors(color);
-    else {
-        qDebug() << color.spec();
-        Q_ASSERT(false);
-    }
+    mCurrentColor = color;
 
     drawSquareImage(color.hue());
-
-    if (color.alpha() != mCurrentColor.alpha())
-    {
-        alphaChanged(color.alpha());
-    }
-
     update();
-    emit colorSelected(color);
 }
 
 void ColorWheel::changeRgbColors(const QColor& color)
@@ -330,7 +302,7 @@ void ColorWheel::drawSquareImage(const int &hue)
     colorGradient.setColorAt(0, QColor(255,255,255));
 
     // color square should always use full value and saturation
-    colorGradient.setColorAt(1, QColor::fromHsv(color().hsvHue(), 255, 255));
+    colorGradient.setColorAt(1, QColor::fromHsv(hue, 255, 255));
 
     QLinearGradient blackGradient = QLinearGradient(0, 0, 0, square.height());
     blackGradient.setColorAt(0, QColor(0,0,0,0));
@@ -378,14 +350,14 @@ void ColorWheel::drawPicker(const QColor& color)
 {
     QPainter painter(&mWheelPixmap);
     painter.setRenderHint(QPainter::Antialiasing);
-    int ellipseSize = 7;
+    int ellipseSize = 10;
 
     QPoint squareTopLeft = mSquareRegion.boundingRect().topLeft()-QPoint(1,1);
 
-    QSize squareSize = mSquareRegion.boundingRect().size()*1.01;
+    QSize squareSize = mSquareRegion.boundingRect().size() * 1.01;
 
     qreal S = color.hsvSaturationF() * (squareSize.width());
-    qreal V = (squareSize.height() - (color.valueF() * (squareSize.height())));
+    qreal V = (squareSize.height() - (color.valueF() * squareSize.height()));
 
     QPen pen;
     pen.setWidth(1);

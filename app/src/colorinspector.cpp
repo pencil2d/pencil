@@ -96,10 +96,14 @@ void ColorInspector::initUI()
     connect(ui->green_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
     connect(ui->blue_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
     connect(ui->alpha_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
+
+    connect(editor(), &Editor::objectLoaded, this, &ColorInspector::updateUI);
 }
 
 void ColorInspector::updateUI()
 {
+    QColor newColor = editor()->color()->frontColor();
+    setColor(newColor);
 }
 
 void ColorInspector::onSliderChanged(QColor color)
@@ -121,6 +125,9 @@ void ColorInspector::onSliderChanged(QColor color)
 
 void ColorInspector::setColor(QColor newColor)
 {
+    // this is a UI update function, never emit any signals
+    // grab the color from color manager, and then update itself, that's it.
+
     // compare under the same color spec
     newColor = (isRgbColors) ? newColor.toRgb() : newColor.toHsv();
 
