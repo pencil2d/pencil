@@ -82,10 +82,14 @@ public:
     QString copyFileToDataFolder( QString strFilePath );
 
     // Color palette
-    ColourRef getColour( int i ) const;
+    ColourRef getColour( int index ) const;
+    void useAsTempPaletteColor(QColor color) { mFrontColor = ColourRef(color, "Front Color"); }
     void setColour(int index, QColor newColour);
+    void setColourRef(int index, ColourRef newColourRef);
     void addColour( QColor );
+
     void addColour( ColourRef newColour ) { mPalette.append( newColour ); }
+    void addColourAtIndex(int index, ColourRef newColour);
     bool removeColour( int index );
     void renameColour( int i, QString text );
     int getColourCount() { return mPalette.size(); }
@@ -149,6 +153,8 @@ private:
     bool modified = false;
 
     QList<ColourRef> mPalette;
+
+    ColourRef mFrontColor;
 
     std::unique_ptr<ObjectData> mData;
 };

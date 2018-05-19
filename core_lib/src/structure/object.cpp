@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QTextStream>
 #include <QProgressDialog>
 #include <QApplication>
+#include <QMessageBox>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -272,12 +273,14 @@ void Object::deleteLayer(Layer* layer)
     }
 }
 
-ColourRef Object::getColour(int i) const
+ColourRef Object::getColour(int index) const
 {
     ColourRef result(Qt::white, "error");
-    if (i > -1 && i < mPalette.size())
+    if (index > -1 && index < mPalette.size())
     {
-        result = mPalette.at(i);
+        result = mPalette.at(index);
+    } else {
+        return mFrontColor;
     }
     return result;
 }
@@ -285,12 +288,32 @@ ColourRef Object::getColour(int i) const
 void Object::setColour(int index, QColor newColour)
 {
     Q_ASSERT(index >= 0);
+
+    // To allow a clean color palette, we return if it's empty
+    if (mPalette.isEmpty())
+    {
+        return;
+    }
     mPalette[index].colour = newColour;
+}
+
+void Object::setColourRef(int index, ColourRef newColourRef)
+{
+    if (mPalette.isEmpty())
+    {
+        return;
+    }
+    mPalette[index] = newColourRef;
 }
 
 void Object::addColour(QColor colour)
 {
     addColour(ColourRef(colour, "Colour " + QString::number(mPalette.size())));
+}
+
+void Object::addColourAtIndex(int index, ColourRef newColour)
+{
+    mPalette.insert(index, newColour);
 }
 
 bool Object::removeColour(int index)
@@ -301,19 +324,13 @@ bool Object::removeColour(int index)
         if (layer->type() == Layer::VECTOR)
         {
             LayerVector* layerVector = (LayerVector*)layer;
-            if (layerVector->usesColour(index)) return false;
-        }
-    }
-    for (int i = 0; i < getLayerCount(); i++)
-    {
-        Layer* layer = getLayer(i);
-        if (layer->type() == Layer::VECTOR)
-        {
-            LayerVector* layerVector = (LayerVector*)layer;
+
             layerVector->removeColour(index);
         }
     }
+
     mPalette.removeAt(index);
+
     return true;
     // update the vector pictures using that colour !
 }
@@ -419,7 +436,7 @@ void Object::loadDefaultPalette()
     addColour(ColourRef(QColor(255, 214, 156), QString(tr("Skin"))));
     addColour(ColourRef(QColor(207, 174, 127), QString(tr("Skin - shade"))));
     addColour(ColourRef(QColor(255, 198, 116), QString(tr("Dark Skin"))));
-    addColour(ColourRef(QColor(227, 177, 105), QString(tr("Dark Skin - shade"))));
+    addColour(ColourRef(QColor(227, 177, 105), QString(tr("Dark Skin - shade")) ));
 }
 
 void Object::paintImage(QPainter& painter, int frameNumber,

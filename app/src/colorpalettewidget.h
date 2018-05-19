@@ -53,15 +53,16 @@ public:
     void setColor(QColor, int);
     void refreshColorList();
 
+    void showContextMenu(const QPoint&);
+
 signals:
     void colorChanged(QColor);
     void colorNumberChanged(int);
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-    void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
     void onActiveColorNameChange(QString name);
@@ -74,6 +75,10 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
+    QList<QListWidgetItem*> selectedItems() const;
+    void addItem();
+    void replaceItem();
+    void removeItem();
 
 private:
     void updateItemColor(int, QColor);

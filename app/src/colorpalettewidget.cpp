@@ -17,8 +17,10 @@ GNU General Public License for more details.
 #include "colorpalettewidget.h"
 #include "ui_colorpalette.h"
 
-#include <cmath>
+// Standard libraries
+#include "cmath"
 
+// Qt
 #include <QDebug>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -26,7 +28,9 @@ GNU General Public License for more details.
 #include <QColorDialog>
 #include <QToolBar>
 #include <QSettings>
+#include <QMenu>
 
+// Project
 #include "colordictionary.h"
 #include "colourref.h"
 #include "object.h"
@@ -50,15 +54,12 @@ ColorPaletteWidget::~ColorPaletteWidget()
 
 void ColorPaletteWidget::initUI()
 {
-    // "Remove color" feature is disabled because
-    // vector strokes that are linked to palette
-    // colors don't handle color removal from palette
-    ui->removeColorButton->hide();
-
     QSettings settings(PENCIL2D, PENCIL2D);
     int colorGridSize = settings.value("PreferredColorGridSize", 34).toInt();
 
     mIconSize = QSize(colorGridSize, colorGridSize);
+
+    ui->colorListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
     QString sViewMode = settings.value("ColorPaletteViewMode", "ListMode").toString();
     if (sViewMode == "ListMode")
@@ -71,13 +72,19 @@ void ColorPaletteWidget::initUI()
                              "QPushButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
                              "QPushButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
 
+
+    // color number need to be set to add new color to palette
+    // in cases where the last color was saved
+    // otherwise first color will be black.
+    editor()->color()->setColorNumber(0);
+    editor()->color()->setColor(editor()->color()->frontColor());
+
     ui->addColorButton->setStyleSheet(buttonStylesheet);
     ui->removeColorButton->setStyleSheet(buttonStylesheet);
     ui->colorDialogButton->setStyleSheet(buttonStylesheet);
 
     palettePreferences();
 
-    connect(ui->colorListWidget, &QListWidget::currentItemChanged, this, &ColorPaletteWidget::colorListCurrentItemChanged);
     connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
     connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
     connect(ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange);
@@ -85,12 +92,63 @@ void ColorPaletteWidget::initUI()
     connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
     connect(ui->colorDialogButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickColorDialogButton);
     connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
+    connect(ui->colorListWidget, &QListWidget::itemSelectionChanged, this, &ColorPaletteWidget::selectedItems);
+    connect(ui->colorListWidget, &QListWidget::customContextMenuRequested, this, &ColorPaletteWidget::showContextMenu);
 }
 
 void ColorPaletteWidget::updateUI()
 {
     refreshColorList();
     updateGridUI();
+}
+
+void ColorPaletteWidget::showContextMenu(const QPoint &pos)
+{
+    QPoint globalPos = ui->colorListWidget->mapToGlobal(pos);
+
+    QMenu* menu = new QMenu();
+    menu->addAction(tr("Add"), this, &ColorPaletteWidget::addItem, 0);
+    menu->addAction(tr("Replace"),  this, &ColorPaletteWidget::replaceItem, 0);
+    menu->addAction(tr("Remove"), this, &ColorPaletteWidget::removeItem, 0);
+
+    menu->exec(globalPos);
+}
+
+void ColorPaletteWidget::addItem()
+{
+    QSignalBlocker b(ui->colorListWidget);
+    QColor newColour = editor()->color()->frontColor();
+
+    // add in front of selected color
+    int colorIndex = ui->colorListWidget->currentRow()+1;
+
+    ColourRef ref(newColour);
+    ref.name = getDefaultColorName(newColour);
+
+    editor()->object()->addColourAtIndex(colorIndex, ref);
+    refreshColorList();
+}
+
+void ColorPaletteWidget::replaceItem()
+{
+    QSignalBlocker b(ui->colorListWidget);
+    int index = ui->colorListWidget->currentRow();
+
+    QColor newColour = editor()->color()->frontColor();
+
+    if (index > 0)
+    {
+        updateItemColor(index, newColour);
+        emit colorChanged(newColour);
+        ui->colorListWidget->setCurrentRow(index);
+    }
+
+}
+
+void ColorPaletteWidget::removeItem()
+{
+    QSignalBlocker b(ui->colorListWidget);
+    clickRemoveColorButton();
 }
 
 void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
@@ -100,11 +158,14 @@ void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
 
     if (colorIndex > 0)
     {
-        updateItemColor(colorIndex, newColor);
         emit colorChanged(newColor);
     }
 }
 
+QList<QListWidgetItem*> ColorPaletteWidget::selectedItems() const
+{
+    return ui->colorListWidget->selectedItems();
+}
 
 void ColorPaletteWidget::selectColorNumber(int colorNumber)
 {
@@ -123,7 +184,6 @@ int ColorPaletteWidget::currentColourNumber()
 void ColorPaletteWidget::refreshColorList()
 {
     QSignalBlocker b(ui->colorListWidget);
-
     if (ui->colorListWidget->count() > 0)
     {
         ui->colorListWidget->clear();
@@ -135,7 +195,9 @@ void ColorPaletteWidget::refreshColorList()
     swatchPainter.end();
     QPixmap colourSwatch;
 
-    for (int i = 0; i < editor()->object()->getColourCount(); i++)
+    int colourCount = editor()->object()->getColourCount();
+
+    for (int i = 0; i < colourCount; i++)
     {
         const ColourRef colourRef = editor()->object()->getColour(i);
         QListWidgetItem* colourItem = new QListWidgetItem(ui->colorListWidget);
@@ -193,17 +255,14 @@ void ColorPaletteWidget::onActiveColorNameChange(QString name)
     }
 }
 
-void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
-{
-    if (!current)
-    {
-        current = previous;
-    }
-    emit colorNumberChanged(ui->colorListWidget->row(current));
-}
-
 void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
 {
+    auto modifiers = qApp->keyboardModifiers();
+
+    // to avoid conflicts with multiple selections
+    // ie. will be seen as selected twice and cause problems
+    if (modifiers & Qt::ShiftModifier || modifiers & Qt::ControlModifier) { return; }
+
     int colorIndex = ui->colorListWidget->row(currentItem);
 
     emit colorNumberChanged(colorIndex);
@@ -417,15 +476,8 @@ void ColorPaletteWidget::clickAddColorButton()
 {
     QColor prevColor = Qt::white;
 
-    if (editor()->object()->getLayer(editor()->currentLayerIndex())->type() == Layer::VECTOR)
-    {
-        if (currentColourNumber() > -1)
-        {
-             prevColor = editor()->object()->getColour(currentColourNumber()).colour;
-        }
-    }
-
     QColor newColour;
+
     if (mIsColorDialog) {
         newColour = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
     } else {
@@ -438,13 +490,12 @@ void ColorPaletteWidget::clickAddColorButton()
         return;
     }
 
+    int colorIndex = editor()->object()->getColourCount();
     ColourRef ref(newColour);
     ref.name = getDefaultColorName(newColour);
 
     editor()->object()->addColour(ref);
     refreshColorList();
-
-    int colorIndex = editor()->object()->getColourCount() - 1;
 
     editor()->color()->setColorNumber(colorIndex);
     editor()->color()->setColor(ref.colour);
@@ -452,10 +503,17 @@ void ColorPaletteWidget::clickAddColorButton()
 
 void ColorPaletteWidget::clickRemoveColorButton()
 {
-    int colorNumber = ui->colorListWidget->currentRow();
-    editor()->object()->removeColour(colorNumber);
+    for (auto item : selectedItems())
+    {
+        int index = ui->colorListWidget->row(item);
 
-    refreshColorList();
+        // items are not deleted by qt, has to be done manually
+        // delete should happen before removing the color from from palette
+        // as the palette will be one ahead and crash otherwise
+        delete item;
+
+        editor()->object()->removeColour(index);
+    }
 }
 
 void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
@@ -464,6 +522,7 @@ void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
     QPainter swatchPainter(&colourSwatch);
     swatchPainter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
     swatchPainter.fillRect(0, 0, mIconSize.width(), mIconSize.height(), newColor);
+
     ui->colorListWidget->item(itemIndex)->setIcon(colourSwatch);
 
     // Make sure to update grid in grid mode

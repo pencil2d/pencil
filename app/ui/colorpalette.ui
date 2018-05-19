@@ -228,6 +228,9 @@
         <property name="autoScrollMargin">
          <number>16</number>
         </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
         <property name="resizeMode">
          <enum>QListView::Fixed</enum>
         </property>
@@ -312,24 +315,7 @@
  <resources>
   <include location="../data/app.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>removeColorButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ColorPalette</receiver>
-   <slot>clickRemoveColorButton()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>36</x>
-     <y>43</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>133</x>
-     <y>128</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>colorListCurrentItemChanged(QListWidgetItem*,QListWidgetItem*)</slot>
   <slot>clickColorListItem(QListWidgetItem*)</slot>

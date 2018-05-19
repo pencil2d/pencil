@@ -62,7 +62,15 @@ QColor ColorManager::frontColor()
 {
 
     if (mIsWorkingOnVectorLayer)
-        return object()->getColour(mCurrentColorIndex).colour;
+        if (object()->getColourCount() == 0)
+        {
+            object()->useAsTempPaletteColor(mCurrentFrontColor);
+            return mCurrentFrontColor;
+        }
+        else
+        {
+            return object()->getColour(mCurrentColorIndex).colour;
+        }
     else
         return mCurrentFrontColor;
 }
