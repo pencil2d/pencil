@@ -141,6 +141,7 @@ enum StabilizationLevel
 #define CMD_TOGGLE_TOOLBOX "CmdToggleToolBox"
 #define CMD_TOGGLE_TOOL_OPTIONS "CmdToggleToolOptions"
 #define CMD_TOGGLE_COLOR_WHEEL "CmdToggleColorWheel"
+#define CMD_TOGGLE_COLOR_INSPECTOR "CmdToggleColorInspector"
 #define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
 #define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"

@@ -337,7 +337,8 @@ void MainWindow2::createMenus()
         mColorBox->toggleViewAction(),
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
-        mDisplayOptionWidget->toggleViewAction()
+        mDisplayOptionWidget->toggleViewAction(),
+        mColorInspector->toggleViewAction()
     };
 
     for (QAction* action : actions)
@@ -801,6 +802,7 @@ void MainWindow2::lockWidgets(bool shouldLock)
     QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
 
     mColorBox->setFeatures(feat);
+    mColorInspector->setFeatures(feat);
     mColorPalette->setFeatures(feat);
     mDisplayOptionWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
@@ -971,6 +973,7 @@ void MainWindow2::setupKeyboardShortcuts()
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
     mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
+    mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
