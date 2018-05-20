@@ -510,9 +510,11 @@ void ColorPaletteWidget::clickRemoveColorButton()
         // items are not deleted by qt, has to be done manually
         // delete should happen before removing the color from from palette
         // as the palette will be one ahead and crash otherwise
-        delete item;
-
-        editor()->object()->removeColour(index);
+        if (editor()->object()->shouldDeleteColor(index)) {
+            delete item;
+            editor()->object()->removeColour(index);
+            editor()->updateCurrentFrame();
+        }
     }
 }
 
