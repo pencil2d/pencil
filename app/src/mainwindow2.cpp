@@ -762,6 +762,11 @@ void MainWindow2::importImageSequence()
                 failedImport = true;
             }
         }
+
+        for (int i = 1; i < number; i++)
+        {
+            mEditor->scrubForward();
+        }
     }
 
     if (failedImport)
@@ -771,11 +776,6 @@ void MainWindow2::importImageSequence()
                              tr("was unable to import") + failedFiles,
                              QMessageBox::Ok,
                              QMessageBox::Ok);
-    }
-
-    for (int i = 1; i < number; i++)
-    {
-        mEditor->scrubForward();
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
