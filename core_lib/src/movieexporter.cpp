@@ -246,9 +246,9 @@ Status MovieExporter::assembleAudio(const Object* obj,
                                     std::function<void(float)> progress)
 {
     // Quicktime assemble call
-    int startFrame = mDesc.startFrame;
-    int endFrame = mDesc.endFrame;
-    int fps = mDesc.fps;
+    const int startFrame = mDesc.startFrame;
+    const int endFrame = mDesc.endFrame;
+    const int fps = mDesc.fps;
 
     Q_ASSERT(startFrame >= 0);
     Q_ASSERT(endFrame >= startFrame);
@@ -411,8 +411,6 @@ Status MovieExporter::generateMovie(
     }
     imageToExportBase.fill(bgColor);
 
-    QTransform view = cameraLayer->getViewAtFrame(currentFrame);
-
     QSize camSize = cameraLayer->getViewSize();
     QTransform centralizeCamera;
     centralizeCamera.translate(camSize.width() / 2, camSize.height() / 2);
@@ -479,10 +477,12 @@ Status MovieExporter::generateMovie(
             QImage imageToExport = imageToExportBase.copy();
             QPainter painter(&imageToExport);
 
+            QTransform view = cameraLayer->getViewAtFrame(currentFrame);
             painter.setWorldTransform(view * centralizeCamera);
             painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
 
             obj->paintImage(painter, currentFrame, false, true);
+            painter.end();
 
             // Should use sizeInBytes instead of byteCount to support large images,
             // but this is only supported in QT 5.10+
