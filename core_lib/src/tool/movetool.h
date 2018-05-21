@@ -44,7 +44,11 @@ private:
     void applyChanges();
     void resetSelectionProperties();
     void paintTransformedSelection();
-    void whichTransformationPoint();
+
+    /// @brief Selects which corner-point of the selection to move, if
+    /// one is range of the last click.
+    /// @return true if a corner point was selected, false otherwise.
+    bool whichTransformationPoint();
     void transformSelection(qreal offsetX, qreal offsetY);
     void pressOperation(QMouseEvent* event, Layer *layer);
     void actionOnVector(QMouseEvent *event, Layer *layer);

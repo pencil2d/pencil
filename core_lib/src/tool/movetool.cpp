@@ -167,10 +167,12 @@ void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
 
         if (mScribbleArea->somethingSelected) // there is an area selection
         {
-            if (event->modifiers() != Qt::ShiftModifier && !selectionRect.contains(getCurrentPoint()))
-                mScribbleArea->deselectAll();
+            // Below will return true if a corner point was in range of the click.
+            bool cornerPointInRange = whichTransformationPoint();
 
-            whichTransformationPoint();
+            if (event->modifiers() != Qt::ShiftModifier && !selectionRect.contains(getCurrentPoint())
+                && !cornerPointInRange)
+                mScribbleArea->deselectAll();
 
             // calculate new transformation in case click only
             mScribbleArea->calculateSelectionTransformation();
@@ -243,81 +245,97 @@ void MoveTool::actionOnVector(QMouseEvent* event, Layer* layer)
     }
 }
 
-void MoveTool::whichTransformationPoint()
+bool MoveTool::whichTransformationPoint()
 {
     QRectF transformPoint = mScribbleArea->myTransformedSelection;
 
-    if (QLineF(getLastPoint(), transformPoint.topLeft()).length() < 10)
+    // Give the user a margin to select a corner point.
+    bool cornerInRange = false;
+    const double marginInPixels = 12;
+    const double scale = mEditor->view()->getView().inverted().m11();
+    const double scaledMargin = fabs(marginInPixels * scale);
+
+    if (QLineF(getLastPoint(), transformPoint.topLeft()).length() < scaledMargin)
     {
         mScribbleArea->setMoveMode(ScribbleArea::TOPLEFT);
         anchorOriginPoint = mScribbleArea->mySelection.bottomRight();
+        cornerInRange = true;
     }
-    if (QLineF(getLastPoint(), transformPoint.topRight()).length() < 10)
+    if (QLineF(getLastPoint(), transformPoint.topRight()).length() < scaledMargin)
     {
         mScribbleArea->setMoveMode(ScribbleArea::TOPRIGHT);
         anchorOriginPoint = mScribbleArea->mySelection.bottomLeft();
+        cornerInRange = true;
     }
-    if (QLineF(getLastPoint(), transformPoint.bottomLeft()).length() < 10)
+    if (QLineF(getLastPoint(), transformPoint.bottomLeft()).length() < scaledMargin)
     {
         mScribbleArea->setMoveMode(ScribbleArea::BOTTOMLEFT);
         anchorOriginPoint = mScribbleArea->mySelection.topRight();
+        cornerInRange = true;
     }
-    if (QLineF(getLastPoint(), transformPoint.bottomRight()).length() < 10)
+    if (QLineF(getLastPoint(), transformPoint.bottomRight()).length() < scaledMargin)
     {
         mScribbleArea->setMoveMode(ScribbleArea::BOTTOMRIGHT);
         anchorOriginPoint = mScribbleArea->mySelection.topLeft();
+        cornerInRange = true;
     }
+    return cornerInRange;
 }
 
 void MoveTool::transformSelection(qreal offsetX, qreal offsetY)
 {
+    QRectF& transformedSelection =  mScribbleArea->myTransformedSelection;
     switch (mScribbleArea->mMoveMode)
     {
     case ScribbleArea::MIDDLE:
         if (QLineF(getLastPressPixel(), getCurrentPixel()).length() > 4)
         {
             mScribbleArea->myTempTransformedSelection =
-                mScribbleArea->myTransformedSelection.translated(QPointF(offsetX, offsetY));
+                transformedSelection.translated(QPointF(offsetX, offsetY));
         }
         break;
 
     case ScribbleArea::TOPRIGHT:
     {
         mScribbleArea->myTempTransformedSelection =
-            mScribbleArea->myTransformedSelection.adjusted(0, offsetY, offsetX, 0);
+            transformedSelection.adjusted(0, offsetY, offsetX, 0);
 
-        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
+        mScribbleArea->manageSelectionOrigin(QPointF(transformedSelection.topRight().x()+offsetX,
+                                                     transformedSelection.topRight().y()+offsetY), anchorOriginPoint);
         break;
     }
     case ScribbleArea::TOPLEFT:
     {
         mScribbleArea->myTempTransformedSelection =
-            mScribbleArea->myTransformedSelection.adjusted(offsetX, offsetY, 0, 0);
+            transformedSelection.adjusted(offsetX, offsetY, 0, 0);
 
-        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
+        mScribbleArea->manageSelectionOrigin(QPointF(transformedSelection.x()+offsetX,
+                                                     transformedSelection.y()+offsetY), anchorOriginPoint);
         break;
     }
     case ScribbleArea::BOTTOMLEFT:
     {
         mScribbleArea->myTempTransformedSelection =
-            mScribbleArea->myTransformedSelection.adjusted(offsetX, 0, 0, offsetY);
+            transformedSelection.adjusted(offsetX, 0, 0, offsetY);
 
-        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
+        mScribbleArea->manageSelectionOrigin(QPointF(transformedSelection.bottomLeft().x()+offsetX,
+                                                     transformedSelection.bottomLeft().y()+offsetY), anchorOriginPoint);
         break;
     }
     case ScribbleArea::BOTTOMRIGHT:
     {
         mScribbleArea->myTempTransformedSelection =
-            mScribbleArea->myTransformedSelection.adjusted(0, 0, offsetX, offsetY);
+            transformedSelection.adjusted(0, 0, offsetX, offsetY);
 
-        mScribbleArea->manageSelectionOrigin(getCurrentPoint(), anchorOriginPoint);
+        mScribbleArea->manageSelectionOrigin(QPointF(transformedSelection.bottomRight().x()+offsetX,
+                                                     transformedSelection.bottomRight().y()+offsetY), anchorOriginPoint);
         break;
 
     }
     case ScribbleArea::ROTATION:
     {
         mScribbleArea->myTempTransformedSelection =
-            mScribbleArea->myTransformedSelection; // @ necessary?
+            transformedSelection; // @ necessary?
         mScribbleArea->myRotatedAngle = getCurrentPixel().x() - getLastPressPixel().x();
         break;
     }
