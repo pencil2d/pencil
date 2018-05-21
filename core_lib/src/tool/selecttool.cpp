@@ -52,10 +52,8 @@ void SelectTool::mousePressEvent(QMouseEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (!mScribbleArea->somethingSelected)
-        {
-            anchorOriginPoint = getLastPoint();  // Store original click position for help with selection rectangle.
-        }
+
+        anchorOriginPoint = getLastPoint();  // Store original click position for help with selection rectangle.
 
         if (layer->isPaintable())
         {
