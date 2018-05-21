@@ -495,11 +495,14 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile(QString filename)
 {
-    bool ok = openObject(filename);
-    if (!ok)
+    if (maybeSave())
     {
-        QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
-        newDocument();
+        bool ok = openObject(filename);
+        if (!ok)
+        {
+            QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
+            newDocument();
+        }
     }
 }
 
