@@ -79,8 +79,9 @@ void ColorPaletteWidget::initUI()
 
     connect(ui->colorListWidget, &QListWidget::currentItemChanged, this, &ColorPaletteWidget::colorListCurrentItemChanged);
     connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
+
     connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
-    connect(ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange);
+    connect(ui->colorListWidget, &QListWidget::itemChanged, this, &ColorPaletteWidget::onItemChanged);
 
     connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
     connect(ui->colorDialogButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickColorDialogButton);
@@ -185,12 +186,11 @@ void ColorPaletteWidget::changeColourName(QListWidgetItem* item)
     }
 }
 
-void ColorPaletteWidget::onActiveColorNameChange(QString name)
+void ColorPaletteWidget::onItemChanged(QListWidgetItem* item)
 {
-    if (!name.isNull())
-    {
-        editor()->object()->renameColour(ui->colorListWidget->currentRow(), name);
-    }
+    int index = ui->colorListWidget->currentRow();
+    QString newColorName = item->text();
+    editor()->object()->renameColour(index, newColorName);
 }
 
 void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)

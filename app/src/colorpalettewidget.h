@@ -64,7 +64,7 @@ private slots:
     void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
-    void onActiveColorNameChange(QString name);
+    void onItemChanged(QListWidgetItem* item);
     void clickAddColorButton();
     void clickColorDialogButton();
     void clickRemoveColorButton();
