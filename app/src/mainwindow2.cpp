@@ -601,7 +601,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
         if (eLog.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             QTextStream out(&eLog);
-            out << st.details().replace("<br>", "\n", Qt::CaseInsensitive);
+            out << st.details().str(); // .replace("<br>", "\n", Qt::CaseInsensitive);
         }
         eLog.close();
 
@@ -609,7 +609,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
                                 st.description().append(tr("<br><br>An error has occurred and your file may not have saved successfully."
                                                            "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
                                                            "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
-                                                           "Please be sure to include the following details in your issue:")), st.details());
+                                                           "Please be sure to include the following details in your issue:")), st.details().html());
         errorDialog.exec();
         return false;
     }

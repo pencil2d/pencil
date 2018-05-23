@@ -177,13 +177,14 @@ bool FileManager::isOldForamt(const QString& fileName)
 
 Status FileManager::save(Object* object, QString strFileName)
 {
-    QStringList debugDetails;
+    DebugDetails debugDetails;
     debugDetails << "FileManager::save";
-    debugDetails << QString("strFileName = ").append(strFileName);
+    debugDetails << ("strFileName = " + strFileName);
 
     if (object == nullptr)
     {
-        return Status(Status::INVALID_ARGUMENT, debugDetails << "object parameter is null");
+        debugDetails << "object parameter is null";
+        return Status(Status::INVALID_ARGUMENT, debugDetails);
     }
 
     int totalCount = object->totalKeyFrameCount();
@@ -281,12 +282,8 @@ Status FileManager::save(Object* object, QString strFileName)
         if (!st.ok())
         {
             saveLayerOK = false;
-            QStringList layerDetails = st.detailsList();
-            for (QString& detail : layerDetails)
-            {
-                detail.prepend("&nbsp;&nbsp;");
-            }
-            debugDetails << QString("- Layer[%1] failed to save").arg(i) << layerDetails;
+            debugDetails.collect(st.details());
+            debugDetails << QString("- Layer[%1] failed to save").arg(i);
         }
     }
 
@@ -333,7 +330,7 @@ Status FileManager::save(Object* object, QString strFileName)
         if (!ok)
         {
             return Status(Status::ERROR_MINIZ_FAIL, debugDetails, 
-                          tr("Internal Error"),
+                          tr("MiniZ Error"),
                           tr("An internal error occurred. Your file may not be saved successfully."));
         }
         qCDebug(mLog) << "Compressed. File saved.";

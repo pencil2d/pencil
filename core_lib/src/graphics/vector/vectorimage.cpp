@@ -88,7 +88,7 @@ bool VectorImage::read(QString filePath)
  */
 Status VectorImage::write(QString filePath, QString format)
 {
-    QStringList debugInfo;
+    DebugDetails debugInfo;
     debugInfo << "VectorImage::write";
     debugInfo << QString("filePath = ").append(filePath);
     debugInfo << QString("format = ").append(format);
@@ -98,13 +98,14 @@ Status VectorImage::write(QString filePath, QString format)
     if (!result)
     {
         qDebug() << "VectorImage - Cannot write file" << filePath << file.error();
-        return Status(Status::FAIL, debugInfo << QString("file.error() = ").append(file.errorString()));
+        debugInfo << ("file.error() = " + file.errorString());
+        return Status(Status::FAIL, debugInfo);
     }
 
     if (format != "VEC")
     {
-        qDebug() << "--- Not the VEC format!";
-        return Status(Status::FAIL, debugInfo << "Unrecognized format");
+        debugInfo << "Unrecognized format";
+        return Status(Status::FAIL, debugInfo);
     }
 
     QXmlStreamWriter xmlStream(&file);
@@ -114,11 +115,13 @@ Status VectorImage::write(QString filePath, QString format)
 
     xmlStream.writeStartElement("image");
     xmlStream.writeAttribute("type", "vector");
+
     Status st = createDomElement(xmlStream);
     if (!st.ok())
     {
-        const QString xmlDetails = st.detailsList().join("&nbsp;&nbsp;");
-        return Status(Status::FAIL, debugInfo << "- xml creation failed" << xmlDetails);
+        debugInfo.collect(st.details());
+        debugInfo << "- xml creation failed";
+        return Status(Status::FAIL, debugInfo);
     }
     xmlStream.writeEndElement(); // Close image element
     xmlStream.writeEndDocument();
@@ -134,14 +137,17 @@ Status VectorImage::write(QString filePath, QString format)
  */
 Status VectorImage::createDomElement(QXmlStreamWriter& xmlStream)
 {
-    QStringList debugInfo = QStringList() << "VectorImage::createDomElement";
+    DebugDetails debugInfo;
+    debugInfo << "VectorImage::createDomElement";
+
     for (int i = 0; i < mCurves.size(); i++)
     {
         Status st = mCurves[i].createDomElement(xmlStream);
         if (!st.ok())
         {
-            const QString curveDetails = st.detailsList().join("&nbsp;&nbsp;");
-            return Status(Status::FAIL, debugInfo << QString("- m_curves[%1] failed to write").arg(i) << curveDetails);
+            debugInfo.collect(st.details());
+            debugInfo << QString("- m_curves[%1] failed to write").arg(i);
+            return Status(Status::FAIL, debugInfo);
         }
     }
     for (int i = 0; i < mArea.size(); i++)
@@ -149,8 +155,9 @@ Status VectorImage::createDomElement(QXmlStreamWriter& xmlStream)
         Status st = mArea[i].createDomElement(xmlStream);
         if (!st.ok())
         {
-            const QString areaDetails = st.detailsList().join("&nbsp;&nbsp;");
-            return Status(Status::FAIL, debugInfo << QString("- area[%1] failed to write").arg(i) << areaDetails);
+            debugInfo.collect(st.details());
+            debugInfo << QString("- area[%1] failed to write").arg(i);
+            return Status(Status::FAIL, debugInfo);
         }
     }
     return Status::OK;

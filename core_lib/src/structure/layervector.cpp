@@ -80,18 +80,14 @@ Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
     Status st = vecImage->write(strFilePath, "VEC");
     if (!st.ok())
     {
-        QStringList debugInfo;
+        DebugDetails debugInfo;
         debugInfo << "LayerVector::saveKeyFrame";
         debugInfo << QString("pKeyFrame.pos() = %1").arg(keyFrame->pos());
         debugInfo << QString("path = ").append(path);
         debugInfo << QString("strFilePath = ").append(strFilePath);
 
-        QStringList vecImageDetails = st.detailsList();
-        for (QString detail : vecImageDetails)
-        {
-            detail.prepend("&nbsp;&nbsp;");
-        }
-        debugInfo << QString("- VectorImage failed to write") << vecImageDetails;
+        debugInfo.collect(st.details());
+        debugInfo << "- VectorImage failed to write";
         return Status(Status::FAIL, debugInfo);
     }
 
