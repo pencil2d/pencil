@@ -537,14 +537,18 @@ void BitmapImage::clear(QRect rectangle)
  *  @param[in] newColor The first color to compare
  *  @param[in] oldColor The second color to compare
  *  @param[in] tolerance The threshold limit between a matching and non-matching color
+ *  @param[in,out] cache Contains a mapping of previous results of compareColor with rule that
+ *                 cache[someColor] = compareColor(someColor, oldColor, tolerance)
  *
  *  @return Returns true if the colors have a similarity below the tolerance level
  *          (i.e. if Eulcidian distance squared is <= tolerance)
  */
-bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance)
+bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache)
 {
     // Handle trivial case
     if (newColor == oldColor) return true;
+
+    if(cache && cache->contains(newColor)) return cache->value(newColor);
 
     // Get Eulcidian distance between colors
     // Not an accurate representation of human perception,
@@ -557,6 +561,12 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance)
     int diffAlpha = qPow(qAlpha(oldColor) - qAlpha(newColor), 2);
 
     bool isSimilar = (diffRed + diffGreen + diffBlue + diffAlpha) <= tolerance;
+
+    if(cache)
+    {
+        Q_ASSERT(cache->contains(isSimilar) ? isSimilar == (*cache)[newColor] : true);
+        (*cache)[newColor] = isSimilar;
+    }
 
     return isSimilar;
 }
@@ -587,6 +597,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
     BitmapImage* replaceImage = nullptr;
     QPoint tempPoint;
     QRgb newPlacedColor = 0;
+    QScopedPointer< QHash<QRgb, bool> > cache(new QHash<QRgb, bool>());
 
     int xTemp = 0;
     bool spanLeft = false;
@@ -610,12 +621,12 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
 
         newPlacedColor = replaceImage->constScanLine(xTemp, point.y());
         while (xTemp >= targetImage->topLeft().x() &&
-               compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance)) xTemp--;
+               compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data())) xTemp--;
         xTemp++;
 
         spanLeft = spanRight = false;
         while (xTemp <= targetImage->right() &&
-               compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance) &&
+               compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data()) &&
                newPlacedColor != newColor)
         {
 
@@ -623,23 +634,23 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
             replaceImage->scanLine(xTemp, point.y(), newColor);
 
             if (!spanLeft && (point.y() > targetImage->top()) &&
-                compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance)) {
+                compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
                 queue.append(QPoint(xTemp, point.y() - 1));
                 spanLeft = true;
             }
             else if (spanLeft && (point.y() > targetImage->top()) &&
-                     !compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance)) {
+                     !compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
                 spanLeft = false;
             }
 
             if (!spanRight && point.y() < targetImage->bottom() &&
-                compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance)) {
+                compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance, cache.data())) {
                 queue.append(QPoint(xTemp, point.y() + 1));
                 spanRight = true;
 
             }
             else if (spanRight && point.y() < targetImage->bottom() &&
-                     !compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance)) {
+                     !compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance, cache.data())) {
                 spanRight = false;
             }
 
