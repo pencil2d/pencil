@@ -517,16 +517,28 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     Layer* layer = mEditor->layers()->currentLayer();
     Q_ASSUME(layer != nullptr);
 
+    bool keyExists = layer->keyExists(mEditor->currentFrame());
+    int keyFrameIndex = mEditor->currentFrame();
+
+    // usually we look the previous frame but if there's no previous frame to look for
+    // bad stuff happens, therefore look for next index
+    // we know that one has to exist.
+    if (!keyExists)
+        keyFrameIndex = mEditor->layers()->currentLayer()->getNextFrameNumber(mEditor->currentFrame(), true);
+
     if (layer->type() == Layer::VECTOR)
     {
         auto pLayerVector = static_cast<LayerVector*>(layer);
-        VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(keyFrameIndex, 0);
+
         Q_CHECK_PTR(vectorImage);
     }
     else if (layer->type() == Layer::BITMAP)
     {
         auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
-        BitmapImage* bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+
+        BitmapImage* bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(keyFrameIndex, 0);
+
         Q_CHECK_PTR(bitmapImage);
     }
 
