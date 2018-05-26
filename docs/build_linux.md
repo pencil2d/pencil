@@ -107,4 +107,4 @@ You can then open Pencil2D by running this from the source directory:
 
 ## Next steps
 
-Now that you can build Pencil2D, the next step is to learn about [navigating the source code](dive-into-code.md).
+Now that you can build Pencil2D, the next step is to learn about [navigating the source code](docs/dive-into-code.md).
