@@ -99,7 +99,7 @@ private slots:
     void resetAndDockAllSubWidgets();
 
 private:
-    bool openObject(QString strFilename);
+    bool openObject(QString strFilename, bool checkForChanges);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();
