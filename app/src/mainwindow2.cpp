@@ -431,9 +431,9 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
     event->ignore();
 }
 
-void MainWindow2::newDocument()
+void MainWindow2::newDocument(bool force)
 {
-    if (maybeSave())
+    if (force || maybeSave())
     {
         Object* object = new Object();
         object->init();
@@ -471,7 +471,7 @@ void MainWindow2::openDocument()
         if (!ok)
         {
             QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
-            newDocument();
+            newDocument(true);
         }
     }
     updateSaveState();
@@ -501,7 +501,7 @@ void MainWindow2::openFile(QString filename)
         if (!ok)
         {
             QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
-            newDocument();
+            newDocument(true);
         }
     }
 }
