@@ -28,6 +28,10 @@ GNU General Public License for more details.
 #define PENCIL_IMAGE_FILTER \
    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;GIF(*.gif)" )
 
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
+#define S__GIT_COMMIT_HASH TOSTRING(GIT_CURRENT_SHA1)
 
 enum ToolType : int
 {

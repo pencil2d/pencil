@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include <QSysInfo>
 #include <QClipboard>
 
+#include "pencildef.h"
+
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AboutDialog)
@@ -37,11 +39,6 @@ AboutDialog::~AboutDialog()
 
 void AboutDialog::init()
 {
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
-#define S__GIT_COMMIT_HASH TOSTRING(GIT_CURRENT_SHA1)
-
 	QStringList devText;
 	devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
 #if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
