@@ -451,11 +451,26 @@ void Object::paintImage(QPainter& painter, int frameNumber,
             if (layer->type() == Layer::BITMAP)
             {
                 LayerBitmap* layerBitmap = (LayerBitmap*)layer;
-                layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0)->paintImage(painter);
+
+                // Make sure there's a key before painting anything
+                // otherwise return
+                if (!layer->keyExists(frameNumber)) {
+                    return;
+                }
+
+                layerBitmap->getLastBitmapImageAtFrame(frameNumber)->paintImage(painter);
+
             }
             // paints the vector images
             if (layer->type() == Layer::VECTOR)
             {
+
+                // Make sure there's a key before painting anything
+                // otherwise return
+                if (!layer->keyExists(frameNumber)) {
+                    return;
+                }
+
                 LayerVector* layerVector = (LayerVector*)layer;
                 layerVector->getLastVectorImageAtFrame(frameNumber, 0)->paintImage(painter,
                                                                                    false,
