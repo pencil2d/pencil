@@ -33,6 +33,6 @@ public:
     QString name;
 };
 
-QDebug operator<<(QDebug debug, const ColourRef &colourRef);
+QDebug& operator<<(QDebug debug, const ColourRef &colourRef);
 
 #endif

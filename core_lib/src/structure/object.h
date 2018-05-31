@@ -90,8 +90,8 @@ public:
 
     void addColour( ColourRef newColour ) { mPalette.append( newColour ); }
     void addColourAtIndex(int index, ColourRef newColour);
-    bool removeColour( int index );
-    bool shouldDeleteColor( int index );
+    void removeColour( int index );
+    bool isColourInUse( int index );
     void renameColour( int i, QString text );
     int getColourCount() { return mPalette.size(); }
     bool importPalette( QString filePath );

@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #include "ui_colorpalette.h"
 
 // Standard libraries
-#include "cmath"
+#include <cmath>
 
 // Qt
 #include <QDebug>
@@ -27,6 +27,8 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QColorDialog>
 #include <QToolBar>
+#include <QMessageBox>
+#include <QPushButton>
 #include <QSettings>
 #include <QMenu>
 
@@ -72,13 +74,6 @@ void ColorPaletteWidget::initUI()
                              "QPushButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
                              "QPushButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
 
-
-    // color number need to be set to add new color to palette
-    // in cases where the last color was saved
-    // otherwise first color will be black.
-    editor()->color()->setColorNumber(0);
-    editor()->color()->setColor(editor()->color()->frontColor());
-
     ui->addColorButton->setStyleSheet(buttonStylesheet);
     ui->removeColorButton->setStyleSheet(buttonStylesheet);
     ui->colorDialogButton->setStyleSheet(buttonStylesheet);
@@ -92,7 +87,6 @@ void ColorPaletteWidget::initUI()
     connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
     connect(ui->colorDialogButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickColorDialogButton);
     connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
-    connect(ui->colorListWidget, &QListWidget::itemSelectionChanged, this, &ColorPaletteWidget::selectedItems);
     connect(ui->colorListWidget, &QListWidget::customContextMenuRequested, this, &ColorPaletteWidget::showContextMenu);
 }
 
@@ -162,10 +156,6 @@ void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
     }
 }
 
-QList<QListWidgetItem*> ColorPaletteWidget::selectedItems() const
-{
-    return ui->colorListWidget->selectedItems();
-}
 
 void ColorPaletteWidget::selectColorNumber(int colorNumber)
 {
@@ -503,19 +493,41 @@ void ColorPaletteWidget::clickAddColorButton()
 
 void ColorPaletteWidget::clickRemoveColorButton()
 {
-    for (auto item : selectedItems())
+    for (auto item : ui->colorListWidget->selectedItems())
     {
         int index = ui->colorListWidget->row(item);
 
         // items are not deleted by qt, has to be done manually
         // delete should happen before removing the color from from palette
         // as the palette will be one ahead and crash otherwise
-        if (editor()->object()->shouldDeleteColor(index)) {
-            delete item;
-            editor()->object()->removeColour(index);
-            editor()->updateCurrentFrame();
+        if (editor()->object()->isColourInUse(index))
+        {
+            bool accepted = showPaletteWarning();
+            if (accepted)
+            {
+                delete item;
+                editor()->object()->removeColour(index);
+                editor()->updateCurrentFrame();
+            }
         }
     }
+}
+
+bool ColorPaletteWidget::showPaletteWarning()
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("The color you are trying to delete is currently being used by one or multiple strokes, "
+                   "if you wish to delete it anyway, you accept that the stroke(s) will be bound to the next available color"));
+    msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
+    QPushButton* removeButton = msgBox.addButton(tr("Delete anyway"), QMessageBox::AcceptRole);
+
+    msgBox.exec();
+    if (msgBox.clickedButton() == removeButton)
+    {
+        return true;
+    }
+    return false;
+
 }
 
 void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)

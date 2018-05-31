@@ -20,8 +20,6 @@ GNU General Public License for more details.
 #include <QTextStream>
 #include <QProgressDialog>
 #include <QApplication>
-#include <QMessageBox>
-#include <QPushButton>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -317,7 +315,7 @@ void Object::addColourAtIndex(int index, ColourRef newColour)
     mPalette.insert(index, newColour);
 }
 
-bool Object::shouldDeleteColor(int index)
+bool Object::isColourInUse(int index)
 {
     bool usesColor = false;
     for (int i = 0; i < getLayerCount(); i++)
@@ -333,30 +331,11 @@ bool Object::shouldDeleteColor(int index)
             }
         }
     }
-
-    if (usesColor)
-    {
-        QMessageBox msgBox;
-        msgBox.setText(tr("The color you are trying to delete is currently being used by one or multiple strokes, "
-                       "if you wish to delete it anyway, you accept that the stroke(s) will be bound to the next available color"));
-        QPushButton* cancelButton = msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
-        QPushButton* removeButton = msgBox.addButton(tr("Remove anyway"), QMessageBox::AcceptRole);
-
-        msgBox.exec();
-        if (msgBox.clickedButton() == cancelButton)
-        {
-            return false;
-        }
-        else if (msgBox.clickedButton() == removeButton)
-        {
-            return true;
-        }
-    }
     return true;
 
 }
 
-bool Object::removeColour(int index)
+void Object::removeColour(int index)
 {
     for (int i = 0; i < getLayerCount(); i++)
     {
@@ -370,7 +349,6 @@ bool Object::removeColour(int index)
 
     mPalette.removeAt(index);
 
-    return true;
     // update the vector pictures using that colour !
 }
 

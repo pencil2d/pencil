@@ -75,10 +75,10 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
-    QList<QListWidgetItem*> selectedItems() const;
     void addItem();
     void replaceItem();
     void removeItem();
+    bool showPaletteWarning();
 
 private:
     void updateItemColor(int, QColor);

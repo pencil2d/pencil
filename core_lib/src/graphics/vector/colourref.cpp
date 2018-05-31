@@ -54,7 +54,7 @@ bool ColourRef::operator!=(ColourRef colourRef1)
     }
 }
 
-QDebug operator<<(QDebug debug, const ColourRef& colourRef)
+QDebug& operator<<(QDebug debug, const ColourRef& colourRef)
 {
     debug.nospace() << "ColourRef(" << colourRef.colour << " " << colourRef.name <<")";
     return debug.maybeSpace();
