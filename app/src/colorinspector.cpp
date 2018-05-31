@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QStyleOption>
 #include <QDebug>
 #include <QStylePainter>
+#include <QButtonGroup>
 
 #include "colorslider.h"
 #include "pencildef.h"
