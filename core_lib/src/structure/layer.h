@@ -64,13 +64,13 @@ public:
     bool visible() const { return mVisible; }
     void setVisible(bool b) { mVisible = b; }
 
-    // KeyFrame interface
-    int getMaxKeyFramePosition() const;
-    int firstKeyFramePosition() const;
-
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) = 0;
+
+    // KeyFrame interface
+    int getMaxKeyFramePosition() const;
+    int firstKeyFramePosition() const;
 
     bool keyExists(int position) const;
     int  getPreviousKeyFramePosition(int position) const;

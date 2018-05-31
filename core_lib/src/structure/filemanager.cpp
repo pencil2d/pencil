@@ -177,14 +177,14 @@ bool FileManager::isOldForamt(const QString& fileName)
 
 Status FileManager::save(Object* object, QString strFileName)
 {
-    DebugDetails debugDetails;
-    debugDetails << "FileManager::save";
-    debugDetails << ("strFileName = " + strFileName);
+    DebugDetails dd;
+    dd << "FileManager::save";
+    dd << ("strFileName = " + strFileName);
 
     if (object == nullptr)
     {
-        debugDetails << "object parameter is null";
-        return Status(Status::INVALID_ARGUMENT, debugDetails);
+        dd << "object parameter is null";
+        return Status(Status::INVALID_ARGUMENT, dd);
     }
 
     int totalCount = object->totalKeyFrameCount();
@@ -196,26 +196,26 @@ Status FileManager::save(Object* object, QString strFileName)
     QFileInfo fileInfo(strFileName);
     if (fileInfo.isDir())
     {
-        debugDetails << "FileName points to a directory";
+        dd << "FileName points to a directory";
         return Status(Status::INVALID_ARGUMENT,
-                      debugDetails,
+                      dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") points to a directory.").arg(fileInfo.absoluteFilePath()));
     }
     QFileInfo parentDirInfo(fileInfo.dir().absolutePath());
     if (!parentDirInfo.exists())
     {
-        debugDetails << "The parent directory of strFileName does not exist";
+        dd << "The parent directory of strFileName does not exist";
         return Status(Status::INVALID_ARGUMENT,
-                      debugDetails,
+                      dd,
                       tr("Invalid Save Path"),
                       tr("The directory (\"%1\") does not exist.").arg(parentDirInfo.absoluteFilePath()));
     }
     if ((fileInfo.exists() && !fileInfo.isWritable()) || !parentDirInfo.isWritable())
     {
-        debugDetails << "Filename points to a location that is not writable";
+        dd << "Filename points to a location that is not writable";
         return Status(Status::INVALID_ARGUMENT,
-                      debugDetails,
+                      dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") is not writable.").arg(fileInfo.absoluteFilePath()));
     }
@@ -238,7 +238,7 @@ Status FileManager::save(Object* object, QString strFileName)
 
         strTempWorkingFolder = object->workingDir();
         Q_ASSERT(QDir(strTempWorkingFolder).exists());
-        debugDetails << QString("strTempWorkingFolder = ").append(strTempWorkingFolder);
+        dd << QString("strTempWorkingFolder = ").append(strTempWorkingFolder);
 
         qCDebug(mLog) << "Temp Folder=" << strTempWorkingFolder;
         strMainXMLFile = QDir(strTempWorkingFolder).filePath(PFF_XML_FILE_NAME);
@@ -252,43 +252,48 @@ Status FileManager::save(Object* object, QString strFileName)
 
         if (!dir.mkpath(strDataFolder))
         {
-            debugDetails << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
+            dd << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
 
-            return Status(Status::FAIL, debugDetails,
+            return Status(Status::FAIL, dd,
                           tr("Cannot Create Data Directory"),
                           tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(strDataFolder));
         }
     }
     if (!dataInfo.isDir())
     {
-        debugDetails << QString("dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
+        dd << QString("dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
         return Status(Status::FAIL,
-                      debugDetails,
+                      dd,
                       tr("Cannot Create Data Directory"),
                       tr("\"%1\" is a file. Please delete the file and try again.").arg(dataInfo.absoluteFilePath()));
     }
 
     // save data
     int layerCount = object->getLayerCount();
-    debugDetails << QString("layerCount = %1").arg(layerCount);
+    dd << QString("layerCount = %1").arg(layerCount);
 
     bool saveLayerOK = true;
     for (int i = 0; i < layerCount; ++i)
     {
         Layer* layer = object->getLayer(i);
-        debugDetails << QString("layer[%1] = Layer[id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
+        dd << QString("layer[%1] = Layer[id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
         
         Status st = layer->save(strDataFolder, [this] { progressForward(); });
         if (!st.ok())
         {
             saveLayerOK = false;
-            debugDetails.collect(st.details());
-            debugDetails << QString("- Layer[%1] failed to save").arg(i);
+            dd.collect(st.details());
+            dd << QString("  !! Failed to save Layer[%1] %2 ").arg(i).arg(layer->name());
         }
     }
+    dd << "All Layers saved";
 
     // save palette
-    object->savePalette(strDataFolder);
+    bool bPaletteOK = object->savePalette(strDataFolder);
+    if (!bPaletteOK)
+    {
+        dd << "Failed to save palette";
+    }
 
     progressForward();
 
@@ -315,6 +320,8 @@ Status FileManager::save(Object* object, QString strFileName)
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
 
+    dd << "Writing main xml file...";
+
     const int IndentSize = 2;
 
     QTextStream out(&file);
@@ -322,18 +329,22 @@ Status FileManager::save(Object* object, QString strFileName)
     out.flush();
     file.close();
 
+    dd << "Done writing main xml file";
+
     progressForward();
 
     if (!isOldFile)
     {
-        bool ok = MiniZ::compressFolder(strFileName, strTempWorkingFolder);
-        if (!ok)
+        dd << "Miniz";
+        Status s = MiniZ::compressFolder(strFileName, strTempWorkingFolder);
+        if (!s.ok())
         {
-            return Status(Status::ERROR_MINIZ_FAIL, debugDetails, 
-                          tr("MiniZ Error"),
+            dd.collect(s.details());
+            return Status(Status::ERROR_MINIZ_FAIL, dd, 
+                          tr("Miniz Error"),
                           tr("An internal error occurred. Your file may not be saved successfully."));
         }
-        qCDebug(mLog) << "Compressed. File saved.";
+        dd << "Zip file saved successfully";
     }
 
     object->setFilePath(strFileName);
@@ -343,8 +354,7 @@ Status FileManager::save(Object* object, QString strFileName)
 
     if (!saveLayerOK)
     {
-        return Status(Status::FAIL,
-                      debugDetails,
+        return Status(Status::FAIL, dd,
                       tr("Internal Error"),
                       tr("An internal error occurred. Your file may not be saved successfully."));
     }
@@ -522,8 +532,8 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     // removes the previous directory first  - better approach
     removePFFTmpDirectory(strUnzipTarget);
 
-    bool bOK = MiniZ::uncompressFolder(strZipFile, strUnzipTarget);
-    Q_ASSERT(bOK);
+    Status s = MiniZ::uncompressFolder(strZipFile, strUnzipTarget);
+    Q_ASSERT(s.ok());
 
     mstrLastTempFolder = strUnzipTarget;
 }

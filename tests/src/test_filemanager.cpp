@@ -248,7 +248,8 @@ TEST_CASE("FileManager Load-a-zip Test")
         REQUIRE(img.save(workDir.absolutePath() + "/" PFF_DATA_DIR "/005.001.png"));
 
         QString pclxFile = QDir(testDir.path()).filePath("test-animation.pclx");
-        REQUIRE(MiniZ::compressFolder(pclxFile, workDir.absolutePath()));
+        Status s = MiniZ::compressFolder(pclxFile, workDir.absolutePath());
+        REQUIRE(s.ok());
 
         FileManager fm;
         Object* o = fm.load(pclxFile);
