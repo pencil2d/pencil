@@ -517,19 +517,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     Layer* layer = mEditor->layers()->currentLayer();
     Q_ASSUME(layer != nullptr);
 
-    if (layer->type() == Layer::VECTOR)
-    {
-        auto pLayerVector = static_cast<LayerVector*>(layer);
-        VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-        Q_CHECK_PTR(vectorImage);
-    }
-    else if (layer->type() == Layer::BITMAP)
-    {
-        auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
-        BitmapImage* bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-        Q_CHECK_PTR(bitmapImage);
-    }
-
     if (!layer->visible() && currentTool()->type() != HAND && (event->button() != Qt::RightButton))
     {
         QMessageBox::warning(this, tr("Warning"),

@@ -422,7 +422,7 @@ void Object::loadDefaultPalette()
     addColour(ColourRef(QColor(227, 177, 105), QString(tr("Dark Skin - shade"))));
 }
 
-void Object::paintImage(QPainter& painter, int frameNumber,
+void Object::paintImage(QPainter& painter,int frameNumber,
                         bool background,
                         bool antialiasing) const
 {
@@ -451,16 +451,19 @@ void Object::paintImage(QPainter& painter, int frameNumber,
             if (layer->type() == Layer::BITMAP)
             {
                 LayerBitmap* layerBitmap = (LayerBitmap*)layer;
-                layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0)->paintImage(painter);
+
+                BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
+                if (bitmap)
+                    bitmap->paintImage(painter);
+
             }
             // paints the vector images
             if (layer->type() == Layer::VECTOR)
             {
                 LayerVector* layerVector = (LayerVector*)layer;
-                layerVector->getLastVectorImageAtFrame(frameNumber, 0)->paintImage(painter,
-                                                                                   false,
-                                                                                   false,
-                                                                                   antialiasing);
+                VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
+                if (vec)
+                    vec->paintImage(painter, false, false, antialiasing);
             }
         }
     }
