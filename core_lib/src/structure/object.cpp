@@ -325,7 +325,7 @@ void Object::renameColour(int i, QString text)
 
 QString Object::savePalette(QString dataFolder)
 {
-    QString fullPath = QDir(dataFolder).filePath("/palette.xml");
+    QString fullPath = QDir(dataFolder).filePath("palette.xml");
     bool ok = exportPalette(fullPath);
     if (ok)
         return fullPath;
