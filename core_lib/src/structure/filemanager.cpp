@@ -43,51 +43,48 @@ mLog("FileManager")
     ENABLE_DEBUG_LOG(mLog, false);
 }
 
-Object* FileManager::load(QString strFileName)
+Object* FileManager::load(QString sFileName)
 {
     DebugDetails dd;
-    dd << QString("File name: ").append(strFileName);
-    if (!QFile::exists(strFileName))
+    dd << QString("File name: ").append(sFileName);
+    if (!QFile::exists(sFileName))
     {
         qCDebug(mLog) << "ERROR - File doesn't exist.";
         return cleanUpWithErrorCode(Status(Status::FILE_NOT_FOUND, dd, tr("Could not open file"),
-                                           tr("The file you have selected does not exist, so we are unable to open it. Please check "
-                                           "to make sure that you've entered the correct path and that the file is accessible and try again.")));
+                                           tr("The file does not exist, so we are unable to open it. Please check "
+                                           "to make sure the path is correct and that the file is accessible and try again.")));
     }
 
     progressForward();
 
     Object* obj = new Object;
-    obj->setFilePath(strFileName);
+    obj->setFilePath(sFileName);
     obj->createWorkingDir();
 
     QString strMainXMLFile;
     QString strDataFolder;
 
     // Test file format: new zipped .pclx or old .pcl?
-    bool oldFormat = isOldForamt(strFileName);
+    bool oldFormat = isOldForamt(sFileName);
     dd << QString("Is old format: ").append(oldFormat ? "true" : "false");
 
     if (oldFormat)
     {
-        qCDebug(mLog) << "Recognized Old Pencil File Format (*.pcl) !";
+        dd << "Recognized Old Pencil File Format (*.pcl) !";
 
-        strMainXMLFile = strFileName;
+        strMainXMLFile = sFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        qCDebug(mLog) << "Recognized New zipped Pencil File Format (*.pclx) !";
+        dd << "Recognized New zipped Pencil File Format (*.pclx) !";
 
-        unzip(strFileName, obj->workingDir());
+        unzip(sFileName, obj->workingDir());
 
         strMainXMLFile = QDir(obj->workingDir()).filePath(PFF_XML_FILE_NAME);
         strDataFolder = QDir(obj->workingDir()).filePath(PFF_DATA_DIR);
     }
 
-    qCDebug(mLog) << "  XML=" << strMainXMLFile;
-    qCDebug(mLog) << "  Data Folder=" << strDataFolder;
-    qCDebug(mLog) << "  Working Folder=" << obj->workingDir();
     dd << QString("XML file: ").append(strMainXMLFile)
        << QString("Data folder: ").append(strDataFolder)
        << QString("Working folder: ").append(obj->workingDir());
@@ -204,11 +201,11 @@ bool FileManager::isOldForamt(const QString& fileName) const
     return !(MiniZ::isZip(fileName));
 }
 
-Status FileManager::save(Object* object, QString strFileName)
+Status FileManager::save(Object* object, QString sFileName)
 {
     DebugDetails dd;
     dd << "FileManager::save";
-    dd << ("strFileName = " + strFileName);
+    dd << ("sFileName = " + sFileName);
 
     if (object == nullptr)
     {
@@ -222,7 +219,7 @@ Status FileManager::save(Object* object, QString strFileName)
 
     progressForward();
 
-    QFileInfo fileInfo(strFileName);
+    QFileInfo fileInfo(sFileName);
     if (fileInfo.isDir())
     {
         dd << "FileName points to a directory";
@@ -234,7 +231,7 @@ Status FileManager::save(Object* object, QString strFileName)
     QFileInfo parentDirInfo(fileInfo.dir().absolutePath());
     if (!parentDirInfo.exists())
     {
-        dd << "The parent directory of strFileName does not exist";
+        dd << "The parent directory of sFileName does not exist";
         return Status(Status::INVALID_ARGUMENT,
                       dd,
                       tr("Invalid Save Path"),
@@ -253,12 +250,12 @@ Status FileManager::save(Object* object, QString strFileName)
     QString sMainXMLFile;
     QString sDataFolder;
 
-    bool isOldType = strFileName.endsWith(PFF_OLD_EXTENSION);
+    bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
     if (isOldType)
     {
         dd << "Old Pencil File Format (*.pcl) !";
 
-        sMainXMLFile = strFileName;
+        sMainXMLFile = sFileName;
         sDataFolder = sMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
@@ -300,7 +297,7 @@ Status FileManager::save(Object* object, QString strFileName)
     int numLayers = object->getLayerCount();
     dd << QString("Total %1 layers").arg(numLayers);
 
-    QStringList attachedFiles;
+    QStringList zippedFiles;
 
     bool saveLayersOK = true;
     for (int i = 0; i < numLayers; ++i)
@@ -308,7 +305,7 @@ Status FileManager::save(Object* object, QString strFileName)
         Layer* layer = object->getLayer(i);
         dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
         
-        Status st = layer->save(sDataFolder, attachedFiles, [this] { progressForward(); });
+        Status st = layer->save(sDataFolder, zippedFiles, [this] { progressForward(); });
         if (!st.ok())
         {
             saveLayersOK = false;
@@ -321,9 +318,9 @@ Status FileManager::save(Object* object, QString strFileName)
     // save palette
     QString sPaletteFile = object->savePalette(sDataFolder);
     if (!sPaletteFile.isEmpty())
-        attachedFiles.append(sPaletteFile);
+        zippedFiles.append(sPaletteFile);
     else
-        dd << "Failed to save palette";
+        dd << "Failed to save the palette xml";
     
     progressForward();
 
@@ -361,14 +358,14 @@ Status FileManager::save(Object* object, QString strFileName)
 
     dd << "Done writing main xml file";
 
-    attachedFiles.append(sMainXMLFile);
+    zippedFiles.append(sMainXMLFile);
 
     progressForward();
 
     if (!isOldType)
     {
         dd << "Miniz";
-        Status s = MiniZ::compressFolder(strFileName, sTempWorkingFolder, attachedFiles);
+        Status s = MiniZ::compressFolder(sFileName, sTempWorkingFolder, zippedFiles);
         if (!s.ok())
         {
             dd.collect(s.details());
@@ -379,7 +376,7 @@ Status FileManager::save(Object* object, QString strFileName)
         dd << "Zip file saved successfully";
     }
 
-    object->setFilePath(strFileName);
+    object->setFilePath(sFileName);
     object->setModified(false);
 
     progressForward();

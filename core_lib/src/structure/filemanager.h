@@ -38,8 +38,8 @@ class FileManager : public QObject
 public:
     FileManager(QObject* parent = 0);
 
-    Object* load(QString strFilenNme);
-    Status  save(Object*, QString strFileName);
+    Object* load(QString sFilenNme);
+    Status  save(Object*, QString sFileName);
 
     QList<ColourRef> loadPaletteFile(QString strFilename);
     Status error() const { return mError; }
