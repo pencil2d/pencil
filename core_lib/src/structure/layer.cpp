@@ -290,13 +290,15 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
         Status st = saveKeyFrameFile(keyFrame, sDataFolder);
         if (st.ok())
         {
-            attachedFiles.append(keyFrame->fileName());
+            //qDebug() << "Layer [" << name() << "] FN=" << keyFrame->fileName();
+            if (!keyFrame->fileName().isEmpty())
+                attachedFiles.append(keyFrame->fileName());
         }
         else
         {
             ok = false;
             dd.collect(st.details());
-            dd << QString("- Keyframe[%1] failed to save").arg(keyFrame->pos()); // << keyFrameDetails;
+            dd << QString("- Keyframe[%1] failed to save").arg(keyFrame->pos());
         }
         progressStep();
     }
