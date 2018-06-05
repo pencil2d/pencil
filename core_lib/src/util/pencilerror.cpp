@@ -62,7 +62,14 @@ void DebugDetails::appendSystemInfo()
 
 #if QT_VERSION >= 0x050400
     mDetails << "System Info";
-    mDetails << "Pencil version: " APP_VERSION;
+#if !defined(PENCIL2D_RELEASE)
+    mDetails << "Pencil version: " APP_VERSION " (dev)";
+#else
+    mDetails << "Pencil version: " APP_VERSION " (stable)";
+#endif
+#if defined(GIT_EXISTS)
+    mDetails << "Commit: " S__GIT_COMMIT_HASH;
+#endif
     mDetails << "Build ABI: " + QSysInfo::buildAbi();
     mDetails << "Kernel: " + QSysInfo::kernelType() + ", " + QSysInfo::kernelVersion();
     mDetails << "Operating System: " + QSysInfo::prettyProductName();

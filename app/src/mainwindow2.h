@@ -68,7 +68,7 @@ public:
 
 public:
     void setOpacity(int opacity);
-    void newDocument();
+    void newDocument(bool force = false);
     void openDocument();
     bool saveDocument();
     bool saveAsNewDocument();
@@ -99,7 +99,7 @@ private slots:
     void resetAndDockAllSubWidgets();
 
 private:
-    bool openObject(QString strFilename);
+    bool openObject(QString strFilename, bool checkForChanges);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();

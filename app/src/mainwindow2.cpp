@@ -431,9 +431,9 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
     event->ignore();
 }
 
-void MainWindow2::newDocument()
+void MainWindow2::newDocument(bool force)
 {
-    if (maybeSave())
+    if (force || maybeSave())
     {
         Object* object = new Object();
         object->init();
@@ -467,14 +467,8 @@ void MainWindow2::openDocument()
             return;
         }
 
-        bool ok = openObject(fileName);
-        if (!ok)
-        {
-            QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
-            newDocument();
-        }
+        openObject(fileName, false);
     }
-    updateSaveState();
 }
 
 bool MainWindow2::saveAsNewDocument()
@@ -495,19 +489,53 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile(QString filename)
 {
-    if (maybeSave())
-    {
-        bool ok = openObject(filename);
-        if (!ok)
-        {
-            QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
-            newDocument();
-        }
-    }
+    openObject(filename, true);
 }
 
-bool MainWindow2::openObject(QString strFilePath)
+bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 {
+    if(checkForChanges && !maybeSave()) return false; // Open cancelled by user
+
+    // Check for potential issues with the file
+    QFileInfo fileInfo(strFilePath);
+    if (fileInfo.isDir())
+    {
+        ErrorDialog errorDialog(tr("Could not open file"),
+                                tr("The file you have selected is a directory, so we are unable to open it. "
+                                   "If you are are trying to open a project that uses the old structure, please "
+                                   "open the file ending with .pcl, not the data folder."),
+                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+        errorDialog.exec();
+        return false;
+    }
+    if (!fileInfo.exists())
+    {
+        ErrorDialog errorDialog(tr("Could not open file"),
+                                tr("The file you have selected does not exist, so we are unable to open it. Please check "
+                                   "to make sure that you've entered the correct path and that the file is accessible and try again."),
+                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+        errorDialog.exec();
+        return false;
+    }
+    if (!fileInfo.isReadable())
+    {
+        ErrorDialog errorDialog(tr("Could not open file"),
+                                tr("This program does not have permission to read the file you have selected. "
+                                   "Please check that you have read permissions for this file and try again."),
+                                QString("Raw file path: %1\nResolved file path: %2\nPermissions: 0x%3") \
+                                .arg(strFilePath, fileInfo.absoluteFilePath(), QString::number(fileInfo.permissions(), 16)));
+        errorDialog.exec();
+        return false;
+    }
+    if (!fileInfo.isWritable())
+    {
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("This program does not currently have permission to write to the file you have selected. "
+                                "Please make sure you have write permission for this file before attempting to save it. "
+                                "Alternatively, you can use the Save As... menu option to save to a writable location."),
+                             QMessageBox::Ok);
+    }
+
     QProgressDialog progress(tr("Opening document..."), tr("Abort"), 0, 100, this);
 
     // Don't show progress bar if running without a GUI (aka. when rendering from command line)
@@ -535,8 +563,27 @@ bool MainWindow2::openObject(QString strFilePath)
 
     Object* object = fm.load(strFilePath);
 
-    if (object == nullptr || !fm.error().ok())
+    if (!fm.error().ok())
     {
+        Status error = fm.error();
+        DebugDetails dd;
+        dd << QString("Raw file path: ").append(strFilePath)
+           << QString("Resolved file path: ").append(fileInfo.absoluteFilePath());
+        dd.collect(error.details());
+        ErrorDialog errorDialog(error.title(),
+                                error.description(),
+                                dd.str());
+        errorDialog.exec();
+        newDocument(true);
+        return false;
+    }
+
+    if (object == nullptr) {
+        ErrorDialog errorDialog(tr("Could not open file"),
+                                tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
+                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+        errorDialog.exec();
+        newDocument(true);
         return false;
     }
 
@@ -559,6 +606,8 @@ bool MainWindow2::openObject(QString strFilePath)
     mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.setValue(progress.maximum());
+
+    updateSaveState();
 
     return true;
 }
