@@ -42,7 +42,7 @@ public:
     Status  save(Object*, QString strFileName);
 
     QList<ColourRef> loadPaletteFile(QString strFilename);
-    Status error() { return mError; }
+    Status error() const { return mError; }
     Status verifyObject(Object* obj);
 
 Q_SIGNALS:
@@ -54,7 +54,7 @@ private:
 
     bool loadObject(Object*, const QDomElement& root);
     bool loadObjectOldWay(Object*, const QDomElement& root);
-    bool isOldForamt(const QString& fileName);
+    bool isOldForamt(const QString& fileName) const;
     bool loadPalette(Object*);
 
     ObjectData* loadProjectData(const QDomElement& element);

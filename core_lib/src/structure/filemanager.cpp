@@ -234,9 +234,9 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
     return object->loadXML(root, [this] { progressForward(); });
 }
 
-bool FileManager::isOldForamt(const QString& fileName)
+bool FileManager::isOldForamt(const QString& fileName) const
 {
-    return (MiniZ::isZip(fileName) == false);
+    return !MiniZ::isZip(fileName);
 }
 
 Status FileManager::save(Object* object, QString strFileName)
@@ -284,43 +284,42 @@ Status FileManager::save(Object* object, QString strFileName)
                       tr("The path (\"%1\") is not writable.").arg(fileInfo.absoluteFilePath()));
     }
 
-    QString strTempWorkingFolder;
-    QString strMainXMLFile;
-    QString strDataFolder;
+    QString sTempWorkingFolder;
+    QString sMainXMLFile;
+    QString sDataFolder;
 
-    bool isOldFile = strFileName.endsWith(PFF_OLD_EXTENSION);
-    if (isOldFile)
+    bool isOldType = strFileName.endsWith(PFF_OLD_EXTENSION);
+    if (isOldType)
     {
-        qCDebug(mLog) << "Old Pencil File Format (*.pcl) !";
+        dd << "Old Pencil File Format (*.pcl) !";
 
-        strMainXMLFile = strFileName;
-        strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
+        sMainXMLFile = strFileName;
+        sDataFolder = sMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        qCDebug(mLog) << "New zipped Pencil File Format (*.pclx) !";
+        dd << "New zipped Pencil File Format (*.pclx) !";
 
-        strTempWorkingFolder = object->workingDir();
-        Q_ASSERT(QDir(strTempWorkingFolder).exists());
-        dd << QString("strTempWorkingFolder = ").append(strTempWorkingFolder);
+        sTempWorkingFolder = object->workingDir();
+        Q_ASSERT(QDir(sTempWorkingFolder).exists());
+        dd << QString("TempWorkingFolder = ").append(sTempWorkingFolder);
 
-        qCDebug(mLog) << "Temp Folder=" << strTempWorkingFolder;
-        strMainXMLFile = QDir(strTempWorkingFolder).filePath(PFF_XML_FILE_NAME);
-        strDataFolder = QDir(strTempWorkingFolder).filePath(PFF_OLD_DATA_DIR);
+        sMainXMLFile = QDir(sTempWorkingFolder).filePath(PFF_XML_FILE_NAME);
+        sDataFolder = QDir(sTempWorkingFolder).filePath(PFF_OLD_DATA_DIR);
     }
 
-    QFileInfo dataInfo(strDataFolder);
+    QFileInfo dataInfo(sDataFolder);
     if (!dataInfo.exists())
     {
-        QDir dir(strDataFolder); // the directory where all key frames will be saved
+        QDir dir(sDataFolder); // the directory where all key frames will be saved
 
-        if (!dir.mkpath(strDataFolder))
+        if (!dir.mkpath(sDataFolder))
         {
             dd << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
 
             return Status(Status::FAIL, dd,
                           tr("Cannot Create Data Directory"),
-                          tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(strDataFolder));
+                          tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(sDataFolder));
         }
     }
     if (!dataInfo.isDir())
@@ -333,39 +332,41 @@ Status FileManager::save(Object* object, QString strFileName)
     }
 
     // save data
-    int layerCount = object->getLayerCount();
-    dd << QString("layerCount = %1").arg(layerCount);
+    int numLayers = object->getLayerCount();
+    dd << QString("Total %1 layers").arg(numLayers);
 
-    bool saveLayerOK = true;
-    for (int i = 0; i < layerCount; ++i)
+    QStringList attachedFiles;
+
+    bool saveLayersOK = true;
+    for (int i = 0; i < numLayers; ++i)
     {
         Layer* layer = object->getLayer(i);
-        dd << QString("layer[%1] = Layer[id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
+        dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
         
-        Status st = layer->save(strDataFolder, [this] { progressForward(); });
+        Status st = layer->save(sDataFolder, attachedFiles, [this] { progressForward(); });
         if (!st.ok())
         {
-            saveLayerOK = false;
+            saveLayersOK = false;
             dd.collect(st.details());
-            dd << QString("  !! Failed to save Layer[%1] %2 ").arg(i).arg(layer->name());
+            dd << QString("  !! Failed to save Layer[%1] %2").arg(i).arg(layer->name());
         }
     }
     dd << "All Layers saved";
 
     // save palette
-    bool bPaletteOK = object->savePalette(strDataFolder);
-    if (!bPaletteOK)
-    {
+    QString sPaletteFile = object->savePalette(sDataFolder);
+    if (!sPaletteFile.isEmpty())
+        attachedFiles.append(sPaletteFile);
+    else
         dd << "Failed to save palette";
-    }
-
+    
     progressForward();
 
     // -------- save main XML file -----------
-    QFile file(strMainXMLFile);
+    QFile file(sMainXMLFile);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        return Status::ERROR_FILE_CANNOT_OPEN;
+        return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
 
     QDomDocument xmlDoc("PencilDocument");
@@ -377,8 +378,8 @@ Status FileManager::save(Object* object, QString strFileName)
     progressForward();
 
     // save editor information
-    QDomElement projectDataElement = saveProjectData(object->data(), xmlDoc);
-    root.appendChild(projectDataElement);
+    QDomElement projDataXml = saveProjectData(object->data(), xmlDoc);
+    root.appendChild(projDataXml);
 
     // save object
     QDomElement objectElement = object->saveXML(xmlDoc);
@@ -386,21 +387,23 @@ Status FileManager::save(Object* object, QString strFileName)
 
     dd << "Writing main xml file...";
 
-    const int IndentSize = 2;
+    const int indentSize = 2;
 
     QTextStream out(&file);
-    xmlDoc.save(out, IndentSize);
+    xmlDoc.save(out, indentSize);
     out.flush();
     file.close();
 
     dd << "Done writing main xml file";
 
+    attachedFiles.append(sMainXMLFile);
+
     progressForward();
 
-    if (!isOldFile)
+    if (!isOldType)
     {
         dd << "Miniz";
-        Status s = MiniZ::compressFolder(strFileName, strTempWorkingFolder);
+        Status s = MiniZ::compressFolder(strFileName, sTempWorkingFolder, attachedFiles);
         if (!s.ok())
         {
             dd.collect(s.details());
@@ -416,7 +419,7 @@ Status FileManager::save(Object* object, QString strFileName)
 
     progressForward();
 
-    if (!saveLayerOK)
+    if (!saveLayersOK)
     {
         return Status(Status::FAIL, dd,
                       tr("Internal Error"),

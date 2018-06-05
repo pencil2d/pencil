@@ -90,7 +90,7 @@ public:
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
-    KeyFrame *getKeyFrameWhichCovers(int frameNumber);
+    KeyFrame *getKeyFrameWhichCovers(int frameNumber) const;
     bool getVisibility() { return mVisible; }
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>);
@@ -98,7 +98,7 @@ public:
     void setModified(int position, bool isModified);
 
     // Handle selection
-    bool isFrameSelected(int position);
+    bool isFrameSelected(int position) const;
     void setFrameSelected(int position, bool isSelected);
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);
@@ -107,7 +107,7 @@ public:
 
     bool moveSelectedFrames(int offset);
 
-    Status save(QString dataFolder, ProgressCallback progressStep);
+    Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
@@ -118,7 +118,7 @@ public:
 
     virtual void editProperties();
 
-    bool isPaintable();
+    bool isPaintable() const;
 
 protected:
     void setId(int LayerId) { mId = LayerId; }

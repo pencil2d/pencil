@@ -22,7 +22,7 @@ GNU General Public License for more details.
 namespace MiniZ
 {
     bool isZip(const QString& sZipFilePath);
-    Status compressFolder(QString sZipFilePath, QString sSrcPath);
-    Status uncompressFolder(QString sZipFilePath, QString sDestPath);
+    Status compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList);
+    Status uncompressFolder(QString zipFilePath, QString destPath);
 }
 #endif

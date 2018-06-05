@@ -145,11 +145,21 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
 
     if (sDestFileLocation != key->fileName())
     {
-        bool bOK = QFile::copy(key->fileName(), sDestFileLocation);
-        Q_ASSERT(bOK);
+        if (QFile::exists(sDestFileLocation))
+            QFile::remove(sDestFileLocation);
 
-        if (!bOK) return Status::FAIL;
-        
+        bool ok = QFile::copy(key->fileName(), sDestFileLocation);
+        if (!ok)
+        {
+            key->setFileName("");
+
+            DebugDetails dd;
+            dd << __FUNCTION__;
+            dd << QString("  KeyFrame.pos() = %1").arg(key->pos());
+            dd << QString("  FilePath = %1").arg(sDestFileLocation);
+            dd << QString("Couldn't save the sound clip");
+            return Status::FAIL;
+        }
         key->setFileName(sDestFileLocation);
     }
     return Status::OK;

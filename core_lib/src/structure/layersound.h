@@ -38,7 +38,7 @@ public:
     SoundClip* getSoundClipWhichCovers(int frameNumber);
 
 protected:
-    Status saveKeyFrameFile( KeyFrame*, QString path ) override;
+    Status saveKeyFrameFile(KeyFrame*, QString path) override;
     KeyFrame* createKeyFrame(int position, Object*) override;
 };
 

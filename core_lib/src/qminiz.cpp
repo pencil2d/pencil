@@ -38,76 +38,69 @@ bool MiniZ::isZip(const QString& sZipFilePath)
     return (num > 0);
 }
 
-Status MiniZ::compressFolder(QString sZipFilePath, QString sSrcPath)
+// ReSharper disable once CppInconsistentNaming
+Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList)
 {
     DebugDetails dd;
-    dd << QString("Zip the folder %1 to %2").arg(sZipFilePath).arg(sSrcPath);
+    dd << QString("Zip the folder %1 to %2").arg(zipFilePath).arg(srcFolderPath);
 
-    if (!sSrcPath.endsWith("/"))
+    if (!srcFolderPath.endsWith("/"))
     {
-        sSrcPath.append("/");
+        srcFolderPath.append("/");
     }
 
-    sSrcPath = QDir::toNativeSeparators(sSrcPath);
-    sZipFilePath = QDir::toNativeSeparators(sZipFilePath);
 
     mz_zip_archive* mz = new mz_zip_archive;
     OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
 
-    mz_bool ok = mz_zip_writer_init_file(mz, sZipFilePath.toUtf8().data(), 0);
+    mz_bool ok = mz_zip_writer_init_file(mz, zipFilePath.toUtf8().data(), 0);
 
     if (!ok)
     {
         dd << "Miniz writer init failed.";
     }
 
-    QDirIterator it(sSrcPath, QDirIterator::Subdirectories);
-    while (it.hasNext())
+    qDebug() << "SrcFolder=" << srcFolderPath;
+    for (QString filePath : fileList)
     {
-        QString sFullPath = it.next();
-
-        if (it.fileInfo().isDir())
-        {
-            continue;
-        }
-
-        QString sRelativePath = sFullPath;
-        sRelativePath.replace(sSrcPath, "");
+        QString sRelativePath = filePath;
+        sRelativePath.replace(srcFolderPath, "");
 
         dd << QString("Add file to zip: ").append(sRelativePath);
 
         ok = mz_zip_writer_add_file(mz,
                                     sRelativePath.toUtf8().data(),
-                                    sFullPath.toUtf8().data(),
+                                    filePath.toUtf8().data(),
                                     "", 0, MZ_DEFAULT_COMPRESSION);
+        qDebug() << "Zip: " << filePath;
         if (!ok)
         {
             dd << QString("  Cannot add %1 to zip").arg(sRelativePath);
         }
     }
     ok &= mz_zip_writer_finalize_archive(mz);
+    mz_zip_writer_end(mz);
+
     if (!ok)
     {
         dd << "Miniz finalize archive failed";
+        return Status(Status::FAIL, dd);
     }
-
-    mz_zip_writer_end(mz);
-
     return Status::OK;
 }
 
-Status MiniZ::uncompressFolder(QString sZipFilePath, QString sDestPath)
+Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
 {
     DebugDetails dd;
-    dd << QString("Unzip file %1 to folder %2").arg(sZipFilePath).arg(sDestPath);
+    dd << QString("Unzip file %1 to folder %2").arg(zipFilePath).arg(destPath);
 
-    if (!QFile::exists(sZipFilePath))
+    if (!QFile::exists(zipFilePath))
     {
         return Status::FILE_NOT_FOUND;
     }
 
-    QString sBaseDir = QFileInfo(sDestPath).absolutePath();
+    QString sBaseDir = QFileInfo(destPath).absolutePath();
     QDir baseDir(sBaseDir);
     if (!baseDir.exists())
     {
@@ -121,7 +114,7 @@ Status MiniZ::uncompressFolder(QString sZipFilePath, QString sDestPath)
     OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
 
-    mz_bool ok = mz_zip_reader_init_file(mz, sZipFilePath.toUtf8().data(), 0);
+    mz_bool ok = mz_zip_reader_init_file(mz, zipFilePath.toUtf8().data(), 0);
     if (!ok)
         return Status(Status::FAIL, dd);
 
