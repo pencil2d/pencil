@@ -61,8 +61,10 @@ private:
     QDomElement saveProjectData(ObjectData*, QDomDocument& xmlDoc);
 
     void extractProjectData(const QDomElement& element, ObjectData* data);
-
     Object* cleanUpWithErrorCode(Status);
+
+    QString backupPreviousFile(const QString& fileName);
+    void deleteBackupFile(const QString& fileName);
 
     void progressForward();
 

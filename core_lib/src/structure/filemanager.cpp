@@ -365,6 +365,9 @@ Status FileManager::save(Object* object, QString sFileName)
     if (!isOldType)
     {
         dd << "Miniz";
+
+        QString sBackupFile = backupPreviousFile(sFileName);
+
         Status s = MiniZ::compressFolder(sFileName, sTempWorkingFolder, zippedFiles);
         if (!s.ok())
         {
@@ -374,6 +377,9 @@ Status FileManager::save(Object* object, QString sFileName)
                           tr("An internal error occurred. Your file may not be saved successfully."));
         }
         dd << "Zip file saved successfully";
+
+        if (s.ok() && saveLayersOK)
+            deleteBackupFile(sBackupFile);
     }
 
     object->setFilePath(sFileName);
@@ -415,7 +421,6 @@ ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
     }
     return data;
 }
-
 
 QDomElement FileManager::saveProjectData(ObjectData* data, QDomDocument& xmlDoc)
 {
@@ -538,6 +543,32 @@ Object* FileManager::cleanUpWithErrorCode(Status error)
     return nullptr;
 }
 
+QString FileManager::backupPreviousFile(const QString& fileName)
+{
+    if (!QFile::exists(fileName))
+        return "";
+
+    QFileInfo info(fileName);
+    QString sBackupFile = info.completeBaseName() + ".backup." + info.suffix();
+    QString sBackupFileFullPath = QDir(info.absolutePath()).filePath(sBackupFile);
+
+    bool ok = QFile::rename(info.absoluteFilePath(), sBackupFileFullPath);
+    if (!ok)
+    {
+        qDebug() << "Cannot backup the previous file.";
+        return "";
+    }
+    return sBackupFileFullPath;
+}
+
+void FileManager::deleteBackupFile(const QString& fileName)
+{
+    if (QFile::exists(fileName))
+    {
+        QFile::remove(fileName);
+    }
+}
+
 void FileManager::progressForward()
 {
     mCurrentProgress++;
@@ -548,7 +579,7 @@ bool FileManager::loadPalette(Object* obj)
 {
     qCDebug(mLog) << "Load Palette..";
 
-    QString paletteFilePath = obj->dataDir() + "/" + PFF_PALETTE_FILE;
+    QString paletteFilePath = QDir(obj->dataDir()).filePath(PFF_PALETTE_FILE);
     if (!obj->importPalette(paletteFilePath))
     {
         obj->loadDefaultPalette();
