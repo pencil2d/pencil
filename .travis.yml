@@ -65,7 +65,8 @@ before_install:
 install:
   - pip3 freeze > requirements.txt
   - pip3 install -r requirements.txt
-  - sudo pip3 install google-api-python-client
+  - sudo pip3 install --upgrade oauth2client
+  - sudo pip3 install --upgrade google-api-python-client
   - python3 -V
   - pip3 -V
 
