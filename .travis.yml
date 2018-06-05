@@ -119,9 +119,9 @@ after_success:
 
       echo "Copying ffmpeg plugin";
       mkdir Pencil2D.app/Contents/MacOS/plugins;
-      wget -P Pencil2D.app/Contents/MacOS/plugins https://evermeet.cx/ffmpeg/ffmpeg-3.2.4.7z;
-      7z x Pencil2D.app/Contents/MacOS/plugins/ffmpeg-3.2.4.7z -o"Pencil2D.app/Contents/MacOS/plugins";
-      rm Pencil2D.app/Contents/MacOs/plugins/ffmpeg-3.2.4.7z;
+      wget -P Pencil2D.app/Contents/MacOS/plugins https://evermeet.cx/pub/ffmpeg/ffmpeg-3.4.2.7z;
+      7z x Pencil2D.app/Contents/MacOS/plugins/ffmpeg-3.4.2.7z -o"Pencil2D.app/Contents/MacOS/plugins";
+      rm Pencil2D.app/Contents/MacOs/plugins/ffmpeg-3.4.2.7z;
 
       echo "Copying necessary Qt frameworks";
       macdeployqt Pencil2D.app;
