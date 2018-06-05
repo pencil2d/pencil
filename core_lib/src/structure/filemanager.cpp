@@ -24,6 +24,19 @@ GNU General Public License for more details.
 #include "object.h"
 
 
+QString openErrorTitle = QObject::tr("Could not open file");
+QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
+                         "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
+                         "or you can try to use a backup file if you have one. If you contact us through one of "
+                         "our offical channels we may be able to help you. For reporting issues, "
+                         "the best places to reach us are:");
+QString contactLinks = "<ul>"
+                       "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
+                       "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
+                       "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
+                       "</ul>";
+
+
 FileManager::FileManager(QObject *parent) : QObject(parent),
 mLog("FileManager")
 {
@@ -90,16 +103,7 @@ Object* FileManager::load(QString strFileName)
     if (!file.exists())
     {
         dd << "Main XML file does not exist";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, tr("Could not open file"),
-                                           tr("There was an error processing your file. This usually means that your project has "
-                                              "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
-                                              "or you can try to use a backup file if you have one. If you contact us through one of "
-                                              "our offical channels we may be able to further assist you. For reporting issues, "
-                                              "the best places to reach us are:").append("<ul>"
-                                                "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
-                                                "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
-                                                "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
-                                              "</ul>")));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
     }
     if (!file.open(QFile::ReadOnly))
     {
@@ -113,48 +117,21 @@ Object* FileManager::load(QString strFileName)
     {
         qCDebug(mLog) << "Couldn't open the main XML file.";
         dd << "Error parsing or opening the main XML file";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, tr("Could not open file"),
-                                           tr("There was an error processing your file. This usually means that your project has "
-                                              "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
-                                              "or you can try to use a backup file if you have one. If you contact us through one of "
-                                              "our offical channels we may be able to further assist you. For reporting issues, "
-                                              "the best places to reach us are:").append("<ul>"
-                                                "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
-                                                "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
-                                                "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
-                                              "</ul>")));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
     }
 
     QDomDocumentType type = xmlDoc.doctype();
     if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
     {
         dd << QString("Invalid main XML doctype: ").append(type.name());
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, tr("Could not open file"),
-                                           tr("There was an error processing your file. This usually means that your project has "
-                                              "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
-                                              "or you can try to use a backup file if you have one. If you contact us through one of "
-                                              "our offical channels we may be able to further assist you. For reporting issues, "
-                                              "the best places to reach us are:").append("<ul>"
-                                                "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
-                                                "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
-                                                "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
-                                              "</ul>")));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
     }
 
     QDomElement root = xmlDoc.documentElement();
     if (root.isNull())
     {
         dd << "Main XML root node is null";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, tr("Could not open file"),
-                                           tr("There was an error processing your file. This usually means that your project has "
-                                              "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
-                                              "or you can try to use a backup file if you have one. If you contact us through one of "
-                                              "our offical channels we may be able to further assist you. For reporting issues, "
-                                              "the best places to reach us are:").append("<ul>"
-                                                "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
-                                                "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
-                                                "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
-                                              "</ul>")));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
     }
 
     loadPalette(obj);
@@ -174,16 +151,7 @@ Object* FileManager::load(QString strFileName)
     {
         delete obj;
         dd << "Issue occurred during object loading";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, tr("Could not open file"),
-                                           tr("There was an error processing your file. This usually means that your project has "
-                                              "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
-                                              "or you can try to use a backup file if you have one. If you contact us through one of "
-                                              "our offical channels we may be able to further assist you. For reporting issues, "
-                                              "the best places to reach us are:").append("<ul>"
-                                                "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
-                                                "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
-                                                "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
-                                              "</ul>")));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, ""));
     }
 
     verifyObject(obj);
@@ -195,11 +163,9 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
 {
     QDomElement e = root.firstChildElement("object");
     if (e.isNull())
-    {
         return false;
-    }
 
-    bool isOK = true;
+    bool ok = true;
     for (QDomNode node = root.firstChild(); !node.isNull(); node = node.nextSibling())
     {
         QDomElement element = node.toElement(); // try to convert the node to an element.
@@ -210,9 +176,9 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
 
         if (element.tagName() == "object")
         {
-            isOK = object->loadXML(element, [this]{ progressForward(); });
+            ok = object->loadXML(element, [this]{ progressForward(); });
 
-            if (!isOK) qCDebug(mLog) << "Failed to Load object";
+            if (!ok) qCDebug(mLog) << "Failed to Load object";
 
         }
         else if (element.tagName() == "editor" || element.tagName() == "projectdata")
@@ -225,8 +191,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
             Q_ASSERT(false);
         }
     }
-
-    return isOK;
+    return ok;
 }
 
 bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
@@ -236,7 +201,7 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
 
 bool FileManager::isOldForamt(const QString& fileName) const
 {
-    return !MiniZ::isZip(fileName);
+    return !(MiniZ::isZip(fileName));
 }
 
 Status FileManager::save(Object* object, QString strFileName)
