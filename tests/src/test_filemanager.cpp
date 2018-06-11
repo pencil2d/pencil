@@ -217,47 +217,6 @@ TEST_CASE("FileManager Load-a-zip Test")
 {
     SECTION("Load a PCLX zip file")
     {
-        QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
-        REQUIRE(testDir.isValid());
-
-        // manually build a working project
-        // and use filemanager to load it.
-        QString sWorkFolderPath = testDir.path() + "/project_x";
-        QDir workDir(sWorkFolderPath);
-        REQUIRE(workDir.makeAbsolute());
-        REQUIRE(workDir.mkpath("."));
-
-        QString strMainXMLPath = workDir.filePath(PFF_XML_FILE_NAME);
-
-        QFile theXML(strMainXMLPath);
-        theXML.open(QIODevice::WriteOnly);
-
-        QTextStream fout(&theXML);
-        fout << "<!DOCTYPE PencilDocument><document>";
-        fout << "  <object>";
-        fout << "    <layer name='MyBitmapLayer' id='5' visibility='1' type='1' >";
-        fout << "      <image frame='1' topLeftY='0' src='005.001.png' topLeftX='0' />";
-        fout << "    </layer>";
-        fout << "  </object>";
-        fout << "</document>";
-        theXML.close();
-
-        REQUIRE(workDir.mkdir(PFF_DATA_DIR));
-       
-        QImage img(10, 10, QImage::Format_ARGB32_Premultiplied);
-        REQUIRE(img.save(workDir.absolutePath() + "/" PFF_DATA_DIR "/005.001.png"));
-
-        QString pclxFile = QDir(testDir.path()).filePath("test-animation.pclx");
-        REQUIRE(MiniZ::compressFolder(pclxFile, workDir.absolutePath()));
-
-        FileManager fm;
-        Object* o = fm.load(pclxFile);
-
-        REQUIRE(fm.error().ok());
-
-        Layer* layer = o->getLayer(0);
-        REQUIRE(layer->name() == "MyBitmapLayer");
-        REQUIRE(layer->id() == 5);
     }
 }
 

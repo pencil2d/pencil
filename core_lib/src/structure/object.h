@@ -91,7 +91,7 @@ public:
     int getColourCount() { return mPalette.size(); }
     bool importPalette( QString filePath );
     bool exportPalette( QString filePath );
-    bool savePalette( QString filePath );
+    QString savePalette( QString dataFolder );
 
     void loadDefaultPalette();
 

@@ -18,12 +18,20 @@ GNU General Public License for more details.
 #ifndef PENCILDEF_H
 #define PENCILDEF_H
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 #define PENCIL_MOVIE_EXT \
     QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 
 #define PENCIL_IMAGE_FILTER \
    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;GIF(*.gif)" )
 
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
+#define S__GIT_COMMIT_HASH TOSTRING(GIT_CURRENT_SHA1)
 
 enum ToolType : int
 {
@@ -137,6 +145,7 @@ enum StabilizationLevel
 #define CMD_TOGGLE_TOOLBOX "CmdToggleToolBox"
 #define CMD_TOGGLE_TOOL_OPTIONS "CmdToggleToolOptions"
 #define CMD_TOGGLE_COLOR_WHEEL "CmdToggleColorWheel"
+#define CMD_TOGGLE_COLOR_INSPECTOR "CmdToggleColorInspector"
 #define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
 #define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
@@ -189,6 +198,7 @@ enum StabilizationLevel
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
 #define SETTING_ONION_PREV_FRAMES_NUM   "OnionPrevFramesNum"
 #define SETTING_ONION_NEXT_FRAMES_NUM   "OnionNextFramesNum"
+#define SETTING_ONION_WHILE_PLAYBACK    "OnionWhilePlayback"
 #define SETTING_ONION_TYPE              "OnionType"
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"

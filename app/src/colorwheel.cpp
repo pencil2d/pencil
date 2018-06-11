@@ -14,18 +14,22 @@ GNU General Public License for more details.
 
 */
 
-#include <cmath>
+#include <QVBoxLayout>
 #include <QtMath>
 #include <QPainter>
 #include <QResizeEvent>
+#include <QPixmapCache>
 #include <QStyleOption>
+#include <QStylePainter>
 #include <QRect>
 #include <QDebug>
+#include "pencildef.h"
 
 #include "colorwheel.h"
 
 ColorWheel::ColorWheel(QWidget* parent) : QWidget(parent)
 {
+    setWindowTitle(tr("Color Wheel", "Color Wheel's window title"));
     mCurrentColor = mCurrentColor.toHsv();
     setMinimumHeight(100);
 }
@@ -35,84 +39,22 @@ QColor ColorWheel::color()
     return mCurrentColor;
 }
 
-void ColorWheel::changeColor(const QColor& color)
+void ColorWheel::setColor(QColor color)
 {
-    if (color.toHsv() == mCurrentColor)
+    // this is a UI updating function, never emit any signals
+    // and don't call any functions that will emit signals
+
+    color = color.toHsv();
+
+    if (color == mCurrentColor)
     {
         return;
     }
 
-    if (color.spec() == QColor::Spec::Rgb)
-        changeRgbColors(color);
-    else
-        changeHsvColors(color);
-
-    if (color.alpha() != mCurrentColor.alpha())
-    {
-        alphaChanged(color.alpha());
-    }
-    update();
-}
-
-void ColorWheel::setColor(const QColor& color)
-{
-    if (color.toHsv() == mCurrentColor)
-    {
-        return;
-    }
-
-    if (color.spec() == QColor::Spec::Rgb)
-        changeRgbColors(color);
-    else if (color.spec() == QColor::Spec::Hsv)
-        changeHsvColors(color);
-    else
-        Q_ASSERT(false);
+    mCurrentColor = color;
 
     drawSquareImage(color.hue());
-
-    if (color.alpha() != mCurrentColor.alpha())
-    {
-        alphaChanged(color.alpha());
-    }
-
     update();
-    emit colorSelected(color);
-}
-
-void ColorWheel::changeRgbColors(const QColor& color)
-{
-    if (color.red() != mCurrentColor.red())
-    {
-        redChanged(color.red());
-    }
-
-    if (color.green() != mCurrentColor.green())
-    {
-        greenChanged(color.green());
-    }
-
-    if (color.blue() != mCurrentColor.blue())
-    {
-        blueChanged(color.blue());
-    }
-}
-
-void ColorWheel::changeHsvColors(const QColor& color)
-{
-    if (color.hue() != mCurrentColor.hue())
-    {
-        hueChanged(color.hue());
-    }
-
-    if (color.saturation() != mCurrentColor.saturation())
-    {
-        saturationChanged(color.saturation());
-    }
-
-    if (color.value() != mCurrentColor.value())
-    {
-        valueChanged(color.value());
-    }
 }
 
 QColor ColorWheel::pickColor(const QPoint& point)
@@ -236,18 +178,23 @@ void ColorWheel::resizeEvent(QResizeEvent* event)
     mWheelPixmap.fill(palette().background().color());
     drawWheelImage(event->size());
     drawSquareImage(mCurrentColor.hue());
+
     update();
 }
 
 void ColorWheel::paintEvent(QPaintEvent*)
 {
-    QPainter painter(this);
+    QPainter painter;
+
+    painter.begin(this);
     QStyleOption opt;
     opt.initFrom(this);
+
     composeWheel(mWheelPixmap);
     painter.translate(width() / 2, height() / 2);
     painter.translate(-mWheelPixmap.width() / 2, -mWheelPixmap.height() / 2);
     painter.drawPixmap(0, 0, mWheelPixmap);
+
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 }
 
@@ -312,17 +259,25 @@ void ColorWheel::drawSquareImage(const int &hue)
     qreal m1 = (width() / 2) - (ir / qSqrt(2));
     qreal m2 = (height() / 2) - (ir / qSqrt(2));
 
-    QImage square(255, 255, QImage::Format_ARGB32_Premultiplied);
+    QImage square(255, 255, QImage::Format_ARGB32);
 
-    for (int i = 0; i < 255; ++i)
-    {
-        for (int j = 0; j < 255; ++j)
-        {
-            QColor color = QColor::fromHsv(hue, i, 255 - j);
-            QRgb rgb = qRgb(color.red(), color.green(), color.blue());
-            square.setPixel(i, j, rgb);
-        }
-    }
+    QLinearGradient colorGradient = QLinearGradient(0, 0, square.width(), 0);
+    colorGradient.setColorAt(0, QColor(255,255,255));
+
+    // color square should always use full value and saturation
+    colorGradient.setColorAt(1, QColor::fromHsv(hue, 255, 255));
+
+    QLinearGradient blackGradient = QLinearGradient(0, 0, 0, square.height());
+    blackGradient.setColorAt(0, QColor(0,0,0,0));
+    blackGradient.setColorAt(1, QColor(0,0,0,255));
+
+    QBrush colorGradiantBrush = QBrush(colorGradient);
+    QBrush blackGradiantBrush = QBrush(blackGradient);
+
+    QPainter painter(&square);
+
+    painter.fillRect(square.rect(), colorGradiantBrush);
+    painter.fillRect(square.rect(), blackGradiantBrush);
 
     qreal SquareWidth = 2 * ir / qSqrt(2.1);
     mSquareImage = square.scaled(SquareWidth, SquareWidth);
@@ -358,25 +313,28 @@ void ColorWheel::drawPicker(const QColor& color)
 {
     QPainter painter(&mWheelPixmap);
     painter.setRenderHint(QPainter::Antialiasing);
+    int ellipseSize = 10;
 
-    QPoint squareTopLeft = mSquareRegion.boundingRect().topLeft();
+    QPoint squareTopLeft = mSquareRegion.boundingRect().topLeft()-QPoint(1,1);
 
-    painter.translate(squareTopLeft.x(), squareTopLeft.y());
+    QSize squareSize = mSquareRegion.boundingRect().size() * 1.01;
 
-    QSize squareSize = mSquareRegion.boundingRect().size();
-
-    qreal S = color.saturationF() * squareSize.width();
-    qreal V = squareSize.height() - (color.valueF() * squareSize.height());
+    qreal S = color.hsvSaturationF() * (squareSize.width());
+    qreal V = (squareSize.height() - (color.valueF() * squareSize.height()));
 
     QPen pen;
-    pen.setWidth(3);
-    if (color.saturation() > 30 || color.value() < 50)
+    pen.setWidth(1);
+    if (color.hsvSaturation() > 30 || color.value() < 50)
     {
         pen.setColor(Qt::white);
     }
     painter.setPen(pen);
 
-    painter.drawEllipse(S - 2, V - 2, 10, 10);
+    QTransform transform;
+    transform.translate(-ellipseSize/2,-ellipseSize/2);
+    transform.translate(squareTopLeft.x()+2,squareTopLeft.y()+2);
+    painter.setTransform(transform);
+    painter.drawEllipse(S, V, ellipseSize, ellipseSize);
 }
 
 void ColorWheel::composeWheel(QPixmap& pixmap)
@@ -387,61 +345,9 @@ void ColorWheel::composeWheel(QPixmap& pixmap)
     composePainter.translate(-mSquareImage.width() / 2, -mSquareImage.height() / 2); //move to center of image
     composePainter.drawImage(0, 0, mSquareImage);
     composePainter.end();
-    drawHueIndicator(mCurrentColor.hue());
+    drawHueIndicator(mCurrentColor.hsvHue());
     drawPicker(mCurrentColor);
 }
-
-void ColorWheel::redChanged(const int &red)
-{
-    int g = mCurrentColor.green();
-    int b = mCurrentColor.blue();
-    int a = mCurrentColor.alpha();
-
-    mCurrentColor.setRgb(red, g, b, a);
-
-    if (!isVisible())
-    {
-        return;
-    }
-
-    update();
-    emit colorChanged(mCurrentColor);
-}
-
-void ColorWheel::greenChanged(const int &green)
-{
-    int r = mCurrentColor.red();
-    int b = mCurrentColor.blue();
-    int a = mCurrentColor.alpha();
-
-    mCurrentColor.setRgb(r, green, b, a);
-
-    if (!isVisible())
-    {
-        return;
-    }
-
-    update();
-    emit colorChanged(mCurrentColor);
-}
-
-void ColorWheel::blueChanged(const int &blue)
-{
-    int r = mCurrentColor.red();
-    int g = mCurrentColor.green();
-    int a = mCurrentColor.alpha();
-
-    mCurrentColor.setRgb(r, g, blue, a);
-
-    if (!isVisible())
-    {
-        return;
-    }
-
-    update();
-    emit colorChanged(mCurrentColor);
-}
-
 
 void ColorWheel::hueChanged(const int &hue)
 {
@@ -449,7 +355,7 @@ void ColorWheel::hueChanged(const int &hue)
     {
         return;
     }
-    int s = mCurrentColor.saturation();
+    int s = mCurrentColor.hsvSaturation();
     int v = mCurrentColor.value();
     int a = mCurrentColor.alpha();
 
@@ -468,7 +374,7 @@ void ColorWheel::hueChanged(const int &hue)
 
 void ColorWheel::saturationChanged(const int &sat)
 {
-    int hue = mCurrentColor.hue();
+    int hue = mCurrentColor.hsvHue();
     int value = mCurrentColor.value();
     int alpha = mCurrentColor.alpha();
 
@@ -480,23 +386,11 @@ void ColorWheel::saturationChanged(const int &sat)
 
 void ColorWheel::valueChanged(const int &value)
 {
-    int hue = mCurrentColor.hue();
-    int sat = mCurrentColor.saturation();
+    int hue = mCurrentColor.hsvHue();
+    int sat = mCurrentColor.hsvSaturation();
     int alpha = mCurrentColor.alpha();
     mCurrentColor.setHsv(hue, sat, value, alpha);
 
     update();
-    emit colorChanged(mCurrentColor);
-}
-
-void ColorWheel::alphaChanged(const int &alpha)
-{
-    mCurrentColor.setAlpha(alpha);
-
-    if (!isVisible())
-    {
-        return;
-    }
-
     emit colorChanged(mCurrentColor);
 }

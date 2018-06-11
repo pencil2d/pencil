@@ -573,6 +573,8 @@ void ActionCommands::moveFrameForward()
             mEditor->scrubForward();
         }
     }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
 }
 
 void ActionCommands::moveFrameBackward()

@@ -20,6 +20,13 @@ GNU General Public License for more details.
 #include <QProcess>
 #include <QProgressDialog>
 #include <QSysInfo>
+#include <QSettings>
+#include <QDebug>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
+  #include <QOperatingSystemVersion>
+#endif
+
 #include "object.h"
 #include "editor.h"
 #include "pencildef.h"
@@ -59,7 +66,7 @@ void enableCoalescing()
     SetMouseCoalescingEnabled(true, NULL);
 }
 
-void Editor::importMovie (QString filePath, int fps)
+void Editor::importMovie(QString filePath, int fps)
 {
 
     int i;
@@ -96,7 +103,9 @@ void Editor::importMovie (QString filePath, int fps)
         {qDebug() << "ERROR: FFmpeg did not finish executing.";}
     }
     else
-    {qDebug() << "Please install FFMPEG: sudo apt-get install ffmpeg";}
+    {
+        qDebug() << "Please install FFMPEG: sudo apt-get install ffmpeg";
+    }
     progress.setValue(50);
     QDir dir1(tempPath);
     int nFiles = dir1.entryList().count();

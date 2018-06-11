@@ -64,8 +64,9 @@ private slots:
     void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
-    void onActiveColorNameChange(QString name);
+    void onItemChanged(QListWidgetItem* item);
     void clickAddColorButton();
+    void clickColorDialogButton();
     void clickRemoveColorButton();
     void palettePreferences();
     void setListMode();
@@ -88,11 +89,15 @@ private:
     QAction* mSmallSwatchAction = nullptr;
     QAction* mMediumSwatchAction = nullptr;
     QAction* mLargeSwatchAction = nullptr;
-    QAction* mSeparator;
+    QAction* mSeparator = nullptr;
 
     QSize mIconSize{ 34, 34 };
     QMenu* mToolMenu = nullptr;
     int stepper = 0;
+
+    QString buttonStylesheet;
+
+    bool mIsColorDialog = false;
 
 };
 

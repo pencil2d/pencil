@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QDebug>
+#include <QtMath>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -528,34 +529,46 @@ void BitmapImage::clear(QRect rectangle)
     modification();
 }
 
-bool BitmapImage::compareColor(QRgb color1, QRgb color2, int tolerance)
+/** Compare colors for the purposes of flood filling
+ *
+ *  Calculates the Eulcidian difference of the RGB channels
+ *  of the image and compares it to the tolerance
+ *
+ *  @param[in] newColor The first color to compare
+ *  @param[in] oldColor The second color to compare
+ *  @param[in] tolerance The threshold limit between a matching and non-matching color
+ *  @param[in,out] cache Contains a mapping of previous results of compareColor with rule that
+ *                 cache[someColor] = compareColor(someColor, oldColor, tolerance)
+ *
+ *  @return Returns true if the colors have a similarity below the tolerance level
+ *          (i.e. if Eulcidian distance squared is <= tolerance)
+ */
+bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache)
 {
-    if (color1 == color2) return true;
+    // Handle trivial case
+    if (newColor == oldColor) return true;
 
-    int red1 = qRed(color1);
-    int green1 = qGreen(color1);
-    int blue1 = qBlue(color1);
-    int alpha1 = qAlpha(color1);
+    if(cache && cache->contains(newColor)) return cache->value(newColor);
 
-    int red2 = qRed(color2);
-    int green2 = qGreen(color2);
-    int blue2 = qBlue(color2);
-    int alpha2 = qAlpha(color2);
+    // Get Eulcidian distance between colors
+    // Not an accurate representation of human perception,
+    // but it's the best any image editing program ever does
+    int diffRed = qPow(qRed(oldColor) - qRed(newColor), 2);
+    int diffGreen = qPow(qGreen(oldColor) - qGreen(newColor), 2);
+    int diffBlue = qPow(qBlue(oldColor) - qBlue(newColor), 2);
+    // This may not be the best way to handle alpha since the other channels become less relevant as
+    // the alpha is reduces (ex. QColor(0,0,0,0) is the same as QColor(255,255,255,0))
+    int diffAlpha = qPow(qAlpha(oldColor) - qAlpha(newColor), 2);
 
-    int diffRed = abs(red2 - red1);
-    int diffGreen = abs(green2 - green1);
-    int diffBlue = abs(blue2 - blue1);
-    int diffAlpha = abs(alpha2 - alpha1);
+    bool isSimilar = (diffRed + diffGreen + diffBlue + diffAlpha) <= tolerance;
 
-    if (diffRed > tolerance ||
-        diffGreen > tolerance ||
-        diffBlue > tolerance ||
-        diffAlpha > tolerance)
+    if(cache)
     {
-        return false;
+        Q_ASSERT(cache->contains(isSimilar) ? isSimilar == (*cache)[newColor] : true);
+        (*cache)[newColor] = isSimilar;
     }
 
-    return true;
+    return isSimilar;
 }
 
 // Flood fill
@@ -563,14 +576,19 @@ bool BitmapImage::compareColor(QRgb color1, QRgb color2, int tolerance)
 void BitmapImage::floodFill(BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
-                            QRgb oldColor,
                             QRgb newColor,
                             int tolerance)
 {
-    if (oldColor == newColor)
+    // If the point we are supposed to fill is outside the image and camera bounds, do nothing
+    if(!cameraRect.united(targetImage->bounds()).contains(point))
+    {
         return;
-    
-    oldColor = targetImage->pixel(point);
+    }
+
+    // Square tolerance for use with compareColor
+    tolerance = qPow(tolerance, 2);
+
+    QRgb oldColor = targetImage->pixel(point);
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
 
     // Preparations
@@ -579,6 +597,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
     BitmapImage* replaceImage = nullptr;
     QPoint tempPoint;
     QRgb newPlacedColor = 0;
+    QScopedPointer< QHash<QRgb, bool> > cache(new QHash<QRgb, bool>());
 
     int xTemp = 0;
     bool spanLeft = false;
@@ -602,12 +621,12 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
 
         newPlacedColor = replaceImage->constScanLine(xTemp, point.y());
         while (xTemp >= targetImage->topLeft().x() &&
-               compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance)) xTemp--;
+               compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data())) xTemp--;
         xTemp++;
 
         spanLeft = spanRight = false;
         while (xTemp <= targetImage->right() &&
-               compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance) &&
+               compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data()) &&
                newPlacedColor != newColor)
         {
 
@@ -615,23 +634,23 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
             replaceImage->scanLine(xTemp, point.y(), newColor);
 
             if (!spanLeft && (point.y() > targetImage->top()) &&
-                compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance)) {
+                compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
                 queue.append(QPoint(xTemp, point.y() - 1));
                 spanLeft = true;
             }
             else if (spanLeft && (point.y() > targetImage->top()) &&
-                     !compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance)) {
+                     !compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
                 spanLeft = false;
             }
 
             if (!spanRight && point.y() < targetImage->bottom() &&
-                compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance)) {
+                compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance, cache.data())) {
                 queue.append(QPoint(xTemp, point.y() + 1));
                 spanRight = true;
 
             }
             else if (spanRight && point.y() < targetImage->bottom() &&
-                     !compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance)) {
+                     !compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance, cache.data())) {
                 spanRight = false;
             }
 

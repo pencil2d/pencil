@@ -58,11 +58,11 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.6.0</string>
+	<string>0.6.2</string>
 	<key>CFBundleSignature</key>
 	<string>PC2D</string>
 	<key>CFBundleVersion</key>
-	<string>0.6.0.0</string>
+	<string>0.6.2d</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.graphics-design</string>
 	<key>NSHighResolutionCapable</key>

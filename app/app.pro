@@ -58,7 +58,8 @@ HEADERS += \
     src/exportimagedialog.h \
     src/importimageseqdialog.h \
     src/spinslider.h \
-    src/doubleprogressdialog.h
+    src/doubleprogressdialog.h \
+    src/colorslider.h
 
 SOURCES += \
     src/main.cpp \
@@ -85,7 +86,8 @@ SOURCES += \
     src/exportimagedialog.cpp \
     src/importimageseqdialog.cpp \
     src/spinslider.cpp \
-    src/doubleprogressdialog.cpp
+    src/doubleprogressdialog.cpp \
+    src/colorslider.cpp
 
 FORMS += \
     ui/mainwindow2.ui \

@@ -36,6 +36,7 @@ class ToolBoxWidget;
 class PreferencesDialog;
 class PreviewWidget;
 class ColorBox;
+class ColorInspector;
 class RecentFileMenu;
 class Timeline2;
 class ActionCommands;
@@ -67,7 +68,7 @@ public:
 
 public:
     void setOpacity(int opacity);
-    void newDocument();
+    void newDocument(bool force = false);
     void openDocument();
     bool saveDocument();
     bool saveAsNewDocument();
@@ -98,7 +99,7 @@ private slots:
     void resetAndDockAllSubWidgets();
 
 private:
-    bool openObject(QString strFilename);
+    bool openObject(QString strFilename, bool checkForChanges);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();
@@ -117,7 +118,8 @@ private:
     void changePlayState(bool isPlaying);
 
     void makeConnections(Editor*);
-    void makeConnections(Editor*, ColorBox*);
+    void makeConnections(Editor*, ColorBox* colorBox);
+    void makeConnections(Editor*, ColorInspector*);
     void makeConnections(Editor*, ScribbleArea*);
     void makeConnections(Editor*, ColorPaletteWidget*);
     void makeConnections(Editor*, TimeLine*);
@@ -127,7 +129,7 @@ private:
     void bindActionWithSetting(QAction*, SETTING);
 
     // UI: Dock widgets
-    ColorBox*             mColorWheel = nullptr;
+    ColorBox*           mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
@@ -138,6 +140,7 @@ private:
     HistoryViewerWidget* mHistoryView = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr; // be public temporary
+    ColorInspector*       mColorInspector = nullptr;
 
     // backup
     const BackupElement* mBackupAtSave = nullptr;

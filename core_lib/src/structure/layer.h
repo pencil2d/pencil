@@ -64,13 +64,13 @@ public:
     bool visible() const { return mVisible; }
     void setVisible(bool b) { mVisible = b; }
 
-    // KeyFrame interface
-    int getMaxKeyFramePosition() const;
-    int firstKeyFramePosition() const;
-
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) = 0;
+
+    // KeyFrame interface
+    int getMaxKeyFramePosition() const;
+    int firstKeyFramePosition() const;
 
     bool keyExists(int position) const;
     int  getPreviousKeyFramePosition(int position) const;
@@ -90,7 +90,7 @@ public:
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
-    KeyFrame *getKeyFrameWhichCovers(int frameNumber);
+    KeyFrame *getKeyFrameWhichCovers(int frameNumber) const;
     bool getVisibility() { return mVisible; }
 
     std::map<int, KeyFrame*, std::greater<int>> getKeysInLayer() { return mKeyFrames; }
@@ -101,7 +101,7 @@ public:
     // Handle selection
     int getFirstFrameInSelection();
     int getLastFrameInSelection();
-    bool isFrameSelected(int position);
+    bool isFrameSelected(int position) const;
     void setFrameSelected(int position, bool isSelected);
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);
@@ -110,7 +110,7 @@ public:
 
     bool moveSelectedFrames(int offset);
 
-    Status save(QString dataFolder, ProgressCallback progressStep);
+    Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
@@ -121,7 +121,7 @@ public:
 
     virtual void editProperties();
 
-    bool isPaintable();
+    bool isPaintable() const;
 
 protected:
     void setId(int LayerId) { mId = LayerId; }

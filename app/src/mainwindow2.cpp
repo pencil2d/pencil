@@ -59,6 +59,7 @@ GNU General Public License for more details.
 // app headers
 #include "scribblearea.h"
 #include "colorbox.h"
+#include "colorinspector.h"
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
 #include "tooloptionwidget.h"
@@ -163,9 +164,13 @@ void MainWindow2::createDockWidgets()
     mTimeLine = new TimeLine(this);
     mTimeLine->setObjectName("TimeLine");
 
-    mColorWheel = new ColorBox(this);
-    mColorWheel->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
-    mColorWheel->setObjectName("ColorWheel");
+    mColorBox = new ColorBox(this);
+    mColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
+    mColorBox->setObjectName("ColorWheel");
+
+    mColorInspector = new ColorInspector(this);
+    mColorInspector->setToolTip(tr("Color inspector"));
+    mColorInspector->setObjectName("Color Inspector");
 
     mColorPalette = new ColorPaletteWidget(this);
     mColorPalette->setObjectName("ColorPalette");
@@ -190,13 +195,15 @@ void MainWindow2::createDockWidgets()
 
     mDockWidgets
         << mTimeLine
-        << mColorWheel
+        << mColorBox
+        << mColorInspector
         << mColorPalette
         << mDisplayOptionWidget
         << mToolOptions
         << mToolBox
         << mHistoryView;
 
+//    mColorInspector->setFloating(true);
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
 
@@ -212,11 +219,12 @@ void MainWindow2::createDockWidgets()
         qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
-    addDockWidget(Qt::RightDockWidgetArea, mColorWheel);
+    addDockWidget(Qt::RightDockWidgetArea, mColorBox);
+    addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
-    addDockWidget(Qt::RightDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
+    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     addDockWidget(Qt::RightDockWidgetArea, mHistoryView);
     setDockNestingEnabled(true);
@@ -232,7 +240,8 @@ void MainWindow2::createDockWidgets()
 
     makeConnections(mEditor);
     makeConnections(mEditor, mTimeLine);
-    makeConnections(mEditor, mColorWheel);
+    makeConnections(mEditor, mColorBox);
+    makeConnections(mEditor, mColorInspector);
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
 
@@ -317,6 +326,7 @@ void MainWindow2::createMenus()
     connect(pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, mTimeLine, &TimeLine::setRangeState);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState);
+    connect(pPlaybackManager, &PlaybackManager::playStateChanged, mEditor, &Editor::updateCurrentFrame);
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::addNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
@@ -349,10 +359,11 @@ void MainWindow2::createMenus()
     {
         mToolBox->toggleViewAction(),
         mToolOptions->toggleViewAction(),
-        mColorWheel->toggleViewAction(),
+        mColorBox->toggleViewAction(),
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
-        mDisplayOptionWidget->toggleViewAction()
+        mDisplayOptionWidget->toggleViewAction(),
+        mColorInspector->toggleViewAction()
     };
 
     for (QAction* action : actions)
@@ -446,9 +457,9 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
     event->ignore();
 }
 
-void MainWindow2::newDocument()
+void MainWindow2::newDocument(bool force)
 {
-    if (maybeSave())
+    if (force || maybeSave())
     {
         Object* object = new Object();
         object->init();
@@ -485,14 +496,8 @@ void MainWindow2::openDocument()
             return;
         }
 
-        bool ok = openObject(fileName);
-        if (!ok)
-        {
-            QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
-            newDocument();
-        }
+        openObject(fileName, false);
     }
-    updateSaveState();
 }
 
 bool MainWindow2::saveAsNewDocument()
@@ -513,16 +518,53 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile(QString filename)
 {
-    bool ok = openObject(filename);
-    if (!ok)
-    {
-        QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
-        newDocument();
-    }
+    openObject(filename, true);
 }
 
-bool MainWindow2::openObject(QString strFilePath)
+bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 {
+    if(checkForChanges && !maybeSave()) return false; // Open cancelled by user
+
+    // Check for potential issues with the file
+    QFileInfo fileInfo(strFilePath);
+    if (fileInfo.isDir())
+    {
+        ErrorDialog errorDialog(tr("Could not open file"),
+                                tr("The file you have selected is a directory, so we are unable to open it. "
+                                   "If you are are trying to open a project that uses the old structure, please "
+                                   "open the file ending with .pcl, not the data folder."),
+                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+        errorDialog.exec();
+        return false;
+    }
+    if (!fileInfo.exists())
+    {
+        ErrorDialog errorDialog(tr("Could not open file"),
+                                tr("The file you have selected does not exist, so we are unable to open it. Please check "
+                                   "to make sure that you've entered the correct path and that the file is accessible and try again."),
+                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+        errorDialog.exec();
+        return false;
+    }
+    if (!fileInfo.isReadable())
+    {
+        ErrorDialog errorDialog(tr("Could not open file"),
+                                tr("This program does not have permission to read the file you have selected. "
+                                   "Please check that you have read permissions for this file and try again."),
+                                QString("Raw file path: %1\nResolved file path: %2\nPermissions: 0x%3") \
+                                .arg(strFilePath, fileInfo.absoluteFilePath(), QString::number(fileInfo.permissions(), 16)));
+        errorDialog.exec();
+        return false;
+    }
+    if (!fileInfo.isWritable())
+    {
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("This program does not currently have permission to write to the file you have selected. "
+                                "Please make sure you have write permission for this file before attempting to save it. "
+                                "Alternatively, you can use the Save As... menu option to save to a writable location."),
+                             QMessageBox::Ok);
+    }
+
     QProgressDialog progress(tr("Opening document..."), tr("Abort"), 0, 100, this);
 
     // Don't show progress bar if running without a GUI (aka. when rendering from command line)
@@ -550,8 +592,27 @@ bool MainWindow2::openObject(QString strFilePath)
 
     Object* object = fm.load(strFilePath);
 
-    if (object == nullptr || !fm.error().ok())
+    if (!fm.error().ok())
     {
+        Status error = fm.error();
+        DebugDetails dd;
+        dd << QString("Raw file path: ").append(strFilePath)
+           << QString("Resolved file path: ").append(fileInfo.absoluteFilePath());
+        dd.collect(error.details());
+        ErrorDialog errorDialog(error.title(),
+                                error.description(),
+                                dd.str());
+        errorDialog.exec();
+        newDocument(true);
+        return false;
+    }
+
+    if (object == nullptr) {
+        ErrorDialog errorDialog(tr("Could not open file"),
+                                tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
+                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+        errorDialog.exec();
+        newDocument(true);
         return false;
     }
 
@@ -571,13 +632,14 @@ bool MainWindow2::openObject(QString strFilePath)
 
     // Refresh the Palette
     mColorPalette->refreshColorList();
-    mEditor->color()->setColorNumber(0);
     mEditor->layers()->notifyAnimationLengthChanged();
 
     // clear backup stack
     mEditor->backups()->undoStack()->clear();
 
     progress.setValue(progress.maximum());
+
+    updateSaveState();
 
     return true;
 }
@@ -620,7 +682,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
         if (eLog.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             QTextStream out(&eLog);
-            out << st.details().replace("<br>", "\n", Qt::CaseInsensitive);
+            out << st.details().str(); // .replace("<br>", "\n", Qt::CaseInsensitive);
         }
         eLog.close();
 
@@ -628,7 +690,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
                                 st.description().append(tr("<br><br>An error has occurred and your file may not have saved successfully."
                                                            "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
                                                            "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
-                                                           "Please be sure to include the following details in your issue:")), st.details());
+                                                           "Please be sure to include the following details in your issue:")), st.details().html());
         errorDialog.exec();
         return false;
     }
@@ -786,6 +848,11 @@ void MainWindow2::importImageSequence()
                 failedImport = true;
             }
         }
+
+        for (int i = 1; i < number; i++)
+        {
+            mEditor->scrubForward();
+        }
     }
 
     if (failedImport)
@@ -795,11 +862,6 @@ void MainWindow2::importImageSequence()
                              tr("was unable to import") + failedFiles,
                              QMessageBox::Ok,
                              QMessageBox::Ok);
-    }
-
-    for (int i = 1; i < number; i++)
-    {
-        mEditor->scrubForward();
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
@@ -824,7 +886,8 @@ void MainWindow2::lockWidgets(bool shouldLock)
 {
     QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
 
-    mColorWheel->setFeatures(feat);
+    mColorBox->setFeatures(feat);
+    mColorInspector->setFeatures(feat);
     mColorPalette->setFeatures(feat);
     mDisplayOptionWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
@@ -991,10 +1054,11 @@ void MainWindow2::setupKeyboardShortcuts()
 
     mToolBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOLBOX));
     mToolOptions->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOL_OPTIONS));
-    mColorWheel->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
+    mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
     mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
+    mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
@@ -1048,6 +1112,12 @@ void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
     connect(editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor);
 }
 
+void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector)
+{
+    connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setColor);
+    connect(editor->color(), &ColorManager::colorChanged, colorInspector, &ColorInspector::setColor);
+}
+
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
@@ -1079,6 +1149,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::modifiedCamera, mCommands, &ActionCommands::editCameraProperties);
 
     connect(pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType);
+    connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);

@@ -38,6 +38,7 @@ install:
   - "%PYTHON3% -m pip install -r requirements.txt"
   - "%PYTHON3% -m pip install setuptools"
   - "%PYTHON3% -m pip install virtualenvwrapper"
+  - "%PYTHON3% -m pip install --upgrade oauth2client"
   - "%PYTHON3% -m pip install --upgrade google-api-python-client"
   - "%PYTHON3%  -V"
   - set QTDIR=C:\Qt\%qt%

@@ -15,13 +15,17 @@ GNU General Public License for more details.
 
 */
 #include "colorpalettewidget.h"
+#include "ui_colorpalette.h"
+
+#include <cmath>
 
 #include <QDebug>
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QInputDialog>
 #include <QColorDialog>
-#include "ui_colorpalette.h"
+#include <QToolBar>
+#include <QSettings>
 
 #include "colordictionary.h"
 #include "colourref.h"
@@ -62,14 +66,25 @@ void ColorPaletteWidget::initUI()
     else
         setGridMode();
 
+    buttonStylesheet = "::menu-indicator{ image: none; }"
+                             "QPushButton { border: 0px; }"
+                             "QPushButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
+                             "QPushButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
+
+    ui->addColorButton->setStyleSheet(buttonStylesheet);
+    ui->removeColorButton->setStyleSheet(buttonStylesheet);
+    ui->colorDialogButton->setStyleSheet(buttonStylesheet);
+
     palettePreferences();
 
     connect(ui->colorListWidget, &QListWidget::currentItemChanged, this, &ColorPaletteWidget::colorListCurrentItemChanged);
     connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
+
     connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
-    connect(ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange);
+    connect(ui->colorListWidget, &QListWidget::itemChanged, this, &ColorPaletteWidget::onItemChanged);
 
     connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
+    connect(ui->colorDialogButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickColorDialogButton);
     connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
 }
 
@@ -90,6 +105,7 @@ void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
         emit colorChanged(newColor);
     }
 }
+
 
 void ColorPaletteWidget::selectColorNumber(int colorNumber)
 {
@@ -170,12 +186,11 @@ void ColorPaletteWidget::changeColourName(QListWidgetItem* item)
     }
 }
 
-void ColorPaletteWidget::onActiveColorNameChange(QString name)
+void ColorPaletteWidget::onItemChanged(QListWidgetItem* item)
 {
-    if (!name.isNull())
-    {
-        editor()->object()->renameColour(ui->colorListWidget->currentRow(), name);
-    }
+    int index = ui->colorListWidget->currentRow();
+    QString newColorName = item->text();
+    editor()->object()->renameColour(index, newColorName);
 }
 
 void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
@@ -202,7 +217,17 @@ void ColorPaletteWidget::palettePreferences()
     mSeparator = new QAction("", this);
     mSeparator->setSeparator(true);
 
+    buttonStylesheet = "::menu-indicator{ image: none; }"
+                             "QToolButton { border: 0px; }"
+                             "QToolButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
+                             "QToolButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
+
+
     // Add to UI
+    ui->palettePref->setIcon(QIcon(":/app/icons/new/svg/more_options.svg"));
+    ui->palettePref->setIconSize(QSize(15,15));
+    ui->palettePref->setArrowType(Qt::ArrowType::NoArrow);
+    ui->palettePref->setStyleSheet(buttonStylesheet);
     ui->palettePref->addAction(ui->listModeAction);
     ui->palettePref->addAction(ui->gridModeAction);
     ui->palettePref->addAction(mSeparator);
@@ -324,6 +349,8 @@ void ColorPaletteWidget::updateGridUI()
 
 QString ColorPaletteWidget::getDefaultColorName(QColor c)
 {
+    using std::pow;
+
     // Separate rgb values for convenience
     const int r = c.red();
     const int g = c.green();
@@ -338,7 +365,7 @@ QString ColorPaletteWidget::getDefaultColorName(QColor c)
     // Convert XYZ to CEI L*u*v
     // (algorithm source: https://www.cs.rit.edu/~ncs/color/t_convert.html#XYZ%20to%20CIE%20L*a*b*%20(CIELAB)%20&%20CIELAB%20to%20XYZ)
     // Helper function for the conversion
-    auto f = [](const double a) { return a > 0.008856 ? cbrt(a) : 7.787 * a + 16 / 116; };
+    auto f = [](const double a) { return a > 0.008856 ? std::cbrt(a) : 7.787 * a + 16 / 116; };
     // XYZ tristimulus values for D65 (taken from: https://en.wikipedia.org/wiki/Illuminant_D65#Definition)
     const qreal xn = 95.047,
         yn = 100,
@@ -379,16 +406,32 @@ QString ColorPaletteWidget::getDefaultColorName(QColor c)
     return nameDict[minLoc];
 }
 
+void ColorPaletteWidget::clickColorDialogButton()
+{
+    mIsColorDialog = true;
+    clickAddColorButton();
+    mIsColorDialog = false;
+}
+
 void ColorPaletteWidget::clickAddColorButton()
 {
     QColor prevColor = Qt::white;
 
-    if (currentColourNumber() > -1)
+    if (editor()->object()->getLayer(editor()->currentLayerIndex())->type() == Layer::VECTOR)
     {
-        prevColor = editor()->object()->getColour(currentColourNumber()).colour;
+        if (currentColourNumber() > -1)
+        {
+             prevColor = editor()->object()->getColour(currentColourNumber()).colour;
+        }
     }
 
-    QColor newColour = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
+    QColor newColour;
+    if (mIsColorDialog) {
+        newColour = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
+    } else {
+        newColour = editor()->color()->frontColor();
+    }
+
     if (!newColour.isValid())
     {
         // User canceled operation

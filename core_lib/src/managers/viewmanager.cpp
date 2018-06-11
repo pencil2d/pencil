@@ -58,7 +58,7 @@ Status ViewManager::load(Object*)
 Status ViewManager::save(Object* o)
 {
     o->data()->setCurrentView(mView);
-    return Status();
+    return Status::OK;
 }
 
 void ViewManager::workingLayerChanged(Layer* layer)

@@ -24,52 +24,70 @@ GNU General Public License for more details.
 #include "object.h"
 
 
+QString openErrorTitle = QObject::tr("Could not open file");
+QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
+                         "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
+                         "or you can try to use a backup file if you have one. If you contact us through one of "
+                         "our offical channels we may be able to help you. For reporting issues, "
+                         "the best places to reach us are:");
+QString contactLinks = "<ul>"
+                       "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
+                       "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
+                       "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
+                       "</ul>";
+
+
 FileManager::FileManager(QObject *parent) : QObject(parent),
 mLog("FileManager")
 {
     ENABLE_DEBUG_LOG(mLog, false);
 }
 
-Object* FileManager::load(QString strFileName)
+Object* FileManager::load(QString sFileName)
 {
-    if (!QFile::exists(strFileName))
+    DebugDetails dd;
+    dd << QString("File name: ").append(sFileName);
+    if (!QFile::exists(sFileName))
     {
         qCDebug(mLog) << "ERROR - File doesn't exist.";
-        return cleanUpWithErrorCode(Status::FILE_NOT_FOUND);
+        return cleanUpWithErrorCode(Status(Status::FILE_NOT_FOUND, dd, tr("Could not open file"),
+                                           tr("The file does not exist, so we are unable to open it. Please check "
+                                           "to make sure the path is correct and that the file is accessible and try again.")));
     }
 
     progressForward();
 
     Object* obj = new Object;
-    obj->setFilePath(strFileName);
+    obj->setFilePath(sFileName);
     obj->createWorkingDir();
 
     QString strMainXMLFile;
     QString strDataFolder;
 
     // Test file format: new zipped .pclx or old .pcl?
-    bool oldFormat = isOldForamt(strFileName);
+    bool oldFormat = isOldForamt(sFileName);
+    dd << QString("Is old format: ").append(oldFormat ? "true" : "false");
 
     if (oldFormat)
     {
-        qCDebug(mLog) << "Recognized Old Pencil File Format (*.pcl) !";
+        dd << "Recognized Old Pencil File Format (*.pcl) !";
 
-        strMainXMLFile = strFileName;
+        strMainXMLFile = sFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        qCDebug(mLog) << "Recognized New zipped Pencil File Format (*.pclx) !";
+        dd << "Recognized New zipped Pencil File Format (*.pclx) !";
 
-        unzip(strFileName, obj->workingDir());
+        unzip(sFileName, obj->workingDir());
 
         strMainXMLFile = QDir(obj->workingDir()).filePath(PFF_XML_FILE_NAME);
         strDataFolder = QDir(obj->workingDir()).filePath(PFF_DATA_DIR);
     }
 
-    qCDebug(mLog) << "  XML=" << strMainXMLFile;
-    qCDebug(mLog) << "  Data Folder=" << strDataFolder;
-    qCDebug(mLog) << "  Working Folder=" << obj->workingDir();
+    dd << QString("XML file: ").append(strMainXMLFile)
+       << QString("Data folder: ").append(strDataFolder)
+       << QString("Working folder: ").append(obj->workingDir());
 
     obj->setDataDir(strDataFolder);
     obj->setMainXMLFile(strMainXMLFile);
@@ -79,28 +97,38 @@ Object* FileManager::load(QString strFileName)
     emit progressRangeChanged(mMaxProgressValue);
 
     QFile file(strMainXMLFile);
+    if (!file.exists())
+    {
+        dd << "Main XML file does not exist";
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+    }
     if (!file.open(QFile::ReadOnly))
     {
-        return cleanUpWithErrorCode(Status::ERROR_FILE_CANNOT_OPEN);
+        return cleanUpWithErrorCode(Status(Status::ERROR_FILE_CANNOT_OPEN, dd, tr("Could not open file"),
+                                           tr("This program does not have permission to read the file you have selected. "
+                                              "Please check that you have read permissions for this file and try again.")));
     }
 
     QDomDocument xmlDoc;
     if (!xmlDoc.setContent(&file))
     {
         qCDebug(mLog) << "Couldn't open the main XML file.";
-        return cleanUpWithErrorCode(Status::ERROR_INVALID_XML_FILE);
+        dd << "Error parsing or opening the main XML file";
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
     }
 
     QDomDocumentType type = xmlDoc.doctype();
     if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
     {
-        return cleanUpWithErrorCode(Status::ERROR_INVALID_PENCIL_FILE);
+        dd << QString("Invalid main XML doctype: ").append(type.name());
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
     }
 
     QDomElement root = xmlDoc.documentElement();
     if (root.isNull())
     {
-        return cleanUpWithErrorCode(Status::ERROR_INVALID_PENCIL_FILE);
+        dd << "Main XML root node is null";
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
     }
 
     loadPalette(obj);
@@ -119,7 +147,8 @@ Object* FileManager::load(QString strFileName)
     if (!ok)
     {
         delete obj;
-        return cleanUpWithErrorCode(Status::ERROR_INVALID_PENCIL_FILE);
+        dd << "Issue occurred during object loading";
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, ""));
     }
 
     verifyObject(obj);
@@ -131,11 +160,9 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
 {
     QDomElement e = root.firstChildElement("object");
     if (e.isNull())
-    {
         return false;
-    }
 
-    bool isOK = true;
+    bool ok = true;
     for (QDomNode node = root.firstChild(); !node.isNull(); node = node.nextSibling())
     {
         QDomElement element = node.toElement(); // try to convert the node to an element.
@@ -146,9 +173,9 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
 
         if (element.tagName() == "object")
         {
-            isOK = object->loadXML(element, [this]{ progressForward(); });
+            ok = object->loadXML(element, [this]{ progressForward(); });
 
-            if (!isOK) qCDebug(mLog) << "Failed to Load object";
+            if (!ok) qCDebug(mLog) << "Failed to Load object";
 
         }
         else if (element.tagName() == "editor" || element.tagName() == "projectdata")
@@ -161,8 +188,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
             Q_ASSERT(false);
         }
     }
-
-    return isOK;
+    return ok;
 }
 
 bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
@@ -170,20 +196,21 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
     return object->loadXML(root, [this] { progressForward(); });
 }
 
-bool FileManager::isOldForamt(const QString& fileName)
+bool FileManager::isOldForamt(const QString& fileName) const
 {
-    return (MiniZ::isZip(fileName) == false);
+    return !(MiniZ::isZip(fileName));
 }
 
-Status FileManager::save(Object* object, QString strFileName)
+Status FileManager::save(Object* object, QString sFileName)
 {
-    QStringList debugDetails;
-    debugDetails << "FileManager::save";
-    debugDetails << QString("strFileName = ").append(strFileName);
+    DebugDetails dd;
+    dd << "FileManager::save";
+    dd << ("sFileName = " + sFileName);
 
     if (object == nullptr)
     {
-        return Status(Status::INVALID_ARGUMENT, debugDetails << "object parameter is null");
+        dd << "object parameter is null";
+        return Status(Status::INVALID_ARGUMENT, dd);
     }
 
     int totalCount = object->totalKeyFrameCount();
@@ -192,114 +219,116 @@ Status FileManager::save(Object* object, QString strFileName)
 
     progressForward();
 
-    QFileInfo fileInfo(strFileName);
+    QFileInfo fileInfo(sFileName);
     if (fileInfo.isDir())
     {
-        debugDetails << "FileName points to a directory";
+        dd << "FileName points to a directory";
         return Status(Status::INVALID_ARGUMENT,
-                      debugDetails,
+                      dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") points to a directory.").arg(fileInfo.absoluteFilePath()));
     }
     QFileInfo parentDirInfo(fileInfo.dir().absolutePath());
     if (!parentDirInfo.exists())
     {
-        debugDetails << "The parent directory of strFileName does not exist";
+        dd << "The parent directory of sFileName does not exist";
         return Status(Status::INVALID_ARGUMENT,
-                      debugDetails,
+                      dd,
                       tr("Invalid Save Path"),
                       tr("The directory (\"%1\") does not exist.").arg(parentDirInfo.absoluteFilePath()));
     }
     if ((fileInfo.exists() && !fileInfo.isWritable()) || !parentDirInfo.isWritable())
     {
-        debugDetails << "Filename points to a location that is not writable";
+        dd << "Filename points to a location that is not writable";
         return Status(Status::INVALID_ARGUMENT,
-                      debugDetails,
+                      dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") is not writable.").arg(fileInfo.absoluteFilePath()));
     }
 
-    QString strTempWorkingFolder;
-    QString strMainXMLFile;
-    QString strDataFolder;
+    QString sTempWorkingFolder;
+    QString sMainXMLFile;
+    QString sDataFolder;
 
-    bool isOldFile = strFileName.endsWith(PFF_OLD_EXTENSION);
-    if (isOldFile)
+    bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
+    if (isOldType)
     {
-        qCDebug(mLog) << "Old Pencil File Format (*.pcl) !";
+        dd << "Old Pencil File Format (*.pcl) !";
 
-        strMainXMLFile = strFileName;
-        strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
+        sMainXMLFile = sFileName;
+        sDataFolder = sMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        qCDebug(mLog) << "New zipped Pencil File Format (*.pclx) !";
+        dd << "New zipped Pencil File Format (*.pclx) !";
 
-        strTempWorkingFolder = object->workingDir();
-        Q_ASSERT(QDir(strTempWorkingFolder).exists());
-        debugDetails << QString("strTempWorkingFolder = ").append(strTempWorkingFolder);
+        sTempWorkingFolder = object->workingDir();
+        Q_ASSERT(QDir(sTempWorkingFolder).exists());
+        dd << QString("TempWorkingFolder = ").append(sTempWorkingFolder);
 
-        qCDebug(mLog) << "Temp Folder=" << strTempWorkingFolder;
-        strMainXMLFile = QDir(strTempWorkingFolder).filePath(PFF_XML_FILE_NAME);
-        strDataFolder = QDir(strTempWorkingFolder).filePath(PFF_OLD_DATA_DIR);
+        sMainXMLFile = QDir(sTempWorkingFolder).filePath(PFF_XML_FILE_NAME);
+        sDataFolder = QDir(sTempWorkingFolder).filePath(PFF_OLD_DATA_DIR);
     }
 
-    QFileInfo dataInfo(strDataFolder);
+    QFileInfo dataInfo(sDataFolder);
     if (!dataInfo.exists())
     {
-        QDir dir(strDataFolder); // the directory where all key frames will be saved
+        QDir dir(sDataFolder); // the directory where all key frames will be saved
 
-        if (!dir.mkpath(strDataFolder))
+        if (!dir.mkpath(sDataFolder))
         {
-            debugDetails << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
+            dd << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
 
-            return Status(Status::FAIL, debugDetails,
+            return Status(Status::FAIL, dd,
                           tr("Cannot Create Data Directory"),
-                          tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(strDataFolder));
+                          tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(sDataFolder));
         }
     }
     if (!dataInfo.isDir())
     {
-        debugDetails << QString("dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
+        dd << QString("dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
         return Status(Status::FAIL,
-                      debugDetails,
+                      dd,
                       tr("Cannot Create Data Directory"),
                       tr("\"%1\" is a file. Please delete the file and try again.").arg(dataInfo.absoluteFilePath()));
     }
 
     // save data
-    int layerCount = object->getLayerCount();
-    debugDetails << QString("layerCount = %1").arg(layerCount);
+    int numLayers = object->getLayerCount();
+    dd << QString("Total %1 layers").arg(numLayers);
 
-    bool saveLayerOK = true;
-    for (int i = 0; i < layerCount; ++i)
+    QStringList zippedFiles;
+
+    bool saveLayersOK = true;
+    for (int i = 0; i < numLayers; ++i)
     {
         Layer* layer = object->getLayer(i);
-        debugDetails << QString("layer[%1] = Layer[id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
+        dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
         
-        Status st = layer->save(strDataFolder, [this] { progressForward(); });
+        Status st = layer->save(sDataFolder, zippedFiles, [this] { progressForward(); });
         if (!st.ok())
         {
-            saveLayerOK = false;
-            QStringList layerDetails = st.detailsList();
-            for (QString& detail : layerDetails)
-            {
-                detail.prepend("&nbsp;&nbsp;");
-            }
-            debugDetails << QString("- Layer[%1] failed to save").arg(i) << layerDetails;
+            saveLayersOK = false;
+            dd.collect(st.details());
+            dd << QString("  !! Failed to save Layer[%1] %2").arg(i).arg(layer->name());
         }
     }
+    dd << "All Layers saved";
 
     // save palette
-    object->savePalette(strDataFolder);
-
+    QString sPaletteFile = object->savePalette(sDataFolder);
+    if (!sPaletteFile.isEmpty())
+        zippedFiles.append(sPaletteFile);
+    else
+        dd << "Failed to save the palette xml";
+    
     progressForward();
 
     // -------- save main XML file -----------
-    QFile file(strMainXMLFile);
+    QFile file(sMainXMLFile);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        return Status::ERROR_FILE_CANNOT_OPEN;
+        return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
 
     QDomDocument xmlDoc("PencilDocument");
@@ -311,43 +340,56 @@ Status FileManager::save(Object* object, QString strFileName)
     progressForward();
 
     // save editor information
-    QDomElement projectDataElement = saveProjectData(object->data(), xmlDoc);
-    root.appendChild(projectDataElement);
+    QDomElement projDataXml = saveProjectData(object->data(), xmlDoc);
+    root.appendChild(projDataXml);
 
     // save object
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
 
-    const int IndentSize = 2;
+    dd << "Writing main xml file...";
+
+    const int indentSize = 2;
 
     QTextStream out(&file);
-    xmlDoc.save(out, IndentSize);
+    xmlDoc.save(out, indentSize);
     out.flush();
     file.close();
 
+    dd << "Done writing main xml file";
+
+    zippedFiles.append(sMainXMLFile);
+
     progressForward();
 
-    if (!isOldFile)
+    if (!isOldType)
     {
-        bool ok = MiniZ::compressFolder(strFileName, strTempWorkingFolder);
-        if (!ok)
+        dd << "Miniz";
+
+        QString sBackupFile = backupPreviousFile(sFileName);
+
+        Status s = MiniZ::compressFolder(sFileName, sTempWorkingFolder, zippedFiles);
+        if (!s.ok())
         {
-            return Status(Status::ERROR_MINIZ_FAIL, debugDetails, 
-                          tr("Internal Error"),
+            dd.collect(s.details());
+            return Status(Status::ERROR_MINIZ_FAIL, dd, 
+                          tr("Miniz Error"),
                           tr("An internal error occurred. Your file may not be saved successfully."));
         }
-        qCDebug(mLog) << "Compressed. File saved.";
+        dd << "Zip file saved successfully";
+
+        if (s.ok() && saveLayersOK)
+            deleteBackupFile(sBackupFile);
     }
 
-    object->setFilePath(strFileName);
+    object->setFilePath(sFileName);
     object->setModified(false);
 
     progressForward();
 
-    if (!saveLayerOK)
+    if (!saveLayersOK)
     {
-        return Status(Status::FAIL,
-                      debugDetails,
+        return Status(Status::FAIL, dd,
                       tr("Internal Error"),
                       tr("An internal error occurred. Your file may not be saved successfully."));
     }
@@ -379,7 +421,6 @@ ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
     }
     return data;
 }
-
 
 QDomElement FileManager::saveProjectData(ObjectData* data, QDomDocument& xmlDoc)
 {
@@ -502,6 +543,32 @@ Object* FileManager::cleanUpWithErrorCode(Status error)
     return nullptr;
 }
 
+QString FileManager::backupPreviousFile(const QString& fileName)
+{
+    if (!QFile::exists(fileName))
+        return "";
+
+    QFileInfo info(fileName);
+    QString sBackupFile = info.completeBaseName() + ".backup." + info.suffix();
+    QString sBackupFileFullPath = QDir(info.absolutePath()).filePath(sBackupFile);
+
+    bool ok = QFile::rename(info.absoluteFilePath(), sBackupFileFullPath);
+    if (!ok)
+    {
+        qDebug() << "Cannot backup the previous file.";
+        return "";
+    }
+    return sBackupFileFullPath;
+}
+
+void FileManager::deleteBackupFile(const QString& fileName)
+{
+    if (QFile::exists(fileName))
+    {
+        QFile::remove(fileName);
+    }
+}
+
 void FileManager::progressForward()
 {
     mCurrentProgress++;
@@ -512,7 +579,7 @@ bool FileManager::loadPalette(Object* obj)
 {
     qCDebug(mLog) << "Load Palette..";
 
-    QString paletteFilePath = obj->dataDir() + "/" + PFF_PALETTE_FILE;
+    QString paletteFilePath = QDir(obj->dataDir()).filePath(PFF_PALETTE_FILE);
     if (!obj->importPalette(paletteFilePath))
     {
         obj->loadDefaultPalette();
@@ -525,8 +592,8 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     // removes the previous directory first  - better approach
     removePFFTmpDirectory(strUnzipTarget);
 
-    bool bOK = MiniZ::uncompressFolder(strZipFile, strUnzipTarget);
-    Q_ASSERT(bOK);
+    Status s = MiniZ::uncompressFolder(strZipFile, strUnzipTarget);
+    Q_ASSERT(s.ok());
 
     mstrLastTempFolder = strUnzipTarget;
 }

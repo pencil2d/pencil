@@ -38,11 +38,11 @@ class FileManager : public QObject
 public:
     FileManager(QObject* parent = 0);
 
-    Object* load(QString strFilenNme);
-    Status  save(Object*, QString strFileName);
+    Object* load(QString sFilenNme);
+    Status  save(Object*, QString sFileName);
 
     QList<ColourRef> loadPaletteFile(QString strFilename);
-    Status error() { return mError; }
+    Status error() const { return mError; }
     Status verifyObject(Object* obj);
 
 Q_SIGNALS:
@@ -54,15 +54,17 @@ private:
 
     bool loadObject(Object*, const QDomElement& root);
     bool loadObjectOldWay(Object*, const QDomElement& root);
-    bool isOldForamt(const QString& fileName);
+    bool isOldForamt(const QString& fileName) const;
     bool loadPalette(Object*);
 
     ObjectData* loadProjectData(const QDomElement& element);
     QDomElement saveProjectData(ObjectData*, QDomDocument& xmlDoc);
 
     void extractProjectData(const QDomElement& element, ObjectData* data);
-
     Object* cleanUpWithErrorCode(Status);
+
+    QString backupPreviousFile(const QString& fileName);
+    void deleteBackupFile(const QString& fileName);
 
     void progressForward();
 

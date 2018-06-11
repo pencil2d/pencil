@@ -16,34 +16,14 @@ GNU General Public License for more details.
 
 #include <QVBoxLayout>
 #include "colorwheel.h"
-#include "colorinspector.h"
 #include "colorbox.h"
+#include "editor.h"
+#include "colormanager.h"
+
 
 ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
 {
-    setWindowTitle(tr("Color Wheel", "Color Wheel's window title"));
-
-    mColorWheel = new ColorWheel(this);
-    mColorInspector = new ColorInspector(this);
-
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setContentsMargins(5, 5, 5, 5);
-    layout->addWidget(mColorWheel);
-    layout->addWidget(mColorInspector);
-    layout->setStretch(0, 1);
-    layout->setStretch(1, 0);
-    QWidget* mainWidget = new QWidget;
-    mainWidget->setLayout(layout);
-    setWidget(mainWidget);
-
-    connect(mColorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove);
-    connect(mColorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange);
-    connect(mColorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease);
-
-    QColor defaultColor;
-    defaultColor.setHsv(0, 0, 0);
-    mColorWheel->setColor(defaultColor);
-    mColorInspector->setColor(defaultColor);
+    setWindowTitle(tr("Color Box", "Color Box window title"));
 }
 
 ColorBox::~ColorBox()
@@ -52,10 +32,27 @@ ColorBox::~ColorBox()
 
 void ColorBox::initUI()
 {
+    mColorWheel = new ColorWheel(this);
+
+    QVBoxLayout* layout = new QVBoxLayout;
+    layout->setContentsMargins(5, 5, 5, 5);
+    layout->addWidget(mColorWheel);
+    layout->setStretch(0, 1);
+    layout->setStretch(1, 0);
+    QWidget* mainWidget = new QWidget;
+    mainWidget->setLayout(layout);
+    setWidget(mainWidget);
+
+    connect(mColorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove);
+    connect(mColorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease);
+
+    connect(editor(), &Editor::objectLoaded, this, &ColorBox::updateUI);
 }
 
 void ColorBox::updateUI()
 {
+    QColor newColor = editor()->color()->frontColor();
+    setColor(newColor);
 }
 
 QColor ColorBox::color()
@@ -63,36 +60,22 @@ QColor ColorBox::color()
     return mColorWheel->color();
 }
 
-void ColorBox::setColor(const QColor& newColor)
+void ColorBox::setColor(QColor newColor)
 {
-    if ( newColor.toHsv() != mColorWheel->color() )
+    newColor = newColor.toHsv();
+
+    if ( newColor != mColorWheel->color() )
     {
         mColorWheel->setColor(newColor);
-        mColorInspector->setColor(newColor);
-
-        emit colorChanged(newColor);
-    }
-}
-
-void ColorBox::onSpinboxChange(const QColor& color)
-{
-    if ( mColorWheel->color() != color.toHsv() )
-    {
-        mColorWheel->setColor(color);
-        emit colorChanged(color);
     }
 }
 
 void ColorBox::onWheelMove(const QColor& color)
 {
-    if ( mColorInspector->color() != color )
-    {
-        mColorInspector->setColor(color);
-    }
+    emit colorChanged(color);
 }
 
 void ColorBox::onWheelRelease(const QColor& color)
 {
-     mColorInspector->setColor(color);
      emit colorChanged(color);
 }

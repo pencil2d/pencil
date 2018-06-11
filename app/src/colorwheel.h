@@ -33,7 +33,7 @@ signals:
     void colorChanged(const QColor& color);
     
 public slots:
-    void setColor(const QColor& color);
+    void setColor(QColor color);
 
 protected:
     void mousePressEvent(QMouseEvent*) override;
@@ -43,17 +43,9 @@ protected:
     void paintEvent(QPaintEvent*) override;
 
 private:
-    void changeColor(const QColor&);
     void hueChanged(const int& hue);
     void saturationChanged(const int& sat);
     void valueChanged(const int& value);
-    void redChanged(const int& red);
-    void greenChanged(const int& green);
-    void blueChanged(const int& blue);
-    void alphaChanged(const int& alpha);
-
-    void changeRgbColors(const QColor& color);
-    void changeHsvColors(const QColor& color);
 
     QColor pickColor(const QPoint& point);
     

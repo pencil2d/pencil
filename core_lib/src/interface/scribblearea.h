@@ -67,7 +67,7 @@ public:
     QRectF getSelection() const { return mySelection; }
     bool somethingSelected = false;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
-    qreal myRotatedAngle;
+    qreal myRotatedAngle = 0.0;
     QList<int> mClosestCurves;
 
     bool areLayersSane() const;
@@ -192,7 +192,7 @@ private:
     void settingUpdated(SETTING setting);
 
     MoveMode mMoveMode = MIDDLE;
-    ToolType mPrevTemporalToolType;
+    ToolType mPrevTemporalToolType = ERASER;
     ToolType mPrevToolType = PEN; // previous tool (except temporal)
 
     BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
@@ -205,7 +205,7 @@ private:
     bool mIsSimplified  = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
-    int  mShowAllLayers;
+    int  mShowAllLayers = 1;
     bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors   = true;
@@ -225,11 +225,11 @@ private:
     QPointF mLastPoint;
     QPointF mCurrentPoint;
 
-    qreal selectionTolerance;
+    qreal selectionTolerance = 8.0;
     QList<VertexRef> mClosestVertices;
     QPointF mOffset;
     QPoint mCursorCenterPos;
-    int mCursorWidth;
+
     QPointF transformedCursorPos;
 
     //instant tool (temporal eg. eraser)
