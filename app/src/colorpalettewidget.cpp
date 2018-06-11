@@ -497,37 +497,58 @@ void ColorPaletteWidget::clickRemoveColorButton()
     {
         int index = ui->colorListWidget->row(item);
 
-        // items are not deleted by qt, has to be done manually
+        // items are not deleted by qt, it has to be done manually
         // delete should happen before removing the color from from palette
         // as the palette will be one ahead and crash otherwise
         if (editor()->object()->isColourInUse(index))
         {
-            bool accepted = showPaletteWarning();
-            if (accepted)
+            bool accepted = false;
+            if (!mMultipleSelected)
+                accepted = showPaletteWarning();
+
+            if ((accepted || mMultipleSelected) && editor()->object()->getColourCount() > 1)
             {
                 delete item;
                 editor()->object()->removeColour(index);
-                editor()->updateCurrentFrame();
             }
         }
+        else if (editor()->object()->getColourCount() > 1)
+        {
+            delete item;
+            editor()->object()->removeColour(index);
+        }
+        else if (editor()->object()->getColourCount() == 1)
+        {
+            showPaletteReminder();
+        }
+        editor()->updateCurrentFrame();
     }
+    mMultipleSelected = false;
 }
 
 bool ColorPaletteWidget::showPaletteWarning()
 {
     QMessageBox msgBox;
-    msgBox.setText(tr("The color you are trying to delete is currently being used by one or multiple strokes, "
-                   "if you wish to delete it anyway, you accept that the stroke(s) will be bound to the next available color"));
+    msgBox.setText(tr("The color(s) you are about to delete are currently being used by one or multiple strokes."));
     msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
-    QPushButton* removeButton = msgBox.addButton(tr("Delete anyway"), QMessageBox::AcceptRole);
+    QPushButton* removeButton = msgBox.addButton(tr("Delete"), QMessageBox::AcceptRole);
 
     msgBox.exec();
     if (msgBox.clickedButton() == removeButton)
     {
+        if (ui->colorListWidget->selectedItems().size() > 1)
+        {
+            mMultipleSelected = true;
+        }
         return true;
     }
     return false;
+}
 
+void ColorPaletteWidget::showPaletteReminder()
+{
+    QMessageBox::warning(nullptr, tr("Palette Restriction"),
+                                  tr("The palette requires at least one swatch to remain functional"));
 }
 
 void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)

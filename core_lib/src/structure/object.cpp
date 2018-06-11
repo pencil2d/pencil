@@ -278,8 +278,6 @@ ColourRef Object::getColour(int index) const
     if (index > -1 && index < mPalette.size())
     {
         result = mPalette.at(index);
-    } else {
-        return mFrontColor;
     }
     return result;
 }
@@ -288,20 +286,11 @@ void Object::setColour(int index, QColor newColour)
 {
     Q_ASSERT(index >= 0);
 
-    // To allow a clean color palette, we return if it's empty
-    if (mPalette.isEmpty())
-    {
-        return;
-    }
     mPalette[index].colour = newColour;
 }
 
 void Object::setColourRef(int index, ColourRef newColourRef)
 {
-    if (mPalette.isEmpty())
-    {
-        return;
-    }
     mPalette[index] = newColourRef;
 }
 
@@ -317,7 +306,6 @@ void Object::addColourAtIndex(int index, ColourRef newColour)
 
 bool Object::isColourInUse(int index)
 {
-    bool usesColor = false;
     for (int i = 0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
@@ -327,11 +315,11 @@ bool Object::isColourInUse(int index)
 
             if (layerVector->usesColour(index))
             {
-                usesColor = true;
+                return true;
             }
         }
     }
-    return true;
+    return false;
 
 }
 

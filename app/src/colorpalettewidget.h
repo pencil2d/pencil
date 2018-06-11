@@ -41,6 +41,7 @@ class ColorPaletteWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
+
     explicit ColorPaletteWidget(QWidget* parent);
     ~ColorPaletteWidget();
 
@@ -78,6 +79,8 @@ private slots:
     void addItem();
     void replaceItem();
     void removeItem();
+    void showPaletteReminder();
+
     bool showPaletteWarning();
 
 private:
@@ -103,6 +106,7 @@ private:
     QString buttonStylesheet;
 
     bool mIsColorDialog = false;
+    bool mMultipleSelected = false;
 
 };
 
