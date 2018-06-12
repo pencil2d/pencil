@@ -272,12 +272,12 @@ void Object::deleteLayer(Layer* layer)
     }
 }
 
-ColourRef Object::getColour(int i) const
+ColourRef Object::getColour(int index) const
 {
     ColourRef result(Qt::white, "error");
-    if (i > -1 && i < mPalette.size())
+    if (index > -1 && index < mPalette.size())
     {
-        result = mPalette.at(i);
+        result = mPalette.at(index);
     }
     return result;
 }
@@ -285,7 +285,13 @@ ColourRef Object::getColour(int i) const
 void Object::setColour(int index, QColor newColour)
 {
     Q_ASSERT(index >= 0);
+
     mPalette[index].colour = newColour;
+}
+
+void Object::setColourRef(int index, ColourRef newColourRef)
+{
+    mPalette[index] = newColourRef;
 }
 
 void Object::addColour(QColor colour)
@@ -293,7 +299,12 @@ void Object::addColour(QColor colour)
     addColour(ColourRef(colour, "Colour " + QString::number(mPalette.size())));
 }
 
-bool Object::removeColour(int index)
+void Object::addColourAtIndex(int index, ColourRef newColour)
+{
+    mPalette.insert(index, newColour);
+}
+
+bool Object::isColourInUse(int index)
 {
     for (int i = 0; i < getLayerCount(); i++)
     {
@@ -301,9 +312,19 @@ bool Object::removeColour(int index)
         if (layer->type() == Layer::VECTOR)
         {
             LayerVector* layerVector = (LayerVector*)layer;
-            if (layerVector->usesColour(index)) return false;
+
+            if (layerVector->usesColour(index))
+            {
+                return true;
+            }
         }
     }
+    return false;
+
+}
+
+void Object::removeColour(int index)
+{
     for (int i = 0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
@@ -313,8 +334,9 @@ bool Object::removeColour(int index)
             layerVector->removeColour(index);
         }
     }
+
     mPalette.removeAt(index);
-    return true;
+
     // update the vector pictures using that colour !
 }
 
@@ -423,7 +445,7 @@ void Object::loadDefaultPalette()
     addColour(ColourRef(QColor(255, 214, 156), QString(tr("Skin"))));
     addColour(ColourRef(QColor(207, 174, 127), QString(tr("Skin - shade"))));
     addColour(ColourRef(QColor(255, 198, 116), QString(tr("Dark Skin"))));
-    addColour(ColourRef(QColor(227, 177, 105), QString(tr("Dark Skin - shade"))));
+    addColour(ColourRef(QColor(227, 177, 105), QString(tr("Dark Skin - shade")) ));
 }
 
 void Object::paintImage(QPainter& painter,int frameNumber,
