@@ -372,6 +372,9 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 // mouse and tablet event handlers
 void ScribbleArea::wheelEvent(QWheelEvent* event)
 {
+    // Don't change view if tool is in use
+    if(mEditor->tools()->currentTool()->isActive()) return;
+
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
     //qDebug() <<"angle"<<angle<<"pixels"<<pixels;
