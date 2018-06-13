@@ -79,3 +79,16 @@ TEST_CASE("BitmapImage constructors")
         }
     }
 }
+
+TEST_CASE("BitmapImage functions")
+{
+    SECTION("moveTopLeft()")
+    {
+        auto b = std::make_shared<BitmapImage>(QRect(0, 0, 50, 50), Qt::red);
+        b->moveTopLeft(QPoint(20, 10));
+
+        REQUIRE(b->topLeft() == QPoint(20, 10));
+        REQUIRE(b->width() == 50);
+        REQUIRE(b->height() == 50);
+    }
+}
