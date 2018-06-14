@@ -41,6 +41,7 @@ class ColorPaletteWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
+
     explicit ColorPaletteWidget(QWidget* parent);
     ~ColorPaletteWidget();
 
@@ -53,15 +54,16 @@ public:
     void setColor(QColor, int);
     void refreshColorList();
 
+    void showContextMenu(const QPoint&);
+
 signals:
     void colorChanged(QColor);
     void colorNumberChanged(int);
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-    void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
     void onItemChanged(QListWidgetItem* item);
@@ -74,6 +76,12 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
+    void addItem();
+    void replaceItem();
+    void removeItem();
+    void showPaletteReminder();
+
+    bool showPaletteWarning();
 
 private:
     void updateItemColor(int, QColor);
@@ -98,6 +106,7 @@ private:
     QString buttonStylesheet;
 
     bool mIsColorDialog = false;
+    bool mMultipleSelected = false;
 
 };
 

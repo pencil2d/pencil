@@ -185,7 +185,7 @@
 #endif
 
 #ifdef __cplusplus
-//extern "C" {
+extern "C" {
 #endif
 
 /* ------------------- zlib-style API Definitions. */
@@ -465,7 +465,7 @@ typedef void *const voidpc;
 #endif /* MINIZ_NO_ZLIB_APIS */
 
 #ifdef __cplusplus
-//}
+}
 #endif
 #pragma once
 #include <assert.h>

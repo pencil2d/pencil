@@ -228,6 +228,9 @@
         <property name="autoScrollMargin">
          <number>16</number>
         </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
         <property name="resizeMode">
          <enum>QListView::Fixed</enum>
         </property>

@@ -58,7 +58,7 @@ before_install:
             brew upgrade python;
         fi
         brew install p7zip;
-        brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/13d52537d1e0e5f913de46390123436d220035f6/Formula/qt.rb;
+        brew install qt;
         brew link qt --force;
     fi
 

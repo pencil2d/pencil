@@ -16,6 +16,8 @@ GNU General Public License for more details.
 */
 #include "colourref.h"
 
+#include <QDebug>
+
 ColourRef::ColourRef()
 {
     colour = Qt::green;
@@ -51,3 +53,12 @@ bool ColourRef::operator!=(ColourRef colourRef1)
         return false;
     }
 }
+
+QDebug& operator<<(QDebug debug, const ColourRef& colourRef)
+{
+    debug.nospace() << "ColourRef(" << colourRef.colour << " " << colourRef.name <<")";
+    return debug.maybeSpace();
+}
+
+
+
