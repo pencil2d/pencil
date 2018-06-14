@@ -92,6 +92,7 @@ public:
     int bottom() { return mBounds.bottom(); }
     int width() { return mBounds.width(); }
     int height() { return mBounds.height(); }
+    QSize size() { return mBounds.size(); }
 
     QRect& bounds() { return mBounds; }
 

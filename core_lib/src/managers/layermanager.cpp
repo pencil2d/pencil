@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "layermanager.h"
 
+#include <QDebug>
 #include "object.h"
 #include "editor.h"
 

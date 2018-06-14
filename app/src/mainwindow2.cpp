@@ -26,10 +26,13 @@ GNU General Public License for more details.
 #include <QList>
 #include <QMenu>
 #include <QFile>
+#include <QDir>
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QFileIconProvider>
 #include <QTabletEvent>
+#include <QStandardPaths>
+#include <QDateTime>
 
 // core_lib headers
 #include "pencildef.h"
