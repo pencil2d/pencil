@@ -94,8 +94,13 @@ public:
     void renameColour( int i, QString text );
     int getColourCount() { return mPalette.size(); }
     bool importPalette( QString filePath );
+    void importPaletteGPL(QFile& file);
+    void importPalettePencil(QFile& file);
+
     bool exportPalette( QString filePath );
-    QString savePalette( QString dataFolder );
+    void exportPaletteGPL(QFile& file);
+    void exportPalettePencil(QFile& file);
+    bool savePalette( QString filePath );
 
     void loadDefaultPalette();
 
