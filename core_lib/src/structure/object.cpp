@@ -328,28 +328,14 @@ bool Object::savePalette(QString filePath)
     return exportPalette(filePath + "/palette.xml");
 }
 
-void Object::exportPaletteGPL(QFile& file)
+bool Object::exportPalette(QString filePath)
 {
-
-    QString fileName = QFileInfo(file).baseName();
-    QTextStream out(&file);
-
-    out << "GIMP Palette" << "\n";
-    out << "Name: " << fileName << "\n";
-    out << "#" << "\n";
-
-    for (int i = 0; i < mPalette.size(); i++)
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        ColourRef ref = mPalette.at(i);
-
-        QColor toRgb = ref.colour.toRgb();
-        out << QString("%1 %2 %3").arg(toRgb.red()).arg(toRgb.green()).arg(toRgb.blue());
-        out << " " << ref.name << "\n";
+        qDebug("Error: cannot export palette");
+        return false;
     }
-}
-
-void Object::exportPalettePencil(QFile& file)
-{
     QTextStream out(&file);
 
     QDomDocument doc("PencilPalette");
@@ -366,105 +352,22 @@ void Object::exportPalettePencil(QFile& file)
         tag.setAttribute("alpha", ref.colour.alpha());
         root.appendChild(tag);
     }
+
     int IndentSize = 2;
     doc.save(out, IndentSize);
-}
-
-bool Object::exportPalette(QString filePath)
-{
-    QFile file(filePath);
-    if (!file.open(QFile::WriteOnly | QFile::Text))
-    {
-        qDebug("Error: cannot export palette");
-        return false;
-    }
-
-    if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
-    {
-        exportPaletteGPL(file);
-    } else {
-        exportPalettePencil(file);
-    }
 
     file.close();
     return true;
 }
 
-void Object::importPaletteGPL(QFile& file)
+bool Object::importPalette(QString filePath)
 {
-
-    QTextStream in(&file);
-    QString line;
-
-    bool hashFound = false;
-    bool colorFound = false;
-    while (in.readLineInto(&line))
+    QFile file(filePath);
+    if (!file.open(QFile::ReadOnly))
     {
-        quint8 red = 0;
-        quint8 green = 0;
-        quint8 blue = 0;
-
-        int countInLine = 0;
-        QString name;
-
-        if (!colorFound)
-        {
-            hashFound = (line == "#") ? true : false;
-        }
-
-        if (!hashFound)
-        {
-            continue;
-        }
-        else if (!colorFound)
-        {
-            colorFound = true;
-            continue;
-        }
-
-        for (QString snip : line.split(" "))
-        {
-            if (countInLine == 0) // assume red
-            {
-                red = snip.toInt();
-            }
-            else if (countInLine == 1) // assume green
-            {
-                green = snip.toInt();
-            }
-            else if (countInLine == 2) // assume blue
-            {
-                blue = snip.toInt();
-            }
-            else
-            {
-
-                // assume last bit of line is a name
-                // gimp interprets as untitled
-                if (snip == "---")
-                {
-                    name = "untitled";
-                }
-                else
-                {
-                    name += snip + " ";
-                }
-            }
-            countInLine++;
-        }
-
-        // trim additional spaces
-        name = name.trimmed();
-
-        if (QColor(red, green, blue).isValid())
-        {
-            mPalette.append(ColourRef(QColor(red,green,blue), name));
-        }
+        return false;
     }
-}
 
-void Object::importPalettePencil(QFile& file)
-{
     QDomDocument doc;
     doc.setContent(&file);
 
@@ -484,23 +387,6 @@ void Object::importPalettePencil(QFile& file)
             mPalette.append(ColourRef(QColor(r, g, b, a), name));
         }
         tag = tag.nextSibling();
-    }
-}
-
-bool Object::importPalette(QString filePath)
-{
-    QFile file(filePath);
-
-    if (!file.open(QFile::ReadOnly))
-    {
-        return false;
-    }
-
-    if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
-    {
-        importPaletteGPL(file);
-    } else {
-        importPalettePencil(file);
     }
     file.close();
     return true;
