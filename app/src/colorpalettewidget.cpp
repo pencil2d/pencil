@@ -267,9 +267,9 @@ void ColorPaletteWidget::palettePreferences()
     mSeparator->setSeparator(true);
 
     buttonStylesheet = "::menu-indicator{ image: none; }"
-                             "QToolButton { border: 0px; }"
-                             "QToolButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
-                             "QToolButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
+        "QToolButton { border: 0px; }"
+        "QToolButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
+        "QToolButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
 
 
     // Add to UI

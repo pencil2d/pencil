@@ -90,7 +90,7 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     paintBackground();
     paintOnionSkin(painter);
 
-    painter.setClipRect(aligned);
+    //painter.setClipRect(aligned); // this aligned rect is valid only for bitmap images.
     paintCurrentFrame(painter);
     paintCameraBorder(painter);
 
