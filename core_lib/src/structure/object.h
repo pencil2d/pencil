@@ -100,7 +100,7 @@ public:
     bool exportPalette( QString filePath );
     void exportPaletteGPL(QFile& file);
     void exportPalettePencil(QFile& file);
-    bool savePalette( QString filePath );
+    QString savePalette( QString filePath );
 
     void loadDefaultPalette();
 
