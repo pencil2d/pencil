@@ -164,7 +164,7 @@ QString FileDialog::openFileFilters( FileType fileType )
         case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_FILTER;
         case FileType::MOVIE: { Q_ASSERT(false); return PENCIL_MOVIE_EXT; } // currently not supported
         case FileType::SOUND: return tr( "Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)" );
-        case FileType::PALETTE: return tr( "Palette (*.xml)" );
+        case FileType::PALETTE: return tr( "Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)" );
         default: Q_ASSERT( false );
     }
     return "";
@@ -179,7 +179,7 @@ QString FileDialog::saveFileFilters( FileType fileType )
         case FileType::IMAGE_SEQUENCE: return "";
         case FileType::MOVIE: return tr( "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; GIF (*.gif);; APNG (*.apng)" );
         case FileType::SOUND: return "";
-        case FileType::PALETTE: return tr( "Palette (*.xml)" );
+        case FileType::PALETTE: return tr( "Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)" );
         default: Q_ASSERT( false );
     }
     return "";
