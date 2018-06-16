@@ -240,7 +240,7 @@ void ColorPaletteWidget::changeColourName(QListWidgetItem* item)
 
 void ColorPaletteWidget::onItemChanged(QListWidgetItem* item)
 {
-    int index = ui->colorListWidget->currentRow();
+    int index = ui->colorListWidget->row(item);
     QString newColorName = item->text();
     editor()->object()->renameColour(index, newColorName);
 }
