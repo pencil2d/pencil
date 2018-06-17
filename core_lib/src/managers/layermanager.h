@@ -70,9 +70,10 @@ public:
     void notifyAnimationLengthChanged();
 
 Q_SIGNALS:
-    void currentLayerChanged(int n);
+    void currentLayerChanged(int index);
     void layerCountChanged(int count);
     void animationLengthChanged(int length);
+    void layerDeleted(int index);
 
 private:
     int getIndex(Layer*) const;

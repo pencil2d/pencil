@@ -261,6 +261,7 @@ Status LayerManager::deleteLayer(int index)
         setCurrentLayer(currentLayerIndex() - 1);
     }
 
+    Q_EMIT layerDeleted(index);
     Q_EMIT layerCountChanged(count());
 
     return Status::OK;
