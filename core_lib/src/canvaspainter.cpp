@@ -191,7 +191,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(layer);
 #endif
 
-    qCDebug(mLog) << "Paint Onion skin bitmap, Frame = " << nFrame;
+    //qCDebug(mLog) << "Paint Onion skin bitmap, Frame = " << nFrame;
     BitmapImage* paintedImage = nullptr;
     if (useLastKeyFrame)
     {
@@ -208,7 +208,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     }
 
     paintedImage->loadFile(); // Critical! force the BitmapImage to load the image
-    qCDebug(mLog) << "Paint Image Size:" << paintedImage->image()->size();
+    //qCDebug(mLog) << "Paint Image Size:" << paintedImage->image()->size();
 
     BitmapImage paintToImage;
     paintToImage.paste(paintedImage);
@@ -271,7 +271,7 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
 }
 
 void CanvasPainter::paintVectorFrame(QPainter& painter,
-                                     Layer* layer, 
+                                     Layer* layer,
                                      int nFrame,
                                      bool colorize,
                                      bool useLastKeyFrame)
