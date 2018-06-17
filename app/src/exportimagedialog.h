@@ -33,6 +33,7 @@ public:
     ~ExportImageDialog();
 
 	void setCamerasInfo(const std::vector<std::pair<QString, QSize>>& camInfo);
+    void setDefaultRange( int startFrame, int endFrame, int endFrameWithSounds );
 
     void  setExportSize( QSize size );
     QSize getExportSize() const;
@@ -40,12 +41,20 @@ public:
     QString getExportFormat() const;
 	QString getCameraLayerName() const;
 
+    int getStartFrame() const;
+    int getEndFrame() const;
+
 private slots:
+    void frameCheckboxClicked(bool checked);
     void formatChanged(const QString& format);
 	void cameraComboChanged(int index);
 
+
 private:
     Ui::ExportImageOptions* ui = nullptr;
+
+    int mEndFrameWithSounds = 0;
+    int mEndFrame = 0;
 };
 
 #endif // EXPORTIMAGEDIALOG_H

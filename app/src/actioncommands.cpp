@@ -266,6 +266,11 @@ Status ActionCommands::exportImageSequence()
     }
     dialog->setCamerasInfo(camerasInfo);
 
+    int lengthWithSounds = mEditor->layers()->animationLength(true);
+    int length = mEditor->layers()->animationLength(false);
+
+    dialog->setDefaultRange(1, length, lengthWithSounds);
+
     dialog->exec();
 
     if (dialog->result() == QDialog::Rejected)
@@ -277,8 +282,8 @@ Status ActionCommands::exportImageSequence()
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
-
-    int totalLength = mEditor->layers()->animationLength();
+    int startFrame = dialog->getStartFrame();
+    int endFrame  = dialog->getEndFrame();
 
     QString sCameraLayerName = dialog->getCameraLayerName();
     LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
@@ -289,7 +294,7 @@ Status ActionCommands::exportImageSequence()
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
-    mEditor->object()->exportFrames(1, totalLength,
+    mEditor->object()->exportFrames(startFrame, endFrame,
                                     cameraLayer,
                                     exportSize,
                                     strFilePath,
