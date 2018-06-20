@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "exportimagedialog.h"
 #include "ui_exportimageoptions.h"
+#include "util.h"
 
 ExportImageDialog::ExportImageDialog(QWidget* parent, FileType eFileType) :
     ImportExportDialog(parent, ImportExportDialog::Export, eFileType),
@@ -30,6 +31,7 @@ ExportImageDialog::ExportImageDialog(QWidget* parent, FileType eFileType) :
     else
     {
         setWindowTitle(tr("Export image"));
+        ui->frameRangeGroupBox->hide();
     }
 
     connect(ui->formatComboBox, &QComboBox::currentTextChanged, this, &ExportImageDialog::formatChanged);
@@ -55,6 +57,36 @@ void ExportImageDialog::setCamerasInfo(const std::vector<std::pair<QString, QSiz
     connect(ui->cameraCombo, indexChanged, this, &ExportImageDialog::cameraComboChanged);
 
     cameraComboChanged(0);
+}
+
+void ExportImageDialog::setDefaultRange(int startFrame, int endFrame, int endFrameWithSounds)
+{
+    mEndFrame = endFrame;
+    mEndFrameWithSounds = endFrameWithSounds;
+
+    SignalBlocker b1( ui->startSpinBox );
+    SignalBlocker b2( ui->endSpinBox );
+
+    ui->startSpinBox->setValue( startFrame );
+    ui->endSpinBox->setValue( endFrame );
+
+    connect(ui->frameCheckBox, &QCheckBox::clicked, this, &ExportImageDialog::frameCheckboxClicked);
+}
+
+int ExportImageDialog::getStartFrame() const
+{
+    return ui->startSpinBox->value();
+}
+
+int ExportImageDialog::getEndFrame() const
+{
+    return ui->endSpinBox->value();
+}
+
+void ExportImageDialog::frameCheckboxClicked(bool checked)
+{
+    int e = (checked) ? mEndFrameWithSounds : mEndFrame;
+    ui->endSpinBox->setValue(e);
 }
 
 void ExportImageDialog::setExportSize(QSize size)
