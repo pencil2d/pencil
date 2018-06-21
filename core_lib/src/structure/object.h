@@ -146,6 +146,9 @@ public:
 
     int totalKeyFrameCount();
 
+signals:
+    void layerViewChanged();
+
 private:
     int getMaxLayerID();
 
