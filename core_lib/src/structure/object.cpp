@@ -142,6 +142,8 @@ LayerCamera* Object::addNewCameraLayer()
 
     layerCamera->addNewKeyFrameAt(1);
 
+    connect(layerCamera, &LayerCamera::resolutionChanged, this, &Object::layerViewChanged);
+
     return layerCamera;
 }
 
