@@ -87,6 +87,7 @@ HEADERS +=  \
     src/util/pencilsettings.h \
     src/util/util.h \
     src/util/log.h \
+    src/util/movemode.h \
     src/canvaspainter.h \
     src/soundplayer.h \
     src/movieexporter.h \
