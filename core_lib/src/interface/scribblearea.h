@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include <QWidget>
 #include <QPixmapCache>
 
+#include "movemode.h"
 #include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
@@ -85,9 +86,8 @@ public:
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY, NONE };
-    MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode( MoveMode moveMode ) { mMoveMode = moveMode; }
+    MoveMode getMoveMode() const { return mMoveMode; }
 
     QRectF getCameraRect();
     QPointF getCentralPoint();
@@ -189,7 +189,7 @@ private:
     void drawCanvas( int frame, QRect rect );
     void settingUpdated(SETTING setting);
 
-    MoveMode mMoveMode = MIDDLE;
+    MoveMode mMoveMode = MoveMode::NONE;
     ToolType mPrevTemporalToolType = ERASER;
     ToolType mPrevToolType = PEN; // previous tool (except temporal)
 

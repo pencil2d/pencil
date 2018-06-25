@@ -183,6 +183,55 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
     return cursorPixmap;
 }
 
+QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
+{
+    QPixmap cursorPixmap = QPixmap(24, 24);
+    if (!cursorPixmap.isNull())
+    {
+        cursorPixmap.fill(QColor(255, 255, 255, 0));
+        QPainter cursorPainter(&cursorPixmap);
+        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+        switch(mode) {
+            case MoveMode::MIDDLE:
+            {
+                if (type == SELECT) {
+                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+                } else {
+                    return Qt::ArrowCursor;
+                }
+                break;
+            }
+            case MoveMode::TOPLEFT:
+            case MoveMode::BOTTOMRIGHT:
+            {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+                break;
+            }
+            case MoveMode::TOPRIGHT:
+            case MoveMode::BOTTOMLEFT:
+            {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+                break;
+            }
+            default:
+                if (type == SELECT) {
+                    return Qt::CrossCursor;
+                }
+                else
+                {
+                    return Qt::ArrowCursor;
+                }
+                break;
+        }
+
+
+        cursorPainter.end();
+    }
+    return QCursor(cursorPixmap);
+
+}
+
 /**
  * @brief precision circular cursor: used for drawing stroke size while adjusting
  * @return QPixmap

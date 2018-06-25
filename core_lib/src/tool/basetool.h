@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QPointF>
 #include <QPixmap>
 #include <QHash>
+#include "movemode.h"
 #include "pencildef.h"
 
 class Editor;
@@ -95,6 +96,7 @@ public:
     static bool isAdjusting;
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
     static QPixmap quickSizeCursor(float brushWidth, float brushFeather, float scalingFac);
+    static QCursor selectMoveCursor(MoveMode mode, ToolType type);
 
     virtual void setWidth(const qreal width);
     virtual void setFeather(const qreal feather);
