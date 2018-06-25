@@ -70,6 +70,7 @@ void MoveTool::mouseReleaseEvent(QMouseEvent*)
     if (!mScribbleArea->isSomethingSelected())
         return;
 
+    mRotatedAngle = mScribbleArea->myRotatedAngle;
     updateTransformation();
 
     mScribbleArea->updateToolCursor();
@@ -130,7 +131,7 @@ void MoveTool::transformSelection(QMouseEvent* event)
             offset = maintainAspectRatio(offset.x(), offset.y());
         }
 
-        mScribbleArea->adjustSelection(offset.x(),offset.y());
+        mScribbleArea->adjustSelection(offset.x(),offset.y(), mRotatedAngle);
 
         mScribbleArea->calculateSelectionTransformation();
         paintTransformedSelection();
@@ -156,6 +157,7 @@ void MoveTool::beginInteraction(QMouseEvent* event)
     }
 
     mScribbleArea->findMoveModeOfCornerInRange();
+    mScribbleArea->myRotatedAngle = mRotatedAngle;
 
     if (event->modifiers() != Qt::ShiftModifier)
     {

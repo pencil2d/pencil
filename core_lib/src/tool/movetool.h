@@ -70,6 +70,8 @@ private:
 
     Layer* mCurrentLayer = nullptr;
 
+    qreal mRotatedAngle = 0.0;
+
 };
 
 #endif

@@ -63,7 +63,7 @@ public:
 
     void deleteSelection();
     void setSelection( QRectF rect );
-    void adjustSelection(float offsetX, float offsetY);
+    void adjustSelection(float offsetX, float offsetY, qreal rotatedAngle);
     void applyAllSelectionChangesTo(QRectF& modifiedRect);
     void displaySelectionProperties();
     void resetSelectionProperties();

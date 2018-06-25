@@ -160,7 +160,7 @@ void SelectTool::controlOffsetOrigin()
                                  mScribbleArea->getTransformOffset().y()).toPoint();
         }
 
-        mScribbleArea->adjustSelection(offset.x(),offset.y());
+        mScribbleArea->adjustSelection(offset.x(),offset.y(), mScribbleArea->myRotatedAngle);
     }
     else
     {
