@@ -90,10 +90,16 @@ void ToolManager::setCurrentTool(ToolType eToolType)
 {
     if (mCurrentTool != NULL)
     {
-        mCurrentTool->leavingThisTool();
+       leavingThisTool();
     }
+
     mCurrentTool = getTool(eToolType);
     Q_EMIT toolChanged(eToolType);
+}
+
+bool ToolManager::leavingThisTool()
+{
+    return mCurrentTool->leavingThisTool();
 }
 
 void ToolManager::cleanupAllToolsData()

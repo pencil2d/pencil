@@ -111,8 +111,8 @@ public:
     virtual void setTolerance(const int tolerance);
     virtual void setUseFillContour(const bool useFillContour);
 
-    virtual void leavingThisTool() {}
-    virtual void switchingLayers() {}
+    virtual bool leavingThisTool() { return true; }
+    virtual bool switchingLayer() { return true; } // default state should be true
 
     Properties properties;
 

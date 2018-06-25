@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define MOVETOOL_H
 
 #include "basetool.h"
+#include "movemode.h"
 
 class Layer;
 
@@ -36,14 +37,15 @@ public:
     void mouseReleaseEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;
 
-    void leavingThisTool() override;
-    void switchingLayers() override;
+    bool leavingThisTool() override;
+    bool switchingLayer() override;
 
 private:
     void cancelChanges();
     void applyChanges();
     void resetSelectionProperties();
     void paintTransformedSelection();
+    int showTransformWarning();
 
     /// @brief Selects which corner-point of the selection to move, if
     /// one is range of the last click.

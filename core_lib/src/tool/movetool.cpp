@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "movetool.h"
 
 #include <QMouseEvent>
+#include <QMessageBox>
 
 #include "editor.h"
 #include "toolmanager.h"
@@ -400,17 +401,71 @@ void MoveTool::paintTransformedSelection()
     mScribbleArea->paintTransformedSelection();
 }
 
-void MoveTool::leavingThisTool()
+bool MoveTool::leavingThisTool()
 {
-    // make sure correct transformation is applied
-    // before leaving
-    mScribbleArea->calculateSelectionTransformation();
-    applyChanges();
+    if (mScribbleArea->isTemporaryTool()) { return true; }
+    if (!transformHasBeenModified()) { return true; }
+
+    int returnValue = QMessageBox::warning(nullptr,
+                                   tr("Transform", "Windows title of layer switch pop-up."),
+                                   tr("You are about to switch tool, do you want to apply the transformation?"),
+                                   QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
+                                   QMessageBox::Yes);
+
+    if (returnValue == QMessageBox::Yes)
+    {
+        if (mCurrentLayer->type() == Layer::BITMAP)
+        {
+            applyChanges();
+        }
+        applyAllChangesTo(mScribbleArea->mySelection);
+
+    }
+    else if (returnValue == QMessageBox::No)
+    {
+        cancelChanges();
+    }
+    else if (returnValue == QMessageBox::Cancel) {
+        return false;
+    }
+    return true;
+}
+bool MoveTool::switchingLayer()
+{
+    if (!transformHasBeenModified())
+    {
+        mScribbleArea->deselectAll();
+        return true;
+    }
+
+    int returnValue = showTransformWarning();
+
+    if (returnValue == QMessageBox::Yes)
+    {
+
+        applyAllChangesTo(mScribbleArea->mySelection);
+        mScribbleArea->deselectAll();
+        return true;
+    }
+    else if (returnValue == QMessageBox::No)
+    {
+        cancelChanges();
+        return true;
+    }
+    else if (returnValue == QMessageBox::Cancel) {
+        return false;
+    }
+    return true;
 }
 
-void MoveTool::switchingLayers()
+int MoveTool::showTransformWarning()
 {
-    applyChanges();
+    int returnValue = QMessageBox::warning(nullptr,
+                                   tr("Layer switch", "Windows title of layer switch pop-up."),
+                                   tr("You are about to switch layer, do you want to apply the transformation?"),
+                                   QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
+                                   QMessageBox::Yes);
+    return returnValue;
 }
 
 void MoveTool::resetSelectionProperties()

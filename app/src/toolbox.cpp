@@ -166,6 +166,8 @@ void ToolBoxWidget::updateUI()
 
 void ToolBoxWidget::pencilOn()
 {
+    if (!leavingTool(ui->pencilButton)) { return; }
+
     editor()->tools()->setCurrentTool(PENCIL);
 
     deselectAllTools();
@@ -174,6 +176,8 @@ void ToolBoxWidget::pencilOn()
 
 void ToolBoxWidget::eraserOn()
 {
+    if (!leavingTool(ui->eraserButton)) { return; }
+
     editor()->tools()->setCurrentTool(ERASER);
 
     deselectAllTools();
@@ -182,6 +186,8 @@ void ToolBoxWidget::eraserOn()
 
 void ToolBoxWidget::selectOn()
 {
+    if (!leavingTool(ui->selectButton)) { return; }
+
     editor()->tools()->setCurrentTool(SELECT);
 
     deselectAllTools();
@@ -190,6 +196,8 @@ void ToolBoxWidget::selectOn()
 
 void ToolBoxWidget::moveOn()
 {
+    if (!leavingTool(ui->moveButton)) { return; }
+
     editor()->tools()->setCurrentTool(MOVE);
 
     deselectAllTools();
@@ -198,6 +206,8 @@ void ToolBoxWidget::moveOn()
 
 void ToolBoxWidget::penOn()
 {
+    if (!leavingTool(ui->penButton)) { return; }
+
     editor()->tools()->setCurrentTool(PEN);
 
     deselectAllTools();
@@ -206,6 +216,8 @@ void ToolBoxWidget::penOn()
 
 void ToolBoxWidget::handOn()
 {
+    if (!leavingTool(ui->handButton)) { return; }
+
     editor()->tools()->setCurrentTool( HAND );
 
     deselectAllTools();
@@ -214,6 +226,8 @@ void ToolBoxWidget::handOn()
 
 void ToolBoxWidget::polylineOn()
 {
+    if (!leavingTool(ui->polylineButton)) { return; }
+
     editor()->tools()->setCurrentTool(POLYLINE);
 
     deselectAllTools();
@@ -222,6 +236,8 @@ void ToolBoxWidget::polylineOn()
 
 void ToolBoxWidget::bucketOn()
 {
+    if (!leavingTool(ui->bucketButton)) { return; }
+
     editor()->tools()->setCurrentTool(BUCKET);
 
     deselectAllTools();
@@ -230,6 +246,7 @@ void ToolBoxWidget::bucketOn()
 
 void ToolBoxWidget::eyedropperOn()
 {
+    if (!leavingTool(ui->eyedropperButton)) { return; }
     editor()->tools()->setCurrentTool(EYEDROPPER);
 
     deselectAllTools();
@@ -238,6 +255,8 @@ void ToolBoxWidget::eyedropperOn()
 
 void ToolBoxWidget::brushOn()
 {
+    if (!leavingTool(ui->brushButton)) { return; }
+
     editor()->tools()->setCurrentTool( BRUSH );
 
     deselectAllTools();
@@ -246,6 +265,7 @@ void ToolBoxWidget::brushOn()
 
 void ToolBoxWidget::smudgeOn()
 {
+    if (!leavingTool(ui->smudgeButton)) { return; }
     editor()->tools()->setCurrentTool(SMUDGE);
 
     deselectAllTools();
@@ -265,4 +285,16 @@ void ToolBoxWidget::deselectAllTools()
     ui->eyedropperButton->setChecked(false);
     ui->brushButton->setChecked(false);
     ui->smudgeButton->setChecked(false);
+}
+
+bool ToolBoxWidget::leavingTool(QToolButton* toolButton)
+{
+    if (!editor()->tools()->leavingThisTool())
+    {
+        if (toolButton->isChecked()) {
+            toolButton->setChecked(false);
+        }
+        return false;
+    }
+    return true;
 }
