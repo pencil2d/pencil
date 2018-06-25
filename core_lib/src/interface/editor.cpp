@@ -245,7 +245,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
                 element->layer = backupLayer;
                 element->frame = backupFrame;
                 element->undoText = undoText;
-                element->somethingSelected = getScribbleArea()->somethingSelected;
+                element->somethingSelected = getScribbleArea()->isSomethingSelected();
                 element->mySelection = getScribbleArea()->mySelection;
                 element->myTransformedSelection = getScribbleArea()->myTransformedSelection;
                 element->myTempTransformedSelection = getScribbleArea()->myTempTransformedSelection;
@@ -262,7 +262,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
                 element->layer = backupLayer;
                 element->frame = backupFrame;
                 element->undoText = undoText;
-                element->somethingSelected = getScribbleArea()->somethingSelected;
+                element->somethingSelected = getScribbleArea()->isSomethingSelected();
                 element->mySelection = getScribbleArea()->mySelection;
                 element->myTransformedSelection = getScribbleArea()->myTransformedSelection;
                 element->myTempTransformedSelection = getScribbleArea()->myTempTransformedSelection;
@@ -355,10 +355,7 @@ void Editor::restoreKey()
 void BackupBitmapElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
-    editor->getScribbleArea()->somethingSelected = this->somethingSelected;
-    editor->getScribbleArea()->mySelection = this->mySelection;
-    editor->getScribbleArea()->myTransformedSelection = this->myTransformedSelection;
-    editor->getScribbleArea()->myTempTransformedSelection = this->myTempTransformedSelection;
+    editor->getScribbleArea()->setSelection(mySelection);
 
     editor->updateFrame(this->frame);
     editor->scrubTo(this->frame);
@@ -383,10 +380,7 @@ void BackupBitmapElement::restore(Editor* editor)
 void BackupVectorElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
-    editor->getScribbleArea()->somethingSelected = this->somethingSelected;
-    editor->getScribbleArea()->mySelection = this->mySelection;
-    editor->getScribbleArea()->myTransformedSelection = this->myTransformedSelection;
-    editor->getScribbleArea()->myTempTransformedSelection = this->myTempTransformedSelection;
+    editor->getScribbleArea()->setSelection(mySelection);
 
     editor->updateFrameAndVector(this->frame);
     editor->scrubTo(this->frame);
@@ -519,7 +513,7 @@ void Editor::copy()
     {
         if (layer->type() == Layer::BITMAP)
         {
-            if (mScribbleArea->somethingSelected)
+            if (mScribbleArea->isSomethingSelected())
             {
                 g_clipboardBitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
             }
@@ -549,7 +543,7 @@ void Editor::paste()
 
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
             qDebug() << "to be pasted --->" << tobePasted.image()->size();
-            if (mScribbleArea->somethingSelected)
+            if (mScribbleArea->isSomethingSelected())
             {
                 QRectF selection = mScribbleArea->getSelection();
                 if (g_clipboardBitmapImage.width() <= selection.width() && g_clipboardBitmapImage.height() <= selection.height())
@@ -570,7 +564,7 @@ void Editor::paste()
             mScribbleArea->deselectAll();
             VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
-            mScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
+            mScribbleArea->setSelection(vectorImage->getSelectionRect());
         }
     }
     mScribbleArea->updateCurrentFrame();

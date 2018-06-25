@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "movemode.h"
 
 class Layer;
+class VectorImage;
 
 
 class MoveTool : public BaseTool
@@ -43,21 +44,32 @@ public:
 private:
     void cancelChanges();
     void applyChanges();
+    void applyAllChangesTo(QRectF& modifiedRect);
     void resetSelectionProperties();
     void paintTransformedSelection();
+    void whichAnchorPoint();
+    void setAnchorToLastPoint();
+    void updateTransformation();
+
     int showTransformWarning();
 
-    /// @brief Selects which corner-point of the selection to move, if
-    /// one is range of the last click.
-    /// @return true if a corner point was selected, false otherwise.
-    bool whichTransformationPoint();
-    void transformSelection(qreal offsetX, qreal offsetY);
-    void pressOperation(QMouseEvent* event, Layer *layer);
-    void actionOnVector(QMouseEvent *event, Layer *layer);
+    void beginInteraction(QMouseEvent* event);
+    void createVectorSelection(QMouseEvent* event);
+    void transformSelection(QMouseEvent* event);
+
+    void setCurveSelected(VectorImage* vectorImage, QMouseEvent* event);
+    void setAreaSelected(VectorImage* vectorImage, QMouseEvent* event);
+
+    bool transformHasBeenModified();
+    bool shouldDeselect();
+
     void storeClosestVectorCurve();
     QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
 
     QPointF anchorOriginPoint;
+
+    Layer* mCurrentLayer = nullptr;
+
 };
 
 #endif
