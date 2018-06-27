@@ -1484,16 +1484,9 @@ void ScribbleArea::adjustSelection(float offsetX, float offsetY, qreal rotatedAn
     {
     case MoveMode::MIDDLE:
     {
-        // if close enough to old selection, snap to origin.
-        if (QLineF(currentTool()->getLastPressPixel(), currentTool()->getCurrentPixel()).length() < 4)
-        {
-            myTempTransformedSelection = myTransformedSelection;
-        }
-        else
-        {
-            myTempTransformedSelection =
-                transformedSelection.translated(QPointF(offsetX, offsetY));
-        }
+        myTempTransformedSelection =
+            transformedSelection.translated(QPointF(offsetX, offsetY));
+
         break;
     }
     case MoveMode::TOPRIGHT:
