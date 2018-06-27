@@ -314,33 +314,15 @@ void MoveTool::paintTransformedSelection()
 
 bool MoveTool::leavingThisTool()
 {
-    if (mScribbleArea->isTemporaryTool()) { return true; }
-    if (!transformHasBeenModified()) { return true; }
-
-    int returnValue = QMessageBox::warning(nullptr,
-                                   tr("Transform", "Windows title of layer switch pop-up."),
-                                   tr("You are about to switch tool, do you want to apply the transformation?"),
-                                   QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
-                                   QMessageBox::Yes);
-
-    if (returnValue == QMessageBox::Yes)
+    if (mCurrentLayer->type() == Layer::BITMAP)
     {
-        if (mCurrentLayer->type() == Layer::BITMAP)
-        {
-            applySelectionChanges();
-        }
-        else if (mCurrentLayer->type() == Layer::VECTOR) {
-            applyTransformation();
-        }
-
+        applySelectionChanges();
     }
-    else if (returnValue == QMessageBox::No)
+    else if (mCurrentLayer->type() == Layer::VECTOR)
     {
-        cancelChanges();
+        applyTransformation();
     }
-    else if (returnValue == QMessageBox::Cancel) {
-        return false;
-    }
+
     return true;
 }
 
