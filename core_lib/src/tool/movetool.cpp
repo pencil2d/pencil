@@ -163,7 +163,7 @@ void MoveTool::beginInteraction(QMouseEvent* event)
     {
         if (shouldDeselect())
         {
-            applyChanges();
+            applyTransformation();
             mScribbleArea->deselectAll();
         }
     }
@@ -217,7 +217,7 @@ void MoveTool::setCurveSelected(VectorImage* vectorImage, QMouseEvent* event)
     {
         if (event->modifiers() != Qt::ShiftModifier)
         {
-            applyChanges();
+            applyTransformation();
         }
         vectorImage->setSelected(mScribbleArea->mClosestCurves, true);
         mScribbleArea->setSelection(vectorImage->getSelectionRect());
@@ -231,7 +231,7 @@ void MoveTool::setAreaSelected(VectorImage* vectorImage, QMouseEvent* event)
     {
         if (event->modifiers() != Qt::ShiftModifier)
         {
-            applyChanges();
+            applyTransformation();
         }
         vectorImage->setAreaSelected(areaNumber, true);
         mScribbleArea->setSelection(vectorImage->getSelectionRect());
@@ -294,12 +294,15 @@ void MoveTool::cancelChanges()
     mScribbleArea->deselectAll();
 }
 
-void MoveTool::applyAllChangesTo(QRectF& modifiedRect)
+void MoveTool::applySelectionChanges()
 {
-    mScribbleArea->applyAllSelectionChangesTo(modifiedRect);
+    mScribbleArea->myRotatedAngle = 0;
+    mRotatedAngle = 0;
+
+    mScribbleArea->applySelectionChanges();
 }
 
-void MoveTool::applyChanges()
+void MoveTool::applyTransformation()
 {
     mScribbleArea->applyTransformedSelection();
 }
@@ -324,7 +327,10 @@ bool MoveTool::leavingThisTool()
     {
         if (mCurrentLayer->type() == Layer::BITMAP)
         {
-            applyAllChangesTo(mScribbleArea->myTransformedSelection);
+            applySelectionChanges();
+        }
+        else if (mCurrentLayer->type() == Layer::VECTOR) {
+            applyTransformation();
         }
 
     }
@@ -358,7 +364,10 @@ bool MoveTool::switchingLayer()
 
         if (mCurrentLayer->type() == Layer::BITMAP)
         {
-            applyAllChangesTo(mScribbleArea->myTransformedSelection);
+            applySelectionChanges();
+
+        } else if (mCurrentLayer->type() == Layer::VECTOR) {
+            applyTransformation();
         }
 
         mScribbleArea->deselectAll();

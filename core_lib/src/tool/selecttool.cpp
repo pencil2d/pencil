@@ -58,8 +58,6 @@ void SelectTool::mousePressEvent(QMouseEvent* event)
 
 void SelectTool::beginSelection()
 {
-    mScribbleArea->myRotatedAngle = 0;
-
     // Store original click position for help with selection rectangle.
     mAnchorOriginPoint = getLastPoint();
 

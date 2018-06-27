@@ -64,7 +64,7 @@ public:
     void deleteSelection();
     void setSelection( QRectF rect );
     void adjustSelection(float offsetX, float offsetY, qreal rotatedAngle);
-    void applyAllSelectionChangesTo(QRectF& modifiedRect);
+    void applySelectionChanges();
     void displaySelectionProperties();
     void resetSelectionProperties();
 
@@ -141,7 +141,7 @@ public slots:
     void setModified( int layerNumber, int frameNumber );
 
     inline bool transformHasBeenModified() {
-        return mySelection != myTempTransformedSelection;
+        return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0;
     }
 
     void selectAll();

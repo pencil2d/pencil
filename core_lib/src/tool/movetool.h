@@ -43,8 +43,8 @@ public:
 
 private:
     void cancelChanges();
-    void applyChanges();
-    void applyAllChangesTo(QRectF& modifiedRect);
+    void applyTransformation();
+    void applySelectionChanges();
     void resetSelectionProperties();
     void paintTransformedSelection();
     void whichAnchorPoint();

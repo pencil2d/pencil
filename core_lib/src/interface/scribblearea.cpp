@@ -1607,32 +1607,29 @@ void ScribbleArea::paintTransformedSelection()
     update();
 }
 
-void ScribbleArea::applyAllSelectionChangesTo(QRectF& selectionRect)
+void ScribbleArea::applySelectionChanges()
 {
-    // because we've applied some changes already, paint the transformation
-    // and make sure it's modified
-    paintTransformedSelection();
 
-    // we've painted the current selection but it has not been applied yet
-    // we make sure that the selection is correct
-    // by setting the temp (editing) selection
-    selectionRect = myTempTransformedSelection;
-
-    // Calculate the new transformation based on the new selection
-    calculateSelectionTransformation();
-
-    // apply the transformation to make the selection "stick" to the image
-    // we only want to do this when we're absolutely sure the transformation
-    // is final, othewise we will dirty the image upon further editing
+    // we haven't applied our last modifications yet
+    // therefore apply the transformed selection first.
     applyTransformedSelection();
 
-    // finally set the transformation again
-    // normalize if below zero
+    // make sure the current transformed selection is valid
     if (!myTempTransformedSelection.isValid())
     {
         myTempTransformedSelection = myTempTransformedSelection.normalized();
     }
     setSelection(myTempTransformedSelection);
+
+    // paint the transformed selection
+    paintTransformedSelection();
+
+    // Calculate the new transformation based on the new selection
+    calculateSelectionTransformation();
+
+    // apply the transformed selection to make the selection modification absolute.
+    applyTransformedSelection();
+
 }
 
 void ScribbleArea::applyTransformedSelection()
