@@ -61,7 +61,7 @@ void BrushTool::loadSettings()
     properties.pressure = settings.value( "brushPressure", false ).toBool();
     properties.invisibility = settings.value("brushInvisibility", true).toBool();
     properties.preserveAlpha = OFF;
-    properties.stabilizerLevel = settings.value("brushStabilization").toInt();
+    properties.stabilizerLevel = settings.value("brushLineStabilization").toInt();
     properties.useAA = settings.value("brushAA").toInt();
 
     if (properties.useFeather == true) {
@@ -140,7 +140,7 @@ void BrushTool::setStabilizerLevel(const int level)
     properties.stabilizerLevel = level;
 
     QSettings settings( PENCIL2D, PENCIL2D);
-    settings.setValue("brushStabilization", level);
+    settings.setValue("brushLineStabilization", level);
     settings.sync();
 }
 

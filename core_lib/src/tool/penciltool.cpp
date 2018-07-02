@@ -50,7 +50,7 @@ void PencilTool::loadSettings()
     properties.width = settings.value("pencilWidth").toDouble();
     properties.feather = 50;
     properties.pressure = settings.value("pencilPressure").toBool();
-    properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
+    properties.stabilizerLevel = settings.value("pencilLineStabilization").toInt();
     properties.useAA = DISABLED;
     properties.useFeather = true;
     properties.useFillContour = false;
@@ -124,7 +124,7 @@ void PencilTool::setStabilizerLevel(const int level)
     properties.stabilizerLevel = level;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("stabilizerLevel", level);
+    settings.setValue("pencilLineStabilization", level);
     settings.sync();
 }
 
