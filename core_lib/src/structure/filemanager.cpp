@@ -356,7 +356,7 @@ Status FileManager::save(Object* object, QString sFileName)
     out.flush();
     file.close();
 
-    dd << "Done writing main xml file";
+    dd << "Done writing main xml file at" << sMainXMLFile;
 
     zippedFiles.append(sMainXMLFile);
 
