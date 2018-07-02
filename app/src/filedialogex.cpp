@@ -161,7 +161,7 @@ QString FileDialog::openFileFilters( FileType fileType )
     {
         case FileType::ANIMATION: return PFF_OPEN_ALL_FILE_FILTER;
         case FileType::IMAGE: return PENCIL_IMAGE_FILTER;
-        case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_FILTER;
+        case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_SEQ_FILTER;
         case FileType::MOVIE: { Q_ASSERT(false); return PENCIL_MOVIE_EXT; } // currently not supported
         case FileType::SOUND: return tr( "Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)" );
         case FileType::PALETTE: return tr( "Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)" );

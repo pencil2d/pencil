@@ -28,6 +28,9 @@ GNU General Public License for more details.
 #define PENCIL_IMAGE_FILTER \
    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;GIF(*.gif)" )
 
+#define PENCIL_IMAGE_SEQ_FILTER \
+    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);" )
+
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 #define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
