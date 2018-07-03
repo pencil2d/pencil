@@ -760,7 +760,7 @@ QString Editor::workingDir() const
     return mObject->workingDir();
 }
 
-bool Editor::importBitmapImage(QString filePath)
+bool Editor::importBitmapImage(QString filePath, int space)
 {
     QImageReader reader(filePath);
 
@@ -787,7 +787,11 @@ bool Editor::importBitmapImage(QString filePath)
         BitmapImage importedBitmapImage{ boundaries, img };
         bitmapImage->paste(&importedBitmapImage);
 
-        scrubTo(currentFrame() + 1);
+        if (space > 1) {
+            scrubTo(currentFrame() + space);
+        } else {
+            scrubTo(currentFrame() + 1);
+        }
 
         backup(tr("Import Image"));
     }
@@ -839,6 +843,17 @@ bool Editor::importImage(QString filePath)
         return false;
     }
     }
+}
+
+bool Editor::importGIF(QString filePath, int numOfImages)
+{
+    Layer* layer = layers()->currentLayer();
+    if (layer->type() == Layer::BITMAP) {
+        return importBitmapImage(filePath, numOfImages);
+    } else {
+        return false;
+    }
+
 }
 
 void Editor::updateFrame(int frameNumber)

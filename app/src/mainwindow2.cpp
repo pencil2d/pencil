@@ -246,6 +246,7 @@ void MainWindow2::createMenus()
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
+    connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
@@ -833,6 +834,60 @@ void MainWindow2::importImageSequence()
 
     mEditor->layers()->notifyAnimationLengthChanged();
 
+    progress.close();
+
+    mIsImportingImageSequence = false;
+}
+
+void MainWindow2::importGIF()
+{
+    auto gifDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::GIF);
+    gifDialog->exec();
+    if (gifDialog->result() == QDialog::Rejected)
+    {
+        return;
+    }
+
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = true;
+
+    int space = gifDialog->getSpace();
+
+    // Show a progress dialog, as this could take a while if the gif is huge
+    QProgressDialog progress(tr("Importing Animated GIF..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
+    bool failedImport = false;
+    QString strImgFileLower = gifDialog->getFilePath();
+
+    if (strImgFileLower.endsWith(".gif"))
+    {
+        mEditor->importGIF(strImgFileLower, space);
+
+        progress.setValue(50);
+        QApplication::processEvents();  // Required to make progress bar update on-screen.
+
+    } else {
+        if (!failedImport)
+        {
+            failedImport = true;
+        }
+    }
+
+    if (failedImport)
+    {
+        QMessageBox::warning(this,
+                             tr("Warning"),
+                             tr("was unable to import") + strImgFileLower,
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
+
+    progress.setValue(100);
     progress.close();
 
     mIsImportingImageSequence = false;

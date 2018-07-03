@@ -64,6 +64,7 @@
      <addaction name="actionImport_Image"/>
      <addaction name="actionImport_ImageSeq"/>
      <addaction name="actionImport_Movie"/>
+     <addaction name="actionImport_Gif"/>
      <addaction name="actionImport_Sound"/>
      <addaction name="separator"/>
      <addaction name="actionImport_Palette"/>
@@ -874,6 +875,11 @@
    </property>
    <property name="shortcut">
     <string>F1</string>
+   </property>
+  </action>
+  <action name="actionImport_Gif">
+   <property name="text">
+    <string>Animated GIF</string>
    </property>
   </action>
  </widget>

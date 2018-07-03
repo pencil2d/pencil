@@ -19,13 +19,18 @@ GNU General Public License for more details.
 #include "ui_importimageseqoptions.h"
 #include "util.h"
 
-ImportImageSeqDialog::ImportImageSeqDialog(QWidget* parent) :
-    ImportExportDialog(parent, ImportExportDialog::Import, FileType::IMAGE_SEQUENCE)
+ImportImageSeqDialog::ImportImageSeqDialog(QWidget* parent, Mode mode, FileType fileType) :
+    ImportExportDialog(parent, mode, fileType)
 {
     ui = new Ui::ImportImageSeqOptions;
     ui->setupUi(getOptionsGroupBox());
 
-    setWindowTitle(tr("Import image sequence"));
+    if (fileType == FileType::GIF) {
+        setWindowTitle(tr("Import Animated GIF"));
+    } else {
+        setWindowTitle(tr("Import image sequence"));
+    }
+
     connect(ui->spaceSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ImportImageSeqDialog::setSpace);
 }
 

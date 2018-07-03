@@ -25,6 +25,7 @@ enum class FileType
     ANIMATION,
     IMAGE,
     IMAGE_SEQUENCE,
+    GIF,
     MOVIE,
     SOUND,
     PALETTE
