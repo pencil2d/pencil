@@ -61,7 +61,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     }
 
     //qDebug() << "SrcFolder=" << srcFolderPath;
-    for (QString filePath : fileList)
+    for (const QString& filePath : fileList)
     {
         QString sRelativePath = filePath;
         sRelativePath.replace(srcFolderPath, "");
@@ -75,7 +75,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("  Cannot add %1: %2").arg(sRelativePath).arg((int)err);
+            dd << QString("  Cannot add %1: error %2, %3").arg(sRelativePath).arg((int)err).arg(mz_zip_get_error_string(err));
         }
     }
     ok &= mz_zip_writer_finalize_archive(mz);
