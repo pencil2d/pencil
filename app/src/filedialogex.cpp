@@ -148,6 +148,7 @@ QString FileDialog::saveDialogTitle( FileType fileType )
         case FileType::ANIMATION: return tr( "Save animation" );
         case FileType::IMAGE: return tr( "Export image" );
         case FileType::IMAGE_SEQUENCE: return tr( "Export image sequence" );
+        case FileType::GIF: return tr( "Export Animated GIF" );
         case FileType::MOVIE: return tr( "Export movie" );
         case FileType::SOUND: return tr( "Export sound" );
         case FileType::PALETTE: return tr( "Export palette" );
@@ -179,7 +180,8 @@ QString FileDialog::saveFileFilters( FileType fileType )
         case FileType::ANIMATION: return PFF_SAVE_ALL_FILE_FILTER;
         case FileType::IMAGE: return "";
         case FileType::IMAGE_SEQUENCE: return "";
-        case FileType::MOVIE: return tr( "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; GIF (*.gif);; APNG (*.apng)" );
+        case FileType::GIF: return tr("Animated GIF (*.gif)");
+        case FileType::MOVIE: return tr( "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)" );
         case FileType::SOUND: return "";
         case FileType::PALETTE: return tr( "Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)" );
         default: Q_ASSERT( false );

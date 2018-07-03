@@ -239,6 +239,7 @@ void MainWindow2::createMenus()
     connect(ui->actionExport_Image, &QAction::triggered, mCommands, &ActionCommands::exportImage);
     connect(ui->actionExport_ImageSeq, &QAction::triggered, mCommands, &ActionCommands::exportImageSequence);
     connect(ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie);
+    connect(ui->actionExport_Animated_GIF, &QAction::triggered, mCommands, &ActionCommands::exportGif);
 
     connect(ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette);
 

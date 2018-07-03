@@ -133,9 +133,20 @@ Status ActionCommands::importSound()
     return st;
 }
 
-Status ActionCommands::exportMovie()
+Status ActionCommands::exportGif()
 {
-    auto dialog = new ExportMovieDialog(mParent);
+    // exporting gif
+    return exportMovie(true);
+}
+
+Status ActionCommands::exportMovie(bool isGif)
+{
+    ExportMovieDialog* dialog = nullptr;
+    if (isGif) {
+        dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, FileType::GIF);
+    } else {
+        dialog = new ExportMovieDialog(mParent);
+    }
     OnScopeExit(dialog->deleteLater());
 
     dialog->init();
@@ -227,11 +238,16 @@ Status ActionCommands::exportMovie()
 
     if (st.ok() && QFile::exists(strMoviePath))
     {
+        if (isGif) {
+            QMessageBox::information(mParent, "Pencil2D",
+                                             tr("Finished"));
+            return Status::OK;
+        }
         auto btn = QMessageBox::question(mParent, "Pencil2D",
                                          tr("Finished. Open movie now?", "When movie export done."));
         if (btn == QMessageBox::Yes)
         {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
+            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath).path());
         }
     }
     return Status::OK;

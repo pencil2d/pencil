@@ -31,7 +31,7 @@ class ExportMovieDialog : public ImportExportDialog
     Q_OBJECT
 
 public:
-    explicit ExportMovieDialog(QWidget* parent = 0);
+    explicit ExportMovieDialog(QWidget* parent = 0, Mode mode = ImportExportDialog::Export, FileType fileType = FileType::MOVIE);
     ~ExportMovieDialog();
 
     void setCamerasInfo(const std::vector<std::pair<QString, QSize>>);

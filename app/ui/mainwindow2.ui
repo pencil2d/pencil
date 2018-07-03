@@ -77,6 +77,7 @@
      <addaction name="actionExport_Movie"/>
      <addaction name="actionExport_ImageSeq"/>
      <addaction name="actionExport_Image"/>
+     <addaction name="actionExport_Animated_GIF"/>
      <addaction name="separator"/>
      <addaction name="actionExport_Palette"/>
     </widget>
@@ -878,6 +879,11 @@
    </property>
   </action>
   <action name="actionImport_Gif">
+   <property name="text">
+    <string>Animated GIF</string>
+   </property>
+  </action>
+  <action name="actionExport_Animated_GIF">
    <property name="text">
     <string>Animated GIF</string>
    </property>
