@@ -880,12 +880,12 @@
   </action>
   <action name="actionImport_Gif">
    <property name="text">
-    <string>Animated GIF</string>
+    <string>Animated GIF...</string>
    </property>
   </action>
   <action name="actionExport_Animated_GIF">
    <property name="text">
-    <string>Animated GIF</string>
+    <string>Animated GIF...</string>
    </property>
   </action>
  </widget>
