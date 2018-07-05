@@ -19,8 +19,10 @@ GNU General Public License for more details.
 #define MOVETOOL_H
 
 #include "basetool.h"
+#include "movemode.h"
 
 class Layer;
+class VectorImage;
 
 
 class MoveTool : public BaseTool
@@ -36,26 +38,40 @@ public:
     void mouseReleaseEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;
 
-    void leavingThisTool() override;
-    void switchingLayers() override;
+    bool leavingThisTool() override;
+    bool switchingLayer() override;
 
 private:
     void cancelChanges();
-    void applyChanges();
+    void applyTransformation();
+    void applySelectionChanges();
     void resetSelectionProperties();
     void paintTransformedSelection();
+    void whichAnchorPoint();
+    void setAnchorToLastPoint();
+    void updateTransformation();
 
-    /// @brief Selects which corner-point of the selection to move, if
-    /// one is range of the last click.
-    /// @return true if a corner point was selected, false otherwise.
-    bool whichTransformationPoint();
-    void transformSelection(qreal offsetX, qreal offsetY);
-    void pressOperation(QMouseEvent* event, Layer *layer);
-    void actionOnVector(QMouseEvent *event, Layer *layer);
+    int showTransformWarning();
+
+    void beginInteraction(QMouseEvent* event);
+    void createVectorSelection(QMouseEvent* event);
+    void transformSelection(QMouseEvent* event);
+
+    void setCurveSelected(VectorImage* vectorImage, QMouseEvent* event);
+    void setAreaSelected(VectorImage* vectorImage, QMouseEvent* event);
+
+    bool transformHasBeenModified();
+    bool shouldDeselect();
+
     void storeClosestVectorCurve();
     QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
 
     QPointF anchorOriginPoint;
+
+    Layer* mCurrentLayer = nullptr;
+
+    qreal mRotatedAngle = 0.0;
+
 };
 
 #endif

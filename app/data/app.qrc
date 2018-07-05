@@ -51,6 +51,11 @@
         <file>icons/new/svg/smudge_detailed.svg</file>
         <file>icons/new/svg/trash_detailed.svg</file>
         <file>icons/new/checkerboard_smaller</file>
+        <file>icons/new/arrow-diagonalleft.png</file>
+        <file>icons/new/arrow-diagonalright.png</file>
+        <file>icons/new/arrow-horizontal.png</file>
+        <file>icons/new/arrow-selectmove.png</file>
+        <file>icons/new/arrow-vertical.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

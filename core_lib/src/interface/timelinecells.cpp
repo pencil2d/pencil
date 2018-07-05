@@ -418,7 +418,6 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
 
 void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
-    if (primaryButton != Qt::NoButton) return;
     int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
 
@@ -439,7 +438,9 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
     primaryButton = event->button();
 
-    mEditor->tools()->currentTool()->switchingLayers();
+    bool switchLayer = mEditor->tools()->currentTool()->switchingLayer();
+    if (!switchLayer) { return; }
+
     switch (mType)
     {
     case TIMELINE_CELL_TYPE::Layers:

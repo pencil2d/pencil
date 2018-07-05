@@ -369,7 +369,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
                                  mEditor->color()->frontColorNumber());
     }
 
-    if (vectorImage->isAnyCurveSelected() || mScribbleArea->somethingSelected)
+    if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected())
     {
         mScribbleArea->deselectAll();
     }
@@ -377,8 +377,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
     // select last/newest curve
     vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
-    // TODO: selection doesn't apply on enter or escape
-    mScribbleArea->somethingSelected = true;
+    // TODO: selection doesn't apply on enter
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();
