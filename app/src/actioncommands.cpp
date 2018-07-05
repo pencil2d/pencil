@@ -247,7 +247,7 @@ Status ActionCommands::exportMovie(bool isGif)
                                          tr("Finished. Open movie now?", "When movie export done."));
         if (btn == QMessageBox::Yes)
         {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath).path());
+            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
         }
     }
     return Status::OK;
