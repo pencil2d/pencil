@@ -26,7 +26,10 @@ GNU General Public License for more details.
     QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 
 #define PENCIL_IMAGE_FILTER \
-   QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;GIF(*.gif)" )
+   QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)" )
+
+#define PENCIL_IMAGE_SEQ_FILTER \
+    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);" )
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
