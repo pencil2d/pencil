@@ -239,15 +239,21 @@ Status ActionCommands::exportMovie(bool isGif)
     if (st.ok() && QFile::exists(strMoviePath))
     {
         if (isGif) {
-            QMessageBox::information(mParent, "Pencil2D",
-                                             tr("Finished"));
+            auto btn = QMessageBox::question(mParent, "Pencil2D",
+                                             tr("Finished. Open file location?"));
+
+            if (btn == QMessageBox::Yes)
+            {
+                QString path = dialog->getAbsolutePath();
+                QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+            }
             return Status::OK;
         }
         auto btn = QMessageBox::question(mParent, "Pencil2D",
                                          tr("Finished. Open movie now?", "When movie export done."));
         if (btn == QMessageBox::Yes)
         {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath).path());
+            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
         }
     }
     return Status::OK;

@@ -553,8 +553,6 @@ Status MovieExporter::generateGif(
     }
     imageToExportBase.fill(bgColor);
 
-    QTransform view = cameraLayer->getViewAtFrame(currentFrame);
-
     QSize camSize = cameraLayer->getViewSize();
     QTransform centralizeCamera;
     centralizeCamera.translate(camSize.width() / 2, camSize.height() / 2);
@@ -597,6 +595,7 @@ Status MovieExporter::generateGif(
         QImage imageToExport = imageToExportBase.copy();
         QPainter painter(&imageToExport);
 
+        QTransform view = cameraLayer->getViewAtFrame(currentFrame);
         painter.setWorldTransform(view * centralizeCamera);
         painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
 

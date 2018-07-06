@@ -49,6 +49,12 @@ QStringList ImportExportDialog::getFilePaths()
     return m_filePaths;
 }
 
+QString ImportExportDialog::getAbsolutePath()
+{
+    QFileInfo info(m_filePaths.first());
+    return info.absolutePath();
+}
+
 void ImportExportDialog::init()
 {
     switch (mMode)
