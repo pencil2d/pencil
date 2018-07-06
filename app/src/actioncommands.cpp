@@ -242,15 +242,10 @@ Status ActionCommands::exportMovie(bool isGif)
             auto btn = QMessageBox::question(mParent, "Pencil2D",
                                              tr("Finished. Open file location?"));
 
-            QString name = dialog->getFileName() + ".gif";
-
-            // Chop name + extension off the string
-            // to get folder path
-            strMoviePath.chop(name.size());
-
             if (btn == QMessageBox::Yes)
             {
-                QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
+                QString path = dialog->getAbsolutePath();
+                QDesktopServices::openUrl(QUrl::fromLocalFile(path));
             }
             return Status::OK;
         }
