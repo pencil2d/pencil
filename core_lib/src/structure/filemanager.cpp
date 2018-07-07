@@ -292,6 +292,10 @@ Status FileManager::save(Object* object, QString sFileName)
                       tr("Cannot Create Data Directory"),
                       tr("\"%1\" is a file. Please delete the file and try again.").arg(dataInfo.absoluteFilePath()));
     }
+    // There may be old files lying around
+    // from projects before this implementation, cleanup their dirty workfolder
+    // before saving new content
+    removeFilesWithNoXMLReference(sMainXMLFile, sDataFolder);
 
     // save data
     int numLayers = object->getLayerCount();
@@ -355,6 +359,10 @@ Status FileManager::save(Object* object, QString sFileName)
     xmlDoc.save(out, indentSize);
     out.flush();
     file.close();
+
+    // There may be old files may be lying around, cleanup workfolder before
+    // zipping
+    removeFilesWithNoXMLReference(sMainXMLFile, sDataFolder);
 
     dd << "Done writing main xml file at" << sMainXMLFile;
 
@@ -621,4 +629,55 @@ Status FileManager::verifyObject(Object* obj)
     }
 
     return Status::OK;
+}
+QStringList FileManager::getImageSrcNamesFromXML(QString mainXmlFile, QString dataFolderPath)
+{
+    QStringList listOfWorkFolderFiles = QDir(dataFolderPath).entryList(QDir::Files);
+
+    QFile xmlFile(mainXmlFile);
+    QDomDocument xmlDoc;
+    xmlDoc.setContent(&xmlFile);
+    QDomElement objectElem = xmlDoc.firstChildElement("document");
+
+    QStringList srcNames;
+
+    QDomNode objectNode = objectElem.namedItem("object");
+    QDomElement element = objectNode.toElement();
+
+    for (QDomNode child = element.firstChild(); !child.isNull(); child = child.nextSibling())
+    {
+       QDomElement element = child.toElement();
+       if (element.tagName() == "layer")
+       {
+           for (QDomNode child2 = element.firstChild(); !child2.isNull(); child2 = child2.nextSibling())
+           {
+               QDomElement element = child2.toElement();
+
+               srcNames << element.attribute("src");
+           }
+       }
+    }
+    return srcNames;
+}
+
+void FileManager::removeFilesWithNoXMLReference(QString xmlFilePath, QString dataFolderPath)
+{
+    QStringList srcNames = getImageSrcNamesFromXML(xmlFilePath, dataFolderPath);
+    QStringList listOfWorkFolderFiles = QDir(dataFolderPath).entryList(QDir::Files);
+    for (QString fileName: listOfWorkFolderFiles)
+    {
+        bool fileExists = false;
+        for (QString srcName: srcNames)
+        {
+            if (fileName == srcName)
+            {
+                fileExists = true;
+            }
+        }
+
+        if (!fileExists && !fileName.endsWith(".xml", Qt::CaseInsensitive))
+        {
+            QDir(dataFolderPath).remove(fileName);
+        }
+    }
 }
