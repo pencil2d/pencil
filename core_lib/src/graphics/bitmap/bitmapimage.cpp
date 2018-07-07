@@ -83,6 +83,9 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 
 BitmapImage* BitmapImage::clone()
 {
+    // try to load file if image appears to be null
+    loadFile();
+
     return new BitmapImage(*this);
 }
 
