@@ -83,9 +83,6 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 
 BitmapImage* BitmapImage::clone()
 {
-    // try to load file if image appears to be null
-    loadFile();
-
     return new BitmapImage(*this);
 }
 
@@ -93,10 +90,8 @@ void BitmapImage::loadFile()
 {
     if (mImage == nullptr)
     {
-        Q_ASSERT(isModified() == false);
         mImage = std::make_shared<QImage>(fileName());
         mBounds.setSize(mImage->size());
-        //qDebug() << "Load file=" << fileName();
     }
 }
 

@@ -292,10 +292,6 @@ Status FileManager::save(Object* object, QString sFileName)
                       tr("Cannot Create Data Directory"),
                       tr("\"%1\" is a file. Please delete the file and try again.").arg(dataInfo.absoluteFilePath()));
     }
-    // There may be old files lying around
-    // from projects before this implementation, cleanup their dirty workfolder
-    // before saving new content
-    removeFilesWithNoXMLReference(sMainXMLFile, sDataFolder);
 
     // save data
     int numLayers = object->getLayerCount();
@@ -359,10 +355,6 @@ Status FileManager::save(Object* object, QString sFileName)
     xmlDoc.save(out, indentSize);
     out.flush();
     file.close();
-
-    // There may be old files may be lying around, cleanup workfolder before
-    // zipping
-    removeFilesWithNoXMLReference(sMainXMLFile, sDataFolder);
 
     dd << "Done writing main xml file at" << sMainXMLFile;
 

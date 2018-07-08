@@ -73,7 +73,9 @@ public:
         ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER,
 
         // Timeline
-        KEYFRAME_MODIFIED
+        KEYFRAME_MODIFIED,
+        KEYFRAME_MOVED,
+        KEYFRAME_EXISTS
     };
 
     Status(ErrorCode code);

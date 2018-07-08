@@ -59,21 +59,26 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
 
     BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
 
-    Status st = Status(Status::FAIL);
-
-    st = needSaveFrame(keyframe, strFilePath);
+    Status st = needSaveFrame(keyframe, strFilePath);
     if (st == Status::OK)
     {
         return Status::SAFE;
-    } else if (st == Status::KEYFRAME_MODIFIED) {
-
-        bitmapImage = bitmapImage->clone();
-        st = bitmapImage->writeFile(strFilePath);
-    } else {
-        st = bitmapImage->writeFile(strFilePath);
     }
 
+    if (bitmapImage->fileName().isEmpty())
+    {
+        bitmapImage->setFileName(strFilePath);
+    }
+    else if(strFilePath != bitmapImage->fileName())
+    {
+        bitmapImage->setFileName(bitmapImage->fileName());
+    }
+    else {
+        bitmapImage->setFileName(strFilePath);
+    }
+    bitmapImage->setRenamed(true);
 
+    st = bitmapImage->writeFile(strFilePath);
     if (!st.ok())
     {
         bitmapImage->setFileName("");
@@ -108,9 +113,9 @@ Status LayerBitmap::needSaveFrame(KeyFrame* key, const QString& strSavePath)
     if (key->isModified()) // keyframe was modified
         return Status::KEYFRAME_MODIFIED;
     if (QFile::exists(strSavePath) == false) // hasn't been saved before
-        return Status::KEYFRAME_MODIFIED;
+        return Status::KEYFRAME_EXISTS;
     if (strSavePath != key->fileName()) // key frame moved
-        return Status::KEYFRAME_MODIFIED;
+        return Status::KEYFRAME_MOVED;
     return Status::OK;
 }
 
@@ -133,7 +138,14 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
         imageTag.setAttribute("topLeftY", pImg->topLeft().y());
         layerTag.appendChild(imageTag);
 
-        Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        if (!pImg->hasBeenRenamed())
+        {
+            Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        }
+        else
+        {
+            pImg->setRenamed(false);
+        }
     });
 
     return layerTag;
