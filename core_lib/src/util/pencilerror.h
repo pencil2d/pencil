@@ -70,12 +70,7 @@ public:
 		ERROR_FFMPEG_NOT_FOUND,
 
         // Layer
-        ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER,
-
-        // Timeline
-        KEYFRAME_MODIFIED,
-        KEYFRAME_MOVED,
-        KEYFRAME_EXISTS
+        ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER
     };
 
     Status(ErrorCode code);

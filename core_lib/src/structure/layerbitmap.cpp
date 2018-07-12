@@ -59,8 +59,8 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
 
     BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
 
-    Status st = needSaveFrame(keyframe, strFilePath);
-    if (st == Status::OK)
+    bool needSave = needSaveFrame(keyframe, strFilePath);
+    if (!needSave)
     {
         return Status::SAFE;
     }
@@ -78,7 +78,7 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
     }
     bitmapImage->setRenamed(true);
 
-    st = bitmapImage->writeFile(strFilePath);
+    Status st = bitmapImage->writeFile(strFilePath);
     if (!st.ok())
     {
         bitmapImage->setFileName("");
@@ -108,15 +108,15 @@ QString LayerBitmap::fileName(KeyFrame* key) const
     return QString::asprintf("%03d.%03d.png", id(), key->pos());
 }
 
-Status LayerBitmap::needSaveFrame(KeyFrame* key, const QString& strSavePath)
+bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& strSavePath)
 {
     if (key->isModified()) // keyframe was modified
-        return Status::KEYFRAME_MODIFIED;
+        return true;
     if (QFile::exists(strSavePath) == false) // hasn't been saved before
-        return Status::KEYFRAME_EXISTS;
+        return true;
     if (strSavePath != key->fileName()) // key frame moved
-        return Status::KEYFRAME_MOVED;
-    return Status::OK;
+        return true;
+    return false;
 }
 
 QDomElement LayerBitmap::createDomElement(QDomDocument& doc)

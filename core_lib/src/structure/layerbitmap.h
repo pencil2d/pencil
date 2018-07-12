@@ -43,7 +43,7 @@ protected:
 
 private:
     QString fileName(KeyFrame* key) const;
-    Status needSaveFrame(KeyFrame* key, const QString& strSavePath);
+    bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 };
 
 #endif
