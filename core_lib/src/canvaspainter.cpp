@@ -77,9 +77,9 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     mCurrentLayerIndex = layer;
     mFrameNumber = frame;
 
-    QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
-    QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
-    QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
+    //QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
+    //QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
+    //QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
     QPainter painter(mCanvas);
 
     painter.setWorldMatrixEnabled(true);
