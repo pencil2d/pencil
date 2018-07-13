@@ -48,6 +48,8 @@ public:
 
     QString fileName() const { return mAttachedFileName; }
     void    setFileName(QString strFileName) { mAttachedFileName = strFileName; }
+    bool hasBeenRenamed() const { return mHasBeenRenamed; }
+    void setRenamed(bool b) { mHasBeenRenamed = b; }
 
     void addEventListener(KeyFrameEventListener*);
     void removeEventListner(KeyFrameEventListener*);
@@ -61,6 +63,7 @@ private:
     int mLength = 1;
     bool mIsModified = true;
     bool mIsSelected = false;
+    bool mHasBeenRenamed = false;
     QString mAttachedFileName;
 
     std::vector<KeyFrameEventListener*> mEventListeners;

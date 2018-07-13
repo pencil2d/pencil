@@ -90,10 +90,8 @@ void BitmapImage::loadFile()
 {
     if (mImage == nullptr)
     {
-        Q_ASSERT(isModified() == false);
         mImage = std::make_shared<QImage>(fileName());
         mBounds.setSize(mImage->size());
-        //qDebug() << "Load file=" << fileName();
     }
 }
 

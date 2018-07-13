@@ -57,12 +57,27 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
     QString theFileName = fileName(keyframe);
     QString strFilePath = QDir(path).filePath(theFileName);
 
-    if (needSaveFrame(keyframe, strFilePath) == false)
+    BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
+
+    bool needSave = needSaveFrame(keyframe, strFilePath);
+    if (!needSave)
     {
         return Status::SAFE;
     }
 
-    BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
+    if (bitmapImage->fileName().isEmpty())
+    {
+        bitmapImage->setFileName(strFilePath);
+    }
+    else if(strFilePath != bitmapImage->fileName())
+    {
+        bitmapImage->setFileName(bitmapImage->fileName());
+    }
+    else {
+        bitmapImage->setFileName(strFilePath);
+    }
+    bitmapImage->setRenamed(true);
+
     Status st = bitmapImage->writeFile(strFilePath);
     if (!st.ok())
     {
@@ -77,7 +92,6 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
         return Status(Status::FAIL, dd);
     }
 
-    bitmapImage->setFileName(strFilePath);
     bitmapImage->setModified(false);
     return Status::OK;
 }
@@ -124,7 +138,14 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
         imageTag.setAttribute("topLeftY", pImg->topLeft().y());
         layerTag.appendChild(imageTag);
 
-        Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        if (!pImg->hasBeenRenamed())
+        {
+            Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        }
+        else
+        {
+            pImg->setRenamed(false);
+        }
     });
 
     return layerTag;
