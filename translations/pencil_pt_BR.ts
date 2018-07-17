@@ -148,57 +148,57 @@
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="39"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
         <source>Pencil</source>
         <translation>Lápis</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Eraser</source>
         <translation>Borracha</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Select</source>
         <translation>Selecionar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Move</source>
         <translation>Mover</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Hand</source>
         <translation>Mão</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
         <source>Smudge</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
         <source>Pen</source>
         <translation>Caneta</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
         <source>Polyline</source>
         <translation>Polilinha</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
         <source>Bucket</source>
         <translation>Balde</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
         <source>Eyedropper</source>
         <translation>Conta-gotas</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
         <source>Brush</source>
         <translation>Pincel</translation>
     </message>
@@ -360,8 +360,8 @@
 <context>
     <name>ColorPaletteWidget</name>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="152"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="153"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="159"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="160"/>
         <source>Colour name</source>
         <translation>Nome da cor</translation>
     </message>
@@ -1278,7 +1278,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="513"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1128"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1150"/>
         <source>Play</source>
         <translation>Reproduzir</translation>
     </message>
@@ -1496,22 +1496,22 @@
         <translation>Mover Quadro para Trás</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="141"/>
+        <location filename="../app/src/mainwindow2.cpp" line="145"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Paleta de cores:&lt;br&gt;Use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;para alternar no cursor</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="336"/>
+        <location filename="../app/src/mainwindow2.cpp" line="340"/>
         <source>Lock Windows</source>
         <translation>Bloquear Janelas</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="353"/>
+        <location filename="../app/src/mainwindow2.cpp" line="357"/>
         <source>Open Recent</source>
         <translation>Abrir Recente</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="387"/>
+        <location filename="../app/src/mainwindow2.cpp" line="391"/>
         <source>
 
  You have successfully cleared the list</source>
@@ -1519,86 +1519,92 @@
 Você limpou a lista com sucesso</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="458"/>
-        <location filename="../app/src/mainwindow2.cpp" line="486"/>
-        <location filename="../app/src/mainwindow2.cpp" line="629"/>
-        <location filename="../app/src/mainwindow2.cpp" line="688"/>
+        <location filename="../app/src/mainwindow2.cpp" line="462"/>
+        <location filename="../app/src/mainwindow2.cpp" line="490"/>
+        <location filename="../app/src/mainwindow2.cpp" line="633"/>
+        <location filename="../app/src/mainwindow2.cpp" line="692"/>
+        <location filename="../app/src/mainwindow2.cpp" line="761"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="458"/>
-        <location filename="../app/src/mainwindow2.cpp" line="486"/>
+        <location filename="../app/src/mainwindow2.cpp" line="462"/>
+        <location filename="../app/src/mainwindow2.cpp" line="490"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil não consegue ler este arquivo. Se você quiser importar imagens, use o comando Importar.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="493"/>
+        <location filename="../app/src/mainwindow2.cpp" line="497"/>
         <source>Opening document...</source>
         <translation>Abrindo documento...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="493"/>
-        <location filename="../app/src/mainwindow2.cpp" line="551"/>
-        <location filename="../app/src/mainwindow2.cpp" line="715"/>
+        <location filename="../app/src/mainwindow2.cpp" line="497"/>
+        <location filename="../app/src/mainwindow2.cpp" line="555"/>
+        <location filename="../app/src/mainwindow2.cpp" line="719"/>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="551"/>
+        <location filename="../app/src/mainwindow2.cpp" line="555"/>
         <source>Saving document...</source>
         <translation>Salvando documento...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="592"/>
+        <location filename="../app/src/mainwindow2.cpp" line="596"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Um erro ocorreu e seu arquivo pode não ter sido salvo com sucesso. Se você acredita que é um problema com Pencil2D, por favor crie um tópico em: &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Por favor, certifique-se de incluir os seguintes detalhes:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="630"/>
+        <location filename="../app/src/mainwindow2.cpp" line="634"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Esta animação foi modificada. 
 Você deseja salvar suas alterações?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="658"/>
+        <location filename="../app/src/mainwindow2.cpp" line="662"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>A animação não foi salva. 
 Gostaria de salvar agora?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="659"/>
+        <location filename="../app/src/mainwindow2.cpp" line="663"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Não pergunte novamente</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="689"/>
+        <location filename="../app/src/mainwindow2.cpp" line="693"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Impossível importar imagem. &lt;br&gt;&lt;b&gt;DICA:&lt;/b&gt; Use uma camada Bitmap para importar bitmaps.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="715"/>
+        <location filename="../app/src/mainwindow2.cpp" line="719"/>
         <source>Importing image sequence...</source>
         <translation>Importando sequência de imagens...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="961"/>
-        <location filename="../app/src/mainwindow2.cpp" line="966"/>
+        <location filename="../app/src/mainwindow2.cpp" line="762"/>
+        <source>was unable to import</source>
+        <translation>não é possivel importar</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="983"/>
+        <location filename="../app/src/mainwindow2.cpp" line="988"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Desfazer</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="981"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1003"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Refazer</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1123"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1145"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
@@ -1606,122 +1612,122 @@ Gostaria de salvar agora?</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="394"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="400"/>
         <source>Black</source>
         <translation>Preto</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="395"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="401"/>
         <source>Red</source>
         <translation>Vermelho</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="396"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="402"/>
         <source>Dark Red</source>
         <translation>Vermelho escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="397"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="403"/>
         <source>Orange</source>
         <translation>Laranja</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="398"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="404"/>
         <source>Dark Orange</source>
         <translation>Laranja escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="399"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="405"/>
         <source>Yellow</source>
         <translation>Amarelo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="400"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="406"/>
         <source>Dark Yellow</source>
         <translation>Amarelo escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="401"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="407"/>
         <source>Green</source>
         <translation>Verde</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="402"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="408"/>
         <source>Dark Green</source>
         <translation>Verde escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="403"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="409"/>
         <source>Cyan</source>
         <translation>Ciano</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="404"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="410"/>
         <source>Dark Cyan</source>
         <translation>Ciano escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="405"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="411"/>
         <source>Blue</source>
         <translation>Azul</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="406"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="412"/>
         <source>Dark Blue</source>
         <translation>Azul escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="407"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="413"/>
         <source>White</source>
         <translation>Branco</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="408"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="414"/>
         <source>Very Light Grey</source>
         <translation>Cinza muito claro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="409"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="415"/>
         <source>Light Grey</source>
         <translation>Cinza claro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="410"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="416"/>
         <source>Grey</source>
         <translation>Cinza</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="411"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="417"/>
         <source>Dark Grey</source>
         <translation>Cinza escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="412"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="418"/>
         <source>Light Skin</source>
         <translation>Pele clara</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="413"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="419"/>
         <source>Light Skin - shade</source>
         <translation>Pele clara - sombra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="414"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="420"/>
         <source>Skin</source>
         <translation>Pele</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="415"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="421"/>
         <source>Skin - shade</source>
         <translation>Pele - sombra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="416"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="422"/>
         <source>Dark Skin</source>
         <translation>Pele escura</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="417"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="423"/>
         <source>Dark Skin - shade</source>
         <translation>Pele escura - sombra</translation>
     </message>
@@ -1856,26 +1862,26 @@ Gostaria de salvar agora?</translation>
         <translation>Aviso: O formato de saída não foi especificado ou não é suportado. Utilizando PNG.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="289"/>
+        <location filename="../app/src/main.cpp" line="288"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
         <translation>Aviso: Transparência não é suportada atualmente em arquivos de vídeo</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="291"/>
+        <location filename="../app/src/main.cpp" line="290"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
         <translation>Exportando vídeo...</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="293"/>
-        <location filename="../app/src/main.cpp" line="298"/>
+        <location filename="../app/src/main.cpp" line="292"/>
+        <location filename="../app/src/main.cpp" line="297"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
         <translation>Concluído.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="296"/>
+        <location filename="../app/src/main.cpp" line="295"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
         <translation>Exportando sequência de imagens...</translation>
@@ -1936,8 +1942,8 @@ Gostaria de salvar agora?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="25"/>
-        <source>Images (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)</source>
-        <translation>Imagens (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)</translation>
+        <source>Images (*.png *.jpg *.jpeg *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;GIF(*.gif)</source>
+        <translation>Imagens (*.png *.jpg *.jpeg *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;GIF(*.gif)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="37"/>
@@ -1980,1337 +1986,1337 @@ Gostaria de salvar agora?</translation>
         <translation>Arquivo de Animação Pencil PCLX(*.pclx);;Arquivo Antigo de Animação Pencil PCL(*.pcl)</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="279"/>
+        <location filename="../app/src/colordictionary.h" line="282"/>
         <source>Vivid Pink</source>
         <translation>Cor de Rosa Vívido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="280"/>
+        <location filename="../app/src/colordictionary.h" line="283"/>
         <source>Strong Pink</source>
         <translation>Cor de Rosa Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="281"/>
+        <location filename="../app/src/colordictionary.h" line="284"/>
         <source>Deep Pink</source>
         <translation>Cor de Rosa Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="282"/>
+        <location filename="../app/src/colordictionary.h" line="285"/>
         <source>Light Pink</source>
         <translation>Cor de Rosa Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="283"/>
+        <location filename="../app/src/colordictionary.h" line="286"/>
         <source>Moderate Pink</source>
         <translation>Cor de Rosa Médio</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="284"/>
+        <location filename="../app/src/colordictionary.h" line="287"/>
         <source>Dark Pink</source>
         <translation>Cor de Rosa Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="285"/>
+        <location filename="../app/src/colordictionary.h" line="288"/>
         <source>Pale Pink</source>
         <translation>Cor de Rosa Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="286"/>
+        <location filename="../app/src/colordictionary.h" line="289"/>
         <source>Grayish Pink</source>
         <translation>Cor de Rosa Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="287"/>
+        <location filename="../app/src/colordictionary.h" line="290"/>
         <source>Pinkish White</source>
         <translation>Branco Rosado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="288"/>
+        <location filename="../app/src/colordictionary.h" line="291"/>
         <source>Pinkish Gray</source>
         <translation>Cinza Rosado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="289"/>
+        <location filename="../app/src/colordictionary.h" line="292"/>
         <source>Vivid Red</source>
         <translation>Vermelho Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="290"/>
+        <location filename="../app/src/colordictionary.h" line="293"/>
         <source>Strong Red</source>
         <translation>Vermelho Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="291"/>
+        <location filename="../app/src/colordictionary.h" line="294"/>
         <source>Deep Red</source>
         <translation>Vermelho Profundo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="292"/>
+        <location filename="../app/src/colordictionary.h" line="295"/>
         <source>Very Deep Red</source>
         <translation>Vermelho Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="293"/>
+        <location filename="../app/src/colordictionary.h" line="296"/>
         <source>Moderate Red</source>
         <translation>Vermelho Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="294"/>
+        <location filename="../app/src/colordictionary.h" line="297"/>
         <source>Dark Red</source>
         <translation>Vermelho Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="295"/>
+        <location filename="../app/src/colordictionary.h" line="298"/>
         <source>Very Dark Red</source>
         <translation>Vermelho Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="296"/>
+        <location filename="../app/src/colordictionary.h" line="299"/>
         <source>Light Grayish Red</source>
         <translation>Vermelho Claro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="297"/>
+        <location filename="../app/src/colordictionary.h" line="300"/>
         <source>Grayish Red</source>
         <translation>Vermelho Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="298"/>
+        <location filename="../app/src/colordictionary.h" line="301"/>
         <source>Dark Grayish Red</source>
         <translation>Vermelho Escuro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="299"/>
+        <location filename="../app/src/colordictionary.h" line="302"/>
         <source>Blackish Red</source>
         <translation>Vermelho Escurecido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="300"/>
+        <location filename="../app/src/colordictionary.h" line="303"/>
         <source>Reddish Gray</source>
         <translation>Cinza Avermelhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="301"/>
+        <location filename="../app/src/colordictionary.h" line="304"/>
         <source>Dark Reddish Gray</source>
         <translation>Cinza Avermelhado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="302"/>
+        <location filename="../app/src/colordictionary.h" line="305"/>
         <source>Reddish Black</source>
         <translation>Preto Avermelhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="303"/>
+        <location filename="../app/src/colordictionary.h" line="306"/>
         <source>Vivid Yellowish Pink</source>
         <translation>Rosa Amarelado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="304"/>
+        <location filename="../app/src/colordictionary.h" line="307"/>
         <source>Strong Yellowish Pink</source>
         <translation>Rosa Amarelado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="305"/>
+        <location filename="../app/src/colordictionary.h" line="308"/>
         <source>Deep Yellowish Pink</source>
         <translation>Rosa Amarelado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="306"/>
+        <location filename="../app/src/colordictionary.h" line="309"/>
         <source>Light Yellowish Pink</source>
         <translation>Rosa Amarelado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="307"/>
+        <location filename="../app/src/colordictionary.h" line="310"/>
         <source>Moderate Yellowish Pink</source>
         <translation>Rosa Amarelado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="308"/>
+        <location filename="../app/src/colordictionary.h" line="311"/>
         <source>Dark Yellowish Pink</source>
         <translation>Rosa Amarelado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="309"/>
+        <location filename="../app/src/colordictionary.h" line="312"/>
         <source>Pale Yellowish Pink</source>
         <translation>Rosa Amarelado Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="310"/>
+        <location filename="../app/src/colordictionary.h" line="313"/>
         <source>Grayish Yellowish Pink</source>
         <translation>Rosa Amarelado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="311"/>
+        <location filename="../app/src/colordictionary.h" line="314"/>
         <source>Brownish Pink</source>
         <translation>Rosa Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="312"/>
+        <location filename="../app/src/colordictionary.h" line="315"/>
         <source>Vivid Reddish Orange</source>
         <translation>Laranja Avermelhado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="313"/>
+        <location filename="../app/src/colordictionary.h" line="316"/>
         <source>Strong Reddish Orange</source>
         <translation>Laranja Avermelhado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="314"/>
+        <location filename="../app/src/colordictionary.h" line="317"/>
         <source>Deep Reddish Orange</source>
         <translation>Laranja Avermelhado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="315"/>
+        <location filename="../app/src/colordictionary.h" line="318"/>
         <source>Moderate Reddish Orange</source>
         <translation>Laranja Avermelhado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="316"/>
+        <location filename="../app/src/colordictionary.h" line="319"/>
         <source>Dark Reddish Orange</source>
         <translation>Laranja Avermelhado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="317"/>
+        <location filename="../app/src/colordictionary.h" line="320"/>
         <source>Grayish Reddish Orange</source>
         <translation>Laranja Avermelhado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="318"/>
+        <location filename="../app/src/colordictionary.h" line="321"/>
         <source>Strong Reddish Brown</source>
         <translation>Castanho Avermelhado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="319"/>
+        <location filename="../app/src/colordictionary.h" line="322"/>
         <source>Deep Reddish Brown</source>
         <translation>Castanho Avermelhado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="320"/>
+        <location filename="../app/src/colordictionary.h" line="323"/>
         <source>Light Reddish Brown</source>
         <translation>Castanho Avermelhado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="321"/>
+        <location filename="../app/src/colordictionary.h" line="324"/>
         <source>Moderate Reddish Brown</source>
         <translation>Castanho Avermelhado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="322"/>
+        <location filename="../app/src/colordictionary.h" line="325"/>
         <source>Dark Reddish Brown</source>
         <translation>Castanho Avermelhado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="323"/>
+        <location filename="../app/src/colordictionary.h" line="326"/>
         <source>Light Grayish Reddish Brown</source>
         <translation>Castanho Avermelhado Acinzentado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="324"/>
+        <location filename="../app/src/colordictionary.h" line="327"/>
         <source>Grayish Reddish Brown</source>
         <translation>Castanho Avermelhado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="325"/>
+        <location filename="../app/src/colordictionary.h" line="328"/>
         <source>Dark Grayish Reddish Brown</source>
         <translation>Castanho Avermelhado Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="326"/>
+        <location filename="../app/src/colordictionary.h" line="329"/>
         <source>Vivid Orange</source>
         <translation>Laranja Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="327"/>
+        <location filename="../app/src/colordictionary.h" line="330"/>
         <source>Brilliant Orange</source>
         <translation>Laranja Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="328"/>
+        <location filename="../app/src/colordictionary.h" line="331"/>
         <source>Strong Orange</source>
         <translation>Laranja Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="329"/>
+        <location filename="../app/src/colordictionary.h" line="332"/>
         <source>Deep Orange</source>
         <translation>Laranja Profundo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="330"/>
+        <location filename="../app/src/colordictionary.h" line="333"/>
         <source>Light Orange</source>
         <translation>Laranja Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="331"/>
+        <location filename="../app/src/colordictionary.h" line="334"/>
         <source>Moderate Orange</source>
         <translation>Laranja Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="332"/>
+        <location filename="../app/src/colordictionary.h" line="335"/>
         <source>Brownish Orange</source>
         <translation>Laranja Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="333"/>
+        <location filename="../app/src/colordictionary.h" line="336"/>
         <source>Strong Brown</source>
         <translation>Castanho Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="334"/>
+        <location filename="../app/src/colordictionary.h" line="337"/>
         <source>Deep Brown</source>
         <translation>Castanho Profundo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="335"/>
+        <location filename="../app/src/colordictionary.h" line="338"/>
         <source>Light Brown</source>
         <translation>Castanho Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="336"/>
+        <location filename="../app/src/colordictionary.h" line="339"/>
         <source>Moderate Brown</source>
         <translation>Castanho Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="337"/>
+        <location filename="../app/src/colordictionary.h" line="340"/>
         <source>Dark Brown</source>
         <translation>Castanho Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="338"/>
+        <location filename="../app/src/colordictionary.h" line="341"/>
         <source>Light Grayish Brown</source>
         <translation>Castanho Claro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="339"/>
+        <location filename="../app/src/colordictionary.h" line="342"/>
         <source>Grayish Brown</source>
         <translation>Castanho Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="340"/>
+        <location filename="../app/src/colordictionary.h" line="343"/>
         <source>Dark Grayish Brown</source>
         <translation>Castanho Escuro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="341"/>
+        <location filename="../app/src/colordictionary.h" line="344"/>
         <source>Light Brownish Gray</source>
         <translation>Cinza Claro Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="342"/>
+        <location filename="../app/src/colordictionary.h" line="345"/>
         <source>Brownish Gray</source>
         <translation>Cinza Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="343"/>
+        <location filename="../app/src/colordictionary.h" line="346"/>
         <source>Brownish Black</source>
         <translation>Preto Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="344"/>
+        <location filename="../app/src/colordictionary.h" line="347"/>
         <source>Vivid Orange Yellow</source>
         <translation>Amarelo-Laranja Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="345"/>
+        <location filename="../app/src/colordictionary.h" line="348"/>
         <source>Brilliant Orange Yellow</source>
         <translation>Amarelo-Laranja Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="346"/>
+        <location filename="../app/src/colordictionary.h" line="349"/>
         <source>Strong Orange Yellow</source>
         <translation>Amarelo-Laranja Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="347"/>
+        <location filename="../app/src/colordictionary.h" line="350"/>
         <source>Deep Orange Yellow</source>
         <translation>Amarelo-Laranja Profundo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="348"/>
+        <location filename="../app/src/colordictionary.h" line="351"/>
         <source>Light Orange Yellow</source>
         <translation>Amarelo-Laranja Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="349"/>
+        <location filename="../app/src/colordictionary.h" line="352"/>
         <source>Moderate Orange Yellow</source>
         <translation>Amarelo-Laranja Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="350"/>
+        <location filename="../app/src/colordictionary.h" line="353"/>
         <source>Dark Orange Yellow</source>
         <translation>Amarelo-Laranja Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="351"/>
+        <location filename="../app/src/colordictionary.h" line="354"/>
         <source>Pale Orange Yellow</source>
         <translation>Amarelo-Laranja Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="352"/>
+        <location filename="../app/src/colordictionary.h" line="355"/>
         <source>Strong Yellowish Brown</source>
         <translation>Castanho Amarelado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="353"/>
+        <location filename="../app/src/colordictionary.h" line="356"/>
         <source>Deep Yellowish Brown</source>
         <translation>Castanho Amarelado Profundo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="354"/>
+        <location filename="../app/src/colordictionary.h" line="357"/>
         <source>Light Yellowish Brown</source>
         <translation>Castanho Amarelado Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="355"/>
+        <location filename="../app/src/colordictionary.h" line="358"/>
         <source>Moderate Yellowish Brown</source>
         <translation>Castanho Amarelado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="356"/>
+        <location filename="../app/src/colordictionary.h" line="359"/>
         <source>Dark Yellowish Brown</source>
         <translation>Castanho Amarelado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="357"/>
+        <location filename="../app/src/colordictionary.h" line="360"/>
         <source>Light Grayish Yellowish Brown</source>
         <translation>Castanho Amarelado Claro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="358"/>
+        <location filename="../app/src/colordictionary.h" line="361"/>
         <source>Grayish Yellowish Brown</source>
         <translation>Castanho Amarelado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="359"/>
+        <location filename="../app/src/colordictionary.h" line="362"/>
         <source>Dark Grayish Yellowish Brown</source>
         <translation>Castanho Amarelado Escuro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="360"/>
+        <location filename="../app/src/colordictionary.h" line="363"/>
         <source>Vivid Yellow</source>
         <translation>Amarelo Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="361"/>
+        <location filename="../app/src/colordictionary.h" line="364"/>
         <source>Brilliant Yellow</source>
         <translation>Amarelo Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="362"/>
+        <location filename="../app/src/colordictionary.h" line="365"/>
         <source>Strong Yellow</source>
         <translation>Amarelo Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="363"/>
+        <location filename="../app/src/colordictionary.h" line="366"/>
         <source>Deep Yellow</source>
         <translation>Amarelo Profundo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="364"/>
+        <location filename="../app/src/colordictionary.h" line="367"/>
         <source>Light Yellow</source>
         <translation>Amarelo Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="365"/>
+        <location filename="../app/src/colordictionary.h" line="368"/>
         <source>Moderate Yellow</source>
         <translation>Amarelo Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="366"/>
+        <location filename="../app/src/colordictionary.h" line="369"/>
         <source>Dark Yellow</source>
         <translation>Amarelo Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="367"/>
+        <location filename="../app/src/colordictionary.h" line="370"/>
         <source>Pale Yellow</source>
         <translation>Amarelo Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="368"/>
+        <location filename="../app/src/colordictionary.h" line="371"/>
         <source>Grayish Yellow</source>
         <translation>Amarelo Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="369"/>
+        <location filename="../app/src/colordictionary.h" line="372"/>
         <source>Dark Grayish Yellow</source>
         <translation>Amarelo Escuro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="370"/>
+        <location filename="../app/src/colordictionary.h" line="373"/>
         <source>Yellowish White</source>
         <translation>Branco Amarelado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="371"/>
+        <location filename="../app/src/colordictionary.h" line="374"/>
         <source>Yellowish Gray</source>
         <translation>Cinza Amarelado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="372"/>
+        <location filename="../app/src/colordictionary.h" line="375"/>
         <source>Light Olive Brown</source>
         <translation>Castanho Oliva Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="373"/>
+        <location filename="../app/src/colordictionary.h" line="376"/>
         <source>Moderate Olive Brown</source>
         <translation>Castanho Oliva Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="374"/>
+        <location filename="../app/src/colordictionary.h" line="377"/>
         <source>Dark Olive Brown</source>
         <translation>Castanho Oliva Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="375"/>
+        <location filename="../app/src/colordictionary.h" line="378"/>
         <source>Vivid Greenish Yellow</source>
         <translation>Amarelo Esverdeado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="376"/>
+        <location filename="../app/src/colordictionary.h" line="379"/>
         <source>Brilliant Greenish Yellow</source>
         <translation>Amarelo Esverdeado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="377"/>
+        <location filename="../app/src/colordictionary.h" line="380"/>
         <source>Strong Greenish Yellow</source>
         <translation>Amarelo Esverdeado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="378"/>
+        <location filename="../app/src/colordictionary.h" line="381"/>
         <source>Deep Greenish Yellow</source>
         <translation>Amarelo Esverdeado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="379"/>
+        <location filename="../app/src/colordictionary.h" line="382"/>
         <source>Light Greenish Yellow</source>
         <translation>Amarelo Esverdeado Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="380"/>
+        <location filename="../app/src/colordictionary.h" line="383"/>
         <source>Moderate Greenish Yellow</source>
         <translation>Amarelo Esverdeado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="381"/>
+        <location filename="../app/src/colordictionary.h" line="384"/>
         <source>Dark Greenish Yellow</source>
         <translation>Amarelo Esverdeado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="382"/>
+        <location filename="../app/src/colordictionary.h" line="385"/>
         <source>Pale Greenish Yellow</source>
         <translation>Amarelo Esverdeado Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="383"/>
+        <location filename="../app/src/colordictionary.h" line="386"/>
         <source>Grayish Greenish Yellow</source>
         <translation>Amarelo Esverdeado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="384"/>
+        <location filename="../app/src/colordictionary.h" line="387"/>
         <source>Light Olive</source>
         <translation>Oliva Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="385"/>
+        <location filename="../app/src/colordictionary.h" line="388"/>
         <source>Moderate Olive</source>
         <translation>Oliva Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="386"/>
+        <location filename="../app/src/colordictionary.h" line="389"/>
         <source>Dark Olive</source>
         <translation>Oliva Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="387"/>
+        <location filename="../app/src/colordictionary.h" line="390"/>
         <source>Light Grayish Olive</source>
         <translation>Oliva Acinzentado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="388"/>
+        <location filename="../app/src/colordictionary.h" line="391"/>
         <source>Grayish Olive</source>
         <translation>Oliva Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="389"/>
+        <location filename="../app/src/colordictionary.h" line="392"/>
         <source>Dark Grayish Olive</source>
         <translation>Oliva Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="390"/>
+        <location filename="../app/src/colordictionary.h" line="393"/>
         <source>Light Olive Gray</source>
         <translation>Cinza Oliva Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="391"/>
+        <location filename="../app/src/colordictionary.h" line="394"/>
         <source>Olive Gray</source>
         <translation>Cinza Oliva</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="392"/>
+        <location filename="../app/src/colordictionary.h" line="395"/>
         <source>Olive Black</source>
         <translation>Preto Oliva</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="393"/>
+        <location filename="../app/src/colordictionary.h" line="396"/>
         <source>Vivid Yellow Green</source>
         <translation>Verde Amarelo Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="394"/>
+        <location filename="../app/src/colordictionary.h" line="397"/>
         <source>Brilliant Yellow Green</source>
         <translation>Verde Amarelo Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="395"/>
+        <location filename="../app/src/colordictionary.h" line="398"/>
         <source>Strong Yellow Green</source>
         <translation>Verde Amarelo Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="396"/>
+        <location filename="../app/src/colordictionary.h" line="399"/>
         <source>Deep Yellow Green</source>
         <translation>Verde Amarelo Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="397"/>
+        <location filename="../app/src/colordictionary.h" line="400"/>
         <source>Light Yellow Green</source>
         <translation>Verde Amarelo Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="398"/>
+        <location filename="../app/src/colordictionary.h" line="401"/>
         <source>Moderate Yellow Green</source>
         <translation>Verde Amarelo Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="399"/>
+        <location filename="../app/src/colordictionary.h" line="402"/>
         <source>Pale Yellow Green</source>
         <translation>Verde Amarelo Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="400"/>
+        <location filename="../app/src/colordictionary.h" line="403"/>
         <source>Grayish Yellow Green</source>
         <translation>Verde Amarelo Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="401"/>
+        <location filename="../app/src/colordictionary.h" line="404"/>
         <source>Strong Olive Green</source>
         <translation>Verde Oliva Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="402"/>
+        <location filename="../app/src/colordictionary.h" line="405"/>
         <source>Deep Olive Green</source>
         <translation>Verde Oliva Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="403"/>
+        <location filename="../app/src/colordictionary.h" line="406"/>
         <source>Moderate Olive Green</source>
         <translation>Verde Oliva Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="404"/>
+        <location filename="../app/src/colordictionary.h" line="407"/>
         <source>Dark Olive Green</source>
         <translation>Verde Oliva Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="405"/>
+        <location filename="../app/src/colordictionary.h" line="408"/>
         <source>Grayish Olive Green</source>
         <translation>Verde Oliva Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="406"/>
+        <location filename="../app/src/colordictionary.h" line="409"/>
         <source>Dark Grayish Olive Green</source>
         <translation>Verde Oliva Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="407"/>
+        <location filename="../app/src/colordictionary.h" line="410"/>
         <source>Vivid Yellowish Green</source>
         <translation>Verde Amarelado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="408"/>
+        <location filename="../app/src/colordictionary.h" line="411"/>
         <source>Brilliant Yellowish Green</source>
         <translation>Verde Amarelado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="409"/>
+        <location filename="../app/src/colordictionary.h" line="412"/>
         <source>Strong Yellowish Green</source>
         <translation>Verde Amarelado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="410"/>
+        <location filename="../app/src/colordictionary.h" line="413"/>
         <source>Deep Yellowish Green</source>
         <translation>Verde Amarelado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="411"/>
+        <location filename="../app/src/colordictionary.h" line="414"/>
         <source>Very Deep Yellowish Green</source>
         <translation>Verde Amarelado Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="412"/>
+        <location filename="../app/src/colordictionary.h" line="415"/>
         <source>Very Light Yellowish Green</source>
         <translation>Verde Amarelado Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="413"/>
+        <location filename="../app/src/colordictionary.h" line="416"/>
         <source>Light Yellowish Green</source>
         <translation>Verde Amarelado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="414"/>
+        <location filename="../app/src/colordictionary.h" line="417"/>
         <source>Moderate Yellowish Green</source>
         <translation>Verde Amarelado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="415"/>
+        <location filename="../app/src/colordictionary.h" line="418"/>
         <source>Dark Yellowish Green</source>
         <translation>Verde Amarelado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="416"/>
+        <location filename="../app/src/colordictionary.h" line="419"/>
         <source>Very Dark Yellowish Green</source>
         <translation>Verde Amarelado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="417"/>
+        <location filename="../app/src/colordictionary.h" line="420"/>
         <source>Vivid Green</source>
         <translation>Verde Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="418"/>
+        <location filename="../app/src/colordictionary.h" line="421"/>
         <source>Brilliant Green</source>
         <translation>Verde Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="419"/>
+        <location filename="../app/src/colordictionary.h" line="422"/>
         <source>Strong Green</source>
         <translation>Verde Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="420"/>
+        <location filename="../app/src/colordictionary.h" line="423"/>
         <source>Deep Green</source>
         <translation>Verde Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="421"/>
+        <location filename="../app/src/colordictionary.h" line="424"/>
         <source>Very Light Green</source>
         <translation>Verde Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="422"/>
+        <location filename="../app/src/colordictionary.h" line="425"/>
         <source>Light Green</source>
         <translation>Verde Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="423"/>
+        <location filename="../app/src/colordictionary.h" line="426"/>
         <source>Moderate Green</source>
         <translation>Verde Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="424"/>
+        <location filename="../app/src/colordictionary.h" line="427"/>
         <source>Dark Green</source>
         <translation>Verde Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="425"/>
+        <location filename="../app/src/colordictionary.h" line="428"/>
         <source>Very Dark Green</source>
         <translation>Verde Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="426"/>
+        <location filename="../app/src/colordictionary.h" line="429"/>
         <source>Very Pale Green</source>
         <translation>Verde Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="427"/>
+        <location filename="../app/src/colordictionary.h" line="430"/>
         <source>Pale Green</source>
         <translation>Verde Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="428"/>
+        <location filename="../app/src/colordictionary.h" line="431"/>
         <source>Grayish Green</source>
         <translation>Verde Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="429"/>
+        <location filename="../app/src/colordictionary.h" line="432"/>
         <source>Dark Grayish Green</source>
         <translation>Verde Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="430"/>
+        <location filename="../app/src/colordictionary.h" line="433"/>
         <source>Blackish Green</source>
         <translation>Verde Escurecido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="431"/>
+        <location filename="../app/src/colordictionary.h" line="434"/>
         <source>Greenish White</source>
         <translation>Branco Esverdeado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="432"/>
+        <location filename="../app/src/colordictionary.h" line="435"/>
         <source>Light Greenish Gray</source>
         <translation>Cinza Esverdeado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="433"/>
+        <location filename="../app/src/colordictionary.h" line="436"/>
         <source>Greenish Gray</source>
         <translation>Cinza Esverdeado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="434"/>
+        <location filename="../app/src/colordictionary.h" line="437"/>
         <source>Dark Greenish Gray</source>
         <translation>Cinza Esverdeado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="435"/>
+        <location filename="../app/src/colordictionary.h" line="438"/>
         <source>Greenish Black</source>
         <translation>Preto Esverdeado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="436"/>
+        <location filename="../app/src/colordictionary.h" line="439"/>
         <source>Vivid Bluish Green</source>
         <translation>Verde Azulado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="437"/>
+        <location filename="../app/src/colordictionary.h" line="440"/>
         <source>Brilliant Bluish Green</source>
         <translation>Verde Azulado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="438"/>
+        <location filename="../app/src/colordictionary.h" line="441"/>
         <source>Strong Bluish Green</source>
         <translation>Verde Azulado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="439"/>
+        <location filename="../app/src/colordictionary.h" line="442"/>
         <source>Deep Bluish Green</source>
         <translation>Verde Azulado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="440"/>
+        <location filename="../app/src/colordictionary.h" line="443"/>
         <source>Very Light Bluish Green</source>
         <translation>Verde Azulado Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="441"/>
+        <location filename="../app/src/colordictionary.h" line="444"/>
         <source>Light Bluish Green</source>
         <translation>Verde Azulado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="442"/>
+        <location filename="../app/src/colordictionary.h" line="445"/>
         <source>Moderate Bluish Green</source>
         <translation>Verde Azulado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="443"/>
+        <location filename="../app/src/colordictionary.h" line="446"/>
         <source>Dark Bluish Green</source>
         <translation>Verde Azulado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="444"/>
+        <location filename="../app/src/colordictionary.h" line="447"/>
         <source>Very Dark Bluish Green</source>
         <translation>Verde Azulado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="445"/>
+        <location filename="../app/src/colordictionary.h" line="448"/>
         <source>Vivid Greenish Blue</source>
         <translation>Azul Esverdeado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="446"/>
+        <location filename="../app/src/colordictionary.h" line="449"/>
         <source>Brilliant Greenish Blue</source>
         <translation>Azul Esverdeado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="447"/>
+        <location filename="../app/src/colordictionary.h" line="450"/>
         <source>Strong Greenish Blue</source>
         <translation>Azul Esverdeado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="448"/>
+        <location filename="../app/src/colordictionary.h" line="451"/>
         <source>Deep Greenish Blue</source>
         <translation>Azul Esverdeado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="449"/>
+        <location filename="../app/src/colordictionary.h" line="452"/>
         <source>Very Light Greenish Blue</source>
         <translation>Azul Esverdeado Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="450"/>
+        <location filename="../app/src/colordictionary.h" line="453"/>
         <source>Light Greenish Blue</source>
         <translation>Azul Esverdeado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="451"/>
+        <location filename="../app/src/colordictionary.h" line="454"/>
         <source>Moderate Greenish Blue</source>
         <translation>Azul Esverdeado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="452"/>
+        <location filename="../app/src/colordictionary.h" line="455"/>
         <source>Dark Greenish Blue</source>
         <translation>Azul Esverdeado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="453"/>
+        <location filename="../app/src/colordictionary.h" line="456"/>
         <source>Very Dark Greenish Blue</source>
         <translation>Azul Esverdeado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="454"/>
+        <location filename="../app/src/colordictionary.h" line="457"/>
         <source>Vivid Blue</source>
         <translation>Azul Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="455"/>
+        <location filename="../app/src/colordictionary.h" line="458"/>
         <source>Brilliant Blue</source>
         <translation>Azul Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="456"/>
+        <location filename="../app/src/colordictionary.h" line="459"/>
         <source>Strong Blue</source>
         <translation>Azul Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="457"/>
+        <location filename="../app/src/colordictionary.h" line="460"/>
         <source>Deep Blue</source>
         <translation>Azul Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="458"/>
+        <location filename="../app/src/colordictionary.h" line="461"/>
         <source>Very Light Blue</source>
         <translation>Azul Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="459"/>
+        <location filename="../app/src/colordictionary.h" line="462"/>
         <source>Light Blue</source>
         <translation>Azul Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="460"/>
+        <location filename="../app/src/colordictionary.h" line="463"/>
         <source>Moderate Blue</source>
         <translation>Azul Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="461"/>
+        <location filename="../app/src/colordictionary.h" line="464"/>
         <source>Dark Blue</source>
         <translation>Azul Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="462"/>
+        <location filename="../app/src/colordictionary.h" line="465"/>
         <source>Very Pale Blue</source>
         <translation>Azul Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="463"/>
+        <location filename="../app/src/colordictionary.h" line="466"/>
         <source>Pale Blue</source>
         <translation>Azul Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="464"/>
+        <location filename="../app/src/colordictionary.h" line="467"/>
         <source>Grayish Blue</source>
         <translation>Azul Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="465"/>
+        <location filename="../app/src/colordictionary.h" line="468"/>
         <source>Dark Grayish Blue</source>
         <translation>Azul Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="466"/>
+        <location filename="../app/src/colordictionary.h" line="469"/>
         <source>Blackish Blue</source>
         <translation>Azul Escurecido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="467"/>
+        <location filename="../app/src/colordictionary.h" line="470"/>
         <source>Bluish White</source>
         <translation>Branco Azulado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="468"/>
+        <location filename="../app/src/colordictionary.h" line="471"/>
         <source>Light Bluish Gray</source>
         <translation>Cinza Azulado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="469"/>
+        <location filename="../app/src/colordictionary.h" line="472"/>
         <source>Bluish Gray</source>
         <translation>Cinza Azulado </translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="470"/>
+        <location filename="../app/src/colordictionary.h" line="473"/>
         <source>Dark Bluish Gray</source>
         <translation>Cinza Azulado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="471"/>
+        <location filename="../app/src/colordictionary.h" line="474"/>
         <source>Bluish Black</source>
         <translation>Preto Azulado </translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="472"/>
+        <location filename="../app/src/colordictionary.h" line="475"/>
         <source>Vivid Purplish Blue</source>
         <translation>Azul Púrpura Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="473"/>
+        <location filename="../app/src/colordictionary.h" line="476"/>
         <source>Brilliant Purplish Blue</source>
         <translation>Azul Púrpura Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="474"/>
+        <location filename="../app/src/colordictionary.h" line="477"/>
         <source>Strong Purplish Blue</source>
         <translation>Azul Púrpura Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="475"/>
+        <location filename="../app/src/colordictionary.h" line="478"/>
         <source>Deep Purplish Blue</source>
         <translation>Azul Púrpura Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="476"/>
+        <location filename="../app/src/colordictionary.h" line="479"/>
         <source>Very Light Purplish Blue</source>
         <translation>Azul Púrpura Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="477"/>
+        <location filename="../app/src/colordictionary.h" line="480"/>
         <source>Light Purplish Blue</source>
         <translation>Azul Púrpura Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="478"/>
+        <location filename="../app/src/colordictionary.h" line="481"/>
         <source>Moderate Purplish Blue</source>
         <translation>Azul Púrpura Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="479"/>
+        <location filename="../app/src/colordictionary.h" line="482"/>
         <source>Dark Purplish Blue</source>
         <translation>Azul Púrpura Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="480"/>
+        <location filename="../app/src/colordictionary.h" line="483"/>
         <source>Very Pale Purplish Blue</source>
         <translation>Azul Púrpura Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="481"/>
+        <location filename="../app/src/colordictionary.h" line="484"/>
         <source>Pale Purplish Blue</source>
         <translation>Azul Púrpura Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="482"/>
+        <location filename="../app/src/colordictionary.h" line="485"/>
         <source>Grayish Purplish Blue</source>
         <translation>Azul Púrpura Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="483"/>
+        <location filename="../app/src/colordictionary.h" line="486"/>
         <source>Vivid Violet</source>
         <translation>Violeta Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="484"/>
+        <location filename="../app/src/colordictionary.h" line="487"/>
         <source>Brilliant Violet</source>
         <translation>Violeta Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="485"/>
+        <location filename="../app/src/colordictionary.h" line="488"/>
         <source>Strong Violet</source>
         <translation>Violeta Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="486"/>
+        <location filename="../app/src/colordictionary.h" line="489"/>
         <source>Deep Violet</source>
         <translation>Violeta Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="487"/>
+        <location filename="../app/src/colordictionary.h" line="490"/>
         <source>Very Light Violet</source>
         <translation>Violeta Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="488"/>
+        <location filename="../app/src/colordictionary.h" line="491"/>
         <source>Light Violet</source>
         <translation>Violeta Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="489"/>
+        <location filename="../app/src/colordictionary.h" line="492"/>
         <source>Moderate Violet</source>
         <translation>Violeta Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="490"/>
+        <location filename="../app/src/colordictionary.h" line="493"/>
         <source>Dark Violet</source>
         <translation>Violeta Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="491"/>
+        <location filename="../app/src/colordictionary.h" line="494"/>
         <source>Very Pale Violet</source>
         <translation>Violeta Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="492"/>
+        <location filename="../app/src/colordictionary.h" line="495"/>
         <source>Pale Violet</source>
         <translation>Violeta Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="493"/>
+        <location filename="../app/src/colordictionary.h" line="496"/>
         <source>Grayish Violet</source>
         <translation>Violeta Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="494"/>
+        <location filename="../app/src/colordictionary.h" line="497"/>
         <source>Vivid Purple</source>
         <translation>Roxo Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="495"/>
+        <location filename="../app/src/colordictionary.h" line="498"/>
         <source>Brilliant Purple</source>
         <translation>Roxo Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="496"/>
+        <location filename="../app/src/colordictionary.h" line="499"/>
         <source>Strong Purple</source>
         <translation>Roxo Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="497"/>
+        <location filename="../app/src/colordictionary.h" line="500"/>
         <source>Deep Purple</source>
         <translation>Roxo Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="498"/>
+        <location filename="../app/src/colordictionary.h" line="501"/>
         <source>Very Deep Purple</source>
         <translation>Roxo Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="499"/>
+        <location filename="../app/src/colordictionary.h" line="502"/>
         <source>Very Light Purple</source>
         <translation>Roxo Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="500"/>
+        <location filename="../app/src/colordictionary.h" line="503"/>
         <source>Light Purple</source>
         <translation>Roxo Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="501"/>
+        <location filename="../app/src/colordictionary.h" line="504"/>
         <source>Moderate Purple</source>
         <translation>Roxo Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="502"/>
+        <location filename="../app/src/colordictionary.h" line="505"/>
         <source>Dark Purple</source>
         <translation>Roxo Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="503"/>
+        <location filename="../app/src/colordictionary.h" line="506"/>
         <source>Very Dark Purple</source>
         <translation>Roxo Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="504"/>
+        <location filename="../app/src/colordictionary.h" line="507"/>
         <source>Very Pale Purple</source>
         <translation>Roxo Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="505"/>
+        <location filename="../app/src/colordictionary.h" line="508"/>
         <source>Pale Purple</source>
         <translation>Roxo Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="506"/>
+        <location filename="../app/src/colordictionary.h" line="509"/>
         <source>Grayish Purple</source>
         <translation>Roxo Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="507"/>
+        <location filename="../app/src/colordictionary.h" line="510"/>
         <source>Dark Grayish Purple</source>
         <translation>Roxo Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="508"/>
+        <location filename="../app/src/colordictionary.h" line="511"/>
         <source>Blackish Purple</source>
         <translation>Roxo Escurecido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="509"/>
+        <location filename="../app/src/colordictionary.h" line="512"/>
         <source>Purplish White</source>
         <translation>Branco Arroxado </translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="510"/>
+        <location filename="../app/src/colordictionary.h" line="513"/>
         <source>Light Purplish Gray</source>
         <translation>Cinza Arroxado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="511"/>
+        <location filename="../app/src/colordictionary.h" line="514"/>
         <source>Purplish Gray</source>
         <translation>Cinza Arroxado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="512"/>
+        <location filename="../app/src/colordictionary.h" line="515"/>
         <source>Dark Purplish Gray</source>
         <translation>Cinza Arroxado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="513"/>
+        <location filename="../app/src/colordictionary.h" line="516"/>
         <source>Purplish Black</source>
         <translation>Preto Arroxado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="514"/>
+        <location filename="../app/src/colordictionary.h" line="517"/>
         <source>Vivid Reddish Purple</source>
         <translation>Roxo Avermelhado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="515"/>
+        <location filename="../app/src/colordictionary.h" line="518"/>
         <source>Strong Reddish Purple</source>
         <translation>Roxo Avermelhado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="516"/>
+        <location filename="../app/src/colordictionary.h" line="519"/>
         <source>Deep Reddish Purple</source>
         <translation>Roxo Avermelhado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="517"/>
+        <location filename="../app/src/colordictionary.h" line="520"/>
         <source>Very Deep Reddish Purple</source>
         <translation>Roxo Avermelhado Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="518"/>
+        <location filename="../app/src/colordictionary.h" line="521"/>
         <source>Light Reddish Purple</source>
         <translation>Roxo Avermelhado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="519"/>
+        <location filename="../app/src/colordictionary.h" line="522"/>
         <source>Moderate Reddish Purple</source>
         <translation>Roxo Avermelhado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="520"/>
+        <location filename="../app/src/colordictionary.h" line="523"/>
         <source>Dark Reddish Purple</source>
         <translation>Roxo Avermelhado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="521"/>
+        <location filename="../app/src/colordictionary.h" line="524"/>
         <source>Very Dark Reddish Purple</source>
         <translation>Roxo Avermelhado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="522"/>
+        <location filename="../app/src/colordictionary.h" line="525"/>
         <source>Pale Reddish Purple</source>
         <translation>Roxo Avermelhado Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="523"/>
+        <location filename="../app/src/colordictionary.h" line="526"/>
         <source>Grayish Reddish Purple</source>
         <translation>Roxo Avermelhado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="524"/>
+        <location filename="../app/src/colordictionary.h" line="527"/>
         <source>Brilliant Purplish Pink</source>
         <translation>Rosa Arroxado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="525"/>
+        <location filename="../app/src/colordictionary.h" line="528"/>
         <source>Strong Purplish Pink</source>
         <translation>Rosa Arroxado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="526"/>
+        <location filename="../app/src/colordictionary.h" line="529"/>
         <source>Deep Purplish Pink</source>
         <translation>Rosa Arroxado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="527"/>
+        <location filename="../app/src/colordictionary.h" line="530"/>
         <source>Light Purplish Pink</source>
         <translation>Rosa Arroxado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="528"/>
+        <location filename="../app/src/colordictionary.h" line="531"/>
         <source>Moderate Purplish Pink</source>
         <translation>Rosa Arroxado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="529"/>
+        <location filename="../app/src/colordictionary.h" line="532"/>
         <source>Dark Purplish Pink</source>
         <translation>Rosa Arroxado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="530"/>
+        <location filename="../app/src/colordictionary.h" line="533"/>
         <source>Pale Purplish Pink</source>
         <translation>Rosa Arroxado Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="531"/>
+        <location filename="../app/src/colordictionary.h" line="534"/>
         <source>Grayish Purplish Pink</source>
         <translation>Rosa Arroxado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="532"/>
+        <location filename="../app/src/colordictionary.h" line="535"/>
         <source>Vivid Purplish Red</source>
         <translation>Vermelho Arroxado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="533"/>
+        <location filename="../app/src/colordictionary.h" line="536"/>
         <source>Strong Purplish Red</source>
         <translation>Vermelho Arroxado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="534"/>
+        <location filename="../app/src/colordictionary.h" line="537"/>
         <source>Deep Purplish Red</source>
         <translation>Vermelho Arroxado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="535"/>
+        <location filename="../app/src/colordictionary.h" line="538"/>
         <source>Very Deep Purplish Red</source>
         <translation>Vermelho Arroxado Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="536"/>
+        <location filename="../app/src/colordictionary.h" line="539"/>
         <source>Moderate Purplish Red</source>
         <translation>Vermelho Arroxado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="537"/>
+        <location filename="../app/src/colordictionary.h" line="540"/>
         <source>Dark Purplish Red</source>
         <translation>Vermelho Arroxado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="538"/>
+        <location filename="../app/src/colordictionary.h" line="541"/>
         <source>Very Dark Purplish Red</source>
         <translation>Vermelho Arroxado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="539"/>
+        <location filename="../app/src/colordictionary.h" line="542"/>
         <source>Light Grayish Purplish Red</source>
         <translation>Vermelho Arroxado Acinzentado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="540"/>
+        <location filename="../app/src/colordictionary.h" line="543"/>
         <source>Grayish Purplish Red</source>
         <translation>Vermelho Arroxado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="541"/>
+        <location filename="../app/src/colordictionary.h" line="544"/>
         <source>White</source>
         <translation>Branco</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="542"/>
+        <location filename="../app/src/colordictionary.h" line="545"/>
         <source>Light Gray</source>
         <translation>Cinza Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="543"/>
+        <location filename="../app/src/colordictionary.h" line="546"/>
         <source>Medium Gray</source>
         <translation>Cinza Médio</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="544"/>
+        <location filename="../app/src/colordictionary.h" line="547"/>
         <source>Dark Gray</source>
         <translation>Cinza escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="545"/>
+        <location filename="../app/src/colordictionary.h" line="548"/>
         <source>Black</source>
         <translation>Preto</translation>
     </message>
@@ -3331,60 +3337,60 @@ Gostaria de salvar agora?</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="535"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="537"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="536"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="538"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Você está desenhando em uma camada oculta! Por favor, selecione outra camada (ou torne a camada atual visível).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1633"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1721"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Apagar seleção</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1649"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1657"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1737"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1745"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Limpar Imagem</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1684"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1772"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Há um espaço no seu desenho (ou talvez você tenha aumentado o zoom demais).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1685"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1773"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Desculpe! Isto nem sempre funciona. Por favor tente novamente (aumente um pouco o zoom, clique em outro lugar... )&lt;br&gt;Caso não funcione, aumente um pouco o zoom e tenha a certeza que os caminhos estão conectados pressionando F1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1689"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1777"/>
         <source>Out of bound.</source>
         <translation>Fora do limite</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1690"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1778"/>
         <source>Could not find a closed path.</source>
         <translation>Não encontro um caminho fechado.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1691"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1779"/>
         <source>Could not find the root index.</source>
         <translation>Não encontro o índice principal</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1780"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Erro: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1780"/>
         <source>Flood fill error</source>
         <translation>Erro de preenchimento</translation>
     </message>
@@ -3589,12 +3595,12 @@ Gostaria de salvar agora?</translation>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="681"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="677"/>
         <source>Layer Properties</source>
         <translation>Propriedades da camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="682"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="678"/>
         <source>Layer name:</source>
         <translation>Nome da camada:</translation>
     </message>
@@ -3630,6 +3636,46 @@ Gostaria de salvar agora?</translation>
         <source>Timeline length:</source>
         <comment>Preferences</comment>
         <translation>Tamanho da linha do tempo: </translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="89"/>
+        <source>Drawing</source>
+        <translation>Desenhando</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="95"/>
+        <source>When drawing on an empty frame:</source>
+        <translation>Ao desenhar em um quadro vazio:</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="102"/>
+        <source>Create a new (blank) key-frame and start drawing on it.</source>
+        <translation>Criar um novo quadro-chave (em branco) e começar a desenhar nele.</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="105"/>
+        <source>Create a new (blank) key-frame</source>
+        <translation>Criar um novo quadro chave (em branco)</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="115"/>
+        <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
+        <translation>Duplicar o quadro-chave anterior e começar a desenhar na duplicata</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="118"/>
+        <source>Duplicate the previous key-frame</source>
+        <translation>Duplicar o quadro-chave anterior</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="125"/>
+        <source>Keep drawing on the previous key-frame</source>
+        <translation>Continuar desenhando no quadro-chave anterior</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="137"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Aplicável para as ferramentas Lápis, Borracha, Caneta, Polilinha, Balde e Pincel)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>

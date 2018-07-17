@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -229,7 +227,7 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
     <message>
         <location filename="../app/src/colorbox.cpp" line="24"/>
         <source>Color Wheel</source>
-        <comment>Color Wheel&apos;s window title</comment>
+        <comment>Color Wheel's window title</comment>
         <translation>Koło kolorów</translation>
     </message>
 </context>
