@@ -9,7 +9,9 @@ Exec=pencil2d %f
 MimeType=application/x-pencil-pcl;application/x-pencil-pclx;
 Categories=Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;AudioVideo;Video;
 Keywords=picture;drawing;vector;bitmap;cartoon;
-Keywords[de]=Bild;Zeichnen;Vektor;Raster;Zeichentrick;
+
+
+# Translations
 
 
 # Translations
@@ -17,10 +19,10 @@ Name[he]=Pencil2D
 GenericName[he]=תוכנת הנפשה
 Comment[he]=צרו הנפשה מסורתית מצויירת ביד באמצעות כלי מפת ביטים וכלים וקטוריים
 Icon[he]=pencil2d
-Name[sl]=Svinčnik2D
-GenericName[sl]=Program za animacijo
-Comment[sl]=Ustvarite tradicionalno ročno risano animacijo s pomočjo bitne in vektorske grafike
-Icon[sl]=svinčnik2d
+Name[ar]=بنسل2D
+GenericName[ar]=برنامج تحريك الرسومات
+Comment[ar]=أنشئ رسومات متحركة بالطريقة الكلاسكية بإستخدام bitmap و vector graphics
+Icon[ar]=pencil2d
 Name[pt]=Pencil2D
 GenericName[pt]=Programa de Animação
 Comment[pt]=Cria animações tradicionais feitas a mão utilizando bitmaps e vectores gráficos 
@@ -43,17 +45,26 @@ Name[de]=Pencil2D
 GenericName[de]=Animationssoftware
 Comment[de]=Traditionelle handgezeichnete Animation sowohl mit Raster- als auch mit Vektorgrafik schaffen
 Icon[de]=pencil2d
+Name[sl]=Svinčnik2D
+GenericName[sl]=Program za animacijo
+Comment[sl]=Ustvarite tradicionalno ročno risano animacijo s pomočjo bitne in vektorske grafike
+Icon[sl]=pencil2d
 Name[es]=Pencil2D
 GenericName[es]=Programa de Animación
 Comment[es]=Crea animaciones tradicionales hechas a mano usando mapas de bits o vectores gráficos
 Icon[es]=pencil2d
 Name[et]=Pencil2D
 GenericName[et]=Animeerimistarkvara
+Comment[et]=Loo traditsioonilisi käsitsijoonistatud animatsioone kasutades nii raster- kui vektorgraafikat.
 Icon[et]=pencil2d
 Name[vi]=Pencil 2D
 GenericName[vi]=Phần mềm làm phim hoạt hình
 Comment[vi]=Tạo nên các chuyển Động hoạt hình vẽ tay truyền thống bằng các hình ảnh Bitmap và Vector
-Icon[vi]=Pencil 2D
+Icon[vi]=pencil2d
+Name[zh_CN]=Pencil2D
+GenericName[zh_CN]=动画软件
+Comment[zh_CN]=用位图和矢量两种图像技术创作传统手绘动画
+Icon[zh_CN]=pencil2d
 Name[fr]=Pencil2D
 GenericName[fr]=Logiciel d'Animation
 Comment[fr]=Créez une animation traditionnelle dessinée à la main à l'aide de graphiques bitmap et vectoriels
