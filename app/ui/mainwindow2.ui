@@ -256,7 +256,7 @@
      <normaloff>:/icons/saveas.png</normaloff>:/icons/saveas.png</iconset>
    </property>
    <property name="text">
-    <string>Save As ..</string>
+    <string>Save As...</string>
    </property>
   </action>
   <action name="actionExit">
