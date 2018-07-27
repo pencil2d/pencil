@@ -185,6 +185,13 @@ void ColorPaletteWidget::refreshColorList()
     swatchPainter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
     swatchPainter.end();
     QPixmap colourSwatch;
+    QPen borderShadow(QColor(0, 0, 0, 200), 1, Qt::DotLine, Qt::FlatCap, Qt::MiterJoin);
+    QVector<qreal> dashPattern;
+    dashPattern << 4 << 4;
+    borderShadow.setDashPattern(dashPattern);
+    QPen borderHighlight(borderShadow);
+    borderHighlight.setColor(QColor(255, 255, 255, 200));
+    borderHighlight.setDashOffset(4);
 
     int colourCount = editor()->object()->getColourCount();
 
@@ -204,12 +211,24 @@ void ColorPaletteWidget::refreshColorList()
         colourSwatch = originalColourSwatch;
         swatchPainter.begin(&colourSwatch);
         swatchPainter.fillRect(0, 0, mIconSize.width(), mIconSize.height(), colourRef.colour);
+
+        QIcon swatchIcon;
+        swatchIcon.addPixmap(colourSwatch, QIcon::Normal);
+
+        // Draw selection border
+        swatchPainter.setPen(borderHighlight);
+        swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+        swatchPainter.setPen(borderShadow);
+        swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+        swatchIcon.addPixmap(colourSwatch, QIcon::Selected);
+
+        colourItem->setIcon(swatchIcon);
         swatchPainter.end();
-        colourItem->setIcon(colourSwatch);
         colourItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
 
         ui->colorListWidget->addItem(colourItem);
     }
+    updateGridUI();
     update();
 }
 
@@ -316,7 +335,8 @@ void ColorPaletteWidget::setGridMode()
     ui->colorListWidget->setViewMode(QListView::IconMode);
     ui->colorListWidget->setMovement(QListView::Static); // TODO: update swatch index on move
     ui->colorListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    ui->colorListWidget->setGridSize(mIconSize);
+    ui->colorListWidget->setGridSize(QSize(mIconSize.width() + 1, mIconSize.height() + 1));
+
     updateUI();
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -325,28 +345,7 @@ void ColorPaletteWidget::setGridMode()
 
 void ColorPaletteWidget::resizeEvent(QResizeEvent* event)
 {
-    if (ui->colorListWidget->viewMode() == QListView::IconMode)
-    {
-        // Find the value to divide with
-        for (int i = 1; i < 75; i++)
-        {
-            int size = (ui->colorListWidget->width() - 18) / i; // subtract scrollbar width
-            if (size >= mIconSize.width() && size <= mIconSize.width() + 8)
-            {
-                stepper = size;
-            }
-        }
-        QSize tempSize = QSize(stepper, mIconSize.height());
-
-        ui->colorListWidget->setIconSize(QSize(tempSize.width(), mIconSize.height()));
-        ui->colorListWidget->setGridSize(QSize(tempSize.width(), mIconSize.height()));
-        mIconSize.setWidth(mIconSize.width());
-    }
-    else
-    {
-        ui->colorListWidget->setIconSize(mIconSize);
-        ui->colorListWidget->setGridSize(QSize(-1, -1));
-    }
+    updateUI();
     QWidget::resizeEvent(event);
 }
 
@@ -388,12 +387,26 @@ void ColorPaletteWidget::setSwatchSizeLarge()
 
 void ColorPaletteWidget::updateGridUI()
 {
-    if (ui->colorListWidget->viewMode() == QListView::IconMode)
-        ui->colorListWidget->setGridSize(mIconSize);
-    else
-        ui->colorListWidget->setGridSize(QSize(-1, -1));
+    if (ui->colorListWidget->viewMode() == QListView::IconMode) {
+        // Find the value to divide with
+        for (int i = 1; i < 75; i++)
+        {
+            int size = (ui->colorListWidget->width() - 18) / i; // subtract scrollbar width
+            if (size >= mIconSize.width() && size <= mIconSize.width() + 8)
+            {
+                stepper = size;
+            }
+        }
+        QSize tempSize = QSize(stepper, mIconSize.height());
 
-    ui->colorListWidget->setIconSize(mIconSize);
+        ui->colorListWidget->setIconSize(QSize(tempSize.width(), mIconSize.height()));
+        ui->colorListWidget->setGridSize(QSize(tempSize.width(), mIconSize.height() + 2));
+        mIconSize.setWidth(mIconSize.width());
+    }
+    else {
+        ui->colorListWidget->setIconSize(mIconSize);
+        ui->colorListWidget->setGridSize(QSize(-1, -1));
+    }
 }
 
 QString ColorPaletteWidget::getDefaultColorName(QColor c)
@@ -558,7 +571,25 @@ void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
     swatchPainter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
     swatchPainter.fillRect(0, 0, mIconSize.width(), mIconSize.height(), newColor);
 
-    ui->colorListWidget->item(itemIndex)->setIcon(colourSwatch);
+    QPen borderShadow(QColor(0, 0, 0, 200), 1, Qt::DotLine, Qt::FlatCap, Qt::MiterJoin);
+    QVector<qreal> dashPattern;
+    dashPattern << 4 << 4;
+    borderShadow.setDashPattern(dashPattern);
+    QPen borderHighlight(borderShadow);
+    borderHighlight.setColor(QColor(255, 255, 255, 200));
+    borderHighlight.setDashOffset(4);
+
+    QIcon swatchIcon;
+    swatchIcon.addPixmap(colourSwatch, QIcon::Normal);
+
+    // Draw selection border
+    swatchPainter.setPen(borderHighlight);
+    swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+    swatchPainter.setPen(borderShadow);
+    swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+    swatchIcon.addPixmap(colourSwatch, QIcon::Selected);
+
+    ui->colorListWidget->item(itemIndex)->setIcon(swatchIcon);
 
     // Make sure to update grid in grid mode
     if (ui->colorListWidget->viewMode() == QListView::IconMode)
