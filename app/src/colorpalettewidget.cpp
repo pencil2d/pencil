@@ -216,10 +216,12 @@ void ColorPaletteWidget::refreshColorList()
         swatchIcon.addPixmap(colourSwatch, QIcon::Normal);
 
         // Draw selection border
-        swatchPainter.setPen(borderHighlight);
-        swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
-        swatchPainter.setPen(borderShadow);
-        swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+        if(ui->colorListWidget->viewMode() == QListView::IconMode) {
+            swatchPainter.setPen(borderHighlight);
+            swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+            swatchPainter.setPen(borderShadow);
+            swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+        }
         swatchIcon.addPixmap(colourSwatch, QIcon::Selected);
 
         colourItem->setIcon(swatchIcon);
@@ -582,11 +584,13 @@ void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
     QIcon swatchIcon;
     swatchIcon.addPixmap(colourSwatch, QIcon::Normal);
 
-    // Draw selection border
-    swatchPainter.setPen(borderHighlight);
-    swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
-    swatchPainter.setPen(borderShadow);
-    swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+    if(ui->colorListWidget->viewMode() == QListView::IconMode) {
+        // Draw selection border
+        swatchPainter.setPen(borderHighlight);
+        swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+        swatchPainter.setPen(borderShadow);
+        swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
+    }
     swatchIcon.addPixmap(colourSwatch, QIcon::Selected);
 
     ui->colorListWidget->item(itemIndex)->setIcon(swatchIcon);
