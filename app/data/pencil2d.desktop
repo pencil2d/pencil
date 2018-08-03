@@ -6,7 +6,7 @@ GenericName=Animation Software
 Comment=Create traditional hand-drawn animation using both bitmap and vector graphics
 Icon=pencil2d
 Exec=pencil2d %f
-MimeType=application/x-pencil-pcl;application/x-pencil-pclx;
+MimeType=application/x-pencil2d-pcl;application/x-pencil2d-pclx;application/x-pencil2d-palette;
 Categories=Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;AudioVideo;Video;
 Keywords=picture;drawing;vector;bitmap;cartoon;
 
