@@ -32,14 +32,19 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "fileformat.h"
+#include "activeframepool.h"
+
 
 Object::Object(QObject* parent) : QObject(parent)
 {
     setData(new ObjectData());
+    mActiveFramePool.reset(new ActiveFramePool(200));
 }
 
 Object::~Object()
 {
+    mActiveFramePool->clear();
+
     while (!mLayers.empty())
     {
         delete mLayers.takeLast();
@@ -568,6 +573,8 @@ void Object::paintImage(QPainter& painter,int frameNumber,
                         bool background,
                         bool antialiasing) const
 {
+    updateActiveFrames(frameNumber);
+
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
@@ -799,4 +806,19 @@ int Object::totalKeyFrameCount()
         sum += layer->keyFrameCount();
     }
     return sum;
+}
+
+void Object::updateActiveFrames(int frame) const
+{
+    int beginFrame = std::max(frame - 3, 1);
+    int endFrame = frame + 4;
+    for (int i = 0; i < getLayerCount(); ++i)
+    {
+        Layer* layer = getLayer(i);
+        for (int k = beginFrame; k < endFrame; ++k)
+        {
+            KeyFrame* key = layer->getKeyFrameAt(k);
+            mActiveFramePool->put(key);
+        }
+    }
 }

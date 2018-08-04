@@ -205,10 +205,6 @@ private:
     bool clipboardBitmapOk = true;
     bool clipboardVectorOk = true;
     bool clipboardSoundClipOk = true;
-
-    // Memory management
-    void updateActiveFrames(int frame);
-    std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
 #endif
