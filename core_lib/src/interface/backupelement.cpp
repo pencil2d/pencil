@@ -352,9 +352,6 @@ void AddBitmapElement::redo()
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
     int framePos = frameIndex;
 
-    // TODO: do the same for vector
-    // and possibly find a less copy'ish way..
-
     *static_cast<LayerBitmap*>(layer)->
             getBitmapImageAtFrame(otherFrameIndex) = *newBitmap;
 
@@ -993,103 +990,6 @@ void FlipViewElement::redo()
         editor()->view()->flipHorizontal(isFlipped);
     }
 }
-
-//ToggleSettingElement::ToggleSettingElement(bool /*backupToggleState*/, SETTING /*backupType*/, Editor* /*editor*/, QUndoCommand *parent) : BackupElement(editor, parent)
-//{
-//
-
-//    isToggled = backupToggleState;
-//    settingType = backupType;
-
-//    QString stateText = "OFF";
-//    if (isToggled)
-//    {
-//        stateText = "ON";
-//    }
-
-//    switch(settingType)
-//    {
-//        case SETTING::INVISIBLE_LINES:
-//        {
-//            setText(QObject::tr("Thin lines %0").arg(stateText));
-//            break;
-//        }
-//        case SETTING::OUTLINES:
-//        {
-//            setText(QObject::tr("Outlines %0").arg(stateText));
-//            break;
-//        }
-//        case SETTING::ONION_RED:
-//        {
-//            setText(QObject::tr("Red Onion skin %0").arg(stateText));
-//            break;
-//        }
-//        case SETTING::ONION_BLUE:
-//        {
-//            setText(QObject::tr("Blue Onion skin %0").arg(stateText));
-//            break;
-//        }
-//        case SETTING::PREV_ONION:
-//        {
-//            setText(QObject::tr("skin previous frame %0").arg(stateText));
-//        }
-//        case SETTING::NEXT_ONION:
-//        {
-//            setText(QObject::tr("skin next frame %0").arg(stateText));
-//        }
-//        default:
-//            break;
-//    }
-//}
-
-//void ToggleSettingElement::undo()
-//{
-//    switch(settingType)
-//    {
-//        case SETTING::OUTLINES:
-//        case SETTING::INVISIBLE_LINES:
-//        {
-//            editor()->getScribbleArea()->setEffect(settingType, !isToggled);
-//            break;
-//        }
-//        case SETTING::ONION_RED:
-//        case SETTING::ONION_BLUE:
-//        case SETTING::NEXT_ONION:
-//        case SETTING::PREV_ONION:
-//        {
-//            PreferenceManager* prefs = editor()->preference();
-//            prefs->set(settingType, !isToggled);
-//        }
-//        default:
-//            break;
-
-//    }
-//}
-
-//void ToggleSettingElement::redo()
-//{
-//    if (isFirstRedo) { isFirstRedo = false; return; }
-//    switch(settingType)
-//    {
-//        case SETTING::OUTLINES:
-//        case SETTING::INVISIBLE_LINES:
-//        {
-//            editor()->getScribbleArea()->setEffect(settingType, isToggled);
-//            break;
-//        }
-//        case SETTING::ONION_RED:
-//        case SETTING::ONION_BLUE:
-//        case SETTING::NEXT_ONION:
-//        case SETTING::PREV_ONION:
-//        {
-//            PreferenceManager* prefs = editor()->preference();
-//            prefs->set(settingType, isToggled);
-//        }
-//        default:
-//            break;
-
-//    }
-//}
 
 MoveLayerElement::MoveLayerElement(int backupOldLayerIndex, int backupNewLayerIndex, Editor* editor, QUndoCommand* parent) : BackupElement(editor, parent)
 {

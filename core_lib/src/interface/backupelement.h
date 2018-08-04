@@ -415,26 +415,6 @@ public:
     void redo() override;
 };
 
-//class ToggleSettingElement : public BackupElement
-//{
-//#include "preferencemanager.h"
-
-//public:
-//    ToggleSettingElement(bool /*backupToggleState*/,
-//                         SETTING /*backupType*/,
-//                         Editor* /*editor*/,
-//                         QUndoCommand* parent = 0);
-
-//    bool isToggled = false;
-
-//    SETTING settingType;
-
-//    bool isFirstRedo = true;
-
-//    void undo() override;
-//    void redo() override;
-//};
-
 class MoveLayerElement : public BackupElement
 {
 
