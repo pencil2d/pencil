@@ -242,17 +242,14 @@ void TimeLine::setLength(int frame)
 
 /** Extends the tineline frame length if necessary
  *
- *  If the new animation length is more than 75% of the timeline
- *  frame length, then double the timeline frame length, otherwise
- *  do nothing.
- *
  *  @param[in] frame The new animation length
  */
 void TimeLine::extendLength(int frame)
 {
-    int frameLength = mTracks->getFrameLength();
-    if(frame > frameLength * 0.75) {
-        mTracks->setFrameLength(frameLength * 1.5);
+    int currentLength = mTracks->getFrameLength();
+    if(frame > currentLength - 50)
+    {
+        mTracks->setFrameLength(frame + 100);
         updateLength();
     }
 }
