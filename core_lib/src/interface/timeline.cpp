@@ -240,16 +240,17 @@ void TimeLine::setLength(int frame)
     updateLength();
 }
 
-/** Extends the tineline frame length if necessary
+/** Extends the timeline frame length if necessary
  *
  *  @param[in] frame The new animation length
  */
 void TimeLine::extendLength(int frame)
 {
     int currentLength = mTracks->getFrameLength();
-    if(frame > currentLength - 50)
+    if(frame > (currentLength * 0.75))
     {
-        mTracks->setFrameLength(frame + 100);
+        int newLength = std::max(frame, currentLength) * 1.5;
+        mTracks->setFrameLength(newLength);
         updateLength();
     }
 }
