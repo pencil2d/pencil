@@ -139,6 +139,12 @@ win32 {
 linux {
     target.path = $${PREFIX}/bin
 
+    bashcompletion.files = data/pencil2d
+    bashcompletion.path = $${PREFIX}/share/bash-completion/completions
+
+    zshcompletion.files = data/_pencil2d
+    zshcompletion.path = $${PREFIX}/share/zsh/site-functions
+
     mimepackage.files = data/pencil2d.xml
     mimepackage.path = $${PREFIX}/share/mime/packages
 
@@ -148,7 +154,7 @@ linux {
     icon.files = data/pencil2d.png
     icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps
 
-    INSTALLS += target mimepackage desktopentry icon
+    INSTALLS += bashcompletion zshcompletion target mimepackage desktopentry icon
 }
 
 
