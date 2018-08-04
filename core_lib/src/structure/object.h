@@ -33,6 +33,7 @@ class LayerVector;
 class LayerCamera;
 class LayerSound;
 class ObjectData;
+class ActiveFramePool;
 
 
 struct ExportMovieParameters
@@ -145,6 +146,7 @@ public:
     void setData( ObjectData* );
 
     int totalKeyFrameCount();
+    void updateActiveFrames(int frame) const;
 
 signals:
     void layerViewChanged();
@@ -163,6 +165,7 @@ private:
     QList<ColourRef> mPalette;
 
     std::unique_ptr<ObjectData> mData;
+    mutable std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
 

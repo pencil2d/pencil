@@ -173,8 +173,6 @@ Status MovieExporter::run(const Object* obj,
     {
 #ifdef _WIN32
         qCritical() << "Please place ffmpeg.exe in " << ffmpegPath << " directory";
-#elif __APPLE__
-        qCritical() << "Please place ffmpeg in " << ffmpegPath << " directory";
 #else
         qCritical() << "Please place ffmpeg in " << ffmpegPath << " directory";
 #endif

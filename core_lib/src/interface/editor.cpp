@@ -65,15 +65,12 @@ Editor::Editor(QObject* parent) : QObject(parent)
     clipboardBitmapOk = false;
     clipboardVectorOk = false;
     clipboardSoundClipOk = false;
-
-    mActiveFramePool.reset(new ActiveFramePool(200));
 }
 
 Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
     clearUndoStack();
-    mActiveFramePool->clear();
 }
 
 bool Editor::init()
@@ -484,21 +481,6 @@ void Editor::updateAutoSaveCounter()
     }
 }
 
-void Editor::updateActiveFrames(int frame)
-{
-    int beginFrame = std::max(frame - 3, 1);
-    int endFrame = frame + 4;
-    for (int i = 0; i < mObject->getLayerCount(); ++i)
-    {
-        Layer* layer = mObject->getLayer(i);
-        for (int k = beginFrame; k < endFrame; ++k)
-        {
-            KeyFrame* key = layer->getKeyFrameAt(k);
-            mActiveFramePool->put(key);
-        }
-    }
-}
-
 void Editor::cut()
 {
     copy();
@@ -632,13 +614,11 @@ Status Editor::setObject(Object* newObject)
 
     mObject.reset(newObject);
 
-
     for (BaseManager* m : mAllManagers)
     {
         m->load(mObject.get());
     }
 
-    mActiveFramePool->clear();
     g_clipboardVectorImage.setObject(newObject);
 
     updateObject();
@@ -896,7 +876,7 @@ void Editor::scrubTo(int frame)
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
 
-    updateActiveFrames(frame);
+    mObject->updateActiveFrames(frame);
 }
 
 void Editor::scrubForward()
