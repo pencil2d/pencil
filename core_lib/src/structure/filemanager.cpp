@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "filemanager.h"
 
+#include <ctime>
 #include <QDir>
 #include "pencildef.h"
 #include "qminiz.h"
