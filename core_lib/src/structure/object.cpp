@@ -164,11 +164,8 @@ void Object::createWorkingDir()
         QFileInfo fileInfo(mFilePath);
         strFolderName = fileInfo.completeBaseName();
     }
-    const QString strWorkingDir = QDir::tempPath()
-        + "/Pencil2D/"
-        + strFolderName
-        + PFF_TMP_DECOMPRESS_EXT
-        + "/";
+    const QString strWorkingDir = 
+        QString("%1/Pencil2D/%2_%3_%4/").arg(QDir::tempPath()).arg(strFolderName).arg(PFF_TMP_DECOMPRESS_EXT).arg(uniqueString(8));
 
     QDir dir(QDir::tempPath());
     dir.mkpath(strWorkingDir);

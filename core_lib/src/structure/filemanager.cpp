@@ -41,6 +41,7 @@ FileManager::FileManager(QObject *parent) : QObject(parent),
 mLog("FileManager")
 {
     ENABLE_DEBUG_LOG(mLog, false);
+    srand(time(nullptr));
 }
 
 Object* FileManager::load(QString sFileName)
