@@ -164,12 +164,20 @@ void Object::createWorkingDir()
         QFileInfo fileInfo(mFilePath);
         strFolderName = fileInfo.completeBaseName();
     }
-    const QString strWorkingDir = 
-        QString("%1/Pencil2D/%2_%3_%4/").arg(QDir::tempPath()).arg(strFolderName).arg(PFF_TMP_DECOMPRESS_EXT).arg(uniqueString(8));
-
     QDir dir(QDir::tempPath());
-    dir.mkpath(strWorkingDir);
 
+    QString strWorkingDir;
+    do
+    {
+        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/")
+            .arg(QDir::tempPath())
+            .arg(strFolderName)
+            .arg(PFF_TMP_DECOMPRESS_EXT)
+            .arg(uniqueString(8));
+    }
+    while(dir.exists(strWorkingDir));
+
+    dir.mkpath(strWorkingDir);
     mWorkingDirPath = strWorkingDir;
 
     QDir dataDir(strWorkingDir + PFF_DATA_DIR);
