@@ -183,8 +183,11 @@ void Object::createWorkingDir()
 
 void Object::deleteWorkingDir() const
 {
-    QDir dir(mWorkingDirPath);
-    dir.removeRecursively();
+    if (!mWorkingDirPath.isEmpty())
+    {
+        QDir dir(mWorkingDirPath);
+        dir.removeRecursively();
+    }
 }
 
 void Object::createDefaultLayers()
