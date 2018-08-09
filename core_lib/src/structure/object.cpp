@@ -45,16 +45,11 @@ Object::~Object()
 {
     mActiveFramePool->clear();
 
-    while (!mLayers.empty())
-    {
-        delete mLayers.takeLast();
-    }
+    for (Layer* layer : mLayers)
+        delete layer;
+    mLayers.clear();
 
-    // Delete the working directory if this is not a "New" project.
-    if (!filePath().isEmpty())
-    {
-        deleteWorkingDir();
-    }
+    deleteWorkingDir();
 }
 
 void Object::init()
