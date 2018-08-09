@@ -240,19 +240,21 @@ void TimeLine::setLength(int frame)
     updateLength();
 }
 
-/** Extends the tineline frame length if necessary
- *
- *  If the new animation length is more than 75% of the timeline
- *  frame length, then double the timeline frame length, otherwise
- *  do nothing.
+/** Extends the timeline frame length if necessary
  *
  *  @param[in] frame The new animation length
  */
 void TimeLine::extendLength(int frame)
 {
-    int frameLength = mTracks->getFrameLength();
-    if(frame > frameLength * 0.75) {
-        mTracks->setFrameLength(frameLength * 1.5);
+    int currentLength = mTracks->getFrameLength();
+    if(frame > (currentLength * 0.75))
+    {
+        int newLength = std::max(frame, currentLength) * 1.5;
+
+        if (newLength > 9999)
+            newLength = 9999;
+
+        mTracks->setFrameLength(newLength);
         updateLength();
     }
 }
