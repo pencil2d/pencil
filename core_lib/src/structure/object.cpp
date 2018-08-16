@@ -45,16 +45,11 @@ Object::~Object()
 {
     mActiveFramePool->clear();
 
-    while (!mLayers.empty())
-    {
-        delete mLayers.takeLast();
-    }
+    for (Layer* layer : mLayers)
+        delete layer;
+    mLayers.clear();
 
-    // Delete the working directory if this is not a "New" project.
-    if (!filePath().isEmpty())
-    {
-        deleteWorkingDir();
-    }
+    deleteWorkingDir();
 }
 
 void Object::init()
@@ -164,15 +159,20 @@ void Object::createWorkingDir()
         QFileInfo fileInfo(mFilePath);
         strFolderName = fileInfo.completeBaseName();
     }
-    const QString strWorkingDir = QDir::tempPath()
-        + "/Pencil2D/"
-        + strFolderName
-        + PFF_TMP_DECOMPRESS_EXT
-        + "/";
-
     QDir dir(QDir::tempPath());
-    dir.mkpath(strWorkingDir);
 
+    QString strWorkingDir;
+    do
+    {
+        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/")
+            .arg(QDir::tempPath())
+            .arg(strFolderName)
+            .arg(PFF_TMP_DECOMPRESS_EXT)
+            .arg(uniqueString(8));
+    }
+    while(dir.exists(strWorkingDir));
+
+    dir.mkpath(strWorkingDir);
     mWorkingDirPath = strWorkingDir;
 
     QDir dataDir(strWorkingDir + PFF_DATA_DIR);
@@ -183,8 +183,11 @@ void Object::createWorkingDir()
 
 void Object::deleteWorkingDir() const
 {
-    QDir dir(mWorkingDirPath);
-    dir.removeRecursively();
+    if (!mWorkingDirPath.isEmpty())
+    {
+        QDir dir(mWorkingDirPath);
+        dir.removeRecursively();
+    }
 }
 
 void Object::createDefaultLayers()

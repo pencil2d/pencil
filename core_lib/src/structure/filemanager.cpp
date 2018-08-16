@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "filemanager.h"
 
+#include <ctime>
 #include <QDir>
 #include "pencildef.h"
 #include "qminiz.h"
@@ -41,6 +42,7 @@ FileManager::FileManager(QObject *parent) : QObject(parent),
 mLog("FileManager")
 {
     ENABLE_DEBUG_LOG(mLog, false);
+    srand(time(nullptr));
 }
 
 Object* FileManager::load(QString sFileName)
