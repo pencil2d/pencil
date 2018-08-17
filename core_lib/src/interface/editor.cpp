@@ -37,7 +37,6 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 #include "backupelement.h"
-#include "activeframepool.h"
 
 #include "colormanager.h"
 #include "toolmanager.h"

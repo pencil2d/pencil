@@ -302,6 +302,7 @@ Status FileManager::save(Object* object, QString sFileName)
     for (int i = 0; i < numLayers; ++i)
     {
         Layer* layer = object->getLayer(i);
+
         dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
         
         Status st = layer->save(sDataFolder, zippedFiles, [this] { progressForward(); });

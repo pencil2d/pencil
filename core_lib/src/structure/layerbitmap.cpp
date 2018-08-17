@@ -65,18 +65,7 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
         return Status::SAFE;
     }
 
-    if (bitmapImage->fileName().isEmpty())
-    {
-        bitmapImage->setFileName(strFilePath);
-    }
-    else if(strFilePath != bitmapImage->fileName())
-    {
-        bitmapImage->setFileName(bitmapImage->fileName());
-    }
-    else {
-        bitmapImage->setFileName(strFilePath);
-    }
-    bitmapImage->setRenamed(true);
+    bitmapImage->setFileName(strFilePath);
 
     Status st = bitmapImage->writeFile(strFilePath);
     if (!st.ok())
@@ -101,6 +90,41 @@ KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
     BitmapImage* b = new BitmapImage;
     b->setPos(position);
     return b;
+}
+
+Status LayerBitmap::presave(const QString& sDataFolder)
+{
+    // handles those moved keys but note loaded yet
+    std::vector<BitmapImage*> bitmapArray;
+    foreachKeyFrame([&bitmapArray](KeyFrame* key)
+    {
+        auto bitmap = static_cast<BitmapImage*>(key);
+        // null image + modified => the keyframe has been moved, but users didn't draw on it.
+        if (bitmap->image()->isNull() && bitmap->isModified())
+        {
+            bitmapArray.push_back(bitmap);
+        }
+    });
+
+    for (BitmapImage* b : bitmapArray) 
+    {
+        if (b->fileName() != fileName(b))
+        {
+            QString tmpName = QString::asprintf("t_%03d.%03d.png", id(), b->pos());
+            QFile::rename(b->fileName(), tmpName);
+            b->setFileName(tmpName);
+        }
+    }
+
+    for (BitmapImage* b : bitmapArray)
+    {
+        if (QFile::exists(fileName(b)))
+            QFile::remove(fileName(b));
+
+        QFile::rename(b->fileName(), fileName(b));
+    }
+
+    return Status::OK;
 }
 
 QString LayerBitmap::fileName(KeyFrame* key) const
@@ -138,14 +162,7 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
         imageTag.setAttribute("topLeftY", pImg->topLeft().y());
         layerTag.appendChild(imageTag);
 
-        if (!pImg->hasBeenRenamed())
-        {
-            Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
-        }
-        else
-        {
-            pImg->setRenamed(false);
-        }
+        Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
     });
 
     return layerTag;
