@@ -29,14 +29,14 @@ class MoveTool : public BaseTool
 {
     Q_OBJECT
 public:
-    explicit MoveTool( QObject* parent = 0 );
+    explicit MoveTool(QObject* parent);
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *) override;
-    void mouseReleaseEvent(QMouseEvent *) override;
-    void mouseMoveEvent(QMouseEvent *) override;
+    void mousePressEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
 
     bool leavingThisTool() override;
     bool switchingLayer() override;
@@ -53,9 +53,10 @@ private:
 
     int showTransformWarning();
 
-    void beginInteraction(QMouseEvent* event);
-    void createVectorSelection(QMouseEvent* event);
-    void transformSelection(QMouseEvent* event);
+    void beginInteraction(QMouseEvent* event, Layer* layer);
+    void createVectorSelection(QMouseEvent* event, Layer* layer);
+    void transformSelection(QMouseEvent* event, Layer* layer);
+    void storeClosestVectorCurve(Layer* layer);
 
     void setCurveSelected(VectorImage* vectorImage, QMouseEvent* event);
     void setAreaSelected(VectorImage* vectorImage, QMouseEvent* event);
@@ -63,15 +64,12 @@ private:
     bool transformHasBeenModified();
     bool shouldDeselect();
 
-    void storeClosestVectorCurve();
     QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
+    Layer* currentPaintableLayer();
 
     QPointF anchorOriginPoint;
-
     Layer* mCurrentLayer = nullptr;
-
     qreal mRotatedAngle = 0.0;
-
 };
 
 #endif

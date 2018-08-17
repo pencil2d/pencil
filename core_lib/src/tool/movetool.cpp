@@ -56,13 +56,10 @@ QCursor MoveTool::cursor()
 
 void MoveTool::mousePressEvent(QMouseEvent* event)
 {
-    mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == NULL) { return; }
-    if (!mCurrentLayer->isPaintable()) { return; }
+    mCurrentLayer = currentPaintableLayer();
     if (event->button() != Qt::LeftButton) { return; }
 
-    beginInteraction(event);
-
+    beginInteraction(event, mCurrentLayer);
 }
 
 void MoveTool::mouseReleaseEvent(QMouseEvent*)
@@ -79,22 +76,21 @@ void MoveTool::mouseReleaseEvent(QMouseEvent*)
 
 void MoveTool::mouseMoveEvent(QMouseEvent* event)
 {
-    mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == NULL) { return; }
-    if (!mCurrentLayer->isPaintable()) { return; }
+    mCurrentLayer = currentPaintableLayer();
 
     if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
     {
-        transformSelection(event);
+        transformSelection(event, mCurrentLayer);
     }
-    else // the user is moving the mouse without pressing it
+    else
     {
+        // the user is moving the mouse without pressing it
         // update cursor to reflect selection corner interaction
         mScribbleArea->updateToolCursor();
 
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
-            storeClosestVectorCurve();
+            storeClosestVectorCurve(mCurrentLayer);
         }
     }
     mScribbleArea->updateCurrentFrame();
@@ -110,17 +106,19 @@ void MoveTool::updateTransformation()
 
     // paint the transformation
     paintTransformedSelection();
-
 }
 
-void MoveTool::transformSelection(QMouseEvent* event)
+void MoveTool::transformSelection(QMouseEvent* event, Layer* layer)
 {
     if (mScribbleArea->isSomethingSelected())
     {
         QPointF offset;
-        if (mCurrentLayer->type() == Layer::VECTOR) {
+        if (layer->type() == Layer::VECTOR)
+        {
             offset = mScribbleArea->getTransformOffset();
-        } else {
+        }
+        else
+        {
             offset = QPointF(mScribbleArea->getTransformOffset().x(),
                          mScribbleArea->getTransformOffset().y()).toPoint();
         }
@@ -132,7 +130,6 @@ void MoveTool::transformSelection(QMouseEvent* event)
         }
 
         mScribbleArea->adjustSelection(offset.x(),offset.y(), mRotatedAngle);
-
         mScribbleArea->calculateSelectionTransformation();
         paintTransformedSelection();
 
@@ -143,7 +140,7 @@ void MoveTool::transformSelection(QMouseEvent* event)
     }
 }
 
-void MoveTool::beginInteraction(QMouseEvent* event)
+void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
 {
     if (event->buttons() & Qt::LeftButton)
     {
@@ -168,19 +165,17 @@ void MoveTool::beginInteraction(QMouseEvent* event)
         }
     }
 
-
     if (mScribbleArea->getMoveMode() == MoveMode::MIDDLE)
     {
         if (event->modifiers() == Qt::ControlModifier) // --- rotation
         {
             mScribbleArea->setMoveMode(MoveMode::ROTATION);
         }
-
     }
 
-    if (mCurrentLayer->type() == Layer::VECTOR)
+    if (layer->type() == Layer::VECTOR)
     {
-        createVectorSelection(event);
+        createVectorSelection(event, layer);
     }
 }
 
@@ -195,10 +190,11 @@ bool MoveTool::shouldDeselect()
  * In vector the selection rectangle is based on the bounding box of the curves
  * We can therefore create a selection just by clicking near/on a curve
  */
-void MoveTool::createVectorSelection(QMouseEvent* event)
+void MoveTool::createVectorSelection(QMouseEvent* event, Layer* layer)
 {
-    VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->
-            getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    assert(layer->type() == Layer::VECTOR);
+    LayerVector* vecLayer = static_cast<LayerVector*>(layer);
+    VectorImage* vectorImage = vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
     if (mScribbleArea->mClosestCurves.size() > 0) // the user clicks near a curve
     {
@@ -236,7 +232,6 @@ void MoveTool::setAreaSelected(VectorImage* vectorImage, QMouseEvent* event)
         vectorImage->setAreaSelected(areaNumber, true);
         mScribbleArea->setSelection(vectorImage->getSelectionRect());
     }
-
 }
 
 QPointF MoveTool::maintainAspectRatio(qreal offsetX, qreal offsetY)
@@ -269,9 +264,9 @@ QPointF MoveTool::maintainAspectRatio(qreal offsetX, qreal offsetY)
  * @brief MoveTool::storeClosestVectorCurve
  * stores the curves closest to the mouse position in mClosestCurves
  */
-void MoveTool::storeClosestVectorCurve()
+void MoveTool::storeClosestVectorCurve(Layer* layer)
 {
-    auto layerVector = static_cast<LayerVector*>(mCurrentLayer);
+    auto layerVector = static_cast<LayerVector*>(layer);
     VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
     mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo(getCurrentPoint(),
                                                               mScribbleArea->selectionTolerance / mEditor->view()->scaling());
@@ -314,15 +309,15 @@ void MoveTool::paintTransformedSelection()
 
 bool MoveTool::leavingThisTool()
 {
-    if (mCurrentLayer->type() == Layer::BITMAP)
+    if (mCurrentLayer)
     {
-        applySelectionChanges();
+        switch (mCurrentLayer->type())
+        {
+        case Layer::BITMAP: applySelectionChanges(); break;
+        case Layer::VECTOR: applyTransformation(); break;
+        default: break;
+        }
     }
-    else if (mCurrentLayer->type() == Layer::VECTOR)
-    {
-        applyTransformation();
-    }
-
     return true;
 }
 
@@ -343,7 +338,6 @@ bool MoveTool::switchingLayer()
 
     if (returnValue == QMessageBox::Yes)
     {
-
         if (mCurrentLayer->type() == Layer::BITMAP)
         {
             applySelectionChanges();
@@ -379,4 +373,14 @@ int MoveTool::showTransformWarning()
 void MoveTool::resetSelectionProperties()
 {
     mScribbleArea->resetSelectionProperties();
+}
+
+Layer* MoveTool::currentPaintableLayer()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer == nullptr) 
+        return nullptr;
+    if (!layer->isPaintable())
+        return nullptr;
+    return layer;
 }
