@@ -225,8 +225,7 @@ Status FileManager::save(Object* object, QString sFileName)
     if (fileInfo.isDir())
     {
         dd << "FileName points to a directory";
-        return Status(Status::INVALID_ARGUMENT,
-                      dd,
+        return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") points to a directory.").arg(fileInfo.absoluteFilePath()));
     }
@@ -234,16 +233,14 @@ Status FileManager::save(Object* object, QString sFileName)
     if (!parentDirInfo.exists())
     {
         dd << "The parent directory of sFileName does not exist";
-        return Status(Status::INVALID_ARGUMENT,
-                      dd,
+        return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The directory (\"%1\") does not exist.").arg(parentDirInfo.absoluteFilePath()));
     }
     if ((fileInfo.exists() && !fileInfo.isWritable()) || !parentDirInfo.isWritable())
     {
         dd << "Filename points to a location that is not writable";
-        return Status(Status::INVALID_ARGUMENT,
-                      dd,
+        return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") is not writable.").arg(fileInfo.absoluteFilePath()));
     }
@@ -280,7 +277,6 @@ Status FileManager::save(Object* object, QString sFileName)
         if (!dir.mkpath(sDataFolder))
         {
             dd << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
-
             return Status(Status::FAIL, dd,
                           tr("Cannot Create Data Directory"),
                           tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(sDataFolder));
@@ -623,55 +619,4 @@ Status FileManager::verifyObject(Object* obj)
     }
 
     return Status::OK;
-}
-QStringList FileManager::getImageSrcNamesFromXML(QString mainXmlFile, QString dataFolderPath)
-{
-    QStringList listOfWorkFolderFiles = QDir(dataFolderPath).entryList(QDir::Files);
-
-    QFile xmlFile(mainXmlFile);
-    QDomDocument xmlDoc;
-    xmlDoc.setContent(&xmlFile);
-    QDomElement objectElem = xmlDoc.firstChildElement("document");
-
-    QStringList srcNames;
-
-    QDomNode objectNode = objectElem.namedItem("object");
-    QDomElement element = objectNode.toElement();
-
-    for (QDomNode child = element.firstChild(); !child.isNull(); child = child.nextSibling())
-    {
-       QDomElement element = child.toElement();
-       if (element.tagName() == "layer")
-       {
-           for (QDomNode child2 = element.firstChild(); !child2.isNull(); child2 = child2.nextSibling())
-           {
-               QDomElement element = child2.toElement();
-
-               srcNames << element.attribute("src");
-           }
-       }
-    }
-    return srcNames;
-}
-
-void FileManager::removeFilesWithNoXMLReference(QString xmlFilePath, QString dataFolderPath)
-{
-    QStringList srcNames = getImageSrcNamesFromXML(xmlFilePath, dataFolderPath);
-    QStringList listOfWorkFolderFiles = QDir(dataFolderPath).entryList(QDir::Files);
-    for (QString fileName: listOfWorkFolderFiles)
-    {
-        bool fileExists = false;
-        for (QString srcName: srcNames)
-        {
-            if (fileName == srcName)
-            {
-                fileExists = true;
-            }
-        }
-
-        if (!fileExists && !fileName.endsWith(".xml", Qt::CaseInsensitive))
-        {
-            QDir(dataFolderPath).remove(fileName);
-        }
-    }
 }

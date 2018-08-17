@@ -67,9 +67,6 @@ private:
     void deleteBackupFile(const QString& fileName);
 
     void progressForward();
-    void removeFilesWithNoXMLReference(QString xmlFilePath, QString dataFolderPath);
-
-    QStringList getImageSrcNamesFromXML(QString mainXmlFile, QString dataFolderPath);
 
 private:
     Status mError = Status::OK;
