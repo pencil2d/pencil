@@ -612,6 +612,7 @@ Status Editor::setObject(Object* newObject)
         return Status::SAFE;
     }
 
+    clearUndoStack();
     mObject.reset(newObject);
 
     for (BaseManager* m : mAllManagers)
@@ -637,8 +638,6 @@ void Editor::updateObject()
 {
     scrubTo(mObject->data()->getCurrentFrame());
     setCurrentLayerIndex(mObject->data()->getCurrentLayer());
-
-    clearUndoStack();
 
     mAutosaveCounter = 0;
     mAutosaveNerverAskAgain = false;
