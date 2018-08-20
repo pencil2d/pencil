@@ -90,7 +90,7 @@ script:
   - 'if [ "$TRAVIS_BRANCH" == "release" ]; then
     qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE;
   else
-    qmake ../ PREFIX=/usr CONFIG+=GIT CONFIG+=NIGHTLY;
+    qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=NIGHTLY;
   fi'
   - make;
   - "$TRAVIS_BUILD_DIR/build/tests/tests"
