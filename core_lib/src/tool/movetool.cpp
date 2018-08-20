@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "movetool.h"
 
+#include <cassert>
 #include <QMouseEvent>
 #include <QMessageBox>
 
