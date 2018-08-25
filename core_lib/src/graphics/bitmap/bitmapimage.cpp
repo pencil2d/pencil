@@ -19,13 +19,13 @@ GNU General Public License for more details.
 #include <cmath>
 #include <QDebug>
 #include <QtMath>
+#include <QFile>
 #include "util.h"
 
 BitmapImage::BitmapImage()
 {
-    mImage = std::make_shared<QImage>(1, 1, QImage::Format_ARGB32_Premultiplied); // don't create null image
-    mImage->fill(QColor(0,0,0,0));
-    mBounds = QRect(0, 0, 1, 1);
+    mImage = std::make_shared<QImage>(); // create null image
+    mBounds = QRect(0, 0, 0, 0);
 }
 
 BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
@@ -659,14 +659,26 @@ Status BitmapImage::writeFile(const QString& filename)
         bool b = mImage->save(filename);
         return (b) ? Status::OK : Status::FAIL;
     }
+    else
+    {
+        QFile f(filename);
+        if(f.exists())
+        {
+            bool b = f.remove();
+            return (b) ? Status::OK : Status::FAIL;
+        }
+        else
+        {
+            return Status::OK;
+        }
+    }
     return Status::SAFE;
 }
 
 void BitmapImage::clear()
 {
-    mImage = std::make_shared<QImage>(1, 1, QImage::Format_ARGB32_Premultiplied); // null image
-    mBounds = QRect(0, 0, 1, 1);
-    mImage->fill(QColor(0,0,0,0));
+    mImage = std::make_shared<QImage>(); // null image
+    mBounds = QRect(0, 0, 0, 0);
     modification();
 }
 
