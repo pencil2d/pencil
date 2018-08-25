@@ -46,8 +46,7 @@ public:
 
     BitmapImage copy();
     BitmapImage copy(QRect rectangle);
-    void paste(BitmapImage*);
-    void paste(BitmapImage*, QPainter::CompositionMode cm);
+    void paste(BitmapImage*, QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver);
 
     void add(BitmapImage*);
     void compareAlpha(BitmapImage*);
@@ -63,6 +62,7 @@ public:
     bool contains(QPointF P) { return contains(P.toPoint()); }
     void extend(QPoint P);
     void extend(QRect rectangle);
+    void autoCrop();
 
     QRgb pixel(int x, int y);
     QRgb pixel(QPoint P);

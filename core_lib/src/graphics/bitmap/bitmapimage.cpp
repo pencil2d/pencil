@@ -133,14 +133,16 @@ BitmapImage BitmapImage::copy(QRect rectangle)
     return result;
 }
 
-void BitmapImage::paste(BitmapImage* bitmapImage)
-{
-    paste(bitmapImage, QPainter::CompositionMode_SourceOver);
-}
-
 void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
 {
     QRect newBoundaries;
+
+    bitmapImage->autoCrop();
+    if(bitmapImage->width() <= 0 || bitmapImage->height() <= 0)
+    {
+        return;
+    }
+
     if (image()->width() == 0 || image()->height() == 0)
     {
         newBoundaries = bitmapImage->mBounds;
@@ -157,6 +159,8 @@ void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
     painter.setCompositionMode(cm);
     painter.drawImage(bitmapImage->mBounds.topLeft() - mBounds.topLeft(), *image2);
     painter.end();
+
+    autoCrop();
 
     modification();
 }
@@ -329,6 +333,183 @@ void BitmapImage::extend(QRect rectangle)
         mBounds = newBoundaries;
 
         modification();
+    }
+}
+
+/** Removes any transparent borders by reducing the boundaries.
+ *
+ *  This function reduces the bounds of an image until the top and
+ *  bottom rows, and the left and right columns of pixels each
+ *  contain at least one pixel with a non-zero alpha value
+ *  (i.e. non-transparent pixel). Both mBounds and
+ *  the size of #mImage are updated.
+ *
+ *  @pre mBounds.size() == mImage->size()
+ *  @post Either the first and last rows and columns all contain a
+ *        pixel with alpha > 0 or mBounds.isEmpty() == true
+ */
+void BitmapImage::autoCrop()
+{
+    // Get image properties
+    const int width = mImage->width();
+
+    // Relative top and bottom row indices (inclusive)
+    int relTop = 0;
+    int relBottom = mBounds.height()-1;
+
+    // Check top row
+    bool isEmpty = true; // Used to track if a non-transparent pixel has been found
+    while (isEmpty && relTop <= relBottom) // Loop through rows
+    {
+        // Point cursor to the first pixel in the current top row
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relTop));
+        for (int col = 0; col < width; col++) // Loop through pixels in row
+        {
+            // If the pixel is not transparent
+            // (i.e. alpha channel > 0)
+            if (qAlpha(*cursor) != 0)
+            {
+                // We've found a non-transparent pixel in row relTop,
+                // so we can stop looking for one
+                isEmpty = false;
+                break;
+            }
+            // Move cursor to point to the next pixel in the row
+            cursor++;
+        }
+        if (isEmpty)
+        {
+            // If the row we just checked was empty, increase relTop
+            // to remove the empty row from the top of the bounding box
+            ++relTop;
+        }
+    }
+
+    // Check bottom row
+    isEmpty = true; // Reset isEmpty
+    while (isEmpty && relBottom >= relTop) // Loop through rows
+    {
+        // Point cursor to the first pixel in the current bottom row
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relBottom));
+        for (int col = 0; col < width; col++) // Loop through pixels in row
+        {
+            // If the pixel is not transparent
+            // (i.e. alpha channel > 0)
+            if(qAlpha(*cursor) != 0)
+            {
+                // We've found a non-transparent pixel in row relBottom,
+                // so we can stop looking for one
+                isEmpty = false;
+                break;
+            }
+            // Move cursor to point to the next pixel in the row
+            ++cursor;
+        }
+        if (isEmpty)
+        {
+            // If the row we just checked was empty, decrease relBottom
+            // to remove the empty row from the bottom of the bounding box
+            --relBottom;
+        }
+    }
+
+    // Relative left and right column indices (inclusive)
+    int relLeft = 0;
+    int relRight = mBounds.width()-1;
+
+    // Check left row
+    isEmpty = true; // Reset isEmpty
+    while (isEmpty && relLeft <= relRight) // Loop through columns
+    {
+        // Point cursor to the pixel at row relTop and column relLeft
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relTop)) + relLeft;
+        // Loop through pixels in column
+        // Note: we only need to loop from relTop to relBottom (inclusive)
+        //       not the full image height, because rows 0 to relTop-1 and
+        //       relBottom+1 to mBounds.height() have already been
+        //       confirmed to contain only transparent pixels
+        for (int row = relTop; row <= relBottom; row++)
+        {
+            // If the pixel is not transparent
+            // (i.e. alpha channel > 0)
+            if(qAlpha(*cursor) != 0)
+            {
+                // We've found a non-transparent pixel in column relLeft,
+                // so we can stop looking for one
+                isEmpty = false;
+                break;
+            }
+            // Move cursor to point to next pixel in the column
+            // Increment by width because the data is in row-major order
+            cursor += width;
+        }
+        if (isEmpty)
+        {
+            // If the column we just checked was empty, increase relLeft
+            // to remove the empty column from the left of the bounding box
+            ++relLeft;
+        }
+    }
+
+    // Check right row
+    isEmpty = true; // Reset isEmpty
+    while (isEmpty && relRight >= relLeft) // Loop through columns
+    {
+        // Point cursor to the pixel at row relTop and column relRight
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relTop)) + relRight;
+        // Loop through pixels in column
+        // Note: we only need to loop from relTop to relBottom (inclusive)
+        //       not the full image height, because rows 0 to relTop-1 and
+        //       relBottom+1 to mBounds.height()-1 have already been
+        //       confirmed to contain only transparent pixels
+        for (int row = relTop; row <= relBottom; row++)
+        {
+            // If the pixel is not transparent
+            // (i.e. alpha channel > 0)
+            if(qAlpha(*cursor) != 0)
+            {
+                // We've found a non-transparent pixel in column relRight,
+                // so we can stop looking for one
+                isEmpty = false;
+                break;
+            }
+            // Move cursor to point to next pixel in the column
+            // Increment by width because the data is in row-major order
+            cursor += width;
+        }
+        if (isEmpty)
+        {
+            // If the column we just checked was empty, increase relRight
+            // to remove the empty column from the left of the bounding box
+            --relRight;
+        }
+    }
+
+    // If any of the rel* variables have changed, then update mBounds and mImage
+    if (relTop != 0 ||
+        relLeft != 0 ||
+        relRight != mBounds.width()-1 ||
+        relBottom != mBounds.height()-1)
+    {
+        // Create new QRect for bounds by normalizing mBounds and then applying the rel offsets
+        QRect newBoundaries = mBounds.normalized().adjusted(relLeft, relTop, relRight - mBounds.width() + 1, relBottom - mBounds.height() + 1);
+        // Create a new image with this same size
+        QImage* newImage = new QImage( newBoundaries.size(), QImage::Format_ARGB32_Premultiplied);
+        // Make the image transparent
+        newImage->fill(Qt::transparent);
+        // If the image initialized properly
+        // (probably true unless the newBoundaries width or height <= 0)
+        if (!newImage->isNull())
+        {
+            // Copy mImage to the new image with the updated size
+            QPainter painter(newImage);
+            painter.drawImage(mBounds.topLeft() - newBoundaries.topLeft(), *mImage);
+            painter.end();
+        }
+        // Apply the resized image to mImage
+        mImage.reset( newImage );
+        // Apply the boundaries to mBounds
+        mBounds = newBoundaries;
     }
 }
 
