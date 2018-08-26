@@ -688,7 +688,7 @@ void ScribbleArea::paintBitmapBuffer()
         case PENCIL:
             if (getTool(currentTool()->type())->properties.preserveAlpha)
             {
-                cm = QPainter::CompositionMode_SourceAtop;
+                cm = QPainter::CompositionMode_SourceOver;
             }
             break;
         default: //nothing
@@ -1204,13 +1204,12 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, 
 {
     QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
-    BitmapImage gradientImg;
     if (usingFeather)
     {
         QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
         setGaussianGradient(radialGrad, fillColour, opacity, mOffset);
 
-        gradientImg.drawEllipse(rectangle, Qt::NoPen, radialGrad,
+        mBufferImg->drawEllipse(rectangle, Qt::NoPen, radialGrad,
                                 QPainter::CompositionMode_SourceOver, false);
     }
     else
@@ -1218,7 +1217,6 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, 
         mBufferImg->drawEllipse(rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
                                 QPainter::CompositionMode_SourceOver, useAA);
     }
-    mBufferImg->paste(&gradientImg);
 }
 
 /**

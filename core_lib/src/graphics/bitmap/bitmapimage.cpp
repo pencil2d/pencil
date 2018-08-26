@@ -233,6 +233,8 @@ void BitmapImage::updateBounds(QRect newBoundaries)
     mImage.reset( newImage );
     mBounds = newBoundaries;
     mMinBound = false;
+
+    modification();
 }
 
 void BitmapImage::extend(const QPoint &p)
@@ -287,18 +289,16 @@ void BitmapImage::setCompositionModeBounds(BitmapImage *source, QPainter::Compos
 /** Updates the bounds after a draw operation with the composition mode cm.
  *
  * @param[in] sourceBounds The bounds of the source used for drawcall.
+ * @param[in] isSourceMinBounds Is sourceBounds the minimal bounds for the source image
  * @param[in] cm The composition mode that will be used for the draw image
  *
  * For a call to draw image of a QPainter (initialized with mImage) with an argument
  * of source, this function intelligently calculates the bounds. It will attempt to
  * preserve minimum bounds based on the composition mode.
  *
- * Some minimal bounds can be determined solely by the
- * minimal bounds of this and source, depending on the value of cm.
- * Here is a summary of such cases:
- * Depends on destination only: Destination, SourceAtop
- * Depnds on source only: Source, DestinationAtop
- * Depends on both: SourceOver, DestinationOver
+ * This works baed on the principle that some minimal bounds can be determined
+ * solely by the minimal bounds of this and source, depending on the value of cm.
+ * Some composition modes only expand, or have no affect on the bounds.
  *
  * @warning The draw operation described by the arguments of this
  *          function needs to be called after this function is run,
@@ -308,49 +308,31 @@ void BitmapImage::setCompositionModeBounds(BitmapImage *source, QPainter::Compos
 void BitmapImage::setCompositionModeBounds(QRect sourceBounds, bool isSourceMinBounds, QPainter::CompositionMode cm)
 {
     QRect newBoundaries;
-    /*if ((cm == QPainter::CompositionMode_Destination || cm == QPainter::CompositionMode_SourceAtop) && mMinBound)
+    switch(cm)
     {
-        // The bounds of the result of Destination and SourceAtop
-        // modes depend entirely on the destination bounds.
+    case QPainter::CompositionMode_Destination:
+    case QPainter::CompositionMode_SourceAtop:
+        // The Destination and SourceAtop modes
+        // do not change the bounds from destination.
         newBoundaries = mBounds;
-        // mMinBound is already true
-    }
-    else if ((cm == QPainter::CompositionMode_Source || cm == QPainter::CompositionMode_DestinationAtop) && isSourceMinBounds)
-    {
-        // The bounds of the result of Source and DestinationAtop
-        // modes depend entirely on the source bounds.
-        newBoundaries = sourceBounds;
-        mMinBound = true;
-    }
-    else
-    {
+        // mMinBound remains the same
+        break;
+    case QPainter::CompositionMode_SourceIn:
+    case QPainter::CompositionMode_DestinationIn:
+    case QPainter::CompositionMode_Clear:
+    case QPainter::CompositionMode_DestinationOut:
+        // The bounds of the result of SourceIn, DestinationIn, Clear, and DestinationOut
+        // modes are no larger than the destination bounds
+        newBoundaries = mBounds;
+        mMinBound = false;
+        break;
+    default:
         // If it's not one of the above cases, create a union of the two bounds.
-        // This contains the minimum bounds, but may be larger.
+        // This contains the minimum bounds, if both the destination and source
+        // use their respective minimum bounds.
         newBoundaries = mBounds.united(sourceBounds);
-
-        if((cm == QPainter::CompositionMode_SourceOver || cm == QPainter::CompositionMode_DestinationOver) && mMinBound && isSourceMinBounds)
-        {
-            // If the mode is SourceOut or DestinationOut, then the minimal bound is
-            // the minimal bound of destination U the minimal bound of source
-            // which is what we just did above, therefore the current bounds are minimal
-            mMinBound = true;
-        }
-        else {
-            // There's not enough information to determine if the bounds are minimal
-            mMinBound = false;
-        }
-    }*/
-
-    // TEMPORARY
-    if ( mImage->width() == 0 || mImage->height() == 0 )
-    {
-        newBoundaries = sourceBounds;
+        mMinBound = mMinBound && isSourceMinBounds;
     }
-    else
-    {
-        newBoundaries = mBounds.united(sourceBounds);
-    }
-    mMinBound = false;
 
     updateBounds(newBoundaries);
 }
@@ -513,12 +495,12 @@ void BitmapImage::autoCrop()
         }
     }
 
-    qDebug() << "Original" << mBounds;
-    qDebug() << "Autocrop" << relLeft << relTop << relRight - mBounds.width() + 1 << relBottom - mBounds.height() + 1;
+    //qDebug() << "Original" << mBounds;
+    //qDebug() << "Autocrop" << relLeft << relTop << relRight - mBounds.width() + 1 << relBottom - mBounds.height() + 1;
     // Update mBounds and mImage if necessary
     updateBounds(mBounds.adjusted(relLeft, relTop, relRight - mBounds.width() + 1, relBottom - mBounds.height() + 1));
 
-    qDebug() << "New bounds" << mBounds;
+    //qDebug() << "New bounds" << mBounds;
 
     mMinBound = true;
 }
