@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "qminiz.h"
 #include "fileformat.h"
 #include "object.h"
+#include "layercamera.h"
 
 
 QString openErrorTitle = QObject::tr("Could not open file");
@@ -617,6 +618,12 @@ Status FileManager::verifyObject(Object* obj)
     {
         obj->data()->setCurrentLayer(maxLayer - 1);
     }
-
+    
+    // Must have at least 1 camera layer
+    std::vector<LayerCamera*> camLayers = obj->getLayersByType<LayerCamera>();
+    if (camLayers.empty())
+    {
+        obj->addNewCameraLayer();
+    }
     return Status::OK;
 }

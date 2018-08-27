@@ -84,7 +84,6 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
     int layerNumber = -1;
 
     const QString dataDirPath = mDataDirPath;
-    bool hasCameraLayer = false;
 
     for (QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling())
     {
@@ -96,19 +95,13 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
             case Layer::BITMAP: addNewBitmapLayer(); break;
             case Layer::VECTOR: addNewVectorLayer(); break;
             case Layer::SOUND:  addNewSoundLayer();  break;
-            case Layer::CAMERA: addNewCameraLayer(); hasCameraLayer = true; break;
+            case Layer::CAMERA: addNewCameraLayer(); break;
             default: Q_ASSERT(false); break;
             }
             layerNumber++;
             getLayer(layerNumber)->loadDomElement(element, dataDirPath, progressForward);
         }
     }
-
-    // Must have at least 1 camera layer
-    if(!hasCameraLayer) {
-        addNewCameraLayer();
-    }
-
     return true;
 }
 
