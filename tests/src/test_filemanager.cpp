@@ -108,7 +108,7 @@ TEST_CASE("FileManager Loading XML Tests")
 
             REQUIRE(o != nullptr);
             REQUIRE(fm.error().ok());
-            REQUIRE(o->getLayerCount() == 0);
+            REQUIRE(o->getLayerCount() == 1); // have at least one cam layer
 
             delete o;
         }
@@ -134,7 +134,7 @@ TEST_CASE("FileManager Loading XML Tests")
 
         FileManager fm;
         Object* obj = fm.load(theXML.fileName());
-        REQUIRE(obj->getLayerCount() == 1);
+        REQUIRE(obj->getLayerCount() == 2); // one bitmap layer and one default cam layer
         REQUIRE(obj->getLayer(0)->name() == "MyLayer");
         REQUIRE(obj->getLayer(0)->id() == 5);
         REQUIRE(obj->getLayer(0)->visible() == true);
