@@ -91,19 +91,4 @@ TEST_CASE("BitmapImage functions")
         REQUIRE(b->width() == 50);
         REQUIRE(b->height() == 50);
     }
-
-    SECTION("extend()")
-    {
-        auto b = std::make_shared<BitmapImage>(QRect(0, 0, 50, 50), Qt::red);
-
-        // before
-        REQUIRE(b->topLeft() == QPoint(0, 0));
-        REQUIRE(b->size() == QSize(50, 50));
-
-        b->extend(QPoint(-10, -10));
-
-        // after
-        REQUIRE(b->topLeft() == QPoint(-10, -10));
-        REQUIRE(b->size() == QSize(60, 60));
-    }
 }

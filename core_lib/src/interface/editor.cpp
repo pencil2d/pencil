@@ -754,10 +754,7 @@ bool Editor::importBitmapImage(QString filePath, int space)
         }
         BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(currentFrame());
 
-        QRect boundaries = img.rect();
-        boundaries.moveTopLeft(mScribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width() / 2, boundaries.height() / 2));
-
-        BitmapImage importedBitmapImage{ boundaries, img };
+        BitmapImage importedBitmapImage(mScribbleArea->getCentralPoint().toPoint() - QPoint(img.width() / 2, img.height() / 2), img);
         bitmapImage->paste(&importedBitmapImage);
 
         if (space > 1) {
