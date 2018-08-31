@@ -424,7 +424,11 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     else {
         editor()->tools()->tabletRestorePrevTool();
     }
-    event->ignore(); // indicates that the tablet event is not accepted yet, so that it is propagated as a mouse event)
+    // Tablet move events should not be ignored as that will propagate it as a mouse event with reduced resolution
+    if(event->type() != QEvent::TabletMove)
+    {
+        event->ignore(); // indicates that the tablet event is not accepted yet, and propagates it accordingly
+    }
 }
 
 bool ScribbleArea::isLayerPaintable() const

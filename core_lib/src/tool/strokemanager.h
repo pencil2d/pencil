@@ -34,6 +34,7 @@ class StrokeManager : public QObject
 public:
     StrokeManager();
 
+    void genericMoveEvent(QPointF pos);
     void tabletEvent(QTabletEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
@@ -67,8 +68,6 @@ private:
 
     void reset();
 
-    QPointF getEventPosition(QMouseEvent *);
-
     float pressure = 1.0f; // last pressure
     QQueue<QPointF> strokeQueue;
     QQueue<qreal> pressureQueue;
@@ -92,7 +91,6 @@ private:
     bool    mTabletInUse = false;
     float   mTabletPressure = 1.f;
     int     mStabilizerLevel = 0;
-    QPointF mTabletPosition;
     qreal mMeanPressure;
 
     clock_t m_timeshot;
