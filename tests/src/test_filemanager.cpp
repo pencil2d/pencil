@@ -220,29 +220,47 @@ TEST_CASE("FileManager Load-a-zip Test")
     }
 }
 
-TEST_CASE("FileManager Lazy loading test")
+TEST_CASE("FileManager File-saving")
 {
-    SECTION("")
+    // https://github.com/pencil2d/pencil/issues/939
+    SECTION("#939 Clear action not properly saved")
     {
-        Object* o = new Object;
-        o->init();
-        o->createDefaultLayers();
+        FileManager fm;
 
-        LayerBitmap* layer = static_cast<LayerBitmap*>(o->getLayer(2));
-        //qDebug() << "LayerType:" << layer->type();
+        // 1. create a animation with one red frame & save it
+        Object* o1 = new Object;
+        o1->init();
+        o1->createDefaultLayers();
 
+        LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
         REQUIRE(layer->addNewKeyFrameAt(2));
-        BitmapImage* b2 = layer->getBitmapImageAtFrame(2);
-        //qDebug() << b2->bounds();
-        b2->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
-        //b2->image()->save("C:/temp/test1.png");
+
+        BitmapImage* b1 = layer->getBitmapImageAtFrame(2);
+        b1->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
 
         QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
-        REQUIRE(testDir.isValid());
 
-        FileManager fm;
-        fm.save(o, testDir.path() + "/abc.pclx");
+        QString animationPath = testDir.path() + "/abc.pclx";
+        fm.save(o1, animationPath);
+        delete o1;
 
-        delete o;
+        // 2. load the animation, and then clear the red frame, save it.
+        Object* o2 = fm.load(animationPath);
+        layer = dynamic_cast<LayerBitmap*>(o2->getLayer(2));
+
+        BitmapImage* b2 = layer->getBitmapImageAtFrame(2);
+        b2->clear();
+
+        fm.save(o2, animationPath);
+        delete o2;
+
+        // 3. load the animation again, check whether it's an empty frame
+        Object* o3 = fm.load(animationPath);
+        layer = dynamic_cast<LayerBitmap*>(o3->getLayer(2));
+
+        BitmapImage* b3 = layer->getBitmapImageAtFrame(2);
+        REQUIRE(b3->bounds().isEmpty());
+
+        delete o3;
     }
 }

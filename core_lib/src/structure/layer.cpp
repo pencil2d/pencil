@@ -465,7 +465,6 @@ void Layer::setFrameSelected(int position, bool isSelected)
         if (isSelected && !mSelectedFrames_byLast.contains(startPosition))
         {
             // Add the selected frame to the lists
-            //
             mSelectedFrames_byLast.insert(0, startPosition);
             mSelectedFrames_byPosition.append(startPosition);
 
