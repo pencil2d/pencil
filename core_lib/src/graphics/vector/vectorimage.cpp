@@ -1407,6 +1407,9 @@ QList<VertexRef> VectorImage::getVerticesCloseTo(QPointF P1, qreal maxDistance)
 {
     QList<VertexRef> result;
 
+    // Square maxDistance rather than taking the square root for each distance
+    maxDistance *= maxDistance;
+
     for (int curve = 0; curve < mCurves.size(); curve++)
     {
         for (int vertex = -1; vertex < mCurves.at(curve).getVertexSize(); vertex++)
