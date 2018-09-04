@@ -229,7 +229,7 @@ void EraserTool::drawStroke()
 
         qreal opacity = 1.0;
         mCurrentWidth = properties.width;
-        if (properties.pressure == true)
+        if (properties.pressure)
         {
             opacity = m_pStrokeManager->getPressure();
             mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
@@ -274,16 +274,15 @@ void EraserTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        qreal brushWidth = 0;
-        if (properties.pressure ) {
-            brushWidth = properties.width * m_pStrokeManager->getPressure();
+        mCurrentWidth = properties.width;
+        if (properties.pressure)
+        {
+            mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
         }
-        else {
-            brushWidth = properties.width;
-        }
+        qreal brushWidth = mCurrentWidth;
 
         QPen pen( Qt::white, brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-        int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
+        int rad = qRound(brushWidth) / 2 + 2;
 
         if ( p.size() == 4 )
         {
@@ -331,7 +330,7 @@ void EraserTool::updateStrokes()
 
     if ( layer->type() == Layer::VECTOR )
     {
-        qreal radius = ( properties.width / 2 ) / mEditor->view()->scaling();
+        qreal radius = properties.width / 2;
         QList<VertexRef> nearbyVertices = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )
             ->getVerticesCloseTo( getCurrentPoint(), radius );
         for ( int i = 0; i < nearbyVertices.size(); i++ )
