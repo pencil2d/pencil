@@ -651,7 +651,8 @@ Status BitmapImage::writeFile(const QString& filename)
         bool b = mImage->save(filename);
         return (b) ? Status::OK : Status::FAIL;
     }
-    else
+    
+    if (bounds().isEmpty())
     {
         QFile f(filename);
         if(f.exists())
@@ -659,10 +660,7 @@ Status BitmapImage::writeFile(const QString& filename)
             bool b = f.remove();
             return (b) ? Status::OK : Status::FAIL;
         }
-        else
-        {
-            return Status::OK;
-        }
+        return Status::SAFE;
     }
     return Status::SAFE;
 }
