@@ -37,6 +37,7 @@ public:
     BitmapImage* clone() override;
     void loadFile() override;
     void unloadFile() override;
+    bool isLoaded() override;
 
     void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);

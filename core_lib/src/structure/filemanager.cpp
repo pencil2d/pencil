@@ -296,6 +296,12 @@ Status FileManager::save(Object* object, QString sFileName)
     int numLayers = object->getLayerCount();
     dd << QString("Total %1 layers").arg(numLayers);
 
+    for (int i = 0; i < numLayers; ++i)
+    {
+        Layer* layer = object->getLayer(i);
+        layer->presave(sDataFolder);
+    }
+
     QStringList zippedFiles;
 
     bool saveLayersOK = true;

@@ -191,7 +191,7 @@ QString FileDialog::saveFileFilters( FileType fileType )
 
 QString FileDialog::getFilterForFile(QString filters, QString filePath)
 {
-    qDebug() << "Getfilterforfile" << filters << filePath;
+    qDebug() << __FUNCTION__ << filters << filePath;
     if(!filePath.contains("."))
     {
         return QString();

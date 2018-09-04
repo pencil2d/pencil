@@ -36,6 +36,7 @@ public:
     void put(KeyFrame* key);
     size_t size() const;
     void clear();
+    bool isFrameInPool(KeyFrame*);
 
     void onKeyFrameDestroy(KeyFrame*) override;
 

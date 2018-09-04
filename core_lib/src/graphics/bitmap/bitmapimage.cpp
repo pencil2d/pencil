@@ -106,6 +106,11 @@ void BitmapImage::unloadFile()
     }
 }
 
+bool BitmapImage::isLoaded()
+{
+    return (mImage != nullptr);
+}
+
 void BitmapImage::paintImage(QPainter& painter)
 {
     painter.drawImage(mBounds.topLeft(), *image());
@@ -354,6 +359,7 @@ void BitmapImage::autoCrop()
 {
     // Exit if current bounds are null
     if (mBounds.isEmpty()) return;
+    if (!mImage) return;
 
     Q_ASSERT(mBounds.size() == mImage->size());
 

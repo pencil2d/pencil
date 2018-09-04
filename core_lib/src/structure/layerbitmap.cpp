@@ -92,7 +92,7 @@ KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
     return b;
 }
 
-Status LayerBitmap::presave(const QString& sDataFolder)
+Status LayerBitmap::presave(const QString&)
 {
     // handles those moved keys but note loaded yet
     std::vector<BitmapImage*> bitmapArray;
@@ -100,7 +100,9 @@ Status LayerBitmap::presave(const QString& sDataFolder)
     {
         auto bitmap = static_cast<BitmapImage*>(key);
         // null image + modified => the keyframe has been moved, but users didn't draw on it.
-        if (bitmap->image()->isNull() && bitmap->isModified())
+        if (!bitmap->fileName().isEmpty()
+            && bitmap->image()->isNull() 
+            && bitmap->isModified())
         {
             bitmapArray.push_back(bitmap);
         }

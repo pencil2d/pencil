@@ -38,7 +38,7 @@ GNU General Public License for more details.
 Object::Object(QObject* parent) : QObject(parent)
 {
     setData(new ObjectData());
-    mActiveFramePool.reset(new ActiveFramePool(200));
+    mActiveFramePool.reset(new ActiveFramePool(12));
 }
 
 Object::~Object()

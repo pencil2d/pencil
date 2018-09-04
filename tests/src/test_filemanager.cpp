@@ -239,7 +239,6 @@ TEST_CASE("FileManager File-saving")
         b1->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
 
         QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
-
         QString animationPath = testDir.path() + "/abc.pclx";
         fm.save(o1, animationPath);
         delete o1;
@@ -261,6 +260,59 @@ TEST_CASE("FileManager File-saving")
         BitmapImage* b3 = layer->getBitmapImageAtFrame(2);
         REQUIRE(b3->bounds().isEmpty());
 
+        delete o3;
+    }
+
+    //https://github.com/pencil2d/pencil/issues/966
+    SECTION("#966 Moving more than 200 frames corrupts frames upon save")
+    {
+        FileManager fm;
+
+        // 1. Create a animation with 500 frames & save it
+        Object* o1 = new Object;
+        o1->init();
+        o1->createDefaultLayers();
+        LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
+
+        for (int i = 100; i < 500; ++i) 
+        {
+            layer->addNewKeyFrameAt(i);
+            auto bitmap = layer->getBitmapImageAtFrame(i);
+            bitmap->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
+        }
+
+        QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
+        QString animationPath = testDir.path() + "/abc.pclx";
+        fm.save(o1, animationPath);
+        delete o1;
+
+        // 2. Load the animation back and then make some frames unloaded by active frame pool
+        Object* o2 = fm.load(animationPath);
+        
+        layer = dynamic_cast<LayerBitmap*>(o2->getLayer(2));
+        for (int i = 1; i < 500; ++i)
+            o2->updateActiveFrames(i);
+
+        // 3. Move those unloaded frames around
+        for (int i = 100; i < 200; ++i)
+            layer->setFrameSelected(i, true);
+
+        layer->moveSelectedFrames(-98);
+        fm.save(o2, animationPath);
+        delete o2;
+
+        // 4. Check no lost frames 
+        Object* o3 = fm.load(animationPath);
+        layer = dynamic_cast<LayerBitmap*>(o3->getLayer(2));
+        for (int i = 2; i < 500; ++i)
+        {
+            auto bitmap = layer->getBitmapImageAtFrame(i);
+            if (bitmap)
+            {
+                REQUIRE(bitmap->image()->width() > 1);
+                REQUIRE(bitmap->image()->height() > 1);
+            }
+        }
         delete o3;
     }
 }
