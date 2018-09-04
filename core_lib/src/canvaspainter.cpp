@@ -211,6 +211,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     //qCDebug(mLog) << "Paint Image Size:" << paintedImage->image()->size();
 
     BitmapImage paintToImage;
+    paintToImage.ignoreAutoCrop();
     paintToImage.paste(paintedImage);
 
     if (colorize)
@@ -243,7 +244,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     painter.setWorldMatrixEnabled(true);
 
     prescale(&paintToImage);
-
+    paintToImage.ignoreAutoCrop();
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 }
 

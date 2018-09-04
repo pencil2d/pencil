@@ -694,6 +694,7 @@ void ScribbleArea::paintBitmapBuffer()
         default: //nothing
             break;
         }
+        mBufferImg->ignoreAutoCrop();
         targetImage->paste(mBufferImg, cm);
     }
 

@@ -105,6 +105,7 @@ public:
      *          for the contained image.
      */
     bool isMinimallyBounded() const { return mMinBound; }
+    void ignoreAutoCrop() { mMinBound = true; }
 
     Status writeFile(const QString& filename);
 

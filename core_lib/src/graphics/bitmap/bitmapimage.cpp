@@ -47,7 +47,7 @@ BitmapImage::BitmapImage(const QRect& rectangle, const QColor& colour)
 BitmapImage::BitmapImage(const QPoint& topLeft, const QImage& image)
 {
     mBounds = QRect(topLeft, image.size());
-    mMinBound = false;
+    mMinBound = true;
     mImage = std::make_shared<QImage>(image);
 }
 
@@ -56,7 +56,7 @@ BitmapImage::BitmapImage(const QPoint& topLeft, const QString& path)
     setFileName(path);
     mImage.reset();
 
-    mBounds = QRect(topLeft, QSize(0,0));
+    mBounds = QRect(topLeft, QSize(0, 0));
     mMinBound = true;
     setModified(false);
 }
