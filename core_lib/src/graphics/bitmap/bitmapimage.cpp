@@ -41,7 +41,7 @@ BitmapImage::BitmapImage(const QRect& rectangle, const QColor& colour)
     mBounds = rectangle;
     mImage = std::make_shared<QImage>(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
     mImage->fill(colour.rgba());
-    mMinBound = true;
+    mMinBound = false;
 }
 
 BitmapImage::BitmapImage(const QPoint& topLeft, const QImage& image)
