@@ -1552,23 +1552,23 @@ QVector<QPoint> ScribbleArea::calcSelectionCenterPoints()
 
 void ScribbleArea::calculateSelectionTransformation()
 {
-    float scaleX, scaleY;
-
     QVector<QPoint> centerPoints = calcSelectionCenterPoints();
 
     selectionTransformation.reset();
 
-    scaleX = myTempTransformedSelection.width() / mySelection.width();
-
-    scaleY = myTempTransformedSelection.height() / mySelection.height();
+    float scaleX = myTempTransformedSelection.width() / mySelection.width();
+    float scaleY = myTempTransformedSelection.height() / mySelection.height();
 
     selectionTransformation.translate(centerPoints[0].x(), centerPoints[0].y());
     selectionTransformation.rotate(myRotatedAngle);
 
-    selectionTransformation.scale(scaleX, scaleY);
-
+    if (mySelection.width() > 0 && mySelection.height() > 0) // can't divide by 0
+    {
+        float scaleX = myTempTransformedSelection.width() / mySelection.width();
+        float scaleY = myTempTransformedSelection.height() / mySelection.height();
+        selectionTransformation.scale(scaleX, scaleY);
+    }
     selectionTransformation.translate(-centerPoints[1].x(), -centerPoints[1].y());
-
 }
 
 

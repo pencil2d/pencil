@@ -70,7 +70,9 @@ public:
 
     bool isSomethingSelected() const;
     QRectF getSelection() const { return mySelection; }
-    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    QRectF mySelection;
+    QRectF myTransformedSelection;
+    QRectF myTempTransformedSelection;
     qreal myRotatedAngle = 0.0;
     QList<int> mClosestCurves;
 
