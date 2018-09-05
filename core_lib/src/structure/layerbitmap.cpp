@@ -89,6 +89,7 @@ KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
 {
     BitmapImage* b = new BitmapImage;
     b->setPos(position);
+    b->enableAutoCrop(true);
     return b;
 }
 

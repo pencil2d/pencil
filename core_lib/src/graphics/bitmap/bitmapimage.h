@@ -106,7 +106,7 @@ public:
      *          for the contained image.
      */
     bool isMinimallyBounded() const { return mMinBound; }
-    void ignoreAutoCrop() { mMinBound = true; }
+    void enableAutoCrop(bool b) { mEnableAutoCrop = b; }
 
     Status writeFile(const QString& filename);
 
@@ -121,8 +121,10 @@ protected:
 private:
     std::shared_ptr< QImage > mImage;
     QRect   mBounds;
+
     /** @see isMinimallyBounded() */
-    bool mMinBound;
+    bool mMinBound = true;
+    bool mEnableAutoCrop = false;
 };
 
 #endif

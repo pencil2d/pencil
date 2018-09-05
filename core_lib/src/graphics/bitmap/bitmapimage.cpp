@@ -26,7 +26,6 @@ BitmapImage::BitmapImage()
 {
     mImage = std::make_shared<QImage>(); // create null image
     mBounds = QRect(0, 0, 0, 0);
-    mMinBound = true;
 }
 
 BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
@@ -357,8 +356,8 @@ void BitmapImage::setCompositionModeBounds(QRect sourceBounds, bool isSourceMinB
  */
 void BitmapImage::autoCrop()
 {
-    // Exit if current bounds are null
-    if (mBounds.isEmpty()) return;
+    if (!mEnableAutoCrop) return;
+    if (mBounds.isEmpty()) return; // Exit if current bounds are null
     if (!mImage) return;
 
     Q_ASSERT(mBounds.size() == mImage->size());
