@@ -1556,9 +1556,6 @@ void ScribbleArea::calculateSelectionTransformation()
 
     selectionTransformation.reset();
 
-    float scaleX = myTempTransformedSelection.width() / mySelection.width();
-    float scaleY = myTempTransformedSelection.height() / mySelection.height();
-
     selectionTransformation.translate(centerPoints[0].x(), centerPoints[0].y());
     selectionTransformation.rotate(myRotatedAngle);
 

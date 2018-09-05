@@ -187,7 +187,8 @@ void Editor::backup(QString undoText)
         if (layers()->currentLayer()->type() == Layer::SOUND)
         {
             frame = layers()->currentLayer()->getKeyFrameWhichCovers(mLastModifiedFrame);
-            if (frame != nullptr) {
+            if (frame != nullptr)
+            {
                 backup(mLastModifiedLayer, frame->pos(), undoText);
             }
         }
@@ -225,6 +226,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
         delete mBackupList.takeFirst();
         mBackupIndex--;
     }
+
     Layer* layer = mObject->getLayer(backupLayer);
     if (layer != NULL)
     {
@@ -492,24 +494,28 @@ void Editor::copy()
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
     if (layer != NULL)
     {
-        if (layer->type() == Layer::BITMAP)
+        return;
+    }
+
+    if (layer->type() == Layer::BITMAP)
+    {
+        LayerBitmap* layerBitmap = (LayerBitmap*)layer;
+        if (mScribbleArea->isSomethingSelected())
         {
-            if (mScribbleArea->isSomethingSelected())
-            {
-                g_clipboardBitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
-            }
-            else
-            {
-                g_clipboardBitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
-            }
-            clipboardBitmapOk = true;
-            if (g_clipboardBitmapImage.image() != NULL) QApplication::clipboard()->setImage(*g_clipboardBitmapImage.image());
+            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
         }
-        if (layer->type() == Layer::VECTOR)
+        else
         {
-            clipboardVectorOk = true;
-            g_clipboardVectorImage = *(((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
         }
+        clipboardBitmapOk = true;
+        if (g_clipboardBitmapImage.image() != NULL)
+            QApplication::clipboard()->setImage(*g_clipboardBitmapImage.image());
+    }
+    if (layer->type() == Layer::VECTOR)
+    {
+        clipboardVectorOk = true;
+        g_clipboardVectorImage = *(((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
     }
 }
 
@@ -822,7 +828,6 @@ bool Editor::importGIF(QString filePath, int numOfImages)
     } else {
         return false;
     }
-
 }
 
 void Editor::updateFrame(int frameNumber)
@@ -853,10 +858,7 @@ void Editor::setCurrentLayerIndex(int i)
 
 void Editor::scrubTo(int frame)
 {
-    if (frame < 1)
-    {
-        frame = 1;
-    }
+    if (frame < 1) { frame = 1; }
     int oldFrame = mFrame;
     mFrame = frame;
 
@@ -870,7 +872,6 @@ void Editor::scrubTo(int frame)
     {
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
-
     mObject->updateActiveFrames(frame);
 }
 

@@ -137,7 +137,6 @@ void ColorPaletteWidget::replaceItem()
         emit colorChanged(newColour);
         ui->colorListWidget->setCurrentRow(index);
     }
-
 }
 
 void ColorPaletteWidget::removeItem()
@@ -156,7 +155,6 @@ void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
         emit colorChanged(newColor);
     }
 }
-
 
 void ColorPaletteWidget::selectColorNumber(int colorNumber)
 {
@@ -405,7 +403,8 @@ void ColorPaletteWidget::updateGridUI()
         ui->colorListWidget->setGridSize(QSize(tempSize.width(), mIconSize.height() + 2));
         mIconSize.setWidth(mIconSize.width());
     }
-    else {
+    else
+    {
         ui->colorListWidget->setIconSize(mIconSize);
         ui->colorListWidget->setGridSize(QSize(-1, -1));
     }
@@ -483,16 +482,14 @@ void ColorPaletteWidget::clickAddColorButton()
 
     QColor newColour;
 
-    if (mIsColorDialog) {
+    if (mIsColorDialog)
         newColour = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
-    } else {
+    else 
         newColour = editor()->color()->frontColor();
-    }
 
     if (!newColour.isValid())
     {
-        // User canceled operation
-        return;
+        return; // User canceled operation
     }
 
     int colorIndex = editor()->object()->getColourCount();
