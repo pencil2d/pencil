@@ -40,7 +40,7 @@ AboutDialog::~AboutDialog()
 void AboutDialog::init()
 {
 	QStringList devText;
-	devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
+	devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION " RC1");
 #if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
     devText << "commit: " S__GIT_COMMIT_HASH ;
 	devText << "date: " S__GIT_TIMESTAMP ;

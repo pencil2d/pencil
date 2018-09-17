@@ -83,7 +83,7 @@ GNU General Public License for more details.
 #ifdef NIGHTLY_BUILD
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( BUILD_DATE )
 #else
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION " RC1")
 #endif
 
 
