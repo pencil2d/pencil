@@ -19,9 +19,11 @@ GNU General Public License for more details.
 
 #include <map>
 #include <functional>
+#include <QObject>
 #include <QString>
 #include <QPainter>
-#include <QtXml>
+#include <QDomElement>
+#include "pencilerror.h"
 
 class QMouseEvent;
 class KeyFrame;
@@ -63,13 +65,13 @@ public:
     bool visible() const { return mVisible; }
     void setVisible(bool b) { mVisible = b; }
 
-    // KeyFrame interface
-    int getMaxKeyFramePosition() const;
-    int firstKeyFramePosition() const;
-
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) = 0;
+
+    // KeyFrame interface
+    int getMaxKeyFramePosition() const;
+    int firstKeyFramePosition() const;
 
     bool keyExists(int position) const;
     int  getPreviousKeyFramePosition(int position) const;
@@ -89,7 +91,7 @@ public:
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
-    KeyFrame *getKeyFrameWhichCovers(int frameNumber);
+    KeyFrame *getKeyFrameWhichCovers(int frameNumber) const;
     bool getVisibility() { return mVisible; }
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>);
@@ -97,7 +99,7 @@ public:
     void setModified(int position, bool isModified);
 
     // Handle selection
-    bool isFrameSelected(int position);
+    bool isFrameSelected(int position) const;
     void setFrameSelected(int position, bool isSelected);
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);
@@ -106,22 +108,19 @@ public:
 
     bool moveSelectedFrames(int offset);
 
-    Status save(QString dataFolder, ProgressCallback progressStep);
+    Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
+    virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
     void paintFrames(QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
-
-    void mousePress(QMouseEvent*, int frameNumber);
-    void mouseMove(QMouseEvent*, int frameNumber);
-    void mouseRelease(QMouseEvent*, int frameNumber);
     void mouseDoubleClick(QMouseEvent*, int frameNumber);
 
     virtual void editProperties();
 
-    bool isPaintable();
+    bool isPaintable() const;
 
 protected:
     void setId(int LayerId) { mId = LayerId; }

@@ -108,7 +108,7 @@ TEST_CASE("FileManager Loading XML Tests")
 
             REQUIRE(o != nullptr);
             REQUIRE(fm.error().ok());
-            REQUIRE(o->getLayerCount() == 0);
+            REQUIRE(o->getLayerCount() == 1); // have at least one cam layer
 
             delete o;
         }
@@ -134,7 +134,7 @@ TEST_CASE("FileManager Loading XML Tests")
 
         FileManager fm;
         Object* obj = fm.load(theXML.fileName());
-        REQUIRE(obj->getLayerCount() == 1);
+        REQUIRE(obj->getLayerCount() == 2); // one bitmap layer and one default cam layer
         REQUIRE(obj->getLayer(0)->name() == "MyLayer");
         REQUIRE(obj->getLayer(0)->id() == 5);
         REQUIRE(obj->getLayer(0)->visible() == true);
@@ -217,73 +217,102 @@ TEST_CASE("FileManager Load-a-zip Test")
 {
     SECTION("Load a PCLX zip file")
     {
-        QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
-        REQUIRE(testDir.isValid());
-
-        // manually build a working project
-        // and use filemanager to load it.
-        QString sWorkFolderPath = testDir.path() + "/project_x";
-        QDir workDir(sWorkFolderPath);
-        REQUIRE(workDir.makeAbsolute());
-        REQUIRE(workDir.mkpath("."));
-
-        QString strMainXMLPath = workDir.filePath(PFF_XML_FILE_NAME);
-
-        QFile theXML(strMainXMLPath);
-        theXML.open(QIODevice::WriteOnly);
-
-        QTextStream fout(&theXML);
-        fout << "<!DOCTYPE PencilDocument><document>";
-        fout << "  <object>";
-        fout << "    <layer name='MyBitmapLayer' id='5' visibility='1' type='1' >";
-        fout << "      <image frame='1' topLeftY='0' src='005.001.png' topLeftX='0' />";
-        fout << "    </layer>";
-        fout << "  </object>";
-        fout << "</document>";
-        theXML.close();
-
-        REQUIRE(workDir.mkdir(PFF_DATA_DIR));
-       
-        QImage img(10, 10, QImage::Format_ARGB32_Premultiplied);
-        REQUIRE(img.save(workDir.absolutePath() + "/" PFF_DATA_DIR "/005.001.png"));
-
-        QString pclxFile = QDir(testDir.path()).filePath("test-animation.pclx");
-        REQUIRE(MiniZ::compressFolder(pclxFile, workDir.absolutePath()));
-
-        FileManager fm;
-        Object* o = fm.load(pclxFile);
-
-        REQUIRE(fm.error().ok());
-
-        Layer* layer = o->getLayer(0);
-        REQUIRE(layer->name() == "MyBitmapLayer");
-        REQUIRE(layer->id() == 5);
     }
 }
 
-TEST_CASE("FileManager Lazy loading test")
+TEST_CASE("FileManager File-saving")
 {
-    SECTION("")
+    // https://github.com/pencil2d/pencil/issues/939
+    SECTION("#939 Clear action not properly saved")
     {
-        Object* o = new Object;
-        o->init();
-        o->createDefaultLayers();
+        FileManager fm;
 
-        LayerBitmap* layer = static_cast<LayerBitmap*>(o->getLayer(2));
-        //qDebug() << "LayerType:" << layer->type();
+        // 1. create a animation with one red frame & save it
+        Object* o1 = new Object;
+        o1->init();
+        o1->createDefaultLayers();
 
+        LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
         REQUIRE(layer->addNewKeyFrameAt(2));
-        BitmapImage* b2 = layer->getBitmapImageAtFrame(2);
-        //qDebug() << b2->bounds();
-        b2->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
-        //b2->image()->save("C:/temp/test1.png");
+
+        BitmapImage* b1 = layer->getBitmapImageAtFrame(2);
+        b1->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
 
         QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
-        REQUIRE(testDir.isValid());
+        QString animationPath = testDir.path() + "/abc.pclx";
+        fm.save(o1, animationPath);
+        delete o1;
 
+        // 2. load the animation, and then clear the red frame, save it.
+        Object* o2 = fm.load(animationPath);
+        layer = dynamic_cast<LayerBitmap*>(o2->getLayer(2));
+
+        BitmapImage* b2 = layer->getBitmapImageAtFrame(2);
+        b2->clear();
+
+        fm.save(o2, animationPath);
+        delete o2;
+
+        // 3. load the animation again, check whether it's an empty frame
+        Object* o3 = fm.load(animationPath);
+        layer = dynamic_cast<LayerBitmap*>(o3->getLayer(2));
+
+        BitmapImage* b3 = layer->getBitmapImageAtFrame(2);
+        REQUIRE(b3->bounds().isEmpty());
+
+        delete o3;
+    }
+
+    //https://github.com/pencil2d/pencil/issues/966
+    SECTION("#966 Moving more than 200 frames corrupts frames upon save")
+    {
         FileManager fm;
-        fm.save(o, testDir.path() + "/abc.pclx");
 
-        delete o;
+        // 1. Create a animation with 500 frames & save it
+        Object* o1 = new Object;
+        o1->init();
+        o1->createDefaultLayers();
+        LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
+
+        for (int i = 100; i < 500; ++i) 
+        {
+            layer->addNewKeyFrameAt(i);
+            auto bitmap = layer->getBitmapImageAtFrame(i);
+            bitmap->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
+        }
+
+        QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
+        QString animationPath = testDir.path() + "/abc.pclx";
+        fm.save(o1, animationPath);
+        delete o1;
+
+        // 2. Load the animation back and then make some frames unloaded by active frame pool
+        Object* o2 = fm.load(animationPath);
+        
+        layer = dynamic_cast<LayerBitmap*>(o2->getLayer(2));
+        for (int i = 1; i < 500; ++i)
+            o2->updateActiveFrames(i);
+
+        // 3. Move those unloaded frames around
+        for (int i = 100; i < 200; ++i)
+            layer->setFrameSelected(i, true);
+
+        layer->moveSelectedFrames(-98);
+        fm.save(o2, animationPath);
+        delete o2;
+
+        // 4. Check no lost frames 
+        Object* o3 = fm.load(animationPath);
+        layer = dynamic_cast<LayerBitmap*>(o3->getLayer(2));
+        for (int i = 2; i < 500; ++i)
+        {
+            auto bitmap = layer->getBitmapImageAtFrame(i);
+            if (bitmap)
+            {
+                REQUIRE(bitmap->image()->width() > 1);
+                REQUIRE(bitmap->image()->height() > 1);
+            }
+        }
+        delete o3;
     }
 }

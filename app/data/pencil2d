@@ -1,0 +1,27 @@
+_pencil2d()
+{
+  local cur prev words cword opts
+  _init_completion || return
+  opts="-h --help -v --version -o --export --camera --width --height --start --end --transparency"
+
+  case "${prev}" in
+    --camera|--width|--height|--start)
+      return 0
+      ;;
+    --end)
+      COMPREPLY=( $(compgen -W "last last-sound" -- ${cur}) )
+      return 0
+      ;;
+    -o|--export)
+      _filedir
+      return 0
+      ;;
+  esac
+
+  if [[ ${cur} == -* ]]; then
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  else
+    _filedir "pcl?(x)"
+  fi
+} &&
+complete -F _pencil2d pencil2d

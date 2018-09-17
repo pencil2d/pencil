@@ -133,9 +133,20 @@ Status ActionCommands::importSound()
     return st;
 }
 
-Status ActionCommands::exportMovie()
+Status ActionCommands::exportGif()
 {
-    auto dialog = new ExportMovieDialog(mParent);
+    // exporting gif
+    return exportMovie(true);
+}
+
+Status ActionCommands::exportMovie(bool isGif)
+{
+    ExportMovieDialog* dialog = nullptr;
+    if (isGif) {
+        dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, FileType::GIF);
+    } else {
+        dialog = new ExportMovieDialog(mParent);
+    }
     OnScopeExit(dialog->deleteLater());
 
     dialog->init();
@@ -227,6 +238,17 @@ Status ActionCommands::exportMovie()
 
     if (st.ok() && QFile::exists(strMoviePath))
     {
+        if (isGif) {
+            auto btn = QMessageBox::question(mParent, "Pencil2D",
+                                             tr("Finished. Open file location?"));
+
+            if (btn == QMessageBox::Yes)
+            {
+                QString path = dialog->getAbsolutePath();
+                QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+            }
+            return Status::OK;
+        }
         auto btn = QMessageBox::question(mParent, "Pencil2D",
                                          tr("Finished. Open movie now?", "When movie export done."));
         if (btn == QMessageBox::Yes)
@@ -266,6 +288,11 @@ Status ActionCommands::exportImageSequence()
     }
     dialog->setCamerasInfo(camerasInfo);
 
+    int lengthWithSounds = mEditor->layers()->animationLength(true);
+    int length = mEditor->layers()->animationLength(false);
+
+    dialog->setDefaultRange(1, length, lengthWithSounds);
+
     dialog->exec();
 
     if (dialog->result() == QDialog::Rejected)
@@ -277,8 +304,8 @@ Status ActionCommands::exportImageSequence()
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
-
-    int totalLength = mEditor->layers()->animationLength();
+    int startFrame = dialog->getStartFrame();
+    int endFrame  = dialog->getEndFrame();
 
     QString sCameraLayerName = dialog->getCameraLayerName();
     LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
@@ -289,7 +316,7 @@ Status ActionCommands::exportImageSequence()
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
-    mEditor->object()->exportFrames(1, totalLength,
+    mEditor->object()->exportFrames(startFrame, endFrame,
                                     cameraLayer,
                                     exportSize,
                                     strFilePath,
@@ -546,6 +573,8 @@ void ActionCommands::moveFrameForward()
             mEditor->scrubForward();
         }
     }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
 }
 
 void ActionCommands::moveFrameBackward()

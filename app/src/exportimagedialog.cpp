@@ -17,23 +17,25 @@ GNU General Public License for more details.
 
 #include "exportimagedialog.h"
 #include "ui_exportimageoptions.h"
+#include "util.h"
 
-ExportImageDialog::ExportImageDialog(QWidget *parent, FileType eFileType) :
+ExportImageDialog::ExportImageDialog(QWidget* parent, FileType eFileType) :
     ImportExportDialog(parent, ImportExportDialog::Export, eFileType),
     ui(new Ui::ExportImageOptions)
 {
-    ui->setupUi( getOptionsGroupBox() );
+    ui->setupUi(getOptionsGroupBox());
     if (eFileType == FileType::IMAGE_SEQUENCE)
     {
-        setWindowTitle( tr( "Export image sequence" ) );
+        setWindowTitle(tr("Export image sequence"));
     }
     else
     {
-        setWindowTitle( tr( "Export image" ) );
+        setWindowTitle(tr("Export image"));
+        ui->frameRangeGroupBox->hide();
     }
 
-    connect( ui->formatComboBox, &QComboBox::currentTextChanged, this, &ExportImageDialog::formatChanged );
-    formatChanged( getExportFormat() ); // Make sure file extension matches format combobox
+    connect(ui->formatComboBox, &QComboBox::currentTextChanged, this, &ExportImageDialog::formatChanged);
+    formatChanged(getExportFormat()); // Make sure file extension matches format combobox
 }
 
 ExportImageDialog::~ExportImageDialog()
@@ -43,55 +45,85 @@ ExportImageDialog::~ExportImageDialog()
 
 void ExportImageDialog::setCamerasInfo(const std::vector<std::pair<QString, QSize>>& cameraInfo)
 {
-	Q_ASSERT(ui->cameraCombo);
+    Q_ASSERT(ui->cameraCombo);
 
-	ui->cameraCombo->clear();
-	for (const std::pair<QString, QSize>& it : cameraInfo)
-	{
-		ui->cameraCombo->addItem(it.first, it.second);
-	}
+    ui->cameraCombo->clear();
+    for (const std::pair<QString, QSize>& it : cameraInfo)
+    {
+        ui->cameraCombo->addItem(it.first, it.second);
+    }
 
-	auto indexChanged = static_cast<void(QComboBox::*)(int i)>(&QComboBox::currentIndexChanged);
-	connect(ui->cameraCombo, indexChanged, this, &ExportImageDialog::cameraComboChanged);
+    const auto indexChanged = static_cast<void(QComboBox::*)(int i)>(&QComboBox::currentIndexChanged);
+    connect(ui->cameraCombo, indexChanged, this, &ExportImageDialog::cameraComboChanged);
 
-	cameraComboChanged(0);
+    cameraComboChanged(0);
+}
+
+void ExportImageDialog::setDefaultRange(int startFrame, int endFrame, int endFrameWithSounds)
+{
+    mEndFrame = endFrame;
+    mEndFrameWithSounds = endFrameWithSounds;
+
+    SignalBlocker b1( ui->startSpinBox );
+    SignalBlocker b2( ui->endSpinBox );
+
+    ui->startSpinBox->setValue( startFrame );
+    ui->endSpinBox->setValue( endFrame );
+
+    connect(ui->frameCheckBox, &QCheckBox::clicked, this, &ExportImageDialog::frameCheckboxClicked);
+}
+
+int ExportImageDialog::getStartFrame() const
+{
+    return ui->startSpinBox->value();
+}
+
+int ExportImageDialog::getEndFrame() const
+{
+    return ui->endSpinBox->value();
+}
+
+void ExportImageDialog::frameCheckboxClicked(bool checked)
+{
+    int e = (checked) ? mEndFrameWithSounds : mEndFrame;
+    ui->endSpinBox->setValue(e);
 }
 
 void ExportImageDialog::setExportSize(QSize size)
 {
-    ui->imgWidthSpinBox->setValue( size.width() );
-    ui->imgHeightSpinBox->setValue( size.height() );
+    ui->imgWidthSpinBox->setValue(size.width());
+    ui->imgHeightSpinBox->setValue(size.height());
 }
 
-QSize ExportImageDialog::getExportSize()
+QSize ExportImageDialog::getExportSize() const
 {
-    return QSize( ui->imgWidthSpinBox->value(), ui->imgHeightSpinBox->value() );
+    return QSize(ui->imgWidthSpinBox->value(), ui->imgHeightSpinBox->value());
 }
 
-bool ExportImageDialog::getTransparency()
+bool ExportImageDialog::getTransparency() const
 {
     return ui->cbTransparency->checkState() == Qt::Checked;
 }
 
-QString ExportImageDialog::getExportFormat()
+QString ExportImageDialog::getExportFormat() const
 {
     return ui->formatComboBox->currentText();
 }
 
-QString ExportImageDialog::getCameraLayerName()
+QString ExportImageDialog::getCameraLayerName() const
 {
-	return ui->cameraCombo->currentText();
+    return ui->cameraCombo->currentText();
 }
 
-void ExportImageDialog::formatChanged(QString format)
+void ExportImageDialog::formatChanged(const QString& format)
 {
-    setFileExtension( format.toLower() );
+    setFileExtension(format.toLower());
 }
 
 void ExportImageDialog::cameraComboChanged(int index)
 {
-	QSize cameraSize = ui->cameraCombo->itemData(index).toSize();
+    const QSize cameraSize = ui->cameraCombo->itemData(index).toSize();
 
-	ui->imgWidthSpinBox->setValue(cameraSize.width());
-	ui->imgHeightSpinBox->setValue(cameraSize.height());
+    ui->imgWidthSpinBox->setValue(cameraSize.width());
+    ui->imgHeightSpinBox->setValue(cameraSize.height());
 }

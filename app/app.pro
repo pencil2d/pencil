@@ -58,7 +58,8 @@ HEADERS += \
     src/exportimagedialog.h \
     src/importimageseqdialog.h \
     src/spinslider.h \
-    src/doubleprogressdialog.h
+    src/doubleprogressdialog.h \
+    src/colorslider.h
 
 SOURCES += \
     src/main.cpp \
@@ -85,7 +86,8 @@ SOURCES += \
     src/exportimagedialog.cpp \
     src/importimageseqdialog.cpp \
     src/spinslider.cpp \
-    src/doubleprogressdialog.cpp
+    src/doubleprogressdialog.cpp \
+    src/colorslider.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -137,6 +139,12 @@ win32 {
 linux {
     target.path = $${PREFIX}/bin
 
+    bashcompletion.files = data/pencil2d
+    bashcompletion.path = $${PREFIX}/share/bash-completion/completions
+
+    zshcompletion.files = data/_pencil2d
+    zshcompletion.path = $${PREFIX}/share/zsh/site-functions
+
     mimepackage.files = data/pencil2d.xml
     mimepackage.path = $${PREFIX}/share/mime/packages
 
@@ -146,7 +154,7 @@ linux {
     icon.files = data/pencil2d.png
     icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps
 
-    INSTALLS += target mimepackage desktopentry icon
+    INSTALLS += bashcompletion zshcompletion target mimepackage desktopentry icon
 }
 
 

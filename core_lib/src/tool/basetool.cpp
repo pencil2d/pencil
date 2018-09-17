@@ -18,7 +18,9 @@ GNU General Public License for more details.
 #include "basetool.h"
 
 #include <array>
+#include <QtMath>
 #include "editor.h"
+#include "viewmanager.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"
@@ -62,7 +64,7 @@ BaseTool::BaseTool(QObject *parent) : QObject(parent)
     m_enabledProperties.insert(PRESERVEALPHA, false);
     m_enabledProperties.insert(BEZIER, false);
     m_enabledProperties.insert(ANTI_ALIASING, false);
-    m_enabledProperties.insert(INTERPOLATION, false);
+    m_enabledProperties.insert(STABILIZATION, false);
 }
 
 QCursor BaseTool::cursor()
@@ -181,6 +183,55 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
     return cursorPixmap;
 }
 
+QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
+{
+    QPixmap cursorPixmap = QPixmap(24, 24);
+    if (!cursorPixmap.isNull())
+    {
+        cursorPixmap.fill(QColor(255, 255, 255, 0));
+        QPainter cursorPainter(&cursorPixmap);
+        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+        switch(mode) {
+            case MoveMode::MIDDLE:
+            {
+                if (type == SELECT) {
+                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+                } else {
+                    return Qt::ArrowCursor;
+                }
+                break;
+            }
+            case MoveMode::TOPLEFT:
+            case MoveMode::BOTTOMRIGHT:
+            {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+                break;
+            }
+            case MoveMode::TOPRIGHT:
+            case MoveMode::BOTTOMLEFT:
+            {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+                break;
+            }
+            default:
+                if (type == SELECT) {
+                    return Qt::CrossCursor;
+                }
+                else
+                {
+                    return Qt::ArrowCursor;
+                }
+                break;
+        }
+
+
+        cursorPainter.end();
+    }
+    return QCursor(cursorPixmap);
+
+}
+
 /**
  * @brief precision circular cursor: used for drawing stroke size while adjusting
  * @return QPixmap
@@ -243,7 +294,7 @@ void BaseTool::stopAdjusting()
 
 void BaseTool::adjustCursor(qreal argOffsetX, ToolPropertyType propertyType) //offsetx x-lastx ...
 {
-    qreal inc = pow(OriginalSettingValue * 100, 0.5);
+    qreal inc = qPow(OriginalSettingValue * 100, 0.5);
     qreal newValue = inc + argOffsetX;
     int max = (propertyType == FEATHER) ? 64 : 200;
     int min = (propertyType == FEATHER) ? 2 : 1;
@@ -253,7 +304,7 @@ void BaseTool::adjustCursor(qreal argOffsetX, ToolPropertyType propertyType) //o
         newValue = 0;
     }
 
-    newValue = pow(newValue, 2) / 100;
+    newValue = qPow(newValue, 2) / 100;
     if (mAdjustmentStep > 0)
     {
         int tempValue = (int)(newValue / mAdjustmentStep); // + 0.5 ?
@@ -365,9 +416,9 @@ void BaseTool::setAA(const int useAA)
     properties.useAA = useAA;
 }
 
-void BaseTool::setInpolLevel(const int level)
+void BaseTool::setStabilizerLevel(const int level)
 {
-    properties.inpolLevel = level;
+    properties.stabilizerLevel = level;
 }
 
 void BaseTool::setTolerance(const int tolerance)

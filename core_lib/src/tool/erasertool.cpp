@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "viewmanager.h"
 #include "layervector.h"
 #include "vectorimage.h"
 
@@ -44,7 +45,7 @@ void EraserTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[FEATHER] = true;
     m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[INTERPOLATION] = true;
+    m_enabledProperties[STABILIZATION] = true;
 
 
     QSettings settings( PENCIL2D, PENCIL2D );
@@ -55,14 +56,14 @@ void EraserTool::loadSettings()
     properties.pressure = settings.value( "eraserPressure" ).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
-    properties.inpolLevel = 0;
+    properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
 
     // First run
     if ( properties.width <= 0 )
     {
         setWidth(25);
         setFeather(50);
-        setPressure(1);
+        setPressure(true);
     }
 }
 
@@ -99,12 +100,12 @@ void EraserTool::setPressure( const bool pressure )
     settings.sync();
 }
 
-void EraserTool::setInpolLevel(const int level)
+void EraserTool::setStabilizerLevel(const int level)
 {
-    properties.inpolLevel = level;
+    properties.stabilizerLevel = level;
 
     QSettings settings( PENCIL2D, PENCIL2D);
-    settings.setValue("lineInpol", level);
+    settings.setValue("stabilizerLevel", level);
     settings.sync();
 }
 
@@ -169,8 +170,8 @@ void EraserTool::mouseMoveEvent( QMouseEvent *event )
         if ( mScribbleArea->isLayerPaintable() )
         {
             updateStrokes();
-            if (properties.inpolLevel != m_pStrokeManager->getInpolLevel()) {
-                m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel()) {
+                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
             }
         }
     }
@@ -228,7 +229,7 @@ void EraserTool::drawStroke()
 
         qreal opacity = 1.0;
         mCurrentWidth = properties.width;
-        if (properties.pressure == true)
+        if (properties.pressure)
         {
             opacity = m_pStrokeManager->getPressure();
             mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
@@ -273,19 +274,18 @@ void EraserTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        qreal brushWidth = 0;
-        if (properties.pressure ) {
-            brushWidth = properties.width * m_pStrokeManager->getPressure();
+        mCurrentWidth = properties.width;
+        if (properties.pressure)
+        {
+            mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
         }
-        else {
-            brushWidth = properties.width;
-        }
+        qreal brushWidth = mCurrentWidth;
 
         QPen pen( Qt::white, brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-        int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
+        int rad = qRound(brushWidth) / 2 + 2;
 
-        if ( p.size() == 4 ) {
-            QSizeF size( 2, 2 );
+        if ( p.size() == 4 )
+        {
             QPainterPath path( p[ 0 ] );
             path.cubicTo( p[ 1 ],
                           p[ 2 ],
@@ -330,7 +330,7 @@ void EraserTool::updateStrokes()
 
     if ( layer->type() == Layer::VECTOR )
     {
-        qreal radius = ( properties.width / 2 ) / mEditor->view()->scaling();
+        qreal radius = properties.width / 2;
         QList<VertexRef> nearbyVertices = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )
             ->getVerticesCloseTo( getCurrentPoint(), radius );
         for ( int i = 0; i < nearbyVertices.size(); i++ )

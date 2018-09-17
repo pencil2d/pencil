@@ -19,6 +19,10 @@ GNU General Public License for more details.
 #include <QLibraryInfo>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QSettings>
+#include <QFileInfo>
+#include <QDebug>
+
 #include "editor.h"
 #include "mainwindow2.h"
 #include "pencilapplication.h"
@@ -269,7 +273,6 @@ int handleArguments( PencilApplication& app )
             format = "PNG";
         }
 
-        bool asMovie;
         QMap<QString, bool> formatMapping;
         formatMapping[ "PNG" ] = false;
         formatMapping[ "JPG" ] = false;
@@ -280,7 +283,7 @@ int handleArguments( PencilApplication& app )
         formatMapping[ "GIF" ] = true;
         formatMapping[ "WEBM" ] = true;
         formatMapping[ "APNG" ] = true;
-        asMovie = formatMapping[format];
+        bool asMovie = formatMapping[format];
 
         if ( asMovie )
         {
@@ -307,6 +310,9 @@ int main(int argc, char* argv[])
     Q_INIT_RESOURCE(core_lib);
 
     QSettings settings(PENCIL2D, PENCIL2D);
+#ifdef Q_OS_MACOS
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
     if (settings.value("EnableHighDpiScaling", "true").toBool())
     {
         // Enable auto screen scaling on high dpi display, for example, a 4k monitor

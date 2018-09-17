@@ -27,7 +27,7 @@ class ShortcutFilter : public QObject
 public:
     ShortcutFilter(ScribbleArea* scribbleArea, QObject* parent);
 protected:
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
     ScribbleArea* mScribbleArea = nullptr;
 };
 

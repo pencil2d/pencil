@@ -17,9 +17,9 @@ GNU General Public License for more details.
 #include "layer.h"
 
 #include <QDebug>
+#include <QSettings>
 #include "keyframe.h"
 #include "object.h"
-#include "timeline.h"
 #include "timelinecells.h"
 
 
@@ -125,10 +125,7 @@ int Layer::getPreviousFrameNumber(int position, bool isAbsolute) const
     {
         return -1; // There is no previous keyframe
     }
-    else
-    {
-        return prevNumber;
-    }
+    return prevNumber;
 }
 
 int Layer::getNextFrameNumber(int position, bool isAbsolute) const
@@ -167,7 +164,7 @@ int Layer::getMaxKeyFramePosition() const
 bool Layer::addNewKeyFrameAt(int position)
 {
     if (position <= 0) return false;
-   
+
     KeyFrame* key = createKeyFrame(position, mObject);
     return addKeyFrame(position, key);
 }
@@ -280,38 +277,41 @@ bool Layer::loadKey(KeyFrame* pKey)
     return true;
 }
 
-Status Layer::save(QString strDataFolder, ProgressCallback progressStep)
+Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep)
 {
-    QStringList debugInfo;
-    debugInfo << "Layer::save";
-    debugInfo << QString("strDataFolder = ").append(strDataFolder);
+    DebugDetails dd;
+    dd << __FUNCTION__;
 
-    bool isOkay = true;
+    bool ok = true;
+
     for (auto pair : mKeyFrames)
     {
-        KeyFrame* pKeyFrame = pair.second;
-        Status st = saveKeyFrameFile(pKeyFrame, strDataFolder);
-        if (!st.ok())
+        KeyFrame* keyFrame = pair.second;
+        Status st = saveKeyFrameFile(keyFrame, sDataFolder);
+        if (st.ok())
         {
-            isOkay = false;
-
-            QStringList keyFrameDetails = st.detailsList();
-            for (QString detail : keyFrameDetails)
-            {
-                detail.prepend("&nbsp;&nbsp;");
-            }
-            debugInfo << QString("- Keyframe[%1] failed to save").arg(pKeyFrame->pos()) << keyFrameDetails;
+            //qDebug() << "Layer [" << name() << "] FN=" << keyFrame->fileName();
+            if (!keyFrame->fileName().isEmpty())
+                attachedFiles.append(keyFrame->fileName());
+        }
+        else
+        {
+            ok = false;
+            dd.collect(st.details());
+            dd << QString("- Keyframe[%1] failed to save").arg(keyFrame->pos());
         }
         progressStep();
     }
-    if (!isOkay)
+    if (!ok)
     {
-        return Status(Status::FAIL, debugInfo);
+        return Status(Status::FAIL, dd);
     }
     return Status::OK;
 }
 
-void Layer::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
+void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
+                       int x, int y, int width, int height,
+                       bool selected, int frameSize)
 {
     if (mVisible)
     {
@@ -375,7 +375,9 @@ void Layer::paintFrames(QPainter& painter, TimeLineCells* cells, int y, int heig
     }
 }
 
-void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int allLayers)
+void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
+                       int x, int y, int width, int height,
+                       bool selected, int allLayers)
 {
     Q_UNUSED(cells);
     painter.setBrush(Qt::lightGray);
@@ -384,9 +386,9 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, in
 
     if (mVisible)
     {
-        if (allLayers == 0)  painter.setBrush(Qt::NoBrush);
-        if (allLayers == 1)   painter.setBrush(Qt::darkGray);
-        if ((allLayers == 2) || selected)  painter.setBrush(Qt::black);
+        if (allLayers == 0) painter.setBrush(Qt::NoBrush);
+        if (allLayers == 1) painter.setBrush(Qt::darkGray);
+        if ((allLayers == 2) || selected) painter.setBrush(Qt::black);
     }
     else
     {
@@ -424,25 +426,7 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
     painter.drawRect(x, y, width, height - 1);
 }
 
-void Layer::mousePress(QMouseEvent* event, int frameNumber)
-{
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
-}
-
 void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
-{
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
-}
-
-void Layer::mouseMove(QMouseEvent* event, int frameNumber)
-{
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
-}
-
-void Layer::mouseRelease(QMouseEvent* event, int frameNumber)
 {
     Q_UNUSED(event);
     Q_UNUSED(frameNumber);
@@ -461,9 +445,9 @@ void Layer::setModified(int position, bool modified)
     }
 }
 
-bool Layer::isFrameSelected(int position)
+bool Layer::isFrameSelected(int position) const
 {
-    KeyFrame *keyFrame = getKeyFrameWhichCovers(position);
+    KeyFrame* keyFrame = getKeyFrameWhichCovers(position);
     if (keyFrame)
     {
         return mSelectedFrames_byLast.contains(keyFrame->pos());
@@ -473,7 +457,7 @@ bool Layer::isFrameSelected(int position)
 
 void Layer::setFrameSelected(int position, bool isSelected)
 {
-    KeyFrame *keyFrame = getKeyFrameWhichCovers(position);
+    KeyFrame* keyFrame = getKeyFrameWhichCovers(position);
     if (keyFrame != nullptr)
     {
         int startPosition = keyFrame->pos();
@@ -481,14 +465,12 @@ void Layer::setFrameSelected(int position, bool isSelected)
         if (isSelected && !mSelectedFrames_byLast.contains(startPosition))
         {
             // Add the selected frame to the lists
-            //
             mSelectedFrames_byLast.insert(0, startPosition);
             mSelectedFrames_byPosition.append(startPosition);
 
             // We need to keep the list of selected frames sorted
             // in order to easily handle their movement
             std::sort(mSelectedFrames_byPosition.begin(), mSelectedFrames_byPosition.end(), sortAsc);
-
         }
         else if (!isSelected)
         {
@@ -507,7 +489,8 @@ void Layer::toggleFrameSelected(int position, bool allowMultiple)
 {
     bool wasSelected = isFrameSelected(position);
 
-    if (!allowMultiple) {
+    if (!allowMultiple)
+    {
         deselectAll();
     }
 
@@ -656,20 +639,9 @@ bool Layer::moveSelectedFrames(int offset)
     return false;
 }
 
-bool Layer::isPaintable()
+bool Layer::isPaintable() const
 {
-    switch (type())
-    {
-    case Layer::BITMAP:
-    case Layer::VECTOR:
-        return true;
-    case Layer::CAMERA:
-    case Layer::SOUND:
-        return false;
-    default:
-        break;
-    }
-    return false;
+    return (type() == BITMAP || type() == VECTOR);
 }
 
 bool Layer::keyExistsWhichCovers(int frameNumber)
@@ -677,7 +649,7 @@ bool Layer::keyExistsWhichCovers(int frameNumber)
     return getKeyFrameWhichCovers(frameNumber) != nullptr;
 }
 
-KeyFrame *Layer::getKeyFrameWhichCovers(int frameNumber)
+KeyFrame* Layer::getKeyFrameWhichCovers(int frameNumber) const
 {
     auto keyFrame = getLastKeyFrameAtPosition(frameNumber);
     if (keyFrame != nullptr)

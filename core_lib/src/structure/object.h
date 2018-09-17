@@ -33,6 +33,7 @@ class LayerVector;
 class LayerCamera;
 class LayerSound;
 class ObjectData;
+class ActiveFramePool;
 
 
 struct ExportMovieParameters
@@ -82,20 +83,25 @@ public:
     QString copyFileToDataFolder( QString strFilePath );
 
     // Color palette
-    ColourRef getColour( int i );
-    void setColour( int index, QColor newColour )
-    {
-        Q_ASSERT( index >= 0 );
-        mPalette[ index ].colour = newColour;
-    }
+    ColourRef getColour( int index ) const;
+    void setColour(int index, QColor newColour);
+    void setColourRef(int index, ColourRef newColourRef);
     void addColour( QColor );
+
     void addColour( ColourRef newColour ) { mPalette.append( newColour ); }
-    bool removeColour( int index );
+    void addColourAtIndex(int index, ColourRef newColour);
+    void removeColour( int index );
+    bool isColourInUse( int index );
     void renameColour( int i, QString text );
     int getColourCount() { return mPalette.size(); }
     bool importPalette( QString filePath );
+    void importPaletteGPL(QFile& file);
+    void importPalettePencil(QFile& file);
+
     bool exportPalette( QString filePath );
-    bool savePalette( QString filePath );
+    void exportPaletteGPL(QFile& file);
+    void exportPalettePencil(QFile& file);
+    QString savePalette( QString filePath );
 
     void loadDefaultPalette();
 
@@ -140,6 +146,10 @@ public:
     void setData( ObjectData* );
 
     int totalKeyFrameCount();
+    void updateActiveFrames(int frame) const;
+
+signals:
+    void layerViewChanged();
 
 private:
     int getMaxLayerID();
@@ -155,6 +165,7 @@ private:
     QList<ColourRef> mPalette;
 
     std::unique_ptr<ObjectData> mData;
+    mutable std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
 

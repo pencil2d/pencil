@@ -73,6 +73,12 @@ void ActiveFramePool::clear()
     mCacheFramesMap.clear();
 }
 
+bool ActiveFramePool::isFrameInPool(KeyFrame* key)
+{
+    auto it = mCacheFramesMap.find(key);
+    return (it != mCacheFramesMap.end());
+}
+
 void ActiveFramePool::onKeyFrameDestroy(KeyFrame* key)
 {
     auto it = mCacheFramesMap.find(key);
@@ -85,5 +91,6 @@ void ActiveFramePool::onKeyFrameDestroy(KeyFrame* key)
 
 void ActiveFramePool::unloadFrame(KeyFrame* key)
 {
+    //qDebug() << "Unload frame:" << key->pos();
     key->unloadFile();
 }

@@ -77,9 +77,9 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     mCurrentLayerIndex = layer;
     mFrameNumber = frame;
 
-    QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
-    QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
-    QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
+    //QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
+    //QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
+    //QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
     QPainter painter(mCanvas);
 
     painter.setWorldMatrixEnabled(true);
@@ -90,7 +90,7 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     paintBackground();
     paintOnionSkin(painter);
 
-    painter.setClipRect(aligned);
+    //painter.setClipRect(aligned); // this aligned rect is valid only for bitmap images.
     paintCurrentFrame(painter);
     paintCameraBorder(painter);
 
@@ -108,6 +108,8 @@ void CanvasPainter::paintBackground()
 
 void CanvasPainter::paintOnionSkin(QPainter& painter)
 {
+    if (!mOptions.onionWhilePlayback && mOptions.isPlaying) { return; }
+
     Layer* layer = mObject->getLayer(mCurrentLayerIndex);
 
     if (layer->visible() == false)
@@ -189,7 +191,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(layer);
 #endif
 
-    qCDebug(mLog) << "Paint Onion skin bitmap, Frame = " << nFrame;
+    //qCDebug(mLog) << "Paint Onion skin bitmap, Frame = " << nFrame;
     BitmapImage* paintedImage = nullptr;
     if (useLastKeyFrame)
     {
@@ -206,7 +208,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     }
 
     paintedImage->loadFile(); // Critical! force the BitmapImage to load the image
-    qCDebug(mLog) << "Paint Image Size:" << paintedImage->image()->size();
+    //qCDebug(mLog) << "Paint Image Size:" << paintedImage->image()->size();
 
     BitmapImage paintToImage;
     paintToImage.paste(paintedImage);
@@ -241,7 +243,6 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     painter.setWorldMatrixEnabled(true);
 
     prescale(&paintToImage);
-
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 }
 
@@ -269,7 +270,7 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
 }
 
 void CanvasPainter::paintVectorFrame(QPainter& painter,
-                                     Layer* layer, 
+                                     Layer* layer,
                                      int nFrame,
                                      bool colorize,
                                      bool useLastKeyFrame)

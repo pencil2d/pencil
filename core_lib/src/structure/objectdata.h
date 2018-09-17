@@ -56,7 +56,7 @@ public:
 
 private:
 	int mCurrentFrame = 1;
-	QColor mCurrentColor{ 0, 0, 0, 255 };
+	QColor mCurrentColor{ 55, 33, 33, 255 };
 	int mCurrentLayer = 2; // Layers are counted bottom up
                            // 0 - Camera Layer
                            // 1 - Vector Layer

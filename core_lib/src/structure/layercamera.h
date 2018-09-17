@@ -67,6 +67,9 @@ public:
     QRect getViewRect();
     QSize getViewSize();
 
+signals:
+    void resolutionChanged();
+
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
     KeyFrame* createKeyFrame(int position, Object*) override;

@@ -25,6 +25,7 @@ ui_*.h
 Makefile*
 *-build-*
 .moc
+moc_predefs.h
 
 Makefile
 Makefile.Debug

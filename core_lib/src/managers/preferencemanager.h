@@ -31,7 +31,6 @@ enum class SETTING
     SHADOW,
     PREV_ONION,
     NEXT_ONION,
-    AXIS,
     INVISIBLE_LINES,
     OUTLINES,
     ONION_BLUE,
@@ -53,13 +52,23 @@ enum class SETTING
     ONION_MIN_OPACITY,
     ONION_PREV_FRAMES_NUM,
     ONION_NEXT_FRAMES_NUM,
+    ONION_WHILE_PLAYBACK,
     ONION_TYPE,
     GRID_SIZE,
     QUICK_SIZING,
     MULTILAYER_ONION,
     LANGUAGE,
     LAYOUT_LOCK,
+    DRAW_ON_EMPTY_FRAME_ACTION,
     COUNT, // COUNT must always be the last one.
+};
+
+// Actions for drawing on an empty frame.
+enum DrawOnEmptyFrameAction
+{
+    CREATE_NEW_KEY,
+    DUPLICATE_PREVIOUS_KEY,
+    KEEP_DRAWING_ON_PREVIOUS_KEY
 };
 
 class PreferenceManager : public BaseManager
@@ -71,29 +80,28 @@ public:
     ~PreferenceManager();
 
     virtual bool init() override;
-    Status load( Object* ) override;
-	Status save( Object* ) override;
+    Status load(Object*) override;
+    Status save(Object*) override;
 
     void loadPrefs();
-    void set(SETTING option, QString value );
-    void set(SETTING option, int value );
-    void set(SETTING option, bool value );
+    void set(SETTING option, QString value);
+    void set(SETTING option, int value);
+    void set(SETTING option, bool value);
 
-    void turnOn(SETTING option );
-    void turnOff(SETTING option );
-    bool isOn(SETTING option );
+    void turnOn(SETTING option);
+    void turnOff(SETTING option);
+    bool isOn(SETTING option);
 
     QString getString(SETTING option);
     int     getInt(SETTING option);
 
 Q_SIGNALS:
-    void optionChanged( SETTING e );
-
+    void optionChanged(SETTING e);
 
 private:
-    QHash< int, QString > mStringSet;
-    QHash< int, int > mIntegerSet;
-    QHash< int, bool > mBooleanSet;
+    QHash<int, QString> mStringSet;
+    QHash<int, int> mIntegerSet;
+    QHash<int, bool> mBooleanSet;
 };
 
 #endif // PREFERENCEMANAGER_H

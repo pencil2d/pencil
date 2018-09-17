@@ -27,7 +27,7 @@ class PencilApplication : public QApplication
 public:
     PencilApplication(int &argc, char **argv);
 
-    bool event(QEvent* event);
+    bool event(QEvent* event) override;
     void emitOpenFileRequest();
 
 signals:

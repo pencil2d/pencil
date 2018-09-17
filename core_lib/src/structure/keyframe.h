@@ -55,6 +55,7 @@ public:
     virtual KeyFrame* clone() { return nullptr; }
     virtual void loadFile() {};
     virtual void unloadFile() {}
+    virtual bool isLoaded() { return true; }
 
 private:
     int mFrame = -1;

@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 #include "strokemanager.h"
+#include "viewmanager.h"
 #include "editor.h"
 
 #ifdef Q_OS_MAC
@@ -43,6 +44,11 @@ BaseTool( parent )
 
 void StrokeTool::startStroke()
 {
+    if(emptyFrameActionEnabled())
+    {
+        mScribbleArea->handleDrawingOnEmptyFrame();
+    }
+
     mFirstDraw = true;
     mLastPixel = getCurrentPixel();
     
@@ -74,6 +80,11 @@ bool StrokeTool::keyPressEvent(QKeyEvent *event)
 bool StrokeTool::keyReleaseEvent(QKeyEvent *event)
 {
     Q_UNUSED(event);
+    return true;
+}
+
+bool StrokeTool::emptyFrameActionEnabled()
+{
     return true;
 }
 

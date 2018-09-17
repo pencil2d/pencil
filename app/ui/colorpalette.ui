@@ -2,18 +2,18 @@
 <ui version="4.0">
  <class>ColorPalette</class>
  <widget class="QDockWidget" name="ColorPalette">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>268</width>
+    <height>241</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string comment="Window title of color palette.">Color Palette</string>
   </property>
   <widget class="QWidget" name="widget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>246</width>
-     <height>337</height>
-    </rect>
-   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>1</number>
@@ -88,6 +88,69 @@
        </widget>
       </item>
       <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="colorDialogButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="whatsThis">
+         <string>Native color dialog window</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/app/icons/new/svg/color-dialog.svg</normaloff>:/app/icons/new/svg/color-dialog.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -115,12 +178,16 @@
          <number>-1</number>
         </property>
         <property name="text">
-         <string>... </string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/app/icons/new/svg/more_options.svg</normaloff>:/app/icons/new/svg/more_options.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
           <width>15</width>
-          <height>10</height>
+          <height>15</height>
          </size>
         </property>
         <property name="checkable">
@@ -160,6 +227,9 @@
         </property>
         <property name="autoScrollMargin">
          <number>16</number>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
         </property>
         <property name="resizeMode">
          <enum>QListView::Fixed</enum>
@@ -245,24 +315,7 @@
  <resources>
   <include location="../data/app.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>removeColorButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ColorPalette</receiver>
-   <slot>clickRemoveColorButton()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>36</x>
-     <y>43</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>133</x>
-     <y>128</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>colorListCurrentItemChanged(QListWidgetItem*,QListWidgetItem*)</slot>
   <slot>clickColorListItem(QListWidgetItem*)</slot>

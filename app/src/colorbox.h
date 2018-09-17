@@ -19,8 +19,6 @@ GNU General Public License for more details.
 #include "basedockwidget.h"
 
 class ColorWheel;
-class ColorInspector;
-
 
 class ColorBox : public BaseDockWidget
 {
@@ -34,18 +32,18 @@ public:
     void updateUI() override;
 
     QColor color();
-    void setColor(const QColor&);
+    void setColor(QColor);
 
 Q_SIGNALS:
     void colorChanged(const QColor&);
 
 private:
-    void onSpinboxChange(const QColor&);
     void onWheelMove(const QColor&);
     void onWheelRelease(const QColor&);
 
     ColorWheel* mColorWheel = nullptr;
-    ColorInspector* mColorInspector = nullptr;
+
+//    ColorInspector* mColorInspector = nullptr;
 };
 
 #endif // COLORBOX_H

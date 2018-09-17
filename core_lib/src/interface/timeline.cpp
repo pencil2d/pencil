@@ -203,6 +203,7 @@ void TimeLine::initUI()
     connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);
     connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick);
     connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::updateLength);
+    connect(mTimeControls, &TimeControls::playButtonTriggered, this, &TimeLine::playButtonTriggered);
 
     connect(newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer);
     connect(newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer);
@@ -239,12 +240,21 @@ void TimeLine::setLength(int frame)
     updateLength();
 }
 
+/** Extends the timeline frame length if necessary
+ *
+ *  @param[in] frame The new animation length
+ */
 void TimeLine::extendLength(int frame)
 {
-    int extendFrame = frame + 10;
-    if (extendFrame > mTracks->getFrameLength())
+    int currentLength = mTracks->getFrameLength();
+    if(frame > (currentLength * 0.75))
     {
-        mTracks->setFrameLength(extendFrame);
+        int newLength = std::max(frame, currentLength) * 1.5;
+
+        if (newLength > 9999)
+            newLength = 9999;
+
+        mTracks->setFrameLength(newLength);
         updateLength();
     }
 }

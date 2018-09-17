@@ -1,0 +1,13 @@
+#compdef pencil2d
+
+_arguments \
+  {-h,--help}'[Display help]' \
+  {-v,--version}'[Display version information]' \
+  {-o+,--export=}'[Render the file to the given path]:output file:_files' \
+  '--camera=[Name of the camera layer to use]:name of the camera layer to use:' \
+  '--width=[Width of the output frames]:width of the output frames:' \
+  '--height=[Height of the output frames]:height of the output frames:' \
+  '--start=[The first frame to export]:number of first frame to include:' \
+  '--end=[The last frame to include]:number of last frame to include:((last\:"Last frame containing animation" last-sound\:"Last frame containing animation or sound"))' \
+  '--transparency[Render transparency when possible]' \
+  '::input file:_files -g "*.pcl|*.pclx"'

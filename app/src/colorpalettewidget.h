@@ -41,6 +41,7 @@ class ColorPaletteWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
+
     explicit ColorPaletteWidget(QWidget* parent);
     ~ColorPaletteWidget();
 
@@ -53,19 +54,21 @@ public:
     void setColor(QColor, int);
     void refreshColorList();
 
+    void showContextMenu(const QPoint&);
+
 signals:
     void colorChanged(QColor);
     void colorNumberChanged(int);
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-    void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
-    void onActiveColorNameChange(QString name);
+    void onItemChanged(QListWidgetItem* item);
     void clickAddColorButton();
+    void clickColorDialogButton();
     void clickRemoveColorButton();
     void palettePreferences();
     void setListMode();
@@ -73,6 +76,12 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
+    void addItem();
+    void replaceItem();
+    void removeItem();
+    void showPaletteReminder();
+
+    bool showPaletteWarning();
 
 private:
     void updateItemColor(int, QColor);
@@ -88,11 +97,16 @@ private:
     QAction* mSmallSwatchAction = nullptr;
     QAction* mMediumSwatchAction = nullptr;
     QAction* mLargeSwatchAction = nullptr;
-    QAction* mSeparator;
+    QAction* mSeparator = nullptr;
 
     QSize mIconSize{ 34, 34 };
     QMenu* mToolMenu = nullptr;
     int stepper = 0;
+
+    QString buttonStylesheet;
+
+    bool mIsColorDialog = false;
+    bool mMultipleSelected = false;
 
 };
 

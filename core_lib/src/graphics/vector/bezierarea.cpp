@@ -72,11 +72,12 @@ Status BezierArea::createDomElement( QXmlStreamWriter& xmlStream )
 
     if ( xmlStream.hasError() && errorLocation >= 0 )
     {
-        QStringList debugInfo = QStringList() << "BezierArea::createDomElement"
-                                              << QString( "colourNumber = %1" ).arg( mColourNumber )
-                                              << QString( "- mVertex[%1] has failed to write" ).arg( errorLocation )
-                                              << QString( "&nbsp;&nbsp;curve = %1" ).arg( mVertex.at( errorLocation ).curveNumber )
-                                              << QString( "&nbsp;&nbsp;vertex = %1 " ).arg( mVertex.at( errorLocation ).vertexNumber );
+        DebugDetails debugInfo;
+        debugInfo << "BezierArea::createDomElement";
+        debugInfo << QString("colourNumber = %1").arg(mColourNumber);
+        debugInfo << QString("- mVertex[%1] has failed to write").arg(errorLocation);
+        debugInfo << QString("&nbsp;&nbsp;curve = %1").arg(mVertex.at(errorLocation).curveNumber);
+        debugInfo << QString("&nbsp;&nbsp;vertex = %1 ").arg(mVertex.at(errorLocation).vertexNumber);
 
         return Status( Status::FAIL, debugInfo );
     }

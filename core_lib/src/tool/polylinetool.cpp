@@ -22,6 +22,8 @@ GNU General Public License for more details.
 
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "colormanager.h"
+#include "viewmanager.h"
 
 #include "layervector.h"
 #include "layerbitmap.h"
@@ -48,11 +50,11 @@ void PolylineTool::loadSettings()
 
     properties.width = settings.value( "polyLineWidth" ).toDouble();
     properties.feather = -1;
-    properties.pressure = 0;
+    properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value( "brushAA").toBool();
-    properties.inpolLevel = -1;
+    properties.stabilizerLevel = -1;
 
     // First run
     if ( properties.width <= 0 )
@@ -107,6 +109,8 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
         {
+            mScribbleArea->handleDrawingOnEmptyFrame();
+
             if ( layer->type() == Layer::VECTOR )
             {
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();

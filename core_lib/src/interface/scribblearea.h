@@ -30,22 +30,19 @@ GNU General Public License for more details.
 #include <QWidget>
 #include <QPixmapCache>
 
+#include "movemode.h"
 #include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
 #include "colourref.h"
 #include "vectorselection.h"
-#include "colormanager.h"
-#include "viewmanager.h"
 #include "canvaspainter.h"
 #include "preferencemanager.h"
-
 
 class Layer;
 class Editor;
 class BaseTool;
 class StrokeManager;
-class ColorManager;
 
 
 class ScribbleArea : public QWidget
@@ -65,13 +62,18 @@ public:
     void setCore( Editor* pCore ) { mEditor = pCore; }
 
     void deleteSelection();
-    void setSelection( QRectF rect, bool );
+    void setSelection( QRectF rect );
+    void adjustSelection(float offsetX, float offsetY, qreal rotatedAngle);
+    void applySelectionChanges();
     void displaySelectionProperties();
     void resetSelectionProperties();
+
+    bool isSomethingSelected() const;
     QRectF getSelection() const { return mySelection; }
-    bool somethingSelected = false;
-    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
-    qreal myRotatedAngle;
+    QRectF mySelection;
+    QRectF myTransformedSelection;
+    QRectF myTempTransformedSelection;
+    qreal myRotatedAngle = 0.0;
     QList<int> mClosestCurves;
 
     bool areLayersSane() const;
@@ -89,12 +91,13 @@ public:
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY, NONE };
-    MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode( MoveMode moveMode ) { mMoveMode = moveMode; }
+    MoveMode getMoveMode() const { return mMoveMode; }
+    void findMoveModeOfCornerInRange();
+    MoveMode getMoveModeForSelectionAnchor();
 
-    QTransform getView();
-    QRectF getViewRect();
+    QPointF whichAnchorPoint(QPointF anchorPoint);
+
     QRectF getCameraRect();
     QPointF getCentralPoint();
 
@@ -102,7 +105,7 @@ public:
     void updateFrame( int frame );
     void updateAllFrames();
     void updateAllVectorLayersAtCurrentFrame();
-    void updateAllVectorLayersAt( int frame );
+    void updateAllVectorLayersAt(int frameNumber);
 
     bool shouldUpdateAll() const { return mNeedUpdateAll; }
     void setAllDirty() { mNeedUpdateAll = true; }
@@ -115,11 +118,14 @@ public:
 
     StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
 
-    Editor* editor() { return mEditor; }
+    Editor* editor() const { return mEditor; }
 
     void floodFillError( int errorType );
 
-    bool isMouseInUse() { return mMouseInUse; }
+    bool isMouseInUse() const { return mMouseInUse; }
+    bool isTemporaryTool() const { return instantTool; }
+
+    void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
 
 signals:
     void modification( int );
@@ -129,12 +135,16 @@ signals:
 public slots:
     void clearImage();
     void calculateSelectionRect();
-    QTransform getSelectionTransformation() { return selectionTransformation; }
+    QTransform getSelectionTransformation() const { return selectionTransformation; }
     void calculateSelectionTransformation();
     void paintTransformedSelection();
     void applyTransformedSelection();
     void cancelTransformedSelection();
     void setModified( int layerNumber, int frameNumber );
+
+    inline bool transformHasBeenModified() {
+        return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0;
+    }
 
     void selectAll();
     void deselectAll();
@@ -170,7 +180,7 @@ public:
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
 
     void paintBitmapBuffer();
-    void paintBitmapBufferRect( QRect rect );
+    void paintBitmapBufferRect(const QRect& rect);
     void paintCanvasCursor(QPainter& painter);
     void clearBitmapBuffer();
     void refreshBitmap( const QRectF& rect, int rad );
@@ -179,22 +189,28 @@ public:
 
     void updateCanvasCursor();
 
+    /// Call this when starting to use a paint tool. Checks whether we are drawing
+    /// on an empty frame, and if so, takes action according to use preference.
+    void handleDrawingOnEmptyFrame();
+
     BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
     BitmapImage* mStrokeImg = nullptr; // used for brush strokes before they are finalized
 
     QPixmap mCursorImg;
     QPixmap mTransCursImg;
 
+    QPointF getTransformOffset() { return mOffset; }
+
 private:
     void drawCanvas( int frame, QRect rect );
     void settingUpdated(SETTING setting);
+    void paintSelectionVisuals(QPainter& painter);
 
-    MoveMode mMoveMode = MIDDLE;
-    ToolType mPrevTemporalToolType;
+    MoveMode mMoveMode = MoveMode::NONE;
+    ToolType mPrevTemporalToolType = ERASER;
     ToolType mPrevToolType = PEN; // previous tool (except temporal)
 
     BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
-    bool isTransforming = false;
 
     std::unique_ptr< StrokeManager > mStrokeManager;
 
@@ -203,7 +219,7 @@ private:
     bool mIsSimplified  = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
-    int  mShowAllLayers;
+    int  mShowAllLayers = 1;
     bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors   = true;
@@ -223,20 +239,21 @@ private:
     QPointF mLastPoint;
     QPointF mCurrentPoint;
 
-    qreal selectionTolerance;
+    qreal selectionTolerance = 8.0;
     QList<VertexRef> mClosestVertices;
     QPointF mOffset;
     QPoint mCursorCenterPos;
-    int mCursorWidth;
+
     QPointF transformedCursorPos;
 
     //instant tool (temporal eg. eraser)
     bool instantTool = false; //whether or not using temporal tool
+    bool mSomethingSelected = false;
 
     VectorSelection vectorSelection;
     QTransform selectionTransformation;
 
-    PreferenceManager *mPrefs = nullptr;
+    PreferenceManager* mPrefs = nullptr;
 
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
@@ -248,6 +265,9 @@ private:
     QRectF mDebugRect;
     QLoggingCategory mLog;
     std::deque< clock_t > mDebugTimeQue;
+
+    QPolygonF mCurrentTransformSelection;
+    QPolygonF mLastTransformSelection;
 };
 
 #endif

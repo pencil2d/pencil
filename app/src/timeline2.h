@@ -17,8 +17,8 @@ GNU General Public License for more details.
 #ifndef TIMELINE2_H
 #define TIMELINE2_H
 
-#include <QDockWidget>
 #include "basedockwidget.h"
+
 
 namespace Ui {
 class Timeline2;

@@ -4,17 +4,20 @@
         <file>pencil_da.qm</file>
         <file>pencil_de.qm</file>
         <file>pencil_es.qm</file>
+        <file>pencil_et.qm</file>
         <file>pencil_fr.qm</file>
         <file>pencil_he.qm</file>
         <file>pencil_hu_HU.qm</file>
         <file>pencil_id.qm</file>
         <file>pencil_it.qm</file>
         <file>pencil_ja.qm</file>
+        <file>pencil_pl.qm</file>
         <file>pencil_pt.qm</file>
         <file>pencil_pt_BR.qm</file>
         <file>pencil_ru.qm</file>
         <file>pencil_sl.qm</file>
         <file>pencil_vi.qm</file>
+        <file>pencil_zh_CN.qm</file>
         <file>pencil_zh_TW.qm</file>
     </qresource>
 </RCC>

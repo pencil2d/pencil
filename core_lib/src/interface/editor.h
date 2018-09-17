@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include <deque>
 #include <memory>
 #include <QObject>
 #include <QList>
@@ -123,6 +122,7 @@ public: //slots
     void cut();
 
     bool importImage(QString filePath);
+    bool importGIF(QString filePath, int numOfImages = 0);
     void updateFrame(int frameNumber);
     void restoreKey();
 
@@ -164,7 +164,7 @@ protected:
     void dropEvent(QDropEvent*);
 
 private:
-    bool importBitmapImage(QString);
+    bool importBitmapImage(QString, int space = 0);
     bool importVectorImage(QString);
 
     // the object to be edited by the editor
@@ -205,10 +205,6 @@ private:
     bool clipboardBitmapOk = true;
     bool clipboardVectorOk = true;
     bool clipboardSoundClipOk = true;
-
-    // Memory management
-    void updateActiveFrames(int frame);
-    std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
 #endif

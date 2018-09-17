@@ -48,8 +48,8 @@ Status LayerManager::load(Object* o)
 
 Status LayerManager::save(Object* o)
 {
-	o->data()->setCurrentLayer(editor()->currentLayerIndex());
-	return Status::OK;
+    o->data()->setCurrentLayer(editor()->currentLayerIndex());
+    return Status::OK;
 }
 
 Layer* LayerManager::getLastCameraLayer()
@@ -59,7 +59,7 @@ Layer* LayerManager::getLastCameraLayer()
     {
         return layer;
     }
-    
+
     // it's not a camera layer
     std::vector<LayerCamera*> camLayers = object()->getLayersByType<LayerCamera>();
     if (camLayers.size() > 0)
@@ -74,13 +74,13 @@ Layer* LayerManager::currentLayer()
     return currentLayer(0);
 }
 
-Layer* LayerManager::currentLayer( int incr )
+Layer* LayerManager::currentLayer(int incr)
 {
-    Q_ASSERT( object() != NULL );
+    Q_ASSERT(object() != NULL);
     return object()->getLayer(editor()->currentLayerIndex() + incr);
 }
 
-Layer* LayerManager::getLayer( int index )
+Layer* LayerManager::getLayer(int index)
 {
     Q_ASSERT(object() != NULL);
     return object()->getLayer(index);
@@ -96,14 +96,14 @@ int LayerManager::currentLayerIndex()
     return editor()->currentLayerIndex();
 }
 
-void LayerManager::setCurrentLayer( int layerIndex )
+void LayerManager::setCurrentLayer(int layerIndex)
 {
     Q_ASSERT(layerIndex >= 0);
 
     Object* o = object();
     if (layerIndex >= o->getLayerCount())
     {
-        Q_ASSERT( false );
+        Q_ASSERT(false);
         return;
     }
 
@@ -113,9 +113,9 @@ void LayerManager::setCurrentLayer( int layerIndex )
         Q_EMIT currentLayerChanged(layerIndex);
     }
 
-    if ( object() )
+    if (object())
     {
-        if ( object()->getLayer( layerIndex )->type() == Layer::CAMERA )
+        if (object()->getLayer(layerIndex)->type() == Layer::CAMERA)
         {
             mLastCameraLayerIdx = layerIndex;
         }
@@ -129,71 +129,71 @@ void LayerManager::setCurrentLayer(Layer* layer)
 
 void LayerManager::gotoNextLayer()
 {
-    if (editor()->currentLayerIndex() < object()->getLayerCount() - 1 )
+    if (editor()->currentLayerIndex() < object()->getLayerCount() - 1)
     {
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
-		Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
+        Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
     }
 }
 
 void LayerManager::gotoPreviouslayer()
 {
-    if (editor()->currentLayerIndex() > 0 )
+    if (editor()->currentLayerIndex() > 0)
     {
-		editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
-		Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
+        editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
+        Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
     }
 }
 
-LayerBitmap* LayerManager::createBitmapLayer( const QString& strLayerName )
+LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 {
     LayerBitmap* layer = object()->addNewBitmapLayer();
-    layer->setName( strLayerName );
-    
-    Q_EMIT layerCountChanged( count() );
-    
+    layer->setName(strLayerName);
+
+    Q_EMIT layerCountChanged(count());
+
     return layer;
 }
 
-LayerVector* LayerManager::createVectorLayer( const QString& strLayerName )
+LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 {
     LayerVector* layer = object()->addNewVectorLayer();
-    layer->setName( strLayerName );
-    
-    Q_EMIT layerCountChanged( count() );
-    
+    layer->setName(strLayerName);
+
+    Q_EMIT layerCountChanged(count());
+
     return layer;
 }
 
-LayerCamera* LayerManager::createCameraLayer( const QString& strLayerName )
+LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
 {
     LayerCamera* layer = object()->addNewCameraLayer();
-    layer->setName( strLayerName );
-    
-    Q_EMIT layerCountChanged( count() );
-    
+    layer->setName(strLayerName);
+
+    Q_EMIT layerCountChanged(count());
+
     return layer;
 }
 
-LayerSound* LayerManager::createSoundLayer( const QString& strLayerName )
+LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
 {
     LayerSound* layer = object()->addNewSoundLayer();
-    layer->setName( strLayerName );
-    
-    Q_EMIT layerCountChanged( count() );
+    layer->setName(strLayerName);
+
+    Q_EMIT layerCountChanged(count());
 
     return layer;
 }
 
-int LayerManager::LastFrameAtFrame( int frameIndex )
+int LayerManager::LastFrameAtFrame(int frameIndex)
 {
     Object* o = object();
-    for ( int i = frameIndex; i >= 0; i -= 1 )
+    for (int i = frameIndex; i >= 0; i -= 1)
     {
-        for ( int layerIndex = 0; layerIndex < o->getLayerCount(); ++layerIndex )
+        for (int layerIndex = 0; layerIndex < o->getLayerCount(); ++layerIndex)
         {
-            auto pLayer = o->getLayer( layerIndex );
-            if ( pLayer->keyExists( i ) )
+            auto pLayer = o->getLayer(layerIndex);
+            if (pLayer->keyExists(i))
             {
                 return i;
             }
@@ -207,12 +207,12 @@ int LayerManager::firstKeyFrameIndex()
     int minPosition = INT_MAX;
 
     Object* o = object();
-    for ( int i = 0; i < o->getLayerCount(); ++i )
+    for (int i = 0; i < o->getLayerCount(); ++i)
     {
-        Layer* pLayer = o->getLayer( i );
+        Layer* pLayer = o->getLayer(i);
 
         int position = pLayer->firstKeyFramePosition();
-        if ( position < minPosition )
+        if (position < minPosition)
         {
             minPosition = position;
         }
@@ -224,12 +224,12 @@ int LayerManager::lastKeyFrameIndex()
 {
     int maxPosition = 0;
 
-    for ( int i = 0; i < object()->getLayerCount(); ++i )
+    for (int i = 0; i < object()->getLayerCount(); ++i)
     {
-        Layer* pLayer = object()->getLayer( i );
+        Layer* pLayer = object()->getLayer(i);
 
         int position = pLayer->getMaxKeyFramePosition();
-        if ( position > maxPosition )
+        if (position > maxPosition)
         {
             maxPosition = position;
         }
@@ -248,20 +248,21 @@ Status LayerManager::deleteLayer(int index)
     if (layer->type() == Layer::CAMERA)
     {
         std::vector<LayerCamera*> camLayers = object()->getLayersByType<LayerCamera>();
-        if ( camLayers.size() == 1 )
+        if (camLayers.size() == 1)
             return Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER;
     }
 
-    object()->deleteLayer( layer );
+    object()->deleteLayer(layer);
 
     // current layer is the last layer && we are deleting it
     if (index == object()->getLayerCount() &&
         index == currentLayerIndex())
     {
-        setCurrentLayer( currentLayerIndex() - 1 );
+        setCurrentLayer(currentLayerIndex() - 1);
     }
 
-    Q_EMIT layerCountChanged( count() );
+    Q_EMIT layerDeleted(index);
+    Q_EMIT layerCountChanged(count());
 
     return Status::OK;
 }
@@ -289,7 +290,7 @@ int LayerManager::animationLength(bool includeSounds)
     int maxFrame = -1;
 
     Object* o = object();
-    for ( int i = 0; i < o->getLayerCount(); i++ )
+    for (int i = 0; i < o->getLayerCount(); i++)
     {
         if (o->getLayer(i)->type() == Layer::SOUND)
         {

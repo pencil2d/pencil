@@ -20,11 +20,13 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
+
 #include "layermanager.h"
-#include "colormanager.h"
+#include "strokemanager.h"
+#include "viewmanager.h"
+
 #include "layerbitmap.h"
 #include "layervector.h"
-#include "strokemanager.h"
 #include "blitrect.h"
 
 SmudgeTool::SmudgeTool(QObject *parent) :
@@ -47,15 +49,15 @@ void SmudgeTool::loadSettings()
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value("smudgeWidth").toDouble();
     properties.feather = settings.value("smudgeFeather").toDouble();
-    properties.pressure = 0;
-    properties.inpolLevel = -1;
+    properties.pressure = false;
+    properties.stabilizerLevel = -1;
 
     // First run
     if (properties.width <= 0)
     {
         setWidth(25);
         setFeather(200);
-        setPressure(0);
+        setPressure(false);
     }
 }
 
@@ -90,6 +92,12 @@ void SmudgeTool::setPressure( const bool pressure )
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("smudgePressure", pressure);
     settings.sync();
+}
+
+bool SmudgeTool::emptyFrameActionEnabled()
+{
+    // Disabled till we get it working for vector layers...
+    return false;
 }
 
 QCursor SmudgeTool::cursor()
@@ -161,6 +169,13 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
 
             if (mScribbleArea->mClosestVertices.size() > 0 || mScribbleArea->mClosestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
+                // Since startStroke() isn't called, handle empty frame behaviour here.
+                // Commented out for now - leads to segfault on mouse-release event.
+//                if(emptyFrameActionEnabled())
+//                {
+//                    mScribbleArea->handleDrawingOnEmptyFrame();
+//                }
+
                 //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
                 VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 

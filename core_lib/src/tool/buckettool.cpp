@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
+#include "viewmanager.h"
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
@@ -46,8 +47,8 @@ void BucketTool::loadSettings()
 {
     properties.width = 4;
     properties.feather = 10;
-    properties.inpolLevel = 0;
-    properties.useAA = -1;
+    properties.stabilizerLevel = StabilizationLevel::NONE;
+    properties.useAA = DISABLED;
     properties.tolerance = 10;
 
     m_enabledProperties[TOLERANCE] = true;
@@ -149,9 +150,8 @@ void BucketTool::paintBitmap(Layer* layer)
     BitmapImage::floodFill( targetImage,
                             cameraRect,
                             point,
-                            Qt::transparent,
                             qPremultiply( mEditor->color()->frontColor().rgba() ),
-                            properties.tolerance * 2.55 );
+                            properties.tolerance );
 
     mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
@@ -187,8 +187,8 @@ void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
 
-    if (properties.inpolLevel != m_pStrokeManager->getInpolLevel()) {
-        m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel()) {
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
     }
 
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();

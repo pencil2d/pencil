@@ -17,11 +17,10 @@ GNU General Public License for more details.
 #ifndef CANVASPAINTER_H
 #define CANVASPAINTER_H
 
-
+#include <memory>
 #include <QObject>
 #include <QTransform>
 #include <QPainter>
-#include <memory>
 #include "log.h"
 
 
@@ -49,6 +48,8 @@ struct CanvasPainterOptions
     int   nShowAllLayers = 3;
     bool  bIsOnionAbsolute = false;
     float scaling = 1.0f;
+    bool isPlaying = false;
+    bool onionWhilePlayback = false;
 };
 
 

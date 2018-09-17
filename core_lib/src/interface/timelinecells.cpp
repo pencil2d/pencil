@@ -418,7 +418,6 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
 
 void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
-    if (primaryButton != Qt::NoButton) return;
     int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
 
@@ -439,7 +438,9 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
     primaryButton = event->button();
 
-    mEditor->tools()->currentTool()->switchingLayers();
+    bool switchLayer = mEditor->tools()->currentTool()->switchingLayer();
+    if (!switchLayer) { return; }
+
     switch (mType)
     {
     case TIMELINE_CELL_TYPE::Layers:
@@ -529,7 +530,6 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         mCanMoveFrame = true;
                     }
 
-                    currentLayer->mousePress(event, frameNumber);
                     mTimeLine->updateContent();
                 }
                 else
@@ -593,6 +593,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 
                             int offset = frameNumber - mLastFrameNumber;
                             currentLayer->moveSelectedFrames(offset);
+                            mEditor->layers()->notifyAnimationLengthChanged();
                             mEditor->updateCurrentFrame();
                         }
                         else if (mCanBoxSelect)
@@ -606,7 +607,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                         }
                         mLastFrameNumber = frameNumber;
                     }
-                    currentLayer->mouseMove(event, frameNumber);
                 }
             }
         }
@@ -638,8 +638,6 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
         }
-
-        currentLayer->mouseRelease(event, frameNumber);
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {

@@ -58,14 +58,15 @@ before_install:
             brew upgrade python;
         fi
         brew install p7zip;
-        brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/13d52537d1e0e5f913de46390123436d220035f6/Formula/qt.rb;
+        brew install qt;
         brew link qt --force;
     fi
 
 install:
   - pip3 freeze > requirements.txt
   - pip3 install -r requirements.txt
-  - sudo pip3 install google-api-python-client
+  - sudo pip3 install --upgrade oauth2client
+  - sudo pip3 install --upgrade google-api-python-client
   - python3 -V
   - pip3 -V
 
@@ -89,7 +90,7 @@ script:
   - 'if [ "$TRAVIS_BRANCH" == "release" ]; then
     qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE;
   else
-    qmake ../ PREFIX=/usr CONFIG+=GIT CONFIG+=NIGHTLY;
+    qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=NIGHTLY;
   fi'
   - make;
   - "$TRAVIS_BUILD_DIR/build/tests/tests"
@@ -119,9 +120,9 @@ after_success:
 
       echo "Copying ffmpeg plugin";
       mkdir Pencil2D.app/Contents/MacOS/plugins;
-      wget -P Pencil2D.app/Contents/MacOS/plugins https://evermeet.cx/ffmpeg/ffmpeg-3.2.4.7z;
-      7z x Pencil2D.app/Contents/MacOS/plugins/ffmpeg-3.2.4.7z -o"Pencil2D.app/Contents/MacOS/plugins";
-      rm Pencil2D.app/Contents/MacOs/plugins/ffmpeg-3.2.4.7z;
+      wget -P Pencil2D.app/Contents/MacOS/plugins https://evermeet.cx/pub/ffmpeg/ffmpeg-3.4.2.7z;
+      7z x Pencil2D.app/Contents/MacOS/plugins/ffmpeg-3.4.2.7z -o"Pencil2D.app/Contents/MacOS/plugins";
+      rm Pencil2D.app/Contents/MacOs/plugins/ffmpeg-3.4.2.7z;
 
       echo "Copying necessary Qt frameworks";
       macdeployqt Pencil2D.app;

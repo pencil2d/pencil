@@ -29,7 +29,7 @@ class StrokeTool : public BaseTool
     Q_OBJECT
 
 public:
-    explicit StrokeTool(QObject* parent = 0);
+    explicit StrokeTool(QObject* parent);
     
     void startStroke();
     void drawStroke();
@@ -46,6 +46,13 @@ protected:
 
     qreal mCurrentWidth    = 0.0;
     qreal mCurrentPressure = 0.5;
+
+    /// Whether to enable the "drawing on empty frame" preference.
+    /// If true, then the user preference is honored.
+    /// If false, then the stroke is drawn on the previous key-frame (i.e. the
+    /// "old" Pencil behaviour).
+    /// Returns true by default.
+    virtual bool emptyFrameActionEnabled();
 
 private:
 	QPointF mLastPixel = { 0, 0 };

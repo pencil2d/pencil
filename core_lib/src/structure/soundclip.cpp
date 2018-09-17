@@ -42,33 +42,33 @@ SoundClip* SoundClip::clone()
 
 Status SoundClip::init(const QString& strSoundFile)
 {
-    if ( strSoundFile.isEmpty() )
+    if (strSoundFile.isEmpty())
     {
         return Status::FAIL;
     }
-    setFileName( strSoundFile );
+    setFileName(strSoundFile);
     return Status::OK;
 }
 
-bool SoundClip::isValid()
+bool SoundClip::isValid() const
 {
-    if ( fileName().isEmpty() )
+    if (fileName().isEmpty())
     {
         return false;
     }
 
-    if ( mPlayer == nullptr )
+    if (mPlayer == nullptr)
     {
         return false;
     }
-    
+
     return true;
 }
 
-void SoundClip::attachPlayer( SoundPlayer* player )
+void SoundClip::attachPlayer(SoundPlayer* player)
 {
     Q_ASSERT( player != nullptr );
-    mPlayer.reset( player );
+    mPlayer.reset(player);
 }
 
 void SoundClip::detachPlayer()
@@ -78,7 +78,7 @@ void SoundClip::detachPlayer()
 
 void SoundClip::play()
 {
-    if ( mPlayer )
+    if (mPlayer)
     {
         mPlayer->play();
     }
@@ -87,13 +87,14 @@ void SoundClip::play()
 void SoundClip::playFromPosition(int frameNumber, int fps)
 {
     int framesIntoSound = frameNumber;
-    if ( pos() > 1 ) {
+    if (pos() > 1)
+    {
         framesIntoSound = frameNumber - pos();
     }
-    float msPerFrame = ( 1000 / fps );
+    float msPerFrame = (1000 / fps);
     float msIntoSound = framesIntoSound * msPerFrame;
 
-    if ( mPlayer )
+    if (mPlayer)
     {
         mPlayer->setMediaPlayerPosition(msIntoSound);
         mPlayer->play();
@@ -102,7 +103,7 @@ void SoundClip::playFromPosition(int frameNumber, int fps)
 
 void SoundClip::stop()
 {
-    if ( mPlayer )
+    if (mPlayer)
     {
         mPlayer->stop();
     }
@@ -113,7 +114,7 @@ int64_t SoundClip::duration() const
     return mDuration;
 }
 
-void SoundClip::setDuration(const int64_t &duration)
+void SoundClip::setDuration(const int64_t& duration)
 {
     mDuration = duration;
 }

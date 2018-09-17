@@ -2,7 +2,7 @@
 
 These are instructions for building Pencil2D on a Mac. If you are using Windows go [here](docs/build_win.md), and Linux please go [here](docs/build_linux.md).
 
-This guide is primarily targeted towards developers. If you just want to use the latest version, download it from our [nightly builds](https://drive.google.com/drive/folders/0BxdcdOiOmg-CcWhLazdKR1oydHM). This tutorial was made with macOS Sierra (10.12) in mind, however this will probably work with all versions Mountain Lion (10.8) and up.
+This guide is primarily targeted towards developers. If you just want to use the latest version, download it from our [nightly builds](https://www.pencil2d.org/download/#nightlybuild). This tutorial was made with macOS Sierra (10.12) in mind, however this will probably work with all versions Yosemite (10.10) and up.
 
 There are 4 steps in total:
 
@@ -40,7 +40,7 @@ A dialog should pop up asking if you want to install the command line developer 
 - The file is the Qt installer application, so go ahead and open it. Click continue. You can skip the the step of creating Qt account. It's not necessary.
 - Next, specify a location for Qt, put it somewhere you can find it in case you ever need to navigate to the Qt files manually.
 - Then choose the Qt version and components you wish to install.
-  - If you have no idea what to do, select `Qt 5.9.2 -> macOS`.
+  - If you have no idea what to do, select `Qt 5.9.x -> macOS`.
   - Also make sure Qt Creator under the Tools section is being installed (at the time of writing there is no option to uncheck this, but it's worth double checking!).
 - Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press `Done` and it will launch Qt Creator for you.
 
@@ -68,7 +68,7 @@ Now it's time to build the application.
 
 - Open up the Qt Creator application.
 - From the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root source folder and open the `pencil2d.pro` file. 
-- Next, you'll be asked to configure your kits for the project. Kits determine compilers, target environment, and various build settings among other things. The Desktop option should be the only one checked. Click Configure Project to complete the kit selection.
+- Next, you'll be asked to configure your **kits** for the project. Kits determine compilers, target environment, and various build settings among other things. The Desktop option should be the only one checked. Click Configure Project to complete the kit selection.
 - Now all you have to do to build is click the plain **green arrow** in the bottom left corner of the window or press `Command+r`. A small progress bar will show up on the bottom right and console output will appear in the bottom section.
 - If everything goes well then the version of Pencil2D that you build will open up automatically and you're done!
 

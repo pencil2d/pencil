@@ -27,7 +27,7 @@ class PencilTool : public StrokeTool
 {
     Q_OBJECT
 public:
-    explicit PencilTool( QObject *parent = 0 );
+    explicit PencilTool(QObject* parent);
     ToolType type() override { return PENCIL; }
     void loadSettings() override;
     QCursor cursor() override;
@@ -49,7 +49,7 @@ public:
     void setInvisibility( const bool invisibility ) override;
     void setPressure( const bool pressure ) override;
     void setPreserveAlpha( const bool preserveAlpha ) override;
-    void setInpolLevel(const int level) override;
+    void setStabilizerLevel(const int level) override;
     void setUseFillContour(const bool useFillContour) override;
 
 private:
