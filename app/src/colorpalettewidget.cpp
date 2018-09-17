@@ -131,7 +131,7 @@ void ColorPaletteWidget::replaceItem()
 
     QColor newColour = editor()->color()->frontColor();
 
-    if (index > 0)
+    if (index >= 0)
     {
         updateItemColor(index, newColour);
         emit colorChanged(newColour);
@@ -581,7 +581,8 @@ void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
     QIcon swatchIcon;
     swatchIcon.addPixmap(colourSwatch, QIcon::Normal);
 
-    if(ui->colorListWidget->viewMode() == QListView::IconMode) {
+    if(ui->colorListWidget->viewMode() == QListView::IconMode)
+    {
         // Draw selection border
         swatchPainter.setPen(borderHighlight);
         swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
