@@ -8,7 +8,7 @@
 
 ## Download ###
 
-### Pencil2D 0.6.1  (16 April 2018)
+### Pencil2D 0.6.2 RC1  (17 September 2018)
 
 [What's new?](https://www.pencil2d.org/2018/04/maintenance-release-0.6.1.html)
 
@@ -16,10 +16,10 @@
 | :--------------: | :---------------: | :-------------: | :---------------: |
 | [Download][0]    | [Download][1]     | [Download][2]   | [Download][3]     |
 
-[0]: https://github.com/pencil2d/pencil/releases/download/v0.6.1.1/pencil2d-win64-0.6.1.1.zip
-[1]: https://github.com/pencil2d/pencil/releases/download/v0.6.1.1/pencil2d-win32-0.6.1.1.zip
-[2]: https://github.com/pencil2d/pencil/releases/download/v0.6.1.1/pencil2d-mac-0.6.1.1.zip
-[3]: https://github.com/pencil2d/pencil/releases/download/v0.6.1.1/pencil2d-linux-amd64-0.6.1.1.AppImage
+[0]: https://github.com/pencil2d/pencil/releases/download/v0.6.2-rc1/pencil2d-win64-v0.6.2-rc1.zip
+[1]: https://github.com/pencil2d/pencil/releases/download/v0.6.2-rc1/pencil2d-win32-v0.6.2-rc1.zip
+[2]: https://github.com/pencil2d/pencil/releases/download/v0.6.2-rc1/pencil2d-mac-v0.6.2-rc1.zip
+[3]: https://github.com/pencil2d/pencil/releases/download/v0.6.2-rc1/pencil2d-linux-amd64-v0.6.2-rc1.AppImage
 
 ### Nightly build
 
