@@ -149,15 +149,17 @@ QCursor PencilTool::cursor()
 void PencilTool::tabletPressEvent(QTabletEvent*)
 {
     mScribbleArea->setAllDirty();
-    startStroke(); //start and appends first stroke
-
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-    {
-        drawStroke();
-    }
 
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
+
+    startStroke();
+
+    // note: why are we doing this on device press event?
+    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    {
+        mScribbleArea->toggleThinLines();
+    }
 }
 
 void PencilTool::tabletMoveEvent(QTabletEvent*)
@@ -189,25 +191,20 @@ void PencilTool::tabletReleaseEvent(QTabletEvent*)
     endStroke();
 }
 
-void PencilTool::mousePressEvent(QMouseEvent*)
+void PencilTool::mousePressEvent(QMouseEvent *)
 {
     mScribbleArea->setAllDirty();
-    startStroke(); //start and appends first stroke
-
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-    {
-        drawStroke();
-    }
 
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
-}
 
-void PencilTool::mouseMoveEvent( QMouseEvent* )
-{
-    drawStroke();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+    startStroke();
+
+    // note: why are we doing this on device press event?
+    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    {
+        mScribbleArea->toggleThinLines();
+    }
 }
 
 void PencilTool::mouseReleaseEvent(QMouseEvent *)
@@ -230,6 +227,13 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *)
     else if (layer->type() == Layer::VECTOR)
         paintVectorStroke(layer);
     endStroke();
+}
+
+void PencilTool::mouseMoveEvent( QMouseEvent *)
+{
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
 void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)

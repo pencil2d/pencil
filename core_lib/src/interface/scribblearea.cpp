@@ -565,12 +565,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         return;
     }
 
-    // note: why are we doing this on device press event?
-    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
-    {
-        toggleThinLines();
-    }
-
     if ( event->button() == Qt::LeftButton )
     {
         currentTool()->mousePressEvent(event);
