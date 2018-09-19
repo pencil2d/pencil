@@ -424,11 +424,26 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     else {
         editor()->tools()->tabletRestorePrevTool();
     }
-    // Tablet move events should not be ignored as that will propagate it as a mouse event with reduced resolution
-    if(event->type() != QEvent::TabletMove)
+
+    if (isLayerPaintable())
     {
-        event->ignore(); // indicates that the tablet event is not accepted yet, and propagates it accordingly
+        if (event->type() == QTabletEvent::TabletMove)
+        {
+            currentTool()->tabletMoveEvent(event);
+        }
+        if (event->type() == QTabletEvent::TabletPress)
+        {
+            currentTool()->tabletPressEvent(event);
+        }
+        if (event->type() == QTabletEvent::TabletRelease)
+        {
+            currentTool()->tabletReleaseEvent(event);
+        }
     }
+    updateCanvasCursor();
+
+    // ignore any other events...
+    event->ignore();
 }
 
 bool ScribbleArea::isLayerPaintable() const
@@ -550,7 +565,16 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         return;
     }
 
-    currentTool()->mousePressEvent(event);
+    // note: why are we doing this on device press event?
+    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    {
+        toggleThinLines();
+    }
+
+    if ( event->button() == Qt::LeftButton )
+    {
+        currentTool()->mousePressEvent(event);
+    }
 }
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
@@ -587,7 +611,13 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         return;
     }
 
-    currentTool()->mouseMoveEvent(event);
+    if (isLayerPaintable())
+    {
+        if (event->buttons() & Qt::LeftButton)
+        {
+            currentTool()->mouseMoveEvent(event);
+        }
+    }
     updateCanvasCursor();
 
 #ifdef DEBUG_FPS
@@ -632,7 +662,10 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
         return;
     }
 
-    currentTool()->mouseReleaseEvent(event);
+    if ( event->button() == Qt::LeftButton )
+    {
+        currentTool()->mouseReleaseEvent(event);
+    }
 
     if (currentTool()->type() == EYEDROPPER)
     {

@@ -36,6 +36,10 @@ public:
     void mouseMoveEvent( QMouseEvent* ) override;
     void mouseReleaseEvent( QMouseEvent* ) override;
 
+    void tabletPressEvent( QTabletEvent* ) override;
+    void tabletMoveEvent( QTabletEvent* ) override;
+    void tabletReleaseEvent( QTabletEvent* ) override;
+
     void drawStroke();
     void paintAt( QPointF point );
     void paintVectorStroke(Layer* layer);

@@ -127,54 +127,70 @@ void EraserTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDe
     }
 }
 
-void EraserTool::mousePressEvent( QMouseEvent *event )
+void EraserTool::tabletPressEvent(QTabletEvent *)
 {
-    if ( event->button() == Qt::LeftButton )
-    {
-        mScribbleArea->setAllDirty();
-    }
+    mScribbleArea->setAllDirty();
 
     startStroke();
     mLastBrushPoint = getCurrentPoint();
     mMouseDownPoint = getCurrentPoint();
 }
 
-void EraserTool::mouseReleaseEvent( QMouseEvent *event )
+void EraserTool::tabletMoveEvent(QTabletEvent *)
 {
-    if ( event->button() == Qt::LeftButton )
-    {
-        mEditor->backup(typeName());
+    updateStrokes();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+}
 
-        if ( mScribbleArea->isLayerPaintable() )
-        {
-            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
-            if (distance < 1)
-            {
-                paintAt(mMouseDownPoint);
-            }
-            else
-            {
-                drawStroke();
-            }
-        }
-        removeVectorPaint();
+void EraserTool::tabletReleaseEvent(QTabletEvent *)
+{
+    mEditor->backup(typeName());
+
+    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+    if (distance < 1)
+    {
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+    removeVectorPaint();
     endStroke();
 }
 
-void EraserTool::mouseMoveEvent( QMouseEvent *event )
+void EraserTool::mousePressEvent( QMouseEvent *)
 {
+    mScribbleArea->setAllDirty();
 
-    if ( event->buttons() & Qt::LeftButton )
+    startStroke();
+    mLastBrushPoint = getCurrentPoint();
+    mMouseDownPoint = getCurrentPoint();
+}
+
+void EraserTool::mouseReleaseEvent(QMouseEvent *)
+{
+    mEditor->backup(typeName());
+
+    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+    if (distance < 1)
     {
-        if ( mScribbleArea->isLayerPaintable() )
-        {
-            updateStrokes();
-            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel()) {
-                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-            }
-        }
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+    removeVectorPaint();
+    endStroke();
+}
+
+void EraserTool::mouseMoveEvent(QMouseEvent *)
+{
+    updateStrokes();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
 // draw a single paint dab at the given location

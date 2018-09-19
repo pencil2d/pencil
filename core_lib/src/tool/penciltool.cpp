@@ -146,74 +146,89 @@ QCursor PencilTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PencilTool::mousePressEvent(QMouseEvent* event)
+void PencilTool::tabletPressEvent(QTabletEvent*)
 {
-    mLastBrushPoint = getCurrentPoint();
+    mScribbleArea->setAllDirty();
+    startStroke(); //start and appends first stroke
 
-    if (event->button() == Qt::LeftButton)
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
     {
-        mScribbleArea->setAllDirty();
-        startStroke(); //start and appends first stroke
-
-        if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-            // in case of bitmap, first pixel(mouseDown) is drawn
-        {
-            drawStroke();
-        }
-        else if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
-        {
-            if (!mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
-            {
-                mScribbleArea->toggleThinLines();
-            }
-        }
+        drawStroke();
     }
 
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 }
 
-void PencilTool::mouseMoveEvent(QMouseEvent* event)
+void PencilTool::tabletMoveEvent(QTabletEvent*)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
-    {
-        if (event->buttons() & Qt::LeftButton)
-        {
-            drawStroke();
-            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-            {
-                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-            }
-        }
-    }
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
-void PencilTool::mouseReleaseEvent(QMouseEvent* event)
+void PencilTool::tabletReleaseEvent(QTabletEvent*)
 {
-    if (event->button() == Qt::LeftButton)
+    mEditor->backup(typeName());
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    if (distance < 1)
     {
-        mEditor->backup(typeName());
-
-        Layer* layer = mEditor->layers()->currentLayer();
-        if (mScribbleArea->isLayerPaintable())
-        {
-            qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
-            if (distance < 1)
-            {
-                paintAt(mMouseDownPoint);
-            }
-            else
-            {
-                drawStroke();
-            }
-        }
-
-        if (layer->type() == Layer::BITMAP)
-            paintBitmapStroke();
-        else if (layer->type() == Layer::VECTOR)
-            paintVectorStroke(layer);
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+
+    if (layer->type() == Layer::BITMAP)
+        paintBitmapStroke();
+    else if (layer->type() == Layer::VECTOR)
+        paintVectorStroke(layer);
+    endStroke();
+}
+
+void PencilTool::mousePressEvent(QMouseEvent*)
+{
+    mScribbleArea->setAllDirty();
+    startStroke(); //start and appends first stroke
+
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        drawStroke();
+    }
+
+    mMouseDownPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
+}
+
+void PencilTool::mouseMoveEvent( QMouseEvent* )
+{
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+}
+
+void PencilTool::mouseReleaseEvent(QMouseEvent *)
+{
+    mEditor->backup(typeName());
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    if (distance < 1)
+    {
+        paintAt(mMouseDownPoint);
+    }
+    else
+    {
+        drawStroke();
+    }
+
+    if (layer->type() == Layer::BITMAP)
+        paintBitmapStroke();
+    else if (layer->type() == Layer::VECTOR)
+        paintVectorStroke(layer);
     endStroke();
 }
 

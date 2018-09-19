@@ -97,6 +97,18 @@ void BaseTool::initialize(Editor* editor)
     loadSettings();
 }
 
+void BaseTool::tabletMoveEvent(QTabletEvent* event) {
+    event->accept();
+}
+
+void BaseTool::tabletPressEvent(QTabletEvent* event) {
+    event->accept();
+}
+
+void BaseTool::tabletReleaseEvent(QTabletEvent* event) {
+    event->accept();
+}
+
 void BaseTool::mouseDoubleClickEvent(QMouseEvent* event)
 {
     mousePressEvent(event);

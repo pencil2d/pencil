@@ -31,6 +31,7 @@ class Editor;
 class ScribbleArea;
 class QKeyEvent;
 class QMouseEvent;
+class QTabletEvent;
 class StrokeManager;
 
 class Properties
@@ -79,6 +80,9 @@ public:
     virtual void mouseMoveEvent(QMouseEvent*) = 0;
     virtual void mouseReleaseEvent(QMouseEvent*) = 0;
     virtual void mouseDoubleClickEvent(QMouseEvent*);
+    virtual void tabletMoveEvent(QTabletEvent*);
+    virtual void tabletPressEvent(QTabletEvent*);
+    virtual void tabletReleaseEvent(QTabletEvent*);
 
     // return true if handled
     virtual bool keyPressEvent(QKeyEvent*) { return false; }
