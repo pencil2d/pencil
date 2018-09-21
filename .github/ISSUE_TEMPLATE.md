@@ -1,7 +1,7 @@
 <!-- 
 Make sure that the issue you're about to make does not exist already, use the search function to find possible duplicates.
 
-*OBS: Reports that does not follow the template below, will be considered invalid and closed. :OBS*
+*Reports that does not follow the template below, will be considered invalid and closed.*
 keep general complaints and questions to the forum or our Discord channel https://www.pencil2d.org/community/
 -->
 
@@ -39,13 +39,13 @@ hint: describe the exact steps to reproduce the problem as best as you can
 + Pencil2D Version:
 
 <!-- WRITE ABOVE THIS LINE -----
-hint: You can find the VERSION in Menu->Help->About, e.g., 0.5.4 or Nightly build 02 June 2017)
+hint: You can find the VERSION in Menu->Help->About, e.g., 0.5.4 or Nightly build 02 June 2017
 ------ OR BELOW THIS --> 
 
 + Operating System:
 
 <!-- WRITE ABOVE THIS LINE -----
-hint: Windows10, macOS 10.12, Ubuntu 16.04
+hint: Windows 10, Mac OS 10.12, Ubuntu 16.04 etc.
 ------ OR BELOW THIS --> 
 
 + RAM Size:
