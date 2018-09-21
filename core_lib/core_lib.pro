@@ -158,7 +158,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/activeframepool.cpp
 
 FORMS += \
-    ui/camerapropertiesdialog.ui
+    ui/camerapropertiesdialog.ui \
+    ui/copymultiplekeyframesdialog.ui
 
 win32 {
     CONFIG -= flat

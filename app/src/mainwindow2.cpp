@@ -1149,8 +1149,6 @@ void MainWindow2::importPalette()
     {
         mEditor->object()->importPalette(filePath);
         mColorPalette->refreshColorList();
-        filePath.chop(4); // chop off ".xml", and (below) isolate filename
-        mColorPalette->setWindowTitle(tr("Palette: ") + filePath.remove(0, filePath.lastIndexOf("/") + 1));
         mEditor->color()->setColorNumber(0);
     }
 }

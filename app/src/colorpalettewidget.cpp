@@ -47,7 +47,6 @@ ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) :
     ui(new Ui::ColorPalette)
 {
     ui->setupUi(this);
-    this->setWindowTitle(tr("Palette: Default"));
 }
 
 ColorPaletteWidget::~ColorPaletteWidget()
