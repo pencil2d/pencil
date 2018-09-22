@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>CopyMultiplekeyframesDialog</class>
+ <widget class="QDialog" name="CopyMultiplekeyframesDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>272</width>
-    <height>216</height>
+    <width>224</width>
+    <height>262</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Copy multiple keyframes</string>
+   <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>30</x>
      <y>20</y>
-     <width>228</width>
-     <height>169</height>
+     <width>176</width>
+     <height>220</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="labHeader">
       <property name="text">
-       <string>Copy loop multiple times:</string>
+       <string>Copy Multiple Frames</string>
       </property>
      </widget>
     </item>
     <item>
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="labStartLoop">
         <property name="text">
-         <string>Loop start at frame:</string>
+         <string>Start frame:</string>
         </property>
        </widget>
       </item>
@@ -45,14 +45,14 @@
          <number>1</number>
         </property>
         <property name="maximum">
-         <number>9998</number>
+         <number>9999</number>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="labStopLoop">
         <property name="text">
-         <string>Loop stop at frame:</string>
+         <string>End frame</string>
         </property>
        </widget>
       </item>
@@ -67,37 +67,48 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="labTimesCopied">
+       <widget class="QLabel" name="labNumLoops">
         <property name="text">
-         <string>Times loop will be copied:</string>
+         <string>Number of loops:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="sBoxNumberLoops">
-        <property name="value">
+       <widget class="QSpinBox" name="sBoxNumLoops">
+        <property name="minimum">
          <number>1</number>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="labStartFrom">
+       <widget class="QLabel" name="labStartFrame">
         <property name="text">
-         <string>Starting from frame: </string>
+         <string>From frame:</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QSpinBox" name="sBoxStartFrom">
-        <property name="maximum">
-         <number>999</number>
-        </property>
-        <property name="value">
+       <widget class="QSpinBox" name="sBoxStartFrame">
+        <property name="minimum">
          <number>3</number>
         </property>
        </widget>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="labWarning">
+      <property name="font">
+       <font>
+        <family>DejaVu Sans Mono</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QDialogButtonBox" name="buttonBox">
@@ -117,7 +128,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>CopyMultiplekeyframesDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -133,7 +144,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>CopyMultiplekeyframesDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

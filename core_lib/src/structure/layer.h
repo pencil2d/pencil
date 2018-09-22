@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QDomElement>
 #include "pencilerror.h"
+#include "copymultiplekeyframesdialog.h"
 
 class QMouseEvent;
 class KeyFrame;
@@ -95,6 +96,8 @@ public:
     bool getVisibility() { return mVisible; }
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>);
+
+    void copyMultipleFrames(int start, int stop,int times,int first);
 
     void setModified(int position, bool isModified);
 

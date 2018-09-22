@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include "timelinecells.h"
 
 
+
 TimeLine::TimeLine(QWidget* parent) : BaseDockWidget(parent)
 {
 }
@@ -131,6 +132,11 @@ void TimeLine::initUI()
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
 
+    QToolButton* copyManyButton = new QToolButton(this);
+    copyManyButton->setIcon(QIcon(":icons/copy_many.png"));
+    copyManyButton->setToolTip(tr("Copy many Frames"));
+    copyManyButton->setFixedSize(24, 24);
+
     QLabel* onionLabel = new QLabel(tr("Onion skin:"));
 
     QToolButton* onionTypeButton = new QToolButton(this);
@@ -142,6 +148,7 @@ void TimeLine::initUI()
     timelineButtons->addWidget(addKeyButton);
     timelineButtons->addWidget(removeKeyButton);
     timelineButtons->addWidget(duplicateKeyButton);
+    timelineButtons->addWidget(copyManyButton);
     timelineButtons->addSeparator();
     timelineButtons->addWidget(onionLabel);
     timelineButtons->addWidget(onionTypeButton);
@@ -198,6 +205,7 @@ void TimeLine::initUI()
     connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::addKeyClick);
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
+    connect(copyManyButton, &QToolButton::clicked, this, &TimeLine::copyMultipleKeyframesClick);
     connect(onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick);
 
     connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);
