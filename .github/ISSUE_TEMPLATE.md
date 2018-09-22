@@ -1,41 +1,41 @@
 <!-- 
-Make sure that the issue you're about to make does not exist already, use the search function to find possible duplicates.
+Please search your issue first to avoid duplication.
 
 *Reports that does not follow the template below, will be considered invalid and closed.*
 keep general complaints and questions to the forum or our Discord channel https://www.pencil2d.org/community/
 -->
 
-### --Issue Summary--
+### Issue Summary
 
 <!-- WRITE ABOVE THIS LINE -----
 hint: (Optional) A brief overview of your issue (i.e When I use the paint bucket in a vector layer everything goes red) 
 ------ OR BELOW THIS --> 
 
-### --Actual Results--
+### Actual Results
 
 <!-- WRITE ABOVE THIS LINE -----
 hint: Explain what you actually got and how different it is from your expectations.
 ------ OR BELOW THIS --> 
 
-### --Expected Results--
+### Expected Results
 
 <!-- WRITE ABOVE THIS LINE -----
 hint: Explain how the function should behave in the context you're using it.
 ------ OR BELOW THIS --> 
 
-### --Video or Image Reference--
+### Video or Image Reference
 
 <!-- WRITE ABOVE THIS LINE -----
 hint: (Optional) A screenshot or short video to show your problem
 ------ OR BELOW THIS --> 
 
-### --Steps to reproduce--
+### Steps to reproduce
 
 <!-- WRITE ABOVE THIS LINE -----
 hint: describe the exact steps to reproduce the problem as best as you can
 ------ OR BELOW THIS --> 
 
-### --System Information--
+### System Information
 + Pencil2D Version:
 
 <!-- WRITE ABOVE THIS LINE -----
@@ -59,20 +59,3 @@ hint: 4GB, 8GB etc.
 <!-- WRITE ABOVE THIS LINE -----
 hint: (Optional) Write your MODEL, e.g., WACOM Intuos 2
 ------ OR BELOW THIS --> 
-
----
-<!--
-### --For Code Contributors--
-(Optional) You can use this space to point out relevant code chunks that are suspected to be causing the issue.
-
-```C++
-    Paste here code snippets relevant to your report like so:
-    #include <iostream>
-
-    int main() {
-        std::cout << "Hello, World" << endl;        
-        return 0;
-    }
-
-```
--->
