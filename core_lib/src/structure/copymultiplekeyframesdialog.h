@@ -34,6 +34,7 @@ private:
     int mStopLoop;     // Frame# that ends loop
     int mNumLoops;      // Number of loops
     int mStartFrame;     // Frame# to insert first copied frame
+    int mTimelineLength; // frames in scene/in timeline
 
     void checkValidity();
 

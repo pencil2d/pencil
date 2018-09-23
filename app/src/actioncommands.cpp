@@ -586,7 +586,18 @@ void ActionCommands::copyMultipleKeyframes()
                     KeyFrame* kf = layer->getKeyFrameAt(j);
                     if (kf == nullptr) return;
                     KeyFrame* dupKey = kf->clone();
-                    layer->addKeyFrame(startF, dupKey);
+                    // replace if keyframe exists!
+                    if (layer->keyExists(startF))
+                    {
+                        if (layer->removeKeyFrame(startF))
+                        {
+                            layer->addKeyFrame(startF, dupKey);
+                        }
+                    }
+                    else
+                    {
+                        layer->addKeyFrame(startF, dupKey);
+                    }
                 }
             }
         }
