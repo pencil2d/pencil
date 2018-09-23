@@ -21,6 +21,10 @@ void CopyMultiplekeyframesDialog::init()
     connect(ui->sBoxStopLoop, SIGNAL(valueChanged(int)), this, SLOT(setStopLoop(int)));
     connect(ui->sBoxNumLoops, SIGNAL(valueChanged(int)), this, SLOT(setNumLoops(int)));
     connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
+    mStartLoop = ui->sBoxStartLoop->value();
+    mStopLoop = ui->sBoxStopLoop->value();
+    mNumLoops = ui->sBoxNumLoops->value();
+    mStartFrame = ui->sBoxStartFrame->value();
 }
 
 int CopyMultiplekeyframesDialog::getStartLoop()
@@ -31,6 +35,8 @@ int CopyMultiplekeyframesDialog::getStartLoop()
 void CopyMultiplekeyframesDialog::setStartLoop(int i)
 {
     mStartLoop = i;
+    mStopLoop = mStartLoop + 1;
+    ui->sBoxStopLoop->setMinimum(mStopLoop);
     checkValidity();
 }
 
@@ -42,6 +48,8 @@ int CopyMultiplekeyframesDialog::getStopLoop()
 void CopyMultiplekeyframesDialog::setStopLoop(int i)
 {
     mStopLoop = i;
+    mStartFrame = mStopLoop + 1;
+    ui->sBoxStartFrame->setValue(mStartFrame);
     checkValidity();
 }
 
@@ -74,16 +82,14 @@ void CopyMultiplekeyframesDialog::setStartFrame(int i)
 
 void CopyMultiplekeyframesDialog::checkValidity()
 {
-    ui->sBoxStopLoop->setMinimum(mStartLoop + 1);
-    if (mStartLoop >= mStopLoop)
-    {
-        ui->sBoxStopLoop->setMinimum(mStartLoop + 1);
-        ui->sBoxStopLoop->setValue(mStartLoop + 1);
-
-    }
-    if ((mStartLoop + 1 - mStopLoop) * mNumLoops + mStartFrame > 500)
+    if ((mStopLoop + 1 - mStartLoop) * mNumLoops + mStartFrame > 500)
     {
         ui->buttonBox->setEnabled(false);
         ui->labWarning->setText(tr("Values exceed scene length!"));
+    }
+    else if (ui->labWarning->text() != "")
+    {
+        ui->buttonBox->setEnabled(true);
+        ui->labWarning->setText("");
     }
 }

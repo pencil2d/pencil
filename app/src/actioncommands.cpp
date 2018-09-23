@@ -566,7 +566,7 @@ void ActionCommands::duplicateKey()
 }
 
 
-void ActionCommands::copyMultipleKeyframes(int i)
+void ActionCommands::copyMultipleKeyframes()
 {
     CopyMultiplekeyframesDialog cd;
     int res = cd.exec();
@@ -584,8 +584,9 @@ void ActionCommands::copyMultipleKeyframes(int i)
                 if (layer->keyExists(j))
                 {
                     KeyFrame* kf = layer->getKeyFrameAt(j);
-                    layer->addKeyFrame(startF, kf);
-                    mEditor->scrubTo(startF + 1);
+                    if (kf == nullptr) return;
+                    KeyFrame* dupKey = kf->clone();
+                    layer->addKeyFrame(startF, dupKey);
                 }
             }
         }
