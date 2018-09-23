@@ -58,11 +58,6 @@ void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action)
     }
 }
 
-void Layer::copyMultipleFrames(int start, int stop, int times, int first)
-{
-    // TODO
-}
-
 bool Layer::keyExists(int position) const
 {
     return (mKeyFrames.find(position) != mKeyFrames.end());

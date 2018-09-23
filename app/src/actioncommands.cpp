@@ -566,20 +566,20 @@ void ActionCommands::duplicateKey()
 }
 
 
-void ActionCommands::copyMultipleKeyframes()
+void ActionCommands::copyMultipleKeyframes(int i)
 {
     CopyMultiplekeyframesDialog cd;
-    int i = cd.exec();
-    if (i == 1)  // if OK pressed
+    int res = cd.exec();
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (res == 1)  // if OK pressed
     {
-        Layer* layer = mEditor->layers()->currentLayer();
         int startL = cd.getStartLoop();
         int stopL = cd.getStopLoop();
         int num = cd.getNumLoops();
         int startF = cd.getStartFrame();
         for (int i = 0; i < num; i++)
         {
-            for (int j = startL; j < stopL + 1; j++)
+            for (int j = startL; j < stopL + 1; j++, startF++)
             {
                 if (layer->keyExists(j))
                 {
@@ -587,7 +587,6 @@ void ActionCommands::copyMultipleKeyframes()
                     layer->addKeyFrame(startF, kf);
                     mEditor->scrubTo(startF + 1);
                 }
-                startF++;
             }
         }
         mEditor->layers()->notifyLayerChanged(layer);

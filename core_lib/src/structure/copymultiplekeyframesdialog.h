@@ -14,25 +14,28 @@ class CopyMultiplekeyframesDialog : public QDialog
 public:
     explicit CopyMultiplekeyframesDialog(QWidget *parent = 0);
     ~CopyMultiplekeyframesDialog();
+    void init();
     int getStartLoop();
-    void setStartLoop(int i);
     int getStopLoop();
-    void setStopLoop(int i);
     int getNumLoops();
-    void setNumLoops(int i);
     void setNumLoopsMax(int i);
     int getStartFrame();
+
+private slots:
+    void setStartLoop(int i);
+    void setStopLoop(int i);
+    void setNumLoops(int i);
     void setStartFrame(int i);
 
 private:
     Ui::CopyMultiplekeyframesDialog *ui;
 
-    int mStartFrame;    // Frame# that starts loop
-    int mStopFrame;     // Frame# that ends loop
+    int mStartLoop;    // Frame# that starts loop
+    int mStopLoop;     // Frame# that ends loop
     int mNumLoops;      // Number of loops
-    int mFromFrame;     // Frame# to insert first copied frame
+    int mStartFrame;     // Frame# to insert first copied frame
 
-    bool checkValidity();
+    void checkValidity();
 
 
 };

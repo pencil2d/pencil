@@ -1,16 +1,26 @@
 #include "copymultiplekeyframesdialog.h"
 #include "ui_copymultiplekeyframesdialog.h"
+#include "timeline.h"
 
 CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CopyMultiplekeyframesDialog)
 {
     ui->setupUi(this);
+    init();
 }
 
 CopyMultiplekeyframesDialog::~CopyMultiplekeyframesDialog()
 {
     delete ui;
+}
+
+void CopyMultiplekeyframesDialog::init()
+{
+    connect(ui->sBoxStartLoop, SIGNAL(valueChanged(int)), this, SLOT(setStartLoop(int)));
+    connect(ui->sBoxStopLoop, SIGNAL(valueChanged(int)), this, SLOT(setStopLoop(int)));
+    connect(ui->sBoxNumLoops, SIGNAL(valueChanged(int)), this, SLOT(setNumLoops(int)));
+    connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
 }
 
 int CopyMultiplekeyframesDialog::getStartLoop()
@@ -20,7 +30,8 @@ int CopyMultiplekeyframesDialog::getStartLoop()
 
 void CopyMultiplekeyframesDialog::setStartLoop(int i)
 {
-    ui->sBoxStartLoop->setValue(i);
+    mStartLoop = i;
+    checkValidity();
 }
 
 int CopyMultiplekeyframesDialog::getStopLoop()
@@ -30,7 +41,8 @@ int CopyMultiplekeyframesDialog::getStopLoop()
 
 void CopyMultiplekeyframesDialog::setStopLoop(int i)
 {
-    ui->sBoxStopLoop->setValue(i);
+    mStopLoop = i;
+    checkValidity();
 }
 
 int CopyMultiplekeyframesDialog::getNumLoops()
@@ -40,7 +52,8 @@ int CopyMultiplekeyframesDialog::getNumLoops()
 
 void CopyMultiplekeyframesDialog::setNumLoops(int i)
 {
-    ui->sBoxNumLoops->setValue(i);
+    mNumLoops = i;
+    checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::setNumLoopsMax(int i)
@@ -55,5 +68,22 @@ int CopyMultiplekeyframesDialog::getStartFrame()
 
 void CopyMultiplekeyframesDialog::setStartFrame(int i)
 {
-    ui->sBoxStartFrame->setValue(i);
+    mStartFrame = i;
+    checkValidity();
+}
+
+void CopyMultiplekeyframesDialog::checkValidity()
+{
+    ui->sBoxStopLoop->setMinimum(mStartLoop + 1);
+    if (mStartLoop >= mStopLoop)
+    {
+        ui->sBoxStopLoop->setMinimum(mStartLoop + 1);
+        ui->sBoxStopLoop->setValue(mStartLoop + 1);
+
+    }
+    if ((mStartLoop + 1 - mStopLoop) * mNumLoops + mStartFrame > 500)
+    {
+        ui->buttonBox->setEnabled(false);
+        ui->labWarning->setText(tr("Values exceed scene length!"));
+    }
 }
