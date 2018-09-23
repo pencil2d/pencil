@@ -93,7 +93,8 @@ HEADERS +=  \
     src/movieexporter.h \
     src/miniz.h \
     src/qminiz.h \
-    src/activeframepool.h
+    src/activeframepool.h \
+    src/structure/copymultiplekeyframesdialog.h
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
@@ -155,10 +156,12 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/movieexporter.cpp \
     src/miniz.cpp \
     src/qminiz.cpp \
-    src/activeframepool.cpp
+    src/activeframepool.cpp \
+    src/structure/copymultiplekeyframesdialog.cpp
 
 FORMS += \
-    ui/camerapropertiesdialog.ui
+    ui/camerapropertiesdialog.ui \
+    src/structure/copymultiplekeyframesdialog.ui
 
 win32 {
     CONFIG -= flat

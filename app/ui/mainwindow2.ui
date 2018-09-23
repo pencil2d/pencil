@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -163,6 +163,7 @@
     <addaction name="actionAdd_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
+    <addaction name="actionCopy_multiple_Keyframes"/>
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
@@ -886,6 +887,15 @@
   <action name="actionExport_Animated_GIF">
    <property name="text">
     <string>Animated GIF...</string>
+   </property>
+  </action>
+  <action name="actionCopy_multiple_Keyframes">
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/copy_many.png</normaloff>:/icons/copy_many.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy multiple Keyframes</string>
    </property>
   </action>
  </widget>

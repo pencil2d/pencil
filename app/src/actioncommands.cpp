@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include "util.h"
 #include "app_util.h"
 
+#include "layer.h"
 #include "layercamera.h"
 #include "layersound.h"
 #include "bitmapimage.h"
@@ -47,6 +48,7 @@ GNU General Public License for more details.
 #include "exportimagedialog.h"
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
+#include "copymultiplekeyframesdialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -561,6 +563,34 @@ void ActionCommands::duplicateKey()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+}
+
+
+void ActionCommands::copyMultipleKeyframes(int i)
+{
+    CopyMultiplekeyframesDialog cd;
+    int res = cd.exec();
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (res == 1)  // if OK pressed
+    {
+        int startL = cd.getStartLoop();
+        int stopL = cd.getStopLoop();
+        int num = cd.getNumLoops();
+        int startF = cd.getStartFrame();
+        for (int i = 0; i < num; i++)
+        {
+            for (int j = startL; j < stopL + 1; j++, startF++)
+            {
+                if (layer->keyExists(j))
+                {
+                    KeyFrame* kf = layer->getKeyFrameAt(j);
+                    layer->addKeyFrame(startF, kf);
+                    mEditor->scrubTo(startF + 1);
+                }
+            }
+        }
+        mEditor->layers()->notifyLayerChanged(layer);
+    }
 }
 
 void ActionCommands::moveFrameForward()
