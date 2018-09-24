@@ -5,7 +5,7 @@
         <location filename="../app/ui/aboutdialog.ui" line="26"/>
         <source>About</source>
         <comment>About Dialog Window Title</comment>
-        <translation type="unfinished"/>
+        <translation>Névjegy</translation>
     </message>
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
@@ -16,13 +16,13 @@
         <location filename="../app/src/aboutdialog.cpp" line="43"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Verzió: %1</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="55"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Másolás vágólapra</translation>
     </message>
 </context>
 <context>
@@ -46,24 +46,24 @@
         <location filename="../app/src/actioncommands.cpp" line="80"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>Réteg tulajdonságai</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="82"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>Hang réteg</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="201"/>
         <source>Exporting movie</source>
-        <translation type="unfinished"/>
+        <translation>Videó exportálása</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="253"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
-        <translation type="unfinished"/>
+        <translation>Kész. Videó megnyitása most?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="595"/>
@@ -90,27 +90,27 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Finished. Open file location?</source>
-        <translation type="unfinished"/>
+        <translation>Kész. Megnyitás a fájlkezelőben?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
         <source>Exporting image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>Képsorozat exportálása...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>Megszakít</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="394"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Figyelmeztetés</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="395"/>
         <source>Unable to export image.</source>
-        <translation type="unfinished"/>
+        <translation>Nem lehet exportálni a képet.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="597"/>
@@ -136,12 +136,12 @@
         <location filename="../app/src/actioncommands.cpp" line="655"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Réteg Törlése</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="656"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation type="unfinished"/>
+        <translation>Biztosan törölni akarja a következő réteget: </translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="665"/>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="6"/>
         <source>Camera Properties</source>
-        <translation type="unfinished"/>
+        <translation>Kamera tulajdonságok</translation>
     </message>
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
@@ -250,22 +250,22 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="157"/>
         <source>R</source>
-        <translation type="unfinished"/>
+        <translation>R</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="167"/>
         <source>A</source>
-        <translation type="unfinished"/>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="177"/>
         <source>G</source>
-        <translation type="unfinished"/>
+        <translation>G</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="213"/>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../app/src/colorinspector.cpp" line="35"/>
@@ -280,7 +280,7 @@
         <location filename="../app/ui/colorpalette.ui" line="14"/>
         <source>Color Palette</source>
         <comment>Window title of color palette.</comment>
-        <translation type="unfinished"/>
+        <translation>Színpaletta</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="47"/>
@@ -353,17 +353,17 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Hozzáadás</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Replace</source>
-        <translation type="unfinished"/>
+        <translation>Cserél</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Eltávolítás</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="227"/>
@@ -379,12 +379,12 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="533"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="534"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Törlés</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="550"/>
@@ -428,7 +428,7 @@
         <location filename="../app/ui/displayoption.ui" line="14"/>
         <source>Display</source>
         <comment>Window title of display options like .</comment>
-        <translation type="unfinished"/>
+        <translation>Megjelenítés</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="125"/>
@@ -475,12 +475,12 @@
     <message>
         <location filename="../app/ui/doubleprogressdialog.ui" line="27"/>
         <source>Loading...</source>
-        <translation type="unfinished"/>
+        <translation>Betöltés...</translation>
     </message>
     <message>
         <location filename="../app/ui/doubleprogressdialog.ui" line="56"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégse</translation>
     </message>
 </context>
 <context>
@@ -494,7 +494,7 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="950"/>
         <source>Remove frame</source>
-        <translation type="unfinished"/>
+        <translation>Képkocka eltávolítása</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="790"/>
@@ -539,7 +539,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="23"/>
         <source>Camera</source>
-        <translation type="unfinished"/>
+        <translation>Kamera</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="35"/>
@@ -574,7 +574,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="111"/>
         <source>Range</source>
-        <translation type="unfinished"/>
+        <translation>Tartomány</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="157"/>
@@ -1243,11 +1243,6 @@
         <translation>Mentés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>Mentés másként ..</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
         <source>Exit</source>
         <translation>Kilépés</translation>
@@ -1580,6 +1575,11 @@
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
         <translation>Következő kulcsképkocka</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>

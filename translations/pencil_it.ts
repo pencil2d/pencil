@@ -1243,11 +1243,6 @@
         <translation>Salva</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>Salva come...</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
         <source>Exit</source>
         <translation>Esci</translation>
@@ -1580,6 +1575,11 @@
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
         <translation>KeyFrame seguente</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>

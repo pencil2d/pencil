@@ -90,7 +90,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Finished. Open file location?</source>
-        <translation type="unfinished"/>
+        <translation>工作完成。要打開檔案嗎?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
@@ -271,7 +271,7 @@
         <location filename="../app/src/colorinspector.cpp" line="35"/>
         <source>Color Inspector</source>
         <comment>Window title of color inspector</comment>
-        <translation type="unfinished"/>
+        <translation>顏色屬性</translation>
     </message>
 </context>
 <context>
@@ -353,17 +353,17 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>增加</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Replace</source>
-        <translation type="unfinished"/>
+        <translation>取代</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>移除</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="227"/>
@@ -379,12 +379,12 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="533"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="534"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>刪除</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="550"/>
@@ -394,7 +394,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="551"/>
         <source>The palette requires at least one swatch to remain functional</source>
-        <translation type="unfinished"/>
+        <translation>調色盤需要保留至少一個顏色</translation>
     </message>
 </context>
 <context>
@@ -403,7 +403,7 @@
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation type="unfinished"/>
+        <translation>色環</translation>
     </message>
 </context>
 <context>
@@ -574,27 +574,27 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="111"/>
         <source>Range</source>
-        <translation type="unfinished"/>
+        <translation>範圍</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="157"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>輸出影片的最後一個畫格</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="160"/>
         <source>End Frame</source>
-        <translation type="unfinished"/>
+        <translation>終止畫格</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="179"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>輸出影片的第一個畫格</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="182"/>
         <source>Start Frame</source>
-        <translation type="unfinished"/>
+        <translation>起始畫格</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="207"/>
@@ -604,7 +604,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="213"/>
         <source>To the end of sound clips</source>
-        <translation type="unfinished"/>
+        <translation>輸出直到聲音片段結尾</translation>
     </message>
 </context>
 <context>
@@ -612,7 +612,7 @@
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="29"/>
         <source>Export Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>輸出GIF動畫</translation>
     </message>
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="31"/>
@@ -708,7 +708,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="135"/>
         <source>Import Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>匯入GIF動畫</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="136"/>
@@ -743,7 +743,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="151"/>
         <source>Export Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>匯出GIF動畫</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="152"/>
@@ -794,12 +794,12 @@
         <location filename="../core_lib/src/structure/filemanager.cpp" line="53"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="107"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>無法開啟檔案</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="54"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>檔案不存在所以無法開啟。請檢查檔案路徑。</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="108"/>
@@ -842,12 +842,12 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; 是個檔案，請刪除檔案再試一次。</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="376"/>
         <source>Miniz Error</source>
-        <translation type="unfinished"/>
+        <translation>Miniz 錯誤</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="393"/>
@@ -956,7 +956,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Estonian</source>
-        <translation type="unfinished"/>
+        <translation>愛沙尼亞語</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="102"/>
@@ -996,12 +996,12 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Polish</source>
-        <translation type="unfinished"/>
+        <translation>波蘭語</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Portuguese - Portugal</source>
-        <translation type="unfinished"/>
+        <translation>葡萄牙語 (葡萄牙)</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
@@ -1016,12 +1016,12 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>Slovenian</source>
-        <translation type="unfinished"/>
+        <translation>斯洛維尼雅語</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Vietnamese</source>
-        <translation type="unfinished"/>
+        <translation>越南語</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
@@ -1102,7 +1102,7 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="29"/>
         <source>Import Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>匯入GIF動畫</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="31"/>
@@ -1241,11 +1241,6 @@
         <location filename="../app/ui/mainwindow2.ui" line="250"/>
         <source>Save</source>
         <translation>儲存</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>另存為..</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
@@ -1562,12 +1557,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="875"/>
         <source>Quick Reference Guide</source>
-        <translation type="unfinished"/>
+        <translation>快速上手指南</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="878"/>
         <source>F1</source>
-        <translation type="unfinished"/>
+        <translation>F1</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="883"/>
@@ -1580,6 +1575,11 @@
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
         <translation>下一個關鍵影格</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
+        <translation>另存檔案為...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
@@ -1640,7 +1640,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="150"/>
         <source>Color inspector</source>
-        <translation type="unfinished"/>
+        <translation>顏色屬性</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="353"/>
@@ -1665,7 +1665,7 @@
         <location filename="../app/src/mainwindow2.cpp" line="524"/>
         <location filename="../app/src/mainwindow2.cpp" line="584"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>無法開啟檔案</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="506"/>
@@ -1750,31 +1750,31 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="783"/>
         <source>Importing image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>匯入連續圖片</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="831"/>
         <location filename="../app/src/mainwindow2.cpp" line="884"/>
         <source>was unable to import</source>
-        <translation type="unfinished"/>
+        <translation>無法匯入</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="858"/>
         <source>Importing Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>匯入GIF動畫</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1103"/>
         <location filename="../app/src/mainwindow2.cpp" line="1108"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1123"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>重做</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1273"/>
@@ -1788,7 +1788,7 @@
         <location filename="../core_lib/src/tool/movetool.cpp" line="372"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>切換圖層</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="373"/>
@@ -2029,13 +2029,13 @@
         <location filename="../app/src/main.cpp" line="208"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>錯誤：檔案 &apos;%1&apos; 不存在</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="213"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>錯誤：路徑 &apos;%1&apos; 不是一個檔案</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="241"/>
@@ -2058,20 +2058,20 @@
         <location filename="../app/src/main.cpp" line="294"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>匯出影片...</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="296"/>
         <location filename="../app/src/main.cpp" line="301"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished"/>
+        <translation>完成</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="299"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>輸出連續圖片中...</translation>
     </message>
 </context>
 <context>
@@ -2112,12 +2112,12 @@
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="166"/>
         <source>Checking environment...</source>
-        <translation type="unfinished"/>
+        <translation>檢查環境中...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="219"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>完成</translation>
     </message>
 </context>
 <context>
@@ -3515,12 +3515,12 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="27"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>無法開啟檔案</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="28"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
-        <translation type="unfinished"/>
+        <translation>處理檔案過程出現錯誤，您的檔案可能已經損毀。請下載新版的 Pencil2D 並嘗試再開啟一次，或者找出您的備份檔案。或者您可以聯絡 Pencil2D 的開發者：</translation>
     </message>
 </context>
 <context>
@@ -3882,12 +3882,12 @@
     <message>
         <location filename="../app/ui/timelinepage.ui" line="162"/>
         <source>Playback</source>
-        <translation type="unfinished"/>
+        <translation>播放</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="174"/>
         <source>Show onion skin while playing</source>
-        <translation type="unfinished"/>
+        <translation>播放動畫時顯示描圖紙</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>
@@ -3911,7 +3911,7 @@
     <message>
         <location filename="../app/src/toolbox.cpp" line="77"/>
         <source>Pencil Tool (%1): Sketch with pencil</source>
-        <translation type="unfinished"/>
+        <translation>鉛筆工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="79"/>
@@ -3921,27 +3921,27 @@
     <message>
         <location filename="../app/src/toolbox.cpp" line="81"/>
         <source>Move Tool (%1): Move an object</source>
-        <translation type="unfinished"/>
+        <translation>移動工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="83"/>
         <source>Hand Tool (%1): Move the canvas</source>
-        <translation type="unfinished"/>
+        <translation>手工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="85"/>
         <source>Pen Tool (%1): Sketch with pen</source>
-        <translation type="unfinished"/>
+        <translation>鋼筆工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="87"/>
         <source>Eraser Tool (%1): Erase</source>
-        <translation type="unfinished"/>
+        <translation>橡皮擦工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="89"/>
         <source>Polyline Tool (%1): Create line/curves</source>
-        <translation type="unfinished"/>
+        <translation>多邊形工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="91"/>
@@ -3951,7 +3951,7 @@
     <message>
         <location filename="../app/src/toolbox.cpp" line="93"/>
         <source>Brush Tool (%1): Paint smooth stroke with a brush</source>
-        <translation type="unfinished"/>
+        <translation>筆刷工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="95"/>
@@ -4001,7 +4001,7 @@
     <message>
         <location filename="../app/src/toolbox.cpp" line="116"/>
         <source>Polyline Tool (%1)</source>
-        <translation type="unfinished"/>
+        <translation>多邊形工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="118"/>
@@ -4011,17 +4011,17 @@
     <message>
         <location filename="../app/src/toolbox.cpp" line="120"/>
         <source>Brush Tool (%1)</source>
-        <translation type="unfinished"/>
+        <translation>筆刷工具 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="122"/>
         <source>Eyedropper Tool (%1)</source>
-        <translation type="unfinished"/>
+        <translation>滴管工具  (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="124"/>
         <source>Clear Tool (%1)</source>
-        <translation type="unfinished"/>
+        <translation>清除 (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="126"/>
@@ -4114,7 +4114,7 @@
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Pressure</source>
         <comment>Brush</comment>
-        <translation type="unfinished"/>
+        <translation>感壓</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="147"/>

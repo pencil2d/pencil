@@ -5,24 +5,24 @@
         <location filename="../app/ui/aboutdialog.ui" line="26"/>
         <source>About</source>
         <comment>About Dialog Window Title</comment>
-        <translation type="unfinished"/>
+        <translation>Om</translation>
     </message>
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
         <source>Official site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Thanks to Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Officiel side: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Udviklet af: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Tak til Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distribueret under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="43"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Version: %1</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="55"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Kopier til udklipsholder</translation>
     </message>
 </context>
 <context>
@@ -46,24 +46,24 @@
         <location filename="../app/src/actioncommands.cpp" line="80"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>Lag egenskaber</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="82"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>Lyd lag</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="201"/>
         <source>Exporting movie</source>
-        <translation type="unfinished"/>
+        <translation>Eksporter video</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="253"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
-        <translation type="unfinished"/>
+        <translation>Færdig. Åbn video?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="595"/>
@@ -71,7 +71,7 @@
         <location filename="../app/src/actioncommands.cpp" line="622"/>
         <location filename="../app/src/actioncommands.cpp" line="636"/>
         <source>Layer Properties</source>
-        <translation>Lag Præferencer</translation>
+        <translation>Lag Egenskaber</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="81"/>
@@ -90,27 +90,27 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Finished. Open file location?</source>
-        <translation type="unfinished"/>
+        <translation>Færdig. Åbn fil?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
         <source>Exporting image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>Eksporterer billedsekvens...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>Afbryd</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="394"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Advarsel</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="395"/>
         <source>Unable to export image.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke eksportere billede.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="597"/>
@@ -136,18 +136,18 @@
         <location filename="../app/src/actioncommands.cpp" line="655"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Slet lag</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="656"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation type="unfinished"/>
+        <translation>Er du sikker på at du vil slette laget:</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="665"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
-        <translation type="unfinished"/>
+        <translation>Behold venligst mindst et kamera lag i projektet</translation>
     </message>
 </context>
 <context>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="6"/>
         <source>Camera Properties</source>
-        <translation type="unfinished"/>
+        <translation>Kamera egenskaber</translation>
     </message>
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
@@ -232,7 +232,7 @@
         <location filename="../app/src/colorbox.cpp" line="26"/>
         <source>Color Box</source>
         <comment>Color Box window title</comment>
-        <translation type="unfinished"/>
+        <translation>Farveboks</translation>
     </message>
 </context>
 <context>
@@ -250,28 +250,28 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="157"/>
         <source>R</source>
-        <translation type="unfinished"/>
+        <translation>R</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="167"/>
         <source>A</source>
-        <translation type="unfinished"/>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="177"/>
         <source>G</source>
-        <translation type="unfinished"/>
+        <translation>G</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="213"/>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../app/src/colorinspector.cpp" line="35"/>
         <source>Color Inspector</source>
         <comment>Window title of color inspector</comment>
-        <translation type="unfinished"/>
+        <translation>Farveinspektor</translation>
     </message>
 </context>
 <context>
@@ -280,7 +280,7 @@
         <location filename="../app/ui/colorpalette.ui" line="14"/>
         <source>Color Palette</source>
         <comment>Window title of color palette.</comment>
-        <translation type="unfinished"/>
+        <translation>Farve palette</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="47"/>
@@ -295,57 +295,57 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="133"/>
         <source>Native color dialog window</source>
-        <translation type="unfinished"/>
+        <translation>Farvedialog vindue</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="258"/>
         <source>List Mode</source>
-        <translation type="unfinished"/>
+        <translation>Liste tilstand</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="261"/>
         <source>Show palette as a list</source>
-        <translation type="unfinished"/>
+        <translation>Vis palette som liste</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="269"/>
         <source>Grid Mode</source>
-        <translation type="unfinished"/>
+        <translation>Gittertilstand</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="272"/>
         <source>Show palette as icons</source>
-        <translation type="unfinished"/>
+        <translation>Vis palette som ikoner</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="282"/>
         <source>Small swatch</source>
-        <translation type="unfinished"/>
+        <translation>Lille farverude</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="285"/>
         <source>Sets swatch size to: 16x16px</source>
-        <translation type="unfinished"/>
+        <translation>Sætter farveruden til 16x16px</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="293"/>
         <source>Medium Swatch</source>
-        <translation type="unfinished"/>
+        <translation>Medium farverude</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="296"/>
         <source>Sets swatch size to: 26x26px</source>
-        <translation type="unfinished"/>
+        <translation>Sætter farveruden til 26x26px</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="307"/>
         <source>Large Swatch</source>
-        <translation type="unfinished"/>
+        <translation>Stor farverude</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="310"/>
         <source>Sets swatch size to: 36x36px</source>
-        <translation type="unfinished"/>
+        <translation>Sætter farveruden til 36x36px</translation>
     </message>
 </context>
 <context>
@@ -353,17 +353,17 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Replace</source>
-        <translation type="unfinished"/>
+        <translation>Erstat</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Fjern</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="227"/>
@@ -374,27 +374,27 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="532"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation type="unfinished"/>
+        <translation>Farven(-erne) du er ved at slette, er aktuelt brugt af en eller flere strøg.</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="533"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="534"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Slet</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="550"/>
         <source>Palette Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Palet begrænsning</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="551"/>
         <source>The palette requires at least one swatch to remain functional</source>
-        <translation type="unfinished"/>
+        <translation>Paletten kræver mindst en funktionel farverude</translation>
     </message>
 </context>
 <context>
@@ -403,7 +403,7 @@
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation type="unfinished"/>
+        <translation>Farvehjul</translation>
     </message>
 </context>
 <context>
@@ -411,7 +411,7 @@
     <message>
         <location filename="../app/ui/displayoption.ui" line="67"/>
         <source>Horizontal flip</source>
-        <translation type="unfinished"/>
+        <translation>Horisontal flip</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="44"/>
@@ -422,13 +422,13 @@
         <location filename="../app/ui/displayoption.ui" line="221"/>
         <location filename="../app/ui/displayoption.ui" line="259"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="14"/>
         <source>Display</source>
         <comment>Window title of display options like .</comment>
-        <translation type="unfinished"/>
+        <translation>Visning</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="125"/>
@@ -1243,11 +1243,6 @@
         <translation>Gem</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>Gem Som ..</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
         <source>Exit</source>
         <translation>Afslut</translation>
@@ -1416,7 +1411,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="527"/>
         <source>Loop</source>
-        <translation>Lykke</translation>
+        <translation>Løkke</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="536"/>
@@ -1461,7 +1456,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="613"/>
         <source>Brush</source>
-        <translation>Pencel</translation>
+        <translation>Pensel</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="622"/>
@@ -1579,6 +1574,11 @@
         <location filename="../app/ui/mainwindow2.ui" line="754"/>
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1896,7 +1896,7 @@
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Light Skin - shade</source>
-        <translation>Lys hyd - skygge</translation>
+        <translation>Lys hud - skygge</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="561"/>
@@ -3594,7 +3594,7 @@
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1993"/>
         <source>Flood fill error</source>
-        <translation>Fejl ved Oversvømmelses fyldning</translation>
+        <translation>Fejl ved farveudfyldning</translation>
     </message>
 </context>
 <context>
@@ -3675,7 +3675,7 @@
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
         <source>Loop</source>
-        <translation>Lykke</translation>
+        <translation>Løkke</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>

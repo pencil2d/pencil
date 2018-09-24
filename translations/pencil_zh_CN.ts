@@ -1243,11 +1243,6 @@
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>另存为...</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
         <source>Exit</source>
         <translation>退出</translation>
@@ -1580,6 +1575,11 @@
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
         <translation>后一关键帧</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
+        <translation>另存为...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
