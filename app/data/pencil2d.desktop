@@ -15,6 +15,9 @@ Keywords=picture;drawing;vector;bitmap;cartoon;
 
 
 # Translations
+
+
+# Translations
 Name[he]=Pencil2D
 GenericName[he]=תוכנת הנפשה
 Comment[he]=צרו הנפשה מסורתית מצויירת ביד באמצעות כלי מפת ביטים וכלים וקטוריים
@@ -41,6 +44,10 @@ Name[cs]=Pencil2D
 GenericName[cs]=Animační program
 Comment[cs]=Tvořte tradiční ručně kreslenou animaci pomocí bitmapové i vektorové grafiky
 Icon[cs]=pencil2d
+Name[da]=Pencil2D
+GenericName[da]=Animationssoftware
+Comment[da]=Lav traditionel håndtegnet animation, ved brug af både bitmap og vektorgrafik
+Icon[da]=pencil2d
 Name[de]=Pencil2D
 GenericName[de]=Animationssoftware
 Comment[de]=Traditionelle handgezeichnete Animation sowohl mit Raster- als auch mit Vektorgrafik schaffen
@@ -49,6 +56,10 @@ Name[sl]=Svinčnik2D
 GenericName[sl]=Program za animacijo
 Comment[sl]=Ustvarite tradicionalno ročno risano animacijo s pomočjo bitne in vektorske grafike
 Icon[sl]=pencil2d
+Name[hu_HU]=Pencil2D
+GenericName[hu_HU]=Animációs Szoftver
+Comment[hu_HU]=A Pencil2D egy animáció készítő/rajzoló szoftver Mac OS X, Windows és Linux rendszerekre. Hagyományos, kézzel rajzolt animációk készítésére alkalmas. Bitkép és vagy vektorgrafika használatával.
+Icon[hu_HU]=pencil2d
 Name[es]=Pencil2D
 GenericName[es]=Programa de Animación
 Comment[es]=Crea animaciones tradicionales hechas a mano usando mapas de bits o vectores gráficos
@@ -73,3 +84,5 @@ Name[zh_TW]=Pencil2D
 GenericName[zh_TW]=動畫軟體
 Comment[zh_TW]=利用點陣圖跟向量圖兩種方式創作傳統手繪動畫
 Icon[zh_TW]=pencil2d
+Name[kab]=Pencil2D
+Icon[kab]=pencil2d
