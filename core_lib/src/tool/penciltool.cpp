@@ -317,14 +317,14 @@ void PencilTool::drawStroke()
     else if (layer->type() == Layer::VECTOR)
     {
         properties.useFeather = false;
-        properties.width = 0;
+        mCurrentWidth = 0;
         QPen pen(mEditor->color()->frontColor(),
                  1,
                  Qt::DotLine,
                  Qt::RoundCap,
                  Qt::RoundJoin);
 
-        int rad = qRound((properties.width / 2 + 2) * mEditor->view()->scaling());
+        int rad = qRound((mCurrentWidth / 2 + 2) * mEditor->view()->scaling());
 
         if (p.size() == 4)
         {
