@@ -403,7 +403,7 @@
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation type="unfinished"/>
+        <translation>Roda de Cores</translation>
     </message>
 </context>
 <context>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="157"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>O último quadro a incluir no vídeo exportado</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="160"/>
@@ -589,7 +589,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="179"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>O primeiro quadro a incluir no vídeo exportado</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="182"/>
@@ -799,12 +799,12 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="54"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo não existe, por isso não podemos abri-lo. Por favor, verifique se o caminho está correto e que o arquivo pode ser acessado e tente novamente.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="108"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Este programa não tem permissão para ler o arquivo selecionado. Por favor, verifique se o arquivo pode ser lido e tente novamente.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="228"/>
@@ -956,7 +956,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Estonian</source>
-        <translation type="unfinished"/>
+        <translation>Estoniano</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="102"/>
@@ -1241,11 +1241,6 @@
         <location filename="../app/ui/mainwindow2.ui" line="250"/>
         <source>Save</source>
         <translation>Salvar</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>Salvar como...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
@@ -1582,6 +1577,11 @@
         <translation>Próximo quadro-chave</translation>
     </message>
     <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
+        <translation>Salvar como...</translation>
+    </message>
+    <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
         <location filename="../app/ui/mainwindow2.ui" line="770"/>
         <source>Previous KeyFrame</source>
@@ -1713,7 +1713,7 @@ Você limpou a lista com sucesso</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="585"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
-        <translation type="unfinished"/>
+        <translation>Um erro desconhecido ocorreu ao tentar carregar o arquivo. Não foi possível carregar seu arquivo.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>

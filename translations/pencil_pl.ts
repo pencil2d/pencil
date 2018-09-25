@@ -1244,11 +1244,6 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>Zapisz jako ..</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
         <source>Exit</source>
         <translation>Zamknij</translation>
@@ -1581,6 +1576,11 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
         <translation>Następna kluczowa klatka</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>

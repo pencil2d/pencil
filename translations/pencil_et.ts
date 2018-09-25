@@ -90,7 +90,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Finished. Open file location?</source>
-        <translation type="unfinished"/>
+        <translation>Lõpetatud. Kas avada faili asukoht?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
@@ -353,17 +353,17 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Lisa</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Replace</source>
-        <translation type="unfinished"/>
+        <translation>Asenda</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="227"/>
@@ -379,12 +379,12 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="533"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Loobu</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="534"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Kustuta</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="550"/>
@@ -403,7 +403,7 @@
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation type="unfinished"/>
+        <translation>Värviratas</translation>
     </message>
 </context>
 <context>
@@ -574,7 +574,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="111"/>
         <source>Range</source>
-        <translation type="unfinished"/>
+        <translation>Vahemik</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="157"/>
@@ -584,7 +584,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="160"/>
         <source>End Frame</source>
-        <translation type="unfinished"/>
+        <translation>Lõpukaader</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="179"/>
@@ -594,7 +594,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="182"/>
         <source>Start Frame</source>
-        <translation type="unfinished"/>
+        <translation>Alguse kaader</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="207"/>
@@ -956,7 +956,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Estonian</source>
-        <translation type="unfinished"/>
+        <translation>Eesti</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="102"/>
@@ -996,7 +996,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Polish</source>
-        <translation type="unfinished"/>
+        <translation>Poola</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
@@ -1243,11 +1243,6 @@
         <translation>Salvesta</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>Salvesta kui ...</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
         <source>Exit</source>
         <translation>Välju</translation>
@@ -1466,12 +1461,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="622"/>
         <source>Polyline</source>
-        <translation type="unfinished"/>
+        <translation>Hulknurk</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="631"/>
         <source>Smudge</source>
-        <translation type="unfinished"/>
+        <translation>Hägustamine</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="640"/>
@@ -1496,7 +1491,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="676"/>
         <source>Eyedropper</source>
-        <translation type="unfinished"/>
+        <translation>Värvi valija</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="685"/>
@@ -1573,13 +1568,18 @@
         <location filename="../app/ui/mainwindow2.ui" line="883"/>
         <location filename="../app/ui/mainwindow2.ui" line="888"/>
         <source>Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>Animeeritud GIF...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="754"/>
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
+        <translation>Salvesta kui ...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
@@ -1667,7 +1667,7 @@ Nimekiri on tühjendatud</translation>
         <location filename="../app/src/mainwindow2.cpp" line="524"/>
         <location filename="../app/src/mainwindow2.cpp" line="584"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Faili avamine ebaõnnestus</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="506"/>
@@ -1763,7 +1763,7 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="858"/>
         <source>Importing Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>Animeeritud GIF-i importimine...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1103"/>
@@ -2132,12 +2132,12 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</source>
-        <translation type="unfinished"/>
+        <translation>PIldid (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</source>
-        <translation type="unfinished"/>
+        <translation>PIldid (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
@@ -2432,22 +2432,22 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="332"/>
         <source>Deep Orange</source>
-        <translation type="unfinished"/>
+        <translation>Sügav oraanž</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="333"/>
         <source>Light Orange</source>
-        <translation type="unfinished"/>
+        <translation>Heleoraanž</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="334"/>
         <source>Moderate Orange</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine oraanž</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="335"/>
         <source>Brownish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Pruunikas oraanž</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="336"/>
@@ -2457,22 +2457,22 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="337"/>
         <source>Deep Brown</source>
-        <translation type="unfinished"/>
+        <translation>Sügav pruun</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="338"/>
         <source>Light Brown</source>
-        <translation type="unfinished"/>
+        <translation>Helepruun</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="339"/>
         <source>Moderate Brown</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine pruun</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="340"/>
         <source>Dark Brown</source>
-        <translation type="unfinished"/>
+        <translation>Tumepruun</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="341"/>
@@ -2482,27 +2482,27 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="342"/>
         <source>Grayish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Hallikaspruun</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="343"/>
         <source>Dark Grayish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Tume hallikaspruun</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="344"/>
         <source>Light Brownish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Hele pruunikashall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="345"/>
         <source>Brownish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Pruunikashall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="346"/>
         <source>Brownish Black</source>
-        <translation type="unfinished"/>
+        <translation>Pruunikasmust</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="347"/>
@@ -2617,32 +2617,32 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="369"/>
         <source>Dark Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Tumekollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="370"/>
         <source>Pale Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Kahvatu kollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="371"/>
         <source>Grayish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Hallikaskollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="372"/>
         <source>Dark Grayish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Tume hallikaskollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="373"/>
         <source>Yellowish White</source>
-        <translation type="unfinished"/>
+        <translation>Kollakasvalge</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="374"/>
         <source>Yellowish Gray</source>
-        <translation type="unfinished"/>
+        <translation>ollakashall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="375"/>
@@ -2677,27 +2677,27 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="381"/>
         <source>Deep Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Sügav rohekaskollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="382"/>
         <source>Light Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Hele rohekaskollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="383"/>
         <source>Moderate Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine rohekaskollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="384"/>
         <source>Dark Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Tume rohekaskollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="385"/>
         <source>Pale Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Kahvatu rohekaskollane</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="386"/>
@@ -2707,12 +2707,12 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="387"/>
         <source>Light Olive</source>
-        <translation type="unfinished"/>
+        <translation>Hele oliiv</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="388"/>
         <source>Moderate Olive</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine oliiv</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="389"/>
@@ -2747,7 +2747,7 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="395"/>
         <source>Olive Black</source>
-        <translation type="unfinished"/>
+        <translation>Oliivimust</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="396"/>
@@ -2772,17 +2772,17 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="400"/>
         <source>Light Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Hele kollakasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="401"/>
         <source>Moderate Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine kollakasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="402"/>
         <source>Pale Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Kahvatu kollakasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="403"/>
@@ -2792,22 +2792,22 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="404"/>
         <source>Strong Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Tugev oliiviroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="405"/>
         <source>Deep Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Sügav oliiviroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="406"/>
         <source>Moderate Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine oliiviroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="407"/>
         <source>Dark Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Tume oliiviroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="408"/>
@@ -2857,17 +2857,17 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="417"/>
         <source>Moderate Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine kollakasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="418"/>
         <source>Dark Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Tume kollakasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="419"/>
         <source>Very Dark Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Väga tume kollakasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="420"/>
@@ -2882,12 +2882,12 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="422"/>
         <source>Strong Green</source>
-        <translation type="unfinished"/>
+        <translation>Tugev roheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="423"/>
         <source>Deep Green</source>
-        <translation type="unfinished"/>
+        <translation>Sügav roheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="424"/>
@@ -2897,72 +2897,72 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="425"/>
         <source>Light Green</source>
-        <translation type="unfinished"/>
+        <translation>Heleroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="426"/>
         <source>Moderate Green</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine roheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="427"/>
         <source>Dark Green</source>
-        <translation type="unfinished"/>
+        <translation>Tumeroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="428"/>
         <source>Very Dark Green</source>
-        <translation type="unfinished"/>
+        <translation>Väga tume roheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="429"/>
         <source>Very Pale Green</source>
-        <translation type="unfinished"/>
+        <translation>Väga kahvatu roheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="430"/>
         <source>Pale Green</source>
-        <translation type="unfinished"/>
+        <translation>Kahvatu roheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="431"/>
         <source>Grayish Green</source>
-        <translation type="unfinished"/>
+        <translation>Hallikasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="432"/>
         <source>Dark Grayish Green</source>
-        <translation type="unfinished"/>
+        <translation>Tume hallikasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="433"/>
         <source>Blackish Green</source>
-        <translation type="unfinished"/>
+        <translation>Mustjasroheline</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="434"/>
         <source>Greenish White</source>
-        <translation type="unfinished"/>
+        <translation>Rohekasvalge</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="435"/>
         <source>Light Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Hele rohekasvalge</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="436"/>
         <source>Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Rohekashall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="437"/>
         <source>Dark Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Tume rohekashall</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="438"/>
         <source>Greenish Black</source>
-        <translation type="unfinished"/>
+        <translation>Rohekasmust</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="439"/>
@@ -3072,47 +3072,47 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="460"/>
         <source>Deep Blue</source>
-        <translation type="unfinished"/>
+        <translation>Sügav sinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="461"/>
         <source>Very Light Blue</source>
-        <translation type="unfinished"/>
+        <translation>Väga hele sinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="462"/>
         <source>Light Blue</source>
-        <translation type="unfinished"/>
+        <translation>Helesinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="463"/>
         <source>Moderate Blue</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine sinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="464"/>
         <source>Dark Blue</source>
-        <translation type="unfinished"/>
+        <translation>Tumesinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="465"/>
         <source>Very Pale Blue</source>
-        <translation type="unfinished"/>
+        <translation>Väga hakvatu sinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="466"/>
         <source>Pale Blue</source>
-        <translation type="unfinished"/>
+        <translation>Kahvatu sinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="467"/>
         <source>Grayish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Hallikassinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="468"/>
         <source>Dark Grayish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Tume hallikassinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="469"/>
@@ -3172,22 +3172,22 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="480"/>
         <source>Light Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Hele lillakassinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="481"/>
         <source>Moderate Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine lillakassinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="482"/>
         <source>Dark Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Tume lillakassinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="483"/>
         <source>Very Pale Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Väga kahvatu lillakassinine</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="484"/>
@@ -3272,42 +3272,42 @@ Nimekiri on tühjendatud</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="500"/>
         <source>Deep Purple</source>
-        <translation type="unfinished"/>
+        <translation>Sügav lilla</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="501"/>
         <source>Very Deep Purple</source>
-        <translation type="unfinished"/>
+        <translation>Väga sügav lilla</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="502"/>
         <source>Very Light Purple</source>
-        <translation type="unfinished"/>
+        <translation>Väga hele lilla</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="503"/>
         <source>Light Purple</source>
-        <translation type="unfinished"/>
+        <translation>Helelilla</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="504"/>
         <source>Moderate Purple</source>
-        <translation type="unfinished"/>
+        <translation>Keskmine lilla</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="505"/>
         <source>Dark Purple</source>
-        <translation type="unfinished"/>
+        <translation>Tumelilla</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="506"/>
         <source>Very Dark Purple</source>
-        <translation type="unfinished"/>
+        <translation>Väga tume lilla</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="507"/>
         <source>Very Pale Purple</source>
-        <translation type="unfinished"/>
+        <translation>Väga kahvatu lilla</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="508"/>

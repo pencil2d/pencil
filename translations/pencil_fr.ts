@@ -90,7 +90,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Finished. Open file location?</source>
-        <translation type="unfinished"/>
+        <translation>Fini. Ouvrir l&apos;emplacement du fichier?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
@@ -232,7 +232,7 @@
         <location filename="../app/src/colorbox.cpp" line="26"/>
         <source>Color Box</source>
         <comment>Color Box window title</comment>
-        <translation type="unfinished"/>
+        <translation>Boîte Couleur</translation>
     </message>
 </context>
 <context>
@@ -250,28 +250,28 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="157"/>
         <source>R</source>
-        <translation type="unfinished"/>
+        <translation>R</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="167"/>
         <source>A</source>
-        <translation type="unfinished"/>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="177"/>
         <source>G</source>
-        <translation type="unfinished"/>
+        <translation>G</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="213"/>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../app/src/colorinspector.cpp" line="35"/>
         <source>Color Inspector</source>
         <comment>Window title of color inspector</comment>
-        <translation type="unfinished"/>
+        <translation>Inspecteur Couleur</translation>
     </message>
 </context>
 <context>
@@ -295,7 +295,7 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="133"/>
         <source>Native color dialog window</source>
-        <translation type="unfinished"/>
+        <translation>Fenêtre de dialogue de couleur native</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="258"/>
@@ -353,17 +353,17 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Replace</source>
-        <translation type="unfinished"/>
+        <translation>Remplacer</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="227"/>
@@ -374,27 +374,27 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="532"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation type="unfinished"/>
+        <translation>La ou les couleur(s) que vous êtes sur le point de supprimer sont actuellement utilisées par un ou plusieurs traits.</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="533"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="534"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Effacer</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="550"/>
         <source>Palette Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Restriction de palette</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="551"/>
         <source>The palette requires at least one swatch to remain functional</source>
-        <translation type="unfinished"/>
+        <translation>La palette nécessite qu&apos;au moins un échantillon reste fonctionnel</translation>
     </message>
 </context>
 <context>
@@ -403,7 +403,7 @@
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation type="unfinished"/>
+        <translation>Roue Couleurs</translation>
     </message>
 </context>
 <context>
@@ -575,37 +575,37 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="111"/>
         <source>Range</source>
-        <translation type="unfinished"/>
+        <translation>Gamme</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="157"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>La dernière image que vous voulez inclure dans le film exporté</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="160"/>
         <source>End Frame</source>
-        <translation type="unfinished"/>
+        <translation>Cadre de fin</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="179"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>La première image que vous souhaitez inclure dans le film exporté</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="182"/>
         <source>Start Frame</source>
-        <translation type="unfinished"/>
+        <translation>Démarrer le cadre</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="207"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;L&apos;image de fin est définie sur la dernière image clé à peindre (utile lorsque vous souhaitez uniquement exporter vers la dernière image animée)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="213"/>
         <source>To the end of sound clips</source>
-        <translation type="unfinished"/>
+        <translation>À la fin des clips sonores</translation>
     </message>
 </context>
 <context>
@@ -613,7 +613,7 @@
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="29"/>
         <source>Export Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Exporter un GIF animé</translation>
     </message>
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="31"/>
@@ -709,7 +709,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="135"/>
         <source>Import Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Importer un GIF animé</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="136"/>
@@ -744,7 +744,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="151"/>
         <source>Export Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Exporter un GIF animé</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="152"/>
@@ -765,7 +765,7 @@
         <location filename="../app/src/filedialogex.cpp" line="167"/>
         <location filename="../app/src/filedialogex.cpp" line="183"/>
         <source>Animated GIF (*.gif)</source>
-        <translation type="unfinished"/>
+        <translation>GIF animé (*.gif)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="169"/>
@@ -776,12 +776,12 @@
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
         <source>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</source>
-        <translation type="unfinished"/>
+        <translation>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="226"/>
@@ -795,17 +795,17 @@
         <location filename="../core_lib/src/structure/filemanager.cpp" line="53"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="107"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;ouvrir le fichier</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="54"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier n&apos;existe pas, nous ne pouvons donc pas l&apos;ouvrir. Veuillez vérifier que le chemin est correct et que le fichier est accessible et réessayez.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="108"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ce programme n&apos;est pas autorisé à lire le fichier que vous avez sélectionné. Veuillez vérifier que vous avez lu les autorisations pour ce fichier et réessayez.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="228"/>
@@ -848,7 +848,7 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="376"/>
         <source>Miniz Error</source>
-        <translation type="unfinished"/>
+        <translation>Erreur Miniz</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="393"/>
@@ -957,7 +957,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Estonian</source>
-        <translation type="unfinished"/>
+        <translation>Estonien</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="102"/>
@@ -997,7 +997,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Polish</source>
-        <translation type="unfinished"/>
+        <translation>Polonais</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
@@ -1103,7 +1103,7 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="29"/>
         <source>Import Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Importer un GIF animé</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="31"/>
@@ -1242,11 +1242,6 @@
         <location filename="../app/ui/mainwindow2.ui" line="250"/>
         <source>Save</source>
         <translation>Enregistrer</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
-        <source>Save As ..</source>
-        <translation>Enregistrer sous...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
@@ -1574,13 +1569,18 @@
         <location filename="../app/ui/mainwindow2.ui" line="883"/>
         <location filename="../app/ui/mainwindow2.ui" line="888"/>
         <source>Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>GIF animé...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="754"/>
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
         <translation>Image suivante</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <source>Save As...</source>
+        <translation>Enregistrer sous...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
@@ -1641,7 +1641,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="150"/>
         <source>Color inspector</source>
-        <translation type="unfinished"/>
+        <translation>Inspecteur de couleur</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="353"/>
@@ -1668,22 +1668,22 @@ Vous avez effacé la liste avec succès</translation>
         <location filename="../app/src/mainwindow2.cpp" line="524"/>
         <location filename="../app/src/mainwindow2.cpp" line="584"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;ouvrir le fichier</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="506"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier que vous avez sélectionné est un répertoire, nous ne pouvons donc pas l’ouvrir. Si vous essayez d&apos;ouvrir un projet qui utilise l&apos;ancienne structure, ouvrez le fichier se terminant par .pcl, pas le dossier de données.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="516"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please check to make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier que vous avez sélectionné n’existe pas, nous ne pouvons donc pas l’ouvrir. Veuillez vérifier que vous avez entré le bon chemin et que le fichier est accessible et réessayez.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ce programme n&apos;est pas autorisé à lire le fichier que vous avez sélectionné. Veuillez vérifier que vous avez lu les autorisations pour ce fichier et réessayez.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="534"/>
@@ -1697,7 +1697,7 @@ Vous avez effacé la liste avec succès</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="535"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
-        <translation type="unfinished"/>
+        <translation>Ce programme n&apos;est actuellement pas autorisé à écrire dans le fichier que vous avez sélectionné. Assurez-vous d&apos;avoir une autorisation en écriture pour ce fichier avant de tenter de l&apos;enregistrer. Vous pouvez également utiliser l&apos;option de menu Enregistrer sous... Pour enregistrer dans un emplacement accessible en écriture.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="541"/>
@@ -1715,7 +1715,7 @@ Vous avez effacé la liste avec succès</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="585"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur inconnue s&apos;est produite lors de la tentative de chargement du fichier et nous ne sommes pas en mesure de charger votre fichier.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>
@@ -1766,7 +1766,7 @@ Voulez-vous enregistrer maintenant?</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="858"/>
         <source>Importing Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>Importation GIF animé...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1103"/>
@@ -1793,12 +1793,12 @@ Voulez-vous enregistrer maintenant?</translation>
         <location filename="../core_lib/src/tool/movetool.cpp" line="372"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Commutateur de couche</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="373"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
-        <translation type="unfinished"/>
+        <translation>Vous êtes sur le point de changer de couche, voulez-vous appliquer la transformation?</translation>
     </message>
 </context>
 <context>
@@ -2135,12 +2135,12 @@ Voulez-vous enregistrer maintenant?</translation>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</source>
-        <translation type="unfinished"/>
+        <translation>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</source>
-        <translation type="unfinished"/>
+        <translation>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
@@ -3520,12 +3520,12 @@ Voulez-vous enregistrer maintenant?</translation>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="27"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;ouvrir le fichier</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="28"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur s&apos;est produite lors du traitement de votre fichier. Cela signifie généralement que votre projet a été au moins partiellement corrompu. Vous pouvez réessayer avec une version plus récente de Pencil2D, ou vous pouvez essayer d&apos;utiliser un fichier de sauvegarde si vous en avez un. Si vous nous contactez via l&apos;un de nos canaux officiels, nous pourrons vous aider. Pour les problèmes de rapport, les meilleurs endroits pour nous contacter sont:</translation>
     </message>
 </context>
 <context>
@@ -3887,12 +3887,12 @@ Voulez-vous enregistrer maintenant?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="162"/>
         <source>Playback</source>
-        <translation type="unfinished"/>
+        <translation>Lecture</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="174"/>
         <source>Show onion skin while playing</source>
-        <translation type="unfinished"/>
+        <translation>Montrer la peau d&apos;oignon en jouant</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>
