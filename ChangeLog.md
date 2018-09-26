@@ -1,4 +1,52 @@
-## Pencil2D 0.6.2 - (WIP)
+## Pencil2D 0.6.2 - 26 September 2018
+
+* #378 Disable onion skins while playing animation.
+* #444 Polyline tool displayed glitch while using canvas pan function.
+* #662 Move tool shouldn't make new selection area.
+* #744 Restore the UI panel's positions after restaring Pencil2D.
+* #881 Selection Tool corner area for dragging was too small.
+* #907 File leaking of the default project.
+* #908 Stablizer was reset to default value after restarting Pencil2D.
+* #915 Insert a new keyframe when drawing on an empty key-frame.
+* #920 Bitmap layer doesn't refresh after deleting a layer.
+* #938 Backup project before saving.
+* #942 Brought the "Remove Colour" button back to Palette panel.
+* #950 Pencil2D crashes when attempting to modify a non-existing first (key)frame.
+* #958 Renaming a color in palette was not working.
+* #960 Cameras didn't move in exported videos.
+* #963 Showing a warning pop-up for saving file before opening another project.
+* #973 Resizing a selected area proportionally did not work with modifier shift key.
+* #974 Click+drag outside the selected area does not create new selection.
+* #975 Timeline extends its length automatically when reaching 70% of the current length.
+* #979 Optimize bucket fill algorithm with cache.
+* #982 Exporting a movie any size lower than camera resolution exports a single image.
+* #992 Lock zoom when using certain tools.
+* #994 Color swatch name was assigned incorrectly under certain conditions.
+* #995 Supports Gimp palette format import/export.
+* #997 Added range settings to image sequence export.
+* #999 Canvas view didn't update immediately after changing camera resolutions.
+* #1002 Excessive RAM usage while exporting a long project may leads to a crash.
+* #1007 Line stablizer level was shared between tools.
+* #1008 Improved GIF UI/UX import/export.
+* #1010 Camera motion didn't work on exported gif. Misc movie export fixes.
+* #1012 Fixed frame loss during saving if moving frames around frequently.
+* #1025 Trimmed tab titles in Color Inspector.
+* #1028 Showing the proper icon color when selected.
+* #1039 Addded command line completion for bash and zsh.
+* #1040 Timeline didn't extend to a correct length when opening a super long project.
+* #1043 Opening the same project twice in a row may causes content loss.
+* #1048 Crash on file loading after drawing on vectors layers.
+* #1051 Reimplement autocropping.
+* #1058 Improve vector eraser tool precision.
+* #1060 Refactor the audio assemble step by using ffmpeg.
+* Updated Catch2 unit test framework to 2.4.0.
+* Updated miniz library to 2.0.7.
+* Updated macOS ffmpeg version to 3.4.2.
+* Doubled active frame pool size to 400 under 64bit versions.
+* Added a camera layer if cannot find a camera layer from the loaded project.
+* Added translation: Estonian, Polish, Simplified Chinese.
+* Fixed a saving failure if the file path contains unicode characters on Windows platform.
+* Fixed vector layers displaying the top-left quarter of canvas only.
 
 ## Pencil2D 0.6.1 - 15 April 2018
 
