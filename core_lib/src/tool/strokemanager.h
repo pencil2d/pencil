@@ -61,6 +61,7 @@ public:
     QPointF getLastPixel() const { return mLastPixel; }
     QPointF getLastMeanPixel() const { return mLastInterpolated; }
     QPointF getMousePos() const { return mousePos; }
+    bool isPenPressed() const { return mPenIsHeld; }
 
 private:
 
@@ -89,6 +90,8 @@ private:
     bool    mStrokeStarted = false;
 
     bool    mTabletInUse = false;
+
+    bool mPenIsHeld = true;
     float   mTabletPressure = 1.f;
     int     mStabilizerLevel = 0;
     qreal mMeanPressure;

@@ -114,6 +114,21 @@ void BaseTool::mouseDoubleClickEvent(QMouseEvent* event)
     mousePressEvent(event);
 }
 
+
+/**
+ * @brief BaseTool::isDrawingTool - A drawing tool is anything that applies something to the canvas.
+ * SELECT and MOVE does not count here because they modify already applied content.
+ * @return true if not a drawing tool and false otherwise
+ */
+bool BaseTool::isDrawingTool()
+{
+    if (type() == ToolType::HAND || type() == ToolType::MOVE || type() == ToolType::SELECT )
+    {
+        return false;
+    }
+    return true;
+}
+
 /**
  * @brief precision circular cursor: used for drawing a cursor within scribble area.
  * @return QPixmap
@@ -304,8 +319,11 @@ void BaseTool::stopAdjusting()
     mEditor->getScribbleArea()->updateCanvasCursor();
 }
 
-void BaseTool::adjustCursor(qreal argOffsetX, ToolPropertyType propertyType) //offsetx x-lastx ...
+void BaseTool::adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod) //offsetx x-lastx ...
 {
+    ToolPropertyType propertyType;
+    propertyType = (keyMod & Qt::ControlModifier) ? FEATHER : WIDTH;
+
     qreal inc = qPow(OriginalSettingValue * 100, 0.5);
     qreal newValue = inc + argOffsetX;
     int max = (propertyType == FEATHER) ? 64 : 200;

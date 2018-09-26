@@ -97,8 +97,12 @@ void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
 
 void StrokeManager::tabletEvent(QTabletEvent* event)
 {
-    if (event->type() == QEvent::TabletPress) { mTabletInUse = true; }
-    if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; }
+    if (event->type() == QEvent::TabletPress) {
+        mTabletInUse = true;
+        mPenIsHeld = true;
+        mLastPressPixel = event->posF();
+    }
+    if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; mPenIsHeld = false; }
 
     setPressure(event->pressure());
 

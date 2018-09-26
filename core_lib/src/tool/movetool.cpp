@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "toolmanager.h"
 #include "viewmanager.h"
+#include "strokemanager.h"
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
@@ -55,12 +56,52 @@ QCursor MoveTool::cursor()
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
 
+void MoveTool::tabletPressEvent(QTabletEvent *event)
+{
+    mCurrentLayer = currentPaintableLayer();
+    beginInteraction(event->modifiers(), mCurrentLayer);
+
+}
+
+void MoveTool::tabletMoveEvent(QTabletEvent *event)
+{
+    mCurrentLayer = currentPaintableLayer();
+
+    if (m_pStrokeManager->isPenPressed())   // the user is also pressing the mouse (dragging)
+    {
+        transformSelection(event->modifiers(), mCurrentLayer);
+    }
+    else
+    {
+        // the user is hovering the pen over the tablet
+        // update cursor to reflect selection corner interaction
+        mScribbleArea->updateToolCursor();
+
+        if (mCurrentLayer->type() == Layer::VECTOR)
+        {
+            storeClosestVectorCurve(mCurrentLayer);
+        }
+    }
+    mScribbleArea->updateCurrentFrame();
+}
+
+void MoveTool::tabletReleaseEvent(QTabletEvent*)
+{
+    if (!mScribbleArea->isSomethingSelected())
+        return;
+
+    mRotatedAngle = mScribbleArea->myRotatedAngle;
+    updateTransformation();
+
+    mScribbleArea->updateToolCursor();
+    mScribbleArea->updateCurrentFrame();
+}
+
 void MoveTool::mousePressEvent(QMouseEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
-    if (event->button() != Qt::LeftButton) { return; }
-
-    beginInteraction(event, mCurrentLayer);
+    setAnchorToLastPoint();
+    beginInteraction(event->modifiers(), mCurrentLayer);
 }
 
 void MoveTool::mouseReleaseEvent(QMouseEvent*)
@@ -81,7 +122,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent* event)
 
     if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
     {
-        transformSelection(event, mCurrentLayer);
+        transformSelection(event->modifiers(), mCurrentLayer);
     }
     else
     {
@@ -109,7 +150,7 @@ void MoveTool::updateTransformation()
     paintTransformedSelection();
 }
 
-void MoveTool::transformSelection(QMouseEvent* event, Layer* layer)
+void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
 {
     if (mScribbleArea->isSomethingSelected())
     {
@@ -125,7 +166,7 @@ void MoveTool::transformSelection(QMouseEvent* event, Layer* layer)
         }
 
         // maintain aspect ratio
-        if (event->modifiers() == Qt::ShiftModifier)
+        if (keyMod == Qt::ShiftModifier)
         {
             offset = maintainAspectRatio(offset.x(), offset.y());
         }
@@ -141,12 +182,8 @@ void MoveTool::transformSelection(QMouseEvent* event, Layer* layer)
     }
 }
 
-void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
+void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
 {
-    if (event->buttons() & Qt::LeftButton)
-    {
-        setAnchorToLastPoint();
-    }
 
     QRectF selectionRect = mScribbleArea->myTransformedSelection;
     if (!selectionRect.isNull())
@@ -157,7 +194,7 @@ void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
     mScribbleArea->findMoveModeOfCornerInRange();
     mScribbleArea->myRotatedAngle = mRotatedAngle;
 
-    if (event->modifiers() != Qt::ShiftModifier)
+    if (keyMod != Qt::ShiftModifier)
     {
         if (shouldDeselect())
         {
@@ -168,7 +205,7 @@ void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
 
     if (mScribbleArea->getMoveMode() == MoveMode::MIDDLE)
     {
-        if (event->modifiers() == Qt::ControlModifier) // --- rotation
+        if (keyMod == Qt::ControlModifier) // --- rotation
         {
             mScribbleArea->setMoveMode(MoveMode::ROTATION);
         }
@@ -176,7 +213,7 @@ void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
 
     if (layer->type() == Layer::VECTOR)
     {
-        createVectorSelection(event, layer);
+        createVectorSelection(keyMod, layer);
     }
 }
 
@@ -191,7 +228,7 @@ bool MoveTool::shouldDeselect()
  * In vector the selection rectangle is based on the bounding box of the curves
  * We can therefore create a selection just by clicking near/on a curve
  */
-void MoveTool::createVectorSelection(QMouseEvent* event, Layer* layer)
+void MoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
 {
     assert(layer->type() == Layer::VECTOR);
     LayerVector* vecLayer = static_cast<LayerVector*>(layer);
@@ -199,20 +236,20 @@ void MoveTool::createVectorSelection(QMouseEvent* event, Layer* layer)
 
     if (mScribbleArea->mClosestCurves.size() > 0) // the user clicks near a curve
     {
-        setCurveSelected(vectorImage, event);
+        setCurveSelected(vectorImage, keyMod);
     }
     else if (vectorImage->getLastAreaNumber(getLastPoint()) > -1)
     {
-        setAreaSelected(vectorImage, event);
+        setAreaSelected(vectorImage, keyMod);
     }
     mScribbleArea->update();
 }
 
-void MoveTool::setCurveSelected(VectorImage* vectorImage, QMouseEvent* event)
+void MoveTool::setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod)
 {
     if (!vectorImage->isSelected(mScribbleArea->mClosestCurves))
     {
-        if (event->modifiers() != Qt::ShiftModifier)
+        if (keyMod != Qt::ShiftModifier)
         {
             applyTransformation();
         }
@@ -221,12 +258,12 @@ void MoveTool::setCurveSelected(VectorImage* vectorImage, QMouseEvent* event)
     }
 }
 
-void MoveTool::setAreaSelected(VectorImage* vectorImage, QMouseEvent* event)
+void MoveTool::setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod)
 {
     int areaNumber = vectorImage->getLastAreaNumber(getLastPoint());
     if (!vectorImage->isAreaSelected(areaNumber))
     {
-        if (event->modifiers() != Qt::ShiftModifier)
+        if (keyMod != Qt::ShiftModifier)
         {
             applyTransformation();
         }

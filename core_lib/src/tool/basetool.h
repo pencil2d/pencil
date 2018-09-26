@@ -91,7 +91,7 @@ public:
     // dynamic cursor adjustment
     virtual void startAdjusting(ToolPropertyType argSettingType, qreal argStep);
     virtual void stopAdjusting();
-    virtual void adjustCursor(qreal argOffsetX, ToolPropertyType type);
+    virtual void adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod);
 
     virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
@@ -128,6 +128,7 @@ public:
     QPointF getLastPressPoint();
 
     bool isPropertyEnabled(ToolPropertyType t) { return m_enabledProperties[t]; }
+    bool isDrawingTool();
 
 protected:
     QHash<ToolPropertyType, bool> m_enabledProperties;

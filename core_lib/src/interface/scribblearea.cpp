@@ -84,6 +84,11 @@ bool ScribbleArea::init()
     updateCanvasCursor();
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
+    if (QT_VERSION >= 0x50900)
+    {
+        // tablet tracking first added in 5.9
+        setTabletTracking(true);
+    }
 
     mDebugRect = QRectF(0, 0, 0, 0);
 
@@ -404,7 +409,7 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 
 void ScribbleArea::tabletEvent(QTabletEvent *event)
 {
-    //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
+    updateCanvasCursor();
     mStrokeManager->tabletEvent(event);
 
     // Some tablets return "NoDevice" and Cursor.
@@ -412,10 +417,12 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
         currentTool()->adjustPressureSensitiveProperties(mStrokeManager->getPressure(),
                                                          false);
     }
-    else {
+    else
+    {
         currentTool()->adjustPressureSensitiveProperties(mStrokeManager->getPressure(),
                                                          event->pointerType() == QTabletEvent::Cursor);
     }
+
 
     if (event->pointerType() == QTabletEvent::Eraser)
     {
@@ -427,23 +434,92 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
 
     if (isLayerPaintable())
     {
-        if (event->type() == QTabletEvent::TabletMove)
+        switch(event->type())
         {
-            currentTool()->tabletMoveEvent(event);
-        }
-        if (event->type() == QTabletEvent::TabletPress)
-        {
-            currentTool()->tabletPressEvent(event);
-        }
-        if (event->type() == QTabletEvent::TabletRelease)
-        {
-            currentTool()->tabletReleaseEvent(event);
+            case QTabletEvent::TabletPress:
+            {
+                tabletPressEvent(event);
+                break;
+            }
+            case QTabletEvent::TabletMove:
+            {
+                tabletMoveEvent(event);
+                break;
+            }
+            case QTabletEvent::TabletRelease:
+            {
+                tabletReleaseEvent(event);
+                break;
+            }
+            default:
+                break;
         }
     }
-    updateCanvasCursor();
 
-    // ignore any other events...
-    event->ignore();
+    event->accept();
+}
+
+void ScribbleArea::tabletPressEvent(QTabletEvent* event)
+{
+    if (currentTool()->type() != HAND && (event->button() != Qt::RightButton))
+    {
+        Layer* layer = mEditor->layers()->currentLayer();
+        if (!layer->visible()) {
+            showLayerNotVisibleWarning();
+            return;
+        }
+    }
+
+    if (event->type() == QTabletEvent::TabletPress) {
+        mLastPixel = mStrokeManager->getLastPressPixel();
+        mLastPoint = mEditor->view()->mapScreenToCanvas(mLastPixel);
+    }
+
+    currentTool()->tabletPressEvent(event);
+}
+
+void ScribbleArea::tabletMoveEvent(QTabletEvent* event)
+{
+    const bool isPenPressed = mStrokeManager->isPenPressed();
+
+    if (isPenPressed && mQuickSizing) {
+        if (isDoingAssistedToolAdjustment(event->modifiers())){
+            return;
+        }
+    }
+
+    if (currentTool()->isAdjusting)
+    {
+        currentTool()->adjustCursor(mOffset.x(), event->modifiers()); //updates cursors given org width or feather and x
+        return;
+    }
+
+    mCurrentPixel = currentTool()->getCurrentPixel();
+    mCurrentPoint = currentTool()->getCurrentPoint();
+    if (isPenPressed) {
+        mOffset = getCurrentOffset();
+    }
+
+    currentTool()->tabletMoveEvent(event);
+}
+
+void ScribbleArea::tabletReleaseEvent(QTabletEvent* event)
+{
+    if (currentTool()->isAdjusting)
+    {
+        currentTool()->stopAdjusting();
+        mEditor->tools()->setWidth(currentTool()->properties.width);
+        return; // [SHIFT]+drag OR [CTRL]+drag
+    }
+
+
+    currentTool()->tabletReleaseEvent(event);
+
+    // ---- last check (at the very bottom of mouseRelease) ----
+    if (instantTool && !mKeyboardInUse) // temp tool and released all keys ?
+    {
+        setPrevTool();
+    }
 }
 
 bool ScribbleArea::isLayerPaintable() const
@@ -493,44 +569,30 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
     mUsePressure = currentTool()->properties.pressure;
 
-    if (!(mStrokeManager->isTabletInUse() && currentTool()->properties.pressure))
-    {
-        mStrokeManager->setPressure(1.0);
-        currentTool()->adjustPressureSensitiveProperties(1.0, true);
+    if (!mStrokeManager->isTabletInUse()) {
+        if (mUsePressure)
+        {
+            mStrokeManager->setPressure(1.0);
+            currentTool()->adjustPressureSensitiveProperties(1.0, true);
+        }
     }
 
-    //----------------code for starting hand tool when middle mouse is pressed
+    // code for starting hand tool when middle mouse is pressed
     if (event->buttons() & Qt::MidButton)
     {
-        //qDebug() << "Hand Start " << event->pos();
         mPrevTemporalToolType = currentTool()->type();
         editor()->tools()->setCurrentTool(HAND);
     }
-    else if (event->button() == Qt::LeftButton)    // if the user is pressing the left or right button
+
+    else if (event->button() == Qt::LeftButton)
     {
         mLastPixel = mStrokeManager->getLastPressPixel();
         mLastPoint = mEditor->view()->mapScreenToCanvas(mLastPixel);
     }
 
-    // ----- assisted tool adjustment -- todo: simplify this
     if (event->button() == Qt::LeftButton && mQuickSizing)
     {
-        if ((event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1))
-        {
-            //adjust width if not locked
-            currentTool()->startAdjusting(WIDTH, 1);
-            return;
-        }
-        if ((event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather > -1))
-        {
-            //adjust feather if not locked
-            currentTool()->startAdjusting(FEATHER, 1);
-            return;
-        }
-        if ((event->modifiers() == (Qt::ControlModifier | Qt::AltModifier)) && (currentTool()->properties.feather > -1))
-        {
-            //adjust feather if not locked
-            currentTool()->startAdjusting(FEATHER, 0);
+        if (isDoingAssistedToolAdjustment(event->modifiers())) {
             return;
         }
     }
@@ -539,23 +601,22 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     Layer* layer = mEditor->layers()->currentLayer();
     Q_ASSUME(layer != nullptr);
 
-    if (!layer->visible() && currentTool()->type() != HAND && (event->button() != Qt::RightButton))
+    if (currentTool()->type() != HAND && (event->button() != Qt::RightButton))
     {
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-        mMouseInUse = false;
-        return;
+        if (!layer->visible()) {
+            showLayerNotVisibleWarning();
+            mMouseInUse = false;
+            return;
+        }
     }
 
-    mCurrentPixel = mStrokeManager->getCurrentPixel();
-    mCurrentPoint = mEditor->view()->mapScreenToCanvas(mCurrentPixel);
+    mCurrentPixel = currentTool()->getCurrentPixel();
+    mCurrentPoint = currentTool()->getCurrentPoint();
 
     // the user is also pressing the mouse
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
-        mOffset = mCurrentPoint - mLastPoint;
+        mOffset = getCurrentOffset();
     }
 
     if (event->button() == Qt::RightButton)
@@ -573,6 +634,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
+    updateCanvasCursor();
+
     if (!areLayersSane())
     {
         return;
@@ -581,20 +644,17 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     Q_EMIT refreshPreview();
 
     mStrokeManager->mouseMoveEvent(event);
-    mCurrentPixel = mStrokeManager->getCurrentPixel();
-    mCurrentPoint = mEditor->view()->mapScreenToCanvas(mCurrentPixel);
+    mCurrentPixel = currentTool()->getCurrentPixel();
+    mCurrentPoint = currentTool()->getCurrentPoint();
 
     // the user is also pressing the mouse (= dragging)
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
-        mOffset = mCurrentPoint - mLastPoint;
+        mOffset = getCurrentOffset();
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
         if (currentTool()->isAdjusting)
         {
-            ToolPropertyType tool_type;
-            tool_type = (event->modifiers() & Qt::ControlModifier) ? FEATHER : WIDTH;
-            currentTool()->adjustCursor(mOffset.x(), tool_type); //updates cursors given org width or feather and x
-            updateCanvasCursor();
+            currentTool()->adjustCursor(mOffset.x(), event->modifiers()); //updates cursors given org width or feather and x
             return;
         }
     }
@@ -605,14 +665,14 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         return;
     }
 
-    if (isLayerPaintable())
+    if (!currentTool()->isDrawingTool())
     {
-        if (event->buttons() & Qt::LeftButton)
-        {
+        currentTool()->mouseMoveEvent(event);
+    } else { // MOVE, SELECT OR HAND TOOL
+        if (event->buttons() & Qt::LeftButton) {
             currentTool()->mouseMoveEvent(event);
         }
     }
-    updateCanvasCursor();
 
 #ifdef DEBUG_FPS
     if (mMouseInUse)
@@ -686,6 +746,43 @@ void ScribbleArea::resizeEvent(QResizeEvent *event)
 
     mEditor->view()->setCanvasSize(size());
     updateAllFrames();
+}
+
+bool ScribbleArea::isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod)
+{
+    if ((keyMod == Qt::ShiftModifier) && (currentTool()->properties.width > -1))
+    {
+        //adjust width if not locked
+        currentTool()->startAdjusting(WIDTH, 1);
+        return true;
+    }
+    if ((keyMod == Qt::ControlModifier) && (currentTool()->properties.feather > -1))
+    {
+        //adjust feather if not locked
+        currentTool()->startAdjusting(FEATHER, 1);
+        return true;
+    }
+    if ((keyMod == (Qt::ControlModifier | Qt::AltModifier)) &&
+        (currentTool()->properties.feather > -1))
+    {
+        //adjust feather if not locked
+        currentTool()->startAdjusting(FEATHER, 0);
+        return true;
+    }
+    return false;
+}
+
+QPointF ScribbleArea::getCurrentOffset()
+{
+    return mCurrentPoint - mLastPoint;
+}
+
+void ScribbleArea::showLayerNotVisibleWarning()
+{
+    QMessageBox::warning(this, tr("Warning"),
+                         tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
+                         QMessageBox::Ok,
+                         QMessageBox::Ok);
 }
 
 void ScribbleArea::paintBitmapBuffer()
@@ -1420,7 +1517,7 @@ void ScribbleArea::findMoveModeOfCornerInRange()
     {
         mode = MoveMode::BOTTOMRIGHT;
     }
-    else if (myTransformedSelection.translated(mOffset).contains(lastPoint))
+    else if (myTransformedSelection.contains(lastPoint))
     {
         mode = MoveMode::MIDDLE;
     }

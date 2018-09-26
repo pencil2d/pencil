@@ -155,6 +155,13 @@ public slots:
     void updateToolCursor();
     void paletteColorChanged(QColor);
 
+    bool isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod);
+
+    QPointF getCurrentOffset();
+
+    void showLayerNotVisibleWarning();
+
+
 protected:
     void tabletEvent( QTabletEvent* ) override;
     void wheelEvent( QWheelEvent* ) override;
@@ -203,6 +210,9 @@ private:
     void drawCanvas( int frame, QRect rect );
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter& painter);
+    void tabletPressEvent(QTabletEvent* event);
+    void tabletMoveEvent(QTabletEvent* event);
+    void tabletReleaseEvent(QTabletEvent* event);
 
     MoveMode mMoveMode = MoveMode::NONE;
     ToolType mPrevTemporalToolType = ERASER;
@@ -232,6 +242,7 @@ private:
     bool mKeyboardInUse = false;
     bool mMouseInUse    = false;
     bool mMouseRightButtonInUse = false;
+    bool mPenHeldDown = false;
     QPointF mLastPixel;
     QPointF mCurrentPixel;
     QPointF mLastPoint;
