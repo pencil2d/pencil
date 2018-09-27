@@ -580,8 +580,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     // code for starting hand tool when middle mouse is pressed
     if (event->buttons() & Qt::MidButton)
     {
-        mPrevTemporalToolType = currentTool()->type();
-        editor()->tools()->setCurrentTool(HAND);
+        setTemporaryTool(HAND);
     }
 
     else if (event->button() == Qt::LeftButton)
