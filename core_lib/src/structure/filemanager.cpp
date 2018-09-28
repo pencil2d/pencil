@@ -30,7 +30,7 @@ QString openErrorTitle = QObject::tr("Could not open file");
 QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
                          "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
                          "or you can try to use a backup file if you have one. If you contact us through one of "
-                         "our offical channels we may be able to help you. For reporting issues, "
+                         "our official channels we may be able to help you. For reporting issues, "
                          "the best places to reach us are:");
 QString contactLinks = "<ul>"
                        "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
