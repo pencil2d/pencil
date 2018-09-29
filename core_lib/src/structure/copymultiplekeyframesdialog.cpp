@@ -18,12 +18,12 @@ CopyMultiplekeyframesDialog::~CopyMultiplekeyframesDialog()
 
 void CopyMultiplekeyframesDialog::init()
 {
-    connect(ui->sBoxStartLoop, SIGNAL(valueChanged(int)), this, SLOT(setStartLoop(int)));
-    connect(ui->sBoxStopLoop, SIGNAL(valueChanged(int)), this, SLOT(setStopLoop(int)));
+//    connect(ui->sBoxStartLoop, SIGNAL(valueChanged(int)), this, SLOT(setStartLoop(int)));
+//    connect(ui->sBoxStopLoop, SIGNAL(valueChanged(int)), this, SLOT(setStopLoop(int)));
     connect(ui->sBoxNumLoops, SIGNAL(valueChanged(int)), this, SLOT(setNumLoops(int)));
     connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
-    mStartLoop = ui->sBoxStartLoop->value();
-    mStopLoop = ui->sBoxStopLoop->value();
+//    mStartLoop = ui->sBoxStartLoop->value();
+//    mStopLoop = ui->sBoxStopLoop->value();
     mNumLoops = ui->sBoxNumLoops->value();
     mStartFrame = ui->sBoxStartFrame->value();
     QSettings settings ("Pencil", "Pencil");
@@ -33,20 +33,22 @@ void CopyMultiplekeyframesDialog::init()
 
 int CopyMultiplekeyframesDialog::getStartLoop()
 {
-    return ui->sBoxStartLoop->value();
+//    return ui->sBoxStartLoop->value();
+    return 0;
 }
 
 void CopyMultiplekeyframesDialog::setStartLoop(int i)
 {
     mStartLoop = i;
     mStopLoop = mStartLoop + 1;
-    ui->sBoxStopLoop->setMinimum(mStopLoop);
+ //   ui->sBoxStopLoop->setMinimum(mStopLoop);
     checkValidity();
 }
 
 int CopyMultiplekeyframesDialog::getStopLoop()
 {
-    return ui->sBoxStopLoop->value();
+ //   return ui->sBoxStopLoop->value();
+    return 0;
 }
 
 void CopyMultiplekeyframesDialog::setStopLoop(int i)
@@ -91,11 +93,11 @@ void CopyMultiplekeyframesDialog::checkValidity()
     if (def > mTimelineLength)
     {
         ui->buttonBox->setEnabled(false);
-        ui->labWarning->setText(tr("Timeline exceeded!"));
+  //      ui->labWarning->setText(tr("Timeline exceeded!"));
     }
     else
     {
         ui->buttonBox->setEnabled(true);
-        ui->labWarning->setText(tr("Ends at frame ") + QString::number(def) + " (" + QString::number(mTimelineLength) + ")");
+//        ui->labWarning->setText(tr("Ends at frame ") + QString::number(def) + " (" + QString::number(mTimelineLength) + ")");
     }
 }
