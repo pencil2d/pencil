@@ -68,6 +68,8 @@ public:
     QSize getViewSize();
 
     void setViewRect(QRect newRect) {viewRect = newRect; }
+signals:
+    void resolutionChanged();
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;

@@ -36,9 +36,10 @@ public:
 
     // file 
     Status importSound();
-    Status exportMovie();
+    Status exportMovie(bool isGif = false);
     Status exportImageSequence();
     Status exportImage();
+    Status exportGif();
 
     // edit
     void flipSelectionX();

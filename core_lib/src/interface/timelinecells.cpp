@@ -424,7 +424,6 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
     int frameNumber = getFrameNumber( event->pos().x() );
     int layerNumber = getLayerNumber( event->pos().y() );
 
-
     mStartY = event->pos().y();
     mStartLayerNumber = layerNumber;
     mEndY = event->pos().y();
@@ -442,7 +441,9 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
     primaryButton = event->button();
 
-    mEditor->tools()->currentTool()->switchingLayers();
+    bool switchLayer = mEditor->tools()->currentTool()->switchingLayer();
+    if (!switchLayer) { return; }
+
     switch (mType)
     {
     case TIMELINE_CELL_TYPE::Layers:

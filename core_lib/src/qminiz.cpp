@@ -42,27 +42,26 @@ bool MiniZ::isZip(const QString& sZipFilePath)
 Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList)
 {
     DebugDetails dd;
-    dd << QString("Zip the folder %1 to %2").arg(zipFilePath).arg(srcFolderPath);
+    dd << QString("Creating Zip %1 from folder %2").arg(zipFilePath).arg(srcFolderPath);
 
     if (!srcFolderPath.endsWith("/"))
     {
         srcFolderPath.append("/");
     }
 
-
     mz_zip_archive* mz = new mz_zip_archive;
     OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_writer_init_file(mz, zipFilePath.toUtf8().data(), 0);
-
     if (!ok)
     {
-        dd << "Miniz writer init failed.";
+        mz_zip_error err = mz_zip_get_last_error(mz);
+        dd << QString("Miniz writer init failed: %1").arg((int)err);
     }
 
-    qDebug() << "SrcFolder=" << srcFolderPath;
-    for (QString filePath : fileList)
+    //qDebug() << "SrcFolder=" << srcFolderPath;
+    for (const QString& filePath : fileList)
     {
         QString sRelativePath = filePath;
         sRelativePath.replace(srcFolderPath, "");
@@ -72,11 +71,11 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         ok = mz_zip_writer_add_file(mz,
                                     sRelativePath.toUtf8().data(),
                                     filePath.toUtf8().data(),
-                                    "", 0, MZ_DEFAULT_COMPRESSION);
-        qDebug() << "Zip: " << filePath;
+                                    "", 0, MZ_BEST_SPEED);
         if (!ok)
         {
-            dd << QString("  Cannot add %1 to zip").arg(sRelativePath);
+            mz_zip_error err = mz_zip_get_last_error(mz);
+            dd << QString("  Cannot add %1: error %2, %3").arg(sRelativePath).arg((int)err).arg(mz_zip_get_error_string(err));
         }
     }
     ok &= mz_zip_writer_finalize_archive(mz);

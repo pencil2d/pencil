@@ -22,10 +22,10 @@ TEST_CASE("BitmapImage constructors")
     SECTION("Init an Bitmap Image")
     {
         auto b = std::make_shared<BitmapImage>();
-        REQUIRE(b->image()->isNull() == false);
+        REQUIRE(b->image()->isNull());
 
-        REQUIRE(b->width() == 1);
-        REQUIRE(b->height() == 1);
+        REQUIRE(b->width() == 0);
+        REQUIRE(b->height() == 0);
         REQUIRE(b->top() == 0);
         REQUIRE(b->left() == 0);
     }
@@ -90,20 +90,5 @@ TEST_CASE("BitmapImage functions")
         REQUIRE(b->topLeft() == QPoint(20, 10));
         REQUIRE(b->width() == 50);
         REQUIRE(b->height() == 50);
-    }
-
-    SECTION("extend()")
-    {
-        auto b = std::make_shared<BitmapImage>(QRect(0, 0, 50, 50), Qt::red);
-
-        // before
-        REQUIRE(b->topLeft() == QPoint(0, 0));
-        REQUIRE(b->size() == QSize(50, 50));
-
-        b->extend(QPoint(-10, -10));
-
-        // after
-        REQUIRE(b->topLeft() == QPoint(-10, -10));
-        REQUIRE(b->size() == QSize(60, 60));
     }
 }

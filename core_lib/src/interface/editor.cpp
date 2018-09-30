@@ -36,7 +36,6 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layercamera.h"
-
 #include "activeframepool.h"
 
 #include "colormanager.h"
@@ -65,14 +64,6 @@ Editor::Editor(QObject* parent) : QObject(parent)
     clipboardBitmapOk = false;
     clipboardVectorOk = false;
     clipboardSoundClipOk = false;
-
-    mActiveFramePool.reset(new ActiveFramePool(200));
-}
-
-Editor::~Editor()
-{
-    // a lot more probably needs to be cleaned here...
-    mActiveFramePool->clear();
 }
 
 bool Editor::init()
@@ -173,21 +164,6 @@ void Editor::settingUpdated(SETTING setting)
     }
 }
 
-void Editor::updateActiveFrames(int frame)
-{
-    int beginFrame = std::max(frame - 3, 1);
-    int endFrame = frame + 4;
-    for (int i = 0; i < mObject->getLayerCount(); ++i)
-    {
-        Layer* layer = mObject->getLayer(i);
-        for (int k = beginFrame; k < endFrame; ++k)
-        {
-            KeyFrame* key = layer->getKeyFrameAt(k);
-            mActiveFramePool->put(key);
-        }
-    }
-}
-
 void Editor::cut()
 {
     copy();
@@ -200,24 +176,28 @@ void Editor::copy()
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
     if (layer != NULL)
     {
-        if (layer->type() == Layer::BITMAP)
+        return;
+    }
+
+    if (layer->type() == Layer::BITMAP)
+    {
+        LayerBitmap* layerBitmap = (LayerBitmap*)layer;
+        if (mScribbleArea->isSomethingSelected())
         {
-            if (mScribbleArea->somethingSelected)
-            {
-                g_clipboardBitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
-            }
-            else
-            {
-                g_clipboardBitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
-            }
-            clipboardBitmapOk = true;
-            if (g_clipboardBitmapImage.image() != NULL) QApplication::clipboard()->setImage(*g_clipboardBitmapImage.image());
+            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
         }
-        if (layer->type() == Layer::VECTOR)
+        else
         {
-            clipboardVectorOk = true;
-            g_clipboardVectorImage = *(((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
         }
+        clipboardBitmapOk = true;
+        if (g_clipboardBitmapImage.image() != NULL)
+            QApplication::clipboard()->setImage(*g_clipboardBitmapImage.image());
+    }
+    if (layer->type() == Layer::VECTOR)
+    {
+        clipboardVectorOk = true;
+        g_clipboardVectorImage = *(((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
     }
 }
 
@@ -233,7 +213,7 @@ void Editor::paste()
 
             // TODO: paste doesn't remember location, will always paste on top of old image.
             qDebug() << "to be pasted --->" << tobePasted.image()->size();
-            if (mScribbleArea->somethingSelected)
+            if (mScribbleArea->isSomethingSelected())
             {
                 QRectF selection = mScribbleArea->getSelection();
                 if (g_clipboardBitmapImage.width() <= selection.width() && g_clipboardBitmapImage.height() <= selection.height())
@@ -255,7 +235,8 @@ void Editor::paste()
             mScribbleArea->deselectAll();
             VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
-            mScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
+
+            mScribbleArea->setSelection(vectorImage->getSelectionRect());
             backups()->vector("Vector: Paste");
         }
     }
@@ -324,16 +305,19 @@ Status Editor::setObject(Object* newObject)
 
     mObject.reset(newObject);
 
-
     for (BaseManager* m : mAllManagers)
     {
         m->load(mObject.get());
     }
 
-    mActiveFramePool->clear();
     g_clipboardVectorImage.setObject(newObject);
 
     updateObject();
+
+    if (mViewManager)
+    {
+        connect(newObject, &Object::layerViewChanged, mViewManager, &ViewManager::viewChanged);
+    }
 
     emit objectLoaded();
 
@@ -439,7 +423,8 @@ QString Editor::workingDir() const
     return mObject->workingDir();
 }
 
-bool Editor::importBitmapImage(QString filePath, bool isSequence)
+
+bool Editor::importBitmapImage(QString filePath, int space)
 {
     QImageReader reader(filePath);
 
@@ -462,28 +447,28 @@ bool Editor::importBitmapImage(QString filePath, bool isSequence)
             addNewKey();
             keyAdded = true;
         }
-        BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(currentFrame());
+
+        backups()->prepareBackup();
 
         QRect boundaries = img.rect();
         boundaries.moveTopLeft(mScribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width() / 2, boundaries.height() / 2));
 
-        backups()->prepareBackup();
-
         BitmapImage importedBitmapImage{ boundaries, img };
-        bitmapImage->paste(&importedBitmapImage);
+        importedBitmapImage->paste(&importedBitmapImage);
 
         if (!keyExisted)
         {
-            backups()->keyAdded(isSequence, keyExisted, "Import: Image+Key");
+            backups()->keyAdded(space, keyExisted, "Import: Image+Key");
         }
         else
         {
             backups()->bitmap("Import: Image");
-        }
 
-        if (isSequence)
-        {
-            scrubTo(currentFrame() + 1);
+            if (space > 1) {
+                scrubTo(currentFrame() + space);
+            } else {
+                scrubTo(currentFrame() + 1);
+            }
         }
     }
 
@@ -537,6 +522,16 @@ bool Editor::importImage(QString filePath, bool isSequence)
     }
 }
 
+bool Editor::importGIF(QString filePath, int numOfImages)
+{
+    Layer* layer = layers()->currentLayer();
+    if (layer->type() == Layer::BITMAP) {
+        return importBitmapImage(filePath, numOfImages);
+    } else {
+        return false;
+    }
+}
+
 void Editor::updateFrame(int frameNumber)
 {
     mScribbleArea->updateFrame(frameNumber);
@@ -565,10 +560,7 @@ void Editor::setCurrentLayerIndex(int i)
 
 void Editor::scrubTo(int frame)
 {
-    if (frame < 1)
-    {
-        frame = 1;
-    }
+    if (frame < 1) { frame = 1; }
     int oldFrame = mFrame;
     mFrame = frame;
 
@@ -582,8 +574,7 @@ void Editor::scrubTo(int frame)
     {
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
-
-    updateActiveFrames(frame);
+    mObject->updateActiveFrames(frame);
 }
 
 void Editor::scrubForward()

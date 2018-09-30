@@ -61,7 +61,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
 {
-    BitmapImage* pKeyFrame = new BitmapImage(path, topLeft);
+    BitmapImage* pKeyFrame = new BitmapImage(topLeft, path);
     pKeyFrame->setPos(frameNumber);
     loadKey(pKeyFrame);
 }
@@ -71,12 +71,16 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
     QString theFileName = fileName(keyframe);
     QString strFilePath = QDir(path).filePath(theFileName);
 
-    if (needSaveFrame(keyframe, strFilePath) == false)
+    BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
+
+    bool needSave = needSaveFrame(keyframe, strFilePath);
+    if (!needSave)
     {
         return Status::SAFE;
     }
 
-    BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
+    bitmapImage->setFileName(strFilePath);
+
     Status st = bitmapImage->writeFile(strFilePath);
     if (!st.ok())
     {
@@ -91,7 +95,6 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
         return Status(Status::FAIL, dd);
     }
 
-    bitmapImage->setFileName(strFilePath);
     bitmapImage->setModified(false);
     return Status::OK;
 }
@@ -100,7 +103,45 @@ KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
 {
     BitmapImage* b = new BitmapImage;
     b->setPos(position);
+    b->enableAutoCrop(true);
     return b;
+}
+
+Status LayerBitmap::presave(const QString&)
+{
+    // handles those moved keys but note loaded yet
+    std::vector<BitmapImage*> bitmapArray;
+    foreachKeyFrame([&bitmapArray](KeyFrame* key)
+    {
+        auto bitmap = static_cast<BitmapImage*>(key);
+        // null image + modified => the keyframe has been moved, but users didn't draw on it.
+        if (!bitmap->fileName().isEmpty()
+            && bitmap->image()->isNull() 
+            && bitmap->isModified())
+        {
+            bitmapArray.push_back(bitmap);
+        }
+    });
+
+    for (BitmapImage* b : bitmapArray) 
+    {
+        if (b->fileName() != fileName(b))
+        {
+            QString tmpName = QString::asprintf("t_%03d.%03d.png", id(), b->pos());
+            QFile::rename(b->fileName(), tmpName);
+            b->setFileName(tmpName);
+        }
+    }
+
+    for (BitmapImage* b : bitmapArray)
+    {
+        if (QFile::exists(fileName(b)))
+            QFile::remove(fileName(b));
+
+        QFile::rename(b->fileName(), fileName(b));
+    }
+
+    return Status::OK;
 }
 
 QString LayerBitmap::fileName(KeyFrame* key) const

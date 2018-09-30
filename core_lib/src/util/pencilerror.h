@@ -70,7 +70,7 @@ public:
 		ERROR_FFMPEG_NOT_FOUND,
 
         // Layer
-        ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER,
+        ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER
     };
 
     Status(ErrorCode code);

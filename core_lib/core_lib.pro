@@ -90,6 +90,7 @@ HEADERS +=  \
     src/util/util.h \
     src/util/log.h \
     src/util/direction.h \
+    src/util/movemode.h \
     src/canvaspainter.h \
     src/soundplayer.h \
     src/movieexporter.h \
@@ -162,6 +163,9 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/qminiz.cpp \
     src/activeframepool.cpp \
 
+FORMS += \
+    ui/camerapropertiesdialog.ui
+
 win32 {
     CONFIG -= flat
 
@@ -179,5 +183,10 @@ unix:!macx {
     SOURCES += src/external/linux/linux.cpp
 }
 
-FORMS += \
-    ui/camerapropertiesdialog.ui
+contains(QT_ARCH, i386) {
+    message("32-bit")
+    DEFINES += "FRAME_POOL_SIZE=200"
+} else {
+    message("64-bit")
+    DEFINES += "FRAME_POOL_SIZE=400"
+}

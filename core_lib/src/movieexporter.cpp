@@ -31,75 +31,6 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "soundclip.h"
 
-// refs
-// http://www.topherlee.com/software/pcm-tut-wavformat.html
-// http://soundfile.sapp.org/doc/WaveFormat/
-//
-struct WavFileHeader
-{
-    char    riff[4];
-    int32_t chuckSize;
-    char    format[4];
-    char    fmtID[4];
-    int32_t fmtChuckSize;
-    int16_t audioFormat;
-    int16_t numChannels;
-    int32_t sampleRate;
-    int32_t byteRate;
-    int16_t blockAlign;
-    int16_t bitsPerSample;
-    char    dataChuckID[4];
-    int32_t dataSize;
-
-    void InitWithDefaultValues()
-    {
-        strncpy(riff, "RIFF", 4);
-        chuckSize = 0;
-        strncpy(format, "WAVE", 4);
-        strncpy(fmtID, "fmt ", 4);
-        fmtChuckSize = 16;
-        audioFormat = 1; // 1 means PCM
-        numChannels = 2; // stereo
-        sampleRate = 44100;
-        bitsPerSample = 16;
-        blockAlign = (bitsPerSample * numChannels) / 8;
-        byteRate = (sampleRate * bitsPerSample * numChannels) / 8;
-
-        strncpy(dataChuckID, "data", 4);
-        dataSize = 0;
-    }
-};
-
-int16_t safeSumInt16(int16_t a, int16_t b)
-{
-    int32_t a32 = static_cast<int32_t>(a);
-    int32_t b32 = static_cast<int32_t>(b);
-
-    if ((a32 + b32) > INT16_MAX)
-    {
-        return INT16_MAX;
-    }
-    else if ((a32 + b32) < INT16_MIN)
-    {
-        return INT16_MIN;
-    }
-    return a + b;
-}
-
-void skipUselessChucks(WavFileHeader& header, QFile& file)
-{
-    // We only care about the 'data' chuck
-    while (memcmp(header.dataChuckID, "data", 4) != 0)
-    {
-        int skipByteCount = header.dataSize;
-        std::vector<char> skipData(skipByteCount);
-        file.read(skipData.data(), skipByteCount);
-
-        file.read((char*)&header.dataChuckID, 4);
-        file.read((char*)&header.dataSize, 4);
-    }
-}
-
 QString ffmpegLocation()
 {
 #ifdef _WIN32
@@ -173,8 +104,6 @@ Status MovieExporter::run(const Object* obj,
     {
 #ifdef _WIN32
         qCritical() << "Please place ffmpeg.exe in " << ffmpegPath << " directory";
-#elif __APPLE__
-        qCritical() << "Please place ffmpeg in " << ffmpegPath << " directory";
 #else
         qCritical() << "Please place ffmpeg in " << ffmpegPath << " directory";
 #endif
@@ -253,15 +182,6 @@ Status MovieExporter::assembleAudio(const Object* obj,
     Q_ASSERT(startFrame >= 0);
     Q_ASSERT(endFrame >= startFrame);
 
-    float lengthInSec = (endFrame - startFrame + 1) / (float)fps;
-    qDebug() << "Audio Length = " << lengthInSec << " seconds";
-
-    int32_t audioDataSize = 44100 * 2 * 2 * lengthInSec;
-
-    std::vector<int16_t> audioData(audioDataSize / sizeof(int16_t));
-
-    bool audioDataValid = false;
-
     QDir dir(mTempWorkDir);
     Q_ASSERT(dir.exists());
 
@@ -281,6 +201,9 @@ Status MovieExporter::assembleAudio(const Object* obj,
 
     int clipCount = 0;
 
+    QString strCmd, filterComplex, amixInput;
+    strCmd += QString("\"%1\"").arg(ffmpegPath);
+
     for (SoundClip* clip : allSoundClips)
     {
         if (mCanceled)
@@ -288,69 +211,32 @@ Status MovieExporter::assembleAudio(const Object* obj,
             return Status::CANCELED;
         }
 
-        // convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
-        // supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
-        QString strCmd;
-        strCmd += QString("\"%1\"").arg(ffmpegPath);
-        strCmd += QString(" -i \"%1\" ").arg(clip->fileName());
-        strCmd += "-ar 44100 -acodec pcm_s16le -ac 2 -y ";
-        strCmd += QString("\"%1\"").arg(tempAudioPath);
+        // Add sound file as input
+        strCmd += QString(" -i \"%1\"").arg(clip->fileName());
 
-        executeFFMpeg(strCmd, [](float){});
-        qDebug() << "audio file: " + tempAudioPath;
+        // Offset the sound to its correct position
+        // See https://superuser.com/questions/716320/ffmpeg-placing-audio-at-specific-location
+        filterComplex += QString("[%1:a:0] adelay=%2S|%2S [ad%1];")
+                    .arg(clipCount).arg(qRound(44100.0 * (clip->pos() - 1) / fps));
+        amixInput += QString("[ad%1]").arg(clipCount);
 
-        // Read wav file header
-        WavFileHeader header;
-        QFile file(tempAudioPath);
-        file.open(QIODevice::ReadOnly);
-        file.read((char*)&header, sizeof(WavFileHeader));
-
-        skipUselessChucks(header, file);
-
-        int32_t audioSize = header.dataSize;
-
-        qDebug() << "audio len " << audioSize;
-
-        // before calling malloc should check: audioSize < max credible value
-        std::vector< int16_t > data(audioSize / sizeof(int16_t));
-        file.read((char*)data.data(), audioSize);
-        audioDataValid = true;
-
-        float fframe = (float)clip->pos() / (float)fps;
-        int delta = fframe * 44100 * 2;
-        qDebug() << "audio delta " << delta;
-
-        int indexMax = std::min(audioSize / 2, audioDataSize / 2 - delta);
-
-        // audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
-        for (int i = 0; i < indexMax; i++)
-        {
-            audioData[i + delta] = safeSumInt16(audioData[i + delta], data[i]);
-        }
-
-        file.close();
-
-        progress((float)clipCount / allSoundClips.size());
         clipCount++;
     }
+    // Output arguments
+    // Mix audio
+    strCmd += QString(" -filter_complex \"%1%2 amix=inputs=%3 [out]\"")
+            .arg(filterComplex).arg(amixInput).arg(clipCount);
+    // Convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
+    // Supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
+    strCmd += " -ar 44100 -acodec pcm_s16le -ac 2 -map \"[out]\" -y";
+    // Trim audio
+    strCmd += QString(" -ss %1").arg((startFrame - 1) / static_cast<double>(fps));
+    strCmd += QString(" -to %1").arg(endFrame / static_cast<double>(fps));
+    // Output path
+    strCmd += " " + mTempWorkDir + "/tmpaudio.wav";
 
-    if (!audioDataValid)
-    {
-        return Status::SAFE;
-    }
-
-    // save mixed audio file ( will be used as audio stream )
-    QFile file(mTempWorkDir + "/tmpaudio.wav");
-    file.open(QIODevice::WriteOnly);
-
-    WavFileHeader outputHeader;
-    outputHeader.InitWithDefaultValues();
-    outputHeader.dataSize = audioDataSize;
-    outputHeader.chuckSize = 36 + audioDataSize;
-
-    file.write((char*)&outputHeader, sizeof(outputHeader));
-    file.write((char*)audioData.data(), audioDataSize);
-    file.close();
+    STATUS_CHECK(executeFFMpeg(strCmd, progress));
+    qDebug() << "audio file: " + tempAudioPath;
 
     return Status::OK;
 }
@@ -553,8 +439,6 @@ Status MovieExporter::generateGif(
     }
     imageToExportBase.fill(bgColor);
 
-    QTransform view = cameraLayer->getViewAtFrame(currentFrame);
-
     QSize camSize = cameraLayer->getViewSize();
     QTransform centralizeCamera;
     centralizeCamera.translate(camSize.width() / 2, camSize.height() / 2);
@@ -597,6 +481,7 @@ Status MovieExporter::generateGif(
         QImage imageToExport = imageToExportBase.copy();
         QPainter painter(&imageToExport);
 
+        QTransform view = cameraLayer->getViewAtFrame(currentFrame);
         painter.setWorldTransform(view * centralizeCamera);
         painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
 

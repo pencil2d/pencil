@@ -121,9 +121,8 @@ public: //slots
     void cut();
 
     void deselectAll();
-
     bool importImage(QString filePath, bool isSequence);
-
+    bool importGIF(QString filePath, int numOfImages = 0);
     void updateFrame(int frameNumber);
     void restoreKey();
 
@@ -169,7 +168,7 @@ protected:
     void dropEvent(QDropEvent*);
 
 private:
-    bool importBitmapImage(QString, bool isSequence);
+    bool importBitmapImage(QString, int space);
     bool importVectorImage(QString, bool);
 
     // the object to be edited by the editor
@@ -204,10 +203,6 @@ private:
     bool clipboardBitmapOk = true;
     bool clipboardVectorOk = true;
     bool clipboardSoundClipOk = true;
-
-    // Memory management
-    void updateActiveFrames(int frame);
-    std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
 #endif

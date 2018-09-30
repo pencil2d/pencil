@@ -69,6 +69,7 @@ ipch
 *.opendb
 .vs
 *.rc
+*.tlog
 
 tests/tests
 bin/*

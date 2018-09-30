@@ -27,9 +27,9 @@ class BitmapImage : public KeyFrame
 public:
     BitmapImage();
     BitmapImage(const BitmapImage&);
-    BitmapImage(const QRect& boundaries, const QColor& colour);
-    BitmapImage(const QRect& boundaries, const QImage& image);
-    BitmapImage(const QString& path, const QPoint& topLeft);
+    BitmapImage(const QRect &rectangle, const QColor& colour);
+    BitmapImage(const QPoint& topLeft, const QImage& image);
+    BitmapImage(const QPoint& topLeft, const QString& path);
 
     ~BitmapImage();
     BitmapImage& operator=(const BitmapImage& a);
@@ -37,6 +37,7 @@ public:
     BitmapImage* clone() override;
     void loadFile() override;
     void unloadFile() override;
+    bool isLoaded() override;
 
     void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);
@@ -46,8 +47,7 @@ public:
 
     BitmapImage copy();
     BitmapImage copy(QRect rectangle);
-    void paste(BitmapImage*);
-    void paste(BitmapImage*, QPainter::CompositionMode cm);
+    void paste(BitmapImage*, QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver);
 
     void add(BitmapImage*);
     void compareAlpha(BitmapImage*);
@@ -61,13 +61,12 @@ public:
 
     bool contains(QPoint P) { return mBounds.contains(P); }
     bool contains(QPointF P) { return contains(P.toPoint()); }
-    void extend(QPoint P);
-    void extend(QRect rectangle);
+    void autoCrop();
 
     QRgb pixel(int x, int y);
-    QRgb pixel(QPoint P);
+    QRgb pixel(QPoint p);
     void setPixel(int x, int y, QRgb colour);
-    void setPixel(QPoint P, QRgb colour);
+    void setPixel(QPoint p, QRgb colour);
     QRgb constScanLine(int x, int y);
     void scanLine(int x, int y, QRgb colour);
     void clear();
@@ -82,26 +81,50 @@ public:
     void drawEllipse(QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
 
-    QPoint topLeft() { return mBounds.topLeft(); }
-    QPoint topRight() { return mBounds.topRight(); }
-    QPoint bottomLeft() { return mBounds.bottomLeft(); }
-    QPoint bottomRight() { return mBounds.bottomRight(); }
-    int left() { return mBounds.left(); }
-    int right() { return mBounds.right(); }
-    int top() { return mBounds.top(); }
-    int bottom() { return mBounds.bottom(); }
-    int width() { return mBounds.width(); }
-    int height() { return mBounds.height(); }
-    QSize size() { return mBounds.size(); }
+    QPoint topLeft() { autoCrop(); return mBounds.topLeft(); }
+    QPoint topRight() { autoCrop(); return mBounds.topRight(); }
+    QPoint bottomLeft() { autoCrop(); return mBounds.bottomLeft(); }
+    QPoint bottomRight() { autoCrop(); return mBounds.bottomRight(); }
+    int left() { autoCrop(); return mBounds.left(); }
+    int right() { autoCrop(); return mBounds.right(); }
+    int top() { autoCrop(); return mBounds.top(); }
+    int bottom() { autoCrop(); return mBounds.bottom(); }
+    int width() { autoCrop(); return mBounds.width(); }
+    int height() { autoCrop(); return mBounds.height(); }
+    QSize size() { autoCrop(); return mBounds.size(); }
 
-    QRect& bounds() { return mBounds; }
+    QRect& bounds() { autoCrop(); return mBounds; }
+
+    /** Determines if the BitmapImage is minimally bounded.
+     *
+     *  A BitmapImage is minimally bounded if all edges contain
+     *  at least 1 non-transparent pixel (alpha > 0). In other words,
+     *  the size of the image cannot be decreased without
+     *  cropping visible data.
+     *
+     *  @return True only if bounds() is the minimal bounding box
+     *          for the contained image.
+     */
+    bool isMinimallyBounded() const { return mMinBound; }
+    void enableAutoCrop(bool b) { mEnableAutoCrop = b; }
 
     Status writeFile(const QString& filename);
+
+protected:
+    void updateBounds(QRect rectangle);
+    void extend(const QPoint& p);
+    void extend(QRect rectangle);
+
+    void setCompositionModeBounds(BitmapImage *source, QPainter::CompositionMode cm);
+    void setCompositionModeBounds(QRect sourceBounds, bool isSourceMinBounds, QPainter::CompositionMode cm);
 
 private:
     std::shared_ptr< QImage > mImage;
     QRect   mBounds;
-    bool    mExtendable = true;
+
+    /** @see isMinimallyBounded() */
+    bool mMinBound = true;
+    bool mEnableAutoCrop = false;
 };
 
 #endif

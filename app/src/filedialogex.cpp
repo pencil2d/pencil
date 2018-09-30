@@ -132,6 +132,7 @@ QString FileDialog::openDialogTitle( FileType fileType )
         case FileType::ANIMATION: return tr( "Open animation" );
         case FileType::IMAGE: return tr( "Import image" );
         case FileType::IMAGE_SEQUENCE: return tr( "Import image sequence" );
+        case FileType::GIF: return tr( "Import Animated GIF" );
         case FileType::MOVIE: return tr( "Import movie" );
         case FileType::SOUND: return tr( "Import sound" );
         case FileType::PALETTE: return tr( "Import palette" );
@@ -147,6 +148,7 @@ QString FileDialog::saveDialogTitle( FileType fileType )
         case FileType::ANIMATION: return tr( "Save animation" );
         case FileType::IMAGE: return tr( "Export image" );
         case FileType::IMAGE_SEQUENCE: return tr( "Export image sequence" );
+        case FileType::GIF: return tr( "Export Animated GIF" );
         case FileType::MOVIE: return tr( "Export movie" );
         case FileType::SOUND: return tr( "Export sound" );
         case FileType::PALETTE: return tr( "Export palette" );
@@ -161,10 +163,11 @@ QString FileDialog::openFileFilters( FileType fileType )
     {
         case FileType::ANIMATION: return PFF_OPEN_ALL_FILE_FILTER;
         case FileType::IMAGE: return PENCIL_IMAGE_FILTER;
-        case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_FILTER;
+        case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_SEQ_FILTER;
+        case FileType::GIF: return tr("Animated GIF (*.gif)");
         case FileType::MOVIE: { Q_ASSERT(false); return PENCIL_MOVIE_EXT; } // currently not supported
         case FileType::SOUND: return tr( "Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)" );
-        case FileType::PALETTE: return tr( "Palette (*.xml)" );
+        case FileType::PALETTE: return tr( "Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)" );
         default: Q_ASSERT( false );
     }
     return "";
@@ -177,9 +180,10 @@ QString FileDialog::saveFileFilters( FileType fileType )
         case FileType::ANIMATION: return PFF_SAVE_ALL_FILE_FILTER;
         case FileType::IMAGE: return "";
         case FileType::IMAGE_SEQUENCE: return "";
-        case FileType::MOVIE: return tr( "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; GIF (*.gif);; APNG (*.apng)" );
+        case FileType::GIF: return tr("Animated GIF (*.gif)");
+        case FileType::MOVIE: return tr( "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)" );
         case FileType::SOUND: return "";
-        case FileType::PALETTE: return tr( "Palette (*.xml)" );
+        case FileType::PALETTE: return tr( "Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)" );
         default: Q_ASSERT( false );
     }
     return "";
@@ -187,7 +191,7 @@ QString FileDialog::saveFileFilters( FileType fileType )
 
 QString FileDialog::getFilterForFile(QString filters, QString filePath)
 {
-    qDebug() << "Getfilterforfile" << filters << filePath;
+    qDebug() << __FUNCTION__ << filters << filePath;
     if(!filePath.contains("."))
     {
         return QString();
@@ -222,6 +226,7 @@ QString FileDialog::defaultFileName( FileType fileType )
         case FileType::ANIMATION: return tr( "MyAnimation.pclx" );
         case FileType::IMAGE: return "untitled.png";
         case FileType::IMAGE_SEQUENCE: return "untitled.png";
+        case FileType::GIF: return "untitled.gif";
         case FileType::MOVIE: return "untitled.mp4";
         case FileType::SOUND: return "untitled.wav";
         case FileType::PALETTE: return "untitled.xml";
@@ -237,6 +242,7 @@ QString FileDialog::toSettingKey( FileType fileType )
         case FileType::ANIMATION: return "Animation";
         case FileType::IMAGE: return "Image";
         case FileType::IMAGE_SEQUENCE: return "ImageSequence";
+        case FileType::GIF: return "Animated GIF";
         case FileType::MOVIE: return "Movie";
         case FileType::SOUND: return "Sound";
         case FileType::PALETTE: return "Palette";

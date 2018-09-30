@@ -19,12 +19,17 @@ GNU General Public License for more details.
 #include "ui_exportmovieoptions.h"
 #include "util.h"
 
-ExportMovieDialog::ExportMovieDialog(QWidget *parent) :
-    ImportExportDialog(parent, ImportExportDialog::Export, FileType::MOVIE),
+ExportMovieDialog::ExportMovieDialog(QWidget *parent, Mode mode, FileType fileType) :
+    ImportExportDialog(parent, mode, fileType),
     ui(new Ui::ExportMovieOptions)
 {
     ui->setupUi(getOptionsGroupBox());
-    setWindowTitle(tr("Export Movie"));
+
+    if (fileType == FileType::GIF) {
+        setWindowTitle(tr("Export Animated GIF"));
+    } else {
+        setWindowTitle(tr("Export Movie"));
+    }
     connect(this, &ExportMovieDialog::filePathsChanged, this, &ExportMovieDialog::onFilePathsChanged);
 }
 

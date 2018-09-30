@@ -32,24 +32,24 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "fileformat.h"
+#include "activeframepool.h"
+
 
 Object::Object(QObject* parent) : QObject(parent)
 {
     setData(new ObjectData());
+    mActiveFramePool.reset(new ActiveFramePool(FRAME_POOL_SIZE));
 }
 
 Object::~Object()
 {
-    while (!mLayers.empty())
-    {
-        delete mLayers.takeLast();
-    }
+    mActiveFramePool->clear();
 
-    // Delete the working directory if this is not a "New" project.
-    if (!filePath().isEmpty())
-    {
-        deleteWorkingDir();
-    }
+    for (Layer* layer : mLayers)
+        delete layer;
+    mLayers.clear();
+
+    deleteWorkingDir();
 }
 
 void Object::init()
@@ -168,6 +168,8 @@ LayerCamera* Object::addNewCameraLayer()
 
     layerCamera->addNewKeyFrameAt(1);
 
+    connect(layerCamera, &LayerCamera::resolutionChanged, this, &Object::layerViewChanged);
+
     return layerCamera;
 }
 
@@ -192,15 +194,20 @@ void Object::createWorkingDir()
         QFileInfo fileInfo(mFilePath);
         strFolderName = fileInfo.completeBaseName();
     }
-    const QString strWorkingDir = QDir::tempPath()
-        + "/Pencil2D/"
-        + strFolderName
-        + PFF_TMP_DECOMPRESS_EXT
-        + "/";
-
     QDir dir(QDir::tempPath());
-    dir.mkpath(strWorkingDir);
 
+    QString strWorkingDir;
+    do
+    {
+        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/")
+            .arg(QDir::tempPath())
+            .arg(strFolderName)
+            .arg(PFF_TMP_DECOMPRESS_EXT)
+            .arg(uniqueString(8));
+    }
+    while(dir.exists(strWorkingDir));
+
+    dir.mkpath(strWorkingDir);
     mWorkingDirPath = strWorkingDir;
 
     QDir dataDir(strWorkingDir + PFF_DATA_DIR);
@@ -211,8 +218,11 @@ void Object::createWorkingDir()
 
 void Object::deleteWorkingDir() const
 {
-    QDir dir(mWorkingDirPath);
-    dir.removeRecursively();
+    if (!mWorkingDirPath.isEmpty())
+    {
+        QDir dir(mWorkingDirPath);
+        dir.removeRecursively();
+    }
 }
 
 void Object::createDefaultLayers()
@@ -419,14 +429,28 @@ QString Object::savePalette(QString dataFolder)
     return "";
 }
 
-bool Object::exportPalette(QString filePath)
+void Object::exportPaletteGPL(QFile& file)
 {
-    QFile file(filePath);
-    if (!file.open(QFile::WriteOnly | QFile::Text))
+
+    QString fileName = QFileInfo(file).baseName();
+    QTextStream out(&file);
+
+    out << "GIMP Palette" << "\n";
+    out << "Name: " << fileName << "\n";
+    out << "#" << "\n";
+
+    for (int i = 0; i < mPalette.size(); i++)
     {
-        qDebug("Error: cannot export palette");
-        return false;
+        ColourRef ref = mPalette.at(i);
+
+        QColor toRgb = ref.colour.toRgb();
+        out << QString("%1 %2 %3").arg(toRgb.red()).arg(toRgb.green()).arg(toRgb.blue());
+        out << " " << ref.name << "\n";
     }
+}
+
+void Object::exportPalettePencil(QFile& file)
+{
     QTextStream out(&file);
 
     QDomDocument doc("PencilPalette");
@@ -443,22 +467,105 @@ bool Object::exportPalette(QString filePath)
         tag.setAttribute("alpha", ref.colour.alpha());
         root.appendChild(tag);
     }
-
     int IndentSize = 2;
     doc.save(out, IndentSize);
+}
+
+bool Object::exportPalette(QString filePath)
+{
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        qDebug("Error: cannot export palette");
+        return false;
+    }
+
+    if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
+    {
+        exportPaletteGPL(file);
+    } else {
+        exportPalettePencil(file);
+    }
 
     file.close();
     return true;
 }
 
-bool Object::importPalette(QString filePath)
+void Object::importPaletteGPL(QFile& file)
 {
-    QFile file(filePath);
-    if (!file.open(QFile::ReadOnly))
-    {
-        return false;
-    }
 
+    QTextStream in(&file);
+    QString line;
+
+    bool hashFound = false;
+    bool colorFound = false;
+    while (in.readLineInto(&line))
+    {
+        quint8 red = 0;
+        quint8 green = 0;
+        quint8 blue = 0;
+
+        int countInLine = 0;
+        QString name;
+
+        if (!colorFound)
+        {
+            hashFound = (line == "#") ? true : false;
+        }
+
+        if (!hashFound)
+        {
+            continue;
+        }
+        else if (!colorFound)
+        {
+            colorFound = true;
+            continue;
+        }
+
+        for (QString snip : line.split(" "))
+        {
+            if (countInLine == 0) // assume red
+            {
+                red = snip.toInt();
+            }
+            else if (countInLine == 1) // assume green
+            {
+                green = snip.toInt();
+            }
+            else if (countInLine == 2) // assume blue
+            {
+                blue = snip.toInt();
+            }
+            else
+            {
+
+                // assume last bit of line is a name
+                // gimp interprets as untitled
+                if (snip == "---")
+                {
+                    name = "untitled";
+                }
+                else
+                {
+                    name += snip + " ";
+                }
+            }
+            countInLine++;
+        }
+
+        // trim additional spaces
+        name = name.trimmed();
+
+        if (QColor(red, green, blue).isValid())
+        {
+            mPalette.append(ColourRef(QColor(red,green,blue), name));
+        }
+    }
+}
+
+void Object::importPalettePencil(QFile& file)
+{
     QDomDocument doc;
     doc.setContent(&file);
 
@@ -478,6 +585,23 @@ bool Object::importPalette(QString filePath)
             mPalette.append(ColourRef(QColor(r, g, b, a), name));
         }
         tag = tag.nextSibling();
+    }
+}
+
+bool Object::importPalette(QString filePath)
+{
+    QFile file(filePath);
+
+    if (!file.open(QFile::ReadOnly))
+    {
+        return false;
+    }
+
+    if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
+    {
+        importPaletteGPL(file);
+    } else {
+        importPalettePencil(file);
     }
     file.close();
     return true;
@@ -517,6 +641,8 @@ void Object::paintImage(QPainter& painter,int frameNumber,
                         bool background,
                         bool antialiasing) const
 {
+    updateActiveFrames(frameNumber);
+
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
@@ -748,4 +874,19 @@ int Object::totalKeyFrameCount()
         sum += layer->keyFrameCount();
     }
     return sum;
+}
+
+void Object::updateActiveFrames(int frame) const
+{
+    int beginFrame = std::max(frame - 3, 1);
+    int endFrame = frame + 4;
+    for (int i = 0; i < getLayerCount(); ++i)
+    {
+        Layer* layer = getLayer(i);
+        for (int k = beginFrame; k < endFrame; ++k)
+        {
+            KeyFrame* key = layer->getKeyFrameAt(k);
+            mActiveFramePool->put(key);
+        }
+    }
 }

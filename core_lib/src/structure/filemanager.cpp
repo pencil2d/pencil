@@ -17,18 +17,20 @@ GNU General Public License for more details.
 
 #include "filemanager.h"
 
+#include <ctime>
 #include <QDir>
 #include "pencildef.h"
 #include "qminiz.h"
 #include "fileformat.h"
 #include "object.h"
+#include "layercamera.h"
 
 
 QString openErrorTitle = QObject::tr("Could not open file");
 QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
                          "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
                          "or you can try to use a backup file if you have one. If you contact us through one of "
-                         "our offical channels we may be able to help you. For reporting issues, "
+                         "our official channels we may be able to help you. For reporting issues, "
                          "the best places to reach us are:");
 QString contactLinks = "<ul>"
                        "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
@@ -41,6 +43,7 @@ FileManager::FileManager(QObject *parent) : QObject(parent),
 mLog("FileManager")
 {
     ENABLE_DEBUG_LOG(mLog, false);
+    srand(time(nullptr));
 }
 
 Object* FileManager::load(QString sFileName)
@@ -223,8 +226,7 @@ Status FileManager::save(Object* object, QString sFileName)
     if (fileInfo.isDir())
     {
         dd << "FileName points to a directory";
-        return Status(Status::INVALID_ARGUMENT,
-                      dd,
+        return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") points to a directory.").arg(fileInfo.absoluteFilePath()));
     }
@@ -232,16 +234,14 @@ Status FileManager::save(Object* object, QString sFileName)
     if (!parentDirInfo.exists())
     {
         dd << "The parent directory of sFileName does not exist";
-        return Status(Status::INVALID_ARGUMENT,
-                      dd,
+        return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The directory (\"%1\") does not exist.").arg(parentDirInfo.absoluteFilePath()));
     }
     if ((fileInfo.exists() && !fileInfo.isWritable()) || !parentDirInfo.isWritable())
     {
         dd << "Filename points to a location that is not writable";
-        return Status(Status::INVALID_ARGUMENT,
-                      dd,
+        return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") is not writable.").arg(fileInfo.absoluteFilePath()));
     }
@@ -278,7 +278,6 @@ Status FileManager::save(Object* object, QString sFileName)
         if (!dir.mkpath(sDataFolder))
         {
             dd << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
-
             return Status(Status::FAIL, dd,
                           tr("Cannot Create Data Directory"),
                           tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(sDataFolder));
@@ -297,12 +296,19 @@ Status FileManager::save(Object* object, QString sFileName)
     int numLayers = object->getLayerCount();
     dd << QString("Total %1 layers").arg(numLayers);
 
+    for (int i = 0; i < numLayers; ++i)
+    {
+        Layer* layer = object->getLayer(i);
+        layer->presave(sDataFolder);
+    }
+
     QStringList zippedFiles;
 
     bool saveLayersOK = true;
     for (int i = 0; i < numLayers; ++i)
     {
         Layer* layer = object->getLayer(i);
+
         dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
         
         Status st = layer->save(sDataFolder, zippedFiles, [this] { progressForward(); });
@@ -356,7 +362,7 @@ Status FileManager::save(Object* object, QString sFileName)
     out.flush();
     file.close();
 
-    dd << "Done writing main xml file";
+    dd << "Done writing main xml file at" << sMainXMLFile;
 
     zippedFiles.append(sMainXMLFile);
 
@@ -619,6 +625,12 @@ Status FileManager::verifyObject(Object* obj)
     {
         obj->data()->setCurrentLayer(maxLayer - 1);
     }
-
+    
+    // Must have at least 1 camera layer
+    std::vector<LayerCamera*> camLayers = obj->getLayersByType<LayerCamera>();
+    if (camLayers.empty())
+    {
+        obj->addNewCameraLayer();
+    }
     return Status::OK;
 }

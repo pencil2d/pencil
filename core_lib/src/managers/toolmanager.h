@@ -40,6 +40,7 @@ public:
     void setDefaultTool();
     void setCurrentTool(ToolType eToolType);
     void cleanupAllToolsData();
+    bool leavingThisTool();
 
     void tabletSwitchToEraser();
     void tabletRestorePrevTool();

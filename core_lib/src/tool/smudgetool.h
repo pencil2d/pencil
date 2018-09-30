@@ -36,12 +36,12 @@ public:
     bool keyPressEvent(QKeyEvent *) override;
     bool keyReleaseEvent(QKeyEvent *) override;
 
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice) override;
     void drawStroke();
 
-    void setWidth( const qreal width );
-    void setFeather( const qreal feather );
-    void setPressure( const bool pressure );
+    void setWidth( const qreal width ) override;
+    void setFeather( const qreal feather ) override;
+    void setPressure( const bool pressure ) override;
 
 protected:
     bool emptyFrameActionEnabled() override;

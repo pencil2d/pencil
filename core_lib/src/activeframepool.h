@@ -36,13 +36,14 @@ public:
     void put(KeyFrame* key);
     size_t size() const;
     void clear();
+    bool isFrameInPool(KeyFrame*);
 
     void onKeyFrameDestroy(KeyFrame*) override;
 
 private:
     void unloadFrame(KeyFrame* key);
 
-    typedef std::list<KeyFrame*>::iterator list_iterator_t;
+    using list_iterator_t = std::list<KeyFrame*>::iterator;
 
     std::list<KeyFrame*> mCacheFramesList;
     std::unordered_map<KeyFrame*, list_iterator_t> mCacheFramesMap;

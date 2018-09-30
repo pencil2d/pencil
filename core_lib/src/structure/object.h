@@ -33,6 +33,7 @@ class LayerVector;
 class LayerCamera;
 class LayerSound;
 class ObjectData;
+class ActiveFramePool;
 
 
 struct ExportMovieParameters
@@ -94,8 +95,13 @@ public:
     void renameColour( int i, QString text );
     int getColourCount() { return mPalette.size(); }
     bool importPalette( QString filePath );
+    void importPaletteGPL(QFile& file);
+    void importPalettePencil(QFile& file);
+
     bool exportPalette( QString filePath );
-    QString savePalette( QString dataFolder );
+    void exportPaletteGPL(QFile& file);
+    void exportPalettePencil(QFile& file);
+    QString savePalette( QString filePath );
 
     void loadDefaultPalette();
 
@@ -147,6 +153,10 @@ public:
     void setData( ObjectData* );
 
     int totalKeyFrameCount();
+    void updateActiveFrames(int frame) const;
+
+signals:
+    void layerViewChanged();
 
 private:
     int getMaxLayerID();
@@ -162,6 +172,7 @@ private:
     QList<ColourRef> mPalette;
 
     std::unique_ptr<ObjectData> mData;
+    mutable std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
 

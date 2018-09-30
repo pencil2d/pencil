@@ -79,6 +79,7 @@ public:
     void importImage();
     void importImageSequence();
     void importMovie();
+    void importGIF();
 
     void lockWidgets(bool shouldLock);
 

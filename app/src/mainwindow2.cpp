@@ -269,6 +269,7 @@ void MainWindow2::createMenus()
     connect(ui->actionExport_Image, &QAction::triggered, mCommands, &ActionCommands::exportImage);
     connect(ui->actionExport_ImageSeq, &QAction::triggered, mCommands, &ActionCommands::exportImageSequence);
     connect(ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie);
+    connect(ui->actionExport_Animated_GIF, &QAction::triggered, mCommands, &ActionCommands::exportGif);
 
     connect(ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette);
 
@@ -276,6 +277,7 @@ void MainWindow2::createMenus()
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
+    connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
@@ -874,6 +876,60 @@ void MainWindow2::importImageSequence()
     mIsImportingImageSequence = false;
 }
 
+void MainWindow2::importGIF()
+{
+    auto gifDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::GIF);
+    gifDialog->exec();
+    if (gifDialog->result() == QDialog::Rejected)
+    {
+        return;
+    }
+
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = true;
+
+    int space = gifDialog->getSpace();
+
+    // Show a progress dialog, as this could take a while if the gif is huge
+    QProgressDialog progress(tr("Importing Animated GIF..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
+    bool failedImport = false;
+    QString strImgFileLower = gifDialog->getFilePath();
+
+    if (strImgFileLower.endsWith(".gif"))
+    {
+        mEditor->importGIF(strImgFileLower, space);
+
+        progress.setValue(50);
+        QApplication::processEvents();  // Required to make progress bar update on-screen.
+
+    } else {
+        if (!failedImport)
+        {
+            failedImport = true;
+        }
+    }
+
+    if (failedImport)
+    {
+        QMessageBox::warning(this,
+                             tr("Warning"),
+                             tr("was unable to import") + strImgFileLower,
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
+
+    progress.setValue(100);
+    progress.close();
+
+    mIsImportingImageSequence = false;
+}
+
 void MainWindow2::importMovie()
 {
     FileDialog fileDialog(this);
@@ -1126,6 +1182,7 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
     connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
     connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
 

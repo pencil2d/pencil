@@ -38,6 +38,7 @@ public:
 
     void init();
     QString getFilePath();
+    QString getAbsolutePath();
     QStringList getFilePaths();
 
 signals:

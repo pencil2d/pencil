@@ -17,6 +17,7 @@
         <file>pencil_ru.qm</file>
         <file>pencil_sl.qm</file>
         <file>pencil_vi.qm</file>
+        <file>pencil_zh_CN.qm</file>
         <file>pencil_zh_TW.qm</file>
     </qresource>
 </RCC>

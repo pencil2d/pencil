@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include <QWidget>
 #include <QPixmapCache>
 
+#include "movemode.h"
 #include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
@@ -61,12 +62,17 @@ public:
     void setCore( Editor* pCore ) { mEditor = pCore; }
 
     void deleteSelection();
-    void setSelection( QRectF rect, bool );
+    void setSelection( QRectF rect );
+    void adjustSelection(float offsetX, float offsetY, qreal rotatedAngle);
+    void applySelectionChanges();
     void displaySelectionProperties();
     void resetSelectionProperties();
+
+    bool isSomethingSelected() const;
     QRectF getSelection() const { return mySelection; }
-    bool somethingSelected = false;
-    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    QRectF mySelection;
+    QRectF myTransformedSelection;
+    QRectF myTempTransformedSelection;
     qreal myRotatedAngle = 0.0;
     QList<int> mClosestCurves;
 
@@ -86,9 +92,12 @@ public:
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY, NONE };
-    MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode( MoveMode moveMode ) { mMoveMode = moveMode; }
+    MoveMode getMoveMode() const { return mMoveMode; }
+    void findMoveModeOfCornerInRange();
+    MoveMode getMoveModeForSelectionAnchor();
+
+    QPointF whichAnchorPoint(QPointF anchorPoint);
 
     QRectF getCameraRect();
     QPointF getCentralPoint();
@@ -115,6 +124,7 @@ public:
     void floodFillError( int errorType );
 
     bool isMouseInUse() const { return mMouseInUse; }
+    bool isTemporaryTool() const { return instantTool; }
 
     void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
 
@@ -133,6 +143,10 @@ public slots:
     void applyTransformedSelection();
     void cancelTransformedSelection();
     void setModified( int layerNumber, int frameNumber );
+
+    inline bool transformHasBeenModified() {
+        return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0;
+    }
 
     void selectAll();
     void deselectAll();
@@ -187,16 +201,18 @@ public:
     QPixmap mCursorImg;
     QPixmap mTransCursImg;
 
+    QPointF getTransformOffset() { return mOffset; }
+
 private:
     void drawCanvas( int frame, QRect rect );
     void settingUpdated(SETTING setting);
+    void paintSelectionVisuals(QPainter& painter);
 
-    MoveMode mMoveMode = MIDDLE;
+    MoveMode mMoveMode = MoveMode::NONE;
     ToolType mPrevTemporalToolType = ERASER;
     ToolType mPrevToolType = PEN; // previous tool (except temporal)
 
     BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
-    bool isTransforming = false;
 
     std::unique_ptr< StrokeManager > mStrokeManager;
 
@@ -234,6 +250,7 @@ private:
 
     //instant tool (temporal eg. eraser)
     bool instantTool = false; //whether or not using temporal tool
+    bool mSomethingSelected = false;
 
     VectorSelection vectorSelection;
     QTransform selectionTransformation;
@@ -250,6 +267,9 @@ private:
     QRectF mDebugRect;
     QLoggingCategory mLog;
     std::deque< clock_t > mDebugTimeQue;
+
+    QPolygonF mCurrentTransformSelection;
+    QPolygonF mLastTransformSelection;
 };
 
 #endif

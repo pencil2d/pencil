@@ -55,7 +55,7 @@ void PencilTool::loadSettings()
     properties.width = settings.value("pencilWidth").toDouble();
     properties.feather = 50;
     properties.pressure = settings.value("pencilPressure").toBool();
-    properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
+    properties.stabilizerLevel = settings.value("pencilLineStabilization").toInt();
     properties.useAA = DISABLED;
     properties.useFeather = true;
     properties.useFillContour = false;
@@ -129,7 +129,7 @@ void PencilTool::setStabilizerLevel(const int level)
     properties.stabilizerLevel = level;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("stabilizerLevel", level);
+    settings.setValue("pencilLineStabilization", level);
     settings.sync();
 }
 
@@ -328,14 +328,14 @@ void PencilTool::drawStroke()
     else if (layer->type() == Layer::VECTOR)
     {
         properties.useFeather = false;
-        properties.width = 0;
+        mCurrentWidth = 0;
         QPen pen(mEditor->color()->frontColor(),
                  1,
                  Qt::DotLine,
                  Qt::RoundCap,
                  Qt::RoundJoin);
 
-        int rad = qRound((properties.width / 2 + 2) * mEditor->view()->scaling());
+        int rad = qRound((mCurrentWidth / 2 + 2) * mEditor->view()->scaling());
 
         if (p.size() == 4)
         {
@@ -380,7 +380,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
                                  mEditor->color()->frontColorNumber());
     }
 
-    if (vectorImage->isAnyCurveSelected() || mScribbleArea->somethingSelected)
+    if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected())
     {
         mScribbleArea->deselectAll();
     }
@@ -388,8 +388,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
     // select last/newest curve
     vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
-    // TODO: selection doesn't apply on enter or escape
-    mScribbleArea->somethingSelected = true;
+    // TODO: selection doesn't apply on enter
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();

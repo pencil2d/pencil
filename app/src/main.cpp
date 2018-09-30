@@ -310,6 +310,9 @@ int main(int argc, char* argv[])
     Q_INIT_RESOURCE(core_lib);
 
     QSettings settings(PENCIL2D, PENCIL2D);
+#ifdef Q_OS_MACOS
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
     if (settings.value("EnableHighDpiScaling", "true").toBool())
     {
         // Enable auto screen scaling on high dpi display, for example, a 4k monitor

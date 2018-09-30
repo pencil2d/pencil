@@ -1,4 +1,4 @@
-/* miniz.c 2.0.6 beta - public domain deflate/inflate, zlib-subset, ZIP reading/writing/appending, PNG writing
+/* miniz.c 2.0.7 - public domain deflate/inflate, zlib-subset, ZIP reading/writing/appending, PNG writing
    See "unlicense" statement at the end of this file.
    Rich Geldreich <richgel99@gmail.com>, last updated Oct. 13, 2013
    Implements RFC 1950: http://www.ietf.org/rfc/rfc1950.txt and RFC 1951: http://www.ietf.org/rfc/rfc1951.txt
@@ -125,7 +125,7 @@
 /* If MINIZ_NO_TIME is specified then the ZIP archive functions will not be able to get the current time, or */
 /* get/set file times, and the C run-time funcs that get/set times won't be called. */
 /* The current downside is the times written to your archives will be from 1979. */
-/*#define MINIZ_NO_TIME */
+#define MINIZ_NO_TIME
 
 /* Define MINIZ_NO_ARCHIVE_APIS to disable all ZIP archive API's. */
 /*#define MINIZ_NO_ARCHIVE_APIS */
@@ -234,11 +234,11 @@ enum
     MZ_DEFAULT_COMPRESSION = -1
 };
 
-#define MZ_VERSION "10.0.1"
-#define MZ_VERNUM 0xA010
+#define MZ_VERSION "10.0.2"
+#define MZ_VERNUM 0xA020
 #define MZ_VER_MAJOR 10
 #define MZ_VER_MINOR 0
-#define MZ_VER_REVISION 1
+#define MZ_VER_REVISION 2
 #define MZ_VER_SUBREVISION 0
 
 #ifndef MINIZ_NO_ZLIB_APIS
