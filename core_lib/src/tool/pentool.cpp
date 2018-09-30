@@ -158,13 +158,16 @@ void PenTool::mouseReleaseEvent(QMouseEvent* event)
                 drawStroke();
             }
 
-        mEditor->backups()->prepareBackup();
-        if (layer->type() == Layer::BITMAP)
-            paintBitmapStroke();
-            mEditor->backups()->bitmap("Bitmap: Pen");
-        else if (layer->type() == Layer::VECTOR)
-            paintVectorStroke(layer);
-            mEditor->backups()->vector("Vector: Pen");
+            mEditor->backups()->prepareBackup();
+            if (layer->type() == Layer::BITMAP) {
+                paintBitmapStroke();
+                mEditor->backups()->bitmap("Bitmap: Pen");
+            }
+            else if (layer->type() == Layer::VECTOR) {
+                paintVectorStroke(layer);
+                mEditor->backups()->vector("Vector: Pen");
+            }
+        }
     }
     endStroke();
 }

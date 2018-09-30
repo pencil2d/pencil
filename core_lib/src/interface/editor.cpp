@@ -66,6 +66,11 @@ Editor::Editor(QObject* parent) : QObject(parent)
     clipboardSoundClipOk = false;
 }
 
+Editor::~Editor()
+{
+    // a lot more probably needs to be cleaned here...
+}
+
 bool Editor::init()
 {
     // Initialize managers
@@ -453,8 +458,8 @@ bool Editor::importBitmapImage(QString filePath, int space)
         QRect boundaries = img.rect();
         boundaries.moveTopLeft(mScribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width() / 2, boundaries.height() / 2));
 
-        BitmapImage importedBitmapImage{ boundaries, img };
-        importedBitmapImage->paste(&importedBitmapImage);
+        BitmapImage importedBitmapImage{ boundaries.topLeft(), img };
+        importedBitmapImage.paste(&importedBitmapImage);
 
         if (!keyExisted)
         {

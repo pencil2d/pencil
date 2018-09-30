@@ -75,7 +75,6 @@ void MoveTool::mouseReleaseEvent(QMouseEvent*)
 
     mEditor->backups()->transform();
 
-
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
 }
@@ -156,7 +155,7 @@ void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
     QRectF selectionRect = mScribbleArea->myTransformedSelection;
     if (!selectionRect.isNull())
     {
-        mEditor->backup(typeName());
+        mEditor->backups()->transform();
     }
 
     mScribbleArea->findMoveModeOfCornerInRange();

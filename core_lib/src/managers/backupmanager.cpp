@@ -447,7 +447,7 @@ void BackupManager::prepareBackup()
     mLayer = editor()->layers()->currentLayer();
     mLayerId = mLayer->id();
     mFrameIndex = editor()->currentFrame();
-    mIsSelected = editor()->getScribbleArea()->somethingSelected;
+    mIsSelected = editor()->getScribbleArea()->isSomethingSelected();
     mSelectionRect = editor()->getScribbleArea()->mySelection;
     mTempSelection = editor()->getScribbleArea()->myTempTransformedSelection;
     mLayerName = mLayer->name();

@@ -144,7 +144,7 @@ void SelectTool::mouseMoveEvent(QMouseEvent* event)
 
     if (!mScribbleArea->mySelection.isEmpty())
     {
-        backup->selection();
+        mEditor->backups()->selection();
     }
     mScribbleArea->updateCurrentFrame();
 

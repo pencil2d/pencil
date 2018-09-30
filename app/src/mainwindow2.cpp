@@ -368,7 +368,8 @@ void MainWindow2::createMenus()
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction(),
-        mColorInspector->toggleViewAction()
+        mColorInspector->toggleViewAction(),
+        mHistoryView->toggleViewAction()
     };
 
     for (QAction* action : actions)

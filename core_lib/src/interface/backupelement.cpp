@@ -134,10 +134,11 @@ void AddKeyFrameElement::redo()
     qDebug() << "undo: newLayer" << newLayerIndex;
 
     if (isFirstRedo) { isFirstRedo = false; return; }
+    bool isSequence = (oldKeySpacing > 1) ? true : false;
 
     if (newFrameIndex > 0)
     {
-        if (oldIsSequence)
+        if (isSequence)
         {
             qDebug() << "nnnew:" << newKeyFrames;
             for (auto map : newKeyFrames)
@@ -445,7 +446,7 @@ SelectionElement::SelectionElement(bool backupIsSelected,
     oldIsSelected = backupIsSelected;
     oldSelection = backupSelection;
 
-    newIsSelected = editor->getScribbleArea()->somethingSelected;
+    newIsSelected = editor->getScribbleArea()->isSomethingSelected();
     newSelection = editor->getScribbleArea()->mySelection;
 
     setText(QObject::tr("New Selection"));
@@ -454,7 +455,12 @@ SelectionElement::SelectionElement(bool backupIsSelected,
 
 void SelectionElement::undo()
 {
-    editor()->getScribbleArea()->setSelection(oldSelection, oldIsSelected);
+    ScribbleArea* scribbleArea = editor()->getScribbleArea();
+    scribbleArea->setSelection(oldSelection);
+
+    scribbleArea->myRotatedAngle = 0;
+    scribbleArea->applySelectionChanges();
+
     editor()->updateCurrentFrame();
 }
 
@@ -462,7 +468,13 @@ void SelectionElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    editor()->getScribbleArea()->setSelection(newSelection, newIsSelected);
+    ScribbleArea* scribbleArea = editor()->getScribbleArea();
+    scribbleArea->setSelection(newSelection);
+
+
+    scribbleArea->myRotatedAngle = 0;
+    scribbleArea->applySelectionChanges();
+
     editor()->updateCurrentFrame();
 
 }
@@ -525,6 +537,7 @@ void TransformElement::undo()
 {
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
 
+    oldBitmap->image()->save("/Users/CandyFace/Desktop/oldbitmap.png");
     switch(layer->type())
     {
         case Layer::BITMAP:
@@ -543,11 +556,16 @@ void TransformElement::undo()
 
     }
     qDebug() << oldTransformApplied;
-    editor()->getScribbleArea()->myTempTransformedSelection = oldTransformApplied;
-    editor()->updateCurrentFrame();
+    ScribbleArea* scribbleArea = editor()->getScribbleArea();
+    scribbleArea->myTempTransformedSelection = oldTransformApplied;
 
-    editor()->getScribbleArea()->setSelection(oldTransformApplied, true);
-    editor()->getScribbleArea()->resetSelectionProperties();
+    scribbleArea->setSelection(oldTransformApplied);
+
+//    scribbleArea->applyTransformedSelection();
+//    scribbleArea->paintTransformedSelection();
+
+    scribbleArea->resetSelectionProperties();
+    scribbleArea->updateCurrentFrame();
 }
 
 void TransformElement::redo()
@@ -571,11 +589,15 @@ void TransformElement::redo()
             break;
 
     }
-    editor()->getScribbleArea()->myTempTransformedSelection = newTransformApplied;
-    editor()->updateCurrentFrame();
+    ScribbleArea* scribbleArea = editor()->getScribbleArea();
+    scribbleArea->myTempTransformedSelection = newTransformApplied;
 
-    editor()->getScribbleArea()->setSelection(newTransformApplied, true);
-    editor()->getScribbleArea()->resetSelectionProperties();
+    scribbleArea->setSelection(newTransformApplied);
+//    scribbleArea->applyTransformedSelection();
+//    scribbleArea->paintTransformedSelection();
+    scribbleArea->resetSelectionProperties();
+
+    editor()->updateCurrentFrame();
 }
 
 bool TransformElement::mergeWith(const QUndoCommand *other)

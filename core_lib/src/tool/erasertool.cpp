@@ -365,12 +365,11 @@ void EraserTool::paintVectorStroke()
         VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
         vectorImage->addCurve( curve, mEditor->view()->scaling(), false );
 
-        if (vectorImage->isAnyCurveSelected() || mScribbleArea->somethingSelected) {
+        if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected()) {
             mScribbleArea->deselectAll();
         }
 
         vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
-        mScribbleArea->somethingSelected = true;
 
         mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
         mScribbleArea->setAllDirty();
