@@ -49,6 +49,7 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "copymultiplekeyframesdialog.h"
+#include "timecontrols.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -568,15 +569,20 @@ void ActionCommands::duplicateKey()
 
 void ActionCommands::copyMultipleKeyframes()
 {
-    CopyMultiplekeyframesDialog cd;
-    int res = cd.exec();
+    int a = 7;
+    int b = 23;
+    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(new QWidget, a, b);
+ //   cd.setStartLoop(a);
+ //   cd.setStopLoop(b);
+    //        CopyMultiplekeyframesDialog(QWidget* parent, a, b) cd;
+    int res = cd->exec();
     Layer* layer = mEditor->layers()->currentLayer();
     if (res == 1)  // if OK pressed
     {
-        int startL = cd.getStartLoop();
-        int stopL = cd.getStopLoop();
-        int num = cd.getNumLoops();
-        int startF = cd.getStartFrame();
+        int startL = cd->getStartLoop();
+        int stopL = cd->getStopLoop();
+        int num = cd->getNumLoops();
+        int startF = cd->getStartFrame();
         for (int i = 0; i < num; i++)
         {
             for (int j = startL; j < stopL + 1; j++, startF++)

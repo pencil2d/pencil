@@ -1,12 +1,23 @@
 #include "copymultiplekeyframesdialog.h"
 #include "ui_copymultiplekeyframesdialog.h"
 #include "timeline.h"
+#include "timecontrols.h"
 #include <QSettings>
 
 CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CopyMultiplekeyframesDialog)
 {
+    ui->setupUi(this);
+    init();
+}
+
+CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(QWidget *parent, int startLoop, int stopLoop) :
+    QDialog(parent),
+    ui(new Ui::CopyMultiplekeyframesDialog)
+{
+    mStartLoop = startLoop;
+    mStopLoop = stopLoop;
     ui->setupUi(this);
     init();
 }
@@ -24,6 +35,8 @@ void CopyMultiplekeyframesDialog::init()
     connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
 //    mStartLoop = ui->sBoxStartLoop->value();
 //    mStopLoop = ui->sBoxStopLoop->value();
+    ui->labRangeDefine->setText(tr("Range: ") + QString::number(mStartLoop) +
+                                " -> " + QString::number(mStopLoop) + tr(" \(both included\)"));
     mNumLoops = ui->sBoxNumLoops->value();
     mStartFrame = ui->sBoxStartFrame->value();
     QSettings settings ("Pencil", "Pencil");
@@ -92,12 +105,12 @@ void CopyMultiplekeyframesDialog::checkValidity()
     int def = (mStopLoop + 1 - mStartLoop) * mNumLoops + mStartFrame - 1;
     if (def > mTimelineLength)
     {
-        ui->buttonBox->setEnabled(false);
+        ui->btnBoxOkCancel->setEnabled(false);
   //      ui->labWarning->setText(tr("Timeline exceeded!"));
     }
     else
     {
-        ui->buttonBox->setEnabled(true);
+        ui->btnBoxOkCancel->setEnabled(true);
 //        ui->labWarning->setText(tr("Ends at frame ") + QString::number(def) + " (" + QString::number(mTimelineLength) + ")");
     }
 }

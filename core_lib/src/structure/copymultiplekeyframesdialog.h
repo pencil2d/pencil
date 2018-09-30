@@ -13,6 +13,7 @@ class CopyMultiplekeyframesDialog : public QDialog
 
 public:
     explicit CopyMultiplekeyframesDialog(QWidget *parent = 0);
+    explicit CopyMultiplekeyframesDialog(QWidget *parent = 0, int startLoop = 1, int stopLoop = 2);
     ~CopyMultiplekeyframesDialog();
     void init();
     int getStartLoop();

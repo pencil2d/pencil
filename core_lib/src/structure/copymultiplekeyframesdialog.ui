@@ -16,30 +16,33 @@
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>23</y>
+     <x>21</x>
+     <y>25</y>
      <width>241</width>
-     <height>307</height>
+     <height>274</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QLabel" name="labHeader">
-        <property name="text">
-         <string>Manipulate loop</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labLoopDefine">
-        <property name="text">
-         <string>Frames:  1 to 24</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QLabel" name="labHeader">
+      <property name="font">
+       <font>
+        <family>DejaVu Sans Mono</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Manipulate Range of frames</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labRangeDefine">
+      <property name="text">
+       <string>Frames:  1 to 24</string>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="Line" name="line">
@@ -49,47 +52,51 @@
      </widget>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="radioButton">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QRadioButton" name="rBtnCopy">
         <property name="text">
-         <string>Copy keys</string>
+         <string>Copy Range</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labNumLoops">
-        <property name="text">
-         <string>Number of loops:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sBoxNumLoops">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="labCopyFrom">
-        <property name="text">
-         <string>From frame:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sBoxStartFrame">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>9999</number>
-        </property>
-       </widget>
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labNumLoops">
+          <property name="text">
+           <string>Number of loops:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="sBoxNumLoops">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labCopyFrom">
+          <property name="text">
+           <string>From frame:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="sBoxStartFrame">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -101,30 +108,34 @@
      </widget>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="radioButton_3">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QRadioButton" name="rBtnMove">
         <property name="text">
-         <string>Move keys</string>
+         <string>Move Range</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labMoveFrom">
-        <property name="text">
-         <string>From frame:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="spinBox">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>9999</number>
-        </property>
-       </widget>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labMoveFrom">
+          <property name="text">
+           <string>From frame:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="spinBox">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -136,14 +147,14 @@
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="radioButton_2">
+     <widget class="QRadioButton" name="rBtnDelete">
       <property name="text">
-       <string>Delete Keys</string>
+       <string>Delete Range</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QDialogButtonBox" name="buttonBox">
+     <widget class="QDialogButtonBox" name="btnBoxOkCancel">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -158,7 +169,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>btnBoxOkCancel</sender>
    <signal>accepted()</signal>
    <receiver>CopyMultiplekeyframesDialog</receiver>
    <slot>accept()</slot>
@@ -174,7 +185,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>btnBoxOkCancel</sender>
    <signal>rejected()</signal>
    <receiver>CopyMultiplekeyframesDialog</receiver>
    <slot>reject()</slot>
