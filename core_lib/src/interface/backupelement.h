@@ -117,7 +117,7 @@ public:
     enum { Id = 5 };
     AddKeyFrameElement(int backupFrameIndex,
                        int backupLayerId,
-                       bool backupIsSequence,
+                       int backupKeySpacing,
                        bool backupKeyExisted,
                        QString description,
                        Editor* editor,
@@ -133,7 +133,7 @@ public:
     std::map<int, KeyFrame*>oldKeyFrames;
     std::map<int, KeyFrame*>newKeyFrames;
 
-    bool oldIsSequence = false;
+    int oldKeySpacing = 0;
     bool oldKeyExisted = false;
 
     KeyFrame* newKey = nullptr;

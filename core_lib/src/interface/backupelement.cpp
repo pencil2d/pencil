@@ -46,7 +46,7 @@ BackupElement::~BackupElement()
 
 AddKeyFrameElement::AddKeyFrameElement(int backupFrameIndex,
                                        int backupLayerId,
-                                       bool backupIsSequence,
+                                       int backupKeySpacing,
                                        bool backupKeyExisted,
                                        QString description,
                                        Editor *editor,
@@ -61,7 +61,7 @@ AddKeyFrameElement::AddKeyFrameElement(int backupFrameIndex,
 
     oldKeyExisted = backupKeyExisted;
 
-    oldIsSequence = backupIsSequence;
+    oldKeySpacing = backupKeySpacing;
 
     Layer* layer = editor->layers()->currentLayer();
 
@@ -70,31 +70,32 @@ AddKeyFrameElement::AddKeyFrameElement(int backupFrameIndex,
 
     oldKeyFrames.insert(std::make_pair(oldFrameIndex, newKey));
 
+    bool isSequence = (oldKeySpacing > 1) ? true : false;
     switch(layer->type())
     {
         case Layer::BITMAP:
         {
-            if (!description.isEmpty() || oldIsSequence) { break; }
+            if (!description.isEmpty() || isSequence) { break; }
             description = "New Bitmap Key";
             break;
         }
         case Layer::VECTOR:
         {
-            if (!description.isEmpty() || oldIsSequence) { break; }
+            if (!description.isEmpty() || isSequence) { break; }
 
             description = "New Vector Key";
             break;
         }
         case Layer::SOUND:
         {
-            if (!description.isEmpty() || oldIsSequence) { break; }
+            if (!description.isEmpty() || isSequence) { break; }
 
             description = "New Sound Key";
             break;
         }
         case Layer::CAMERA:
         {
-            if (!description.isEmpty() || oldIsSequence) { break; }
+            if (!description.isEmpty() || isSequence) { break; }
 
             description = "New Camera Key";
             break;
@@ -108,7 +109,8 @@ AddKeyFrameElement::AddKeyFrameElement(int backupFrameIndex,
 void AddKeyFrameElement::undo()
 {
     qDebug() << "key remove triggered";
-    if (oldIsSequence)
+    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    if (isSequence)
     {
         qDebug() << "oldKeyFrames: " << oldKeyFrames;
         for (auto map : oldKeyFrames)
@@ -163,6 +165,8 @@ bool AddKeyFrameElement::mergeWith(const QUndoCommand *other)
     qDebug() << "state of frames:: new" << newKeyFrames;
     qDebug() << newKeyFrames;
 
+    bool isSequence = (oldKeySpacing > 1) ? true : false;
+
     if (newKeyFrames.empty())
     {
         newKeyFrames.insert(std::make_pair(oldFrameIndex, newKey));
@@ -170,7 +174,7 @@ bool AddKeyFrameElement::mergeWith(const QUndoCommand *other)
 
     const AddKeyFrameElement* element = static_cast<const AddKeyFrameElement*>(other);
 
-    if (!oldIsSequence || !element->oldIsSequence)
+    if (!isSequence || element->oldKeySpacing < 2)
     {
         return false;
     }

@@ -31,7 +31,7 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    void keyAdded(bool isSequence, bool keyExisted, QString description);
+    void keyAdded(int keySpacing, bool keyExisted, QString description);
     void keyAdded();
     void keyRemoved();
     void bitmap(QString description);

@@ -76,13 +76,13 @@ const BackupElement* BackupManager::currentBackup()
     }
 }
 
-void BackupManager::keyAdded(bool isSequence, bool keyExisted, QString description)
+void BackupManager::keyAdded(int keySpacing, bool keyExisted, QString description)
 {
     if (mLayer == NULL) { return; }
 
     AddKeyFrameElement* element = new AddKeyFrameElement(mFrameIndex,
                                                          mLayerId,
-                                                         isSequence,
+                                                         keySpacing,
                                                          keyExisted,
                                                          description,
                                                          editor());
