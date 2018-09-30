@@ -54,7 +54,9 @@ public:
     void setLooping(bool isLoop);
     void enableRangedPlayback(bool b);
     void setRangedStartFrame(int frame);
+    int getRangedStartFrame();
     void setRangedEndFrame(int frame);
+    int getRangedEndFrame();
     void enableSound(bool b);
 
     void stopSounds();

@@ -569,14 +569,12 @@ void ActionCommands::duplicateKey()
 
 void ActionCommands::copyMultipleKeyframes()
 {
-    int a = 7;
-    int b = 23;
+    int a = mEditor->playback()->getRangedStartFrame();
+    int b = mEditor->playback()->getRangedEndFrame();
     CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(new QWidget, a, b);
- //   cd.setStartLoop(a);
- //   cd.setStopLoop(b);
-    //        CopyMultiplekeyframesDialog(QWidget* parent, a, b) cd;
     int res = cd->exec();
     Layer* layer = mEditor->layers()->currentLayer();
+
     if (res == 1)  // if OK pressed
     {
         int startL = cd->getStartLoop();
