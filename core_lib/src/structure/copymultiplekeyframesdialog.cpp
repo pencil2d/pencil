@@ -35,8 +35,8 @@ void CopyMultiplekeyframesDialog::init()
     connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
 //    mStartLoop = ui->sBoxStartLoop->value();
 //    mStopLoop = ui->sBoxStopLoop->value();
-    ui->labRangeDefine->setText(tr("Range: ") + QString::number(mStartLoop) +
-                                " -> " + QString::number(mStopLoop) + tr(" \(both included\)"));
+//    ui->labRangeDefine->setText(tr("Range: ") + QString::number(mStartLoop) +
+//                                " -> " + QString::number(mStopLoop));
     mNumLoops = ui->sBoxNumLoops->value();
     mStartFrame = ui->sBoxStartFrame->value();
     QSettings settings ("Pencil", "Pencil");
