@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>539</height>
+    <height>561</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>21</y>
      <width>251</width>
-     <height>481</height>
+     <height>493</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -260,9 +260,42 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QLabel" name="labWarning">
+      <property name="font">
+       <font>
+        <family>DejaVu Sans Mono</family>
+        <weight>75</weight>
+        <italic>true</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>9999 frames exceeded!</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>sBoxFirstFrame</tabstop>
+  <tabstop>sBoxLastFrame</tabstop>
+  <tabstop>cBoxFromLayer</tabstop>
+  <tabstop>rBtnCopy</tabstop>
+  <tabstop>sBoxNumLoops</tabstop>
+  <tabstop>sBoxStartFrame</tabstop>
+  <tabstop>cBoxCopyToLayer</tabstop>
+  <tabstop>rBtnMove</tabstop>
+  <tabstop>sBoxMove</tabstop>
+  <tabstop>cBoxMoveToLayer</tabstop>
+  <tabstop>rBtnReverse</tabstop>
+  <tabstop>sBoxStartReverse</tabstop>
+  <tabstop>rBtnDelete</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -272,8 +305,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>249</x>
+     <y>491</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -288,8 +321,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>279</x>
+     <y>491</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

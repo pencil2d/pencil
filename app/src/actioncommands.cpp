@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QDesktopServices>
 #include <QStandardPaths>
+#include <QMessageBox>
 
 #include "pencildef.h"
 #include "editor.h"
@@ -571,57 +572,110 @@ void ActionCommands::copyMultipleKeyframes()
 {
     int a = 1, b = 2; // default values
     if (mEditor->playback()->isRangedPlaybackOn())
-    {   // defined range values
+    {   // defined range values if available
         a = mEditor->playback()->getRangedStartFrame();
         b = mEditor->playback()->getRangedEndFrame();
     }
     LayerManager* layerMgr = mEditor->layers();
-    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, a, b, new QWidget);
-    cd->exec();
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (cd->Accepted)
+    int lIndex = layerMgr->currentLayer()->type();
+    if (lIndex == 1 || lIndex == 2)
     {
- /*
-        QString s = cd->getRadioChecked();
-        switch (s) {
-        case "copy":
-
-            break;
-        default:
-            break;
-        }
-
-        qDebug() << s;
-*/
-        int startL = cd->getFirstFrame();
-        int stopL = cd->getLastFrame();
-        int num = cd->getNumLoops();
-        int startF = cd->getStartFrame();
-        for (int i = 0; i < num; i++)
+        CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, a, b, new QWidget);
+        cd->exec();
+        Layer* layer = mEditor->layers()->currentLayer();
+        QString sel = cd->getRadioChecked();
+        if (cd->Accepted == 1)
         {
-            for (int j = startL; j < stopL + 1; j++, startF++)
+            int startL = cd->getFirstFrame();
+            int stopL = cd->getLastFrame();
+            QString strFromLayer = cd->getFromLayer();
+            Layer *fromLayer = layerMgr->findLayerByName(strFromLayer);
+            QString strToLayer = "";
+            Layer *toLayer;
+            if (sel == "copy")
             {
-                if (layer->keyExists(j))
+                strToLayer = cd->getCopyToLayer();
+                toLayer = layerMgr->findLayerByName(strToLayer);
+                int num = cd->getNumLoops();
+                int startF = cd->getCopyStartFrame();
+                qDebug() << "from " << strFromLayer << " to " << strToLayer;
+                for (int i = 0; i < num; i++)
                 {
-                    KeyFrame* kf = layer->getKeyFrameAt(j);
-                    if (kf == nullptr) return;
-                    KeyFrame* dupKey = kf->clone();
-                    // replace if keyframe exists!
-                    if (layer->keyExists(startF))
+                    for (int j = startL; j < stopL + 1; j++, startF++)
                     {
-                        if (layer->removeKeyFrame(startF))
+                        if (layer->keyExists(j))
                         {
-                            layer->addKeyFrame(startF, dupKey);
+                            KeyFrame* kf = fromLayer->getKeyFrameAt(j);
+                            if (kf == nullptr) return;
+                            KeyFrame* dupKey = kf->clone();
+                            // replace if keyframe exists!
+                            if (toLayer->keyExists(startF))
+                            {
+                                toLayer->removeKeyFrame(startF);
+                                toLayer->addKeyFrame(startF, dupKey);
+                            }
+                            else
+                            {
+                                toLayer->addKeyFrame(startF, dupKey);
+                            }
                         }
-                    }
-                    else
-                    {
-                        layer->addKeyFrame(startF, dupKey);
                     }
                 }
             }
+            if (sel == "move")
+            {
+                // find TO-layer
+                strToLayer = cd->getMoveToLayer();
+                toLayer = layerMgr->findLayerByName(strToLayer);
+                int startF = cd->getMoveStartFrame();
+//                qDebug() << "startF: " << startF << " stopF: " << stopF;
+//                qDebug() << "From " << fromLayer->name() << " To " << toLayer->name();
+                for (int j = startL; j < stopL + 1; j++, startF++)
+                {
+                    if (fromLayer->keyExists(j))
+                    {
+                        KeyFrame* kf = fromLayer->getKeyFrameAt(j);
+                        if (kf == nullptr) return;
+                        KeyFrame* dupKey = kf->clone();
+                        // replace if keyframe exists!
+                        if (toLayer->keyExists(startF))
+                        {
+                            if (toLayer->removeKeyFrame(startF))
+                            {
+                                toLayer->addKeyFrame(startF, dupKey);
+                                fromLayer->removeKeyFrame(j);
+                            }
+                        }
+                        else
+                        {
+                            toLayer->addKeyFrame(startF, dupKey);
+                            fromLayer->removeKeyFrame(j);
+                        }
+
+                    }
+                }
+            }
+            if (sel == "reverse")
+            {
+
+            }
+            if (sel == "delete")
+            {
+
+            }
+            mEditor->layers()->notifyLayerChanged(layer);
         }
-        mEditor->layers()->notifyLayerChanged(layer);
+        // delete next four lines later...
+        else
+        {
+            qDebug() << "ikke accepteret";
+        }
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setText(tr("Can only be used on Bitmap and Vector layers."));
+        msgBox.exec();
     }
 }
 

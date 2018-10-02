@@ -18,31 +18,49 @@ public:
     explicit CopyMultiplekeyframesDialog(LayerManager *lm, int startLoop = 1, int stopLoop = 2, QWidget *parent = 0);
     ~CopyMultiplekeyframesDialog();
     void init();
-    int getFirstFrame();
-    int getLastFrame();
-    int getNumLoops();
+    int getFirstFrame();        // first frame in range
+    int getLastFrame();         // last frame in range
+    QString getFromLayer();     // Layer thet holds the Range
+    QString getCopyToLayer();   // Layer that receives Copy Range
+    QString getMoveToLayer();   // Layer the Range is moved to
+    int getNumLoops();          // Number of loops asked for
     void setNumLoopsMax(int i);
-    int getStartFrame();
+    int getCopyStartFrame();
+    int getMoveStartFrame();
     QString getRadioChecked();
 
 private slots:
+    // Range and Layers
     void setFirstFrame(int i);
     void setLastFrame(int i);
+    void setFromLayer(QString s);
+    // copy Range
     void setNumLoops(int i);
     void setStartFrame(int i);
+    void setCopyToLayer(QString s);
+    // move Range
+    void setMoveStartFrame(int i);
+    void setMoveToLayer(QString s);
+    // reverse Range
+    void setReverseFrom(int i);
+
 
 private:
     Ui::CopyMultiplekeyframesDialog *ui;
 
-    int mFirstFrame;    // Frame# that starts loop
-    int mLastFrame;     // Frame# that ends loop
-    int mNumLoops;      // Number of loops
-    int mStartFrame;     // Frame# to insert first copied frame
-    int mTimelineLength; // frames in scene/in timeline
-    Editor* mEditor = nullptr;
+    int mFirstFrame;        // Frame# that starts loop
+    int mLastFrame;         // Frame# that ends loop
+    int mNumLoops;          // Number of loops
+    int mCopyStart;         // Frame# to insert first copied frame
+    int mMoveStart;         // Frame# to insert first moved frame
+    int mReverseStart;      // Frame# to insert first reversed frame
+    QString mFromLayer;     // name of From Layer
+    QString mCopyToLayer;   // name of To Layer you copy to
+    QString mMoveToLayer;   // name of To Layer you move to
+    LayerManager *lMgr;
+    int mTimelineLength;    // frames in scene/in timeline
 
     void checkValidity();
-
 
 };
 
