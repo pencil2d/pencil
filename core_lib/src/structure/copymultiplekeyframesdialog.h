@@ -2,6 +2,8 @@
 #define COPYMULTIPLEKEYFRAMESDIALOG_H
 
 #include <QDialog>
+#include "layermanager.h"
+#include "editor.h"
 
 namespace Ui {
 class CopyMultiplekeyframesDialog;
@@ -13,29 +15,31 @@ class CopyMultiplekeyframesDialog : public QDialog
 
 public:
     explicit CopyMultiplekeyframesDialog(QWidget *parent = 0);
-    explicit CopyMultiplekeyframesDialog(QWidget *parent = 0, int startLoop = 1, int stopLoop = 2);
+    explicit CopyMultiplekeyframesDialog(LayerManager *lm, int startLoop = 1, int stopLoop = 2, QWidget *parent = 0);
     ~CopyMultiplekeyframesDialog();
     void init();
-    int getStartLoop();
-    int getStopLoop();
+    int getFirstFrame();
+    int getLastFrame();
     int getNumLoops();
     void setNumLoopsMax(int i);
     int getStartFrame();
+    QString getRadioChecked();
 
 private slots:
-    void setStartLoop(int i);
-    void setStopLoop(int i);
+    void setFirstFrame(int i);
+    void setLastFrame(int i);
     void setNumLoops(int i);
     void setStartFrame(int i);
 
 private:
     Ui::CopyMultiplekeyframesDialog *ui;
 
-    int mStartLoop;    // Frame# that starts loop
-    int mStopLoop;     // Frame# that ends loop
+    int mFirstFrame;    // Frame# that starts loop
+    int mLastFrame;     // Frame# that ends loop
     int mNumLoops;      // Number of loops
     int mStartFrame;     // Frame# to insert first copied frame
     int mTimelineLength; // frames in scene/in timeline
+    Editor* mEditor = nullptr;
 
     void checkValidity();
 

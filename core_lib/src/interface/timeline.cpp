@@ -134,7 +134,7 @@ void TimeLine::initUI()
 
     QToolButton* copyManyButton = new QToolButton(this);
     copyManyButton->setIcon(QIcon(":icons/copy_many.png"));
-    copyManyButton->setToolTip(tr("Copy many Frames"));
+    copyManyButton->setToolTip(tr("Manipulate range of Frames"));
     copyManyButton->setFixedSize(24, 24);
 
     QLabel* onionLabel = new QLabel(tr("Onion skin:"));

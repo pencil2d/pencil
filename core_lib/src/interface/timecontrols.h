@@ -41,6 +41,7 @@ public:
     void setEditor(Editor* editor);
     void updateLength(int frameLength);
     void updatePlayState();
+    bool getRangeBoxState() {return mPlaybackRangeCheckBox->isChecked() ? true: false; }
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 

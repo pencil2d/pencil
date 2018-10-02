@@ -6,23 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>251</width>
-    <height>592</height>
+    <width>320</width>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>20</y>
-     <width>195</width>
-     <height>402</height>
+     <y>21</y>
+     <width>251</width>
+     <height>481</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
      <widget class="QLabel" name="labHeader">
       <property name="font">
@@ -47,14 +47,14 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="labRangeEnd">
         <property name="text">
          <string>Last Frame:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="labRangeStart">
         <property name="text">
          <string>First Frame:</string>
         </property>
@@ -71,10 +71,10 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="comboBox_3"/>
+       <widget class="QComboBox" name="cBoxFromLayer"/>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="labFromLayer">
         <property name="text">
          <string>FROM layer:</string>
         </property>
@@ -83,7 +83,7 @@
      </layout>
     </item>
     <item>
-     <widget class="Line" name="line">
+     <widget class="Line" name="line_1">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -121,7 +121,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="labCopyFrom">
+         <widget class="QLabel" name="labCopyFromFrame">
           <property name="text">
            <string>From frame:</string>
           </property>
@@ -135,10 +135,10 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QComboBox" name="comboBox"/>
+         <widget class="QComboBox" name="cBoxCopyToLayer"/>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="labCopyToLayer">
           <property name="text">
            <string>TO layer:</string>
           </property>
@@ -167,7 +167,7 @@
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <widget class="QLabel" name="labMoveFrom">
+         <widget class="QLabel" name="labMoveFromFrame">
           <property name="text">
            <string>From frame:</string>
           </property>
@@ -184,14 +184,53 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="labMoveToLayer">
           <property name="text">
            <string>TO layer</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QComboBox" name="comboBox_2"/>
+         <widget class="QComboBox" name="cBoxMoveToLayer"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rBtnReverse">
+        <property name="text">
+         <string>Reverse Range</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labReverseFromFrame">
+          <property name="text">
+           <string>From frame:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="sBoxStartReverse">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

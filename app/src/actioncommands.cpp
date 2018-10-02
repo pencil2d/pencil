@@ -569,16 +569,32 @@ void ActionCommands::duplicateKey()
 
 void ActionCommands::copyMultipleKeyframes()
 {
-    int a = mEditor->playback()->getRangedStartFrame();
-    int b = mEditor->playback()->getRangedEndFrame();
-    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(new QWidget, a, b);
-    int res = cd->exec();
+    int a = 1, b = 2; // default values
+    if (mEditor->playback()->isRangedPlaybackOn())
+    {   // defined range values
+        a = mEditor->playback()->getRangedStartFrame();
+        b = mEditor->playback()->getRangedEndFrame();
+    }
+    LayerManager* layerMgr = mEditor->layers();
+    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, a, b, new QWidget);
+    cd->exec();
     Layer* layer = mEditor->layers()->currentLayer();
-
-    if (res == 1)  // if OK pressed
+    if (cd->Accepted)
     {
-        int startL = cd->getStartLoop();
-        int stopL = cd->getStopLoop();
+ /*
+        QString s = cd->getRadioChecked();
+        switch (s) {
+        case "copy":
+
+            break;
+        default:
+            break;
+        }
+
+        qDebug() << s;
+*/
+        int startL = cd->getFirstFrame();
+        int stopL = cd->getLastFrame();
         int num = cd->getNumLoops();
         int startF = cd->getStartFrame();
         for (int i = 0; i < num; i++)

@@ -2,6 +2,9 @@
 #include "ui_copymultiplekeyframesdialog.h"
 #include "timeline.h"
 #include "timecontrols.h"
+#include "layer.h"
+#include "layermanager.h"
+#include <QDebug>
 #include <QSettings>
 
 CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(QWidget *parent) :
@@ -12,12 +15,16 @@ CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(QWidget *parent) :
     init();
 }
 
-CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(QWidget *parent, int startLoop, int stopLoop) :
+
+CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(LayerManager *lm, int startLoop, int stopLoop, QWidget *parent):
     QDialog(parent),
     ui(new Ui::CopyMultiplekeyframesDialog)
 {
-    mStartLoop = startLoop;
-    mStopLoop = stopLoop;
+    mFirstFrame = startLoop;
+    mLastFrame = stopLoop;
+    LayerManager *lMgr = lm;
+    qDebug() << mFirstFrame << " - " << mLastFrame;
+    qDebug() << lMgr->count();
     ui->setupUi(this);
     init();
 }
@@ -29,47 +36,57 @@ CopyMultiplekeyframesDialog::~CopyMultiplekeyframesDialog()
 
 void CopyMultiplekeyframesDialog::init()
 {
-//    connect(ui->sBoxStartLoop, SIGNAL(valueChanged(int)), this, SLOT(setStartLoop(int)));
-//    connect(ui->sBoxStopLoop, SIGNAL(valueChanged(int)), this, SLOT(setStopLoop(int)));
-    connect(ui->sBoxNumLoops, SIGNAL(valueChanged(int)), this, SLOT(setNumLoops(int)));
-    connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
-//    mStartLoop = ui->sBoxStartLoop->value();
-//    mStopLoop = ui->sBoxStopLoop->value();
-//    ui->labRangeDefine->setText(tr("Range: ") + QString::number(mStartLoop) +
-//                                " -> " + QString::number(mStopLoop));
+    connect(ui->sBoxFirstFrame, SIGNAL(valueChanged(int)), this, SLOT(setFirstFrame(int)));
+    connect(ui->sBoxLastFrame, SIGNAL(valueChanged(int)), this, SLOT(setLastFrame(int)));
+//    connect(ui->sBoxNumLoops, SIGNAL(valueChanged(int)), this, SLOT(setNumLoops(int)));
+//    connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
+//    mFirstFrame = ui->sBoxStartLoop->value();
+//    mLastFrame = ui->sBoxStopLoop->value();
+//    ui->labRangeDefine->setText(tr("Range: ") + QString::number(mFirstFrame) +
+//                                " -> " + QString::number(mLastFrame));
+    ui->sBoxFirstFrame->setValue(mFirstFrame);
+    ui->sBoxLastFrame->setValue(mLastFrame);
+    ui->sBoxStartFrame->setValue(mLastFrame + 1);
+    ui->sBoxMove->setValue(mLastFrame + 1);
+    ui->sBoxStartReverse->setValue(mLastFrame + 1);
+ /*
+    LayerManager* layerMgr = mEditor->layers();
+    int i = layerMgr->count();
+    qDebug() << i << " lag i alt.";
+*/
     mNumLoops = ui->sBoxNumLoops->value();
-    mStartFrame = ui->sBoxStartFrame->value();
-    QSettings settings ("Pencil", "Pencil");
-    mTimelineLength = settings.value("TimelineSize").toInt();
-    checkValidity();
+    mFirstFrame = ui->sBoxStartFrame->value();
+//    QSettings settings ("Pencil", "Pencil");
+//    mTimelineLength = settings.value("TimelineSize").toInt();
+//    checkValidity();
 }
 
-int CopyMultiplekeyframesDialog::getStartLoop()
+int CopyMultiplekeyframesDialog::getFirstFrame()
 {
 //    return ui->sBoxStartLoop->value();
     return 0;
 }
 
-void CopyMultiplekeyframesDialog::setStartLoop(int i)
+void CopyMultiplekeyframesDialog::setFirstFrame(int i)
 {
-    mStartLoop = i;
-    mStopLoop = mStartLoop + 1;
- //   ui->sBoxStopLoop->setMinimum(mStopLoop);
+    mFirstFrame = i;
     checkValidity();
 }
 
-int CopyMultiplekeyframesDialog::getStopLoop()
+int CopyMultiplekeyframesDialog::getLastFrame()
 {
  //   return ui->sBoxStopLoop->value();
     return 0;
 }
 
-void CopyMultiplekeyframesDialog::setStopLoop(int i)
+void CopyMultiplekeyframesDialog::setLastFrame(int i)
 {
-    mStopLoop = i;
-    mStartFrame = mStopLoop + 1;
-    ui->sBoxStartFrame->setValue(mStartFrame);
-    ui->sBoxStartFrame->setMinimum(mStartFrame);
+    mLastFrame = i;
+    if (mFirstFrame > mLastFrame)
+    {
+        mFirstFrame = mLastFrame - 1;
+        ui->sBoxFirstFrame->setValue(mFirstFrame);
+    }
     checkValidity();
 }
 
@@ -94,6 +111,17 @@ int CopyMultiplekeyframesDialog::getStartFrame()
     return ui->sBoxStartFrame->value();
 }
 
+QString CopyMultiplekeyframesDialog::getRadioChecked()
+{
+    if (ui->rBtnCopy->isChecked())
+        return "copy";
+    if (ui->rBtnMove->isChecked())
+        return "move";
+    if (ui->rBtnDelete->isChecked())
+        return "delete";
+    return "";
+}
+
 void CopyMultiplekeyframesDialog::setStartFrame(int i)
 {
     mStartFrame = i;
@@ -102,8 +130,8 @@ void CopyMultiplekeyframesDialog::setStartFrame(int i)
 
 void CopyMultiplekeyframesDialog::checkValidity()
 {
-    int def = (mStopLoop + 1 - mStartLoop) * mNumLoops + mStartFrame - 1;
-    if (def > mTimelineLength)
+    int def = (mLastFrame + 1 - mFirstFrame) * mNumLoops + mStartFrame - 1;
+    if (def > 9999) // 9999 frames is maximim timeline length
     {
         ui->btnBoxOkCancel->setEnabled(false);
   //      ui->labWarning->setText(tr("Timeline exceeded!"));
