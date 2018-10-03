@@ -798,7 +798,9 @@ void MainWindow2::importImageSequence()
         if (strImgFileLower.endsWith(".png") ||
             strImgFileLower.endsWith(".jpg") ||
             strImgFileLower.endsWith(".jpeg") ||
-            strImgFileLower.endsWith(".bmp"))
+            strImgFileLower.endsWith(".bmp") ||
+            strImgFileLower.endsWith(".tif") ||
+            strImgFileLower.endsWith(".tiff"))
         {
             mEditor->importImage(strImgFile);
 

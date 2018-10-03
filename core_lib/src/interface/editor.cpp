@@ -751,7 +751,7 @@ bool Editor::importBitmapImage(QString filePath, int space)
         return false;
     }
 
-    while (reader.read(&img))
+    if (reader.read(&img))
     {
         if (!layer->keyExists(currentFrame()))
         {
