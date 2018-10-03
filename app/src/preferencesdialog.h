@@ -75,7 +75,8 @@ public:
 
 public slots:
     void updateValues();
-    void gridSizeChange(int value);
+    void gridSizeChangeW(int value);
+    void gridSizeChangeH(int value);
 
 signals:
     void windowOpacityChange(int value);

@@ -195,7 +195,8 @@ enum StabilizationLevel
 #define SETTING_ONION_BLUE       "OnionBlue"
 #define SETTING_ONION_RED        "OnionRed"
 
-#define SETTING_GRID_SIZE        "GridSize"
+#define SETTING_GRID_SIZE_W      "GridSizeW"
+#define SETTING_GRID_SIZE_H      "GridSizeH"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"

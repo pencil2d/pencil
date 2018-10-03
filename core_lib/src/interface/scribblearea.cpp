@@ -115,7 +115,8 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_MAX_OPACITY:
     case SETTING::ANTIALIAS:
     case SETTING::GRID:
-    case SETTING::GRID_SIZE:
+    case SETTING::GRID_SIZE_W:
+    case SETTING::GRID_SIZE_H:
     case SETTING::PREV_ONION:
     case SETTING::NEXT_ONION:
     case SETTING::ONION_BLUE:
@@ -1148,7 +1149,8 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     o.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     o.bAntiAlias           = mPrefs->isOn(SETTING::ANTIALIAS);
     o.bGrid                = mPrefs->isOn(SETTING::GRID);
-    o.nGridSize            = mPrefs->getInt(SETTING::GRID_SIZE);
+    o.nGridSizeW           = mPrefs->getInt(SETTING::GRID_SIZE_W);
+    o.nGridSizeH           = mPrefs->getInt(SETTING::GRID_SIZE_H);
     o.bAxis                = false;
     o.bThinLines           = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines            = mPrefs->isOn(SETTING::OUTLINES);

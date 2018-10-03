@@ -390,15 +390,16 @@ int round100(double f, int gridSize)
 
 void CanvasPainter::paintGrid(QPainter& painter)
 {
-    int gridSize = mOptions.nGridSize;
+    int gridSizeW = mOptions.nGridSizeW;
+    int gridSizeH = mOptions.nGridSizeH;
 
     QRectF rect = painter.viewport();
     QRectF boundingRect = mViewTransform.inverted().mapRect(rect);
 
-    int left = round100(boundingRect.left(), gridSize) - gridSize;
-    int right = round100(boundingRect.right(), gridSize) + gridSize;
-    int top = round100(boundingRect.top(), gridSize) - gridSize;
-    int bottom = round100(boundingRect.bottom(), gridSize) + gridSize;
+    int left = round100(boundingRect.left(), gridSizeW) - gridSizeW;
+    int right = round100(boundingRect.right(), gridSizeW) + gridSizeW;
+    int top = round100(boundingRect.top(), gridSizeH) - gridSizeH;
+    int bottom = round100(boundingRect.bottom(), gridSizeH) + gridSizeH;
 
     QPen pen(Qt::lightGray);
     pen.setCosmetic(true);
@@ -407,12 +408,14 @@ void CanvasPainter::paintGrid(QPainter& painter)
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
-    for (int x = left; x < right; x += gridSize)
+    // draw vertical gridlines
+    for (int x = left; x < right; x += gridSizeW)
     {
         painter.drawLine(x, top, x, bottom);
     }
 
-    for (int y = top; y < bottom; y += gridSize)
+    // draw horizontal gridlines
+    for (int y = top; y < bottom; y += gridSizeH)
     {
         painter.drawLine(left, y, right, y);
     }
