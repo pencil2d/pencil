@@ -584,21 +584,21 @@ void ActionCommands::copyMultipleKeyframes()
         cd->exec();
         Layer* layer = mEditor->layers()->currentLayer();
         QString sel = cd->getRadioChecked();
+        qDebug() << sel;
         if (cd->Accepted == 1)
         {
             int startL = cd->getFirstFrame();
             int stopL = cd->getLastFrame();
             QString strFromLayer = cd->getFromLayer();
             Layer *fromLayer = layerMgr->findLayerByName(strFromLayer);
-            QString strToLayer = "";
+//            QString strToLayer = "";
             Layer *toLayer;
-            if (sel == "copy")
+            if (sel == "copy")  // COPY Range
             {
-                strToLayer = cd->getCopyToLayer();
-                toLayer = layerMgr->findLayerByName(strToLayer);
+                toLayer = layerMgr->findLayerByName(cd->getCopyToLayer());
                 int num = cd->getNumLoops();
                 int startF = cd->getCopyStartFrame();
-                qDebug() << "from " << strFromLayer << " to " << strToLayer;
+//                qDebug() << "from " << strFromLayer << " to " << strToLayer;
                 for (int i = 0; i < num; i++)
                 {
                     for (int j = startL; j < stopL + 1; j++, startF++)
@@ -622,11 +622,10 @@ void ActionCommands::copyMultipleKeyframes()
                     }
                 }
             }
-            if (sel == "move")
+            if (sel == "move")  // MOVE Range
             {
                 // find TO-layer
-                strToLayer = cd->getMoveToLayer();
-                toLayer = layerMgr->findLayerByName(strToLayer);
+                toLayer = layerMgr->findLayerByName(cd->getMoveToLayer());
                 int startF = cd->getMoveStartFrame();
 //                qDebug() << "startF: " << startF << " stopF: " << stopF;
 //                qDebug() << "From " << fromLayer->name() << " To " << toLayer->name();
@@ -655,12 +654,53 @@ void ActionCommands::copyMultipleKeyframes()
                     }
                 }
             }
-            if (sel == "reverse")
+            if (sel == "reverse")   // REVERSE Range
             {
+                // find TO-layer
+                toLayer = layerMgr->findLayerByName(cd->getFromLayer());
+                int startF = cd->getReverseStartFrame();
+                qDebug() << "startF: " << startF;
+                qDebug() << " To " << toLayer->name();
+                for (int j = stopL; j >= startL; j--, startF++)
+                {
+                    if (toLayer->keyExists(j))
+                    {
+                        KeyFrame* kf = toLayer->getKeyFrameAt(j);
+                        if (kf == nullptr) return;
+                        KeyFrame* dupKey = kf->clone();
+                        // replace if keyframe exists!
+                        qDebug() << "After dubkey";
+                        if (toLayer->keyExists(startF))
+                        {
+                            if (toLayer->removeKeyFrame(startF))
+                            {
+                                toLayer->addKeyFrame(startF, dupKey);
+                                qDebug() << "remove and addKey";
+                            }
+                        }
+                        else
+                        {
+                            toLayer->addKeyFrame(startF, dupKey);
+                            qDebug() << "addKey";
+                        }
+
+                    }
+                }
 
             }
-            if (sel == "delete")
+            if (sel == "delete")    // DELETE Range
             {
+                // find TO-layer
+//                strToLayer = cd->getMoveToLayer();
+                fromLayer = layerMgr->findLayerByName(cd->getDeleteOnLayer());
+//                int startF = cd->getMoveStartFrame();
+//                qDebug() << "startF: " << startF << " stopF: " << stopF;
+//                qDebug() << "From " << fromLayer->name() << " To " << toLayer->name();
+                for (int j = startL; j < stopL + 1; j++)
+                {
+                    if (fromLayer->keyExists(j))
+                        fromLayer->removeKeyFrame(j);
+                }
 
             }
             mEditor->layers()->notifyLayerChanged(layer);
