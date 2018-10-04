@@ -607,7 +607,7 @@ Status ActionCommands::addNewVectorLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Vector Layer"), &ok);
+                                         nameSuggest(tr("Vector Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
@@ -620,7 +620,7 @@ Status ActionCommands::addNewCameraLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Camera Layer"), &ok);
+                                         nameSuggest(tr("Camera Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createCameraLayer(text);
@@ -633,14 +633,13 @@ Status ActionCommands::addNewSoundLayer()
     bool ok = false;
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
-                                                 tr("Sound Layer"), &ok);
+                                                 nameSuggest(tr("Sound Layer")), &ok);
     if (ok && !strLayerName.isEmpty())
     {
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
         mEditor->layers()->setCurrentLayer(layer);
-
-        return Status::OK;
-    }
+   }
+    return Status::OK;
 }
 
 Status ActionCommands::deleteCurrentLayer()
@@ -686,8 +685,11 @@ QString ActionCommands::nameSuggest(QString s)
     }
     int j = 2;
     QString tmp = s;
+    qDebug() << "Before  do loop. s = " << s;
     do {
         tmp = s + QString::number(j);
+        j++;
+        qDebug() << "In loop. tmp = " << tmp;
     } while (sLayers.contains(tmp));
     return tmp;
 }
