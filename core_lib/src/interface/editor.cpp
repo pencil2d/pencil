@@ -492,7 +492,7 @@ void Editor::cut()
 void Editor::copy()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer != NULL)
+    if (layer == NULL) 
     {
         return;
     }
