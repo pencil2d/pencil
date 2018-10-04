@@ -825,3 +825,9 @@ void Object::updateActiveFrames(int frame) const
         }
     }
 }
+
+void Object::setActiveFramePoolSize(int n)
+{
+    mActiveFramePool->clear();
+    mActiveFramePool.reset(new ActiveFramePool(n));
+}
