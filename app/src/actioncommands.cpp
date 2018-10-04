@@ -685,11 +685,9 @@ QString ActionCommands::nameSuggest(QString s)
     }
     int j = 2;
     QString tmp = s;
-    qDebug() << "Before  do loop. s = " << s;
     do {
         tmp = s + QString::number(j);
         j++;
-        qDebug() << "In loop. tmp = " << tmp;
     } while (sLayers.contains(tmp));
     return tmp;
 }
