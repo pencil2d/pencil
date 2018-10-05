@@ -769,6 +769,12 @@ bool Editor::importBitmapImage(QString filePath, int space)
         }
 
         backup(tr("Import Image"));
+
+        // Workaround for tiff import getting stuck in this loop
+        if (!reader.supportsAnimation())
+        {
+            break;
+        }
     }
 
     return true;

@@ -675,6 +675,11 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         extension = ".jpg";
         transparency = false; // JPG doesn't support transparency so we have to include the background
     }
+    if (formatStr == "TIFF" || formatStr == "tiff" || formatStr == "TIF" || formatStr == "tif")
+    {
+        format = "TIFF";
+        extension = ".tiff";
+    }
     if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {
         filePath.chop(extension.size());
