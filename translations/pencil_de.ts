@@ -10,7 +10,7 @@
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
         <source>Official site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Thanks to Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Offizielle Seite: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Entwickelt von: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Dank an Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Verbreitet unter der &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, Version 2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="43"/>
@@ -243,35 +243,35 @@
         <translation>HSV</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="115"/>
+        <location filename="../app/ui/colorinspector.ui" line="99"/>
         <source>RGB</source>
         <translation>RGB</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="157"/>
+        <location filename="../app/ui/colorinspector.ui" line="254"/>
         <source>R</source>
-        <translation type="unfinished"/>
+        <translation>R</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="167"/>
+        <location filename="../app/ui/colorinspector.ui" line="161"/>
         <source>A</source>
-        <translation type="unfinished"/>
+        <translation>A</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="177"/>
+        <location filename="../app/ui/colorinspector.ui" line="211"/>
         <source>G</source>
-        <translation type="unfinished"/>
+        <translation>G</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="213"/>
+        <location filename="../app/ui/colorinspector.ui" line="264"/>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../app/src/colorinspector.cpp" line="35"/>
         <source>Color Inspector</source>
         <comment>Window title of color inspector</comment>
-        <translation type="unfinished"/>
+        <translation>Farbinspektor</translation>
     </message>
 </context>
 <context>
@@ -366,35 +366,35 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="227"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="228"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="246"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="247"/>
         <source>Colour name</source>
         <translation>Name der Farbe</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="532"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="544"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="533"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="545"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="534"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="546"/>
         <source>Delete</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="550"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="562"/>
         <source>Palette Restriction</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="551"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="563"/>
         <source>The palette requires at least one swatch to remain functional</source>
-        <translation type="unfinished"/>
+        <translation>Die Palette benötigt mindestens einen Farbe, um funktionstüchtig zu bleiben</translation>
     </message>
 </context>
 <context>
@@ -403,7 +403,7 @@
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation type="unfinished"/>
+        <translation>Farbrad</translation>
     </message>
 </context>
 <context>
@@ -486,19 +486,19 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="542"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="563"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="550"/>
         <source>Paste</source>
         <translation>Einfügen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="950"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="926"/>
         <source>Remove frame</source>
         <translation>Einzelbild entfernen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="790"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="816"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="797"/>
         <source>Import Image</source>
         <translation>Bild importieren</translation>
     </message>
@@ -574,27 +574,27 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="111"/>
         <source>Range</source>
-        <translation type="unfinished"/>
+        <translation>Bereich</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="157"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>Das letzte Bild, das Sie in den exportierten Film einbeziehen möchten</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="160"/>
         <source>End Frame</source>
-        <translation type="unfinished"/>
+        <translation>Endbild</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="179"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>Das erste Bild, das Sie in den exportierten Film einbeziehen möchten</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="182"/>
         <source>Start Frame</source>
-        <translation type="unfinished"/>
+        <translation>Startbild</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="207"/>
@@ -612,7 +612,7 @@
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="29"/>
         <source>Export Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Animiertes GIF exportieren</translation>
     </message>
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="31"/>
@@ -680,12 +680,12 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="233"/>
         <source>GIF and APNG only</source>
-        <translation type="unfinished"/>
+        <translation>Nur GIF und APNG</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="236"/>
         <source>Loop</source>
-        <translation type="unfinished"/>
+        <translation>Wiederholen</translation>
     </message>
 </context>
 <context>
@@ -708,7 +708,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="135"/>
         <source>Import Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Animiertes GIF importieren</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="136"/>
@@ -743,7 +743,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="151"/>
         <source>Export Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Animiertes GIF exportieren</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="152"/>
@@ -764,7 +764,7 @@
         <location filename="../app/src/filedialogex.cpp" line="167"/>
         <location filename="../app/src/filedialogex.cpp" line="183"/>
         <source>Animated GIF (*.gif)</source>
-        <translation type="unfinished"/>
+        <translation>Animiertes GIF (*.gif)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="169"/>
@@ -775,12 +775,12 @@
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D-Palette (*.xml);; Gimp-Palette (*.gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
         <source>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</source>
-        <translation type="unfinished"/>
+        <translation>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="226"/>
@@ -791,35 +791,35 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="53"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="107"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="56"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="110"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Konnte Datei nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="54"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="108"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="228"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="237"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
         <source>Invalid Save Path</source>
         <translation>Ungültiger Speicherpfad</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="229"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Der Pfad („%1“) zeigt auf ein Verzeichnis.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Das Verzeichnis („%1“) existiert nicht.</translation>
     </message>
@@ -829,34 +829,34 @@
         <translation>Der Pfad („%1“) ist nicht beschreibbar.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="282"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="291"/>
         <source>Cannot Create Data Directory</source>
         <translation>Kann Datenverzeichnis nicht erstellen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>„%1“ ist eine Datei. Bitte löschen Sie die Datei und versuchen Sie es erneut.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="376"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="382"/>
         <source>Miniz Error</source>
-        <translation type="unfinished"/>
+        <translation>Miniz-Fehler</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="393"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="399"/>
         <source>Internal Error</source>
         <translation>Interner Fehler</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="377"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="394"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Ein interner Fehler ist aufgetreten. Ihre Datei wurde möglicherweise nicht erfolgreich gespeichert.</translation>
     </message>
@@ -956,7 +956,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Estonian</source>
-        <translation type="unfinished"/>
+        <translation>Estnisch</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="102"/>
@@ -971,7 +971,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="104"/>
         <source>Hebrew</source>
-        <translation type="unfinished"/>
+        <translation>Hebräisch</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="105"/>
@@ -981,7 +981,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="106"/>
         <source>Indonesian</source>
-        <translation type="unfinished"/>
+        <translation>Indonesisch</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="107"/>
@@ -1001,7 +1001,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Portuguese - Portugal</source>
-        <translation type="unfinished"/>
+        <translation>Portugiesisch - Portugal</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
@@ -1016,15 +1016,20 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>Slovenian</source>
-        <translation type="unfinished"/>
+        <translation>Slowenisch</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Vietnamese</source>
-        <translation type="unfinished"/>
+        <translation>Vietnamesisch</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
+        <source>Chinese - China</source>
+        <translation>Chinesisch - China</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>Chinese - Taiwan</source>
         <translation>Chinesisch – Taiwan</translation>
     </message>
@@ -1069,12 +1074,12 @@
         <translation>Hochauflösende Tablet-Position</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="211"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
         <source>Restart Required</source>
         <translation>Neustart erforderlich</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="213"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Die Sprachänderung wird nach einem Neustart von Pencil2D wirksam werden.</translation>
     </message>
@@ -1102,7 +1107,7 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="29"/>
         <source>Import Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Animiertes GIF importieren</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="31"/>
@@ -1562,13 +1567,13 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="878"/>
         <source>F1</source>
-        <translation type="unfinished"/>
+        <translation>F1</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="883"/>
         <location filename="../app/ui/mainwindow2.ui" line="888"/>
         <source>Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>Animiertes GIF...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="754"/>
@@ -1579,7 +1584,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="259"/>
         <source>Save As...</source>
-        <translation type="unfinished"/>
+        <translation>Speichern unter...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
@@ -1640,7 +1645,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="150"/>
         <source>Color inspector</source>
-        <translation type="unfinished"/>
+        <translation>Farbinspektor</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="353"/>
@@ -1667,7 +1672,7 @@ Sie haben die Liste erfolgreich geleert</translation>
         <location filename="../app/src/mainwindow2.cpp" line="524"/>
         <location filename="../app/src/mainwindow2.cpp" line="584"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Konnte Datei nicht öffnen</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="506"/>
@@ -1754,7 +1759,7 @@ Sie haben die Liste erfolgreich geleert</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="783"/>
         <source>Importing image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>Bildsequenz wird importiert...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="831"/>
@@ -1765,20 +1770,20 @@ Sie haben die Liste erfolgreich geleert</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="858"/>
         <source>Importing Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>Animiertes GIF wird importiert...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1103"/>
         <location filename="../app/src/mainwindow2.cpp" line="1108"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>Rückgängig</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1123"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>Wiederholen</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1273"/>
@@ -1789,13 +1794,13 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="372"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="367"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="373"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="368"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
         <translation type="unfinished"/>
     </message>
@@ -1803,125 +1808,125 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="541"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
         <source>Black</source>
         <translation>Schwarz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="542"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
         <source>Red</source>
         <translation>Rot</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="543"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
         <source>Dark Red</source>
         <translation>Dunkelrot</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="544"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
         <source>Orange</source>
         <translation>Orange</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="545"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
         <source>Dark Orange</source>
         <translation>Dunkelorange
 </translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="546"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
         <source>Yellow</source>
         <translation>Gelb</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="547"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
         <source>Dark Yellow</source>
         <translation>Dunkelgelb
 </translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="548"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
         <source>Green</source>
         <translation>Grün</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
         <source>Dark Green</source>
         <translation>Dunkelgrün</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
         <source>Cyan</source>
         <translation>Cyan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
         <source>Dark Cyan</source>
         <translation>Dunkelcyan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Blue</source>
         <translation>Blau</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Dark Blue</source>
         <translation>Dunkelblau</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>White</source>
         <translation>Weiß</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Very Light Grey</source>
         <translation>Sehr helles Grau</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Light Grey</source>
         <translation>Hellgrau</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Grey</source>
         <translation>Grau</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Dark Grey</source>
         <translation>Dunkelgrau
 </translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Light Skin</source>
         <translation>Helle Hautfarbe</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Light Skin - shade</source>
         <translation>Helle Hautfarbe – Schatten</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Skin</source>
         <translation>Hautfarbe</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
         <source>Skin - shade</source>
         <translation>Hautfarbe – Schatten</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
         <source>Dark Skin</source>
         <translation>Dunkle Hautfarbe</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
         <source>Dark Skin - shade</source>
         <translation>Dunkle Hautfarbe – Schatten</translation>
     </message>
@@ -1985,7 +1990,7 @@ Sie haben die Liste erfolgreich geleert</translation>
         <location filename="../app/src/main.cpp" line="109"/>
         <location filename="../app/src/main.cpp" line="116"/>
         <source>frame</source>
-        <translation type="unfinished"/>
+        <translation>Bild</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="113"/>
@@ -2036,13 +2041,13 @@ Sie haben die Liste erfolgreich geleert</translation>
         <location filename="../app/src/main.cpp" line="208"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>Fehler: Die Eingabedatei unter &apos;%1&apos; existiert nicht</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="213"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>Fehler: Der Eingabepfad &apos;%1&apos; ist keine Datei</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="241"/>
@@ -2053,32 +2058,32 @@ Sie haben die Liste erfolgreich geleert</translation>
         <location filename="../app/src/main.cpp" line="272"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished"/>
+        <translation>Warnung: Ausgabeformat nicht angegeben oder nicht unterstützt. PNG wird verwendet.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="292"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished"/>
+        <translation>Warnung: Transparenz wird in Filmdateien derzeit nicht unterstützt</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="294"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Film wird exportiert...</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="296"/>
         <location filename="../app/src/main.cpp" line="301"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished"/>
+        <translation>Erledigt.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="299"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Bildsequenz wird exportiert...</translation>
     </message>
 </context>
 <context>
@@ -2117,12 +2122,12 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="166"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="97"/>
         <source>Checking environment...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="219"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="148"/>
         <source>Done</source>
         <translation>Erledigt.</translation>
     </message>
@@ -2137,12 +2142,12 @@ Sie haben die Liste erfolgreich geleert</translation>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</source>
-        <translation type="unfinished"/>
+        <translation>Bilder (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</source>
-        <translation type="unfinished"/>
+        <translation>Bilder (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
@@ -3520,12 +3525,12 @@ Sie haben die Liste erfolgreich geleert</translation>
         <translation>Schwarz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="27"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="29"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Konnte Datei nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="28"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"/>
     </message>
@@ -3556,50 +3561,50 @@ Sie haben die Liste erfolgreich geleert</translation>
         <translation>Sie zeichnen auf einer ausgeblendeten Ebene! Bitte wählen Sie eine andere Ebene aus (oder blenden Sie die aktuelle Ebene ein)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1934"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1929"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Auswahl löschen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1950"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1958"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1945"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Bild leeren</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1980"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1981"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
         <source>Out of bound.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1991"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
         <source>Could not find a closed path.</source>
         <translation>Konnte keinen geschlossenen Pfad finden.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1992"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
         <source>Could not find the root index.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1993"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Fehler: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1993"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>Flood fill error</source>
         <translation type="unfinished"/>
     </message>
@@ -3682,7 +3687,7 @@ Sie haben die Liste erfolgreich geleert</translation>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
         <source>Loop</source>
-        <translation>Schleife</translation>
+        <translation>Wiederholen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>
@@ -3752,7 +3757,7 @@ Sie haben die Liste erfolgreich geleert</translation>
         <location filename="../core_lib/src/interface/timeline.cpp" line="98"/>
         <source>&amp;Layer</source>
         <comment>Timeline add-layer menu</comment>
-        <translation type="unfinished"/>
+        <translation>&amp;Ebene</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="116"/>
@@ -3785,18 +3790,18 @@ Sie haben die Liste erfolgreich geleert</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="283"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="285"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Ebene löschen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="293"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
         <source>Please keep at least one camera layer in project</source>
         <translation>Bitte belassen Sie mindestens eine Kamera-Ebene im Projekt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="284"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="286"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Sind Sie sicher, dass Sie die Ebene löschen möchten: </translation>
     </message>
@@ -3889,12 +3894,12 @@ Sie haben die Liste erfolgreich geleert</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="162"/>
         <source>Playback</source>
-        <translation type="unfinished"/>
+        <translation>Wiedergabe</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="174"/>
         <source>Show onion skin while playing</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Zwiebelhaut während der Wiedergabe</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>
@@ -4075,7 +4080,7 @@ Sie haben die Liste erfolgreich geleert</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="22"/>
@@ -4090,12 +4095,12 @@ Sie haben die Liste erfolgreich geleert</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="92"/>
         <source>Enable or disable feathering</source>
-        <translation type="unfinished"/>
+        <translation>Weichheit aktivieren oder deaktivieren</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="95"/>
         <source>Use Feather</source>
-        <translation type="unfinished"/>
+        <translation>Weichheit verwenden</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="102"/>
@@ -4121,13 +4126,13 @@ Sie haben die Liste erfolgreich geleert</translation>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Pressure</source>
         <comment>Brush</comment>
-        <translation type="unfinished"/>
+        <translation>Druck</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="147"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
-        <translation type="unfinished"/>
+        <translation>Kantenglättung</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="177"/>
@@ -4139,19 +4144,19 @@ Sie haben die Liste erfolgreich geleert</translation>
         <location filename="../app/ui/tooloptions.ui" line="200"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Keiner</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="205"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Einfach</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="210"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Stark</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="154"/>

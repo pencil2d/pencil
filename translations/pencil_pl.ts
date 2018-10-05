@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -246,27 +244,27 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
         <translation>HSV</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="115"/>
+        <location filename="../app/ui/colorinspector.ui" line="99"/>
         <source>RGB</source>
         <translation>RGB</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="157"/>
+        <location filename="../app/ui/colorinspector.ui" line="254"/>
         <source>R</source>
         <translation>R</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="167"/>
+        <location filename="../app/ui/colorinspector.ui" line="161"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="177"/>
+        <location filename="../app/ui/colorinspector.ui" line="211"/>
         <source>G</source>
         <translation>G</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="213"/>
+        <location filename="../app/ui/colorinspector.ui" line="264"/>
         <source>B</source>
         <translation>B</translation>
     </message>
@@ -369,33 +367,33 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="227"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="228"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="246"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="247"/>
         <source>Colour name</source>
         <translation>Nazwa koloru</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="532"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="544"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation>Kolor lub kolory, które mają zostać usuniętą są aktualnie w użyciu przy jednym lub wielu pociągnięciach.</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="533"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="545"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="534"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="546"/>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="550"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="562"/>
         <source>Palette Restriction</source>
         <translation>Paleta ograniczeń</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="551"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="563"/>
         <source>The palette requires at least one swatch to remain functional</source>
         <translation>Paleta wymaga co najmniej jedej próbki, aby nadawała się do użytku</translation>
     </message>
@@ -405,7 +403,7 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
     <message>
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
-        <comment>Color Wheel&apos;s window title</comment>
+        <comment>Color Wheel's window title</comment>
         <translation>Kolory (koło)</translation>
     </message>
 </context>
@@ -489,19 +487,19 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="542"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="563"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="550"/>
         <source>Paste</source>
         <translation>Wklej</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="950"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="926"/>
         <source>Remove frame</source>
         <translation>Usuń kratke</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="790"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="816"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="797"/>
         <source>Import Image</source>
         <translation>Importuj obraz</translation>
     </message>
@@ -794,35 +792,35 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="53"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="107"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="56"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="110"/>
         <source>Could not open file</source>
         <translation>Nie można otworzyć pliku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="54"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
         <translation>Plik nie istnieje, więc nie można go otworzyć. Upewnij się, że ścieżka do pliku jest poprawna i posiadasz dostęp. Spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="108"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Program nie posiada pozwolenia odczytu dla wybranego pliku. Upewnij się, że masz dostęp do odczytu dla tego pliku i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="228"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="237"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
         <source>Invalid Save Path</source>
         <translation>Nieprawidłowa ścieżka zapisu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="229"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Ścieżka (&quot;%1&quot;) odnosi się do folderu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Folder (&quot;%1&quot;) nie istnieje.</translation>
     </message>
@@ -832,34 +830,34 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
         <translation>Ścieżka (&quot;%1&quot;) nie umożliwia zapisu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="282"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="291"/>
         <source>Cannot Create Data Directory</source>
         <translation>Nie można utworzyć folderu danych</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>Nie można utworzyć folderu &quot;%1&quot;. Upewnij się, że masz wystarczające uprawnienia.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; jest plikiem. Usuń plik i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="376"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="382"/>
         <source>Miniz Error</source>
         <translation>Błąd Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="393"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="399"/>
         <source>Internal Error</source>
         <translation>Błąd wewnętrzny</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="377"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="394"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Wystąpił błąd wewnętrzny. Twój plik może nie zostać pomyślnie zapisany.</translation>
     </message>
@@ -1028,6 +1026,11 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
+        <source>Chinese - China</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>Chinese - Taiwan</source>
         <translation>Chinese - Taiwan</translation>
     </message>
@@ -1072,12 +1075,12 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
         <translation>Tablet wysokiej rozdzielczości</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="211"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
         <source>Restart Required</source>
         <translation>Wymagane jest ponowne uruchomienie</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="213"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Zmiana języka zostanie zastosowana po ponownym uruchomieniu Pencil2D</translation>
     </message>
@@ -1792,13 +1795,13 @@ Czy zapisać ją teraz?</translation>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="372"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="367"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation>Warstwy</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="373"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="368"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
         <translation>Zamierzasz zmienić warstwę, czy chcesz zastosować transformację?</translation>
     </message>
@@ -1806,122 +1809,122 @@ Czy zapisać ją teraz?</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="541"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
         <source>Black</source>
         <translation>Czarny</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="542"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
         <source>Red</source>
         <translation>Czerwony</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="543"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
         <source>Dark Red</source>
         <translation>Ciemny czerwony</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="544"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
         <source>Orange</source>
         <translation>Pomarańczowy</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="545"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
         <source>Dark Orange</source>
         <translation>Ciemny pomarańczowy</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="546"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
         <source>Yellow</source>
         <translation>Żółty</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="547"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
         <source>Dark Yellow</source>
         <translation>Ciemny żółty</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="548"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
         <source>Green</source>
         <translation>Zielony</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
         <source>Dark Green</source>
         <translation>Ciemny zielony</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
         <source>Cyan</source>
         <translation>Cyan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
         <source>Dark Cyan</source>
         <translation>Ciemny cyan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Blue</source>
         <translation>Niebieski</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Dark Blue</source>
         <translation>Ciemny niebieski</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>White</source>
         <translation>Biały</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Very Light Grey</source>
         <translation>Bardzo jasny szary</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Light Grey</source>
         <translation>Jasny szary</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Grey</source>
         <translation>Szary</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Dark Grey</source>
         <translation>Ciemny szary</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Light Skin</source>
         <translation>Jasna skóra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Light Skin - shade</source>
         <translation>Jasna skóra - odcień</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Skin</source>
         <translation>Skóra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
         <source>Skin - shade</source>
         <translation>Skóra - odcień</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
         <source>Dark Skin</source>
         <translation>Ciemna skóra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
         <source>Dark Skin - shade</source>
         <translation>Ciemna skóra - odcień</translation>
     </message>
@@ -2117,12 +2120,12 @@ Czy zapisać ją teraz?</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="166"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="97"/>
         <source>Checking environment...</source>
         <translation>Sprawdzanie środowiska...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="219"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="148"/>
         <source>Done</source>
         <translation>Gotowe</translation>
     </message>
@@ -3520,12 +3523,12 @@ Czy zapisać ją teraz?</translation>
         <translation>Czarny</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="27"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="29"/>
         <source>Could not open file</source>
         <translation>Nie można otworzyć pliku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="28"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation>Wystąpił błąd podczas przetwarzania Twojego pliku. Zwykle oznacza to, że twój projekt jest co najmniej częściowo uszkodzony. Możesz spróbować ponownie, korzystając z nowszej wersji Pencil2D, lub możesz spróbować użyć pliku kopii zapasowej, jeśli taki posiadasz. Jeśli skontaktujesz się z nami za pośrednictwem jednego z naszych oficjalnych kanałów, być może będziemy mogli Ci pomóc. W przypadku zgłaszania problemów najlepsze miejsca, do których można dotrzeć, to:</translation>
     </message>
@@ -3556,51 +3559,51 @@ Czy zapisać ją teraz?</translation>
         <translation>Aktualnie rysujesz na ukrytej warstwie! Użyj innej warstwy (albo zmień obecną warstwę na widoczną).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1934"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1929"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Usuń zaznaczenie</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1950"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1958"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1945"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Czyść obraz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1980"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Znaleziono lukę w rysunku (bądź obraz został za bardzo powiększony).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1981"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Przepraszam! Ta opcja nie zawsze działa poprawnie. Spróbuj ponownie (powiększ nieco, kliknij w inne miejsce...)&lt;br&gt;
 jeżeli to nie pomoże, to spróbuj powiększyć i sprawdź, czy ścieżki są połączone (naciskając klawisz F1).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
         <source>Out of bound.</source>
         <translation>Brak powiązania.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1991"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
         <source>Could not find a closed path.</source>
         <translation>Nie można znaleźć zamkniętej ścieżki.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1992"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
         <source>Could not find the root index.</source>
         <translation>Nie można znaleźć głównego indeksu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1993"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Błąd: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1993"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>Flood fill error</source>
         <translation>Błąd napełnianiu wypełnienia</translation>
     </message>
@@ -3786,18 +3789,18 @@ jeżeli to nie pomoże, to spróbuj powiększyć i sprawdź, czy ścieżki są p
         <translation>Przełącz dopasowane klatki kluczowe</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="283"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="285"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Usuń warstwę</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="293"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
         <source>Please keep at least one camera layer in project</source>
         <translation>Zachowaj co najmniej jedną warstwę kamery w projekcie</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="284"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="286"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Czy na pewno chcesz usunąć warstwę: </translation>
     </message>
