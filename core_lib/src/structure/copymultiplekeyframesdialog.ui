@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>603</height>
+    <height>676</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>31</x>
-     <y>24</y>
+     <x>30</x>
+     <y>25</y>
      <width>261</width>
-     <height>508</height>
+     <height>631</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -38,32 +38,15 @@
      </widget>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sBoxLastFrame">
-        <property name="minimum">
-         <number>2</number>
-        </property>
-        <property name="maximum">
-         <number>9999</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labRangeEnd">
-        <property name="text">
-         <string>Last Frame:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
        <widget class="QLabel" name="labRangeStart">
         <property name="text">
          <string>First Frame:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item>
        <widget class="QSpinBox" name="sBoxFirstFrame">
         <property name="minimum">
          <number>1</number>
@@ -73,15 +56,40 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="cBoxFromLayer"/>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="labRangeEnd">
+        <property name="text">
+         <string>Last Frame:</string>
+        </property>
+       </widget>
       </item>
-      <item row="2" column="0">
+      <item>
+       <widget class="QSpinBox" name="sBoxLastFrame">
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>9999</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
        <widget class="QLabel" name="labFromLayer">
         <property name="text">
          <string>FROM layer:</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cBoxFromLayer"/>
       </item>
      </layout>
     </item>
@@ -221,8 +229,15 @@
      </widget>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QLabel" name="labNumLoops">
+        <property name="text">
+         <string>Number of loops:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QSpinBox" name="sBoxNumLoops">
         <property name="minimum">
          <number>1</number>
@@ -232,7 +247,18 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QLabel" name="labCopyFromFrame">
+        <property name="text">
+         <string>From frame:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QSpinBox" name="sBoxStartFrame">
         <property name="minimum">
          <number>1</number>
@@ -242,29 +268,19 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labCopyFromFrame">
-        <property name="text">
-         <string>From frame:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="labNumLoops">
-        <property name="text">
-         <string>Number of loops:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="cBoxCopyToLayer"/>
-      </item>
-      <item row="2" column="0">
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
        <widget class="QLabel" name="labCopyToLayer">
         <property name="text">
          <string>TO layer:</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cBoxCopyToLayer"/>
       </item>
      </layout>
     </item>
@@ -283,15 +299,15 @@
      </widget>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
+      <item>
        <widget class="QLabel" name="labMoveFromFrame">
         <property name="text">
          <string>From frame:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item>
        <widget class="QSpinBox" name="sBoxMove">
         <property name="minimum">
          <number>1</number>
@@ -301,14 +317,18 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
        <widget class="QLabel" name="labMoveToLayer">
         <property name="text">
          <string>TO layer</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item>
        <widget class="QComboBox" name="cBoxMoveToLayer"/>
       </item>
      </layout>
@@ -387,12 +407,13 @@
      <widget class="QLabel" name="labInfoAction">
       <property name="font">
        <font>
+        <family>DejaVu Sans Mono</family>
         <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
       <property name="text">
-       <string>COPY</string>
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -400,18 +421,16 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="labInfoLayerToFrom">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
+     <widget class="QLabel" name="labInfoFromLayer">
       <property name="text">
-       <string>From A to B</string>
+       <string>TextLabel</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labInfoToLayer">
+      <property name="text">
+       <string>TextLabel</string>
       </property>
      </widget>
     </item>

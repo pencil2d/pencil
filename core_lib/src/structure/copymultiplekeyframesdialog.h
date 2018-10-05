@@ -25,7 +25,7 @@ public:
     QString getMoveToLayer();   // Layer the Range is moved to
     QString getDeleteOnLayer(); // Layer the range is deleted on
     int getNumLoops();          // Number of loops asked for
-    void setNumLoopsMax(int i);
+    void setNumLoopsMax(int numLoopsMax);
     int getCopyStartFrame();
     int getMoveStartFrame();
     int getReverseStartFrame();
@@ -33,20 +33,22 @@ public:
 
 private slots:
     // Range and Layers
-    void setFirstFrame(int i);
-    void setLastFrame(int i);
-    void setFromLayer(QString s);
+    void setFirstFrame(int firstFrame);
+    void setLastFrame(int lastFrame);
+    void setFromLayer(QString fromLayer);
     // copy Range
-    void setNumLoops(int i);
-    void setStartFrame(int i);
-    void setCopyToLayer(QString s);
+    void setNumLoops(int numLoops);
+    void setStartFrame(int startFrame);
+    void setCopyToLayer(QString copyToLayer);
     // move Range
-    void setMoveStartFrame(int i);
-    void setMoveToLayer(QString s);
+    void setMoveStartFrame(int startFrame);
+    void setMoveToLayer(QString moveToLayer);
     // reverse Range
-    void setReverseFrom(int i);
+    void setReverseFrom(int reverseFrom);
     // delete Range
-    void setDeleteOnLayer(QString s);
+    void setDeleteOnLayer();
+
+    void setMethodPicked();
 
 
 private:
