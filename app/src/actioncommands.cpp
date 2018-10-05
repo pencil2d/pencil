@@ -585,7 +585,7 @@ void ActionCommands::copyMultipleKeyframes()
         Layer* layer = mEditor->layers()->currentLayer();
         QString sel = cd->getRadioChecked();
         qDebug() << sel;
-        if (cd->Accepted == 1)
+        if (cd->Accepted == (1))
         {
             int startL = cd->getFirstFrame();
             int stopL = cd->getLastFrame();
