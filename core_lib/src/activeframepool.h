@@ -32,6 +32,7 @@ class ActiveFramePool : public KeyFrameEventListener
 {
 public:
     explicit ActiveFramePool();
+    explicit ActiveFramePool(unsigned long n);
 
     void put(KeyFrame* key);
     size_t size() const;

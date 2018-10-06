@@ -31,6 +31,14 @@ ActiveFramePool::ActiveFramePool()
     mMaxSize = maxSize;
 }
 
+ActiveFramePool::ActiveFramePool(unsigned long n)
+{
+    size_t maxSize = n;
+
+    Q_ASSERT(maxSize > 10);
+    mMaxSize = maxSize;
+}
+
 void ActiveFramePool::put(KeyFrame* key)
 {
     if (key == nullptr)

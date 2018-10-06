@@ -243,27 +243,27 @@
         <translation>HSV</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="115"/>
+        <location filename="../app/ui/colorinspector.ui" line="99"/>
         <source>RGB</source>
         <translation>RGB</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="157"/>
+        <location filename="../app/ui/colorinspector.ui" line="254"/>
         <source>R</source>
         <translation>R</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="167"/>
+        <location filename="../app/ui/colorinspector.ui" line="161"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="177"/>
+        <location filename="../app/ui/colorinspector.ui" line="211"/>
         <source>G</source>
         <translation>G</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="213"/>
+        <location filename="../app/ui/colorinspector.ui" line="264"/>
         <source>B</source>
         <translation>B</translation>
     </message>
@@ -366,33 +366,33 @@
         <translation>Eltávolítás</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="227"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="228"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="246"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="247"/>
         <source>Colour name</source>
         <translation>Szín neve</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="532"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="544"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="533"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="545"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="534"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="546"/>
         <source>Delete</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="550"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="562"/>
         <source>Palette Restriction</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="551"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="563"/>
         <source>The palette requires at least one swatch to remain functional</source>
         <translation type="unfinished"/>
     </message>
@@ -486,19 +486,19 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="542"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="563"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="550"/>
         <source>Paste</source>
         <translation>Beillesztés</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="950"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="926"/>
         <source>Remove frame</source>
         <translation>Képkocka eltávolítása</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="790"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="816"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="797"/>
         <source>Import Image</source>
         <translation>Kép importálása</translation>
     </message>
@@ -791,35 +791,35 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="53"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="107"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="56"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="110"/>
         <source>Could not open file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="54"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="108"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="228"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="237"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
         <source>Invalid Save Path</source>
         <translation>Érvénytelen mentési útvonal</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="229"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation type="unfinished"/>
     </message>
@@ -829,34 +829,34 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="282"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="291"/>
         <source>Cannot Create Data Directory</source>
         <translation>Az adatkönyvtár nem hozható létre</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="376"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="382"/>
         <source>Miniz Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="393"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="399"/>
         <source>Internal Error</source>
         <translation>Belső hiba</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="377"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="394"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation type="unfinished"/>
     </message>
@@ -1025,6 +1025,11 @@
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
+        <source>Chinese - China</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>Chinese - Taiwan</source>
         <translation>Kínai - Taiwan</translation>
     </message>
@@ -1069,12 +1074,12 @@
         <translation>Nagy pontosságú pozicionálás táblagépen</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="211"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
         <source>Restart Required</source>
         <translation>Újraindítás szükséges</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="213"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>A nyelv megváltoztatása csak a Pencil2D újraindítása után érvényesül</translation>
     </message>
@@ -1786,13 +1791,13 @@
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="372"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="367"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="373"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="368"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
         <translation type="unfinished"/>
     </message>
@@ -1800,122 +1805,122 @@
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="541"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
         <source>Black</source>
         <translation>Fekete</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="542"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
         <source>Red</source>
         <translation>Piros</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="543"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
         <source>Dark Red</source>
         <translation>Sötét vörös</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="544"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
         <source>Orange</source>
         <translation>Narancs</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="545"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
         <source>Dark Orange</source>
         <translation>Sötét narancs</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="546"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
         <source>Yellow</source>
         <translation>Sárga</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="547"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
         <source>Dark Yellow</source>
         <translation>Sötét sárga</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="548"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
         <source>Green</source>
         <translation>Zöld</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
         <source>Dark Green</source>
         <translation>Sötét zöld</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
         <source>Cyan</source>
         <translation>Cián</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
         <source>Dark Cyan</source>
         <translation>Sötét cián</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Blue</source>
         <translation>Kék</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Dark Blue</source>
         <translation>Sötét kék</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>White</source>
         <translation>Fehér</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Very Light Grey</source>
         <translation>Halvány szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Light Grey</source>
         <translation>Világos szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Grey</source>
         <translation>Szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Dark Grey</source>
         <translation>Sötét szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Light Skin</source>
         <translation>Világos bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Light Skin - shade</source>
         <translation>Világos bőr - árnyék</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Skin</source>
         <translation>Bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
         <source>Skin - shade</source>
         <translation>Bőr - árnyék</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
         <source>Dark Skin</source>
         <translation>Sötét bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
         <source>Dark Skin - shade</source>
         <translation>Sötét bőr - árnyék</translation>
     </message>
@@ -2111,12 +2116,12 @@
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="166"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="97"/>
         <source>Checking environment...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="219"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="148"/>
         <source>Done</source>
         <translation type="unfinished"/>
     </message>
@@ -3514,12 +3519,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="27"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="29"/>
         <source>Could not open file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="28"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"/>
     </message>
@@ -3550,50 +3555,50 @@
         <translation>Most egy láthatatlan rétegre rajzol! Válasszon egy másik réteget (vagy tegye láthatóvá az aktuális réteget).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1934"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1929"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1950"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1958"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1945"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1980"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Egy rés van a rajzon (vagy túlságosan fel van nagyítva).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1981"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Elnézést! Ez nem mindig működik. Próbáld újra (egy kis nagyítással vagy máshová kattintva...)&lt;br&gt;Ha nem működik nagyíts egy kicsit és az F1 lenyomásával ellenőrizd, hogy az útvonalak összeérnek-e.).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
         <source>Out of bound.</source>
         <translation>Tartományon kívül.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1991"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
         <source>Could not find a closed path.</source>
         <translation>Nem található zárt útvonal.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1992"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
         <source>Could not find the root index.</source>
         <translation>Nem található a gyökér index.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1993"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Hiba: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1993"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>Flood fill error</source>
         <translation>Kitöltési hiba</translation>
     </message>
@@ -3779,18 +3784,18 @@
         <translation>Érintkező kulcsképkocka be- és kikapcsolása</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="283"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="285"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="293"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
         <source>Please keep at least one camera layer in project</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="284"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="286"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Biztosan törölni akarja a következő réteget: </translation>
     </message>

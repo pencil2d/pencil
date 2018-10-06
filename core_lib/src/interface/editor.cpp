@@ -492,7 +492,7 @@ void Editor::cut()
 void Editor::copy()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer != NULL)
+    if (layer == NULL) 
     {
         return;
     }
@@ -769,6 +769,12 @@ bool Editor::importBitmapImage(QString filePath, int space)
         }
 
         backup(tr("Import Image"));
+
+        // Workaround for tiff import getting stuck in this loop
+        if (!reader.supportsAnimation())
+        {
+            break;
+        }
     }
 
     return true;

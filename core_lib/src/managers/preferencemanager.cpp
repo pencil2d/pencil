@@ -54,7 +54,8 @@ void PreferenceManager::loadPrefs()
     set(SETTING::OUTLINES,                 settings.value(SETTING_OUTLINES,               false).toBool());
 
     // Grid
-    set(SETTING::GRID_SIZE,                settings.value(SETTING_GRID_SIZE,               50).toInt());
+    set(SETTING::GRID_SIZE_W,              settings.value(SETTING_GRID_SIZE_W,            100).toInt());
+    set(SETTING::GRID_SIZE_H,              settings.value(SETTING_GRID_SIZE_H,            100).toInt());
 
     // General
     set(SETTING::ANTIALIAS,                settings.value(SETTING_ANTIALIAS,              true).toBool());
@@ -211,8 +212,11 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::ONION_NEXT_FRAMES_NUM:
         settings.setValue(SETTING_ONION_NEXT_FRAMES_NUM, value);
         break;
-    case SETTING::GRID_SIZE:
-        settings.setValue(SETTING_GRID_SIZE, value);
+    case SETTING::GRID_SIZE_W:
+        settings.setValue(SETTING_GRID_SIZE_W, value);
+        break;
+    case SETTING::GRID_SIZE_H:
+        settings.setValue(SETTING_GRID_SIZE_H, value);
         break;
     case SETTING::FRAME_POOL_CACHE:
         settings.setValue(SETTING_FRAME_POOL_CACHE, value);

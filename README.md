@@ -12,16 +12,16 @@ Pencil2D Website: <https://www.pencil2d.org/>
 
 ### Pencil2D 0.6.2 (26 September 2018)
 
-[What's new?](https://www.pencil2d.org/2018/04/maintenance-release-0.6.1.html)
+[What's new?](https://www.pencil2d.org/2018/09/maintenance-release-0.6.2.html)
 
 | Windows 64 bit   | Windows 32 bit    | Mac             | Linux             |
 | :--------------: | :---------------: | :-------------: | :---------------: |
-| [Download][0]    | [Download][1]     | [Download][2]   | [Download][3]     |
+| [Download][w64]  | [Download][w32]   | [Download][mac] | [Download][lnx]   |
 
-[0]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-win64-0.6.2.zip
-[1]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-win32-0.6.2.zip
-[2]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-mac-0.6.2.zip
-[3]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-linux-amd64-0.6.2.AppImage
+[w64]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-win64-0.6.2.zip
+[w32]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-win32-0.6.2.zip
+[mac]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-mac-0.6.2.zip
+[lnx]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-linux-amd64-0.6.2.AppImage
 
 ### Nightly builds
 
@@ -45,6 +45,6 @@ The link will direct you to Google Drive, please right-click on a file and selec
 
 ## Source code
 
-* Github: [https://github.com/pencil2d/pencil](https://github.com/pencil2d/pencil) (Primary)
-* Bitbucket: [https://bitbucket.org/chchwy/pencil2d](https://bitbucket.org/chchwy/pencil2d) (Mirror)
-
+* GitHub: <https://github.com/pencil2d/pencil> (Primary)
+* Bitbucket: <https://bitbucket.org/chchwy/pencil2d> (Mirror)
+* GitLab: <https://gitlab.com/chchwy/pencil2d> (Mirror 2)

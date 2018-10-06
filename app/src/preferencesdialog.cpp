@@ -150,7 +150,8 @@ GeneralPage::GeneralPage(QWidget* parent) :
     connect(ui->curveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChange);
     connect(ui->highResBox, &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged);
     connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
-    connect(ui->gridSizeInput, spinValueChanged, this, &GeneralPage::gridSizeChange);
+    connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridSizeChangeW);
+    connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridSizeChangeH);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->frameCacheInput, spinValueChanged, this, &GeneralPage::frameCacheChange);
 }
@@ -182,8 +183,10 @@ void GeneralPage::updateValues()
     ui->antialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
     SignalBlocker b6(ui->dottedCursorBox);
     ui->dottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
-    SignalBlocker b7(ui->gridSizeInput);
-    ui->gridSizeInput->setValue(mManager->getInt(SETTING::GRID_SIZE));
+    SignalBlocker b7(ui->gridSizeInputW);
+    ui->gridSizeInputW->setValue(mManager->getInt(SETTING::GRID_SIZE_W));
+    SignalBlocker b11(ui->gridSizeInputH);
+    ui->gridSizeInputH->setValue(mManager->getInt(SETTING::GRID_SIZE_H));
     SignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
 
@@ -193,7 +196,7 @@ void GeneralPage::updateValues()
     SignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
 
-    SignalBlocker b11(ui->frameCacheInput);
+    SignalBlocker b12(ui->frameCacheInput);
     ui->frameCacheInput->setValue(mManager->getInt(SETTING::FRAME_POOL_CACHE));
 
     int buttonIdx = 1;
@@ -263,9 +266,14 @@ void GeneralPage::dottedCursorCheckboxStateChanged(int b)
     mManager->set( SETTING::DOTTED_CURSOR, b != Qt::Unchecked );
 }
 
-void GeneralPage::gridSizeChange(int value)
+void GeneralPage::gridSizeChangeW(int value)
 {
-    mManager->set(SETTING::GRID_SIZE, value);
+    mManager->set(SETTING::GRID_SIZE_W, value);
+}
+
+void GeneralPage::gridSizeChangeH(int value)
+{
+    mManager->set(SETTING::GRID_SIZE_H, value);
 }
 
 void GeneralPage::gridCheckBoxStateChanged(int b)
