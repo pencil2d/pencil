@@ -24,6 +24,7 @@ CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(LayerManager *lm, int s
     mLastFrame = stopLoop;
     lMgr = lm;
     ui->setupUi(this);
+    setWindowTitle(tr("Manipulate Range of frames"));
     init();
 }
 
@@ -94,6 +95,7 @@ void CopyMultiplekeyframesDialog::init()
     connect(ui->cBoxFromLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setFromLayer(QString)));
     connect(ui->cBoxCopyToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setCopyToLayer(QString)));
     connect(ui->cBoxMoveToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setMoveToLayer(QString)));
+    connect(ui->cBoxDeleteFrames, SIGNAL(currentTextChanged(QString)), this, SLOT(setDeleteOnLayer(QString)));
 }
 
 int CopyMultiplekeyframesDialog::getFirstFrame()
@@ -213,6 +215,7 @@ void CopyMultiplekeyframesDialog::setStartFrame(int startFrame)
 void CopyMultiplekeyframesDialog::setMoveStartFrame(int startFrame)
 {
     mMoveStart = startFrame;
+    checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::setMoveToLayer(QString moveToLayer)
@@ -233,17 +236,18 @@ void CopyMultiplekeyframesDialog::setReverseFrom(int reverseFrom)
         ui->labInfoFromLayer->setText(tr("On: ") + ui->cBoxFromLayer->currentText());
         ui->labInfoToLayer->setText("");
     }
+    checkValidity();
 }
 
-void CopyMultiplekeyframesDialog::setDeleteOnLayer()
+void CopyMultiplekeyframesDialog::setDeleteOnLayer(QString deleteFromLayer)
 {
-    mDeleteOnLayer = ui->cBoxDeleteFrames->currentText();
+    mDeleteOnLayer = deleteFromLayer;
     if (ui->rBtnDelete->isChecked())
     {
-        ui->labInfoFromLayer->setText(tr("On: ") + ui->cBoxDeleteFrames->currentText());
+        ui->labInfoFromLayer->setText(tr("On: ") + deleteFromLayer);
         ui->labInfoToLayer->setText("");
     }
-
+    checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::setMethodPicked()
@@ -266,32 +270,35 @@ void CopyMultiplekeyframesDialog::setMethodPicked()
     if (ui->rBtnDelete->isChecked())
     {
         ui->labInfoAction->setText("DELETE");
-        setDeleteOnLayer();
+        setDeleteOnLayer(ui->cBoxDeleteFrames->currentText());
     }
+    checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::checkValidity()
 {
-    int cop = 1, mov = 1, rev = 1;
+    int copy = 1, move = 1, reverse = 1;
     QString msg = "";
     if (ui->rBtnCopy->isChecked())
     {
-        cop = (mLastFrame + 1 - mFirstFrame) * (mNumLoops + 1) + mCopyStart - 1;
+        copy = (mLastFrame + 1 - mFirstFrame) * (mNumLoops + 1) + mCopyStart - 1;
     }
     if (ui->rBtnMove->isChecked())
     {
-        mov = (mLastFrame + 1 - mFirstFrame) + mMoveStart;
+        move = (mLastFrame + 1 - mFirstFrame) + mMoveStart;
     }
     if (ui->rBtnReverse->isChecked())
     {
-        rev = (mLastFrame + 1 - mFirstFrame) + mReverseStart;
-    }
-    if (cop > 9999 || mov > 9999 || rev > 9999) // 9999 frames is maximum timeline length
+        reverse = (mLastFrame + 1 - mFirstFrame) + mReverseStart;
+    }               // 9999 frames is maximum timeline length
+    if ((ui->rBtnCopy->isChecked() && copy > 9999) ||
+            (ui->rBtnMove->isChecked() && move > 9999) ||
+            (ui->rBtnReverse->isChecked() && reverse > 9999))
     {
         ui->btnBoxOkCancel->setEnabled(false);
         msg = tr("Exceeds 9999 frames!");
-    }
-    else if (mFirstFrame >= mLastFrame)     // Range must be valid
+    }               // Range must be valid
+    else if (mFirstFrame >= mLastFrame)
     {
         ui->btnBoxOkCancel->setEnabled(false);
         msg = tr("Range not valid!");

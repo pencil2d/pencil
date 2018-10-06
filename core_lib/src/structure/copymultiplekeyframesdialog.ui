@@ -425,12 +425,18 @@
       <property name="text">
        <string>TextLabel</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="labInfoToLayer">
       <property name="text">
        <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -448,9 +454,9 @@
      <widget class="QLabel" name="labWarning">
       <property name="font">
        <font>
-        <family>DejaVu Sans Mono</family>
+        <family>Sans</family>
         <weight>75</weight>
-        <italic>true</italic>
+        <italic>false</italic>
         <bold>true</bold>
        </font>
       </property>

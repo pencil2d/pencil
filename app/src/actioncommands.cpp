@@ -570,40 +570,37 @@ void ActionCommands::duplicateKey()
 
 void ActionCommands::copyMultipleKeyframes()
 {
-    int a = 1, b = 2; // default values
+    int loopBegin = 1, loopEnd = 2; // default values
     if (mEditor->playback()->isRangedPlaybackOn())
     {   // defined range values if available
-        a = mEditor->playback()->getRangedStartFrame();
-        b = mEditor->playback()->getRangedEndFrame();
+        loopBegin = mEditor->playback()->getRangedStartFrame();
+        loopEnd = mEditor->playback()->getRangedEndFrame();
     }
     LayerManager* layerMgr = mEditor->layers();
     int lIndex = layerMgr->currentLayer()->type();
     if (lIndex == 1 || lIndex == 2)
     {
-        CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, a, b, new QWidget);
+        CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, loopBegin, loopEnd, new QWidget);
         cd->exec();
         Layer* layer = mEditor->layers()->currentLayer();
         QString sel = cd->getRadioChecked();
-        qDebug() << sel;
-        if (cd->Accepted == (1))
+        if (cd->result() == QDialog::Accepted)
         {
             int startL = cd->getFirstFrame();
             int stopL = cd->getLastFrame();
             QString strFromLayer = cd->getFromLayer();
             Layer *fromLayer = layerMgr->findLayerByName(strFromLayer);
-//            QString strToLayer = "";
             Layer *toLayer;
             if (sel == "copy")  // COPY Range
             {
                 toLayer = layerMgr->findLayerByName(cd->getCopyToLayer());
                 int num = cd->getNumLoops();
                 int startF = cd->getCopyStartFrame();
-//                qDebug() << "from " << strFromLayer << " to " << strToLayer;
                 for (int i = 0; i < num; i++)
                 {
                     for (int j = startL; j < stopL + 1; j++, startF++)
                     {
-                        if (layer->keyExists(j))
+                        if (fromLayer->keyExists(j))
                         {
                             KeyFrame* kf = fromLayer->getKeyFrameAt(j);
                             if (kf == nullptr) return;
@@ -624,11 +621,8 @@ void ActionCommands::copyMultipleKeyframes()
             }
             if (sel == "move")  // MOVE Range
             {
-                // find TO-layer
                 toLayer = layerMgr->findLayerByName(cd->getMoveToLayer());
                 int startF = cd->getMoveStartFrame();
-//                qDebug() << "startF: " << startF << " stopF: " << stopF;
-//                qDebug() << "From " << fromLayer->name() << " To " << toLayer->name();
                 for (int j = startL; j < stopL + 1; j++, startF++)
                 {
                     if (fromLayer->keyExists(j))
@@ -656,11 +650,8 @@ void ActionCommands::copyMultipleKeyframes()
             }
             if (sel == "reverse")   // REVERSE Range
             {
-                // find TO-layer
                 toLayer = layerMgr->findLayerByName(cd->getFromLayer());
                 int startF = cd->getReverseStartFrame();
-                qDebug() << "startF: " << startF;
-                qDebug() << " To " << toLayer->name();
                 for (int j = stopL; j >= startL; j--, startF++)
                 {
                     if (toLayer->keyExists(j))
@@ -669,19 +660,16 @@ void ActionCommands::copyMultipleKeyframes()
                         if (kf == nullptr) return;
                         KeyFrame* dupKey = kf->clone();
                         // replace if keyframe exists!
-                        qDebug() << "After dubkey";
                         if (toLayer->keyExists(startF))
                         {
                             if (toLayer->removeKeyFrame(startF))
                             {
                                 toLayer->addKeyFrame(startF, dupKey);
-                                qDebug() << "remove and addKey";
                             }
                         }
                         else
                         {
                             toLayer->addKeyFrame(startF, dupKey);
-                            qDebug() << "addKey";
                         }
 
                     }
@@ -690,12 +678,7 @@ void ActionCommands::copyMultipleKeyframes()
             }
             if (sel == "delete")    // DELETE Range
             {
-                // find TO-layer
-//                strToLayer = cd->getMoveToLayer();
                 fromLayer = layerMgr->findLayerByName(cd->getDeleteOnLayer());
-//                int startF = cd->getMoveStartFrame();
-//                qDebug() << "startF: " << startF << " stopF: " << stopF;
-//                qDebug() << "From " << fromLayer->name() << " To " << toLayer->name();
                 for (int j = startL; j < stopL + 1; j++)
                 {
                     if (fromLayer->keyExists(j))
@@ -704,11 +687,6 @@ void ActionCommands::copyMultipleKeyframes()
 
             }
             mEditor->layers()->notifyLayerChanged(layer);
-        }
-        // delete next four lines later...
-        else
-        {
-            qDebug() << "ikke accepteret";
         }
     }
     else

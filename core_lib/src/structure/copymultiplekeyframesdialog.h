@@ -46,7 +46,7 @@ private slots:
     // reverse Range
     void setReverseFrom(int reverseFrom);
     // delete Range
-    void setDeleteOnLayer();
+    void setDeleteOnLayer(QString deleteFromLayer);
 
     void setMethodPicked();
 
