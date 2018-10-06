@@ -70,6 +70,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::BACKGROUND_STYLE,         settings.value(SETTING_BACKGROUND_STYLE,       "white").toString());
 
     set(SETTING::LAYOUT_LOCK,              settings.value(SETTING_LAYOUT_LOCK,            false).toBool());
+    set(SETTING::IMAGE_POOL_CACHE,         settings.value(SETTING_IMAGE_POOL_CACHE,       200).toInt());
 
     // Files
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              true ).toBool());

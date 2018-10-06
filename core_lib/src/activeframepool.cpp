@@ -17,11 +17,16 @@ GNU General Public License for more details.
 
 #include "activeframepool.h"
 #include "keyframe.h"
+#include "pencildef.h"
 #include <QDebug>
+#include <QSettings>
 
 
-ActiveFramePool::ActiveFramePool(int maxSize)
+ActiveFramePool::ActiveFramePool()
 {
+    QSettings settings( PENCIL2D, PENCIL2D );
+    size_t maxSize = settings.value("ImagePoolCache").toUInt();
+
     Q_ASSERT(maxSize > 10);
     mMaxSize = maxSize;
 }
