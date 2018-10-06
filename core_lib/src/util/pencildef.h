@@ -196,7 +196,7 @@ enum StabilizationLevel
 #define SETTING_ONION_RED        "OnionRed"
 
 #define SETTING_GRID_SIZE        "GridSize"
-#define SETTING_IMAGE_POOL_CACHE "ImagePoolCache"
+#define SETTING_FRAME_POOL_CACHE "FramePoolCache"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"

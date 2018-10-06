@@ -289,12 +289,12 @@
           <item>
            <widget class="QLabel" name="cacheLabel">
             <property name="text">
-             <string>Image Pool Cache:</string>
+             <string>Frame Pool Cache:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="imageCacheInput">
+           <widget class="QSpinBox" name="frameCacheInput">
             <property name="minimumSize">
              <size>
               <width>80</width>

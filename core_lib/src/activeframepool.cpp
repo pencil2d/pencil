@@ -25,7 +25,7 @@ GNU General Public License for more details.
 ActiveFramePool::ActiveFramePool()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
-    size_t maxSize = settings.value("ImagePoolCache").toUInt();
+    size_t maxSize = settings.value("FramePoolCache",200).toUInt();
 
     Q_ASSERT(maxSize > 10);
     mMaxSize = maxSize;

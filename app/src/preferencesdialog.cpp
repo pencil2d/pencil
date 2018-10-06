@@ -152,7 +152,7 @@ GeneralPage::GeneralPage(QWidget* parent) :
     connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
     connect(ui->gridSizeInput, spinValueChanged, this, &GeneralPage::gridSizeChange);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
-    connect(ui->imageCacheInput, spinValueChanged, this, &GeneralPage::imageCacheChange);
+    connect(ui->frameCacheInput, spinValueChanged, this, &GeneralPage::frameCacheChange);
 }
 
 GeneralPage::~GeneralPage()
@@ -193,8 +193,8 @@ void GeneralPage::updateValues()
     SignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
 
-    SignalBlocker b11(ui->imageCacheInput);
-    ui->imageCacheInput->setValue(mManager->getInt(SETTING::IMAGE_POOL_CACHE));
+    SignalBlocker b11(ui->frameCacheInput);
+    ui->frameCacheInput->setValue(mManager->getInt(SETTING::FRAME_POOL_CACHE));
 
     int buttonIdx = 1;
     if (bgName == "checkerboard") buttonIdx = 1;
@@ -273,9 +273,9 @@ void GeneralPage::gridCheckBoxStateChanged(int b)
     mManager->set(SETTING::GRID, b != Qt::Unchecked);
 }
 
-void GeneralPage::imageCacheChange(int value)
+void GeneralPage::frameCacheChange(int value)
 {
-    mManager->set(SETTING::IMAGE_POOL_CACHE, value);
+    mManager->set(SETTING::FRAME_POOL_CACHE, value);
 }
 
 TimelinePage::TimelinePage(QWidget* parent) :
