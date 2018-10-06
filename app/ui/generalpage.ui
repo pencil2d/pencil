@@ -38,7 +38,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-367</y>
+        <y>0</y>
         <width>333</width>
         <height>728</height>
        </rect>
@@ -287,14 +287,14 @@
            <number>6</number>
           </property>
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="cacheLabel">
             <property name="text">
              <string>Image Pool Cache:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="gridSizeInput_2">
+           <widget class="QSpinBox" name="imageCacheInput">
             <property name="minimumSize">
              <size>
               <width>80</width>

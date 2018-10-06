@@ -152,6 +152,7 @@ GeneralPage::GeneralPage(QWidget* parent) :
     connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
     connect(ui->gridSizeInput, spinValueChanged, this, &GeneralPage::gridSizeChange);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
+    connect(ui->imageCacheInput, spinValueChanged, this, &GeneralPage::imageCacheChange);
 }
 
 GeneralPage::~GeneralPage()
@@ -267,6 +268,11 @@ void GeneralPage::gridSizeChange(int value)
 void GeneralPage::gridCheckBoxStateChanged(int b)
 {
     mManager->set(SETTING::GRID, b != Qt::Unchecked);
+}
+
+void GeneralPage::imageCacheChange(int value)
+{
+    mManager->set(SETTING::IMAGE_POOL_CACHE, value);
 }
 
 TimelinePage::TimelinePage(QWidget* parent) :

@@ -213,6 +213,9 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::GRID_SIZE:
         settings.setValue(SETTING_GRID_SIZE, value);
         break;
+    case SETTING::IMAGE_POOL_CACHE:
+        settings.setValue(SETTING_IMAGE_POOL_CACHE, value);
+        break;
     case SETTING::DRAW_ON_EMPTY_FRAME_ACTION:
         settings.setValue( SETTING_DRAW_ON_EMPTY_FRAME_ACTION, value);
         break;
