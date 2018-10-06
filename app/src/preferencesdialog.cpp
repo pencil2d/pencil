@@ -193,6 +193,9 @@ void GeneralPage::updateValues()
     SignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
 
+    SignalBlocker b11(ui->imageCacheInput);
+    ui->imageCacheInput->setValue(mManager->getInt(SETTING::IMAGE_POOL_CACHE));
+
     int buttonIdx = 1;
     if (bgName == "checkerboard") buttonIdx = 1;
     else if (bgName == "white")   buttonIdx = 2;
