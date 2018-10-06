@@ -40,7 +40,7 @@
         <x>0</x>
         <y>-367</y>
         <width>333</width>
-        <height>728</height>
+        <height>746</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="lay">
@@ -289,7 +289,13 @@
           <item>
            <widget class="QLabel" name="cacheLabel">
             <property name="text">
-             <string>Frame Pool Cache:</string>
+             <string>Frame Pool Cache (you must restart the application if you want to apply those change):</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
