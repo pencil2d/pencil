@@ -29,7 +29,7 @@ public:
     int getCopyStartFrame();
     int getMoveStartFrame();
     int getReverseStartFrame();
-    QString getRadioChecked();
+    QString getActiveTab();
 
 private slots:
     // Range and Layers
@@ -48,7 +48,7 @@ private slots:
     // delete Range
     void setDeleteOnLayer(QString deleteFromLayer);
 
-    void setMethodPicked();
+    void setMethodPicked(QString methodName);
 
 
 private:

@@ -583,9 +583,11 @@ void ActionCommands::copyMultipleKeyframes()
         CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, loopBegin, loopEnd, new QWidget);
         cd->exec();
         Layer* layer = mEditor->layers()->currentLayer();
-        QString sel = cd->getRadioChecked();
+        QString sel = cd->getActiveTab();
+        qDebug() << "sel = " << sel;
         if (cd->result() == QDialog::Accepted)
         {
+            qDebug() << "accepted OK";
             int startL = cd->getFirstFrame();
             int stopL = cd->getLastFrame();
             QString strFromLayer = cd->getFromLayer();
@@ -593,6 +595,7 @@ void ActionCommands::copyMultipleKeyframes()
             Layer *toLayer;
             if (sel == "copy")  // COPY Range
             {
+                qDebug() << "sel = " << sel;
                 toLayer = layerMgr->findLayerByName(cd->getCopyToLayer());
                 int num = cd->getNumLoops();
                 int startF = cd->getCopyStartFrame();
@@ -650,18 +653,25 @@ void ActionCommands::copyMultipleKeyframes()
             }
             if (sel == "reverse")   // REVERSE Range
             {
+                qDebug() << "in REVERSE";
                 toLayer = layerMgr->findLayerByName(cd->getFromLayer());
+                qDebug() << "toLayer: " << toLayer;
                 int startF = cd->getReverseStartFrame();
+                qDebug() << "startF: " << startF;
                 for (int j = stopL; j >= startL; j--, startF++)
                 {
+                    qDebug() << "stopL og startL: " << stopL << " " << startL;
                     if (toLayer->keyExists(j))
                     {
                         KeyFrame* kf = toLayer->getKeyFrameAt(j);
+                        qDebug() << "kf: " << kf;
                         if (kf == nullptr) return;
                         KeyFrame* dupKey = kf->clone();
+                        qDebug() << "dupKey: " << dupKey;
                         // replace if keyframe exists!
                         if (toLayer->keyExists(startF))
                         {
+                            qDebug() << "in keyExists";
                             if (toLayer->removeKeyFrame(startF))
                             {
                                 toLayer->addKeyFrame(startF, dupKey);
