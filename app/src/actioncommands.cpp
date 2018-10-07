@@ -582,7 +582,7 @@ void ActionCommands::copyMultipleKeyframes()
     {
         CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, loopBegin, loopEnd, new QWidget);
         cd->exec();
-        Layer* layer = mEditor->layers()->currentLayer();
+//        Layer* layer = mEditor->layers()->currentLayer();
         QString sel = cd->getActiveTab();
         qDebug() << "sel = " << sel;
         if (cd->result() == QDialog::Accepted)
@@ -650,6 +650,11 @@ void ActionCommands::copyMultipleKeyframes()
 
                     }
                 }
+                if (fromLayer->firstKeyFramePosition() == 0)
+                {
+                    fromLayer->addNewKeyFrameAt(1);
+                }
+
             }
             if (sel == "reverse")   // REVERSE Range
             {
@@ -694,9 +699,12 @@ void ActionCommands::copyMultipleKeyframes()
                     if (fromLayer->keyExists(j))
                         fromLayer->removeKeyFrame(j);
                 }
-
+                if (fromLayer->firstKeyFramePosition() == 0)
+                {
+                    fromLayer->addNewKeyFrameAt(1);
+                }
             }
-            mEditor->layers()->notifyLayerChanged(layer);
+            mEditor->layers()->notifyLayerChanged(toLayer);
         }
     }
     else
