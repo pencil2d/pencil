@@ -432,6 +432,9 @@ void Object::importPaletteGPL(QFile& file)
 
     bool hashFound = false;
     bool colorFound = false;
+
+    int emptyColorNameCounter = 1;
+
     while (in.readLineInto(&line))
     {
         quint8 red = 0;
@@ -439,7 +442,7 @@ void Object::importPaletteGPL(QFile& file)
         quint8 blue = 0;
 
         int countInLine = 0;
-        QString name;
+        QString name= "";
 
         if (!colorFound)
         {
@@ -456,7 +459,7 @@ void Object::importPaletteGPL(QFile& file)
             continue;
         }
 
-        for (const QString& snip : line.split(" "))
+        for (const QString& snip : line.split(QRegExp("\\s|\\t"), QString::SkipEmptyParts))
         {
             if (countInLine == 0) // assume red
             {
@@ -480,7 +483,7 @@ void Object::importPaletteGPL(QFile& file)
                 }
                 else
                 {
-                    name += snip + " ";
+                    name += snip;
                 }
             }
             countInLine++;
@@ -488,6 +491,12 @@ void Object::importPaletteGPL(QFile& file)
 
         // trim additional spaces
         name = name.trimmed();
+
+        if (name.isEmpty())
+        {
+            name = "Color" + QString::number(emptyColorNameCounter);
+            ++emptyColorNameCounter;
+        }
 
         if (QColor(red, green, blue).isValid())
         {
