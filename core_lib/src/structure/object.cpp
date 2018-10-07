@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QTextStream>
 #include <QProgressDialog>
 #include <QApplication>
+#include <QFile>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -374,10 +375,8 @@ void Object::exportPaletteGPL(QFile& file)
     out << "Name: " << fileName << "\n";
     out << "#" << "\n";
 
-    for (int i = 0; i < mPalette.size(); i++)
+    for (ColourRef ref : mPalette)
     {
-        ColourRef ref = mPalette.at(i);
-
         QColor toRgb = ref.colour.toRgb();
         out << QString("%1 %2 %3").arg(toRgb.red()).arg(toRgb.green()).arg(toRgb.blue());
         out << " " << ref.name << "\n";
@@ -428,7 +427,6 @@ bool Object::exportPalette(QString filePath)
 
 void Object::importPaletteGPL(QFile& file)
 {
-
     QTextStream in(&file);
     QString line;
 
@@ -458,7 +456,7 @@ void Object::importPaletteGPL(QFile& file)
             continue;
         }
 
-        for (QString snip : line.split(" "))
+        for (const QString& snip : line.split(" "))
         {
             if (countInLine == 0) // assume red
             {
@@ -474,7 +472,6 @@ void Object::importPaletteGPL(QFile& file)
             }
             else
             {
-
                 // assume last bit of line is a name
                 // gimp interprets as untitled
                 if (snip == "---")
@@ -678,6 +675,11 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         extension = ".jpg";
         transparency = false; // JPG doesn't support transparency so we have to include the background
     }
+    if (formatStr == "TIFF" || formatStr == "tiff" || formatStr == "TIF" || formatStr == "tif")
+    {
+        format = "TIFF";
+        extension = ".tiff";
+    }
     if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {
         filePath.chop(extension.size());
@@ -824,4 +826,10 @@ void Object::updateActiveFrames(int frame) const
             mActiveFramePool->put(key);
         }
     }
+}
+
+void Object::setActiveFramePoolSize(int n)
+{
+    mActiveFramePool->clear();
+    mActiveFramePool.reset(new ActiveFramePool(n));
 }

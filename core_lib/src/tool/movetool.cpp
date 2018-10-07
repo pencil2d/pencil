@@ -57,8 +57,10 @@ QCursor MoveTool::cursor()
 
 void MoveTool::mousePressEvent(QMouseEvent* event)
 {
-    mCurrentLayer = currentPaintableLayer();
     if (event->button() != Qt::LeftButton) { return; }
+
+    mCurrentLayer = currentPaintableLayer();
+    if (mCurrentLayer == nullptr) return;
 
     beginInteraction(event, mCurrentLayer);
 }
@@ -78,6 +80,7 @@ void MoveTool::mouseReleaseEvent(QMouseEvent*)
 void MoveTool::mouseMoveEvent(QMouseEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
+    if (mCurrentLayer == nullptr) return;
 
     if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
     {

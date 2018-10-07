@@ -93,6 +93,11 @@
           <string>BMP</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>TIFF</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>

@@ -433,8 +433,8 @@ void BitmapImage::autoCrop()
     int relRight = mBounds.width()-1;
 
     // Check left row
-    isEmpty = true; // Reset isEmpty
-    while (isEmpty && relLeft <= relRight) // Loop through columns
+    isEmpty = (relBottom >= relTop); // Check left only when 
+    while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relLeft
         const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relTop)) + relLeft;
@@ -467,7 +467,7 @@ void BitmapImage::autoCrop()
     }
 
     // Check right row
-    isEmpty = true; // Reset isEmpty
+    isEmpty = (relBottom >= relTop); // Reset isEmpty
     while (isEmpty && relRight >= relLeft) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relRight

@@ -729,9 +729,13 @@ Status ActionCommands::addNewBitmapLayer()
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
                                          tr("Bitmap Layer"), &ok);
-    if (ok && !text.isEmpty())
+    if (ok && !text.isEmpty() && checkNewLayerName(text))
     {
         mEditor->layers()->createBitmapLayer(text);
+    }
+    else
+    {
+        uniqueNameMsg();
     }
     return Status::OK;
 }
@@ -742,9 +746,13 @@ Status ActionCommands::addNewVectorLayer()
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
                                          tr("Vector Layer"), &ok);
-    if (ok && !text.isEmpty())
+    if (ok && !text.isEmpty() && checkNewLayerName(text))
     {
         mEditor->layers()->createVectorLayer(text);
+    }
+    else
+    {
+        uniqueNameMsg();
     }
 
     return Status::OK;
@@ -756,9 +764,13 @@ Status ActionCommands::addNewCameraLayer()
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
                                          tr("Camera Layer"), &ok);
-    if (ok && !text.isEmpty())
+    if (ok && !text.isEmpty() && checkNewLayerName(text))
     {
         mEditor->layers()->createCameraLayer(text);
+    }
+    else
+    {
+        uniqueNameMsg();
     }
 
     return Status::OK;
@@ -770,12 +782,16 @@ Status ActionCommands::addNewSoundLayer()
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
                                                  tr("Sound Layer"), &ok);
-    if (ok && !strLayerName.isEmpty())
+    if (ok && !strLayerName.isEmpty() && checkNewLayerName(strLayerName))
     {
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
         mEditor->layers()->setCurrentLayer(layer);
 
         return Status::OK;
+    }
+    else
+    {
+        uniqueNameMsg();
     }
     return Status::FAIL;
 }
@@ -800,6 +816,27 @@ Status ActionCommands::deleteCurrentLayer()
         }
     }
     return Status::OK;
+}
+
+bool ActionCommands::checkNewLayerName(QString s)
+{
+    LayerManager* layerMgr = mEditor->layers();
+    bool b = true;
+    for (int i = 0; i < layerMgr->count(); i++)
+    {
+        if (layerMgr->getLayer(i)->name() == s)
+        {
+            b = false;
+        }
+    }
+    return b;
+}
+
+void ActionCommands::uniqueNameMsg()
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("Filename must be unique and not empty"));
+    msgBox.exec();
 }
 
 

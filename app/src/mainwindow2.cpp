@@ -83,7 +83,7 @@ GNU General Public License for more details.
 #ifdef NIGHTLY_BUILD
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( BUILD_DATE )
 #else
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION " RC1")
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
 #endif
 
 
@@ -799,7 +799,9 @@ void MainWindow2::importImageSequence()
         if (strImgFileLower.endsWith(".png") ||
             strImgFileLower.endsWith(".jpg") ||
             strImgFileLower.endsWith(".jpeg") ||
-            strImgFileLower.endsWith(".bmp"))
+            strImgFileLower.endsWith(".bmp") ||
+            strImgFileLower.endsWith(".tif") ||
+            strImgFileLower.endsWith(".tiff"))
         {
             mEditor->importImage(strImgFile);
 
