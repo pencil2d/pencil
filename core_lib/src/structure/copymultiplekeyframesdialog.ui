@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>427</height>
+    <width>344</width>
+    <height>397</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>12</x>
-     <y>28</y>
-     <width>291</width>
-     <height>381</height>
+     <x>14</x>
+     <y>20</y>
+     <width>321</width>
+     <height>361</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -34,6 +34,9 @@
       </property>
       <property name="text">
        <string>Manipulate Range of frames</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -105,10 +108,10 @@
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>0</y>
-          <width>176</width>
-          <height>91</height>
+          <x>15</x>
+          <y>10</y>
+          <width>271</width>
+          <height>101</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -178,10 +181,10 @@
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>50</x>
+          <x>6</x>
           <y>10</y>
-          <width>147</width>
-          <height>59</height>
+          <width>281</width>
+          <height>61</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -230,9 +233,9 @@
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>14</x>
           <y>10</y>
-          <width>145</width>
+          <width>271</width>
           <height>26</height>
          </rect>
         </property>
@@ -261,27 +264,21 @@
        <attribute name="title">
         <string>DELETE</string>
        </attribute>
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QLabel" name="labDeleteOnLayer">
         <property name="geometry">
          <rect>
-          <x>60</x>
-          <y>10</y>
-          <width>144</width>
-          <height>25</height>
+          <x>7</x>
+          <y>11</y>
+          <width>271</width>
+          <height>20</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_5">
-         <item row="0" column="0">
-          <widget class="QLabel" name="labDeleteOnLayer">
-           <property name="text">
-            <string>ON layer:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="cBoxDeleteFrames"/>
-         </item>
-        </layout>
+        <property name="text">
+         <string>ON layer:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </widget>
      </widget>
@@ -296,7 +293,7 @@
        </font>
       </property>
       <property name="text">
-       <string/>
+       <string>COPY</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -304,27 +301,20 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="labInfoFromLayer">
+     <widget class="QLabel" name="labInfoToFromLayer">
       <property name="text">
-       <string>TextLabel</string>
+       <string>From: x To: x</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QLabel" name="labInfoToLayer">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
+    <item alignment="Qt::AlignHCenter">
      <widget class="QDialogButtonBox" name="btnBoxOkCancel">
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -347,7 +337,7 @@
        <string>9999 frames exceeded!</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>

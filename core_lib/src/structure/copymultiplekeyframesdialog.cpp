@@ -52,6 +52,7 @@ void CopyMultiplekeyframesDialog::init()
     mFromLayer = ui->cBoxFromLayer->currentText();
     mCopyToLayer = ui->cBoxCopyToLayer->currentText();
     mMoveToLayer = ui->cBoxMoveToLayer->currentText();
+    mCurrentTab = 0; // starts with COPY selected
 
     // SET values in ComboBoxes
     int lType = lMgr->currentLayer()->type();
@@ -62,40 +63,47 @@ void CopyMultiplekeyframesDialog::init()
             ui->cBoxFromLayer->addItem(lMgr->getLayer(i)->name());
             ui->cBoxCopyToLayer->addItem(lMgr->getLayer(i)->name());
             ui->cBoxMoveToLayer->addItem(lMgr->getLayer(i)->name());
-            ui->cBoxDeleteFrames->addItem(lMgr->getLayer(i)->name());
         }
     }
     ui->cBoxFromLayer->setCurrentText(lMgr->currentLayer()->name());
     ui->cBoxCopyToLayer->setCurrentText(lMgr->currentLayer()->name());
     ui->cBoxMoveToLayer->setCurrentText(lMgr->currentLayer()->name());
-    ui->cBoxDeleteFrames->setCurrentText(lMgr->currentLayer()->name());
+
+    // SET text on dialog
+    ui->labHeader->setText(tr("Manipulate Range of Frames"));
+    ui->labRangeStart->setText(tr("First Frame"));
+    ui->labRangeEnd->setText(tr("Last Frame"));
+    ui->labFromLayer->setText(tr("FROM Layer"));
+    ui->labNumLoops->setText(tr("Number of Loops"));
+    ui->labCopyFromFrame->setText(tr("Insert Frame at"));
+    ui->labCopyToLayer->setText(tr("TO Layer"));
+    ui->labMoveFromFrame->setText(tr("Insert Frame at"));
+    ui->labMoveToLayer->setText(tr("TO Layer"));
+    ui->labReverseFromFrame->setText(tr("Insert Frame at"));
+    ui->labDeleteOnLayer->setText(tr("On Layer ") + mFromLayer );
+
 
     // SET text on labWarning and infolabels
     ui->labWarning->setText("");
     ui->labInfoAction->setText(getActiveTab().toUpper());
-    ui->labInfoFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText());
-    ui->labInfoToLayer->setText(tr("To: ") + ui->cBoxCopyToLayer->currentText());
-
-    // SET connections
+    ui->labInfoToFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText() +
+                                    tr(" To: ") + ui->cBoxFromLayer->currentText());
+    // SET connections HEADER
     connect(ui->sBoxFirstFrame, SIGNAL(valueChanged(int)), this, SLOT(setFirstFrame(int)));
     connect(ui->sBoxLastFrame, SIGNAL(valueChanged(int)), this, SLOT(setLastFrame(int)));
-
-    connect(ui->tabCopy, SIGNAL(windowTitleChanged(QString)), this, SLOT(setMethodPicked(QString)));
+    connect(ui->cBoxFromLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setFromLayer(QString)));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(setMethodPicked(int)));
+    // COPY
     connect(ui->sBoxNumLoops, SIGNAL(valueChanged(int)), this, SLOT(setNumLoops(int)));
     connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
-
-    connect(ui->tabMove, SIGNAL(windowTitleChanged(QString)), this, SLOT(setMethodPicked(QString)));
-    connect(ui->sBoxMove, SIGNAL(valueChanged(int)), this, SLOT(setMoveStartFrame(int)));
-
-    connect(ui->tabReverse, SIGNAL(windowTitleChanged(QString)), this, SLOT(setMethodPicked(QString)));
-    connect(ui->sBoxStartReverse, SIGNAL(valueChanged(int)), this, SLOT(setReverseFrom(int)));
-
-    connect(ui->tabDelete, SIGNAL(windowTitleChanged(QString)), this, SLOT(setMethodPicked(QString)));
-
-    connect(ui->cBoxFromLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setFromLayer(QString)));
     connect(ui->cBoxCopyToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setCopyToLayer(QString)));
+    //MOVE
+    connect(ui->sBoxMove, SIGNAL(valueChanged(int)), this, SLOT(setMoveStartFrame(int)));
     connect(ui->cBoxMoveToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setMoveToLayer(QString)));
-    connect(ui->cBoxDeleteFrames, SIGNAL(currentTextChanged(QString)), this, SLOT(setDeleteOnLayer(QString)));
+    // REVERSE
+    connect(ui->sBoxStartReverse, SIGNAL(valueChanged(int)), this, SLOT(setReverseFrom(int)));
+    // DELETE
+
 }
 
 int CopyMultiplekeyframesDialog::getFirstFrame()
@@ -125,7 +133,7 @@ QString CopyMultiplekeyframesDialog::getMoveToLayer()
 
 QString CopyMultiplekeyframesDialog::getDeleteOnLayer()
 {
-    return ui->cBoxDeleteFrames->currentText();
+    return ui->cBoxFromLayer->currentText();
 }
 
 int CopyMultiplekeyframesDialog::getNumLoops()
@@ -165,7 +173,7 @@ QString CopyMultiplekeyframesDialog::getActiveTab()
     }
     if (ui->tabWidget->currentIndex() == 2)
     {
-        ui->labInfoToLayer->setText("");
+        ui->labInfoToFromLayer->setText(tr("On layer: ") + ui->cBoxFromLayer->currentText());
         return "reverse";
     }
     if (ui->tabWidget->currentIndex() == 3)
@@ -191,10 +199,26 @@ void CopyMultiplekeyframesDialog::setLastFrame(int lastFrame)
 void CopyMultiplekeyframesDialog::setFromLayer(QString fromLayer)
 {
     mFromLayer = fromLayer;
-    if (ui->tabWidget->currentIndex() == 0 || ui->tabWidget->currentIndex() == 1)
-        ui->labInfoFromLayer->setText(tr("From: ") + fromLayer);
-    else
-        ui->labInfoFromLayer->setText(tr("On: ") + fromLayer);
+    int index = ui->tabWidget->currentIndex();
+    switch (index) {
+    case 0:
+        ui->labInfoToFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText() +
+                                        tr(" To: ") + ui->cBoxCopyToLayer->currentText());
+        break;
+    case 1:
+        ui->labInfoToFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText() +
+                                        tr(" To: ") + ui->cBoxMoveToLayer->currentText());
+        break;
+    case 2:
+        ui->labInfoToFromLayer->setText(tr("On: ") + mFromLayer);
+        break;
+    case 3:
+        ui->labInfoToFromLayer->setText(tr("On: ") + mFromLayer);
+        ui->labDeleteOnLayer->setText(tr("On Layer ") + mFromLayer);
+        break;
+    default:
+        break;
+    }
 }
 
 void CopyMultiplekeyframesDialog::setCopyToLayer(QString copyToLayer)
@@ -202,7 +226,8 @@ void CopyMultiplekeyframesDialog::setCopyToLayer(QString copyToLayer)
     mCopyToLayer = copyToLayer;
     if (ui->tabWidget->currentIndex() == 0)
     {
-        ui->labInfoToLayer->setText(tr("To: ") + copyToLayer);
+        ui->labInfoToFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText() +
+                                        tr(" To: ") + mCopyToLayer);
     }
 }
 
@@ -229,8 +254,8 @@ void CopyMultiplekeyframesDialog::setMoveToLayer(QString moveToLayer)
     mMoveToLayer = moveToLayer;
     if (ui->tabWidget->currentIndex() == 1)
     {
-        ui->labInfoFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText());
-        ui->labInfoToLayer->setText(tr("To: ") + moveToLayer);
+        ui->labInfoToFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText() +
+                                        tr(" To: ") + ui->cBoxMoveToLayer->currentText());
     }
 }
 
@@ -239,8 +264,7 @@ void CopyMultiplekeyframesDialog::setReverseFrom(int reverseFrom)
     mReverseStart = reverseFrom;
     if (ui->tabWidget->currentIndex() == 2)
     {
-        ui->labInfoFromLayer->setText(tr("On: ") + ui->cBoxFromLayer->currentText());
-        ui->labInfoToLayer->setText("");
+        ui->labInfoToFromLayer->setText(tr("On: ") + ui->cBoxFromLayer->currentText());
     }
     checkValidity();
 }
@@ -250,15 +274,16 @@ void CopyMultiplekeyframesDialog::setDeleteOnLayer(QString deleteFromLayer)
     mDeleteOnLayer = deleteFromLayer;
     if (ui->tabWidget->currentIndex() == 3)
     {
-        ui->labInfoFromLayer->setText(tr("On: ") + deleteFromLayer);
-        ui->labInfoToLayer->setText("");
+        ui->labInfoToFromLayer->setText(tr("On: ") + mDeleteOnLayer);
+        ui->labDeleteOnLayer->setText(tr("On Layer ") + mDeleteOnLayer);
     }
     checkValidity();
 }
 
-void CopyMultiplekeyframesDialog::setMethodPicked(QString methodName)
+void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
 {
-    ui->labInfoAction->setText(methodName);
+    qDebug() << "setMethodPicked param: " << tabIndex;
+    ui->labInfoAction->setText(ui->tabWidget->tabText(tabIndex));
     if (ui->tabWidget->currentIndex() == 0)
     {
         setCopyToLayer(ui->cBoxCopyToLayer->currentText());
@@ -273,7 +298,7 @@ void CopyMultiplekeyframesDialog::setMethodPicked(QString methodName)
     }
     if (ui->tabWidget->currentIndex() == 3)
     {
-        setDeleteOnLayer(ui->cBoxDeleteFrames->currentText());
+        setDeleteOnLayer(ui->cBoxFromLayer->currentText());
     }
     checkValidity();
 }
@@ -298,12 +323,12 @@ void CopyMultiplekeyframesDialog::checkValidity()
             (ui->tabWidget->currentIndex() == 1 && move > 9999) ||
             (ui->tabWidget->currentIndex() == 2 && reverse > 9999))
     {
-        ui->btnBoxOkCancel->setEnabled(false);
+//        ui->btnBoxOkCancel->setEnabled(false);
         msg = tr("Exceeds 9999 frames!");
     }               // Range must be valid
     else if (mFirstFrame >= mLastFrame)
     {
-        ui->btnBoxOkCancel->setEnabled(false);
+//        ui->btnBoxOkCancel->setEnabled(false);
         msg = tr("Range not valid!");
     }
     else

@@ -584,15 +584,16 @@ void ActionCommands::copyMultipleKeyframes()
         cd->exec();
 //        Layer* layer = mEditor->layers()->currentLayer();
         QString sel = cd->getActiveTab();
-        qDebug() << "sel = " << sel;
         if (cd->result() == QDialog::Accepted)
         {
             qDebug() << "accepted OK";
             int startL = cd->getFirstFrame();
             int stopL = cd->getLastFrame();
             QString strFromLayer = cd->getFromLayer();
+            qDebug() << "From layer: " << strFromLayer;
             Layer *fromLayer = layerMgr->findLayerByName(strFromLayer);
-            Layer *toLayer;
+            Layer *toLayer = nullptr;
+            int scrubOrg = mEditor->currentFrame();
             if (sel == "copy")  // COPY Range
             {
                 qDebug() << "sel = " << sel;
@@ -603,6 +604,7 @@ void ActionCommands::copyMultipleKeyframes()
                 {
                     for (int j = startL; j < stopL + 1; j++, startF++)
                     {
+                        mEditor->scrubTo(j);
                         if (fromLayer->keyExists(j))
                         {
                             KeyFrame* kf = fromLayer->getKeyFrameAt(j);
@@ -658,14 +660,10 @@ void ActionCommands::copyMultipleKeyframes()
             }
             if (sel == "reverse")   // REVERSE Range
             {
-                qDebug() << "in REVERSE";
                 toLayer = layerMgr->findLayerByName(cd->getFromLayer());
-                qDebug() << "toLayer: " << toLayer;
                 int startF = cd->getReverseStartFrame();
-                qDebug() << "startF: " << startF;
                 for (int j = stopL; j >= startL; j--, startF++)
                 {
-                    qDebug() << "stopL og startL: " << stopL << " " << startL;
                     if (toLayer->keyExists(j))
                     {
                         KeyFrame* kf = toLayer->getKeyFrameAt(j);
@@ -704,6 +702,7 @@ void ActionCommands::copyMultipleKeyframes()
                     fromLayer->addNewKeyFrameAt(1);
                 }
             }
+            mEditor->scrubTo(scrubOrg);
             mEditor->layers()->notifyLayerChanged(toLayer);
         }
     }

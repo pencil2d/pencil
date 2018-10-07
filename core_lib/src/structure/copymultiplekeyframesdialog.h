@@ -48,12 +48,13 @@ private slots:
     // delete Range
     void setDeleteOnLayer(QString deleteFromLayer);
 
-    void setMethodPicked(QString methodName);
+    void setMethodPicked(int tabIndex);
 
 
 private:
     Ui::CopyMultiplekeyframesDialog *ui;
 
+    int mCurrentTab;        // Index of current tab
     int mFirstFrame;        // Frame# that starts loop
     int mLastFrame;         // Frame# that ends loop
     int mNumLoops;          // Number of loops
