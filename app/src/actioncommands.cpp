@@ -601,12 +601,10 @@ void ActionCommands::manipulateRange()
         if (cd->result() == QDialog::Accepted)
         {
             QSettings settings(PENCIL2D, PENCIL2D);
-            int len = settings.value("TimelineSize").toInt();
-
-//            qDebug() << "længde " << len;
-            if (cd->getManiEndAt() > len)
+            int Tsize = settings.value("TimelineSize").toInt();
+            if (cd->getManiEndAt() > Tsize)
             {
-                qDebug() << "Timeline2: ";
+                layerMgr->extendTimelineTo(cd->getManiEndAt());
             }
             int startL = cd->getFirstFrame();
             int stopL = cd->getLastFrame();
@@ -742,6 +740,11 @@ void ActionCommands::manipulateRange()
         msgBox.setText(tr("Can only be used on Bitmap and Vector layers."));
         msgBox.exec();
     }
+}
+
+void ActionCommands::prolongTimeline(int i)
+{
+
 }
 
 void ActionCommands::moveFrameForward()

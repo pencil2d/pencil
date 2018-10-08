@@ -64,6 +64,7 @@ public:
     void removeKey();
     void duplicateKey();
     void manipulateRange();
+    void prolongTimeline(int i);
     void moveFrameForward();
     void moveFrameBackward();
 
