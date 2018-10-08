@@ -14,8 +14,8 @@ class CopyMultiplekeyframesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit CopyMultiplekeyframesDialog(QWidget *parent = 0);
-    explicit CopyMultiplekeyframesDialog(LayerManager *lm, int startLoop = 1, int stopLoop = 2, QWidget *parent = 0);
+    explicit CopyMultiplekeyframesDialog(QWidget *parent = nullptr);
+    explicit CopyMultiplekeyframesDialog(LayerManager *lm, int startLoop = 1, int stopLoop = 2, QWidget *parent = nullptr);
     ~CopyMultiplekeyframesDialog();
     void init();
     int getFirstFrame();        // first frame in range
@@ -30,6 +30,7 @@ public:
     int getMoveStartFrame();
     int getReverseStartFrame();
     QString getActiveTab();
+    bool getValidity();
 
 private slots:
     // Range and Layers
@@ -61,6 +62,9 @@ private:
     int mCopyStart;         // Frame# to insert first copied frame
     int mMoveStart;         // Frame# to insert first moved frame
     int mReverseStart;      // Frame# to insert first reversed frame
+
+    bool mValidAction;      // Validity of desired action
+
     QString mFromLayer;     // name of From Layer
     QString mCopyToLayer;   // name of To Layer you copy to
     QString mMoveToLayer;   // name of To Layer you move to

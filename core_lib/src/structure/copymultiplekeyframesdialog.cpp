@@ -24,7 +24,7 @@ CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(LayerManager *lm, int s
     mLastFrame = stopLoop;
     lMgr = lm;
     ui->setupUi(this);
-    setWindowTitle(tr("Manipulate Range of frames"));
+    setWindowTitle(tr("Manipulate Range of Frames"));
     init();
 }
 
@@ -53,6 +53,7 @@ void CopyMultiplekeyframesDialog::init()
     mCopyToLayer = ui->cBoxCopyToLayer->currentText();
     mMoveToLayer = ui->cBoxMoveToLayer->currentText();
     mCurrentTab = 0; // starts with COPY selected
+    mValidAction = true;
 
     // SET values in ComboBoxes
     int lType = lMgr->currentLayer()->type();
@@ -102,7 +103,7 @@ void CopyMultiplekeyframesDialog::init()
     connect(ui->cBoxMoveToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setMoveToLayer(QString)));
     // REVERSE
     connect(ui->sBoxStartReverse, SIGNAL(valueChanged(int)), this, SLOT(setReverseFrom(int)));
-    // DELETE
+    // DELETE (none)
 
 }
 
@@ -181,6 +182,11 @@ QString CopyMultiplekeyframesDialog::getActiveTab()
         return "delete";
     }
     return "";
+}
+
+bool CopyMultiplekeyframesDialog::getValidity()
+{
+    return mValidAction;
 }
 
 // SLOTs
@@ -295,6 +301,7 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
     if (ui->tabWidget->currentIndex() == 2)
     {
         setReverseFrom(ui->sBoxStartReverse->value());
+
     }
     if (ui->tabWidget->currentIndex() == 3)
     {
@@ -307,6 +314,7 @@ void CopyMultiplekeyframesDialog::checkValidity()
 {
     int copy = 1, move = 1, reverse = 1;
     QString msg = "";
+    bool testValidity = true;
     if (ui->tabWidget->currentIndex() == 0)
     {
         copy = (mLastFrame + 1 - mFirstFrame) * (mNumLoops + 1) + mCopyStart - 1;
@@ -318,22 +326,23 @@ void CopyMultiplekeyframesDialog::checkValidity()
     if (ui->tabWidget->currentIndex() == 2)
     {
         reverse = (mLastFrame + 1 - mFirstFrame) + mReverseStart;
+        if (lMgr->currentLayer()->type() == 4)
+        {
+            msg = tr("Sound layer not reversable!");
+        }
     }               // 9999 frames is maximum timeline length
     if ((ui->tabWidget->currentIndex() == 0 && copy > 9999) ||
             (ui->tabWidget->currentIndex() == 1 && move > 9999) ||
             (ui->tabWidget->currentIndex() == 2 && reverse > 9999))
     {
-//        ui->btnBoxOkCancel->setEnabled(false);
         msg = tr("Exceeds 9999 frames!");
+        testValidity = false;
     }               // Range must be valid
     else if (mFirstFrame >= mLastFrame)
     {
-//        ui->btnBoxOkCancel->setEnabled(false);
         msg = tr("Range not valid!");
-    }
-    else
-    {
-        ui->btnBoxOkCancel->setEnabled(true);
+        testValidity = false;
     }
     ui->labWarning->setText(msg);       // writes empty string OR error message
+    mValidAction = testValidity;
 }

@@ -578,11 +578,23 @@ void ActionCommands::copyMultipleKeyframes()
     }
     LayerManager* layerMgr = mEditor->layers();
     int lIndex = layerMgr->currentLayer()->type();
-    if (lIndex == 1 || lIndex == 2)
+    //   BITMAP = 1     VECTOR = 2  //      SOUND = 4     CAMERA = 5
+    if (lIndex == 1 || lIndex == 2) // || lIndex == 4 || lIndex == 5)
     {
         CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, loopBegin, loopEnd, new QWidget);
         cd->exec();
-//        Layer* layer = mEditor->layers()->currentLayer();
+
+        // If validation is NOT OK -> return
+        if (cd->result() == QDialog::Accepted && !cd->getValidity())
+        {
+            QMessageBox msgBox;
+            msgBox.setWindowTitle(tr("Action not valid!"));
+            msgBox.setText(tr("Failed validation check:\n- Exceeds 9999 Frames OR\n- Range not valid"));
+            msgBox.exec();
+            return;
+        }
+
+        // If Validation is OK
         QString sel = cd->getActiveTab();
         if (cd->result() == QDialog::Accepted)
         {
@@ -658,7 +670,7 @@ void ActionCommands::copyMultipleKeyframes()
                 }
 
             }
-            if (sel == "reverse")   // REVERSE Range
+            if (sel == "reverse" && lIndex != 4)   // REVERSE Range NOT SOUND
             {
                 toLayer = layerMgr->findLayerByName(cd->getFromLayer());
                 int startF = cd->getReverseStartFrame();
@@ -688,6 +700,13 @@ void ActionCommands::copyMultipleKeyframes()
                     }
                 }
 
+            }
+            else if (sel == "reverse" && lIndex == 4)
+            {
+                QMessageBox mBox;
+                mBox.setWindowTitle(tr("Action not possible"));
+                mBox.setText(tr("Sound layer is not reversable"));
+                mBox.exec();
             }
             if (sel == "delete")    // DELETE Range
             {
