@@ -73,8 +73,7 @@ public:
     Status addNewCameraLayer();
     Status addNewSoundLayer();
     Status deleteCurrentLayer();
-    bool checkNewLayerName(QString s);
-    void uniqueNameMsg();
+    QString nameSuggest(QString s);
 
     // Help
     void help();

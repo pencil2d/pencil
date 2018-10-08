@@ -146,7 +146,7 @@ void TimeLineCells::updateContent()
 
 void TimeLineCells::drawContent()
 {
-    if (mCache == NULL)
+    if (mCache == nullptr)
     {
         mCache = new QPixmap(size());
         if (mCache->isNull())
@@ -371,7 +371,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
     QPainter painter(this);
 
     bool isPlaying = mEditor->playback()->isPlaying();
-    if ((!isPlaying && !mTimeLine->scrubbing) || mCache == NULL)
+    if ((!isPlaying && !mTimeLine->scrubbing) || mCache == nullptr)
     {
         drawContent();
     }
@@ -676,7 +676,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
                 QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
                 bool ok;
-                QString text = QInputDialog::getText(NULL, tr("Layer Properties"),
+                QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                      tr("Layer name:"), QLineEdit::Normal,
                                                      layer->name(), &ok);
                 if (ok && !text.isEmpty())
