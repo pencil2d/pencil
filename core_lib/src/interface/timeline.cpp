@@ -205,7 +205,7 @@ void TimeLine::initUI()
     connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::addKeyClick);
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
-    connect(manipulateRangeButton, &QToolButton::clicked, this, &TimeLine::copyMultipleKeyframesClick);
+    connect(manipulateRangeButton, &QToolButton::clicked, this, &TimeLine::manipulateRangeClick);
     connect(onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick);
 
     connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);

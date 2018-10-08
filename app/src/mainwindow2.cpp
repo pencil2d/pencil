@@ -1195,7 +1195,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps);
 
     connect(pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey);
-    connect(pTimeline, &TimeLine::copyMultipleKeyframesClick, mCommands, &ActionCommands::copyMultipleKeyframes);
+    connect(pTimeline, &TimeLine::manipulateRangeClick, mCommands, &ActionCommands::manipulateRange);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
 
     connect(pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer);

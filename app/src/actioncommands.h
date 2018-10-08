@@ -63,7 +63,7 @@ public:
     Status addNewKey();
     void removeKey();
     void duplicateKey();
-    void copyMultipleKeyframes();
+    void manipulateRange();
     void moveFrameForward();
     void moveFrameBackward();
 

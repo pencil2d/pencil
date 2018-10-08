@@ -59,7 +59,7 @@ Q_SIGNALS:
     void addKeyClick();
     void removeKeyClick();
     void duplicateKeyClick();
-    void copyMultipleKeyframesClick();
+    void manipulateRangeClick();
     void toogleAbsoluteOnionClick();
 
     void newBitmapLayer();

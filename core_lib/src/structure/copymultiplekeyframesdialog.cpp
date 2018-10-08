@@ -119,6 +119,16 @@ int CopyMultiplekeyframesDialog::getLastFrame()
     return ui->sBoxLastFrame->value();
 }
 
+int CopyMultiplekeyframesDialog::getManiStartAt()
+{
+    return mManiStartAt;
+}
+
+int CopyMultiplekeyframesDialog::getManiEndAt()
+{
+    return mManiEndAt;
+}
+
 QString CopyMultiplekeyframesDialog::getFromLayer()
 {
     return ui->cBoxFromLayer->currentText();

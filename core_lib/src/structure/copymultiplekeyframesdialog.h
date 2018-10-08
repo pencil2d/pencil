@@ -20,6 +20,8 @@ public:
     void init();
     int getFirstFrame();        // first frame in range
     int getLastFrame();         // last frame in range
+    int getManiStartAt();       // First frame to be manipulated
+    int getManiEndAt();         // Last frame to bu manipulated
     QString getFromLayer();     // Layer thet holds the Range
     QString getCopyToLayer();   // Layer that receives Copy Range
     QString getMoveToLayer();   // Layer the Range is moved to

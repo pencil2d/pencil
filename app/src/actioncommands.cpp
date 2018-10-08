@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QDesktopServices>
 #include <QStandardPaths>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "pencildef.h"
 #include "editor.h"
@@ -51,6 +52,7 @@ GNU General Public License for more details.
 #include "doubleprogressdialog.h"
 #include "copymultiplekeyframesdialog.h"
 #include "timecontrols.h"
+#include "timeline.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -568,7 +570,7 @@ void ActionCommands::duplicateKey()
 }
 
 
-void ActionCommands::copyMultipleKeyframes()
+void ActionCommands::manipulateRange()
 {
     int loopBegin = 1, loopEnd = 2; // default values
     if (mEditor->playback()->isRangedPlaybackOn())
@@ -598,17 +600,23 @@ void ActionCommands::copyMultipleKeyframes()
         QString sel = cd->getActiveTab();
         if (cd->result() == QDialog::Accepted)
         {
-            qDebug() << "accepted OK";
+            QSettings settings(PENCIL2D, PENCIL2D);
+            int len = settings.value("TimelineSize").toInt();
+
+//            qDebug() << "længde " << len;
+            if (cd->getManiEndAt() > len)
+            {
+                qDebug() << "Timeline2: ";
+            }
             int startL = cd->getFirstFrame();
             int stopL = cd->getLastFrame();
             QString strFromLayer = cd->getFromLayer();
-            qDebug() << "From layer: " << strFromLayer;
             Layer *fromLayer = layerMgr->findLayerByName(strFromLayer);
             Layer *toLayer = nullptr;
             int scrubOrg = mEditor->currentFrame();
+
             if (sel == "copy")  // COPY Range
             {
-                qDebug() << "sel = " << sel;
                 toLayer = layerMgr->findLayerByName(cd->getCopyToLayer());
                 int num = cd->getNumLoops();
                 int startF = cd->getCopyStartFrame();
