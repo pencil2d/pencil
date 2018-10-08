@@ -49,6 +49,8 @@ void CopyMultiplekeyframesDialog::init()
     mCopyStart = ui->sBoxStartFrame->value();
     mMoveStart = ui->sBoxMove->value();
     mReverseStart = ui->sBoxStartReverse->value();
+    mManiStartAt = mFirstFrame;
+    mManiEndAt = mLastFrame;
     mFromLayer = ui->cBoxFromLayer->currentText();
     mCopyToLayer = ui->cBoxCopyToLayer->currentText();
     mMoveToLayer = ui->cBoxMoveToLayer->currentText();
@@ -301,7 +303,6 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
     if (ui->tabWidget->currentIndex() == 2)
     {
         setReverseFrom(ui->sBoxStartReverse->value());
-
     }
     if (ui->tabWidget->currentIndex() == 3)
     {
@@ -310,30 +311,39 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
     checkValidity();
 }
 
+void CopyMultiplekeyframesDialog::getCalculateLength(int methodChosen)
+{
+    int digit = methodChosen;
+
+    switch (digit) {
+    case 0: // copy
+        mManiStartAt = ui->sBoxStartFrame->value();
+        mManiEndAt = mManiStartAt - 1 + (mLastFrame + 1 - mFirstFrame) * mNumLoops;
+        break;
+    case 1: // move
+        mManiStartAt = ui->sBoxMove->value();
+        mManiEndAt = mManiStartAt + mLastFrame - mFirstFrame;
+        break;
+    case 2: // reverse
+        mManiStartAt = ui->sBoxStartReverse->value();
+        mManiEndAt = mManiStartAt + mLastFrame - mFirstFrame;
+        break;
+    case 3:
+        mManiStartAt = ui->sBoxFirstFrame->value();
+        mManiEndAt = ui->sBoxLastFrame->value();
+        break;
+    default:
+        break;
+    }
+}
+
 void CopyMultiplekeyframesDialog::checkValidity()
 {
-    int copy = 1, move = 1, reverse = 1;
+    getCalculateLength(ui->tabWidget->currentIndex());
     QString msg = "";
     bool testValidity = true;
-    if (ui->tabWidget->currentIndex() == 0)
-    {
-        copy = (mLastFrame + 1 - mFirstFrame) * (mNumLoops + 1) + mCopyStart - 1;
-    }
-    if (ui->tabWidget->currentIndex() == 1)
-    {
-        move = (mLastFrame + 1 - mFirstFrame) + mMoveStart;
-    }
-    if (ui->tabWidget->currentIndex() == 2)
-    {
-        reverse = (mLastFrame + 1 - mFirstFrame) + mReverseStart;
-        if (lMgr->currentLayer()->type() == 4)
-        {
-            msg = tr("Sound layer not reversable!");
-        }
-    }               // 9999 frames is maximum timeline length
-    if ((ui->tabWidget->currentIndex() == 0 && copy > 9999) ||
-            (ui->tabWidget->currentIndex() == 1 && move > 9999) ||
-            (ui->tabWidget->currentIndex() == 2 && reverse > 9999))
+    // 9999 frames is maximum timeline length
+    if (mManiEndAt > 9999)
     {
         msg = tr("Exceeds 9999 frames!");
         testValidity = false;
@@ -343,6 +353,14 @@ void CopyMultiplekeyframesDialog::checkValidity()
         msg = tr("Range not valid!");
         testValidity = false;
     }
-    ui->labWarning->setText(msg);       // writes empty string OR error message
+    if (msg == "")
+    {
+        ui->labWarning->setText(tr("Affects Frames ") + QString::number(mManiStartAt) +
+                                " -> " + QString::number(mManiEndAt));
+    }
+    else
+    {
+        ui->labWarning->setText(msg);
+    }
     mValidAction = testValidity;
 }

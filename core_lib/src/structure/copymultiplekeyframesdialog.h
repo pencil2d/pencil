@@ -31,6 +31,7 @@ public:
     int getReverseStartFrame();
     QString getActiveTab();
     bool getValidity();
+    void getCalculateLength(int methodChosen); // returns calculated length of timeline if executed
 
 private slots:
     // Range and Layers
@@ -62,6 +63,8 @@ private:
     int mCopyStart;         // Frame# to insert first copied frame
     int mMoveStart;         // Frame# to insert first moved frame
     int mReverseStart;      // Frame# to insert first reversed frame
+    int mManiStartAt;       // First frame affected of change
+    int mManiEndAt;         // Last frame affected of change
 
     bool mValidAction;      // Validity of desired action
 
