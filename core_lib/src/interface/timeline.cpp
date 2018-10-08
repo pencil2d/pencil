@@ -132,10 +132,10 @@ void TimeLine::initUI()
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
 
-    QToolButton* copyManyButton = new QToolButton(this);
-    copyManyButton->setIcon(QIcon(":icons/copy_many.png"));
-    copyManyButton->setToolTip(tr("Manipulate range of Frames"));
-    copyManyButton->setFixedSize(24, 24);
+    QToolButton* manipulateRangeButton = new QToolButton(this);
+    manipulateRangeButton->setIcon(QIcon(":icons/manipulate_range.png"));
+    manipulateRangeButton->setToolTip(tr("Manipulate Range of Frames"));
+    manipulateRangeButton->setFixedSize(24, 24);
 
     QLabel* onionLabel = new QLabel(tr("Onion skin:"));
 
@@ -148,7 +148,7 @@ void TimeLine::initUI()
     timelineButtons->addWidget(addKeyButton);
     timelineButtons->addWidget(removeKeyButton);
     timelineButtons->addWidget(duplicateKeyButton);
-    timelineButtons->addWidget(copyManyButton);
+    timelineButtons->addWidget(manipulateRangeButton);
     timelineButtons->addSeparator();
     timelineButtons->addWidget(onionLabel);
     timelineButtons->addWidget(onionTypeButton);
@@ -205,7 +205,7 @@ void TimeLine::initUI()
     connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::addKeyClick);
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
-    connect(copyManyButton, &QToolButton::clicked, this, &TimeLine::copyMultipleKeyframesClick);
+    connect(manipulateRangeButton, &QToolButton::clicked, this, &TimeLine::copyMultipleKeyframesClick);
     connect(onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick);
 
     connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);
