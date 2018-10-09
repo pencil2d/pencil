@@ -76,14 +76,18 @@ void CopyMultiplekeyframesDialog::init()
     ui->labHeader->setText(tr("Manipulate Range of Frames"));
     ui->labRangeStart->setText(tr("First Frame"));
     ui->labRangeEnd->setText(tr("Last Frame"));
-    ui->labFromLayer->setText(tr("FROM Layer"));
+    ui->labFromLayer->setText(tr("From Layer"));
     ui->labNumLoops->setText(tr("Number of Loops"));
     ui->labCopyFromFrame->setText(tr("Insert Frame at"));
-    ui->labCopyToLayer->setText(tr("TO Layer"));
+    ui->labCopyToLayer->setText(tr("To Layer"));
     ui->labMoveFromFrame->setText(tr("Insert Frame at"));
-    ui->labMoveToLayer->setText(tr("TO Layer"));
+    ui->labMoveToLayer->setText(tr("To Layer"));
     ui->labReverseFromFrame->setText(tr("Insert Frame at"));
     ui->labDeleteOnLayer->setText(tr("On Layer ") + mFromLayer );
+    ui->tabWidget->setTabText(0, tr("Copy"));
+    ui->tabWidget->setTabText(1, tr("Move"));
+    ui->tabWidget->setTabText(2, tr("Reverse"));
+    ui->tabWidget->setTabText(3, tr("Delete"));
 
 
     // SET text on labWarning and infolabels
