@@ -13,11 +13,11 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>21</y>
+     <x>16</x>
+     <y>22</y>
      <width>321</width>
      <height>411</height>
     </rect>
@@ -103,7 +103,7 @@
       </property>
       <widget class="QWidget" name="tabCopy">
        <attribute name="title">
-        <string>COPY</string>
+        <string>Copy</string>
        </attribute>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
@@ -176,7 +176,7 @@
       </widget>
       <widget class="QWidget" name="tabMove">
        <attribute name="title">
-        <string>MOVE</string>
+        <string>Move</string>
        </attribute>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
@@ -228,7 +228,7 @@
       </widget>
       <widget class="QWidget" name="tabReverse">
        <attribute name="title">
-        <string>REVERSE</string>
+        <string>Reverse</string>
        </attribute>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
@@ -262,7 +262,7 @@
       </widget>
       <widget class="QWidget" name="tabDelete">
        <attribute name="title">
-        <string>DELETE</string>
+        <string>Delete</string>
        </attribute>
        <widget class="QLabel" name="labDeleteOnLayer">
         <property name="geometry">
@@ -310,19 +310,6 @@
       </property>
      </widget>
     </item>
-    <item alignment="Qt::AlignHCenter">
-     <widget class="QDialogButtonBox" name="btnBoxOkCancel">
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="standardButtons">
-       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-      </property>
-     </widget>
-    </item>
     <item>
      <widget class="QLabel" name="labWarning">
       <property name="font">
@@ -338,6 +325,19 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDialogButtonBox" name="btnBoxOkCancel">
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
       </property>
      </widget>
     </item>
