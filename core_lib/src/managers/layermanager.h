@@ -73,7 +73,6 @@ Q_SIGNALS:
     void currentLayerChanged(int index);
     void layerCountChanged(int count);
     void animationLengthChanged(int length);
-    void extendTimelineTo(int length);
     void layerDeleted(int index);
 
 private:
