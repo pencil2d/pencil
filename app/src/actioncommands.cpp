@@ -541,7 +541,7 @@ void ActionCommands::removeKey()
 void ActionCommands::duplicateKey()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) return;
+    if (layer == nullptr) return;
 
     KeyFrame* key = layer->getKeyFrameAt(mEditor->currentFrame());
     if (key == nullptr) return;
@@ -580,7 +580,7 @@ void ActionCommands::manipulateRange()
     }
     LayerManager* layerMgr = mEditor->layers();
     int lIndex = layerMgr->currentLayer()->type();
-    //   BITMAP = 1     VECTOR = 2  //      SOUND = 4     CAMERA = 5
+    //   BITMAP = 1     VECTOR = 2  //not yet SOUND = 4     CAMERA = 5
     if (lIndex == 1 || lIndex == 2) // || lIndex == 4 || lIndex == 5)
     {
         CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, loopBegin, loopEnd, new QWidget);
@@ -600,12 +600,6 @@ void ActionCommands::manipulateRange()
         QString sel = cd->getActiveTab();
         if (cd->result() == QDialog::Accepted)
         {
-            QSettings settings(PENCIL2D, PENCIL2D);
-            int Tsize = settings.value("TimelineSize").toInt();
-            if (cd->getManiEndAt() > Tsize)
-            {
-                layerMgr->extendTimelineTo(cd->getManiEndAt());
-            }
             int startL = cd->getFirstFrame();
             int stopL = cd->getLastFrame();
             QString strFromLayer = cd->getFromLayer();
@@ -733,6 +727,7 @@ void ActionCommands::manipulateRange()
             mEditor->scrubTo(scrubOrg);
             mEditor->layers()->notifyLayerChanged(toLayer);
         }
+        layerMgr->notifyAnimationLengthChanged();
     }
     else
     {
@@ -740,11 +735,6 @@ void ActionCommands::manipulateRange()
         msgBox.setText(tr("Can only be used on Bitmap and Vector layers."));
         msgBox.exec();
     }
-}
-
-void ActionCommands::prolongTimeline(int i)
-{
-
 }
 
 void ActionCommands::moveFrameForward()

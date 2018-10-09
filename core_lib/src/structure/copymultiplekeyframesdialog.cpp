@@ -107,6 +107,7 @@ void CopyMultiplekeyframesDialog::init()
     connect(ui->sBoxStartReverse, SIGNAL(valueChanged(int)), this, SLOT(setReverseFrom(int)));
     // DELETE (none)
 
+    checkValidity();
 }
 
 int CopyMultiplekeyframesDialog::getFirstFrame()
