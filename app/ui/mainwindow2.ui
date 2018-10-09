@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -891,8 +891,8 @@
   </action>
   <action name="actionCopy_multiple_Keyframes">
    <property name="icon">
-    <iconset>
-     <normaloff>../data/icons/manipulate_range.png</normaloff>../data/icons/manipulate_range.png</iconset>
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/manipulate_range.png</normaloff>:/icons/manipulate_range.png</iconset>
    </property>
    <property name="text">
     <string>Manipulate Range</string>
