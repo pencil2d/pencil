@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -891,11 +891,11 @@
   </action>
   <action name="actionCopy_multiple_Keyframes">
    <property name="icon">
-    <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/copy_many.png</normaloff>:/icons/copy_many.png</iconset>
+    <iconset>
+     <normaloff>../data/icons/manipulate_range.png</normaloff>../data/icons/manipulate_range.png</iconset>
    </property>
    <property name="text">
-    <string>Copy multiple Keyframes</string>
+    <string>Manipulate Range</string>
    </property>
   </action>
  </widget>

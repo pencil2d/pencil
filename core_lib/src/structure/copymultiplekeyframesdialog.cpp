@@ -322,11 +322,10 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
     checkValidity();
 }
 
+
 void CopyMultiplekeyframesDialog::getCalculateLength(int methodChosen)
 {
-    int digit = methodChosen;
-
-    switch (digit) {
+    switch (methodChosen) {
     case 0: // copy
         mManiStartAt = ui->sBoxStartFrame->value();
         mManiEndAt = mManiStartAt - 1 + (mLastFrame + 1 - mFirstFrame) * mNumLoops;

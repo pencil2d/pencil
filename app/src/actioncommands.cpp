@@ -52,7 +52,6 @@ GNU General Public License for more details.
 #include "doubleprogressdialog.h"
 #include "copymultiplekeyframesdialog.h"
 #include "timecontrols.h"
-#include "timeline.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -580,8 +579,8 @@ void ActionCommands::manipulateRange()
     }
     LayerManager* layerMgr = mEditor->layers();
     int lIndex = layerMgr->currentLayer()->type();
-    //   BITMAP = 1     VECTOR = 2  //not yet SOUND = 4     CAMERA = 5
-    if (lIndex == 1 || lIndex == 2) // || lIndex == 4 || lIndex == 5)
+    //   BITMAP = 1     VECTOR = 2  //not yet      SOUND = 4     CAMERA = 5
+    if (lIndex == 1 || lIndex == 2) //not yet || lIndex == 4 || lIndex == 5)
     {
         CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, loopBegin, loopEnd, new QWidget);
         cd->exec();
