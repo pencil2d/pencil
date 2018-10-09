@@ -51,6 +51,7 @@ void TimeControls::initUI()
     mLoopStartSpinBox->setFixedHeight(24);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
     mLoopStartSpinBox->setMinimum(1);
+    mLoopStartSpinBox->setEnabled(false);
     mLoopStartSpinBox->setToolTip(tr("Start of playback loop"));
     mLoopStartSpinBox->setFocusPolicy(Qt::WheelFocus);
 
@@ -58,6 +59,7 @@ void TimeControls::initUI()
     mLoopEndSpinBox->setFixedHeight(24);
     mLoopEndSpinBox->setValue(settings.value("loopEnd").toInt());
     mLoopEndSpinBox->setMinimum(2);
+    mLoopEndSpinBox->setEnabled(false);
     mLoopEndSpinBox->setToolTip(tr("End of playback loop"));
     mLoopEndSpinBox->setFocusPolicy(Qt::WheelFocus);
 
