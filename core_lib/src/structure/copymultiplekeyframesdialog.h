@@ -33,7 +33,7 @@ public:
     int getReverseStartFrame();
     QString getActiveTab();
     bool getValidity();
-    void getCalculateLength(int methodChosen); // returns calculated length of timeline if executed
+    void setStartEnd(int methodChosen);
 
 private slots:
     // Range and Layers

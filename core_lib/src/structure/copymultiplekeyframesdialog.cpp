@@ -58,7 +58,7 @@ void CopyMultiplekeyframesDialog::init()
     mValidAction = true;
 
     // SET values in ComboBoxes
-    int lType = lMgr->currentLayer()->type();
+    int lType = lMgr->currentLayer()->type(); // find layer-type
     for (int i = 1; i < lMgr->count(); i++)
     {
         if (lMgr->getLayer(i)->type() == lType)
@@ -96,16 +96,16 @@ void CopyMultiplekeyframesDialog::init()
     connect(ui->sBoxLastFrame, SIGNAL(valueChanged(int)), this, SLOT(setLastFrame(int)));
     connect(ui->cBoxFromLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setFromLayer(QString)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(setMethodPicked(int)));
-    // COPY
+    // SET connections COPY
     connect(ui->sBoxNumLoops, SIGNAL(valueChanged(int)), this, SLOT(setNumLoops(int)));
     connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
     connect(ui->cBoxCopyToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setCopyToLayer(QString)));
-    //MOVE
+    // SET connections MOVE
     connect(ui->sBoxMove, SIGNAL(valueChanged(int)), this, SLOT(setMoveStartFrame(int)));
     connect(ui->cBoxMoveToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setMoveToLayer(QString)));
-    // REVERSE
+    // SET connections REVERSE
     connect(ui->sBoxStartReverse, SIGNAL(valueChanged(int)), this, SLOT(setReverseFrom(int)));
-    // DELETE (none)
+    // SET connections DELETE (none)
 
     checkValidity();
 }
@@ -301,7 +301,7 @@ void CopyMultiplekeyframesDialog::setDeleteOnLayer(QString deleteFromLayer)
 
 void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
 {
-    qDebug() << "setMethodPicked param: " << tabIndex;
+//    qDebug() << "setMethodPicked param: " << tabIndex;
     ui->labInfoAction->setText(ui->tabWidget->tabText(tabIndex));
     if (ui->tabWidget->currentIndex() == 0)
     {
@@ -323,7 +323,7 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
 }
 
 
-void CopyMultiplekeyframesDialog::getCalculateLength(int methodChosen)
+void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
 {
     switch (methodChosen) {
     case 0: // copy
@@ -349,7 +349,7 @@ void CopyMultiplekeyframesDialog::getCalculateLength(int methodChosen)
 
 void CopyMultiplekeyframesDialog::checkValidity()
 {
-    getCalculateLength(ui->tabWidget->currentIndex());
+    setStartEnd(ui->tabWidget->currentIndex());
     QString msg = "";
     bool testValidity = true;
     // 9999 frames is maximum timeline length
