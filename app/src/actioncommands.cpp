@@ -642,6 +642,7 @@ void ActionCommands::manipulateRange()
                 int startF = cd->getMoveStartFrame();
                 for (int j = startL; j < stopL + 1; j++, startF++)
                 {
+                    mEditor->scrubTo(j);
                     if (fromLayer->keyExists(j))
                     {
                         KeyFrame* kf = fromLayer->getKeyFrameAt(j);
@@ -677,6 +678,7 @@ void ActionCommands::manipulateRange()
                 int startF = cd->getReverseStartFrame();
                 for (int j = stopL; j >= startL; j--, startF++)
                 {
+                    mEditor->scrubTo(startF);
                     if (toLayer->keyExists(j))
                     {
                         KeyFrame* kf = toLayer->getKeyFrameAt(j);
