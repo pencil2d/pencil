@@ -153,6 +153,7 @@ GeneralPage::GeneralPage(QWidget* parent) :
     connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridSizeChangeW);
     connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridSizeChangeH);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
+    connect(ui->frameCacheInput, spinValueChanged, this, &GeneralPage::frameCacheChange);
 }
 
 GeneralPage::~GeneralPage()
@@ -194,6 +195,9 @@ void GeneralPage::updateValues()
 
     SignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
+
+    SignalBlocker b12(ui->frameCacheInput);
+    ui->frameCacheInput->setValue(mManager->getInt(SETTING::FRAME_POOL_CACHE));
 
     int buttonIdx = 1;
     if (bgName == "checkerboard") buttonIdx = 1;
@@ -275,6 +279,11 @@ void GeneralPage::gridSizeChangeH(int value)
 void GeneralPage::gridCheckBoxStateChanged(int b)
 {
     mManager->set(SETTING::GRID, b != Qt::Unchecked);
+}
+
+void GeneralPage::frameCacheChange(int value)
+{
+    mManager->set(SETTING::FRAME_POOL_CACHE, value);
 }
 
 TimelinePage::TimelinePage(QWidget* parent) :

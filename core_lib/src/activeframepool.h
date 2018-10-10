@@ -31,7 +31,8 @@ GNU General Public License for more details.
 class ActiveFramePool : public KeyFrameEventListener
 {
 public:
-    explicit ActiveFramePool(int maxSize);
+    explicit ActiveFramePool();
+    explicit ActiveFramePool(unsigned long n);
 
     void put(KeyFrame* key);
     size_t size() const;
