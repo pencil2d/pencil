@@ -176,11 +176,3 @@ unix:!macx {
     INCLUDEPATH += src/external/linux
     SOURCES += src/external/linux/linux.cpp
 }
-
-contains(QT_ARCH, i386) {
-    message("32-bit")
-    DEFINES += "FRAME_POOL_SIZE=200"
-} else {
-    message("64-bit")
-    DEFINES += "FRAME_POOL_SIZE=400"
-}

@@ -91,6 +91,7 @@ private slots:
     void gridCheckBoxStateChanged(int b);
     void curveSmoothingChange(int value);
     void backgroundChange(int value);
+    void frameCacheChange(int value);
 
 private:
     Ui::GeneralPage* ui = nullptr;
