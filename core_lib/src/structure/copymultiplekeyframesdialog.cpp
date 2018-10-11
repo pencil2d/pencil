@@ -42,21 +42,6 @@ void CopyMultiplekeyframesDialog::init()
     ui->sBoxMove->setValue(mLastFrame + 1);
     ui->sBoxStartReverse->setValue(mLastFrame + 1);
 
-    // SET member variables values
-    mFirstFrame = ui->sBoxFirstFrame->value();
-    mLastFrame = ui->sBoxLastFrame->value();
-    mNumLoops = ui->sBoxNumLoops->value();
-    mCopyStart = ui->sBoxStartFrame->value();
-    mMoveStart = ui->sBoxMove->value();
-    mReverseStart = ui->sBoxStartReverse->value();
-    mManiStartAt = mFirstFrame;
-    mManiEndAt = mLastFrame;
-    mFromLayer = ui->cBoxFromLayer->currentText();
-    mCopyToLayer = ui->cBoxCopyToLayer->currentText();
-    mMoveToLayer = ui->cBoxMoveToLayer->currentText();
-    mCurrentTab = 0; // starts with COPY selected
-    mValidAction = true;
-
     // SET values in ComboBoxes
     int lType = lMgr->currentLayer()->type(); // find layer-type
     for (int i = 1; i < lMgr->count(); i++)
@@ -71,6 +56,21 @@ void CopyMultiplekeyframesDialog::init()
     ui->cBoxFromLayer->setCurrentText(lMgr->currentLayer()->name());
     ui->cBoxCopyToLayer->setCurrentText(lMgr->currentLayer()->name());
     ui->cBoxMoveToLayer->setCurrentText(lMgr->currentLayer()->name());
+
+    // SET member variables values
+//    mFirstFrame = ui->sBoxFirstFrame->value();
+//    mLastFrame = ui->sBoxLastFrame->value();
+    mNumLoops = ui->sBoxNumLoops->value();
+    mCopyStart = ui->sBoxStartFrame->value();
+    mMoveStart = ui->sBoxMove->value();
+    mReverseStart = ui->sBoxStartReverse->value();
+    mManiStartAt = mFirstFrame;
+    mManiEndAt = mLastFrame;
+    mFromLayer = ui->cBoxFromLayer->currentText();
+    mCopyToLayer = ui->cBoxCopyToLayer->currentText();
+    mMoveToLayer = ui->cBoxMoveToLayer->currentText();
+    mCurrentTab = 0; // starts with COPY selected
+    mValidAction = true;
 
     // SET text on dialog
     ui->labHeader->setText(tr("Manipulate Range of Frames"));
@@ -111,6 +111,7 @@ void CopyMultiplekeyframesDialog::init()
     connect(ui->sBoxStartReverse, SIGNAL(valueChanged(int)), this, SLOT(setReverseFrom(int)));
     // SET connections DELETE (none)
 
+    setStartEnd(0);
     checkValidity();
 }
 
@@ -252,6 +253,7 @@ void CopyMultiplekeyframesDialog::setCopyToLayer(QString copyToLayer)
         ui->labInfoToFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText() +
                                         tr(" To: ") + mCopyToLayer);
     }
+    checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::setNumLoops(int numLoops)
@@ -280,6 +282,7 @@ void CopyMultiplekeyframesDialog::setMoveToLayer(QString moveToLayer)
         ui->labInfoToFromLayer->setText(tr("From: ") + ui->cBoxFromLayer->currentText() +
                                         tr(" To: ") + ui->cBoxMoveToLayer->currentText());
     }
+    checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::setReverseFrom(int reverseFrom)
@@ -355,6 +358,7 @@ void CopyMultiplekeyframesDialog::checkValidity()
 {
     setStartEnd(ui->tabWidget->currentIndex());
     QString msg = "";
+    qDebug() << ui->sBoxFirstFrame->value() << " r " << ui->sBoxStartReverse->value();
     bool testValidity = true;
     // 9999 frames is maximum timeline length
     if (mManiEndAt > 9999)
@@ -366,6 +370,25 @@ void CopyMultiplekeyframesDialog::checkValidity()
     {
         msg = tr("Range not valid!");
         testValidity = false;
+    }
+    else if (ui->tabWidget->currentIndex() == 0 && ui->cBoxFromLayer->currentText() == mCopyToLayer)
+    {
+        if (ui->sBoxLastFrame->value() >= ui->sBoxStartFrame->value())
+        {
+            msg = tr("Beware! Originals may be damaged!");
+        }
+    }
+    else if (ui->tabWidget->currentIndex() == 1 &&
+             (ui->sBoxFirstFrame->value() == ui->sBoxMove->value()))
+    {
+            msg = tr("Alert! Originals will be erased!");
+    }
+    else if (ui->tabWidget->currentIndex() == 2)
+    {
+        if (ui->sBoxLastFrame->value() >= ui->sBoxStartReverse->value())
+        {
+            msg = tr("Beware! Originals may be damaged!");
+        }
     }
     if (msg == "")
     {
