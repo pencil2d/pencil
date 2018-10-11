@@ -27,21 +27,24 @@ GNU General Public License for more details.
  * ActiveFramePool implemented a LRU cache to keep tracking the most recent accessed key frames
  * A key frame will be unloaded if it's not accessed for a while (at the end of cache list)
  * The ActiveFramePool will be updated whenever Editor::scrubTo() gets called.
+ *
+ * Note: ActiveFramePool doesn't not handle file saving. It loads frames, but never write frames to disks.
  */
 class ActiveFramePool : public KeyFrameEventListener
 {
 public:
-    explicit ActiveFramePool();
     explicit ActiveFramePool(unsigned long n);
 
     void put(KeyFrame* key);
     size_t size() const;
     void clear();
+    void resize(int n);
     bool isFrameInPool(KeyFrame*);
 
     void onKeyFrameDestroy(KeyFrame*) override;
 
 private:
+    void discardLeastUsedFrames();
     void unloadFrame(KeyFrame* key);
 
     using list_iterator_t = std::list<KeyFrame*>::iterator;

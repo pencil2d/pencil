@@ -162,6 +162,9 @@ void Editor::settingUpdated(SETTING setting)
         mScribbleArea->updateAllFrames();
         emit updateTimeLine();
         break;
+    case SETTING::FRAME_POOL_SIZE:
+        mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
+        break;
     default:
         break;
     }
@@ -641,6 +644,7 @@ Status Editor::setObject(Object* newObject)
 
 void Editor::updateObject()
 {
+    mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
     scrubTo(mObject->data()->getCurrentFrame());
     setCurrentLayerIndex(mObject->data()->getCurrentLayer());
 
