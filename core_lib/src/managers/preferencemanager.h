@@ -61,7 +61,7 @@ enum class SETTING
     LANGUAGE,
     LAYOUT_LOCK,
     DRAW_ON_EMPTY_FRAME_ACTION,
-    FRAME_POOL_CACHE,
+    FRAME_POOL_SIZE,
     COUNT, // COUNT must always be the last one.
 };
 

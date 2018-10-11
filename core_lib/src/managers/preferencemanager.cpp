@@ -71,7 +71,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::BACKGROUND_STYLE,         settings.value(SETTING_BACKGROUND_STYLE,       "white").toString());
 
     set(SETTING::LAYOUT_LOCK,              settings.value(SETTING_LAYOUT_LOCK,            false).toBool());
-    set(SETTING::FRAME_POOL_CACHE,         settings.value(SETTING_FRAME_POOL_CACHE,       200).toInt());
+    set(SETTING::FRAME_POOL_SIZE,          settings.value(SETTING_FRAME_POOL_SIZE,        200).toInt());
 
     // Files
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              true ).toBool());
@@ -218,8 +218,8 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::GRID_SIZE_H:
         settings.setValue(SETTING_GRID_SIZE_H, value);
         break;
-    case SETTING::FRAME_POOL_CACHE:
-        settings.setValue(SETTING_FRAME_POOL_CACHE, value);
+    case SETTING::FRAME_POOL_SIZE:
+        settings.setValue(SETTING_FRAME_POOL_SIZE, value);
         break;
     case SETTING::DRAW_ON_EMPTY_FRAME_ACTION:
         settings.setValue( SETTING_DRAW_ON_EMPTY_FRAME_ACTION, value);
