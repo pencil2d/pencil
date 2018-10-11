@@ -30,6 +30,8 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "vectorimage.h"
 
+#include "bitmapimage.h"
+#include "layerbitmap.h"
 
 MoveTool::MoveTool(QObject* parent) :
     BaseTool(parent)
@@ -61,7 +63,9 @@ void MoveTool::mousePressEvent(QMouseEvent* event)
     mCurrentLayer = currentPaintableLayer();
     if (event->button() != Qt::LeftButton) { return; }
 
-    mEditor->backups()->prepareBackup();
+    if (mScribbleArea->isSomethingSelected()) {
+        mEditor->backups()->prepareBackup();
+    }
     beginInteraction(event, mCurrentLayer);
 }
 
@@ -73,10 +77,11 @@ void MoveTool::mouseReleaseEvent(QMouseEvent*)
     mRotatedAngle = mScribbleArea->myRotatedAngle;
     updateTransformation();
 
-    mEditor->backups()->transform();
-
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
+
+    mScribbleArea->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
+    mEditor->backups()->transform();
 }
 
 void MoveTool::mouseMoveEvent(QMouseEvent* event)
@@ -153,20 +158,21 @@ void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
     }
 
     QRectF selectionRect = mScribbleArea->myTransformedSelection;
-    if (!selectionRect.isNull())
-    {
-        mEditor->backups()->transform();
-    }
+//    if (!selectionRect.isNull())
+//    {
+//        mEditor->backups()->transform();
+//    }
 
     mScribbleArea->findMoveModeOfCornerInRange();
     mScribbleArea->myRotatedAngle = mRotatedAngle;
 
     if (event->modifiers() != Qt::ShiftModifier)
     {
-        if (shouldDeselect())
+        if (canDeselect())
         {
+            mEditor->backups()->prepareBackup();
             applyTransformation();
-            mScribbleArea->deselectAll();
+            mEditor->deselectAllSelections();
         }
     }
 
@@ -184,10 +190,14 @@ void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
     }
 }
 
-bool MoveTool::shouldDeselect()
+bool MoveTool::canDeselect()
 {
-    return (!mScribbleArea->myTransformedSelection.contains(getCurrentPoint())
+    if (mScribbleArea->isSomethingSelected())
+    {
+        return (!mScribbleArea->myTransformedSelection.contains(getCurrentPoint())
             && mScribbleArea->getMoveMode() == MoveMode::NONE);
+    }
+    return false;
 }
 
 /**
@@ -290,8 +300,7 @@ void MoveTool::setAnchorToLastPoint()
 void MoveTool::cancelChanges()
 {
     mScribbleArea->cancelTransformedSelection();
-    mScribbleArea->resetSelectionProperties();
-    mScribbleArea->deselectAll();
+//    mScribbleArea->deselectAll();
 }
 
 void MoveTool::applySelectionChanges()

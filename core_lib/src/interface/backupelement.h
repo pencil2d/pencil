@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QUndoCommand>
 #include "direction.h"
+#include "movemode.h"
+#include "pencildef.h"
 
 class Editor;
 class BackupManager;
@@ -188,16 +190,25 @@ public:
 
     enum { Id = 1 };
 
-    SelectionElement(bool backupIsSelected,
+    SelectionElement(Selection backupSelectionType,
+                     QRectF backupTempSelection,
                      QRectF backupSelection,
+                     bool backupCancelTransform,
                      Editor* editor,
                      QUndoCommand* parent = 0);
 
     bool oldIsSelected = false;
-    QRectF oldSelection = QRectF(0,0,0,0);
-
     bool newIsSelected = false;
-    QRectF newSelection = QRectF(0,0,0,0);
+
+    QRectF oldSelection = QRectF();
+    QRectF newSelection = QRectF();
+
+    QRectF oldTempSelection = QRectF();
+    QRectF newTempSelection = QRectF();
+
+    bool cancelTransform;
+
+    Selection selectionType;
 
     bool isFirstRedo = true;
 
@@ -205,40 +216,41 @@ public:
     void redo() override;
     bool mergeWith(const QUndoCommand *other) override;
     int id() const override { return Id; }
+
+    void redoDeselection();
+    void redoSelection();
+    void undoDeselection();
+    void undoSelection();
 };
 
 class TransformElement : public BackupElement
+
 {
 public:
 
     enum { Id = 2 };
-    TransformElement(int backupLayerId,
-                KeyFrame* backupKeyFrame,
-                QRectF backupTempSelection,
-                Editor* editor,
-                QUndoCommand* parent = 0);
+    TransformElement(QRectF backupTempSelection,
+                     QRectF backupSelection,
+                     QTransform backupTransform,
+                     Editor* editor,
+                     QUndoCommand* parent = 0);
 
-    QPointF transformOffset = QPointF(0,0);
+    QRectF oldTransformApplied = QRectF();
+    QRectF newTransformApplied = QRectF();
 
-    QRectF oldTransformApplied = QRectF(0,0,0,0);
-    QRectF newTransformApplied = QRectF(0,0,0,0);
+    QRectF oldSelection;
+    QRectF newSelection;
 
-    BitmapImage* oldBitmap;
-    BitmapImage* newBitmap;
+    QTransform oldTransform;
+    QTransform newTransform;
 
-    VectorImage* oldVector;
-    VectorImage* newVector;
-
-    int oldLayerId = 0;
-    int newLayerId = 0;
-
-    int oldFrameIndex = 0;
-    int newFrameIndex = 0;
+    BitmapImage* getTransformedImage(Layer* layer, int frame);
 
 
     bool isFirstRedo = true;
     void undo() override;
     void redo() override;
+    void apply(QRectF tempRect, QRectF selectionRect, QTransform transform);
     bool mergeWith(const QUndoCommand *other) override;
     int id() const override { return Id; }
 };

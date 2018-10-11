@@ -68,11 +68,22 @@ public:
     void displaySelectionProperties();
     void resetSelectionProperties();
 
+
+    /**
+     * @brief trySelectSomething
+     * will set as seleced and return true if something was selected, otherwise false
+     */
+    bool trySelectSomething();
     bool isSomethingSelected() const;
     QRectF getSelection() const { return mySelection; }
     QRectF mySelection;
     QRectF myTransformedSelection;
     QRectF myTempTransformedSelection;
+
+    QRectF myMappedSelection;
+    QRectF myTransformedMappedSelection;
+    QRectF myTempTransformedMappedSelection;
+
     qreal myRotatedAngle = 0.0;
     QList<int> mClosestCurves;
 
@@ -80,6 +91,11 @@ public:
     bool isKeySane() const;
     bool isLayerPaintable() const;
     bool allowSmudging();
+
+    QRectF mappedSelection();
+    QRectF mappedTempSelection();
+    QRectF mappedTransformedSelection();
+
 
     void flipSelection(bool flipVertical);
 
@@ -137,9 +153,11 @@ public slots:
     void clearImage();
     void calculateSelectionRect();
     QTransform getSelectionTransformation() const { return selectionTransformation; }
+    void setSelectionTransform(QTransform newTransform) { selectionTransformation = newTransform; }
 
     void calculateSelectionTransformation();
     void paintTransformedSelection();
+    void paintTransformedSelection(QRectF selectionToTransform);
     void applyTransformedSelection();
     void cancelTransformedSelection();
     void setModified( int layerNumber, int frameNumber );

@@ -107,6 +107,8 @@ public:
 Q_SIGNALS:
     void updateTimeLine();
     void updateLayerCount();
+    void deselectAll();
+    void selectAll();
 
     void objectLoaded();
 
@@ -120,7 +122,8 @@ public: //slots
 
     void cut();
 
-    void deselectAll();
+    void deselectAllSelections();
+    void deselectAllAndCancelTransform();
     bool importImage(QString filePath, bool isSequence);
     bool importGIF(QString filePath, int numOfImages = 0);
     void updateFrame(int frameNumber);

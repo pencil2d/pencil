@@ -290,8 +290,8 @@ void MainWindow2::createMenus()
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
-    connect(ui->actionSelect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::selectAll);
-    connect(ui->actionDeselect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::deselectAll);
+    connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
+    connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     /// --- Layer Menu ---
@@ -1186,6 +1186,8 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
     connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
+    connect(editor, &Editor::deselectAll, scribbleArea, &ScribbleArea::deselectAll);
+    connect(editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll);
 
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
     //connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );

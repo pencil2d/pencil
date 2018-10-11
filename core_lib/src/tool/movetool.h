@@ -62,7 +62,7 @@ private:
     void setAreaSelected(VectorImage* vectorImage, QMouseEvent* event);
 
     bool transformHasBeenModified();
-    bool shouldDeselect();
+    bool canDeselect();
 
     QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
     Layer* currentPaintableLayer();

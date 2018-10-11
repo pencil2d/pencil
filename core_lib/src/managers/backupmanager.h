@@ -7,6 +7,7 @@
 #include "preferencemanager.h"
 #include "layer.h"
 #include "direction.h"
+#include "movemode.h"
 
 class BitmapImage;
 class VectorImage;
@@ -43,6 +44,7 @@ public:
     void layerMoved(int backupNewLayerIndex);
 
     void selection();
+    void deselect(bool cancelTransforn = false);
     void transform();
     void cameraProperties(QRect backupViewRect);
     void frameDragged(int backupFrameOffset);
@@ -85,9 +87,13 @@ private:
     KeyFrame* mKeyframe = nullptr;
 
     QRectF mSelectionRect = QRectF();
-    QRectF mTempSelection = QRectF();
+    QRectF mTempSelectionRect = QRectF();
 
     QPointF mTranslation = QPointF(0,0);
+    QPointF mMoveOffset = QPointF(0,0);
+    QTransform mSelectionTransform;
+
+    MoveMode mMoveMode;
 
     Layer::LAYER_TYPE mLayerType;
 

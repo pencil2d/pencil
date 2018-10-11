@@ -48,7 +48,6 @@ QCursor SelectTool::cursor()
 
 void SelectTool::mousePressEvent(QMouseEvent* event)
 {
-
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == NULL) return;
     if (!mCurrentLayer->isPaintable()) { return; }
@@ -117,6 +116,11 @@ void SelectTool::mouseReleaseEvent(QMouseEvent* event)
     mScribbleArea->updateToolCursor();
 
     mScribbleArea->updateCurrentFrame();
+
+    if (!mScribbleArea->mySelection.isEmpty())
+    {
+        mEditor->backups()->selection();
+    }
     mScribbleArea->setAllDirty();
 }
 
@@ -141,11 +145,6 @@ void SelectTool::mouseMoveEvent(QMouseEvent* event)
         }
     }
 
-
-    if (!mScribbleArea->mySelection.isEmpty())
-    {
-        mEditor->backups()->selection();
-    }
     mScribbleArea->updateCurrentFrame();
 
 }

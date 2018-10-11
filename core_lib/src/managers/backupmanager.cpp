@@ -142,18 +142,31 @@ void BackupManager::vector(QString description)
 
 void BackupManager::selection()
 {
-    SelectionElement* element = new SelectionElement(mIsSelected,
-                                                           mSelectionRect,
-                                                           editor());
+    SelectionElement* element = new SelectionElement(Selection::SELECTION,
+                                                     mTempSelectionRect,
+                                                     mSelectionRect,
+                                /* cancelTransform */false,
+                                                     editor());
+    mUndoStack->push(element);
+    emit updateBackup();
+}
+
+void BackupManager::deselect(bool cancelTransform)
+{
+    SelectionElement* element = new SelectionElement(Selection::DESELECT,
+                                                     mTempSelectionRect,
+                                                     mSelectionRect,
+                                                     cancelTransform,
+                                                     editor());
     mUndoStack->push(element);
     emit updateBackup();
 }
 
 void BackupManager::transform()
 {
-    TransformElement* element = new TransformElement(mLayerId,
-                                           mKeyframe,
-                                           mTempSelection,
+    TransformElement* element = new TransformElement(mTempSelectionRect,
+                                                     mSelectionRect,
+                                                     mSelectionTransform,
                                            editor());
     mUndoStack->push(element);
     emit updateBackup();
@@ -449,10 +462,13 @@ void BackupManager::prepareBackup()
     mFrameIndex = editor()->currentFrame();
     mIsSelected = editor()->getScribbleArea()->isSomethingSelected();
     mSelectionRect = editor()->getScribbleArea()->mySelection;
-    mTempSelection = editor()->getScribbleArea()->myTempTransformedSelection;
+    mTempSelectionRect = editor()->getScribbleArea()->myTempTransformedSelection;
     mLayerName = mLayer->name();
     mLayerIndex = editor()->currentLayerIndex();
     mLayerType = mLayer->type();
+    mMoveOffset = editor()->getScribbleArea()->getTransformOffset();
+    mSelectionTransform = editor()->getScribbleArea()->getSelectionTransformation();
+    mMoveMode = editor()->getScribbleArea()->getMoveMode();
 
     ViewManager* viewMgr = editor()->view();
     mTranslation = viewMgr->translation();

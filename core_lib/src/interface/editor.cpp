@@ -253,6 +253,21 @@ void Editor::flipSelection(bool flipVertical)
     mScribbleArea->flipSelection(flipVertical);
 }
 
+void Editor::deselectAllSelections()
+{
+//    backups()->prepareBackup();
+    backups()->deselect();
+    emit deselectAll();
+}
+
+void Editor::deselectAllAndCancelTransform()
+{
+//    backups()->prepareBackup();
+    bool cancelTransform = true;
+    backups()->deselect(cancelTransform);
+    emit deselectAll();
+}
+
 void Editor::clipboardChanged()
 {
     if (clipboardBitmapOk == false)

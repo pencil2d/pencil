@@ -303,6 +303,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
             myTransformedSelection = myTempTransformedSelection;
             calculateSelectionTransformation();
             paintTransformedSelection();
+            mEditor->backups()->selection();
         }
         else
         {
@@ -313,9 +314,9 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Return:
         if (mSomethingSelected)
         {
-            applyTransformedSelection();
             paintTransformedSelection();
-            deselectAll();
+            applyTransformedSelection();
+            mEditor->deselectAllSelections();
         }
         else
         {
@@ -325,15 +326,16 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Escape:
         if (mSomethingSelected)
         {
-            deselectAll();
-            applyTransformedSelection();
+            mEditor->backups()->prepareBackup();
+            cancelTransformedSelection();
+            mEditor->deselectAllAndCancelTransform();
+//            deselectAll();
         }
         break;
     case Qt::Key_Backspace:
         if (mSomethingSelected)
         {
             deleteSelection();
-            deselectAll();
         }
         break;
     case Qt::Key_Space:
@@ -939,6 +941,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
+
     if (!mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND || mMouseRightButtonInUse)
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
@@ -1088,8 +1091,44 @@ void ScribbleArea::paintSelectionVisuals(QPainter& painter)
     // outline of the transformed selection
     painter.setWorldMatrixEnabled(false);
     painter.setOpacity(1.0);
-    mCurrentTransformSelection = mEditor->view()->getView().mapToPolygon(myTempTransformedSelection.toAlignedRect());
-    mLastTransformSelection = mEditor->view()->getView().mapToPolygon(myTransformedSelection.toAlignedRect());
+
+    QRectF debugRect = mappedSelection();
+    QRectF debugTempRect = mappedTempSelection();
+    QRectF debugTransRect = mappedTransformedSelection();
+
+//    selectionTransformation = mEditor->view()->getView();
+//    QRectF debugTransformRect = selectionTransformation.mapRect(debugRect);
+//    QRectF debugTransformTempRect = selectionTransformation.mapRect(debugTempRect);
+//    QRectF debugTransformTransRect = selectionTransformation.mapRect(debugTransRect);
+
+    QRectF debugTransformRect = mappedSelection();
+    QRectF debugTransformTransRect = mappedTransformedSelection();
+    QRectF debugTransformTempRect = mappedTempSelection();
+
+    painter.setPen(Qt::blue);
+    painter.drawText(debugRect.topLeft(),"MySelection");
+    painter.drawRect(debugRect);
+    painter.setPen(Qt::green);
+    painter.drawText(debugTempRect.bottomLeft(),"MyTempSelection");
+    painter.drawRect(debugTempRect);
+    painter.setPen(Qt::red);
+    painter.drawText(QPointF(debugTransRect.left(),debugTransRect.center().y()),"MyTempTransformedSelection");
+    painter.drawRect(debugTransRect);
+
+    painter.setPen(Qt::gray);
+    painter.drawText(debugTransformRect.bottomRight(),"selectionTransform");
+    painter.drawRect(debugTransformRect);
+
+    painter.setPen(Qt::cyan);
+    painter.drawText(debugTransformTempRect.bottomRight(),"selectionTempTransform");
+    painter.drawRect(debugTransformTempRect);
+
+    painter.setPen(Qt::magenta);
+    painter.drawText(debugTransformTransRect.bottomRight(),"selectionTransTransform");
+    painter.drawRect(debugTransformTransRect);
+
+    mCurrentTransformSelection = mappedTempSelection();
+    mLastTransformSelection = mappedTransformedSelection();
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer != NULL)
@@ -1385,7 +1424,22 @@ void ScribbleArea::calculateSelectionRect()
 
 bool ScribbleArea::isSomethingSelected() const
 {
-    return mSomethingSelected;
+    bool somethingSelected = ((mySelection.isNull() &&
+                              myTransformedSelection.isNull() &&
+                              myTempTransformedSelection.isNull()) ? false : true);
+    qDebug() << somethingSelected;
+    return somethingSelected;
+}
+
+bool ScribbleArea::trySelectSomething()
+{
+    mSomethingSelected = isSomethingSelected();
+
+    if (mSomethingSelected) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void ScribbleArea::findMoveModeOfCornerInRange()
@@ -1578,6 +1632,7 @@ QVector<QPoint> ScribbleArea::calcSelectionCenterPoints()
 
 void ScribbleArea::calculateSelectionTransformation()
 {
+
     QVector<QPoint> centerPoints = calcSelectionCenterPoints();
 
     selectionTransformation.reset();
@@ -1594,8 +1649,33 @@ void ScribbleArea::calculateSelectionTransformation()
     selectionTransformation.translate(-centerPoints[1].x(), -centerPoints[1].y());
 }
 
+QRectF ScribbleArea::mappedSelection()
+{
+//    selectionTransformation = mEditor->view()->getView();
+    QTransform selectionTransformation = mEditor->view()->getView();
+    return selectionTransformation.mapRect(mySelection);
+}
+
+QRectF ScribbleArea::mappedTempSelection()
+{
+//    selectionTransformation = mEditor->view()->getView();
+    QTransform selectionTransformation = mEditor->view()->getView();
+    return selectionTransformation.mapRect(myTempTransformedSelection);
+}
+
+QRectF ScribbleArea::mappedTransformedSelection()
+{
+//    selectionTransformation = mEditor->view()->getView();
+    QTransform selectionTransformation = mEditor->view()->getView();
+    return selectionTransformation.mapRect(myTransformedSelection);
+}
 
 void ScribbleArea::paintTransformedSelection()
+{
+    paintTransformedSelection(mySelection);
+}
+
+void ScribbleArea::paintTransformedSelection(QRectF selectionToTransform)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL)
@@ -1607,7 +1687,7 @@ void ScribbleArea::paintTransformedSelection()
     {
         if (layer->type() == Layer::BITMAP)
         {
-            mCanvasPainter.setTransformedSelection(mySelection.toAlignedRect(), selectionTransformation);
+            mCanvasPainter.setTransformedSelection(selectionToTransform.toAlignedRect(), selectionTransformation);
         }
         else if (layer->type() == Layer::VECTOR)
         {
@@ -1650,6 +1730,7 @@ void ScribbleArea::applySelectionChanges()
 void ScribbleArea::applyTransformedSelection()
 {
     mCanvasPainter.ignoreTransformedSelection();
+//    selectionTransformation.reset();
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL)
@@ -1721,8 +1802,7 @@ void ScribbleArea::setSelection(QRectF rect)
     mySelection = rect;
     myTransformedSelection = rect;
     myTempTransformedSelection = rect;
-    mSomethingSelected = (mySelection.isNull() ? false : true);
-
+    mSomethingSelected = isSomethingSelected();
 
     // Temporary disabled this as it breaks selection rotate key (ctrl) event.
     // displaySelectionProperties();

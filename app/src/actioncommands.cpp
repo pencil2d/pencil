@@ -416,6 +416,17 @@ void ActionCommands::flipSelectionY()
     mEditor->flipSelection(flipVertical);
 }
 
+void ActionCommands::deselectAll()
+{
+    mEditor->backups()->prepareBackup();
+    mEditor->deselectAllSelections();
+}
+
+void ActionCommands::selectAll()
+{
+    mEditor->selectAll();
+}
+
 void ActionCommands::ZoomIn()
 {
     mEditor->view()->scaleUp();
