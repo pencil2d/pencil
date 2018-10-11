@@ -75,8 +75,8 @@ public:
 
 public slots:
     void updateValues();
-    void gridSizeChangeW(int value);
-    void gridSizeChangeH(int value);
+    void gridWidthChanged(int value);
+    void gridHeightChanged(int value);
 
 signals:
     void windowOpacityChange(int value);
@@ -89,17 +89,13 @@ private slots:
     void dottedCursorCheckboxStateChanged( int b );
     void highResCheckboxStateChanged(int b);
     void gridCheckBoxStateChanged(int b);
-    void curveSmoothingChange(int value);
-    void backgroundChange(int value);
-    void frameCacheChange(int value);
+    void curveSmoothingChanged(int value);
+    void backgroundChanged(int value);
+    void frameCacheNumberChanged(int value);
 
 private:
     Ui::GeneralPage* ui = nullptr;
-
     PreferenceManager* mManager = nullptr;
-
-    int gridSize;
-
 };
 
 class TimelinePage : public QWidget

@@ -143,17 +143,17 @@ GeneralPage::GeneralPage(QWidget* parent) :
     auto spinValueChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->languageCombo,curIndexChagned, this, &GeneralPage::languageChanged);
     connect(ui->windowOpacityLevel, &QSlider::valueChanged, this, &GeneralPage::windowOpacityChange);
-    connect(ui->backgroundButtons, buttonClicked, this, &GeneralPage::backgroundChange);
+    connect(ui->backgroundButtons, buttonClicked, this, &GeneralPage::backgroundChanged);
     connect(ui->shadowsBox, &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged);
     connect(ui->toolCursorsBox, &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged);
     connect(ui->antialiasingBox, &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged);
-    connect(ui->curveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChange);
+    connect(ui->curveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChanged);
     connect(ui->highResBox, &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged);
     connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
     connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridSizeChangeW);
     connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridSizeChangeH);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
-    connect(ui->frameCacheInput, spinValueChanged, this, &GeneralPage::frameCacheChange);
+    connect(ui->frameCacheInput, spinValueChanged, this, &GeneralPage::frameCacheChanged);
 }
 
 GeneralPage::~GeneralPage()
@@ -220,7 +220,7 @@ void GeneralPage::languageChanged( int i )
                          tr("The language change will take effect after a restart of Pencil2D"));
 }
 
-void GeneralPage::backgroundChange(int value)
+void GeneralPage::backgroundChanged(int value)
 {
     QString brushName = "white";
     switch (value)
@@ -236,7 +236,7 @@ void GeneralPage::backgroundChange(int value)
     mManager->set(SETTING::BACKGROUND_STYLE, brushName);
 }
 
-void GeneralPage::curveSmoothingChange(int value)
+void GeneralPage::curveSmoothingChanged(int value)
 {
     mManager->set(SETTING::CURVE_SMOOTHING, value);
 }
@@ -281,7 +281,7 @@ void GeneralPage::gridCheckBoxStateChanged(int b)
     mManager->set(SETTING::GRID, b != Qt::Unchecked);
 }
 
-void GeneralPage::frameCacheChange(int value)
+void GeneralPage::frameCacheChanged(int value)
 {
     mManager->set(SETTING::FRAME_POOL_CACHE, value);
 }
