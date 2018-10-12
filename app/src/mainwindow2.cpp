@@ -1215,7 +1215,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
-
 }
 
 void MainWindow2::makeConnections(Editor*, DisplayOptionWidget*)

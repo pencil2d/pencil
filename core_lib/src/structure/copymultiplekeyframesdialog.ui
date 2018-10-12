@@ -11,9 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Manipulate multiple Frames</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>16</x>
@@ -27,7 +27,6 @@
      <widget class="QLabel" name="labHeader">
       <property name="font">
        <font>
-        <family>DejaVu Sans Mono</family>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -87,7 +86,7 @@
       <item>
        <widget class="QLabel" name="labFromLayer">
         <property name="text">
-         <string>FROM layer:</string>
+         <string>From Layer:</string>
         </property>
        </widget>
       </item>
@@ -287,7 +286,6 @@
      <widget class="QLabel" name="labInfoAction">
       <property name="font">
        <font>
-        <family>DejaVu Sans Mono</family>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -314,9 +312,7 @@
      <widget class="QLabel" name="labWarning">
       <property name="font">
        <font>
-        <family>Sans</family>
         <weight>75</weight>
-        <italic>false</italic>
         <bold>true</bold>
        </font>
       </property>

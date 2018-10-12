@@ -611,7 +611,7 @@ void ActionCommands::manipulateRange()
                 toLayer = layerMgr->findLayerByName(cd->getCopyToLayer());
                 int num = cd->getNumLoops();
                 int startF = cd->getCopyStartFrame();
-                 for (int i = 0; i < num; i++)
+                for (int i = 0; i < num; i++)
                 {
                     for (int j = startL; j < stopL + 1; j++, startF++)
                     {
@@ -644,37 +644,83 @@ void ActionCommands::manipulateRange()
             {
                 toLayer = layerMgr->findLayerByName(cd->getMoveToLayer());
                 int startF = cd->getMoveStartFrame();
-                for (int j = startL; j < stopL + 1; j++, startF++)
+                qDebug() << "startF " << startF;
+
+                if (startF > startL)
                 {
-                    mEditor->scrubTo(j);
-                    if (fromLayer->keyExists(j))
+                    startF = startF + stopL + 1;
+                    for (int j = startF; j > startL; j--, startF--)
                     {
-                        KeyFrame* kf = fromLayer->getKeyFrameAt(j);
-                        if (kf == nullptr) return;
-                        KeyFrame* dupKey = kf->clone();
-                        // replace if keyframe exists!
-                        if (toLayer->keyExists(startF))
+                        mEditor->scrubTo(j);
+                        if (fromLayer->keyExists(j))
                         {
-                            if (toLayer->removeKeyFrame(startF))
+                            KeyFrame* kf = fromLayer->getKeyFrameAt(j);
+                            if (kf == nullptr) return;
+                            KeyFrame* dupKey = kf->clone();
+                            // replace if keyframe exists!
+                            if (toLayer->keyExists(startF))
                             {
                                 if (!toLayer->loadKey(dupKey))
+                                {
                                     return;
-//                                toLayer->addKeyFrame(startF, dupKey);
-//                                fromLayer->removeKeyFrame(j);
+                                }
+    //                            if (toLayer->removeKeyFrame(startF))
+    //                            {
+    //                                toLayer->addKeyFrame(startF, dupKey);
+    //                                fromLayer->removeKeyFrame(j);
+    //                            }
                             }
+                            else
+                            {
+                                toLayer->addKeyFrame(startF, dupKey);
+                                fromLayer->removeKeyFrame(j);
+                            }
+                            toLayer->setModified(startF, true);
                         }
-                        else
-                        {
-                            toLayer->addKeyFrame(startF, dupKey);
-                            fromLayer->removeKeyFrame(j);
-                        }
-                        toLayer->setModified(startF, true);
                     }
+                    if (fromLayer->firstKeyFramePosition() == 0)
+                    {
+                        fromLayer->addNewKeyFrameAt(1);
+                        fromLayer->setModified(1, true);
+                    }
+
                 }
-                if (fromLayer->firstKeyFramePosition() == 0)
+                else
                 {
-                    fromLayer->addNewKeyFrameAt(1);
-                    fromLayer->setModified(1, true);
+                    for (int j = startL; j < stopL + 1; j++, startF++)
+                    {
+                        mEditor->scrubTo(j);
+                        if (fromLayer->keyExists(j))
+                        {
+                            KeyFrame* kf = fromLayer->getKeyFrameAt(j);
+                            if (kf == nullptr) return;
+                            KeyFrame* dupKey = kf->clone();
+                            // replace if keyframe exists!
+                            if (toLayer->keyExists(startF))
+                            {
+                                if (!toLayer->loadKey(dupKey))
+                                {
+                                    return;
+                                }
+    //                            if (toLayer->removeKeyFrame(startF))
+    //                            {
+    //                                toLayer->addKeyFrame(startF, dupKey);
+    //                                fromLayer->removeKeyFrame(j);
+    //                            }
+                            }
+                            else
+                            {
+                                toLayer->addKeyFrame(startF, dupKey);
+                                fromLayer->removeKeyFrame(j);
+                            }
+                            toLayer->setModified(startF, true);
+                        }
+                    }
+                    if (fromLayer->firstKeyFramePosition() == 0)
+                    {
+                        fromLayer->addNewKeyFrameAt(1);
+                        fromLayer->setModified(1, true);
+                    }
                 }
 
             }
