@@ -644,7 +644,6 @@ Status Editor::setObject(Object* newObject)
 
 void Editor::updateObject()
 {
-    mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
     scrubTo(mObject->data()->getCurrentFrame());
     setCurrentLayerIndex(mObject->data()->getCurrentLayer());
 
@@ -654,6 +653,11 @@ void Editor::updateObject()
     if (mScribbleArea)
     {
         mScribbleArea->updateAllFrames();
+    }
+    
+    if (mPreferenceManager)
+    {
+        mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
     }
 
     emit updateLayerCount();
