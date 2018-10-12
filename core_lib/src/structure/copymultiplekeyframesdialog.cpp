@@ -130,19 +130,20 @@ QString CopyMultiplekeyframesDialog::getActiveTab()
     int actTab = ui->tabWidget->currentIndex();
     switch (actTab) {
     case 0:
-        return "copy";
+        return tr("copy");
         break;
     case 1:
-        return "move";
+        return tr("move");
         break;
     case 2:
         ui->labInfoToFromLayer->setText(tr("On layer: %1").arg(ui->cBoxFromLayer->currentText()));
-        return "reverse";
+        return tr("reverse");
         break;
     case 3:
-        return "delete";
+        return tr("delete");
         break;
     default:
+        Q_ASSERT(false);
         return "";
         break;
     }
@@ -185,6 +186,7 @@ void CopyMultiplekeyframesDialog::setFromLayer(QString fromLayer)
         ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(mFromLayer));
         break;
     default:
+        Q_ASSERT(false);
         break;
     }
 }
@@ -250,6 +252,7 @@ void CopyMultiplekeyframesDialog::setDeleteOnLayer(QString deleteFromLayer)
 
 void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
 {
+    ui->labInfoAction->setText(getActiveTab().toUpper());
     switch (tabIndex) {
     case 0:
         setCopyToLayer(ui->cBoxCopyToLayer->currentText());
@@ -264,6 +267,7 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
         setDeleteOnLayer(ui->cBoxFromLayer->currentText());
         break;
     default:
+        Q_ASSERT(false);
         break;
     }
     checkValidity();
@@ -290,6 +294,7 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
         mManiEndAt = ui->sBoxLastFrame->value();
         break;
     default:
+        Q_ASSERT(false);
         break;
     }
 }
@@ -333,7 +338,7 @@ void CopyMultiplekeyframesDialog::checkValidity()
     */
     if (msg == "")
     {
-        ui->labWarning->setText(tr("Affects Frames %1 -> %2").arg(QString::number(mManiStartAt)).arg(QString::number(mManiEndAt)));
+        ui->labWarning->setText(tr("Affects Frames %1 %2 %3").arg(QString::number(mManiStartAt)).arg(QChar(0x2192)).arg(QString::number(mManiEndAt)));
     }
     else
     {
