@@ -59,7 +59,8 @@ HEADERS += \
     src/importimageseqdialog.h \
     src/spinslider.h \
     src/doubleprogressdialog.h \
-    src/colorslider.h
+    src/colorslider.h \
+    src/copymultiplekeyframesdialog.h
 
 SOURCES += \
     src/main.cpp \
@@ -87,7 +88,8 @@ SOURCES += \
     src/importimageseqdialog.cpp \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
-    src/colorslider.cpp
+    src/colorslider.cpp \
+    src/copymultiplekeyframesdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -109,7 +111,8 @@ FORMS += \
     ui/timelinepage.ui \
     ui/filespage.ui \
     ui/toolspage.ui \
-    ui/toolboxwidget.ui
+    ui/toolboxwidget.ui \
+    ui/copymultiplekeyframesdialog.ui
 
 
 
