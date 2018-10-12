@@ -611,7 +611,7 @@ void ActionCommands::manipulateRange()
                 toLayer = layerMgr->findLayerByName(cd->getCopyToLayer());
                 int num = cd->getNumLoops();
                 int startF = cd->getCopyStartFrame();
-                for (int i = 0; i < num; i++)
+                 for (int i = 0; i < num; i++)
                 {
                     for (int j = startL; j < stopL + 1; j++, startF++)
                     {
@@ -624,8 +624,12 @@ void ActionCommands::manipulateRange()
                             // replace if keyframe exists!
                             if (toLayer->keyExists(startF))
                             {
+                                if (!toLayer->loadKey(dupKey))
+                                    return;
+/*
                                 toLayer->removeKeyFrame(startF);
                                 toLayer->addKeyFrame(startF, dupKey);
+*/
                             }
                             else
                             {
@@ -653,8 +657,10 @@ void ActionCommands::manipulateRange()
                         {
                             if (toLayer->removeKeyFrame(startF))
                             {
-                                toLayer->addKeyFrame(startF, dupKey);
-                                fromLayer->removeKeyFrame(j);
+                                if (!toLayer->loadKey(dupKey))
+                                    return;
+//                                toLayer->addKeyFrame(startF, dupKey);
+//                                fromLayer->removeKeyFrame(j);
                             }
                         }
                         else
@@ -687,11 +693,15 @@ void ActionCommands::manipulateRange()
                         // replace if keyframe exists!
                         if (toLayer->keyExists(startF))
                         {
+                            if (!toLayer->loadKey(dupKey))
+                                return;
+/*
                             if (toLayer->removeKeyFrame(startF))
                             {
                                 toLayer->addKeyFrame(startF, dupKey);
                             }
-                        }
+  */
+                      }
                         else
                         {
                             toLayer->addKeyFrame(startF, dupKey);
