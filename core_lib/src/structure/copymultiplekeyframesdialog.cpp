@@ -315,27 +315,6 @@ void CopyMultiplekeyframesDialog::checkValidity()
         msg = tr("Range not valid!");
         testValidity = false;
     }
-    /*
-    else if (ui->tabWidget->currentIndex() == 0 && ui->cBoxFromLayer->currentText() == mCopyToLayer)
-    {
-        if (ui->sBoxLastFrame->value() >= ui->sBoxStartFrame->value())
-        {
-            msg = tr("Beware! Originals may be damaged!");
-        }
-    }
-    else if (ui->tabWidget->currentIndex() == 1 &&
-             (ui->sBoxFirstFrame->value() == ui->sBoxMove->value()))
-    {
-            msg = tr("Alert! Originals will be erased!");
-    }
-    else if (ui->tabWidget->currentIndex() == 2)
-    {
-        if (ui->sBoxLastFrame->value() >= ui->sBoxStartReverse->value())
-        {
-            msg = tr("Beware! Originals may be damaged!");
-        }
-    }
-    */
     if (msg == "")
     {
         ui->labWarning->setText(tr("Affects Frames %1 %2 %3").arg(QString::number(mManiStartAt)).arg(QChar(0x2192)).arg(QString::number(mManiEndAt)));

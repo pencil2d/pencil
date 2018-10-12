@@ -633,10 +633,6 @@ void ActionCommands::manipulateRange()
                         {
                             if (!toLayer->loadKey(dupKey))
                                 return;
-                            /*
-                                toLayer->removeKeyFrame(startF);
-                                toLayer->addKeyFrame(startF, dupKey);
-*/
                         }
                         else
                         {
@@ -656,8 +652,8 @@ void ActionCommands::manipulateRange()
 
             if (startF > startL)
             {
-                startF = startF + stopL + 1;
-                for (int j = startF; j > startL; j--, startF--)
+                startF = startF + stopL - startL;
+                for (int j = stopL; j >= startL; j--, startF--)
                 {
                     mEditor->scrubTo(j);
                     if (fromLayer->keyExists(j))
@@ -672,11 +668,6 @@ void ActionCommands::manipulateRange()
                             {
                                 return;
                             }
-                            //                            if (toLayer->removeKeyFrame(startF))
-                            //                            {
-                            //                                toLayer->addKeyFrame(startF, dupKey);
-                            //                                fromLayer->removeKeyFrame(j);
-                            //                            }
                         }
                         else
                         {
@@ -710,11 +701,6 @@ void ActionCommands::manipulateRange()
                             {
                                 return;
                             }
-                            //                            if (toLayer->removeKeyFrame(startF))
-                            //                            {
-                            //                                toLayer->addKeyFrame(startF, dupKey);
-                            //                                fromLayer->removeKeyFrame(j);
-                            //                            }
                         }
                         else
                         {
@@ -750,12 +736,6 @@ void ActionCommands::manipulateRange()
                     {
                         if (!toLayer->loadKey(dupKey))
                             return;
-                        /*
-                            if (toLayer->removeKeyFrame(startF))
-                            {
-                                toLayer->addKeyFrame(startF, dupKey);
-                            }
-  */
                     }
                     else
                     {
