@@ -566,12 +566,11 @@ void ActionCommands::duplicateKey()
     mEditor->layers()->notifyAnimationLengthChanged();
 }
 
-
 void ActionCommands::manipulateRange()
 {
-    int startL = 1, stopL = 2; // default values
+    int startL = 1, stopL = 2;          // default values
     if (mEditor->playback()->isRangedPlaybackOn())
-    {   // defined range values if available
+    {                                   // defined range values if available
         startL = mEditor->playback()->getRangedStartFrame();
         stopL = mEditor->playback()->getRangedEndFrame();
     }
@@ -734,7 +733,6 @@ void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLaye
             fLayer->setModified(1, true);
         }
     }
-
 }
 
 void ActionCommands::reverseFrames(int startL, int stopL, int startAt, Layer *tLayer)
@@ -761,7 +759,6 @@ void ActionCommands::reverseFrames(int startL, int stopL, int startAt, Layer *tL
             tLayer->setModified(startF, true);
         }
     }
-
 }
 
 void ActionCommands::deleteFrames(int startL, int stopL, Layer *tLayer)
