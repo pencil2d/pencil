@@ -217,23 +217,6 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
 {
     mCurrentTab = tabIndex;
     ui->labInfoAction->setText(ui->tabWidget->tabText(mCurrentTab));
-    switch (tabIndex) {
-    case 0:
-        setCopyToLayer(ui->cBoxCopyToLayer->currentText());
-        break;
-    case 1:
-        setMoveToLayer(ui->cBoxMoveToLayer->currentText());
-        break;
-    case 2:
-        setReverseFrom(ui->sBoxStartReverse->value());
-        break;
-    case 3:
-        setDeleteOnLayer(ui->cBoxFromLayer->currentText());
-        break;
-    default:
-        Q_ASSERT(false);
-        break;
-    }
     checkValidity();
 }
 

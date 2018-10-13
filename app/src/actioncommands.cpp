@@ -51,7 +51,6 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "copymultiplekeyframesdialog.h"
-#include "timecontrols.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
