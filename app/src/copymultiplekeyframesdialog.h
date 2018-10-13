@@ -27,11 +27,11 @@ public:
     QString getMoveToLayer() { return mMoveToLayer; }       ///< Layer the Range is moved to
     QString getDeleteOnLayer() { return mDeleteOnLayer; }   ///< Layer the range is deleted on
     int getNumLoops() { return mNumLoops; }                 ///< Number of loops asked for
+    int getCurrentTab() { return mCurrentTab; }             ///< Tab/Method currently picked
     void setNumLoopsMax(int numLoopsMax);
     int getCopyStartFrame();
     int getMoveStartFrame();
     int getReverseStartFrame();
-    QString getActiveTab();
     bool getValidity();
     void setStartEnd(int methodChosen);
 

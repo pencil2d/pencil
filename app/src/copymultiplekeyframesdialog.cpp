@@ -65,7 +65,7 @@ void CopyMultiplekeyframesDialog::init()
     mFromLayer = ui->cBoxFromLayer->currentText();
     mCopyToLayer = ui->cBoxCopyToLayer->currentText();
     mMoveToLayer = ui->cBoxMoveToLayer->currentText();
-    mCurrentTab = 0; // starts with COPY selected
+    mCurrentTab = ui->tabWidget->currentIndex();
     mValidAction = true;
 
     ///< SET text on dialog
@@ -83,7 +83,7 @@ void CopyMultiplekeyframesDialog::init()
 
     ///< SET text on labWarning and infolabels
     ui->labWarning->setText("");
-    ui->labInfoAction->setText(getActiveTab().toUpper());
+    ui->labInfoAction->setText(ui->tabWidget->tabText(mCurrentTab));
     ui->labInfoToFromLayer->setText(tr("From: %1 To: %2").arg(ui->cBoxFromLayer->currentText()).arg(ui->cBoxFromLayer->currentText()));
     ///< SET connections HEADER
     connect(ui->sBoxFirstFrame, SIGNAL(valueChanged(int)), this, SLOT(setFirstFrame(int)));
@@ -125,36 +125,11 @@ int CopyMultiplekeyframesDialog::getReverseStartFrame()
     return ui->sBoxStartReverse->value();
 }
 
-QString CopyMultiplekeyframesDialog::getActiveTab()
-{
-    int actTab = ui->tabWidget->currentIndex();
-    switch (actTab) {
-    case 0:
-        return tr("copy");
-        break;
-    case 1:
-        return tr("move");
-        break;
-    case 2:
-        ui->labInfoToFromLayer->setText(tr("On layer: %1").arg(ui->cBoxFromLayer->currentText()));
-        return tr("reverse");
-        break;
-    case 3:
-        return tr("delete");
-        break;
-    default:
-        Q_ASSERT(false);
-        return "";
-        break;
-    }
-}
-
 bool CopyMultiplekeyframesDialog::getValidity()
 {
     return mValidAction;
 }
 
-// SLOTs
 void CopyMultiplekeyframesDialog::setFirstFrame(int firstFrame)
 {
     mFirstFrame = firstFrame;
@@ -194,10 +169,7 @@ void CopyMultiplekeyframesDialog::setFromLayer(QString fromLayer)
 void CopyMultiplekeyframesDialog::setCopyToLayer(QString copyToLayer)
 {
     mCopyToLayer = copyToLayer;
-    if (ui->tabWidget->currentIndex() == 0)
-    {
-        ui->labInfoToFromLayer->setText(tr("From: %1 To: %2").arg(ui->cBoxFromLayer->currentText()).arg(ui->cBoxCopyToLayer->currentText()));
-    }
+    ui->labInfoToFromLayer->setText(tr("From: %1 To: %2").arg(ui->cBoxFromLayer->currentText()).arg(ui->cBoxCopyToLayer->currentText()));
     checkValidity();
 }
 
@@ -222,37 +194,29 @@ void CopyMultiplekeyframesDialog::setMoveStartFrame(int startFrame)
 void CopyMultiplekeyframesDialog::setMoveToLayer(QString moveToLayer)
 {
     mMoveToLayer = moveToLayer;
-    if (ui->tabWidget->currentIndex() == 1)
-    {
-        ui->labInfoToFromLayer->setText(tr("From: %1 To: %2").arg(ui->cBoxFromLayer->currentText()).arg(ui->cBoxMoveToLayer->currentText()));
-    }
+    ui->labInfoToFromLayer->setText(tr("From: %1 To: %2").arg(ui->cBoxFromLayer->currentText()).arg(ui->cBoxMoveToLayer->currentText()));
     checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::setReverseFrom(int reverseFrom)
 {
     mReverseStart = reverseFrom;
-    if (ui->tabWidget->currentIndex() == 2)
-    {
-        ui->labInfoToFromLayer->setText(tr("On: %1").arg(ui->cBoxFromLayer->currentText()));
-    }
+    ui->labInfoToFromLayer->setText(tr("On Layer: %1").arg(ui->cBoxFromLayer->currentText()));
     checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::setDeleteOnLayer(QString deleteFromLayer)
 {
     mDeleteOnLayer = deleteFromLayer;
-    if (ui->tabWidget->currentIndex() == 3)
-    {
-        ui->labInfoToFromLayer->setText(tr("On: %1").arg(mDeleteOnLayer));
-        ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(mDeleteOnLayer));
-    }
+    ui->labInfoToFromLayer->setText(tr("On: %1").arg(mDeleteOnLayer));
+    ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(mDeleteOnLayer));
     checkValidity();
 }
 
 void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
 {
-    ui->labInfoAction->setText(getActiveTab().toUpper());
+    mCurrentTab = tabIndex;
+    ui->labInfoAction->setText(ui->tabWidget->tabText(mCurrentTab));
     switch (tabIndex) {
     case 0:
         setCopyToLayer(ui->cBoxCopyToLayer->currentText());
@@ -304,13 +268,13 @@ void CopyMultiplekeyframesDialog::checkValidity()
     setStartEnd(ui->tabWidget->currentIndex());
     QString msg = "";
     bool testValidity = true;
-    // 9999 frames is maximum timeline length
-    if (mManiEndAt > 9999)
+
+    if (mManiEndAt > 9999) ///< 9999 frames is maximum timeline length
     {
         msg = tr("Exceeds 9999 frames!");
         testValidity = false;
-    }               // Range must be valid
-    else if (mFirstFrame >= mLastFrame)
+    }
+    else if (mFirstFrame >= mLastFrame) ///< Range must be valid
     {
         msg = tr("Range not valid!");
         testValidity = false;
