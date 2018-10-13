@@ -571,11 +571,11 @@ void ActionCommands::duplicateKey()
 
 void ActionCommands::manipulateRange()
 {
-    int loopBegin = 1, loopEnd = 2; // default values
+    int startL = 1, stopL = 2; // default values
     if (mEditor->playback()->isRangedPlaybackOn())
     {   // defined range values if available
-        loopBegin = mEditor->playback()->getRangedStartFrame();
-        loopEnd = mEditor->playback()->getRangedEndFrame();
+        startL = mEditor->playback()->getRangedStartFrame();
+        stopL = mEditor->playback()->getRangedEndFrame();
     }
     LayerManager* layerMgr = mEditor->layers();
     int lIndex = layerMgr->currentLayer()->type();
@@ -587,7 +587,7 @@ void ActionCommands::manipulateRange()
         msgBox.exec();
         return;
     }
-    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, loopBegin, loopEnd, new QWidget);
+    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, startL, stopL, new QWidget);
     cd->exec();
 
     // If validation is NOT OK -> return
@@ -602,8 +602,8 @@ void ActionCommands::manipulateRange()
     }
 
     // If Validation is OK
-    int startL = cd->getFirstFrame();
-    int stopL = cd->getLastFrame();
+    startL = cd->getFirstFrame();
+    stopL = cd->getLastFrame();
     Layer *fromLayer = layerMgr->findLayerByName(cd->getFromLayer());
     Q_ASSERT(fromLayer != nullptr);
     Layer *toLayer = nullptr;
