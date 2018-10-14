@@ -423,66 +423,69 @@ bool Object::exportPalette(QString filePath)
     return true;
 }
 
+/* Import the .gpl GIMP palette format.
+ *
+ * This functions supports importing both the old and new .gpl formats.
+ * This should load colors the same as GIMP, with the following intentional exceptions:
+ * - Whitespace before and after a name does not appear in the name
+ * - The last line is processed, even if there is not a trailing newline
+ * - Colours without a name will use are automatic naming system rather than "Untitled"
+ */
 void Object::importPaletteGPL(QFile& file)
 {
     QTextStream in(&file);
     QString line;
 
-    bool hashFound = false;
-    bool colorFound = false;
+    // First line must start with "GIMP Palette"
+    // Displaying an error here would be nice
+    in.readLineInto(&line);
+    if (!line.startsWith("GIMP Palette")) return;
 
-    int emptyColorNameCounter = 1;
+    in.readLineInto(&line);
 
-    while (in.readLineInto(&line))
+    // There are two GPL formats, the new one must start with "Name: " on the second line
+    if (line.startsWith("Name: "))
     {
-        quint8 red = 0;
-        quint8 green = 0;
-        quint8 blue = 0;
+        in.readLineInto(&line);
+        // The new format contains an optional thrid line starting with "Columns: "
+        if (line.startsWith("Columns: "))
+        {
+            // Skip to next line
+            in.readLineInto(&line);
+        }
+    }
+
+    // Colours inherit the value from the previous colour for missing channels
+    // Some palettes may rely on this behavior so we should try to replicate it
+    QColor prevColour(Qt::black);
+
+    do
+    {
+        // Ignore comments and empty lines
+        if (line.isEmpty() || line.startsWith("#")) continue;
+
+        int red = 0;
+        int green = 0;
+        int blue = 0;
 
         int countInLine = 0;
-        QString name= "";
+        QString name = "";
 
-        if (!colorFound)
+        for(const QString& snip : line.split(QRegExp("\\s|\\t"), QString::SkipEmptyParts))
         {
-            hashFound = (line == "#") ? true : false;
-        }
-
-        if (!hashFound)
-        {
-            continue;
-        }
-        else if (!colorFound)
-        {
-            colorFound = true;
-            continue;
-        }
-
-        for (const QString& snip : line.split(QRegExp("\\s|\\t"), QString::SkipEmptyParts))
-        {
-            if (countInLine == 0) // assume red
+            switch (countInLine)
             {
+            case 0:
                 red = snip.toInt();
-            }
-            else if (countInLine == 1) // assume green
-            {
+                break;
+            case 1:
                 green = snip.toInt();
-            }
-            else if (countInLine == 2) // assume blue
-            {
+                break;
+            case 2:
                 blue = snip.toInt();
-            }
-            else
-            {
-                // assume last bit of line is a name
-                // gimp interprets as untitled
-                if (snip == "---")
-                {
-                    name = "untitled";
-                }
-                else
-                {
-                    name += snip;
-                }
+                break;
+            default:
+                name += snip + " ";
             }
             countInLine++;
         }
@@ -490,17 +493,22 @@ void Object::importPaletteGPL(QFile& file)
         // trim additional spaces
         name = name.trimmed();
 
-        if (name.isEmpty())
-        {
-            name = "Color" + QString::number(emptyColorNameCounter);
-            ++emptyColorNameCounter;
-        }
+        // Get values from previous colour if necessary
+        if (countInLine < 2) green = prevColour.green();
+        if (countInLine < 3) blue = prevColour.blue();
 
-        if (QColor(red, green, blue).isValid())
+        // GIMP assigns colours the name "Untitled" by default now
+        // so in addition to missing names, we also use automatic
+        // naming for this
+        if (name.isEmpty() || name == "Untitled") name = QString();
+
+        QColor colour(red, green, blue);
+        if (colour.isValid())
         {
-            mPalette.append(ColourRef(QColor(red,green,blue), name));
+            mPalette.append(ColourRef(colour, name));
+            prevColour = colour;
         }
-    }
+    } while (in.readLineInto(&line));
 }
 
 void Object::importPalettePencil(QFile& file)
