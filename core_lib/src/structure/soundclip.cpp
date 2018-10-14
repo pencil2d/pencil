@@ -91,8 +91,8 @@ void SoundClip::playFromPosition(int frameNumber, int fps)
     {
         framesIntoSound = frameNumber - pos();
     }
-    float msPerFrame = (1000 / fps);
-    float msIntoSound = framesIntoSound * msPerFrame;
+    qreal msPerFrame = 1000.0 / fps;
+    qint64 msIntoSound = qRound(framesIntoSound * msPerFrame);
 
     if (mPlayer)
     {
