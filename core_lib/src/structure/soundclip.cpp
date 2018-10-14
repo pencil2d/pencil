@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QFile>
 #include <QMediaPlayer>
+#include <QtMath>
 #include "soundplayer.h"
 
 SoundClip::SoundClip()
@@ -121,5 +122,5 @@ void SoundClip::setDuration(const int64_t& duration)
 
 void SoundClip::updateLength(int fps)
 {
-    setLength(mDuration * fps / 1000.0);
+    setLength(qCeil(mDuration * fps / 1000.0));
 }
