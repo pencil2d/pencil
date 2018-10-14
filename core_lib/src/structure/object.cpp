@@ -266,7 +266,6 @@ void Object::deleteLayer(int i)
 {
     if (i > -1 && i < mLayers.size())
     {
-        disconnect(mLayers[i], 0, 0, 0); // disconnect the layer from this object
         delete mLayers.takeAt(i);
     }
 }
@@ -277,7 +276,6 @@ void Object::deleteLayer(Layer* layer)
 
     if (it != mLayers.end())
     {
-        disconnect(layer, 0, 0, 0);
         delete layer;
         mLayers.erase(it);
     }
@@ -322,7 +320,7 @@ bool Object::isColourInUse(int index)
         Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
-            LayerVector* layerVector = (LayerVector*)layer;
+            LayerVector* layerVector = static_cast<LayerVector*>(layer);
 
             if (layerVector->usesColour(index))
             {
@@ -341,7 +339,7 @@ void Object::removeColour(int index)
         Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
-            LayerVector* layerVector = (LayerVector*)layer;
+            LayerVector* layerVector = static_cast<LayerVector*>(layer);
             layerVector->removeColour(index);
         }
     }
@@ -608,7 +606,7 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             // paints the bitmap images
             if (layer->type() == Layer::BITMAP)
             {
-                LayerBitmap* layerBitmap = (LayerBitmap*)layer;
+                LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
 
                 BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
                 if (bitmap)
@@ -618,7 +616,7 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             // paints the vector images
             if (layer->type() == Layer::VECTOR)
             {
-                LayerVector* layerVector = (LayerVector*)layer;
+                LayerVector* layerVector = static_cast<LayerVector*>(layer);
                 VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
                 if (vec)
                     vec->paintImage(painter, false, false, antialiasing);

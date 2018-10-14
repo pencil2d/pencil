@@ -25,25 +25,26 @@ GNU General Public License for more details.
 #include "object.h"
 #include "layercamera.h"
 
-
-QString openErrorTitle = QObject::tr("Could not open file");
-QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
-                         "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
-                         "or you can try to use a backup file if you have one. If you contact us through one of "
-                         "our official channels we may be able to help you. For reporting issues, "
-                         "the best places to reach us are:");
-QString contactLinks = "<ul>"
-                       "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
-                       "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
-                       "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
-                       "</ul>";
-
+namespace
+{
+    QString openErrorTitle = QObject::tr("Could not open file");
+    QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
+                             "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
+                             "or you can try to use a backup file if you have one. If you contact us through one of "
+                             "our official channels we may be able to help you. For reporting issues, "
+                             "the best places to reach us are:");
+    QString contactLinks = "<ul>"
+                           "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
+                           "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
+                           "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
+                           "</ul>";
+}
 
 FileManager::FileManager(QObject *parent) : QObject(parent),
 mLog("FileManager")
 {
     ENABLE_DEBUG_LOG(mLog, false);
-    srand(time(nullptr));
+    srand(static_cast<uint>(time(nullptr)));
 }
 
 Object* FileManager::load(QString sFileName)

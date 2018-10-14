@@ -1096,37 +1096,25 @@ void ScribbleArea::paintSelectionVisuals(QPainter& painter)
             int width = 6;
             int radius = width/2;
 
-            QRectF topLeftCorner = QRectF(mCurrentTransformSelection[0].x() - radius,
+            const QRectF topLeftCorner = QRectF(mCurrentTransformSelection[0].x() - radius,
                     mCurrentTransformSelection[0].y() - radius,
                     width, width);
+            painter.drawRect(topLeftCorner);
 
-            QRectF topRightCorner = QRectF(mCurrentTransformSelection[1].x() - radius,
+            const QRectF topRightCorner = QRectF(mCurrentTransformSelection[1].x() - radius,
                     mCurrentTransformSelection[1].y() - radius,
                     width, width);
+            painter.drawRect(topRightCorner);
 
-            QRectF bottomRightCorner = QRectF(mCurrentTransformSelection[2].x() - radius,
+            const QRectF bottomRightCorner = QRectF(mCurrentTransformSelection[2].x() - radius,
                     mCurrentTransformSelection[2].y() - radius,
                     width, width);
+            painter.drawRect(bottomRightCorner);
 
-            QRectF bottomLeftCorner = QRectF(mCurrentTransformSelection[3].x() - radius,
+            const QRectF bottomLeftCorner = QRectF(mCurrentTransformSelection[3].x() - radius,
                     mCurrentTransformSelection[3].y() - radius,
                     width, width);
-
-            painter.drawRect(topLeftCorner.x(),
-                             topLeftCorner.y(),
-                             width, width);
-
-            painter.drawRect(topRightCorner.x(),
-                             topRightCorner.y(),
-                             width, width);
-
-            painter.drawRect(bottomRightCorner.x(),
-                             bottomRightCorner.y(),
-                             width, width);
-
-            painter.drawRect(bottomLeftCorner.x(),
-                             bottomLeftCorner.y(),
-                             width, width);
+            painter.drawRect(bottomLeftCorner);
 
             painter.setBrush(QColor(0, 255, 0, 50));
             painter.setPen(Qt::green);
