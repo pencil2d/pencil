@@ -33,7 +33,6 @@ GNU General Public License for more details.
 #include <QMenu>
 
 // Project
-#include "colordictionary.h"
 #include "colourref.h"
 #include "object.h"
 #include "editor.h"
@@ -118,7 +117,6 @@ void ColorPaletteWidget::addItem()
     int colorIndex = ui->colorListWidget->currentRow()+1;
 
     ColourRef ref(newColour);
-    ref.name = getDefaultColorName(newColour);
 
     editor()->object()->addColourAtIndex(colorIndex, ref);
     refreshColorList();
@@ -410,65 +408,6 @@ void ColorPaletteWidget::updateGridUI()
     }
 }
 
-QString ColorPaletteWidget::getDefaultColorName(QColor c)
-{
-    using std::pow;
-
-    // Separate rgb values for convenience
-    const int r = c.red();
-    const int g = c.green();
-    const int b = c.blue();
-
-    // Convert RGB to XYZ with D65 white point
-    // (algorithm source: https://www.cs.rit.edu/%7Encs/color/t_convert.html#RGB%20to%20XYZ%20&%20XYZ%20to%20RGB)
-    const qreal x = 0.412453*r + 0.357580*g + 0.180423*b;
-    const qreal y = 0.212671*r + 0.715160*g + 0.072169*b;
-    const qreal z = 0.019334*r + 0.119193*g + 0.950227*b;
-
-    // Convert XYZ to CEI L*u*v
-    // (algorithm source: https://www.cs.rit.edu/~ncs/color/t_convert.html#XYZ%20to%20CIE%20L*a*b*%20(CIELAB)%20&%20CIELAB%20to%20XYZ)
-    // Helper function for the conversion
-    auto f = [](const double a) { return a > 0.008856 ? std::cbrt(a) : 7.787 * a + 16 / 116; };
-    // XYZ tristimulus values for D65 (taken from: https://en.wikipedia.org/wiki/Illuminant_D65#Definition)
-    const qreal xn = 95.047,
-        yn = 100,
-        zn = 108.883;
-    const qreal l = y / yn > 0.008856 ? 116 * cbrt(y / yn) - 16 : 903.3*y / yn,
-        u = 500 * (f(x / xn) - f(y / yn)),
-        v = 200 * (f(y / yn) - f(z / zn));
-
-    // Find closest color match in colorDict to the luv values
-    int minLoc = 0;
-    if (u < 0.01 && u > -0.01 && v < 0.01 && v > -0.01)
-    {
-        // The color is grayscale so only compare to gray centroids so there is no 'false hue'
-        qreal minDist = pow(colorDict[dictSize - 5][0] - l, 2) + pow(colorDict[dictSize - 5][1] - u, 2) + pow(colorDict[dictSize - 5][2] - v, 2);
-        for (int i = dictSize - 4; i < dictSize; i++)
-        {
-            qreal curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
-            if (curDist < minDist)
-            {
-                minDist = curDist;
-                minLoc = i;
-            }
-        }
-    }
-    else
-    {
-        qreal minDist = pow(colorDict[0][0] - l, 2) + pow(colorDict[0][1] - u, 2) + pow(colorDict[0][2] - v, 2);
-        for (int i = 1; i < dictSize; i++)
-        {
-            qreal curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
-            if (curDist < minDist)
-            {
-                minDist = curDist;
-                minLoc = i;
-            }
-        }
-    }
-    return nameDict[minLoc];
-}
-
 void ColorPaletteWidget::clickColorDialogButton()
 {
     mIsColorDialog = true;
@@ -494,7 +433,6 @@ void ColorPaletteWidget::clickAddColorButton()
 
     int colorIndex = editor()->object()->getColourCount();
     ColourRef ref(newColour);
-    ref.name = getDefaultColorName(newColour);
 
     editor()->object()->addColour(ref);
     refreshColorList();
