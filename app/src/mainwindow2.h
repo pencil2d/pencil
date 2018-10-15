@@ -78,6 +78,7 @@ public:
     // import
     void importImage();
     void importImageSequence();
+    void importImageSequenceNumbered();
     void importMovie();
     void importGIF();
 

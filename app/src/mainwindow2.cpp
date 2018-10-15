@@ -247,6 +247,7 @@ void MainWindow2::createMenus()
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
+    connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importImageSequenceNumbered);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
@@ -400,7 +401,7 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty())
     {
         mRecentFileMenu->clear();
-        QMessageBox::information(this, 0,
+        QMessageBox::information(this, nullptr,
                                  tr("\n\n You have successfully cleared the list"),
                                  QMessageBox::Ok);
     }
@@ -840,6 +841,54 @@ void MainWindow2::importImageSequence()
     progress.close();
 
     mIsImportingImageSequence = false;
+}
+
+void MainWindow2::importImageSequenceNumbered()
+{
+    FileDialog fileDialog(this);
+    QString strFilePath = fileDialog.openFile(FileType::IMAGE);
+
+    if (strFilePath.isEmpty()) { return; }
+    if (!QFile::exists(strFilePath)) { return; }
+
+    int dot = strFilePath.lastIndexOf(".");
+    int slash = strFilePath.lastIndexOf("/");
+    QString path = strFilePath.left(slash + 1);
+    QString prefix = strFilePath.mid(slash + 1, dot - slash - 5);
+    QString digit;
+    QString suffix;
+    QDir dir = strFilePath.left(strFilePath.lastIndexOf("/"));
+    QStringList sList = dir.entryList(QDir::Files, QDir::Name);
+    if (sList.isEmpty()) { return; }
+    QStringList finalList;
+    for (int i = 0; i < sList.size(); i++)
+    {
+        if (sList[i].contains(prefix))
+        {
+            finalList.append(sList[i]);
+        }
+    }
+    if (finalList.isEmpty()) { return; }
+
+    mEditor->layers()->createBitmapLayer(prefix);
+    Layer *layer = mEditor->layers()->findLayerByName(prefix);
+    Q_ASSERT(layer != nullptr);
+
+    LayerManager* lMgr = mEditor->layers();
+    lMgr->setCurrentLayer(layer);
+    dot = finalList[0].lastIndexOf(".");
+    prefix = finalList[0].mid(0, dot - 4);
+    digit = finalList[0].mid(dot - 4, 4);
+    suffix = finalList[0].mid(dot, finalList[0].length() - 1);
+    for (int i = 0; i < finalList.size(); i++)
+    {
+        mEditor->scrubTo(finalList[i].mid(dot - 4, 4).toInt());
+        bool ok = mEditor->importImage(path + finalList[i]);
+        if (!ok) { return;}
+        layer->addNewKeyFrameAt(finalList[i].mid(dot - 4, 4).toInt());
+    }
+    ui->scribbleArea->updateCurrentFrame();
+    mTimeLine->updateContent();
 }
 
 void MainWindow2::importGIF()

@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QDesktopServices>
 #include <QStandardPaths>
+#include <QFileDialog>
 
 #include "pencildef.h"
 #include "editor.h"
