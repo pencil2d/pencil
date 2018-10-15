@@ -851,35 +851,63 @@ void MainWindow2::importImageSequenceNumbered()
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
 
+    // local vars for testing file validity
     int dot = strFilePath.lastIndexOf(".");
     int slash = strFilePath.lastIndexOf("/");
     QString path = strFilePath.left(slash + 1);
     QString prefix = strFilePath.mid(slash + 1, dot - slash - 5);
-    QString digit;
-    QString suffix;
+    QString digit = strFilePath.mid(dot - 4, 4);
+    QString suffix = strFilePath.mid(dot, strFilePath.length() - 1);
+
     QDir dir = strFilePath.left(strFilePath.lastIndexOf("/"));
     QStringList sList = dir.entryList(QDir::Files, QDir::Name);
     if (sList.isEmpty()) { return; }
+
+    // List of files is not empty. Let's go find the relevant files
     QStringList finalList;
+    int validLength = prefix.length() + digit.length() + suffix.length();
     for (int i = 0; i < sList.size(); i++)
     {
-        if (sList[i].contains(prefix))
+        if (sList[i].contains(prefix) && sList[i].length() == validLength)
         {
             finalList.append(sList[i]);
         }
     }
     if (finalList.isEmpty()) { return; }
 
+    // List of relevant files is not empty. Let's validate them
+    dot = finalList[0].lastIndexOf(".");
+
+    QFile file;
+    QTime t;
+    QString msg = "";
+    for (int i = 0; i < finalList.size(); i++)
+    {
+        if (!(finalList[i].mid(dot - 4, 4).toInt()
+                && (finalList[i].mid(dot - 4, 4).toInt() > 0)))
+        {
+            msg = tr("Illegal numbering");
+        }
+        if (msg.length() > 0)
+        {
+            QMessageBox msgBox;
+            msgBox.setText(msg);
+            msgBox.exec();
+            return;
+        }
+    }
+    qDebug() << "Elapsed: " << t.elapsed();
     mEditor->layers()->createBitmapLayer(prefix);
     Layer *layer = mEditor->layers()->findLayerByName(prefix);
     Q_ASSERT(layer != nullptr);
 
     LayerManager* lMgr = mEditor->layers();
     lMgr->setCurrentLayer(layer);
-    dot = finalList[0].lastIndexOf(".");
+    /*
     prefix = finalList[0].mid(0, dot - 4);
     digit = finalList[0].mid(dot - 4, 4);
     suffix = finalList[0].mid(dot, finalList[0].length() - 1);
+    */
     for (int i = 0; i < finalList.size(); i++)
     {
         mEditor->scrubTo(finalList[i].mid(dot - 4, 4).toInt());
