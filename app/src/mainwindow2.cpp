@@ -868,7 +868,7 @@ void MainWindow2::importImageSequenceNumbered()
     int validLength = prefix.length() + digit.length() + suffix.length();
     for (int i = 0; i < sList.size(); i++)
     {
-        if (sList[i].contains(prefix) && sList[i].length() == validLength)
+        if (sList[i].startsWith(prefix) && sList[i].length() == validLength)
         {
             finalList.append(sList[i]);
         }
@@ -879,7 +879,6 @@ void MainWindow2::importImageSequenceNumbered()
     dot = finalList[0].lastIndexOf(".");
 
     QFile file;
-    QTime t;
     QString msg = "";
     for (int i = 0; i < finalList.size(); i++)
     {
@@ -896,18 +895,11 @@ void MainWindow2::importImageSequenceNumbered()
             return;
         }
     }
-    qDebug() << "Elapsed: " << t.elapsed();
     mEditor->layers()->createBitmapLayer(prefix);
     Layer *layer = mEditor->layers()->findLayerByName(prefix);
     Q_ASSERT(layer != nullptr);
-
     LayerManager* lMgr = mEditor->layers();
     lMgr->setCurrentLayer(layer);
-    /*
-    prefix = finalList[0].mid(0, dot - 4);
-    digit = finalList[0].mid(dot - 4, 4);
-    suffix = finalList[0].mid(dot, finalList[0].length() - 1);
-    */
     for (int i = 0; i < finalList.size(); i++)
     {
         mEditor->scrubTo(finalList[i].mid(dot - 4, 4).toInt());
