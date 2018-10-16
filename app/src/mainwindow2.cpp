@@ -851,6 +851,11 @@ void MainWindow2::importImageSequenceNumbered()
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
 
+    addLayerByFilename(strFilePath);
+}
+
+void MainWindow2::addLayerByFilename(QString strFilePath)
+{
     // local vars for testing file validity
     int dot = strFilePath.lastIndexOf(".");
     int slash = strFilePath.lastIndexOf("/");
@@ -868,7 +873,9 @@ void MainWindow2::importImageSequenceNumbered()
     int validLength = prefix.length() + digit.length() + suffix.length();
     for (int i = 0; i < sList.size(); i++)
     {
-        if (sList[i].startsWith(prefix) && sList[i].length() == validLength)
+        if (sList[i].startsWith(prefix) &&
+                sList[i].length() == validLength &&
+                sList[i].endsWith(suffix))
         {
             finalList.append(sList[i]);
         }
@@ -878,7 +885,6 @@ void MainWindow2::importImageSequenceNumbered()
     // List of relevant files is not empty. Let's validate them
     dot = finalList[0].lastIndexOf(".");
 
-    QFile file;
     QString msg = "";
     for (int i = 0; i < finalList.size(); i++)
     {
