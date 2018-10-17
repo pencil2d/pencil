@@ -859,9 +859,22 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
     // local vars for testing file validity
     int dot = strFilePath.lastIndexOf(".");
     int slash = strFilePath.lastIndexOf("/");
+    QString fName = strFilePath.mid(slash + 1);
     QString path = strFilePath.left(slash + 1);
-    QString prefix = strFilePath.mid(slash + 1, dot - slash - 5);
-    QString digit = strFilePath.mid(dot - 4, 4);
+    QString digit = strFilePath.mid(slash + 1, dot - slash + 1);
+
+    // Find number of digits (min: 1, max: 4)
+    int digits = 0;
+    for (int i = digit.length() - 1; i > 0; i--)
+    {
+        if (digit.at(i).isDigit())
+        {
+            digits++;
+        }
+    }
+    if (digits < 1) { return; }
+    digit = strFilePath.mid(dot - digits, digits);
+    QString prefix = strFilePath.mid(slash + 1, dot - slash - digits - 1);
     QString suffix = strFilePath.mid(dot, strFilePath.length() - 1);
 
     QDir dir = strFilePath.left(strFilePath.lastIndexOf("/"));
@@ -875,6 +888,7 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
     {
         if (sList[i].startsWith(prefix) &&
                 sList[i].length() == validLength &&
+                sList[i].mid(sList[i].lastIndexOf(".") - digits, digits).toInt() > 0 &&
                 sList[i].endsWith(suffix))
         {
             finalList.append(sList[i]);
@@ -888,8 +902,8 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
     QString msg = "";
     for (int i = 0; i < finalList.size(); i++)
     {
-        if (!(finalList[i].mid(dot - 4, 4).toInt()
-                && (finalList[i].mid(dot - 4, 4).toInt() > 0)))
+        if (!(finalList[i].mid(dot - digits, digits).toInt()
+                && (finalList[i].mid(dot - digits, digits).toInt() > 0)))
         {
             msg = tr("Illegal numbering");
         }
@@ -901,6 +915,7 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
             return;
         }
     }
+    prefix = mCommands->nameSuggest(prefix);
     mEditor->layers()->createBitmapLayer(prefix);
     Layer *layer = mEditor->layers()->findLayerByName(prefix);
     Q_ASSERT(layer != nullptr);
@@ -908,10 +923,10 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
     lMgr->setCurrentLayer(layer);
     for (int i = 0; i < finalList.size(); i++)
     {
-        mEditor->scrubTo(finalList[i].mid(dot - 4, 4).toInt());
+        mEditor->scrubTo(finalList[i].mid(dot - digits, digits).toInt());
         bool ok = mEditor->importImage(path + finalList[i]);
         if (!ok) { return;}
-        layer->addNewKeyFrameAt(finalList[i].mid(dot - 4, 4).toInt());
+        layer->addNewKeyFrameAt(finalList[i].mid(dot - digits, digits).toInt());
     }
     ui->scribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
