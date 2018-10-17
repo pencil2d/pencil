@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -163,7 +163,7 @@
     <addaction name="actionAdd_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
-    <addaction name="actionCopy_multiple_Keyframes"/>
+    <addaction name="actionManipulate_Frames"/>
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
@@ -889,13 +889,13 @@
     <string>Animated GIF...</string>
    </property>
   </action>
-  <action name="actionCopy_multiple_Keyframes">
+  <action name="actionManipulate_Frames">
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/manipulate_range.png</normaloff>:/icons/manipulate_range.png</iconset>
    </property>
    <property name="text">
-    <string>Manipulate Range</string>
+    <string>Manipulate Frames</string>
    </property>
   </action>
  </widget>

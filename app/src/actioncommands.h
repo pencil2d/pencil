@@ -64,7 +64,7 @@ public:
     Status addNewKey();
     void removeKey();
     void duplicateKey();
-    void manipulateRange();
+    void manipulateFrames();
     void copyFrames(int startL, int stopL, int loops, int startAt, Layer *fLayer, Layer* tLayer );
     void moveFrames(int startL, int stopL, int startAt, Layer* fLayer, Layer* tLayer );
     void reverseFrames(int startL, int stopL, int startAt, Layer *tLayer );

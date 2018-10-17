@@ -566,7 +566,7 @@ void ActionCommands::duplicateKey()
     mEditor->layers()->notifyAnimationLengthChanged();
 }
 
-void ActionCommands::manipulateRange()
+void ActionCommands::manipulateFrames()
 {
     int startL = 1, stopL = 2;          // default values
     if (mEditor->playback()->isRangedPlaybackOn())
@@ -635,7 +635,7 @@ void ActionCommands::manipulateRange()
     }
     mEditor->scrubTo(scrubOrg);
     mEditor->layers()->notifyLayerChanged(toLayer);
-    layerMgr->notifyAnimationLengthChanged();
+    mEditor->layers()->notifyAnimationLengthChanged();
 }
 
 void ActionCommands::copyFrames(int startL, int stopL, int loops, int startAt, Layer *fLayer, Layer *tLayer)
@@ -687,6 +687,7 @@ void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLaye
                     {
                         return;
                     }
+                    fLayer->removeKeyFrame(j);
                 }
                 else
                 {
@@ -695,11 +696,6 @@ void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLaye
                 }
                 tLayer->setModified(startF, true);
             }
-        }
-        if (fLayer->firstKeyFramePosition() == 0)
-        {
-            fLayer->addNewKeyFrameAt(1);
-            fLayer->setModified(1, true);
         }
     }
     else // Move first frame first
@@ -718,6 +714,7 @@ void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLaye
                     {
                         return;
                     }
+                    fLayer->removeKeyFrame(j);
                 }
                 else
                 {
@@ -727,11 +724,11 @@ void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLaye
                 tLayer->setModified(startF, true);
             }
         }
-        if (fLayer->firstKeyFramePosition() == 0)
-        {
-            fLayer->addNewKeyFrameAt(1);
-            fLayer->setModified(1, true);
-        }
+    }
+    if (fLayer->firstKeyFramePosition() == 0)
+    {
+        fLayer->addNewKeyFrameAt(1);
+        fLayer->setModified(1, true);
     }
 }
 
@@ -776,7 +773,6 @@ void ActionCommands::deleteFrames(int startL, int stopL, Layer *tLayer)
         tLayer->addNewKeyFrameAt(1);
         tLayer->setModified(1, true);
     }
-
 }
 
 void ActionCommands::moveFrameForward()
