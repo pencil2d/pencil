@@ -314,6 +314,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mCommands, &ActionCommands::duplicateKey);
     connect(ui->actionMove_Frame_Forward, &QAction::triggered, mCommands, &ActionCommands::moveFrameForward);
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
+    connect(ui->actionXsheet_toggle, &QAction::triggered, this, &MainWindow2::xsheetToggle);
 
     /// --- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
@@ -952,6 +953,14 @@ void MainWindow2::resetAndDockAllSubWidgets()
         dock->setFloating(false);
         dock->show();
     }
+}
+
+void MainWindow2::xsheetToggle()
+{
+    qDebug() << "Xsheet...";
+    Xsheet* xsheet = new Xsheet();
+    xsheet->setWindowFlags(Qt::WindowStaysOnTopHint);
+    xsheet->show();
 }
 
 void MainWindow2::readSettings()

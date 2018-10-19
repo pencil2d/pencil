@@ -58,7 +58,8 @@ HEADERS += \
     src/importimageseqdialog.h \
     src/spinslider.h \
     src/doubleprogressdialog.h \
-    src/colorslider.h
+    src/colorslider.h \
+    src/xsheet.h
 
 SOURCES += \
     src/main.cpp \
@@ -86,7 +87,8 @@ SOURCES += \
     src/importimageseqdialog.cpp \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
-    src/colorslider.cpp
+    src/colorslider.cpp \
+    src/xsheet.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -108,7 +110,8 @@ FORMS += \
     ui/timelinepage.ui \
     ui/filespage.ui \
     ui/toolspage.ui \
-    ui/toolboxwidget.ui
+    ui/toolboxwidget.ui \
+    ui/xsheet.ui
 
 
 
