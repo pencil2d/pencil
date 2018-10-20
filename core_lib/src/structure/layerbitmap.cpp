@@ -114,7 +114,14 @@ Status LayerBitmap::presave(const QString& sDataFolder)
         // Move to temporary locations first to avoid overwritting anything we shouldn't be
         // Ex: Frame A moves from 1 -> 2, Frame B moves from 2 -> 3. Make sure A does not overwrite B
         QString tmpName = QString::asprintf("t_%03d.%03d.png", id(), b->pos());
-        QFile::rename(b->fileName(), tmpName);
+        QDir sA, sB;
+        if ((sA=QFileInfo(b->fileName()).dir()) != (sB=dataFolder)) {
+            // Copy instead of move if the data folder itself has changed
+            QFile::copy(b->fileName(), tmpName);
+        }
+        else {
+            QFile::rename(b->fileName(), tmpName);
+        }
         b->setFileName(tmpName);
     }
 
