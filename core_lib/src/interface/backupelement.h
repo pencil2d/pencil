@@ -56,7 +56,7 @@ private:
 class AddBitmapElement : public BackupElement
 {
 public:
-    AddBitmapElement(BitmapImage* backupBitmap,
+    AddBitmapElement(BitmapImage* backupBitmap, BitmapImage* bufferImage,
                      int backupLayerId,
                      int backupFrameIndex,
                      QString description,
@@ -78,10 +78,14 @@ public:
     BitmapImage* oldBitmap = nullptr;
     BitmapImage* newBitmap = nullptr;
 
+    BitmapImage* oldBufferImage = nullptr;
+
     bool isFirstRedo = true;
 
     void undo() override;
     void redo() override;
+
+    void applyToLastTransformedImage();
 };
 
 
@@ -193,20 +197,14 @@ public:
     SelectionElement(Selection backupSelectionType,
                      QRectF backupTempSelection,
                      QRectF backupSelection,
-                     bool backupCancelTransform,
                      Editor* editor,
                      QUndoCommand* parent = 0);
-
-    bool oldIsSelected = false;
-    bool newIsSelected = false;
 
     QRectF oldSelection = QRectF();
     QRectF newSelection = QRectF();
 
     QRectF oldTempSelection = QRectF();
     QRectF newTempSelection = QRectF();
-
-    bool cancelTransform;
 
     Selection selectionType;
 
@@ -221,6 +219,10 @@ public:
     void redoSelection();
     void undoDeselection();
     void undoSelection();
+    void apply(int layerId,
+               int frameIndex,
+               BitmapImage* bitmap,
+               VectorImage* vector);
 };
 
 class TransformElement : public BackupElement
@@ -229,28 +231,49 @@ class TransformElement : public BackupElement
 public:
 
     enum { Id = 2 };
-    TransformElement(QRectF backupTempSelection,
-                     QRectF backupSelection,
-                     QTransform backupTransform,
+    TransformElement(KeyFrame* backupKeyFrame,
+                     BitmapImage* backupBufferImage,
+                     int backupLayerId,
+                     int backupFramePos, QRectF backupSelection,
+                     QRectF backupTempSelection, QTransform backupTransform,
                      Editor* editor,
                      QUndoCommand* parent = 0);
 
-    QRectF oldTransformApplied = QRectF();
-    QRectF newTransformApplied = QRectF();
 
-    QRectF oldSelection;
-    QRectF newSelection;
+    QRectF oldSelectionRect = QRectF();
+    QRectF newSelectionRect = QRectF();
+
+    QRectF oldSelectionRectTemp = QRectF();
+    QRectF newSelectionRectTemp= QRectF();
 
     QTransform oldTransform;
     QTransform newTransform;
 
-    BitmapImage* getTransformedImage(Layer* layer, int frame);
+    BitmapImage* oldBitmap;
+    BitmapImage* newBitmap;
 
+    BitmapImage* bufferImg;
+
+    VectorImage* oldVector;
+    VectorImage* newVector;
+
+    int oldLayerId = 0;
+    int newLayerId = 0;
+
+    int oldFrameIndex = 0;
+    int newFrameIndex = 0;
 
     bool isFirstRedo = true;
     void undo() override;
     void redo() override;
-    void apply(QRectF tempRect, QRectF selectionRect, QTransform transform);
+    void apply(QRectF tempRect,
+               BitmapImage* bitmapImage,
+               VectorImage* vectorImage,
+               QRectF selectionRect,
+               QTransform transform,
+               int frameIndex,
+               int layerId);
+
     bool mergeWith(const QUndoCommand *other) override;
     int id() const override { return Id; }
 };

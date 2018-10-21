@@ -44,7 +44,7 @@ public:
     void layerMoved(int backupNewLayerIndex);
 
     void selection();
-    void deselect(bool cancelTransforn = false);
+    void deselect();
     void transform();
     void cameraProperties(QRect backupViewRect);
     void frameDragged(int backupFrameOffset);
@@ -81,6 +81,7 @@ private:
 
     Layer* mLayer = nullptr;
     BitmapImage* mBitmap = nullptr;
+    BitmapImage* mBufferImage = nullptr;
     VectorImage* mVector = nullptr;
     SoundClip* mClip = nullptr;
     Camera* mCamera = nullptr;

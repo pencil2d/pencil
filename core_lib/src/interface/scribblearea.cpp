@@ -1744,11 +1744,11 @@ void ScribbleArea::applyTransformedSelection()
 
         if (layer->type() == Layer::BITMAP)
         {
-                BitmapImage* bitmapImage = dynamic_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-                BitmapImage transformedImage = bitmapImage->transformed(mySelection.toRect(), selectionTransformation, true);
+            BitmapImage* bitmapImage = dynamic_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+            BitmapImage transformedImage = bitmapImage->transformed(mySelection.toRect(), selectionTransformation, true);
 
-                bitmapImage->clear(mySelection);
-                bitmapImage->paste(&transformedImage, QPainter::CompositionMode_SourceOver);
+            bitmapImage->clear(mySelection);
+            bitmapImage->paste(&transformedImage, QPainter::CompositionMode_SourceOver);
         }
         else if (layer->type() == Layer::VECTOR)
         {

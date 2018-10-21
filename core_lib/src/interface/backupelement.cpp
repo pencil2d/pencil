@@ -298,6 +298,7 @@ bool RemoveKeyFrameElement::mergeWith(const QUndoCommand *other)
 
 
 AddBitmapElement::AddBitmapElement(BitmapImage* backupBitmap,
+                                   BitmapImage* backupBufferBitmap,
                                    int backupLayerId,
                                    int backupFrameIndex,
                                    QString description,
@@ -305,7 +306,8 @@ AddBitmapElement::AddBitmapElement(BitmapImage* backupBitmap,
                                    QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
-    oldBitmap = backupBitmap;
+    oldBitmap = backupBitmap->clone();
+    oldBufferImage = backupBufferBitmap->clone();
 
     frameIndex = backupFrameIndex;
     newLayerIndex = editor->currentLayerIndex();
@@ -338,7 +340,42 @@ void AddBitmapElement::undo()
 //    {
 //        framePos = previousFrameIndex;
 //    }
-    *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(otherFrameIndex) = *oldBitmap;
+
+    if (editor()->getScribbleArea()->isSomethingSelected())
+    {
+        const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
+        ScribbleArea* scribbleArea = editor()->getScribbleArea();
+
+        // clone old bitmap so we don't paint on the same...
+        BitmapImage* oldBitmapClone = oldBitmap->clone();
+
+        // get the previous image from our old iamge
+        BitmapImage transformedImage = childElem->oldBitmap->transformed(childElem->oldSelectionRect.toRect(),
+                                                                         childElem->oldTransform,
+                                                                         false);
+
+        // clear leftovers...
+        oldBitmapClone->clear(childElem->oldSelectionRect);
+
+        // paste tranformedImage to our cloned bitmap
+        oldBitmapClone->paste(&transformedImage, QPainter::CompositionMode_SourceOver);
+
+        // make the cloned bitmap the new canvas image.
+        *static_cast<LayerBitmap*>(layer)->
+                getBitmapImageAtFrame(framePos) = *oldBitmapClone;
+
+
+        // set selections so the transform will be correct
+        scribbleArea->mySelection = childElem->oldSelectionRectTemp;
+        scribbleArea->myTempTransformedSelection = childElem->oldSelectionRectTemp;
+        scribbleArea->myTransformedSelection= childElem->oldSelectionRectTemp;
+
+        scribbleArea->paintTransformedSelection();
+    }
+    else
+    {
+        *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(framePos) = *oldBitmap;
+    }
 
     if (previousFrameIndex == frameIndex)
     {
@@ -352,13 +389,25 @@ void AddBitmapElement::undo()
 
 void AddBitmapElement::redo()
 {
-    if (isFirstRedo) { isFirstRedo = false; return; }
-
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
+
     int framePos = frameIndex;
 
-    *static_cast<LayerBitmap*>(layer)->
-            getBitmapImageAtFrame(otherFrameIndex) = *newBitmap;
+    if (editor()->getScribbleArea()->isSomethingSelected())
+    {
+        applyToLastTransformedImage();
+    }
+    else
+    {
+        if (isFirstRedo)
+        {
+            isFirstRedo = false;
+            return;
+        }
+
+        *static_cast<LayerBitmap*>(layer)->
+                getBitmapImageAtFrame(otherFrameIndex) = *newBitmap;
+    }
 
     if (previousFrameIndex == frameIndex)
     {
@@ -368,6 +417,44 @@ void AddBitmapElement::redo()
     editor()->scrubTo(framePos);
     editor()->updateCurrentFrame();
 
+}
+
+void AddBitmapElement::applyToLastTransformedImage()
+{
+    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
+    ScribbleArea* scribbleArea = editor()->getScribbleArea();
+    Layer* layer = editor()->layers()->findLayerById(newLayerId);
+
+    newBitmap->clear(childElem->newSelectionRect);
+
+    BitmapImage* newBitmapClone = newBitmap->clone();
+    if (isFirstRedo) {
+
+        // copy buffer image
+        BitmapImage newTransformed = oldBufferImage->transformed(childElem->newSelectionRect.toRect(), QTransform(), false);
+
+        // get transformed image from old position
+        BitmapImage transformedImage = childElem->oldBitmap->transformed(childElem->newSelectionRect.toRect(), childElem->newTransform, false);
+
+        // paste the old transformed image on new cloned bitmap
+        newBitmapClone->paste(&transformedImage, QPainter::CompositionMode_SourceOver);
+
+        // paste buffer image to make it look like the transformation has been applied
+        newBitmapClone->paste(&newTransformed, QPainter::CompositionMode_SourceOver);
+    }
+
+    // set new bitmap to canvas (not painted yet)
+    *static_cast<LayerBitmap*>(layer)->
+            getBitmapImageAtFrame(otherFrameIndex) = *newBitmapClone;
+
+    // reset transform and set selections
+    scribbleArea->setSelectionTransform(QTransform());
+    scribbleArea->mySelection = childElem->newSelectionRectTemp;
+    scribbleArea->myTempTransformedSelection = childElem->newSelectionRectTemp;
+    scribbleArea->myTransformedSelection= childElem->newSelectionRectTemp;
+
+    // finally paint the transformation to apply to canvas
+    scribbleArea->paintTransformedSelection();
 }
 
 AddVectorElement::AddVectorElement(VectorImage* backupVector, int backupLayerId, QString description, Editor* editor, QUndoCommand* parent) : BackupElement(editor, parent)
@@ -438,14 +525,13 @@ void AddVectorElement::redo()
 }
 
 SelectionElement::SelectionElement(Selection backupSelectionType, QRectF backupTempSelection,
-                                         QRectF backupSelection, bool backupCancelTransform,
+                                         QRectF backupSelection,
                                          Editor* editor,
                                          QUndoCommand* parent) : BackupElement(editor, parent)
 {
 
     oldTempSelection = backupTempSelection;
     oldSelection = backupSelection;
-    cancelTransform = backupCancelTransform;
 
     newTempSelection = editor->getScribbleArea()->myTempTransformedSelection;
     newSelection = editor->getScribbleArea()->mySelection;
@@ -474,8 +560,7 @@ void SelectionElement::undoSelection()
     ScribbleArea* scribbleArea = editor()->getScribbleArea();
 
     scribbleArea->myRotatedAngle = 0;
-//    scribbleArea->applyTransformedSelection();
-    scribbleArea->applySelectionChanges();
+    scribbleArea->paintTransformedSelection();
     scribbleArea->deselectAll();
 
     editor()->updateCurrentFrame();
@@ -485,26 +570,49 @@ void SelectionElement::undoSelection()
 void SelectionElement::undoDeselection()
 {
     ScribbleArea* scribbleArea = editor()->getScribbleArea();
-//    scribbleArea->setSelection(oldSelection);
 
-    if (cancelTransform) {
-        qDebug() << "transform cancelled";
-        scribbleArea->cancelTransformedSelection();
-    } else {
-        scribbleArea->mySelection = oldSelection;
-        scribbleArea->myTempTransformedSelection = oldTempSelection;
-        scribbleArea->myTransformedSelection = oldTempSelection;
-        scribbleArea->trySelectSomething();
-        scribbleArea->applySelectionChanges();
+    scribbleArea->mySelection = oldSelection;
+    scribbleArea->myTempTransformedSelection = oldTempSelection;
+    scribbleArea->myTransformedSelection = oldTempSelection;
+    scribbleArea->trySelectSomething();
+
+    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
+    scribbleArea->setSelectionTransform(childElem->oldTransform);
+    apply(childElem->oldLayerId,
+          childElem->oldFrameIndex,
+          childElem->oldBitmap,
+          childElem->oldVector);
+
+    scribbleArea->paintTransformedSelection();
+}
+
+void SelectionElement::apply(int layerId,
+                             int frameIndex,
+                             BitmapImage* bitmap,
+                             VectorImage* vector)
+{
+    Layer* layer = editor()->layers()->findLayerById(layerId);
+    Layer* currentLayer = editor()->layers()->currentLayer();
+
+    if (currentLayer != layer) {
+        editor()->layers()->setCurrentLayer(layer);
     }
 
-    qDebug() << "undo deselection";
+    switch(layer->type())
+    {
+        case Layer::BITMAP:
+        {
+            *static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(frameIndex) = *bitmap;
+            break;
+        }
+        case Layer::VECTOR:
+        {
+            *static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex) = *vector;
+        }
+        default:
+            break;
 
-    scribbleArea->calculateSelectionTransformation();
-    scribbleArea->paintTransformedSelection();
-//    scribbleArea->applyTransformedSelection();
-
-//    scribbleArea->applySelectionChanges();
+    }
 }
 
 void SelectionElement::redo()
@@ -528,7 +636,6 @@ void SelectionElement::redoSelection()
     scribbleArea->myRotatedAngle = 0;
     scribbleArea->calculateSelectionTransformation();
     scribbleArea->paintTransformedSelection();
-    scribbleArea->applySelectionChanges();
 
     editor()->updateCurrentFrame();
 }
@@ -536,9 +643,21 @@ void SelectionElement::redoSelection()
 void SelectionElement::redoDeselection()
 {
     ScribbleArea* scribbleArea = editor()->getScribbleArea();
-    scribbleArea->calculateSelectionTransformation();
-    scribbleArea->paintTransformedSelection();
+
+    scribbleArea->mySelection = newSelection;
+    scribbleArea->myTempTransformedSelection = newTempSelection;
+    scribbleArea->myTransformedSelection = newTempSelection;
+    scribbleArea->trySelectSomething();
+
+    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
+    scribbleArea->setSelectionTransform(childElem->newTransform);
+    apply(childElem->newLayerId,
+          childElem->newFrameIndex,
+          childElem->newBitmap,
+          childElem->newVector);
+
     scribbleArea->applyTransformedSelection();
+    scribbleArea->paintTransformedSelection();
 
     scribbleArea->deselectAll();
 }
@@ -553,7 +672,11 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
     if (selectionType == Selection::SELECTION) {
         newTempSelection = static_cast<const SelectionElement*>(other)->newTempSelection;
         newSelection = static_cast<const SelectionElement*>(other)->newSelection;
-        newIsSelected = static_cast<const SelectionElement*>(other)->newIsSelected;
+
+        ScribbleArea* scribbleArea = editor()->getScribbleArea();
+        scribbleArea->mySelection = newSelection;
+        scribbleArea->myTempTransformedMappedSelection = newTempSelection;
+        scribbleArea->myTransformedSelection = newTempSelection;
 
         return true;
     } else {
@@ -561,69 +684,131 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
     }
 }
 
-TransformElement::TransformElement(QRectF backupTempSelection,
-                                   QRectF backupSelection,
-                                   QTransform backupTransform,
+TransformElement::TransformElement(KeyFrame* backupKeyFrame,
+                                   BitmapImage* backupBufferImage,
+                               int backupLayerId,
+                               int backupFramePos,
+                               QRectF backupSelection,
+                               QRectF backupTempSelection,
+                               QTransform backupTransform,
                                Editor *editor,
                                QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
-    oldSelection = backupSelection;
-    oldTransformApplied = backupTempSelection;
+
+    oldLayerId = backupLayerId;
+    oldFrameIndex = backupFramePos;
+    oldSelectionRect = backupSelection;
+    oldSelectionRectTemp = backupTempSelection;
     oldTransform = backupTransform;
+    bufferImg = backupBufferImage;
 
-    qDebug() << "oldSe: " << oldSelection;
-
-    qDebug() << "oldTemp: " << oldTransformApplied;
-    newTransformApplied = editor->getScribbleArea()->myTempTransformedSelection;
-
-    qDebug() << "newTemp: " << newTransformApplied;
-    newSelection = editor->getScribbleArea()->mySelection;
+    Layer* newLayer = editor->layers()->currentLayer();
+    newLayerId = newLayer->id();
+    newFrameIndex = editor->currentFrame();
+    newSelectionRect = editor->getScribbleArea()->mySelection;
+    newSelectionRectTemp = editor->getScribbleArea()->myTempTransformedSelection;
     newTransform = editor->getScribbleArea()->getSelectionTransformation();
 
-    qDebug() << "newT: " << newTransform;
-    qDebug() << "oldT: " << oldTransform;
+//    qDebug() << "old T:" << oldTransform;
+//    qDebug() << "newT:" << newTransform;
+
+    Layer* layer = editor->layers()->findLayerById(backupLayerId);
+    switch(layer->type())
+    {
+        case Layer::BITMAP:
+        {
+            oldBitmap = static_cast<BitmapImage*>(backupKeyFrame);
+            newBitmap = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(newFrameIndex)->clone();
+            break;
+        }
+        case Layer::VECTOR:
+        {
+            oldVector = static_cast<VectorImage*>(backupKeyFrame);
+            newVector = static_cast<LayerVector*>(layer)->
+                    getVectorImageAtFrame(backupFramePos)->clone();
+            break;
+        }
+        default:
+            break;
+    }
+
+//    ScribbleArea* scribbleArea = editor->getScribbleArea();
+
+//    scribbleArea->mySelection = newSelectionRect;
+//    scribbleArea->paintTransformedSelection();
+
 
     setText("Moved Image");
 }
 
 void TransformElement::undo()
 {
-    apply(newTransformApplied, oldSelection, oldTransform);
-    qDebug() << "undo transform";
-}
-
-void TransformElement::apply(QRectF tempRect, QRectF selectionRect, QTransform transform)
-{
-    ScribbleArea* scribbleArea = editor()->getScribbleArea();
-
-    QRectF tempSwap = selectionRect;
-    selectionRect = tempRect;
-    tempRect = tempSwap;
-
-    scribbleArea->setSelectionTransform(transform);
-    scribbleArea->mySelection = selectionRect;
-    scribbleArea->myTransformedSelection = tempRect;
-    scribbleArea->myTempTransformedSelection = tempRect;
-    scribbleArea->trySelectSomething();
-
-    scribbleArea->calculateSelectionTransformation();
-    scribbleArea->paintTransformedSelection();
-    scribbleArea->applySelectionChanges();
-
-    qDebug() << "tempRect: " << tempRect;
-    qDebug() << "selectionRect: " << selectionRect;
-    qDebug() << "transform: " << newTransform;
-
-    scribbleArea->updateCurrentFrame();
+    apply(oldSelectionRectTemp,
+          oldBitmap,
+          oldVector,
+          oldSelectionRect,
+          oldTransform,
+          oldFrameIndex,
+          oldLayerId);
 }
 
 void TransformElement::redo()
 {
-    if (isFirstRedo) { isFirstRedo = false; return; }
+    if (isFirstRedo) {
+        isFirstRedo = false; return;
+    }
 
-    apply(newSelection, newTransformApplied, newTransform);
-    qDebug() << "redo transform";
+    apply(newSelectionRectTemp,
+          newBitmap,
+          newVector,
+          newSelectionRect,
+          newTransform,
+          newFrameIndex,
+          newLayerId);
+}
+
+void TransformElement::apply(QRectF tempRect,
+                             BitmapImage* bitmapImage,
+                             VectorImage* vectorImage,
+                             QRectF selectionRect,
+                             QTransform transform,
+                             int frameIndex,
+                             int layerId)
+{
+    ScribbleArea* scribbleArea = editor()->getScribbleArea();
+
+    Layer* layer = editor()->layers()->findLayerById(layerId);
+    Layer* currentLayer = editor()->layers()->currentLayer();
+
+    if (layer->type() != currentLayer->type())
+    {
+        editor()->layers()->setCurrentLayer(layer);
+    }
+
+    scribbleArea->setSelectionTransform(transform);
+    scribbleArea->mySelection = selectionRect;
+    scribbleArea->myTempTransformedSelection = tempRect;
+    scribbleArea->myTransformedSelection = tempRect;
+    scribbleArea->trySelectSomething();
+
+    switch(layer->type())
+    {
+        case Layer::BITMAP:
+        {
+            *static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(frameIndex) = *bitmapImage;
+            break;
+        }
+        case Layer::VECTOR:
+        {
+            *static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex) = *vectorImage;
+            break;
+        }
+        default:
+            break;
+
+    }
+    editor()->getScribbleArea()->paintTransformedSelection();
 }
 
 bool TransformElement::mergeWith(const QUndoCommand *other)
@@ -633,20 +818,30 @@ bool TransformElement::mergeWith(const QUndoCommand *other)
         return false;
     }
     const TransformElement* elem = static_cast<const TransformElement*>(other);
-    newSelection = elem->newSelection;
-    newTransformApplied = elem->newTransformApplied;
-    newTransform = elem->newTransform;
 
-    qDebug() << newTransform;
+    newSelectionRectTemp = elem->newSelectionRectTemp;
+    newBitmap = elem->newBitmap;
+    newVector = elem->newVector;
+    newSelectionRect = elem->newSelectionRect;
+    newTransform = elem->newTransform;
+    newFrameIndex = elem->newFrameIndex;
+    newLayerId = elem->newLayerId;
+
+    apply(newSelectionRectTemp,
+          newBitmap,
+          newVector,
+          newSelectionRect,
+          newTransform,
+          newFrameIndex,
+          newLayerId);
 
     ScribbleArea* scribbleArea = editor()->getScribbleArea();
-    scribbleArea->setSelectionTransform(oldTransform);
-    scribbleArea->mySelection = newSelection;
-    scribbleArea->myTempTransformedSelection = newTransformApplied;
 
-    scribbleArea->calculateSelectionTransformation();
+    scribbleArea->mySelection =  newSelectionRect;
+    scribbleArea->myTempTransformedSelection = newSelectionRectTemp;
+    scribbleArea->myTransformedSelection = newSelectionRectTemp;
+
     scribbleArea->paintTransformedSelection();
-    scribbleArea->applyTransformedSelection();
 
     return true;
 }

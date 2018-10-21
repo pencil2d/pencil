@@ -255,16 +255,13 @@ void Editor::flipSelection(bool flipVertical)
 
 void Editor::deselectAllSelections()
 {
-//    backups()->prepareBackup();
     backups()->deselect();
     emit deselectAll();
 }
 
 void Editor::deselectAllAndCancelTransform()
 {
-//    backups()->prepareBackup();
-    bool cancelTransform = true;
-    backups()->deselect(cancelTransform);
+    backups()->deselect();
     emit deselectAll();
 }
 

@@ -157,12 +157,6 @@ void MoveTool::beginInteraction(QMouseEvent* event, Layer* layer)
         setAnchorToLastPoint();
     }
 
-    QRectF selectionRect = mScribbleArea->myTransformedSelection;
-//    if (!selectionRect.isNull())
-//    {
-//        mEditor->backups()->transform();
-//    }
-
     mScribbleArea->findMoveModeOfCornerInRange();
     mScribbleArea->myRotatedAngle = mRotatedAngle;
 
@@ -327,7 +321,14 @@ bool MoveTool::leavingThisTool()
     {
         switch (mCurrentLayer->type())
         {
-        case Layer::BITMAP: applySelectionChanges(); break;
+        case Layer::BITMAP:
+        {
+            if (transformHasBeenModified()) {
+                mEditor->backups()->prepareBackup();
+                mEditor->backups()->transform();
+            }
+            break;
+        }
         case Layer::VECTOR: applyTransformation(); break;
         default: break;
         }
@@ -354,7 +355,7 @@ bool MoveTool::switchingLayer()
     {
         if (mCurrentLayer->type() == Layer::BITMAP)
         {
-            applySelectionChanges();
+            applyTransformation();
 
         } else if (mCurrentLayer->type() == Layer::VECTOR) {
             applyTransformation();

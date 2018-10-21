@@ -122,10 +122,20 @@ void BackupManager::bitmap(QString description)
 {
     if (!mBitmap) { return; }
     AddBitmapElement* element = new AddBitmapElement(mBitmap,
+                                                     mBufferImage->clone(),
                                                      mLayerId,
                                                      mFrameIndex,
                                                      description,
                                                      editor());
+
+    new TransformElement(mKeyframe,
+                         editor()->getScribbleArea()->mBufferImg,
+                          mLayerId,
+                          mFrameIndex,
+                          mSelectionRect,
+                          mTempSelectionRect,
+                          mSelectionTransform,
+                          editor(), element);
     mUndoStack->push(element);
     emit updateBackup();
 }
@@ -145,29 +155,40 @@ void BackupManager::selection()
     SelectionElement* element = new SelectionElement(Selection::SELECTION,
                                                      mTempSelectionRect,
                                                      mSelectionRect,
-                                /* cancelTransform */false,
                                                      editor());
     mUndoStack->push(element);
     emit updateBackup();
 }
 
-void BackupManager::deselect(bool cancelTransform)
+void BackupManager::deselect()
 {
     SelectionElement* element = new SelectionElement(Selection::DESELECT,
                                                      mTempSelectionRect,
                                                      mSelectionRect,
-                                                     cancelTransform,
                                                      editor());
+   new TransformElement(mKeyframe,
+                        editor()->getScribbleArea()->mBufferImg,
+                         mLayerId,
+                         mFrameIndex,
+                         mSelectionRect,
+                         mTempSelectionRect,
+                         mSelectionTransform,
+                         editor(), element);
     mUndoStack->push(element);
+
     emit updateBackup();
 }
 
 void BackupManager::transform()
 {
-    TransformElement* element = new TransformElement(mTempSelectionRect,
+    TransformElement* element = new TransformElement(mKeyframe,
+                                                     editor()->getScribbleArea()->mBufferImg->clone(),
+                                                     mLayerId,
+                                                     mFrameIndex,
                                                      mSelectionRect,
+                                                     mTempSelectionRect,
                                                      mSelectionTransform,
-                                           editor());
+                                                     editor());
     mUndoStack->push(element);
     emit updateBackup();
 }
@@ -457,6 +478,7 @@ void BackupManager::prepareBackup()
     mCamera = nullptr;
     mClip = nullptr;
     mKeyframe = nullptr;
+    mBufferImage = editor()->getScribbleArea()->mBufferImg->clone();
     mLayer = editor()->layers()->currentLayer();
     mLayerId = mLayer->id();
     mFrameIndex = editor()->currentFrame();
