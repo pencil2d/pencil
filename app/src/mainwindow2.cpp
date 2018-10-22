@@ -401,7 +401,7 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty())
     {
         mRecentFileMenu->clear();
-        QMessageBox::information(this, 0,
+        QMessageBox::information(this, nullptr,
                                  tr("\n\n You have successfully cleared the list"),
                                  QMessageBox::Ok);
     }
@@ -957,10 +957,19 @@ void MainWindow2::resetAndDockAllSubWidgets()
 
 void MainWindow2::xsheetToggle()
 {
-    qDebug() << "Xsheet...";
-    Xsheet* xsheet = new Xsheet();
-    xsheet->setWindowFlags(Qt::WindowStaysOnTopHint);
-    xsheet->show();
+    if (mXsheet == nullptr)
+    {
+        mXsheet = new Xsheet();
+        mXsheet->setWindowFlags(Qt::WindowStaysOnTopHint);
+        LayerManager* lMgr = mEditor->layers();
+        mXsheet->updateUi(*lMgr, mEditor);
+        mXsheet->show();
+    }
+    else
+    {
+        mXsheet->close();
+        mXsheet = nullptr;
+    }
 }
 
 void MainWindow2::readSettings()

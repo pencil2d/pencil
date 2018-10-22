@@ -892,7 +892,7 @@
   </action>
   <action name="actionXsheet_toggle">
    <property name="text">
-    <string>Xsheet toggle</string>
+    <string>Show/Hide Xsheet</string>
    </property>
   </action>
  </widget>

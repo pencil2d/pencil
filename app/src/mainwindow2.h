@@ -144,6 +144,7 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr; // be public temporary
     ColorInspector*       mColorInspector = nullptr;
+    Xsheet*               mXsheet = nullptr;
 
     // backup
     BackupElement* mBackupAtSave = nullptr;

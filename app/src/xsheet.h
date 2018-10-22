@@ -2,6 +2,11 @@
 #define XSHEET_H
 
 #include <QDialog>
+#include "layermanager.h"
+#include "editor.h"
+#include "qdebug.h"
+#include <QTableWidget>
+#include <QTableWidgetItem>
 
 namespace Ui {
 class Xsheet;
@@ -14,9 +19,19 @@ class Xsheet : public QDialog
 public:
     explicit Xsheet(QWidget *parent = nullptr);
     ~Xsheet();
+    void updateUi(LayerManager &lMgr, Editor* &editor);
+
+private slots:
+    void selectLayerFrame(int row, int column);
 
 private:
     Ui::Xsheet *ui;
+    LayerManager* mLayerMgr = nullptr;
+    Editor* mEditor = nullptr;
+    int mLayerCount;
+    int mTimeLineLength;
+    QTableWidget* mTableWidget;
+    QTableWidgetItem* mTableItem;
 };
 
 #endif // XSHEET_H
