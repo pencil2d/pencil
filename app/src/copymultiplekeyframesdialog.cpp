@@ -257,7 +257,7 @@ void CopyMultiplekeyframesDialog::checkValidity()
         msg = tr("Exceeds 9999 frames!");
         testValidity = false;
     }
-    else if (mFirstFrame >= mLastFrame) ///< Range must be valid
+    else if (mFirstFrame > mLastFrame) ///< Range must be valid, but can be one frame
     {
         msg = tr("Range not valid!");
         testValidity = false;

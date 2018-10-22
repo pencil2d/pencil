@@ -579,9 +579,10 @@ void ActionCommands::manipulateFrames()
     //     BITMAP = 1     VECTOR = 2   //not yet      SOUND = 4     CAMERA = 5
     if (!(lIndex == 1 || lIndex == 2)) //not yet || lIndex == 4 || lIndex == 5)
     {
-        QMessageBox msgBox;
-        msgBox.setText(tr("Can only be used on Bitmap and Vector layers."));
-        msgBox.exec();
+        int ret = QMessageBox::information(new QWidget, tr("Action not available"),
+                                 tr("Can only be used on Bitmap and Vector layers."),
+                                 QMessageBox::Ok);
+        Q_UNUSED(ret);
         return;
     }
     CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, startL, stopL, new QWidget);
@@ -591,10 +592,10 @@ void ActionCommands::manipulateFrames()
     if (cd->result() != QDialog::Accepted) { return; }
     if (!cd->getValidity())
     {
-        QMessageBox msgBox;
-        msgBox.setWindowTitle(tr("Action not valid!"));
-        msgBox.setText(tr("Failed validation check:\n- Exceeds 9999 Frames OR\n- Range not valid"));
-        msgBox.exec();
+        int ret = QMessageBox::critical(new QWidget,tr("Action not valid!"),
+                              tr("Failed validation check:\n- Exceeds 9999 Frames OR\n- Range not valid"),
+                              QMessageBox::Ok);
+        Q_UNUSED(ret);
         return;
     }
 
