@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QFile>
 #include <QMediaPlayer>
+#include <QtMath>
 #include "soundplayer.h"
 
 SoundClip::SoundClip()
@@ -91,8 +92,8 @@ void SoundClip::playFromPosition(int frameNumber, int fps)
     {
         framesIntoSound = frameNumber - pos();
     }
-    float msPerFrame = (1000 / fps);
-    float msIntoSound = framesIntoSound * msPerFrame;
+    qreal msPerFrame = 1000.0 / fps;
+    qint64 msIntoSound = qRound(framesIntoSound * msPerFrame);
 
     if (mPlayer)
     {
@@ -121,5 +122,5 @@ void SoundClip::setDuration(const int64_t& duration)
 
 void SoundClip::updateLength(int fps)
 {
-    setLength(mDuration * fps / 1000.0);
+    setLength(qCeil(mDuration * fps / 1000.0));
 }

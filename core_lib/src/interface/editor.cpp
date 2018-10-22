@@ -162,6 +162,9 @@ void Editor::settingUpdated(SETTING setting)
         mScribbleArea->updateAllFrames();
         emit updateTimeLine();
         break;
+    case SETTING::FRAME_POOL_SIZE:
+        mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
+        break;
     default:
         break;
     }
@@ -650,6 +653,11 @@ void Editor::updateObject()
     if (mScribbleArea)
     {
         mScribbleArea->updateAllFrames();
+    }
+    
+    if (mPreferenceManager)
+    {
+        mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
     }
 
     emit updateLayerCount();

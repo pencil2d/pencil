@@ -29,7 +29,7 @@ class SoundClip : public KeyFrame
 public:
     explicit SoundClip();
     explicit SoundClip(const SoundClip&);
-    ~SoundClip();
+    ~SoundClip() override;
 
     SoundClip* clone() override;
 
