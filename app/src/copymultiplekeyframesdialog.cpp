@@ -69,16 +69,6 @@ void CopyMultiplekeyframesDialog::init()
     mValidAction = true;
 
     ///< SET text on dialog
-    ui->labHeader->setText(tr("Manipulate Range of Frames"));
-    ui->labRangeStart->setText(tr("First Frame"));
-    ui->labRangeEnd->setText(tr("Last Frame"));
-    ui->labFromLayer->setText(tr("From Layer"));
-    ui->labNumLoops->setText(tr("Number of Loops"));
-    ui->labCopyFromFrame->setText(tr("Insert Frame at"));
-    ui->labCopyToLayer->setText(tr("To Layer"));
-    ui->labMoveFromFrame->setText(tr("Insert Frame at"));
-    ui->labMoveToLayer->setText(tr("To Layer"));
-    ui->labReverseFromFrame->setText(tr("Insert Frame at"));
     ui->labDeleteOnLayer->setText(tr("On Layer ") + mFromLayer );
 
     ///< SET text on labWarning and infolabels

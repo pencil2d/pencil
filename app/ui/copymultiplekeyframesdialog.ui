@@ -152,7 +152,7 @@
           <item>
            <widget class="QLabel" name="labCopyToLayer">
             <property name="text">
-             <string>TO layer:</string>
+             <string>To layer:</string>
             </property>
            </widget>
           </item>
@@ -204,7 +204,7 @@
           <item>
            <widget class="QLabel" name="labMoveToLayer">
             <property name="text">
-             <string>TO layer</string>
+             <string>To layer</string>
             </property>
            </widget>
           </item>
@@ -264,7 +264,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>ON layer:</string>
+        <string>On layer:</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -282,7 +282,7 @@
       </font>
      </property>
      <property name="text">
-      <string>COPY</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -292,7 +292,7 @@
    <item>
     <widget class="QLabel" name="labInfoToFromLayer">
      <property name="text">
-      <string>From: x To: x</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -308,7 +308,7 @@
       </font>
      </property>
      <property name="text">
-      <string>9999 frames exceeded!</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
