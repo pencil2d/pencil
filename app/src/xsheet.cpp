@@ -10,6 +10,7 @@ Xsheet::Xsheet(QWidget *parent) :
     ui(new Ui::Xsheet)
 {
     ui->setupUi(this);
+    sl = new QStringList;
     mTableWidget = ui->tableXsheet;
     connect(mTableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(selectLayerFrame(int, int)));
 }
@@ -27,14 +28,16 @@ void Xsheet::updateUi(LayerManager &lMgr, Editor *&editor)
     mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
     qDebug() << "Width: " << ui->tableXsheet->width();
     mLayerCount = 0;
-    QStringList sl;
-    sl.clear();
+    sl->clear();
+    int lType = mLayerMgr->currentLayer()->type();
     for (int i = 0; i < mLayerMgr->count(); i++)
     {   // count Bitmap and Vector layers
-        if (mLayerMgr->getLayer(i)->type() == 1 || mLayerMgr->getLayer(i)->type() == 2)
+        if (mLayerMgr->getLayer(i)->type() == lType)
+//            if (mLayerMgr->getLayer(i)->type() == 1 || mLayerMgr->getLayer(i)->type() == 2)
         {
             mLayerCount++;
-            sl.append(mLayerMgr->getLayer(i)->name());
+            sl->append(mLayerMgr->getLayer(i)->name());
+            qDebug() << "id : " << mLayerMgr->getLayer(i)->id();
         }
     }
     this->setMinimumWidth(mLayerCount * 40 + 140);
@@ -45,21 +48,21 @@ void Xsheet::updateUi(LayerManager &lMgr, Editor *&editor)
     {
         ui->tableXsheet->setColumnWidth(i, 40);
     }
-
     // set headers of Xsheet
     ui->tableXsheet->setRowHeight(0,16);
     mTableItem = new QTableWidgetItem("#");
     mTableItem->setBackgroundColor(QColor(Qt::lightGray));
     ui->tableXsheet->setItem(0, 0, mTableItem);
-    for (int i = 0; i < sl.size(); i++)
+    for (int i = 0; i < sl->size(); i++)
     {
-        mTableItem = new QTableWidgetItem(sl.at(i));
+        mTableItem = new QTableWidgetItem(sl->at(i));
         mTableItem->setBackgroundColor(QColor(Qt::lightGray));
         ui->tableXsheet->setItem(0, i + 1, mTableItem);
     }
     mTableItem = new QTableWidgetItem("DIAL");
     mTableItem->setBackgroundColor(QColor(Qt::lightGray));
-    ui->tableXsheet->setItem(0, sl.size() + 1, mTableItem);
+    ui->tableXsheet->setItem(0, sl->size() + 1, mTableItem);
+
     fillXsheet();
 }
 

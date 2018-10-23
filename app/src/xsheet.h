@@ -26,6 +26,7 @@ private slots:
     void fillXsheet();
 
 private:
+    QStringList* sl;
     Ui::Xsheet *ui;
     LayerManager* mLayerMgr = nullptr;
     Editor* mEditor = nullptr;
