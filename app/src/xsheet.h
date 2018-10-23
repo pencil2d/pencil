@@ -23,6 +23,7 @@ public:
 
 private slots:
     void selectLayerFrame(int row, int column);
+    void fillXsheet();
 
 private:
     Ui::Xsheet *ui;

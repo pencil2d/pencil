@@ -12,7 +12,6 @@ Xsheet::Xsheet(QWidget *parent) :
     ui->setupUi(this);
     mTableWidget = ui->tableXsheet;
     connect(mTableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(selectLayerFrame(int, int)));
-//    connect(this, SIGNAL(ui->tableXsheet->cellClicked(1,2)), this, SLOT(selectLayerFrame()));
 }
 
 Xsheet::~Xsheet()
@@ -30,20 +29,17 @@ void Xsheet::updateUi(LayerManager &lMgr, Editor *&editor)
     mLayerCount = 0;
     QStringList sl;
     sl.clear();
-    for (int i = 0; i < lMgr.count(); i++)
+    for (int i = 0; i < mLayerMgr->count(); i++)
     {   // count Bitmap and Vector layers
-        if (lMgr.getLayer(i)->type() == 1 || lMgr.getLayer(i)->type() == 2)
+        if (mLayerMgr->getLayer(i)->type() == 1 || mLayerMgr->getLayer(i)->type() == 2)
         {
             mLayerCount++;
-            sl.append(lMgr.getLayer(i)->name());
+            sl.append(mLayerMgr->getLayer(i)->name());
         }
     }
     this->setMinimumWidth(mLayerCount * 40 + 140);
     ui->tableXsheet->setRowCount(mTimeLineLength + 1);
     ui->tableXsheet->setColumnCount(mLayerCount + 2);
-//    ui->tableXsheet->setColumnWidth(0, 40);
-//    ui->tableXsheet->setColumnWidth(mLayerCount + 1, 40);
-    qDebug() << "Width: " << ui->tableXsheet->width();
     // set column width for layers
     for (int i = 0; i < ui->tableXsheet->columnCount(); i++)
     {
@@ -64,26 +60,7 @@ void Xsheet::updateUi(LayerManager &lMgr, Editor *&editor)
     mTableItem = new QTableWidgetItem("DIAL");
     mTableItem->setBackgroundColor(QColor(Qt::lightGray));
     ui->tableXsheet->setItem(0, sl.size() + 1, mTableItem);
-
-    // fill Xsheet
-    for (int i = 1; i <= mTimeLineLength; i++)
-    {
-        ui->tableXsheet->setRowHeight(i,16);
-        mTableItem = new QTableWidgetItem(QString::number(i));
-        ui->tableXsheet->setItem(i, 0, mTableItem);
-        for (int j = 1; j <= mLayerCount; j++)
-        {
-            if (lMgr.getLayer(j)->keyExists(i))
-            {
-                mTableItem = new QTableWidgetItem(QString::number(i));
-                ui->tableXsheet->setItem(i, j, mTableItem);
-            }
-            else
-            {
-                ui->tableXsheet->setItem(i, j, new QTableWidgetItem(" "));
-            }
-        }
-    }
+    fillXsheet();
 }
 
 void Xsheet::selectLayerFrame(int row, int column)
@@ -96,5 +73,29 @@ void Xsheet::selectLayerFrame(int row, int column)
         if (layer == nullptr) { return; }
         mLayerMgr->setCurrentLayer(layer);
         mEditor->scrubTo(row);
+    }
+    fillXsheet();
+}
+
+void Xsheet::fillXsheet()
+{
+    // fill Xsheet
+    for (int i = 1; i <= mTimeLineLength; i++)
+    {
+        ui->tableXsheet->setRowHeight(i,16);
+        mTableItem = new QTableWidgetItem(QString::number(i));
+        ui->tableXsheet->setItem(i, 0, mTableItem);
+        for (int j = 1; j <= mLayerCount; j++)
+        {
+            if (mLayerMgr->getLayer(j)->keyExists(i))
+            {
+                mTableItem = new QTableWidgetItem(QString::number(i));
+                ui->tableXsheet->setItem(i, j, mTableItem);
+            }
+            else
+            {
+                ui->tableXsheet->setItem(i, j, new QTableWidgetItem(" "));
+            }
+        }
     }
 }
