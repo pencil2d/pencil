@@ -74,25 +74,36 @@ void Xsheet::fillXsheet()
         {
             if (mLayerMgr->findLayerByName(mTableWidget->item(0,j)->text())->keyExists(i))
             {
+                int type = getLayerType(mLayerMgr->findLayerByName(mTableWidget->item(0,j)->text()));
                 mTableItem = new QTableWidgetItem(QString::number(i));
+                mTableItem->setBackgroundColor(getLayerColor(type));
                 mTableWidget->setItem(i, j, mTableItem);
             }
+/*
             else
             {
                 mTableWidget->setItem(i, j, new QTableWidgetItem(" "));
             }
+            */
         }
     }
 }
 
 void Xsheet::initXsheet()
 {
+    // clear backgroundcolors
+    for (int i = 1; i < sl->size(); i++)
+        for (int j = 1; j < mTimeLineLength; j++)
+        {
+            mTableItem = new QTableWidgetItem("");
+            mTableItem->setBackgroundColor(Qt::white);
+            mTableWidget->setItem(i, j, mTableItem);
+        }
     mLayerCount = 0;
     sl->clear();
-    int lType = mLayerMgr->currentLayer()->type();
     for (int i = 0; i < mLayerMgr->count(); i++)
-    {   // count Bitmap OR Vector layers, whichever is active
-        if (mLayerMgr->getLayer(i)->type() == lType)
+    {   // count Bitmap and Vector layers (duplicate names NOT supported)
+        if (mLayerMgr->getLayer(i)->type() == 1 || mLayerMgr->getLayer(i)->type() == 2)
         {
             if (!sl->contains(mLayerMgr->getLayer(i)->name()))
             {
@@ -109,13 +120,13 @@ void Xsheet::initXsheet()
             }
         }
     }
-    this->setMinimumWidth(mLayerCount * 40 + 140);
+    this->setMinimumWidth(mLayerCount * 50 + 130);
     mTableWidget->setRowCount(mTimeLineLength + 1);
     mTableWidget->setColumnCount(mLayerCount + 2);
     // set column width for layers
     for (int i = 0; i < mTableWidget->columnCount(); i++)
     {
-        mTableWidget->setColumnWidth(i, 40);
+        mTableWidget->setColumnWidth(i, 50);
     }
     // set headers of Xsheet
     mTableWidget->setRowHeight(0,16);
@@ -124,11 +135,23 @@ void Xsheet::initXsheet()
     mTableWidget->setItem(0, 0, mTableItem);
     for (int i = 0; i < sl->size(); i++)
     {
+        int type = getLayerType(mLayerMgr->findLayerByName(sl->at(i)));
         mTableItem = new QTableWidgetItem(sl->at(i));
-        mTableItem->setBackgroundColor(QColor(220, 220, 255));
+        mTableItem->setBackgroundColor(getLayerColor(type));
         mTableWidget->setItem(0, i + 1, mTableItem);
     }
     mTableItem = new QTableWidgetItem("DIAL");
     mTableItem->setBackgroundColor(QColor(Qt::lightGray));
     mTableWidget->setItem(0, sl->size() + 1, mTableItem);
+}
+
+int Xsheet::getLayerType(Layer *layer)
+{
+    return layer->type();
+}
+
+QColor Xsheet::getLayerColor(int color)
+{
+    if (color == 1) { return QColor(151, 176, 244); }
+    else            { return QColor(150, 242, 150); }
 }

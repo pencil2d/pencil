@@ -27,6 +27,8 @@ private slots:
 
 private:
     void initXsheet();
+    int getLayerType(Layer* layer);
+    QColor getLayerColor(int color);
     QStringList* sl;
     Ui::Xsheet *ui;
     LayerManager* mLayerMgr = nullptr;
