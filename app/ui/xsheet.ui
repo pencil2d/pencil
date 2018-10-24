@@ -52,9 +52,13 @@
       </spacer>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton">
+      <widget class="QPushButton" name="btnPapa">
        <property name="text">
-        <string>...</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../data/app.qrc">
+         <normaloff>:/icons/papagayo.png</normaloff>:/icons/papagayo.png</iconset>
        </property>
       </widget>
      </item>
@@ -95,6 +99,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../data/app.qrc"/>
+ </resources>
  <connections/>
 </ui>
