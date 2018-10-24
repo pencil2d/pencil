@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -893,6 +893,9 @@
   <action name="actionXsheet_toggle">
    <property name="text">
     <string>Show/Hide Xsheet</string>
+   </property>
+   <property name="shortcut">
+    <string>X</string>
    </property>
   </action>
  </widget>
