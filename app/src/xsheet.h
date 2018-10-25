@@ -31,7 +31,7 @@ private:
     void writePapa();
     int getLayerType(Layer* layer);
     QColor getLayerColor(int color);
-    QStringList* sl;
+    QStringList* mLayerNames;
     QStringList* mPapaLines;            // for filling DIAL column
     Ui::Xsheet *ui;
     LayerManager* mLayerMgr = nullptr;

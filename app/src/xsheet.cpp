@@ -29,7 +29,8 @@ Xsheet::Xsheet(QWidget *parent) :
     ui(new Ui::Xsheet)
 {
     ui->setupUi(this);
-    sl = new QStringList;
+    mLayerNames = new QStringList;
+    mLayerCount = 0;
     mPapaLines = new QStringList;
     mTableWidget = ui->tableXsheet;
     connect(mTableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(selectLayerFrame(int, int)));
@@ -53,9 +54,6 @@ void Xsheet::updateUi(LayerManager &lMgr, Editor *&editor)
 
 void Xsheet::selectLayerFrame(int row, int column)
 {
-    initXsheet();
-    fillXsheet();
-    writePapa();
     if (column > 0 && column <= mLayerCount)
     {
         mTableItem = new QTableWidgetItem();
@@ -65,6 +63,9 @@ void Xsheet::selectLayerFrame(int row, int column)
         mLayerMgr->setCurrentLayer(layer);
         mEditor->scrubTo(row);
     }
+    initXsheet();
+    fillXsheet();
+    writePapa();
 }
 
 void Xsheet::fillXsheet()
@@ -74,6 +75,7 @@ void Xsheet::fillXsheet()
     {
         mTableWidget->setRowHeight(i,16);
         mTableItem = new QTableWidgetItem(QString::number(i));
+        mTableItem->setBackgroundColor(QColor(250, 240, 160));
         mTableWidget->setItem(i, 0, mTableItem);
         for (int j = 1; j <= mLayerCount; j++)
         {
@@ -109,15 +111,15 @@ void Xsheet::loadPapa()
 void Xsheet::initXsheet()
 {
     mLayerCount = 0;
-    sl->clear();
+    mLayerNames->clear();
     for (int i = 0; i < mLayerMgr->count(); i++)
     {   // count Bitmap and Vector layers (duplicate names NOT supported)
         if (mLayerMgr->getLayer(i)->type() == 1 || mLayerMgr->getLayer(i)->type() == 2)
         {
-            if (!sl->contains(mLayerMgr->getLayer(i)->name()))
+            if (!mLayerNames->contains(mLayerMgr->getLayer(i)->name()))
             {
                 mLayerCount++;
-                sl->append(mLayerMgr->getLayer(i)->name());
+                mLayerNames->append(mLayerMgr->getLayer(i)->name());
             }
             else
             {
@@ -129,7 +131,7 @@ void Xsheet::initXsheet()
             }
         }
     }
-    for (int i = 1; i <= sl->size(); i++)
+    for (int i = 1; i <= mLayerNames->size(); i++)
     {
         for (int j = 1; j < mTimeLineLength; j++)
         {
@@ -149,16 +151,18 @@ void Xsheet::initXsheet()
     // set headers of Xsheet
     mTableWidget->setRowHeight(0,16);
     mTableItem = new QTableWidgetItem("#");
+    mTableItem->setBackgroundColor(QColor(250, 240, 160));
     mTableWidget->setItem(0, 0, mTableItem);
-    for (int i = 0; i < sl->size(); i++)
+    for (int i = 0; i < mLayerNames->size(); i++)
     {
-        int type = getLayerType(mLayerMgr->findLayerByName(sl->at(i)));
-        mTableItem = new QTableWidgetItem(sl->at(i));
+        int type = getLayerType(mLayerMgr->findLayerByName(mLayerNames->at(i)));
+        mTableItem = new QTableWidgetItem(mLayerNames->at(i));
         mTableItem->setBackgroundColor(getLayerColor(type));
         mTableWidget->setItem(0, i + 1, mTableItem);
     }
     mTableItem = new QTableWidgetItem("DIAL");
-    mTableWidget->setItem(0, sl->size() + 1, mTableItem);
+    mTableItem->setBackgroundColor(QColor(244, 167, 167, 150));
+    mTableWidget->setItem(0, mLayerNames->size() + 1, mTableItem);
 }
 
 void Xsheet::writePapa()
@@ -169,12 +173,14 @@ void Xsheet::writePapa()
     // clear column
     for (int i = 0; i < mTimeLineLength; i++)
     {
-        mTableItem = new QTableWidgetItem(" ");
+        mTableItem = new QTableWidgetItem("");
+        mTableItem->setBackgroundColor(Qt::white);
         mTableWidget->setItem(i, dial - 1, mTableItem);
     }
 
     // write header
     mTableItem = new QTableWidgetItem(mPapaLines->at(5));
+    mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
     mTableWidget->setItem(0, dial - 1, mTableItem);
     QString tmp;
     QStringList lipsync;    // papagayo mouths
@@ -186,7 +192,9 @@ void Xsheet::writePapa()
         {
             tmp = lipsync.at(0);
             int row = tmp.toInt();
-            mTableWidget->setItem(row, dial - 1, new QTableWidgetItem(lipsync.at(1)));
+            mTableItem = new QTableWidgetItem(lipsync.at(1));
+            mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
+            mTableWidget->setItem(row, dial - 1, mTableItem);
         }
     }
     tmp = mPapaLines->at(10);
