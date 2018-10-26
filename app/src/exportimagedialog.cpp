@@ -136,7 +136,7 @@ void ExportImageDialog::setTransparencyOptionVisability(const QString &format)
     //Why private? I don't see it as a public function.
     //If there are other formats to be included in the future that also
     //do not support transparency, could add them into the if condition with
-    //&& (until that got too long, in case we could store option in a vector)
+    // || (until that got too long, in case we could store option in a vector)
     if (format == "JPG")
         ui->cbTransparency->setDisabled(true);
     else
