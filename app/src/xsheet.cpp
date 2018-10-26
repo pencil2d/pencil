@@ -34,6 +34,7 @@ Xsheet::Xsheet(QWidget *parent) :
     mPapaLines = new QStringList;
     mTableWidget = ui->tableXsheet;
     connect(mTableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(selectLayerFrame(int, int)));
+    connect(mTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(addLayerFrame(int,int)));
     connect(ui->btnPapa, SIGNAL(clicked(bool)), this, SLOT(loadPapa()));
     connect(ui->btnNoPapa, SIGNAL(clicked(bool)), this, SLOT(erasePapa()));
 }
@@ -53,17 +54,26 @@ void Xsheet::updateUi(LayerManager &lMgr, Editor *&editor)
     fillXsheet();
 }
 
+void Xsheet::updateXsheet()
+{
+    qDebug() << "in updateXsheet...";
+    initXsheet();
+    fillXsheet();
+    writePapa();
+}
+
 void Xsheet::selectLayerFrame(int row, int column)
 {
-    if (column > 0 && column <= mLayerCount)
-    {
-        mTableItem = new QTableWidgetItem();
-        mTableItem = mTableWidget->item(0, column);
-        Layer* layer = mLayerMgr->findLayerByName(mTableItem->text());
-        if (layer == nullptr) { return; }
-        mLayerMgr->setCurrentLayer(layer);
-        mEditor->scrubTo(row);
-    }
+    selectItem(row, column);
+    initXsheet();
+    fillXsheet();
+    writePapa();
+}
+
+void Xsheet::addLayerFrame(int row, int column)
+{
+    selectItem(row, column);
+    mLayerMgr->currentLayer()->addNewKeyFrameAt(row);
     initXsheet();
     fillXsheet();
     writePapa();
@@ -215,6 +225,19 @@ void Xsheet::writePapa()
     tmp = mPapaLines->at(10);
     int row = tmp.toInt();
     mTableWidget->setItem(row, dial - 1, new QTableWidgetItem("-"));
+}
+
+void Xsheet::selectItem(int row, int column)
+{
+    if (column > 0 && column <= mLayerCount)
+    {
+        mTableItem = new QTableWidgetItem();
+        mTableItem = mTableWidget->item(0, column);
+        Layer* layer = mLayerMgr->findLayerByName(mTableItem->text());
+        if (layer == nullptr) { return; }
+        mLayerMgr->setCurrentLayer(layer);
+        mEditor->scrubTo(row);
+    }
 }
 
 QColor Xsheet::getLayerColor(int color)

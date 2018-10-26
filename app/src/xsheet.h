@@ -20,9 +20,12 @@ public:
     explicit Xsheet(QWidget *parent = nullptr);
     ~Xsheet();
     void updateUi(LayerManager &lMgr, Editor* &editor);
+public slots:
+    void updateXsheet();
 
 private slots:
     void selectLayerFrame(int row, int column);
+    void addLayerFrame(int row, int column);
     void fillXsheet();
     void loadPapa();
     void erasePapa();
@@ -31,6 +34,7 @@ private:
     void initXsheet();
     void writePapa();
     int getLayerType(Layer* layer) { return layer->type(); }
+    void selectItem(int row, int column);
     QColor getLayerColor(int color);
     QStringList* mLayerNames;
     QStringList* mPapaLines;            // for filling DIAL column

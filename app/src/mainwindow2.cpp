@@ -229,6 +229,7 @@ void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument);
+//    connect(ui->actionNew, &QAction::triggered, mXsheet, &Xsheet::updateXsheet);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument);
     connect(ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument);
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument);
