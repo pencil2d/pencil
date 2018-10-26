@@ -118,10 +118,7 @@ QString ExportImageDialog::getCameraLayerName() const
 void ExportImageDialog::formatChanged(const QString& format)
 {
     setFileExtension(format.toLower());
-    if (format == "JPG")
-        ui->cbTransparency->setVisible(false);
-    else
-        ui->cbTransparency->setVisible(true);
+    setTransparencyOptionVisability(format);
 }
 
 void ExportImageDialog::cameraComboChanged(int index)
@@ -130,4 +127,18 @@ void ExportImageDialog::cameraComboChanged(int index)
 
     ui->imgWidthSpinBox->setValue(cameraSize.width());
     ui->imgHeightSpinBox->setValue(cameraSize.height());
+}
+
+void ExportImageDialog::setTransparencyOptionVisability(const QString &format)
+{
+    //to put in PR description:
+    //Why a function? To encapsulate the logic.
+    //Why private? I don't see it as a public function.
+    //If there are other formats to be included in the future that also
+    //do not support transparency, could add them into the if condition with
+    //&& (until that got too long, in case we could store option in a vector)
+    if (format == "JPG")
+        ui->cbTransparency->setDisabled(true);
+    else
+        ui->cbTransparency->setDisabled(false);
 }
