@@ -25,11 +25,12 @@ private slots:
     void selectLayerFrame(int row, int column);
     void fillXsheet();
     void loadPapa();
+    void erasePapa();
 
 private:
     void initXsheet();
     void writePapa();
-    int getLayerType(Layer* layer);
+    int getLayerType(Layer* layer) { return layer->type(); }
     QColor getLayerColor(int color);
     QStringList* mLayerNames;
     QStringList* mPapaLines;            // for filling DIAL column

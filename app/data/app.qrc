@@ -57,6 +57,7 @@
         <file>icons/new/arrow-selectmove.png</file>
         <file>icons/new/arrow-vertical.png</file>
         <file>icons/papagayo.png</file>
+        <file>icons/papagayoNo.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

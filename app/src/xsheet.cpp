@@ -35,6 +35,7 @@ Xsheet::Xsheet(QWidget *parent) :
     mTableWidget = ui->tableXsheet;
     connect(mTableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(selectLayerFrame(int, int)));
     connect(ui->btnPapa, SIGNAL(clicked(bool)), this, SLOT(loadPapa()));
+    connect(ui->btnNoPapa, SIGNAL(clicked(bool)), this, SLOT(erasePapa()));
 }
 
 Xsheet::~Xsheet()
@@ -106,6 +107,20 @@ void Xsheet::loadPapa()
     }
     file.close();
     writePapa();
+}
+
+void Xsheet::erasePapa()
+{
+    int dial = mTableWidget->columnCount();
+
+    // clear column
+    for (int i = 0; i < mTimeLineLength; i++)
+    {
+        mTableItem = new QTableWidgetItem("");
+        mTableItem->setBackgroundColor(Qt::white);
+        mTableWidget->setItem(i, dial - 1, mTableItem);
+    }
+    mPapaLines->clear();
 }
 
 void Xsheet::initXsheet()
@@ -183,16 +198,16 @@ void Xsheet::writePapa()
     mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
     mTableWidget->setItem(0, dial - 1, mTableItem);
     QString tmp;
-    QStringList lipsync;    // papagayo mouths
+    QStringList lipsync;    // papagayo info on mouths
     for (int i = 12; i < mPapaLines->size(); i++)
     {
         tmp = mPapaLines->at(i);
         lipsync = tmp.split(" ");
         if (lipsync.size() == 2)
         {
-            tmp = lipsync.at(0);
+            tmp = lipsync.at(0);    // frame number
             int row = tmp.toInt();
-            mTableItem = new QTableWidgetItem(lipsync.at(1));
+            mTableItem = new QTableWidgetItem(lipsync.at(1)); // audio to animate
             mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
             mTableWidget->setItem(row, dial - 1, mTableItem);
         }
@@ -200,11 +215,6 @@ void Xsheet::writePapa()
     tmp = mPapaLines->at(10);
     int row = tmp.toInt();
     mTableWidget->setItem(row, dial - 1, new QTableWidgetItem("-"));
-}
-
-int Xsheet::getLayerType(Layer *layer)
-{
-    return layer->type();
 }
 
 QColor Xsheet::getLayerColor(int color)
