@@ -695,6 +695,12 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         format = "TIFF";
         extension = ".tiff";
     }
+    if (formatStr == "BMP" || formatStr == "bmp")
+    {
+        format = "BMP";
+        extension = ".bmp";
+        transparency = false; // Even though BMP supports transparency, we don't allow it for now.
+    }
     if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {
         filePath.chop(extension.size());
