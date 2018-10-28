@@ -27,8 +27,8 @@ public:
 public slots:
     void updateXsheet();
     void updateUi(Editor *editor);
-    void upNew();
     void showScrub(int frame);
+    void updateScrub(int frame);
 
 private slots:
     void selectLayerFrame(int row, int column);

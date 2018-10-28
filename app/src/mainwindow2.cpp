@@ -336,7 +336,9 @@ void MainWindow2::createMenus()
 
     /// --- Xsheet update ---
     connect(mEditor, &Editor::updateTimeLine, this, &MainWindow2::updateXsheet);
-//    connect(ui->actionDelete_Current_Layer, &QAction::changed, this, &MainWindow2::updateXsheet);
+    connect(mEditor->layers(), &LayerManager::layerCountChanged, mXsheet, &Xsheet::updateXsheet);
+    connect(mEditor, &Editor::currentFrameChanged, mXsheet, &Xsheet::updateScrub);
+
 
     /// --- Window Menu ---
     QMenu* winMenu = ui->menuWindows;

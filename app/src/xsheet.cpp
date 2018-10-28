@@ -29,7 +29,6 @@ Xsheet::Xsheet(QWidget *parent) :
     ui(new Ui::Xsheet)
 {
     ui->setupUi(this);
-    initUI();
 }
 
 Xsheet::~Xsheet()
@@ -43,20 +42,18 @@ void Xsheet::initUI()
     mLayerCount = 0;
     mPapaLines = new QStringList;
     mTableWidget = ui->tableXsheet;
-    connect(mTableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(selectLayerFrame(int, int)));
-    connect(mTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(addLayerFrame(int,int)));
-    connect(ui->btnPapa, SIGNAL(clicked(bool)), this, SLOT(loadPapa()));
-    connect(ui->btnNoPapa, SIGNAL(clicked(bool)), this, SLOT(erasePapa()));
+    connect(mTableWidget, &QTableWidget::cellClicked, this, &Xsheet::selectLayerFrame);
+    connect(mTableWidget, &QTableWidget::cellDoubleClicked, this, &Xsheet::addLayerFrame);
+    connect(ui->btnPapa, &QPushButton::clicked, this, &Xsheet::loadPapa );
+    connect(ui->btnNoPapa, &QPushButton::clicked, this, &Xsheet::erasePapa);
 }
 
 void Xsheet::updateUI()
 {
-
 }
 
 void Xsheet::updateUi(Editor* editor)
 {
-    qDebug() << "in UpdateUi. papaSize: " << mPapaLines->size();
     mEditor = editor;
     QSettings settings(PENCIL2D, PENCIL2D);
     mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
@@ -66,17 +63,18 @@ void Xsheet::updateUi(Editor* editor)
     writePapa();
 }
 
-void Xsheet::upNew()
-{
-    qDebug() << "Up new";
-}
-
 void Xsheet::showScrub(int frame)
 {
-//    qDebug() << "in showScrub. Frame: " << frame;
     mTableItem = new QTableWidgetItem(QString::number(frame));
     mTableItem->setBackgroundColor(QColor(250, 150, 150));
     mTableWidget->setItem(frame, 0, mTableItem);
+    mTableWidget->scrollToItem(mTableItem);
+}
+
+void Xsheet::updateScrub(int frame)
+{
+    fillXsheet();
+    showScrub(frame);
 }
 
 void Xsheet::updateXsheet()
@@ -84,6 +82,7 @@ void Xsheet::updateXsheet()
     initXsheet();
     fillXsheet();
     writePapa();
+    showScrub(mEditor->currentFrame());
 }
 
 void Xsheet::selectLayerFrame(int row, int column)
@@ -129,13 +128,12 @@ void Xsheet::fillXsheet()
 
 void Xsheet::loadPapa()
 {
-    qDebug() << "Before load: mPapaLines " << mPapaLines->size();
-    mPapaLines->clear();
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open *.pgo file"), "", tr("Pgo Files (*.pgo)"));
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
+    mPapaLines->clear();
     QTextStream in(&file);
     while (!in.atEnd()) {
         QString tmp = in.readLine();
@@ -143,7 +141,6 @@ void Xsheet::loadPapa()
         mPapaLines->append(tmp);
     }
     file.close();
-    qDebug() << "After load: mPapaLines " << mPapaLines->size();
     writePapa();
 }
 
@@ -170,7 +167,8 @@ void Xsheet::initXsheet()
     mLayerNames->clear();
     for (int i = 0; i < mEditor->layers()->count(); i++)
     {   // count Bitmap and Vector layers (duplicate names NOT supported)
-        if (mEditor->layers()->getLayer(i)->type() == 1 || mEditor->layers()->getLayer(i)->type() == 2)
+        bool visi = mEditor->layers()->getLayer(i)->getVisibility();
+        if (visi && (mEditor->layers()->getLayer(i)->type() == 1 || mEditor->layers()->getLayer(i)->type() == 2))
         {
             if (!mLayerNames->contains(mEditor->layers()->getLayer(i)->name()))
             {
@@ -224,8 +222,6 @@ void Xsheet::initXsheet()
 
 void Xsheet::writePapa()
 {
-    qDebug() << "Before write: mPapaLines " << mPapaLines->size();
-
     if (mPapaLines->size() > 11)
     {
         int dial = mTableWidget->columnCount();
@@ -261,7 +257,10 @@ void Xsheet::writePapa()
         int row = tmp.toInt();
         mTableWidget->setItem(row, dial - 1, new QTableWidgetItem("-"));
     }
-    qDebug() << "After write: mPapaLines " << mPapaLines->size();
+    else
+    {
+        erasePapa();
+    }
 }
 
 int Xsheet::getLayerType(Layer *layer)
