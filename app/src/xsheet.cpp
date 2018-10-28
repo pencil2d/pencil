@@ -57,6 +57,7 @@ void Xsheet::initUI()
     connect(ui->btnNoPapa, &QPushButton::clicked, this, &Xsheet::erasePapa);
     connect(ui->btnSave, &QPushButton::clicked, this, &Xsheet::saveLipsync);
     connect(ui->btnLoad, &QPushButton::clicked, this, &Xsheet::loadLipsync);
+    connect(ui->btnDeleteFrame, &QPushButton::clicked, this, &Xsheet::removeFrame);
 }
 
 void Xsheet::updateUI()
@@ -114,17 +115,49 @@ void Xsheet::addLayerFrame(int row, int column)
     else if (column == mTableWidget->columnCount() - 1)
     {
         bool ok;
-        QString text = QInputDialog::getText(this, tr("Input text for Lipsync"),
-                                             tr("Maximum 4 chars accepted:"), QLineEdit::Normal,
-                                             "", &ok);
+        int len;
+        QString text;
+        if (row > 0)
+        {
+            text = QInputDialog::getText(this, tr("Input text for Lipsync"),
+                                                 tr("Maximum 4 chars accepted:"), QLineEdit::Normal,
+                                                 "", &ok);
+            len = 4;
+        }
+        else
+        {
+            text = QInputDialog::getText(this, tr("Input Character name"),
+                                                 tr("Maximum 20 chars accepted:"), QLineEdit::Normal,
+                                                 "", &ok);
+            len = 20;
+        }
         if (ok && !text.isEmpty())
         {
-            mTableItem = new QTableWidgetItem(text.left(4));
+            mTableItem = new QTableWidgetItem(text.left(len));
             mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
             mTableWidget->setItem(row, column, mTableItem);
-            if (mPapaLines->size() > 1)
-                mPapaLines->append(QString::number(row) + " " + text.left(4));
-//            return;
+            if (mPapaLines->size() > 0 && row > 0)
+            {   // if mPapaLines was NOT EMPTY and you typed a Text
+                mPapaLines->append(QString::number(row) + " " + text.left(len));
+            }
+            else if (mPapaLines->size() > 0 && row == 0)
+            {   // if mPapaLines was NOT EMPTY and you want to change Name of Character
+                QStringList tmp = mPapaLines->at(0).split(" ");
+                mPapaLines->insert(0, text.left(20) + " " + tmp.at(1) + " " + tmp.at(2));
+            }
+            else
+            {   // if mPapaLines was EMPTY
+                mPapaLines->clear();
+                if (row > 0)
+                {
+                    mPapaLines->append("DIAL 12 " + QString::number(mTimeLineLength));
+                    mPapaLines->append(QString::number(row) + " " + text);
+                }
+                else
+                {
+                    mPapaLines->append(text + " 12 " + QString::number(mTimeLineLength));
+                }
+            }
         }
     }
     initXsheet();
@@ -247,14 +280,13 @@ void Xsheet::loadLipsync()
     writePapa();
 }
 
-
 void Xsheet::saveLipsync()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save Lipsync column"), "",
             tr("Pencil2D Lipsync file (*.lip2d)"));
     if (fileName.isEmpty()) { return; }
-    QFile file(fileName + ".lip2d");
+    QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         QMessageBox::information(this,
@@ -266,6 +298,36 @@ void Xsheet::saveLipsync()
     for (int i = 0; i < mPapaLines->length(); i++)
     {
         out << mPapaLines->at(i) << '\n';
+    }
+}
+
+void Xsheet::removeFrame()
+{
+    QString tmp = mTableWidget->item(mTableWidget->currentRow(), mTableWidget->currentColumn())->text();
+    if (mTableWidget->currentColumn() > 0)
+    {
+        mTableItem = new QTableWidgetItem("");
+        mTableItem->setBackgroundColor(QColor(Qt::white));
+        mTableWidget->setItem(mTableWidget->currentRow(), mTableWidget->currentColumn(), mTableItem);
+        if (mTableWidget->currentColumn() == mTableWidget->columnCount() - 1)
+        {   // if it is a lipsync column
+            for (int i = 1; i < mPapaLines->size(); i++)
+                if (mPapaLines->at(i).startsWith(QString::number(mTableWidget->currentRow())))
+                    mPapaLines->removeAt(i);
+        }
+        else
+        {   // if it is a Bitmap or Vector layer
+            if (!tmp.isEmpty())
+            {
+                QString name = mTableWidget->item(0, mTableWidget->currentColumn())->text();
+                int frame = mTableWidget->currentRow();
+                if (mEditor->layers()->findLayerByName(name)->keyExists(frame))
+                {
+                    mEditor->layers()->findLayerByName(name)->removeKeyFrame(frame);
+                    emit mEditor->layers()->notifyLayerChanged(mEditor->layers()->findLayerByName(name));
+                }
+            }
+        }
     }
 }
 
@@ -330,7 +392,7 @@ void Xsheet::initXsheet()
 
 void Xsheet::writePapa()
 {
-    if (mPapaLines->size() > 1)
+    if (!mPapaLines->isEmpty())
     {
         int dial = mTableWidget->columnCount();
 

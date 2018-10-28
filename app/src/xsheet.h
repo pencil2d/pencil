@@ -39,6 +39,7 @@ private slots:
     void erasePapa();
     void loadLipsync();
     void saveLipsync();
+    void removeFrame();
 
 private:
     void initXsheet();
