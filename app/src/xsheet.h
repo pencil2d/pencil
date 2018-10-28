@@ -22,9 +22,10 @@ class Xsheet : public BaseDockWidget
     void updateUI() override;
 
 public:
-    explicit Xsheet(QWidget *parent = 0);
-    ~Xsheet();
+    explicit Xsheet(QWidget *parent = nullptr);
+    ~Xsheet() override;
 public slots:
+    void newOpenScene();
     void updateXsheet();
     void updateUi(Editor *editor);
     void showScrub(int frame);

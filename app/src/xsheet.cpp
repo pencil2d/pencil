@@ -36,6 +36,11 @@ Xsheet::~Xsheet()
     delete ui;
 }
 
+void Xsheet::newOpenScene()
+{
+    erasePapa();
+}
+
 void Xsheet::initUI()
 {
     mLayerNames = new QStringList;

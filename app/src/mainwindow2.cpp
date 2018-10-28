@@ -338,6 +338,8 @@ void MainWindow2::createMenus()
     connect(mEditor, &Editor::updateTimeLine, this, &MainWindow2::updateXsheet);
     connect(mEditor->layers(), &LayerManager::layerCountChanged, mXsheet, &Xsheet::updateXsheet);
     connect(mEditor, &Editor::currentFrameChanged, mXsheet, &Xsheet::updateScrub);
+    connect(ui->actionNew, &QAction::triggered, mXsheet, &Xsheet::newOpenScene);
+    connect(ui->actionOpen, &QAction::triggered, mXsheet, &Xsheet::newOpenScene);
 
 
     /// --- Window Menu ---
