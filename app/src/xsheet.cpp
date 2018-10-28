@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include "layer.h"
 #include <QFile>
 #include <QFileDialog>
+#include <QInputDialog>
+#include <QLineEdit>
 
 Xsheet::Xsheet(QWidget *parent) :
     BaseDockWidget(parent),
@@ -45,6 +47,8 @@ void Xsheet::initUI()
 {
     mLayerNames = new QStringList;
     mLayerCount = 0;
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
     mPapaLines = new QStringList;
     mTableWidget = ui->tableXsheet;
     connect(mTableWidget, &QTableWidget::cellClicked, this, &Xsheet::selectLayerFrame);
@@ -96,6 +100,7 @@ void Xsheet::selectLayerFrame(int row, int column)
     fillXsheet();
     selectItem(row, column);
     showScrub(row);
+    mEditor->scrubTo(row);
     writePapa();
 }
 
@@ -104,6 +109,22 @@ void Xsheet::addLayerFrame(int row, int column)
     selectItem(row, column);
     if (column > 0 && column <= mLayerCount)
         mEditor->layers()->currentLayer()->addNewKeyFrameAt(row);
+    else if (column == mTableWidget->columnCount() - 1)
+    {
+        bool ok;
+        QString text = QInputDialog::getText(this, tr("Input text for Lipsync"),
+                                             tr("Maximum 4 chars accepted:"), QLineEdit::Normal,
+                                             "", &ok);
+        if (ok && !text.isEmpty())
+        {
+            mTableItem = new QTableWidgetItem(text.left(4));
+            mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
+            mTableWidget->setItem(row, column, mTableItem);
+            if (mPapaLines->size() > 1)
+                mPapaLines->append(QString::number(row) + " " + text.left(4));
+//            return;
+        }
+    }
     initXsheet();
     fillXsheet();
     showScrub(row);
@@ -130,7 +151,13 @@ void Xsheet::fillXsheet()
         }
     }
 }
-
+/*
+ * Load *.pgo file and keep in mPapaLines as follows:
+ * First entry in mPapaLines:   Character Name OR DIAL - SPACE - FPS - SPACE - Last frame, if any
+ * Next entries in mPapaLines:  Frame - SPACE - phonemes (Only lines with two informations is saved)
+ *
+ * Extra phonemes can be added
+ */
 void Xsheet::loadPapa()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -139,13 +166,28 @@ void Xsheet::loadPapa()
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
     mPapaLines->clear();
+    QStringList tmpList;
     QTextStream in(&file);
     while (!in.atEnd()) {
         QString tmp = in.readLine();
         tmp.remove("\t");
-        mPapaLines->append(tmp);
+        tmpList.append(tmp);
     }
     file.close();
+    QString tmp = tmpList.at(5);
+    if (tmp.length() < 1)
+        tmp = "DIAL";
+    mPapaLines->append(tmp + " " + tmpList.at(2) + " " + tmpList.at(10));
+    QStringList lipsync;    // papagayo info on mouths
+    for (int i = 12; i < tmpList.size(); i++)
+    {
+        tmp = tmpList.at(i);
+        lipsync = tmp.split(" ");
+        if (lipsync.size() == 2)
+        {
+            mPapaLines->append(tmp);
+        }
+    }
     writePapa();
 }
 
@@ -227,7 +269,7 @@ void Xsheet::initXsheet()
 
 void Xsheet::writePapa()
 {
-    if (mPapaLines->size() > 11)
+    if (mPapaLines->size() > 1)
     {
         int dial = mTableWidget->columnCount();
 
@@ -240,12 +282,21 @@ void Xsheet::writePapa()
         }
 
         // write header
-        mTableItem = new QTableWidgetItem(mPapaLines->at(5));
+        QStringList lipsync;
+        QString tmp;
+        tmp = mPapaLines->at(0);
+        lipsync = tmp.split(" ");
+        mTableItem = new QTableWidgetItem(lipsync.at(0));
         mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
         mTableWidget->setItem(0, dial - 1, mTableItem);
-        QString tmp;
-        QStringList lipsync;    // papagayo info on mouths
-        for (int i = 12; i < mPapaLines->size(); i++)
+        // TODO use fps-info at lipsync.at(1) to set fps...
+        if (lipsync.size() > 2)
+        {
+            tmp = lipsync.at(2);
+            int row = tmp.toInt();
+            mTableWidget->setItem(row, dial - 1, new QTableWidgetItem("-"));
+        }
+        for (int i = 1; i < mPapaLines->size(); i++)
         {
             tmp = mPapaLines->at(i);
             lipsync = tmp.split(" ");
@@ -258,9 +309,6 @@ void Xsheet::writePapa()
                 mTableWidget->setItem(row, dial - 1, mTableItem);
             }
         }
-        tmp = mPapaLines->at(10);
-        int row = tmp.toInt();
-        mTableWidget->setItem(row, dial - 1, new QTableWidgetItem("-"));
     }
     else
     {
