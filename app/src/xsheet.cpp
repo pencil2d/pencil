@@ -55,6 +55,8 @@ void Xsheet::initUI()
     connect(mTableWidget, &QTableWidget::cellDoubleClicked, this, &Xsheet::addLayerFrame);
     connect(ui->btnPapa, &QPushButton::clicked, this, &Xsheet::loadPapa );
     connect(ui->btnNoPapa, &QPushButton::clicked, this, &Xsheet::erasePapa);
+    connect(ui->btnSave, &QPushButton::clicked, this, &Xsheet::saveLipsync);
+    connect(ui->btnLoad, &QPushButton::clicked, this, &Xsheet::loadLipsync);
 }
 
 void Xsheet::updateUI()
@@ -206,6 +208,65 @@ void Xsheet::erasePapa()
     mTableItem->setBackgroundColor(QColor(244, 167, 167, 150));
     mTableWidget->setItem(0, mLayerNames->size() + 1, mTableItem);
     mPapaLines->clear();
+}
+
+void Xsheet::loadLipsync()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open Lipsync file"), "",
+        tr("Pencil2D Lipsync file (*.lip2d)"));
+    if (fileName.isEmpty()) { return; }
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QMessageBox::information(this,
+                     tr("Unable to open file"),
+                     file.errorString());
+        return;
+    }
+    QTextStream in(&file);
+    QString first = in.readLine();
+    QStringList lipsync = first.split(" ");
+    mTableItem = new QTableWidgetItem(lipsync.at(0));
+    mTableItem->setBackgroundColor(QColor(250, 240, 160));
+    mTableWidget->setItem(0, mTableWidget->columnCount() - 1, mTableItem);
+    // TODO use fps-info at lipsync.at(1) to set fps...
+    if (lipsync.size() > 2)
+    {
+        mTableItem = new QTableWidgetItem(lipsync.at(2));
+        mTableItem->setBackgroundColor(QColor(250, 240, 160));
+        QString tmp = lipsync.at(2);
+        mTableWidget->setItem(tmp.toInt(), mTableWidget->columnCount() - 1, mTableItem);
+    }
+    mPapaLines->clear();
+    mPapaLines->append(first + '\n');
+    while (!in.atEnd()) {
+        mPapaLines->append(in.readLine() + '\n');
+    }
+    file.close();
+    writePapa();
+}
+
+
+void Xsheet::saveLipsync()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save Lipsync column"), "",
+            tr("Pencil2D Lipsync file (*.lip2d)"));
+    if (fileName.isEmpty()) { return; }
+    QFile file(fileName + ".lip2d");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QMessageBox::information(this,
+                     tr("Unable to open file"),
+                     file.errorString());
+        return;
+    }
+    QTextStream out(&file);
+    for (int i = 0; i < mPapaLines->length(); i++)
+    {
+        out << mPapaLines->at(i) << '\n';
+    }
 }
 
 void Xsheet::initXsheet()
