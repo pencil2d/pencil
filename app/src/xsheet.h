@@ -1,6 +1,8 @@
 #ifndef XSHEET_H
 #define XSHEET_H
 
+#include "basedockwidget.h"
+
 #include <QDialog>
 #include "layermanager.h"
 #include "editor.h"
@@ -12,16 +14,21 @@ namespace Ui {
 class Xsheet;
 }
 
-class Xsheet : public QDialog
+class Xsheet : public BaseDockWidget
 {
     Q_OBJECT
 
+    void initUI() override;
+    void updateUI() override;
+
 public:
-    explicit Xsheet(QWidget *parent = nullptr);
+    explicit Xsheet(QWidget *parent = 0);
     ~Xsheet();
-    void updateUi(LayerManager &lMgr, Editor* &editor);
 public slots:
     void updateXsheet();
+    void updateUi(Editor *editor);
+    void upNew();
+    void showScrub(int frame);
 
 private slots:
     void selectLayerFrame(int row, int column);
@@ -33,13 +40,12 @@ private slots:
 private:
     void initXsheet();
     void writePapa();
-    int getLayerType(Layer* layer) { return layer->type(); }
+    int getLayerType(Layer* layer);
     void selectItem(int row, int column);
     QColor getLayerColor(int color);
     QStringList* mLayerNames;
     QStringList* mPapaLines;            // for filling DIAL column
     Ui::Xsheet *ui;
-    LayerManager* mLayerMgr = nullptr;
     Editor* mEditor = nullptr;
     int mLayerCount;
     int mTimeLineLength;

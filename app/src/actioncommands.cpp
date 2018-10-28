@@ -48,7 +48,6 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 
-
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
 {
     mParent = parent;

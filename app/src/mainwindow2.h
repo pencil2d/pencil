@@ -100,7 +100,7 @@ protected:
 
 private slots:
     void resetAndDockAllSubWidgets();
-    void xsheetToggle();
+    void updateXsheet();
 
 private:
     bool openObject(QString strFilename, bool checkForChanges);

@@ -25,10 +25,20 @@ GNU General Public License for more details.
 #include <QFileDialog>
 
 Xsheet::Xsheet(QWidget *parent) :
-    QDialog(parent),
+    BaseDockWidget(parent),
     ui(new Ui::Xsheet)
 {
     ui->setupUi(this);
+    initUI();
+}
+
+Xsheet::~Xsheet()
+{
+    delete ui;
+}
+
+void Xsheet::initUI()
+{
     mLayerNames = new QStringList;
     mLayerCount = 0;
     mPapaLines = new QStringList;
@@ -39,24 +49,38 @@ Xsheet::Xsheet(QWidget *parent) :
     connect(ui->btnNoPapa, SIGNAL(clicked(bool)), this, SLOT(erasePapa()));
 }
 
-Xsheet::~Xsheet()
+void Xsheet::updateUI()
 {
-    delete ui;
+
 }
 
-void Xsheet::updateUi(LayerManager &lMgr, Editor *&editor)
+void Xsheet::updateUi(Editor* editor)
 {
-    mLayerMgr = &lMgr;
+    qDebug() << "in UpdateUi. papaSize: " << mPapaLines->size();
     mEditor = editor;
     QSettings settings(PENCIL2D, PENCIL2D);
     mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
     initXsheet();
     fillXsheet();
+    showScrub(mEditor->currentFrame());
+    writePapa();
+}
+
+void Xsheet::upNew()
+{
+    qDebug() << "Up new";
+}
+
+void Xsheet::showScrub(int frame)
+{
+//    qDebug() << "in showScrub. Frame: " << frame;
+    mTableItem = new QTableWidgetItem(QString::number(frame));
+    mTableItem->setBackgroundColor(QColor(250, 150, 150));
+    mTableWidget->setItem(frame, 0, mTableItem);
 }
 
 void Xsheet::updateXsheet()
 {
-    qDebug() << "in updateXsheet...";
     initXsheet();
     fillXsheet();
     writePapa();
@@ -64,24 +88,26 @@ void Xsheet::updateXsheet()
 
 void Xsheet::selectLayerFrame(int row, int column)
 {
-    selectItem(row, column);
     initXsheet();
     fillXsheet();
+    selectItem(row, column);
+    showScrub(row);
     writePapa();
 }
 
 void Xsheet::addLayerFrame(int row, int column)
 {
     selectItem(row, column);
-    mLayerMgr->currentLayer()->addNewKeyFrameAt(row);
+    if (column > 0 && column <= mLayerCount)
+        mEditor->layers()->currentLayer()->addNewKeyFrameAt(row);
     initXsheet();
     fillXsheet();
+    showScrub(row);
     writePapa();
 }
 
 void Xsheet::fillXsheet()
 {
-    // fill Xsheet
     for (int i = 1; i <= mTimeLineLength; i++)
     {
         mTableWidget->setRowHeight(i,16);
@@ -90,9 +116,9 @@ void Xsheet::fillXsheet()
         mTableWidget->setItem(i, 0, mTableItem);
         for (int j = 1; j <= mLayerCount; j++)
         {
-            if (mLayerMgr->findLayerByName(mTableWidget->item(0,j)->text())->keyExists(i))
+            if (mEditor->layers()->findLayerByName(mTableWidget->item(0,j)->text())->keyExists(i))
             {
-                int type = getLayerType(mLayerMgr->findLayerByName(mTableWidget->item(0,j)->text()));
+                int type = getLayerType(mEditor->layers()->findLayerByName(mTableWidget->item(0,j)->text()));
                 mTableItem = new QTableWidgetItem(QString::number(i));
                 mTableItem->setBackgroundColor(getLayerColor(type));
                 mTableWidget->setItem(i, j, mTableItem);
@@ -103,6 +129,7 @@ void Xsheet::fillXsheet()
 
 void Xsheet::loadPapa()
 {
+    qDebug() << "Before load: mPapaLines " << mPapaLines->size();
     mPapaLines->clear();
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open *.pgo file"), "", tr("Pgo Files (*.pgo)"));
@@ -116,6 +143,7 @@ void Xsheet::loadPapa()
         mPapaLines->append(tmp);
     }
     file.close();
+    qDebug() << "After load: mPapaLines " << mPapaLines->size();
     writePapa();
 }
 
@@ -130,6 +158,9 @@ void Xsheet::erasePapa()
         mTableItem->setBackgroundColor(Qt::white);
         mTableWidget->setItem(i, dial - 1, mTableItem);
     }
+    mTableItem = new QTableWidgetItem("DIAL");
+    mTableItem->setBackgroundColor(QColor(244, 167, 167, 150));
+    mTableWidget->setItem(0, mLayerNames->size() + 1, mTableItem);
     mPapaLines->clear();
 }
 
@@ -137,20 +168,20 @@ void Xsheet::initXsheet()
 {
     mLayerCount = 0;
     mLayerNames->clear();
-    for (int i = 0; i < mLayerMgr->count(); i++)
+    for (int i = 0; i < mEditor->layers()->count(); i++)
     {   // count Bitmap and Vector layers (duplicate names NOT supported)
-        if (mLayerMgr->getLayer(i)->type() == 1 || mLayerMgr->getLayer(i)->type() == 2)
+        if (mEditor->layers()->getLayer(i)->type() == 1 || mEditor->layers()->getLayer(i)->type() == 2)
         {
-            if (!mLayerNames->contains(mLayerMgr->getLayer(i)->name()))
+            if (!mLayerNames->contains(mEditor->layers()->getLayer(i)->name()))
             {
                 mLayerCount++;
-                mLayerNames->append(mLayerMgr->getLayer(i)->name());
+                mLayerNames->append(mEditor->layers()->getLayer(i)->name());
             }
             else
             {
                 int ret = QMessageBox::critical(new QWidget,
                                tr("Layer name duplicate!"),
-                               tr("Identical layer names '%1' not supported in Xsheet").arg(mLayerMgr->getLayer(i)->name()),
+                               tr("Identical layer names '%1' not supported in Xsheet").arg(mEditor->layers()->getLayer(i)->name()),
                                QMessageBox::Ok);
                 Q_UNUSED(ret);
             }
@@ -165,13 +196,13 @@ void Xsheet::initXsheet()
             mTableWidget->setItem(j, i, mTableItem);
         }
     }
-    this->setMinimumWidth(mLayerCount * 50 + 130);
+    this->setMinimumWidth(mLayerCount * 40 + 100);
     mTableWidget->setRowCount(mTimeLineLength + 1);
     mTableWidget->setColumnCount(mLayerCount + 2);
     // set column width for layers
     for (int i = 0; i < mTableWidget->columnCount(); i++)
     {
-        mTableWidget->setColumnWidth(i, 50);
+        mTableWidget->setColumnWidth(i, 40);
     }
     // set headers of Xsheet
     mTableWidget->setRowHeight(0,16);
@@ -180,11 +211,12 @@ void Xsheet::initXsheet()
     mTableWidget->setItem(0, 0, mTableItem);
     for (int i = 0; i < mLayerNames->size(); i++)
     {
-        int type = getLayerType(mLayerMgr->findLayerByName(mLayerNames->at(i)));
+        int type = getLayerType(mEditor->layers()->findLayerByName(mLayerNames->at(i)));
         mTableItem = new QTableWidgetItem(mLayerNames->at(i));
         mTableItem->setBackgroundColor(getLayerColor(type));
         mTableWidget->setItem(0, i + 1, mTableItem);
     }
+//    if (!mPapaLines->isEmpty()) { return; }
     mTableItem = new QTableWidgetItem("DIAL");
     mTableItem->setBackgroundColor(QColor(244, 167, 167, 150));
     mTableWidget->setItem(0, mLayerNames->size() + 1, mTableItem);
@@ -192,39 +224,49 @@ void Xsheet::initXsheet()
 
 void Xsheet::writePapa()
 {
-    if (mPapaLines->isEmpty()) { return; }
-    int dial = mTableWidget->columnCount();
+    qDebug() << "Before write: mPapaLines " << mPapaLines->size();
 
-    // clear column
-    for (int i = 0; i < mTimeLineLength; i++)
+    if (mPapaLines->size() > 11)
     {
-        mTableItem = new QTableWidgetItem("");
-        mTableItem->setBackgroundColor(Qt::white);
-        mTableWidget->setItem(i, dial - 1, mTableItem);
-    }
+        int dial = mTableWidget->columnCount();
 
-    // write header
-    mTableItem = new QTableWidgetItem(mPapaLines->at(5));
-    mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
-    mTableWidget->setItem(0, dial - 1, mTableItem);
-    QString tmp;
-    QStringList lipsync;    // papagayo info on mouths
-    for (int i = 12; i < mPapaLines->size(); i++)
-    {
-        tmp = mPapaLines->at(i);
-        lipsync = tmp.split(" ");
-        if (lipsync.size() == 2)
+        // clear column
+        for (int i = 0; i < mTimeLineLength; i++)
         {
-            tmp = lipsync.at(0);    // frame number
-            int row = tmp.toInt();
-            mTableItem = new QTableWidgetItem(lipsync.at(1)); // audio to animate
-            mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
-            mTableWidget->setItem(row, dial - 1, mTableItem);
+            mTableItem = new QTableWidgetItem("");
+            mTableItem->setBackgroundColor(Qt::white);
+            mTableWidget->setItem(i, dial - 1, mTableItem);
         }
+
+        // write header
+        mTableItem = new QTableWidgetItem(mPapaLines->at(5));
+        mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
+        mTableWidget->setItem(0, dial - 1, mTableItem);
+        QString tmp;
+        QStringList lipsync;    // papagayo info on mouths
+        for (int i = 12; i < mPapaLines->size(); i++)
+        {
+            tmp = mPapaLines->at(i);
+            lipsync = tmp.split(" ");
+            if (lipsync.size() == 2)
+            {
+                tmp = lipsync.at(0);    // frame number
+                int row = tmp.toInt();
+                mTableItem = new QTableWidgetItem(lipsync.at(1)); // audio to animate
+                mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
+                mTableWidget->setItem(row, dial - 1, mTableItem);
+            }
+        }
+        tmp = mPapaLines->at(10);
+        int row = tmp.toInt();
+        mTableWidget->setItem(row, dial - 1, new QTableWidgetItem("-"));
     }
-    tmp = mPapaLines->at(10);
-    int row = tmp.toInt();
-    mTableWidget->setItem(row, dial - 1, new QTableWidgetItem("-"));
+    qDebug() << "After write: mPapaLines " << mPapaLines->size();
+}
+
+int Xsheet::getLayerType(Layer *layer)
+{
+    return layer->type();
 }
 
 void Xsheet::selectItem(int row, int column)
@@ -233,9 +275,9 @@ void Xsheet::selectItem(int row, int column)
     {
         mTableItem = new QTableWidgetItem();
         mTableItem = mTableWidget->item(0, column);
-        Layer* layer = mLayerMgr->findLayerByName(mTableItem->text());
+        Layer* layer = mEditor->layers()->findLayerByName(mTableItem->text());
         if (layer == nullptr) { return; }
-        mLayerMgr->setCurrentLayer(layer);
+        mEditor->layers()->setCurrentLayer(layer);
         mEditor->scrubTo(row);
     }
 }

@@ -162,6 +162,9 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
+    mXsheet = new Xsheet(this);
+    mXsheet->setObjectName("Xsheet");
+
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -175,7 +178,8 @@ void MainWindow2::createDockWidgets()
         << mColorPalette
         << mDisplayOptionWidget
         << mToolOptions
-        << mToolBox;
+        << mToolBox
+        << mXsheet;
 
 //    mColorInspector->setFloating(true);
     mStartIcon = QIcon(":icons/controls/play.png");
@@ -196,6 +200,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorBox);
     addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
+    addDockWidget(Qt::RightDockWidgetArea, mXsheet);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
@@ -229,7 +234,6 @@ void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument);
-//    connect(ui->actionNew, &QAction::triggered, mXsheet, &Xsheet::updateXsheet);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument);
     connect(ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument);
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument);
@@ -315,7 +319,6 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mCommands, &ActionCommands::duplicateKey);
     connect(ui->actionMove_Frame_Forward, &QAction::triggered, mCommands, &ActionCommands::moveFrameForward);
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
-    connect(ui->actionXsheet_toggle, &QAction::triggered, this, &MainWindow2::xsheetToggle);
 
     /// --- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
@@ -331,6 +334,10 @@ void MainWindow2::createMenus()
     connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::eraserOn);
     connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools);
 
+    /// --- Xsheet update ---
+    connect(mEditor, &Editor::updateTimeLine, this, &MainWindow2::updateXsheet);
+//    connect(ui->actionDelete_Current_Layer, &QAction::changed, this, &MainWindow2::updateXsheet);
+
     /// --- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
     winMenu->clear();
@@ -342,7 +349,8 @@ void MainWindow2::createMenus()
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction(),
-        mColorInspector->toggleViewAction()
+        mColorInspector->toggleViewAction(),
+        mXsheet->toggleViewAction()
     };
 
     for (QAction* action : actions)
@@ -920,6 +928,7 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mToolOptions->setFeatures(feat);
     mToolBox->setFeatures(feat);
     mTimeLine->setFeatures(feat);
+    mXsheet->setFeatures(feat);
 }
 
 void MainWindow2::preferences()
@@ -956,21 +965,9 @@ void MainWindow2::resetAndDockAllSubWidgets()
     }
 }
 
-void MainWindow2::xsheetToggle()
+void MainWindow2::updateXsheet()
 {
-    if (mXsheet == nullptr)
-    {
-        mXsheet = new Xsheet();
-        mXsheet->setWindowFlags(Qt::WindowStaysOnTopHint);
-        LayerManager* lMgr = mEditor->layers();
-        mXsheet->updateUi(*lMgr, mEditor);
-        mXsheet->show();
-    }
-    else
-    {
-        mXsheet->close();
-        mXsheet = nullptr;
-    }
+    mXsheet->updateUi(mEditor);
 }
 
 void MainWindow2::readSettings()
@@ -1103,6 +1100,7 @@ void MainWindow2::setupKeyboardShortcuts()
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
     mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
+    mXsheet->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_XSHEET));
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
