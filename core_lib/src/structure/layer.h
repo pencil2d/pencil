@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QString>
 #include <QPainter>
 #include <QDomElement>
+#include "pencilerror.h"
 
 class QMouseEvent;
 class KeyFrame;
@@ -108,6 +109,7 @@ public:
     bool moveSelectedFrames(int offset);
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
+    virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);

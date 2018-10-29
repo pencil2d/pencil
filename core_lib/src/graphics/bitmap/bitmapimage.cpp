@@ -26,7 +26,6 @@ BitmapImage::BitmapImage()
 {
     mImage = std::make_shared<QImage>(); // create null image
     mBounds = QRect(0, 0, 0, 0);
-    mMinBound = true;
 }
 
 BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
@@ -41,13 +40,13 @@ BitmapImage::BitmapImage(const QRect& rectangle, const QColor& colour)
     mBounds = rectangle;
     mImage = std::make_shared<QImage>(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
     mImage->fill(colour.rgba());
-    mMinBound = true;
+    mMinBound = false;
 }
 
 BitmapImage::BitmapImage(const QPoint& topLeft, const QImage& image)
 {
     mBounds = QRect(topLeft, image.size());
-    mMinBound = false;
+    mMinBound = true;
     mImage = std::make_shared<QImage>(image);
 }
 
@@ -56,7 +55,7 @@ BitmapImage::BitmapImage(const QPoint& topLeft, const QString& path)
     setFileName(path);
     mImage.reset();
 
-    mBounds = QRect(topLeft, QSize(0,0));
+    mBounds = QRect(topLeft, QSize(0, 0));
     mMinBound = true;
     setModified(false);
 }
@@ -104,6 +103,11 @@ void BitmapImage::unloadFile()
     {
         mImage.reset();
     }
+}
+
+bool BitmapImage::isLoaded()
+{
+    return (mImage != nullptr);
 }
 
 void BitmapImage::paintImage(QPainter& painter)
@@ -352,8 +356,9 @@ void BitmapImage::setCompositionModeBounds(QRect sourceBounds, bool isSourceMinB
  */
 void BitmapImage::autoCrop()
 {
-    // Exit if current bounds are null
-    if (mBounds.isEmpty()) return;
+    if (!mEnableAutoCrop) return;
+    if (mBounds.isEmpty()) return; // Exit if current bounds are null
+    if (!mImage) return;
 
     Q_ASSERT(mBounds.size() == mImage->size());
 
@@ -428,8 +433,8 @@ void BitmapImage::autoCrop()
     int relRight = mBounds.width()-1;
 
     // Check left row
-    isEmpty = true; // Reset isEmpty
-    while (isEmpty && relLeft <= relRight) // Loop through columns
+    isEmpty = (relBottom >= relTop); // Check left only when 
+    while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relLeft
         const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relTop)) + relLeft;
@@ -462,7 +467,7 @@ void BitmapImage::autoCrop()
     }
 
     // Check right row
-    isEmpty = true; // Reset isEmpty
+    isEmpty = (relBottom >= relTop); // Reset isEmpty
     while (isEmpty && relRight >= relLeft) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relRight
@@ -651,7 +656,8 @@ Status BitmapImage::writeFile(const QString& filename)
         bool b = mImage->save(filename);
         return (b) ? Status::OK : Status::FAIL;
     }
-    else
+    
+    if (bounds().isEmpty())
     {
         QFile f(filename);
         if(f.exists())
@@ -659,10 +665,7 @@ Status BitmapImage::writeFile(const QString& filename)
             bool b = f.remove();
             return (b) ? Status::OK : Status::FAIL;
         }
-        else
-        {
-            return Status::OK;
-        }
+        return Status::SAFE;
     }
     return Status::SAFE;
 }

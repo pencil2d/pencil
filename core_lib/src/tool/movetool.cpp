@@ -99,7 +99,9 @@ void MoveTool::tabletReleaseEvent(QTabletEvent*)
 
 void MoveTool::mousePressEvent(QMouseEvent* event)
 {
+
     mCurrentLayer = currentPaintableLayer();
+    if (mCurrentLayer == nullptr) return;
     setAnchorToLastPoint();
     beginInteraction(event->modifiers(), mCurrentLayer);
 }
@@ -119,6 +121,7 @@ void MoveTool::mouseReleaseEvent(QMouseEvent*)
 void MoveTool::mouseMoveEvent(QMouseEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
+    if (mCurrentLayer == nullptr) return;
 
     if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
     {

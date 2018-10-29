@@ -87,8 +87,6 @@ private:
     void updateItemColor(int, QColor);
     void updateGridUI();
 
-    QString getDefaultColorName(QColor c);
-
     Ui::ColorPalette* ui = nullptr;
     QActionGroup* mLayoutModeActionGroup = nullptr;
     QAction* mListModeAction = nullptr;

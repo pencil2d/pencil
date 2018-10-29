@@ -37,6 +37,7 @@ public:
     BitmapImage* clone() override;
     void loadFile() override;
     void unloadFile() override;
+    bool isLoaded() override;
 
     void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);
@@ -48,8 +49,6 @@ public:
     BitmapImage copy(QRect rectangle);
     void paste(BitmapImage*, QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver);
 
-    void add(BitmapImage*);
-    void compareAlpha(BitmapImage*);
     void moveTopLeft(QPoint point);
     void moveTopLeft(QPointF point) { moveTopLeft(point.toPoint()); }
     void transform(QRect rectangle, bool smoothTransform);
@@ -105,6 +104,7 @@ public:
      *          for the contained image.
      */
     bool isMinimallyBounded() const { return mMinBound; }
+    void enableAutoCrop(bool b) { mEnableAutoCrop = b; }
 
     Status writeFile(const QString& filename);
 
@@ -119,8 +119,10 @@ protected:
 private:
     std::shared_ptr< QImage > mImage;
     QRect   mBounds;
+
     /** @see isMinimallyBounded() */
-    bool mMinBound;
+    bool mMinBound = true;
+    bool mEnableAutoCrop = false;
 };
 
 #endif

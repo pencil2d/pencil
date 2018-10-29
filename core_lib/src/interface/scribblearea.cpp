@@ -120,7 +120,8 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_MAX_OPACITY:
     case SETTING::ANTIALIAS:
     case SETTING::GRID:
-    case SETTING::GRID_SIZE:
+    case SETTING::GRID_SIZE_W:
+    case SETTING::GRID_SIZE_H:
     case SETTING::PREV_ONION:
     case SETTING::NEXT_ONION:
     case SETTING::ONION_BLUE:
@@ -1222,37 +1223,25 @@ void ScribbleArea::paintSelectionVisuals(QPainter& painter)
             int width = 6;
             int radius = width/2;
 
-            QRectF topLeftCorner = QRectF(mCurrentTransformSelection[0].x() - radius,
+            const QRectF topLeftCorner = QRectF(mCurrentTransformSelection[0].x() - radius,
                     mCurrentTransformSelection[0].y() - radius,
                     width, width);
+            painter.drawRect(topLeftCorner);
 
-            QRectF topRightCorner = QRectF(mCurrentTransformSelection[1].x() - radius,
+            const QRectF topRightCorner = QRectF(mCurrentTransformSelection[1].x() - radius,
                     mCurrentTransformSelection[1].y() - radius,
                     width, width);
+            painter.drawRect(topRightCorner);
 
-            QRectF bottomRightCorner = QRectF(mCurrentTransformSelection[2].x() - radius,
+            const QRectF bottomRightCorner = QRectF(mCurrentTransformSelection[2].x() - radius,
                     mCurrentTransformSelection[2].y() - radius,
                     width, width);
+            painter.drawRect(bottomRightCorner);
 
-            QRectF bottomLeftCorner = QRectF(mCurrentTransformSelection[3].x() - radius,
+            const QRectF bottomLeftCorner = QRectF(mCurrentTransformSelection[3].x() - radius,
                     mCurrentTransformSelection[3].y() - radius,
                     width, width);
-
-            painter.drawRect(topLeftCorner.x(),
-                             topLeftCorner.y(),
-                             width, width);
-
-            painter.drawRect(topRightCorner.x(),
-                             topRightCorner.y(),
-                             width, width);
-
-            painter.drawRect(bottomRightCorner.x(),
-                             bottomRightCorner.y(),
-                             width, width);
-
-            painter.drawRect(bottomLeftCorner.x(),
-                             bottomLeftCorner.y(),
-                             width, width);
+            painter.drawRect(bottomLeftCorner);
 
             painter.setBrush(QColor(0, 255, 0, 50));
             painter.setPen(Qt::green);
@@ -1275,7 +1264,8 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     o.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     o.bAntiAlias           = mPrefs->isOn(SETTING::ANTIALIAS);
     o.bGrid                = mPrefs->isOn(SETTING::GRID);
-    o.nGridSize            = mPrefs->getInt(SETTING::GRID_SIZE);
+    o.nGridSizeW           = mPrefs->getInt(SETTING::GRID_SIZE_W);
+    o.nGridSizeH           = mPrefs->getInt(SETTING::GRID_SIZE_H);
     o.bAxis                = false;
     o.bThinLines           = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines            = mPrefs->isOn(SETTING::OUTLINES);
@@ -1678,23 +1668,20 @@ QVector<QPoint> ScribbleArea::calcSelectionCenterPoints()
 
 void ScribbleArea::calculateSelectionTransformation()
 {
-    float scaleX, scaleY;
-
     QVector<QPoint> centerPoints = calcSelectionCenterPoints();
 
     selectionTransformation.reset();
 
-    scaleX = myTempTransformedSelection.width() / mySelection.width();
-
-    scaleY = myTempTransformedSelection.height() / mySelection.height();
-
     selectionTransformation.translate(centerPoints[0].x(), centerPoints[0].y());
     selectionTransformation.rotate(myRotatedAngle);
 
-    selectionTransformation.scale(scaleX, scaleY);
-
+    if (mySelection.width() > 0 && mySelection.height() > 0) // can't divide by 0
+    {
+        float scaleX = myTempTransformedSelection.width() / mySelection.width();
+        float scaleY = myTempTransformedSelection.height() / mySelection.height();
+        selectionTransformation.scale(scaleX, scaleY);
+    }
     selectionTransformation.translate(-centerPoints[1].x(), -centerPoints[1].y());
-
 }
 
 

@@ -41,29 +41,27 @@ public:
 
     void modification() { mIsModified = true; }
     void setModified(bool b) { mIsModified = b; }
-    bool isModified() const { return mIsModified; };
+    bool isModified() const { return mIsModified; }
 
     void setSelected(bool b) { mIsSelected = b; }
     bool isSelected() const { return mIsSelected; }
 
     QString fileName() const { return mAttachedFileName; }
     void    setFileName(QString strFileName) { mAttachedFileName = strFileName; }
-    bool hasBeenRenamed() const { return mHasBeenRenamed; }
-    void setRenamed(bool b) { mHasBeenRenamed = b; }
 
     void addEventListener(KeyFrameEventListener*);
     void removeEventListner(KeyFrameEventListener*);
 
     virtual KeyFrame* clone() { return nullptr; }
-    virtual void loadFile() {};
+    virtual void loadFile() {}
     virtual void unloadFile() {}
+    virtual bool isLoaded() { return true; }
 
 private:
     int mFrame = -1;
     int mLength = 1;
     bool mIsModified = true;
     bool mIsSelected = false;
-    bool mHasBeenRenamed = false;
     QString mAttachedFileName;
 
     std::vector<KeyFrameEventListener*> mEventListeners;
