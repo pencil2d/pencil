@@ -23,6 +23,7 @@ class Xsheet : public BaseDockWidget
 
 public:
     explicit Xsheet(QWidget *parent = nullptr);
+    explicit Xsheet(Editor* editor, QWidget *parent = nullptr);
     ~Xsheet() override;
 public slots:
     void newOpenScene();

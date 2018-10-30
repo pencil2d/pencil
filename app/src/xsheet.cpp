@@ -33,6 +33,15 @@ Xsheet::Xsheet(QWidget *parent) :
     ui->setupUi(this);
 }
 
+Xsheet::Xsheet(Editor *editor, QWidget *parent) :
+    BaseDockWidget(parent),
+    ui(new Ui::Xsheet)
+{
+    ui->setupUi(this);
+    mEditor = editor;
+}
+
+
 Xsheet::~Xsheet()
 {
     delete ui;
@@ -58,6 +67,7 @@ void Xsheet::initUI()
     connect(ui->btnSave, &QPushButton::clicked, this, &Xsheet::saveLipsync);
     connect(ui->btnLoad, &QPushButton::clicked, this, &Xsheet::loadLipsync);
     connect(ui->btnDeleteFrame, &QPushButton::clicked, this, &Xsheet::removeFrame);
+    initXsheet();
 }
 
 void Xsheet::updateUI()
@@ -80,7 +90,7 @@ void Xsheet::showScrub(int frame)
     mTableItem = new QTableWidgetItem(QString::number(frame));
     mTableItem->setBackgroundColor(QColor(250, 150, 150));
     mTableWidget->setItem(frame, 0, mTableItem);
-    mTableWidget->scrollToItem(mTableItem);
+    mTableWidget->scrollToItem(mTableItem, QAbstractItemView::PositionAtCenter);
 }
 
 void Xsheet::updateScrub(int frame)
@@ -299,6 +309,7 @@ void Xsheet::saveLipsync()
     {
         out << mPapaLines->at(i) << '\n';
     }
+    file.close();
 }
 
 void Xsheet::removeFrame()

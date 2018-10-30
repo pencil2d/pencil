@@ -162,7 +162,7 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
-    mXsheet = new Xsheet(this);
+    mXsheet = new Xsheet(mEditor, this);
     mXsheet->setObjectName("Xsheet");
 
     /*
