@@ -471,20 +471,26 @@ void ScribbleArea::tabletPressEvent(QTabletEvent* event)
         }
     }
 
-    if (event->type() == QTabletEvent::TabletPress) {
+    if (event->type() == QTabletEvent::TabletPress)
+    {
         mLastPixel = mStrokeManager->getLastPressPixel();
         mLastPoint = mEditor->view()->mapScreenToCanvas(mLastPixel);
     }
 
-    currentTool()->tabletPressEvent(event);
+    if (event->button() == Qt::LeftButton)
+    {
+        currentTool()->tabletPressEvent(event);
+    }
 }
 
 void ScribbleArea::tabletMoveEvent(QTabletEvent* event)
 {
     const bool isPenPressed = mStrokeManager->isPenPressed();
 
-    if (isPenPressed && mQuickSizing) {
-        if (isDoingAssistedToolAdjustment(event->modifiers())){
+    if (isPenPressed && mQuickSizing)
+    {
+        if (isDoingAssistedToolAdjustment(event->modifiers()))
+        {
             return;
         }
     }
@@ -501,7 +507,17 @@ void ScribbleArea::tabletMoveEvent(QTabletEvent* event)
         mOffset = getCurrentOffset();
     }
 
-    currentTool()->tabletMoveEvent(event);
+    if (currentTool()->isDrawingTool())
+    {
+        if (event->buttons() & Qt::LeftButton)
+        {
+            currentTool()->tabletMoveEvent(event);
+        }
+    }
+    else
+    {
+        currentTool()->tabletMoveEvent(event);
+    }
 }
 
 void ScribbleArea::tabletReleaseEvent(QTabletEvent* event)
@@ -512,7 +528,6 @@ void ScribbleArea::tabletReleaseEvent(QTabletEvent* event)
         mEditor->tools()->setWidth(currentTool()->properties.width);
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
-
 
     currentTool()->tabletReleaseEvent(event);
 
@@ -539,12 +554,12 @@ bool ScribbleArea::areLayersSane() const
     if (layer == NULL) { return false; }
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage *vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         if (vectorImage == NULL) { return false; }
     }
     if (layer->type() == Layer::BITMAP)
     {
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        BitmapImage *bitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
         if (bitmapImage == NULL) { return false; }
     }
     // ---- end checks ------
@@ -570,7 +585,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
     mUsePressure = currentTool()->properties.pressure;
 
-    if (!mStrokeManager->isTabletInUse()) {
+    if (!mStrokeManager->isTabletInUse())
+    {
         if (mUsePressure)
         {
             mStrokeManager->setPressure(1.0);
@@ -583,7 +599,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         setTemporaryTool(HAND);
     }
-
     else if (event->button() == Qt::LeftButton)
     {
         mLastPixel = mStrokeManager->getLastPressPixel();
@@ -592,9 +607,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
     if (event->button() == Qt::LeftButton && mQuickSizing)
     {
-        if (isDoingAssistedToolAdjustment(event->modifiers())) {
+        if (isDoingAssistedToolAdjustment(event->modifiers()))
             return;
-        }
     }
 
     // ---- checks layer availability ------
@@ -603,7 +617,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
     if (currentTool()->type() != HAND && (event->button() != Qt::RightButton))
     {
-        if (!layer->visible()) {
+        if (!layer->visible())
+        {
             showLayerNotVisibleWarning();
             mMouseInUse = false;
             return;
@@ -626,13 +641,13 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         return;
     }
 
-    if ( event->button() == Qt::LeftButton )
+    if (event->button() == Qt::LeftButton)
     {
         currentTool()->mousePressEvent(event);
     }
 }
 
-void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
+void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
 {
     updateCanvasCursor();
 
@@ -665,13 +680,17 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         return;
     }
 
-    if (!currentTool()->isDrawingTool())
+    if (currentTool()->isDrawingTool())
     {
-        currentTool()->mouseMoveEvent(event);
-    } else { // MOVE, SELECT OR HAND TOOL
-        if (event->buttons() & Qt::LeftButton) {
+        if (event->buttons() & Qt::LeftButton)
+        {
             currentTool()->mouseMoveEvent(event);
         }
+    }
+    else
+    {
+        // MOVE, SELECT OR HAND TOOL
+        currentTool()->mouseMoveEvent(event);
     }
 
 #ifdef DEBUG_FPS
@@ -695,7 +714,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 #endif
 }
 
-void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
+void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
 {
     mMouseInUse = false;
 
@@ -716,7 +735,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
         return;
     }
 
-    if ( event->button() == Qt::LeftButton )
+    if (event->button() == Qt::LeftButton)
     {
         currentTool()->mouseReleaseEvent(event);
     }

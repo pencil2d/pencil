@@ -38,6 +38,7 @@ BezierCurve::BezierCurve(QList<QPointF> pointList)
 
 BezierCurve::BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, double tol)
 {
+    // FIXME: crashes if n == 0
     int n = pointList.size();
 
     // Simplify path
