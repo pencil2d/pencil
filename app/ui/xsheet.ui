@@ -28,8 +28,8 @@
        <widget class="QPushButton" name="btnSave">
         <property name="maximumSize">
          <size>
-          <width>25</width>
-          <height>16777215</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="toolTip">
@@ -48,8 +48,8 @@
        <widget class="QPushButton" name="btnLoad">
         <property name="maximumSize">
          <size>
-          <width>25</width>
-          <height>16777215</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="toolTip">
@@ -78,11 +78,28 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="btnAddFrame">
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnDeleteFrame">
         <property name="maximumSize">
          <size>
-          <width>25</width>
-          <height>16777215</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="toolTip">
@@ -114,8 +131,8 @@
        <widget class="QPushButton" name="btnNoPapa">
         <property name="maximumSize">
          <size>
-          <width>25</width>
-          <height>16777215</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="toolTip">
@@ -134,8 +151,8 @@
        <widget class="QPushButton" name="btnPapa">
         <property name="maximumSize">
          <size>
-          <width>25</width>
-          <height>16777215</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="toolTip">

@@ -40,6 +40,7 @@ private slots:
     void erasePapa();
     void loadLipsync();
     void saveLipsync();
+    void addFrame();
     void removeFrame();
 
 private:

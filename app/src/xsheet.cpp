@@ -66,6 +66,7 @@ void Xsheet::initUI()
     connect(ui->btnNoPapa, &QPushButton::clicked, this, &Xsheet::erasePapa);
     connect(ui->btnSave, &QPushButton::clicked, this, &Xsheet::saveLipsync);
     connect(ui->btnLoad, &QPushButton::clicked, this, &Xsheet::loadLipsync);
+    connect(ui->btnAddFrame, &QPushButton::clicked, this, &Xsheet::addFrame);
     connect(ui->btnDeleteFrame, &QPushButton::clicked, this, &Xsheet::removeFrame);
     initXsheet();
 }
@@ -90,7 +91,7 @@ void Xsheet::showScrub(int frame)
     mTableItem = new QTableWidgetItem(QString::number(frame));
     mTableItem->setBackgroundColor(QColor(250, 150, 150));
     mTableWidget->setItem(frame, 0, mTableItem);
-    mTableWidget->scrollToItem(mTableItem, QAbstractItemView::PositionAtCenter);
+    mTableWidget->scrollToItem(mTableItem);
 }
 
 void Xsheet::updateScrub(int frame)
@@ -294,7 +295,8 @@ void Xsheet::saveLipsync()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save Lipsync column"), "",
-            tr("Pencil2D Lipsync file (*.lip2d)"));
+            tr("Pencil2D Lipsync file (*.lip2d)"),
+            new QString("Pencil2D Lipsync file (*.lip2d"));
     if (fileName.isEmpty()) { return; }
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -312,32 +314,45 @@ void Xsheet::saveLipsync()
     file.close();
 }
 
+void Xsheet::addFrame()
+{
+    if (mTableWidget->currentColumn() == 0 ||
+        mTableWidget->currentColumn() == mTableWidget->columnCount() - 1 ||
+        mTableWidget->currentRow() == 0) { return; }
+    QString name = mTableWidget->item(0, mTableWidget->currentColumn())->text();
+    int frame = mTableWidget->currentRow();
+    if (!mEditor->layers()->findLayerByName(name)->keyExists(frame))
+    {
+        mTableItem = new QTableWidgetItem(QString::number(mTableWidget->currentRow()));
+        mTableItem->setBackgroundColor(QColor(getLayerColor(getLayerType(mEditor->layers()->currentLayer()))));
+        mTableWidget->setItem(mTableWidget->currentRow(), mTableWidget->currentColumn(), mTableItem);
+        mEditor->layers()->currentLayer()->addNewKeyFrameAt(mTableWidget->currentRow());
+        emit mEditor->layers()->notifyLayerChanged(mEditor->layers()->findLayerByName(name));
+    }
+}
+
 void Xsheet::removeFrame()
 {
     QString tmp = mTableWidget->item(mTableWidget->currentRow(), mTableWidget->currentColumn())->text();
-    if (mTableWidget->currentColumn() > 0)
-    {
-        mTableItem = new QTableWidgetItem("");
-        mTableItem->setBackgroundColor(QColor(Qt::white));
-        mTableWidget->setItem(mTableWidget->currentRow(), mTableWidget->currentColumn(), mTableItem);
-        if (mTableWidget->currentColumn() == mTableWidget->columnCount() - 1)
-        {   // if it is a lipsync column
-            for (int i = 1; i < mPapaLines->size(); i++)
-                if (mPapaLines->at(i).startsWith(QString::number(mTableWidget->currentRow())))
-                    mPapaLines->removeAt(i);
-        }
-        else
-        {   // if it is a Bitmap or Vector layer
-            if (!tmp.isEmpty())
-            {
-                QString name = mTableWidget->item(0, mTableWidget->currentColumn())->text();
-                int frame = mTableWidget->currentRow();
-                if (mEditor->layers()->findLayerByName(name)->keyExists(frame))
-                {
-                    mEditor->layers()->findLayerByName(name)->removeKeyFrame(frame);
-                    emit mEditor->layers()->notifyLayerChanged(mEditor->layers()->findLayerByName(name));
-                }
-            }
+    if (mTableWidget->currentColumn() == 0) { return; }
+    mTableItem = new QTableWidgetItem("");
+    mTableItem->setBackgroundColor(QColor(Qt::white));
+    mTableWidget->setItem(mTableWidget->currentRow(), mTableWidget->currentColumn(), mTableItem);
+    if (mTableWidget->currentColumn() == mTableWidget->columnCount() - 1)
+    {   // if it is a lipsync column
+        for (int i = 1; i < mPapaLines->size(); i++)
+            if (mPapaLines->at(i).startsWith(QString::number(mTableWidget->currentRow())))
+                mPapaLines->removeAt(i);
+    }
+    else
+    {   // if it is a Bitmap or Vector layer
+        if (tmp.isEmpty()) { return; }
+        QString name = mTableWidget->item(0, mTableWidget->currentColumn())->text();
+        int frame = mTableWidget->currentRow();
+        if (mEditor->layers()->findLayerByName(name)->keyExists(frame))
+        {
+            mEditor->layers()->findLayerByName(name)->removeKeyFrame(frame);
+            emit mEditor->layers()->notifyLayerChanged(mEditor->layers()->findLayerByName(name));
         }
     }
 }
