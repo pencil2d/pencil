@@ -58,6 +58,7 @@
         <file>icons/new/arrow-vertical.png</file>
         <file>icons/papagayo.png</file>
         <file>icons/papagayoNo.png</file>
+        <file>icons/savecsv.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

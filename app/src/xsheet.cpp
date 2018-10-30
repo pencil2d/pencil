@@ -66,6 +66,7 @@ void Xsheet::initUI()
     connect(ui->btnNoPapa, &QPushButton::clicked, this, &Xsheet::erasePapa);
     connect(ui->btnSave, &QPushButton::clicked, this, &Xsheet::saveLipsync);
     connect(ui->btnLoad, &QPushButton::clicked, this, &Xsheet::loadLipsync);
+    connect(ui->btnSaveCsv, &QPushButton::clicked, this, &Xsheet::saveCsv);
     connect(ui->btnAddFrame, &QPushButton::clicked, this, &Xsheet::addFrame);
     connect(ui->btnDeleteFrame, &QPushButton::clicked, this, &Xsheet::removeFrame);
     initXsheet();
@@ -310,6 +311,37 @@ void Xsheet::saveLipsync()
     for (int i = 0; i < mPapaLines->length(); i++)
     {
         out << mPapaLines->at(i) << '\n';
+    }
+    file.close();
+}
+
+void Xsheet::saveCsv()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save xsheet as CSV"), "",
+            tr("Csv file (*.csv)"),
+            new QString("Csv file (*.csv"));
+    if (fileName.isEmpty()) { return; }
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QMessageBox::information(this,
+                     tr("Unable to open file"),
+                     file.errorString());
+        return;
+    }
+    QTextStream out(&file);
+    QString tmp;
+    for (int i = 0; i < mTimeLineLength; i++)
+    {
+        tmp.clear();
+        for (int j = 0; j < mTableWidget->columnCount(); j++)
+        {
+            tmp += mTableWidget->item(i, j)->text() + ",";
+        }
+        tmp.chop(1);
+        tmp += '\n';
+        out << tmp;
     }
     file.close();
 }
