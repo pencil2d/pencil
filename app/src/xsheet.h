@@ -31,6 +31,7 @@ public slots:
     void updateUi(Editor *editor);
     void showScrub(int frame);
     void updateScrub(int frame);
+    void lengthChanged(int frames);
 
 private slots:
     void selectLayerFrame(int row, int column);

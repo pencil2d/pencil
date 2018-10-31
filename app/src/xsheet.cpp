@@ -50,6 +50,7 @@ Xsheet::~Xsheet()
 void Xsheet::newOpenScene()
 {
     erasePapa();
+    updateXsheet();
 }
 
 void Xsheet::initUI()
@@ -81,10 +82,7 @@ void Xsheet::updateUi(Editor* editor)
     mEditor = editor;
     QSettings settings(PENCIL2D, PENCIL2D);
     mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
-    initXsheet();
-    fillXsheet();
-    showScrub(mEditor->currentFrame());
-    writePapa();
+    updateXsheet();
 }
 
 void Xsheet::showScrub(int frame)
@@ -101,6 +99,12 @@ void Xsheet::updateScrub(int frame)
     showScrub(frame);
 }
 
+void Xsheet::lengthChanged(int frames)
+{
+    mTimeLineLength = frames;
+    updateXsheet();
+}
+
 void Xsheet::updateXsheet()
 {
     initXsheet();
@@ -111,12 +115,9 @@ void Xsheet::updateXsheet()
 
 void Xsheet::selectLayerFrame(int row, int column)
 {
-    initXsheet();
-    fillXsheet();
-    selectItem(row, column);
-    showScrub(row);
+    updateXsheet();
     mEditor->scrubTo(row);
-    writePapa();
+    selectItem(row, column);
 }
 
 void Xsheet::addLayerFrame(int row, int column)
@@ -172,10 +173,7 @@ void Xsheet::addLayerFrame(int row, int column)
             }
         }
     }
-    initXsheet();
-    fillXsheet();
-    showScrub(row);
-    writePapa();
+    updateXsheet();
 }
 
 void Xsheet::fillXsheet()
@@ -198,6 +196,7 @@ void Xsheet::fillXsheet()
         }
     }
 }
+
 /*
  * Load *.pgo file and keep in mPapaLines as follows:
  * First entry in mPapaLines:   Character Name OR DIAL - SPACE - FPS - SPACE - Last frame, if any
@@ -332,7 +331,7 @@ void Xsheet::saveCsv()
     }
     QTextStream out(&file);
     QString tmp;
-    for (int i = 0; i < mTimeLineLength; i++)
+    for (int i = 0; i <= mTimeLineLength; i++)
     {
         tmp.clear();
         for (int j = 0; j < mTableWidget->columnCount(); j++)
@@ -413,9 +412,9 @@ void Xsheet::initXsheet()
             }
         }
     }
-    for (int i = 1; i <= mLayerNames->size(); i++)
+    for (int i = 1; i <= mLayerNames->size() + 1; i++)
     {
-        for (int j = 1; j < mTimeLineLength; j++)
+        for (int j = 1; j <= mTimeLineLength; j++)
         {
             mTableItem = new QTableWidgetItem("");
             mTableItem->setBackgroundColor(Qt::white);
