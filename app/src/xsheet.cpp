@@ -128,20 +128,21 @@ void Xsheet::addLayerFrame(int row, int column)
     else if (column == mTableWidget->columnCount() - 1)
     {
         bool ok;
-        int len;
+        int len;    // accepted length of string
         QString text;
         if (row > 0)
         {
+            QString string = mTableWidget->item(row, column)->text();
             text = QInputDialog::getText(this, tr("Input text for Lipsync"),
                                                  tr("Maximum 4 chars accepted:"), QLineEdit::Normal,
-                                                 "", &ok);
+                                                 string, &ok);
             len = 4;
         }
         else
         {
             text = QInputDialog::getText(this, tr("Input Character name"),
                                                  tr("Maximum 20 chars accepted:"), QLineEdit::Normal,
-                                                 "", &ok);
+                                                 tr("Name or...?"), &ok);
             len = 20;
         }
         if (ok && !text.isEmpty())
@@ -202,7 +203,7 @@ void Xsheet::fillXsheet()
  * First entry in mPapaLines:   Character Name OR DIAL - SPACE - FPS - SPACE - Last frame, if any
  * Next entries in mPapaLines:  Frame - SPACE - phonemes (Only lines with two informations is saved)
  *
- * Extra phonemes can be added
+ * Extra phonemes can be added by doublecliking in xsheet
  */
 void Xsheet::loadPapa()
 {
@@ -242,7 +243,7 @@ void Xsheet::erasePapa()
     int dial = mTableWidget->columnCount();
 
     // clear column
-    for (int i = 0; i < mTimeLineLength; i++)
+    for (int i = 0; i <= mTimeLineLength; i++)
     {
         mTableItem = new QTableWidgetItem("");
         mTableItem->setBackgroundColor(Qt::white);
@@ -274,7 +275,6 @@ void Xsheet::loadLipsync()
     mTableItem = new QTableWidgetItem(lipsync.at(0));
     mTableItem->setBackgroundColor(QColor(250, 240, 160));
     mTableWidget->setItem(0, mTableWidget->columnCount() - 1, mTableItem);
-    // TODO use fps-info at lipsync.at(1) to set fps...
     if (lipsync.size() > 2)
     {
         mTableItem = new QTableWidgetItem(lipsync.at(2));
@@ -295,8 +295,7 @@ void Xsheet::saveLipsync()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save Lipsync column"), "",
-            tr("Pencil2D Lipsync file (*.lip2d)"),
-            new QString("Pencil2D Lipsync file (*.lip2d"));
+            tr("Pencil2D Lipsync file (*.lip2d)"));
     if (fileName.isEmpty()) { return; }
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -318,8 +317,7 @@ void Xsheet::saveCsv()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save xsheet as CSV"), "",
-            tr("Csv file (*.csv)"),
-            new QString("Csv file (*.csv"));
+            tr("Csv file (*.csv)"));
     if (fileName.isEmpty()) { return; }
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -372,8 +370,12 @@ void Xsheet::removeFrame()
     if (mTableWidget->currentColumn() == mTableWidget->columnCount() - 1)
     {   // if it is a lipsync column
         for (int i = 1; i < mPapaLines->size(); i++)
+        {
             if (mPapaLines->at(i).startsWith(QString::number(mTableWidget->currentRow())))
+            {
                 mPapaLines->removeAt(i);
+            }
+        }
     }
     else
     {   // if it is a Bitmap or Vector layer
@@ -469,7 +471,6 @@ void Xsheet::writePapa()
         mTableItem = new QTableWidgetItem(lipsync.at(0));
         mTableItem->setBackgroundColor(QColor(245, 155, 155, 150));
         mTableWidget->setItem(0, dial - 1, mTableItem);
-        // TODO use fps-info at lipsync.at(1) to set fps...
         if (lipsync.size() > 2)
         {
             tmp = lipsync.at(2);
