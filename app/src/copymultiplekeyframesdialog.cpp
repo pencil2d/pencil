@@ -67,6 +67,7 @@ void CopyMultiplekeyframesDialog::init()
     mMoveToLayer = ui->cBoxMoveToLayer->currentText();
     mCurrentTab = ui->tabWidget->currentIndex();
     mValidAction = true;
+    mLabWarning = "";
 
     ///< SET text on dialog
     ui->labDeleteOnLayer->setText(tr("On Layer ") + mFromLayer );
@@ -217,14 +218,26 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
     case 0: // copy
         mManiStartAt = ui->sBoxStartFrame->value();
         mManiEndAt = mManiStartAt - 1 + (mLastFrame + 1 - mFirstFrame) * mNumLoops;
+        if (ui->sBoxLastFrame->value() >= ui->sBoxStartFrame->value())
+            mLabWarning = tr("Originals may be overwritten!");
+        else
+            mLabWarning.clear();
         break;
     case 1: // move
         mManiStartAt = ui->sBoxMove->value();
         mManiEndAt = mManiStartAt + mLastFrame - mFirstFrame;
+        if (ui->sBoxLastFrame->value() >= ui->sBoxMove->value())
+            mLabWarning = tr("Originals may be overwritten!");
+        else
+            mLabWarning.clear();
         break;
     case 2: // reverse
         mManiStartAt = ui->sBoxStartReverse->value();
         mManiEndAt = mManiStartAt + mLastFrame - mFirstFrame;
+        if (ui->sBoxLastFrame->value() >= ui->sBoxStartReverse->value())
+            mLabWarning = tr("Originals may be overwritten!");
+        else
+            mLabWarning.clear();
         break;
     case 3:
         mManiStartAt = ui->sBoxFirstFrame->value();
@@ -239,26 +252,25 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
 void CopyMultiplekeyframesDialog::checkValidity()
 {
     setStartEnd(ui->tabWidget->currentIndex());
-    QString msg = "";
     bool testValidity = true;
 
     if (mManiEndAt > 9999) ///< 9999 frames is maximum timeline length
     {
-        msg = tr("Exceeds 9999 frames!");
+        mLabWarning = tr("Exceeds 9999 frames!");
         testValidity = false;
     }
     else if (mFirstFrame > mLastFrame) ///< Range must be valid, but can be one frame
     {
-        msg = tr("Range not valid!");
+        mLabWarning = tr("Range not valid!");
         testValidity = false;
     }
-    if (msg == "")
+    if (mLabWarning.isEmpty())
     {
         ui->labWarning->setText(tr("Affects Frames %1 %2 %3").arg(QString::number(mManiStartAt)).arg(QChar(0x2192)).arg(QString::number(mManiEndAt)));
     }
     else
     {
-        ui->labWarning->setText(msg);
+        ui->labWarning->setText(mLabWarning);
     }
     mValidAction = testValidity;
 }

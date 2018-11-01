@@ -654,14 +654,8 @@ void ActionCommands::copyFrames(int startL, int stopL, int loops, int startAt, L
                 if (kf == nullptr) return;
                 KeyFrame* dupKey = kf->clone();
                 if (tLayer->keyExists(startF))
-                {
-                    if (!tLayer->loadKey(dupKey))
-                        return;
-                }
-                else
-                {
-                    tLayer->addKeyFrame(startF, dupKey);
-                }
+                    tLayer->removeKeyFrame(startF);
+                tLayer->addKeyFrame(startF, dupKey);
                 tLayer->setModified(startF, true);
             }
         }
@@ -683,18 +677,9 @@ void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLaye
                 if (kf == nullptr) return;
                 KeyFrame* dupKey = kf->clone();
                 if (tLayer->keyExists(startF))
-                {
-                    if (!tLayer->loadKey(dupKey))
-                    {
-                        return;
-                    }
-                    fLayer->removeKeyFrame(j);
-                }
-                else
-                {
-                    tLayer->addKeyFrame(startF, dupKey);
-                    fLayer->removeKeyFrame(j);
-                }
+                    tLayer->removeKeyFrame(startF);
+                tLayer->addKeyFrame(startF, dupKey);
+                fLayer->removeKeyFrame(j);
                 tLayer->setModified(startF, true);
             }
         }
@@ -710,18 +695,9 @@ void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLaye
                 if (kf == nullptr) return;
                 KeyFrame* dupKey = kf->clone();
                 if (tLayer->keyExists(startF))
-                {
-                    if (!tLayer->loadKey(dupKey))
-                    {
-                        return;
-                    }
-                    fLayer->removeKeyFrame(j);
-                }
-                else
-                {
-                    tLayer->addKeyFrame(startF, dupKey);
-                    fLayer->removeKeyFrame(j);
-                }
+                    tLayer->removeKeyFrame(startF);
+                tLayer->addKeyFrame(startF, dupKey);
+                fLayer->removeKeyFrame(j);
                 tLayer->setModified(startF, true);
             }
         }
@@ -746,14 +722,8 @@ void ActionCommands::reverseFrames(int startL, int stopL, int startAt, Layer *tL
             KeyFrame* dupKey = kf->clone();
             // replace if keyframe exists!
             if (tLayer->keyExists(startF))
-            {
-                if (!tLayer->loadKey(dupKey))
-                    return;
-            }
-            else
-            {
-                tLayer->addKeyFrame(startF, dupKey);
-            }
+                tLayer->removeKeyFrame(startF);
+            tLayer->addKeyFrame(startF, dupKey);
             tLayer->setModified(startF, true);
         }
     }

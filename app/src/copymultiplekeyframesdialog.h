@@ -74,6 +74,7 @@ private:
     QString mCopyToLayer;   ///< name of To Layer you copy to
     QString mMoveToLayer;   ///< name of To Layer you move to
     QString mDeleteOnLayer; ///< = mFromLayer
+    QString mLabWarning;
     LayerManager *lMgr;
     int mTimelineLength;    ///< frames in scene/in timeline
 
