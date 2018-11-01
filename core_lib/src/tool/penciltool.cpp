@@ -367,6 +367,9 @@ void PencilTool::paintBitmapStroke()
 
 void PencilTool::paintVectorStroke(Layer* layer)
 {
+    if (mStrokePoints.empty())
+        return;
+
     // Clear the temporary pixel path
     mScribbleArea->clearBitmapBuffer();
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();

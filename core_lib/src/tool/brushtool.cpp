@@ -410,11 +410,13 @@ void BrushTool::paintBitmapStroke()
 // and turns them into vector lines.
 void BrushTool::paintVectorStroke()
 {
+    if (mStrokePoints.empty())
+        return;
+
     Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::VECTOR && mStrokePoints.size() > -1 )
     {
-
         // Clear the temporary pixel path
         mScribbleArea->clearBitmapBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
