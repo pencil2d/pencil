@@ -40,6 +40,22 @@ StrokeManager::StrokeManager()
     connect(&timer, &QTimer::timeout, this, &StrokeManager::interpolatePollAndPaint);
 }
 
+void StrokeManager::genericMoveEvent(QPointF pos)
+{
+    // only applied to drawing tools.
+    if (mStabilizerLevel != -1)
+    {
+        smoothMousePos(pos);
+    }
+    else
+    {
+        // No smoothing
+        mLastPixel = mCurrentPixel;
+        mCurrentPixel = pos;
+        mLastInterpolated = mCurrentPixel;
+    }
+}
+
 void StrokeManager::reset()
 {
     mStrokeStarted = false;
@@ -56,41 +72,16 @@ void StrokeManager::setPressure(float pressure)
     mTabletPressure = pressure;
 }
 
-QPointF StrokeManager::getEventPosition(QMouseEvent* event)
-{
-    QPointF pos;
-
-    if ( mTabletInUse )
-    {
-        // QT BUG (Wacom Tablets): updates are not synchronised in Windows giving different coordinates.
-        // Clue: Not a Microsoft nor Wacom problem because other windows apps are working fine in the same tablet mode.
-        // Solved: Qt bug in Wacom coding -> a lot of patches but no real solutions.
-        // QPointF pos2 = event->pos() + mTabletPosition - event->globalPos();
-        // Patch: next line skips the coordinate problem and it seems safe .
-        pos = event->pos() + mTabletPosition - mTabletPosition.toPoint();
-        //pos = event->pos();
-        //qDebug() << "New pos" << pos << ", Old pos" << pos2;
-    }
-    else
-    {
-        pos = event->localPos();
-    }
-
-    return pos;
-}
-
 void StrokeManager::mousePressEvent(QMouseEvent* event)
 {
     reset();
     if ( !(event->button() == Qt::NoButton) ) // if the user is pressing the left/right button
     {
-        mLastPressPixel = getEventPosition(event);
+        mLastPressPixel = event->localPos();
     }
-    mLastPixel = getEventPosition( event );
-    mCurrentPixel = getEventPosition( event );
+    mLastPixel = mCurrentPixel = event->localPos();
 
     mStrokeStarted = true;
-
 }
 
 void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
@@ -106,11 +97,19 @@ void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
 
 void StrokeManager::tabletEvent(QTabletEvent* event)
 {
-    if (event->type() == QEvent::TabletPress) { mTabletInUse = true; }
-    if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; }
+    if (event->type() == QEvent::TabletPress) {
+        mTabletInUse = true;
+        mPenIsHeld = true;
+        mLastPressPixel = event->posF();
+    }
+    if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; mPenIsHeld = false; }
 
-    mTabletPosition = event->posF();
     setPressure(event->pressure());
+
+    if(event->type() == QEvent::TabletMove)
+    {
+        genericMoveEvent(event->posF());
+    }
 }
 
 void StrokeManager::setStabilizerLevel(int level)
@@ -120,18 +119,7 @@ void StrokeManager::setStabilizerLevel(int level)
 
 void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 {
-    QPointF pos = getEventPosition(event);
-
-    // only applied to drawing tools.
-    if (mStabilizerLevel != -1){
-        smoothMousePos(pos);
-    } else {
-        // No smoothing
-        mLastPixel = mCurrentPixel;
-        mCurrentPixel = pos;
-        mLastInterpolated = mCurrentPixel;
-
-    }
+    genericMoveEvent(event->localPos());
 }
 
 void StrokeManager::smoothMousePos(QPointF pos)

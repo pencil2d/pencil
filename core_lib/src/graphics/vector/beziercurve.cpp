@@ -22,11 +22,12 @@ GNU General Public License for more details.
 #include "object.h"
 #include "pencilerror.h"
 
+
 BezierCurve::BezierCurve()
 {
 }
 
-BezierCurve::BezierCurve(QList<QPointF> pointList)
+BezierCurve::BezierCurve(const QList<QPointF>& pointList)
 {
     QList<qreal> pressureList;
 	for (int i = 0; i < pointList.size(); i++)
@@ -36,9 +37,12 @@ BezierCurve::BezierCurve(QList<QPointF> pointList)
     createCurve(pointList, pressureList);
 }
 
-BezierCurve::BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, double tol)
+BezierCurve::BezierCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, double tol)
 {
+    // FIXME: crashes if n == 0
     int n = pointList.size();
+
+    Q_ASSERT(n > 0);
 
     // Simplify path
     QList<bool> markList;
@@ -51,7 +55,7 @@ BezierCurve::BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, do
     QList<qreal> simplifiedPressureList;
     for(int i=0; i<n; i++)
     {
-        if (markList.at(i)==true)
+        if (markList.at(i) == true)
         {
             simplifiedPointList.append(pointList.at(i));
             if (pressureList.size() > i)
@@ -616,7 +620,7 @@ QRectF BezierCurve::getBoundingRect()
     return getSimplePath().boundingRect();
 }
 
-void BezierCurve::createCurve(QList<QPointF>& pointList, QList<qreal>& pressureList )
+void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList )
 {
     int p = 0;
     int n = pointList.size();
@@ -692,11 +696,11 @@ void BezierCurve::smoothCurve()
     }
 }
 
-void BezierCurve::simplify(double tol, QList<QPointF>& inputList, int j, int k, QList<bool>& markList)
+void BezierCurve::simplify(double tol, const QList<QPointF>& inputList, int j, int k, QList<bool>& markList)
 {
     // -- Douglas-Peucker simplification algorithm
     // from http://geometryalgorithms.com/Archive/algorithm_0205/
-    if (k <= j+1)   //there is nothing to simplify
+    if (k <= j + 1)   //there is nothing to simplify
     {
         // return immediately
     }
@@ -705,15 +709,15 @@ void BezierCurve::simplify(double tol, QList<QPointF>& inputList, int j, int k, 
         // test distance of intermediate vertices from segment Vj to Vk
         double maxd = 0.0; //is the distance of farthest vertex from segment jk
         int maxi = j;  //is the index of the vertex farthest from segement jk
-        for(int i=j+1; i<k-1; i++)  // each intermediate vertex Vi
+        for (int i = j + 1; i < k - 1; i++)  // each intermediate vertex Vi
         {
-            QPointF Vij = inputList.at(i)-inputList.at(j);
-            QPointF Vjk = inputList.at(j)-inputList.at(k);
+            QPointF Vij = inputList.at(i) - inputList.at(j);
+            QPointF Vjk = inputList.at(j) - inputList.at(k);
             double Vijx = Vij.x();
             double Vijy = Vij.y();
             double Vjkx = Vjk.x();
             double Vjky = Vjk.y();
-            double dv = (Vjkx*Vjkx+Vjky*Vjky);
+            double dv = (Vjkx * Vjkx + Vjky * Vjky);
             if ( dv != 0.0)
             {
                 dv = sqrt( Vijx*Vijx+Vijy*Vijy  -  pow(Vijx*Vjkx+Vijy*Vjky,2)/dv );
