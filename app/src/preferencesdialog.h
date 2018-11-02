@@ -111,7 +111,6 @@ public slots:
 
     void timelineLengthChanged(int);
     void fontSizeChanged(int);
-    void frameSizeChanged(int);
     void scrubChanged(int);
     void playbackStateChanged(int);
     void drawEmptyKeyRadioButtonToggled(bool);
