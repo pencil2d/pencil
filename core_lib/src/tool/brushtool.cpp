@@ -191,64 +191,78 @@ void BrushTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDev
     }
 }
 
-void BrushTool::mousePressEvent( QMouseEvent *event )
+void BrushTool::tabletPressEvent(QTabletEvent *)
 {
-    if ( event->button() == Qt::LeftButton )
-    {
-        mScribbleArea->setAllDirty();
-    }
-
+    mScribbleArea->setAllDirty();
     mMouseDownPoint = getCurrentPoint();
-
     mLastBrushPoint = getCurrentPoint();
     startStroke();
-
-    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
-    {
-        mScribbleArea->toggleThinLines();
-    }
-
 }
 
-void BrushTool::mouseReleaseEvent( QMouseEvent* event )
+void BrushTool::tabletMoveEvent(QTabletEvent *)
 {
-    if ( event->button() == Qt::LeftButton )
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+}
+
+void BrushTool::tabletReleaseEvent(QTabletEvent *)
+{
+    mEditor->backup(typeName());
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+    if (distance < 1)
     {
-        mEditor->backup(typeName());
-
-        Layer* layer = mEditor->layers()->currentLayer();
-        if ( mScribbleArea->isLayerPaintable() )
-        {
-            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
-            if (distance < 1)
-            {
-                paintAt(mMouseDownPoint);
-            }
-            else
-            {
-                drawStroke();
-            }
-        }
-
-        if ( layer->type() == Layer::BITMAP ) 
-            paintBitmapStroke();
-        else if (layer->type() == Layer::VECTOR )
-            paintVectorStroke();
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+
+    if ( layer->type() == Layer::BITMAP )
+        paintBitmapStroke();
+    else if (layer->type() == Layer::VECTOR )
+        paintVectorStroke();
     endStroke();
 }
 
-void BrushTool::mouseMoveEvent( QMouseEvent* event )
+void BrushTool::mousePressEvent( QMouseEvent *)
 {
-    if ( mScribbleArea->isLayerPaintable() )
+    mScribbleArea->setAllDirty();
+    mMouseDownPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
+    startStroke();
+}
+
+void BrushTool::mouseReleaseEvent( QMouseEvent *)
+{
+    mEditor->backup(typeName());
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+    if (distance < 1)
     {
-        if ( event->buttons() & Qt::LeftButton )
-        {
-            drawStroke();
-            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-        }
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+
+    if ( layer->type() == Layer::BITMAP )
+        paintBitmapStroke();
+    else if (layer->type() == Layer::VECTOR )
+        paintVectorStroke();
+    endStroke();
+}
+
+void BrushTool::mouseMoveEvent( QMouseEvent *)
+{
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
 // draw a single paint dab at the given location
@@ -396,11 +410,13 @@ void BrushTool::paintBitmapStroke()
 // and turns them into vector lines.
 void BrushTool::paintVectorStroke()
 {
+    if (mStrokePoints.empty())
+        return;
+
     Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::VECTOR && mStrokePoints.size() > -1 )
     {
-
         // Clear the temporary pixel path
         mScribbleArea->clearBitmapBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
