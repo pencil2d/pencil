@@ -118,7 +118,7 @@ QString ExportImageDialog::getCameraLayerName() const
 void ExportImageDialog::formatChanged(const QString& format)
 {
     setFileExtension(format.toLower());
-    setTransparencyOptionVisability(format);
+    setTransparencyOptionVisibility(format);
 }
 
 void ExportImageDialog::cameraComboChanged(int index)
