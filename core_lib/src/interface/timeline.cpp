@@ -139,7 +139,7 @@ void TimeLine::initUI()
     zoomSlider->setRange(4, 40);
     zoomSlider->setFixedWidth(74);
     zoomSlider->setValue(mTracks->getFrameSize());
-    zoomSlider->setToolTip(tr("Choose Framesize"));
+    zoomSlider->setToolTip(tr("Adjust frame width"));
     zoomSlider->setOrientation(Qt::Horizontal);
 
     QLabel* onionLabel = new QLabel(tr("Onion skin:"));
