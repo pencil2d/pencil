@@ -53,7 +53,7 @@ private slots:
 private:
     Ui::ExportImageOptions* ui = nullptr;
 
-    void setTransparencyOptionVisability(const QString& format);
+    void setTransparencyOptionVisibility(const QString& format);
     int mEndFrameWithSounds = 0;
     int mEndFrame = 0;
 };
