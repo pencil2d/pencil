@@ -129,7 +129,7 @@ void ExportImageDialog::cameraComboChanged(int index)
     ui->imgHeightSpinBox->setValue(cameraSize.height());
 }
 
-void ExportImageDialog::setTransparencyOptionVisability(const QString &format)
+void ExportImageDialog::setTransparencyOptionVisibility(const QString &format)
 {
     if (format == "JPG" || format == "BMP")
         ui->cbTransparency->setDisabled(true);
