@@ -149,7 +149,7 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent*)
 void SmudgeTool::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "smudgetool: mousePressEvent";
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }

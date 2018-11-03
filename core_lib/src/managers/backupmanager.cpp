@@ -468,10 +468,10 @@ void BackupManager::layerMoved(int backupNewLayerIndex)
 }
 
 /**
- * @brief BackupManager::prepareBackup
- * This should be called prior to a modification
+ * @brief BackupManager::saveStates
+ * This method should be called prior to an undo action taking place.
  */
-void BackupManager::prepareBackup()
+void BackupManager::saveStates()
 {
     mBitmap = nullptr;
     mVector = nullptr;

@@ -219,7 +219,7 @@ void BrushTool::tabletReleaseEvent(QTabletEvent *)
         drawStroke();
     }
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
@@ -250,7 +250,7 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *)
         paintAt(mMouseDownPoint);
     }
     
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();

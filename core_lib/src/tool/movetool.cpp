@@ -66,7 +66,7 @@ void MoveTool::tabletPressEvent(QTabletEvent *event)
     mCurrentLayer = currentPaintableLayer();
 
 	if (mScribbleArea->isSomethingSelected()) {
-        mEditor->backups()->prepareBackup();
+        mEditor->backups()->saveStates();
     }
     beginInteraction(event->modifiers(), mCurrentLayer);
 }
@@ -116,7 +116,7 @@ void MoveTool::mousePressEvent(QMouseEvent* event)
     setAnchorToLastPoint();
     
     if (mScribbleArea->isSomethingSelected()) {
-        mEditor->backups()->prepareBackup();
+        mEditor->backups()->saveStates();
     }
     beginInteraction(event->modifiers(), mCurrentLayer);
 }
@@ -213,7 +213,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     {
         if (canDeselect())
         {
-            mEditor->backups()->prepareBackup();
+            mEditor->backups()->saveStates();
             applyTransformation();
             mEditor->deselectAllSelections();
         }
@@ -373,7 +373,7 @@ bool MoveTool::leavingThisTool()
         case Layer::BITMAP:
         {
             if (transformHasBeenModified()) {
-                mEditor->backups()->prepareBackup();
+                mEditor->backups()->saveStates();
                 mEditor->backups()->transform();
             }
             break;

@@ -187,7 +187,7 @@ void PencilTool::tabletReleaseEvent(QTabletEvent*)
         drawStroke();
     }
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
@@ -230,7 +230,7 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *)
         drawStroke();
     }
 
-   mEditor->backups()->prepareBackup();
+   mEditor->backups()->saveStates();
    if ( layer->type() == Layer::BITMAP )
    {
        paintBitmapStroke();

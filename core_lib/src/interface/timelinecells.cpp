@@ -596,7 +596,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 
                             int offset = frameNumber - mLastFrameNumber;
 
-                            mEditor->backups()->prepareBackup();
+                            mEditor->backups()->saveStates();
                             mNumOfFramesOffset += offset;
                             currentLayer->moveSelectedFrames(offset);
                             mEditor->layers()->notifyAnimationLengthChanged();
@@ -686,7 +686,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
             }
             else
             {
-                mEditor->backups()->prepareBackup();
+                mEditor->backups()->saveStates();
                 QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
                 bool ok;

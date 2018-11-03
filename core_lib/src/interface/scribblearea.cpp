@@ -332,7 +332,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Escape:
         if (mSomethingSelected)
         {
-            mEditor->backups()->prepareBackup();
+            mEditor->backups()->saveStates();
             cancelTransformedSelection();
             mEditor->deselectAllAndCancelTransform();
 //            deselectAll();
@@ -1026,7 +1026,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
     if(layer->getKeyFrameAt(frameNumber) == nullptr)
     {
 
-        mEditor->backups()->prepareBackup();
+        mEditor->backups()->saveStates();
         // Drawing on an empty frame; take action based on preference.
         int action = mPrefs->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
 
@@ -2172,7 +2172,7 @@ void ScribbleArea::deleteSelection()
         Layer* layer = mEditor->layers()->currentLayer();
         if (layer == NULL) { return; }
 
-        mEditor->backups()->prepareBackup();
+        mEditor->backups()->saveStates();
 
         mClosestCurves.clear();
         if (layer->type() == Layer::VECTOR)
@@ -2195,10 +2195,10 @@ void ScribbleArea::clearImage()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if (layer->type() == Layer::VECTOR)
     {
-        mEditor->backups()->prepareBackup();
+        mEditor->backups()->saveStates();
         static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->clear();
         
         mClosestCurves.clear();

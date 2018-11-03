@@ -244,7 +244,7 @@ void PolylineTool::endPolyline( QList<QPointF> points )
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if ( layer->type() == Layer::VECTOR )
     {
         BezierCurve curve = BezierCurve( points );

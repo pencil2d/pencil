@@ -214,7 +214,7 @@ void Editor::paste()
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
     if (layer != NULL)
     {
-        backups()->prepareBackup();
+        backups()->saveStates();
         if (layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != NULL)
         {
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
@@ -473,7 +473,7 @@ bool Editor::importBitmapImage(QString filePath, int space)
             keyAdded = true;
         }
 
-        backups()->prepareBackup();
+        backups()->saveStates();
 
         QRect boundaries = img.rect();
         boundaries.moveTopLeft(mScribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width() / 2, boundaries.height() / 2));
@@ -512,7 +512,7 @@ bool Editor::importVectorImage(QString filePath, bool /*isSequence*/)
 
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
 
-    backups()->prepareBackup();
+    backups()->saveStates();
     VectorImage* vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
     if (vectorImage == NULL)
     {

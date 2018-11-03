@@ -81,7 +81,7 @@ Status ActionCommands::importSound()
         QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties", "Dialog title on creating a sound layer"),
                                                      tr("Layer name:"), QLineEdit::Normal,
                                                      tr("Sound Layer", "Default name on creating a sound layer"), &ok);
-        mEditor->backups()->prepareBackup();
+        mEditor->backups()->saveStates();
         if (ok && !strLayerName.isEmpty())
         {
             Layer* newLayer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -118,7 +118,7 @@ Status ActionCommands::importSound()
         layer->addKeyFrame(currentFrame, key);
     }
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     FileDialog fileDialog(mParent);
     QString strSoundFile = fileDialog.openFile(FileType::SOUND);
 
@@ -418,7 +418,7 @@ void ActionCommands::flipSelectionY()
 
 void ActionCommands::deselectAll()
 {
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     mEditor->deselectAllSelections();
 }
 
@@ -517,7 +517,7 @@ Status ActionCommands::addNewKey()
 
     KeyFrame* key = mEditor->addNewKey();
 
-    backups->prepareBackup();
+    backups->saveStates();
     SoundClip* clip = dynamic_cast<SoundClip*>(key);
     if (clip)
     {
@@ -555,7 +555,7 @@ void ActionCommands::removeKey()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
 
     mEditor->removeCurrentKey();
 
@@ -578,7 +578,7 @@ void ActionCommands::duplicateKey()
 
     KeyFrame* dupKey = key->clone();
 
-    backups->prepareBackup();
+    backups->saveStates();
     int nextEmptyFrame = mEditor->currentFrame() + 1;
     while (layer->keyExistsWhichCovers(nextEmptyFrame))
     {
@@ -632,7 +632,7 @@ Status ActionCommands::addNewBitmapLayer()
     bool ok;
 
     BackupManager* backups = mEditor->backups();
-    backups->prepareBackup();
+    backups->saveStates();
 
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
@@ -650,7 +650,7 @@ Status ActionCommands::addNewVectorLayer()
 {
     bool ok;
     BackupManager* backups = mEditor->backups();
-    backups->prepareBackup();
+    backups->saveStates();
 
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
@@ -667,7 +667,7 @@ Status ActionCommands::addNewCameraLayer()
 {
     bool ok;
     BackupManager* backups = mEditor->backups();
-    backups->prepareBackup();
+    backups->saveStates();
 
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
@@ -684,7 +684,7 @@ Status ActionCommands::addNewSoundLayer()
 {
     bool ok = false;
     BackupManager* backups = mEditor->backups();
-    backups->prepareBackup();
+    backups->saveStates();
 
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
@@ -708,7 +708,7 @@ Status ActionCommands::deleteCurrentLayer()
     QString layerName = layer->name();
     int layerIndex = mEditor->currentLayerIndex();
 
-    backups->prepareBackup();
+    backups->saveStates();
     std::map<int, KeyFrame*, std::greater<int>> keyFrames;
     for(auto map : layer->getKeysInLayer())
     {
@@ -740,7 +740,7 @@ void ActionCommands::editCameraProperties()
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
 
     QRect viewRect = layer->getViewRect();
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
 
     if ( dialog == NULL )
     {

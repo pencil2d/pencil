@@ -119,7 +119,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent* event)
 
         if ( mScribbleArea->isLayerPaintable() )
         {
-            mEditor->backups()->prepareBackup();
+            mEditor->backups()->saveStates();
             if ( layer->type() == Layer::BITMAP )
             {
                 paintBitmap(layer);

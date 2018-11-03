@@ -69,7 +69,7 @@ void HandTool::tabletMoveEvent(QTabletEvent * event)
     }
     mScribbleArea->updateToolCursor();
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
 }
 
 void HandTool::tabletReleaseEvent(QTabletEvent *)
@@ -92,7 +92,7 @@ void HandTool::mousePressEvent( QMouseEvent* )
 
     mScribbleArea->updateToolCursor();
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
 }
 
 void HandTool::mouseReleaseEvent( QMouseEvent* event )

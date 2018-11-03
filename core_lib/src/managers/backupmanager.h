@@ -50,7 +50,7 @@ public:
     void frameDragged(int backupFrameOffset);
     void flipView(bool backupIsFlipped, DIRECTION backupFlipDirection);
     void toggleSetting(bool backupToggleState, SETTING backupType);
-    void prepareBackup();
+    void saveStates();
 
     void restoreKey(int layerId, int frame, KeyFrame* keyFrame);
 

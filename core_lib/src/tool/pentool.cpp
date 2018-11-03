@@ -150,7 +150,7 @@ void PenTool::tabletReleaseEvent(QTabletEvent *)
         drawStroke();
     }
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if (layer->type() == Layer::BITMAP) {
         paintBitmapStroke();
         mEditor->backups()->bitmap("Bitmap: Pen");
@@ -193,7 +193,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *)
         drawStroke();
     }
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if (layer->type() == Layer::BITMAP) {
         paintBitmapStroke();
         mEditor->backups()->bitmap("Bitmap: Pen");

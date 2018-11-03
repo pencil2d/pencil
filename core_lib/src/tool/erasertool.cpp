@@ -159,7 +159,7 @@ void EraserTool::tabletReleaseEvent(QTabletEvent *)
         drawStroke();
     }
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
@@ -196,7 +196,7 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *)
         drawStroke();
     }
 
-    mEditor->backups()->prepareBackup();
+    mEditor->backups()->saveStates();
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
