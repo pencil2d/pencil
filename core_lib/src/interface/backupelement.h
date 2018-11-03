@@ -194,7 +194,7 @@ public:
 
     enum { Id = 1 };
 
-    SelectionElement(Selection backupSelectionType,
+    SelectionElement(SelectionType backupSelectionType,
                      QRectF backupTempSelection,
                      QRectF backupSelection,
                      Editor* editor,
@@ -206,7 +206,7 @@ public:
     QRectF oldTempSelection = QRectF();
     QRectF newTempSelection = QRectF();
 
-    Selection selectionType;
+    SelectionType selectionType;
 
     bool isFirstRedo = true;
 

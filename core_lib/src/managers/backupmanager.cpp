@@ -152,7 +152,7 @@ void BackupManager::vector(QString description)
 
 void BackupManager::selection()
 {
-    SelectionElement* element = new SelectionElement(Selection::SELECTION,
+    SelectionElement* element = new SelectionElement(SelectionType::SELECTION,
                                                      mTempSelectionRect,
                                                      mSelectionRect,
                                                      editor());
@@ -162,7 +162,7 @@ void BackupManager::selection()
 
 void BackupManager::deselect()
 {
-    SelectionElement* element = new SelectionElement(Selection::DESELECT,
+    SelectionElement* element = new SelectionElement(SelectionType::DESELECT,
                                                      mTempSelectionRect,
                                                      mSelectionRect,
                                                      editor());

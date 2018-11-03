@@ -524,7 +524,7 @@ void AddVectorElement::redo()
 
 }
 
-SelectionElement::SelectionElement(Selection backupSelectionType, QRectF backupTempSelection,
+SelectionElement::SelectionElement(SelectionType backupSelectionType, QRectF backupTempSelection,
                                          QRectF backupSelection,
                                          Editor* editor,
                                          QUndoCommand* parent) : BackupElement(editor, parent)
@@ -538,7 +538,7 @@ SelectionElement::SelectionElement(Selection backupSelectionType, QRectF backupT
 
     selectionType = backupSelectionType;
 
-    if (selectionType == Selection::SELECTION) {
+    if (selectionType == SelectionType::SELECTION) {
         setText(QObject::tr("New Selection"));
     } else {
         setText(QObject::tr("Deselected"));
@@ -548,7 +548,7 @@ SelectionElement::SelectionElement(Selection backupSelectionType, QRectF backupT
 
 void SelectionElement::undo()
 {
-    if (selectionType == Selection::SELECTION) {
+    if (selectionType == SelectionType::SELECTION) {
         undoSelection();
     } else {
         undoDeselection();
@@ -564,7 +564,6 @@ void SelectionElement::undoSelection()
     scribbleArea->deselectAll();
 
     editor()->updateCurrentFrame();
-
 }
 
 void SelectionElement::undoDeselection()
@@ -611,7 +610,6 @@ void SelectionElement::apply(int layerId,
         }
         default:
             break;
-
     }
 }
 
@@ -619,7 +617,7 @@ void SelectionElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    if (selectionType == Selection::SELECTION) {
+    if (selectionType == SelectionType::SELECTION) {
         redoSelection();
     } else {
         redoDeselection();
@@ -669,7 +667,8 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
         return false;
     }
 
-    if (selectionType == Selection::SELECTION) {
+    SelectionType otherType = static_cast<const SelectionElement*>(other)->selectionType;
+    if (selectionType == SelectionType::SELECTION && otherType == selectionType) {
         newTempSelection = static_cast<const SelectionElement*>(other)->newTempSelection;
         newSelection = static_cast<const SelectionElement*>(other)->newSelection;
 

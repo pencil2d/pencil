@@ -53,7 +53,7 @@ enum ToolType : int
     TOOL_TYPE_COUNT
 };
 
-enum Selection {
+enum SelectionType {
     SELECTION,
     DESELECT
 };
