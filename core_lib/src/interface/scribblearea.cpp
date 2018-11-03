@@ -267,6 +267,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
             myTransformedSelection = myTempTransformedSelection;
             calculateSelectionTransformation();
             paintTransformedSelection();
+            mEditor->backups()->transform();
         }
         else
         {
@@ -281,6 +282,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
             myTransformedSelection = myTempTransformedSelection;
             calculateSelectionTransformation();
             paintTransformedSelection();
+            mEditor->backups()->transform();
         }
         else
         {
@@ -295,6 +297,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
             myTransformedSelection = myTempTransformedSelection;
             calculateSelectionTransformation();
             paintTransformedSelection();
+            mEditor->backups()->transform();
         }
         else
         {
@@ -309,7 +312,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
             myTransformedSelection = myTempTransformedSelection;
             calculateSelectionTransformation();
             paintTransformedSelection();
-            mEditor->backups()->selection();
+            mEditor->backups()->transform();
         }
         else
         {
