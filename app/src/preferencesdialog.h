@@ -42,8 +42,7 @@ public:
     PreferencesDialog(QWidget* parent);
     ~PreferencesDialog();
 
-    void init( PreferenceManager* m );
-
+    void init(PreferenceManager* m);
     void updateRecentListBtn(bool isEmpty);
 
 public slots:
@@ -56,7 +55,7 @@ Q_SIGNALS:
     void updateRecentFileListBtn();
 
 protected:
-    void closeEvent( QCloseEvent* ) override;
+    void closeEvent(QCloseEvent*) override;
 
 private:
     Ui::PreferencesDialog* ui = nullptr;
@@ -69,56 +68,53 @@ class GeneralPage : public QWidget
 {
     Q_OBJECT
 public:
-    GeneralPage(QWidget* parent = 0);
+    GeneralPage();
     ~GeneralPage();
-    void setManager( PreferenceManager* p ) { mManager = p; }
+    void setManager(PreferenceManager* p) { mManager = p; }
 
 public slots:
     void updateValues();
-    void gridSizeChange(int value);
+    void gridWidthChanged(int value);
+    void gridHeightChanged(int value);
 
 signals:
     void windowOpacityChange(int value);
 
 private slots:
-    void languageChanged( int i );
+    void languageChanged(int i);
     void shadowsCheckboxStateChanged(int b);
-    void antiAliasCheckboxStateChanged( int b );
-    void toolCursorsCheckboxStateChanged( int b );
-    void dottedCursorCheckboxStateChanged( int b );
+    void antiAliasCheckboxStateChanged(int b);
+    void toolCursorsCheckboxStateChanged(int b);
+    void dottedCursorCheckboxStateChanged(int b);
     void highResCheckboxStateChanged(int b);
     void gridCheckBoxStateChanged(int b);
-    void curveSmoothingChange(int value);
-    void backgroundChange(int value);
+    void curveSmoothingChanged(int value);
+    void backgroundChanged(int value);
+    void frameCacheNumberChanged(int value);
 
 private:
     Ui::GeneralPage* ui = nullptr;
-
     PreferenceManager* mManager = nullptr;
-
-    int gridSize;
-
 };
 
 class TimelinePage : public QWidget
 {
     Q_OBJECT
 public:
-    TimelinePage(QWidget* parent = 0);
+    TimelinePage();
     ~TimelinePage();
 
-    void setManager( PreferenceManager* p ) { mManager = p; }
+    void setManager(PreferenceManager* p) { mManager = p; }
 
 public slots:
     void updateValues();
 
     void timelineLengthChanged(int);
-    void fontSizeChange(int);
-    void frameSizeChange(int);
-    void labelChange(bool);
-    void scrubChange(int);
+    void fontSizeChanged(int);
+    void frameSizeChanged(int);
+    void scrubChanged(int);
     void playbackStateChanged(int);
-    void radioButtonToggled(bool);
+    void drawEmptyKeyRadioButtonToggled(bool);
 
 private:
     Ui::TimelinePage* ui = nullptr;
@@ -130,9 +126,9 @@ class FilesPage : public QWidget
     Q_OBJECT
 
 public:
-    FilesPage(QWidget *parent = 0);
+    FilesPage();
     ~FilesPage();
-    void setManager( PreferenceManager* p ) { mManager = p; }
+    void setManager(PreferenceManager* p) { mManager = p; }
 
 public slots:
     void updateValues();
@@ -143,9 +139,8 @@ Q_SIGNALS:
     void clearRecentList();
 
 private:
-    Ui::FilesPage *ui = nullptr;
-    PreferenceManager *mManager = nullptr;
-
+    Ui::FilesPage* ui = nullptr;
+    PreferenceManager* mManager = nullptr;
 };
 
 
@@ -153,9 +148,9 @@ class ToolsPage : public QWidget
 {
     Q_OBJECT
 public:
-    ToolsPage(QWidget* parent = 0);
+    ToolsPage();
     ~ToolsPage();
-    void setManager( PreferenceManager* p ) { mManager = p; }
+    void setManager(PreferenceManager* p) { mManager = p; }
 
 public slots:
     void updateValues();

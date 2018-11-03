@@ -130,66 +130,92 @@ void EraserTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDe
     }
 }
 
-void EraserTool::mousePressEvent( QMouseEvent *event )
+void EraserTool::tabletPressEvent(QTabletEvent *)
 {
-    if ( event->button() == Qt::LeftButton )
-    {
-        mScribbleArea->setAllDirty();
-    }
+    mScribbleArea->setAllDirty();
 
     startStroke();
     mLastBrushPoint = getCurrentPoint();
     mMouseDownPoint = getCurrentPoint();
 }
 
-void EraserTool::mouseReleaseEvent( QMouseEvent *event )
+void EraserTool::tabletMoveEvent(QTabletEvent *)
 {
-    if ( event->button() == Qt::LeftButton )
+    updateStrokes();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+}
+
+void EraserTool::tabletReleaseEvent(QTabletEvent *)
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+    if (distance < 1)
     {
-
-        Layer* layer = mEditor->layers()->currentLayer();
-        if ( mScribbleArea->isLayerPaintable() )
-        {
-            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
-            if (distance < 1)
-            {
-                paintAt(mMouseDownPoint);
-            }
-            else
-            {
-                drawStroke();
-            }
-
-            mEditor->backups()->prepareBackup();
-            if ( layer->type() == Layer::BITMAP )
-            {
-                paintBitmapStroke();
-                mEditor->backups()->bitmap("Bitmap: Eraser");
-            }
-            else if (layer->type() == Layer::VECTOR )
-            {
-                paintVectorStroke();
-                mEditor->backups()->vector("Vector: Eraser");
-            }
-        }
-        removeVectorPaint();
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+
+    mEditor->backups()->prepareBackup();
+    if ( layer->type() == Layer::BITMAP )
+    {
+        paintBitmapStroke();
+        mEditor->backups()->bitmap("Bitmap: Eraser");
+    }
+    else if (layer->type() == Layer::VECTOR )
+    {
+        paintVectorStroke();
+        mEditor->backups()->vector("Vector: Eraser");
+    }
+    removeVectorPaint();
     endStroke();
 }
 
-void EraserTool::mouseMoveEvent( QMouseEvent *event )
+void EraserTool::mousePressEvent( QMouseEvent *)
 {
+    mScribbleArea->setAllDirty();
 
-    if ( event->buttons() & Qt::LeftButton )
+    startStroke();
+    mLastBrushPoint = getCurrentPoint();
+    mMouseDownPoint = getCurrentPoint();
+}
+
+void EraserTool::mouseReleaseEvent(QMouseEvent *)
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+    if (distance < 1)
     {
-        if ( mScribbleArea->isLayerPaintable() )
-        {
-            updateStrokes();
-            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel()) {
-                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-            }
-        }
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+
+    mEditor->backups()->prepareBackup();
+    if ( layer->type() == Layer::BITMAP )
+    {
+        paintBitmapStroke();
+        mEditor->backups()->bitmap("Bitmap: Eraser");
+    }
+    else if (layer->type() == Layer::VECTOR )
+    {
+        paintVectorStroke();
+        mEditor->backups()->vector("Vector: Eraser");
+    }
+    removeVectorPaint();
+    endStroke();
+}
+
+void EraserTool::mouseMoveEvent(QMouseEvent *)
+{
+    updateStrokes();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
 // draw a single paint dab at the given location

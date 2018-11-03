@@ -20,7 +20,7 @@ Camera::Camera()
 {
 }
 
-Camera::Camera(QPointF translation, float rotation, float scaling)
+Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
 {
     Q_ASSERT(scaling > 0);
     mTranslate = translation;
@@ -65,8 +65,8 @@ QTransform Camera::getView()
 void Camera::reset()
 {
     mTranslate = QPointF(0, 0);
-    mRotate = 0.f;
-    mScale = 1.f;
+    mRotate = 0.;
+    mScale = 1.;
     mNeedUpdateView = true;
     modification();
 }
@@ -89,7 +89,7 @@ void Camera::updateViewTransform()
     mNeedUpdateView = false;
 }
 
-void Camera::translate(float dx, float dy)
+void Camera::translate(qreal dx, qreal dy)
 {
     mTranslate.setX(dx);
     mTranslate.setY(dy);
@@ -103,16 +103,16 @@ void Camera::translate(const QPointF pt)
     translate(pt.x(), pt.y());
 }
 
-void Camera::rotate(float degree)
+void Camera::rotate(qreal degree)
 {
     mRotate = degree;
-    if (mRotate > 360.f)
+    if (mRotate > 360)
     {
-        mRotate = mRotate - 360.f;
+        mRotate = mRotate - 360;
     }
-    else if (mRotate < 0.f)
+    else if (mRotate < 0)
     {
-        mRotate = mRotate + 360.f;
+        mRotate = mRotate + 360;
     }
     mRotate = degree;
 
@@ -120,7 +120,7 @@ void Camera::rotate(float degree)
     modification();
 }
 
-void Camera::scale(float scaleValue)
+void Camera::scale(qreal scaleValue)
 {
     mScale = scaleValue;
 

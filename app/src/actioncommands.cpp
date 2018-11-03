@@ -636,7 +636,7 @@ Status ActionCommands::addNewBitmapLayer()
 
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Bitmap Layer"), &ok);
+                                         nameSuggest(tr("Bitmap Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createBitmapLayer(text);
@@ -654,13 +654,12 @@ Status ActionCommands::addNewVectorLayer()
 
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Vector Layer"), &ok);
+                                         nameSuggest(tr("Vector Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
         backups->layerAdded();
     }
-
     return Status::OK;
 }
 
@@ -672,13 +671,12 @@ Status ActionCommands::addNewCameraLayer()
 
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Camera Layer"), &ok);
+                                         nameSuggest(tr("Camera Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createCameraLayer(text);
         backups->layerAdded();
     }
-
     return Status::OK;
 }
 
@@ -690,7 +688,7 @@ Status ActionCommands::addNewSoundLayer()
 
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
-                                                 tr("Sound Layer"), &ok);
+                                                 nameSuggest(tr("Sound Layer")), &ok);
     if (ok && !strLayerName.isEmpty())
     {
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -762,6 +760,34 @@ void ActionCommands::editCameraProperties()
         mEditor->backups()->cameraProperties(viewRect);
     }
 }
+
+QString ActionCommands::nameSuggest(QString s)
+{
+    LayerManager* layerMgr = mEditor->layers();
+    // if no layers: return 's'
+    if (layerMgr->count() == 0)
+    {
+        return s;
+    }
+    QVector<QString> sLayers;
+    // fill Vector with layer names
+    for (int i = 0; i < layerMgr->count(); i++)
+    {
+        sLayers.append(layerMgr->getLayer(i)->name());
+    }
+    // if 's' is not in list, then return 's'
+    if (!sLayers.contains(s))
+    {
+        return s;
+    }
+    int j = 2;
+    QString tmp = s;
+    do {
+        tmp = s + " " + QString::number(j++);
+    } while (sLayers.contains(tmp));
+    return tmp;
+}
+
 
 void ActionCommands::help()
 {

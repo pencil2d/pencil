@@ -139,7 +139,7 @@ bool SmudgeTool::keyPressEvent(QKeyEvent *event)
 
 bool SmudgeTool::keyReleaseEvent(QKeyEvent*)
 {
-    
+
     toolMode = 0; // default mode
     mScribbleArea->setCursor( cursor() ); // update cursor
 

@@ -49,8 +49,6 @@ public:
     BitmapImage copy(QRect rectangle);
     void paste(BitmapImage*, QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver);
 
-    void add(BitmapImage*);
-    void compareAlpha(BitmapImage*);
     void moveTopLeft(QPoint point);
     void moveTopLeft(QPointF point) { moveTopLeft(point.toPoint()); }
     void transform(QRect rectangle, bool smoothTransform);

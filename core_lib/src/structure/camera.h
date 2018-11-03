@@ -25,9 +25,9 @@ class Camera : public KeyFrame
 {
 public:
     explicit Camera();
-    explicit Camera(QPointF translation, float rotation, float scaling);
+    explicit Camera(QPointF translation, qreal rotation, qreal scaling);
     explicit Camera(const Camera&);
-    ~Camera();
+    ~Camera() override;
 
     Camera* clone() override;
 
@@ -36,15 +36,15 @@ public:
     void updateViewTransform();
     void assign(const Camera& rhs);
 
-    void translate(float dx, float dy);
+    void translate(qreal dx, qreal dy);
     void translate(const QPointF);
     QPointF translation() { return mTranslate; }
 
-    void rotate(float degree);
-    float rotation() { return mRotate; }
+    void rotate(qreal degree);
+    qreal rotation() { return mRotate; }
 
-    void scale(float scaleValue);
-    float scaling() { return mScale; }
+    void scale(qreal scaleValue);
+    qreal scaling() { return mScale; }
 
     QTransform view;
 
@@ -52,8 +52,8 @@ public:
 
 private:
     QPointF mTranslate;
-    float mRotate = 0.f;
-    float mScale = 1.f;
+    qreal mRotate = 0.;
+    qreal mScale = 1.;
     bool mNeedUpdateView = true;
 };
 

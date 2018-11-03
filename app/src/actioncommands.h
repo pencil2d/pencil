@@ -76,6 +76,7 @@ public:
     Status addNewSoundLayer();
     Status deleteCurrentLayer();
     void editCameraProperties();
+    QString nameSuggest(QString s);
 
     // Help
     void help();

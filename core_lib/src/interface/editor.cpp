@@ -164,6 +164,9 @@ void Editor::settingUpdated(SETTING setting)
         mScribbleArea->updateAllFrames();
         emit updateTimeLine();
         break;
+    case SETTING::FRAME_POOL_SIZE:
+        mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
+        break;
     default:
         break;
     }
@@ -179,7 +182,7 @@ void Editor::cut()
 void Editor::copy()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer != NULL)
+    if (layer == NULL) 
     {
         return;
     }
@@ -353,6 +356,11 @@ void Editor::updateObject()
     {
         mScribbleArea->updateAllFrames();
     }
+    
+    if (mPreferenceManager)
+    {
+        mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
+    }
 
     emit updateLayerCount();
 }
@@ -486,6 +494,12 @@ bool Editor::importBitmapImage(QString filePath, int space)
             } else {
                 scrubTo(currentFrame() + 1);
             }
+        }
+
+        // Workaround for tiff import getting stuck in this loop
+        if (!reader.supportsAnimation())
+        {
+            break;
         }
     }
 

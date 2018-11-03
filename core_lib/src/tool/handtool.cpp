@@ -25,12 +25,13 @@ GNU General Public License for more details.
 
 #include "viewmanager.h"
 #include "layermanager.h"
+#include "backupmanager.h"
+#include "strokemanager.h"
 
 #include "layer.h"
 #include "layercamera.h"
 
 #include "editor.h"
-#include "backupmanager.h"
 #include "scribblearea.h"
 
 
@@ -50,13 +51,45 @@ void HandTool::loadSettings()
 
 QCursor HandTool::cursor()
 {
-    return mButtonsDown > 0 ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
+    return mIsHeld ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
+}
+
+void HandTool::tabletPressEvent(QTabletEvent *)
+{
+    mLastPixel = getLastPressPixel();
+    mScribbleArea->updateToolCursor();
+    mIsHeld = true;
+}
+
+void HandTool::tabletMoveEvent(QTabletEvent * event)
+{
+    if (m_pStrokeManager->isPenPressed()) {
+        transformView(event->modifiers(), event->buttons());
+        mLastPixel = getCurrentPixel();
+    }
+    mScribbleArea->updateToolCursor();
+
+    mEditor->backups()->prepareBackup();
+}
+
+void HandTool::tabletReleaseEvent(QTabletEvent *)
+{
+    mScribbleArea->updateToolCursor();
+    mIsHeld = false;
+
+	Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA)
+    {
+        BackupManager* backup = mEditor->backups();
+        backup->cameraMotion();
+    }
 }
 
 void HandTool::mousePressEvent( QMouseEvent* )
 {
     mLastPixel = getLastPressPixel();
-    ++mButtonsDown;
+    mIsHeld = true;
+
     mScribbleArea->updateToolCursor();
 
     mEditor->backups()->prepareBackup();
@@ -70,7 +103,7 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
         qDebug( "[HandTool] Stop Hand Tool" );
         mScribbleArea->setPrevTool();
     }
-    --mButtonsDown;
+    mIsHeld = false;
     mScribbleArea->updateToolCursor();
 
     Layer* layer = mEditor->layers()->currentLayer();
@@ -81,17 +114,31 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
     }
 }
 
-void HandTool::mouseMoveEvent( QMouseEvent* evt )
+void HandTool::mouseMoveEvent( QMouseEvent* event )
 {
-    if ( evt->buttons() == Qt::NoButton )
+    if ( event->buttons() == Qt::NoButton )
     {
         return;
     }
 
-    bool isTranslate = evt->modifiers() == Qt::NoModifier;
-    bool isRotate = evt->modifiers() & Qt::AltModifier;
-    bool isScale = ( evt->modifiers() & Qt::ControlModifier ) || ( evt->buttons() & Qt::RightButton );
+    transformView(event->modifiers(), event->buttons());
 
+    mLastPixel = getCurrentPixel();
+}
+
+void HandTool::mouseDoubleClickEvent( QMouseEvent *event )
+{
+    if ( event->button() == Qt::RightButton )
+    {
+        mEditor->view()->resetView();
+    }
+}
+
+void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons)
+{
+    bool isTranslate = keyMod == Qt::NoModifier;
+    bool isRotate = keyMod & Qt::AltModifier;
+    bool isScale = (keyMod & Qt::ControlModifier) || ( buttons & Qt::RightButton );
 
     ViewManager* viewMgr = mEditor->view();
 
@@ -116,15 +163,5 @@ void HandTool::mouseMoveEvent( QMouseEvent* evt )
         float delta = ( getCurrentPixel().y() - mLastPixel.y() ) / 100.f;
         float scaleValue = viewMgr->scaling() * (1.f + delta);
         viewMgr->scale(scaleValue);
-    }
-
-    mLastPixel = getCurrentPixel();
-}
-
-void HandTool::mouseDoubleClickEvent( QMouseEvent *event )
-{
-    if ( event->button() == Qt::RightButton )
-    {
-        mEditor->view()->resetView();
     }
 }

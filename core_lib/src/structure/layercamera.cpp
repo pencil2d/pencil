@@ -113,15 +113,15 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
     int nextFrame = getNextKeyFramePosition( frameNumber );
     Camera* camera2 = static_cast< Camera* >( getLastKeyFrameAtPosition( nextFrame ) );
 
-    if (camera1 == NULL && camera2 == NULL)
+    if (camera1 == nullptr && camera2 == nullptr)
     {
         return QTransform();
     }
-    else if (camera1 == NULL && camera2 != NULL)
+    else if (camera1 == nullptr && camera2 != nullptr)
     {
         return camera2->view;
     }
-    else if (camera2 == NULL && camera1 != NULL)
+    else if (camera2 == nullptr && camera1 != nullptr)
     {
         return camera1->view;
     }
@@ -163,15 +163,15 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
 
-    if (camera1 == NULL && camera2 == NULL)
+    if (camera1 == nullptr && camera2 == nullptr)
     {
         return; // do nothing
     }
-    else if (camera1 == NULL && camera2 != NULL)
+    else if (camera1 == nullptr && camera2 != nullptr)
     {
         return cam->assign(*camera2);
     }
-    else if (camera2 == NULL && camera1 != NULL)
+    else if (camera2 == nullptr && camera1 != nullptr)
     {
         return cam->assign(*camera1);
     }
@@ -212,7 +212,7 @@ QSize LayerCamera::getViewSize()
     return viewRect.size();
 }
 
-void LayerCamera::loadImageAtFrame( int frameNumber, float dx, float dy, float rotate, float scale)
+void LayerCamera::loadImageAtFrame( int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale)
 {
     if ( keyExists( frameNumber ) )
     {

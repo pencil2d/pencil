@@ -55,7 +55,7 @@ public:
     LayerCamera(const int layerId, Object *object);
     ~LayerCamera();
 
-    void loadImageAtFrame(int frame, float dx, float dy, float rotate, float scale);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
     
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;

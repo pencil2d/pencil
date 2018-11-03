@@ -34,6 +34,10 @@ public:
     void mousePressEvent( QMouseEvent* ) override;
     void mouseReleaseEvent( QMouseEvent* ) override;
 
+    void tabletPressEvent( QTabletEvent* ) override;
+    void tabletMoveEvent( QTabletEvent* ) override;
+    void tabletReleaseEvent( QTabletEvent* ) override;
+
     void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
 
     void drawStroke();

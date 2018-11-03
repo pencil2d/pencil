@@ -35,9 +35,16 @@ public:
     void mouseMoveEvent(QMouseEvent *) override;
     void mouseDoubleClickEvent(QMouseEvent *) override;
 
+    void tabletPressEvent(QTabletEvent*) override;
+    void tabletMoveEvent(QTabletEvent*) override;
+    void tabletReleaseEvent(QTabletEvent*) override;
+
 private:
+
+    void transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons);
+
     QPointF mLastPixel;
-    int mButtonsDown = 0;
+    bool mIsHeld = false;
 };
 
 #endif

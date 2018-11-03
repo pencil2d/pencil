@@ -127,12 +127,9 @@ void PenTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice
     }
 }
 
-void PenTool::mousePressEvent(QMouseEvent* event)
+void PenTool::tabletPressEvent(QTabletEvent *)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        mScribbleArea->setAllDirty();
-    }
+    mScribbleArea->setAllDirty();
 
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
@@ -140,52 +137,79 @@ void PenTool::mousePressEvent(QMouseEvent* event)
     startStroke();
 }
 
-void PenTool::mouseReleaseEvent(QMouseEvent* event)
+void PenTool::tabletReleaseEvent(QTabletEvent *)
 {
-    if (event->button() == Qt::LeftButton)
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    if (distance < 1)
     {
+        paintAt(mMouseDownPoint);
+    }
+    else
+    {
+        drawStroke();
+    }
 
-        Layer* layer = mEditor->layers()->currentLayer();
-        if (mScribbleArea->isLayerPaintable())
-        {
-            qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
-            if (distance < 1)
-            {
-                paintAt(mMouseDownPoint);
-            }
-            else
-            {
-                drawStroke();
-            }
-
-            mEditor->backups()->prepareBackup();
-            if (layer->type() == Layer::BITMAP) {
-                paintBitmapStroke();
-                mEditor->backups()->bitmap("Bitmap: Pen");
-            }
-            else if (layer->type() == Layer::VECTOR) {
-                paintVectorStroke(layer);
-                mEditor->backups()->vector("Vector: Pen");
-            }
-        }
+    mEditor->backups()->prepareBackup();
+    if (layer->type() == Layer::BITMAP) {
+        paintBitmapStroke();
+        mEditor->backups()->bitmap("Bitmap: Pen");
+    }
+    else if (layer->type() == Layer::VECTOR) {
+        paintVectorStroke(layer);
+        mEditor->backups()->vector("Vector: Pen");
     }
     endStroke();
 }
 
-void PenTool::mouseMoveEvent(QMouseEvent* event)
+void PenTool::tabletMoveEvent(QTabletEvent *)
+{
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+}
+
+
+void PenTool::mousePressEvent(QMouseEvent *)
+{
+    mScribbleArea->setAllDirty();
+
+    mMouseDownPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
+
+    startStroke();
+}
+
+void PenTool::mouseReleaseEvent(QMouseEvent *)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    if (distance < 1)
     {
-        if (event->buttons() & Qt::LeftButton)
-        {
-            drawStroke();
-            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel()) {
-                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-            }
-            //qDebug() << "DrawStroke" << event->pos() ;
-        }
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+
+    mEditor->backups()->prepareBackup();
+    if (layer->type() == Layer::BITMAP) {
+        paintBitmapStroke();
+        mEditor->backups()->bitmap("Bitmap: Pen");
+    }
+    else if (layer->type() == Layer::VECTOR) {
+        paintVectorStroke(layer);
+        mEditor->backups()->vector("Vector: Pen");
+    }
+    endStroke();
+}
+
+void PenTool::mouseMoveEvent( QMouseEvent *)
+{
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
 // draw a single paint dab at the given location
@@ -306,6 +330,9 @@ void PenTool::paintBitmapStroke()
 
 void PenTool::paintVectorStroke(Layer* layer)
 {
+    if (mStrokePoints.empty())
+        return;
+
     // Clear the temporary pixel path
     mScribbleArea->clearBitmapBuffer();
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
