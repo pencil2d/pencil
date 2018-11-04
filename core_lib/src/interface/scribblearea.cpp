@@ -2181,14 +2181,12 @@ void ScribbleArea::deleteSelection()
         if (layer->type() == Layer::VECTOR)
         {
             static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deleteSelection();
-            mEditor->backups()->vector("Vector: Clear Selection");
         }
         if (layer->type() == Layer::BITMAP)
         {
             static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear(mySelection);
-            mEditor->backups()->bitmap("Bitmap: Clear Selection");
-
         }
+        mEditor->backups()->clearSelection();
         updateAllFrames();
     }
 }

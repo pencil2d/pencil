@@ -45,6 +45,7 @@ public:
 
     void selection();
     void deselect();
+    void clearSelection();
     void transform();
     void cameraProperties(QRect backupViewRect);
     void frameDragged(int backupFrameOffset);

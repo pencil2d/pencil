@@ -179,6 +179,34 @@ void BackupManager::deselect()
     emit updateBackup();
 }
 
+void BackupManager::clearSelection()
+{
+    SelectionElement* element = new SelectionElement(SelectionType::DESELECT,
+                                                     mTempSelectionRect,
+                                                     mSelectionRect,
+                                                     editor());
+    new TransformElement(mKeyframe,
+                         editor()->getScribbleArea()->mBufferImg,
+                          mLayerId,
+                          mFrameIndex,
+                          mSelectionRect,
+                          mTempSelectionRect,
+                          mSelectionTransform,
+                          editor(), element);
+
+
+
+    if (mLayer->type() == Layer::BITMAP) {
+        element->setText(tr("Bitmap Clear Selection"));
+    } else if (mLayer->type() == Layer::VECTOR) {
+        element->setText(tr("Vector: Clear Selection"));
+    } else {
+        return;
+    }
+    mUndoStack->push(element);
+    emit updateBackup();
+}
+
 void BackupManager::transform()
 {
     TransformElement* element = new TransformElement(mKeyframe,

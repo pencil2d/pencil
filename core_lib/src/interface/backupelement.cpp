@@ -184,7 +184,6 @@ bool AddKeyFrameElement::mergeWith(const QUndoCommand *other)
     oldFrameIndex = element->oldFrameIndex;
     newFrameIndex = element->newFrameIndex;
     newKey = element->newKey;
-
     oldKeyExisted = element->oldKeyExisted;
 
     std::map<int, KeyFrame*>frames = static_cast<const AddKeyFrameElement*>(other)->oldKeyFrames;
