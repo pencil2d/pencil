@@ -124,7 +124,6 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
 
-    //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
     mEditor->updateObject();
@@ -177,7 +176,6 @@ void MainWindow2::createDockWidgets()
         << mToolOptions
         << mToolBox;
 
-//    mColorInspector->setFloating(true);
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
 
@@ -201,7 +199,6 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     setDockNestingEnabled(true);
-    //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
     /*
     mPreview = new PreviewWidget( this );
