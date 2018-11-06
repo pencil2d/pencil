@@ -6,7 +6,7 @@
 
 ! include( ../common.pri ) { error( Could not find the common.pri file! ) }
 
-QT += core widgets gui xml multimedia svg
+QT += core widgets gui xml multimedia svg network
 
 TEMPLATE = app
 TARGET = pencil2d
@@ -58,7 +58,8 @@ HEADERS += \
     src/importimageseqdialog.h \
     src/spinslider.h \
     src/doubleprogressdialog.h \
-    src/colorslider.h
+    src/colorslider.h \
+    checkupdatesdialog.h
 
 SOURCES += \
     src/main.cpp \
@@ -86,7 +87,8 @@ SOURCES += \
     src/importimageseqdialog.cpp \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
-    src/colorslider.cpp
+    src/colorslider.cpp \
+    checkupdatesdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \

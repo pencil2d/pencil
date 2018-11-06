@@ -24,6 +24,7 @@ class Editor;
 class QWidget;
 class ExportMovieDialog;
 
+
 class ActionCommands : public QObject
 {
     Q_OBJECT
@@ -78,7 +79,10 @@ public:
     void help();
     void quickGuide();
     void website();
+    void forum();
+    void discord();
     void reportbug();
+    void checkForUpdates();
     void about();
 
 private:

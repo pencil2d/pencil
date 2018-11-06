@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -204,6 +204,10 @@
     <addaction name="actionQuick_Guide"/>
     <addaction name="separator"/>
     <addaction name="actionWebsite"/>
+    <addaction name="actionForum"/>
+    <addaction name="actionDiscord"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheck_for_Updates"/>
     <addaction name="actionReport_Bug"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
@@ -886,6 +890,21 @@
   <action name="actionExport_Animated_GIF">
    <property name="text">
     <string>Animated GIF...</string>
+   </property>
+  </action>
+  <action name="actionForum">
+   <property name="text">
+    <string>Pencil2D Forum</string>
+   </property>
+  </action>
+  <action name="actionCheck_for_Updates">
+   <property name="text">
+    <string>Check for Updates</string>
+   </property>
+  </action>
+  <action name="actionDiscord">
+   <property name="text">
+    <string>Pencil2D Discord</string>
    </property>
   </action>
  </widget>
