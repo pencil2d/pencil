@@ -39,7 +39,7 @@ ImportExportDialog::~ImportExportDialog()
     delete ui;
 }
 
-QString ImportExportDialog::getFilePath()
+QString ImportExportDialog::getFilePath() const
 {
     return m_filePaths.isEmpty() ? QString() : m_filePaths.first();
 }

@@ -37,7 +37,7 @@ public:
     ~ImportExportDialog();
 
     void init();
-    QString getFilePath();
+    QString getFilePath() const;
     QString getAbsolutePath();
     QStringList getFilePaths();
 
