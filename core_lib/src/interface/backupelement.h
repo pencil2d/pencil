@@ -278,6 +278,34 @@ public:
     int id() const override { return Id; }
 };
 
+class QProgressDialog;
+class ImportBitmapElement : public BackupElement
+{
+
+public:
+    enum { Id = 7 };
+
+    ImportBitmapElement(std::map<int, KeyFrame*, std::greater<int>>backupCanvasKeyFrames,
+                        std::map<int, KeyFrame*, std::less<int> > backupImportedKeyFrames,
+                        int backupLayerId,
+                        Editor* editor,
+                        QUndoCommand* parent = 0);
+
+    std::map<int, KeyFrame*, std::greater<int>> oldKeyFrames;
+    std::map<int, KeyFrame*,std::less<int>> importedKeyFrames;
+
+    int oldLayerId = 0;
+    int newLayerId = 0;
+
+    bool isFirstRedo = true;
+
+    QProgressDialog* progress = nullptr;
+
+    void undo() override;
+    void redo() override;
+    int id() const override { return Id; }
+};
+
 class CameraMotionElement : public BackupElement
 {
 public:

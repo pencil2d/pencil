@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 
+#include "QProgressDialog"
 #include "layermanager.h"
 #include "backupmanager.h"
 #include "viewmanager.h"
@@ -117,13 +118,13 @@ void AddKeyFrameElement::undo()
         {
             qDebug() << "did A key exist before:" << oldKeyExisted;
             if (!oldKeyExisted) {
-                editor()->removeKeyAtLayerId(newLayerId, map.first);
+                editor()->removeKeyAtLayerId(oldLayerId, map.first);
             }
         }
     }
     else
     {
-        editor()->removeKeyAtLayerId(newLayerId, newFrameIndex);
+        editor()->removeKeyAtLayerId(oldLayerId, oldFrameIndex);
     }
     editor()->updateCurrentFrame();
 }
@@ -143,7 +144,7 @@ void AddKeyFrameElement::redo()
             qDebug() << "nnnew:" << newKeyFrames;
             for (auto map : newKeyFrames)
             {
-                newFrameIndex = map.first; //
+                newFrameIndex = map.first;
                 newKey = map.second;
                 editor()->backups()->restoreKey(this);
             }
@@ -277,10 +278,10 @@ void RemoveKeyFrameElement::redo()
 
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    if (oldFrameIndex > 1)
+    if (newFrameIndex > 1)
     {
         qDebug() << "RemoveKeyFrame triggered";
-        editor()->removeKeyAtLayerId(newLayerId, oldFrameIndex);
+        editor()->removeKeyAtLayerId(newLayerId, newFrameIndex);
     }
 
 }
@@ -842,6 +843,79 @@ bool TransformElement::mergeWith(const QUndoCommand *other)
     scribbleArea->paintTransformedSelection();
 
     return true;
+}
+
+ImportBitmapElement::ImportBitmapElement(std::map<int, KeyFrame*, std::greater<int>> backupCanvasKeyFrames,
+                                         std::map<int, KeyFrame*, std::less<int>> backupImportedKeyFrames,
+                                         int backupLayerId,
+                                         Editor *editor,
+                                         QUndoCommand *parent) : BackupElement(editor, parent)
+{
+
+    oldLayerId = backupLayerId;
+    newLayerId = editor->layers()->currentLayer()->id();
+
+    importedKeyFrames = backupImportedKeyFrames;
+    oldKeyFrames = backupCanvasKeyFrames;
+
+    setText(QObject::tr("Import images/s"));
+}
+
+void ImportBitmapElement::undo()
+{
+    for (auto key : importedKeyFrames)
+    {
+        editor()->removeKeyAtLayerId(oldLayerId,key.second->pos());
+    }
+
+    // we've removed all keyframes + those that were overwritten
+    // now put the re-add the old ones
+    Layer* layer = editor()->layers()->currentLayer();
+    for (auto key : oldKeyFrames)
+    {
+        editor()->addKeyFrameToLayerId(oldLayerId, key.first, true);
+        BitmapImage oldBitmap = *static_cast<BitmapImage*>(key.second);
+        static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(key.first)->paste(&oldBitmap);
+    }
+}
+
+void ImportBitmapElement::redo()
+{
+    if (isFirstRedo)
+    {
+        isFirstRedo = false;
+        return;
+    }
+
+    progress = new QProgressDialog(QObject::tr("Reimporting..."), QObject::tr("Abort"), 0, 100, nullptr);
+    progress->setWindowModality(Qt::WindowModal);
+    progress->show();
+    progress->setMaximum(importedKeyFrames.size());
+
+    Layer* layer = editor()->layers()->currentLayer();
+    int progressValue = 0;
+
+    for (auto key : importedKeyFrames)
+    {
+        editor()->addKeyFrameToLayerId(newLayerId, key.first, true);
+        BitmapImage oldBitmap = *static_cast<BitmapImage*>(key.second);
+        static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(key.first)->paste(&oldBitmap);
+
+        progress->setValue(progressValue);
+
+        // Because everything is singlethreaded... we have to push remaining events through
+        // to update the UI. This makes loading slightly slower, let's only update per 25%
+        if (progressValue % 25 == 0) {
+            QCoreApplication::processEvents();
+        }
+
+        if (progressValue > progress->maximum()) {
+            progress->cancel();
+        }
+
+        progressValue++;
+    }
+    progress->setValue(progressValue);
 }
 
 CameraMotionElement::CameraMotionElement(QPointF backupTranslation,

@@ -462,39 +462,48 @@ bool Editor::importBitmapImage(QString filePath, int space)
         return false;
     }
 
-    bool keyExisted = layer->keyExists(currentFrame());
-    qDebug("frame %d and exist %d", currentFrame(), keyExisted);
+    backups()->saveStates();
+
+    std::map<int, KeyFrame*, std::greater<int>> canvasKeyFrames;
+
+    for(auto map : layer->getKeysInLayer())
+    {
+        // make sure file is loaded when trying to get bitmap from layer...
+        map.second->loadFile();
+        canvasKeyFrames.insert(std::make_pair(map.first, map.second->clone()));
+    }
+
+    std::map<int, KeyFrame*, std::less<int>> importedKeyFrames;
     while (reader.read(&img))
     {
+        bool keyExisted = layer->keyExists(currentFrame());
         bool keyAdded = false;
+        KeyFrame* newKey = nullptr;
         if (!keyExisted)
         {
-            addNewKey();
+            newKey = addNewKey();
             keyAdded = true;
         }
 
-        backups()->saveStates();
+        BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(currentFrame());
+        BitmapImage importedBitmapImage(mScribbleArea->getCentralPoint().toPoint() - QPoint(img.width() / 2, img.height() / 2), img);
+        bitmapImage->paste(&importedBitmapImage);
 
-        QRect boundaries = img.rect();
-        boundaries.moveTopLeft(mScribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width() / 2, boundaries.height() / 2));
+        newKey = bitmapImage;
+        if (newKey != nullptr) {
+            newKey = newKey->clone();
+        }
+        importedKeyFrames.insert(std::make_pair(newKey->pos(), newKey));
 
-        BitmapImage importedBitmapImage{ boundaries.topLeft(), img };
-        importedBitmapImage.paste(&importedBitmapImage);
-
-        if (!keyExisted)
+        if (space > 1)
         {
-            backups()->keyAdded(space, keyExisted, "Import: Image+Key");
+            scrubTo(currentFrame() + space);
         }
         else
         {
-            backups()->bitmap("Import: Image");
-
-            if (space > 1) {
-                scrubTo(currentFrame() + space);
-            } else {
-                scrubTo(currentFrame() + 1);
-            }
+            scrubTo(currentFrame() + 1);
         }
+
 
         // Workaround for tiff import getting stuck in this loop
         if (!reader.supportsAnimation())
@@ -502,6 +511,7 @@ bool Editor::importBitmapImage(QString filePath, int space)
             break;
         }
     }
+    backups()->importBitmap(canvasKeyFrames, importedKeyFrames);
 
     return true;
 }
@@ -626,6 +636,11 @@ KeyFrame* Editor::addNewKey()
     return addKeyFrame(layers()->currentLayerIndex(), currentFrame());
 }
 
+KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex)
+{
+    addKeyFrame(layerIndex, frameIndex, false);
+}
+
 /**
  * @brief Editor::addKeyFrame
  * @param layerIndex
@@ -633,7 +648,7 @@ KeyFrame* Editor::addNewKey()
  * @param isLastFrame Set true if no more frames will be added, otherwise false.
  * @return KeyFrame*
  */
-KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex)
+KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex, bool ignoreKeyExists)
 {
     Layer* layer = mObject->getLayer(layerIndex);
     if (layer == NULL)
@@ -642,9 +657,12 @@ KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex)
         return nullptr;
     }
 
-    while (layer->keyExists(frameIndex))
+    if (!ignoreKeyExists)
     {
-        frameIndex += 1;
+        while (layer->keyExists(frameIndex))
+        {
+            frameIndex += 1;
+        }
     }
 
     bool ok = layer->addNewKeyFrameAt(frameIndex);
@@ -663,6 +681,11 @@ KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex)
 
 KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex)
 {
+    return addKeyFrameToLayerId(layerId,frameIndex, false);
+}
+
+KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists)
+{
     Layer* layer = layers()->findLayerById(layerId);
     int layerIndex = layers()->getLayerIndex(layer);
     if (layer == NULL)
@@ -671,9 +694,12 @@ KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex)
         return nullptr;
     }
 
-    while (layer->keyExists(frameIndex) && frameIndex > 1)
+    if (!ignoreKeyExists)
     {
-        frameIndex += 1;
+        while (layer->keyExists(frameIndex) && frameIndex > 1)
+        {
+            frameIndex += 1;
+        }
     }
 
     bool ok = layer->addNewKeyFrameAt(frameIndex);

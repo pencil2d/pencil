@@ -102,7 +102,17 @@ void BackupManager::keyAdded()
                                                          "",
                                                          editor());
     mUndoStack->push(element);
+void BackupManager::importBitmap(std::map<int, KeyFrame*, std::greater<int>> canvasKeys,
+                                 std::map<int, KeyFrame*, std::less<int>> importedKeys)
+{
+    if (mLayer->type() != Layer::BITMAP) { return; }
 
+    ImportBitmapElement* element = new ImportBitmapElement(canvasKeys,
+                                                         importedKeys,
+                                                         mLayerId,
+                                                         editor());
+
+    mUndoStack->push(element);
     emit updateBackup();
 }
 
@@ -148,6 +158,7 @@ void BackupManager::vector(QString description)
                                                      description,
                                                      editor());
     mUndoStack->push(element);
+    emit updateBackup();
 }
 
 void BackupManager::selection()

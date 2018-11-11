@@ -43,6 +43,8 @@ public:
     void layerRenamed();
     void layerMoved(int backupNewLayerIndex);
 
+    void importBitmap(std::map<int, KeyFrame*, std::greater<int>> canvasKeys,
+                      std::map<int, KeyFrame*, std::less<int> > importedKeys);
     void selection();
     void deselect();
     void clearSelection();
