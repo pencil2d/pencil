@@ -638,7 +638,7 @@ KeyFrame* Editor::addNewKey()
 
 KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex)
 {
-    addKeyFrame(layerIndex, frameIndex, false);
+    return addKeyFrame(layerIndex, frameIndex, false);
 }
 
 /**
