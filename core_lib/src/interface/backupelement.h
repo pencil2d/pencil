@@ -34,15 +34,16 @@ class Camera;
 class Layer;
 class KeyFrame;
 
+enum types { UNDEFINED,
+             ADD_KEY_MODIF,
+             REMOVE_KEY_MODIF
+           };
+
 class BackupElement : public QUndoCommand
 {
 public:
     explicit BackupElement(Editor* editor, QUndoCommand* parent = 0);
     virtual ~BackupElement();
-    enum types { UNDEFINED,
-                 ADD_KEY_MODIF,
-                 REMOVE_KEY_MODIF
-               };
 
     Editor* editor() { return mEditor; }
 
@@ -65,6 +66,7 @@ public:
 
     int oldLayerIndex = 0;
     int newLayerIndex = 0;
+
     int frameIndex = 0;
     int previousFrameIndex = 0;
 
@@ -79,15 +81,16 @@ public:
     BitmapImage* newBitmap = nullptr;
 
     BitmapImage* oldBufferImage = nullptr;
+    Layer* layer = nullptr;
 
     bool isFirstRedo = true;
 
     void undo() override;
     void redo() override;
 
-    void applyToLastTransformedImage();
+    void redoTransform();
+    void undoTransform();
 };
-
 
 class AddVectorElement : public BackupElement
 {
@@ -146,7 +149,7 @@ public:
 
     bool isFirstRedo = true;
 
-    int type() override { return BackupElement::ADD_KEY_MODIF; }
+    int type() override { return ADD_KEY_MODIF; }
     void undo() override;
     void redo() override;
     int id() const override { return Id; }
@@ -180,7 +183,7 @@ public:
 
     bool isFirstRedo = true;
 
-    int type() override { return BackupElement::REMOVE_KEY_MODIF; }
+    int type() override { return REMOVE_KEY_MODIF; }
     void undo() override;
     void redo() override;
     bool mergeWith(const QUndoCommand *other) override;
@@ -375,6 +378,7 @@ public:
     QString oldLayerName;
 
     Layer::LAYER_TYPE oldLayerType;
+    Layer::LAYER_TYPE newLayerType;
 
     int oldLayerIndex = 0;
     int newLayerIndex = 0;

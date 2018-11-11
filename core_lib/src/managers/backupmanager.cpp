@@ -102,6 +102,9 @@ void BackupManager::keyAdded()
                                                          "",
                                                          editor());
     mUndoStack->push(element);
+    emit updateBackup();
+}
+
 void BackupManager::importBitmap(std::map<int, KeyFrame*, std::greater<int>> canvasKeys,
                                  std::map<int, KeyFrame*, std::less<int>> importedKeys)
 {
@@ -326,7 +329,7 @@ void BackupManager::restoreKey(BackupElement* backupElement)
     int layerId = 0;
     KeyFrame* keyFrame = nullptr;
 
-    if (backupElement->type() == BackupElement::ADD_KEY_MODIF)
+    if (backupElement->type() == ADD_KEY_MODIF)
     {
         AddKeyFrameElement* lastBackupKeyFrameElement = (AddKeyFrameElement*)backupElement;
         layerIndex = lastBackupKeyFrameElement->newLayerIndex;
