@@ -15,9 +15,7 @@ CheckUpdatesDialog::CheckUpdatesDialog()
 {
     Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint;
     setWindowFlags(eFlags);
-    setMinimumSize(QSize(380, 120));
-
-    //hLayout->setContentsMargins(20, 40, 40, 20);
+    setMinimumSize(QSize(400, 150));
 
     QLabel* logoLabel = new QLabel;
     logoLabel->setPixmap(QPixmap(":/icons/logo.png"));
@@ -27,6 +25,7 @@ CheckUpdatesDialog::CheckUpdatesDialog()
     mTitleLabel->setText(tr("Checking for Updates...", "status description in the check-for-update dialog"));
 
     mDetailLabel = new QLabel;
+    mDetailLabel->setWordWrap(true);
 
     //If minimum and maximum both are set to 0, the bar shows a busy indicator instead of a percentage of steps. 
     mProgressBar = new QProgressBar;
@@ -131,6 +130,7 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
         mDetailLabel->setText(tr("Pencil2D %1 is now available -- you have %2. Would you like to download it?")
                               .arg(latestVersionString)
                               .arg(APP_VERSION));
+        mProgressBar->hide();
         mDownloadButton->setEnabled(true);
     }
     else
