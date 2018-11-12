@@ -59,7 +59,7 @@ HEADERS += \
     src/spinslider.h \
     src/doubleprogressdialog.h \
     src/colorslider.h \
-    checkupdatesdialog.h
+    src/checkupdatesdialog.h
 
 SOURCES += \
     src/main.cpp \
@@ -88,7 +88,7 @@ SOURCES += \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
-    checkupdatesdialog.cpp
+    src/checkupdatesdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
