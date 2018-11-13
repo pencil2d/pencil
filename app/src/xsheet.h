@@ -34,7 +34,7 @@ public slots:
     void lengthChanged(int frames);
 
 private slots:
-    void selectLayerFrame(int row, int column);
+    void selectLayerFrame(const QModelIndex &current, const QModelIndex &previous);
     void addLayerFrame(int row, int column);
     void fillXsheet();
     void loadPapa();

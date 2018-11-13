@@ -61,7 +61,7 @@ void Xsheet::initUI()
     mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
     mPapaLines = new QStringList;
     mTableWidget = ui->tableXsheet;
-    connect(mTableWidget, &QTableWidget::cellClicked, this, &Xsheet::selectLayerFrame);
+    connect(mTableWidget->selectionModel(), &QItemSelectionModel::currentChanged, this, &Xsheet::selectLayerFrame);
     connect(mTableWidget, &QTableWidget::cellDoubleClicked, this, &Xsheet::addLayerFrame);
     connect(ui->btnPapa, &QPushButton::clicked, this, &Xsheet::loadPapa );
     connect(ui->btnNoPapa, &QPushButton::clicked, this, &Xsheet::erasePapa);
@@ -113,11 +113,11 @@ void Xsheet::updateXsheet()
     showScrub(mEditor->currentFrame());
 }
 
-void Xsheet::selectLayerFrame(int row, int column)
+void Xsheet::selectLayerFrame(const QModelIndex &current, const QModelIndex &previous)
 {
+    Q_UNUSED(previous);
     updateXsheet();
-    mEditor->scrubTo(row);
-    selectItem(row, column);
+    mEditor->scrubTo(current.row());
 }
 
 void Xsheet::addLayerFrame(int row, int column)
