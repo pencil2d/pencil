@@ -25,6 +25,7 @@ private:
 
     void networkRequestFinished(QNetworkReply* reply);
     bool compareVersion(QString currentVersion, QString latestVersion);
+    QString getVersionNumberFromXml(QString xml);
 
     void gotoDownloadPage();
     void closeDialog();

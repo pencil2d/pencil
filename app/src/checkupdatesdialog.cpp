@@ -7,6 +7,8 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QDesktopServices>
+#include <QVersionNumber>
+#include <QXmlStreamReader>
 
 #include "util.h"
 
@@ -32,6 +34,7 @@ CheckUpdatesDialog::CheckUpdatesDialog()
     mProgressBar->setMaximum(0);
     mProgressBar->setMinimum(0);
     mProgressBar->setValue(0);
+    mProgressBar->setTextVisible(false);
 
     mDownloadButton = new QPushButton(tr("Download"));
     mCloseButton = new QPushButton(tr("Close"));
@@ -75,7 +78,7 @@ void CheckUpdatesDialog::startChecking()
 void CheckUpdatesDialog::regularBuildCheck()
 {
     mNetworkManager = new QNetworkAccessManager(this);
-    QUrl url("https://www.pencil2d.org/version/");
+    QUrl url("https://github.com/pencil2d/pencil/releases.atom");
 
     QNetworkRequest req;
     req.setUrl(url);
@@ -93,23 +96,21 @@ void CheckUpdatesDialog::nightlyBuildCheck()
     mDetailLabel->setOpenExternalLinks(true);
     mProgressBar->setRange(0, 1);
     mProgressBar->setValue(1);
-    mProgressBar->setTextVisible(false);
     mDownloadButton->setEnabled(false);
 }
 
 void CheckUpdatesDialog::networkErrorHappened()
 {
-    mTitleLabel->setText(tr("<b>An error occurred while checking for updates</b>"));
-    mDetailLabel->setText(tr("Please check your internet connection and try again later."));
+    mTitleLabel->setText(tr("<b>An error occurred while checking for updates</b>", "error msg of check-for-update"));
+    mDetailLabel->setText(tr("Please check your internet connection and try again later.", "error msg of check-for-update"));
     mProgressBar->setRange(0, 1);
     mProgressBar->setValue(1);
-    mProgressBar->setTextVisible(false);
     mDownloadButton->setEnabled(false);
 }
 
 void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
 {
-    OnScopeExit(reply->deleteLater());
+    reply->deleteLater();
 
     QNetworkReply::NetworkError errorCode = reply->error();
     if (errorCode != QNetworkReply::NoError)
@@ -120,8 +121,10 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
         return;
     }
 
-    auto latestVersionString = QString::fromUtf8(reply->readAll()).trimmed();
-    qDebug() << latestVersionString;
+    auto releasesAtom = QString::fromUtf8(reply->readAll()).trimmed();
+    //qDebug() << releasesAtom;
+
+    QString latestVersionString = getVersionNumberFromXml(releasesAtom);
 
     bool isNewVersionAvailable = compareVersion(APP_VERSION, latestVersionString);
     if (isNewVersionAvailable)
@@ -139,46 +142,43 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
         mDetailLabel->setText(tr("Version") + " " APP_VERSION);
         mProgressBar->setRange(0, 1);
         mProgressBar->setValue(1);
-        mProgressBar->setTextVisible(false);
         mDownloadButton->setEnabled(false);
     }
 }
 
 bool CheckUpdatesDialog::compareVersion(QString currentVersion, QString latestVersion)
 {
-    QStringList currentVersionTokens = currentVersion.split('.');
-    QStringList latestVersionTokens = latestVersion.split('.');
+    return QVersionNumber::fromString(currentVersion) < QVersionNumber::fromString(latestVersion);
+}
 
-    if (currentVersionTokens.size() != 3 || latestVersionTokens.size() != 3)
+QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
+{
+    // XML source: https://github.com/pencil2d/pencil/releases.atom
+    
+    QXmlStreamReader xmlReader(xml);
+
+    while (!xmlReader.atEnd() && !xmlReader.hasError())
     {
-        // something went wrong
-        return false;
+        QXmlStreamReader::TokenType tokenType = xmlReader.readNext();
+        if (tokenType == QXmlStreamReader::StartElement && xmlReader.name() == "entry")
+        {
+            while (!xmlReader.atEnd() && !xmlReader.hasError())
+            {
+                xmlReader.readNext();
+                if (xmlReader.name() == "title")
+                {
+                    QString titleTag = xmlReader.readElementText();
+                    return titleTag.remove(QRegExp("^v")); // remove the leading 'v'
+                }
+            }
+        }
     }
-
-    // Example of versioning: 
-    // 0.8.5 -> major: 0, minor: 8, patch: 5
-
-    int majorVersionCurrent = currentVersionTokens.at(0).toInt();
-    int majorVersionLatest = latestVersionTokens.at(0).toInt();
-    if (majorVersionLatest > majorVersionCurrent)
+    if (xmlReader.error() != QXmlStreamReader::NoError)
     {
-        return true; // yes, a new version is available
+        qDebug() << xmlReader.errorString();
+        return "0.0.1";
     }
-
-    int minorVersionCurrent = currentVersionTokens.at(1).toInt();
-    int minorVersionLatest = latestVersionTokens.at(1).toInt();
-    if (minorVersionLatest > minorVersionCurrent)
-    {
-        return true;
-    }
-
-    int patchVersionCurrent = currentVersionTokens.at(2).toInt();
-    int patchVersionLatest = latestVersionTokens.at(2).toInt();
-    if (patchVersionLatest > patchVersionCurrent)
-    {
-        return true;
-    }
-    return false;
+    return "0.0.1";
 }
 
 void CheckUpdatesDialog::gotoDownloadPage()
