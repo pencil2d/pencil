@@ -104,7 +104,7 @@ Object* FileManager::load(QString sFileName)
     if (!file.exists())
     {
         dd << "Main XML file does not exist";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
     if (!file.open(QFile::ReadOnly))
     {
@@ -118,21 +118,21 @@ Object* FileManager::load(QString sFileName)
     {
         qCDebug(mLog) << "Couldn't open the main XML file.";
         dd << "Error parsing or opening the main XML file";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
 
     QDomDocumentType type = xmlDoc.doctype();
     if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
     {
         dd << QString("Invalid main XML doctype: ").append(type.name());
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
 
     QDomElement root = xmlDoc.documentElement();
     if (root.isNull())
     {
         dd << "Main XML root node is null";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
 
     loadPalette(obj);
