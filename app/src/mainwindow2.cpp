@@ -335,7 +335,7 @@ void MainWindow2::createMenus()
     connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools);
 
     /// --- Xsheet update ---
-    connect(mEditor, &Editor::updateTimeLine, this, &MainWindow2::updateXsheet);
+    connect(mEditor, &Editor::updateTimeLine ,mXsheet, &Xsheet::updateXsheet);
     connect(mEditor->layers(), &LayerManager::layerCountChanged, mXsheet, &Xsheet::updateXsheet);
     connect(mEditor, &Editor::currentFrameChanged, mXsheet, &Xsheet::updateScrub);
     connect(ui->actionNew, &QAction::triggered, mXsheet, &Xsheet::newOpenScene);
@@ -968,11 +968,6 @@ void MainWindow2::resetAndDockAllSubWidgets()
         dock->setFloating(false);
         dock->show();
     }
-}
-
-void MainWindow2::updateXsheet()
-{
-    mXsheet->updateUi(mEditor);
 }
 
 void MainWindow2::readSettings()

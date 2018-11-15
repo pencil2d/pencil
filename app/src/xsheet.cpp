@@ -61,6 +61,7 @@ void Xsheet::initUI()
     mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
     mPapaLines = new QStringList;
     mTableWidget = ui->tableXsheet;
+    mCurrentFrame = 1;
     connect(mTableWidget->selectionModel(), &QItemSelectionModel::currentChanged, this, &Xsheet::selectLayerFrame);
     connect(mTableWidget, &QTableWidget::cellDoubleClicked, this, &Xsheet::addLayerFrame);
     connect(ui->btnPapa, &QPushButton::clicked, this, &Xsheet::loadPapa );
@@ -70,19 +71,11 @@ void Xsheet::initUI()
     connect(ui->btnSaveCsv, &QPushButton::clicked, this, &Xsheet::saveCsv);
     connect(ui->btnAddFrame, &QPushButton::clicked, this, &Xsheet::addFrame);
     connect(ui->btnDeleteFrame, &QPushButton::clicked, this, &Xsheet::removeFrame);
-    initXsheet();
+    updateXsheet();
 }
 
 void Xsheet::updateUI()
 {
-}
-
-void Xsheet::updateUi(Editor* editor)
-{
-    mEditor = editor;
-    QSettings settings(PENCIL2D, PENCIL2D);
-    mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
-    updateXsheet();
 }
 
 void Xsheet::showScrub(int frame)
@@ -91,11 +84,14 @@ void Xsheet::showScrub(int frame)
     mTableItem->setBackgroundColor(QColor(250, 150, 150));
     mTableWidget->setItem(frame, 0, mTableItem);
     mTableWidget->scrollToItem(mTableItem);
+    mCurrentFrame = frame;
 }
 
 void Xsheet::updateScrub(int frame)
 {
-    fillXsheet();
+    mTableItem = new QTableWidgetItem(QString::number(mCurrentFrame));
+    mTableItem->setBackgroundColor(QColor(250, 240, 160));
+    mTableWidget->setItem(mCurrentFrame, 0, mTableItem);
     showScrub(frame);
 }
 
@@ -116,7 +112,11 @@ void Xsheet::updateXsheet()
 void Xsheet::selectLayerFrame(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
-    updateXsheet();
+    if (current.column() > 0 && current.column() < mLayerCount)
+    {
+        Layer* layer = mEditor->layers()->findLayerByName(mTableWidget->item(0, current.column())->text());
+        mEditor->layers()->setCurrentLayer(layer);
+    }
     mEditor->scrubTo(current.row());
 }
 
@@ -124,7 +124,13 @@ void Xsheet::addLayerFrame(int row, int column)
 {
     selectItem(row, column);
     if (column > 0 && column <= mLayerCount)
+    {
         mEditor->layers()->currentLayer()->addNewKeyFrameAt(row);
+        int type = getLayerType(mEditor->layers()->findLayerByName(mTableWidget->item(0, column)->text()));
+        mTableItem = new QTableWidgetItem(QString::number(row));
+        mTableItem->setBackgroundColor(getLayerColor(type));
+        mTableWidget->setItem(row, column, mTableItem);
+    }
     else if (column == mTableWidget->columnCount() - 1)
     {
         bool ok;
@@ -174,7 +180,6 @@ void Xsheet::addLayerFrame(int row, int column)
             }
         }
     }
-    updateXsheet();
 }
 
 void Xsheet::fillXsheet()

@@ -28,7 +28,6 @@ public:
 public slots:
     void newOpenScene();
     void updateXsheet();
-    void updateUi(Editor *editor);
     void showScrub(int frame);
     void updateScrub(int frame);
     void lengthChanged(int frames);
@@ -56,6 +55,7 @@ private:
     Ui::Xsheet *ui;
     Editor* mEditor = nullptr;
     int mLayerCount;
+    int mCurrentFrame;
     int mTimeLineLength;
     QTableWidget* mTableWidget;
     QTableWidgetItem* mTableItem;

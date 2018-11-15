@@ -888,14 +888,6 @@
     <string>Animated GIF...</string>
    </property>
   </action>
-  <action name="actionXsheet_toggle">
-   <property name="text">
-    <string>Show/Hide Xsheet</string>
-   </property>
-   <property name="shortcut">
-    <string>X</string>
-   </property>
-  </action>
  </widget>
  <customwidgets>
   <customwidget>
