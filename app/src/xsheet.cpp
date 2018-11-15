@@ -112,11 +112,7 @@ void Xsheet::updateXsheet()
 void Xsheet::selectLayerFrame(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
-    if (current.column() > 0 && current.column() < mLayerCount)
-    {
-        Layer* layer = mEditor->layers()->findLayerByName(mTableWidget->item(0, current.column())->text());
-        mEditor->layers()->setCurrentLayer(layer);
-    }
+    selectItem(current.row(), current.column());
     mEditor->scrubTo(current.row());
 }
 
