@@ -111,6 +111,12 @@ void Xsheet::updateXsheet()
 
 void Xsheet::selectLayerFrame(const QModelIndex &current, const QModelIndex &previous)
 {
+    QSettings settings(PENCIL2D, PENCIL2D);
+    if (mTimeLineLength != settings.value(SETTING_TIMELINE_SIZE).toInt())
+    {
+        mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE).toInt();
+        updateXsheet();
+    }
     Q_UNUSED(previous);
     selectItem(current.row(), current.column());
     mEditor->scrubTo(current.row());

@@ -201,6 +201,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
     addDockWidget(Qt::RightDockWidgetArea, mXsheet);
+    mXsheet->hide();
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
@@ -340,8 +341,6 @@ void MainWindow2::createMenus()
     connect(mEditor, &Editor::currentFrameChanged, mXsheet, &Xsheet::updateScrub);
     connect(ui->actionNew, &QAction::triggered, mXsheet, &Xsheet::newOpenScene);
     connect(ui->actionOpen, &QAction::triggered, mXsheet, &Xsheet::newOpenScene);
-    connect(mEditor->layers(), &LayerManager::animationLengthChanged, mXsheet, &Xsheet::lengthChanged);
-
 
     /// --- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
