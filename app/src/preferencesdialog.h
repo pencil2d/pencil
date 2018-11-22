@@ -40,7 +40,7 @@ class PreferencesDialog : public QDialog
 
 public:
     PreferencesDialog(QWidget* parent);
-    ~PreferencesDialog();
+    ~PreferencesDialog() override;
 
     void init(PreferenceManager* m);
     void updateRecentListBtn(bool isEmpty);

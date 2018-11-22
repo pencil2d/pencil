@@ -78,7 +78,7 @@ void ToolOptionWidget::updateUI()
     setVectorMergeEnabled(p.vectorMergeEnabled);
     setAA(p.useAA);
     setStabilizerLevel(p.stabilizerLevel);
-    setTolerance(p.tolerance);
+    setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
 }
 
@@ -132,7 +132,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
     case ANTI_ALIASING: setAA(p.useAA); break;
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
-    case TOLERANCE: setTolerance(p.tolerance); break;
+    case TOLERANCE: setTolerance(static_cast<int>(p.tolerance)); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case BEZIER: setBezier(p.bezier_state); break;
     default:

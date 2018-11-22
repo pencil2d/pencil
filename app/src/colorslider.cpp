@@ -19,12 +19,12 @@ ColorSlider::~ColorSlider()
 
 }
 
-void ColorSlider::init(ColorType type, QColor color, qreal min, float max)
+void ColorSlider::init(ColorType type, QColor color, qreal min, qreal max)
 {
     init(type, color, min, max, QSize(this->size()));
 }
 
-void ColorSlider::init(ColorType type, QColor color, qreal min, float max, QSize size)
+void ColorSlider::init(ColorType type, QColor color, qreal min, qreal max, QSize size)
 {
     mMin = min;
     mMax = max;
@@ -298,14 +298,14 @@ void ColorSlider::drawPicker(QColor color)
 
 
     painter.setPen(pen);
-    painter.drawRect(val, 0, mPickerSize.width(), mPickerSize.height());
+    painter.drawRect(static_cast<int>(val), 0, mPickerSize.width(), mPickerSize.height());
     painter.end();
 }
 
 void ColorSlider::colorPicked(QPoint point)
 {
     QColor colorPicked = mColor;
-    int colorMax = mMax;
+    int colorMax = static_cast<int>(mMax);
     int colorVal = 0;
 
     colorVal = point.x()*colorMax/mBoxPixmapSource.width();

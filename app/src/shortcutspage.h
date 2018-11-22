@@ -38,7 +38,7 @@ class ShortcutsPage : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ShortcutsPage(QWidget* parent = 0);
+    explicit ShortcutsPage(QWidget* parent = nullptr);
 
     void setManager( PreferenceManager* p ) { mManager = p; }
 
