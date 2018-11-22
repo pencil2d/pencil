@@ -660,6 +660,7 @@ void ActionCommands::copyFrames(int startL, int stopL, int loops, int startAt, L
             }
         }
     }
+    // TODO Signal that it should be saved...
 }
 
 void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLayer, Layer *tLayer)
@@ -707,6 +708,7 @@ void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLaye
         fLayer->addNewKeyFrameAt(1);
         fLayer->setModified(1, true);
     }
+    // TODO Signal that it should be saved...
 }
 
 void ActionCommands::reverseFrames(int startL, int stopL, int startAt, Layer *tLayer)
@@ -727,6 +729,7 @@ void ActionCommands::reverseFrames(int startL, int stopL, int startAt, Layer *tL
             tLayer->setModified(startF, true);
         }
     }
+    // TODO Signal that it should be saved...
 }
 
 void ActionCommands::deleteFrames(int startL, int stopL, Layer *tLayer)
@@ -744,6 +747,7 @@ void ActionCommands::deleteFrames(int startL, int stopL, Layer *tLayer)
         tLayer->addNewKeyFrameAt(1);
         tLayer->setModified(1, true);
     }
+    // TODO Signal that it should be saved...
 }
 
 void ActionCommands::moveFrameForward()
