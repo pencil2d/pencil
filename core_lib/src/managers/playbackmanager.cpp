@@ -82,6 +82,7 @@ bool PlaybackManager::isPlaying()
 
 void PlaybackManager::play()
 {
+    if (isPlaying()) { return; }
     updateStartFrame();
     updateEndFrame();
 
@@ -169,8 +170,6 @@ void PlaybackManager::playFlipBtwn()
 {
     if (isPlaying()) { return; }
     int start = editor()->currentFrame();
-    if (!editor()->layers()->currentLayer()->keyExists(start)) { return; }
-
     int prev = editor()->layers()->currentLayer()->getPreviousKeyFramePosition(start);
     int next = editor()->layers()->currentLayer()->getNextKeyFramePosition(start);
     if (editor()->layers()->currentLayer()->keyExists(prev) &&
@@ -178,7 +177,6 @@ void PlaybackManager::playFlipBtwn()
     {
         mFlipList.clear();
         mFlipList.append(QString::number(prev));
-        mFlipList.append(QString::number(next));
         mFlipList.append(QString::number(start));
         mFlipList.append(QString::number(next));
         mFlipList.append(QString::number(start));
