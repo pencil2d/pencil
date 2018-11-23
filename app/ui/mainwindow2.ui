@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -166,6 +166,9 @@
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
+    <addaction name="separator"/>
+    <addaction name="actionFlip_Roll"/>
+    <addaction name="actionFlip_InBetween"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -886,6 +889,22 @@
   <action name="actionExport_Animated_GIF">
    <property name="text">
     <string>Animated GIF...</string>
+   </property>
+  </action>
+  <action name="actionFlip_Roll">
+   <property name="text">
+    <string>Flip Roll</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Z</string>
+   </property>
+  </action>
+  <action name="actionFlip_InBetween">
+   <property name="text">
+    <string>Flip InBetween</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+X</string>
    </property>
   </action>
  </widget>

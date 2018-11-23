@@ -304,6 +304,8 @@ void MainWindow2::createMenus()
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mEditor, &Editor::updateCurrentFrame);
+    connect(ui->actionFlip_Roll, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
+    connect(ui->actionFlip_InBetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipBtwn);
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::addNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
