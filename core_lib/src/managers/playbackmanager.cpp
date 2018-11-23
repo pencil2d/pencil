@@ -40,9 +40,11 @@ bool PlaybackManager::init()
 {
     mTimer = new QTimer(this);
     mTimer->setTimerType(Qt::PreciseTimer);
+    mFlipTimer = new QTimer(this);
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
+    connect(mFlipTimer, &QTimer::timeout, this, &PlaybackManager::flipTimerTick);
     return true;
 }
 
@@ -119,7 +121,7 @@ void PlaybackManager::play()
         }
     }
 
-    mTimer->setInterval(1000.f / mFps);
+    mTimer->setInterval(static_cast<int>(1000.f / mFps));
     mTimer->start();
 
     // for error correction, please ref skipFrame()
@@ -137,6 +139,59 @@ void PlaybackManager::stop()
     mTimer->stop();
     stopSounds();
     emit playStateChanged(false);
+}
+
+void PlaybackManager::playFlipRoll()
+{
+    if (isPlaying()) { return; }
+    int start = editor()->currentFrame();
+    int tmp = start;
+    mFlipList.clear();
+    for (int i = 0; i < 10; i++)
+    {
+        int prev = editor()->layers()->currentLayer()->getPreviousKeyFramePosition(tmp);
+        if (prev < tmp)
+        {
+            mFlipList.prepend(QString::number(prev));
+            tmp = prev;
+        }
+    }
+    if (mFlipList.isEmpty()) { return; }
+    // run the roll...
+    mFlipList.append(QString::number(start));
+    mFlipTimer->setInterval(200);
+    editor()->scrubTo(mFlipList[0].toInt());
+    mFlipTimer->start();
+    emit playStateChanged(true);
+}
+
+void PlaybackManager::playFlipBtwn()
+{
+    if (isPlaying()) { return; }
+    int start = editor()->currentFrame();
+    if (!editor()->layers()->currentLayer()->keyExists(start)) { return; }
+
+    int prev = editor()->layers()->currentLayer()->getPreviousKeyFramePosition(start);
+    int next = editor()->layers()->currentLayer()->getNextKeyFramePosition(start);
+    if (editor()->layers()->currentLayer()->keyExists(prev) &&
+        editor()->layers()->currentLayer()->keyExists(next))
+    {
+        mFlipList.clear();
+        mFlipList.append(QString::number(prev));
+        mFlipList.append(QString::number(next));
+        mFlipList.append(QString::number(start));
+        mFlipList.append(QString::number(next));
+        mFlipList.append(QString::number(start));
+    }
+    else
+    {
+        return;
+    }
+    // run the flip inbetween...
+    mFlipTimer->setInterval(200);
+    editor()->scrubTo(mFlipList[0].toInt());
+    mFlipTimer->start();
+    emit playStateChanged(true);
 }
 
 void PlaybackManager::setFps(int fps)
@@ -315,6 +370,22 @@ void PlaybackManager::timerTick()
 
     // keep going 
     editor()->scrubForward();
+}
+
+void PlaybackManager::flipTimerTick()
+{
+    int curr = editor()->currentFrame();
+    int pos = mFlipList.indexOf(QString::number(curr));
+    if (pos == mFlipList.count() - 1)
+    {
+        mFlipTimer->stop();
+        emit playStateChanged(false);
+    }
+    else
+    {
+        editor()->scrubTo(mFlipList[pos + 1].toInt());
+        mFlipList.removeAt(pos);
+    }
 }
 
 void PlaybackManager::setLooping(bool isLoop)

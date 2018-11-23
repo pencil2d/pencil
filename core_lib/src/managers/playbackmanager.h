@@ -29,7 +29,7 @@ class PlaybackManager : public BaseManager
     Q_OBJECT
 public:
     explicit PlaybackManager(Editor* editor);
-    ~PlaybackManager();
+    ~PlaybackManager() override;
 
     bool init() override;
     Status load(Object*) override;
@@ -41,6 +41,8 @@ public:
 
     void play();
     void stop();
+    void playFlipRoll();
+    void playFlipBtwn();
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
@@ -67,6 +69,7 @@ Q_SIGNALS:
 
 private:
     void timerTick();
+    void flipTimerTick();
     void playSounds(int frame);
     bool skipFrame();
 
@@ -87,11 +90,13 @@ private:
     int mFps = 12;
 
     QTimer* mTimer = nullptr;
+    QTimer* mFlipTimer = nullptr;
     QElapsedTimer* mElapsedTimer = nullptr;
     int mPlayingFrameCounter = 0; // how many frames has passed after pressing play
 
     bool mCheckForSoundsHalfway = false;
     QList<int> mListOfActiveSoundFrames;
+    QStringList mFlipList;
 };
 
 #endif // PLAYBACKMANAGER_H
