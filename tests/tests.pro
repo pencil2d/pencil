@@ -39,7 +39,8 @@ SOURCES += \
     src/test_object.cpp \
     src/test_filemanager.cpp \
     src/test_bitmapimage.cpp \
-    src/test_viewmanager.cpp
+    src/test_viewmanager.cpp \
+    src/test_backupmanager.cpp
 
 # --- CoreLib ---
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -lcore_lib
