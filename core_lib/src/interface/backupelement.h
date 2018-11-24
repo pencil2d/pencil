@@ -20,9 +20,13 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include <QUndoCommand>
+#include <QRectF>
+#include <QTransform>
+
 #include "direction.h"
 #include "movemode.h"
 #include "pencildef.h"
+#include "layer.h"
 
 class Editor;
 class BackupManager;
@@ -42,14 +46,14 @@ enum types { UNDEFINED,
 class BackupElement : public QUndoCommand
 {
 public:
-    explicit BackupElement(Editor* editor, QUndoCommand* parent = 0);
+    explicit BackupElement(Editor* editor, QUndoCommand* parent = nullptr);
     virtual ~BackupElement();
 
     Editor* editor() { return mEditor; }
 
     virtual int type() { return UNDEFINED; }
-    virtual void undo() { qDebug() << "shouldn't be here"; }
-    virtual void redo() { qDebug() << "shouldn't be here"; }
+    virtual void undo() { Q_ASSUME(true); } // should never end here
+    virtual void redo() { Q_ASSUME(true); } // should never end here
 private:
     Editor* mEditor = nullptr;
 };
@@ -62,7 +66,7 @@ public:
                      int backupFrameIndex,
                      QString description,
                      Editor* editor,
-                     QUndoCommand* parent = 0);
+                     QUndoCommand* parent = nullptr);
 
     int oldLayerIndex = 0;
     int newLayerIndex = 0;
@@ -99,7 +103,7 @@ public:
                      int backupLayerId,
                      QString description,
                      Editor* editor,
-                     QUndoCommand* parent = 0);
+                     QUndoCommand* parent = nullptr);
 
     int newLayerIndex = 0;
     int frameIndex = 0;
@@ -130,7 +134,7 @@ public:
                        bool backupKeyExisted,
                        QString description,
                        Editor* editor,
-                       QUndoCommand* parent = 0);
+                       QUndoCommand* parent = nullptr);
 
 
     int newLayerIndex = 0;
@@ -163,7 +167,7 @@ public:
     RemoveKeyFrameElement(KeyFrame* backupBitmap,
                           int backupLayerId,
                           Editor* editor,
-                          QUndoCommand* parent = 0);
+                          QUndoCommand* parent = nullptr);
 
     int oldLayerIndex = 0;
     int newLayerIndex = 0;
@@ -201,7 +205,7 @@ public:
                      QRectF backupTempSelection,
                      QRectF backupSelection,
                      Editor* editor,
-                     QUndoCommand* parent = 0);
+                     QUndoCommand* parent = nullptr);
 
     QRectF oldSelection = QRectF();
     QRectF newSelection = QRectF();
@@ -240,7 +244,7 @@ public:
                      int backupFramePos, QRectF backupSelection,
                      QRectF backupTempSelection, QTransform backupTransform,
                      Editor* editor,
-                     QUndoCommand* parent = 0);
+                     QUndoCommand* parent = nullptr);
 
 
     QRectF oldSelectionRect = QRectF();
@@ -292,7 +296,7 @@ public:
                         std::map<int, KeyFrame*, std::less<int> > backupImportedKeyFrames,
                         int backupLayerId,
                         Editor* editor,
-                        QUndoCommand* parent = 0);
+                        QUndoCommand* parent = nullptr);
 
     std::map<int, KeyFrame*, std::greater<int>> oldKeyFrames;
     std::map<int, KeyFrame*,std::less<int>> importedKeyFrames;
@@ -318,7 +322,7 @@ public:
                         float backupRotation,
                         float backupScale,
                         Editor* editor,
-                        QUndoCommand* parent = 0);
+                        QUndoCommand* parent = nullptr);
 
 
     QPointF oldTranslation = QPointF(0,0);
@@ -342,7 +346,7 @@ class AddLayerElement : public BackupElement
 public:
     AddLayerElement(Layer* backupLayer,
                     Editor* editor,
-                    QUndoCommand* parent = 0);
+                    QUndoCommand* parent = nullptr);
 
     Layer* oldLayer;
     Layer* newLayer;
@@ -369,7 +373,7 @@ public:
                        int backupLayerIndex,
                        int backupLayerId,
                        Editor* editor,
-                       QUndoCommand* parent = 0);
+                       QUndoCommand* parent = nullptr);
 
     Layer* oldLayer;
 
@@ -400,7 +404,7 @@ public:
     RenameLayerElement(QString backupLayerName,
                        int backupLayerId,
                        Editor* editor,
-                       QUndoCommand* parent = 0);
+                       QUndoCommand* parent = nullptr);
 
     QString oldLayerName;
     QString newLayerName;
@@ -424,7 +428,7 @@ public:
                             QRect backupViewRect,
                             int backupLayerId,
                             Editor* editor,
-                            QUndoCommand* parent = 0);
+                            QUndoCommand* parent = nullptr);
 
     QString oldLayerName;
     QString newLayerName;
@@ -450,7 +454,7 @@ public:
     DragFrameElement(int backupLayerIndex,
                      int backupFrameOffset,
                      Editor* editor,
-                     QUndoCommand* parent = 0);
+                     QUndoCommand* parent = nullptr);
 
     int layerId = 0;
 
@@ -470,7 +474,7 @@ public:
     FlipViewElement(bool backupFlipEnabled,
                     DIRECTION backupFlipDirection,
                     Editor* editor,
-                    QUndoCommand* parent = 0);
+                    QUndoCommand* parent = nullptr);
 
     bool isFlipped = false;
 
@@ -489,7 +493,7 @@ public:
     MoveLayerElement(int backupOldLayerIndex,
                      int backupNewLayerIndex,
                      Editor* editor,
-                     QUndoCommand* parent = 0);
+                     QUndoCommand* parent = nullptr);
 
     int oldLayerIndex = 0;
     int newLayerIndex = 0;

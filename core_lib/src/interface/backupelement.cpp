@@ -39,7 +39,6 @@ GNU General Public License for more details.
 BackupElement::BackupElement(Editor* editor, QUndoCommand* parent) : QUndoCommand(parent)
 {
     qDebug() << "backupElement created";
-
     mEditor = editor;
 }
 
@@ -599,6 +598,7 @@ void SelectionElement::apply(int layerId,
         case Layer::VECTOR:
         {
             *static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex) = *vector;
+            break;
         }
         default:
             break;
@@ -873,7 +873,7 @@ void ImportBitmapElement::redo()
     progress = new QProgressDialog(QObject::tr("Reimporting..."), QObject::tr("Abort"), 0, 100, nullptr);
     progress->setWindowModality(Qt::WindowModal);
     progress->show();
-    progress->setMaximum(importedKeyFrames.size());
+    progress->setMaximum(static_cast<int>(importedKeyFrames.size()));
 
     Layer* layer = editor()->layers()->currentLayer();
     int progressValue = 0;
@@ -1316,6 +1316,3 @@ void MoveLayerElement::redo()
     editor()->moveLayer(oldLayerIndex, newLayerIndex);
 
 }
-
-
-
