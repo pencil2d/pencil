@@ -114,8 +114,8 @@ public:
     int previousFrameIndex = 0;
     int emptyFrameSettingVal = -1;
 
-    VectorImage* oldVector;
-    VectorImage* newVector;
+    VectorImage* oldVector = nullptr;
+    VectorImage* newVector = nullptr;
 
     bool isFirstRedo = true;
 
@@ -178,12 +178,12 @@ public:
     int oldLayerId = 0;
     int newLayerId = 0;
 
-    KeyFrame* oldKey;
+    KeyFrame* oldKey = nullptr;
 
-    BitmapImage* oldBitmap;
-    VectorImage* oldVector;
-    SoundClip* oldClip;
-    Camera* oldCamera;
+    BitmapImage* oldBitmap = nullptr;
+    VectorImage* oldVector = nullptr;
+    SoundClip* oldClip = nullptr;
+    Camera* oldCamera = nullptr;
 
     bool isFirstRedo = true;
 
@@ -256,13 +256,13 @@ public:
     QTransform oldTransform;
     QTransform newTransform;
 
-    BitmapImage* oldBitmap;
-    BitmapImage* newBitmap;
+    BitmapImage* oldBitmap = nullptr;
+    BitmapImage* newBitmap = nullptr;
 
-    BitmapImage* bufferImg;
+    BitmapImage* bufferImg = nullptr;
 
-    VectorImage* oldVector;
-    VectorImage* newVector;
+    VectorImage* oldVector = nullptr;
+    VectorImage* newVector = nullptr;
 
     int oldLayerId = 0;
     int newLayerId = 0;

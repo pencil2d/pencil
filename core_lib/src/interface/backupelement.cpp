@@ -852,7 +852,7 @@ void ImportBitmapElement::undo()
     }
 
     // we've removed all keyframes + those that were overwritten
-    // now put the re-add the old ones
+    // now re-add the old ones
     Layer* layer = editor()->layers()->currentLayer();
     for (auto key : oldKeyFrames)
     {
