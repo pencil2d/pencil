@@ -77,12 +77,11 @@ Status PlaybackManager::save(Object* o)
 
 bool PlaybackManager::isPlaying()
 {
-    return mTimer->isActive();
+    return (mTimer->isActive() || mFlipTimer->isActive());
 }
 
 void PlaybackManager::play()
 {
-    if (isPlaying()) { return; }
     updateStartFrame();
     updateEndFrame();
 
