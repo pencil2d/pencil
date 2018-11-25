@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QDebug>
+#include <QSettings>
 #include "object.h"
 #include "editor.h"
 #include "layersound.h"
@@ -147,7 +148,9 @@ void PlaybackManager::playFlipRoll()
     int start = editor()->currentFrame();
     int tmp = start;
     mFlipList.clear();
-    for (int i = 0; i < 10; i++)
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mFlipRollMax = settings.value(SETTING_FLIP_ROLL_DRAWINGS).toInt();
+    for (int i = 0; i < mFlipRollMax; i++)
     {
         int prev = editor()->layers()->currentLayer()->getPreviousKeyFramePosition(tmp);
         if (prev < tmp)
@@ -158,8 +161,9 @@ void PlaybackManager::playFlipRoll()
     }
     if (mFlipList.isEmpty()) { return; }
     // run the roll...
+    mFlipRollInterval = settings.value(SETTING_FLIP_ROLL_MSEC).toInt();
     mFlipList.append(QString::number(start));
-    mFlipTimer->setInterval(200);
+    mFlipTimer->setInterval(mFlipRollInterval);
     editor()->scrubTo(mFlipList[0].toInt());
     mFlipTimer->start();
     emit playStateChanged(true);
@@ -185,7 +189,9 @@ void PlaybackManager::playFlipBtwn()
         return;
     }
     // run the flip inbetween...
-    mFlipTimer->setInterval(200);
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mFlipInbetweenInterval = settings.value(SETTING_FLIP_INBETWEEN_MSEC).toInt();
+    mFlipTimer->setInterval(mFlipInbetweenInterval);
     editor()->scrubTo(mFlipList[0].toInt());
     mFlipTimer->start();
     emit playStateChanged(true);

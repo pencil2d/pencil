@@ -895,16 +895,10 @@
    <property name="text">
     <string>Flip Roll</string>
    </property>
-   <property name="shortcut">
-    <string>Alt+Z</string>
-   </property>
   </action>
   <action name="actionFlip_InBetween">
    <property name="text">
     <string>Flip InBetween</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+X</string>
    </property>
   </action>
  </widget>

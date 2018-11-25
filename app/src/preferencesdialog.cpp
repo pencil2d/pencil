@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <QComboBox>
 #include <QMessageBox>
+#include <QSlider>
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
@@ -423,11 +424,18 @@ ToolsPage::ToolsPage()
     ui->setupUi(this);
 
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    auto sliderChanged = static_cast<void(QSlider::*)(int)>(&QSlider::valueChanged);
     connect(ui->onionMaxOpacityBox, spinBoxChanged, this, &ToolsPage::onionMaxOpacityChange);
     connect(ui->onionMinOpacityBox, spinBoxChanged, this, &ToolsPage::onionMinOpacityChange);
     connect(ui->onionPrevFramesNumBox, spinBoxChanged, this, &ToolsPage::onionPrevFramesNumChange);
     connect(ui->onionNextFramesNumBox, spinBoxChanged, this, &ToolsPage::onionNextFramesNumChange);
     connect(ui->useQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange);
+    connect(ui->flipRollMsecsSlider, sliderChanged, this, &ToolsPage::flipRollMsecSliderChanged);
+    connect(ui->flipRollMsecsSpinBox, spinBoxChanged, this, &ToolsPage::flipRollMsecSpinboxChanged);
+    connect(ui->flipRollNumDrawingsSlider, sliderChanged, this, &ToolsPage::flipRollNumDrawingdSliderChanged);
+    connect(ui->flipRollNumDrawingsSpinBox, spinBoxChanged, this, &ToolsPage::flipRollNumDrawingdSpinboxChanged);
+    connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &ToolsPage::flipInbetweenMsecSliderChanged);
+    connect(ui->flipInBtwnMsecSpinBox, spinBoxChanged, this, &ToolsPage::flipInbetweenMsecSpinboxChanged);
 }
 
 ToolsPage::~ToolsPage()
@@ -442,6 +450,12 @@ void ToolsPage::updateValues()
     ui->onionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
     ui->onionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
+    ui->flipRollMsecsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
+    ui->flipRollNumDrawingsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
+    ui->flipInBtwnMsecSlider->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
+    ui->flipRollMsecsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
+    ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
+    ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
 }
 
 void ToolsPage::onionMaxOpacityChange(int value)
@@ -468,3 +482,40 @@ void ToolsPage::onionNextFramesNumChange(int value)
 {
     mManager->set(SETTING::ONION_NEXT_FRAMES_NUM, value);
 }
+
+void ToolsPage::flipRollMsecSliderChanged(int value)
+{
+    ui->flipRollMsecsSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_MSEC, value);
+}
+
+void ToolsPage::flipRollMsecSpinboxChanged(int value)
+{
+    ui->flipRollMsecsSlider->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_MSEC, value);
+}
+
+void ToolsPage::flipRollNumDrawingdSliderChanged(int value)
+{
+    ui->flipRollNumDrawingsSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_DRAWINGS, value);
+}
+
+void ToolsPage::flipRollNumDrawingdSpinboxChanged(int value)
+{
+    ui->flipRollNumDrawingsSlider->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_DRAWINGS, value);
+}
+
+void ToolsPage::flipInbetweenMsecSliderChanged(int value)
+{
+    ui->flipInBtwnMsecSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+
+void ToolsPage::flipInbetweenMsecSpinboxChanged(int value)
+{
+    ui->flipInBtwnMsecSlider->setValue(value);
+    mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+

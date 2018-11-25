@@ -88,6 +88,9 @@ private:
     int mActiveSoundFrame = 0;
 
     int mFps = 12;
+    int mFlipRollInterval;
+    int mFlipInbetweenInterval;
+    int mFlipRollMax;
 
     QTimer* mTimer = nullptr;
     QTimer* mFlipTimer = nullptr;
