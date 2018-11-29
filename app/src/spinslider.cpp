@@ -96,15 +96,15 @@ void SpinSlider::setValue(qreal v)
     int value2 = 0;
     if (mGrowthType == LINEAR)
     {
-        value2 = static_cast<int>(std::round(mSlider->maximum() * (v - mMin) / (mMax - mMin)));
+        value2 =qRound((mSlider->maximum() * (v - mMin) / (mMax - mMin)));
     }
     else if (mGrowthType == LOG)
     {
-        value2 = static_cast<int>(std::round(std::log(v / mMin) * mSlider->maximum() / std::log(mMax / mMin)));
+        value2 = qRound(std::log(v / mMin) * mSlider->maximum() / std::log(mMax / mMin));
     }
     else if (mGrowthType == EXPONENT)
     {
-        value2 = static_cast<int>(std::round(std::pow((v - mMin) * std::pow(mSlider->maximum(), mExp) / (mMax - mMin), 1 / mExp)));
+        value2 = qRound(std::pow((v - mMin) * std::pow(mSlider->maximum(), mExp) / (mMax - mMin), 1 / mExp));
     }
 
     changeValue(v);
