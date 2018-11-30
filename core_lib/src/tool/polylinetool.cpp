@@ -261,14 +261,14 @@ void PolylineTool::endPolyline( QList<QPointF> points )
         curve.setInvisibility( mScribbleArea->makeInvisible() );
 
         ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, mEditor->view()->scaling() );
-        mEditor->backups()->vector("Vector: Polyline");
+        mEditor->backups()->vector(tr("Vector: Polyline"));
     }
     if ( layer->type() == Layer::BITMAP )
     {
         drawPolyline( points, points.last() );
         BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
         bitmapImage->paste( mScribbleArea->mBufferImg );
-        mEditor->backups()->bitmap("Bitmap: Polyline");
+        mEditor->backups()->bitmap(tr("Bitmap: Polyline"));
     }
     mScribbleArea->mBufferImg->clear();
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );

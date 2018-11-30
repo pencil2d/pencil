@@ -163,12 +163,12 @@ void EraserTool::tabletReleaseEvent(QTabletEvent *)
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
-        mEditor->backups()->bitmap("Bitmap: Eraser");
+        mEditor->backups()->bitmap(tr("Bitmap: Eraser"));
     }
     else if (layer->type() == Layer::VECTOR )
     {
         paintVectorStroke();
-        mEditor->backups()->vector("Vector: Eraser");
+        mEditor->backups()->vector(tr("Vector: Eraser"));
     }
     removeVectorPaint();
     endStroke();
@@ -200,12 +200,12 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *)
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
-        mEditor->backups()->bitmap("Bitmap: Eraser");
+        mEditor->backups()->bitmap(tr("Bitmap: Eraser"));
     }
     else if (layer->type() == Layer::VECTOR )
     {
         paintVectorStroke();
-        mEditor->backups()->vector("Vector: Eraser");
+        mEditor->backups()->vector(tr("Vector: Eraser"));
     }
     removeVectorPaint();
     endStroke();

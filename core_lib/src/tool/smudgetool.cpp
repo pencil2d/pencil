@@ -216,7 +216,7 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
             drawStroke();
             mScribbleArea->setAllDirty();
             endStroke();
-            mEditor->backups()->bitmap("Bitmap: Smudge");
+            mEditor->backups()->bitmap(tr("Bitmap: Smudge"));
         }
         else if (layer->type() == Layer::VECTOR)
         {
@@ -229,7 +229,7 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
                 vectorImage->curve(curveNumber).smoothCurve();
             }
             mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-            mEditor->backups()->vector("Vector: Smudge");
+            mEditor->backups()->vector(tr("Vector: Smudge"));
         }
     }
 }

@@ -143,12 +143,12 @@ void BackupManager::bitmap(QString description)
 
     new TransformElement(mKeyframe,
                          editor()->getScribbleArea()->mBufferImg,
-                          mLayerId,
-                          mFrameIndex,
-                          mSelectionRect,
-                          mTempSelectionRect,
-                          mSelectionTransform,
-                          editor(), element);
+                         mLayerId,
+                         mFrameIndex,
+                         mSelectionRect,
+                         mTempSelectionRect,
+                         mSelectionTransform,
+                         editor(), element);
     mUndoStack->push(element);
     emit updateBackup();
 }

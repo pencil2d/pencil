@@ -73,39 +73,19 @@ AddKeyFrameElement::AddKeyFrameElement(int backupFrameIndex,
     oldKeyFrames.insert(std::make_pair(oldFrameIndex, newKey));
 
     bool isSequence = (oldKeySpacing > 1) ? true : false;
-    switch(layer->type())
+
+    if (description.isEmpty() && !isSequence)
     {
-        case Layer::BITMAP:
+        switch (layer->type())
         {
-            if (!description.isEmpty() || isSequence) { break; }
-            description = "New Bitmap Key";
-            break;
+        case Layer::BITMAP: description = QObject::tr("New Bitmap Key"); break;
+        case Layer::VECTOR: description = QObject::tr("New Vector Key"); break;
+        case Layer::SOUND: description = QObject::tr("New Sound Key"); break;
+        case Layer::CAMERA: description = QObject::tr("New Camera Key"); break;
+        default: break;
         }
-        case Layer::VECTOR:
-        {
-            if (!description.isEmpty() || isSequence) { break; }
-
-            description = "New Vector Key";
-            break;
-        }
-        case Layer::SOUND:
-        {
-            if (!description.isEmpty() || isSequence) { break; }
-
-            description = "New Sound Key";
-            break;
-        }
-        case Layer::CAMERA:
-        {
-            if (!description.isEmpty() || isSequence) { break; }
-
-            description = "New Camera Key";
-            break;
-        }
-        default:
-            break;
     }
-    setText(QObject::tr(qPrintable(description)));
+    setText(description);
 }
 
 void AddKeyFrameElement::undo()
@@ -329,7 +309,7 @@ AddBitmapElement::AddBitmapElement(BitmapImage* backupBitmap,
     newBitmap = static_cast<LayerBitmap*>(layer)->
             getBitmapImageAtFrame(otherFrameIndex)->clone();
 
-    setText(QObject::tr(qPrintable(description)));
+    setText(description);
 }
 
 void AddBitmapElement::undoTransform()
@@ -475,7 +455,7 @@ AddVectorElement::AddVectorElement(VectorImage* backupVector, int backupLayerId,
     newVector = static_cast<LayerVector*>(layer)->
             getVectorImageAtFrame(otherFrameIndex)->clone();
 
-    setText(QObject::tr(qPrintable(description)));
+    setText(description);
 }
 
 void AddVectorElement::undo()
