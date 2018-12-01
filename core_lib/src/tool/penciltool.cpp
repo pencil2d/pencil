@@ -191,12 +191,12 @@ void PencilTool::tabletReleaseEvent(QTabletEvent*)
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
-        mEditor->backups()->bitmap("Bitmap: Pencil");
+        mEditor->backups()->bitmap(tr("Bitmap: Pencil"));
     }
     else if (layer->type() == Layer::VECTOR )
     {
         paintVectorStroke(layer);
-        mEditor->backups()->vector("Vector: Pencil");
+        mEditor->backups()->vector(tr("Vector: Pencil"));
     }
     endStroke();
 }
@@ -234,12 +234,12 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *)
    if ( layer->type() == Layer::BITMAP )
    {
        paintBitmapStroke();
-       mEditor->backups()->bitmap("Bitmap: Pencil");
+       mEditor->backups()->bitmap(tr("Bitmap: Pencil"));
    }
    else if (layer->type() == Layer::VECTOR )
    {
        paintVectorStroke(layer);
-       mEditor->backups()->vector("Vector: Pencil");
+       mEditor->backups()->vector(tr("Vector: Pencil"));
    }
     endStroke();
 }

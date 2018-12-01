@@ -153,11 +153,11 @@ void PenTool::tabletReleaseEvent(QTabletEvent *)
     mEditor->backups()->saveStates();
     if (layer->type() == Layer::BITMAP) {
         paintBitmapStroke();
-        mEditor->backups()->bitmap("Bitmap: Pen");
+        mEditor->backups()->bitmap(tr("Bitmap: Pen"));
     }
     else if (layer->type() == Layer::VECTOR) {
         paintVectorStroke(layer);
-        mEditor->backups()->vector("Vector: Pen");
+        mEditor->backups()->vector(tr("Vector: Pen"));
     }
     endStroke();
 }
@@ -196,11 +196,11 @@ void PenTool::mouseReleaseEvent(QMouseEvent *)
     mEditor->backups()->saveStates();
     if (layer->type() == Layer::BITMAP) {
         paintBitmapStroke();
-        mEditor->backups()->bitmap("Bitmap: Pen");
+        mEditor->backups()->bitmap(tr("Bitmap: Pen"));
     }
     else if (layer->type() == Layer::VECTOR) {
         paintVectorStroke(layer);
-        mEditor->backups()->vector("Vector: Pen");
+        mEditor->backups()->vector(tr("Vector: Pen"));
     }
     endStroke();
 }

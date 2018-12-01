@@ -236,7 +236,7 @@ void Editor::paste()
             auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
             pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->paste(&tobePasted); // paste the clipboard
 
-            backups()->bitmap("Bitmap: Paste");
+            backups()->bitmap(tr("Bitmap: Paste"));
         }
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
@@ -245,7 +245,7 @@ void Editor::paste()
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
 
             mScribbleArea->setSelection(vectorImage->getSelectionRect());
-            backups()->vector("Vector: Paste");
+            backups()->vector(tr("Vector: Paste"));
         }
     }
     mScribbleArea->updateCurrentFrame();
@@ -537,7 +537,7 @@ bool Editor::importVectorImage(QString filePath, bool /*isSequence*/)
         importedVectorImage.selectAll();
         vectorImage->paste(importedVectorImage);
 
-        backups()->vector("Vector: Import");
+        backups()->vector(tr("Vector: Import"));
     }
 
     return ok;

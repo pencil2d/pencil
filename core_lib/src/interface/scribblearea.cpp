@@ -2205,13 +2205,13 @@ void ScribbleArea::clearImage()
         mClosestCurves.clear();
         mClosestVertices.clear();
         
-        mEditor->backups()->vector("Vector: Clear frame");
+        mEditor->backups()->vector(tr("Vector: Clear frame"));
     }
     else if (layer->type() == Layer::BITMAP)
     {
         static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear();
 
-        mEditor->backups()->bitmap("Bitmap: Clear frame");
+        mEditor->backups()->bitmap(tr("Bitmap: Clear frame"));
     }
     else
     {

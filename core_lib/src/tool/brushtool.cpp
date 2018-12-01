@@ -223,12 +223,12 @@ void BrushTool::tabletReleaseEvent(QTabletEvent *)
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
-        mEditor->backups()->bitmap("Bitmap: Brush");
+        mEditor->backups()->bitmap(tr("Bitmap: Brush"));
     }
     else if (layer->type() == Layer::VECTOR )
     {
         paintVectorStroke();
-        mEditor->backups()->vector("Vector: Brush");
+        mEditor->backups()->vector(tr("Vector: Brush"));
     }
     endStroke();
 }
@@ -254,12 +254,12 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *)
     if ( layer->type() == Layer::BITMAP )
     {
         paintBitmapStroke();
-        mEditor->backups()->bitmap("Bitmap: Brush");
+        mEditor->backups()->bitmap(tr("Bitmap: Brush"));
     }
     else if (layer->type() == Layer::VECTOR )
     {
         paintVectorStroke();
-        mEditor->backups()->vector("Vector: Brush");
+        mEditor->backups()->vector(tr("Vector: Brush"));
     }
     endStroke();
 }

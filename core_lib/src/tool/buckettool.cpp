@@ -123,12 +123,12 @@ void BucketTool::mouseReleaseEvent(QMouseEvent* event)
             if ( layer->type() == Layer::BITMAP )
             {
                 paintBitmap(layer);
-                mEditor->backups()->bitmap("Bitmap: Bucket");
+                mEditor->backups()->bitmap(tr("Bitmap: Bucket"));
             }
             else if (layer->type() == Layer::VECTOR )
             {
                 paintVector(event, layer);
-                mEditor->backups()->vector("Vector: Bucket");
+                mEditor->backups()->vector(tr("Vector: Bucket"));
             }
         }
     }

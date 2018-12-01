@@ -247,11 +247,11 @@ public:
                      QUndoCommand* parent = nullptr);
 
 
-    QRectF oldSelectionRect = QRectF();
-    QRectF newSelectionRect = QRectF();
+    QRectF oldSelectionRect;
+    QRectF newSelectionRect;
 
-    QRectF oldSelectionRectTemp = QRectF();
-    QRectF newSelectionRectTemp= QRectF();
+    QRectF oldSelectionRectTemp;
+    QRectF newSelectionRectTemp;
 
     QTransform oldTransform;
     QTransform newTransform;
