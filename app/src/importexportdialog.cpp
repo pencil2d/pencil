@@ -83,7 +83,7 @@ void ImportExportDialog::setFileExtension(QString extension)
     for (int i = 0; i < m_filePaths.size(); i++)
     {
         QFileInfo info(m_filePaths.at(i));
-        m_filePaths.replace(i, info.path() + "/" + info.baseName() + "." + extension);
+        m_filePaths.replace(i, info.path() + "/" + info.completeBaseName() + "." + extension);
     }
     ui->fileEdit->setText("\"" + m_filePaths.join("\" \"") + "\"");
 
