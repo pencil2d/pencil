@@ -247,6 +247,7 @@ void MainWindow2::createMenus()
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
+    connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importImageSequenceNumbered);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
@@ -400,7 +401,7 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty())
     {
         mRecentFileMenu->clear();
-        QMessageBox::information(this, 0,
+        QMessageBox::information(this, nullptr,
                                  tr("\n\n You have successfully cleared the list"),
                                  QMessageBox::Ok);
     }
@@ -840,6 +841,95 @@ void MainWindow2::importImageSequence()
     progress.close();
 
     mIsImportingImageSequence = false;
+}
+
+void MainWindow2::importImageSequenceNumbered()
+{
+    FileDialog fileDialog(this);
+    QString strFilePath = fileDialog.openFile(FileType::IMAGE);
+
+    if (strFilePath.isEmpty()) { return; }
+    if (!QFile::exists(strFilePath)) { return; }
+
+    addLayerByFilename(strFilePath);
+}
+
+void MainWindow2::addLayerByFilename(QString strFilePath)
+{
+    // local vars for testing file validity
+    int dot = strFilePath.lastIndexOf(".");
+    int slash = strFilePath.lastIndexOf("/");
+    QString fName = strFilePath.mid(slash + 1);
+    QString path = strFilePath.left(slash + 1);
+    QString digit = strFilePath.mid(slash + 1, dot - slash + 1);
+
+    // Find number of digits (min: 1, max: 4)
+    int digits = 0;
+    for (int i = digit.length() - 1; i > 0; i--)
+    {
+        if (digit.at(i).isDigit())
+        {
+            digits++;
+        }
+    }
+    if (digits < 1) { return; }
+    digit = strFilePath.mid(dot - digits, digits);
+    QString prefix = strFilePath.mid(slash + 1, dot - slash - digits - 1);
+    QString suffix = strFilePath.mid(dot, strFilePath.length() - 1);
+
+    QDir dir = strFilePath.left(strFilePath.lastIndexOf("/"));
+    QStringList sList = dir.entryList(QDir::Files, QDir::Name);
+    if (sList.isEmpty()) { return; }
+
+    // List of files is not empty. Let's go find the relevant files
+    QStringList finalList;
+    int validLength = prefix.length() + digit.length() + suffix.length();
+    for (int i = 0; i < sList.size(); i++)
+    {
+        if (sList[i].startsWith(prefix) &&
+                sList[i].length() == validLength &&
+                sList[i].mid(sList[i].lastIndexOf(".") - digits, digits).toInt() > 0 &&
+                sList[i].endsWith(suffix))
+        {
+            finalList.append(sList[i]);
+        }
+    }
+    if (finalList.isEmpty()) { return; }
+
+    // List of relevant files is not empty. Let's validate them
+    dot = finalList[0].lastIndexOf(".");
+
+    QString msg = "";
+    for (int i = 0; i < finalList.size(); i++)
+    {
+        if (!(finalList[i].mid(dot - digits, digits).toInt()
+                && (finalList[i].mid(dot - digits, digits).toInt() > 0)))
+        {
+            msg = tr("Illegal numbering");
+        }
+        if (msg.length() > 0)
+        {
+            QMessageBox msgBox;
+            msgBox.setText(msg);
+            msgBox.exec();
+            return;
+        }
+    }
+    prefix = mCommands->nameSuggest(prefix);
+    mEditor->layers()->createBitmapLayer(prefix);
+    Layer *layer = mEditor->layers()->findLayerByName(prefix);
+    Q_ASSERT(layer != nullptr);
+    LayerManager* lMgr = mEditor->layers();
+    lMgr->setCurrentLayer(layer);
+    for (int i = 0; i < finalList.size(); i++)
+    {
+        mEditor->scrubTo(finalList[i].mid(dot - digits, digits).toInt());
+        bool ok = mEditor->importImage(path + finalList[i]);
+        if (!ok) { return;}
+        layer->addNewKeyFrameAt(finalList[i].mid(dot - digits, digits).toInt());
+    }
+    ui->scribbleArea->updateCurrentFrame();
+    mTimeLine->updateContent();
 }
 
 void MainWindow2::importGIF()
