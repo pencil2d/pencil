@@ -41,3 +41,5 @@ TRANSLATIONS += translations/pencil.ts \
                 translations/pencil_vi.ts \
                 translations/pencil_zh_CN.ts \
                 translations/pencil_zh_TW.ts
+
+macx: LIBS += -framework AppKit
