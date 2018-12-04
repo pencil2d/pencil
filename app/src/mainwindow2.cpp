@@ -861,15 +861,19 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
     int slash = strFilePath.lastIndexOf("/");
     QString fName = strFilePath.mid(slash + 1);
     QString path = strFilePath.left(slash + 1);
-    QString digit = strFilePath.mid(slash + 1, dot - slash + 1);
+    QString digit = strFilePath.mid(slash + 1, dot - slash - 1);
 
-    // Find number of digits (min: 1, max: 4)
+    // Find number of digits (min: 1, max: digit.length - 1)
     int digits = 0;
     for (int i = digit.length() - 1; i > 0; i--)
     {
         if (digit.at(i).isDigit())
         {
             digits++;
+        }
+        else
+        {
+            break;
         }
     }
     if (digits < 1) { return; }
