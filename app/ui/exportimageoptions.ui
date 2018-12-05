@@ -131,19 +131,6 @@
       <property name="spacing">
        <number>3</number>
       </property>
-      <item row="0" column="2">
-       <widget class="QSpinBox" name="startSpinBox">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>99999</number>
-        </property>
-        <property name="value">
-         <number>1</number>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1">
        <widget class="QLabel" name="endLabel">
         <property name="sizePolicy">
@@ -163,28 +150,6 @@
         </property>
         <property name="text">
          <string>End Frame</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="startLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>80</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The first frame you want to include in the exported movie</string>
-        </property>
-        <property name="text">
-         <string>Start Frame</string>
         </property>
        </widget>
       </item>
@@ -219,6 +184,41 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="2">
+       <widget class="QSpinBox" name="startSpinBox">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>99999</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="startLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The first frame you want to include in the exported movie</string>
+        </property>
+        <property name="text">
+         <string>Start Frame</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="2">
        <widget class="QSpinBox" name="endSpinBox">
         <property name="minimum">
@@ -229,6 +229,13 @@
         </property>
         <property name="value">
          <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="cbExportKeyframesOnly">
+        <property name="text">
+         <string>Export keyframes only</string>
         </property>
        </widget>
       </item>

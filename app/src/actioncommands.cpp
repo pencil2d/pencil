@@ -305,12 +305,14 @@ Status ActionCommands::exportImageSequence()
     QString strFilePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
+    bool exportKeyframesOnly = dialog->getExportKeyframesOnly();
     bool useTranparency = dialog->getTransparency();
     int startFrame = dialog->getStartFrame();
     int endFrame  = dialog->getEndFrame();
 
     QString sCameraLayerName = dialog->getCameraLayerName();
     LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
+    QString layerName = mEditor->layers()->currentLayer()->name();
 
     // Show a progress dialog, as this can take a while if you have lots of frames.
     QProgressDialog progress(tr("Exporting image sequence..."), tr("Abort"), 0, 100, mParent);
@@ -324,6 +326,8 @@ Status ActionCommands::exportImageSequence()
                                     strFilePath,
                                     exportFormat,
                                     useTranparency,
+                                    exportKeyframesOnly,
+                                    mEditor->layers()->currentLayer()->name(),
                                     true,
                                     &progress,
                                     100);
