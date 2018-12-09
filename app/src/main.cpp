@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "pencilapplication.h"
 #include "layermanager.h"
 #include "layercamera.h"
+#include "platformhandler.h"
 
 
 void installTranslator( PencilApplication& app )
@@ -223,6 +224,7 @@ int handleArguments( PencilApplication& app )
     // If there are no output paths, open up the GUI (to the input path if there is one)
     if ( outputPaths.isEmpty() )
     {
+        PlatformHandler::configurePlatformSpecificSettings();
         mainWindow.show();
         if( !inputPath.isEmpty() )
         {

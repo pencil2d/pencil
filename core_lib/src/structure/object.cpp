@@ -751,6 +751,12 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         format = "TIFF";
         extension = ".tiff";
     }
+    if (formatStr == "BMP" || formatStr == "bmp")
+    {
+        format = "BMP";
+        extension = ".bmp";
+        transparency = false;
+    }
     if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {
         filePath.chop(extension.size());

@@ -41,6 +41,7 @@ public:
 
     QString getSelectedCameraName();
     QSize getExportSize();
+    bool getTransparency() const;
 
     int getStartFrame();
     int getEndFrame();
@@ -50,6 +51,9 @@ public:
 private:
     void frameCheckboxClicked(bool checked);
     void onFilePathsChanged(QStringList filePaths);
+
+    bool supportsLooping(QString filePath) const;
+    bool supportsTransparency(QString filePath) const;
     
     int mEndFrameWithSounds = 0;
     int mEndFrame = 0;

@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QDesktopServices>
 #include <QStandardPaths>
+#include <QFileDialog>
 
 #include "pencildef.h"
 #include "editor.h"
@@ -200,6 +201,7 @@ Status ActionCommands::exportMovie(bool isGif)
     desc.exportSize = dialog->getExportSize();
     desc.strCameraName = dialog->getSelectedCameraName();
     desc.loop = dialog->getLoop();
+    desc.alpha = dialog->getTransparency();
 
     DoubleProgressDialog progressDlg;
     progressDlg.setWindowModality(Qt::WindowModal);

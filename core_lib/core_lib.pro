@@ -27,6 +27,8 @@ INCLUDEPATH += src \
     src/tool \
     src/util \
     ui \
+    src/managers \
+    src/external
 
 # Input
 HEADERS +=  \
@@ -98,6 +100,8 @@ HEADERS +=  \
     src/miniz.h \
     src/qminiz.h \
     src/activeframepool.h \
+    src/external/platformhandler.h \
+    src/external/macosx/macosxnative.h
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
@@ -176,7 +180,9 @@ win32 {
 
 macx {
     INCLUDEPATH += src/external/macosx
+    LIBS += -framework AppKit
     SOURCES += src/external/macosx/macosx.cpp
+    OBJECTIVE_SOURCES += src/external/macosx/macosxnative.mm
 }
 
 unix:!macx {

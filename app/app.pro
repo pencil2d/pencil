@@ -30,7 +30,8 @@ INCLUDEPATH += \
     ../core_lib/src/tool \
     ../core_lib/src/util \
     ../core_lib/ui \
-    ../core_lib/src/managers
+    ../core_lib/src/managers \
+    ../core_lib/src/external
 
 HEADERS += \
     src/mainwindow2.h \
@@ -128,6 +129,8 @@ macx {
     FILE_ICONS.files = data/icons/mac_pcl_icon.icns data/icons/mac_pclx_icon.icns
     FILE_ICONS.path = Contents/Resources
     QMAKE_BUNDLE_DATA += FILE_ICONS
+
+    LIBS += -framework AppKit
 }
 
 win32 {

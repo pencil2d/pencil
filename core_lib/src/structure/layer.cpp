@@ -610,7 +610,6 @@ bool Layer::moveSelectedFrames(int offset)
                         mKeyFrames.erase(framePosition);
 
                         frame->setPos(targetPosition);
-                        frame->modification();
                         mKeyFrames.insert(std::make_pair(targetPosition, frame));
                     }
 
@@ -629,7 +628,6 @@ bool Layer::moveSelectedFrames(int offset)
 
                 // Update the position of the selected frame
                 selectedFrame->setPos(toPos);
-                selectedFrame->modification();
                 mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
             }
             indexInSelection = indexInSelection + step;
