@@ -1359,7 +1359,7 @@ void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
 void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
-    statusBar()->showMessage(QString("Zoom: %0%1").arg(zoom, 0, 'f', 1).arg("%"));
+    statusBar()->showMessage(QString("Zoom: %0%1").arg(static_cast<double>(zoom), 0, 'f', 1).arg("%"));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

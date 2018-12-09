@@ -310,7 +310,7 @@ Status ActionCommands::exportImageSequence()
     int endFrame  = dialog->getEndFrame();
 
     QString sCameraLayerName = dialog->getCameraLayerName();
-    LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA));
 
     // Show a progress dialog, as this can take a while if you have lots of frames.
     QProgressDialog progress(tr("Exporting image sequence..."), tr("Abort"), 0, 100, mParent);
@@ -377,7 +377,7 @@ Status ActionCommands::exportImage()
 
     // Export
     QString sCameraLayerName = dialog->getCameraLayerName();
-    LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA));
 
     QTransform view = cameraLayer->getViewAtFrame(mEditor->currentFrame());
 
@@ -537,7 +537,7 @@ void ActionCommands::removeKey()
 void ActionCommands::duplicateKey()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) return;
+    if (layer == nullptr) return;
 
     KeyFrame* key = layer->getKeyFrameAt(mEditor->currentFrame());
     if (key == nullptr) return;
