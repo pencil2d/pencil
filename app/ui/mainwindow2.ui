@@ -324,6 +324,11 @@
     <string>Palette...</string>
    </property>
   </action>
+  <action name="actionImport_ImageSeqNum">
+   <property name="text">
+    <string>Image Sequence Numbered...</string>
+   </property>
+  </action>
   <action name="actionUndo">
    <property name="icon">
     <iconset resource="../data/app.qrc">
@@ -893,12 +898,14 @@
     <string>Animated GIF...</string>
    </property>
   </action>
-   <property name="text">
-   </property>
-  </action>
   <action name="actionCheck_for_Updates">
    <property name="text">
     <string>Check for Updates</string>
+   </property>
+  </action>
+  <action name="actionForum">
+   <property name="text">
+    <string>Pencil2D Forum</string>
    </property>
   </action>
   <action name="actionDiscord">
