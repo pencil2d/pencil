@@ -48,6 +48,7 @@ GNU General Public License for more details.
 #include "exportimagedialog.h"
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
+#include "checkupdatesdialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -717,10 +718,29 @@ void ActionCommands::website()
     QDesktopServices::openUrl(QUrl(url));
 }
 
+void ActionCommands::forum()
+{
+    QString url = "https://discuss.pencil2d.org/";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::discord()
+{
+    QString url = "https://discord.gg/8FxdV2g";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
 void ActionCommands::reportbug()
 {
     QString url = "https://github.com/pencil2d/pencil/issues";
     QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::checkForUpdates()
+{
+    CheckUpdatesDialog dialog;
+    dialog.startChecking();
+    dialog.exec();
 }
 
 void ActionCommands::about()

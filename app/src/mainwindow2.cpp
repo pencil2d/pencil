@@ -124,7 +124,6 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
 
-    //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
     mEditor->updateObject();
@@ -177,7 +176,6 @@ void MainWindow2::createDockWidgets()
         << mToolOptions
         << mToolBox;
 
-//    mColorInspector->setFloating(true);
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
 
@@ -201,7 +199,6 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     setDockNestingEnabled(true);
-    //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
     /*
     mPreview = new PreviewWidget( this );
@@ -363,9 +360,12 @@ void MainWindow2::createMenus()
     // -------------- Help Menu ---------------
     connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
     connect(ui->actionQuick_Guide, &QAction::triggered, mCommands, &ActionCommands::quickGuide);
-    connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
     connect(ui->actionWebsite, &QAction::triggered, mCommands, &ActionCommands::website);
+    connect(ui->actionForum, &QAction::triggered, mCommands, &ActionCommands::forum);
+    connect(ui->actionDiscord, &QAction::triggered, mCommands, &ActionCommands::discord);
+    connect(ui->actionCheck_for_Updates, &QAction::triggered, mCommands, &ActionCommands::checkForUpdates);
     connect(ui->actionReport_Bug, &QAction::triggered, mCommands, &ActionCommands::reportbug);
+    connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
 
     // --------------- Menus ------------------
     mRecentFileMenu = new RecentFileMenu(tr("Open Recent"), this);
