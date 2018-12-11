@@ -2,6 +2,7 @@
 
 #include <AppKit/NSWindow.h>
 #include <AppKit/Appkit.h>
+#include <Availability.h>
 
 namespace MacOSXNative
 {
@@ -28,8 +29,11 @@ namespace MacOSXNative
     bool isDarkMode()
     {
         NSAppearance* apperance = NSAppearance.currentAppearance;
-        if (@available(macOS 10.14, *)) {
+
+        #ifdef __MAC_10_14
             return apperance.name == NSAppearanceNameDarkAqua;
-        }
+        #endif
+
+        return false;
     }
 }
