@@ -291,7 +291,6 @@ TimelinePage::TimelinePage()
     ui->setupUi(this);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    connect(ui->frameSize, &QSlider::valueChanged, this, &TimelinePage::frameSizeChanged);
     connect(ui->timelineLength, spinBoxValueChange, this, &TimelinePage::timelineLengthChanged);
     connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChanged);
     connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
@@ -309,13 +308,6 @@ void TimelinePage::updateValues()
 {
     SignalBlocker b1(ui->scrubBox);
     ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
-
-    int frameSize = mManager->getInt(SETTING::FRAME_SIZE);
-    if (frameSize <= 0)
-        frameSize = 6;
-
-    SignalBlocker b2(ui->frameSize);
-    ui->frameSize->setValue(frameSize);
 
     SignalBlocker b3(ui->timelineLength);
     ui->timelineLength->setValue(mManager->getInt(SETTING::TIMELINE_SIZE));
@@ -353,11 +345,6 @@ void TimelinePage::timelineLengthChanged(int value)
 void TimelinePage::fontSizeChanged(int value)
 {
     mManager->set(SETTING::LABEL_FONT_SIZE, value);
-}
-
-void TimelinePage::frameSizeChanged(int value)
-{
-    mManager->set(SETTING::FRAME_SIZE, value);
 }
 
 void TimelinePage::scrubChanged(int value)

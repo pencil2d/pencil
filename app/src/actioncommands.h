@@ -24,12 +24,13 @@ class Editor;
 class QWidget;
 class ExportMovieDialog;
 
+
 class ActionCommands : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ActionCommands(QWidget* parent = 0);
+    explicit ActionCommands(QWidget* parent = nullptr);
     virtual ~ActionCommands();
 
     void setCore(Editor* e) { mEditor = e; }
@@ -78,7 +79,10 @@ public:
     void help();
     void quickGuide();
     void website();
+    void forum();
+    void discord();
     void reportbug();
+    void checkForUpdates();
     void about();
 
 private:

@@ -321,9 +321,9 @@ void ColorInspector::onColorChanged()
     } else {
         c.setHsv(
             ui->RedspinBox->value(),
-            ui->GreenspinBox->value()* 2.55,
-            ui->BluespinBox->value()* 2.55,
-            ui->AlphaspinBox->value()* 2.55);
+            static_cast<int>(ui->GreenspinBox->value()* 2.55),
+            static_cast<int>(ui->BluespinBox->value()* 2.55),
+            static_cast<int>(ui->AlphaspinBox->value()* 2.55));
     }
 
     emit colorChanged(c);

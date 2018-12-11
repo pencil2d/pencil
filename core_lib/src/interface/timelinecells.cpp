@@ -49,6 +49,7 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setAttribute(Qt::WA_OpaquePaintEvent, false);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
+
 }
 
 TimeLineCells::~TimeLineCells()
@@ -93,6 +94,14 @@ int TimeLineCells::getFrameX(int frameNumber)
 {
     int x = mOffsetX + (frameNumber - mFrameOffset) * mFrameSize;
     return x;
+}
+
+void TimeLineCells::setFrameSize(int size)
+{
+    mFrameSize = size;
+    QSettings settings (PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_FRAME_SIZE, mFrameSize);
+    updateContent();
 }
 
 int TimeLineCells::getLayerNumber(int y)
