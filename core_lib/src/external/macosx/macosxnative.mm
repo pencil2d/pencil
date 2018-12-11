@@ -28,7 +28,7 @@ namespace MacOSXNative
     bool isDarkMode()
     {
         NSAppearance* apperance = NSAppearance.currentAppearance;
-        if (@available(*, macOS 10.14)) {
+        if (@available(macOS 10.14, *)) {
             return apperance.name == NSAppearanceNameDarkAqua;
         }
     }
