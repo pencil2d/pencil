@@ -114,6 +114,12 @@ public slots:
     void scrubChanged(int);
     void playbackStateChanged(int);
     void drawEmptyKeyRadioButtonToggled(bool);
+    void flipRollMsecSliderChanged(int value);
+    void flipRollMsecSpinboxChanged(int value);
+    void flipRollNumDrawingdSliderChanged(int value);
+    void flipRollNumDrawingdSpinboxChanged(int value);
+    void flipInbetweenMsecSliderChanged(int value);
+    void flipInbetweenMsecSpinboxChanged(int value);
 
 private:
     Ui::TimelinePage* ui = nullptr;
@@ -157,12 +163,6 @@ public slots:
     void onionMinOpacityChange(int);
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
-    void flipRollMsecSliderChanged(int value);
-    void flipRollMsecSpinboxChanged(int value);
-    void flipRollNumDrawingdSliderChanged(int value);
-    void flipRollNumDrawingdSpinboxChanged(int value);
-    void flipInbetweenMsecSliderChanged(int value);
-    void flipInbetweenMsecSpinboxChanged(int value);
     void quickSizingChange(int);
 private:
     Ui::ToolsPage* ui = nullptr;
