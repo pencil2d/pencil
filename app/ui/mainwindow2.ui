@@ -169,7 +169,7 @@
     <addaction name="actionMove_Frame_Backward"/>
     <addaction name="separator"/>
     <addaction name="actionFlip_inbetween"/>
-    <addaction name="actionFlip_roll"/>
+    <addaction name="actionFlip_rolling"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -920,16 +920,10 @@
    <property name="text">
     <string>Flip inbetween</string>
    </property>
-   <property name="shortcut">
-    <string>Alt+Z</string>
-   </property>
   </action>
-  <action name="actionFlip_roll">
+  <action name="actionFlip_rolling">
    <property name="text">
-    <string>Flip roll</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+X</string>
+    <string>Flip rolling</string>
    </property>
   </action>
  </widget>
