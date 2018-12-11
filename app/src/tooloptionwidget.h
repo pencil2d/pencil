@@ -40,7 +40,7 @@ class ToolOptionWidget : public BaseDockWidget
     Q_OBJECT
 public:
     explicit ToolOptionWidget(QWidget* parent);
-    virtual ~ToolOptionWidget();
+    virtual ~ToolOptionWidget() override;
 
     void initUI() override;
     void updateUI() override;

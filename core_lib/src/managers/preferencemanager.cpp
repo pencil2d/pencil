@@ -193,7 +193,7 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::FRAME_SIZE:
         if (value < 4) { value = 4; }
-        else if (value > 20) { value = 20; }
+        else if (value > 40) { value = 40; }
         settings.setValue(SETTING_FRAME_SIZE, value);
         break;
     case SETTING::TIMELINE_SIZE:

@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -64,6 +64,7 @@
      <addaction name="actionImport_Image"/>
      <addaction name="actionImport_ImageSeq"/>
      <addaction name="actionImport_Movie"/>
+     <addaction name="actionImport_ImageSeqNum"/>
      <addaction name="actionImport_Gif"/>
      <addaction name="actionImport_Sound"/>
      <addaction name="separator"/>
@@ -167,8 +168,8 @@
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
     <addaction name="separator"/>
-    <addaction name="actionFlip_Roll"/>
-    <addaction name="actionFlip_InBetween"/>
+    <addaction name="actionFlip_inbetween"/>
+    <addaction name="actionFlip_roll"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -207,6 +208,10 @@
     <addaction name="actionQuick_Guide"/>
     <addaction name="separator"/>
     <addaction name="actionWebsite"/>
+    <addaction name="actionForum"/>
+    <addaction name="actionDiscord"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheck_for_Updates"/>
     <addaction name="actionReport_Bug"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
@@ -320,6 +325,11 @@
   <action name="actionImport_Palette">
    <property name="text">
     <string>Palette...</string>
+   </property>
+  </action>
+  <action name="actionImport_ImageSeqNum">
+   <property name="text">
+    <string>Image Sequence Numbered...</string>
    </property>
   </action>
   <action name="actionUndo">
@@ -891,14 +901,35 @@
     <string>Animated GIF...</string>
    </property>
   </action>
-  <action name="actionFlip_Roll">
+  <action name="actionCheck_for_Updates">
    <property name="text">
-    <string>Flip Roll</string>
+    <string>Check for Updates</string>
    </property>
   </action>
-  <action name="actionFlip_InBetween">
+  <action name="actionForum">
    <property name="text">
-    <string>Flip InBetween</string>
+    <string>Pencil2D Forum</string>
+   </property>
+  </action>
+  <action name="actionDiscord">
+   <property name="text">
+    <string>Pencil2D Discord</string>
+   </property>
+  </action>
+  <action name="actionFlip_inbetween">
+   <property name="text">
+    <string>Flip inbetween</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Z</string>
+   </property>
+  </action>
+  <action name="actionFlip_roll">
+   <property name="text">
+    <string>Flip roll</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+X</string>
    </property>
   </action>
  </widget>

@@ -40,7 +40,7 @@ class PreferencesDialog : public QDialog
 
 public:
     PreferencesDialog(QWidget* parent);
-    ~PreferencesDialog();
+    ~PreferencesDialog() override;
 
     void init(PreferenceManager* m);
     void updateRecentListBtn(bool isEmpty);
@@ -111,7 +111,6 @@ public slots:
 
     void timelineLengthChanged(int);
     void fontSizeChanged(int);
-    void frameSizeChanged(int);
     void scrubChanged(int);
     void playbackStateChanged(int);
     void drawEmptyKeyRadioButtonToggled(bool);

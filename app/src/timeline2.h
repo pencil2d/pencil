@@ -30,8 +30,8 @@ class Timeline2 : public BaseDockWidget
     Q_OBJECT
 
 public:
-    explicit Timeline2(QWidget* parent = 0);
-    ~Timeline2();
+    explicit Timeline2(QWidget* parent = nullptr);
+    ~Timeline2() override;
 
     void initUI() override;
     void updateUI() override;

@@ -119,7 +119,7 @@ enum StabilizationLevel
 #define CMD_ONIONSKIN_NEXT "CmdOnionSkinNext"
 #define CMD_PLAY "CmdPlay"
 #define CMD_LOOP "CmdLoop"
-#define CMD_FLIP_INBETWEEN "CmdFlipInBetwwen"
+#define CMD_FLIP_INBETWEEN "CmdFlipInBetween"
 #define CMD_FLIP_ROLL "CmdFlipRoll"
 #define CMD_GOTO_NEXT_FRAME "CmdGotoNextFrame"
 #define CMD_GOTO_PREV_FRAME "CmdGotoPreviousFrame"
