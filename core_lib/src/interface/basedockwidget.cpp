@@ -17,10 +17,22 @@ GNU General Public License for more details.
 
 
 #include "basedockwidget.h"
+#include "platformhandler.h"
 
 BaseDockWidget::BaseDockWidget(QWidget* pParent) 
 : QDockWidget(pParent, Qt::Tool)
 {
+
+#ifdef __APPLE__
+    if (PlatformHandler::isDarkMode())
+    {
+        setStyleSheet("QDockWidget::title { background-image: url(:icons/darkmode-gradient.png); "
+                      "background-repeat: repeat-x; text-align: center;"
+                      "border-style: solid; border-bottom-color: #000000;"
+                      "border-width: 1px; }");
+    }
+#endif
+
 }
 
 BaseDockWidget::~BaseDockWidget()

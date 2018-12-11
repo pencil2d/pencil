@@ -24,4 +24,12 @@ namespace MacOSXNative
     {
         NSEvent.mouseCoalescingEnabled = enabled;
     }
+
+    bool isDarkMode()
+    {
+        NSAppearance* apperance = NSAppearance.currentAppearance;
+        if (@available(*, macOS 10.14)) {
+            return apperance.name == NSAppearanceNameDarkAqua;
+        }
+    }
 }
