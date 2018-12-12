@@ -306,6 +306,7 @@ Status ActionCommands::exportImageSequence()
     QString strFilePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
+    bool exportKeyframesOnly = dialog->getExportKeyframesOnly();
     bool useTranparency = dialog->getTransparency();
     int startFrame = dialog->getStartFrame();
     int endFrame  = dialog->getEndFrame();
@@ -325,6 +326,8 @@ Status ActionCommands::exportImageSequence()
                                     strFilePath,
                                     exportFormat,
                                     useTranparency,
+                                    exportKeyframesOnly,
+                                    mEditor->layers()->currentLayer()->name(),
                                     true,
                                     &progress,
                                     100);

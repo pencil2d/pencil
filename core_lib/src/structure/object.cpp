@@ -669,6 +669,8 @@ bool Object::exportFrames(int frameStart, int frameEnd,
                           QString filePath,
                           QString format,
                           bool transparency,
+                          bool exportKeyframesOnly,
+                          QString layerName,
                           bool antialiasing,
                           QProgressDialog* progress = nullptr,
                           int progressMax = 50)
@@ -737,8 +739,16 @@ bool Object::exportFrames(int frameStart, int frameEnd,
             frameNumberString.prepend("0");
         }
         QString sFileName = filePath + frameNumberString + extension;
-
-        exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+        Layer* layer = findLayerByName(layerName);
+        if (exportKeyframesOnly)
+        {
+            if (layer->keyExists(currentFrame))
+                exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+        }
+        else
+        {
+            exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+        }
     }
 
     return true;
