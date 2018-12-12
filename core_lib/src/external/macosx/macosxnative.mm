@@ -2,6 +2,7 @@
 
 #include <AppKit/NSWindow.h>
 #include <AppKit/Appkit.h>
+#include <Availability.h>
 
 namespace MacOSXNative
 {
@@ -23,5 +24,16 @@ namespace MacOSXNative
     void setMouseCoalescingEnabled(bool enabled)
     {
         NSEvent.mouseCoalescingEnabled = enabled;
+    }
+
+    bool isDarkMode()
+    {
+        NSAppearance* apperance = NSAppearance.currentAppearance;
+
+        #ifdef __MAC_10_14
+            return apperance.name == NSAppearanceNameDarkAqua;
+        #endif
+
+        return false;
     }
 }
