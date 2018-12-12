@@ -30,8 +30,8 @@ class ColorInspector : public BaseDockWidget
     friend class ColorSliders;
     
 public:
-    explicit ColorInspector(QWidget *parent = 0);
-    ~ColorInspector();
+    explicit ColorInspector(QWidget *parent = nullptr);
+    ~ColorInspector() override;
     QColor color();
 
     void initUI() override;

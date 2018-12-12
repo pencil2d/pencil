@@ -54,8 +54,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
 
 Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
 {
-    QString theFileName = fileName(keyframe);
-    QString strFilePath = QDir(path).filePath(theFileName);
+    QString strFilePath = filePath(keyframe, QDir(path));
 
     BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
 
@@ -93,41 +92,54 @@ KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
     return b;
 }
 
-Status LayerBitmap::presave(const QString&)
+Status LayerBitmap::presave(const QString& sDataFolder)
 {
-    // handles those moved keys but note loaded yet
-    std::vector<BitmapImage*> bitmapArray;
-    foreachKeyFrame([&bitmapArray](KeyFrame* key)
+    QDir dataFolder(sDataFolder);
+    // Handles keys that have been moved but not modified
+    std::vector<BitmapImage*> movedOnlyBitmaps;
+    foreachKeyFrame([&movedOnlyBitmaps,&dataFolder,this](KeyFrame* key)
     {
         auto bitmap = static_cast<BitmapImage*>(key);
-        // null image + modified => the keyframe has been moved, but users didn't draw on it.
+        // (b->fileName() != fileName(b) && !modified => the keyframe has been moved, but users didn't draw on it.
         if (!bitmap->fileName().isEmpty()
-            && bitmap->image()->isNull() 
-            && bitmap->isModified())
+            && !bitmap->isModified()
+            && bitmap->fileName() != filePath(bitmap, dataFolder))
         {
-            bitmapArray.push_back(bitmap);
+            movedOnlyBitmaps.push_back(bitmap);
         }
     });
 
-    for (BitmapImage* b : bitmapArray) 
+    for (BitmapImage* b : movedOnlyBitmaps)
     {
-        if (b->fileName() != fileName(b))
-        {
-            QString tmpName = QString::asprintf("t_%03d.%03d.png", id(), b->pos());
-            QFile::rename(b->fileName(), tmpName);
-            b->setFileName(tmpName);
+        // Move to temporary locations first to avoid overwritting anything we shouldn't be
+        // Ex: Frame A moves from 1 -> 2, Frame B moves from 2 -> 3. Make sure A does not overwrite B
+        QString tmpName = QString::asprintf("t_%03d.%03d.png", id(), b->pos());
+        QDir sA, sB;
+        if ((sA=QFileInfo(b->fileName()).dir()) != (sB=dataFolder)) {
+            // Copy instead of move if the data folder itself has changed
+            QFile::copy(b->fileName(), tmpName);
         }
+        else {
+            QFile::rename(b->fileName(), tmpName);
+        }
+        b->setFileName(tmpName);
     }
 
-    for (BitmapImage* b : bitmapArray)
+    for (BitmapImage* b : movedOnlyBitmaps)
     {
-        if (QFile::exists(fileName(b)))
-            QFile::remove(fileName(b));
+        QString dest = filePath(b, dataFolder);
+        QFile::remove(dest);
 
-        QFile::rename(b->fileName(), fileName(b));
+        QFile::rename(b->fileName(), dest);
+        b->setFileName(dest);
     }
 
     return Status::OK;
+}
+
+QString LayerBitmap::filePath(KeyFrame* key, const QDir& dataFolder) const
+{
+    return dataFolder.filePath(fileName(key));
 }
 
 QString LayerBitmap::fileName(KeyFrame* key) const
@@ -140,8 +152,6 @@ bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& strSavePath)
     if (key->isModified()) // keyframe was modified
         return true;
     if (QFile::exists(strSavePath) == false) // hasn't been saved before
-        return true;
-    if (strSavePath != key->fileName()) // key frame moved
         return true;
     return false;
 }

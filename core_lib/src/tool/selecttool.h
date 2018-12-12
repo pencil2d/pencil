@@ -39,6 +39,10 @@ private:
     void mouseMoveEvent(QMouseEvent*) override;
     bool keyPressEvent(QKeyEvent *event) override;
 
+    void tabletPressEvent(QTabletEvent*) override;
+    void tabletMoveEvent(QTabletEvent*) override;
+    void tabletReleaseEvent(QTabletEvent*) override;
+
     QPointF whichAnchorPoint();
     void controlOffsetOrigin();
 

@@ -273,7 +273,7 @@ Status MovieExporter::generateMovie(
     int frameStart = mDesc.startFrame;
     int frameEnd = mDesc.endFrame;
     const QSize exportSize = mDesc.exportSize;
-    bool transparency = false;
+    bool transparency = mDesc.alpha;
     QString strCameraName = mDesc.strCameraName;
     bool loop = mDesc.loop;
 
@@ -330,7 +330,7 @@ Status MovieExporter::generateMovie(
         strCmd += QString(" -i \"%1\" ").arg(tempAudioPath);
     }
 
-    if(strOutputFile.endsWith(".apng"))
+    if (strOutputFile.endsWith(".apng", Qt::CaseInsensitive))
     {
         strCmd += QString(" -plays %1").arg(loop ? "0" : "1");
     }
@@ -339,6 +339,7 @@ Status MovieExporter::generateMovie(
     {
         strCmd += QString(" -pix_fmt yuv420p");
     }
+
     strCmd += " -y";
     strCmd += QString(" \"%1\"").arg(strOutputFile);
 

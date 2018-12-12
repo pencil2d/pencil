@@ -27,6 +27,7 @@ ExportMovieDialog::ExportMovieDialog(QWidget *parent, Mode mode, FileType fileTy
 
     if (fileType == FileType::GIF) {
         setWindowTitle(tr("Export Animated GIF"));
+        ui->exporterGroupBox->hide();
     } else {
         setWindowTitle(tr("Export Movie"));
     }
@@ -91,6 +92,11 @@ QSize ExportMovieDialog::getExportSize()
     return QSize( ui->widthSpinBox->value(), ui->heightSpinBox->value() );
 }
 
+bool ExportMovieDialog::getTransparency() const
+{
+    return ui->transparencyCheckBox->isChecked() && supportsTransparency(getFilePath());
+}
+
 int ExportMovieDialog::getStartFrame()
 {
     return ui->startSpinBox->value();
@@ -115,5 +121,18 @@ void ExportMovieDialog::frameCheckboxClicked(bool checked)
 void ExportMovieDialog::onFilePathsChanged(QStringList filePaths)
 {
     QString filePath = filePaths.first().toLower();
-    ui->loopCheckBox->setEnabled(filePath.endsWith(".apng") || filePath.endsWith(".gif"));
+    ui->loopCheckBox->setEnabled(supportsLooping(filePath));
+    ui->transparencyCheckBox->setEnabled(supportsTransparency(filePath));
+}
+
+bool ExportMovieDialog::supportsLooping(QString filePath) const
+{
+    return filePath.endsWith(".apng", Qt::CaseInsensitive) ||
+           filePath.endsWith(".gif", Qt::CaseInsensitive);
+}
+
+bool ExportMovieDialog::supportsTransparency(QString filePath) const
+{
+    return filePath.endsWith(".apng", Qt::CaseInsensitive) ||
+           filePath.endsWith(".webm", Qt::CaseInsensitive);
 }

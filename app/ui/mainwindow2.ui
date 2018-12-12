@@ -64,6 +64,7 @@
      <addaction name="actionImport_Image"/>
      <addaction name="actionImport_ImageSeq"/>
      <addaction name="actionImport_Movie"/>
+     <addaction name="actionImport_ImageSeqNum"/>
      <addaction name="actionImport_Gif"/>
      <addaction name="actionImport_Sound"/>
      <addaction name="separator"/>
@@ -205,6 +206,10 @@
     <addaction name="actionQuick_Guide"/>
     <addaction name="separator"/>
     <addaction name="actionWebsite"/>
+    <addaction name="actionForum"/>
+    <addaction name="actionDiscord"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheck_for_Updates"/>
     <addaction name="actionReport_Bug"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
@@ -318,6 +323,11 @@
   <action name="actionImport_Palette">
    <property name="text">
     <string>Palette...</string>
+   </property>
+  </action>
+  <action name="actionImport_ImageSeqNum">
+   <property name="text">
+    <string>Image Sequence Numbered...</string>
    </property>
   </action>
   <action name="actionUndo">
@@ -896,6 +906,21 @@
    </property>
    <property name="text">
     <string>Manipulate Frames</string>
+   </property>
+  </action>
+  <action name="actionCheck_for_Updates">
+   <property name="text">
+    <string>Check for Updates</string>
+   </property>
+  </action>
+  <action name="actionForum">
+   <property name="text">
+    <string>Pencil2D Forum</string>
+   </property>
+  </action>
+  <action name="actionDiscord">
+   <property name="text">
+    <string>Pencil2D Discord</string>
    </property>
   </action>
  </widget>

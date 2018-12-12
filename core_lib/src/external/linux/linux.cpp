@@ -28,9 +28,14 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layersound.h"
 #include "pencildef.h"
+#include "platformhandler.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
+namespace PlatformHandler
+{
+    void configurePlatformSpecificSettings() {}
+}
 
 qint16 safeSum ( qint16 a, qint16 b)
 {

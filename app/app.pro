@@ -6,7 +6,7 @@
 
 ! include( ../common.pri ) { error( Could not find the common.pri file! ) }
 
-QT += core widgets gui xml multimedia svg
+QT += core widgets gui xml multimedia svg network
 
 TEMPLATE = app
 TARGET = pencil2d
@@ -30,7 +30,8 @@ INCLUDEPATH += \
     ../core_lib/src/tool \
     ../core_lib/src/util \
     ../core_lib/ui \
-    ../core_lib/src/managers
+    ../core_lib/src/managers \
+    ../core_lib/src/external
 
 HEADERS += \
     src/mainwindow2.h \
@@ -59,7 +60,8 @@ HEADERS += \
     src/spinslider.h \
     src/doubleprogressdialog.h \
     src/colorslider.h \
-    src/copymultiplekeyframesdialog.h
+    src/copymultiplekeyframesdialog.h \
+    src/checkupdatesdialog.h
 
 SOURCES += \
     src/main.cpp \
@@ -88,7 +90,8 @@ SOURCES += \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
-    src/copymultiplekeyframesdialog.cpp
+    src/copymultiplekeyframesdialog.cpp \
+    src/checkupdatesdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -131,6 +134,8 @@ macx {
     FILE_ICONS.files = data/icons/mac_pcl_icon.icns data/icons/mac_pclx_icon.icns
     FILE_ICONS.path = Contents/Resources
     QMAKE_BUNDLE_DATA += FILE_ICONS
+
+    LIBS += -framework AppKit
 }
 
 win32 {

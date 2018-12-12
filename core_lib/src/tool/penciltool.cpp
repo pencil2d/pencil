@@ -146,75 +146,94 @@ QCursor PencilTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PencilTool::mousePressEvent(QMouseEvent* event)
+void PencilTool::tabletPressEvent(QTabletEvent*)
 {
-    mLastBrushPoint = getCurrentPoint();
-
-    if (event->button() == Qt::LeftButton)
-    {
-        mScribbleArea->setAllDirty();
-        startStroke(); //start and appends first stroke
-
-        if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-            // in case of bitmap, first pixel(mouseDown) is drawn
-        {
-            drawStroke();
-        }
-        else if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
-        {
-            if (!mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
-            {
-                mScribbleArea->toggleThinLines();
-            }
-        }
-    }
+    mScribbleArea->setAllDirty();
 
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
+
+    startStroke();
+
+    // note: why are we doing this on device press event?
+    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    {
+        mScribbleArea->toggleThinLines();
+    }
 }
 
-void PencilTool::mouseMoveEvent(QMouseEvent* event)
+void PencilTool::tabletMoveEvent(QTabletEvent*)
 {
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+}
+
+void PencilTool::tabletReleaseEvent(QTabletEvent*)
+{
+    mEditor->backup(typeName());
+
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    if (distance < 1)
     {
-        if (event->buttons() & Qt::LeftButton)
-        {
-            drawStroke();
-            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-            {
-                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-            }
-        }
+        paintAt(mMouseDownPoint);
+    }
+    else
+    {
+        drawStroke();
+    }
+
+    if (layer->type() == Layer::BITMAP)
+        paintBitmapStroke();
+    else if (layer->type() == Layer::VECTOR)
+        paintVectorStroke(layer);
+    endStroke();
+}
+
+void PencilTool::mousePressEvent(QMouseEvent *)
+{
+    mScribbleArea->setAllDirty();
+
+    mMouseDownPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
+
+    startStroke();
+
+    // note: why are we doing this on device press event?
+    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    {
+        mScribbleArea->toggleThinLines();
     }
 }
 
-void PencilTool::mouseReleaseEvent(QMouseEvent* event)
+void PencilTool::mouseReleaseEvent(QMouseEvent *)
 {
-    if (event->button() == Qt::LeftButton)
+    mEditor->backup(typeName());
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    if (distance < 1)
     {
-        mEditor->backup(typeName());
-
-        Layer* layer = mEditor->layers()->currentLayer();
-        if (mScribbleArea->isLayerPaintable())
-        {
-            qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
-            if (distance < 1)
-            {
-                paintAt(mMouseDownPoint);
-            }
-            else
-            {
-                drawStroke();
-            }
-        }
-
-        if (layer->type() == Layer::BITMAP)
-            paintBitmapStroke();
-        else if (layer->type() == Layer::VECTOR)
-            paintVectorStroke(layer);
+        paintAt(mMouseDownPoint);
     }
+    else
+    {
+        drawStroke();
+    }
+
+    if (layer->type() == Layer::BITMAP)
+        paintBitmapStroke();
+    else if (layer->type() == Layer::VECTOR)
+        paintVectorStroke(layer);
     endStroke();
+}
+
+void PencilTool::mouseMoveEvent( QMouseEvent *)
+{
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
 void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
@@ -348,6 +367,9 @@ void PencilTool::paintBitmapStroke()
 
 void PencilTool::paintVectorStroke(Layer* layer)
 {
+    if (mStrokePoints.empty())
+        return;
+
     // Clear the temporary pixel path
     mScribbleArea->clearBitmapBuffer();
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();

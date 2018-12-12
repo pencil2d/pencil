@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include <QMessageBox>
 #include <QLabel>
 #include <QWheelEvent>
+#include <QSlider>
 
 #include "layer.h"
 #include "editor.h"
@@ -135,6 +136,15 @@ void TimeLine::initUI()
     manipulateFramesButton->setIcon(QIcon(":icons/manipulate_range.png"));
     manipulateFramesButton->setToolTip(tr("Manipulate Frames"));
     manipulateFramesButton->setFixedSize(24, 24);
+    QLabel* zoomLabel = new QLabel(tr("Zoom:"));
+    zoomLabel->setIndent(5);
+
+    QSlider* zoomSlider = new QSlider(this);
+    zoomSlider->setRange(4, 40);
+    zoomSlider->setFixedWidth(74);
+    zoomSlider->setValue(mTracks->getFrameSize());
+    zoomSlider->setToolTip(tr("Adjust frame width"));
+    zoomSlider->setOrientation(Qt::Horizontal);
 
     QLabel* onionLabel = new QLabel(tr("Onion skin:"));
 
@@ -148,6 +158,9 @@ void TimeLine::initUI()
     timelineButtons->addWidget(removeKeyButton);
     timelineButtons->addWidget(duplicateKeyButton);
     timelineButtons->addWidget(manipulateFramesButton);
+    timelineButtons->addSeparator();
+    timelineButtons->addWidget(zoomLabel);
+    timelineButtons->addWidget(zoomSlider);
     timelineButtons->addSeparator();
     timelineButtons->addWidget(onionLabel);
     timelineButtons->addWidget(onionTypeButton);
@@ -205,6 +218,7 @@ void TimeLine::initUI()
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(manipulateFramesButton, &QToolButton::clicked, this, &TimeLine::manipulateFramesClick);
+    connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
     connect(onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick);
 
     connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);

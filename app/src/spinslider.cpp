@@ -34,7 +34,7 @@ void SpinSlider::init(QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal
     if (type == LOG)
     {
         // important! dividing by zero is not acceptable.
-        Q_ASSERT_X(min > 0.f, "SpinSlider", "Real type value must larger than 0!!");
+        Q_ASSERT_X(min > 0.0, "SpinSlider", "Real type value must larger than 0!!");
     }
 
     mValue = 1.0;
@@ -96,15 +96,15 @@ void SpinSlider::setValue(qreal v)
     int value2 = 0;
     if (mGrowthType == LINEAR)
     {
-        value2 = std::round(mSlider->maximum() * (v - mMin) / (mMax - mMin));
+        value2 =qRound((mSlider->maximum() * (v - mMin) / (mMax - mMin)));
     }
     else if (mGrowthType == LOG)
     {
-        value2 = std::round(std::log(v / mMin) * mSlider->maximum() / std::log(mMax / mMin));
+        value2 = qRound(std::log(v / mMin) * mSlider->maximum() / std::log(mMax / mMin));
     }
     else if (mGrowthType == EXPONENT)
     {
-        value2 = std::round(std::pow((v - mMin) * std::pow(mSlider->maximum(), mExp) / (mMax - mMin), 1 / mExp));
+        value2 = qRound(std::pow((v - mMin) * std::pow(mSlider->maximum(), mExp) / (mMax - mMin), 1 / mExp));
     }
 
     changeValue(v);
@@ -113,7 +113,8 @@ void SpinSlider::setValue(qreal v)
 
 void SpinSlider::setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown)
 {
-    mSlider->setSliderPosition(QStyle::sliderValueFromPosition(min, max, val, space, upsideDown));
+    mSlider->setSliderPosition(QStyle::sliderValueFromPosition(static_cast<int>(min),
+                                                               static_cast<int>(max), val, space, upsideDown));
 }
 
 void SpinSlider::setExponent(const qreal exp)

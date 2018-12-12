@@ -30,7 +30,12 @@ GNU General Public License for more details.
 #include "object.h"
 #include "editor.h"
 #include "layersound.h"
+#include "platformhandler.h"
 
+namespace PlatformHandler
+{
+    void configurePlatformSpecificSettings() {}
+}
 
 void Editor::importMovie( QString filePath, int fps )
 {

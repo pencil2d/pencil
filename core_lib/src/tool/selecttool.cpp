@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include "vectorimage.h"
 #include "editor.h"
+#include "strokemanager.h"
 #include "layervector.h"
 #include "scribblearea.h"
 #include "layermanager.h"
@@ -43,6 +44,50 @@ QCursor SelectTool::cursor()
 {
     MoveMode mode = mScribbleArea->getMoveModeForSelectionAnchor();
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+}
+
+bool first = false;
+void SelectTool::tabletPressEvent(QTabletEvent *)
+{
+    mCurrentLayer = mEditor->layers()->currentLayer();
+    beginSelection();
+}
+
+void SelectTool::tabletMoveEvent(QTabletEvent *)
+{
+    mCurrentLayer = mEditor->layers()->currentLayer();
+    if (!mScribbleArea->isSomethingSelected()) { return; }
+
+    mScribbleArea->updateToolCursor();
+
+    if (m_pStrokeManager->isPenPressed())
+    {
+        controlOffsetOrigin();
+
+        if (mCurrentLayer->type() == Layer::VECTOR)
+        {
+            static_cast<LayerVector*>(mCurrentLayer)->
+                    getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->
+                    select(mScribbleArea->myTempTransformedSelection);
+        }
+    }
+
+    mScribbleArea->updateCurrentFrame();
+}
+
+void SelectTool::tabletReleaseEvent(QTabletEvent *)
+{
+    mCurrentLayer = mEditor->layers()->currentLayer();
+    if (maybeDeselect())
+    {
+        mScribbleArea->deselectAll();
+    } else {
+        keepSelection();
+    }
+
+    mScribbleArea->updateToolCursor();
+    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->setAllDirty();
 }
 
 void SelectTool::mousePressEvent(QMouseEvent* event)
@@ -154,8 +199,7 @@ void SelectTool::controlOffsetOrigin()
     if (mScribbleArea->getMoveMode() != MoveMode::NONE)
     {
         if (mCurrentLayer->type() == Layer::BITMAP) {
-            offset = QPointF(mScribbleArea->getTransformOffset().x(),
-                                 mScribbleArea->getTransformOffset().y()).toPoint();
+            offset = QPointF(mScribbleArea->getTransformOffset());
         }
 
         mScribbleArea->adjustSelection(offset.x(),offset.y(), mScribbleArea->myRotatedAngle);

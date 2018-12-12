@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QSettings>
+#include <QFileDialog>
 
 #include "pencildef.h"
 #include "editor.h"
@@ -50,7 +51,7 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "copymultiplekeyframesdialog.h"
-
+#include "checkupdatesdialog.h"
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
 {
@@ -198,6 +199,7 @@ Status ActionCommands::exportMovie(bool isGif)
     desc.exportSize = dialog->getExportSize();
     desc.strCameraName = dialog->getSelectedCameraName();
     desc.loop = dialog->getLoop();
+    desc.alpha = dialog->getTransparency();
 
     DoubleProgressDialog progressDlg;
     progressDlg.setWindowModality(Qt::WindowModal);
@@ -311,7 +313,7 @@ Status ActionCommands::exportImageSequence()
     int endFrame  = dialog->getEndFrame();
 
     QString sCameraLayerName = dialog->getCameraLayerName();
-    LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA));
 
     // Show a progress dialog, as this can take a while if you have lots of frames.
     QProgressDialog progress(tr("Exporting image sequence..."), tr("Abort"), 0, 100, mParent);
@@ -378,7 +380,7 @@ Status ActionCommands::exportImage()
 
     // Export
     QString sCameraLayerName = dialog->getCameraLayerName();
-    LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA));
 
     QTransform view = cameraLayer->getViewAtFrame(mEditor->currentFrame());
 
@@ -902,10 +904,29 @@ void ActionCommands::website()
     QDesktopServices::openUrl(QUrl(url));
 }
 
+void ActionCommands::forum()
+{
+    QString url = "https://discuss.pencil2d.org/";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::discord()
+{
+    QString url = "https://discord.gg/8FxdV2g";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
 void ActionCommands::reportbug()
 {
     QString url = "https://github.com/pencil2d/pencil/issues";
     QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::checkForUpdates()
+{
+    CheckUpdatesDialog dialog;
+    dialog.startChecking();
+    dialog.exec();
 }
 
 void ActionCommands::about()

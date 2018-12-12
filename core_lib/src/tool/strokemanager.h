@@ -34,6 +34,7 @@ class StrokeManager : public QObject
 public:
     StrokeManager();
 
+    void genericMoveEvent(QPointF pos);
     void tabletEvent(QTabletEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
@@ -60,14 +61,13 @@ public:
     QPointF getLastPixel() const { return mLastPixel; }
     QPointF getLastMeanPixel() const { return mLastInterpolated; }
     QPointF getMousePos() const { return mousePos; }
+    bool isPenPressed() const { return mPenIsHeld; }
 
 private:
 
     static const int STROKE_QUEUE_LENGTH = 3; // 4 points for cubic bezier
 
     void reset();
-
-    QPointF getEventPosition(QMouseEvent *);
 
     float pressure = 1.0f; // last pressure
     QQueue<QPointF> strokeQueue;
@@ -90,9 +90,10 @@ private:
     bool    mStrokeStarted = false;
 
     bool    mTabletInUse = false;
+
+    bool mPenIsHeld = true;
     float   mTabletPressure = 1.f;
     int     mStabilizerLevel = 0;
-    QPointF mTabletPosition;
     qreal mMeanPressure;
 
     clock_t m_timeshot;
