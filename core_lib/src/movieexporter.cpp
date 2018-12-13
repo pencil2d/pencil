@@ -340,6 +340,11 @@ Status MovieExporter::generateMovie(
         strCmd += QString(" -pix_fmt yuv420p");
     }
 
+    if (strOutputFile.endsWith(".avi", Qt::CaseInsensitive))
+    {
+        strCmd += " -q:v 5";
+    }
+
     strCmd += " -y";
     strCmd += QString(" \"%1\"").arg(strOutputFile);
 
