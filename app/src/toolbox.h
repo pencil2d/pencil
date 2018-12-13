@@ -38,7 +38,7 @@ class ToolBoxWidget : public BaseDockWidget
 
 public:
     ToolBoxWidget(QWidget* parent);
-    ~ToolBoxWidget();
+    ~ToolBoxWidget() override;
 
     void initUI() override;
     void updateUI() override;

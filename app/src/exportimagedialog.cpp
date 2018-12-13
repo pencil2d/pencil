@@ -105,6 +105,11 @@ bool ExportImageDialog::getTransparency() const
     return ui->cbTransparency->checkState() == Qt::Checked;
 }
 
+bool ExportImageDialog::getExportKeyframesOnly() const
+{
+    return ui->cbExportKeyframesOnly->checkState() == Qt::Checked;
+}
+
 QString ExportImageDialog::getExportFormat() const
 {
     return ui->formatComboBox->currentText();
@@ -118,6 +123,7 @@ QString ExportImageDialog::getCameraLayerName() const
 void ExportImageDialog::formatChanged(const QString& format)
 {
     setFileExtension(format.toLower());
+    setTransparencyOptionVisibility(format);
 }
 
 void ExportImageDialog::cameraComboChanged(int index)
@@ -126,4 +132,12 @@ void ExportImageDialog::cameraComboChanged(int index)
 
     ui->imgWidthSpinBox->setValue(cameraSize.width());
     ui->imgHeightSpinBox->setValue(cameraSize.height());
+}
+
+void ExportImageDialog::setTransparencyOptionVisibility(const QString &format)
+{
+    if (format == "JPG" || format == "BMP")
+        ui->cbTransparency->setDisabled(true);
+    else
+        ui->cbTransparency->setDisabled(false);
 }

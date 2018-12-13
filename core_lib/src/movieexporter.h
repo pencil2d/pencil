@@ -36,6 +36,7 @@ struct ExportMovieDesc
     QSize   exportSize{ 0, 0 };
     QString strCameraName;
     bool loop = false;
+    bool alpha = false;
 };
 
 class MovieExporter

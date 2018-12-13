@@ -231,7 +231,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
     }
 
     Layer* layer = mObject->getLayer(backupLayer);
-    if (layer != NULL)
+    if (layer != nullptr)
     {
         if (layer->type() == Layer::BITMAP)
         {
@@ -240,7 +240,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
                 int previous = layer->getPreviousKeyFramePosition(backupFrame);
                 bitmapImage = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(previous);
             }
-            if (bitmapImage != NULL)
+            if (bitmapImage != nullptr)
             {
                 BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
                 element->layer = backupLayer;
@@ -257,7 +257,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
         else if (layer->type() == Layer::VECTOR)
         {
             VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(backupFrame, 0);
-            if (vectorImage != NULL)
+            if (vectorImage != nullptr)
             {
                 BackupVectorElement* element = new BackupVectorElement(vectorImage);
                 element->layer = backupLayer;
@@ -367,7 +367,7 @@ void BackupBitmapElement::restore(Editor* editor)
     }
     else
     {
-        if (layer != NULL)
+        if (layer != nullptr)
         {
             if (layer->type() == Layer::BITMAP)
             {
@@ -391,7 +391,7 @@ void BackupVectorElement::restore(Editor* editor)
     }
     else
     {
-        if (layer != NULL)
+        if (layer != nullptr)
         {
             if (layer->type() == Layer::VECTOR)
             {
@@ -495,7 +495,7 @@ void Editor::cut()
 void Editor::copy()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer == NULL) 
+    if (layer == nullptr)
     {
         return;
     }
@@ -512,7 +512,7 @@ void Editor::copy()
             g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
         }
         clipboardBitmapOk = true;
-        if (g_clipboardBitmapImage.image() != NULL)
+        if (g_clipboardBitmapImage.image() != nullptr)
             QApplication::clipboard()->setImage(*g_clipboardBitmapImage.image());
     }
     if (layer->type() == Layer::VECTOR)
@@ -525,9 +525,9 @@ void Editor::copy()
 void Editor::paste()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer != NULL)
+    if (layer != nullptr)
     {
-        if (layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != NULL)
+        if (layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != nullptr)
         {
             backup(tr("Paste"));
 
@@ -697,8 +697,10 @@ bool Editor::exportSeqCLI(QString filePath, LayerCamera *cameraLayer, QString fo
                           filePath,
                           format,
                           transparency,
+                          false,
+                          "",
                           antialias,
-                          NULL,
+                          nullptr,
                           0);
     return true;
 }
@@ -795,7 +797,7 @@ bool Editor::importVectorImage(QString filePath)
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
 
     VectorImage* vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
-    if (vectorImage == NULL)
+    if (vectorImage == nullptr)
     {
         addNewKey();
         vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
@@ -910,7 +912,7 @@ KeyFrame* Editor::addNewKey()
 KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
 {
     Layer* layer = mObject->getLayer(layerNumber);
-    if (layer == NULL)
+    if (layer == nullptr)
     {
         Q_ASSERT(false);
         return nullptr;
@@ -966,7 +968,7 @@ void Editor::scrubPreviousKeyFrame()
 void Editor::switchVisibilityOfLayer(int layerNumber)
 {
     Layer* layer = mObject->getLayer(layerNumber);
-    if (layer != NULL) layer->switchVisibility();
+    if (layer != nullptr) layer->switchVisibility();
     mScribbleArea->updateAllFrames();
 
     emit updateTimeLine();

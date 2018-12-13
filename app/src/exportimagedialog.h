@@ -38,6 +38,7 @@ public:
     void  setExportSize( QSize size );
     QSize getExportSize() const;
     bool getTransparency() const;
+    bool getExportKeyframesOnly() const;
     QString getExportFormat() const;
 	QString getCameraLayerName() const;
 
@@ -53,6 +54,7 @@ private slots:
 private:
     Ui::ExportImageOptions* ui = nullptr;
 
+    void setTransparencyOptionVisibility(const QString& format);
     int mEndFrameWithSounds = 0;
     int mEndFrame = 0;
 };

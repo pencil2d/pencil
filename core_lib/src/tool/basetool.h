@@ -31,6 +31,7 @@ class Editor;
 class ScribbleArea;
 class QKeyEvent;
 class QMouseEvent;
+class QTabletEvent;
 class StrokeManager;
 
 class Properties
@@ -79,6 +80,9 @@ public:
     virtual void mouseMoveEvent(QMouseEvent*) = 0;
     virtual void mouseReleaseEvent(QMouseEvent*) = 0;
     virtual void mouseDoubleClickEvent(QMouseEvent*);
+    virtual void tabletMoveEvent(QTabletEvent*);
+    virtual void tabletPressEvent(QTabletEvent*);
+    virtual void tabletReleaseEvent(QTabletEvent*);
 
     // return true if handled
     virtual bool keyPressEvent(QKeyEvent*) { return false; }
@@ -87,7 +91,7 @@ public:
     // dynamic cursor adjustment
     virtual void startAdjusting(ToolPropertyType argSettingType, qreal argStep);
     virtual void stopAdjusting();
-    virtual void adjustCursor(qreal argOffsetX, ToolPropertyType type);
+    virtual void adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod);
 
     virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
@@ -124,6 +128,7 @@ public:
     QPointF getLastPressPoint();
 
     bool isPropertyEnabled(ToolPropertyType t) { return m_enabledProperties[t]; }
+    bool isDrawingTool();
 
 protected:
     QHash<ToolPropertyType, bool> m_enabledProperties;

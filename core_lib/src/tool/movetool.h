@@ -38,6 +38,10 @@ public:
     void mouseReleaseEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;
 
+    void tabletMoveEvent( QTabletEvent* ) override;
+    void tabletPressEvent( QTabletEvent* ) override;
+    void tabletReleaseEvent( QTabletEvent* ) override;
+
     bool leavingThisTool() override;
     bool switchingLayer() override;
 
@@ -53,13 +57,13 @@ private:
 
     int showTransformWarning();
 
-    void beginInteraction(QMouseEvent* event, Layer* layer);
-    void createVectorSelection(QMouseEvent* event, Layer* layer);
-    void transformSelection(QMouseEvent* event, Layer* layer);
+    void beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer);
+    void createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
+    void transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void storeClosestVectorCurve(Layer* layer);
 
-    void setCurveSelected(VectorImage* vectorImage, QMouseEvent* event);
-    void setAreaSelected(VectorImage* vectorImage, QMouseEvent* event);
+    void setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
+    void setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
 
     bool transformHasBeenModified();
     bool shouldDeselect();

@@ -42,7 +42,7 @@ class PreviewWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    PreviewWidget(QWidget *parent = 0);
+    PreviewWidget(QWidget *parent = nullptr);
 	void setImage( BitmapImage* img ) { mCanvas->setImage( img ); }
 	void updateImage();
 
