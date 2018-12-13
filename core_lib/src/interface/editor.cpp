@@ -697,6 +697,8 @@ bool Editor::exportSeqCLI(QString filePath, LayerCamera *cameraLayer, QString fo
                           filePath,
                           format,
                           transparency,
+                          false,
+                          "",
                           antialias,
                           nullptr,
                           0);

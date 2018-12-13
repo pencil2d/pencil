@@ -5,6 +5,7 @@ namespace PlatformHandler
 {
 
 void configurePlatformSpecificSettings();
+bool isDarkMode();
 
 }
 
