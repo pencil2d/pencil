@@ -32,7 +32,7 @@ class DisplayOptionWidget : public BaseDockWidget
     Q_OBJECT
 public:
     explicit DisplayOptionWidget(QWidget* parent);
-    virtual ~DisplayOptionWidget();
+    virtual ~DisplayOptionWidget() override;
 
     void initUI() override;
     void updateUI() override;

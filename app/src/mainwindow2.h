@@ -56,8 +56,8 @@ class MainWindow2 : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow2(QWidget* parent = 0);
-    ~MainWindow2();
+    explicit MainWindow2(QWidget* parent = nullptr);
+    ~MainWindow2() override;
 
     Editor* mEditor = nullptr;
 

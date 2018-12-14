@@ -105,6 +105,11 @@ bool ExportImageDialog::getTransparency() const
     return ui->cbTransparency->checkState() == Qt::Checked;
 }
 
+bool ExportImageDialog::getExportKeyframesOnly() const
+{
+    return ui->cbExportKeyframesOnly->checkState() == Qt::Checked;
+}
+
 QString ExportImageDialog::getExportFormat() const
 {
     return ui->formatComboBox->currentText();

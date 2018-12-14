@@ -29,7 +29,7 @@ class ErrorDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ErrorDialog(QString title, QString description, QString details = QString(), QWidget *parent = 0 );
+    explicit ErrorDialog(QString title, QString description, QString details = QString(), QWidget *parent = nullptr);
     ~ErrorDialog();
 
 private:

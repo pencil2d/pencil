@@ -26,10 +26,10 @@ public:
     };
 
     explicit ColorSlider(QWidget* parent);
-    ~ColorSlider();
+    ~ColorSlider() override;
 
-    void init(ColorType type, QColor color, qreal min, float max);
-    void init(ColorType type, QColor color, qreal min, float max, QSize size);
+    void init(ColorType type, QColor color, qreal min, qreal max);
+    void init(ColorType type, QColor color, qreal min, qreal max, QSize size);
 
     QLinearGradient setColorSpec(QColor color);
 
@@ -50,8 +50,8 @@ public:
     void setColorSpecType(ColorSpecType newType) { this->mSpecType = newType; }
     void setColorType(ColorType newType) { this->mColorType = newType; }
 
-    void setMin(float min) { mMin = min; }
-    void setMax(float max) { mMax = max; }
+    void setMin(qreal min) { mMin = min; }
+    void setMax(qreal max) { mMax = max; }
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -78,8 +78,8 @@ private:
     QPixmap mBoxPixmapSource;
 
     QColor mColor;
-    float mMin = 0.0;
-    float mMax = 0.0;
+    qreal mMin = 0.0;
+    qreal mMax = 0.0;
 
     ColorType mColorType;
     ColorSpecType mSpecType;

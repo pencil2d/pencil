@@ -85,6 +85,7 @@ protected:
 
 private:
 
+
     QScrollBar* mHScrollbar = nullptr;
     QScrollBar* mVScrollbar = nullptr;
     TimeLineCells* mTracks = nullptr;

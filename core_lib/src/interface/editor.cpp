@@ -182,7 +182,7 @@ void Editor::cut()
 void Editor::copy()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer == NULL) 
+    if (layer == nullptr)
     {
         return;
     }
@@ -199,7 +199,7 @@ void Editor::copy()
             g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
         }
         clipboardBitmapOk = true;
-        if (g_clipboardBitmapImage.image() != NULL)
+        if (g_clipboardBitmapImage.image() != nullptr)
             QApplication::clipboard()->setImage(*g_clipboardBitmapImage.image());
     }
     if (layer->type() == Layer::VECTOR)
@@ -212,10 +212,10 @@ void Editor::copy()
 void Editor::paste()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer != NULL)
+    if (layer != nullptr)
     {
         backups()->saveStates();
-        if (layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != NULL)
+        if (layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != nullptr)
         {
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
 
@@ -399,8 +399,10 @@ bool Editor::exportSeqCLI(QString filePath, LayerCamera *cameraLayer, QString fo
                           filePath,
                           format,
                           transparency,
+                          false,
+                          "",
                           antialias,
-                          NULL,
+                          nullptr,
                           0);
     return true;
 }
@@ -524,7 +526,7 @@ bool Editor::importVectorImage(QString filePath, bool /*isSequence*/)
 
     backups()->saveStates();
     VectorImage* vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
-    if (vectorImage == NULL)
+    if (vectorImage == nullptr)
     {
         addNewKey();
         vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
@@ -651,7 +653,7 @@ KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex)
 KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex, bool ignoreKeyExists)
 {
     Layer* layer = mObject->getLayer(layerIndex);
-    if (layer == NULL)
+    if (layer == nullptr)
     {
         Q_ASSERT(false);
         return nullptr;
@@ -824,7 +826,7 @@ void Editor::scrubPreviousKeyFrame()
 void Editor::switchVisibilityOfLayer(int layerNumber)
 {
     Layer* layer = mObject->getLayer(layerNumber);
-    if (layer != NULL) layer->switchVisibility();
+    if (layer != nullptr) layer->switchVisibility();
     mScribbleArea->updateAllFrames();
 
     emit updateTimeLine();

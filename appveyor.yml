@@ -9,7 +9,7 @@ environment:
     - arch:       win32
       bitsize:    x86
       platform:   x86
-      qt:         5.9\msvc2015
+      qt:         5.12\msvc2015
       suffix:     msvc2015
       generator:  "Visual Studio 2015"
       PYTHON: "C:\\Python35"
@@ -19,7 +19,7 @@ environment:
     - arch:       win32
       bitsize:    x64
       platform:   amd64
-      qt:         5.9\msvc2015_64
+      qt:         5.12\msvc2015_64
       suffix:     msvc2015
       generator:  "Visual Studio 2015 Win64"
       PYTHON: "C:\\Python35"

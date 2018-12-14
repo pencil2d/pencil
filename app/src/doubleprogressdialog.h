@@ -30,7 +30,7 @@ class DoubleProgressDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit DoubleProgressDialog(QWidget *parent = 0);
+    explicit DoubleProgressDialog(QWidget *parent = nullptr);
     ~DoubleProgressDialog();
 
     QString getStatus();

@@ -55,6 +55,7 @@ public:
     
     int getFrameLength() {return mFrameLength;}
     void setFrameLength(int n) { mFrameLength = n; }
+    void setFrameSize(int size);
 
     int getFrameSize() { return mFrameSize; }
     void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }

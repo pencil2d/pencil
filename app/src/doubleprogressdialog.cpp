@@ -73,17 +73,17 @@ void DoubleProgressDialog::ProgressBarControl::setValue(float value)
 
 int DoubleProgressDialog::ProgressBarControl::getPrecision()
 {
-    return qLn(unitFactor) / qLn(10);
+    return static_cast<int>(qLn(unitFactor) / qLn(10));
 }
 
 void DoubleProgressDialog::ProgressBarControl::setPrecision(int e)
 {
     int oldFactor = unitFactor;
-    unitFactor = qPow(10, e);
+    unitFactor = static_cast<int>(qPow(10, e));
 
-    min *= unitFactor / (float)oldFactor;
-    max *= unitFactor / (float)oldFactor;
-    val *= unitFactor / (float)oldFactor;
+    min *= unitFactor / static_cast<float>(oldFactor);
+    max *= unitFactor / static_cast<float>(oldFactor);
+    val *= unitFactor / static_cast<float>(oldFactor);
 }
 
 int DoubleProgressDialog::ProgressBarControl::convertUnits(float value)

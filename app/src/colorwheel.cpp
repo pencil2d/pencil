@@ -85,7 +85,7 @@ QColor ColorWheel::pickColor(const QPoint& point)
         hue = (hue > 359) ? 359 : hue;
         hue = (hue < 0) ? 0 : hue;
 
-        return QColor::fromHsv(hue,
+        return QColor::fromHsv(static_cast<int>(hue),
                                mCurrentColor.saturation(),
                                mCurrentColor.value());
     }
@@ -243,7 +243,8 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     qreal wheelWidth = 2 * ir / qSqrt(2);
 
     // Calculate wheel region
-    mWheelRegion = QRegion(m1, m2, wheelWidth, wheelWidth);
+    mWheelRegion = QRegion(static_cast<int>(m1), static_cast<int>(m2),
+                           static_cast<int>(wheelWidth), static_cast<int>(wheelWidth));
 }
 
 void ColorWheel::drawSquareImage(const int &hue)
@@ -280,8 +281,9 @@ void ColorWheel::drawSquareImage(const int &hue)
     painter.fillRect(square.rect(), blackGradiantBrush);
 
     qreal SquareWidth = 2 * ir / qSqrt(2.1);
-    mSquareImage = square.scaled(SquareWidth, SquareWidth);
-    mSquareRegion = QRegion(m1, m2, SquareWidth, SquareWidth);
+    mSquareImage = square.scaled(static_cast<int>(SquareWidth), static_cast<int>(SquareWidth));
+    mSquareRegion = QRegion(static_cast<int>(m1), static_cast<int>(m2),
+                            static_cast<int>(SquareWidth), static_cast<int>(SquareWidth));
 }
 
 void ColorWheel::drawHueIndicator(const int &hue)
@@ -334,7 +336,7 @@ void ColorWheel::drawPicker(const QColor& color)
     transform.translate(-ellipseSize/2,-ellipseSize/2);
     transform.translate(squareTopLeft.x()+2,squareTopLeft.y()+2);
     painter.setTransform(transform);
-    painter.drawEllipse(S, V, ellipseSize, ellipseSize);
+    painter.drawEllipse(static_cast<int>(S), static_cast<int>(V), ellipseSize, ellipseSize);
 }
 
 void ColorWheel::composeWheel(QPixmap& pixmap)

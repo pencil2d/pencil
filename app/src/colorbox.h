@@ -26,7 +26,7 @@ class ColorBox : public BaseDockWidget
 
 public:
     explicit ColorBox( QWidget* parent );
-    virtual ~ColorBox();
+    virtual ~ColorBox() override;
 
     void initUI() override;
     void updateUI() override;

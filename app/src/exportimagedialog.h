@@ -38,6 +38,7 @@ public:
     void  setExportSize( QSize size );
     QSize getExportSize() const;
     bool getTransparency() const;
+    bool getExportKeyframesOnly() const;
     QString getExportFormat() const;
 	QString getCameraLayerName() const;
 
