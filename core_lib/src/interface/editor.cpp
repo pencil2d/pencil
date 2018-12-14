@@ -312,7 +312,7 @@ void Editor::restoreKey()
     int layerIndex = 0;
     if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
     {
-        BackupBitmapElement* lastBackupBitmapElement = (BackupBitmapElement*)lastBackupElement;
+        BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
         layerIndex = lastBackupBitmapElement->layer;
         frame = lastBackupBitmapElement->frame;
         layer = object()->getLayer(layerIndex);
@@ -321,7 +321,7 @@ void Editor::restoreKey()
     }
     if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
     {
-        BackupVectorElement* lastBackupVectorElement = (BackupVectorElement*)lastBackupElement;
+        BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
         layerIndex = lastBackupVectorElement->layer;
         frame = lastBackupVectorElement->frame;
         layer = object()->getLayer(layerIndex);
@@ -331,7 +331,7 @@ void Editor::restoreKey()
     if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
     {
         QString strSoundFile;
-        BackupSoundElement* lastBackupSoundElement = (BackupSoundElement*)lastBackupElement;
+        BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
         layerIndex = lastBackupSoundElement->layer;
         frame = lastBackupSoundElement->frame;
 
@@ -424,19 +424,19 @@ void Editor::undo()
             BackupElement* lastBackupElement = mBackupList[mBackupIndex];
             if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
             {
-                BackupBitmapElement* lastBackupBitmapElement = (BackupBitmapElement*)lastBackupElement;
+                BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
                 backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp");
                 mBackupIndex--;
             }
             if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
             {
-                BackupVectorElement* lastBackupVectorElement = (BackupVectorElement*)lastBackupElement;
+                BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
                 backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp");
                 mBackupIndex--;
             }
             if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
             {
-                BackupSoundElement* lastBackupSoundElement = (BackupSoundElement*)lastBackupElement;
+                BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
                 backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp");
                 mBackupIndex--;
             }
@@ -502,7 +502,7 @@ void Editor::copy()
 
     if (layer->type() == Layer::BITMAP)
     {
-        LayerBitmap* layerBitmap = (LayerBitmap*)layer;
+        LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
         if (mScribbleArea->isSomethingSelected())
         {
             g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
@@ -518,7 +518,7 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        g_clipboardVectorImage = *(((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+        g_clipboardVectorImage = *((static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
     }
 }
 
@@ -552,7 +552,7 @@ void Editor::paste()
         {
             backup(tr("Paste"));
             mScribbleArea->deselectAll();
-            VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             mScribbleArea->setSelection(vectorImage->getSelectionRect());
         }
@@ -796,11 +796,11 @@ bool Editor::importVectorImage(QString filePath)
 
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
 
-    VectorImage* vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
+    VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
     if (vectorImage == nullptr)
     {
         addNewKey();
-        vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
+        vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
     }
 
     VectorImage importedVectorImage;
