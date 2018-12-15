@@ -61,8 +61,6 @@ int CameraPropertiesDialog::getWidth()
 void CameraPropertiesDialog::setWidth(int width)
 {
     ui->widthBox->setValue(width);
-    QSettings settings (PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_FIELD_W, width);
 }
 
 int CameraPropertiesDialog::getHeight()
@@ -73,12 +71,9 @@ int CameraPropertiesDialog::getHeight()
 void CameraPropertiesDialog::setHeight(int height)
 {
     ui->heightBox->setValue(height);
-    QSettings settings (PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_FIELD_H, height);
 }
 
 // ------
-
 
 LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
@@ -86,7 +81,11 @@ LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
     QSettings settings (PENCIL2D, PENCIL2D);
     int fieldW = settings.value("FieldW").toInt();
     int fieldH = settings.value("FieldH").toInt();
-    qDebug() << fieldW << " x " << fieldH;
+    if (fieldW < 2)
+    {
+        fieldW = 800;
+        fieldH = 600;
+    }
     viewRect = QRect(QPoint(-fieldW/2, -fieldH/2), QSize(fieldW, fieldH));
     dialog = nullptr;
 }
@@ -253,6 +252,9 @@ void LayerCamera::editProperties()
     if (result == QDialog::Accepted)
     {
         setName( dialog->getName() );
+        QSettings settings (PENCIL2D, PENCIL2D);
+        settings.setValue(SETTING_FIELD_W, dialog->getWidth());
+        settings.setValue(SETTING_FIELD_H, dialog->getHeight());
         viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
 
         emit resolutionChanged();
