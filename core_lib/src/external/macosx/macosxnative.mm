@@ -28,11 +28,12 @@ namespace MacOSXNative
 
     bool isDarkMode()
     {
-        NSAppearance* apperance = NSAppearance.currentAppearance;
-
-        #ifdef __MAC_10_14
-            return apperance.name == NSAppearanceNameDarkAqua;
-        #endif
+//        #ifdef __MAC_10_14
+//            #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14
+//            NSAppearance* apperance = NSAppearance.currentAppearance;
+//            return apperance.name == NSAppearanceNameDarkAqua;
+//            #endif
+//        #endif
 
         return false;
     }
