@@ -45,8 +45,6 @@
 			</array>
 		</dict>
 	</array>
-        <key>NSRequiresAquaSystemAppearance</key>
-        <string>True</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
