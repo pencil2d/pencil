@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QDebug>
+#include <QSettings>
 #include "object.h"
 #include "editor.h"
 #include "layersound.h"
@@ -40,6 +41,8 @@ bool PlaybackManager::init()
 {
     mTimer = new QTimer(this);
     mTimer->setTimerType(Qt::PreciseTimer);
+    QSettings settings (PENCIL2D, PENCIL2D);
+    mFps = settings.value(SETTING_FPS).toInt();
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
@@ -144,6 +147,8 @@ void PlaybackManager::setFps(int fps)
     if (mFps != fps)
     {
         mFps = fps;
+        QSettings settings (PENCIL2D, PENCIL2D);
+        settings.setValue(SETTING_FPS, fps);
         emit fpsChanged(mFps);
 
         // Update key-frame lengths of sound layers,

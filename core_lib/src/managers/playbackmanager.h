@@ -84,7 +84,7 @@ private:
     int mMarkOutFrame = 10;
     int mActiveSoundFrame = 0;
 
-    int mFps = 12;
+    int mFps; // = 12;
 
     QTimer* mTimer = nullptr;
     QElapsedTimer* mElapsedTimer = nullptr;
