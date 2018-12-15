@@ -6,6 +6,10 @@
 
 namespace MacOSXNative
 {
+    #if !defined(MAC_OS_X_VERSION_10_14) || MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_14
+        NSString* const NSAppearanceNameDarkAqua = @"NSAppearanceNameDarkAqua";
+    #endif
+
     void removeUnwantedMenuItems()
     {
         // Remove "Show Tab Bar" option from the "View" menu if possible
@@ -28,13 +32,14 @@ namespace MacOSXNative
 
     bool isDarkMode()
     {
-//        #ifdef __MAC_10_14
-//            #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14
-//            NSAppearance* apperance = NSAppearance.currentAppearance;
-//            return apperance.name == NSAppearanceNameDarkAqua;
-//            #endif
-//        #endif
-
+        if (@available(macOS 10.14, *))
+        {
+            NSAppearanceName appearance =
+                [[NSApp effectiveAppearance] bestMatchFromAppearancesWithNames:@[
+                  NSAppearanceNameAqua, NSAppearanceNameDarkAqua
+                ]];
+            return [appearance isEqual:NSAppearanceNameDarkAqua];
+        }
         return false;
     }
 }
