@@ -79,14 +79,14 @@ LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
     setName(tr("Camera Layer"));
     QSettings settings (PENCIL2D, PENCIL2D);
-    int fieldW = settings.value("FieldW").toInt();
-    int fieldH = settings.value("FieldH").toInt();
-    if (fieldW < 2)
+    mFieldW = settings.value("FieldW").toInt();
+    mFieldH = settings.value("FieldH").toInt();
+    if (mFieldW < 2 || mFieldH < 2)
     {
-        fieldW = 800;
-        fieldH = 600;
+        mFieldW = 800;
+        mFieldH = 600;
     }
-    viewRect = QRect(QPoint(-fieldW/2, -fieldH/2), QSize(fieldW, fieldH));
+    viewRect = QRect(QPoint(-mFieldW/2, -mFieldH/2), QSize(mFieldW, mFieldH));
     dialog = nullptr;
 }
 

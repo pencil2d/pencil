@@ -67,7 +67,7 @@ private:
     QTransform mCurrentView;
     
     // playback manager
-    int  mFps;
+    int  mFps = 12;
     bool mIsLoop = false;
     bool mIsRangedPlayback = false;
     int  mMarkInFrame  = 1;
