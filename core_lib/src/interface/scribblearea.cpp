@@ -85,11 +85,13 @@ bool ScribbleArea::init()
     updateCanvasCursor();
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
-    if (QT_VERSION >= 0x50900)
-    {
-        // tablet tracking first added in 5.9
-        setTabletTracking(true);
-    }
+
+#if QT_VERSION >= 0x50900
+    
+    // tablet tracking first added in 5.9
+    setTabletTracking(true);
+  
+#endif
 
     mDebugRect = QRectF(0, 0, 0, 0);
 
@@ -561,17 +563,16 @@ bool ScribbleArea::areLayersSane() const
 {
     Layer* layer = mEditor->layers()->currentLayer();
     // ---- checks ------
-    if (layer == NULL) { return false; }
-
+    if (layer == nullptr) { return false; }
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-        if (vectorImage == NULL) { return false; }
+        VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        if (vectorImage == nullptr) { return false; }
     }
     if (layer->type() == Layer::BITMAP)
     {
-        BitmapImage *bitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-        if (bitmapImage == NULL) { return false; }
+        BitmapImage *bitmapImage = (static_cast<LayerBitmap*>(layer))->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        if (bitmapImage == nullptr) { return false; }
     }
     // ---- end checks ------
 
@@ -846,7 +847,7 @@ void ScribbleArea::paintBitmapBuffer()
 
     // Clear the temporary pixel path
     BitmapImage* targetImage = layer->getLastBitmapImageAtFrame(mEditor->currentFrame());
-    if (targetImage != NULL)
+    if (targetImage != nullptr)
     {
         QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
         switch (currentTool()->type())
@@ -889,9 +890,9 @@ void ScribbleArea::paintBitmapBufferRect(const QRect& rect)
         Layer* layer = mEditor->layers()->currentLayer();
         Q_ASSERT(layer);
 
-        BitmapImage* targetImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        BitmapImage* targetImage = (static_cast<LayerBitmap*>(layer))->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
 
-        if (targetImage != NULL)
+        if (targetImage != nullptr)
         {
             QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
             switch (currentTool()->type())
@@ -1129,7 +1130,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     {
         if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             switch (currentTool()->type())
             {
             case SMUDGE:
@@ -1194,7 +1195,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         }
 
         // paints the  buffer image
-        if (mEditor->layers()->currentLayer() != NULL)
+        if (mEditor->layers()->currentLayer() != nullptr)
         {
             painter.setOpacity(1.0);
             if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
@@ -1278,7 +1279,7 @@ void ScribbleArea::paintSelectionVisuals(QPainter& painter)
     mLastTransformSelection = mappedTransformedSelection();
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer != NULL)
+    if (layer != nullptr)
     {
         if (layer->type() == Layer::BITMAP)
         {
@@ -1549,10 +1550,10 @@ void ScribbleArea::calculateSelectionRect()
 {
     selectionTransformation.reset();
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         vectorImage->calculateSelectionRect();
         setSelection(vectorImage->getSelectionRect());
     }
@@ -1814,7 +1815,7 @@ void ScribbleArea::paintTransformedSelection()
 void ScribbleArea::paintTransformedSelection(QRectF selectionToTransform)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL)
+    if (layer == nullptr)
     {
         return;
     }
@@ -1828,7 +1829,7 @@ void ScribbleArea::paintTransformedSelection(QRectF selectionToTransform)
         else if (layer->type() == Layer::VECTOR)
         {
             // vector transformation
-            LayerVector* layerVector = (LayerVector*)layer;
+            LayerVector* layerVector = static_cast<LayerVector*>(layer);
             VectorImage* vectorImage = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             vectorImage->setSelectionTransformation(selectionTransformation);
 
@@ -1869,7 +1870,7 @@ void ScribbleArea::applyTransformedSelection()
 //    selectionTransformation.reset();
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL)
+    if (layer == nullptr)
     {
         return;
     }
@@ -1888,7 +1889,7 @@ void ScribbleArea::applyTransformedSelection()
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
                 vectorImage->applySelectionTransformation();
 
         }
@@ -1906,14 +1907,14 @@ void ScribbleArea::cancelTransformedSelection()
     if (mSomethingSelected) {
 
         Layer* layer = mEditor->layers()->currentLayer();
-        if (layer == NULL)
+        if (layer == nullptr)
         {
             return;
         }
 
         if (layer->type() == Layer::VECTOR) {
 
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             vectorImage->setSelectionTransformation(QTransform());
         }
 
@@ -1987,10 +1988,10 @@ void ScribbleArea::manageSelectionOrigin(QPointF currentPoint, QPointF originPoi
 void ScribbleArea::displaySelectionProperties()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
     if (layer->type() == Layer::VECTOR)
     {
-        LayerVector *layerVector = (LayerVector *)layer;
+        LayerVector *layerVector = static_cast<LayerVector*>(layer);
         VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         //vectorImage->applySelectionTransformation();
         if (currentTool()->type() == MOVE)
@@ -2021,7 +2022,7 @@ void ScribbleArea::selectAll()
     Layer* layer = mEditor->layers()->currentLayer();
 
     Q_ASSERT(layer);
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
 
     if (layer->type() == Layer::BITMAP)
     {
@@ -2031,14 +2032,14 @@ void ScribbleArea::selectAll()
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
         // as the drawing area is not limited
         //
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        BitmapImage *bitmapImage = (static_cast<LayerBitmap*>(layer))->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
         setSelection(bitmapImage->bounds());
 
 
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         vectorImage->selectAll();
         setSelection(vectorImage->getSelectionRect());
     }
@@ -2065,10 +2066,10 @@ void ScribbleArea::deselectAll()
     myTempTransformedSelection = QRectF();
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
     if (layer->type() == Layer::VECTOR)
     {
-        ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+        (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
     }
     mSomethingSelected = false;
 
@@ -2127,7 +2128,7 @@ BaseTool* ScribbleArea::getTool(ToolType eToolType)
 // TODO: check this method
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
-    if (currentTool() != NULL && eToolMode != currentTool()->type())
+    if (currentTool() != nullptr && eToolMode != currentTool()->type())
     {
         qDebug() << "Set Current Tool" << BaseTool::TypeName(eToolMode);
         if (BaseTool::TypeName(eToolMode) == "")
@@ -2173,7 +2174,7 @@ void ScribbleArea::deleteSelection()
     if (mSomethingSelected)      // there is something selected
     {
         Layer* layer = mEditor->layers()->currentLayer();
-        if (layer == NULL) { return; }
+        if (layer == nullptr) { return; }
 
         mEditor->backups()->saveStates();
 
@@ -2194,7 +2195,7 @@ void ScribbleArea::deleteSelection()
 void ScribbleArea::clearImage()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
 
     mEditor->backups()->saveStates();
     if (layer->type() == Layer::VECTOR)

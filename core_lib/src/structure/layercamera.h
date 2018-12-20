@@ -78,6 +78,8 @@ protected:
 private:
     void linearInterpolateTransform(Camera*);
 
+    int mFieldW = 800;
+    int mFieldH = 600;
     QRect viewRect;
 };
 

@@ -759,10 +759,11 @@ void ActionCommands::editCameraProperties()
     if (result == QDialog::Accepted)
     {
         layer->setName( dialog->getName() );
-        layer->setViewRect(QRect(-dialog->getWidth()/2,
-                                -dialog->getHeight()/2,
-                                dialog->getWidth(),
-                                dialog->getHeight()));
+        QSettings settings (PENCIL2D, PENCIL2D);
+        settings.setValue(SETTING_FIELD_W, dialog->getWidth());
+        settings.setValue(SETTING_FIELD_H, dialog->getHeight());
+        viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
+        layer->setViewRect(viewRect);
         mEditor->backups()->cameraProperties(viewRect);
     }
 }

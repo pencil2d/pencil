@@ -189,7 +189,7 @@ void Editor::copy()
 
     if (layer->type() == Layer::BITMAP)
     {
-        LayerBitmap* layerBitmap = (LayerBitmap*)layer;
+        LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
         if (mScribbleArea->isSomethingSelected())
         {
             g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
@@ -205,7 +205,7 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        g_clipboardVectorImage = *(((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+        g_clipboardVectorImage = *((static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
     }
 }
 
@@ -241,7 +241,7 @@ void Editor::paste()
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
             mScribbleArea->deselectAll();
-            VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
 
             mScribbleArea->setSelection(vectorImage->getSelectionRect());
@@ -525,11 +525,11 @@ bool Editor::importVectorImage(QString filePath, bool /*isSequence*/)
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
 
     backups()->saveStates();
-    VectorImage* vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
+    VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
     if (vectorImage == nullptr)
     {
         addNewKey();
-        vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(currentFrame());
+        vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
     }
 
     VectorImage importedVectorImage;

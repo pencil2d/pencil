@@ -20,6 +20,8 @@ GNU General Public License for more details.
 
 #include <QColor>
 #include <QTransform>
+#include "pencildef.h"
+#include <qsettings.h>
 
 
 class ObjectData
@@ -65,7 +67,7 @@ private:
     QTransform mCurrentView;
     
     // playback manager
-    int  mFps    = 12;
+    int  mFps = 12;
     bool mIsLoop = false;
     bool mIsRangedPlayback = false;
     int  mMarkInFrame  = 1;
