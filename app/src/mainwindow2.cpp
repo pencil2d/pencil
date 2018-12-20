@@ -962,10 +962,11 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
     Q_ASSERT(layer != nullptr);
     LayerManager* lMgr = mEditor->layers();
     lMgr->setCurrentLayer(layer);
+    bool isSequence = true;
     for (int i = 0; i < finalList.size(); i++)
     {
         mEditor->scrubTo(finalList[i].mid(dot - digits, digits).toInt());
-        bool ok = mEditor->importImage(path + finalList[i]);
+        bool ok = mEditor->importImage(path + finalList[i], isSequence);
         if (!ok) { return;}
         layer->addNewKeyFrameAt(finalList[i].mid(dot - digits, digits).toInt());
     }
