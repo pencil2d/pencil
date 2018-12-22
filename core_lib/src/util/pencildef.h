@@ -114,6 +114,7 @@ enum StabilizationLevel
 #define CMD_ZOOM_400 "CmdZoom400"
 #define CMD_ZOOM_300 "CmdZoom300"
 #define CMD_ZOOM_200 "CmdZoom200"
+#define CMD_ZOOM_100 "CmdZoom100"
 #define CMD_ZOOM_50 "CmdZoom50"
 #define CMD_ZOOM_33 "CmdZoom33"
 #define CMD_ZOOM_25 "CmdZoom25"

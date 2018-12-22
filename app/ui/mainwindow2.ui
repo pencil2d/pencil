@@ -138,6 +138,7 @@
      <addaction name="actionZoom400"/>
      <addaction name="actionZoom300"/>
      <addaction name="actionZoom200"/>
+     <addaction name="actionZoom100"/>
      <addaction name="actionZoom50"/>
      <addaction name="actionZoom33"/>
      <addaction name="actionZoom25"/>
@@ -953,6 +954,11 @@
   <action name="actionZoom25">
    <property name="text">
     <string>25%</string>
+   </property>
+  </action>
+  <action name="actionZoom100">
+   <property name="text">
+    <string>100%</string>
    </property>
   </action>
  </widget>

@@ -280,6 +280,7 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom400, &QAction::triggered, mEditor->view(), &ViewManager::scale400);
     connect(ui->actionZoom300, &QAction::triggered, mEditor->view(), &ViewManager::scale300);
     connect(ui->actionZoom200, &QAction::triggered, mEditor->view(), &ViewManager::scale200);
+    connect(ui->actionZoom100, &QAction::triggered, mEditor->view(), &ViewManager::scale100);
     connect(ui->actionZoom50, &QAction::triggered, mEditor->view(), &ViewManager::scale50);
     connect(ui->actionZoom33, &QAction::triggered, mEditor->view(), &ViewManager::scale33);
     connect(ui->actionZoom25, &QAction::triggered, mEditor->view(), &ViewManager::scale25);
@@ -1127,6 +1128,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionZoom400->setShortcut(cmdKeySeq(CMD_ZOOM_400));
     ui->actionZoom300->setShortcut(cmdKeySeq(CMD_ZOOM_300));
     ui->actionZoom200->setShortcut(cmdKeySeq(CMD_ZOOM_200));
+    ui->actionZoom100->setShortcut(cmdKeySeq(CMD_ZOOM_100));
     ui->actionZoom50->setShortcut(cmdKeySeq(CMD_ZOOM_50));
     ui->actionZoom33->setShortcut(cmdKeySeq(CMD_ZOOM_33));
     ui->actionZoom25->setShortcut(cmdKeySeq(CMD_ZOOM_25));

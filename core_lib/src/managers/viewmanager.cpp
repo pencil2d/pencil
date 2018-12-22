@@ -225,6 +225,11 @@ void ViewManager::scaleDown()
     scale(scaling() * 0.8333f);
 }
 
+void ViewManager::scale100()
+{
+    scale(1.0f);
+}
+
 void ViewManager::scale400()
 {
     scale(4.0f);

@@ -65,6 +65,7 @@ public:
     void scale400();
     void scale300();
     void scale200();
+    void scale100();
     void scale50();
     void scale33();
     void scale25();
