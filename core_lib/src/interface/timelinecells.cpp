@@ -429,6 +429,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
     int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
+    fromLayer = toLayer = layerNumber;
 
     mStartY = event->pos().y();
     mStartLayerNumber = layerNumber;
@@ -566,6 +567,28 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
+        toLayer = getLayerNumber(event->pos().y());
+        if (toLayer != fromLayer && toLayer > -1)
+        {
+            // a temporary layer for swapping layers
+            LayerBitmap* layer = mEditor->layers()->createBitmapLayer("tmp");
+            Q_UNUSED(layer);
+            // new layers are added at top, so layer it at (mLayerHeight + 10)
+            int tmp = getLayerNumber(mLayerHeight + 10);
+            mEditor->moveLayer(toLayer, tmp);
+            mEditor->moveLayer(fromLayer, toLayer);
+            mEditor->moveLayer(tmp, fromLayer);
+            mEditor->layers()->setCurrentLayer(toLayer);
+            mEditor->layers()->deleteLayer(tmp);  // tmp is deleted...
+            // .. and then we update timeline...
+            mTimeLine->updateContent();
+            if (fromLayer > toLayer)
+                mStartY += mLayerHeight;
+            else {
+                mStartY -= mLayerHeight;
+            }
+            fromLayer = toLayer;
+        }
         mEndY = event->pos().y();
         emit mouseMovedY(mEndY - mStartY);
     }
@@ -647,10 +670,6 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
         }
-    }
-    if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
-    {
-        mEditor->moveLayer(mStartLayerNumber, layerNumber);
     }
     mTimeLine->updateContent();
 }

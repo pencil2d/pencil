@@ -103,6 +103,8 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
+    int fromLayer = 0;
+    int toLayer   = 1;
     int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
