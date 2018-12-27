@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include <QWidget>
 #include <QString>
+#include "layer.h"
 
 
 class TimeLine;
@@ -103,8 +104,9 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
-    int fromLayer = 0;
-    int toLayer   = 1;
+    int mFromLayer = 0;
+    int mToLayer   = 1;
+    int mDragType  = 1;
     int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;

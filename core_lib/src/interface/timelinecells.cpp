@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include "qdebug.h"
 
 #include "object.h"
 #include "editor.h"
@@ -429,7 +430,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
     int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
-    fromLayer = toLayer = layerNumber;
+    mFromLayer = mToLayer = layerNumber;
 
     mStartY = event->pos().y();
     mStartLayerNumber = layerNumber;
@@ -463,6 +464,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             else
             {
                 mEditor->layers()->setCurrentLayer(layerNumber);
+                mDragType = mEditor->layers()->currentLayer()->type();
             }
         }
         if (layerNumber == -1)
@@ -567,28 +569,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
-        toLayer = getLayerNumber(event->pos().y());
-        if (toLayer != fromLayer && toLayer > -1)
-        {
-            // a temporary layer for swapping layers
-            LayerBitmap* layer = mEditor->layers()->createBitmapLayer("tmp");
-            Q_UNUSED(layer);
-            // new layers are added at top, so layer it at (mLayerHeight + 10)
-            int tmp = getLayerNumber(mLayerHeight + 10);
-            mEditor->moveLayer(toLayer, tmp);
-            mEditor->moveLayer(fromLayer, toLayer);
-            mEditor->moveLayer(tmp, fromLayer);
-            mEditor->layers()->setCurrentLayer(toLayer);
-            mEditor->layers()->deleteLayer(tmp);  // tmp is deleted...
-            // .. and then we update timeline...
-            mTimeLine->updateContent();
-            if (fromLayer > toLayer)
-                mStartY += mLayerHeight;
-            else {
-                mStartY -= mLayerHeight;
-            }
-            fromLayer = toLayer;
-        }
         mEndY = event->pos().y();
         emit mouseMovedY(mEndY - mStartY);
     }
@@ -648,7 +628,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 {
-    qDebug("TimeLineCell: mouse release event.");
+//    qDebug("TimeLineCell: mouse release event.");
     if (event->button() != primaryButton) return;
 
     primaryButton = Qt::NoButton;
@@ -669,6 +649,53 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
+        }
+    }
+    if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
+    {
+
+        mToLayer = getLayerNumber(event->pos().y());
+        if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
+        {
+            // a temporary layer for swapping layers, correct type
+            if (mDragType == 1)
+            {
+                LayerBitmap* layer = mEditor->layers()->createBitmapLayer("tmp");
+                Q_UNUSED(layer);
+            }
+            if (mDragType == 2)
+            {
+                LayerVector* layer = mEditor->layers()->createVectorLayer("tmp");
+                Q_UNUSED(layer);
+            }
+            if (mDragType == 4)
+            {
+                LayerSound* layer = mEditor->layers()->createSoundLayer("tmp");
+                Q_UNUSED(layer);
+            }
+            if (mDragType == 5)
+            {
+                LayerCamera* layer = mEditor->layers()->createCameraLayer("tmp");
+                Q_UNUSED(layer);
+            }
+            // Drag mFromLayer to tmp (layer at top)
+            int tmp = mEditor->layers()->count() - 1;
+            mEditor->moveLayer(mFromLayer, tmp);
+            // Drag the rest down or up
+            if (mToLayer < mFromLayer)  // drag rest up
+            {
+                for (int i = mFromLayer - 1; i >= mToLayer; i--)
+                    mEditor->moveLayer(i, i + 1);
+            }
+            else                        // drag rest down
+            {
+                for (int i = mFromLayer + 1; i <= mToLayer; i++)
+                    mEditor->moveLayer(i, i - 1);
+            }
+            // Move tmp to mToLayer, and delete tmp
+            mEditor->moveLayer(tmp, mToLayer);
+            mEditor->layers()->deleteLayer(tmp);
+            mEditor->layers()->setCurrentLayer(mToLayer);
         }
     }
     mTimeLine->updateContent();
