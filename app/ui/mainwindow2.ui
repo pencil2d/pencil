@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -131,10 +131,23 @@
      <addaction name="actionOnionNext"/>
      <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
+    <widget class="QMenu" name="menuZoom">
+     <property name="title">
+      <string>Zoom</string>
+     </property>
+     <addaction name="actionZoom400"/>
+     <addaction name="actionZoom300"/>
+     <addaction name="actionZoom200"/>
+     <addaction name="actionZoom100"/>
+     <addaction name="actionZoom50"/>
+     <addaction name="actionZoom33"/>
+     <addaction name="actionZoom25"/>
+    </widget>
     <addaction name="actionReset_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
+    <addaction name="menuZoom"/>
     <addaction name="separator"/>
     <addaction name="actionRotate_Clockwise"/>
     <addaction name="actionRotate_Anticlosewise"/>
@@ -921,6 +934,41 @@
   <action name="actionDiscord">
    <property name="text">
     <string>Pencil2D Discord</string>
+   </property>
+  </action>
+  <action name="actionZoom200">
+   <property name="text">
+    <string>200%</string>
+   </property>
+  </action>
+  <action name="actionZoom300">
+   <property name="text">
+    <string>300%</string>
+   </property>
+  </action>
+  <action name="actionZoom400">
+   <property name="text">
+    <string>400%</string>
+   </property>
+  </action>
+  <action name="actionZoom50">
+   <property name="text">
+    <string>50%</string>
+   </property>
+  </action>
+  <action name="actionZoom33">
+   <property name="text">
+    <string>33%</string>
+   </property>
+  </action>
+  <action name="actionZoom25">
+   <property name="text">
+    <string>25%</string>
+   </property>
+  </action>
+  <action name="actionZoom100">
+   <property name="text">
+    <string>100%</string>
    </property>
   </action>
  </widget>

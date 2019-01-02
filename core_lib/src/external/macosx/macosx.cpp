@@ -42,6 +42,11 @@ namespace PlatformHandler
         MacOSXNative::removeUnwantedMenuItems();
     }
 
+    bool isDarkMode()
+    {
+        return MacOSXNative::isDarkMode();
+    }
+
 }
 
 extern "C" {

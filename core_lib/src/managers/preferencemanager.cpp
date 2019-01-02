@@ -73,6 +73,10 @@ void PreferenceManager::loadPrefs()
     set(SETTING::LAYOUT_LOCK,              settings.value(SETTING_LAYOUT_LOCK,            false).toBool());
     set(SETTING::FRAME_POOL_SIZE,          settings.value(SETTING_FRAME_POOL_SIZE,        200).toInt());
 
+    set(SETTING::FPS,                      settings.value(SETTING_FPS,                    12).toInt());
+    set(SETTING::FIELD_W,                  settings.value(SETTING_FIELD_W,                800).toInt());
+    set(SETTING::FIELD_H,                  settings.value(SETTING_FIELD_H,                600).toInt());
+
     // Files
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              true ).toBool());
     set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       25).toInt());
@@ -226,6 +230,15 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::ONION_WHILE_PLAYBACK:
         settings.setValue(SETTING_ONION_WHILE_PLAYBACK, value);
+        break;
+    case SETTING::FPS:
+        settings.setValue(SETTING_FPS, value);
+        break;
+    case SETTING::FIELD_W:
+        settings.setValue(SETTING_FIELD_W, value);
+        break;
+    case SETTING::FIELD_H:
+        settings.setValue(SETTING_FIELD_H, value);
         break;
     default:
         Q_ASSERT(false);

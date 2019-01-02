@@ -7,6 +7,7 @@ namespace MacOSXNative
 
     bool isMouseCoalescingEnabled();
     void setMouseCoalescingEnabled(bool enabled);
+    bool isDarkMode();
 }
 
 #endif // MACOSXNATIVE_H
