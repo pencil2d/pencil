@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
-#include "qdebug.h"
 
 #include "object.h"
 #include "editor.h"
@@ -646,7 +645,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 {
-//    qDebug("TimeLineCell: mouse release event.");
     if (event->button() != primaryButton) return;
 
     primaryButton = Qt::NoButton;

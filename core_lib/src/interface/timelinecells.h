@@ -20,7 +20,6 @@ GNU General Public License for more details.
 
 #include <QWidget>
 #include <QString>
-#include "layer.h"
 
 
 class TimeLine;
