@@ -60,6 +60,8 @@ public:
 
     int getFrameSize() { return mFrameSize; }
     void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
+    void paintLayerGutter(QPainter& painter);
+    bool didDetatchLayer();
 
 Q_SIGNALS:
     void mouseMovedY(int);
@@ -126,6 +128,7 @@ private:
 
     const static int mOffsetX = 0;
     const static int mOffsetY = 20;
+    const static int mLayerDetatchThreshold = 5;
 };
 
 #endif // TIMELINECELLS_H
