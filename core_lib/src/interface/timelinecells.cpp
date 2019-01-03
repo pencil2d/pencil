@@ -154,6 +154,11 @@ void TimeLineCells::updateContent()
     update();
 }
 
+
+bool TimeLineCells::didDetatchLayer() {
+    return abs(getMouseMoveY()) > mLayerDetatchThreshold;
+}
+
 void TimeLineCells::drawContent()
 {
     if (mCache == nullptr)
@@ -206,7 +211,7 @@ void TimeLineCells::drawContent()
             }
         }
     }
-    if (abs(getMouseMoveY()) > 5)
+    if (didDetatchLayer())
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks)
         {
@@ -220,9 +225,9 @@ void TimeLineCells::drawContent()
             layer->paintLabel(painter, this,
                               0, getLayerY(mEditor->layers()->currentLayerIndex()) + getMouseMoveY(),
                               width() - 1, getLayerHeight(), true, mEditor->allLayers());
+
+            paintLayerGutter(painter);
         }
-        painter.setPen(Qt::black);
-        painter.drawRect(0, getLayerY(getLayerNumber(mEndY)) - 1, width(), 2);
     }
     else
     {
@@ -315,6 +320,19 @@ void TimeLineCells::drawContent()
         // --- draw left border line
         painter.setPen(Qt::darkGray);
         painter.drawLine(0, 0, 0, height());
+    }
+}
+
+void TimeLineCells::paintLayerGutter(QPainter& painter)
+{
+    painter.setPen(Qt::black);
+    if (getMouseMoveY() > mLayerDetatchThreshold)
+    {
+        painter.drawRect(0, getLayerY(getLayerNumber(mEndY))+mLayerHeight, width(), 2);
+    }
+    else
+    {
+        painter.drawRect(0, getLayerY(getLayerNumber(mEndY)), width(), 2);
     }
 }
 
