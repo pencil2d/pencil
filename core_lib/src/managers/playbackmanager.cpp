@@ -87,7 +87,7 @@ void PlaybackManager::play()
     updateEndFrame();
 
     int frame = editor()->currentFrame();
-    if (frame >= mEndFrame)
+    if (frame >= mEndFrame || frame < mStartFrame)
     {
         editor()->scrubTo(mStartFrame);
     }
