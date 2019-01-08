@@ -51,12 +51,14 @@ private:
     void selectItem(int row, int column);
     QColor getLayerColor(int color);
     QStringList* mLayerNames;
+    QVector<int>* mLayerIndexes;
     QStringList* mPapaLines;            // for filling DIAL column
     Ui::Xsheet *ui;
     Editor* mEditor = nullptr;
     int mLayerCount;
     int mCurrentFrame;
     int mTimeLineLength;
+    bool mFirstUpdate = true;
     QTableWidget* mTableWidget;
     QTableWidgetItem* mTableItem;
 };

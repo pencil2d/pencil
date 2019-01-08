@@ -56,6 +56,7 @@ void Xsheet::newOpenScene()
 void Xsheet::initUI()
 {
     mLayerNames = new QStringList;
+    mLayerIndexes = new QVector<int>;
     mLayerCount = 0;
     QSettings settings(PENCIL2D, PENCIL2D);
     mTimeLineLength = settings.value(SETTING_TIMELINE_SIZE,240).toInt();
@@ -128,7 +129,7 @@ void Xsheet::addLayerFrame(int row, int column)
     if (column > 0 && column <= mLayerCount)
     {
         mEditor->layers()->currentLayer()->addNewKeyFrameAt(row);
-        int type = getLayerType(mEditor->layers()->findLayerByName(mTableWidget->item(0, column)->text()));
+        int type = getLayerType(mEditor->layers()->getLayer(mLayerIndexes->at(column-1)));
         mTableItem = new QTableWidgetItem(QString::number(row));
         mTableItem->setBackgroundColor(getLayerColor(type));
         mTableWidget->setItem(row, column, mTableItem);
@@ -194,9 +195,9 @@ void Xsheet::fillXsheet()
         mTableWidget->setItem(i, 0, mTableItem);
         for (int j = 1; j <= mLayerCount; j++)
         {
-            if (mEditor->layers()->findLayerByName(mTableWidget->item(0,j)->text())->keyExists(i))
+            if (mEditor->layers()->getLayer(mLayerIndexes->at(j-1))->keyExists(i))
             {
-                int type = getLayerType(mEditor->layers()->findLayerByName(mTableWidget->item(0,j)->text()));
+                int type = getLayerType(mEditor->layers()->getLayer(mLayerIndexes->at(j-1)));
                 mTableItem = new QTableWidgetItem(QString::number(i));
                 mTableItem->setBackgroundColor(getLayerColor(type));
                 mTableWidget->setItem(i, j, mTableItem);
@@ -258,7 +259,7 @@ void Xsheet::erasePapa()
     }
     mTableItem = new QTableWidgetItem("DIAL");
     mTableItem->setBackgroundColor(QColor(244, 167, 167, 150));
-    mTableWidget->setItem(0, mLayerNames->size() + 1, mTableItem);
+    mTableWidget->setItem(0, mLayerIndexes->size() + 1, mTableItem);
     mPapaLines->clear();
 }
 
@@ -355,15 +356,15 @@ void Xsheet::addFrame()
     if (mTableWidget->currentColumn() == 0 ||
         mTableWidget->currentColumn() == mTableWidget->columnCount() - 1 ||
         mTableWidget->currentRow() == 0) { return; }
-    QString name = mTableWidget->item(0, mTableWidget->currentColumn())->text();
     int frame = mTableWidget->currentRow();
-    if (!mEditor->layers()->findLayerByName(name)->keyExists(frame))
+    Layer* layer = mEditor->layers()->getLayer(mLayerIndexes->at(mTableWidget->currentColumn() - 1));
+    if (!layer->keyExists(frame))
     {
         mTableItem = new QTableWidgetItem(QString::number(mTableWidget->currentRow()));
-        mTableItem->setBackgroundColor(QColor(getLayerColor(getLayerType(mEditor->layers()->currentLayer()))));
+        mTableItem->setBackgroundColor(QColor(getLayerColor(layer->type())));
         mTableWidget->setItem(mTableWidget->currentRow(), mTableWidget->currentColumn(), mTableItem);
         mEditor->layers()->currentLayer()->addNewKeyFrameAt(mTableWidget->currentRow());
-        emit mEditor->layers()->notifyLayerChanged(mEditor->layers()->findLayerByName(name));
+        emit mEditor->layers()->notifyLayerChanged(layer);
     }
 }
 
@@ -387,12 +388,12 @@ void Xsheet::removeFrame()
     else
     {   // if it is a Bitmap or Vector layer
         if (tmp.isEmpty()) { return; }
-        QString name = mTableWidget->item(0, mTableWidget->currentColumn())->text();
+        Layer* layer = mEditor->layers()->getLayer(mLayerIndexes->at(mTableWidget->currentColumn() - 1));
         int frame = mTableWidget->currentRow();
-        if (mEditor->layers()->findLayerByName(name)->keyExists(frame))
+        if (layer->keyExists(frame))
         {
-            mEditor->layers()->findLayerByName(name)->removeKeyFrame(frame);
-            emit mEditor->layers()->notifyLayerChanged(mEditor->layers()->findLayerByName(name));
+            layer->removeKeyFrame(frame);
+            emit mEditor->layers()->notifyLayerChanged(layer);
         }
     }
 }
@@ -400,28 +401,17 @@ void Xsheet::removeFrame()
 void Xsheet::initXsheet()
 {
     mLayerCount = 0;
-    mLayerNames->clear();
+    mLayerIndexes->clear();
     for (int i = 0; i < mEditor->layers()->count(); i++)
-    {   // count Bitmap and Vector layers (duplicate names NOT supported)
+    {   // count Bitmap and Vector layers
         bool visi = mEditor->layers()->getLayer(i)->getVisibility();
         if (visi && (mEditor->layers()->getLayer(i)->type() == 1 || mEditor->layers()->getLayer(i)->type() == 2))
         {
-            if (!mLayerNames->contains(mEditor->layers()->getLayer(i)->name()))
-            {
-                mLayerCount++;
-                mLayerNames->append(mEditor->layers()->getLayer(i)->name());
-            }
-            else
-            {
-                int ret = QMessageBox::critical(new QWidget,
-                               tr("Layer name duplicate!"),
-                               tr("Identical layer names '%1' not supported in Xsheet").arg(mEditor->layers()->getLayer(i)->name()),
-                               QMessageBox::Ok);
-                Q_UNUSED(ret);
-            }
+            mLayerCount++;
+            mLayerIndexes->append(i);
         }
     }
-    for (int i = 1; i <= mLayerNames->size() + 1; i++)
+    for (int i = 1; i <= mLayerIndexes->size() + 1; i++)
     {
         for (int j = 1; j <= mTimeLineLength; j++)
         {
@@ -443,17 +433,22 @@ void Xsheet::initXsheet()
     mTableItem = new QTableWidgetItem("#");
     mTableItem->setBackgroundColor(QColor(250, 240, 160));
     mTableWidget->setItem(0, 0, mTableItem);
-    for (int i = 0; i < mLayerNames->size(); i++)
+    for (int i = 0; i < mLayerIndexes->size(); i++)
     {
-        int type = getLayerType(mEditor->layers()->findLayerByName(mLayerNames->at(i)));
-        mTableItem = new QTableWidgetItem(mLayerNames->at(i));
+        int type = getLayerType(mEditor->layers()->getLayer(mLayerIndexes->at(i)));
+        mTableItem = new QTableWidgetItem(mEditor->layers()->getLayer(mLayerIndexes->at(i))->name());
         mTableItem->setBackgroundColor(getLayerColor(type));
         mTableWidget->setItem(0, i + 1, mTableItem);
     }
 //    if (!mPapaLines->isEmpty()) { return; }
     mTableItem = new QTableWidgetItem("DIAL");
     mTableItem->setBackgroundColor(QColor(244, 167, 167, 150));
-    mTableWidget->setItem(0, mLayerNames->size() + 1, mTableItem);
+    mTableWidget->setItem(0, mLayerIndexes->size() + 1, mTableItem);
+    if (mFirstUpdate) // hack to make sure a cell is selected at least once
+    {
+        mTableWidget->setCurrentCell(1, 2);
+        mFirstUpdate = false;
+    }
 }
 
 void Xsheet::writePapa()
@@ -515,7 +510,7 @@ void Xsheet::selectItem(int row, int column)
     {
         mTableItem = new QTableWidgetItem();
         mTableItem = mTableWidget->item(0, column);
-        Layer* layer = mEditor->layers()->findLayerByName(mTableItem->text());
+        Layer* layer = mEditor->layers()->getLayer(mLayerIndexes->at(column-1));
         if (layer == nullptr) { return; }
         mEditor->layers()->setCurrentLayer(layer);
         mEditor->scrubTo(row);
