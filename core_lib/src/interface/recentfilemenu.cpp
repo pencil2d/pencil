@@ -130,7 +130,7 @@ void RecentFileMenu::removeRecentFile( QString filename )
 
 void RecentFileMenu::onRecentFileTriggered()
 {
-    QAction* action = ( QAction* )QObject::sender();
+    QAction* action = static_cast<QAction*>(QObject::sender());
     QString filePath = action->data().toString();
 
     if ( !filePath.isEmpty() )

@@ -19,6 +19,9 @@ GNU General Public License for more details.
 
 ObjectData::ObjectData()
 {
-
+    QSettings settings(PENCIL2D,PENCIL2D);
+    mFps = settings.value(SETTING_FPS).toInt();
+    if (mFps < 1)
+        mFps = 12;
 }
 

@@ -24,7 +24,8 @@ GNU General Public License for more details.
 #include <QHBoxLayout>
 #include <QtDebug>
 #include "camera.h"
-
+#include <qsettings.h>
+#include "pencildef.h"
 
 CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) :
     QDialog(),
@@ -77,7 +78,15 @@ void CameraPropertiesDialog::setHeight(int height)
 LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
     setName(tr("Camera Layer"));
-    viewRect = QRect(QPoint(-400, -300), QSize(800, 600));
+    QSettings settings (PENCIL2D, PENCIL2D);
+    mFieldW = settings.value("FieldW").toInt();
+    mFieldH = settings.value("FieldH").toInt();
+    if (mFieldW < 2 || mFieldH < 2)
+    {
+        mFieldW = 800;
+        mFieldH = 600;
+    }
+    viewRect = QRect(QPoint(-mFieldW/2, -mFieldH/2), QSize(mFieldW, mFieldH));
     dialog = nullptr;
 }
 
@@ -243,6 +252,9 @@ void LayerCamera::editProperties()
     if (result == QDialog::Accepted)
     {
         setName( dialog->getName() );
+        QSettings settings (PENCIL2D, PENCIL2D);
+        settings.setValue(SETTING_FIELD_W, dialog->getWidth());
+        settings.setValue(SETTING_FIELD_H, dialog->getHeight());
         viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
 
         emit resolutionChanged();
