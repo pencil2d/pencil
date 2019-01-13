@@ -381,11 +381,6 @@ void AddBitmapElement::redo()
         handleEmptyKeyframe(newBitmap);
     }
 
-    if (previousFrameIndex == frameIndex)
-    {
-        frameIndex = previousFrameIndex;
-    }
-
     editor()->scrubTo(frameIndex);
 }
 
@@ -447,10 +442,6 @@ void AddVectorElement::undo()
     *static_cast<LayerVector*>(layer)->
             getVectorImageAtFrame(otherFrameIndex) = *oldVector;
 
-    if (previousFrameIndex == frameIndex)
-    {
-        framePos = previousFrameIndex;
-    }
     editor()->scrubTo(framePos);
 }
 
@@ -466,10 +457,6 @@ void AddVectorElement::redo()
     *static_cast<LayerVector*>(layer)->
             getVectorImageAtFrame(otherFrameIndex) = *newVector;
 
-    if (previousFrameIndex == frameIndex)
-    {
-        framePos = previousFrameIndex;
-    }
     editor()->scrubTo(framePos);
 }
 
