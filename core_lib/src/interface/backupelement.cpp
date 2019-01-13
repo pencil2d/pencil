@@ -309,6 +309,16 @@ AddBitmapElement::AddBitmapElement(BitmapImage* backupBitmap,
     newBitmap = static_cast<LayerBitmap*>(layer)->
             getBitmapImageAtFrame(otherFrameIndex)->clone();
 
+    ScribbleArea* scribble = editor->getScribbleArea();
+    if (scribble->isSomethingSelected()) {
+        BitmapImage selectionBitmap = newBitmap->transformed(scribble->mySelection.toRect(),
+                                                              scribble->getSelectionTransformation(),
+                                                              false);
+
+        newBitmap->clear(scribble->mySelection.toRect());
+        newBitmap->paste(&selectionBitmap, QPainter::CompositionMode_SourceOver);
+    }
+
     setText(description);
 }
 
@@ -317,24 +327,10 @@ void AddBitmapElement::undoTransform()
     const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
     ScribbleArea* scribbleArea = editor()->getScribbleArea();
 
-    // clone old bitmap so we don't paint on the same...
     BitmapImage* oldBitmapClone = oldBitmap->clone();
 
-    // get the previous image from our old iamge
-    BitmapImage transformedImage = childElem->oldBitmap->transformed(childElem->oldSelectionRect.toRect(),
-                                                                     childElem->oldTransform,
-                                                                     false);
-
-    // clear leftovers...
-    oldBitmapClone->clear(childElem->oldSelectionRect);
-
-    // paste tranformedImage to our cloned bitmap
-    oldBitmapClone->paste(&transformedImage, QPainter::CompositionMode_SourceOver);
-
     // make the cloned bitmap the new canvas image.
-    *static_cast<LayerBitmap*>(layer)->
-            getBitmapImageAtFrame(frameIndex) = *oldBitmapClone;
-
+    handleEmptyKeyframe(oldBitmapClone);
 
     // set selections so the transform will be correct
     scribbleArea->mySelection = childElem->oldSelectionRectTemp;
@@ -342,6 +338,19 @@ void AddBitmapElement::undoTransform()
     scribbleArea->myTransformedSelection= childElem->oldSelectionRectTemp;
 
     scribbleArea->paintTransformedSelection();
+}
+
+void AddBitmapElement::handleEmptyKeyframe(BitmapImage* bitmap)
+{
+    int emptyFrameSettingVal = editor()->preference()->
+            getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
+
+    int indexToLookAt = frameIndex;
+    if (emptyFrameSettingVal == DrawOnEmptyFrameAction::KEEP_DRAWING_ON_PREVIOUS_KEY)
+    {
+        indexToLookAt = layer->getPreviousKeyFramePosition(frameIndex);
+    }
+    *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(indexToLookAt) = *bitmap;
 }
 
 void AddBitmapElement::undo()
@@ -354,12 +363,7 @@ void AddBitmapElement::undo()
     }
     else
     {
-        *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frameIndex) = *oldBitmap;
-    }
-
-    if (previousFrameIndex == frameIndex)
-    {
-        frameIndex = previousFrameIndex;
+        handleEmptyKeyframe(oldBitmap);
     }
 
     editor()->scrubTo(frameIndex);
@@ -367,22 +371,14 @@ void AddBitmapElement::undo()
 
 void AddBitmapElement::redo()
 {
-    Layer* layer = editor()->layers()->findLayerById(newLayerId);
-
+    if (isFirstRedo) { isFirstRedo = false; return; }
     if (editor()->getScribbleArea()->isSomethingSelected())
     {
         redoTransform();
     }
     else
     {
-        if (isFirstRedo)
-        {
-            isFirstRedo = false;
-            return;
-        }
-
-        *static_cast<LayerBitmap*>(layer)->
-                getBitmapImageAtFrame(otherFrameIndex) = *newBitmap;
+        handleEmptyKeyframe(newBitmap);
     }
 
     if (previousFrameIndex == frameIndex)
@@ -397,29 +393,11 @@ void AddBitmapElement::redoTransform()
 {
     const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
     ScribbleArea* scribbleArea = editor()->getScribbleArea();
-    Layer* layer = editor()->layers()->findLayerById(newLayerId);
-
-    newBitmap->clear(childElem->newSelectionRect);
+    layer = editor()->layers()->findLayerById(newLayerId);
 
     BitmapImage* newBitmapClone = newBitmap->clone();
-    if (isFirstRedo) {
 
-        // copy buffer image
-        BitmapImage newTransformed = oldBufferImage->transformed(childElem->newSelectionRect.toRect(), QTransform(), false);
-
-        // get transformed image from old position
-        BitmapImage transformedImage = childElem->oldBitmap->transformed(childElem->newSelectionRect.toRect(), childElem->newTransform, false);
-
-        // paste the old transformed image on new cloned bitmap
-        newBitmapClone->paste(&transformedImage, QPainter::CompositionMode_SourceOver);
-
-        // paste buffer image to make it look like the transformation has been applied
-        newBitmapClone->paste(&newTransformed, QPainter::CompositionMode_SourceOver);
-    }
-
-    // set new bitmap to canvas (not painted yet)
-    *static_cast<LayerBitmap*>(layer)->
-            getBitmapImageAtFrame(otherFrameIndex) = *newBitmapClone;
+    handleEmptyKeyframe(newBitmapClone);
 
     // reset transform and set selections
     scribbleArea->setSelectionTransform(QTransform());
@@ -656,7 +634,6 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
 }
 
 TransformElement::TransformElement(KeyFrame* backupKeyFrame,
-                                   BitmapImage* backupBufferImage,
                                int backupLayerId,
                                int backupFramePos,
                                QRectF backupSelection,
@@ -672,7 +649,6 @@ TransformElement::TransformElement(KeyFrame* backupKeyFrame,
     oldSelectionRect = backupSelection;
     oldSelectionRectTemp = backupTempSelection;
     oldTransform = backupTransform;
-    bufferImg = backupBufferImage;
 
     Layer* newLayer = editor->layers()->currentLayer();
     newLayerId = newLayer->id();
@@ -687,7 +663,18 @@ TransformElement::TransformElement(KeyFrame* backupKeyFrame,
         case Layer::BITMAP:
         {
             oldBitmap = static_cast<BitmapImage*>(backupKeyFrame);
+            int emptyFrameSettingVal = editor->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
+            if (emptyFrameSettingVal == DrawOnEmptyFrameAction::KEEP_DRAWING_ON_PREVIOUS_KEY) {
+                int previousFrameIndex = layer->getPreviousKeyFramePosition(oldFrameIndex);
+                newFrameIndex = previousFrameIndex;
+            }
             newBitmap = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(newFrameIndex)->clone();
+            BitmapImage selectionBitmap = newBitmap->transformed(newSelectionRect.toRect(),
+                                                                  newTransform,
+                                                                  false);
+
+            newBitmap->clear(newSelectionRect);
+            newBitmap->paste(&selectionBitmap, QPainter::CompositionMode_SourceOver);
             break;
         }
         case Layer::VECTOR:

@@ -141,14 +141,16 @@ void BackupManager::bitmap(QString description)
                                                      description,
                                                      editor());
 
-    new TransformElement(mKeyframe,
-                         editor()->getScribbleArea()->mBufferImg,
-                         mLayerId,
-                         mFrameIndex,
-                         mSelectionRect,
-                         mTempSelectionRect,
-                         mSelectionTransform,
-                         editor(), element);
+    if (mIsSelected)
+    {
+        new TransformElement(mKeyframe,
+                             mLayerId,
+                             mFrameIndex,
+                             mSelectionRect,
+                             mTempSelectionRect,
+                             mSelectionTransform,
+                             editor(), element);
+    }
     mUndoStack->push(element);
     emit updateBackup();
 }
@@ -181,7 +183,6 @@ void BackupManager::deselect()
                                                      mSelectionRect,
                                                      editor());
    new TransformElement(mKeyframe,
-                        editor()->getScribbleArea()->mBufferImg,
                          mLayerId,
                          mFrameIndex,
                          mSelectionRect,
@@ -200,7 +201,6 @@ void BackupManager::clearSelection()
                                                      mSelectionRect,
                                                      editor());
     new TransformElement(mKeyframe,
-                         editor()->getScribbleArea()->mBufferImg,
                           mLayerId,
                           mFrameIndex,
                           mSelectionRect,
@@ -223,8 +223,8 @@ void BackupManager::clearSelection()
 
 void BackupManager::transform()
 {
+    if (!mIsSelected) { return; }
     TransformElement* element = new TransformElement(mKeyframe,
-                                                     editor()->getScribbleArea()->mBufferImg->clone(),
                                                      mLayerId,
                                                      mFrameIndex,
                                                      mSelectionRect,
@@ -511,7 +511,7 @@ void BackupManager::layerMoved(int backupNewLayerIndex)
 
 /**
  * @brief BackupManager::saveStates
- * This method should be called prior to an undo action taking place.
+ * This method should be called prior to a backup taking place.
  */
 void BackupManager::saveStates()
 {
@@ -520,6 +520,7 @@ void BackupManager::saveStates()
     mCamera = nullptr;
     mClip = nullptr;
     mKeyframe = nullptr;
+
     mBufferImage = editor()->getScribbleArea()->mBufferImg->clone();
     mLayer = editor()->layers()->currentLayer();
     mLayerId = mLayer->id();
@@ -547,17 +548,14 @@ void BackupManager::saveStates()
     {
         mKeyframe = mLayer->getKeyFrameWhichCovers(mFrameIndex)->clone();
     }
-    else
-    {
-        handleDrawingOnEmptyFrame();
-        return;
-    }
 
     switch(mLayer->type())
     {
         case Layer::BITMAP:
         {
             mBitmap = static_cast<BitmapImage*>(mKeyframe);
+            handleDrawingOnEmptyFrame();
+
             break;
         }
         case Layer::VECTOR:
@@ -591,10 +589,25 @@ void BackupManager::handleDrawingOnEmptyFrame()
         switch(mLayer->type())
         {
             case Layer::BITMAP:
+
                 mBitmap = static_cast<LayerBitmap*>(mLayer)->getBitmapImageAtFrame(previousFramePos)->clone();
+                mKeyframe = mBitmap;
+
+                if (mIsSelected) {
+
+                    // when a selection has been made, the moved image is not part of the bitmap until it has been applied
+                    // here we make sure that the bitmap to backup will include the selected part too.
+                    BitmapImage* tImage = mBitmap->transformed(mSelectionRect.toRect(),
+                                                              mSelectionTransform,
+                                                              false).clone();
+
+                    mBitmap->clear(mSelectionRect.toRect());
+                    mBitmap->paste(tImage, QPainter::CompositionMode_SourceOver);
+                }
                 break;
             case Layer::VECTOR:
                 mVector = static_cast<LayerVector*>(mLayer)->getVectorImageAtFrame(previousFramePos)->clone();
+                mKeyframe = mVector;
                 break;
             default:
                 break;

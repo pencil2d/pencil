@@ -372,6 +372,7 @@ bool MoveTool::leavingThisTool()
         {
         case Layer::BITMAP:
         {
+            mScribbleArea->applySelectionChanges();
             if (transformHasBeenModified()) {
                 mEditor->backups()->saveStates();
                 mEditor->backups()->transform();

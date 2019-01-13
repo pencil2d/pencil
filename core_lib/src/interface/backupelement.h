@@ -94,6 +94,8 @@ public:
 
     void redoTransform();
     void undoTransform();
+
+    void handleEmptyKeyframe(BitmapImage* bitmap);
 };
 
 class AddVectorElement : public BackupElement
@@ -239,7 +241,6 @@ public:
 
     enum { Id = 2 };
     TransformElement(KeyFrame* backupKeyFrame,
-                     BitmapImage* backupBufferImage,
                      int backupLayerId,
                      int backupFramePos, QRectF backupSelection,
                      QRectF backupTempSelection, QTransform backupTransform,
@@ -258,8 +259,6 @@ public:
 
     BitmapImage* oldBitmap = nullptr;
     BitmapImage* newBitmap = nullptr;
-
-    BitmapImage* bufferImg = nullptr;
 
     VectorImage* oldVector = nullptr;
     VectorImage* newVector = nullptr;
