@@ -218,7 +218,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
 
         // Offset the sound to its correct position
         // See https://superuser.com/questions/716320/ffmpeg-placing-audio-at-specific-location
-        filterComplex += QString("[%1:a:0] adelay=%2S|%2S,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=mono,volume=1,apad=whole_len=%3[ad%1];")
+        filterComplex += QString("[%1:a:0] aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=mono,volume=1,adelay=%2S|%2S,apad=whole_len=%3[ad%1];")
                     .arg(clipCount).arg(qRound(44100.0 * (clip->pos() - 1) / fps)).arg(wholeLen);
         amergeInput += QString("[ad%1]").arg(clipCount);
         panChannelLayout += QString("c%1+").arg(clipCount);
