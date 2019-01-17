@@ -92,6 +92,7 @@ public:
     QSize size() { autoCrop(); return mBounds.size(); }
 
     QRect& bounds() { autoCrop(); return mBounds; }
+    void setBounds(QRect rect);
 
     /** Determines if the BitmapImage is minimally bounded.
      *

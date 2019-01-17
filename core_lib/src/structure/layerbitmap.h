@@ -28,7 +28,7 @@ class LayerBitmap : public Layer
 
 public:
     LayerBitmap(Object* object);
-    ~LayerBitmap();
+    ~LayerBitmap() override;
 
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -36,6 +36,14 @@ public:
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
+    QRect getUpdatedBounds(int frame);
+
+    // color layer methods
+    void setIsColorLayer(bool value) { mIsColorLayer = value; }
+    bool getIsColorLayer() { return mIsColorLayer; }
+    BitmapImage* toTransparentScan(int frame);
+    void toBlackLine(int frame, int area);
+    void toThinBlackLine(int frame);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
@@ -46,6 +54,7 @@ private:
     QString filePath(KeyFrame* key, const QDir& dataFolder) const;
     QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
+    bool mIsColorLayer = false;
 };
 
 #endif

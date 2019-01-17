@@ -649,6 +649,11 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
+void BitmapImage::setBounds(QRect rect)
+{
+    updateBounds(rect);
+}
+
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (mImage && !mImage->isNull())

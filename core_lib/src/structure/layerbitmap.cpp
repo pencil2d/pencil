@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QColor>
 #include "keyframe.h"
 #include "bitmapimage.h"
 
@@ -43,6 +44,170 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 {
     Q_ASSERT(frameNumber >= 1);
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+}
+
+QRect LayerBitmap::getUpdatedBounds(int frame)
+{
+    BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
+    qDebug() << "L: " << img->left() << ", R: " << img->right() << ", T: " << img->top() << ", B: " << img->bottom();
+    if (img == nullptr) return QRect(0, 0, 0, 0);
+    int aleft = 0, aright = 0, atop = 0, abottom = 0;
+
+    bool cont = true;
+    // find aleft
+    for (int x = img->left(); x < img->right(); x++)
+    {
+        if (!cont)
+            break;
+        for (int y = img->top(); y < img->bottom(); y++)
+        {
+            QColor c = img->pixel(x, y);
+            if (c.value() < 211)
+            {
+                aleft = x;
+                cont = false;
+//                qDebug() << aleft;
+            }
+        }
+    }
+    cont = true;
+
+    // find aright
+    for (int x = img->right(); x > img->left(); x--)
+    {
+        if (!cont)
+            break;
+        for (int y = img->top(); y < img->bottom(); y++)
+        {
+            QColor c = img->pixel(x, y);
+            if (c.value() < 211)
+            {
+                aright = x;
+                cont = false;
+//                qDebug() << aright;
+            }
+        }
+    }
+    cont = true;
+
+    // find atop
+    for (int y = img->top(); y < img->bottom(); y++)
+    {
+        if (!cont)
+            break;
+        for (int x = img->left(); x < img->right(); x++)
+        {
+            QColor c = img->pixel(x, y);
+            if (c.value() < 211)
+            {
+                atop = y;
+                cont = false;
+//                qDebug() << atop;
+            }
+        }
+    }
+    cont = true;
+
+    // find abottom
+    for (int y = img->bottom(); y > img->top(); y--)
+    {
+        if (!cont)
+            break;
+        for (int x = img->left(); x < img->right(); x++)
+        {
+            QColor c = img->pixel(x, y);
+            if (c.value() < 211)
+            {
+                abottom = y;
+                cont = false;
+//                qDebug() << abottom;
+            }
+        }
+    }
+    return QRect(aleft, atop, aright - aleft, abottom - atop);
+}
+
+BitmapImage *LayerBitmap::toTransparentScan(int frame)
+{
+    BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
+    qDebug() << "OLD bounds: " << img->bounds();
+    img->setBounds(getUpdatedBounds(frame));
+    Q_ASSERT(img != nullptr);
+    qDebug() << "New bounds: " << img->bounds();
+
+    int xOffset = img->left();
+    int yOffset = img->top();
+    QRgb transp = qRgba(0, 0, 0, 0);
+    for (int x = 0; x < img->width(); x++)
+    {
+        for (int y = 0; y < img->height(); y++)
+        {
+            QColor c = img->pixel(x + xOffset, y + yOffset);
+            if (c.value() > 210)
+                img->setPixel(x + xOffset, y + yOffset, transp);
+/*
+            if (c.value() > 50 && c.value() < 211)
+            {
+                QRgb color = qRgba(c.red(), c.green(), c.blue(), 255 - (c.value() - 50) * 255 / 160);
+                img->setPixel(x + xOffset, y + yOffset, color);
+            }
+*/
+        }
+    }
+    return img;
+}
+
+void LayerBitmap::toBlackLine(int frame, int area = 5)
+{
+    BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
+    int xOffset = img->left();
+    int yOffset = img->top();
+    QRgb black = qRgba(0, 1, 0, 255);
+
+    // make line black (0, 1, 0, 255)
+    for (int x = 0; x < img->width(); x++)
+    {
+        for (int y = 0; y < img->height(); y++)
+        {
+            QColor c = img->pixel(x + xOffset, y + yOffset);
+            if (c.value() < 211)
+                img->setPixel(x + xOffset, y + yOffset, black);
+        }
+    }
+
+    // fill areas size 5 or less with black
+    QVector<QPoint> points;
+    points.clear();
+    for (int x = 0; x < img->width(); x++)
+    {
+        for (int y = 0; y < img->height(); y++)
+        {
+            if (qAlpha(img->pixel(x,y)) == 255)
+            {
+                points.append(QPoint(x + xOffset, y + yOffset));
+                // hold øje med om det er et hul osv...
+            }
+        }
+    }
+}
+
+void LayerBitmap::toThinBlackLine(int frame)
+{
+    BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
+    int xOffset = img->left();
+    int yOffset = img->top();
+    QRgb thinline = qRgba(0, 1, 0, 255);
+    for (int x = 0; x < img->width(); x++)
+    {
+        for (int y = 0; y < img->height(); y++)
+        {
+            QColor c = img->pixel(x + xOffset, y + yOffset);
+            if (c.value() > 210)
+            {
+
+            }
+        }
+    }
 }
 
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
