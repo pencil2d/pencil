@@ -45,6 +45,7 @@ public:
     ~TimeLineCells();
 
     int getLayerNumber(int y);
+    int getInbetweenLayerNumber(int y);
     int getLayerY(int layerNumber);
     int getFrameNumber(int x);
     int getFrameX(int frameNumber);
@@ -107,7 +108,6 @@ private:
 
     int mFromLayer = 0;
     int mToLayer   = 1;
-    int mDragType  = 1;
     int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
