@@ -136,6 +136,20 @@ int TimeLineCells::getLayerNumber(int y)
     return layerNumber;
 }
 
+int TimeLineCells::getInbetweenLayerNumber(int y) {
+    int layerNumber = getLayerNumber(y);
+    // Round the layer number towards the drag start
+    if(layerNumber != mFromLayer) {
+        if(getMouseMoveY() > 0 && y < getLayerY(layerNumber) + getLayerHeight() / 2) {
+            layerNumber++;
+        }
+        else if(getMouseMoveY() < 0 && y > getLayerY(layerNumber) + getLayerHeight() / 2) {
+            layerNumber--;
+        }
+    }
+    return layerNumber;
+}
+
 int TimeLineCells::getLayerY(int layerNumber)
 {
     return mOffsetY + (mEditor->object()->getLayerCount() - 1 - layerNumber - mLayerOffset)*mLayerHeight;
@@ -327,11 +341,11 @@ void TimeLineCells::paintLayerGutter(QPainter& painter)
     painter.setPen(Qt::black);
     if (getMouseMoveY() > mLayerDetatchThreshold)
     {
-        painter.drawRect(0, getLayerY(getLayerNumber(mEndY))+mLayerHeight, width(), 2);
+        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+mLayerHeight, width(), 2);
     }
     else
     {
-        painter.drawRect(0, getLayerY(getLayerNumber(mEndY)), width(), 2);
+        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY)), width(), 2);
     }
 }
 
@@ -481,7 +495,6 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             else
             {
                 mEditor->layers()->setCurrentLayer(layerNumber);
-                mDragType = mEditor->layers()->currentLayer()->type();
             }
         }
         if (layerNumber == -1)
@@ -649,7 +662,6 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
     primaryButton = Qt::NoButton;
     mEndY = mStartY;
-    emit mouseMovedY(0);
     mTimeLine->scrubbing = false;
     int frameNumber = getFrameNumber(event->pos().x());
     if (frameNumber < 1) frameNumber = -1;
@@ -669,51 +681,23 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {
-
-        mToLayer = getLayerNumber(event->pos().y());
+        mToLayer = getInbetweenLayerNumber(event->pos().y());
         if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
         {
-            // a temporary layer for swapping layers, correct type
-            if (mDragType == 1)
-            {
-                LayerBitmap* layer = mEditor->layers()->createBitmapLayer("tmp");
-                Q_UNUSED(layer);
-            }
-            if (mDragType == 2)
-            {
-                LayerVector* layer = mEditor->layers()->createVectorLayer("tmp");
-                Q_UNUSED(layer);
-            }
-            if (mDragType == 4)
-            {
-                LayerSound* layer = mEditor->layers()->createSoundLayer("tmp");
-                Q_UNUSED(layer);
-            }
-            if (mDragType == 5)
-            {
-                LayerCamera* layer = mEditor->layers()->createCameraLayer("tmp");
-                Q_UNUSED(layer);
-            }
-            // Drag mFromLayer to tmp (layer at top)
-            int tmp = mEditor->layers()->count() - 1;
-            mEditor->moveLayer(mFromLayer, tmp);
-            // Drag the rest down or up
-            if (mToLayer < mFromLayer)  // drag rest up
+            // Bubble the from layer up or down to the to layer
+            if (mToLayer < mFromLayer) // bubble up
             {
                 for (int i = mFromLayer - 1; i >= mToLayer; i--)
-                    mEditor->moveLayer(i, i + 1);
+                    mEditor->swapLayers(i, i + 1);
             }
-            else                        // drag rest down
+            else // bubble down
             {
                 for (int i = mFromLayer + 1; i <= mToLayer; i++)
-                    mEditor->moveLayer(i, i - 1);
+                    mEditor->swapLayers(i, i - 1);
             }
-            // Move tmp to mToLayer, and delete tmp
-            mEditor->moveLayer(tmp, mToLayer);
-            mEditor->layers()->deleteLayer(tmp);
-            mEditor->layers()->setCurrentLayer(mToLayer);
         }
     }
+    emit mouseMovedY(0);
     mTimeLine->updateContent();
 }
 
