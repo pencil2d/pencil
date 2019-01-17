@@ -50,7 +50,6 @@ class LayerCamera : public Layer
     Q_OBJECT
 
 public:
-    // constructor
     LayerCamera(Object* object);
     ~LayerCamera();
 

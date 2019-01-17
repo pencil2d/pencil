@@ -222,7 +222,7 @@ TEST_CASE("ViewManager with camera layers")
     Object* object = new Object;
     Editor* editor = new Editor;
     editor->setObject(object);
-
+    
     SECTION("Empty Camera Layer")
     {
         ViewManager v(editor);
@@ -263,34 +263,33 @@ TEST_CASE("ViewManager with camera layers")
         editor->object()->deleteLayer(0);
     }
 
+    SECTION("Set CameraLayer And then remove it")
+    {
+        ViewManager v(editor);
+        v.init();
+
+        QPointF originalOffset(0, 100);
+        v.translate(originalOffset.x(), originalOffset.y());
+
+        LayerCamera* layerCam = editor->object()->addNewCameraLayer();
+
+        auto cam = layerCam->getCameraAtFrame(1);
+        cam->translate(100, 0);
+
+        layerCam->addKeyFrame(5, new Camera(QPoint(200, 0), 0, 2.0));
+
+        v.setCameraLayer(layerCam);
+        v.setCameraLayer(nullptr);
+
+        REQUIRE(v.translation() == originalOffset);
+    }
+
     delete editor;
 }
 
+
+
 /*
-void TestViewManager::testCameraLayerWithTwoKeys()
-{
-    
-}
-
-void TestViewManager::testSetCameraLayerAndRemoveIt()
-{
-    ViewManager v(mEditor);
-    v.setEditor(mEditor);
-    v.init();
-
-    v.translate(0, 100);
-
-    // set a camera layer and then remove it
-    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
-    auto k = static_cast<Camera*>(layerCam->getKeyFrameAt(1));
-    k->translate(100, 0);
-
-    v.setCameraLayer(layerCam);
-    v.setCameraLayer(nullptr);
-
-    REQUIRE(v.translation(), QPointF(0, 100));
-}
-
 void TestViewManager::testCanvasSize()
 {
 	auto v = std::make_shared<ViewManager>();

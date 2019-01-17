@@ -512,8 +512,8 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     {
         ErrorDialog errorDialog(tr("Could not open file"),
                                 tr("The file you have selected is a directory, so we are unable to open it. "
-                                   "If you are are trying to open a project that uses the old structure, please "
-                                   "open the file ending with .pcl, not the data folder."),
+                                   "If you are are trying to open a project that uses the old structure, "
+                                   "please open the file ending with .pcl, not the data folder."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
         errorDialog.exec();
         return false;
@@ -521,8 +521,8 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     if (!fileInfo.exists())
     {
         ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("The file you have selected does not exist, so we are unable to open it. Please check "
-                                   "to make sure that you've entered the correct path and that the file is accessible and try again."),
+                                tr("The file you have selected does not exist, so we are unable to open it. "
+                                   "Please make sure that you've entered the correct path and that the file is accessible and try again."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
         errorDialog.exec();
         return false;
