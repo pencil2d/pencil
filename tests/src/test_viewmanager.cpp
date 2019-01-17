@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 
-TEST_CASE("ViewManager")
+TEST_CASE("ViewManager: Init")
 {
     Object* object = new Object;
     Editor* editor = new Editor;
@@ -38,7 +38,7 @@ TEST_CASE("ViewManager")
     delete editor;
 }
 
-TEST_CASE("ViewManager::translation")
+TEST_CASE("ViewManager: Translations")
 {
     Object* object = new Object;
     Editor* editor = new Editor;
@@ -68,7 +68,7 @@ TEST_CASE("ViewManager::translation")
     delete editor;
 }
 
-TEST_CASE("ViewManager::rotate()")
+TEST_CASE("ViewManager: Rotate")
 {
     Object* object = new Object;
     Editor* editor = new Editor;
@@ -113,7 +113,7 @@ TEST_CASE("ViewManager::rotate()")
     delete editor;
 }
 
-TEST_CASE("ViewManager::scale")
+TEST_CASE("ViewManager: Scaling")
 {
     Object* object = new Object;
     Editor* editor = new Editor;
@@ -172,13 +172,13 @@ TEST_CASE("ViewManager::scale")
     delete editor;
 }
 
-TEST_CASE("ViewManager mixed translations")
+TEST_CASE("ViewManager: Mixed tranformations")
 {
     Object* object = new Object;
     Editor* editor = new Editor;
     editor->setObject(object);
 
-    SECTION("translate & rotate")
+    SECTION("translate + rotate")
     {
         ViewManager v(editor);
         v.init();
@@ -194,7 +194,7 @@ TEST_CASE("ViewManager mixed translations")
     delete editor;
 }
 
-TEST_CASE("ViewManager::ResetView()")
+TEST_CASE("ViewManager: Reset view")
 {
     Object* object = new Object;
     Editor* editor = new Editor;
@@ -217,7 +217,7 @@ TEST_CASE("ViewManager::ResetView()")
     delete editor;
 }
 
-TEST_CASE("ViewManager with camera layers")
+TEST_CASE("ViewManager: working with camera layers")
 {
     Object* object = new Object;
     Editor* editor = new Editor;
@@ -288,21 +288,46 @@ TEST_CASE("ViewManager with camera layers")
 }
 
 
-
-/*
-void TestViewManager::testCanvasSize()
+TEST_CASE("ViewManager: canvas size")
 {
-	auto v = std::make_shared<ViewManager>();
-	v->setCanvasSize( QSize( 100, 200 ) );
+    Object* object = new Object;
+    Editor* editor = new Editor;
+    editor->setObject(object);
 
-	QTransform t = v->getView();
+    SECTION("Canvas size(100, 200)")
+    {
+        ViewManager v(editor);
+        v.init();
+        v.setCanvasSize(QSize(100, 200));
 
-	REQUIRE( t.dx(), 50.0 );
-	REQUIRE( t.dy(), 100.0 );
-	REQUIRE( t.isRotating(), false );
-	REQUIRE( t.isScaling(), false );
+        QTransform t = v.getView();
+
+        REQUIRE(t.dx() == 50.0);  // should be half of the canvas width
+        REQUIRE(t.dy() == 100.0); // should be half of the canvas height
+        REQUIRE(t.isRotating() == false);
+        REQUIRE(t.isScaling() == false);
+    }
+
+    SECTION("Canvas size(480, 360) + view translations")
+    {
+        ViewManager v(editor);
+        v.init();
+        v.setCanvasSize(QSize(480, 360));
+
+        v.translate(200, 200);
+
+        QTransform t = v.getView();
+
+        REQUIRE(t.dx() == 240.0 + 200.0); // should be half of the canvas width + translation x offset
+        REQUIRE(t.dy() == 180.0 + 200.0); // should be half of the canvas height + translation y offset
+        REQUIRE(t.isRotating() == false);
+        REQUIRE(t.isScaling() == false);
+    }
+
+    delete editor;
 }
 
+/*
 void TestViewManager::testLoadViewFromObject1()
 {
     ViewManager v(mEditor);
