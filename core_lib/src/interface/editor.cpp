@@ -979,7 +979,7 @@ void Editor::moveLayer(int i, int j)
     mObject->moveLayer(i, j);
     if (j < i)
     {
-        layers()->setCurrentLayer(j);
+        layers()->setCurrentLayer(j + 1);
     }
     else
     {
