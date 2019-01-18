@@ -54,6 +54,8 @@ private:
     QString filePath(KeyFrame* key, const QDir& dataFolder) const;
     QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
+
+    int mThreshold = 200;
     bool mIsColorLayer = false;
 };
 

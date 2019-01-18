@@ -49,7 +49,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 QRect LayerBitmap::getUpdatedBounds(int frame)
 {
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
-    qDebug() << "L: " << img->left() << ", R: " << img->right() << ", T: " << img->top() << ", B: " << img->bottom();
+//    qDebug() << "L: " << img->left() << ", R: " << img->right() << ", T: " << img->top() << ", B: " << img->bottom();
     if (img == nullptr) return QRect(0, 0, 0, 0);
     int aleft = 0, aright = 0, atop = 0, abottom = 0;
 
@@ -66,7 +66,6 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
             {
                 aleft = x;
                 cont = false;
-//                qDebug() << aleft;
             }
         }
     }
@@ -84,7 +83,6 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
             {
                 aright = x;
                 cont = false;
-//                qDebug() << aright;
             }
         }
     }
@@ -102,7 +100,6 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
             {
                 atop = y;
                 cont = false;
-//                qDebug() << atop;
             }
         }
     }
@@ -120,7 +117,6 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
             {
                 abottom = y;
                 cont = false;
-//                qDebug() << abottom;
             }
         }
     }
@@ -143,15 +139,8 @@ BitmapImage *LayerBitmap::toTransparentScan(int frame)
         for (int y = 0; y < img->height(); y++)
         {
             QColor c = img->pixel(x + xOffset, y + yOffset);
-            if (c.value() > 210)
+            if (c.value() > mThreshold)
                 img->setPixel(x + xOffset, y + yOffset, transp);
-/*
-            if (c.value() > 50 && c.value() < 211)
-            {
-                QRgb color = qRgba(c.red(), c.green(), c.blue(), 255 - (c.value() - 50) * 255 / 160);
-                img->setPixel(x + xOffset, y + yOffset, color);
-            }
-*/
         }
     }
     return img;
