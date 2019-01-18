@@ -57,6 +57,8 @@ public:
 
     void restoreKey(int layerId, int frame, KeyFrame* keyFrame);
 
+    static int getActiveFrameIndex(Layer* layer, int frameIndex, bool usingPreviousFrameAction);
+
     const BackupElement* currentBackup();
 
     QUndoStack* undoStack() { return mUndoStack; }
@@ -67,7 +69,6 @@ Q_SIGNALS:
 private:
     void restoreKey(BackupElement* element);
     void restoreLayerKeys(BackupElement* element);
-    void handleDrawingOnEmptyFrame();
 
     QUndoStack* mUndoStack;
 

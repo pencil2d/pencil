@@ -71,7 +71,8 @@ public:
     int oldLayerIndex = 0;
     int newLayerIndex = 0;
 
-    int frameIndex = 0;
+    int oldFrameIndex = 0;
+    int newFrameIndex = 0;
     int previousFrameIndex = 0;
 
     int otherFrameIndex = 0;
@@ -94,26 +95,24 @@ public:
 
     void redoTransform();
     void undoTransform();
-
-    void handleEmptyKeyframe(BitmapImage* bitmap);
 };
 
 class AddVectorElement : public BackupElement
 {
 public:
     AddVectorElement(VectorImage* backupVector,
+                     int backupFrameIndex,
                      int backupLayerId,
                      QString description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
     int newLayerIndex = 0;
-    int frameIndex = 0;
-    int otherFrameIndex = 0;
+    int oldFrameIndex = 0;
+    int newFrameIndex = 0;
 
     int newLayerId = 0;
     int oldLayerId = 0;
-    int previousFrameIndex = 0;
     int emptyFrameSettingVal = -1;
 
     VectorImage* oldVector = nullptr;
@@ -152,6 +151,7 @@ public:
     bool oldKeyExisted = false;
 
     KeyFrame* newKey = nullptr;
+    int emptyFrameSettingVal = -1;
 
     bool isFirstRedo = true;
 

@@ -159,6 +159,7 @@ void BackupManager::vector(QString description)
 {
     if (!mVector) { return; }
     AddVectorElement* element = new AddVectorElement(mVector,
+                                                     mFrameIndex,
                                                      mLayerId,
                                                      description,
                                                      editor());
@@ -233,6 +234,25 @@ void BackupManager::transform()
                                                      editor());
     mUndoStack->push(element);
     emit updateBackup();
+}
+
+
+/**
+ * @brief Get the frame index for the keyframe which is being painted to
+ *
+ * @param layer
+ * @param frameIndex <- current frame
+ * @param usingPreviousFrameAction <- This is whether DRAW_ON_EMPTY_FRAME_ACTION is active
+ * @return frameindex
+ */
+int BackupManager::getActiveFrameIndex(Layer* layer, int frameIndex, bool usingPreviousFrameAction) {
+    if (!layer->keyExists(frameIndex)) {
+        if (usingPreviousFrameAction)
+        {
+            frameIndex = layer->getPreviousKeyFramePosition(frameIndex);
+        }
+    }
+    return frameIndex;
 }
 
 void BackupManager::restoreLayerKeys(BackupElement* backupElement)
@@ -524,7 +544,12 @@ void BackupManager::saveStates()
     mBufferImage = editor()->getScribbleArea()->mBufferImg->clone();
     mLayer = editor()->layers()->currentLayer();
     mLayerId = mLayer->id();
+
+    int emptyFrameSettingVal = editor()->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
+
     mFrameIndex = editor()->currentFrame();
+    mFrameIndex = BackupManager::getActiveFrameIndex(mLayer, mFrameIndex, emptyFrameSettingVal);
+
     mIsSelected = editor()->getScribbleArea()->isSomethingSelected();
     mSelectionRect = editor()->getScribbleArea()->mySelection;
     mTempSelectionRect = editor()->getScribbleArea()->myTempTransformedSelection;
@@ -554,8 +579,6 @@ void BackupManager::saveStates()
         case Layer::BITMAP:
         {
             mBitmap = static_cast<BitmapImage*>(mKeyframe);
-            handleDrawingOnEmptyFrame();
-
             break;
         }
         case Layer::VECTOR:
@@ -575,42 +598,5 @@ void BackupManager::saveStates()
         }
         default:
             break;
-    }
-}
-
-void BackupManager::handleDrawingOnEmptyFrame()
-{
-
-    int emptyFrameSettingVal = editor()->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
-
-    if (emptyFrameSettingVal == DrawOnEmptyFrameAction::KEEP_DRAWING_ON_PREVIOUS_KEY)
-    {
-        int previousFramePos = mLayer->getPreviousKeyFramePosition(mFrameIndex);
-        switch(mLayer->type())
-        {
-            case Layer::BITMAP:
-
-                mBitmap = static_cast<LayerBitmap*>(mLayer)->getBitmapImageAtFrame(previousFramePos)->clone();
-                mKeyframe = mBitmap;
-
-                if (mIsSelected) {
-
-                    // when a selection has been made, the moved image is not part of the bitmap until it has been applied
-                    // here we make sure that the bitmap to backup will include the selected part too.
-                    BitmapImage* tImage = mBitmap->transformed(mSelectionRect.toRect(),
-                                                              mSelectionTransform,
-                                                              false).clone();
-
-                    mBitmap->clear(mSelectionRect.toRect());
-                    mBitmap->paste(tImage, QPainter::CompositionMode_SourceOver);
-                }
-                break;
-            case Layer::VECTOR:
-                mVector = static_cast<LayerVector*>(mLayer)->getVectorImageAtFrame(previousFramePos)->clone();
-                mKeyframe = mVector;
-                break;
-            default:
-                break;
-        }
     }
 }
