@@ -61,6 +61,7 @@ GNU General Public License for more details.
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
+#include "bitmapcoloring.h"
 
 //#include "preview.h"
 #include "timeline2.h"
@@ -161,6 +162,9 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
+    mBitmapColoring = new BitmapColoring(this);
+    mBitmapColoring->setObjectName("BitmapColoring");
+
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -174,7 +178,8 @@ void MainWindow2::createDockWidgets()
         << mColorPalette
         << mDisplayOptionWidget
         << mToolOptions
-        << mToolBox;
+        << mToolBox
+        << mBitmapColoring;
 
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
@@ -194,6 +199,8 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorBox);
     addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
+    addDockWidget(Qt::RightDockWidgetArea, mBitmapColoring);
+    mBitmapColoring->hide();
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
@@ -345,7 +352,8 @@ void MainWindow2::createMenus()
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction(),
-        mColorInspector->toggleViewAction()
+        mColorInspector->toggleViewAction(),
+        mBitmapColoring->toggleViewAction()
     };
 
     for (QAction* action : actions)
