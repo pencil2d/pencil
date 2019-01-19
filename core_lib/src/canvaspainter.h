@@ -31,6 +31,12 @@ class ViewManager;
 
 struct CanvasPainterOptions
 {
+    enum VISIBILITY {
+        HIDDEN = 0,
+        RELATIVE = 1,
+        FULL = 2
+    };
+
     bool  bPrevOnionSkin = false;
     bool  bNextOnionSkin = false;
     int   nPrevOnionSkinCount = 3;
@@ -46,8 +52,8 @@ struct CanvasPainterOptions
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
-    int   nShowAllLayers = 3;
     bool  bIsOnionAbsolute = false;
+    VISIBILITY elayerVisibility = RELATIVE;
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
@@ -87,6 +93,7 @@ private:
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
 
+    void applyRelativeLayerTransparency(float& startOpacity, int layerIndex, QPainter& painter);
 private:
     CanvasPainterOptions mOptions;
 

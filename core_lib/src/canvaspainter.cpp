@@ -352,8 +352,15 @@ void CanvasPainter::paintTransformedSelection(QPainter& painter)
 
 void CanvasPainter::paintCurrentFrame(QPainter& painter)
 {
-    //bool isCamera = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
     painter.setOpacity(1.0);
+
+    float opacity = 1/mObject->getLayerCount();
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+
+    bool isCamera = false;
+    if (layer->type() == Layer::CAMERA) {
+        isCamera = true;
+    }
 
     for (int i = 0; i < mObject->getLayerCount(); ++i)
     {
@@ -362,7 +369,13 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
         if (layer->visible() == false)
             continue;
 
-        if (i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0)
+        if (mOptions.elayerVisibility == CanvasPainterOptions::RELATIVE) {
+            if (!isCamera) {
+                applyRelativeLayerTransparency(opacity, i, painter);
+            }
+        }
+
+        if (i == mCurrentLayerIndex || mOptions.elayerVisibility > CanvasPainterOptions::HIDDEN)
         {
             switch (layer->type())
             {
@@ -371,6 +384,27 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
             default: break;
             }
         }
+    }
+}
+
+/**
+ * @brief Adjusts the transparency of layers beneath and above the current index
+ * @param startOpacity - usually 1.0
+ * @param layerIndex
+ * @param painter
+ */
+void CanvasPainter::applyRelativeLayerTransparency(float& startOpacity, int layerIndex, QPainter &painter) {
+    if (layerIndex == mCurrentLayerIndex) {
+        startOpacity = 1.0;
+    } else if (layerIndex > mCurrentLayerIndex) {
+       startOpacity = startOpacity - 0.2;
+    } else if (layerIndex < mCurrentLayerIndex) {
+        startOpacity = startOpacity - 0.2;
+    }
+    painter.setOpacity(startOpacity);
+
+    if (startOpacity <= 0) {
+        startOpacity = 0;
     }
 }
 
