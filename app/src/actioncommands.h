@@ -74,9 +74,8 @@ public:
     Status addNewSoundLayer();
     Status deleteCurrentLayer();
     QString nameSuggest(QString s);
-    void setHiddenLayerVisibility();
-    void setRelativeLayerVisibility();
-    void setFullLayerVisibility();
+
+    void setLayerVisibilityIndex(int index);
 
     // Help
     void help();

@@ -271,9 +271,12 @@ void MainWindow2::createMenus()
     connect(ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer);
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
 
-    connect(ui->actionLayerHidden, &QAction::triggered, mCommands, &ActionCommands::setHiddenLayerVisibility);
-    connect(ui->actionLayerRelative, &QAction::triggered, mCommands, &ActionCommands::setRelativeLayerVisibility);
-    connect(ui->actionLayerFull, &QAction::triggered, mCommands, &ActionCommands::setFullLayerVisibility);
+
+    QList<QAction*> visibilityActions = ui->menuOverall_Layer_Visibility->actions();
+    for (int i = 0; i < visibilityActions.size(); i++) {
+        QAction* action = visibilityActions[i];
+        connect(action, &QAction::triggered, [=] { mCommands->setLayerVisibilityIndex(i % visibilityActions.size()); });
+    }
 
     /// --- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
