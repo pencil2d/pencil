@@ -468,7 +468,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         {
             if (event->pos().x() < 15)
             {
-                mEditor->toggleShowAllLayers();
+                if (event->button() == Qt::LeftButton) {
+                    mEditor->increaseLayerVisibilityIndex();
+                } else if (event->button() == Qt::RightButton) {
+                    mEditor->decreaseLayerVisibilityIndex();
+                }
             }
         }
         break;
@@ -661,7 +665,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     int layerNumber = getLayerNumber(event->pos().y());
 
     // -- short scrub --
-    if (event->pos().y() < 20)
+    if (event->pos().y() < 20 && event->pos().x() > 20)
     {
         mPrefs->set(SETTING::SHORT_SCRUB, !mbShortScrub);
     }

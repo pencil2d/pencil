@@ -86,7 +86,7 @@ public:
 
     void setEffect( SETTING e, bool isOn );
 
-    int showAllLayers() const { return mShowAllLayers; }
+    int getLayerVisibilityIndex() const { return mLayerVisibility; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
@@ -152,7 +152,9 @@ public slots:
     void setCurveSmoothing( int );
     void toggleThinLines();
     void toggleOutlines();
-    void toggleShowAllLayers();
+    void increaseLayerVisibilityIndex();
+    void decreaseLayerVisibilityIndex();
+    void setLayerVisibility(int visibility);
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
@@ -229,7 +231,7 @@ private:
     bool mIsSimplified  = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
-    int  mShowAllLayers = 1;
+    int  mLayerVisibility = 1;
     bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors   = true;

@@ -1290,7 +1290,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     o.bAxis                = false;
     o.bThinLines           = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines            = mPrefs->isOn(SETTING::OUTLINES);
-    o.elayerVisibility     = static_cast<CanvasPainterOptions::VISIBILITY>(mShowAllLayers);
+    o.elayerVisibility     = static_cast<CanvasPainterOptions::VISIBILITY>(mLayerVisibility);
     o.bIsOnionAbsolute     = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     o.scaling              = mEditor->view()->scaling();
     o.onionWhilePlayback   = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
@@ -1990,12 +1990,28 @@ void ScribbleArea::toggleOutlines()
     setEffect(SETTING::OUTLINES, mIsSimplified);
 }
 
-void ScribbleArea::toggleShowAllLayers()
+void ScribbleArea::setLayerVisibility(int visibility)
 {
-    mShowAllLayers++;
-    if (mShowAllLayers == 3)
+    mLayerVisibility = visibility;
+    updateAllFrames();
+}
+
+void ScribbleArea::increaseLayerVisibilityIndex()
+{
+    mLayerVisibility++;
+    if (mLayerVisibility == 3)
     {
-        mShowAllLayers = 0;
+        mLayerVisibility = 0;
+    }
+    updateAllFrames();
+}
+
+void ScribbleArea::decreaseLayerVisibilityIndex()
+{
+    mLayerVisibility--;
+    if (mLayerVisibility == -1)
+    {
+        mLayerVisibility = 2;
     }
     updateAllFrames();
 }

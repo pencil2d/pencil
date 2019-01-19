@@ -697,6 +697,20 @@ QString ActionCommands::nameSuggest(QString s)
     return tmp;
 }
 
+void ActionCommands::setHiddenLayerVisibility()
+{
+    mEditor->setLayerVisibility(0);
+}
+
+void ActionCommands::setRelativeLayerVisibility()
+{
+    mEditor->setLayerVisibility(1);
+}
+
+void ActionCommands::setFullLayerVisibility()
+{
+    mEditor->setLayerVisibility(2);
+}
 
 void ActionCommands::help()
 {

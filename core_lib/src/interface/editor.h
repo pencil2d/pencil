@@ -91,6 +91,11 @@ public:
 
     void scrubTo(int frameNumber);
 
+
+    /**
+     * @brief The visiblity value should match any of the VISIBILITY enum values
+     */
+    void setLayerVisibility(int visibility);
     int  allLayers();
     bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
     bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
@@ -148,7 +153,8 @@ public: //slots
 
     void paste();
     void clipboardChanged();
-    void toggleShowAllLayers();
+    void increaseLayerVisibilityIndex();
+    void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
 
     void toogleOnionSkinType();

@@ -580,14 +580,25 @@ void Editor::clipboardChanged()
     }
 }
 
-int Editor::allLayers()
-{
-    return mScribbleArea->showAllLayers();
+void Editor::setLayerVisibility(int visibility) {
+    mScribbleArea->setLayerVisibility(visibility);
+    emit updateTimeLine();
 }
 
-void Editor::toggleShowAllLayers()
+int Editor::allLayers()
 {
-    mScribbleArea->toggleShowAllLayers();
+    return mScribbleArea->getLayerVisibilityIndex();
+}
+
+void Editor::increaseLayerVisibilityIndex()
+{
+    mScribbleArea->increaseLayerVisibilityIndex();
+    emit updateTimeLine();
+}
+
+void Editor::decreaseLayerVisibilityIndex()
+{
+    mScribbleArea->decreaseLayerVisibilityIndex();
     emit updateTimeLine();
 }
 

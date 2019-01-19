@@ -203,12 +203,22 @@
     <property name="title">
      <string>Layer</string>
     </property>
+    <widget class="QMenu" name="menuOverall_Layer_Visibility">
+     <property name="title">
+      <string>Overall Layer Visibility</string>
+     </property>
+     <addaction name="actionLayerHidden"/>
+     <addaction name="actionLayerRelative"/>
+     <addaction name="actionLayerFull"/>
+    </widget>
     <addaction name="actionNew_Bitmap_Layer"/>
     <addaction name="actionNew_Vector_Layer"/>
     <addaction name="actionNew_Sound_Layer"/>
     <addaction name="actionNew_Camera_Layer"/>
     <addaction name="separator"/>
     <addaction name="actionDelete_Current_Layer"/>
+    <addaction name="separator"/>
+    <addaction name="menuOverall_Layer_Visibility"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -959,6 +969,21 @@
   <action name="actionZoom100">
    <property name="text">
     <string>100%</string>
+   </property>
+  </action>
+  <action name="actionLayerHidden">
+   <property name="text">
+    <string>Hidden</string>
+   </property>
+  </action>
+  <action name="actionLayerRelative">
+   <property name="text">
+    <string>Relative</string>
+   </property>
+  </action>
+  <action name="actionLayerFull">
+   <property name="text">
+    <string>Full</string>
    </property>
   </action>
  </widget>

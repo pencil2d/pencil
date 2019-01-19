@@ -271,6 +271,10 @@ void MainWindow2::createMenus()
     connect(ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer);
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
 
+    connect(ui->actionLayerHidden, &QAction::triggered, mCommands, &ActionCommands::setHiddenLayerVisibility);
+    connect(ui->actionLayerRelative, &QAction::triggered, mCommands, &ActionCommands::setRelativeLayerVisibility);
+    connect(ui->actionLayerFull, &QAction::triggered, mCommands, &ActionCommands::setFullLayerVisibility);
+
     /// --- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
@@ -1184,6 +1188,10 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionNew_Camera_Layer->setShortcut(cmdKeySeq(CMD_NEW_CAMERA_LAYER));
     ui->actionNew_Sound_Layer->setShortcut(cmdKeySeq(CMD_NEW_SOUND_LAYER));
     ui->actionDelete_Current_Layer->setShortcut(cmdKeySeq(CMD_DELETE_CUR_LAYER));
+
+    ui->actionLayerHidden->setShortcut(cmdKeySeq(CMD_HIDDEN_LAYER_VISIBILITY));
+    ui->actionLayerRelative->setShortcut(cmdKeySeq(CMD_RELATIVE_LAYER_VISIBILITY));
+    ui->actionLayerFull->setShortcut(cmdKeySeq(CMD_FULL_LAYER_VISIBILITY));
 
     mToolBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOLBOX));
     mToolOptions->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOL_OPTIONS));
