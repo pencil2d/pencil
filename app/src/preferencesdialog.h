@@ -114,6 +114,7 @@ public slots:
     void scrubChanged(int);
     void playbackStateChanged(int);
     void drawEmptyKeyRadioButtonToggled(bool);
+    void layerVisibilityChanged(int);
 
 private:
     Ui::TimelinePage* ui = nullptr;

@@ -107,6 +107,8 @@ private:
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
 
+    float mOpacityThreshold = 0;
+
     QImage mScaledBitmap;
 
     bool bMultiLayerOnionSkin = false;

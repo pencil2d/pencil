@@ -125,6 +125,46 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="LayerVisibilityBox">
+     <property name="title">
+      <string>Layer Visibility</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="labelVisibility">
+        <property name="text">
+         <string>When layer visibility is relative (gray dot)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QSlider" name="visibilitySlider">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="visibilitySpinbox">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="playbackBox">
      <property name="minimumSize">
       <size>

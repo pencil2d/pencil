@@ -297,6 +297,9 @@ TimelinePage::TimelinePage()
     connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &TimelinePage::playbackStateChanged);
+    connect(ui->visibilitySlider, &QSlider::valueChanged, this, &TimelinePage::layerVisibilityChanged);
+    connect(ui->visibilitySpinbox, spinBoxValueChange, this, &TimelinePage::layerVisibilityChanged);
+    ui->visibilitySpinbox->setSuffix(" %");
 }
 
 TimelinePage::~TimelinePage()
@@ -335,6 +338,13 @@ void TimelinePage::updateValues()
 
     SignalBlocker b7(ui->onionWhilePlayback);
     ui->onionWhilePlayback->setChecked(mManager->getInt(SETTING::ONION_WHILE_PLAYBACK));
+
+    int convertedVisibilityThreshold = mManager->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD)*100;
+    SignalBlocker b8(ui->visibilitySlider);
+    ui->visibilitySlider->setValue(convertedVisibilityThreshold);
+
+    SignalBlocker b9(ui->visibilitySpinbox);
+    ui->visibilitySpinbox->setValue(convertedVisibilityThreshold);
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -355,6 +365,19 @@ void TimelinePage::scrubChanged(int value)
 void TimelinePage::playbackStateChanged(int value)
 {
     mManager->set(SETTING::ONION_WHILE_PLAYBACK, value);
+}
+
+void TimelinePage::layerVisibilityChanged(int value)
+{
+    float percentage = static_cast<float>(value/100.0f);
+    mManager->set(SETTING::LAYER_VISIBILITY_THRESHOLD, percentage);
+
+    SignalBlocker b8(ui->visibilitySlider);
+
+    ui->visibilitySlider->setValue(percentage*100);
+
+    SignalBlocker b9(ui->visibilitySpinbox);
+    ui->visibilitySpinbox->setValue(percentage*100);
 }
 
 void TimelinePage::drawEmptyKeyRadioButtonToggled(bool)

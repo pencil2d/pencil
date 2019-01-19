@@ -77,6 +77,9 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     mCurrentLayerIndex = layer;
     mFrameNumber = frame;
 
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mOpacityThreshold = settings.value("LayerVisibilityThreshold").toFloat();
+
     //QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
     //QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
     //QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
@@ -394,12 +397,13 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
  * @param painter
  */
 void CanvasPainter::applyRelativeLayerTransparency(float& startOpacity, int layerIndex, QPainter &painter) {
+
     if (layerIndex == mCurrentLayerIndex) {
         startOpacity = 1.0;
     } else if (layerIndex > mCurrentLayerIndex) {
-       startOpacity = startOpacity - 0.2;
+       startOpacity = startOpacity - (1 - mOpacityThreshold);
     } else if (layerIndex < mCurrentLayerIndex) {
-        startOpacity = startOpacity - 0.2;
+        startOpacity = startOpacity - (1 - mOpacityThreshold);
     }
     painter.setOpacity(startOpacity);
 

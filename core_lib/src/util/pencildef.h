@@ -218,6 +218,7 @@ enum StabilizationLevel
 #define SETTING_ONION_NEXT_FRAMES_NUM   "OnionNextFramesNum"
 #define SETTING_ONION_WHILE_PLAYBACK    "OnionWhilePlayback"
 #define SETTING_ONION_TYPE              "OnionType"
+#define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"
 
