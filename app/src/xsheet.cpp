@@ -49,6 +49,7 @@ Xsheet::~Xsheet()
 
 void Xsheet::newOpenScene()
 {
+    if (isHidden()) return;
     erasePapa();
     updateXsheet();
 }
@@ -90,6 +91,7 @@ void Xsheet::showScrub(int frame)
 
 void Xsheet::updateScrub(int frame)
 {
+    if (isHidden()) return;
     mTableItem = new QTableWidgetItem(QString::number(mCurrentFrame));
     mTableItem->setBackgroundColor(QColor(250, 240, 160));
     mTableWidget->setItem(mCurrentFrame, 0, mTableItem);
@@ -104,6 +106,7 @@ void Xsheet::lengthChanged(int frames)
 
 void Xsheet::updateXsheet()
 {
+    if (isHidden()) return;
     initXsheet();
     fillXsheet();
     writePapa();
