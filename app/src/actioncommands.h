@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include "pencilerror.h"
-#include "layer.h"
+class Layer;
 
 class Editor;
 class QWidget;
