@@ -1,11 +1,5 @@
 #include "copymultiplekeyframesdialog.h"
 #include "ui_copymultiplekeyframesdialog.h"
-#include "timeline.h"
-#include "timecontrols.h"
-#include "layer.h"
-#include "layermanager.h"
-#include <QDebug>
-#include <QSettings>
 
 CopyMultiplekeyframesDialog::CopyMultiplekeyframesDialog(QWidget *parent) :
     QDialog(parent),
@@ -33,14 +27,14 @@ CopyMultiplekeyframesDialog::~CopyMultiplekeyframesDialog()
 
 void CopyMultiplekeyframesDialog::init()
 {
-    ///< SET values in spinBoxes
+    // SET values in spinBoxes
     ui->sBoxFirstFrame->setValue(mFirstFrame);
     ui->sBoxLastFrame->setValue(mLastFrame);
     ui->sBoxStartFrame->setValue(mLastFrame + 1);
     ui->sBoxMove->setValue(mLastFrame + 1);
     ui->sBoxStartReverse->setValue(mLastFrame + 1);
 
-    ///< SET values in ComboBoxes
+    // SET values in ComboBoxes
     int lType = lMgr->currentLayer()->type(); // find layer-type
     for (int i = 1; i < lMgr->count(); i++)
     {
@@ -55,7 +49,7 @@ void CopyMultiplekeyframesDialog::init()
     ui->cBoxCopyToLayer->setCurrentText(lMgr->currentLayer()->name());
     ui->cBoxMoveToLayer->setCurrentText(lMgr->currentLayer()->name());
 
-    ///< SET member variables values
+    // SET member variables values
     mNumLoops = ui->sBoxNumLoops->value();
     mCopyStart = ui->sBoxStartFrame->value();
     mMoveStart = ui->sBoxMove->value();
@@ -69,36 +63,31 @@ void CopyMultiplekeyframesDialog::init()
     mValidAction = true;
     mLabWarning = "";
 
-    ///< SET text on dialog
-    ui->labDeleteOnLayer->setText(tr("On Layer ") + mFromLayer );
+    // SET text on dialog
+    ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(mFromLayer));
 
-    ///< SET text on labWarning and infolabels
+    // SET text on labWarning and infolabels
     ui->labWarning->setText("");
     ui->labInfoAction->setText(ui->tabWidget->tabText(mCurrentTab));
     ui->labInfoToFromLayer->setText(tr("From: %1 To: %2").arg(ui->cBoxFromLayer->currentText()).arg(ui->cBoxFromLayer->currentText()));
-    ///< SET connections HEADER
+    // SET connections HEADER
     connect(ui->sBoxFirstFrame, SIGNAL(valueChanged(int)), this, SLOT(setFirstFrame(int)));
     connect(ui->sBoxLastFrame, SIGNAL(valueChanged(int)), this, SLOT(setLastFrame(int)));
     connect(ui->cBoxFromLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setFromLayer(QString)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(setMethodPicked(int)));
-    ///< SET connections COPY
+    // SET connections COPY
     connect(ui->sBoxNumLoops, SIGNAL(valueChanged(int)), this, SLOT(setNumLoops(int)));
     connect(ui->sBoxStartFrame, SIGNAL(valueChanged(int)), this, SLOT(setStartFrame(int)));
     connect(ui->cBoxCopyToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setCopyToLayer(QString)));
-    ///< SET connections MOVE
+    // SET connections MOVE
     connect(ui->sBoxMove, SIGNAL(valueChanged(int)), this, SLOT(setMoveStartFrame(int)));
     connect(ui->cBoxMoveToLayer, SIGNAL(currentTextChanged(QString)), this, SLOT(setMoveToLayer(QString)));
-    ///< SET connections REVERSE
+    // SET connections REVERSE
     connect(ui->sBoxStartReverse, SIGNAL(valueChanged(int)), this, SLOT(setReverseFrom(int)));
-    ///< SET connections DELETE (none)
+    // SET connections DELETE (none)
 
     setStartEnd(0);
     checkValidity();
-}
-
-void CopyMultiplekeyframesDialog::setNumLoopsMax(int numLoopsMax)
-{
-    ui->sBoxNumLoops->setMaximum(numLoopsMax);
 }
 
 int CopyMultiplekeyframesDialog::getCopyStartFrame()
@@ -196,14 +185,6 @@ void CopyMultiplekeyframesDialog::setReverseFrom(int reverseFrom)
     checkValidity();
 }
 
-void CopyMultiplekeyframesDialog::setDeleteOnLayer(QString deleteFromLayer)
-{
-    mDeleteOnLayer = deleteFromLayer;
-    ui->labInfoToFromLayer->setText(tr("On: %1").arg(mDeleteOnLayer));
-    ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(mDeleteOnLayer));
-    checkValidity();
-}
-
 void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
 {
     mCurrentTab = tabIndex;
@@ -211,12 +192,12 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
     checkValidity();
 }
 
-
+/** @brief Sets start and end frame based on the tab index chosen */
 void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
 {
     switch (methodChosen) {
     case 0: // copy
-        mManiStartAt = ui->sBoxStartFrame->value();
+        mManiStartAt = mCopyStart;
         mManiEndAt = mManiStartAt - 1 + (mLastFrame + 1 - mFirstFrame) * mNumLoops;
         if (ui->sBoxLastFrame->value() >= ui->sBoxStartFrame->value())
             mLabWarning = tr("Originals may be overwritten!");
@@ -224,7 +205,7 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
             mLabWarning.clear();
         break;
     case 1: // move
-        mManiStartAt = ui->sBoxMove->value();
+        mManiStartAt = mMoveStart;
         mManiEndAt = mManiStartAt + mLastFrame - mFirstFrame;
         if (ui->sBoxLastFrame->value() >= ui->sBoxMove->value())
             mLabWarning = tr("Originals may be overwritten!");
@@ -232,7 +213,7 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
             mLabWarning.clear();
         break;
     case 2: // reverse
-        mManiStartAt = ui->sBoxStartReverse->value();
+        mManiStartAt = mReverseStart;
         mManiEndAt = mManiStartAt + mLastFrame - mFirstFrame;
         if (ui->sBoxLastFrame->value() >= ui->sBoxStartReverse->value())
             mLabWarning = tr("Originals may be overwritten!");
@@ -240,8 +221,8 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
             mLabWarning.clear();
         break;
     case 3:
-        mManiStartAt = ui->sBoxFirstFrame->value();
-        mManiEndAt = ui->sBoxLastFrame->value();
+        mManiStartAt = mFirstFrame;
+        mManiEndAt = mLastFrame;
         break;
     default:
         Q_ASSERT(false);
@@ -252,25 +233,23 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
 void CopyMultiplekeyframesDialog::checkValidity()
 {
     setStartEnd(ui->tabWidget->currentIndex());
-    bool testValidity = true;
 
     if (mManiEndAt > 9999) ///< 9999 frames is maximum timeline length
     {
-        mLabWarning = tr("Exceeds 9999 frames!");
-        testValidity = false;
+        ui->labWarning->setText(tr("Exceeds 9999 frames!"));
+        mValidAction = false;
+        return;
     }
-    else if (mFirstFrame > mLastFrame) ///< Range must be valid, but can be one frame
+    if (mFirstFrame > mLastFrame) ///< Range must be valid, but can be one frame
     {
-        mLabWarning = tr("Range not valid!");
-        testValidity = false;
+        ui->labWarning->setText(tr("Range not valid!"));
+        mValidAction = false;
+        return;
     }
-    if (mLabWarning.isEmpty())
-    {
-        ui->labWarning->setText(tr("Affects Frames %1 %2 %3").arg(QString::number(mManiStartAt)).arg(QChar(0x2192)).arg(QString::number(mManiEndAt)));
-    }
-    else
-    {
+    mValidAction = true;
+    if (!mLabWarning.isEmpty()) {
         ui->labWarning->setText(mLabWarning);
+        return;
     }
-    mValidAction = testValidity;
+    ui->labWarning->setText(tr("Affects Frames %1 %2 %3").arg(QString::number(mManiStartAt)).arg(QChar(0x2192)).arg(QString::number(mManiEndAt)));
 }

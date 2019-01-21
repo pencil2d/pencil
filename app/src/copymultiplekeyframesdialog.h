@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include "layermanager.h"
-#include "editor.h"
 
 namespace Ui {
 class CopyMultiplekeyframesDialog;
@@ -14,21 +13,25 @@ class CopyMultiplekeyframesDialog : public QDialog
     Q_OBJECT
 
 public:
+    enum KeyFrameManipulation
+    {
+        COPY,
+        MOVE,
+        REVERSE,
+        DELETE,
+    };
+
     explicit CopyMultiplekeyframesDialog(QWidget *parent = nullptr);
     explicit CopyMultiplekeyframesDialog(LayerManager *lm, int startLoop = 1, int stopLoop = 2, QWidget *parent = nullptr);
     ~CopyMultiplekeyframesDialog();
     void init();
     int getFirstFrame() { return mFirstFrame; }             ///< first frame in range
     int getLastFrame() { return mLastFrame; }               ///< last frame in range
-    int getManiStartAt() { return mManiStartAt; }           ///< First frame to be manipulated
-    int getManiEndAt() { return mManiEndAt; }               ///< Last frame to bu manipulated
     QString getFromLayer() { return mFromLayer; }           ///< Layer thet holds the Range
     QString getCopyToLayer() { return mCopyToLayer; }       ///< Layer that receives Copy Range
     QString getMoveToLayer() { return mMoveToLayer; }       ///< Layer the Range is moved to
-    QString getDeleteOnLayer() { return mDeleteOnLayer; }   ///< Layer the range is deleted on
     int getNumLoops() { return mNumLoops; }                 ///< Number of loops asked for
     int getCurrentTab() { return mCurrentTab; }             ///< Tab/Method currently picked
-    void setNumLoopsMax(int numLoopsMax);
     int getCopyStartFrame();
     int getMoveStartFrame();
     int getReverseStartFrame();
@@ -49,8 +52,6 @@ private slots:
     void setMoveToLayer(QString moveToLayer);
     // reverse Range
     void setReverseFrom(int reverseFrom);
-    // delete Range
-    void setDeleteOnLayer(QString deleteFromLayer);
 
     void setMethodPicked(int tabIndex);
 
@@ -73,10 +74,8 @@ private:
     QString mFromLayer;     ///< name of From Layer
     QString mCopyToLayer;   ///< name of To Layer you copy to
     QString mMoveToLayer;   ///< name of To Layer you move to
-    QString mDeleteOnLayer; ///< = mFromLayer
     QString mLabWarning;
     LayerManager *lMgr;
-    int mTimelineLength;    ///< frames in scene/in timeline
 
     void checkValidity();
 

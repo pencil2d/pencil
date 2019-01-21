@@ -22,8 +22,6 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QDesktopServices>
 #include <QStandardPaths>
-#include <QMessageBox>
-#include <QSettings>
 #include <QFileDialog>
 
 #include "pencildef.h"
@@ -573,67 +571,64 @@ void ActionCommands::duplicateKey()
 
 void ActionCommands::manipulateFrames()
 {
-    int startL = 1, stopL = 2;          // default values
+    int startLoop = 1, stopLoop = 2;          // default values
     if (mEditor->playback()->isRangedPlaybackOn())
     {                                   // defined range values if available
-        startL = mEditor->playback()->getRangedStartFrame();
-        stopL = mEditor->playback()->getRangedEndFrame();
+        startLoop = mEditor->playback()->getRangedStartFrame();
+        stopLoop = mEditor->playback()->getRangedEndFrame();
     }
     LayerManager* layerMgr = mEditor->layers();
-    int lIndex = layerMgr->currentLayer()->type();
-    //     BITMAP = 1     VECTOR = 2   //not yet      SOUND = 4     CAMERA = 5
-    if (!(lIndex == 1 || lIndex == 2)) //not yet || lIndex == 4 || lIndex == 5)
+    Layer::LAYER_TYPE layerType = layerMgr->currentLayer()->type();
+    if (layerType != Layer::BITMAP && layerType != Layer::VECTOR)
     {
-        int ret = QMessageBox::information(new QWidget, tr("Action not available"),
-                                 tr("Can only be used on Bitmap and Vector layers."),
-                                 QMessageBox::Ok);
+        int ret = QMessageBox::information(nullptr, tr("Action not available"),
+                                           tr("Can only be used on Bitmap and Vector layers."),
+                                           QMessageBox::Ok);
         Q_UNUSED(ret);
         return;
     }
-    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, startL, stopL, new QWidget);
+    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, startLoop, stopLoop, nullptr);
     cd->exec();
 
-    // If validation is NOT OK -> return
     if (cd->result() != QDialog::Accepted) { return; }
+    // if validation is NOT OK -> return
     if (!cd->getValidity())
     {
-        int ret = QMessageBox::critical(new QWidget,tr("Action not valid!"),
-                              tr("Failed validation check:\n- Exceeds 9999 Frames OR\n- Range not valid"),
-                              QMessageBox::Ok);
+        int ret = QMessageBox::critical(nullptr, tr("Action not valid!"),
+                                        tr("Failed validation check:\n- Exceeds 9999 Frames OR\n- Range not valid"),
+                                        QMessageBox::Ok);
         Q_UNUSED(ret);
         return;
     }
 
     // If Validation is OK
-    startL = cd->getFirstFrame();
-    stopL = cd->getLastFrame();
+    startLoop = cd->getFirstFrame();
+    stopLoop = cd->getLastFrame();
     Layer *fromLayer = layerMgr->findLayerByName(cd->getFromLayer());
     Q_ASSERT(fromLayer != nullptr);
     Layer *toLayer = nullptr;
     int scrubOrg = mEditor->currentFrame();
-    int num, startF;
+    int numLoops, startFrame;
     switch (cd->getCurrentTab()) {
     case 0: // Copy
+        startFrame = cd->getCopyStartFrame();
         toLayer = layerMgr->findLayerByName(cd->getCopyToLayer());
         Q_ASSERT(toLayer != nullptr);
-        num = cd->getNumLoops();
-        startF = cd->getCopyStartFrame();
-        copyFrames(startL, stopL, num, startF, fromLayer, toLayer);
+        numLoops = cd->getNumLoops();
+        fromLayer->copyFrames(startLoop, stopLoop, numLoops, startFrame, fromLayer, toLayer);
         break;
     case 1: // Move
-        startF = cd->getMoveStartFrame();
+        startFrame = cd->getMoveStartFrame();
         toLayer = layerMgr->findLayerByName(cd->getMoveToLayer());
         Q_ASSERT(toLayer != nullptr);
-        moveFrames(startL, stopL,startF, fromLayer, toLayer);
+        fromLayer->moveFrames(startLoop, stopLoop,startFrame, fromLayer, toLayer);
         break;
     case 2: // Reverse
-        startF = cd->getReverseStartFrame();
-        toLayer = layerMgr->findLayerByName(cd->getFromLayer());
-        Q_ASSERT(toLayer != nullptr);
-        reverseFrames(startL, stopL, startF, toLayer);
+        startFrame = cd->getReverseStartFrame();
+        fromLayer->reverseFrames(startLoop, stopLoop, startFrame, fromLayer);
         break;
     case 3: // Delete
-        deleteFrames(startL, stopL, fromLayer);
+        fromLayer->deleteFrames(startLoop, stopLoop, fromLayer);
         break;
     default:
         Q_ASSERT(false);
@@ -642,117 +637,6 @@ void ActionCommands::manipulateFrames()
     mEditor->scrubTo(scrubOrg);
     mEditor->layers()->notifyLayerChanged(toLayer);
     mEditor->layers()->notifyAnimationLengthChanged();
-}
-
-void ActionCommands::copyFrames(int startL, int stopL, int loops, int startAt, Layer *fLayer, Layer *tLayer)
-{
-    int num = loops;
-    int startF = startAt;
-    for (int i = 0; i < num; i++)
-    {
-        for (int j = startL; j < stopL + 1; j++, startF++)
-        {
-            mEditor->scrubTo(j);
-            if (fLayer->keyExists(j))
-            {
-                KeyFrame* kf = fLayer->getKeyFrameAt(j);
-                if (kf == nullptr) return;
-                KeyFrame* dupKey = kf->clone();
-                if (tLayer->keyExists(startF))
-                    tLayer->removeKeyFrame(startF);
-                tLayer->addKeyFrame(startF, dupKey);
-                tLayer->setModified(startF, true);
-            }
-        }
-    }
-    // TODO Signal that it should be saved...
-}
-
-void ActionCommands::moveFrames(int startL, int stopL, int startAt, Layer *fLayer, Layer *tLayer)
-{
-    int startF = startAt;
-    if (startF > startL) // Move last frame first
-    {
-        startF = startF + stopL - startL;
-        for (int j = stopL; j >= startL; j--, startF--)
-        {
-            mEditor->scrubTo(j);
-            if (fLayer->keyExists(j))
-            {
-                KeyFrame* kf = fLayer->getKeyFrameAt(j);
-                if (kf == nullptr) return;
-                KeyFrame* dupKey = kf->clone();
-                if (tLayer->keyExists(startF))
-                    tLayer->removeKeyFrame(startF);
-                tLayer->addKeyFrame(startF, dupKey);
-                fLayer->removeKeyFrame(j);
-                tLayer->setModified(startF, true);
-            }
-        }
-    }
-    else // Move first frame first
-    {
-        for (int j = startL; j < stopL + 1; j++, startF++)
-        {
-            mEditor->scrubTo(j);
-            if (fLayer->keyExists(j))
-            {
-                KeyFrame* kf = fLayer->getKeyFrameAt(j);
-                if (kf == nullptr) return;
-                KeyFrame* dupKey = kf->clone();
-                if (tLayer->keyExists(startF))
-                    tLayer->removeKeyFrame(startF);
-                tLayer->addKeyFrame(startF, dupKey);
-                fLayer->removeKeyFrame(j);
-                tLayer->setModified(startF, true);
-            }
-        }
-    }
-    if (fLayer->firstKeyFramePosition() == 0)
-    {
-        fLayer->addNewKeyFrameAt(1);
-        fLayer->setModified(1, true);
-    }
-    // TODO Signal that it should be saved...
-}
-
-void ActionCommands::reverseFrames(int startL, int stopL, int startAt, Layer *tLayer)
-{
-    int startF = startAt;
-    for (int j = stopL; j >= startL; j--, startF++)
-    {
-        mEditor->scrubTo(startF);
-        if (tLayer->keyExists(j))
-        {
-            KeyFrame* kf = tLayer->getKeyFrameAt(j);
-            if (kf == nullptr) return;
-            KeyFrame* dupKey = kf->clone();
-            // replace if keyframe exists!
-            if (tLayer->keyExists(startF))
-                tLayer->removeKeyFrame(startF);
-            tLayer->addKeyFrame(startF, dupKey);
-            tLayer->setModified(startF, true);
-        }
-    }
-    // TODO Signal that it should be saved...
-}
-
-void ActionCommands::deleteFrames(int startL, int stopL, Layer *tLayer)
-{
-    for (int j = startL; j < stopL + 1; j++)
-    {
-        if (tLayer->keyExists(j))
-        {
-            tLayer->removeKeyFrame(j);
-            tLayer->setModified(j, true);
-        }
-    }
-    if (tLayer->firstKeyFramePosition() == 0)
-    {
-        tLayer->addNewKeyFrameAt(1);
-        tLayer->setModified(1, true);
-    }
-    // TODO Signal that it should be saved...
 }
 
 void ActionCommands::moveFrameForward()

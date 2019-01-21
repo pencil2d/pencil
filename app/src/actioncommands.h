@@ -26,11 +26,13 @@ class QWidget;
 class ExportMovieDialog;
 
 
+
 class ActionCommands : public QObject
 {
     Q_OBJECT
 
 public:
+
     explicit ActionCommands(QWidget* parent = nullptr);
     virtual ~ActionCommands();
 
@@ -66,10 +68,6 @@ public:
     void removeKey();
     void duplicateKey();
     void manipulateFrames();
-    void copyFrames(int startL, int stopL, int loops, int startAt, Layer *fLayer, Layer* tLayer );
-    void moveFrames(int startL, int stopL, int startAt, Layer* fLayer, Layer* tLayer );
-    void reverseFrames(int startL, int stopL, int startAt, Layer *tLayer );
-    void deleteFrames(int startL, int stopL, Layer* tLayer);
     void moveFrameForward();
     void moveFrameBackward();
 

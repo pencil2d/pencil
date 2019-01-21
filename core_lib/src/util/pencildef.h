@@ -133,6 +133,7 @@ enum StabilizationLevel
 #define CMD_ADD_FRAME "CmdAddFrame"
 #define CMD_DUPLICATE_FRAME "CmdDuplicateFrame"
 #define CMD_REMOVE_FRAME "CmdRemoveFrame"
+#define CMD_MANIPULATE_FRAMES "CmdManipulateFrames"
 #define CMD_MOVE_FRAME_BACKWARD "CmdMoveFrameBackward"
 #define CMD_MOVE_FRAME_FORWARD "CmdMoveFrameForward"
 #define CMD_TOOL_MOVE "CmdToolMove"
