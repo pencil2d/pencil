@@ -52,10 +52,12 @@ void RecentFileMenu::clear()
 void RecentFileMenu::setRecentFiles( QStringList filenames )
 {
     clear();
-    for( QString filename : filenames )
+
+    for( auto filename = filenames.crbegin(); filename != filenames.crend(); filename++)
     {
-        if ( filename != "" ) {
-            addRecentFile( filename );
+        if ( *filename != "" )
+        {
+            addRecentFile( *filename );
         }
     }
 }
