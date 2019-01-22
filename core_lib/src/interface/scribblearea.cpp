@@ -581,6 +581,9 @@ bool ScribbleArea::allowSmudging()
 
 void ScribbleArea::mousePressEvent(QMouseEvent* event)
 {
+    // Workaround for tablet issue (#677 part 2)
+    if(mStrokeManager->isTabletInUse()) return;
+
     mMouseInUse = true;
 
     mStrokeManager->mousePressEvent(event);
@@ -684,7 +687,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
 
     if (currentTool()->isDrawingTool())
     {
-        if (event->buttons() & Qt::LeftButton)
+        if (event->buttons() & Qt::LeftButton && mMouseInUse)
         {
             currentTool()->mouseMoveEvent(event);
         }
@@ -718,6 +721,9 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
 {
+    // Workaround for tablet issue (#677 part 2)
+    if(!mMouseInUse) return;
+
     mMouseInUse = false;
 
     // ---- checks ------
