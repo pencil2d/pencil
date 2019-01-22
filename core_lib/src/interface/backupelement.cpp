@@ -67,6 +67,9 @@ AddKeyFrameElement::AddKeyFrameElement(int backupFrameIndex,
 
     Layer* layer = editor->layers()->currentLayer();
 
+    emptyFrameSettingVal = editor->preference()->
+            getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
+    newFrameIndex = editor->currentFrame();
     newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, emptyFrameSettingVal);
 
     newLayerId = layer->id();
@@ -759,14 +762,14 @@ void ImportBitmapElement::undo()
         editor()->removeKeyAtLayerId(oldLayerId,key.second->pos());
     }
 
+    Layer* layer = editor()->layers()->currentLayer();
+
     // we've removed all keyframes + those that were overwritten
     // now re-add the old ones
-    Layer* layer = editor()->layers()->currentLayer();
     for (auto key : oldKeyFrames)
     {
         editor()->addKeyFrameToLayerId(oldLayerId, key.first, true);
-        BitmapImage oldBitmap = *static_cast<BitmapImage*>(key.second);
-        static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(key.first)->paste(&oldBitmap);
+        static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(key.second, key.second->pos());
     }
 }
 
@@ -778,35 +781,13 @@ void ImportBitmapElement::redo()
         return;
     }
 
-    progress = new QProgressDialog(QObject::tr("Reimporting..."), QObject::tr("Abort"), 0, 100, nullptr);
-    progress->setWindowModality(Qt::WindowModal);
-    progress->show();
-    progress->setMaximum(static_cast<int>(importedKeyFrames.size()));
-
     Layer* layer = editor()->layers()->currentLayer();
-    int progressValue = 0;
 
     for (auto key : importedKeyFrames)
     {
         editor()->addKeyFrameToLayerId(newLayerId, key.first, true);
-        BitmapImage oldBitmap = *static_cast<BitmapImage*>(key.second);
-        static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(key.first)->paste(&oldBitmap);
-
-        progress->setValue(progressValue);
-
-        // Because everything is singlethreaded... we have to push remaining events through
-        // to update the UI. This makes loading slightly slower, let's only update per 25%
-        if (progressValue % 25 == 0) {
-            QCoreApplication::processEvents();
-        }
-
-        if (progressValue > progress->maximum()) {
-            progress->cancel();
-        }
-
-        progressValue++;
+        static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(key.second, key.second->pos());
     }
-    progress->setValue(progressValue);
 }
 
 CameraMotionElement::CameraMotionElement(QPointF backupTranslation,

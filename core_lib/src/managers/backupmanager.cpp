@@ -315,31 +315,31 @@ void BackupManager::restoreLayerKeys(BackupElement* backupElement)
 void BackupManager::restoreKey(BackupElement* backupElement)
 {
     Layer* layer = nullptr;
+    KeyFrame* keyFrame = nullptr;
     int frame = 0;
     int layerIndex = 0;
     int layerId = 0;
-    KeyFrame* keyFrame = nullptr;
 
     if (backupElement->type() == ADD_KEY_MODIF)
     {
-        AddKeyFrameElement* lastBackupKeyFrameElement = (AddKeyFrameElement*)backupElement;
-        layerIndex = lastBackupKeyFrameElement->newLayerIndex;
-        frame = lastBackupKeyFrameElement->newFrameIndex;
-        layerId = lastBackupKeyFrameElement->newLayerId;
+        AddKeyFrameElement* lastBackupElement = (AddKeyFrameElement*)backupElement;
+        layerIndex = lastBackupElement->newLayerIndex;
+        frame = lastBackupElement->newFrameIndex;
+        layerId = lastBackupElement->newLayerId;
+        keyFrame = lastBackupElement->newKey;
         layer = object()->findLayerById(layerId);
-        keyFrame = lastBackupKeyFrameElement->newKey;
 
         restoreKey(layerId, frame, keyFrame);
 
     }
     else // REMOVE_KEY_MODIF
     {
-        RemoveKeyFrameElement* lastBackupKeyFrameElement = (RemoveKeyFrameElement*)backupElement;
-        layerIndex = lastBackupKeyFrameElement->oldLayerIndex;
-        frame = lastBackupKeyFrameElement->oldFrameIndex;
-        layerId = lastBackupKeyFrameElement->oldLayerId;
+        RemoveKeyFrameElement* lastBackupElement = (RemoveKeyFrameElement*)backupElement;
+        layerIndex = lastBackupElement->oldLayerIndex;
+        frame = lastBackupElement->oldFrameIndex;
+        layerId = lastBackupElement->oldLayerId;
+        keyFrame = lastBackupElement->oldKey;
         layer = editor()->layers()->findLayerById(layerId);
-        keyFrame = lastBackupKeyFrameElement->oldKey;
 
         restoreKey(layerId, frame, keyFrame);
     }
@@ -349,57 +349,31 @@ void BackupManager::restoreKey(int layerId, int frame, KeyFrame *keyFrame)
 {
     Layer* layer = editor()->layers()->findLayerById(layerId);
 
-    switch(layer->type())
+    if (!layer->keyExists(frame))
     {
-        case Layer::BITMAP:
-        case Layer::VECTOR:
-        case Layer::CAMERA:
-        {
-            if (!layer->keyExists(frame))
-            {
-                editor()->addKeyFrameToLayerId(layerId, frame);
-            }
-            break;
-        }
-        default:
-            break;
+        editor()->addKeyFrameToLayerId(layerId, frame);
     }
 
     switch(layer->type())
     {
         case Layer::BITMAP:
         {
-            BitmapImage* bitmap = static_cast<BitmapImage*>(keyFrame);
-            dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(bitmap);
+            static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(keyFrame, frame);
             break;
         }
         case Layer::VECTOR:
         {
-            VectorImage* vector = static_cast<VectorImage*>(keyFrame);
-            dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(*vector);
+            static_cast<LayerVector*>(layer)->putVectorImageIntoFrame(keyFrame, frame);
             break;
         }
         case Layer::SOUND:
         {
-            SoundClip* clip = static_cast<SoundClip*>(keyFrame);
-            clip = new SoundClip(*clip);
-            editor()->addKeyContaining(layerId, frame, clip);
-
-            if (clip)
-            {
-                Status st = editor()->sound()->processSound(clip);
-                if (!st.ok())
-                {
-                      Q_ASSERT(st.ok());
-                }
-            }
+            editor()->sound()->loadSound(layer, frame, keyFrame->fileName());
             break;
         }
         case Layer::CAMERA:
         {
-            Camera* cam = static_cast<Camera*>(keyFrame);
-            cam = new Camera(*cam);
-            dynamic_cast<LayerCamera*>(layer)->getCameraAtFrame(frame)->assign(*cam);
+            static_cast<LayerCamera*>(layer)->putCameraIntoFrame(keyFrame, frame);
             break;
         }
         default:
