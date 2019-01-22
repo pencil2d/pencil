@@ -66,6 +66,14 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
     loadKey(pKeyFrame);
 }
 
+void LayerBitmap::putBitmapIntoFrame(KeyFrame* keyframe, int frameIndex)
+{
+    BitmapImage* currentBitmap = getBitmapImageAtFrame(frameIndex);
+
+    BitmapImage newBitmap = *static_cast<BitmapImage*>(keyframe);
+    static_cast<BitmapImage*>(currentBitmap)->paste(&newBitmap);
+}
+
 Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
 {
     QString strFilePath = filePath(keyframe, QDir(path));

@@ -65,9 +65,25 @@ public:
     LayerSound*  createSoundLayer(const QString& strLayerName);
 
     LayerBitmap* createBitmapLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName);
+    void createBitmapLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                              const int layerId,
+                                              const int layerIndex,
+                                              const QString& strLayerName);
+
+    void createVectorLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                              const int layerId,
+                                              const int layerIndex,
+                                              const QString& strLayerName);
+
+    void createCameraLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                              const int layerId,
+                                              const int layerIndex,
+                                              const QString& strLayerName);
+
     LayerVector* createVectorLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName);
     LayerSound* createSoundLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName);
     LayerCamera* createCameraLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName);
+
 
     // KeyFrame Management
     int LastFrameAtFrame(int frameIndex);

@@ -259,86 +259,57 @@ void BackupManager::restoreLayerKeys(BackupElement* backupElement)
 {
 
     DeleteLayerElement* lastBackupLayerElem = (DeleteLayerElement*)backupElement;
-    int layerIndex = lastBackupLayerElem->oldLayerIndex;
-    QString layerName = lastBackupLayerElem->oldLayerName;
-
-    int frameIndex = 0;
-    int oldFrameIndex = lastBackupLayerElem->oldFrameIndex;
-    int layerId = lastBackupLayerElem->oldLayerId;
-    KeyFrame* key = nullptr;
+    LayerManager* layerMgr = editor()->layers();
     Layer* layer = nullptr;
 
-    bool hasCreatedLayer = false;
-    for(auto& map : lastBackupLayerElem->oldLayerKeys)
+    int oldFrameIndex = lastBackupLayerElem->oldFrameIndex;
+    int layerIndex = lastBackupLayerElem->oldLayerIndex;
+    int layerId = lastBackupLayerElem->oldLayerId;
+    QString layerName = lastBackupLayerElem->oldLayerName;
+
+    switch(lastBackupLayerElem->oldLayerType)
     {
-        key = map.second;
-        frameIndex = key->pos();
-        switch(lastBackupLayerElem->oldLayerType)
+        case Layer::BITMAP:
         {
-            case Layer::BITMAP:
-            {
-                if (!hasCreatedLayer)
-                {
-                    layer = editor()->layers()->createBitmapLayerContaining(layerId, layerIndex, layerName);
-                    hasCreatedLayer = true;
-                }
-                editor()->addKeyFrameToLayerId(layerId, frameIndex);
-                BitmapImage oldBitmap = *static_cast<BitmapImage*>(key);
-                static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frameIndex)->paste(&oldBitmap);
-                break;
-            }
-            case Layer::VECTOR:
-            {
-                if (!hasCreatedLayer)
-                {
-                    layer = editor()->layers()->createVectorLayerContaining(layerId, layerIndex, layerName);
-                    hasCreatedLayer = true;
-                }
-                editor()->addKeyFrameToLayerId(layerId, frameIndex);
-                VectorImage oldVector = *static_cast<VectorImage*>(key);
-                static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex)->paste(oldVector);
-                break;
-            }
-            case Layer::SOUND:
-            {
-                if (!hasCreatedLayer)
-                {
-                    editor()->layers()->createSoundLayerContaining(layerId, layerIndex, layerName);
-                    hasCreatedLayer = true;
-                }
-                SoundClip* clip = static_cast<SoundClip*>(key);
-                clip = new SoundClip(*clip);
-
-                editor()->addKeyContaining(layerId, frameIndex, clip);
-                if (clip)
-                {
-                    Status st = editor()->sound()->processSound(clip);
-                    if (!st.ok())
-                    {
-                        Q_ASSERT(st.ok());
-                    }
-                }
-                break;
-            }
-            case Layer::CAMERA:
-            {
-                if (!hasCreatedLayer)
-                {
-                    layer = editor()->layers()->createCameraLayerContaining(layerId, layerIndex, layerName);
-                    hasCreatedLayer = true;
-                }
-                Camera* cam = static_cast<Camera*>(key);
-                cam = new Camera(*cam);
-
-                editor()->addKeyFrameToLayerId(layerId, frameIndex);
-                static_cast<LayerCamera*>(layer)->getCameraAtFrame(frameIndex)->assign(*cam);
-                break;
-            }
-            default:
-                break;
+            layerMgr->createBitmapLayerContainingKeyFrames(lastBackupLayerElem->oldLayerKeys,
+                                                                     layerId,
+                                                                     layerIndex,
+                                                                     layerName);
+            break;
         }
-        editor()->scrubTo(oldFrameIndex);
+        case Layer::VECTOR:
+        {
+
+           layerMgr->createVectorLayerContainingKeyFrames(lastBackupLayerElem->oldLayerKeys,
+                                                                    layerId,
+                                                                    layerIndex,
+                                                                    layerName);
+            break;
+        }
+        case Layer::SOUND:
+        {
+            layer = layerMgr->createSoundLayerContaining(layerId,
+                                                         layerIndex,
+                                                          layerName);
+            for (auto map : lastBackupLayerElem->oldLayerKeys)
+            {
+                int frameIndex = map.second->pos();
+                editor()->sound()->loadSound(layer, frameIndex, map.second->fileName());
+            }
+            break;
+        }
+        case Layer::CAMERA:
+        {
+            layerMgr->createCameraLayerContainingKeyFrames(lastBackupLayerElem->oldLayerKeys,
+                                                           layerId,
+                                                           layerIndex,
+                                                           layerName);
+            break;
+        }
+        default:
+            break;
     }
+    editor()->scrubTo(oldFrameIndex);
 }
 
 void BackupManager::restoreKey(BackupElement* backupElement)

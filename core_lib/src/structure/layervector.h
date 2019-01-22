@@ -40,6 +40,8 @@ public:
     VectorImage* getVectorImageAtFrame(int frameNumber);
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment);
 
+    void putVectorImageIntoFrame(KeyFrame* keyframe, const int frameIndex);
+
     bool usesColour(int index);
     void removeColour(int index);
 

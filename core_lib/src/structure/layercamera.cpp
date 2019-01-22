@@ -115,6 +115,15 @@ Camera* LayerCamera::getCameraAtFrame(int frameNumber)
     return static_cast< Camera* >( getKeyFrameAt( frameNumber ) );
 }
 
+void LayerCamera::putCameraIntoFrame(KeyFrame *keyframe, int frameIndex)
+{
+    Camera* currentCamera = getCameraAtFrame(frameIndex);
+
+    Camera* newCamera = static_cast<Camera*>(keyframe);
+    static_cast<Camera*>(currentCamera)->assign(*newCamera);
+    linearInterpolateTransform(currentCamera);
+}
+
 Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
 {
     return static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber + increment ) );

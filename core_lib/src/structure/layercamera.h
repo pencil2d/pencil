@@ -59,6 +59,7 @@ public:
     
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
+    void putCameraIntoFrame(KeyFrame* keyframe, int frameIndex);
 
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);

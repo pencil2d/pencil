@@ -38,6 +38,8 @@ public:
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
+    void putBitmapIntoFrame(KeyFrame* keyframe, int frameIndex);
+
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
     KeyFrame* createKeyFrame(int position, Object*) override;

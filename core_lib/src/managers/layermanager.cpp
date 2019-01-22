@@ -183,6 +183,57 @@ LayerBitmap* LayerManager::createBitmapLayerContaining(const int layerId,
     return newLayer;
 }
 
+void LayerManager::createBitmapLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                                        const int layerId,
+                                                        const int layerIndex,
+                                                        const QString& strLayerName)
+{
+    KeyFrame* keyframe = nullptr;
+    Layer* layer = createBitmapLayerContaining(layerId, layerIndex, strLayerName);
+    for(auto& map : keyFrames)
+    {
+        keyframe = map.second;
+        int frameIndex = keyframe->pos();
+
+        editor()->addKeyFrameToLayerId(layerId, frameIndex);
+        static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(keyframe, frameIndex);
+    }
+}
+
+void LayerManager::createVectorLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                                        const int layerId,
+                                                        const int layerIndex,
+                                                        const QString& strLayerName)
+{
+    KeyFrame* keyframe = nullptr;
+    Layer* layer = createVectorLayerContaining(layerId, layerIndex, strLayerName);
+    for(auto& map : keyFrames)
+    {
+        keyframe = map.second;
+        int frameIndex = keyframe->pos();
+
+        editor()->addKeyFrameToLayerId(layerId, frameIndex);
+        static_cast<LayerVector*>(layer)->putVectorImageIntoFrame(keyframe, frameIndex);
+    }
+}
+
+void LayerManager::createCameraLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                                        const int layerId,
+                                                        const int layerIndex,
+                                                        const QString& strLayerName)
+{
+    Layer* layer = createCameraLayerContaining(layerId, layerIndex, strLayerName);
+
+    KeyFrame* keyframe = nullptr;
+    for (auto map : keyFrames)
+    {
+        keyframe = map.second;
+        int frameIndex = map.second->pos();
+        editor()->addKeyFrameToLayerId(layerId, frameIndex);
+        static_cast<LayerCamera*>(layer)->putCameraIntoFrame(keyframe, frameIndex);
+    }
+}
+
 LayerVector* LayerManager::createVectorLayer( const QString& strLayerName )
 {
     LayerVector* layer = object()->addNewVectorLayer();
