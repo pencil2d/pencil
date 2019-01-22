@@ -582,9 +582,8 @@ void ActionCommands::manipulateFrames()
     if (layerType != Layer::BITMAP && layerType != Layer::VECTOR)
     {
         Q_UNUSED(QMessageBox::information(nullptr, tr("Action not available"),
-                                           tr("Can only be used on Bitmap and Vector layers."),
-                                           QMessageBox::Ok));
-//        Q_UNUSED(ret);
+                                          tr("Can only be used on Bitmap and Vector layers."),
+                                          QMessageBox::Ok));
         return;
     }
     CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, startLoop, stopLoop, nullptr);
@@ -595,9 +594,8 @@ void ActionCommands::manipulateFrames()
     if (!cd->getValidity())
     {
         Q_UNUSED(QMessageBox::critical(nullptr, tr("Action not valid!"),
-                                        tr("Failed validation check:\n- Exceeds 9999 Frames OR\n- Range not valid"),
-                                        QMessageBox::Ok));
-//        Q_UNUSED(ret);
+                                       tr("Failed validation check:\n- Exceeds 9999 Frames OR\n- Range not valid"),
+                                       QMessageBox::Ok));
         return;
     }
 

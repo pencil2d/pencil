@@ -138,7 +138,8 @@ void CopyMultiplekeyframesDialog::setFromLayer(QString fromLayer)
         break;
     case 3:
         ui->labInfoToFromLayer->setText(tr("On: %1").arg(mFromLayer));
-        ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(ui->cBoxFromLayer->currentText()));
+        ui->labInfoAction->setText("");
+        ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(mFromLayer));
         break;
     default:
         Q_ASSERT(false);
@@ -192,13 +193,14 @@ void CopyMultiplekeyframesDialog::setMethodPicked(int tabIndex)
     checkValidity();
 }
 
-/** @brief Sets start and end frame based on the tab index chosen */
+/** @brief Sets start and end frame based on the tab index chosen and updates labels */
 void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
 {
     switch (methodChosen) {
     case 0: // copy
         mManiStartAt = mCopyStart;
         mManiEndAt = mManiStartAt - 1 + (mLastFrame + 1 - mFirstFrame) * mNumLoops;
+        ui->labInfoToFromLayer->setText(tr("From: %1 To: %2").arg(ui->cBoxFromLayer->currentText()).arg(ui->cBoxCopyToLayer->currentText()));
         if (ui->sBoxLastFrame->value() >= ui->sBoxStartFrame->value())
             mLabWarning = tr("Originals may be overwritten!");
         else
@@ -207,6 +209,7 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
     case 1: // move
         mManiStartAt = mMoveStart;
         mManiEndAt = mManiStartAt + mLastFrame - mFirstFrame;
+        ui->labInfoToFromLayer->setText(tr("From: %1 To: %2").arg(ui->cBoxFromLayer->currentText()).arg(ui->cBoxMoveToLayer->currentText()));
         if (ui->sBoxLastFrame->value() >= ui->sBoxMove->value())
             mLabWarning = tr("Originals may be overwritten!");
         else
@@ -215,6 +218,7 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
     case 2: // reverse
         mManiStartAt = mReverseStart;
         mManiEndAt = mManiStartAt + mLastFrame - mFirstFrame;
+        ui->labInfoToFromLayer->setText(tr("On Layer: %1").arg(ui->cBoxFromLayer->currentText()));
         if (ui->sBoxLastFrame->value() >= ui->sBoxStartReverse->value())
             mLabWarning = tr("Originals may be overwritten!");
         else
@@ -223,6 +227,9 @@ void CopyMultiplekeyframesDialog::setStartEnd(int methodChosen)
     case 3:
         mManiStartAt = mFirstFrame;
         mManiEndAt = mLastFrame;
+        ui->labDeleteOnLayer->setText(tr("On layer %1").arg(mFromLayer));
+        ui->labInfoAction->setText(tr("On layer %1").arg(mFromLayer));
+        ui->labInfoToFromLayer->setText("");
         break;
     default:
         Q_ASSERT(false);
