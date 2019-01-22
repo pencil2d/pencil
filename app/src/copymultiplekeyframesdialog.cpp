@@ -138,7 +138,7 @@ void CopyMultiplekeyframesDialog::setFromLayer(QString fromLayer)
         break;
     case 3:
         ui->labInfoToFromLayer->setText(tr("On: %1").arg(mFromLayer));
-        ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(mFromLayer));
+        ui->labDeleteOnLayer->setText(tr("On Layer %1").arg(ui->cBoxFromLayer->currentText()));
         break;
     default:
         Q_ASSERT(false);
@@ -234,13 +234,13 @@ void CopyMultiplekeyframesDialog::checkValidity()
 {
     setStartEnd(ui->tabWidget->currentIndex());
 
-    if (mManiEndAt > 9999) ///< 9999 frames is maximum timeline length
+    if (mManiEndAt > 9999) // 9999 frames is maximum timeline length
     {
         ui->labWarning->setText(tr("Exceeds 9999 frames!"));
         mValidAction = false;
         return;
     }
-    if (mFirstFrame > mLastFrame) ///< Range must be valid, but can be one frame
+    if (mFirstFrame > mLastFrame) // Range must be valid, but can be one frame
     {
         ui->labWarning->setText(tr("Range not valid!"));
         mValidAction = false;

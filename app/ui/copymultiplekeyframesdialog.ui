@@ -101,7 +101,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabCopy">
       <attribute name="title">
@@ -110,9 +110,9 @@
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
-         <x>16</x>
+         <x>6</x>
          <y>11</y>
-         <width>281</width>
+         <width>321</width>
          <height>100</height>
         </rect>
        </property>
@@ -185,7 +185,7 @@
         <rect>
          <x>6</x>
          <y>10</y>
-         <width>301</width>
+         <width>321</width>
          <height>67</height>
         </rect>
        </property>
@@ -232,24 +232,24 @@
       <attribute name="title">
        <string>Reverse</string>
       </attribute>
-      <widget class="QWidget" name="layoutWidget">
+      <widget class="QWidget" name="">
        <property name="geometry">
         <rect>
-         <x>14</x>
-         <y>10</y>
-         <width>281</width>
+         <x>9</x>
+         <y>11</y>
+         <width>321</width>
          <height>26</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
          <widget class="QLabel" name="labReverseFromFrame">
           <property name="text">
            <string>From frame:</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item>
          <widget class="QSpinBox" name="sBoxStartReverse">
           <property name="minimum">
            <number>1</number>
