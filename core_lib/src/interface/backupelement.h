@@ -369,27 +369,21 @@ public:
     DeleteLayerElement(QString backupLayerName,
                        Layer::LAYER_TYPE backupType,
                        std::map<int, KeyFrame*, std::greater<int> >,
+                       int backupFrameIndex,
                        int backupLayerIndex,
                        int backupLayerId,
                        Editor* editor,
                        QUndoCommand* parent = nullptr);
-
-    Layer* oldLayer;
 
     std::map<int, KeyFrame*, std::greater<int> >oldLayerKeys;
 
     QString oldLayerName;
 
     Layer::LAYER_TYPE oldLayerType;
-    Layer::LAYER_TYPE newLayerType;
 
     int oldLayerIndex = 0;
-    int newLayerIndex = 0;
-
     int oldFrameIndex = 0;
-
     int oldLayerId = 0;
-    int newLayerId = 0;
 
     bool isFirstRedo = true;
 

@@ -973,6 +973,7 @@ void AddLayerElement::redo()
 DeleteLayerElement::DeleteLayerElement(QString backupLayerName,
                                        Layer::LAYER_TYPE backupType,
                                        std::map<int, KeyFrame*, std::greater<int> > backupLayerKeys,
+                                       int backupFrameIndex,
                                        int backupLayerIndex,
                                        int backupLayerId,
                                        Editor* editor,
@@ -980,17 +981,12 @@ DeleteLayerElement::DeleteLayerElement(QString backupLayerName,
 {
 
 
+    oldFrameIndex = backupFrameIndex;
     oldLayerIndex = backupLayerIndex;
     oldLayerName = backupLayerName;
     oldLayerKeys = backupLayerKeys;
     oldLayerType = backupType;
     oldLayerId = backupLayerId;
-    oldFrameIndex = editor->currentFrame();
-
-    newLayerIndex = editor->currentLayerIndex();
-    Layer* layer = editor->layers()->currentLayer();
-    newLayerId = layer->id();
-    newLayerType = layer->type();
 
     switch(oldLayerType)
     {
@@ -1026,15 +1022,9 @@ void DeleteLayerElement::undo()
 
 void DeleteLayerElement::redo()
 {
-
-    qDebug() << "layer id " << oldLayerId;
-    qDebug() << "new layer id " << newLayerId;
-    qDebug() << "old LayerIndex" << oldLayerIndex;
-
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    qDebug() << "layer remove triggered";
-    editor()->layers()->deleteLayerWithId(newLayerId, newLayerType);
+    editor()->layers()->deleteLayerWithId(oldLayerId, oldLayerType);
 
 }
 

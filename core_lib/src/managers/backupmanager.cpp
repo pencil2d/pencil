@@ -434,6 +434,7 @@ void BackupManager::layerDeleted(std::map<int, KeyFrame*, std::greater<int> > ol
     DeleteLayerElement* element = new DeleteLayerElement(mLayerName,
                                                          mLayerType,
                                                          oldKeys,
+                                                         mFrameIndex,
                                                          mLayerIndex,
                                                          mLayerId,
                                                          editor());
