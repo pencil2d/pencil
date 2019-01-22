@@ -186,18 +186,11 @@ RemoveKeyFrameElement::RemoveKeyFrameElement(KeyFrame* backupKey,
                                              Editor *editor,
                                              QUndoCommand *parent) : BackupElement(editor, parent)
 {
-
-    newLayerIndex = editor->currentLayerIndex();
-    newFrameIndex = editor->currentFrame();
-
     oldFrameIndex = backupKey->pos();
-
     oldLayerId = backupLayerId;
-    newLayerId = editor->layers()->currentLayer()->id();
-
-    Layer* layer = editor->layers()->findLayerById(newLayerId);
-
     oldKey = backupKey;
+
+    Layer* layer = editor->layers()->findLayerById(oldLayerId);
 
     switch(layer->type())
     {
@@ -234,9 +227,6 @@ void RemoveKeyFrameElement::undo()
 {
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
 
-    qDebug() << "undo: new backup frame " << newFrameIndex;
-    qDebug() << "undo: newLayer" << newLayerIndex;
-
     qDebug() << "undo: old frame index" << oldFrameIndex;
 
     if (layer->type() != Layer::SOUND)
@@ -244,7 +234,6 @@ void RemoveKeyFrameElement::undo()
 
         qDebug() << "restore key";
         editor()->backups()->restoreKey(this);
-
     }
     else
     {
@@ -255,30 +244,17 @@ void RemoveKeyFrameElement::undo()
 
 void RemoveKeyFrameElement::redo()
 {
-
-    qDebug() << "redo: new backup frame " << newFrameIndex;
     qDebug() << "redo: old backup frame: " << oldFrameIndex;
 
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    if (newFrameIndex > 1)
+    if (oldFrameIndex > 1)
     {
         qDebug() << "RemoveKeyFrame triggered";
-        editor()->removeKeyAtLayerId(newLayerId, newFrameIndex);
+        editor()->removeKeyAtLayerId(oldLayerId, oldFrameIndex);
     }
 
 }
-
-bool RemoveKeyFrameElement::mergeWith(const QUndoCommand *other)
-{
-    if (other->id() != id() || newFrameIndex != 1)
-    {
-        return false;
-    }
-    newFrameIndex = static_cast<const RemoveKeyFrameElement*>(other)->newFrameIndex;
-    return true;
-}
-
 
 AddBitmapElement::AddBitmapElement(BitmapImage* backupBitmap,
                                    BitmapImage* backupBufferBitmap,

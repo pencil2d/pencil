@@ -172,13 +172,8 @@ public:
                           QUndoCommand* parent = nullptr);
 
     int oldLayerIndex = 0;
-    int newLayerIndex = 0;
-
     int oldFrameIndex = 0;
-    int newFrameIndex = 0;
-
     int oldLayerId = 0;
-    int newLayerId = 0;
 
     KeyFrame* oldKey = nullptr;
 
@@ -192,7 +187,6 @@ public:
     int type() override { return REMOVE_KEY_MODIF; }
     void undo() override;
     void redo() override;
-    bool mergeWith(const QUndoCommand *other) override;
     int id() const override { return Id; }
 
 };
