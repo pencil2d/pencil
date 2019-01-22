@@ -173,7 +173,7 @@ LayerBitmap* LayerManager::createBitmapLayerContaining(const int layerId,
     LayerBitmap* newLayer = object()->bitmapLayerContaining(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
-    if (currentLayerIndex() > editor()->object()->getLastLayerIndex())
+    if (currentLayerIndex() != editor()->object()->getLastLayerIndex())
     {
         setCurrentLayer(layerIndex);
     }
@@ -256,12 +256,9 @@ LayerVector* LayerManager::createVectorLayerContaining(const int layerId,
     LayerVector* newLayer = object()->vectorLayerContaining(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
-//    qDebug() << "backup layer id: " << layerId;
-//    qDebug() << "created layer id " << newLayer->id();
-
-    if (currentLayerIndex() > editor()->object()->getLastLayerIndex())
+    if (currentLayerIndex() != editor()->object()->getLastLayerIndex())
     {
-        setCurrentLayer(editor()->object()->getLastLayerIndex());
+        setCurrentLayer(layerIndex);
     }
 
     Q_EMIT layerCountChanged( count() );
@@ -289,12 +286,9 @@ LayerCamera* LayerManager::createCameraLayerContaining(const int layerId, const 
     LayerCamera* newLayer = object()->addCameraLayerContaining(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
-//    qDebug() << "backup layer id: " << layerId;
-//    qDebug() << "created layer id " << newLayer->id();
-
-    if (currentLayerIndex() > editor()->object()->getLastLayerIndex())
+    if (currentLayerIndex() != editor()->object()->getLastLayerIndex())
     {
-        setCurrentLayer(editor()->object()->getLastLayerIndex());
+        setCurrentLayer(layerIndex);
     }
 
     Q_EMIT layerCountChanged( count() );
@@ -319,12 +313,9 @@ LayerSound* LayerManager::createSoundLayerContaining(const int layerId, const in
     LayerSound* newLayer = object()->addSoundLayerContaining(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
-//    qDebug() << "backup layer id: " << layerId;
-//    qDebug() << "created layer id " << newLayer->id();
-
-    if (currentLayerIndex() > editor()->object()->getLastLayerIndex())
+    if (currentLayerIndex() != editor()->object()->getLastLayerIndex())
     {
-        setCurrentLayer(editor()->object()->getLastLayerIndex());
+        setCurrentLayer(layerIndex);
     }
 
     Q_EMIT layerCountChanged( count() );
