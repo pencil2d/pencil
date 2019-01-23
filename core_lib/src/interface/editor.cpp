@@ -794,8 +794,6 @@ void Editor::removeKeyAtLayerId(int layerId, int frameIndex)
     {
         setCurrentLayerIndex(layerIndex);
     }
-
-    Q_EMIT layers()->currentLayerChanged(layerIndex); // trigger timeline repaint.
 }
 
 void Editor::removeCurrentKey()
