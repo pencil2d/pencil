@@ -32,11 +32,9 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 
-BucketTool::BucketTool( QObject *parent ) :
-StrokeTool( parent )
+BucketTool::BucketTool(QObject* parent) : StrokeTool(parent)
 {
 }
-
 
 ToolType BucketTool::type()
 {
@@ -57,13 +55,16 @@ void BucketTool::loadSettings()
 
 QCursor BucketTool::cursor()
 {
-    if( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) ) {
-        QPixmap pixmap( ":icons/bucketTool.png" );
-        QPainter painter( &pixmap );
+    if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
+    {
+        QPixmap pixmap(":icons/bucketTool.png");
+        QPainter painter(&pixmap);
         painter.end();
 
-        return QCursor( pixmap, 4, 20 );
-    } else {
+        return QCursor(pixmap, 4, 20);
+    }
+    else
+    {
         return Qt::CrossCursor;
     }
 }
@@ -79,7 +80,7 @@ void BucketTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("fillThickness", width);
     settings.sync();
 }
@@ -90,91 +91,120 @@ void BucketTool::setTolerance(const int tolerance)
     properties.tolerance = tolerance;
 
     // Update settings
-    QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue("tolerance", tolerance );
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("tolerance", tolerance);
     settings.sync();
 }
 
-
-void BucketTool::mousePressEvent( QMouseEvent *event )
+void BucketTool::mousePressEvent(QMouseEvent* evt)
 {
-    if( event->button() == Qt::LeftButton )
-    {
-        mScribbleArea->setAllDirty();
-    }
-
-    startStroke();
+    pressEventInternal(evt->button());
 }
 
-void BucketTool::mouseReleaseEvent(QMouseEvent* event)
+void BucketTool::mouseReleaseEvent(QMouseEvent* evt)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer == NULL ) { return; }
-
-    if ( event->button() == Qt::LeftButton )
-    {
-        mEditor->backup(typeName());
-
-        if ( layer->type() == Layer::BITMAP )
-            paintBitmap(layer);
-        else if( layer->type() == Layer::VECTOR )
-            paintVector(event, layer);
-    }
-    endStroke();
+    releaseEventInternal(evt->button());
 }
 
 void BucketTool::mouseMoveEvent(QMouseEvent* evt)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-    if(layer->type() == Layer::VECTOR )
+    moveEventInternal(evt->buttons());
+}
+
+void BucketTool::tabletPressEvent(QTabletEvent* evt)
+{
+    pressEventInternal(evt->button());
+}
+
+void BucketTool::tabletReleaseEvent(QTabletEvent* evt)
+{
+    releaseEventInternal(evt->button());
+}
+
+void BucketTool::tabletMoveEvent(QTabletEvent* evt)
+{
+    moveEventInternal(evt->buttons());
+}
+
+void BucketTool::pressEventInternal(Qt::MouseButton mouseButton)
+{
+    startStroke();
+    if (mouseButton == Qt::LeftButton)
     {
-        if (evt->buttons() & Qt::LeftButton)
+        mScribbleArea->setAllDirty();
+    }
+    startStroke();
+}
+
+void BucketTool::moveEventInternal(Qt::MouseButtons mouseButton)
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::VECTOR)
+    {
+        if (mouseButton & Qt::LeftButton)
         {
             drawStroke();
-            qDebug() << "DrawStroke" << evt->pos();
         }
     }
+}
+
+void BucketTool::releaseEventInternal(Qt::MouseButton mouseButton)
+{
+    Layer* layer = editor()->layers()->currentLayer();
+    if (layer == nullptr) { return; }
+
+    if (mouseButton == Qt::LeftButton)
+    {
+        mEditor->backup(typeName());
+
+        switch (layer->type())
+        {
+        case Layer::BITMAP: paintBitmap(layer); break;
+        case Layer::VECTOR: paintVector(layer); break;
+        default:
+            break;
+        }
+    }
+    endStroke();
 }
 
 void BucketTool::paintBitmap(Layer* layer)
 {
     Layer* targetLayer = layer; // by default
-    int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
+    int layerNumber = editor()->layers()->currentLayerIndex(); // by default
 
-    BitmapImage* targetImage = ((LayerBitmap*)targetLayer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+    BitmapImage* targetImage = ((LayerBitmap*)targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
 
     QPoint point = getLastPoint().toPoint();
-
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
+    BitmapImage::floodFill(targetImage,
+                           cameraRect,
+                           point,
+                           qPremultiply(mEditor->color()->frontColor().rgba()),
+                           properties.tolerance);
 
-    BitmapImage::floodFill( targetImage,
-                            cameraRect,
-                            point,
-                            qPremultiply( mEditor->color()->frontColor().rgba() ),
-                            properties.tolerance );
-
-    mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
+    mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
     mScribbleArea->setAllDirty();
 }
 
-void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
+void BucketTool::paintVector(Layer* layer)
 {
-    Q_UNUSED(event);
     mScribbleArea->clearBitmapBuffer();
-    VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
-    if ( !vectorImage->isPathFilled() )
+    VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+
+    if (!vectorImage->isPathFilled())
     {
-        vectorImage->fillSelectedPath( mEditor->color()->frontColorNumber() );
+        vectorImage->fillSelectedPath(mEditor->color()->frontColorNumber());
     }
 
-    vectorImage->applyWidthToSelection( properties.width );
-    vectorImage->applyColourToSelectedCurve( mEditor->color()->frontColorNumber() );
-    vectorImage->applyColourToSelectedArea( mEditor->color()->frontColorNumber() );
+    vectorImage->applyWidthToSelection(properties.width);
+    vectorImage->applyColourToSelectedCurve(mEditor->color()->frontColorNumber());
+    vectorImage->applyColourToSelectedArea(mEditor->color()->frontColorNumber());
 
     applyChanges();
 
-    mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+    mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();
 }
 
@@ -187,7 +217,8 @@ void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
 
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel()) {
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+    {
         m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
     }
 
@@ -195,27 +226,26 @@ void BucketTool::drawStroke()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-
-    if( layer->type() == Layer::VECTOR ) {
+    if (layer->type() == Layer::VECTOR)
+    {
         mCurrentWidth = 30;
-        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
+        int rad = qRound((mCurrentWidth / 2 + 2) * mEditor->view()->scaling());
 
         QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
-//        pathColor.setAlpha(255);
+        //pathColor.setAlpha(255);
 
-        QPen pen( pathColor,
-                  mCurrentWidth * mEditor->view()->scaling(),
-                  Qt::NoPen,
-                  Qt::RoundCap,
-                  Qt::RoundJoin );
+        QPen pen(pathColor,
+                 mCurrentWidth * mEditor->view()->scaling(),
+                 Qt::NoPen,
+                 Qt::RoundCap,
+                 Qt::RoundJoin);
 
-        if( p.size() == 4 ) {
-            QPainterPath path( p[ 0 ] );
-            path.cubicTo( p[ 1 ],
-                          p[ 2 ],
-                          p[ 3 ] );
-            mScribbleArea->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_Source );
-            mScribbleArea->refreshVector( path.boundingRect().toRect(), rad );
+        if (p.size() == 4)
+        {
+            QPainterPath path(p[0]);
+            path.cubicTo(p[1], p[2], p[3]);
+            mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
+            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }

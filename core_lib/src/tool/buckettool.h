@@ -23,30 +23,39 @@ GNU General Public License for more details.
 class Layer;
 class VectorImage;
 
+
 class BucketTool : public StrokeTool
 {
     Q_OBJECT
 public:
-    explicit BucketTool( QObject *parent = 0 );
+    explicit BucketTool(QObject* parent = nullptr);
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent( QMouseEvent * ) override;
-    void mouseMoveEvent( QMouseEvent * ) override;
-    void mouseReleaseEvent( QMouseEvent * ) override;
+    void mousePressEvent(QMouseEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
+
+    void tabletPressEvent(QTabletEvent*) override;
+    void tabletMoveEvent(QTabletEvent*) override;
+    void tabletReleaseEvent(QTabletEvent*) override;
 
     void setTolerance(const int tolerance) override;
     void setWidth(const qreal width) override;
 
-    void paintBitmap(Layer *layer);
-    void paintVector(QMouseEvent *event, Layer *layer);
+    void paintBitmap(Layer* layer);
+    void paintVector(Layer* layer);
     void drawStroke();
-    void getBrushWidth();
 
     void applyChanges();
 
 private:
+    void pressEventInternal(Qt::MouseButton);
+    void releaseEventInternal(Qt::MouseButton);
+    void moveEventInternal(Qt::MouseButtons);
+    
+
     VectorImage* vectorImage = nullptr;
 };
 
