@@ -117,11 +117,11 @@ Camera* LayerCamera::getCameraAtFrame(int frameNumber)
 
 void LayerCamera::putCameraIntoFrame(KeyFrame *keyframe, int frameIndex)
 {
-    Camera* currentCamera = getCameraAtFrame(frameIndex);
-
     Camera* newCamera = static_cast<Camera*>(keyframe);
-    static_cast<Camera*>(currentCamera)->assign(*newCamera);
-    linearInterpolateTransform(currentCamera);
+    newCamera = new Camera(*newCamera);
+    newCamera->setPos(frameIndex);
+    newCamera->updateViewTransform();
+    loadKey(newCamera);
 }
 
 Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
