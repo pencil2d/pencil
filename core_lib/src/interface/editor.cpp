@@ -533,6 +533,7 @@ void Editor::paste()
 
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
             qDebug() << "to be pasted --->" << tobePasted.image()->size();
+            qDebug() << "to be pasted --->" << tobePasted.image()->offset();
             if (mScribbleArea->isSomethingSelected())
             {
                 QRectF selection = mScribbleArea->getSelection();

@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 
 
-
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
 {
     setName(tr("Bitmap Layer"));
@@ -61,10 +60,11 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
             break;
         for (int y = img->top(); y < img->bottom(); y++)
         {
-            QColor c = img->pixel(x, y);
-            if (c.value() < 211)
+            QRgb c = img->pixel(x, y);
+            if (qAlpha(c) != 0)
             {
                 aleft = x;
+                qDebug() << "aleft " << aleft;
                 cont = false;
             }
         }
@@ -78,10 +78,11 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
             break;
         for (int y = img->top(); y < img->bottom(); y++)
         {
-            QColor c = img->pixel(x, y);
-            if (c.value() < 211)
+            QRgb c = img->pixel(x, y);
+            if (qAlpha(c) != 0)
             {
                 aright = x;
+                qDebug() << "aright " << aright;
                 cont = false;
             }
         }
@@ -95,10 +96,13 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
             break;
         for (int x = img->left(); x < img->right(); x++)
         {
-            QColor c = img->pixel(x, y);
-            if (c.value() < 211)
+//            QColor c = img->pixel(x, y);
+//            if (c.value() < mThreshold)
+            QRgb c = img->pixel(x, y);
+            if (qAlpha(c) != 0)
             {
                 atop = y;
+                qDebug() << "atop " << atop;
                 cont = false;
             }
         }
@@ -112,10 +116,11 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
             break;
         for (int x = img->left(); x < img->right(); x++)
         {
-            QColor c = img->pixel(x, y);
-            if (c.value() < 211)
+            QRgb c = img->pixel(x, y);
+            if (qAlpha(c) != 0)
             {
                 abottom = y;
+                qDebug() << "abottom " << abottom;
                 cont = false;
             }
         }
@@ -126,11 +131,6 @@ QRect LayerBitmap::getUpdatedBounds(int frame)
 BitmapImage *LayerBitmap::toTransparentScan(int frame)
 {
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
-    qDebug() << "OLD bounds: " << img->bounds();
-    img->setBounds(getUpdatedBounds(frame));
-    Q_ASSERT(img != nullptr);
-    qDebug() << "New bounds: " << img->bounds();
-
     int xOffset = img->left();
     int yOffset = img->top();
     QRgb transp = qRgba(0, 0, 0, 0);
@@ -143,6 +143,8 @@ BitmapImage *LayerBitmap::toTransparentScan(int frame)
                 img->setPixel(x + xOffset, y + yOffset, transp);
         }
     }
+    img->setBounds(getUpdatedBounds(frame));
+    qDebug() << img->bounds();
     return img;
 }
 
