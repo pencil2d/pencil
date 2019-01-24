@@ -36,7 +36,6 @@ public:
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
-    QRect getUpdatedBounds(int frame);
 
     // color layer methods
     void setIsColorLayer(bool value) { mIsColorLayer = value; }

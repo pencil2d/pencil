@@ -522,6 +522,24 @@ void Editor::copy()
     }
 }
 
+void Editor::copyFromScan()
+{
+    Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
+    if (layer == nullptr) { return; }
+
+    if (!layer->keyExists(currentFrame())) { return; }
+
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
+    if (layerBitmap->getIsColorLayer() && mScribbleArea->isSomethingSelected())
+    {
+        copy();
+        layer->removeKeyFrame(currentFrame());
+        layer->addNewKeyFrameAt(currentFrame());
+        paste();
+        g_clipboardBitmapImage.clear();
+    }
+}
+
 void Editor::paste()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
@@ -772,7 +790,7 @@ bool Editor::importBitmapImage(QString filePath, int space)
 
         BitmapImage importedBitmapImage(mScribbleArea->getCentralPoint().toPoint() - QPoint(img.width() / 2, img.height() / 2), img);
         bitmapImage->paste(&importedBitmapImage);
-        layer->toTransparentScan(currentFrame());
+//        layer->toTransparentScan(currentFrame());
 
         if (space > 1) {
             scrubTo(currentFrame() + space);

@@ -45,89 +45,6 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-QRect LayerBitmap::getUpdatedBounds(int frame)
-{
-    BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
-//    qDebug() << "L: " << img->left() << ", R: " << img->right() << ", T: " << img->top() << ", B: " << img->bottom();
-    if (img == nullptr) return QRect(0, 0, 0, 0);
-    int aleft = 0, aright = 0, atop = 0, abottom = 0;
-
-    bool cont = true;
-    // find aleft
-    for (int x = img->left(); x < img->right(); x++)
-    {
-        if (!cont)
-            break;
-        for (int y = img->top(); y < img->bottom(); y++)
-        {
-            QRgb c = img->pixel(x, y);
-            if (qAlpha(c) != 0)
-            {
-                aleft = x;
-                qDebug() << "aleft " << aleft;
-                cont = false;
-            }
-        }
-    }
-    cont = true;
-
-    // find aright
-    for (int x = img->right(); x > img->left(); x--)
-    {
-        if (!cont)
-            break;
-        for (int y = img->top(); y < img->bottom(); y++)
-        {
-            QRgb c = img->pixel(x, y);
-            if (qAlpha(c) != 0)
-            {
-                aright = x;
-                qDebug() << "aright " << aright;
-                cont = false;
-            }
-        }
-    }
-    cont = true;
-
-    // find atop
-    for (int y = img->top(); y < img->bottom(); y++)
-    {
-        if (!cont)
-            break;
-        for (int x = img->left(); x < img->right(); x++)
-        {
-//            QColor c = img->pixel(x, y);
-//            if (c.value() < mThreshold)
-            QRgb c = img->pixel(x, y);
-            if (qAlpha(c) != 0)
-            {
-                atop = y;
-                qDebug() << "atop " << atop;
-                cont = false;
-            }
-        }
-    }
-    cont = true;
-
-    // find abottom
-    for (int y = img->bottom(); y > img->top(); y--)
-    {
-        if (!cont)
-            break;
-        for (int x = img->left(); x < img->right(); x++)
-        {
-            QRgb c = img->pixel(x, y);
-            if (qAlpha(c) != 0)
-            {
-                abottom = y;
-                qDebug() << "abottom " << abottom;
-                cont = false;
-            }
-        }
-    }
-    return QRect(aleft, atop, aright - aleft, abottom - atop);
-}
-
 BitmapImage *LayerBitmap::toTransparentScan(int frame)
 {
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
@@ -143,7 +60,6 @@ BitmapImage *LayerBitmap::toTransparentScan(int frame)
                 img->setPixel(x + xOffset, y + yOffset, transp);
         }
     }
-    img->setBounds(getUpdatedBounds(frame));
     qDebug() << img->bounds();
     return img;
 }

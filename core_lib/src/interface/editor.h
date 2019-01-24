@@ -145,6 +145,7 @@ public: //slots
     void undo();
     void redo();
     void copy();
+    void copyFromScan();
 
     void paste();
     void clipboardChanged();

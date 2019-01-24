@@ -162,7 +162,7 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
-    mBitmapColoring = new BitmapColoring(this);
+    mBitmapColoring = new BitmapColoring(mEditor, this);
     mBitmapColoring->setObjectName("BitmapColoring");
 
     /*

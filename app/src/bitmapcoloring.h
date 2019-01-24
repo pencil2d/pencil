@@ -1,14 +1,21 @@
 #ifndef BITMAPCOLORING_H
 #define BITMAPCOLORING_H
 
-#include <QWidget>
 #include "basedockwidget.h"
+#include "editor.h"
+
+namespace Ui
+{
+class BitmapColoringWidget;
+}
 
 class BitmapColoring : public BaseDockWidget
 {
     Q_OBJECT
+
 public:
-    explicit BitmapColoring(QWidget *parent = nullptr);
+    explicit BitmapColoring(Editor* editor, QWidget *parent);
+    ~BitmapColoring() override;
 
     void initUI() override;
     void updateUI() override;
@@ -16,6 +23,11 @@ public:
 signals:
 
 public slots:
+
+private:
+    Ui::BitmapColoringWidget* ui = nullptr;
+    Editor* mEditor;
+
 };
 
 #endif // BITMAPCOLORING_H
