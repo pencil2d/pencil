@@ -276,6 +276,7 @@ void MainWindow2::createMenus()
     connect(ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewVectorLayer);
     connect(ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewSoundLayer);
     connect(ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer);
+    connect(ui->actionAdd_Bitmap_Color_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewBitmapColorLayer);
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
 
     /// --- View Menu ---
@@ -1330,6 +1331,8 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, mBitmapColoring, &BitmapColoring::updateUI);
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
 }
 
 void MainWindow2::makeConnections(Editor*, DisplayOptionWidget*)
@@ -1383,6 +1386,14 @@ void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
     statusBar()->showMessage(QString("Zoom: %0%1").arg(static_cast<double>(zoom), 0, 'f', 1).arg("%"));
+}
+
+void MainWindow2::updateLayerMenu()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+        ui->actionAdd_Bitmap_Color_Layer->setEnabled(true);
+    else
+        ui->actionAdd_Bitmap_Color_Layer->setEnabled(false);
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

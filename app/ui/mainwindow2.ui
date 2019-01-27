@@ -208,6 +208,8 @@
     <addaction name="actionNew_Sound_Layer"/>
     <addaction name="actionNew_Camera_Layer"/>
     <addaction name="separator"/>
+    <addaction name="actionAdd_Bitmap_Color_Layer"/>
+    <addaction name="separator"/>
     <addaction name="actionDelete_Current_Layer"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -959,6 +961,11 @@
   <action name="actionZoom100">
    <property name="text">
     <string>100%</string>
+   </property>
+  </action>
+  <action name="actionAdd_Bitmap_Color_Layer">
+   <property name="text">
+    <string>Add Bitmap Color Layer</string>
    </property>
   </action>
  </widget>

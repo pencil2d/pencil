@@ -15,6 +15,8 @@ GNU General Public License for more details.
 */
 #include "bitmapcoloring.h"
 #include "ui_bitmapcoloringwidget.h"
+#include "layermanager.h"
+#include "qdebug.h"
 
 
 BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
@@ -27,9 +29,17 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     ui = new Ui::BitmapColoringWidget;
     ui->setupUi(innerWidget);
     setWidget(innerWidget);
+
     mEditor = editor;
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+        mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+
     connect(ui->btn1Select, &QPushButton::clicked, mEditor, &Editor::copyFromScan);
     connect(ui->btn1Next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
+    connect(ui->sb2_Threshold, QOverload<int>::of(&QSpinBox::valueChanged), mLayerBitmap, &LayerBitmap::setThreshold);
+    connect(ui->btn3_apply, &QPushButton::clicked, mEditor, &Editor::scanToTransparent);
+    connect(ui->btn3_Next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
+    connect(ui->btn3_applyRest, &QPushButton::clicked, mEditor, &Editor::scanToTransparentRest);
 }
 
 BitmapColoring::~BitmapColoring()
@@ -39,10 +49,25 @@ BitmapColoring::~BitmapColoring()
 
 void BitmapColoring::initUI()
 {
+    if (!isVisible()) { return; }
 
+    updateUI();
 }
 
 void BitmapColoring::updateUI()
 {
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::BITMAP)
+    {
+        setEnabled(true);
+    }
+    else
+    {
+        setEnabled(false);
+    }
+}
 
+void BitmapColoring::scanToTransparent()
+{
+    mEditor->scanToTransparent();
 }

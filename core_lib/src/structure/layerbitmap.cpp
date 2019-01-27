@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QColor>
 #include "keyframe.h"
 #include "bitmapimage.h"
+#include <QtMath>
 
 
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
@@ -45,44 +46,71 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-BitmapImage *LayerBitmap::toTransparentScan(int frame)
+void LayerBitmap::initColorLayer(Layer *fromLayer, LayerBitmap *colorlayer)
+{
+    int max = fromLayer->getMaxKeyFramePosition();
+    for (int i = 1; i <=max; i++)
+    {
+        colorlayer->copyFrame(fromLayer, colorlayer, i);
+        toBlackLine(i);
+    }
+}
+
+BitmapImage* LayerBitmap::scanToTransparent(int frame)
 {
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
     int xOffset = img->left();
     int yOffset = img->top();
-    QRgb transp = qRgba(0, 0, 0, 0);
     for (int x = 0; x < img->width(); x++)
     {
         for (int y = 0; y < img->height(); y++)
         {
             QColor c = img->pixel(x + xOffset, y + yOffset);
-            if (c.value() > mThreshold)
+            if (c.value() >= mThreshold)
+            {
                 img->setPixel(x + xOffset, y + yOffset, transp);
+            }
+            else if(c.value() > 99 && c.value() < mThreshold)
+            {
+                int alpha = static_cast<int>(floor(255 - 255/(mThreshold - 100) * (c.value() - 100)));
+                QRgb rgba = qRgba(c.value(), c.value(), c.value(), alpha);
+                img->setPixel(x + xOffset, y + yOffset, rgba);
+            }
         }
     }
     qDebug() << img->bounds();
     return img;
 }
 
-void LayerBitmap::toBlackLine(int frame, int area = 5)
+void LayerBitmap::toBlackLine(int frame)
 {
+    if (!keyExists(frame)) { return; }
+
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
     int xOffset = img->left();
     int yOffset = img->top();
-    QRgb black = qRgba(0, 1, 0, 255);
 
     // make line black (0, 1, 0, 255)
     for (int x = 0; x < img->width(); x++)
     {
         for (int y = 0; y < img->height(); y++)
         {
-            QColor c = img->pixel(x + xOffset, y + yOffset);
-            if (c.value() < 211)
-                img->setPixel(x + xOffset, y + yOffset, black);
+            QRgb rgba = img->pixel(x + xOffset, y + yOffset);
+            if (rgba != transp)
+                img->setPixel(x + xOffset, y + yOffset, thinline);
         }
     }
+}
 
-    // fill areas size 5 or less with black
+void LayerBitmap::fillWhiteAreas(int frame, int area)
+{
+    if (!keyExists(frame)) { return; }
+
+    BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
+    int xOffset = img->left();
+    int yOffset = img->top();
+
+    // fill areas size 'area' or less with black
     QVector<QPoint> points;
     points.clear();
     for (int x = 0; x < img->width(); x++)
@@ -92,9 +120,19 @@ void LayerBitmap::toBlackLine(int frame, int area = 5)
             if (qAlpha(img->pixel(x,y)) == 255)
             {
                 points.append(QPoint(x + xOffset, y + yOffset));
-                // hold øje med om det er et hul osv...
+                int areaSize = fillWithColor(QPoint(x + xOffset, y + yOffset), transp, rosa, frame);
+                if (areaSize <= area)
+                {   // replace rosa with thinline (black)
+                    fillWithColor(QPoint(x + xOffset, y + yOffset), rosa, thinline, frame);
+                    points.removeLast();
+                }
             }
         }
+    }
+    // replace rosa with trans
+    while (!points.isEmpty()) {
+        fillWithColor(points[0], rosa, transp, frame);
+        points.removeFirst();
     }
 }
 
@@ -103,7 +141,6 @@ void LayerBitmap::toThinBlackLine(int frame)
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
     int xOffset = img->left();
     int yOffset = img->top();
-    QRgb thinline = qRgba(0, 1, 0, 255);
     for (int x = 0; x < img->width(); x++)
     {
         for (int y = 0; y < img->height(); y++)
@@ -115,6 +152,49 @@ void LayerBitmap::toThinBlackLine(int frame)
             }
         }
     }
+}
+
+int LayerBitmap::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame)
+{
+    BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
+    QList<QPoint> fillList;
+    fillList.clear();
+    // fill first pixel
+    img->setPixel(point, newColor);
+    int pixels = 1;
+    fillList.append(point);
+
+    QRect rect = img->bounds();
+    while (!fillList.isEmpty())
+    {
+        QPoint tmp = fillList.at(0);
+        if (rect.contains(QPoint(tmp.x() + 1, tmp.y())) && img->pixel(QPoint(tmp.x() + 1, tmp.y())) == orgColor)
+        {
+            img->setPixel(QPoint(tmp.x() + 1, tmp.y()), newColor);
+            fillList.append(QPoint(tmp.x() + 1, tmp.y()));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x(), tmp.y() + 1)) && img->pixel(QPoint(tmp.x(), tmp.y() + 1)) == orgColor)
+        {
+            img->setPixel(QPoint(tmp.x(), tmp.y() + 1), newColor);
+            fillList.append(QPoint(tmp.x(), tmp.y() + 1));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x() - 1, tmp.y())) && img->pixel(QPoint(tmp.x() - 1, tmp.y())) == orgColor)
+        {
+            img->setPixel(QPoint(tmp.x() - 1, tmp.y()), newColor);
+            fillList.append(QPoint(tmp.x() - 1, tmp.y()));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x(), tmp.y() - 1)) && img->pixel(QPoint(tmp.x(), tmp.y() - 1)) == orgColor)
+        {
+            img->setPixel(QPoint(tmp.x(), tmp.y() - 1), newColor);
+            fillList.append(QPoint(tmp.x(), tmp.y() - 1));
+            pixels++;
+        }
+        fillList.removeFirst();
+    }
+    return pixels;
 }
 
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)

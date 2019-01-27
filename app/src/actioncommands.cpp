@@ -37,6 +37,7 @@ GNU General Public License for more details.
 
 #include "layercamera.h"
 #include "layersound.h"
+#include "layerbitmap.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
@@ -645,6 +646,17 @@ Status ActionCommands::addNewSoundLayer()
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
         mEditor->layers()->setCurrentLayer(layer);
    }
+    return Status::OK;
+}
+
+Status ActionCommands::addNewBitmapColorLayer()
+{
+    QString name = mEditor->layers()->currentLayer()->name() + "_C";
+    if (!name.isEmpty())
+    {
+        LayerBitmap* colorlayer = mEditor->layers()->createBitmapLayer(name);
+        colorlayer->initColorLayer(mEditor->layers()->currentLayer(), colorlayer);
+    }
     return Status::OK;
 }
 

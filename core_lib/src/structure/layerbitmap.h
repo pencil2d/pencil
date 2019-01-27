@@ -27,6 +27,10 @@ class LayerBitmap : public Layer
     Q_OBJECT
 
 public:
+    const QRgb transp = qRgba(0, 0, 0, 0);
+    const QRgb thinline = qRgba(0, 1, 0, 255);
+    const QRgb rosa = qRgba(255,230,230,255);
+
     LayerBitmap(Object* object);
     ~LayerBitmap() override;
 
@@ -38,11 +42,14 @@ public:
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
     // color layer methods
-    void setIsColorLayer(bool value) { mIsColorLayer = value; }
-    bool getIsColorLayer() { return mIsColorLayer; }
-    BitmapImage* toTransparentScan(int frame);
-    void toBlackLine(int frame, int area);
+    void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer);
+    int getThreshold() { return mThreshold; }
+    void setThreshold(int threshold) { mThreshold = threshold; }
+    BitmapImage* scanToTransparent(int frame);
+    void toBlackLine(int frame);
+    void fillWhiteAreas(int frame, int area);
     void toThinBlackLine(int frame);
+    int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
@@ -55,7 +62,6 @@ private:
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 
     int mThreshold = 200;
-    bool mIsColorLayer = false;
 };
 
 #endif

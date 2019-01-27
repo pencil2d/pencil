@@ -57,7 +57,7 @@ public:
     void gotoPreviouslayer();
 
     LayerBitmap* createBitmapLayer(const QString& strLayerName);
-    LayerBitmap* createBitmapColorLayer(const QString& strLayerName);
+//    LayerBitmap* createBitmapColorLayer(const QString& strLayerName);
     LayerVector* createVectorLayer(const QString& strLayerName);
     LayerCamera* createCameraLayer(const QString& strLayerName);
     LayerSound*  createSoundLayer(const QString& strLayerName);

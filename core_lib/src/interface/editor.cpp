@@ -522,24 +522,6 @@ void Editor::copy()
     }
 }
 
-void Editor::copyFromScan()
-{
-    Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer == nullptr) { return; }
-
-    if (!layer->keyExists(currentFrame())) { return; }
-
-    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
-    if (layerBitmap->getIsColorLayer() && mScribbleArea->isSomethingSelected())
-    {
-        copy();
-        layer->removeKeyFrame(currentFrame());
-        layer->addNewKeyFrameAt(currentFrame());
-        paste();
-        g_clipboardBitmapImage.clear();
-    }
-}
-
 void Editor::paste()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
@@ -582,6 +564,44 @@ void Editor::paste()
 void Editor::flipSelection(bool flipVertical)
 {
     mScribbleArea->flipSelection(flipVertical);
+}
+
+/**
+ * @brief Editor::copyFromScan
+ * Selecting from a scanned drawing imported to Pencil2d.
+ * Can only be used by Layer::BITMAP type layers.
+ */
+void Editor::copyFromScan()
+{
+    Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
+    if (layer == nullptr) { return; }
+
+    if (!layer->keyExists(currentFrame())) { return; }
+
+    if (mScribbleArea->isSomethingSelected())
+    {
+        copy();
+        layer->removeKeyFrame(currentFrame());
+        layer->addNewKeyFrameAt(currentFrame());
+        paste();
+        g_clipboardBitmapImage.clear();
+    }
+}
+
+void Editor::scanToTransparent()
+{
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    layerBitmap->scanToTransparent(currentFrame());
+    mScribbleArea->updateFrame(currentFrame());
+}
+
+void Editor::scanToTransparentRest()
+{
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame()) {
+        scrubNextKeyFrame();
+        layerBitmap->scanToTransparent(currentFrame());
+    }
 }
 
 void Editor::clipboardChanged()

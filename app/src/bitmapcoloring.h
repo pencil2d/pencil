@@ -3,6 +3,9 @@
 
 #include "basedockwidget.h"
 #include "editor.h"
+#include "layerbitmap.h"
+
+class Layer;
 
 namespace Ui
 {
@@ -23,10 +26,12 @@ public:
 signals:
 
 public slots:
+    void scanToTransparent();
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;
-    Editor* mEditor;
+    Editor* mEditor = nullptr;
+    LayerBitmap* mLayerBitmap = nullptr;
 
 };
 
