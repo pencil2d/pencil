@@ -174,13 +174,48 @@ void LayerBitmap::toThinBlackLine(int frame)
                     }
                     else
                     {
-                        qDebug() << qAlpha(img->pixel(x,y));
                         if (qAlpha(img->pixel(x,y)) == 0)
                             search = true;
                     }
                 }
             }
             N = black; // if none 'black' is removed, N = false
+        }
+        if (S)  // from SOUTH
+        {
+            black = false;
+            search = true;
+            for (int x = img->left(); x < img->right(); x++)
+            {
+                for (int y = img->bottom(); y > img->top(); y--)
+                {
+                    if (search)
+                    {
+                        if (qAlpha(img->pixel(x,y)) > 0)
+                        {
+                            if (qAlpha(img->pixel(x,y-1)) > 0)
+                            {
+                                if (qAlpha(img->pixel(x-1,y+1)) == 0 && qAlpha(img->pixel(x+1,y+1)) == 0)
+                                {
+                                    if (qAlpha(img->pixel(x+1, y)) > 0 || qAlpha(img->pixel(x+1, y-1)) > 0 ||
+                                            qAlpha(img->pixel(x-1, y)) > 0 || qAlpha(img->pixel(x-1, y-1)) > 0)
+                                    {
+                                        img->setPixel(x, y, transp);
+                                        black = true;
+                                        search = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->pixel(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            S = black; // if none 'black' is removed, S = false
         }
         if (E)  // from EAST
         {
@@ -211,50 +246,12 @@ void LayerBitmap::toThinBlackLine(int frame)
                     }
                     else
                     {
-                        qDebug() << qAlpha(img->pixel(x,y));
                         if (qAlpha(img->pixel(x,y)) == 0)
                             search = true;
                     }
                 }
             }
             E = black; // if none 'black' is removed, E = false
-        }
-        if (S)  // from SOUTH
-        {
-            black = false;
-            search = true;
-            for (int x = img->left(); x <= img->right(); x++)
-            {
-                for (int y = img->bottom(); y < img->top(); y--)
-                {
-                    if (search)
-                    {
-                        if (qAlpha(img->pixel(x,y)) > 0)
-                        {
-                            if (qAlpha(img->pixel(x,y-1)) > 0)
-                            {
-                                if (qAlpha(img->pixel(x-1,y+1)) == 0 && qAlpha(img->pixel(x+1,y+1)) == 0)
-                                {
-                                    if (qAlpha(img->pixel(x+1, y)) > 0 || qAlpha(img->pixel(x+1, y-1)) > 0 ||
-                                            qAlpha(img->pixel(x-1, y)) > 0 || qAlpha(img->pixel(x-1, y-1)) > 0)
-                                    {
-                                        img->setPixel(x, y, transp);
-                                        black = true;
-                                        search = false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        qDebug() << qAlpha(img->pixel(x,y));
-                        if (qAlpha(img->pixel(x,y)) == 0)
-                            search = true;
-                    }
-                }
-            }
-            S = black; // if none 'black' is removed, S = false
         }
         if (W)  // from WEST
         {
@@ -285,13 +282,12 @@ void LayerBitmap::toThinBlackLine(int frame)
                     }
                     else
                     {
-                        qDebug() << qAlpha(img->pixel(x,y));
                         if (qAlpha(img->pixel(x,y)) == 0)
                             search = true;
                     }
                 }
             }
-            W = black; // if none 'black' is removed, E = false
+            W = black; // if none 'black' is removed, W = false
         }
     }
 }
