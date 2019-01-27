@@ -102,7 +102,7 @@ void LayerBitmap::toBlackLine(int frame)
     }
 }
 
-void LayerBitmap::fillWhiteAreas(int frame, int area)
+void LayerBitmap::fillWhiteAreas(int frame)
 {
     if (!keyExists(frame)) { return; }
 
@@ -117,13 +117,13 @@ void LayerBitmap::fillWhiteAreas(int frame, int area)
     {
         for (int y = 0; y < img->height(); y++)
         {
-            if (qAlpha(img->pixel(x,y)) == 255)
+            if (qAlpha(img->pixel(x + xOffset, y + yOffset)) == 0)
             {
                 points.append(QPoint(x + xOffset, y + yOffset));
                 int areaSize = fillWithColor(QPoint(x + xOffset, y + yOffset), transp, rosa, frame);
-                if (areaSize <= area)
+                if (areaSize <= mWhiteArea)
                 {   // replace rosa with thinline (black)
-                    fillWithColor(QPoint(x + xOffset, y + yOffset), rosa, thinline, frame);
+                    fillWithColor(points.last(), rosa, thinline, frame);
                     points.removeLast();
                 }
             }
@@ -139,19 +139,142 @@ void LayerBitmap::fillWhiteAreas(int frame, int area)
 void LayerBitmap::toThinBlackLine(int frame)
 {
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
-    int xOffset = img->left();
-    int yOffset = img->top();
-    for (int x = 0; x < img->width(); x++)
+    int teller = 0, infound = 0, inElse = 0;
+    bool N = true, E = true, S = true, W = true, black, search;
+    while (N || E || S || W)
     {
-        for (int y = 0; y < img->height(); y++)
+        if (N)  // from NORTH
         {
-            QColor c = img->pixel(x + xOffset, y + yOffset);
-            if (c.value() > 210)
+            // set 'black' to false. 'black' is set to true whenever a black pixel is removed
+            black = false;
+            // 'search' is true while pixels are transparent
+            // when thinline pixel is found, 'search' is set to false until next transparent pixel
+            search = true;
+            for (int x = img->left(); x <= img->right(); x++)
             {
-
+                for (int y = img->top(); y < img->bottom(); y++)
+                {
+                    if (search && qAlpha(img->pixel(x, y)) > 0)
+                    {
+                        infound++;
+                        qDebug() << "x,y+1: " << qAlpha(img->pixel(x, y+1));
+                        if (qAlpha(img->pixel(x, y+1) > 0) &&
+                                (qAlpha(img->pixel(x+1, y)) > 0 || qAlpha(img->pixel(x+1, y+1)) > 0 ||
+                                qAlpha(img->pixel(x-1, y)) > 0 || qAlpha(img->pixel(x-1, y+1)) > 0))
+                        {
+                            img->setPixel(x, y, transp);
+                            black = true;
+                            search = false;
+                            teller++;
+                        }
+                    }
+                    else
+                    {
+                        inElse++;
+                        if (qAlpha(img->pixel(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            N = black; // if none 'black' is removed, N = false
+        }
+        if (E)  // from EAST
+        {
+            black = false;
+            search = true;
+            for (int y = img->top(); y <= img->bottom(); y++)
+            {
+                for (int x = img->right(); x > img->left(); x--)
+                {
+                    if (search && qAlpha(img->pixel(x, y)) > 0)
+                    {
+                        infound++;
+                        if (qAlpha(img->pixel(x-1, y) > 0) &&
+                                (qAlpha(img->pixel(x-1, y-1)) > 0 || qAlpha(img->pixel(x, y-1)) > 0 ||
+                                qAlpha(img->pixel(x-1, y+1)) > 0 || qAlpha(img->pixel(x, y+1)) > 0))
+                        {
+                            img->setPixel(x, y, transp);
+                            black = true;
+                            search = false;
+                            teller++;
+                        }
+                    }
+                    else
+                    {
+                        inElse++;
+                        if (qAlpha(img->pixel(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            E = black; // if none 'black' is removed, E = false
+        }
+        if (S)  // from SOUTH
+        {
+            black = false;
+            search = true;
+            for (int x = img->left(); x <= img->right(); x++)
+            {
+                for (int y = img->bottom(); y > img->top(); y--)
+                {
+                    if (search && qAlpha(img->pixel(x, y)) > 0)
+                    {
+                        infound++;
+                        if (qAlpha(img->pixel(x, y-1) > 0) &&
+                                ((qAlpha(img->pixel(x-1, y-1)) > 0 || qAlpha(img->pixel(x-1, y)) > 0 ||
+                                qAlpha(img->pixel(x+1, y-1)) > 0 || qAlpha(img->pixel(x+1, y)) > 0)))
+                        {
+                            img->setPixel(x, y, transp);
+                            black = true;
+                            search = false;
+                            teller++;
+                        }
+                    }
+                    else
+                    {
+                        inElse++;
+                        if (qAlpha(img->pixel(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            S = black; // if none 'black' is removed, S = false
+        }
+        if (W)  // from WEST
+        {
+            black = false;
+            search = true;
+            for (int y = img->top(); y <= img->bottom(); y++)
+            {
+                for (int x = img->left(); x < img->right(); x++)
+                {
+                    if (search && qAlpha(img->pixel(x, y)) > 0)
+                    {
+                        infound++;
+                        if (qAlpha(img->pixel(x+1, y) > 0) &&
+                                (qAlpha(img->pixel(x, y-1)) > 0 || qAlpha(img->pixel(x+1, y-1)) > 0 ||
+                                 qAlpha(img->pixel(x, y+1)) > 0 || qAlpha(img->pixel(x+1, y+1)) > 0))
+                        {
+                            img->setPixel(x, y, transp);
+                            black = true;
+                            search = false;
+                            teller++;
+                        }
+                        else
+                        {
+                            inElse++;
+                            if (qAlpha(img->pixel(x,y)) == 0)
+                                search = true;
+                        }
+                    }
+                    W = black; // if none 'black' is removed, E = false
+                }
             }
         }
     }
+    qDebug() << "Finished thin line. Replaced :" << teller;
+    qDebug() << "Finished thin line. In found :" << infound;
+    qDebug() << "Finished thin line. In else  :" << inElse;
 }
 
 int LayerBitmap::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame)

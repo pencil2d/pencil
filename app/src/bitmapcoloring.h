@@ -26,7 +26,6 @@ public:
 signals:
 
 public slots:
-    void scanToTransparent();
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;

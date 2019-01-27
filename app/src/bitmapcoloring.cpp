@@ -40,6 +40,13 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->btn3_apply, &QPushButton::clicked, mEditor, &Editor::scanToTransparent);
     connect(ui->btn3_Next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
     connect(ui->btn3_applyRest, &QPushButton::clicked, mEditor, &Editor::scanToTransparentRest);
+    connect(ui->sb4_fillArea, QOverload<int>::of(&QSpinBox::valueChanged), mLayerBitmap, &LayerBitmap::setWhiteArea);
+    connect(ui->btn4_apply, &QPushButton::clicked, mEditor, &Editor::fillWhiteAreas);
+    connect(ui->btn4_next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
+    connect(ui->btn4_applyRest, &QPushButton::clicked, mEditor, &Editor::fillWhiteAreasRest);
+    connect(ui->btn5_thin, &QPushButton::clicked, mEditor, &Editor::toThinBlackLine);
+    connect(ui->btn5_next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
+    connect(ui->btn5_thinRest, &QPushButton::clicked, mEditor, &Editor::toThinBlackLineRest);
 }
 
 BitmapColoring::~BitmapColoring()
@@ -65,9 +72,4 @@ void BitmapColoring::updateUI()
     {
         setEnabled(false);
     }
-}
-
-void BitmapColoring::scanToTransparent()
-{
-    mEditor->scanToTransparent();
 }

@@ -28,7 +28,7 @@ class LayerBitmap : public Layer
 
 public:
     const QRgb transp = qRgba(0, 0, 0, 0);
-    const QRgb thinline = qRgba(0, 1, 0, 255);
+    const QRgb thinline = qRgba(0, 0, 0, 255);
     const QRgb rosa = qRgba(255,230,230,255);
 
     LayerBitmap(Object* object);
@@ -45,9 +45,11 @@ public:
     void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer);
     int getThreshold() { return mThreshold; }
     void setThreshold(int threshold) { mThreshold = threshold; }
+    int getWhiteArea() { return mWhiteArea; }
+    void setWhiteArea(int whiteArea) { mWhiteArea = whiteArea; }
     BitmapImage* scanToTransparent(int frame);
     void toBlackLine(int frame);
-    void fillWhiteAreas(int frame, int area);
+    void fillWhiteAreas(int frame);
     void toThinBlackLine(int frame);
     int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame);
 
@@ -62,6 +64,7 @@ private:
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 
     int mThreshold = 200;
+    int mWhiteArea = 6;
 };
 
 #endif

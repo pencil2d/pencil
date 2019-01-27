@@ -154,6 +154,10 @@ public: //slots
     void copyFromScan();
     void scanToTransparent();
     void scanToTransparentRest();
+    void fillWhiteAreas();
+    void fillWhiteAreasRest();
+    void toThinBlackLine();
+    void toThinBlackLineRest();
 
     void toogleOnionSkinType();
 

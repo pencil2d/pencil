@@ -598,10 +598,47 @@ void Editor::scanToTransparent()
 void Editor::scanToTransparentRest()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
-    while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame()) {
+    while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame())
+    {
         scrubNextKeyFrame();
         layerBitmap->scanToTransparent(currentFrame());
     }
+}
+
+void Editor::fillWhiteAreas()
+{
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    layerBitmap->fillWhiteAreas(currentFrame());
+    mScribbleArea->updateFrame(currentFrame());
+}
+
+void Editor::fillWhiteAreasRest()
+{
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame())
+    {
+        scrubNextKeyFrame();
+        layerBitmap->fillWhiteAreas(currentFrame());
+    }
+    mScribbleArea->updateFrame(currentFrame());
+}
+
+void Editor::toThinBlackLine()
+{
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    layerBitmap->toThinBlackLine(currentFrame());
+    mScribbleArea->updateFrame(currentFrame());
+}
+
+void Editor::toThinBlackLineRest()
+{
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame())
+    {
+        scrubNextKeyFrame();
+        layerBitmap->toThinBlackLine(currentFrame());
+    }
+    mScribbleArea->updateFrame(currentFrame());
 }
 
 void Editor::clipboardChanged()
