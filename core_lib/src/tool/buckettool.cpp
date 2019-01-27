@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 #include <QPixmap>
 #include <QPainter>
-#include <QMouseEvent>
+#include "pointerevent.h"
 
 #include "layer.h"
 #include "layervector.h"
@@ -96,64 +96,34 @@ void BucketTool::setTolerance(const int tolerance)
     settings.sync();
 }
 
-void BucketTool::mousePressEvent(QMouseEvent* evt)
-{
-    pressEventInternal(evt->button());
-}
-
-void BucketTool::mouseReleaseEvent(QMouseEvent* evt)
-{
-    releaseEventInternal(evt->button());
-}
-
-void BucketTool::mouseMoveEvent(QMouseEvent* evt)
-{
-    moveEventInternal(evt->buttons());
-}
-
-void BucketTool::tabletPressEvent(QTabletEvent* evt)
-{
-    pressEventInternal(evt->button());
-}
-
-void BucketTool::tabletReleaseEvent(QTabletEvent* evt)
-{
-    releaseEventInternal(evt->button());
-}
-
-void BucketTool::tabletMoveEvent(QTabletEvent* evt)
-{
-    moveEventInternal(evt->buttons());
-}
-
-void BucketTool::pressEventInternal(Qt::MouseButton mouseButton)
+void BucketTool::pointerPressEvent(PointerEvent *event)
 {
     startStroke();
-    if (mouseButton == Qt::LeftButton)
+    if (event->button() == Qt::LeftButton)
     {
         mScribbleArea->setAllDirty();
     }
     startStroke();
 }
 
-void BucketTool::moveEventInternal(Qt::MouseButtons mouseButton)
+void BucketTool::pointerMoveEvent(PointerEvent *event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::VECTOR)
     {
-        if (mouseButton & Qt::LeftButton)
+        if (event->buttons() & Qt::LeftButton)
         {
             drawStroke();
         }
     }
 }
 
-void BucketTool::releaseEventInternal(Qt::MouseButton mouseButton)
+void BucketTool::pointerReleaseEvent(PointerEvent *event)
 {
     Layer* layer = editor()->layers()->currentLayer();
     if (layer == nullptr) { return; }
 
-    if (mouseButton == Qt::LeftButton)
+    if (event->button() == Qt::LeftButton)
     {
         mEditor->backup(typeName());
 

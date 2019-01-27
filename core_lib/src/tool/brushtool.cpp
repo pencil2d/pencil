@@ -164,105 +164,36 @@ QCursor BrushTool::cursor()
     return Qt::CrossCursor;
 }
 
-void BrushTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
-{
-//    Layer* layer = mEditor->layers()->currentLayer();
-
-//    // In Bitmap mode, the brush tool pressure only handles opacity while the Pen tool
-//    // only handles size. Pencil tool handles both.
-
-//    QColor currentColor = mEditor->color()->frontColor();
-//    currentPressuredColor = currentColor;
-
-//    if ( layer->type() == Layer::BITMAP && properties.pressure && !mouseDevice )
-//    {
-//        currentPressuredColor.setAlphaF( currentColor.alphaF() * pressure * pressure );
-//    }
-
-//    mCurrentWidth = properties.width;
-
-    if ( properties.pressure && !mouseDevice )
-    {
-        mCurrentPressure = pressure;
-    }
-    else
-    {
-        mCurrentPressure = 1.0;
-    }
-}
-
-void BrushTool::tabletPressEvent(QTabletEvent *)
+void BrushTool::pointerPressEvent(PointerEvent *)
 {
     mScribbleArea->setAllDirty();
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
-    startStroke();
-}
 
-void BrushTool::tabletMoveEvent(QTabletEvent *)
-{
-    drawStroke();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-}
-
-void BrushTool::tabletReleaseEvent(QTabletEvent *)
-{
-    mEditor->backup(typeName());
-
-    Layer* layer = mEditor->layers()->currentLayer();
     qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
     if (distance < 1)
     {
         paintAt(mMouseDownPoint);
     }
-    else
-    {
-        drawStroke();
-    }
 
-    if ( layer->type() == Layer::BITMAP )
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR )
-        paintVectorStroke();
-    endStroke();
-}
-
-void BrushTool::mousePressEvent( QMouseEvent *)
-{
-    mScribbleArea->setAllDirty();
-    mMouseDownPoint = getCurrentPoint();
-    mLastBrushPoint = getCurrentPoint();
     startStroke();
 }
-
-void BrushTool::mouseReleaseEvent( QMouseEvent *)
+void BrushTool::pointerMoveEvent(PointerEvent *)
 {
-    mEditor->backup(typeName());
-
-    Layer* layer = mEditor->layers()->currentLayer();
-    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
-    if (distance < 1)
-    {
-        paintAt(mMouseDownPoint);
-    }
-    else
-    {
-        drawStroke();
-    }
-
-    if ( layer->type() == Layer::BITMAP )
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR )
-        paintVectorStroke();
-    endStroke();
-}
-
-void BrushTool::mouseMoveEvent( QMouseEvent *)
-{
+    mCurrentPressure = m_pStrokeManager->getPressure();
     drawStroke();
     if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
         m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+}
+void BrushTool::pointerReleaseEvent(PointerEvent *)
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::BITMAP)
+        paintBitmapStroke();
+    else if (layer->type() == Layer::VECTOR)
+        paintVectorStroke();
+
+    endStroke();
 }
 
 // draw a single paint dab at the given location

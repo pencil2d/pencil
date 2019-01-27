@@ -26,7 +26,7 @@
 #include <QLineF>
 #include <QPainterPath>
 #include "object.h"
-
+#include "pointerevent.h"
 
 StrokeManager::StrokeManager()
 {
@@ -72,44 +72,90 @@ void StrokeManager::setPressure(float pressure)
     mTabletPressure = pressure;
 }
 
-void StrokeManager::mousePressEvent(QMouseEvent* event)
+void StrokeManager::pointerPressEvent(PointerEvent *event)
 {
     reset();
     if ( !(event->button() == Qt::NoButton) ) // if the user is pressing the left/right button
     {
-        mLastPressPixel = event->localPos();
+        qDebug() << "press";
+        mLastPressPixel = mCurrentPressPixel;
+        mCurrentPressPixel = event->posF();
     }
-    mLastPixel = mCurrentPixel = event->localPos();
+
+    mLastPixel = mCurrentPixel = event->posF();
 
     mStrokeStarted = true;
+    setPressure(event->pressure());
 }
 
-void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
+void StrokeManager::pointerMoveEvent(PointerEvent *event)
+{
+    // only applied to drawing tools.
+    if (mStabilizerLevel != -1)
+    {
+        smoothMousePos(event->posF());
+    }
+    else
+    {
+        // No smoothing
+        mLastPixel = mCurrentPixel;
+        mCurrentPixel = event->posF();
+        mLastInterpolated = mCurrentPixel;
+    }
+        setPressure(event->pressure());
+}
+
+void StrokeManager::pointerReleaseEvent(PointerEvent *event)
 {
     // flush out stroke
+    // TODO: events refactoring WIP... reassemble moue events and make sure everything is working
+    // will probably also to add is using tablet bool again...
     if ( mStrokeStarted )
     {
-        mouseMoveEvent(event);
+        pointerMoveEvent(event);
     }
 
     mStrokeStarted = false;
 }
 
+void StrokeManager::mousePressEvent(QMouseEvent* event)
+{
+//    reset();
+//    if ( !(event->button() == Qt::NoButton) ) // if the user is pressing the left/right button
+//    {
+//        mLastPressPixel = event->localPos();
+//    }
+//    mLastPixel = mCurrentPixel = event->localPos();
+
+//    mStrokeStarted = true;
+}
+
+void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
+{
+//    // flush out stroke
+//    if ( mStrokeStarted )
+//    {
+//        mouseMoveEvent(event);
+//    }
+
+//    mStrokeStarted = false;
+}
+
 void StrokeManager::tabletEvent(QTabletEvent* event)
 {
-    if (event->type() == QEvent::TabletPress) {
-        mTabletInUse = true;
-        mPenIsHeld = true;
-        mLastPressPixel = event->posF();
-    }
-    if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; mPenIsHeld = false; }
+//    if (event->type() == QEvent::TabletPress) {
+//        mTabletInUse = true;
+//        mPenIsHeld = true;
+//        mLastPressPixel = event->posF();
+//    }
+//    if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; mPenIsHeld = false; }
 
-    setPressure(event->pressure());
+//    setPressure(event->pressure());
 
-    if(event->type() == QEvent::TabletMove)
-    {
-        genericMoveEvent(event->posF());
-    }
+//    if(event->type() == QEvent::TabletMove)
+//    {
+//        genericMoveEvent(event->posF());
+//    }
 }
 
 void StrokeManager::setStabilizerLevel(int level)
@@ -119,7 +165,7 @@ void StrokeManager::setStabilizerLevel(int level)
 
 void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 {
-    genericMoveEvent(event->localPos());
+//    genericMoveEvent(event->localPos());
 }
 
 void StrokeManager::smoothMousePos(QPointF pos)

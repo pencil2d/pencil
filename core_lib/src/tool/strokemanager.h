@@ -29,6 +29,8 @@ GNU General Public License for more details.
 #include "object.h"
 #include "assert.h"
 
+class PointerEvent;
+
 class StrokeManager : public QObject
 {
 public:
@@ -39,6 +41,10 @@ public:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
+
+    void pointerPressEvent(PointerEvent* event);
+    void pointerMoveEvent(PointerEvent* event);
+    void pointerReleaseEvent(PointerEvent* event);
     void setPressure(float pressure);
     void setStabilizerLevel(int level);
 
@@ -61,6 +67,7 @@ public:
     QPointF getLastPixel() const { return mLastPixel; }
     QPointF getLastMeanPixel() const { return mLastInterpolated; }
     QPointF getMousePos() const { return mousePos; }
+    QPointF getCurrentPressPixel() const { return mCurrentPressPixel; }
     bool isPenPressed() const { return mPenIsHeld; }
 
 private:
@@ -76,6 +83,7 @@ private:
     QTimer timer;
 
     QTime mSingleshotTime;
+    QPointF mCurrentPressPixel = { 0, 0 };
     QPointF mLastPressPixel2 = { 0, 0 };
     QPointF mLastPressPixel = { 0, 0 };
     QPointF mCurrentPixel   = { 0, 0 };

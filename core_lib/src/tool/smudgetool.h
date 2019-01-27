@@ -30,13 +30,13 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *) override;
-    void mouseReleaseEvent(QMouseEvent *) override;
-    void mouseMoveEvent(QMouseEvent *) override;
+    void pointerPressEvent(PointerEvent *) override;
+    void pointerReleaseEvent(PointerEvent *) override;
+    void pointerMoveEvent(PointerEvent *) override;
+
     bool keyPressEvent(QKeyEvent *) override;
     bool keyReleaseEvent(QKeyEvent *) override;
 
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice) override;
     void drawStroke();
 
     void setWidth( const qreal width ) override;
