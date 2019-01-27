@@ -154,13 +154,13 @@ void LayerBitmap::toThinBlackLine(int frame)
             {
                 for (int y = img->top(); y < img->bottom(); y++)
                 {
-                    if (search && qAlpha(img->pixel(x, y)) > 0)
+                    if (search && qAlpha(img->pixel(x, y)) > 0 && qAlpha(img->pixel(x, y+1)) > 0)
                     {
                         infound++;
-                        qDebug() << "x,y+1: " << qAlpha(img->pixel(x, y+1));
-                        if (qAlpha(img->pixel(x, y+1) > 0) &&
+//                        qDebug() << "x,y+1: " << qAlpha(img->pixel(x+1, y)) << qAlpha(img->pixel(x+1, y+1)) << qAlpha(img->pixel(x-1, y)) << qAlpha(img->pixel(x-1, y+1));
+                        if (qAlpha(img->pixel(x, y+1)) > 0 &&
                                 (qAlpha(img->pixel(x+1, y)) > 0 || qAlpha(img->pixel(x+1, y+1)) > 0 ||
-                                qAlpha(img->pixel(x-1, y)) > 0 || qAlpha(img->pixel(x-1, y+1)) > 0))
+                                 qAlpha(img->pixel(x-1, y)) > 0 || qAlpha(img->pixel(x-1, y+1)) > 0))
                         {
                             img->setPixel(x, y, transp);
                             black = true;
@@ -189,7 +189,7 @@ void LayerBitmap::toThinBlackLine(int frame)
                     if (search && qAlpha(img->pixel(x, y)) > 0)
                     {
                         infound++;
-                        if (qAlpha(img->pixel(x-1, y) > 0) &&
+                        if (qAlpha(img->pixel(x-1, y)) > 0 &&
                                 (qAlpha(img->pixel(x-1, y-1)) > 0 || qAlpha(img->pixel(x, y-1)) > 0 ||
                                 qAlpha(img->pixel(x-1, y+1)) > 0 || qAlpha(img->pixel(x, y+1)) > 0))
                         {
@@ -220,7 +220,7 @@ void LayerBitmap::toThinBlackLine(int frame)
                     if (search && qAlpha(img->pixel(x, y)) > 0)
                     {
                         infound++;
-                        if (qAlpha(img->pixel(x, y-1) > 0) &&
+                        if (qAlpha(img->pixel(x, y-1)) > 0 &&
                                 ((qAlpha(img->pixel(x-1, y-1)) > 0 || qAlpha(img->pixel(x-1, y)) > 0 ||
                                 qAlpha(img->pixel(x+1, y-1)) > 0 || qAlpha(img->pixel(x+1, y)) > 0)))
                         {
@@ -251,7 +251,7 @@ void LayerBitmap::toThinBlackLine(int frame)
                     if (search && qAlpha(img->pixel(x, y)) > 0)
                     {
                         infound++;
-                        if (qAlpha(img->pixel(x+1, y) > 0) &&
+                        if (qAlpha(img->pixel(x+1, y)) > 0 &&
                                 (qAlpha(img->pixel(x, y-1)) > 0 || qAlpha(img->pixel(x+1, y-1)) > 0 ||
                                  qAlpha(img->pixel(x, y+1)) > 0 || qAlpha(img->pixel(x+1, y+1)) > 0))
                         {
