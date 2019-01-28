@@ -467,8 +467,9 @@ void ScribbleArea::tabletPressEvent(QTabletEvent* event)
     if (currentTool()->type() != HAND && (event->button() != Qt::RightButton))
     {
         Layer* layer = mEditor->layers()->currentLayer();
-        if (!layer->visible()) {
-            showLayerNotVisibleWarning();
+        if (!layer->visible())
+        {
+            showLayerNotVisibleWarning(); // FIXME: crash when using tablets
             return;
         }
     }
