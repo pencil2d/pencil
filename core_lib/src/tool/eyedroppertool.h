@@ -35,8 +35,8 @@ public:
     void pointerReleaseEvent( PointerEvent* event ) override;
     void pointerMoveEvent( PointerEvent* ) override;
 
-    void moveEventInternal();
-    void releaseEventInternal(Qt::MouseButton mouseButton);
+    /** Updates front color for bitmap and color index for vector */
+    void updateFrontColor();
 };
 
 #endif // EYEDROPPERTOOL_H
