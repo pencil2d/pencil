@@ -51,6 +51,7 @@ public:
     float getPressure() { return mTabletPressure; }
     int getStabilizerLevel() { return mStabilizerLevel; }
     bool isTabletInUse() { return mTabletInUse; }
+    void setTabletinUse(bool inUse) { mTabletInUse = inUse; }
 
     QList<QPointF> interpolateStroke();
     void interpolatePoll();

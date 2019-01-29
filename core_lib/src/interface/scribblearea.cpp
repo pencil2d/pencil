@@ -433,6 +433,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     {
         if (event->type() == QTabletEvent::TabletPress)
         {
+            mStrokeManager->setTabletinUse(true);
             mStrokeManager->pointerPressEvent(event);
             if (isFirstClick)
             {
@@ -463,6 +464,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         {
             mStrokeManager->pointerReleaseEvent(event);
             pointerReleaseEvent(event);
+            mStrokeManager->setTabletinUse(false);
         }
 
     }
@@ -633,7 +635,10 @@ bool ScribbleArea::allowSmudging()
 
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
+    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent* event = new PointerEvent(e);
+    mMouseInUse = true;
+
     mStrokeManager->pointerPressEvent(event);
 
     pointerPressEvent(event);
@@ -641,7 +646,11 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
+    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent* event = new PointerEvent(e);
+
+    // Workaround for tablet issue (#677 part 2)
+    if (mStrokeManager->isTabletInUse()) { event->ignore(); return; }
     mStrokeManager->pointerMoveEvent(event);
 
     pointerMoveEvent(event);
@@ -669,14 +678,18 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 {
+    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent* event = new PointerEvent(e);
+
     mStrokeManager->pointerReleaseEvent(event);
 
     pointerReleaseEvent(event);
+    mMouseInUse = false;
 }
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *e)
 {
+    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent* event = new PointerEvent(e);
     mStrokeManager->pointerPressEvent(event);
 
