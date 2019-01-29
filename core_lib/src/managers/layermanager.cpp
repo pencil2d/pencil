@@ -153,17 +153,7 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 
     return layer;
 }
-/*
-LayerBitmap* LayerManager::createBitmapColorLayer(const QString& strLayerName)
-{
-    LayerBitmap* layer = object()->addNewBitmapLayer();
-    layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
-
-    return layer;
-}
-*/
 LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 {
     LayerVector* layer = object()->addNewVectorLayer();

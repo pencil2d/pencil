@@ -296,6 +296,7 @@ void LayerBitmap::toThinBlackLine(int frame)
 void LayerBitmap::replaceThinLine(int frame)
 {
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
+
     int r, g, b, a; //red, green, blue, alpha
     QList<QPoint> points;
     for (int x = img->left(); x <= img->right(); x++)
@@ -315,7 +316,6 @@ void LayerBitmap::replaceThinLine(int frame)
                 if (img->pixel(x+1, y-1) != thinline) points.append(QPoint(x+1, y-1));
                 if (img->pixel(x+1, y  ) != thinline) points.append(QPoint(x+1, y  ));
                 if (img->pixel(x+1, y+1) != thinline) points.append(QPoint(x+1, y+1));
-
                 for (int i = 0; i < points.size(); i++)
                 {
                     r += qPow(qRed(img->pixel(points.at(i))), 2);
