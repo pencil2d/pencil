@@ -47,6 +47,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->btn5_thin, &QPushButton::clicked, mEditor, &Editor::toThinBlackLine);
     connect(ui->btn5_next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
     connect(ui->btn5_thinRest, &QPushButton::clicked, mEditor, &Editor::toThinBlackLineRest);
+    connect(ui->btn7_replaceThinLines, &QPushButton::clicked, mEditor, &Editor::replaceThinLines);
 }
 
 BitmapColoring::~BitmapColoring()

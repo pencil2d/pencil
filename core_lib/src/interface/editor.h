@@ -158,6 +158,7 @@ public: //slots
     void fillWhiteAreasRest();
     void toThinBlackLine();
     void toThinBlackLineRest();
+    void replaceThinLines();
 
     void toogleOnionSkinType();
 

@@ -591,6 +591,7 @@ void Editor::copyFromScan()
 void Editor::scanToTransparent()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    mObject->updateActiveFrames(currentFrame());
     layerBitmap->scanToTransparent(currentFrame());
     mScribbleArea->updateFrame(currentFrame());
 }
@@ -598,6 +599,7 @@ void Editor::scanToTransparent()
 void Editor::scanToTransparentRest()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    mObject->updateActiveFrames(currentFrame());
     while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame())
     {
         scrubNextKeyFrame();
@@ -608,6 +610,7 @@ void Editor::scanToTransparentRest()
 void Editor::fillWhiteAreas()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    mObject->updateActiveFrames(currentFrame());
     layerBitmap->fillWhiteAreas(currentFrame());
     mScribbleArea->updateFrame(currentFrame());
 }
@@ -618,6 +621,7 @@ void Editor::fillWhiteAreasRest()
     while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame())
     {
         scrubNextKeyFrame();
+        mObject->updateActiveFrames(currentFrame());
         layerBitmap->fillWhiteAreas(currentFrame());
     }
     mScribbleArea->updateFrame(currentFrame());
@@ -626,6 +630,7 @@ void Editor::fillWhiteAreasRest()
 void Editor::toThinBlackLine()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    mObject->updateActiveFrames(currentFrame());
     layerBitmap->toThinBlackLine(currentFrame());
     mScribbleArea->updateFrame(currentFrame());
 }
@@ -636,8 +641,22 @@ void Editor::toThinBlackLineRest()
     while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame())
     {
         scrubNextKeyFrame();
+        mObject->updateActiveFrames(currentFrame());
         layerBitmap->toThinBlackLine(currentFrame());
     }
+    mScribbleArea->updateFrame(currentFrame());
+}
+
+void Editor::replaceThinLines()
+{
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    do
+    {
+        mObject->updateActiveFrames(currentFrame());
+        layerBitmap->replaceThinLine(currentFrame());
+        scrubNextKeyFrame();
+        qDebug() << "replace thin..." << currentFrame();
+    } while (layerBitmap->getNextKeyFramePosition(currentFrame()) != currentFrame());
     mScribbleArea->updateFrame(currentFrame());
 }
 

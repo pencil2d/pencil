@@ -51,6 +51,7 @@ public:
     void toBlackLine(int frame);
     void fillWhiteAreas(int frame);
     void toThinBlackLine(int frame);
+    void replaceThinLine(int frame);
     int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame);
 
 protected:
