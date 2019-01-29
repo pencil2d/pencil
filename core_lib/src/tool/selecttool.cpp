@@ -128,6 +128,13 @@ void SelectTool::pointerReleaseEvent(PointerEvent *event)
     if (mCurrentLayer == NULL) return;
     if (event->button() != Qt::LeftButton) return;
 
+    // if there's a small very small distance between current and last point
+    // discard the selection...
+    // TODO: improve by adding a timer to check if the user is deliberately selecting
+    if (qSqrt(qPow(mAnchorOriginPoint.x()-getCurrentPoint().x(),2) +
+              qPow(mAnchorOriginPoint.y()-getCurrentPoint().y(),2)) < 5.0) {
+        mScribbleArea->deselectAll();
+    }
     if (maybeDeselect())
     {
         mScribbleArea->deselectAll();
