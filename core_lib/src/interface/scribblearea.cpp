@@ -417,7 +417,7 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 
 void ScribbleArea::tabletEvent(QTabletEvent *e)
 {
-    PointerEvent* event = new PointerEvent(e);
+    PointerEvent* event = new PointerEvent(e, e->posF());
     updateCanvasCursor();
 
     if (event->pointerType() == QTabletEvent::Eraser)
@@ -635,7 +635,7 @@ bool ScribbleArea::allowSmudging()
 
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
-    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
+    if (mStrokeManager->isTabletInUse()) { e->ignore(); return; }
     PointerEvent* event = new PointerEvent(e);
     mMouseInUse = true;
 

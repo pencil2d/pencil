@@ -8,7 +8,7 @@ class PointerEvent
 {
 public:
     PointerEvent(QMouseEvent* event);
-    PointerEvent(QTabletEvent* event);
+    PointerEvent(QTabletEvent* event, QPointF hiDefPos);
     ~PointerEvent();
 
     /**
@@ -20,6 +20,11 @@ public:
      * Returns pos() if used on mouse event
      */
     QPointF posF() const;
+
+    /**
+     * returns QPointF of current position in the given widget.
+     */
+    inline QPointF widgetPos() { return mWidgetPos; }
 
     /**
      * Returns a value between 0 and 1 for tablet events,
@@ -71,6 +76,7 @@ public:
 
 private:
 
+    QPointF mWidgetPos;
 
 };
 

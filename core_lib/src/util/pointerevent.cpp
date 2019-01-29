@@ -5,9 +5,10 @@ PointerEvent::PointerEvent(QMouseEvent* event)
     this->mouseEvent = event;
 }
 
-PointerEvent::PointerEvent(QTabletEvent* event)
+PointerEvent::PointerEvent(QTabletEvent* event, QPointF widgetPos)
 {
     this->tabletEvent = event;
+    mWidgetPos = this->widgetPos();
 }
 
 PointerEvent::~PointerEvent()
@@ -28,8 +29,7 @@ QPoint PointerEvent::pos() const
     {
         // if we land here... the incoming input was
         // neither tablet nor mouse
-        Q_ASSERT(false);
-        return QPoint(0,0);
+        return mWidgetPos.toPoint();
     }
 }
 
@@ -45,10 +45,7 @@ QPointF PointerEvent::posF() const
     }
     else
     {
-        // if we land here... the incoming input was
-        // neither tablet nor mouse
-        Q_ASSERT(false);
-        return QPoint(0,0);
+        return mWidgetPos;
     }
 }
 
