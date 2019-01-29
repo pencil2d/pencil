@@ -153,16 +153,6 @@ void PencilTool::pointerPressEvent(PointerEvent *)
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
-    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
-    if (distance < 1)
-    {
-        paintAt(mMouseDownPoint);
-    }
-    else
-    {
-        drawStroke();
-    }
-
     startStroke();
 
     // note: why are we doing this on device press event?
@@ -185,6 +175,16 @@ void PencilTool::pointerReleaseEvent(PointerEvent *)
     mEditor->backup(typeName());
 
     Layer* layer = mEditor->layers()->currentLayer();
+
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    if (distance < 1)
+    {
+        paintAt(mMouseDownPoint);
+    }
+    else
+    {
+        drawStroke();
+    }
 
     if (layer->type() == Layer::BITMAP)
         paintBitmapStroke();
