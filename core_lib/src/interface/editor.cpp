@@ -650,13 +650,15 @@ void Editor::toThinBlackLineRest()
 void Editor::replaceThinLines()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
-    do
+    while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame())
     {
         mObject->updateActiveFrames(currentFrame());
         layerBitmap->replaceThinLine(currentFrame());
         scrubNextKeyFrame();
         qDebug() << "replace thin..." << currentFrame();
-    } while (layerBitmap->getNextKeyFramePosition(currentFrame()) != currentFrame());
+    }
+    scrubNextKeyFrame();
+    layerBitmap->replaceThinLine(currentFrame());
     mScribbleArea->updateFrame(currentFrame());
 }
 

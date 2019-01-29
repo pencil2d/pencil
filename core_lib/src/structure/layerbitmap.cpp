@@ -72,9 +72,9 @@ BitmapImage* LayerBitmap::scanToTransparent(int frame)
             {
                 img->setPixel(x, y, transp);
             }
-            else if(grayValue > 39 && grayValue < mThreshold)
+            else if(grayValue > mLowThreshold - 1 && grayValue < mThreshold)
             {
-                int alpha = static_cast<int>(floor(255 - 255 * (grayValue - 40)/(mThreshold - 40) ));
+                int alpha = static_cast<int>(floor(255 - 255 * (grayValue - mLowThreshold)/(mThreshold - mLowThreshold) ));
                 QRgb rgba = qRgba(grayValue, grayValue, grayValue, alpha);
                 img->setPixel(x , y, rgba);
             }

@@ -478,6 +478,20 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
+        <widget class="QLabel" name="lab7_1">
+         <property name="text">
+          <string>All drawings must be finished!</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lab7_2">
+         <property name="text">
+          <string>Handle with care...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="btn7_replaceThinLines">
          <property name="text">
           <string>Replace thin lines...</string>
