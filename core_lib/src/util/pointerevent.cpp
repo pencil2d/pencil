@@ -5,10 +5,10 @@ PointerEvent::PointerEvent(QMouseEvent* event)
     this->mouseEvent = event;
 }
 
-PointerEvent::PointerEvent(QTabletEvent* event, QPointF widgetPos)
+PointerEvent::PointerEvent(QTabletEvent* event)
 {
     this->tabletEvent = event;
-    mWidgetPos = this->widgetPos();
+    mWidgetPos = event->posF();
 }
 
 PointerEvent::~PointerEvent()

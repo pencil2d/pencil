@@ -8,7 +8,7 @@ class PointerEvent
 {
 public:
     PointerEvent(QMouseEvent* event);
-    PointerEvent(QTabletEvent* event, QPointF hiDefPos);
+    PointerEvent(QTabletEvent* event);
     ~PointerEvent();
 
     /**
@@ -71,13 +71,10 @@ public:
     QTabletEvent::TabletDevice device() const;
     QTabletEvent::PointerType pointerType() const;
 
+private:
     QTabletEvent* tabletEvent = nullptr;
     QMouseEvent* mouseEvent = nullptr;
-
-private:
-
     QPointF mWidgetPos;
-
 };
 
 #endif // POINTEREVENT_H

@@ -417,7 +417,7 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 
 void ScribbleArea::tabletEvent(QTabletEvent *e)
 {
-    PointerEvent event(e, e->posF());
+    PointerEvent event(e);
     updateCanvasCursor();
 
     if (event.pointerType() == QTabletEvent::Eraser)
