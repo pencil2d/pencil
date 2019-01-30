@@ -67,17 +67,27 @@ BitmapImage* LayerBitmap::scanToTransparent(int frame)
         for (int y = img->top(); y <= img->bottom(); y++)
         {
             rgba = img->pixel(x, y);
-            grayValue = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
-            if (grayValue >= mThreshold)
+//            grayValue = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
+            if (qGray(rgba) >= mThreshold)
             {
                 img->setPixel(x, y, transp);
             }
-            else if(grayValue > mLowThreshold - 1 && grayValue < mThreshold)
+            /*
+            else
             {
-                int alpha = static_cast<int>(floor(255 - 255 * (grayValue - mLowThreshold)/(mThreshold - mLowThreshold) ));
-                QRgb rgba = qRgba(grayValue, grayValue, grayValue, alpha);
+                QRgb rgba = qRgba(grayValue, grayValue, grayValue, 255 - grayValue);
                 img->setPixel(x , y, rgba);
             }
+            */
+            else  if(qGray(rgba) > mThreshold - 60)
+            {
+
+//                int alpha = static_cast<int>(floor(255 - 255 * (grayValue - mLowThreshold)/(mThreshold - mLowThreshold) ));
+                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), 255 - qGray(rgba));
+
+                img->setPixel(x , y, tmp);
+            }
+
         }
     }
     return img;
