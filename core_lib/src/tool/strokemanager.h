@@ -36,12 +36,6 @@ class StrokeManager : public QObject
 public:
     StrokeManager();
 
-    void genericMoveEvent(QPointF pos);
-    void tabletEvent(QTabletEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-
     void pointerPressEvent(PointerEvent* event);
     void pointerMoveEvent(PointerEvent* event);
     void pointerReleaseEvent(PointerEvent* event);

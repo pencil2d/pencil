@@ -117,19 +117,6 @@ void BaseTool::pointerDoubleClickEvent(PointerEvent *event)
 {
     pointerPressEvent(event);
 }
-//void BaseTool::tabletPressEvent(QTabletEvent* event) {
-//    event->accept();
-//}
-
-//void BaseTool::tabletReleaseEvent(QTabletEvent* event) {
-//    event->accept();
-//}
-
-//void BaseTool::mouseDoubleClickEvent(QMouseEvent* event)
-//{
-//    mousePressEvent(event);
-//}
-
 
 /**
  * @brief BaseTool::isDrawingTool - A drawing tool is anything that applies something to the canvas.

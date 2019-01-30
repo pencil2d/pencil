@@ -40,22 +40,6 @@ StrokeManager::StrokeManager()
     connect(&timer, &QTimer::timeout, this, &StrokeManager::interpolatePollAndPaint);
 }
 
-void StrokeManager::genericMoveEvent(QPointF pos)
-{
-    // only applied to drawing tools.
-    if (mStabilizerLevel != -1)
-    {
-        smoothMousePos(pos);
-    }
-    else
-    {
-        // No smoothing
-        mLastPixel = mCurrentPixel;
-        mCurrentPixel = pos;
-        mLastInterpolated = mCurrentPixel;
-    }
-}
-
 void StrokeManager::reset()
 {
     mStrokeStarted = false;
@@ -108,8 +92,6 @@ void StrokeManager::pointerMoveEvent(PointerEvent *event)
 void StrokeManager::pointerReleaseEvent(PointerEvent *event)
 {
     // flush out stroke
-    // TODO: events refactoring WIP... reassemble moue events and make sure everything is working
-    // will probably also to add is using tablet bool again...
     if ( mStrokeStarted )
     {
         pointerMoveEvent(event);
@@ -118,54 +100,9 @@ void StrokeManager::pointerReleaseEvent(PointerEvent *event)
     mStrokeStarted = false;
 }
 
-void StrokeManager::mousePressEvent(QMouseEvent* event)
-{
-//    reset();
-//    if ( !(event->button() == Qt::NoButton) ) // if the user is pressing the left/right button
-//    {
-//        mLastPressPixel = event->localPos();
-//    }
-//    mLastPixel = mCurrentPixel = event->localPos();
-
-//    mStrokeStarted = true;
-}
-
-void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
-{
-//    // flush out stroke
-//    if ( mStrokeStarted )
-//    {
-//        mouseMoveEvent(event);
-//    }
-
-//    mStrokeStarted = false;
-}
-
-void StrokeManager::tabletEvent(QTabletEvent* event)
-{
-//    if (event->type() == QEvent::TabletPress) {
-//        mTabletInUse = true;
-//        mPenIsHeld = true;
-//        mLastPressPixel = event->posF();
-//    }
-//    if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; mPenIsHeld = false; }
-
-//    setPressure(event->pressure());
-
-//    if(event->type() == QEvent::TabletMove)
-//    {
-//        genericMoveEvent(event->posF());
-//    }
-}
-
 void StrokeManager::setStabilizerLevel(int level)
 {
     mStabilizerLevel = level;
-}
-
-void StrokeManager::mouseMoveEvent(QMouseEvent* event)
-{
-//    genericMoveEvent(event->localPos());
 }
 
 void StrokeManager::smoothMousePos(QPointF pos)
