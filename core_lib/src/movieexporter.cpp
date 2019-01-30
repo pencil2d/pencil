@@ -95,7 +95,7 @@ Status MovieExporter::run(const Object* obj,
 {
     majorProgress(0.f, 0.03f);
     minorProgress(0.f);
-    progressMessage(QApplication::tr("Checking environment..."));
+    progressMessage(QObject::tr("Checking environment..."));
 
     clock_t t1 = clock();
 
@@ -146,7 +146,7 @@ Status MovieExporter::run(const Object* obj,
     }
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
-    progressMessage(QApplication::tr("Done"));
+    progressMessage(QObject::tr("Done"));
     
     clock_t t2 = clock() - t1;
     qDebug("MOVIE = %.1f sec", static_cast<float>(t2) / CLOCKS_PER_SEC);
