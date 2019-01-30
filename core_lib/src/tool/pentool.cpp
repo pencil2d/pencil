@@ -111,21 +111,7 @@ QCursor PenTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PenTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
-{
-    mCurrentWidth = properties.width;
-
-    if (properties.pressure && !mouseDevice)
-    {
-        mCurrentPressure = pressure;
-    }
-    else
-    {
-        mCurrentPressure = 1.0;
-    }
-}
-
-void PenTool::tabletPressEvent(QTabletEvent *)
+void PenTool::pointerPressEvent(PointerEvent *)
 {
     mScribbleArea->setAllDirty();
 
@@ -135,11 +121,20 @@ void PenTool::tabletPressEvent(QTabletEvent *)
     startStroke();
 }
 
-void PenTool::tabletReleaseEvent(QTabletEvent *)
+void PenTool::pointerMoveEvent(PointerEvent *)
+{
+    mCurrentPressure = m_pStrokeManager->getPressure();
+    drawStroke();
+    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+}
+
+void PenTool::pointerReleaseEvent(PointerEvent *)
 {
     mEditor->backup(typeName());
 
     Layer* layer = mEditor->layers()->currentLayer();
+
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)
     {
@@ -155,53 +150,6 @@ void PenTool::tabletReleaseEvent(QTabletEvent *)
     else if (layer->type() == Layer::VECTOR)
         paintVectorStroke(layer);
     endStroke();
-}
-
-void PenTool::tabletMoveEvent(QTabletEvent *)
-{
-    drawStroke();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-}
-
-
-void PenTool::mousePressEvent(QMouseEvent *)
-{
-    mScribbleArea->setAllDirty();
-
-    mMouseDownPoint = getCurrentPoint();
-    mLastBrushPoint = getCurrentPoint();
-
-    startStroke();
-}
-
-void PenTool::mouseReleaseEvent(QMouseEvent *)
-{
-    mEditor->backup(typeName());
-
-    Layer* layer = mEditor->layers()->currentLayer();
-    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
-    if (distance < 1)
-    {
-        paintAt(mMouseDownPoint);
-    }
-    else
-    {
-        drawStroke();
-    }
-
-    if (layer->type() == Layer::BITMAP)
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
-        paintVectorStroke(layer);
-    endStroke();
-}
-
-void PenTool::mouseMoveEvent( QMouseEvent *)
-{
-    drawStroke();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
 // draw a single paint dab at the given location

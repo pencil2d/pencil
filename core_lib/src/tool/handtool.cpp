@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QPixmap>
 #include <QVector2D>
-#include <QMouseEvent>
+#include <pointerevent.h>
 
 #include "layer.h"
 #include "layercamera.h"
@@ -50,28 +50,7 @@ QCursor HandTool::cursor()
     return mIsHeld ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
 }
 
-void HandTool::tabletPressEvent(QTabletEvent *)
-{
-    mLastPixel = getLastPressPixel();
-    mScribbleArea->updateToolCursor();
-    mIsHeld = true;
-}
-
-void HandTool::tabletMoveEvent(QTabletEvent * event)
-{
-    if (m_pStrokeManager->isPenPressed()) {
-        transformView(event->modifiers(), event->buttons());
-        mLastPixel = getCurrentPixel();
-    }
-}
-
-void HandTool::tabletReleaseEvent(QTabletEvent *)
-{
-    mScribbleArea->updateToolCursor();
-    mIsHeld = false;
-}
-
-void HandTool::mousePressEvent( QMouseEvent* )
+void HandTool::pointerPressEvent(PointerEvent *)
 {
     mLastPixel = getLastPressPixel();
     mIsHeld = true;
@@ -79,19 +58,7 @@ void HandTool::mousePressEvent( QMouseEvent* )
     mScribbleArea->updateToolCursor();
 }
 
-void HandTool::mouseReleaseEvent( QMouseEvent* event )
-{
-    //---- stop the hand tool if this was mid button
-    if ( event->button() == Qt::MidButton )
-    {
-        qDebug( "[HandTool] Stop Hand Tool" );
-        mScribbleArea->setPrevTool();
-    }
-    mIsHeld = false;
-    mScribbleArea->updateToolCursor();
-}
-
-void HandTool::mouseMoveEvent( QMouseEvent* event )
+void HandTool::pointerMoveEvent(PointerEvent *event)
 {
     if ( event->buttons() == Qt::NoButton )
     {
@@ -103,7 +70,19 @@ void HandTool::mouseMoveEvent( QMouseEvent* event )
     mLastPixel = getCurrentPixel();
 }
 
-void HandTool::mouseDoubleClickEvent( QMouseEvent *event )
+void HandTool::pointerReleaseEvent(PointerEvent *event)
+{
+    //---- stop the hand tool if this was mid button
+    if ( event->button() == Qt::MidButton )
+    {
+        qDebug( "[HandTool] Stop Hand Tool" );
+        mScribbleArea->setPrevTool();
+    }
+    mIsHeld = false;
+    mScribbleArea->updateToolCursor();
+}
+
+void HandTool::pointerDoubleClickEvent(PointerEvent *event)
 {
     if ( event->button() == Qt::RightButton )
     {

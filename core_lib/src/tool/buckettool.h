@@ -23,7 +23,6 @@ GNU General Public License for more details.
 class Layer;
 class VectorImage;
 
-
 class BucketTool : public StrokeTool
 {
     Q_OBJECT
@@ -33,13 +32,9 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
-
-    void tabletPressEvent(QTabletEvent*) override;
-    void tabletMoveEvent(QTabletEvent*) override;
-    void tabletReleaseEvent(QTabletEvent*) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
 
     void setTolerance(const int tolerance) override;
     void setWidth(const qreal width) override;
@@ -51,10 +46,6 @@ public:
     void applyChanges();
 
 private:
-    void pressEventInternal(Qt::MouseButton);
-    void releaseEventInternal(Qt::MouseButton);
-    void moveEventInternal(Qt::MouseButtons);
-    
 
     VectorImage* vectorImage = nullptr;
 };

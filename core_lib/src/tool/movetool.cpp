@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #include "movetool.h"
 
 #include <cassert>
-#include <QMouseEvent>
+#include "pointerevent.h"
 #include <QMessageBox>
 
 #include "editor.h"
@@ -56,69 +56,15 @@ QCursor MoveTool::cursor()
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
 
-void MoveTool::tabletPressEvent(QTabletEvent *event)
+void MoveTool::pointerPressEvent(PointerEvent *event)
 {
-    mCurrentLayer = currentPaintableLayer();
-    beginInteraction(event->modifiers(), mCurrentLayer);
-
-}
-
-void MoveTool::tabletMoveEvent(QTabletEvent *event)
-{
-    mCurrentLayer = currentPaintableLayer();
-
-    if (m_pStrokeManager->isPenPressed())   // the user is also pressing the mouse (dragging)
-    {
-        transformSelection(event->modifiers(), mCurrentLayer);
-    }
-    else
-    {
-        // the user is hovering the pen over the tablet
-        // update cursor to reflect selection corner interaction
-        mScribbleArea->updateToolCursor();
-
-        if (mCurrentLayer->type() == Layer::VECTOR)
-        {
-            storeClosestVectorCurve(mCurrentLayer);
-        }
-    }
-    mScribbleArea->updateCurrentFrame();
-}
-
-void MoveTool::tabletReleaseEvent(QTabletEvent*)
-{
-    if (!mScribbleArea->isSomethingSelected())
-        return;
-
-    mRotatedAngle = mScribbleArea->myRotatedAngle;
-    updateTransformation();
-
-    mScribbleArea->updateToolCursor();
-    mScribbleArea->updateCurrentFrame();
-}
-
-void MoveTool::mousePressEvent(QMouseEvent* event)
-{
-
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
     setAnchorToLastPoint();
     beginInteraction(event->modifiers(), mCurrentLayer);
 }
 
-void MoveTool::mouseReleaseEvent(QMouseEvent*)
-{
-    if (!mScribbleArea->isSomethingSelected())
-        return;
-
-    mRotatedAngle = mScribbleArea->myRotatedAngle;
-    updateTransformation();
-
-    mScribbleArea->updateToolCursor();
-    mScribbleArea->updateCurrentFrame();
-}
-
-void MoveTool::mouseMoveEvent(QMouseEvent* event)
+void MoveTool::pointerMoveEvent(PointerEvent *event)
 {
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
@@ -138,6 +84,18 @@ void MoveTool::mouseMoveEvent(QMouseEvent* event)
             storeClosestVectorCurve(mCurrentLayer);
         }
     }
+    mScribbleArea->updateCurrentFrame();
+}
+
+void MoveTool::pointerReleaseEvent(PointerEvent *)
+{
+    if (!mScribbleArea->isSomethingSelected())
+        return;
+
+    mRotatedAngle = mScribbleArea->myRotatedAngle;
+    updateTransformation();
+
+    mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
 }
 
