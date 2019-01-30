@@ -646,11 +646,11 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
-    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
+    // Workaround for tablet issue (#677 part 2)
+    if (mStrokeManager->isTabletInUse()
+        || (!isMouseInUse() && currentTool()->type() != POLYLINE)) { e->ignore(); return; }
     PointerEvent* event = new PointerEvent(e);
 
-    // Workaround for tablet issue (#677 part 2)
-    if (mStrokeManager->isTabletInUse()) { event->ignore(); return; }
     mStrokeManager->pointerMoveEvent(event);
 
     pointerMoveEvent(event);
@@ -689,7 +689,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *e)
 {
-    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
+    if (mStrokeManager->isTabletInUse()) { e->ignore(); return; }
     PointerEvent* event = new PointerEvent(e);
     mStrokeManager->pointerPressEvent(event);
 
