@@ -417,10 +417,10 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 
 void ScribbleArea::tabletEvent(QTabletEvent *e)
 {
-    PointerEvent* event = new PointerEvent(e, e->posF());
+    PointerEvent event(e, e->posF());
     updateCanvasCursor();
 
-    if (event->pointerType() == QTabletEvent::Eraser)
+    if (event.pointerType() == QTabletEvent::Eraser)
     {
         editor()->tools()->tabletSwitchToEraser();
     }
@@ -431,45 +431,43 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
 
     if (isLayerPaintable())
     {
-        if (event->type() == QTabletEvent::TabletPress)
+        if (event.type() == QTabletEvent::TabletPress)
         {
             mStrokeManager->setTabletinUse(true);
-            mStrokeManager->pointerPressEvent(event);
+            mStrokeManager->pointerPressEvent(&event);
             if (isFirstClick)
             {
                 isFirstClick = false;
                 doubleClickTimer->start();
-                pointerPressEvent(event);
+                pointerPressEvent(&event);
             }
             else
             {
                 qreal distance = QLineF( currentTool()->getCurrentPressPoint(), currentTool()->getLastPressPoint() ).length();
 
                 if (doubleClickMillis <= DOUBLE_CLICK_THRESHOLD && distance < 5.0) {
-                    currentTool()->pointerDoubleClickEvent(event);
+                    currentTool()->pointerDoubleClickEvent(&event);
                 }
                 else
                 {
                     // in case we handled the event as double click but really should have handled it as single click.
-                    pointerPressEvent(event);
+                    pointerPressEvent(&event);
                 }
             }
         }
-        else if (event->type() == QTabletEvent::TabletMove)
+        else if (event.type() == QTabletEvent::TabletMove)
         {
-            mStrokeManager->pointerMoveEvent(event);
-            pointerMoveEvent(event);
+            mStrokeManager->pointerMoveEvent(&event);
+            pointerMoveEvent(&event);
         }
-        else if (event->type() == QTabletEvent::TabletRelease)
+        else if (event.type() == QTabletEvent::TabletRelease)
         {
-            mStrokeManager->pointerReleaseEvent(event);
-            pointerReleaseEvent(event);
+            mStrokeManager->pointerReleaseEvent(&event);
+            pointerReleaseEvent(&event);
             mStrokeManager->setTabletinUse(false);
         }
-
     }
-
-    event->accept();
+    event.accept();
 }
 
 void ScribbleArea::pointerPressEvent(PointerEvent *event)
@@ -636,12 +634,12 @@ bool ScribbleArea::allowSmudging()
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
     if (mStrokeManager->isTabletInUse()) { e->ignore(); return; }
-    PointerEvent* event = new PointerEvent(e);
+    PointerEvent event(e);
     mMouseInUse = true;
 
-    mStrokeManager->pointerPressEvent(event);
+    mStrokeManager->pointerPressEvent(&event);
 
-    pointerPressEvent(event);
+    pointerPressEvent(&event);
 }
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
@@ -649,11 +647,12 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
     // Workaround for tablet issue (#677 part 2)
     if (mStrokeManager->isTabletInUse()
         || (!isMouseInUse() && currentTool()->type() != POLYLINE)) { e->ignore(); return; }
-    PointerEvent* event = new PointerEvent(e);
 
-    mStrokeManager->pointerMoveEvent(event);
+    PointerEvent event(e);
 
-    pointerMoveEvent(event);
+    mStrokeManager->pointerMoveEvent(&event);
+
+    pointerMoveEvent(&event);
 
 #ifdef DEBUG_FPS
     if (mMouseInUse)
@@ -679,21 +678,21 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 {
     if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
-    PointerEvent* event = new PointerEvent(e);
+    PointerEvent event(e);
 
-    mStrokeManager->pointerReleaseEvent(event);
+    mStrokeManager->pointerReleaseEvent(&event);
 
-    pointerReleaseEvent(event);
+    pointerReleaseEvent(&event);
     mMouseInUse = false;
 }
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *e)
 {
     if (mStrokeManager->isTabletInUse()) { e->ignore(); return; }
-    PointerEvent* event = new PointerEvent(e);
-    mStrokeManager->pointerPressEvent(event);
+    PointerEvent event(e);
+    mStrokeManager->pointerPressEvent(&event);
 
-    currentTool()->pointerDoubleClickEvent(event);
+    currentTool()->pointerDoubleClickEvent(&event);
 }
 
 void ScribbleArea::resizeEvent(QResizeEvent *event)
