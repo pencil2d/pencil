@@ -49,6 +49,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 
 void LayerBitmap::initColorLayer(Layer *fromLayer, LayerBitmap *colorlayer)
 {
+    Q_ASSERT(fromLayer != nullptr && colorlayer != nullptr);
     int max = fromLayer->getMaxKeyFramePosition();
     for (int i = 1; i <=max; i++)
     {
@@ -57,37 +58,38 @@ void LayerBitmap::initColorLayer(Layer *fromLayer, LayerBitmap *colorlayer)
     }
 }
 
+void LayerBitmap::singleInitColorLayer(Layer *fromLayer, LayerBitmap *colorlayer, int frame)
+{
+    Q_ASSERT(fromLayer != nullptr && colorlayer != nullptr);
+    if (fromLayer->keyExists(frame))
+    {
+        colorlayer->copyFrame(fromLayer, colorlayer, frame);
+        toBlackLine(frame);
+    }
+}
+
 BitmapImage* LayerBitmap::scanToTransparent(int frame)
 {
+    if (!keyExists(frame)) { return nullptr; }
+
+    qDebug() << "Acos 60 " << acos(60.0);
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
     QRgb rgba;
-    int grayValue;
     for (int x = img->left(); x <= img->right(); x++)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
             rgba = img->pixel(x, y);
-//            grayValue = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
-            if (qGray(rgba) >= mThreshold)
+            if (qAlpha(rgba) != 0 && qGray(rgba) >= mThreshold)
             {
                 img->setPixel(x, y, transp);
             }
-            /*
-            else
+            else if(qAlpha(rgba) != 0)
             {
-                QRgb rgba = qRgba(grayValue, grayValue, grayValue, 255 - grayValue);
-                img->setPixel(x , y, rgba);
-            }
-            */
-            else  if(qGray(rgba) > mThreshold - 60)
-            {
-
-//                int alpha = static_cast<int>(floor(255 - 255 * (grayValue - mLowThreshold)/(mThreshold - mLowThreshold) ));
-                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), 255 - qGray(rgba));
-
+                int alpha = static_cast<int>(floor(255 * (mThreshold - qGray(rgba))/mThreshold));
+                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
                 img->setPixel(x , y, tmp);
             }
-
         }
     }
     return img;
@@ -98,17 +100,12 @@ void LayerBitmap::toBlackLine(int frame)
     if (!keyExists(frame)) { return; }
 
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
-    int xOffset = img->left();
-    int yOffset = img->top();
-
-    // make line black (0, 1, 0, 255)
-    for (int x = 0; x < img->width(); x++)
+    for (int x = img->left(); x <= img->right(); x++)
     {
-        for (int y = 0; y < img->height(); y++)
+        for (int y = img->top(); y <= img->bottom(); y++)
         {
-            QRgb rgba = img->pixel(x + xOffset, y + yOffset);
-            if (rgba != transp)
-                img->setPixel(x + xOffset, y + yOffset, thinline);
+            if (qAlpha(img->pixel(x, y)) > 0)
+                img->setPixel(x, y, thinline);
         }
     }
 }
@@ -149,6 +146,7 @@ void LayerBitmap::fillWhiteAreas(int frame)
 
 void LayerBitmap::toThinBlackLine(int frame)
 {
+    if (!keyExists(frame)) { return; }
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
     bool N = true, E = true, S = true, W = true, black, search;
     while (N || E || S || W)
@@ -305,6 +303,7 @@ void LayerBitmap::toThinBlackLine(int frame)
 
 void LayerBitmap::replaceThinLine(int frame)
 {
+    if (!keyExists(frame)) { return; }
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
 
     int r, g, b, a; //red, green, blue, alpha
@@ -345,6 +344,7 @@ void LayerBitmap::replaceThinLine(int frame)
 
 int LayerBitmap::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame)
 {
+    if (!keyExists(frame)) { return -1; }
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
     QList<QPoint> fillList;
     fillList.clear();

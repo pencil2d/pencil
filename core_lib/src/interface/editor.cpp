@@ -607,6 +607,14 @@ void Editor::scanToTransparentRest()
     }
 }
 
+void Editor::toBlackLine()
+{
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    mObject->updateActiveFrames(currentFrame());
+    layerBitmap->singleInitColorLayer(layerBitmap, layerBitmap, currentFrame());
+    mScribbleArea->updateFrame(currentFrame());
+}
+
 void Editor::fillWhiteAreas()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());

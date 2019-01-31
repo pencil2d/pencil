@@ -154,6 +154,7 @@ public: //slots
     void copyFromScan();
     void scanToTransparent();
     void scanToTransparentRest();
+    void toBlackLine();
     void fillWhiteAreas();
     void fillWhiteAreasRest();
     void toThinBlackLine();

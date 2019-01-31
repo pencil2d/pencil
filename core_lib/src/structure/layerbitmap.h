@@ -43,6 +43,7 @@ public:
 
     // color layer methods
     void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer);
+    void singleInitColorLayer(Layer* fromLayer, LayerBitmap* colorlayer, int frame);
     int getThreshold() { return mThreshold; }
     void setThreshold(int threshold) { mThreshold = threshold; }
     int getWhiteArea() { return mWhiteArea; }
