@@ -59,27 +59,37 @@ void LayerBitmap::initColorLayer(Layer *fromLayer, LayerBitmap *colorlayer)
 
 BitmapImage* LayerBitmap::scanToTransparent(int frame)
 {
+    if (!keyExists(frame)) { return nullptr; }
+
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
     QRgb rgba;
-    int grayValue;
     for (int x = img->left(); x <= img->right(); x++)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
             rgba = img->pixel(x, y);
-            grayValue = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
-            if (grayValue >= mThreshold)
+            if (qGray(rgba) >= mThreshold)
             {
                 img->setPixel(x, y, transp);
             }
-            else if(grayValue > mLowThreshold - 1 && grayValue < mThreshold)
+            else if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
             {
-                int alpha = static_cast<int>(floor(255 - 255 * (grayValue - mLowThreshold)/(mThreshold - mLowThreshold) ));
-                QRgb rgba = qRgba(grayValue, grayValue, grayValue, alpha);
-                img->setPixel(x , y, rgba);
+                /*
+                qreal degree = 90 * (mThreshold - qGray(rgba)) / (mThreshold - mLowThreshold) ;
+                int alpha = static_cast<int>(255 - 255 * cos(degree * 3.1415 / 180));
+                qDebug() << "gray/degree/alpha: " << qGray(rgba) << " " << degree << " " << alpha;
+                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
+                img->setPixel(x , y, tmp);
+                */
+                qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
+                int alpha = static_cast<int>(255 * factor);
+                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
+                qDebug() << "gray/factor/alpha: " << qGray(rgba) << " " << factor << " " << alpha;
+                img->setPixel(x , y, tmp);
             }
         }
     }
+    qDebug() << "Threshold: " << mThreshold;
     return img;
 }
 
@@ -88,17 +98,15 @@ void LayerBitmap::toBlackLine(int frame)
     if (!keyExists(frame)) { return; }
 
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
-    int xOffset = img->left();
-    int yOffset = img->top();
 
-    // make line black (0, 1, 0, 255)
-    for (int x = 0; x < img->width(); x++)
+    // make line black (0, 0, 0, 255)
+    for (int x = img->left(); x <= img->height(); x++)
     {
-        for (int y = 0; y < img->height(); y++)
+        for (int y = img->top(); y < img->bottom(); y++)
         {
-            QRgb rgba = img->pixel(x + xOffset, y + yOffset);
+            QRgb rgba = img->pixel(x, y);
             if (rgba != transp)
-                img->setPixel(x + xOffset, y + yOffset, thinline);
+                img->setPixel(x, y, thinline);
         }
     }
 }
@@ -307,7 +315,6 @@ void LayerBitmap::replaceThinLine(int frame)
             r=0; g=0; b=0; a=0;
             if (img->pixel(x,y) == thinline)
             {
-                qDebug() << "in replace...";
                 if (img->pixel(x-1, y-1) != thinline) points.append(QPoint(x-1, y-1));
                 if (img->pixel(x-1, y  ) != thinline) points.append(QPoint(x-1, y  ));
                 if (img->pixel(x-1, y+1) != thinline) points.append(QPoint(x-1, y+1));
