@@ -86,13 +86,22 @@ BitmapImage* LayerBitmap::scanToTransparent(int frame)
             }
             else if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
             {
-                qreal degree = 90 * (mThreshold - qGray(rgba)) / (mThreshold - mLowThreshold);
+                /*
+                qreal degree = 90 * (mThreshold - qGray(rgba)) / (mThreshold - mLowThreshold) ;
                 int alpha = static_cast<int>(255 - 255 * cos(degree * 3.1415 / 180));
-//                qDebug() << "gray/degree/alpha: " << qGray(rgba) << " " << degree << " " << alpha;
+                qDebug() << "gray/degree/alpha: " << qGray(rgba) << " " << degree << " " << alpha;
                 QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
-                img->setPixel(x , y, tmp);}
+                img->setPixel(x , y, tmp);
+                */
+                qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
+                int alpha = static_cast<int>(255 * factor);
+                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
+                qDebug() << "gray/factor/alpha: " << qGray(rgba) << " " << factor << " " << alpha;
+                img->setPixel(x , y, tmp);
+            }
         }
     }
+    qDebug() << "Threshold: " << mThreshold;
     return img;
 }
 
@@ -317,7 +326,6 @@ void LayerBitmap::replaceThinLine(int frame)
             r=0; g=0; b=0; a=0;
             if (img->pixel(x,y) == thinline)
             {
-                qDebug() << "in replace...";
                 if (img->pixel(x-1, y-1) != thinline) points.append(QPoint(x-1, y-1));
                 if (img->pixel(x-1, y  ) != thinline) points.append(QPoint(x-1, y  ));
                 if (img->pixel(x-1, y+1) != thinline) points.append(QPoint(x-1, y+1));
