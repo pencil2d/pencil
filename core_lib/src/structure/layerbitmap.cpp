@@ -64,6 +64,7 @@ void LayerBitmap::singleInitColorLayer(Layer *fromLayer, LayerBitmap *colorlayer
     if (fromLayer->keyExists(frame))
     {
         colorlayer->copyFrame(fromLayer, colorlayer, frame);
+
         toBlackLine(frame);
     }
 }
@@ -72,7 +73,6 @@ BitmapImage* LayerBitmap::scanToTransparent(int frame)
 {
     if (!keyExists(frame)) { return nullptr; }
 
-    qDebug() << "Acos 60 " << acos(60.0);
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
     QRgb rgba;
     for (int x = img->left(); x <= img->right(); x++)
@@ -80,16 +80,17 @@ BitmapImage* LayerBitmap::scanToTransparent(int frame)
         for (int y = img->top(); y <= img->bottom(); y++)
         {
             rgba = img->pixel(x, y);
-            if (qAlpha(rgba) != 0 && qGray(rgba) >= mThreshold)
+            if (qGray(rgba) >= mThreshold)
             {
                 img->setPixel(x, y, transp);
             }
-            else if(qAlpha(rgba) != 0)
+            else if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
             {
-                int alpha = static_cast<int>(floor(255 * (mThreshold - qGray(rgba))/mThreshold));
+                qreal degree = 90 * (mThreshold - qGray(rgba)) / (mThreshold - mLowThreshold);
+                int alpha = static_cast<int>(255 - 255 * cos(degree * 3.1415 / 180));
+//                qDebug() << "gray/degree/alpha: " << qGray(rgba) << " " << degree << " " << alpha;
                 QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
-                img->setPixel(x , y, tmp);
-            }
+                img->setPixel(x , y, tmp);}
         }
     }
     return img;
@@ -104,6 +105,7 @@ void LayerBitmap::toBlackLine(int frame)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
+            qDebug() << "Alpha: " << qAlpha(img->pixel(x,y));
             if (qAlpha(img->pixel(x, y)) > 0)
                 img->setPixel(x, y, thinline);
         }
@@ -115,20 +117,19 @@ void LayerBitmap::fillWhiteAreas(int frame)
     if (!keyExists(frame)) { return; }
 
     BitmapImage* img = static_cast<BitmapImage*>(getKeyFrameAt(frame));
-    int xOffset = img->left();
-    int yOffset = img->top();
 
     // fill areas size 'area' or less with black
     QVector<QPoint> points;
     points.clear();
-    for (int x = 0; x < img->width(); x++)
+    for (int x = img->left(); x < img->right(); x++)
     {
-        for (int y = 0; y < img->height(); y++)
+        for (int y = img->top(); y < img->bottom(); y++)
         {
-            if (qAlpha(img->pixel(x + xOffset, y + yOffset)) == 0)
+            if (qAlpha(img->pixel(x, y)) < 1)
             {
-                points.append(QPoint(x + xOffset, y + yOffset));
-                int areaSize = fillWithColor(QPoint(x + xOffset, y + yOffset), transp, rosa, frame);
+                points.append(QPoint(x, y));
+                int areaSize = fillWithColor(QPoint(x, y), transp, rosa, frame);
+                qDebug() << "size: " << areaSize;
                 if (areaSize <= mWhiteArea)
                 {   // replace rosa with thinline (black)
                     fillWithColor(points.last(), rosa, thinline, frame);

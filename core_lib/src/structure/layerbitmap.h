@@ -42,6 +42,9 @@ public:
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
     // color layer methods
+    bool getIsColorLayer() { return mIsColorLayer; }
+    void setIsColorLayer(bool isColor) { mIsColorLayer = isColor; }
+
     void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer);
     void singleInitColorLayer(Layer* fromLayer, LayerBitmap* colorlayer, int frame);
     int getThreshold() { return mThreshold; }
@@ -49,11 +52,14 @@ public:
     int getWhiteArea() { return mWhiteArea; }
     void setWhiteArea(int whiteArea) { mWhiteArea = whiteArea; }
     BitmapImage* scanToTransparent(int frame);
+
     void toBlackLine(int frame);
+
     void fillWhiteAreas(int frame);
     void toThinBlackLine(int frame);
     void replaceThinLine(int frame);
     int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame);
+    // color layer methods end
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
@@ -68,6 +74,7 @@ private:
     int mThreshold = 200;
     const int mLowThreshold = 100; // threshold for images to be given transparency
     int mWhiteArea = 6;
+    bool mIsColorLayer = false;
 };
 
 #endif
