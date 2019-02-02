@@ -64,7 +64,6 @@ void LayerBitmap::singleInitColorLayer(Layer *fromLayer, LayerBitmap *colorlayer
     if (fromLayer->keyExists(frame))
     {
         colorlayer->copyFrame(fromLayer, colorlayer, frame);
-
         toBlackLine(frame);
     }
 }
@@ -86,23 +85,13 @@ BitmapImage* LayerBitmap::scanToTransparent(int frame)
             }
             else if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
             {
-                /*
-                qreal degree = 90 * (mThreshold - qGray(rgba)) / (mThreshold - mLowThreshold) ;
-                int alpha = static_cast<int>(255 - 255 * cos(degree * 3.1415 / 180));
-                qDebug() << "gray/degree/alpha: " << qGray(rgba) << " " << degree << " " << alpha;
-                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
-                img->setPixel(x , y, tmp);
-                */
                 qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
                 int alpha = static_cast<int>(255 * factor);
                 QRgb tmp  = qRgba(0, 0, 0, alpha);
-//                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
-                qDebug() << "gray/factor/alpha: " << qGray(rgba) << " " << factor << " " << alpha;
                 img->setPixel(x , y, tmp);
             }
         }
     }
-    qDebug() << "Threshold: " << mThreshold;
     return img;
 }
 
@@ -115,7 +104,6 @@ void LayerBitmap::toBlackLine(int frame)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
-            qDebug() << "Alpha: " << qAlpha(img->pixel(x,y));
             if (qAlpha(img->pixel(x, y)) > 0)
                 img->setPixel(x, y, thinline);
         }
@@ -139,7 +127,6 @@ void LayerBitmap::fillWhiteAreas(int frame)
             {
                 points.append(QPoint(x, y));
                 int areaSize = fillWithColor(QPoint(x, y), transp, rosa, frame);
-                qDebug() << "size: " << areaSize;
                 if (areaSize <= mWhiteArea)
                 {   // replace rosa with thinline (black)
                     fillWithColor(points.last(), rosa, thinline, frame);
@@ -514,7 +501,7 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("name", name());
     layerTag.setAttribute("visibility", visible());
     layerTag.setAttribute("type", type());
-    layerTag.setAttribute("colorlayer", colorLayer());
+    layerTag.setAttribute("parentid", parentId());
 
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
@@ -542,7 +529,7 @@ void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath, Progr
     }
     setName(element.attribute("name"));
     setVisible(element.attribute("visibility").toInt() == 1);
-    setColorLayer(element.attribute("colorlayer").toInt() == 1);
+    setParentId(element.attribute("parentid").toInt());
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

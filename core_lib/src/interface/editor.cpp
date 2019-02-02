@@ -612,8 +612,7 @@ void Editor::toBlackLine()
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
     LayerBitmap* toLayer = static_cast<LayerBitmap*>(layers()->findLayerByName(layerBitmap->name() + "_C"));
     mObject->updateActiveFrames(currentFrame());
-    layers()->setCurrentLayer(toLayer);
-    layerBitmap->singleInitColorLayer(layerBitmap, toLayer , currentFrame());
+    toLayer->singleInitColorLayer(layerBitmap, toLayer , currentFrame());
     mScribbleArea->updateFrame(currentFrame());
 }
 

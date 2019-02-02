@@ -69,7 +69,7 @@ private:
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 
     int mThreshold = 200;
-    const int mLowThreshold = 40; // threshold for images to be given transparency
+    const int mLowThreshold = 30; // threshold for images to be given transparency
     int mWhiteArea = 6;
 };
 

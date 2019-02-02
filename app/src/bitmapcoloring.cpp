@@ -59,24 +59,35 @@ BitmapColoring::~BitmapColoring()
 
 void BitmapColoring::initUI()
 {
-    if (!isVisible()) { return; }
+//    if (!isVisible()) { return; }
 
     updateUI();
 }
 
 void BitmapColoring::updateUI()
 {
+    if (!isVisible()) { return; }
+
     Layer* layer = mEditor->layers()->currentLayer();
     setEnabled(true);
-    if (layer->type() == Layer::BITMAP && !layer->colorLayer())
+    if (layer->type() == Layer::BITMAP && layer->parentId() == -1)
     {
         ui->tabWidgetColor->setEnabled(false);
+        ui->frameWidgetColor->setEnabled(false);
         ui->tabWidgetScans->setEnabled(true);
+        ui->frameWidgetScans->setEnabled(true);
+        for (int i = 0; i < mEditor->layers()->count(); i++)
+        {
+            if (mEditor->layers()->getLayer(i)->parentId() == layer->id())
+                ui->labx_3->setText(tr("To Layer: %1").arg(mEditor->layers()->getLayer(i)->name()));
+        }
     }
-    else if (layer->type() == Layer::BITMAP && layer->colorLayer())
+    else if (layer->type() == Layer::BITMAP && layer->parentId() > -1)
     {
         ui->tabWidgetColor->setEnabled(true);
+        ui->frameWidgetColor->setEnabled(true);
         ui->tabWidgetScans->setEnabled(false);
+        ui->frameWidgetScans->setEnabled(false);
     }
     else
     {

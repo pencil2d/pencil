@@ -64,8 +64,8 @@ public:
 
     bool visible() const { return mVisible; }
     void setVisible(bool b) { mVisible = b; }
-    bool colorLayer() { return mIsColorLayer; }
-    void setColorLayer(bool isColor) { mIsColorLayer = isColor; }
+    int parentId() const { return mParentId; }
+    void setParentId(int pId) { mParentId = pId; }
 
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
@@ -133,7 +133,7 @@ private:
     Object*    mObject = nullptr;
     int        mId = 0;
     bool       mVisible = true;
-    bool       mIsColorLayer = false;
+    int        mParentId = -1;  ///< Only set (changed) for coloring layers
     QString    mName;
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
