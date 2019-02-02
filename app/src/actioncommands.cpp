@@ -656,6 +656,7 @@ Status ActionCommands::addNewBitmapColorLayer()
     {
         LayerBitmap* colorlayer = mEditor->layers()->createBitmapLayer(name);
         colorlayer->initColorLayer(mEditor->layers()->currentLayer(), colorlayer);
+        colorlayer->setColorLayer(true);
     }
     return Status::OK;
 }

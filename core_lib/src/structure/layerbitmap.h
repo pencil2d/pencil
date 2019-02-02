@@ -42,9 +42,6 @@ public:
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
     // color layer methods
-    bool getIsColorLayer() { return mIsColorLayer; }
-    void setIsColorLayer(bool isColor) { mIsColorLayer = isColor; }
-
     void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer);
     void singleInitColorLayer(Layer* fromLayer, LayerBitmap* colorlayer, int frame);
     int getThreshold() { return mThreshold; }
@@ -74,7 +71,6 @@ private:
     int mThreshold = 200;
     const int mLowThreshold = 40; // threshold for images to be given transparency
     int mWhiteArea = 6;
-    bool mIsColorLayer = false;
 };
 
 #endif

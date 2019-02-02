@@ -95,7 +95,8 @@ BitmapImage* LayerBitmap::scanToTransparent(int frame)
                 */
                 qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
                 int alpha = static_cast<int>(255 * factor);
-                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
+                QRgb tmp  = qRgba(0, 0, 0, alpha);
+//                QRgb tmp  = qRgba(qGray(rgba), qGray(rgba), qGray(rgba), alpha);
                 qDebug() << "gray/factor/alpha: " << qGray(rgba) << " " << factor << " " << alpha;
                 img->setPixel(x , y, tmp);
             }
@@ -513,6 +514,7 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("name", name());
     layerTag.setAttribute("visibility", visible());
     layerTag.setAttribute("type", type());
+    layerTag.setAttribute("colorlayer", colorLayer());
 
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
@@ -540,6 +542,7 @@ void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath, Progr
     }
     setName(element.attribute("name"));
     setVisible(element.attribute("visibility").toInt() == 1);
+    setColorLayer(element.attribute("colorlayer").toInt() == 1);
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

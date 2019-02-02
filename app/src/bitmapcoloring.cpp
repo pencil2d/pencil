@@ -67,9 +67,16 @@ void BitmapColoring::initUI()
 void BitmapColoring::updateUI()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP)
+    setEnabled(true);
+    if (layer->type() == Layer::BITMAP && !layer->colorLayer())
     {
-        setEnabled(true);
+        ui->tabWidgetColor->setEnabled(false);
+        ui->tabWidgetScans->setEnabled(true);
+    }
+    else if (layer->type() == Layer::BITMAP && layer->colorLayer())
+    {
+        ui->tabWidgetColor->setEnabled(true);
+        ui->tabWidgetScans->setEnabled(false);
     }
     else
     {
