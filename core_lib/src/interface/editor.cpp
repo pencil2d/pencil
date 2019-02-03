@@ -664,7 +664,6 @@ void Editor::replaceThinLines()
         mObject->updateActiveFrames(currentFrame());
         layerBitmap->replaceThinLine(currentFrame());
         scrubNextKeyFrame();
-        qDebug() << "replace thin..." << currentFrame();
     }
     scrubNextKeyFrame();
     layerBitmap->replaceThinLine(currentFrame());
