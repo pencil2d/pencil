@@ -456,6 +456,7 @@ void Layer::copyFrame(Layer *fromLayer, Layer *toLayer, int frame)
             toLayer->removeKeyFrame(frame);
         toLayer->addKeyFrame(frame, dupKey);
         toLayer->setModified(frame, true);
+        toLayer->getKeyFrameAt(frame)->modification();
     }
 }
 

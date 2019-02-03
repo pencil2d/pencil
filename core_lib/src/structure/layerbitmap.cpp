@@ -92,6 +92,7 @@ BitmapImage* LayerBitmap::scanToTransparent(int frame)
             }
         }
     }
+    getKeyFrameAt(frame)->modification();
     return img;
 }
 
@@ -108,6 +109,7 @@ void LayerBitmap::toBlackLine(int frame)
                 img->setPixel(x, y, thinline);
         }
     }
+    getKeyFrameAt(frame)->modification();
 }
 
 void LayerBitmap::fillWhiteAreas(int frame)
@@ -140,6 +142,7 @@ void LayerBitmap::fillWhiteAreas(int frame)
         fillWithColor(points[0], rosa, transp, frame);
         points.removeFirst();
     }
+    getKeyFrameAt(frame)->modification();
 }
 
 void LayerBitmap::toThinBlackLine(int frame)
@@ -297,6 +300,7 @@ void LayerBitmap::toThinBlackLine(int frame)
             W = black; // if none 'black' is removed, W = false
         }
     }
+    getKeyFrameAt(frame)->modification();
 }
 
 void LayerBitmap::replaceThinLine(int frame)
@@ -337,6 +341,7 @@ void LayerBitmap::replaceThinLine(int frame)
             }
         }
     }
+    getKeyFrameAt(frame)->modification();
 }
 
 int LayerBitmap::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame)
@@ -380,6 +385,7 @@ int LayerBitmap::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int f
         }
         fillList.removeFirst();
     }
+    getKeyFrameAt(frame)->modification();
     return pixels;
 }
 

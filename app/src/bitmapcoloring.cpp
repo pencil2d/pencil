@@ -76,11 +76,16 @@ void BitmapColoring::updateUI()
         ui->frameWidgetColor->setEnabled(false);
         ui->tabWidgetScans->setEnabled(true);
         ui->frameWidgetScans->setEnabled(true);
+        bool colLayerExists = false;
         for (int i = 0; i < mEditor->layers()->count(); i++)
         {
             if (mEditor->layers()->getLayer(i)->parentId() == layer->id())
+            {
                 ui->labx_3->setText(tr("To Layer: %1").arg(mEditor->layers()->getLayer(i)->name()));
+                colLayerExists = true;
+            }
         }
+        colLayerExists == true ? ui->btnx_blackLine->setEnabled(true) : ui->btnx_blackLine->setEnabled(false);
     }
     else if (layer->type() == Layer::BITMAP && layer->parentId() > -1)
     {
