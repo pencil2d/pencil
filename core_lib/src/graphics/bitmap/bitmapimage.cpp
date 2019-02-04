@@ -32,6 +32,7 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
 {
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
+    mEnableAutoCrop = a.mEnableAutoCrop;
     mImage = std::make_shared<QImage>(*a.mImage);
 }
 
