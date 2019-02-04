@@ -86,25 +86,27 @@ void PreferencesDialog::updateRecentListBtn(bool isEmpty)
     }
 }
 
-GeneralPage::GeneralPage()
-    : ui(new Ui::GeneralPage)
+GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 {
     ui->setupUi(this);
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
+    ui->languageCombo->addItem(tr("Catalan ") + " (Catalan)", "ca");
     ui->languageCombo->addItem(tr("Czech") + " (Czech)", "cs");
     ui->languageCombo->addItem(tr("Danish") + " (Danish)", "da");
     ui->languageCombo->addItem(tr("German") + " (German)", "de");
+    ui->languageCombo->addItem(tr("Greek") + " (Greek)", "el");
     ui->languageCombo->addItem(tr("English") + " (English)", "en");
-    ui->languageCombo->addItem(tr("Estonian") + " (Estonian)", "et");
     ui->languageCombo->addItem(tr("Spanish") + " (Spanish)", "es");
+    ui->languageCombo->addItem(tr("Estonian") + " (Estonian)", "et");
     ui->languageCombo->addItem(tr("French") + " (French)", "fr");
     ui->languageCombo->addItem(tr("Hebrew") + " (Hebrew)", "he");
     ui->languageCombo->addItem(tr("Hungarian") + " (Hungarian)", "hu_HU");
     ui->languageCombo->addItem(tr("Indonesian") + " (Indonesian)", "id");
     ui->languageCombo->addItem(tr("Italian") + " (Italian)", "it");
     ui->languageCombo->addItem(tr("Japanese") + " (Japanese)", "ja");
+    ui->languageCombo->addItem(tr("Kabyle") + " (Kabyle)", "kab");
     ui->languageCombo->addItem(tr("Polish") + " (Polish)", "pl");
     ui->languageCombo->addItem(tr("Portuguese - Portugal") + "(Portuguese - Portugal)", "pt");
     ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt_BR");
