@@ -1976,10 +1976,10 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
 
     mPrevToolType = currentTool()->type();
 
-    // --- change cursor ---
+    // change cursor
     setCursor(currentTool()->cursor());
     updateCanvasCursor();
-    qDebug() << "fn: setCurrentTool " << "call: setCursor()" << "current tool" << currentTool()->typeName();
+    //qDebug() << "fn: setCurrentTool " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
 void ScribbleArea::setTemporaryTool(ToolType eToolMode)

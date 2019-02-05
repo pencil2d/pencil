@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -966,12 +966,12 @@
   </action>
   <action name="actionFlip_inbetween">
    <property name="text">
-    <string>Flip inbetween</string>
+    <string>Flip In-Between</string>
    </property>
   </action>
   <action name="actionFlip_rolling">
    <property name="text">
-    <string>Flip rolling</string>
+    <string>Flip Rolling</string>
    </property>
   </action>
  </widget>

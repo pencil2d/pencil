@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define PLAYBACKMANAGER_H
 
 #include "basemanager.h"
+#include <QVector>
 
 class QTimer;
 class QElapsedTimer;
@@ -42,7 +43,7 @@ public:
     void play();
     void stop();
     void playFlipRoll();
-    void playFlipBtwn();
+    void playFlipInBetween();
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
@@ -88,9 +89,10 @@ private:
     int mActiveSoundFrame = 0;
 
     int mFps = 12;
-    int mFlipRollInterval;
-    int mFlipInbetweenInterval;
-    int mFlipRollMax;
+
+    int mFlipRollInterval = 100;
+    int mFlipInbetweenInterval = 100;
+    int mFlipRollMax = 5;
 
     QTimer* mTimer = nullptr;
     QTimer* mFlipTimer = nullptr;
@@ -98,8 +100,8 @@ private:
     int mPlayingFrameCounter = 0; // how many frames has passed after pressing play
 
     bool mCheckForSoundsHalfway = false;
-    QList<int> mListOfActiveSoundFrames;
-    QStringList mFlipList;
+    QVector<int> mListOfActiveSoundFrames;
+    QVector<int> mFlipList;
 };
 
 #endif // PLAYBACKMANAGER_H
