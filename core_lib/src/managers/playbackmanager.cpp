@@ -41,11 +41,13 @@ bool PlaybackManager::init()
 {
     mTimer = new QTimer(this);
     mTimer->setTimerType(Qt::PreciseTimer);
+    mFlipTimer = new QTimer(this);
     QSettings settings (PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
+    connect(mFlipTimer, &QTimer::timeout, this, &PlaybackManager::flipTimerTick);
     return true;
 }
 
@@ -78,7 +80,7 @@ Status PlaybackManager::save(Object* o)
 
 bool PlaybackManager::isPlaying()
 {
-    return mTimer->isActive();
+    return (mTimer->isActive() || mFlipTimer->isActive());
 }
 
 void PlaybackManager::play()
@@ -122,7 +124,7 @@ void PlaybackManager::play()
         }
     }
 
-    mTimer->setInterval(1000.f / mFps);
+    mTimer->setInterval(static_cast<int>(1000.f / mFps));
     mTimer->start();
 
     // for error correction, please ref skipFrame()
@@ -140,6 +142,61 @@ void PlaybackManager::stop()
     mTimer->stop();
     stopSounds();
     emit playStateChanged(false);
+}
+
+void PlaybackManager::playFlipRoll()
+{
+    if (isPlaying()) { return; }
+    int start = editor()->currentFrame();
+    int tmp = start;
+    mFlipList.clear();
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mFlipRollMax = settings.value(SETTING_FLIP_ROLL_DRAWINGS).toInt();
+    for (int i = 0; i < mFlipRollMax; i++)
+    {
+        int prev = editor()->layers()->currentLayer()->getPreviousKeyFramePosition(tmp);
+        if (prev < tmp)
+        {
+            mFlipList.prepend(QString::number(prev));
+            tmp = prev;
+        }
+    }
+    if (mFlipList.isEmpty()) { return; }
+    // run the roll...
+    mFlipRollInterval = settings.value(SETTING_FLIP_ROLL_MSEC).toInt();
+    mFlipList.append(QString::number(start));
+    mFlipTimer->setInterval(mFlipRollInterval);
+    editor()->scrubTo(mFlipList[0].toInt());
+    mFlipTimer->start();
+    emit playStateChanged(true);
+}
+
+void PlaybackManager::playFlipBtwn()
+{
+    if (isPlaying()) { return; }
+    int start = editor()->currentFrame();
+    int prev = editor()->layers()->currentLayer()->getPreviousKeyFramePosition(start);
+    int next = editor()->layers()->currentLayer()->getNextKeyFramePosition(start);
+    if (editor()->layers()->currentLayer()->keyExists(prev) &&
+        editor()->layers()->currentLayer()->keyExists(next))
+    {
+        mFlipList.clear();
+        mFlipList.append(QString::number(prev));
+        mFlipList.append(QString::number(start));
+        mFlipList.append(QString::number(next));
+        mFlipList.append(QString::number(start));
+    }
+    else
+    {
+        return;
+    }
+    // run the flip inbetween...
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mFlipInbetweenInterval = settings.value(SETTING_FLIP_INBETWEEN_MSEC).toInt();
+    mFlipTimer->setInterval(mFlipInbetweenInterval);
+    editor()->scrubTo(mFlipList[0].toInt());
+    mFlipTimer->start();
+    emit playStateChanged(true);
 }
 
 void PlaybackManager::setFps(int fps)
@@ -320,6 +377,22 @@ void PlaybackManager::timerTick()
 
     // keep going 
     editor()->scrubForward();
+}
+
+void PlaybackManager::flipTimerTick()
+{
+    int curr = editor()->currentFrame();
+    int pos = mFlipList.indexOf(QString::number(curr));
+    if (pos == mFlipList.count() - 1)
+    {
+        mFlipTimer->stop();
+        emit playStateChanged(false);
+    }
+    else
+    {
+        editor()->scrubTo(mFlipList[pos + 1].toInt());
+        mFlipList.removeAt(pos);
+    }
 }
 
 void PlaybackManager::setLooping(bool isLoop)
