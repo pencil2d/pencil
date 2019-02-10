@@ -659,3 +659,24 @@ KeyFrame* Layer::getKeyFrameWhichCovers(int frameNumber) const
     }
     return nullptr;
 }
+
+QDomElement Layer::createBaseDomElement(QDomDocument& doc)
+{
+    QDomElement layerTag = doc.createElement("layer");
+    layerTag.setAttribute("id", id());
+    layerTag.setAttribute("name", name());
+    layerTag.setAttribute("visibility", visible());
+    layerTag.setAttribute("type", type());
+    return layerTag;
+}
+
+void Layer::loadBaseDomElement(QDomElement& elem)
+{
+    if (!elem.attribute("id").isNull())
+    {
+        int id = elem.attribute("id").toInt();
+        setId(id);
+    }
+    setName(elem.attribute("name"));
+    setVisible(elem.attribute("visibility").toInt());
+}

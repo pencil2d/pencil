@@ -263,13 +263,9 @@ void LayerCamera::editProperties()
 
 QDomElement LayerCamera::createDomElement( QDomDocument& doc )
 {
-    QDomElement layerTag = doc.createElement("layer");
-
-    layerTag.setAttribute("name", name());
-    layerTag.setAttribute("visibility", visible());
-    layerTag.setAttribute("type", type());
-    layerTag.setAttribute("width", viewRect.width());
-    layerTag.setAttribute("height", viewRect.height());
+    QDomElement layerElem = this->createBaseDomElement(doc);
+    layerElem.setAttribute("width", viewRect.width());
+    layerElem.setAttribute("height", viewRect.height());
 
     foreachKeyFrame( [&]( KeyFrame* pKeyFrame )
     {
@@ -281,10 +277,10 @@ QDomElement LayerCamera::createDomElement( QDomDocument& doc )
         keyTag.setAttribute( "s", camera->scaling() );
         keyTag.setAttribute( "dx",  camera->translation().x() );
         keyTag.setAttribute( "dy",  camera->translation().y() );
-        layerTag.appendChild( keyTag );
+        layerElem.appendChild( keyTag );
     } );
 
-    return layerTag;
+    return layerElem;
 }
 
 void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
@@ -292,8 +288,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath, Progr
     Q_UNUSED(dataDirPath);
     Q_UNUSED(progressStep);
 
-    setName(element.attribute("name"));
-    setVisible(element.attribute("visibility").toInt());
+    this->loadBaseDomElement(element);
 
     int width = element.attribute( "width" ).toInt();
     int height = element.attribute( "height" ).toInt();

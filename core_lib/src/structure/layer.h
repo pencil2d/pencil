@@ -68,6 +68,8 @@ public:
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) = 0;
+    QDomElement createBaseDomElement(QDomDocument& doc);
+    void loadBaseDomElement(QDomElement& elem);
 
     // KeyFrame interface
     int getMaxKeyFramePosition() const;
