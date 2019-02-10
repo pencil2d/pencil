@@ -1,28 +1,28 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ja" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="kab" version="2.1">
 <context>
     <name>AboutDialog</name>
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="26"/>
         <source>About</source>
         <comment>About Dialog Window Title</comment>
-        <translation type="unfinished"/>
+        <translation>Awal ɣef</translation>
     </message>
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
         <source>Official site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Thanks to Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Asmel unṣib: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Asnefli sɣur: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Tanmirt i Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="43"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Lqem: %1</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="55"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Suken ɣer tecfawit</translation>
     </message>
 </context>
 <context>
@@ -30,40 +30,40 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="68"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
-        <translation>音声の読み込みができる音声レイヤーがありません。音声レイヤーを作成しますか？</translation>
+        <translation>Tazribt-inek n imesli ulamek ara tettwakter acku ulac tazribt n imesli yellan. Ad d-tesnulfuḍ tazribt n imesli tamaynutt?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="69"/>
         <source>Create sound layer</source>
-        <translation>音声レイヤーを作成</translation>
+        <translation>Snulfu-d akalku n imesli</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="70"/>
         <source>Don&apos;t create layer</source>
-        <translation>作成しない</translation>
+        <translation>Ur d-snulfu ara akalku</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="80"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>Iraten n ukalku</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="82"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>Akalku n imesli</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="201"/>
         <source>Exporting movie</source>
-        <translation type="unfinished"/>
+        <translation>Sifeḍ asaru</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="253"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
-        <translation type="unfinished"/>
+        <translation>Ifuk. Ldi asaru tura?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="595"/>
@@ -71,7 +71,7 @@
         <location filename="../app/src/actioncommands.cpp" line="630"/>
         <location filename="../app/src/actioncommands.cpp" line="648"/>
         <source>Layer Properties</source>
-        <translation>レイヤーのプロパティ</translation>
+        <translation>Iraten n ukalku</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="81"/>
@@ -80,79 +80,79 @@
         <location filename="../app/src/actioncommands.cpp" line="631"/>
         <location filename="../app/src/actioncommands.cpp" line="649"/>
         <source>Layer name:</source>
-        <translation>レイヤー名:</translation>
+        <translation>Isem n ukalku</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="108"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
-        <translation>このフレームにには既に音声クリップが存在します。他のフレーム、またはレイヤーを選択して下さい。</translation>
+        <translation>Aklip ameslaw yella yakan deg ukatar-agi! Ttxil-k fren akatar-nniḍen neɣ akalku-nniḍen.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Finished. Open file location?</source>
-        <translation type="unfinished"/>
+        <translation>Ifuk. Ad teldiḍ adig n ufaylu?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
         <source>Exporting image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>Sifeḍ tilubbayin n tugna...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="314"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>Eǧǧ</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="394"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Ɣur-k</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="395"/>
         <source>Unable to export image.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asifeḍ n tugna.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="597"/>
         <source>Bitmap Layer</source>
-        <translation>ビットマップレイヤー</translation>
+        <translation>Tisi Bitmap</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="614"/>
         <source>Vector Layer</source>
-        <translation>ベクターレイヤー</translation>
+        <translation>Tisi n umaway</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="632"/>
         <source>Camera Layer</source>
-        <translation>カメラレイヤー</translation>
+        <translation>Tisi n tkamirat</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="650"/>
         <source>Sound Layer</source>
-        <translation>音声レイヤー</translation>
+        <translation>Tisi n imesli</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="671"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Kkes akalku</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="672"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation type="unfinished"/>
+        <translation>D tidet tebɣiḍ ad tekkseḍ akalku:</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="681"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k eǧǧ xerṣum yiwet n ukalku n tkamirat deg usenfar</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="704"/>
         <source>Filename must be unique and not empty</source>
-        <translation type="unfinished"/>
+        <translation>Isem n ufaylu isefk ad yili d ayiwen yerna mačči d ilem</translation>
     </message>
 </context>
 <context>
@@ -160,57 +160,57 @@
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Pencil</source>
-        <translation>鉛筆</translation>
+        <translation>Akeryun</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Eraser</source>
-        <translation>消しゴム</translation>
+        <translation>Tasemsut</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Select</source>
-        <translation>選択</translation>
+        <translation>Fren</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Move</source>
-        <translation>移動</translation>
+        <translation>Semselsi</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
         <source>Hand</source>
-        <translation>手のひら</translation>
+        <translation>Afus</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
         <source>Smudge</source>
-        <translation>こする</translation>
+        <translation>Ḍlu</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
         <source>Pen</source>
-        <translation>ペン</translation>
+        <translation>Imru</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
         <source>Polyline</source>
-        <translation>折れ線</translation>
+        <translation>izirig irẓen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
         <source>Bucket</source>
-        <translation>バケツ</translation>
+        <translation>Abelyun</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
         <source>Eyedropper</source>
-        <translation>スポイト</translation>
+        <translation>Amelqaḍ n yini</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
         <source>Brush</source>
-        <translation>ブラシ</translation>
+        <translation>Tasnekra</translation>
     </message>
 </context>
 <context>
@@ -218,17 +218,17 @@
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="6"/>
         <source>Camera Properties</source>
-        <translation type="unfinished"/>
+        <translation>Iraten n tkamirat</translation>
     </message>
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
         <source>Camera name:</source>
-        <translation>カメラの名前:</translation>
+        <translation>Isem n tkamirat</translation>
     </message>
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="38"/>
         <source>Camera size:</source>
-        <translation>カメラのサイズ:</translation>
+        <translation>Tiddi n tkamirat:</translation>
     </message>
 </context>
 <context>
@@ -237,7 +237,7 @@
         <location filename="../app/src/colorbox.cpp" line="26"/>
         <source>Color Box</source>
         <comment>Color Box window title</comment>
-        <translation type="unfinished"/>
+        <translation>Tankult n yiniten</translation>
     </message>
 </context>
 <context>
@@ -255,28 +255,28 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="254"/>
         <source>R</source>
-        <translation type="unfinished"/>
+        <translation>R</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="161"/>
         <source>A</source>
-        <translation type="unfinished"/>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="211"/>
         <source>G</source>
-        <translation type="unfinished"/>
+        <translation>G</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="264"/>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../app/src/colorinspector.cpp" line="35"/>
         <source>Color Inspector</source>
         <comment>Window title of color inspector</comment>
-        <translation type="unfinished"/>
+        <translation>Amaswaḍ n yini</translation>
     </message>
 </context>
 <context>
@@ -285,72 +285,72 @@
         <location filename="../app/ui/colorpalette.ui" line="14"/>
         <source>Color Palette</source>
         <comment>Window title of color palette.</comment>
-        <translation type="unfinished"/>
+        <translation>Tafelwit n yiniten</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="47"/>
         <source>Add Color</source>
-        <translation>色の追加</translation>
+        <translation>Rnu ini</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="76"/>
         <source>Remove Color</source>
-        <translation>色の削除</translation>
+        <translation>Kkes ini</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="133"/>
         <source>Native color dialog window</source>
-        <translation type="unfinished"/>
+        <translation>Asfaylu n udiwenni n yiniten isentanen</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="258"/>
         <source>List Mode</source>
-        <translation type="unfinished"/>
+        <translation>Askar n tebdart</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="261"/>
         <source>Show palette as a list</source>
-        <translation type="unfinished"/>
+        <translation>Beqqeḍ tafelwit s talɣa n tebdart</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="269"/>
         <source>Grid Mode</source>
-        <translation type="unfinished"/>
+        <translation>Askar n tferrugt</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="272"/>
         <source>Show palette as icons</source>
-        <translation type="unfinished"/>
+        <translation>Beqqeḍ tafelwit s talɣa n tignitin</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="282"/>
         <source>Small swatch</source>
-        <translation type="unfinished"/>
+        <translation>Talemmict tamecṭuḥt</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="285"/>
         <source>Sets swatch size to: 16x16px</source>
-        <translation type="unfinished"/>
+        <translation>Sbadu tiddi n ulemmec ɣer: 16x16px</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="293"/>
         <source>Medium Swatch</source>
-        <translation type="unfinished"/>
+        <translation>Talemmict talemmast</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="296"/>
         <source>Sets swatch size to: 26x26px</source>
-        <translation type="unfinished"/>
+        <translation>Ad yesbadu tiddi n tlemmict: 26x26px</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="307"/>
         <source>Large Swatch</source>
-        <translation type="unfinished"/>
+        <translation> Talemmict tameqrant</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="310"/>
         <source>Sets swatch size to: 36x36px</source>
-        <translation type="unfinished"/>
+        <translation>Ad yesbadu tiddi n tlemmict: 36x36px</translation>
     </message>
 </context>
 <context>
@@ -358,48 +358,48 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Rnu</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Replace</source>
-        <translation type="unfinished"/>
+        <translation>Semselsi</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Kkes</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="246"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="247"/>
         <source>Colour name</source>
-        <translation>色名</translation>
+        <translation>Isem n yini</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="544"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation type="unfinished"/>
+        <translation>Ini(en) i tettedduḍ ad tekkseḍ iseqdac-it yiwen n izirig neɣ ugar n izirigen.</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="545"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Semmet</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="546"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Sfeḍ</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="562"/>
         <source>Palette Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Aseḥreṣ n tpaliḍt</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="563"/>
         <source>The palette requires at least one swatch to remain functional</source>
-        <translation type="unfinished"/>
+        <translation>Tapaliḍt tesra ma drus yiwet t n tlemmict iwakken ad teqqim tetteddu</translation>
     </message>
 </context>
 <context>
@@ -408,7 +408,7 @@
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation type="unfinished"/>
+        <translation>Ruda n yiniten</translation>
     </message>
 </context>
 <context>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../app/ui/displayoption.ui" line="67"/>
         <source>Horizontal flip</source>
-        <translation>水平反転</translation>
+        <translation>Tuzzya taglawant</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="44"/>
@@ -433,46 +433,46 @@
         <location filename="../app/ui/displayoption.ui" line="14"/>
         <source>Display</source>
         <comment>Window title of display options like .</comment>
-        <translation type="unfinished"/>
+        <translation>Beqqeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="125"/>
         <location filename="../app/ui/displayoption.ui" line="128"/>
         <source>Onion skin previous frame</source>
-        <translation>前フレームのオニオンスキンを表示</translation>
+        <translation>Wali tugna tuzwirt s tefrawant</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="163"/>
         <source>Show invisible lines</source>
-        <translation>透明な線を表示</translation>
+        <translation>Sken izirigen uffiren</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="250"/>
         <location filename="../app/ui/displayoption.ui" line="253"/>
         <source>Onion skin color: blue</source>
-        <translation>オニオンスキンの色：青</translation>
+        <translation>Ini n tefrawant: anili</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="38"/>
         <location filename="../app/ui/displayoption.ui" line="41"/>
         <source>Onion skin next frame</source>
-        <translation>次フレームのオニオンスキンを表示</translation>
+        <translation>Sken tugna tuḍfirt s tefrawant</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="215"/>
         <location filename="../app/ui/displayoption.ui" line="218"/>
         <source>Onion skin color: red</source>
-        <translation>オニオンスキンの色：赤</translation>
+        <translation>Ini n tefrawant: azeggaɣ</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="189"/>
         <source>Show outlines only</source>
-        <translation>輪郭線のみを表示</translation>
+        <translation>Sken kan azizdew</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="99"/>
         <source>Vertical flip</source>
-        <translation>垂直反転</translation>
+        <translation>zzi s ibeddi</translation>
     </message>
 </context>
 <context>
@@ -480,12 +480,12 @@
     <message>
         <location filename="../app/ui/doubleprogressdialog.ui" line="27"/>
         <source>Loading...</source>
-        <translation type="unfinished"/>
+        <translation>Azdam...</translation>
     </message>
     <message>
         <location filename="../app/ui/doubleprogressdialog.ui" line="56"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Semmet</translation>
     </message>
 </context>
 <context>
@@ -494,18 +494,18 @@
         <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="550"/>
         <source>Paste</source>
-        <translation>貼り付け</translation>
+        <translation>Senteḍ</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="932"/>
         <source>Remove frame</source>
-        <translation type="unfinished"/>
+        <translation>Kkes akatar</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="803"/>
         <source>Import Image</source>
-        <translation>イメージを読み込む</translation>
+        <translation>Kter tugna</translation>
     </message>
 </context>
 <context>
@@ -513,17 +513,17 @@
     <message>
         <location filename="../app/ui/errordialog.ui" line="20"/>
         <source>Dialog</source>
-        <translation>メッセージ</translation>
+        <translation>Adiwenni</translation>
     </message>
     <message>
         <location filename="../app/ui/errordialog.ui" line="55"/>
         <source>&lt;h3&gt;Title&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;タイトル&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Azwel&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/errordialog.ui" line="68"/>
         <source>Description</source>
-        <translation>説明</translation>
+        <translation>Asenmel</translation>
     </message>
 </context>
 <context>
@@ -531,12 +531,12 @@
     <message>
         <location filename="../app/src/exportimagedialog.cpp" line="29"/>
         <source>Export image sequence</source>
-        <translation>連番画像の書き出し</translation>
+        <translation>Sifeḍ talubbayt n tugna</translation>
     </message>
     <message>
         <location filename="../app/src/exportimagedialog.cpp" line="33"/>
         <source>Export image</source>
-        <translation>画像の書き出し</translation>
+        <translation>Sifeḍ tugna</translation>
     </message>
 </context>
 <context>
@@ -544,17 +544,17 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="23"/>
         <source>Camera</source>
-        <translation type="unfinished"/>
+        <translation>Takamirat</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="35"/>
         <source>Resolution</source>
-        <translation>解像度</translation>
+        <translation>Tabadut</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="76"/>
         <source>Format</source>
-        <translation>保存形式</translation>
+        <translation>Amasal</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="83"/>
@@ -574,47 +574,47 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="98"/>
         <source>TIFF</source>
-        <translation type="unfinished"/>
+        <translation>TIFF</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="106"/>
         <source>Transparency</source>
-        <translation>透明度</translation>
+        <translation>Tafrawant</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="116"/>
         <source>Range</source>
-        <translation type="unfinished"/>
+        <translation>Tagrumma</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="162"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>Tugna taneggarut i tebɣiḍ ad tsedduḍ deg usaru ara tesifḍeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="165"/>
         <source>End Frame</source>
-        <translation type="unfinished"/>
+        <translation>Akatar n tagara</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="184"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>Tugna tamezwarut i tebɣiḍ ad tsedduḍ deg usaru ara tesifḍeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="187"/>
         <source>Start Frame</source>
-        <translation type="unfinished"/>
+        <translation>Sekker akatar</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="212"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Tugna n tagara tettusbadu ɣef tugna taneggarut ara yettwaklun (tenfɛ ticki tebɣiḍ ad tsifḍeḍ ɣer tugna taneggarut yettemwwiwilen)</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="218"/>
         <source>To the end of sound clips</source>
-        <translation type="unfinished"/>
+        <translation>Di taggara n iklipen imeslawen</translation>
     </message>
 </context>
 <context>
@@ -622,12 +622,12 @@
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="29"/>
         <source>Export Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Sifeḍ GIF yettemwwiwilen</translation>
     </message>
     <message>
         <location filename="../app/src/exportmoviedialog.cpp" line="31"/>
         <source>Export Movie</source>
-        <translation>動画の書き出し</translation>
+        <translation>Sifeḍ asaru</translation>
     </message>
 </context>
 <context>
@@ -635,67 +635,67 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="29"/>
         <source>Camera</source>
-        <translation>カメラ</translation>
+        <translation>Takamirat</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="41"/>
         <source>Resolution</source>
-        <translation>解像度</translation>
+        <translation>Tabadut</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="59"/>
         <source>Width</source>
-        <translation>幅</translation>
+        <translation>Tehri</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="88"/>
         <source>Height</source>
-        <translation>高さ</translation>
+        <translation>Teɣzi</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="108"/>
         <source>Range</source>
-        <translation>範囲</translation>
+        <translation>Tagrumma</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="154"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>Tugna taneggarut i tebɣiḍ ad tsedduḍ deg usaru ara tesifḍeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="157"/>
         <source>End Frame</source>
-        <translation type="unfinished"/>
+        <translation>Akatar n tagara</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="176"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>Tugna tamezwarut i tebɣiḍ ad tsedduḍ deg usaru ara tesifḍeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="179"/>
         <source>Start Frame</source>
-        <translation type="unfinished"/>
+        <translation>Sekker akatar</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="204"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tugna n tagara tettusbadu ɣef tugna taneggarut ara yettwaklun (tenfɛ ticki tebɣiḍ ad tsifḍeḍ ɣer tugna taneggarut yettemwwiwilen)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="210"/>
         <source>To the end of sound clips</source>
-        <translation type="unfinished"/>
+        <translation>Di taggara n iklipen imeslawen</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="233"/>
         <source>GIF and APNG only</source>
-        <translation type="unfinished"/>
+        <translation>GIF akked APNG kan</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="236"/>
         <source>Loop</source>
-        <translation type="unfinished"/>
+        <translation>Tineddict</translation>
     </message>
 </context>
 <context>
@@ -703,94 +703,94 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="132"/>
         <source>Open animation</source>
-        <translation>アニメーションを開く</translation>
+        <translation>Ldi asemwwiwel</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="133"/>
         <source>Import image</source>
-        <translation>画像の読み込み</translation>
+        <translation>Kter tugna</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="134"/>
         <source>Import image sequence</source>
-        <translation>連番画像の読み込み</translation>
+        <translation>Kter talubbayt n tugna</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="135"/>
         <source>Import Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Kter GIF yettemwwiwilen</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="136"/>
         <source>Import movie</source>
-        <translation>動画の読み込み</translation>
+        <translation>Kter asaru</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="137"/>
         <source>Import sound</source>
-        <translation>音声の読み込み</translation>
+        <translation>Kter imesli</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="138"/>
         <source>Import palette</source>
-        <translation>パレットの読み込み</translation>
+        <translation>Kter tafelwit</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="148"/>
         <source>Save animation</source>
-        <translation>アニメーションを保存</translation>
+        <translation>Sekles asemwwiwel</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="149"/>
         <source>Export image</source>
-        <translation>画像の書き出し</translation>
+        <translation>Sifeḍ tugna</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="150"/>
         <source>Export image sequence</source>
-        <translation>連番画像の書き出し</translation>
+        <translation>Sifeḍ talubbayt n tugna</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="151"/>
         <source>Export Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Sifeḍ GIF yettemwwiwilen</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="152"/>
         <source>Export movie</source>
-        <translation>動画の書き出し</translation>
+        <translation>Sifeḍ asaru</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="153"/>
         <source>Export sound</source>
-        <translation>音声の書き出し</translation>
+        <translation>Sifeḍ imesli</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="154"/>
         <source>Export palette</source>
-        <translation>パレットの書き出し</translation>
+        <translation>Sifeḍ tafelwit</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="167"/>
         <location filename="../app/src/filedialogex.cpp" line="183"/>
         <source>Animated GIF (*.gif)</source>
-        <translation type="unfinished"/>
+        <translation>GIF yettemwwiwilen (*.gif)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="169"/>
         <source>Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</source>
-        <translation>音声ファイル (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</translation>
+        <translation>Imesla (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
         <source>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</source>
-        <translation type="unfinished"/>
+        <translation>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="226"/>
@@ -804,71 +804,71 @@
         <location filename="../core_lib/src/structure/filemanager.cpp" line="56"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="110"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi alday n ufaylu</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu ulac-it, ihi ur nezmir ara ad t-neldi. Ttxil-k selken belli abrid d ameɣtu yerna afaylu yettwaddaf sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ahil-agi ur yurig ara akken ad iɣer afaylu i tferneḍ. Ttxil-k ttḥeqqeq belli teɣriḍ isirigen n ufaylu-agi sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
         <source>Invalid Save Path</source>
-        <translation>セーブ先が不正です</translation>
+        <translation>Abrid n usekles d armeɣtu</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
-        <translation type="unfinished"/>
+        <translation>Abrid (&quot;%1&quot;) iṛeccem s akaram.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Akaram (&quot;%1&quot;) ulac-it.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
-        <translation type="unfinished"/>
+        <translation>Abrid (&quot;%1&quot;) ur yesɛi ara adduf s tira.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="282"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="291"/>
         <source>Cannot Create Data Directory</source>
-        <translation>データフォルダーが作成できません</translation>
+        <translation>D awezɣi asnulfu n ukaram n sisefka</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asnulfu n ufaylu &quot;%1&quot;. Ttxil-k tḥeqqeq belli tesɛiḍ isirigen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; d afaylu. Ttxil-k kkes afaylu sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="382"/>
         <source>Miniz Error</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa Miniz</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="399"/>
         <source>Internal Error</source>
-        <translation>内部エラー</translation>
+        <translation>Tuccḍa tadigant</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Teḍra-d tuccḍa tadigant. Afaylu-inek ulamek ara yettwasekles akken iwata.</translation>
     </message>
 </context>
 <context>
@@ -877,19 +877,19 @@
         <location filename="../app/ui/filespage.ui" line="17"/>
         <source>Autosave documents</source>
         <comment>Preference</comment>
-        <translation>ドキュメントを自動保存</translation>
+        <translation>Asekles awurman n isemliyen</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="23"/>
         <source>Enable autosave</source>
         <comment>Preference</comment>
-        <translation>自動保存を有効にする</translation>
+        <translation>Sermed Autosave</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="30"/>
         <source>Number of modifications before autosaving:</source>
         <comment>Preference</comment>
-        <translation>以下の回数ファイルを変更する度に自動保存されます：</translation>
+        <translation>Amḍan n ibeddilen send asekles awurman:</translation>
     </message>
 </context>
 <context>
@@ -898,210 +898,210 @@
         <location filename="../app/ui/generalpage.ui" line="50"/>
         <source>Language</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>言語</translation>
+        <translation>Tutlayt</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="71"/>
         <source>Window opacity</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>ウィンドウの不透明度</translation>
+        <translation>Tiḍullest n usfaylu</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="130"/>
         <source>Background</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>背景</translation>
+        <translation>Agilal</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="100"/>
         <source>Appearance</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>外観</translation>
+        <translation>Timeẓriwt</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="56"/>
         <location filename="../app/ui/generalpage.ui" line="60"/>
         <source>[System-Language]</source>
         <comment>First item of the language list</comment>
-        <translation type="unfinished"/>
+        <translation>[Anagraw-Tameslayt]</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="174"/>
         <source>Canvas</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>キャンバス</translation>
+        <translation>Taɣzut n usuneɣ</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="203"/>
         <source>Editing</source>
         <comment>GroupBox title in Preference</comment>
-        <translation>編集</translation>
+        <translation>Taẓrigt</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="239"/>
         <source>Grid</source>
         <comment>groupBox title in Preference</comment>
-        <translation>グリッド</translation>
+        <translation>Taferrugt</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="97"/>
         <source>Czech</source>
-        <translation>チェコ語</translation>
+        <translation>Tačikit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="98"/>
         <source>Danish</source>
-        <translation>Danish</translation>
+        <translation>Tadanmarkit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="100"/>
         <source>English</source>
-        <translation type="unfinished"/>
+        <translation>Taglizit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="99"/>
         <source>German</source>
-        <translation>German</translation>
+        <translation>Talmanit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Estonian</source>
-        <translation type="unfinished"/>
+        <translation>Tisṭunit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="102"/>
         <source>Spanish</source>
-        <translation>Spanish</translation>
+        <translation>Taspenyulit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="103"/>
         <source>French</source>
-        <translation>French</translation>
+        <translation>Tafransist</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="104"/>
         <source>Hebrew</source>
-        <translation type="unfinished"/>
+        <translation>Taɛebrit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="105"/>
         <source>Hungarian</source>
-        <translation>Hungarian</translation>
+        <translation>Tahungarit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="106"/>
         <source>Indonesian</source>
-        <translation type="unfinished"/>
+        <translation>Tandunisit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Italian</source>
-        <translation>Italian</translation>
+        <translation>Taṭelyanit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Japanese</source>
-        <translation>日本語</translation>
+        <translation>Tajapunit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Polish</source>
-        <translation type="unfinished"/>
+        <translation>Tapulunit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Portuguese - Portugal</source>
-        <translation type="unfinished"/>
+        <translation>Tapurtugalit - Purugal</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Portuguese - Brazil</source>
-        <translation>Portuguese - Brazil</translation>
+        <translation>Tapurtugalit - Brizil</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="112"/>
         <source>Russian</source>
-        <translation>Russian</translation>
+        <translation>Tarusit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>Slovenian</source>
-        <translation type="unfinished"/>
+        <translation>Tasluvakit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Vietnamese</source>
-        <translation type="unfinished"/>
+        <translation>Tavyiṭnamit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
         <source>Chinese - China</source>
-        <translation type="unfinished"/>
+        <translation>Tacinwat - Ccinwa</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>Chinese - Taiwan</source>
-        <translation>Chinese - Taiwan</translation>
+        <translation>Tacinwat -Taywan</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="77"/>
         <source>Opacity</source>
-        <translation>不透明度</translation>
+        <translation>Tiḍullest</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="106"/>
         <source>Shadows</source>
-        <translation>ドロップシャドウを表示</translation>
+        <translation>Tili</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="113"/>
         <source>Tool Cursors</source>
-        <translation>ツールカーソル</translation>
+        <translation>Taḥnacaḍt n ufecku</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="180"/>
         <source>Antialiasing</source>
-        <translation>アンチエイリアス</translation>
+        <translation>Amzay</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="120"/>
         <source>Dotted Cursor</source>
-        <translation>ブラシサイズに応じたカーソルを表示</translation>
+        <translation>Taḥnacaḍt s umetbaqqa</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
         <source>Grid Heigth</source>
-        <translation type="unfinished"/>
+        <translation>Teɣzi n tferrugt</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="252"/>
         <source>Grid Width</source>
-        <translation type="unfinished"/>
+        <translation>Tehri n tferrugt</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="297"/>
         <source>Enable Grid</source>
-        <translation>グリッドを表示</translation>
+        <translation>Sermed taferrugt</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="209"/>
         <source>Vector curve smoothing</source>
-        <translation>ベクターで描画時の線の自動補正度</translation>
+        <translation>Amzay n uzlig amaway</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="229"/>
         <source>Tablet high-resolution position</source>
-        <translation type="unfinished"/>
+        <translation>Ideg n tbadut tafellayt n tfelwit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="215"/>
         <source>Restart Required</source>
-        <translation>プログラムの再起動が必要です</translation>
+        <translation>Yettwasra usekker tikkelt-niḍen</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="216"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
-        <translation>使用言語の変更はプログラムの再起動後に適用されます</translation>
+        <translation>Abeddel n tutlayt ad yeddu ticki tsekkreḍ tikkelt-nniḍen Pencil2D</translation>
     </message>
 </context>
 <context>
@@ -1109,17 +1109,17 @@
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="32"/>
         <source>File</source>
-        <translation>ファイル</translation>
+        <translation>Afaylu</translation>
     </message>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="48"/>
         <source>Browse...</source>
-        <translation>参照...</translation>
+        <translation>Snirem...</translation>
     </message>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="58"/>
         <source>Options</source>
-        <translation>オプション</translation>
+        <translation>Tinefrunin</translation>
     </message>
 </context>
 <context>
@@ -1127,12 +1127,12 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="29"/>
         <source>Import Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Kter GIF yettemwwiwilen</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="31"/>
         <source>Import image sequence</source>
-        <translation>連番画像を読み込む</translation>
+        <translation>Kter talubbayt n tugna</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +1140,7 @@
     <message>
         <location filename="../app/ui/importimageseqoptions.ui" line="15"/>
         <source>Import an image every # frame</source>
-        <translation>指定されたフレーム間隔ごとに連番画像を読み込む</translation>
+        <translation>Kter tugna yal # trame</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1148,7 @@
     <message>
         <location filename="../core_lib/src/structure/layer.cpp" line="38"/>
         <source>Undefined Layer</source>
-        <translation>未定義のレイヤー</translation>
+        <translation>Akalku ur ittusbadu ara</translation>
     </message>
 </context>
 <context>
@@ -1156,7 +1156,7 @@
     <message>
         <location filename="../core_lib/src/structure/layerbitmap.cpp" line="29"/>
         <source>Bitmap Layer</source>
-        <translation>ビットマップレイヤー</translation>
+        <translation>Akalku Bitmap</translation>
     </message>
 </context>
 <context>
@@ -1164,7 +1164,7 @@
     <message>
         <location filename="../core_lib/src/structure/layercamera.cpp" line="79"/>
         <source>Camera Layer</source>
-        <translation>カメラレイヤー</translation>
+        <translation>Akalku takamirat</translation>
     </message>
 </context>
 <context>
@@ -1172,7 +1172,7 @@
     <message>
         <location filename="../core_lib/src/structure/layersound.cpp" line="29"/>
         <source>Sound Layer</source>
-        <translation>音声レイヤー</translation>
+        <translation>Akalku imesli</translation>
     </message>
 </context>
 <context>
@@ -1180,7 +1180,7 @@
     <message>
         <location filename="../core_lib/src/structure/layervector.cpp" line="24"/>
         <source>Vector Layer</source>
-        <translation>ベクターレイヤー</translation>
+        <translation>Akalku amaway</translation>
     </message>
 </context>
 <context>
@@ -1188,501 +1188,501 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="14"/>
         <source>MainWindow</source>
-        <translation>メインウインドウ</translation>
+        <translation>Asfaylu agejdan</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="57"/>
         <source>File</source>
-        <translation>ファイル</translation>
+        <translation>Afaylu</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="61"/>
         <source>Import</source>
-        <translation>読み込む</translation>
+        <translation>Kter</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="74"/>
         <source>Export</source>
-        <translation>エクスポート</translation>
+        <translation>Sifeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="97"/>
         <source>Edit</source>
-        <translation>編集</translation>
+        <translation>Taẓrigt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="101"/>
         <source>Selection</source>
-        <translation>選択範囲</translation>
+        <translation>Tafrayt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="123"/>
         <source>View</source>
-        <translation>表示</translation>
+        <translation>Abeqqeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="127"/>
         <source>Onion Skin</source>
-        <translation>オニオンスキン</translation>
+        <translation>Iclem n uẓalim</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="152"/>
         <source>Animation</source>
-        <translation>アニメーション</translation>
+        <translation>Asemwwiwel</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="172"/>
         <location filename="../app/ui/mainwindow2.ui" line="800"/>
         <source>Tools</source>
-        <translation>ツール</translation>
+        <translation>Ifecka</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="190"/>
         <source>Layer</source>
-        <translation>レイヤー</translation>
+        <translation>Akalku</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="201"/>
         <location filename="../app/ui/mainwindow2.ui" line="731"/>
         <source>Help</source>
-        <translation>ヘルプ</translation>
+        <translation>Tallalt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="213"/>
         <source>Windows</source>
-        <translation>ウィンドウ</translation>
+        <translation>Isfuyla</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="232"/>
         <source>New</source>
-        <translation>新規</translation>
+        <translation>Amaynut</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="241"/>
         <source>Open</source>
-        <translation>開く</translation>
+        <translation>Ldi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="250"/>
         <source>Save</source>
-        <translation>保存</translation>
+        <translation>Sekles</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="268"/>
         <source>Exit</source>
-        <translation>終了</translation>
+        <translation>Tuffɣa</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="273"/>
         <location filename="../app/ui/mainwindow2.ui" line="301"/>
         <source>Image Sequence...</source>
-        <translation>連番画像...</translation>
+        <translation>Talubbayt n tugna...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="278"/>
         <location filename="../app/ui/mainwindow2.ui" line="296"/>
         <source>Image...</source>
-        <translation>画像...</translation>
+        <translation>Tugna...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="283"/>
         <location filename="../app/ui/mainwindow2.ui" line="306"/>
         <source>Movie...</source>
-        <translation>動画...</translation>
+        <translation>Asaru...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="291"/>
         <location filename="../app/ui/mainwindow2.ui" line="319"/>
         <source>Palette...</source>
-        <translation>パレット...</translation>
+        <translation>Tapaliḍt...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="314"/>
         <source>Sound...</source>
-        <translation>音声...</translation>
+        <translation>Imesli...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="328"/>
         <source>Undo</source>
-        <translation>元に戻す</translation>
+        <translation>Semmet</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="340"/>
         <source>Redo</source>
-        <translation>やり直す</translation>
+        <translation>Err-d</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="349"/>
         <source>Cut</source>
-        <translation>切り取り</translation>
+        <translation>Gzem</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="358"/>
         <source>Copy</source>
-        <translation>コピー</translation>
+        <translation>Suken</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="367"/>
         <source>Paste</source>
-        <translation>貼り付け</translation>
+        <translation>Senṭeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="372"/>
         <source>Crop</source>
-        <translation>切り抜き</translation>
+        <translation>Ɣeẓ</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="377"/>
         <source>Crop To Selection</source>
-        <translation>選択範囲でクロップ</translation>
+        <translation>Ɣeẓ ɣer tefrayt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="382"/>
         <source>Select All</source>
-        <translation>すべて選択</translation>
+        <translation>Fren akk</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="387"/>
         <source>Deselect All</source>
-        <translation>すべての選択を解除</translation>
+        <translation>Kkes tafrayt akk</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="396"/>
         <location filename="../app/ui/mainwindow2.ui" line="595"/>
         <source>Clear Frame</source>
-        <translation>フレームをクリア</translation>
+        <translation>Sfeḍ tugna</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="401"/>
         <source>Preferences</source>
-        <translation>詳細設定</translation>
+        <translation>Ismenyifen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="409"/>
         <source>Reset Windows</source>
-        <translation>ウィンドウをリセット</translation>
+        <translation>Ales awennez n usfaylu</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="418"/>
         <source>Zoom In</source>
-        <translation>ズームイン</translation>
+        <translation>Simɣur</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="427"/>
         <source>Zoom Out</source>
-        <translation>ズームアウト</translation>
+        <translation>Simecṭuḥ</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="432"/>
         <source>Rotate Clockwise</source>
-        <translation>時計回りに回転</translation>
+        <translation>Tuzzya di tnila n temrilt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="437"/>
         <source>Rotate AntiClosewise</source>
-        <translation>反時計回りに回転</translation>
+        <translation>Tuzzya mgal tamrilt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="442"/>
         <source>Reset Zoom/Rotate</source>
-        <translation>ズームと回転をリセット</translation>
+        <translation>Ales awennez n Zoom/Tuzzya</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="451"/>
         <source>Horizontal Flip</source>
-        <translation>水平反転</translation>
+        <translation>Tuzzya taglawant</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="460"/>
         <source>Vertical Flip</source>
-        <translation>垂直反転</translation>
+        <translation>Tuzzya taratakt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="468"/>
         <source>Preview</source>
-        <translation>プレビュー</translation>
+        <translation>Tamuɣli</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="476"/>
         <source>Grid</source>
-        <translation>グリッド</translation>
+        <translation>Taferrugt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="488"/>
         <source>Previous</source>
-        <translation>前</translation>
+        <translation>Uzwir</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="491"/>
         <source>Show previous onion skin</source>
-        <translation>前のフレームのオニオンスキンを表示</translation>
+        <translation>Sken tugna tafrawant tuzwirt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="503"/>
         <source>Next</source>
-        <translation>次</translation>
+        <translation>Uḍfir</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="506"/>
         <source>Show next onion skin</source>
-        <translation>次のフレームのオニオンスキンを表示</translation>
+        <translation>Sken tugna tafrawant tuḍfirt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="515"/>
         <location filename="../app/src/mainwindow2.cpp" line="1280"/>
         <source>Play</source>
-        <translation>再生</translation>
+        <translation>Urar</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="527"/>
         <source>Loop</source>
-        <translation>ループ</translation>
+        <translation>Tineddict</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="536"/>
         <source>Next Frame</source>
-        <translation>次のフレーム</translation>
+        <translation>Tugna tuḍfirt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="545"/>
         <source>Previous Frame</source>
-        <translation>前のフレーム</translation>
+        <translation>Tugna tuzwirt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="550"/>
         <source>Extend Frame</source>
-        <translation>フレーム</translation>
+        <translation>Tugna yettwaẓlen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="559"/>
         <source>Add Frame</source>
-        <translation>フレームを追加</translation>
+        <translation>Rnu tugna</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="568"/>
         <source>Duplicate Frame</source>
-        <translation>フレームを複製</translation>
+        <translation>Sisleg tugna</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="577"/>
         <source>Remove Frame</source>
-        <translation>フレームを削除</translation>
+        <translation>Kkes tugna</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="586"/>
         <source>Move</source>
-        <translation>移動</translation>
+        <translation>Smutti</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="604"/>
         <source>Select</source>
-        <translation>選択</translation>
+        <translation>Fren</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="613"/>
         <source>Brush</source>
-        <translation>ブラシ</translation>
+        <translation>Tasrekna</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="622"/>
         <source>Polyline</source>
-        <translation>折れ線</translation>
+        <translation>Izirig irẓen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="631"/>
         <source>Smudge</source>
-        <translation>指先</translation>
+        <translation>Ẓel</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="640"/>
         <source>Pen</source>
-        <translation>ペン</translation>
+        <translation>Imru</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="649"/>
         <source>Hand</source>
-        <translation>手のひら</translation>
+        <translation>Afus</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="658"/>
         <source>Pencil</source>
-        <translation>鉛筆</translation>
+        <translation>Akeryun</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="667"/>
         <source>Bucket</source>
-        <translation>バケツ</translation>
+        <translation>Abelyun</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="676"/>
         <source>Eyedropper</source>
-        <translation>スポイト</translation>
+        <translation>Amelqaḍ n yini</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="685"/>
         <source>Eraser</source>
-        <translation>消しゴム</translation>
+        <translation>Tasemsut</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="694"/>
         <source>New Bitmap Layer</source>
-        <translation>新しいビットマップレイヤー</translation>
+        <translation>Akalku amaynut n tugna</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="703"/>
         <source>New Vector Layer</source>
-        <translation>新しいベクターレイヤー</translation>
+        <translation>Akalku amaynut n umaway</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="712"/>
         <source>New Sound Layer</source>
-        <translation>新しい音声レイヤー</translation>
+        <translation>Akalku amaynut n imesli</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="721"/>
         <source>New Camera Layer</source>
-        <translation>新しいカメラレイヤー</translation>
+        <translation>Akalku amayunut n tkamirat</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="726"/>
         <source>Delete Current Layer</source>
-        <translation>現在のレイヤーを削除</translation>
+        <translation>Kkes akalku amiran</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="736"/>
         <source>About</source>
-        <translation>About</translation>
+        <translation>Ɣef</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="741"/>
         <location filename="../app/ui/mainwindow2.ui" line="744"/>
         <source>Reset to default</source>
-        <translation>初期状態に戻す</translation>
+        <translation>Ales awennez s lexṣas</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="781"/>
         <source>MultiLayer Onion Skin</source>
-        <translation>複数レイヤーのオニオンスキンを表示</translation>
+        <translation>Iclem n uẓalim s waṭas n tissiyin</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="792"/>
         <source>Range</source>
-        <translation>範囲</translation>
+        <translation>Tagrumma</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="865"/>
         <source>Pencil2D Website</source>
-        <translation type="unfinished"/>
+        <translation>Asmel n web n Pencil</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="870"/>
         <source>Report a Bug</source>
-        <translation type="unfinished"/>
+        <translation>Azen aneqqis n tuccḍa</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="875"/>
         <source>Quick Reference Guide</source>
-        <translation type="unfinished"/>
+        <translation>Tamaweskatut </translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="878"/>
         <source>F1</source>
-        <translation type="unfinished"/>
+        <translation>F1</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="883"/>
         <location filename="../app/ui/mainwindow2.ui" line="888"/>
         <source>Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>GIF yettemwwiwilen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="754"/>
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Next KeyFrame</source>
-        <translation>次のキーフレーム</translation>
+        <translation>Tugna tuḍfirt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="259"/>
         <source>Save As...</source>
-        <translation type="unfinished"/>
+        <translation>Sekles s yisem...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
         <location filename="../app/ui/mainwindow2.ui" line="770"/>
         <source>Previous KeyFrame</source>
-        <translation>前のキーフレーム</translation>
+        <translation>Tugna tuzwirt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="808"/>
         <source>Timeline</source>
-        <translation>タイムライン</translation>
+        <translation>Tasnakudt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="816"/>
         <source>Options</source>
-        <translation>オプション</translation>
+        <translation>Tinefrunin</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="824"/>
         <source>Color Wheel</source>
-        <translation>カラーホイール</translation>
+        <translation>Ruda n yiniten</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="832"/>
         <source>Color Palette</source>
-        <translation>カラーパレット</translation>
+        <translation>Tafelwit n yiniten</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="840"/>
         <source>Display Options</source>
-        <translation>表示オプション</translation>
+        <translation>Tinefrunin n ubeqqeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="845"/>
         <source>Flip X</source>
-        <translation>水平反転</translation>
+        <translation>Tuzzya ɣef ugellus X</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="850"/>
         <source>Flip Y</source>
-        <translation>垂直反転</translation>
+        <translation>Tuzzya ɣef ugellus Y</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="855"/>
         <source>Move Frame Forward</source>
-        <translation>次のフレームに移動</translation>
+        <translation>Siẓ tugna</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="860"/>
         <source>Move Frame Backward</source>
-        <translation>前のフレームに移動</translation>
+        <translation>Sewxer tugna</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="146"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
-        <translation type="unfinished"/>
+        <translation>tapaliḍt n yiniten:&lt;br&gt;seqdec&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;qluqel ɣer teḥnacaḍt</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="150"/>
         <source>Color inspector</source>
-        <translation type="unfinished"/>
+        <translation>Amaswaḍ n yini</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="353"/>
         <source>Lock Windows</source>
-        <translation type="unfinished"/>
+        <translation>Sekkeṛ isfuyla</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="370"/>
         <source>Open Recent</source>
-        <translation>最近使ったファイル</translation>
+        <translation>Ldi afaylu n melmi kan</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="404"/>
         <source>
 
  You have successfully cleared the list</source>
-        <translation>リストは正常に削除されました</translation>
+        <translation>Tsefḍeḍ tabdart akken ilaq</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="505"/>
@@ -1690,22 +1690,22 @@
         <location filename="../app/src/mainwindow2.cpp" line="524"/>
         <location filename="../app/src/mainwindow2.cpp" line="584"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi alday n ufaylu</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="506"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu i tferneḍ d akaram, ihi ur nezmir ara ad t-neldi. Ma tettaɛraḍeḍ adeldiḍ asenfar iseqdacen tamṣukt taqburt, ttxil-k ldi afaylu yettfakkan s .pcl, mačči d akaram n isefka.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="516"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please check to make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu i tferneḍ ulac-it, ihi ur nezmir ara ad t-neldi. Ttxil-k selken belli teckecmeḍ abrid iwatan yerna afaylu yettwaddaf sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ahil-agi ur ur yesɛi ara isirigen iwakken ad iɣer afaylu i tferneḍ. Ttxil-k selken belli tesɛiḍ isirigen n tɣuri i ufaylu-agi sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="534"/>
@@ -1714,17 +1714,17 @@
         <location filename="../app/src/mainwindow2.cpp" line="832"/>
         <location filename="../app/src/mainwindow2.cpp" line="885"/>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation>Ɣur-k</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="535"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
-        <translation type="unfinished"/>
+        <translation>Ahil-agi ur yesɛi ara isirigen iwakken ad yaru deg ufaylu i tferneḍ. Ttxil-k selken belli tesɛiḍ isirigrn iwakken ad taruḍ deg ufaylu-agi send ad tɛerḍeḍ ad t-teskelseḍ. Tzemreḍ daɣen ad tesqedceḍ tanerunt n wumuɣ Sekles am...iwakken ad teskelseḍ deg wadig yettwaddafen s tira.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="541"/>
         <source>Opening document...</source>
-        <translation>ドキュメントを開いています...</translation>
+        <translation>Isemli n ulday...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="541"/>
@@ -1732,80 +1732,81 @@
         <location filename="../app/src/mainwindow2.cpp" line="783"/>
         <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Abort</source>
-        <translation>中断</translation>
+        <translation>Eǧǧ</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="585"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
-        <translation type="unfinished"/>
+        <translation>teḍra-d tuccḍa mi neɛreḍ ad nɛebbi afaylu yerna ur nezmir ara ad nɛebbi afaylu-inek.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>
         <source>Saving document...</source>
-        <translation>ドキュメントを保存しています...</translation>
+        <translation>Asekles n isemli...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="660"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;エラーによってファイルが正常に保存されなかった可能性があります。もしこのエラーがPencil2Dによって起こったと推測される場合は, &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;にアクセスして新しい&quot;issue&quot;として報告してください。ご報告の際は、以下の詳細を追記してください:</translation>
+        <translation>&lt;br&gt;&lt;br&gt;Teḍra-d tuccḍa dɣa afaylu-inek ur yettwasekles ara akken iwata. Ma twalaḍ belli tuccḍa-agi tekka-d s Pencil2D, ttxil-k snulfu-d ugur amaynut di:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt; https: //github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Ttxil-k seddu ifatusen-agi deg wugur-inek:</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="698"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
-        <translation>ファイルの変更があります。
-これらの変更を保存しますか？</translation>
+        <translation>Asemwwiwel-agi yettwabeddel.
+Tebɣiḍ ad teskelseḍ ibeddilen ?</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="726"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
-        <translation type="unfinished"/>
+        <translation>Asemwwiwel ur yettwasekles ara yakan.
+Tebɣiḍ ad t-teskelseḍ tura?</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="727"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
-        <translation type="unfinished"/>
+        <translation>Dayen ur yi-d-ssutur ara</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="757"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>画像が読み込めません。&lt;br&gt;&lt;b&gt;ヒント:&lt;/b&gt; ビットマップファイルはビットマップレイヤーに読み込んでください。</translation>
+        <translation>D awezɣi taktert n tugna.&lt;br&gt;&lt;b&gt;TIXIDEST:&lt;/b&gt; Seqdec akalku &quot;Bitmap&quot; iwakken ad tketreḍ tugniwin bitmap.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="783"/>
         <source>Importing image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>Taktert n tlubbayt n tugnba...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="833"/>
         <location filename="../app/src/mainwindow2.cpp" line="886"/>
         <source>was unable to import</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi taktert</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Importing Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>Taktert n GIF yettemwwiwilen...</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1105"/>
         <location filename="../app/src/mainwindow2.cpp" line="1110"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>Semmet</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1125"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
-        <translation type="unfinished"/>
+        <translation>Err-d</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1275"/>
         <source>Stop</source>
-        <translation>停止</translation>
+        <translation>Ḥbes</translation>
     </message>
 </context>
 <context>
@@ -1814,12 +1815,12 @@
         <location filename="../core_lib/src/tool/movetool.cpp" line="367"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Asenfal n tissi</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="368"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
-        <translation type="unfinished"/>
+        <translation>Ala tettedduḍ ad tesnefleḍ tissi, tebɣiḍ ad tesneseḍ abeddel?</translation>
     </message>
 </context>
 <context>
@@ -1827,122 +1828,122 @@
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="546"/>
         <source>Black</source>
-        <translation>黒</translation>
+        <translation>Aberkan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="547"/>
         <source>Red</source>
-        <translation>赤</translation>
+        <translation>Azeggaɣ</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="548"/>
         <source>Dark Red</source>
-        <translation>暗い赤</translation>
+        <translation>Azeggaɣ aɣmayan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="549"/>
         <source>Orange</source>
-        <translation>オレンジ</translation>
+        <translation>Ačinawi</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="550"/>
         <source>Dark Orange</source>
-        <translation>暗いオレンジ</translation>
+        <translation>Ačinawi aɣmayan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="551"/>
         <source>Yellow</source>
-        <translation>黄色</translation>
+        <translation>Awraɣ</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="552"/>
         <source>Dark Yellow</source>
-        <translation>暗い黄色</translation>
+        <translation>Awraɣ aɣmayan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="553"/>
         <source>Green</source>
-        <translation>緑</translation>
+        <translation>Azegzaw</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="554"/>
         <source>Dark Green</source>
-        <translation>暗い緑</translation>
+        <translation>Azegzaw aɣmayan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="555"/>
         <source>Cyan</source>
-        <translation>シアン</translation>
+        <translation>Anili azegzaw</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="556"/>
         <source>Dark Cyan</source>
-        <translation>暗いシアン</translation>
+        <translation>Anili azegzaw imibrik</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="557"/>
         <source>Blue</source>
-        <translation>青</translation>
+        <translation>Anili</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="558"/>
         <source>Dark Blue</source>
-        <translation>暗い青</translation>
+        <translation>Anili imibrik</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="559"/>
         <source>White</source>
-        <translation>白</translation>
+        <translation>Amellal</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Very Light Grey</source>
-        <translation>非常に明るい灰色</translation>
+        <translation>Amellal afessas</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Light Grey</source>
-        <translation>明るい灰色</translation>
+        <translation>Amelliɣdi afessas</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>Grey</source>
-        <translation>灰色</translation>
+        <translation>Amelliɣdi</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Dark Grey</source>
-        <translation>暗い灰色</translation>
+        <translation>Amelliɣdi aɣmayan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Light Skin</source>
-        <translation>明るい肌色</translation>
+        <translation>Aglim anafaw</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Light Skin - shade</source>
-        <translation>明るい肌色 (陰)</translation>
+        <translation>Aglim anafaw - s tili</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Skin</source>
-        <translation>肌色</translation>
+        <translation>Aglim</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Skin - shade</source>
-        <translation>肌色 (陰)</translation>
+        <translation>Aglim - s tili</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Dark Skin</source>
-        <translation>暗い肌色</translation>
+        <translation>Aglim imibrik</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Dark Skin - shade</source>
-        <translation>暗い肌色 (陰)</translation>
+        <translation>Aglim imibrik - s tili</translation>
     </message>
 </context>
 <context>
@@ -1950,154 +1951,154 @@
     <message>
         <location filename="../app/src/main.cpp" line="73"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation>Pencil2DはMac OS X, Windows, and Linuxに対応したアニメーション及びドローイングソフトです。 本ソフトウェアのベクター・ビットマップ両方の描画機能を使用して、一般的なコマ送りアニメーションを作成できます。</translation>
+        <translation>Pencil2D d aseɣẓan n usemwwiwel / asuneɣ i  Mac OS X, Windows akked Linux. Ak k-yeǧǧ ad d-tesnulfuḍ asemwwiwel mansay (unuɣen yettemwwiwilen) s ufus s usemres n tugniwin bitmap akked wudlifen imawayen.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="76"/>
         <source>Path to the input pencil file.</source>
-        <translation>読み込むPencilファイルの場所。</translation>
+        <translation>Abrid ɣer unekcum n ufaylu akeryun.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="79"/>
         <location filename="../app/src/main.cpp" line="85"/>
         <source>Render the file to &lt;output_path&gt;</source>
-        <translation>ファイルを&lt;output_path&gt;内に書き出す</translation>
+        <translation>Err afaylu i</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="80"/>
         <location filename="../app/src/main.cpp" line="86"/>
         <source>output_path</source>
-        <translation>保存場所</translation>
+        <translation>output_path</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="93"/>
         <source>Name of the camera layer to use</source>
-        <translation type="unfinished"/>
+        <translation>Isem n ukalku n tkamirat ara yettwasqedcen</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="94"/>
         <source>layer_name</source>
-        <translation type="unfinished"/>
+        <translation>layer_name</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="98"/>
         <source>Width of the output frames</source>
-        <translation>出力されるフレームの幅</translation>
+        <translation>Tehri n ikataren n tuffɣa</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="99"/>
         <location filename="../app/src/main.cpp" line="104"/>
         <source>integer</source>
-        <translation>整数</translation>
+        <translation>ummid</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="103"/>
         <source>Height of the output frames</source>
-        <translation>出力されるフレームの高さ</translation>
+        <translation>Teɣzi n ikataren n tuffɣa</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="108"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>Tugna tamezwarut i tebɣiḍ ad tsedduḍ deg usaru ara tesifḍeḍ</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="109"/>
         <location filename="../app/src/main.cpp" line="116"/>
         <source>frame</source>
-        <translation type="unfinished"/>
+        <translation>akatar</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="113"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="unfinished"/>
+        <translation>Tugna taneggarut i tebɣiḍ ad tsedduḍ deg usaru ara tsifḍeḍ. Yezmer daɣen ad yili d aneggaru neɣ d imesli aneggaru ara yesqedcen wudem awurman di tugna taneggarut igebrenasemwwiwel neɣ imesli</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="120"/>
         <source>Render transparency when possible</source>
-        <translation>透明ピクセルを出力する（可能なファイル形式のみ）</translation>
+        <translation>Err-it d afrawan ticki yella wamek</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="139"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation>警告：幅の値 %1 が整数ではありません。無視されます。</translation>
+        <translation>Ɣur-k: azal n tehri %1 mačči d amḍan ummid, ad yettwattu.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="149"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation>警告：高さの値 %1 が整数ではありません。無視されます。</translation>
+        <translation>Ɣur-k: azal n teɣzi %1 mačči d amḍan ummid, ad yettwattu.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="159"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Ɣur-k: azal n tazwara %1 mačči d amḍan ummid, ad yettwattu.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="164"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Ɣur-k: azal n tazwara isefk ad yili ma drus 1, ad yettwattu.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="184"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Ɣur-k: azal n tagara %1 mačči d ummid, aneggaru neɣ imesli aneggaru, ad yettwattu.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="190"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Ɣur-k: azal n tagara %1 meẓi ɣef wazal n tazwara %2, ad yettwattu.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="201"/>
         <source>Error: No input file specified.</source>
-        <translation>エラー：読み込むファイルが指定されていません。</translation>
+        <translation>Tuccḍa: ulac afaylu n unekcum i d-ittunefken.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="208"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa: afaylu n unekcum di &apos;%1&apos;  ulac-it</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="213"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa: abrid n unekcum &apos;%1&apos; mačči d afaylu</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="241"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Ɣur-k: akalku n tkamirat i d-ittunefken %1 ur yettwaf ara, ad yettwattu.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="272"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished"/>
+        <translation>Ɣur-k: Amasal n tuffɣa ur d-yettunefk ara neɣ ur itteddu ara. Aseqdec n PNG.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="292"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished"/>
+        <translation>Ɣur-k: Tafrawant akka tura ur tetteddu ara deg yifuyla n tvidyutin</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="294"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Asifeḍ n usaru...</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="296"/>
         <location filename="../app/src/main.cpp" line="301"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished"/>
+        <translation>Ifuk.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="299"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Asifeḍ n tlubbayt n tugna...</translation>
     </message>
 </context>
 <context>
@@ -2105,32 +2106,32 @@
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="20"/>
         <source>Preferences</source>
-        <translation>設定</translation>
+        <translation>Ismenyifen</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="65"/>
         <source>General</source>
-        <translation>基本設定</translation>
+        <translation>Amatu</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="80"/>
         <source>Files</source>
-        <translation>ファイル</translation>
+        <translation>Ifuyla</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="95"/>
         <source>Timeline</source>
-        <translation>タイムライン</translation>
+        <translation>Tasnakudt</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="110"/>
         <source>Tools</source>
-        <translation>ツール</translation>
+        <translation>Ifecka</translation>
     </message>
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="125"/>
         <source>Shortcuts</source>
-        <translation>ショートカット</translation>
+        <translation>Inegzumen</translation>
     </message>
 </context>
 <context>
@@ -2138,12 +2139,12 @@
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="97"/>
         <source>Checking environment...</source>
-        <translation type="unfinished"/>
+        <translation>Asenqed n twennaḍt...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="148"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Ifuk</translation>
     </message>
 </context>
 <context>
@@ -2157,1392 +2158,1392 @@
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</source>
-        <translation type="unfinished"/>
+        <translation>Tugniwin (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
         <source>Everything ok.</source>
-        <translation>正常終了</translation>
+        <translation>Kulec igerrez.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="99"/>
         <source>Ooops, Something went wrong.</source>
-        <translation>エラーが発生しました。</translation>
+        <translation>Yella wacu ur neddi ara.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="100"/>
         <source>File doesn&apos;t exist.</source>
-        <translation>ファイルは存在しません。</translation>
+        <translation>Afaylu ulac-it.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="101"/>
         <source>Cannot open file.</source>
-        <translation>ファイルの読み込みに失敗しました。</translation>
+        <translation>D awezɣi alday n ufaylu</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="102"/>
         <source>The file is not a valid xml document.</source>
-        <translation>正常なXMLファイルではありません。</translation>
+        <translation>Afaylu mači d isemli xml ameɣtu.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="103"/>
         <source>The file is not valid pencil document.</source>
-        <translation>正常なPencil2Dのドキュメントではありません。</translation>
+        <translation>Afaylu mači d isemli pencil ameɣtu.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="29"/>
         <source>All Pencil Files PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</source>
-        <translation>全てのPencilファイル PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</translation>
+        <translation>All Pencil Files PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</source>
-        <translation>Pencil Animation ファイル PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</translation>
+        <translation>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="282"/>
         <source>Vivid Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="283"/>
         <source>Strong Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi iǧǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="284"/>
         <source>Deep Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="285"/>
         <source>Light Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="286"/>
         <source>Moderate Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="287"/>
         <source>Dark Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="288"/>
         <source>Pale Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="289"/>
         <source>Grayish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="290"/>
         <source>Pinkish White</source>
-        <translation type="unfinished"/>
+        <translation>Amellal axuxi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="291"/>
         <source>Pinkish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi axuxi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="292"/>
         <source>Vivid Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="293"/>
         <source>Strong Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ iǧǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="294"/>
         <source>Deep Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="295"/>
         <source>Very Deep Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ leqqayen aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="296"/>
         <source>Moderate Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="297"/>
         <source>Dark Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="298"/>
         <source>Very Dark Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ imibik aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="299"/>
         <source>Light Grayish Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ amelliɣdi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="300"/>
         <source>Grayish Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="301"/>
         <source>Dark Grayish Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ amelliɣdi imibdik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="302"/>
         <source>Blackish Red</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="303"/>
         <source>Reddish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="304"/>
         <source>Dark Reddish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi azeggaɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="305"/>
         <source>Reddish Black</source>
-        <translation type="unfinished"/>
+        <translation>Azeggaɣ aberkan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="306"/>
         <source>Vivid Yellowish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi awraɣ ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="307"/>
         <source>Strong Yellowish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi awraɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="308"/>
         <source>Deep Yellowish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi awraɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="309"/>
         <source>Light Yellowish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi awraɣ anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="310"/>
         <source>Moderate Yellowish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi awraɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="311"/>
         <source>Dark Yellowish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi awraɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="312"/>
         <source>Pale Yellowish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi awraɣ ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="313"/>
         <source>Grayish Yellowish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi awraɣ axuxi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="314"/>
         <source>Brownish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi aqahwi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="315"/>
         <source>Vivid Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi azeggaɣ ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="316"/>
         <source>Strong Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi azeggaɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="317"/>
         <source>Deep Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi azeggaɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="318"/>
         <source>Moderate Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi azeggaɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="319"/>
         <source>Dark Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi azeggaɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="320"/>
         <source>Grayish Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi azeggaɣ amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="321"/>
         <source>Strong Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi azeggaɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="322"/>
         <source>Deep Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi azeggaɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="323"/>
         <source>Light Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi azeggaɣ anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="324"/>
         <source>Moderate Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi azeggaɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="325"/>
         <source>Dark Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi azeggaɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="326"/>
         <source>Light Grayish Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi azeggaɣ amelliɣdi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="327"/>
         <source>Grayish Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi azeggaɣ amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="328"/>
         <source>Dark Grayish Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi azeggaɣ amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="329"/>
         <source>Vivid Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="330"/>
         <source>Brilliant Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="331"/>
         <source>Strong Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="332"/>
         <source>Deep Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="333"/>
         <source>Light Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="334"/>
         <source>Moderate Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="335"/>
         <source>Brownish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi aqahwi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="336"/>
         <source>Strong Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="337"/>
         <source>Deep Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="338"/>
         <source>Light Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="339"/>
         <source>Moderate Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="340"/>
         <source>Dark Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="341"/>
         <source>Light Grayish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi amelliɣdi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="342"/>
         <source>Grayish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi amelliɣdi </translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="343"/>
         <source>Dark Grayish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="344"/>
         <source>Light Brownish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi aqahwi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="345"/>
         <source>Brownish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi aqahwi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="346"/>
         <source>Brownish Black</source>
-        <translation type="unfinished"/>
+        <translation>Aberkan aqahwi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="347"/>
         <source>Vivid Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi awraɣ ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="348"/>
         <source>Brilliant Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi awraɣ ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="349"/>
         <source>Strong Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi awraɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="350"/>
         <source>Deep Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi awraɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="351"/>
         <source>Light Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi awraɣ anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="352"/>
         <source>Moderate Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi awraɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="353"/>
         <source>Dark Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi awraɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="354"/>
         <source>Pale Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ačinawi awraɣ ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="355"/>
         <source>Strong Yellowish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi awraɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="356"/>
         <source>Deep Yellowish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi awraɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="357"/>
         <source>Light Yellowish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi awraɣ anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="358"/>
         <source>Moderate Yellowish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi awraɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="359"/>
         <source>Dark Yellowish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi awraɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="360"/>
         <source>Light Grayish Yellowish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi awraɣ amelliɣdi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="361"/>
         <source>Grayish Yellowish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi awraɣ amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="362"/>
         <source>Dark Grayish Yellowish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Aqahwi awraɣ amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="363"/>
         <source>Vivid Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="364"/>
         <source>Brilliant Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="365"/>
         <source>Strong Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="366"/>
         <source>Deep Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="367"/>
         <source>Light Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="368"/>
         <source>Moderate Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="369"/>
         <source>Dark Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="370"/>
         <source>Pale Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="371"/>
         <source>Grayish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="372"/>
         <source>Dark Grayish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="373"/>
         <source>Yellowish White</source>
-        <translation type="unfinished"/>
+        <translation>Amellal awraɣ</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="374"/>
         <source>Yellowish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi awraɣ</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="375"/>
         <source>Light Olive Brown</source>
-        <translation type="unfinished"/>
+        <translation>Adal aqahwi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="376"/>
         <source>Moderate Olive Brown</source>
-        <translation type="unfinished"/>
+        <translation>Adal aqahwi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="377"/>
         <source>Dark Olive Brown</source>
-        <translation type="unfinished"/>
+        <translation>Adal aqahwi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="378"/>
         <source>Vivid Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="379"/>
         <source>Brilliant Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="380"/>
         <source>Strong Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="381"/>
         <source>Deep Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="382"/>
         <source>Light Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="383"/>
         <source>Moderate Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="384"/>
         <source>Dark Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="385"/>
         <source>Pale Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="386"/>
         <source>Grayish Greenish Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="387"/>
         <source>Light Olive</source>
-        <translation type="unfinished"/>
+        <translation>Adal anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="388"/>
         <source>Moderate Olive</source>
-        <translation type="unfinished"/>
+        <translation>Adal alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="389"/>
         <source>Dark Olive</source>
-        <translation type="unfinished"/>
+        <translation>Adal imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="390"/>
         <source>Light Grayish Olive</source>
-        <translation type="unfinished"/>
+        <translation>Adal amelliɣdi ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="391"/>
         <source>Grayish Olive</source>
-        <translation type="unfinished"/>
+        <translation>Adal amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="392"/>
         <source>Dark Grayish Olive</source>
-        <translation type="unfinished"/>
+        <translation>Adal amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="393"/>
         <source>Light Olive Gray</source>
-        <translation type="unfinished"/>
+        <translation>Adal amelliɣdi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="394"/>
         <source>Olive Gray</source>
-        <translation type="unfinished"/>
+        <translation>Adal amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="395"/>
         <source>Olive Black</source>
-        <translation type="unfinished"/>
+        <translation>Adal imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="396"/>
         <source>Vivid Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="397"/>
         <source>Brilliant Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="398"/>
         <source>Strong Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="399"/>
         <source>Deep Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="400"/>
         <source>Light Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="401"/>
         <source>Moderate Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="402"/>
         <source>Pale Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Awraɣ azegzaw ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="403"/>
         <source>Grayish Yellow Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="404"/>
         <source>Strong Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegza adal iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="405"/>
         <source>Deep Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw adal alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="406"/>
         <source>Moderate Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw adal alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="407"/>
         <source>Dark Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw adal imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="408"/>
         <source>Grayish Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw adal amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="409"/>
         <source>Dark Grayish Olive Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw adal amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="410"/>
         <source>Vivid Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="411"/>
         <source>Brilliant Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="412"/>
         <source>Strong Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="413"/>
         <source>Deep Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="414"/>
         <source>Very Deep Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ leqqayen aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="415"/>
         <source>Very Light Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ anafaw aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="416"/>
         <source>Light Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="417"/>
         <source>Moderate Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="418"/>
         <source>Dark Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="419"/>
         <source>Very Dark Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw awraɣ imibrik aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="420"/>
         <source>Vivid Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzw ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="421"/>
         <source>Brilliant Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="422"/>
         <source>Strong Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="423"/>
         <source>Deep Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="424"/>
         <source>Very Light Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anafaw aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="425"/>
         <source>Light Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="426"/>
         <source>Moderate Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="427"/>
         <source>Dark Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="428"/>
         <source>Very Dark Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw imibrik aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="429"/>
         <source>Very Pale Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw ifesxen aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="430"/>
         <source>Pale Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="431"/>
         <source>Grayish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="432"/>
         <source>Dark Grayish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="433"/>
         <source>Blackish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="434"/>
         <source>Greenish White</source>
-        <translation type="unfinished"/>
+        <translation>Amellal azegzaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="435"/>
         <source>Light Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi azegzaw anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="436"/>
         <source>Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi azegzaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="437"/>
         <source>Dark Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi azegzaw imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="438"/>
         <source>Greenish Black</source>
-        <translation type="unfinished"/>
+        <translation>Aberkan azegzaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="439"/>
         <source>Vivid Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anili ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="440"/>
         <source>Brilliant Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anili ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="441"/>
         <source>Strong Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw iǧehdden anili</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="442"/>
         <source>Deep Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anili alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="443"/>
         <source>Very Light Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anili alqayan aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="444"/>
         <source>Light Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anili anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="445"/>
         <source>Moderate Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anili alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="446"/>
         <source>Dark Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anili imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="447"/>
         <source>Very Dark Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Azegzaw anili imibrik aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="448"/>
         <source>Vivid Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="449"/>
         <source>Brilliant Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="450"/>
         <source>Strong Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="451"/>
         <source>Deep Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="452"/>
         <source>Very Light Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw anafaw aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="453"/>
         <source>Light Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="454"/>
         <source>Moderate Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="455"/>
         <source>Dark Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="456"/>
         <source>Very Dark Greenish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili azegzaw imibrik aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="457"/>
         <source>Vivid Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="458"/>
         <source>Brilliant Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="459"/>
         <source>Strong Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="460"/>
         <source>Deep Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="461"/>
         <source>Very Light Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili anafaw aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="462"/>
         <source>Light Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="463"/>
         <source>Moderate Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="464"/>
         <source>Dark Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="465"/>
         <source>Very Pale Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili ifesxen aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="466"/>
         <source>Pale Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="467"/>
         <source>Grayish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="468"/>
         <source>Dark Grayish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="469"/>
         <source>Blackish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="470"/>
         <source>Bluish White</source>
-        <translation type="unfinished"/>
+        <translation>Amellal anili</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="471"/>
         <source>Light Bluish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi anili anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="472"/>
         <source>Bluish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi anili</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="473"/>
         <source>Dark Bluish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi anili imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="474"/>
         <source>Bluish Black</source>
-        <translation type="unfinished"/>
+        <translation>Aberkan anili</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="475"/>
         <source>Vivid Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="476"/>
         <source>Brilliant Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="477"/>
         <source>Strong Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="478"/>
         <source>Deep Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="479"/>
         <source>Very Light Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi anafaw aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="480"/>
         <source>Light Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="481"/>
         <source>Moderate Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="482"/>
         <source>Dark Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="483"/>
         <source>Very Pale Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi ifesxen aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="484"/>
         <source>Pale Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="485"/>
         <source>Grayish Purplish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Anili amidadi amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="486"/>
         <source>Vivid Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="487"/>
         <source>Brilliant Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="488"/>
         <source>Strong Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="489"/>
         <source>Deep Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="490"/>
         <source>Very Light Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi anafaw aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="491"/>
         <source>Light Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="492"/>
         <source>Moderate Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="493"/>
         <source>Dark Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="494"/>
         <source>Very Pale Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi ifesxen aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="495"/>
         <source>Pale Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="496"/>
         <source>Grayish Violet</source>
-        <translation type="unfinished"/>
+        <translation>Amidadi amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="497"/>
         <source>Vivid Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="498"/>
         <source>Brilliant Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="499"/>
         <source>Strong Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="500"/>
         <source>Deep Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="501"/>
         <source>Very Deep Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw alqayan aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="502"/>
         <source>Very Light Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw anafaw aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="503"/>
         <source>Light Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="504"/>
         <source>Moderate Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="505"/>
         <source>Dark Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="506"/>
         <source>Very Dark Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw imibrik aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="507"/>
         <source>Very Pale Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw ifesxen aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="508"/>
         <source>Pale Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="509"/>
         <source>Grayish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="510"/>
         <source>Dark Grayish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="511"/>
         <source>Blackish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw aberkan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="512"/>
         <source>Purplish White</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw amidadi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="513"/>
         <source>Light Purplish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi amidadi anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="514"/>
         <source>Purplish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi amidadi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="515"/>
         <source>Dark Purplish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi amidadi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="516"/>
         <source>Purplish Black</source>
-        <translation type="unfinished"/>
+        <translation>Aberkan amidadi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="517"/>
         <source>Vivid Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="518"/>
         <source>Strong Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="519"/>
         <source>Deep Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="520"/>
         <source>Very Deep Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ alqayan aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="521"/>
         <source>Light Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="522"/>
         <source>Moderate Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="523"/>
         <source>Dark Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="524"/>
         <source>Very Dark Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ imibrik aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="525"/>
         <source>Pale Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="526"/>
         <source>Grayish Reddish Purple</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="527"/>
         <source>Brilliant Purplish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ ittfeǧǧiǧen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="528"/>
         <source>Strong Purplish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="529"/>
         <source>Deep Purplish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="530"/>
         <source>Light Purplish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Agadaw azeggaɣ anafaw</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="531"/>
         <source>Moderate Purplish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="532"/>
         <source>Dark Purplish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="533"/>
         <source>Pale Purplish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi ifesxen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="534"/>
         <source>Grayish Purplish Pink</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="535"/>
         <source>Vivid Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi ittirriqen</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="536"/>
         <source>Strong Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi iǧehdden</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="537"/>
         <source>Deep Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi alqayan</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="538"/>
         <source>Very Deep Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi alqayan aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="539"/>
         <source>Moderate Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="540"/>
         <source>Dark Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="541"/>
         <source>Very Dark Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi imibrik aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="542"/>
         <source>Light Grayish Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi anafaw aṭas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="543"/>
         <source>Grayish Purplish Red</source>
-        <translation type="unfinished"/>
+        <translation>Axuxi amidadi amelliɣdi</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="544"/>
         <source>White</source>
-        <translation type="unfinished"/>
+        <translation>Amellal</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="545"/>
         <source>Light Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi afessas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="546"/>
         <source>Medium Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi alemmas</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="547"/>
         <source>Dark Gray</source>
-        <translation type="unfinished"/>
+        <translation>Amelliɣdi imibrik</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="548"/>
         <source>Black</source>
-        <translation type="unfinished"/>
+        <translation>Aberkan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="29"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi alday n ufaylu</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
-        <translation type="unfinished"/>
+        <translation>Tella-d tuccḍa dek useker n ufaylu-inek. Ayagi yebɣa ad d-yini s umata belli asenfar-inek yexser. Tzemreḍ ad tɛerḍeḍ s lqem aneggaru n Pencil2D, neɣ ad tesqedceḍ afaylu n weḥraz ma tesɛiḍ. Ma tnermseḍ-aɣ-d s yiwet gar tregwa-nneɣ tunṣibin, ahat ad nizmir ad k-nɛiwen. Iwakken ad ɣ-d-tazneḍ ineqqisen n wuguren, imeḍqan iwulmen iwakken aɣ-d-tnermseḍ d wigi:</translation>
     </message>
 </context>
 <context>
@@ -3550,12 +3551,12 @@
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.h" line="38"/>
         <source>Open Recent</source>
-        <translation>最近使ったファイル</translation>
+        <translation>Yeldi melmi kan</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="31"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Sfeḍ</translation>
     </message>
 </context>
 <context>
@@ -3563,60 +3564,60 @@
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation>Ɣur-k</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="527"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation>選択中のレイヤーは非表示に設定されています。このレイヤーを表示するか他のレイヤーを選択して下さい。</translation>
+        <translation>Ala tesuunuɣeḍ ɣef ukalku uffir! Ttxil-k fren akalku-nniḍen (neɣ err akalku amiran d attwalay).</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1931"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
-        <translation type="unfinished"/>
+        <translation>Kkes tafrayt</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1947"/>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1955"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
-        <translation>画像をクリア</translation>
+        <translation>Sfeḍ tugna</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1982"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
-        <translation type="unfinished"/>
+        <translation>Yella icerriq de wunuɣ-inek (neɣ ahat tesmeɣreḍ aṭas zzom).</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1983"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
-        <translation type="unfinished"/>
+        <translation>Surfaɣ! Ayagi ur itteddu ara yalas. Ttxil-k eɛreḍ tikkelt-nniḍen (ennu ciṭ zoom, sit deg umḍiq-nniḍen...)&lt;br&gt;ma yella ayagi ur itteddu ara, ernu ciṭ zoom yerna selken belli iberdan-ik qqnen s usiti ɣef f1).</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
         <source>Out of bound.</source>
-        <translation>有効範囲の外です。</translation>
+        <translation>Berra n talast.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>Could not find a closed path.</source>
-        <translation>閉じられたパスがありません。</translation>
+        <translation>D awezzɣi tifin n ubrid imedlen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1989"/>
         <source>Could not find the root index.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tifin n umatar aẓar.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
-        <translation>%1&lt;br&gt;&lt;br&gt;エラー: %2</translation>
+        <translation>%1&lt;br&gt;&lt;br&gt;Tuccḍa:%2</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>Flood fill error</source>
-        <translation>塗りつぶし中にエラーが発生しました</translation>
+        <translation>Tuccḍa n tačart</translation>
     </message>
 </context>
 <context>
@@ -3624,42 +3625,42 @@
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Talɣa</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="47"/>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>Tigawt:</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="54"/>
         <source>None</source>
-        <translation>なし</translation>
+        <translation>Ulac</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="61"/>
         <source>Shortcuts:</source>
-        <translation>ショートカット:</translation>
+        <translation>Inegzumen:</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>clear</source>
-        <translation>クリア</translation>
+        <translation>sfeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
         <source>Restore Default Shortcuts</source>
-        <translation>ショートカットを初期状態に戻す</translation>
+        <translation>Err-d inegzumen n lexṣas</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="92"/>
         <source>Shortcut Conflict!</source>
-        <translation>既に使用されているショートカットです</translation>
+        <translation>Ameggired gar inegzumen!</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="93"/>
         <source>%1 is already used, overwrite?</source>
-        <translation>%1 は既に使用されています。上書きしますか？</translation>
+        <translation>%1 yettwaseqdec yakan, ad t-tesemselsiḍ ?</translation>
     </message>
 </context>
 <context>
@@ -3667,58 +3668,58 @@
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="64"/>
         <source>Range</source>
-        <translation>範囲</translation>
+        <translation>Tagrumma</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="47"/>
         <source>Frames per second</source>
-        <translation>フレームレート</translation>
+        <translation>Tugniwin i tasint</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="54"/>
         <source>Start of playback loop</source>
-        <translation>ループ再生の始点</translation>
+        <translation>Tazwara n tneddict n tɣuri</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="61"/>
         <source>End of playback loop</source>
-        <translation>ループ再生の終点</translation>
+        <translation>Tagara n tneddict n tɣuri</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="66"/>
         <source>Playback range</source>
-        <translation>再生範囲</translation>
+        <translation>Tagrumma n tɣuri</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="86"/>
         <source>Play</source>
-        <translation>再生</translation>
+        <translation>Urar</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
         <source>Loop</source>
-        <translation>ループ</translation>
+        <translation>Tineddict</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>
         <source>Sound on/off</source>
-        <translation>音声オン/オフ</translation>
+        <translation>Imesli yermed/yexsi</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="89"/>
         <source>End</source>
-        <translation>最後のフレームに移動</translation>
+        <translation>Tagara</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="90"/>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="192"/>
         <source>Start</source>
-        <translation>最初のフレームに移動</translation>
+        <translation>Tazwara</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="187"/>
         <source>Stop</source>
-        <translation>停止</translation>
+        <translation>Ḥbes</translation>
     </message>
 </context>
 <context>
@@ -3726,94 +3727,94 @@
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="45"/>
         <source>Timeline</source>
-        <translation>タイムライン</translation>
+        <translation>Tasnakudt</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="70"/>
         <source>Layers:</source>
-        <translation>レイヤー:</translation>
+        <translation>Ikalkuten:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="75"/>
         <source>Add Layer</source>
-        <translation>レイヤーを追加</translation>
+        <translation>Rnu akalku</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="80"/>
         <source>Remove Layer</source>
-        <translation>レイヤーを削除</translation>
+        <translation>Kkes akalku</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="93"/>
         <source>New Bitmap Layer</source>
-        <translation>新しいビットマップレイヤー</translation>
+        <translation>Akalku amaynut n tugna</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
         <source>New Vector Layer</source>
-        <translation>新しいベクターレイヤー</translation>
+        <translation>Akalku amaynut n umaway</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
         <source>New Sound Layer</source>
-        <translation>新しい音声レイヤー</translation>
+        <translation>Akalku amaynut n imesli</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
         <source>New Camera Layer</source>
-        <translation>新しいカメラレイヤー</translation>
+        <translation>Akalku amayunut n tkamirat</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="98"/>
         <source>&amp;Layer</source>
         <comment>Timeline add-layer menu</comment>
-        <translation type="unfinished"/>
+        <translation>A&amp;kalku</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="116"/>
         <source>Keys:</source>
-        <translation>キー:</translation>
+        <translation>Tisura:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="121"/>
         <source>Add Frame</source>
-        <translation>フレームを追加</translation>
+        <translation>Rnu tugna</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="126"/>
         <source>Remove Frame</source>
-        <translation>フレームを削除</translation>
+        <translation>Kkes tugna</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="131"/>
         <source>Duplicate Frame</source>
-        <translation>フレームを複製</translation>
+        <translation>Sisleg tugna</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="134"/>
         <source>Onion skin:</source>
-        <translation>オニオンスキンモード：</translation>
+        <translation>Tafrawant:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="138"/>
         <source>Toggle match keyframes</source>
-        <translation>キーフレームと同期機能のオン・オフ</translation>
+        <translation>Qluqel tugniwin inmeɣran</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="285"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Kkes akalku</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
         <source>Please keep at least one camera layer in project</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k eǧǧ ma drus yiwen n ukalku n tkamirat deg usenfar</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="286"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation>レイヤーを削除してよろしいですか：</translation>
+        <translation>D tidet tebɣiḍ ad tekkseḍ akalku:</translation>
     </message>
 </context>
 <context>
@@ -3821,12 +3822,12 @@
     <message>
         <location filename="../core_lib/src/interface/timelinecells.cpp" line="679"/>
         <source>Layer Properties</source>
-        <translation type="unfinished"/>
+        <translation>Iraten n ukalku</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timelinecells.cpp" line="680"/>
         <source>Layer name:</source>
-        <translation type="unfinished"/>
+        <translation>Isem n ukalku:</translation>
     </message>
 </context>
 <context>
@@ -3834,12 +3835,12 @@
     <message>
         <location filename="../app/ui/timeline2.ui" line="14"/>
         <source>Timeline</source>
-        <translation>タイムライン</translation>
+        <translation>Tasnakudt</translation>
     </message>
     <message>
         <location filename="../app/ui/timeline2.ui" line="54"/>
         <source>Layers</source>
-        <translation>レイヤー</translation>
+        <translation>Ikalkuten</translation>
     </message>
     <message>
         <location filename="../app/ui/timeline2.ui" line="68"/>
@@ -3853,73 +3854,73 @@
     <message>
         <location filename="../app/ui/timelinepage.ui" line="20"/>
         <source>Timeline</source>
-        <translation>タイムライン</translation>
+        <translation>Tasnakudt</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="60"/>
         <source>Timeline length:</source>
         <comment>Preferences</comment>
-        <translation type="unfinished"/>
+        <translation>Teɣzi n tesnakudt</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="89"/>
         <source>Drawing</source>
-        <translation type="unfinished"/>
+        <translation>Suneɣ</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="95"/>
         <source>When drawing on an empty frame:</source>
-        <translation type="unfinished"/>
+        <translation>Mi ara tessunuɣeḍ ɣef ukatar ilem:</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="102"/>
         <source>Create a new (blank) key-frame and start drawing on it.</source>
-        <translation type="unfinished"/>
+        <translation>Snulfu-d tugna tamaynut (amellal) sakin bdu asuneɣ deg-s.</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="105"/>
         <source>Create a new (blank) key-frame</source>
-        <translation type="unfinished"/>
+        <translation>Snulfu-d tugna tasarut tamaynutt (amellal)</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="115"/>
         <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
-        <translation type="unfinished"/>
+        <translation>Sisleg tugna tasarut sakin bdu asuneɣ ɣef tugna tusligt.</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="118"/>
         <source>Duplicate the previous key-frame</source>
-        <translation type="unfinished"/>
+        <translation>Sisleg tugna tasarut tuzwirt</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="125"/>
         <source>Keep drawing on the previous key-frame</source>
-        <translation type="unfinished"/>
+        <translation>Kemmel asuneɣ ɣef tugna tasarut tuzwirt</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="137"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Ad yettusnes ɣef ifecka Akaryun, Tasemsut, Imru, izirig irẓen, Amfezzu)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="162"/>
         <source>Playback</source>
-        <translation type="unfinished"/>
+        <translation>Taɣuri</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="174"/>
         <source>Show onion skin while playing</source>
-        <translation type="unfinished"/>
+        <translation>Sken iclem n uẓalim deg wurar</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>
         <source>Frame size</source>
-        <translation>各フレームの幅</translation>
+        <translation>Tiddi n ukatar</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="79"/>
         <source>Short scrub</source>
-        <translation>スクラブバーを短く</translation>
+        <translation>Short scrub</translation>
     </message>
 </context>
 <context>
@@ -3928,127 +3929,127 @@
         <location filename="../app/ui/toolboxwidget.ui" line="20"/>
         <source>Tools</source>
         <comment>Window title of tool box</comment>
-        <translation type="unfinished"/>
+        <translation>Ifecka</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="77"/>
         <source>Pencil Tool (%1): Sketch with pencil</source>
-        <translation type="unfinished"/>
+        <translation>Afecku akeryun (%1): azenziɣ s ukeryun</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="79"/>
         <source>Select Tool (%1): Select an object</source>
-        <translation type="unfinished"/>
+        <translation>Fren afecku (%1): fren taɣawsa</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="81"/>
         <source>Move Tool (%1): Move an object</source>
-        <translation type="unfinished"/>
+        <translation>Afecku n usmutti (%1): Smutti taɣawsa</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="83"/>
         <source>Hand Tool (%1): Move the canvas</source>
-        <translation type="unfinished"/>
+        <translation>Afecku afus (%1): Smutti taɣzut n usuneɣ</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="85"/>
         <source>Pen Tool (%1): Sketch with pen</source>
-        <translation type="unfinished"/>
+        <translation>Afecku imru (%1): Azenziɣ s imru</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="87"/>
         <source>Eraser Tool (%1): Erase</source>
-        <translation type="unfinished"/>
+        <translation>Afecku Tasemsut (%1): Sfeḍ</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="89"/>
         <source>Polyline Tool (%1): Create line/curves</source>
-        <translation type="unfinished"/>
+        <translation>Afecku Izirig irẓen (%1): Snulfu-d izirig/azlig</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="91"/>
         <source>Paint Bucket Tool (%1): Fill selected area with a color</source>
-        <translation type="unfinished"/>
+        <translation>Afecku taqbuct n taklut (%1): Aččar taɣzut yettwafernen s yini</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="93"/>
         <source>Brush Tool (%1): Paint smooth stroke with a brush</source>
-        <translation type="unfinished"/>
+        <translation>Afecku Amfezzu (%1): Klu izirig yemzin s umfezzu</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="95"/>
         <source>Eyedropper Tool (%1): Set color from the stage&lt;br&gt;[ALT] for instant access</source>
-        <translation type="unfinished"/>
+        <translation>Afecku Amelqaḍ n yini (%1): Sbadu ini seg usayes&lt;br&gt;[ALT] iwakken ad taddfeḍ imir kan</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="98"/>
         <source>Clear Frame (%1): Erases content of selected frame</source>
-        <translation type="unfinished"/>
+        <translation>Sfeḍ akatar (%1): Ad yesfeḍ agbur n ukatar yettwafernen</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="100"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
-        <translation type="unfinished"/>
+        <translation>Afecku Ḍlu (%1):&lt;br&gt;ẓreg izirig irẓen/izligen&lt;br&gt; Sefsi ipiksilen bitmap&lt;br&gt; (%1)+[Alt]: Smooth</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="104"/>
         <source>Pencil Tool (%1)</source>
-        <translation>鉛筆ツール (%1)</translation>
+        <translation>Afecku Akeryun (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="106"/>
         <source>Select Tool (%1)</source>
-        <translation>選択ツール (%1)</translation>
+        <translation>Afecku Fren (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="108"/>
         <source>Move Tool (%1)</source>
-        <translation>移動ツール (%1)</translation>
+        <translation> Afecku Smutti (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="110"/>
         <source>Hand Tool (%1)</source>
-        <translation>手のひらツール (%1)</translation>
+        <translation>Afecku Afus (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="112"/>
         <source>Pen Tool (%1)</source>
-        <translation>ペンツール (%1)</translation>
+        <translation>Afecku Imru (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="114"/>
         <source>Eraser Tool (%1)</source>
-        <translation>消しゴムツール (%1)</translation>
+        <translation>Afecku Tasemsut (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="116"/>
         <source>Polyline Tool (%1)</source>
-        <translation>折れ線ツール (%1)</translation>
+        <translation>Afecku Izirig irẓen (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="118"/>
         <source>Paint Bucket Tool (%1)</source>
-        <translation>バケツツール (%1)</translation>
+        <translation>Afecku Taqbuct n teklut (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="120"/>
         <source>Brush Tool (%1)</source>
-        <translation>ブラシツール (%1)</translation>
+        <translation>Afecku Amfezzu (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="122"/>
         <source>Eyedropper Tool (%1)</source>
-        <translation>スポイトツール (%1)</translation>
+        <translation>Afecku Amleqqaḍ n yini (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="124"/>
         <source>Clear Tool (%1)</source>
-        <translation>フレームをクリア (%1)</translation>
+        <translation>Afecku Sfeḍ (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="126"/>
         <source>Smudge Tool (%1)</source>
-        <translation>指先ツール (%1)</translation>
+        <translation>Afecku Ḍlu (%1)</translation>
     </message>
 </context>
 <context>
@@ -4056,33 +4057,33 @@
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="48"/>
         <source>Brush</source>
-        <translation>ブラシ</translation>
+        <translation>Amfezzu</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="52"/>
         <source>Feather</source>
-        <translation>輪郭をぼかす</translation>
+        <translation>Rrica</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="56"/>
         <source>Color Tolerance</source>
-        <translation type="unfinished"/>
+        <translation>Tisurfa n yini</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="32"/>
         <source>Options</source>
         <comment>Window title of tool option panel like pen width, feather etc..</comment>
-        <translation type="unfinished"/>
+        <translation>Tinefrunin</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="183"/>
         <source>Stroke Thickness</source>
-        <translation type="unfinished"/>
+        <translation>Tuzert n ujerriḍ</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="188"/>
         <source>Width</source>
-        <translation type="unfinished"/>
+        <translation>Tehri</translation>
     </message>
 </context>
 <context>
@@ -4090,17 +4091,17 @@
     <message>
         <location filename="../app/ui/tooloptions.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Talɣa</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="22"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"/>
+        <translation>Sbadu tuzert n imru &lt;br&gt;&lt;b&gt; [SHIFT] + zuɣer&lt;/b&gt;&lt;br&gt; i wesgaddi arurad</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="58"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"/>
+        <translation>Sbadu rrica n imru &lt;br&gt;&lt;b&gt;[CTRL]+zuɣer&lt;/b&gt;&lt;br&gt;i wesgaddi s tɣawla</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="92"/>
@@ -4110,17 +4111,17 @@
     <message>
         <location filename="../app/ui/tooloptions.ui" line="95"/>
         <source>Use Feather</source>
-        <translation type="unfinished"/>
+        <translation>Seqdec rrica</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="102"/>
         <source>Contour will be filled</source>
-        <translation type="unfinished"/>
+        <translation>Azizdew ad yaččar</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="105"/>
         <source>Fill Contour</source>
-        <translation type="unfinished"/>
+        <translation>Aččar azizdew</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="114"/>
@@ -4130,73 +4131,73 @@
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
-        <translation type="unfinished"/>
+        <translation>Bezier</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Pressure</source>
         <comment>Brush</comment>
-        <translation type="unfinished"/>
+        <translation>Tussda</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="147"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
-        <translation type="unfinished"/>
+        <translation>Amzay</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="177"/>
         <source>Merge</source>
         <comment>Vector line merge</comment>
-        <translation type="unfinished"/>
+        <translation>Zdi</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="200"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Ulac</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="205"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Aḥerfi</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="210"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Iǧhedd</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="154"/>
         <source>Make invisible</source>
-        <translation type="unfinished"/>
+        <translation>Err d attwalay</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Uffir</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
         <source>Preserve Alpha</source>
-        <translation type="unfinished"/>
+        <translation>Ḥrez Alfa</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="167"/>
         <source>Alpha</source>
-        <translation type="unfinished"/>
+        <translation>Alfa</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
         <source>Merge vector lines when they are close together</source>
-        <translation type="unfinished"/>
+        <translation>Zdi izirigen imawayen ticki mqarabent</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>
         <source>Stabilizer</source>
-        <translation type="unfinished"/>
+        <translation>Amserked</translation>
     </message>
 </context>
 <context>
@@ -4204,37 +4205,37 @@
     <message>
         <location filename="../app/ui/toolspage.ui" line="17"/>
         <source>Onion skin</source>
-        <translation>オニオンスキン</translation>
+        <translation>Iclem n uẓalim</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="23"/>
         <source>Maximum onion opacity %</source>
-        <translation>オニオンスキンの濃さの最高値</translation>
+        <translation>Tiḍullest tafellayt n tefrawant %</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="49"/>
         <source>Minimum onion opacity %</source>
-        <translation>オニオンスキンの濃さの最低値</translation>
+        <translation>Tiḍullest taddayt n tefrawant %</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="75"/>
         <source>Number of previous onion frames shown</source>
-        <translation>表示する前フレームのオニオンスキンの数</translation>
+        <translation>Amaḍan n tugniwin tuzwirin tifrawanin yettwaseknen</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="104"/>
         <source>Number of next onion frames shown</source>
-        <translation>表示する次フレームのオニオンスキンの数</translation>
+        <translation>Amaḍan n tugniwin tuḍfirin tifrawanin yettwaseknen</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="136"/>
         <source>Brush Tools</source>
-        <translation>ブラシツール</translation>
+        <translation>Ifecka n imfezza</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="142"/>
         <source>Use Quick Sizing</source>
-        <translation>クイックサイズ変更を使用</translation>
+        <translation>Seqdec asemɣer arurad</translation>
     </message>
 </context>
 </TS>

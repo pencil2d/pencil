@@ -143,7 +143,7 @@ public: //slots
     void removeKey();
 
     void switchVisibilityOfLayer(int layerNumber);
-    void moveLayer(int i, int j);
+    void swapLayers(int i, int j);
 
     void backup(QString undoText);
     void backup(int layerNumber, int frameNumber, QString undoText);

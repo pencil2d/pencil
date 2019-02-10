@@ -67,18 +67,18 @@
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="595"/>
-        <location filename="../app/src/actioncommands.cpp" line="608"/>
-        <location filename="../app/src/actioncommands.cpp" line="622"/>
-        <location filename="../app/src/actioncommands.cpp" line="636"/>
+        <location filename="../app/src/actioncommands.cpp" line="612"/>
+        <location filename="../app/src/actioncommands.cpp" line="630"/>
+        <location filename="../app/src/actioncommands.cpp" line="648"/>
         <source>Layer Properties</source>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="81"/>
         <location filename="../app/src/actioncommands.cpp" line="596"/>
-        <location filename="../app/src/actioncommands.cpp" line="609"/>
-        <location filename="../app/src/actioncommands.cpp" line="623"/>
-        <location filename="../app/src/actioncommands.cpp" line="637"/>
+        <location filename="../app/src/actioncommands.cpp" line="613"/>
+        <location filename="../app/src/actioncommands.cpp" line="631"/>
+        <location filename="../app/src/actioncommands.cpp" line="649"/>
         <source>Layer name:</source>
         <translation>Název vrstvy:</translation>
     </message>
@@ -118,36 +118,41 @@
         <translation>Bitmapová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="610"/>
+        <location filename="../app/src/actioncommands.cpp" line="614"/>
         <source>Vector Layer</source>
         <translation>Vektorová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="624"/>
+        <location filename="../app/src/actioncommands.cpp" line="632"/>
         <source>Camera Layer</source>
         <translation>Kamerová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="638"/>
+        <location filename="../app/src/actioncommands.cpp" line="650"/>
         <source>Sound Layer</source>
         <translation>Zvuková vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="655"/>
+        <location filename="../app/src/actioncommands.cpp" line="671"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Smazat vrstvu</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="656"/>
+        <location filename="../app/src/actioncommands.cpp" line="672"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Opravdu chcete smazat vrstvu: </translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="665"/>
+        <location filename="../app/src/actioncommands.cpp" line="681"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Ponechejte, prosím, v projektu alespoň jednu vrstvu s kamerou</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="704"/>
+        <source>Filename must be unique and not empty</source>
+        <translation>Název souboru musí být jedinečný a nesmí zůstat prázdný</translation>
     </message>
 </context>
 <context>
@@ -195,7 +200,7 @@
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
         <source>Bucket</source>
-        <translation>Kbelík</translation>
+        <translation>Plechovka</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
@@ -374,7 +379,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="544"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation type="unfinished"/>
+        <translation>Barva(y), jíž se chystáte smazat, se nyní používá v jednom nebo vícero tazích.</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="545"/>
@@ -492,13 +497,13 @@
         <translation>Vložit</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="926"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="932"/>
         <source>Remove frame</source>
         <translation>Odstranit snímek</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="797"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="803"/>
         <source>Import Image</source>
         <translation>Zavést obrázek</translation>
     </message>
@@ -567,42 +572,47 @@
         <translation>BMP</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="101"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="98"/>
+        <source>TIFF</source>
+        <translation>TIFF</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="106"/>
         <source>Transparency</source>
         <translation>Průhlednost</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="111"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="116"/>
         <source>Range</source>
         <translation>Rozsah</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="157"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="162"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation>Poslední snímek, který chcete zahrnout do vyvedeného filmu</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="160"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="165"/>
         <source>End Frame</source>
         <translation>Koncový snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="179"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="184"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>První snímek, který chcete zahrnout do vyvedeného filmu</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="182"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="187"/>
         <source>Start Frame</source>
         <translation>Začáteční snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="207"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="212"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Poslední snímek je nastaven na poslední malovatelný klíčový snímek (Užitečné,pokud chcete vyvést jen po poslední animovaný snímek)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="213"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
         <source>To the end of sound clips</source>
         <translation>Po konec zvukových záběrů</translation>
     </message>
@@ -1026,7 +1036,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
         <source>Chinese - China</source>
-        <translation type="unfinished"/>
+        <translation>Čínština (Čína)</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="116"/>
@@ -1059,7 +1069,17 @@
         <translation>Tečkovaný kurzor</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="267"/>
+        <location filename="../app/ui/generalpage.ui" line="245"/>
+        <source>Grid Heigth</source>
+        <translation>Výška mřížky</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="252"/>
+        <source>Grid Width</source>
+        <translation>Šířka mřížky</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="297"/>
         <source>Enable Grid</source>
         <translation>Povolit mřížku</translation>
     </message>
@@ -1074,12 +1094,12 @@
         <translation>Místo vysokého rozlišení tabletu</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="215"/>
         <source>Restart Required</source>
         <translation>Požadováno opětovné spuštění</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="213"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="216"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Změna jazyka se projeví po znovuspuštění Pencil2D</translation>
     </message>
@@ -1409,7 +1429,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1278"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1280"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -1491,7 +1511,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="667"/>
         <source>Bucket</source>
-        <translation>Kbelík</translation>
+        <translation>Plechovka</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="676"/>
@@ -1693,8 +1713,8 @@
         <location filename="../app/src/mainwindow2.cpp" line="534"/>
         <location filename="../app/src/mainwindow2.cpp" line="697"/>
         <location filename="../app/src/mainwindow2.cpp" line="756"/>
-        <location filename="../app/src/mainwindow2.cpp" line="830"/>
-        <location filename="../app/src/mainwindow2.cpp" line="883"/>
+        <location filename="../app/src/mainwindow2.cpp" line="832"/>
+        <location filename="../app/src/mainwindow2.cpp" line="885"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -1712,14 +1732,14 @@
         <location filename="../app/src/mainwindow2.cpp" line="541"/>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>
         <location filename="../app/src/mainwindow2.cpp" line="783"/>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="585"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
-        <translation type="unfinished"/>
+        <translation>Při pokusu o nahrání souboru se vyskytla neznámá chyba. Soubor nelze nahrát.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>
@@ -1762,31 +1782,31 @@ Chcete ji uložit nyní?</translation>
         <translation>Zavádí se řada obrázků...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="831"/>
-        <location filename="../app/src/mainwindow2.cpp" line="884"/>
+        <location filename="../app/src/mainwindow2.cpp" line="833"/>
+        <location filename="../app/src/mainwindow2.cpp" line="886"/>
         <source>was unable to import</source>
         <translation>nebylo možno zavést</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Importing Animated GIF...</source>
         <translation>Zavádí se animovaný GIF...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1103"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1108"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1105"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1110"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1123"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1125"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1273"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1275"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
@@ -1808,122 +1828,122 @@ Chcete ji uložit nyní?</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="546"/>
         <source>Black</source>
         <translation>Černá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="547"/>
         <source>Red</source>
         <translation>Červená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="548"/>
         <source>Dark Red</source>
         <translation>Tmavá červená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
         <source>Orange</source>
         <translation>Oranžová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
         <source>Dark Orange</source>
         <translation>Tmavá oranžová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
         <source>Yellow</source>
         <translation>Žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
         <source>Dark Yellow</source>
         <translation>Tmavá žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
         <source>Green</source>
         <translation>Zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
         <source>Dark Green</source>
         <translation>Tmavá zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
         <source>Cyan</source>
         <translation>Tyrkysová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
         <source>Dark Cyan</source>
         <translation>Tmavá tyrkysová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
         <source>Blue</source>
         <translation>Modrá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
         <source>Dark Blue</source>
         <translation>Tmavá modrá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
         <source>White</source>
         <translation>Bílá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Very Light Grey</source>
         <translation>Velmi světlá šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Light Grey</source>
         <translation>Světlá šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>Grey</source>
         <translation>Šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Dark Grey</source>
         <translation>Tmavá šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Light Skin</source>
         <translation>Světlá tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Light Skin - shade</source>
         <translation>Světlá tělová - odstín</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Skin</source>
         <translation>Tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Skin - shade</source>
         <translation>Tělová - odstín</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Dark Skin</source>
         <translation>Tmavá tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Dark Skin - shade</source>
         <translation>Tmavá tělová - odstín</translation>
     </message>
@@ -2138,13 +2158,9 @@ Chcete ji uložit nyní?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</source>
-        <translation>Obrázky (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</translation>
-    </message>
-    <message>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</source>
-        <translation>Obrázky (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</translation>
+        <source>Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</source>
+        <translation>Obrázky (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
@@ -2369,22 +2385,22 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="318"/>
         <source>Moderate Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Nevýrazná červenavá oranžová</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="319"/>
         <source>Dark Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá červenavá oranžová</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="320"/>
         <source>Grayish Reddish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Šedavá červenavá oranžová</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="321"/>
         <source>Strong Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Výrazná červenavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="322"/>
@@ -2394,32 +2410,32 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="323"/>
         <source>Light Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Světlá červenavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="324"/>
         <source>Moderate Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Nevýrazná červenavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="325"/>
         <source>Dark Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá červenavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="326"/>
         <source>Light Grayish Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Světlá šedavá červenavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="327"/>
         <source>Grayish Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Šedavá červenavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="328"/>
         <source>Dark Grayish Reddish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá šedavá červenavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="329"/>
@@ -2429,12 +2445,12 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="330"/>
         <source>Brilliant Orange</source>
-        <translation type="unfinished"/>
+        <translation>Svítivá oranžová</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="331"/>
         <source>Strong Orange</source>
-        <translation type="unfinished"/>
+        <translation>Výrazná oranžová</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="332"/>
@@ -2444,22 +2460,22 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="333"/>
         <source>Light Orange</source>
-        <translation type="unfinished"/>
+        <translation>Světlá oranžová</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="334"/>
         <source>Moderate Orange</source>
-        <translation type="unfinished"/>
+        <translation>Nevýrazná oranžová</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="335"/>
         <source>Brownish Orange</source>
-        <translation type="unfinished"/>
+        <translation>Hnědavá oranžová</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="336"/>
         <source>Strong Brown</source>
-        <translation type="unfinished"/>
+        <translation>Výrazná hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="337"/>
@@ -2469,47 +2485,47 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="338"/>
         <source>Light Brown</source>
-        <translation type="unfinished"/>
+        <translation>Světlá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="339"/>
         <source>Moderate Brown</source>
-        <translation type="unfinished"/>
+        <translation>Nevýrazná hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="340"/>
         <source>Dark Brown</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="341"/>
         <source>Light Grayish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Světlá šedavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="342"/>
         <source>Grayish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Šedavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="343"/>
         <source>Dark Grayish Brown</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá šedavá hnědá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="344"/>
         <source>Light Brownish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Světlá hnědavá šedá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="345"/>
         <source>Brownish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Hnědavá šedá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="346"/>
         <source>Brownish Black</source>
-        <translation type="unfinished"/>
+        <translation>Hnědavá černá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="347"/>
@@ -2519,12 +2535,12 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="348"/>
         <source>Brilliant Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Svítivá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="349"/>
         <source>Strong Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Výrazná oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="350"/>
@@ -2534,22 +2550,22 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="351"/>
         <source>Light Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Světlá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="352"/>
         <source>Moderate Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Nevýrazná oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="353"/>
         <source>Dark Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="354"/>
         <source>Pale Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Bledá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="355"/>
@@ -2859,22 +2875,22 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="416"/>
         <source>Light Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Světlá žlutavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="417"/>
         <source>Moderate Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Nevýrazná žlutavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="418"/>
         <source>Dark Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá žlutavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="419"/>
         <source>Very Dark Yellowish Green</source>
-        <translation type="unfinished"/>
+        <translation>Velmi tmavá žlutavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="420"/>
@@ -2884,12 +2900,12 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="421"/>
         <source>Brilliant Green</source>
-        <translation type="unfinished"/>
+        <translation>Svítivá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="422"/>
         <source>Strong Green</source>
-        <translation type="unfinished"/>
+        <translation>Výrazná zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="423"/>
@@ -2899,77 +2915,77 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="424"/>
         <source>Very Light Green</source>
-        <translation type="unfinished"/>
+        <translation>Velmi světlá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="425"/>
         <source>Light Green</source>
-        <translation type="unfinished"/>
+        <translation>Světlá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="426"/>
         <source>Moderate Green</source>
-        <translation type="unfinished"/>
+        <translation>Nevýrazná zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="427"/>
         <source>Dark Green</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="428"/>
         <source>Very Dark Green</source>
-        <translation type="unfinished"/>
+        <translation>Velmi tmavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="429"/>
         <source>Very Pale Green</source>
-        <translation type="unfinished"/>
+        <translation>Velmi bledá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="430"/>
         <source>Pale Green</source>
-        <translation type="unfinished"/>
+        <translation>Bledá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="431"/>
         <source>Grayish Green</source>
-        <translation type="unfinished"/>
+        <translation>Šedavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="432"/>
         <source>Dark Grayish Green</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá šedavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="433"/>
         <source>Blackish Green</source>
-        <translation type="unfinished"/>
+        <translation>Černavá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="434"/>
         <source>Greenish White</source>
-        <translation type="unfinished"/>
+        <translation>Zelenavá bílá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="435"/>
         <source>Light Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Světlá zelenavá šedá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="436"/>
         <source>Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Zelenavá šedá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="437"/>
         <source>Dark Greenish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá zelenavá šedá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="438"/>
         <source>Greenish Black</source>
-        <translation type="unfinished"/>
+        <translation>Zelenavá černá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="439"/>
@@ -2979,12 +2995,12 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="440"/>
         <source>Brilliant Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Svítivá modravá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="441"/>
         <source>Strong Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Výrazná modravá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="442"/>
@@ -2994,7 +3010,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="443"/>
         <source>Very Light Bluish Green</source>
-        <translation type="unfinished"/>
+        <translation>Velmi světlá modravá zelená</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="444"/>
@@ -3069,12 +3085,12 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="458"/>
         <source>Brilliant Blue</source>
-        <translation type="unfinished"/>
+        <translation>Svítivá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="459"/>
         <source>Strong Blue</source>
-        <translation type="unfinished"/>
+        <translation>Výrazná modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="460"/>
@@ -3084,72 +3100,72 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/src/colordictionary.h" line="461"/>
         <source>Very Light Blue</source>
-        <translation type="unfinished"/>
+        <translation>Velmi světlá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="462"/>
         <source>Light Blue</source>
-        <translation type="unfinished"/>
+        <translation>Světlá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="463"/>
         <source>Moderate Blue</source>
-        <translation type="unfinished"/>
+        <translation>Nevýrazná modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="464"/>
         <source>Dark Blue</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="465"/>
         <source>Very Pale Blue</source>
-        <translation type="unfinished"/>
+        <translation>Velmi bledá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="466"/>
         <source>Pale Blue</source>
-        <translation type="unfinished"/>
+        <translation>Bledá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="467"/>
         <source>Grayish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Šedavá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="468"/>
         <source>Dark Grayish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá šedavá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="469"/>
         <source>Blackish Blue</source>
-        <translation type="unfinished"/>
+        <translation>Černavá modrá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="470"/>
         <source>Bluish White</source>
-        <translation type="unfinished"/>
+        <translation>Modravá bílá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="471"/>
         <source>Light Bluish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Světlá modravá šedá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="472"/>
         <source>Bluish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Modravá šedá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="473"/>
         <source>Dark Bluish Gray</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá modravá šedá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="474"/>
         <source>Bluish Black</source>
-        <translation type="unfinished"/>
+        <translation>Modravá černá</translation>
     </message>
     <message>
         <location filename="../app/src/colordictionary.h" line="475"/>
@@ -3528,7 +3544,7 @@ Chcete ji uložit nyní?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
-        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
+        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3548,60 +3564,60 @@ Chcete ji uložit nyní?</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="525"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="527"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Kreslíte na skrytou vrstvu! Vyberte, prosím, jinou vrstvu (nebo nynější vrstvu udělejte viditelnou).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1929"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1931"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Smazat výběr</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1945"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1947"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1955"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Smazat obrázek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1980"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1982"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Ve vaší kresbě je mezera (nebo jste možná provedl moc velké přiblížení).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1981"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1983"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
         <source>Out of bound.</source>
         <translation>Zakázáno.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>Could not find a closed path.</source>
         <translation>Nepodařilo se najít zavřenou cestu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1989"/>
         <source>Could not find the root index.</source>
         <translation>Nepodařilo se najít kořenový index.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Chyba: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>Flood fill error</source>
         <translation>Chyba výplně</translation>
     </message>
@@ -3754,7 +3770,7 @@ Chcete ji uložit nyní?</translation>
         <location filename="../core_lib/src/interface/timeline.cpp" line="98"/>
         <source>&amp;Layer</source>
         <comment>Timeline add-layer menu</comment>
-        <translation type="unfinished"/>
+        <translation>&amp;Vrstva</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="116"/>
@@ -3851,52 +3867,52 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="89"/>
         <source>Drawing</source>
-        <translation type="unfinished"/>
+        <translation>Kreslení</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="95"/>
         <source>When drawing on an empty frame:</source>
-        <translation type="unfinished"/>
+        <translation>Při kreslení na prázdné políčko snímku:</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="102"/>
         <source>Create a new (blank) key-frame and start drawing on it.</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit nový (prázdný) klíčový snímek a začít na něj kreslit.</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="105"/>
         <source>Create a new (blank) key-frame</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit nový (prázdný) klíčový snímek</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="115"/>
         <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
-        <translation type="unfinished"/>
+        <translation>Zdvojit předchozí klíčový snímek a začít kreslit na kopii.</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="118"/>
         <source>Duplicate the previous key-frame</source>
-        <translation type="unfinished"/>
+        <translation>Zdvojit předchozí klíčový snímek</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="125"/>
         <source>Keep drawing on the previous key-frame</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovat v kreslení na předchozí klíčový snímek</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="137"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Použije se na nástroje tužky, mazání, pera, lomené čáry, plechovky a štětce)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="162"/>
         <source>Playback</source>
-        <translation type="unfinished"/>
+        <translation>Přehrávání</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="174"/>
         <source>Show onion skin while playing</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat při přehrávání vzhled cibule</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>
@@ -4082,7 +4098,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="22"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"/>
+        <translation>Nastavit tloušťku pera &lt;br&gt;&lt;b&gt;[SHIFT]+táhnutí&lt;/b&gt;&lt;br&gt;pro rychlé nastavení</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="58"/>
@@ -4112,12 +4128,12 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="114"/>
         <source>The extend to which the color variation will be treated as being equal</source>
-        <translation type="unfinished"/>
+        <translation>Rozsah, po který se bude s barevným kolísáním zacházet jako se stejným</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
-        <translation type="unfinished"/>
+        <translation>Bézier</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
@@ -4129,56 +4145,56 @@ Chcete ji uložit nyní?</translation>
         <location filename="../app/ui/tooloptions.ui" line="147"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
-        <translation type="unfinished"/>
+        <translation>Vyhlazování</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="177"/>
         <source>Merge</source>
         <comment>Vector line merge</comment>
-        <translation type="unfinished"/>
+        <translation>Sloučit</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="200"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Žádná</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="205"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Jednoduchá</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="210"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Silná</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="154"/>
         <source>Make invisible</source>
-        <translation type="unfinished"/>
+        <translation>Zneviditelnit</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Neviditelná</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
         <source>Preserve Alpha</source>
-        <translation type="unfinished"/>
+        <translation>Zachovat alfa kanál</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="167"/>
         <source>Alpha</source>
-        <translation type="unfinished"/>
+        <translation>Alfa kanál</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
         <source>Merge vector lines when they are close together</source>
-        <translation type="unfinished"/>
+        <translation>Sloučit vektorové čáry, když jsou blízko u sebe</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>

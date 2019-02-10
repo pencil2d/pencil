@@ -241,7 +241,7 @@ Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
     return nullptr;
 }
 
-bool Object::moveLayer(int i, int j)
+bool Object::swapLayers(int i, int j)
 {
     if (i < 0 || i >= mLayers.size())
     {

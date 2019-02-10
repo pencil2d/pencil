@@ -114,7 +114,7 @@ public:
     Layer* getLayer(int i) const;
     Layer* findLayerByName(QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
 
-    bool moveLayer(int i, int j);
+    bool swapLayers(int i, int j);
     void deleteLayer(int i);
     void deleteLayer(Layer*);
 

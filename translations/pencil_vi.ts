@@ -67,18 +67,18 @@
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="595"/>
-        <location filename="../app/src/actioncommands.cpp" line="608"/>
-        <location filename="../app/src/actioncommands.cpp" line="622"/>
-        <location filename="../app/src/actioncommands.cpp" line="636"/>
+        <location filename="../app/src/actioncommands.cpp" line="612"/>
+        <location filename="../app/src/actioncommands.cpp" line="630"/>
+        <location filename="../app/src/actioncommands.cpp" line="648"/>
         <source>Layer Properties</source>
         <translation>Thuộc tính của Layer</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="81"/>
         <location filename="../app/src/actioncommands.cpp" line="596"/>
-        <location filename="../app/src/actioncommands.cpp" line="609"/>
-        <location filename="../app/src/actioncommands.cpp" line="623"/>
-        <location filename="../app/src/actioncommands.cpp" line="637"/>
+        <location filename="../app/src/actioncommands.cpp" line="613"/>
+        <location filename="../app/src/actioncommands.cpp" line="631"/>
+        <location filename="../app/src/actioncommands.cpp" line="649"/>
         <source>Layer name:</source>
         <translation>Tên Layer</translation>
     </message>
@@ -118,35 +118,40 @@
         <translation>Bitmap Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="610"/>
+        <location filename="../app/src/actioncommands.cpp" line="614"/>
         <source>Vector Layer</source>
         <translation>Vector Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="624"/>
+        <location filename="../app/src/actioncommands.cpp" line="632"/>
         <source>Camera Layer</source>
         <translation>Layer của máy quay</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="638"/>
+        <location filename="../app/src/actioncommands.cpp" line="650"/>
         <source>Sound Layer</source>
         <translation>Layer âm thanh</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="655"/>
+        <location filename="../app/src/actioncommands.cpp" line="671"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="656"/>
+        <location filename="../app/src/actioncommands.cpp" line="672"/>
         <source>Are you sure you want to delete layer: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="665"/>
+        <location filename="../app/src/actioncommands.cpp" line="681"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="704"/>
+        <source>Filename must be unique and not empty</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -492,13 +497,13 @@
         <translation>Dán</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="926"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="932"/>
         <source>Remove frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="797"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="803"/>
         <source>Import Image</source>
         <translation>Nhập vào hình ảnh</translation>
     </message>
@@ -567,42 +572,47 @@
         <translation>Ảnh dạng Bitmap BMP</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="101"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="98"/>
+        <source>TIFF</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="106"/>
         <source>Transparency</source>
         <translation>Trong suốt</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="111"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="116"/>
         <source>Range</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="157"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="162"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="160"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="165"/>
         <source>End Frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="179"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="184"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="182"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="187"/>
         <source>Start Frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="207"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="212"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="213"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
         <source>To the end of sound clips</source>
         <translation type="unfinished"/>
     </message>
@@ -1059,7 +1069,17 @@
         <translation>Dấu chấm con trỏ chuột</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="267"/>
+        <location filename="../app/ui/generalpage.ui" line="245"/>
+        <source>Grid Heigth</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="252"/>
+        <source>Grid Width</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="297"/>
         <source>Enable Grid</source>
         <translation>Kích hoạt chế Độ lưới</translation>
     </message>
@@ -1074,12 +1094,12 @@
         <translation>Vị trí Độ phân giải cao dành cho máy tính bản</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="215"/>
         <source>Restart Required</source>
         <translation>Yêu cầu khởi Động lại</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="213"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="216"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Thay Đổi ngôn ngữ sẽ Được thực hiện sau khi khỏi Đông lại phần mềm Pencil 2D</translation>
     </message>
@@ -1409,7 +1429,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1278"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1280"/>
         <source>Play</source>
         <translation>Chạy</translation>
     </message>
@@ -1693,8 +1713,8 @@ Bạn Đã xóa thành công danh sách</translation>
         <location filename="../app/src/mainwindow2.cpp" line="534"/>
         <location filename="../app/src/mainwindow2.cpp" line="697"/>
         <location filename="../app/src/mainwindow2.cpp" line="756"/>
-        <location filename="../app/src/mainwindow2.cpp" line="830"/>
-        <location filename="../app/src/mainwindow2.cpp" line="883"/>
+        <location filename="../app/src/mainwindow2.cpp" line="832"/>
+        <location filename="../app/src/mainwindow2.cpp" line="885"/>
         <source>Warning</source>
         <translation>Cảnh báo</translation>
     </message>
@@ -1712,7 +1732,7 @@ Bạn Đã xóa thành công danh sách</translation>
         <location filename="../app/src/mainwindow2.cpp" line="541"/>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>
         <location filename="../app/src/mainwindow2.cpp" line="783"/>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Abort</source>
         <translation>Từ chối</translation>
     </message>
@@ -1762,31 +1782,31 @@ Bạn có muốn lưu ngay không?</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="831"/>
-        <location filename="../app/src/mainwindow2.cpp" line="884"/>
+        <location filename="../app/src/mainwindow2.cpp" line="833"/>
+        <location filename="../app/src/mainwindow2.cpp" line="886"/>
         <source>was unable to import</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Importing Animated GIF...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1103"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1108"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1105"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1110"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1123"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1125"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1273"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1275"/>
         <source>Stop</source>
         <translation>Ngừng ngay</translation>
     </message>
@@ -1808,122 +1828,122 @@ Bạn có muốn lưu ngay không?</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="546"/>
         <source>Black</source>
         <translation>Trở lại</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="547"/>
         <source>Red</source>
         <translation>Đỏ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="548"/>
         <source>Dark Red</source>
         <translation>Đỏ Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
         <source>Orange</source>
         <translation>Cam</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
         <source>Dark Orange</source>
         <translation>Cam Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
         <source>Yellow</source>
         <translation>Vàng</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
         <source>Dark Yellow</source>
         <translation>Vàng Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
         <source>Green</source>
         <translation>Xanh lá cây</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
         <source>Dark Green</source>
         <translation>Xanh lá cây Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
         <source>Cyan</source>
         <translation>Lục lam</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
         <source>Dark Cyan</source>
         <translation>Lục lam sậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
         <source>Blue</source>
         <translation>Xanh dương</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
         <source>Dark Blue</source>
         <translation>Xanh dương Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
         <source>White</source>
         <translation>Trắng</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Very Light Grey</source>
         <translation>Xám nhạt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Light Grey</source>
         <translation>Xám nhẹ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>Grey</source>
         <translation>Xám</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Dark Grey</source>
         <translation>Xám Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Light Skin</source>
         <translation>Màu da sáng</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Light Skin - shade</source>
         <translation>Màu da sáng Đổ bóng</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Skin</source>
         <translation>Màu da</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Skin - shade</source>
         <translation>Bóng da</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Dark Skin</source>
         <translation>Da sậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Dark Skin - shade</source>
         <translation>Bóng da sậm</translation>
     </message>
@@ -2138,12 +2158,8 @@ Bạn có muốn lưu ngay không?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</source>
+        <source>Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3528,7 +3544,7 @@ Bạn có muốn lưu ngay không?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
-        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
+        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3548,60 +3564,60 @@ Bạn có muốn lưu ngay không?</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="525"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
         <source>Warning</source>
         <translation>Cảnh báo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="527"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Bạn Đang vẽ trên một Layer có thuộc tính ẩn! Hãy chọn một Layer khác (Hoặc Điều chỉnh thuộc tính Layer hiện tại thành hiển thị).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1929"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1931"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1945"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1947"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1955"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Làm sạch hình ảnh</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1980"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1982"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Xuất hiện hiện tượng rổ trên ảnh của bạn (hoặc bạn Đã phóng to quá nhiều).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1981"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1983"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Thật xin lỗi! Chức năng này vẫn chưa Được hoàn thiện. Hãy thử lại một lần nữa (Phóng to một chút thôi, và chọn chỗ khác...) &lt;br&gt;Nếu chức năng vẫn không hoạt Động, Phóng to vào một chút và kiểm tra Đường dẫn chính xác bằng cách nhấn F1.).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
         <source>Out of bound.</source>
         <translation>Ngoài giới hạn xử lý</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>Could not find a closed path.</source>
         <translation>Không thể tìm Được Đường dẫn Đúng</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1989"/>
         <source>Could not find the root index.</source>
         <translation>Không thể tìm Được chỉ mục gốc</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Lỗi: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>Flood fill error</source>
         <translation>Lỗi tô màu</translation>
     </message>

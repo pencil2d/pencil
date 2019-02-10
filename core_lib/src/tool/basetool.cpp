@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 
+#include "pointerevent.h"
 #include <array>
 #include <QtMath>
 #include "editor.h"
@@ -97,23 +98,25 @@ void BaseTool::initialize(Editor* editor)
     loadSettings();
 }
 
-void BaseTool::tabletMoveEvent(QTabletEvent* event) {
-    event->accept();
-}
-
-void BaseTool::tabletPressEvent(QTabletEvent* event) {
-    event->accept();
-}
-
-void BaseTool::tabletReleaseEvent(QTabletEvent* event) {
-    event->accept();
-}
-
-void BaseTool::mouseDoubleClickEvent(QMouseEvent* event)
+void BaseTool::pointerPressEvent(PointerEvent *event)
 {
-    mousePressEvent(event);
+    event->accept();
 }
 
+void BaseTool::pointerMoveEvent(PointerEvent *event)
+{
+    event->accept();
+}
+
+void BaseTool::pointerReleaseEvent(PointerEvent *event)
+{
+    event->accept();
+}
+
+void BaseTool::pointerDoubleClickEvent(PointerEvent *event)
+{
+    pointerPressEvent(event);
+}
 
 /**
  * @brief BaseTool::isDrawingTool - A drawing tool is anything that applies something to the canvas.
@@ -365,10 +368,14 @@ void BaseTool::adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod) //of
     };
 }
 
-void BaseTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+QPointF BaseTool::getCurrentPressPixel()
 {
-    Q_UNUSED(pressure);
-    Q_UNUSED(mouseDevice);
+    return m_pStrokeManager->getCurrentPressPixel();
+}
+
+QPointF BaseTool::getCurrentPressPoint()
+{
+    return mEditor->view()->mapScreenToCanvas(m_pStrokeManager->getCurrentPressPixel());
 }
 
 QPointF BaseTool::getCurrentPixel()

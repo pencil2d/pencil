@@ -316,6 +316,8 @@ void MainWindow2::createMenus()
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mEditor, &Editor::updateCurrentFrame);
+    connect(ui->actionFlip_inbetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipInBetween);
+    connect(ui->actionFlip_rolling, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::addNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
@@ -1159,6 +1161,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
+    ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
+    ui->actionFlip_rolling->setShortcut(cmdKeySeq(CMD_FLIP_ROLLING));
 
     ShortcutFilter* shortcutfilter = new ShortcutFilter(ui->scribbleArea, this);
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));

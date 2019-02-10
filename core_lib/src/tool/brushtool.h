@@ -30,15 +30,9 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mouseMoveEvent( QMouseEvent* ) override;
-    void mousePressEvent( QMouseEvent* ) override;
-    void mouseReleaseEvent( QMouseEvent* ) override;
-
-    void tabletMoveEvent( QTabletEvent* ) override;
-    void tabletPressEvent( QTabletEvent* ) override;
-    void tabletReleaseEvent( QTabletEvent* ) override;
-
-    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
+    void pointerMoveEvent( PointerEvent* ) override;
+    void pointerPressEvent( PointerEvent* ) override;
+    void pointerReleaseEvent( PointerEvent* ) override;
 
     void drawStroke();
     void paintVectorStroke();

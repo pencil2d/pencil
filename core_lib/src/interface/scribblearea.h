@@ -43,7 +43,7 @@ class Layer;
 class Editor;
 class BaseTool;
 class StrokeManager;
-
+class PointerEvent;
 
 class ScribbleArea : public QWidget
 {
@@ -196,6 +196,10 @@ public:
     void refreshVector( const QRectF& rect, int rad );
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
+    void pointerPressEvent(PointerEvent*);
+    void pointerMoveEvent(PointerEvent*);
+    void pointerReleaseEvent(PointerEvent*);
+
     void updateCanvasCursor();
 
     /// Call this when starting to use a paint tool. Checks whether we are drawing
@@ -214,9 +218,6 @@ private:
     void drawCanvas( int frame, QRect rect );
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter& painter);
-    void tabletPressEvent(QTabletEvent* event);
-    void tabletMoveEvent(QTabletEvent* event);
-    void tabletReleaseEvent(QTabletEvent* event);
 
     MoveMode mMoveMode = MoveMode::NONE;
     ToolType mPrevTemporalToolType = ERASER;
@@ -247,10 +248,16 @@ private:
     bool mMouseInUse    = false;
     bool mMouseRightButtonInUse = false;
     bool mPenHeldDown = false;
-    QPointF mLastPixel;
-    QPointF mCurrentPixel;
-    QPointF mLastPoint;
-    QPointF mCurrentPoint;
+
+
+    // Double click handling for tablet input
+    void handleDoubleClick();
+    bool isFirstClick = true;
+    int doubleClickMillis = 0;
+    // Microsoft suggests that a double click action should be no more than 500 ms
+    int DOUBLE_CLICK_THRESHOLD = 500;
+    QTimer* doubleClickTimer;
+
 
     qreal selectionTolerance = 8.0;
     QList<VertexRef> mClosestVertices;
