@@ -148,7 +148,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath, Progr
         setId(id);
     }
     setName(element.attribute("name"));
-    setVisible(element.attribute("visibility") == "1");
+    setVisible(element.attribute("visibility").toInt());
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

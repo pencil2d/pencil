@@ -99,7 +99,7 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath, Progre
         setId(myId);
     }
     setName(element.attribute("name"));
-    setVisible(element.attribute("visibility").toInt() == 1);
+    setVisible(element.attribute("visibility").toInt());
 
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())

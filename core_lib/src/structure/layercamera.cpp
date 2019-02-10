@@ -292,8 +292,8 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath, Progr
     Q_UNUSED(dataDirPath);
     Q_UNUSED(progressStep);
 
-    setName( element.attribute("name") );
-    setVisible( true );
+    setName(element.attribute("name"));
+    setVisible(element.attribute("visibility").toInt());
 
     int width = element.attribute( "width" ).toInt();
     int height = element.attribute( "height" ).toInt();
