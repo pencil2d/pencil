@@ -46,7 +46,7 @@
       <item>
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>x. Black line (for repairs!)</string>
+         <string>[x. Black line (for repairs!)]</string>
         </property>
        </widget>
       </item>
@@ -265,14 +265,14 @@
        <item>
         <widget class="QPushButton" name="btn2_fillRest">
          <property name="text">
-          <string>Apply to lines...</string>
+          <string>Apply to ALL lines...</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="btn2_repairs">
          <property name="text">
-          <string>[Apply repairs...]</string>
+          <string>[Apply to Active...]</string>
          </property>
         </widget>
        </item>
@@ -299,14 +299,14 @@
        <item>
         <widget class="QPushButton" name="btn3_thinRest">
          <property name="text">
-          <string>Thin the Lines...</string>
+          <string>Thin ALL Lines...</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="btn3_repairs">
          <property name="text">
-          <string>[Thin repairs...]</string>
+          <string>[Thin Active line]</string>
          </property>
         </widget>
        </item>
@@ -347,7 +347,7 @@
        <item>
         <widget class="QPushButton" name="btn4_replaceThinLines">
          <property name="text">
-          <string>Replace thin lines...</string>
+          <string>Replace ALL thin lines...</string>
          </property>
         </widget>
        </item>

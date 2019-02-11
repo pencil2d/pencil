@@ -617,10 +617,12 @@ void Editor::fillWhiteAreas()
 void Editor::fillWhiteAreasRest()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    scrubTo(1);
     do
     {
         layerBitmap->fillWhiteAreas(currentFrame());
         scrubNextKeyFrame();
+        emit updateTimeLine();
         mObject->updateActiveFrames(currentFrame());
     } while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame());
     layerBitmap->fillWhiteAreas(currentFrame());
@@ -638,6 +640,7 @@ void Editor::toThinBlackLine()
 void Editor::toThinBlackLineRest()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    scrubTo(1);
     do
     {
         layerBitmap->toThinBlackLine(currentFrame());
@@ -651,6 +654,7 @@ void Editor::toThinBlackLineRest()
 void Editor::replaceThinLines()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
+    scrubTo(1);
     do
     {
         mObject->updateActiveFrames(currentFrame());
