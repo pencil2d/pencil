@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -180,6 +180,9 @@
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
+    <addaction name="separator"/>
+    <addaction name="actionFlip_inbetween"/>
+    <addaction name="actionFlip_rolling"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -966,6 +969,16 @@
   <action name="actionAdd_Bitmap_Color_Layer">
    <property name="text">
     <string>Add Bitmap Color Layer</string>
+    </property>
+   </action>
+  <action name="actionFlip_inbetween">
+   <property name="text">
+    <string>Flip In-Between</string>
+   </property>
+  </action>
+  <action name="actionFlip_rolling">
+   <property name="text">
+    <string>Flip Rolling</string>
    </property>
   </action>
  </widget>

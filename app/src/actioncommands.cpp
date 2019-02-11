@@ -564,7 +564,8 @@ void ActionCommands::duplicateKey()
     }
     else
     {
-        key->setFileName(""); // don't share filename
+        dupKey->setFileName(""); // don't share filename
+        dupKey->modification();
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();

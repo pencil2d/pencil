@@ -317,6 +317,8 @@ void MainWindow2::createMenus()
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mEditor, &Editor::updateCurrentFrame);
+    connect(ui->actionFlip_inbetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipInBetween);
+    connect(ui->actionFlip_rolling, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::addNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
@@ -521,8 +523,8 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     {
         ErrorDialog errorDialog(tr("Could not open file"),
                                 tr("The file you have selected is a directory, so we are unable to open it. "
-                                   "If you are are trying to open a project that uses the old structure, please "
-                                   "open the file ending with .pcl, not the data folder."),
+                                   "If you are are trying to open a project that uses the old structure, "
+                                   "please open the file ending with .pcl, not the data folder."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
         errorDialog.exec();
         return false;
@@ -530,8 +532,8 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     if (!fileInfo.exists())
     {
         ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("The file you have selected does not exist, so we are unable to open it. Please check "
-                                   "to make sure that you've entered the correct path and that the file is accessible and try again."),
+                                tr("The file you have selected does not exist, so we are unable to open it. "
+                                   "Please make sure that you've entered the correct path and that the file is accessible and try again."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
         errorDialog.exec();
         return false;
@@ -1162,6 +1164,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
+    ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
+    ui->actionFlip_rolling->setShortcut(cmdKeySeq(CMD_FLIP_ROLLING));
 
     ShortcutFilter* shortcutfilter = new ShortcutFilter(ui->scribbleArea, this);
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));

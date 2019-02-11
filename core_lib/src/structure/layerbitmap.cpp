@@ -491,11 +491,13 @@ QString LayerBitmap::fileName(KeyFrame* key) const
     return QString::asprintf("%03d.%03d.png", id(), key->pos());
 }
 
-bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& strSavePath)
-{
+bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& savePath)
+{    
     if (key->isModified()) // keyframe was modified
         return true;
-    if (QFile::exists(strSavePath) == false) // hasn't been saved before
+    if (QFile::exists(savePath) == false) // hasn't been saved before
+        return true;
+    if (key->fileName().isEmpty())
         return true;
     return false;
 }

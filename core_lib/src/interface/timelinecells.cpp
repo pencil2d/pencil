@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include "timelinecells.h"
 
-#include <QSettings>
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
@@ -49,7 +48,6 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setAttribute(Qt::WA_OpaquePaintEvent, false);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
-
 }
 
 TimeLineCells::~TimeLineCells()
@@ -99,8 +97,7 @@ int TimeLineCells::getFrameX(int frameNumber)
 void TimeLineCells::setFrameSize(int size)
 {
     mFrameSize = size;
-    QSettings settings (PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_FRAME_SIZE, mFrameSize);
+    mPrefs->set(SETTING::FRAME_SIZE, mFrameSize);
     updateContent();
 }
 
@@ -136,6 +133,20 @@ int TimeLineCells::getLayerNumber(int y)
     return layerNumber;
 }
 
+int TimeLineCells::getInbetweenLayerNumber(int y) {
+    int layerNumber = getLayerNumber(y);
+    // Round the layer number towards the drag start
+    if(layerNumber != mFromLayer) {
+        if(getMouseMoveY() > 0 && y < getLayerY(layerNumber) + getLayerHeight() / 2) {
+            layerNumber++;
+        }
+        else if(getMouseMoveY() < 0 && y > getLayerY(layerNumber) + getLayerHeight() / 2) {
+            layerNumber--;
+        }
+    }
+    return layerNumber;
+}
+
 int TimeLineCells::getLayerY(int layerNumber)
 {
     return mOffsetY + (mEditor->object()->getLayerCount() - 1 - layerNumber - mLayerOffset)*mLayerHeight;
@@ -151,6 +162,11 @@ void TimeLineCells::updateContent()
 {
     drawContent();
     update();
+}
+
+
+bool TimeLineCells::didDetatchLayer() {
+    return abs(getMouseMoveY()) > mLayerDetatchThreshold;
 }
 
 void TimeLineCells::drawContent()
@@ -205,7 +221,7 @@ void TimeLineCells::drawContent()
             }
         }
     }
-    if (abs(getMouseMoveY()) > 5)
+    if (didDetatchLayer())
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks)
         {
@@ -219,9 +235,9 @@ void TimeLineCells::drawContent()
             layer->paintLabel(painter, this,
                               0, getLayerY(mEditor->layers()->currentLayerIndex()) + getMouseMoveY(),
                               width() - 1, getLayerHeight(), true, mEditor->allLayers());
+
+            paintLayerGutter(painter);
         }
-        painter.setPen(Qt::black);
-        painter.drawRect(0, getLayerY(getLayerNumber(mEndY)) - 1, width(), 2);
     }
     else
     {
@@ -314,6 +330,19 @@ void TimeLineCells::drawContent()
         // --- draw left border line
         painter.setPen(Qt::darkGray);
         painter.drawLine(0, 0, 0, height());
+    }
+}
+
+void TimeLineCells::paintLayerGutter(QPainter& painter)
+{
+    painter.setPen(Qt::black);
+    if (getMouseMoveY() > mLayerDetatchThreshold)
+    {
+        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+mLayerHeight, width(), 2);
+    }
+    else
+    {
+        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY)), width(), 2);
     }
 }
 
@@ -429,6 +458,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
     int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
+    mFromLayer = mToLayer = layerNumber;
 
     mStartY = event->pos().y();
     mStartLayerNumber = layerNumber;
@@ -625,12 +655,10 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 {
-    qDebug("TimeLineCell: mouse release event.");
     if (event->button() != primaryButton) return;
 
     primaryButton = Qt::NoButton;
     mEndY = mStartY;
-    emit mouseMovedY(0);
     mTimeLine->scrubbing = false;
     int frameNumber = getFrameNumber(event->pos().x());
     if (frameNumber < 1) frameNumber = -1;
@@ -650,8 +678,23 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {
-        mEditor->moveLayer(mStartLayerNumber, layerNumber);
+        mToLayer = getInbetweenLayerNumber(event->pos().y());
+        if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
+        {
+            // Bubble the from layer up or down to the to layer
+            if (mToLayer < mFromLayer) // bubble up
+            {
+                for (int i = mFromLayer - 1; i >= mToLayer; i--)
+                    mEditor->swapLayers(i, i + 1);
+            }
+            else // bubble down
+            {
+                for (int i = mFromLayer + 1; i <= mToLayer; i++)
+                    mEditor->swapLayers(i, i - 1);
+            }
+        }
     }
+    emit mouseMovedY(0);
     mTimeLine->updateContent();
 }
 

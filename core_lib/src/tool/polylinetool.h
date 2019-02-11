@@ -31,10 +31,11 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent( QMouseEvent* ) override;
-    void mouseReleaseEvent( QMouseEvent* ) override;
-    void mouseMoveEvent( QMouseEvent* ) override;
-    void mouseDoubleClickEvent( QMouseEvent* ) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent* event) override;
+    void pointerDoubleClickEvent(PointerEvent*) override;
+
     bool keyPressEvent( QKeyEvent* event ) override;
 
     void clear() override;

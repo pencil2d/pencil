@@ -95,7 +95,7 @@ Status MovieExporter::run(const Object* obj,
 {
     majorProgress(0.f, 0.03f);
     minorProgress(0.f);
-    progressMessage(QApplication::tr("Checking environment..."));
+    progressMessage(QObject::tr("Checking environment..."));
 
     clock_t t1 = clock();
 
@@ -146,7 +146,7 @@ Status MovieExporter::run(const Object* obj,
     }
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
-    progressMessage(QApplication::tr("Done"));
+    progressMessage(QObject::tr("Done"));
     
     clock_t t2 = clock() - t1;
     qDebug("MOVIE = %.1f sec", static_cast<float>(t2) / CLOCKS_PER_SEC);
@@ -218,7 +218,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
 
         // Offset the sound to its correct position
         // See https://superuser.com/questions/716320/ffmpeg-placing-audio-at-specific-location
-        filterComplex += QString("[%1:a:0] adelay=%2S|%2S,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=mono,volume=1,apad=whole_len=%3[ad%1];")
+        filterComplex += QString("[%1:a:0] aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=mono,volume=1,adelay=%2S|%2S,apad=whole_len=%3[ad%1];")
                     .arg(clipCount).arg(qRound(44100.0 * (clip->pos() - 1) / fps)).arg(wholeLen);
         amergeInput += QString("[ad%1]").arg(clipCount);
         panChannelLayout += QString("c%1+").arg(clipCount);

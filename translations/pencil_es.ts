@@ -67,18 +67,18 @@
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="595"/>
-        <location filename="../app/src/actioncommands.cpp" line="608"/>
-        <location filename="../app/src/actioncommands.cpp" line="622"/>
-        <location filename="../app/src/actioncommands.cpp" line="636"/>
+        <location filename="../app/src/actioncommands.cpp" line="612"/>
+        <location filename="../app/src/actioncommands.cpp" line="630"/>
+        <location filename="../app/src/actioncommands.cpp" line="648"/>
         <source>Layer Properties</source>
         <translation>Propiedades de la capa</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="81"/>
         <location filename="../app/src/actioncommands.cpp" line="596"/>
-        <location filename="../app/src/actioncommands.cpp" line="609"/>
-        <location filename="../app/src/actioncommands.cpp" line="623"/>
-        <location filename="../app/src/actioncommands.cpp" line="637"/>
+        <location filename="../app/src/actioncommands.cpp" line="613"/>
+        <location filename="../app/src/actioncommands.cpp" line="631"/>
+        <location filename="../app/src/actioncommands.cpp" line="649"/>
         <source>Layer name:</source>
         <translation>Nombre de la capa:</translation>
     </message>
@@ -118,36 +118,41 @@
         <translation>Capa de bitmap</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="610"/>
+        <location filename="../app/src/actioncommands.cpp" line="614"/>
         <source>Vector Layer</source>
         <translation>Capa de vector</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="624"/>
+        <location filename="../app/src/actioncommands.cpp" line="632"/>
         <source>Camera Layer</source>
         <translation>Capa de cámara</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="638"/>
+        <location filename="../app/src/actioncommands.cpp" line="650"/>
         <source>Sound Layer</source>
         <translation>Capa de sonido</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="655"/>
+        <location filename="../app/src/actioncommands.cpp" line="671"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Eliminar Capa</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="656"/>
+        <location filename="../app/src/actioncommands.cpp" line="672"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>¿Seguro que deseas eliminar la capa?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="665"/>
+        <location filename="../app/src/actioncommands.cpp" line="681"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Favor de mantener al menos una capa de cámara en el proyecto</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="704"/>
+        <source>Filename must be unique and not empty</source>
+        <translation>Nombre del archivo debe ser único e no estar vacío</translation>
     </message>
 </context>
 <context>
@@ -271,7 +276,7 @@
         <location filename="../app/src/colorinspector.cpp" line="35"/>
         <source>Color Inspector</source>
         <comment>Window title of color inspector</comment>
-        <translation>Inspector de color</translation>
+        <translation>Caja de color</translation>
     </message>
 </context>
 <context>
@@ -295,7 +300,7 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="133"/>
         <source>Native color dialog window</source>
-        <translation>Ventana de diálogo de color nativo</translation>
+        <translation>Ventana de color nativo</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="258"/>
@@ -363,8 +368,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
         <source>Remove</source>
-        <translation> 
-Eliminar</translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="246"/>
@@ -375,7 +379,7 @@ Eliminar</translation>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="544"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation>El / los color (s) que está a punto de eliminar se usan actualmente en uno o varios trazos.</translation>
+        <translation>Los colores que está a punto de eliminar están siendo usados en otras pinceladas.</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="545"/>
@@ -390,12 +394,12 @@ Eliminar</translation>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="562"/>
         <source>Palette Restriction</source>
-        <translation>Paleta de restricción</translation>
+        <translation>Limitación de la Paleta</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="563"/>
         <source>The palette requires at least one swatch to remain functional</source>
-        <translation>La paleta requiere al menos una muestra para permanecer funcional</translation>
+        <translation>La paleta requiere al menos una muestra para que pueda funcionar</translation>
     </message>
 </context>
 <context>
@@ -493,13 +497,13 @@ Eliminar</translation>
         <translation>Pegar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="926"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="932"/>
         <source>Remove frame</source>
         <translation>Eliminar fotograma</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="797"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="803"/>
         <source>Import Image</source>
         <translation>Importar imagen</translation>
     </message>
@@ -568,42 +572,47 @@ Eliminar</translation>
         <translation>BMP</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="101"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="98"/>
+        <source>TIFF</source>
+        <translation>TIFF</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="106"/>
         <source>Transparency</source>
         <translation>Transparencia</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="111"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="116"/>
         <source>Range</source>
         <translation>Alcance</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="157"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="162"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation>El último cuadro que desea incluir en la película exportada</translation>
+        <translation>El último fotograma que se desea incluir al exportar la película</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="160"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="165"/>
         <source>End Frame</source>
-        <translation>Marco final</translation>
+        <translation>Fotograma final</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="179"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="184"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation>El primer fotograma que desea incluir en la película exportada</translation>
+        <translation>El primer fotograma que se desea incluir al exportar la película</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="182"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="187"/>
         <source>Start Frame</source>
-        <translation>Cuadro de inicio</translation>
+        <translation>Fotograma de inicio</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="207"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="212"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;El fotograma final está configurado como el último fotograma clave que se puede pintar (útil cuando solo desea exportar al último fotograma animado)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;El fotograma final está configurado como el último fotograma-clave que se puede pintar (útil cuando solo se desea exportar al último fotograma animado)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="213"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
         <source>To the end of sound clips</source>
         <translation>Hasta el final de los clips de sonido</translation>
     </message>
@@ -651,7 +660,7 @@ Eliminar</translation>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="154"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation>El último fotograma que desea incluir en la película exportada</translation>
+        <translation>El último fotograma que se desea incluir al exportar la película</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="157"/>
@@ -776,7 +785,7 @@ Eliminar</translation>
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</source>
-        <translation>Paleta Pencil2D (* .xml) ;; Gimp Palette (* .gpl)</translation>
+        <translation>Paleta Pencil2D (* .xml) ;; Paleta Gimp (* .gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
@@ -800,12 +809,12 @@ Eliminar</translation>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
-        <translation>El archivo no existe, por lo que no podemos abrirlo. Verifique que la ruta sea correcta y que el archivo esté accesible y vuelva a intentarlo.</translation>
+        <translation>El archivo no existe, por lo que no podemos abrirlo. Verifique que la ruta sea la correcta y que el archivo esté accesible y vuelva a intentarlo.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation>Este programa no tiene permiso para leer el archivo que ha seleccionado. Verifique que haya leído los permisos para este archivo y vuelva a intentarlo.</translation>
+        <translation>No tiene permiso para leer el archivo que ha seleccionado. Verifique que tenga permiso para leer este archivo y vuelva a intentarlo.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
@@ -848,7 +857,7 @@ Eliminar</translation>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="382"/>
         <source>Miniz Error</source>
-        <translation>Miniz Error</translation>
+        <translation>Falla Miniz</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="399"/>
@@ -859,7 +868,7 @@ Eliminar</translation>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
-        <translation>Una falla interna ocurrió. Puede que el archivo no se haya grabado correctamente.</translation>
+        <translation>Ha ocurrido una falla interna. Puede que el archivo no se haya grabado correctamente.</translation>
     </message>
 </context>
 <context>
@@ -1060,7 +1069,17 @@ Eliminar</translation>
         <translation>Puntero punteado</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="267"/>
+        <location filename="../app/ui/generalpage.ui" line="245"/>
+        <source>Grid Heigth</source>
+        <translation>Altura de la Cuadrícula</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="252"/>
+        <source>Grid Width</source>
+        <translation>Anchura de la Cuadrícula</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="297"/>
         <source>Enable Grid</source>
         <translation>Activar cuadrícula</translation>
     </message>
@@ -1075,12 +1094,12 @@ Eliminar</translation>
         <translation>Posición de Alta Resolución para Tabla Gráfica</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="215"/>
         <source>Restart Required</source>
         <translation>Inicio requerido</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="213"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="216"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>El cambio de Idioma tomará efecto después de reiniciar Pencil2D</translation>
     </message>
@@ -1108,7 +1127,7 @@ Eliminar</translation>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="29"/>
         <source>Import Animated GIF</source>
-        <translation>Importar un GIF animado</translation>
+        <translation>Importar GIF animado</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="31"/>
@@ -1121,7 +1140,7 @@ Eliminar</translation>
     <message>
         <location filename="../app/ui/importimageseqoptions.ui" line="15"/>
         <source>Import an image every # frame</source>
-        <translation>Importar una imagen a cada # fotograma(s)</translation>
+        <translation>Importar una imagen a cada # fotograma</translation>
     </message>
 </context>
 <context>
@@ -1410,7 +1429,7 @@ Eliminar</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1278"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1280"/>
         <source>Play</source>
         <translation>Reproducir</translation>
     </message>
@@ -1646,7 +1665,7 @@ Eliminar</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="150"/>
         <source>Color inspector</source>
-        <translation>Inspector de color</translation>
+        <translation>Caja de colores</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="353"/>
@@ -1676,7 +1695,7 @@ Eliminar</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="506"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
-        <translation>El archivo que ha seleccionado es un directorio, por lo que no podemos abrirlo. Si está intentando abrir un proyecto que usa la estructura anterior, abra el archivo que termina en .pcl, no la carpeta de datos.</translation>
+        <translation>El archivo que ha seleccionado es un directorio, por lo que no podemos abrirlo. Si está intentando abrir un proyecto que usa el modelo antiguo, abra el archivo que tenga la extensión .pcl, no la carpeta de datos.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="516"/>
@@ -1686,21 +1705,21 @@ Eliminar</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation>Este programa no tiene permiso para leer el archivo que ha seleccionado. Verifique que haya leído los permisos para este archivo y vuelva a intentarlo.</translation>
+        <translation>No tiene permiso para leer el archivo que ha seleccionado. Verifique que tenga permiso para leer este archivo y vuelva a intentarlo.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="534"/>
         <location filename="../app/src/mainwindow2.cpp" line="697"/>
         <location filename="../app/src/mainwindow2.cpp" line="756"/>
-        <location filename="../app/src/mainwindow2.cpp" line="830"/>
-        <location filename="../app/src/mainwindow2.cpp" line="883"/>
+        <location filename="../app/src/mainwindow2.cpp" line="832"/>
+        <location filename="../app/src/mainwindow2.cpp" line="885"/>
         <source>Warning</source>
         <translation>Advertencia</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="535"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
-        <translation>Este programa actualmente no tiene permiso para escribir en el archivo que ha seleccionado. Asegúrese de tener permiso de escritura para este archivo antes de intentar guardarlo. Alternativamente, puede usar la opción de menú Guardar como ... para guardar en una ubicación de escritura.</translation>
+        <translation>No tiene permiso para escribir en el archivo que ha seleccionado. Asegúrese de tener permiso de escritura para este archivo antes de intentar guardarlo. Alternativamente, puede usar la opción del menú Guardar Como... para guardarlo en una ubicación donde pueda escribir.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="541"/>
@@ -1711,14 +1730,14 @@ Eliminar</translation>
         <location filename="../app/src/mainwindow2.cpp" line="541"/>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>
         <location filename="../app/src/mainwindow2.cpp" line="783"/>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="585"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
-        <translation>Se produjo un error desconocido al intentar cargar el archivo y no podemos cargar su archivo.</translation>
+        <translation>Se produjo una falla desconocida al intentar cargar el archivo y no podemos cargar su archivo.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>
@@ -1728,7 +1747,7 @@ Eliminar</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="660"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;Una falla ha ocurrido y el archivo puede que no se haya grabado correctamente. Si piensa que este error es un problema de Pencil2D, por favor haga un informe en:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Asegúrese de incluir los siguientes detalles en su reporte:</translation>
+        <translation>&lt;br&gt;&lt;br&gt;Ha ocurrido una falla y el archivo puede que no se haya grabado correctamente. Si piensa que este error es un problema de Pencil2D, por favor haga un informe en:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Asegúrese de incluir los siguientes detalles en su reporte:</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="698"/>
@@ -1741,8 +1760,8 @@ Eliminar</translation>
         <location filename="../app/src/mainwindow2.cpp" line="726"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
-        <translation>La animación aun no ha sido gravada.
-Quiere gravarla ahora?</translation>
+        <translation>La animación aún no ha sido guardada.
+¿Quiere guardarla ahora?</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="727"/>
@@ -1761,31 +1780,31 @@ Quiere gravarla ahora?</translation>
         <translation>Importando secuencia de imágenes...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="831"/>
-        <location filename="../app/src/mainwindow2.cpp" line="884"/>
+        <location filename="../app/src/mainwindow2.cpp" line="833"/>
+        <location filename="../app/src/mainwindow2.cpp" line="886"/>
         <source>was unable to import</source>
-        <translation>no pudo importar</translation>
+        <translation>no se pudo importar</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Importing Animated GIF...</source>
         <translation>Importación de GIF animado ...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1103"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1108"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1105"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1110"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Deshacer</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1123"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1125"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Rehacer</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1273"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1275"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
@@ -1801,128 +1820,128 @@ Quiere gravarla ahora?</translation>
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="368"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
-        <translation>Estás a punto de cambiar de capa, ¿quieres aplicar la transformación?</translation>
+        <translation>Estás queriendo cambiar de capa, ¿quieres aplicar la transformación?</translation>
     </message>
 </context>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="546"/>
         <source>Black</source>
         <translation>Negro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="547"/>
         <source>Red</source>
         <translation>Rojo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="548"/>
         <source>Dark Red</source>
         <translation>Rojo Oscuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
         <source>Orange</source>
         <translation>Naranja</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
         <source>Dark Orange</source>
         <translation>Naranja Oscuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
         <source>Yellow</source>
         <translation>Amarillo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
         <source>Dark Yellow</source>
         <translation>Amarillo Oscuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
         <source>Green</source>
         <translation>Verde</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
         <source>Dark Green</source>
         <translation>Verde Oscuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
         <source>Cyan</source>
         <translation>Cian</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
         <source>Dark Cyan</source>
         <translation>Cian Oscuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
         <source>Blue</source>
         <translation>Azul</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
         <source>Dark Blue</source>
         <translation>Azul Oscuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
         <source>White</source>
         <translation>Blanco</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Very Light Grey</source>
         <translation>Gris Muy Claro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Light Grey</source>
         <translation>Gris Claro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>Grey</source>
         <translation>Gris</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Dark Grey</source>
         <translation>Gris Oscuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Light Skin</source>
         <translation>Piel Clara</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Light Skin - shade</source>
         <translation>Piel Clara - Sombra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Skin</source>
         <translation>Piel</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Skin - shade</source>
         <translation>Piel - Sombra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Dark Skin</source>
         <translation>Piel Oscura</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Dark Skin - shade</source>
         <translation>Piel Oscura - Sombra</translation>
     </message>
@@ -2031,19 +2050,19 @@ Quiere gravarla ahora?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="201"/>
         <source>Error: No input file specified.</source>
-        <translation>Fallo: archivo no especificado</translation>
+        <translation>Falla: archivo no especificado</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="208"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
-        <translation>Fallo: El archivo en &apos;%1&apos; no existe</translation>
+        <translation>Falla: El archivo en &apos;%1&apos; no existe</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="213"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation>Fallo: El camino &apos;%1&apos; no es un archivo</translation>
+        <translation>Falla: El camino &apos;%1&apos; no es un archivo</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="241"/>
@@ -2137,13 +2156,9 @@ Quiere gravarla ahora?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</source>
-        <translation>Imágenes (* .png * .jpg * .jpeg * .bmp) ;; PNG (* .png) ;; JPG (*. Jpg * .jpeg) ;; BMP (*. Bmp)</translation>
-    </message>
-    <message>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</source>
-        <translation>Imágenes (* .png * .jpg * .jpeg * .bmp) ;; PNG (* .png) ;; JPG (*. Jpg * .jpeg) ;; BMP (*. Bmp);</translation>
+        <source>Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</source>
+        <translation>Imagenes (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
@@ -3527,8 +3542,8 @@ Quiere gravarla ahora?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
-        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
-        <translation>Hubo un error al procesar su archivo. Esto generalmente significa que su proyecto ha sido al menos parcialmente dañado. Puede volver a intentarlo con una versión más nueva de Pencil2D, o puede intentar usar un archivo de copia de seguridad si tiene uno. Si se comunica con nosotros a través de uno de nuestros canales oficiales, podemos ayudarlo. Para informar problemas, los mejores lugares para contactarnos son:</translation>
+        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
+        <translation>Ha ocurrido una falla al procesar su archivo. Esto por lo general quiere decir que su proyecto se encuentra parcialmente inaccesible. Puede intentarlo nuevamente utilizando una versión más reciente de Pencil2D, o puede intentarlo utilizando una copia de seguridad caso la posea. Puede contactarnos a través de los canales oficiales disponibles para que lo podamos ayudar. Para reportar fallas, la mejor manera de hacérnoslas llegar es:</translation>
     </message>
 </context>
 <context>
@@ -3547,60 +3562,60 @@ Quiere gravarla ahora?</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="525"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
         <source>Warning</source>
         <translation>Advertencia</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="527"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Usted está dibujando en una capa oculta! Por favor seleccione otra capa (o haga visible la capa actual).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1929"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1931"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Quitar Selección</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1945"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1947"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1955"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Limpiar imagen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1980"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1982"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Hay una interrupción en su dibujo (ó talvez usted haya usado mucho el zoom)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1981"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1983"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Disculpe! Esto ni siempre funciona. Por favor inténtelo de nuevo (aumente un poco el zoom, haga clic en otro sitio... )&lt;br&gt;Caso no funcione, aumente un poco más el zoom y asegúrese de que las interrupciones son conectadas presionando F1).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
         <source>Out of bound.</source>
         <translation>Fuera del limite</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>Could not find a closed path.</source>
         <translation>No se encuentra el camino cerrado</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1989"/>
         <source>Could not find the root index.</source>
         <translation>No se encuentra el índice principal.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
-        <translation>%1&lt;br&gt;&lt;br&gt;Fallo: %2</translation>
+        <translation>%1&lt;br&gt;&lt;br&gt;Falla: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>Flood fill error</source>
         <translation>Fallo de Relleno</translation>
     </message>
@@ -3855,37 +3870,37 @@ Quiere gravarla ahora?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="95"/>
         <source>When drawing on an empty frame:</source>
-        <translation>Al dibujar en un marco vacío:</translation>
+        <translation>Al dibujar en un fotograma vacío:</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="102"/>
         <source>Create a new (blank) key-frame and start drawing on it.</source>
-        <translation>Cree un nuevo fotograma clave (en blanco) y comience a dibujar en él.</translation>
+        <translation>Crea un nuevo fotograma-clave (en blanco) y comienza a dibujar en él.</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="105"/>
         <source>Create a new (blank) key-frame</source>
-        <translation>Crear un nuevo fotograma clave (en blanco)</translation>
+        <translation>Crea un nuevo fotograma-clave (en blanco)</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="115"/>
         <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
-        <translation>Duplique el fotograma clave anterior y comience a dibujar en el duplicado.</translation>
+        <translation>Duplica el fotograma-clave anterior y comienza a dibujar en el duplicado.</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="118"/>
         <source>Duplicate the previous key-frame</source>
-        <translation>Duplicar el marco clave anterior</translation>
+        <translation>Duplicar el fotograma-clave anterior</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="125"/>
         <source>Keep drawing on the previous key-frame</source>
-        <translation>Sigue dibujando en el fotograma clave anterior</translation>
+        <translation>Sigue dibujando en el fotograma-clave anterior</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="137"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Se aplica a las herramientas Lápiz, Borrador, Pluma, Polilínea, Cubeta y Cepillo)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Se aplica a las herramientas: Lápiz, Borrador, Pluma, Polilínea, Bote de pintura y Pincel)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="162"/>
@@ -3895,7 +3910,7 @@ Quiere gravarla ahora?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="174"/>
         <source>Show onion skin while playing</source>
-        <translation>Mostrar piel de cebolla mientras se reproduce</translation>
+        <translation>Mostrar piel de cebolla durante la reproducción</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="26"/>
@@ -4205,12 +4220,12 @@ Quiere gravarla ahora?</translation>
     <message>
         <location filename="../app/ui/toolspage.ui" line="75"/>
         <source>Number of previous onion frames shown</source>
-        <translation>Número de fotogramas anteriores mostrados en el papel cebolla</translation>
+        <translation>Número de fotogramas anteriores visibles en el papel cebolla</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="104"/>
         <source>Number of next onion frames shown</source>
-        <translation>Número de fotogramas posteriores mostrados en el papel cebolla</translation>
+        <translation>Número de fotogramas posteriores visibles en el papel cebolla</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="136"/>

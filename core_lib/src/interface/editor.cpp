@@ -1071,12 +1071,12 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     emit updateTimeLine();
 }
 
-void Editor::moveLayer(int i, int j)
+void Editor::swapLayers(int i, int j)
 {
-    mObject->moveLayer(i, j);
+    mObject->swapLayers(i, j);
     if (j < i)
     {
-        layers()->setCurrentLayer(j);
+        layers()->setCurrentLayer(j + 1);
     }
     else
     {

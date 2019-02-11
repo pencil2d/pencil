@@ -29,22 +29,23 @@ GNU General Public License for more details.
 #include "object.h"
 #include "assert.h"
 
+class PointerEvent;
+
 class StrokeManager : public QObject
 {
 public:
     StrokeManager();
 
-    void genericMoveEvent(QPointF pos);
-    void tabletEvent(QTabletEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
+    void pointerPressEvent(PointerEvent* event);
+    void pointerMoveEvent(PointerEvent* event);
+    void pointerReleaseEvent(PointerEvent* event);
     void setPressure(float pressure);
     void setStabilizerLevel(int level);
 
     float getPressure() { return mTabletPressure; }
     int getStabilizerLevel() { return mStabilizerLevel; }
     bool isTabletInUse() { return mTabletInUse; }
+    void setTabletinUse(bool inUse) { mTabletInUse = inUse; }
 
     QList<QPointF> interpolateStroke();
     void interpolatePoll();
@@ -61,6 +62,7 @@ public:
     QPointF getLastPixel() const { return mLastPixel; }
     QPointF getLastMeanPixel() const { return mLastInterpolated; }
     QPointF getMousePos() const { return mousePos; }
+    QPointF getCurrentPressPixel() const { return mCurrentPressPixel; }
     bool isPenPressed() const { return mPenIsHeld; }
 
 private:
@@ -76,6 +78,7 @@ private:
     QTimer timer;
 
     QTime mSingleshotTime;
+    QPointF mCurrentPressPixel = { 0, 0 };
     QPointF mLastPressPixel2 = { 0, 0 };
     QPointF mLastPressPixel = { 0, 0 };
     QPointF mCurrentPixel   = { 0, 0 };

@@ -31,20 +31,14 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
-
-    void tabletPressEvent(QTabletEvent*) override;
-    void tabletMoveEvent(QTabletEvent*) override;
-    void tabletReleaseEvent(QTabletEvent*) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
 
     void drawStroke();
     void paintAt(QPointF point);
     void paintVectorStroke(Layer *layer);
     void paintBitmapStroke();
-
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice) override;
 
     void setWidth(const qreal width) override;
     void setPressure(const bool pressure) override;
