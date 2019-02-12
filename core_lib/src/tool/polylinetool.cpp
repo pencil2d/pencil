@@ -17,6 +17,8 @@ GNU General Public License for more details.
 
 #include "polylinetool.h"
 
+#include "pointerevent.h"
+
 #include "editor.h"
 #include "scribblearea.h"
 
@@ -102,7 +104,7 @@ void PolylineTool::clear()
     mPoints.clear();
 }
 
-void PolylineTool::mousePressEvent( QMouseEvent *event )
+void PolylineTool::pointerPressEvent(PointerEvent *event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -126,10 +128,7 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
     }
 }
 
-void PolylineTool::mouseReleaseEvent(QMouseEvent*)
-{}
-
-void PolylineTool::mouseMoveEvent(QMouseEvent*)
+void PolylineTool::pointerMoveEvent(PointerEvent*)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
@@ -138,15 +137,18 @@ void PolylineTool::mouseMoveEvent(QMouseEvent*)
     }
 }
 
-void PolylineTool::mouseDoubleClickEvent(QMouseEvent* event)
-{
+void PolylineTool::pointerReleaseEvent(PointerEvent *)
+{}
 
-    if ( BezierCurve::eLength( m_pStrokeManager->getLastPressPixel() - event->pos() ) < 2.0 )
-    {
-        endPolyline( mPoints );
-        clear();
-    }
+void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
+{
+    // include the current point before ending the line.
+    mPoints << getCurrentPoint();
+
+    endPolyline( mPoints );
+    clear();
 }
+
 
 bool PolylineTool::keyPressEvent(QKeyEvent* event)
 {

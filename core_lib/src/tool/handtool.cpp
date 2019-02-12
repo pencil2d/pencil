@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QPixmap>
 #include <QVector2D>
-#include <QMouseEvent>
+#include <pointerevent.h>
 
 #include "viewmanager.h"
 #include "layermanager.h"
@@ -54,48 +54,29 @@ QCursor HandTool::cursor()
     return mIsHeld ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
 }
 
-void HandTool::tabletPressEvent(QTabletEvent *)
+void HandTool::pointerPressEvent(PointerEvent *)
 {
     mLastPixel = getLastPressPixel();
-    mScribbleArea->updateToolCursor();
     mIsHeld = true;
-}
 
-void HandTool::tabletMoveEvent(QTabletEvent * event)
-{
-    if (m_pStrokeManager->isPenPressed()) {
-        transformView(event->modifiers(), event->buttons());
-        mLastPixel = getCurrentPixel();
-    }
     mScribbleArea->updateToolCursor();
-
     mEditor->backups()->saveStates();
 }
 
-void HandTool::tabletReleaseEvent(QTabletEvent *)
+void HandTool::pointerMoveEvent(PointerEvent *event)
 {
-    mScribbleArea->updateToolCursor();
-    mIsHeld = false;
-
-	Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::CAMERA)
+    if ( event->buttons() == Qt::NoButton )
     {
-        BackupManager* backup = mEditor->backups();
-        backup->cameraMotion();
+        return;
     }
-}
 
-void HandTool::mousePressEvent( QMouseEvent* )
-{
-    mLastPixel = getLastPressPixel();
-    mIsHeld = true;
+    transformView(event->modifiers(), event->buttons());
 
-    mScribbleArea->updateToolCursor();
-
+    mLastPixel = getCurrentPixel();
     mEditor->backups()->saveStates();
 }
 
-void HandTool::mouseReleaseEvent( QMouseEvent* event )
+void HandTool::pointerReleaseEvent(PointerEvent *event)
 {
     //---- stop the hand tool if this was mid button
     if ( event->button() == Qt::MidButton )
@@ -114,19 +95,7 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
     }
 }
 
-void HandTool::mouseMoveEvent( QMouseEvent* event )
-{
-    if ( event->buttons() == Qt::NoButton )
-    {
-        return;
-    }
-
-    transformView(event->modifiers(), event->buttons());
-
-    mLastPixel = getCurrentPixel();
-}
-
-void HandTool::mouseDoubleClickEvent( QMouseEvent *event )
+void HandTool::pointerDoubleClickEvent(PointerEvent *event)
 {
     if ( event->button() == Qt::RightButton )
     {

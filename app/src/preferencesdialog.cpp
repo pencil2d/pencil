@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <QComboBox>
 #include <QMessageBox>
+#include <QSlider>
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
@@ -86,25 +87,27 @@ void PreferencesDialog::updateRecentListBtn(bool isEmpty)
     }
 }
 
-GeneralPage::GeneralPage()
-    : ui(new Ui::GeneralPage)
+GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 {
     ui->setupUi(this);
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
+    ui->languageCombo->addItem(tr("Catalan ") + " (Catalan)", "ca");
     ui->languageCombo->addItem(tr("Czech") + " (Czech)", "cs");
     ui->languageCombo->addItem(tr("Danish") + " (Danish)", "da");
     ui->languageCombo->addItem(tr("German") + " (German)", "de");
+    ui->languageCombo->addItem(tr("Greek") + " (Greek)", "el");
     ui->languageCombo->addItem(tr("English") + " (English)", "en");
-    ui->languageCombo->addItem(tr("Estonian") + " (Estonian)", "et");
     ui->languageCombo->addItem(tr("Spanish") + " (Spanish)", "es");
+    ui->languageCombo->addItem(tr("Estonian") + " (Estonian)", "et");
     ui->languageCombo->addItem(tr("French") + " (French)", "fr");
     ui->languageCombo->addItem(tr("Hebrew") + " (Hebrew)", "he");
     ui->languageCombo->addItem(tr("Hungarian") + " (Hungarian)", "hu_HU");
     ui->languageCombo->addItem(tr("Indonesian") + " (Indonesian)", "id");
     ui->languageCombo->addItem(tr("Italian") + " (Italian)", "it");
     ui->languageCombo->addItem(tr("Japanese") + " (Japanese)", "ja");
+    ui->languageCombo->addItem(tr("Kabyle") + " (Kabyle)", "kab");
     ui->languageCombo->addItem(tr("Polish") + " (Polish)", "pl");
     ui->languageCombo->addItem(tr("Portuguese - Portugal") + "(Portuguese - Portugal)", "pt");
     ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt_BR");
@@ -291,12 +294,19 @@ TimelinePage::TimelinePage()
     ui->setupUi(this);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    auto sliderChanged = static_cast<void(QSlider::*)(int)>(&QSlider::valueChanged);
     connect(ui->timelineLength, spinBoxValueChange, this, &TimelinePage::timelineLengthChanged);
     connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChanged);
     connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &TimelinePage::playbackStateChanged);
+    connect(ui->flipRollMsecsSlider, sliderChanged, this, &TimelinePage::flipRollMsecSliderChanged);
+    connect(ui->flipRollMsecsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollMsecSpinboxChanged);
+    connect(ui->flipRollNumDrawingsSlider, sliderChanged, this, &TimelinePage::flipRollNumDrawingdSliderChanged);
+    connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
+    connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
+    connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
 }
 
 TimelinePage::~TimelinePage()
@@ -335,6 +345,12 @@ void TimelinePage::updateValues()
 
     SignalBlocker b7(ui->onionWhilePlayback);
     ui->onionWhilePlayback->setChecked(mManager->getInt(SETTING::ONION_WHILE_PLAYBACK));
+    ui->flipRollMsecsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
+    ui->flipRollNumDrawingsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
+    ui->flipInBtwnMsecSlider->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
+    ui->flipRollMsecsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
+    ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
+    ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -372,6 +388,43 @@ void TimelinePage::drawEmptyKeyRadioButtonToggled(bool)
         mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, KEEP_DRAWING_ON_PREVIOUS_KEY);
     }
 }
+
+void TimelinePage::flipRollMsecSliderChanged(int value)
+{
+    ui->flipRollMsecsSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_MSEC, value);
+}
+
+void TimelinePage::flipRollMsecSpinboxChanged(int value)
+{
+    ui->flipRollMsecsSlider->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_MSEC, value);
+}
+
+void TimelinePage::flipRollNumDrawingdSliderChanged(int value)
+{
+    ui->flipRollNumDrawingsSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_DRAWINGS, value);
+}
+
+void TimelinePage::flipRollNumDrawingdSpinboxChanged(int value)
+{
+    ui->flipRollNumDrawingsSlider->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_DRAWINGS, value);
+}
+
+void TimelinePage::flipInbetweenMsecSliderChanged(int value)
+{
+    ui->flipInBtwnMsecSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+
+void TimelinePage::flipInbetweenMsecSpinboxChanged(int value)
+{
+    ui->flipInBtwnMsecSlider->setValue(value);
+    mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+
 
 FilesPage::FilesPage()
     : ui(new Ui::FilesPage)
@@ -455,3 +508,5 @@ void ToolsPage::onionNextFramesNumChange(int value)
 {
     mManager->set(SETTING::ONION_NEXT_FRAMES_NUM, value);
 }
+
+

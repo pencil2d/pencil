@@ -45,6 +45,7 @@ public:
     ~TimeLineCells();
 
     int getLayerNumber(int y);
+    int getInbetweenLayerNumber(int y);
     int getLayerY(int layerNumber);
     int getFrameNumber(int x);
     int getFrameX(int frameNumber);
@@ -59,6 +60,8 @@ public:
 
     int getFrameSize() { return mFrameSize; }
     void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
+    void paintLayerGutter(QPainter& painter);
+    bool didDetatchLayer();
 
 Q_SIGNALS:
     void mouseMovedY(int);
@@ -104,6 +107,8 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
+    int mFromLayer = 0;
+    int mToLayer   = 1;
     int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
@@ -126,6 +131,7 @@ private:
 
     int mNumOfFramesOffset = 0;
 
+    const static int mLayerDetatchThreshold = 5;
 };
 
 #endif // TIMELINECELLS_H

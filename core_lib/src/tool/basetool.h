@@ -33,6 +33,7 @@ class QKeyEvent;
 class QMouseEvent;
 class QTabletEvent;
 class StrokeManager;
+class PointerEvent;
 
 class Properties
 {
@@ -76,13 +77,10 @@ public:
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
 
-    virtual void mousePressEvent(QMouseEvent*) = 0;
-    virtual void mouseMoveEvent(QMouseEvent*) = 0;
-    virtual void mouseReleaseEvent(QMouseEvent*) = 0;
-    virtual void mouseDoubleClickEvent(QMouseEvent*);
-    virtual void tabletMoveEvent(QTabletEvent*);
-    virtual void tabletPressEvent(QTabletEvent*);
-    virtual void tabletReleaseEvent(QTabletEvent*);
+    virtual void pointerPressEvent(PointerEvent*) = 0;
+    virtual void pointerMoveEvent(PointerEvent*) = 0;
+    virtual void pointerReleaseEvent(PointerEvent*) = 0;
+    virtual void pointerDoubleClickEvent(PointerEvent*);
 
     // return true if handled
     virtual bool keyPressEvent(QKeyEvent*) { return false; }
@@ -92,8 +90,6 @@ public:
     virtual void startAdjusting(ToolPropertyType argSettingType, qreal argStep);
     virtual void stopAdjusting();
     virtual void adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod);
-
-    virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
     virtual void clear() {}
 
@@ -120,6 +116,8 @@ public:
 
     Properties properties;
 
+    QPointF getCurrentPressPixel();
+    QPointF getCurrentPressPoint();
     QPointF getCurrentPixel();
     QPointF getCurrentPoint();
     QPointF getLastPixel();

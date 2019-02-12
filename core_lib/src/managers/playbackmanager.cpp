@@ -41,23 +41,28 @@ bool PlaybackManager::init()
 {
     mTimer = new QTimer(this);
     mTimer->setTimerType(Qt::PreciseTimer);
+
+    mFlipTimer = new QTimer(this);
+    mFlipTimer->setTimerType(Qt::PreciseTimer);
+
     QSettings settings (PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
+    connect(mFlipTimer, &QTimer::timeout, this, &PlaybackManager::flipTimerTick);
     return true;
 }
 
 Status PlaybackManager::load(Object* o)
 {
-    const ObjectData* e = o->data();
+    const ObjectData* data = o->data();
 
-    mIsLooping = e->isLooping();
-    mIsRangedPlayback = e->isRangedPlayback();
-    mMarkInFrame = e->getMarkInFrameNumber();
-    mMarkOutFrame = e->getMarkOutFrameNumber();
-    mFps = e->getFrameRate();
+    mIsLooping = data->isLooping();
+    mIsRangedPlayback = data->isRangedPlayback();
+    mMarkInFrame = data->getMarkInFrameNumber();
+    mMarkOutFrame = data->getMarkOutFrameNumber();
+    mFps = data->getFrameRate();
 
     updateStartFrame();
     updateEndFrame();
@@ -78,7 +83,7 @@ Status PlaybackManager::save(Object* o)
 
 bool PlaybackManager::isPlaying()
 {
-    return mTimer->isActive();
+    return (mTimer->isActive() || mFlipTimer->isActive());
 }
 
 void PlaybackManager::play()
@@ -87,7 +92,7 @@ void PlaybackManager::play()
     updateEndFrame();
 
     int frame = editor()->currentFrame();
-    if (frame >= mEndFrame)
+    if (frame >= mEndFrame || frame < mStartFrame)
     {
         editor()->scrubTo(mStartFrame);
     }
@@ -122,7 +127,7 @@ void PlaybackManager::play()
         }
     }
 
-    mTimer->setInterval(1000.f / mFps);
+    mTimer->setInterval(static_cast<int>(1000.f / mFps));
     mTimer->start();
 
     // for error correction, please ref skipFrame()
@@ -140,6 +145,69 @@ void PlaybackManager::stop()
     mTimer->stop();
     stopSounds();
     emit playStateChanged(false);
+}
+
+void PlaybackManager::playFlipRoll()
+{
+    if (isPlaying()) { return; }
+
+    int start = editor()->currentFrame();
+    int tmp = start;
+    mFlipList.clear();
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mFlipRollMax = settings.value(SETTING_FLIP_ROLL_DRAWINGS).toInt();
+    for (int i = 0; i < mFlipRollMax; i++)
+    {
+        int prev = editor()->layers()->currentLayer()->getPreviousKeyFramePosition(tmp);
+        if (prev < tmp)
+        {
+            mFlipList.prepend(prev);
+            tmp = prev;
+        }
+    }
+    if (mFlipList.isEmpty()) { return; }
+
+    // run the roll...
+    mFlipRollInterval = settings.value(SETTING_FLIP_ROLL_MSEC).toInt();
+    mFlipList.append(start);
+    mFlipTimer->setInterval(mFlipRollInterval);
+
+    editor()->scrubTo(mFlipList[0]);
+    mFlipTimer->start();
+    emit playStateChanged(true);
+}
+
+void PlaybackManager::playFlipInBetween()
+{
+    if (isPlaying()) { return; }
+
+    LayerManager* layerMgr = editor()->layers();
+    int start = editor()->currentFrame();
+
+    int prev = layerMgr->currentLayer()->getPreviousKeyFramePosition(start);
+    int next = layerMgr->currentLayer()->getNextKeyFramePosition(start);
+
+    if (layerMgr->currentLayer()->keyExists(prev) &&
+        layerMgr->currentLayer()->keyExists(next))
+    {
+        mFlipList.clear();
+        mFlipList.append(prev);
+        mFlipList.append(start);
+        mFlipList.append(next);
+        mFlipList.append(start);
+    }
+    else
+    {
+        return;
+    }
+    // run the flip in-between...
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mFlipInbetweenInterval = settings.value(SETTING_FLIP_INBETWEEN_MSEC).toInt();
+
+    mFlipTimer->setInterval(mFlipInbetweenInterval);
+    editor()->scrubTo(mFlipList[0]);
+    mFlipTimer->start();
+    emit playStateChanged(true);
 }
 
 void PlaybackManager::setFps(int fps)
@@ -251,12 +319,12 @@ void PlaybackManager::playSounds(int frame)
 
 /**
  * @brief PlaybackManager::skipFrame()
- * Small errors will accumulate while playing animation
- * If the error time is larger than a frame interval, skip a frame.
+ * Small errors accumulate while playing animation
+ * If the error is greater than a frame interval, skip a frame
  */
 bool PlaybackManager::skipFrame()
 {
-    // uncomment these debug output to see what happens
+    // uncomment these debug outputs to see what happens
     //float expectedTime = (mPlayingFrameCounter) * (1000.f / mFps);
     //qDebug("Expected:  %.2f ms", expectedTime);
     //qDebug("Actual:    %d   ms", mElapsedTimer->elapsed());
@@ -320,6 +388,22 @@ void PlaybackManager::timerTick()
 
     // keep going 
     editor()->scrubForward();
+}
+
+void PlaybackManager::flipTimerTick()
+{
+    int curr = editor()->currentFrame();
+    int pos = mFlipList.indexOf(curr);
+    if (pos == mFlipList.count() - 1)
+    {
+        mFlipTimer->stop();
+        emit playStateChanged(false);
+    }
+    else
+    {
+        editor()->scrubTo(mFlipList[pos + 1]);
+        mFlipList.removeAt(pos);
+    }
 }
 
 void PlaybackManager::setLooping(bool isLoop)

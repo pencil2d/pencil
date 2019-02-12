@@ -34,13 +34,9 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent*) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
-
-    void tabletMoveEvent( QTabletEvent* ) override;
-    void tabletPressEvent( QTabletEvent* ) override;
-    void tabletReleaseEvent( QTabletEvent* ) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
 
     bool leavingThisTool() override;
     bool switchingLayer() override;

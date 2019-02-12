@@ -67,18 +67,18 @@
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="595"/>
-        <location filename="../app/src/actioncommands.cpp" line="608"/>
-        <location filename="../app/src/actioncommands.cpp" line="622"/>
-        <location filename="../app/src/actioncommands.cpp" line="636"/>
+        <location filename="../app/src/actioncommands.cpp" line="612"/>
+        <location filename="../app/src/actioncommands.cpp" line="630"/>
+        <location filename="../app/src/actioncommands.cpp" line="648"/>
         <source>Layer Properties</source>
         <translation>Lastnosti sloja</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="81"/>
         <location filename="../app/src/actioncommands.cpp" line="596"/>
-        <location filename="../app/src/actioncommands.cpp" line="609"/>
-        <location filename="../app/src/actioncommands.cpp" line="623"/>
-        <location filename="../app/src/actioncommands.cpp" line="637"/>
+        <location filename="../app/src/actioncommands.cpp" line="613"/>
+        <location filename="../app/src/actioncommands.cpp" line="631"/>
+        <location filename="../app/src/actioncommands.cpp" line="649"/>
         <source>Layer name:</source>
         <translation>Ime sloja:</translation>
     </message>
@@ -118,36 +118,41 @@
         <translation>Bitni sloj</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="610"/>
+        <location filename="../app/src/actioncommands.cpp" line="614"/>
         <source>Vector Layer</source>
         <translation>Vektorski sloj</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="624"/>
+        <location filename="../app/src/actioncommands.cpp" line="632"/>
         <source>Camera Layer</source>
         <translation>Sloj kamere</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="638"/>
+        <location filename="../app/src/actioncommands.cpp" line="650"/>
         <source>Sound Layer</source>
         <translation>Zvočni sloj</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="655"/>
+        <location filename="../app/src/actioncommands.cpp" line="671"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Izbriši sloj</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="656"/>
+        <location filename="../app/src/actioncommands.cpp" line="672"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Res želite izbrisati sloj:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="665"/>
+        <location filename="../app/src/actioncommands.cpp" line="681"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Prosim ohranite vsaj en sloj s kamero v projektu</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="704"/>
+        <source>Filename must be unique and not empty</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -492,13 +497,13 @@
         <translation>Prilepi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="926"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="932"/>
         <source>Remove frame</source>
         <translation>Odstrani razdelek</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="797"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="803"/>
         <source>Import Image</source>
         <translation>Uvozi sliko</translation>
     </message>
@@ -567,42 +572,47 @@
         <translation>BMP</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="101"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="98"/>
+        <source>TIFF</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="106"/>
         <source>Transparency</source>
         <translation>Prosojnost</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="111"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="116"/>
         <source>Range</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="157"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="162"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="160"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="165"/>
         <source>End Frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="179"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="184"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="182"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="187"/>
         <source>Start Frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="207"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="212"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="213"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
         <source>To the end of sound clips</source>
         <translation type="unfinished"/>
     </message>
@@ -1059,7 +1069,17 @@
         <translation>Pikčasti kazalec</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="267"/>
+        <location filename="../app/ui/generalpage.ui" line="245"/>
+        <source>Grid Heigth</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="252"/>
+        <source>Grid Width</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="297"/>
         <source>Enable Grid</source>
         <translation>Omogoči mrežo</translation>
     </message>
@@ -1074,12 +1094,12 @@
         <translation>Pozicija za visoko ločljivostno tablico</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="215"/>
         <source>Restart Required</source>
         <translation>Potreben je ponovni zagon</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="213"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="216"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Sprememba jezika bo aktivna po ponovnem zagonu Svinčnika2D</translation>
     </message>
@@ -1409,7 +1429,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1278"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1280"/>
         <source>Play</source>
         <translation>Predvajaj</translation>
     </message>
@@ -1693,8 +1713,8 @@ Uspešno ste izbpraznili seznam</translation>
         <location filename="../app/src/mainwindow2.cpp" line="534"/>
         <location filename="../app/src/mainwindow2.cpp" line="697"/>
         <location filename="../app/src/mainwindow2.cpp" line="756"/>
-        <location filename="../app/src/mainwindow2.cpp" line="830"/>
-        <location filename="../app/src/mainwindow2.cpp" line="883"/>
+        <location filename="../app/src/mainwindow2.cpp" line="832"/>
+        <location filename="../app/src/mainwindow2.cpp" line="885"/>
         <source>Warning</source>
         <translation>Opozorilo</translation>
     </message>
@@ -1712,7 +1732,7 @@ Uspešno ste izbpraznili seznam</translation>
         <location filename="../app/src/mainwindow2.cpp" line="541"/>
         <location filename="../app/src/mainwindow2.cpp" line="619"/>
         <location filename="../app/src/mainwindow2.cpp" line="783"/>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Abort</source>
         <translation>Prekini</translation>
     </message>
@@ -1762,31 +1782,31 @@ Uspešno ste izbpraznili seznam</translation>
         <translation>Uvažanje zaporedja sličic...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="831"/>
-        <location filename="../app/src/mainwindow2.cpp" line="884"/>
+        <location filename="../app/src/mainwindow2.cpp" line="833"/>
+        <location filename="../app/src/mainwindow2.cpp" line="886"/>
         <source>was unable to import</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="860"/>
         <source>Importing Animated GIF...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1103"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1108"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1105"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1110"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Korak nazaj</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1123"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1125"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Korak naprej</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1273"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1275"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
@@ -1808,122 +1828,122 @@ Uspešno ste izbpraznili seznam</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="546"/>
         <source>Black</source>
         <translation>Črna</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="547"/>
         <source>Red</source>
         <translation>Rdeča</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="548"/>
         <source>Dark Red</source>
         <translation>Temno rdeča</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
         <source>Orange</source>
         <translation>Oranžna</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
         <source>Dark Orange</source>
         <translation>Temno oranžna</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
         <source>Yellow</source>
         <translation>Rumena</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
         <source>Dark Yellow</source>
         <translation>Temno rumena</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
         <source>Green</source>
         <translation>Zelena</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
         <source>Dark Green</source>
         <translation>Temno zelena</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
         <source>Cyan</source>
         <translation>Sinja</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
         <source>Dark Cyan</source>
         <translation>Temno sinja</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
         <source>Blue</source>
         <translation>Modra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
         <source>Dark Blue</source>
         <translation>Temno modra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
         <source>White</source>
         <translation>Bela</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
         <source>Very Light Grey</source>
         <translation>Zelo svetlo siva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Light Grey</source>
         <translation>Svetlo siva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>Grey</source>
         <translation>Siva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Dark Grey</source>
         <translation>Temno siva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Light Skin</source>
         <translation>Svetla koža</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Light Skin - shade</source>
         <translation>Svetla koža-senca</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Skin</source>
         <translation>Koža</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Skin - shade</source>
         <translation>Koža-senca</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Dark Skin</source>
         <translation>Temna koža</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Dark Skin - shade</source>
         <translation>Temna koža-senca</translation>
     </message>
@@ -2138,12 +2158,8 @@ Uspešno ste izbpraznili seznam</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</source>
+        <source>Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3528,7 +3544,7 @@ Uspešno ste izbpraznili seznam</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
-        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
+        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3548,60 +3564,60 @@ Uspešno ste izbpraznili seznam</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="525"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
         <source>Warning</source>
         <translation>Opozorilo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="527"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Rišete po skritem sloju! Izberite drug sloj (ali spremenite trenutni sloj v vidnega).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1929"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1931"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Izbriši označeno</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1945"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1947"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1955"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Počisti sliko</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1980"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1982"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>V risbi je razmik (ali pa je preveč približana).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1981"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1983"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Žal, to vedno ne deluje. Poizkusite znova (malce približajte ali oddaljite, kliknite na drugo lokacijo,...)&lt;br&gt;Če ne deluje malce približajte ali oddaljite in preverite če so poti spojene s pritiskom na F1.).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
         <source>Out of bound.</source>
         <translation>Izven mej.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
         <source>Could not find a closed path.</source>
         <translation>Ne najdem zaprte poti.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1989"/>
         <source>Could not find the root index.</source>
         <translation>Ne najdem korenskega kazala.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Napaka: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
         <source>Flood fill error</source>
         <translation>Napaka pri polnenju.</translation>
     </message>

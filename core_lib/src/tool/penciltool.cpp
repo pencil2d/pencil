@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 #include <QSettings>
 #include <QPixmap>
-#include <QMouseEvent>
+#include "pointerevent.h"
 
 #include "layermanager.h"
 
@@ -151,7 +151,7 @@ QCursor PencilTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PencilTool::tabletPressEvent(QTabletEvent*)
+void PencilTool::pointerPressEvent(PointerEvent *)
 {
     mScribbleArea->setAllDirty();
 
@@ -167,59 +167,18 @@ void PencilTool::tabletPressEvent(QTabletEvent*)
     }
 }
 
-void PencilTool::tabletMoveEvent(QTabletEvent*)
+void PencilTool::pointerMoveEvent(PointerEvent *)
 {
+    mCurrentPressure = m_pStrokeManager->getPressure();
     drawStroke();
     if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
         m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
-void PencilTool::tabletReleaseEvent(QTabletEvent*)
+void PencilTool::pointerReleaseEvent(PointerEvent *)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
-    if (distance < 1)
-    {
-        paintAt(mMouseDownPoint);
-    }
-    else
-    {
-        drawStroke();
-    }
 
-    mEditor->backups()->saveStates();
-    if ( layer->type() == Layer::BITMAP )
-    {
-        paintBitmapStroke();
-        mEditor->backups()->bitmap(tr("Bitmap: Pencil"));
-    }
-    else if (layer->type() == Layer::VECTOR )
-    {
-        paintVectorStroke(layer);
-        mEditor->backups()->vector(tr("Vector: Pencil"));
-    }
-    endStroke();
-}
-
-void PencilTool::mousePressEvent(QMouseEvent *)
-{
-    mScribbleArea->setAllDirty();
-
-    mMouseDownPoint = getCurrentPoint();
-    mLastBrushPoint = getCurrentPoint();
-
-    startStroke();
-
-    // note: why are we doing this on device press event?
-    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
-    {
-        mScribbleArea->toggleThinLines();
-    }
-}
-
-void PencilTool::mouseReleaseEvent(QMouseEvent *)
-{
-    Layer* layer = mEditor->layers()->currentLayer();
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)
     {
@@ -242,27 +201,6 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *)
        mEditor->backups()->vector(tr("Vector: Pencil"));
    }
     endStroke();
-}
-
-void PencilTool::mouseMoveEvent( QMouseEvent *)
-{
-    drawStroke();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-}
-
-void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
-{
-    mCurrentWidth = properties.width;
-
-    if (properties.pressure && !mouseDevice)
-    {
-        mCurrentPressure = pressure;
-    }
-    else
-    {
-        mCurrentPressure = 1.0;
-    }
 }
 
 // draw a single paint dab at the given location

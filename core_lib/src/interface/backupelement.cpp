@@ -1185,13 +1185,13 @@ MoveLayerElement::MoveLayerElement(int backupOldLayerIndex, int backupNewLayerIn
 
 void MoveLayerElement::undo()
 {
-    editor()->moveLayer(newLayerIndex, oldLayerIndex);
+    editor()->swapLayers(newLayerIndex, oldLayerIndex);
 }
 
 void MoveLayerElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    editor()->moveLayer(oldLayerIndex, newLayerIndex);
+    editor()->swapLayers(oldLayerIndex, newLayerIndex);
 
 }

@@ -31,9 +31,12 @@ public:
     QCursor cursor() override;
     QCursor cursor( const QColor colour );
 
-    void mousePressEvent( QMouseEvent* ) override;
-    void mouseReleaseEvent( QMouseEvent* ) override;
-    void mouseMoveEvent( QMouseEvent* ) override;
+    void pointerPressEvent( PointerEvent* ) override;
+    void pointerReleaseEvent( PointerEvent* event ) override;
+    void pointerMoveEvent( PointerEvent* ) override;
+
+    /** Updates front color for bitmap and color index for vector */
+    void updateFrontColor();
 };
 
 #endif // EYEDROPPERTOOL_H

@@ -105,6 +105,10 @@ void PreferenceManager::loadPrefs()
     set(SETTING::ONION_WHILE_PLAYBACK,     settings.value(SETTING_ONION_WHILE_PLAYBACK,   0).toInt());
     set(SETTING::ONION_TYPE,               settings.value(SETTING_ONION_TYPE,             "relative").toString());
 
+    set(SETTING::FLIP_ROLL_MSEC,           settings.value(SETTING_FLIP_ROLL_MSEC,         100).toInt());
+    set(SETTING::FLIP_ROLL_DRAWINGS,       settings.value(SETTING_FLIP_ROLL_DRAWINGS,     5).toInt());
+    set(SETTING::FLIP_INBETWEEN_MSEC,      settings.value(SETTING_FLIP_INBETWEEN_MSEC,    100).toInt());
+
     set(SETTING::LANGUAGE,                 settings.value(SETTING_LANGUAGE).toString());
 }
 
@@ -215,6 +219,15 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::ONION_NEXT_FRAMES_NUM:
         settings.setValue(SETTING_ONION_NEXT_FRAMES_NUM, value);
+        break;
+    case SETTING::FLIP_ROLL_MSEC :
+        settings.setValue(SETTING_FLIP_ROLL_MSEC, value);
+        break;
+    case SETTING::FLIP_ROLL_DRAWINGS :
+        settings.setValue(SETTING_FLIP_ROLL_DRAWINGS, value);
+        break;
+    case SETTING::FLIP_INBETWEEN_MSEC :
+        settings.setValue(SETTING_FLIP_INBETWEEN_MSEC, value);
         break;
     case SETTING::GRID_SIZE_W:
         settings.setValue(SETTING_GRID_SIZE_W, value);

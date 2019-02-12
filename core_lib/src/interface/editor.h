@@ -151,7 +151,7 @@ public: //slots
     void removeKeyAtLayerId(int layerId, int frameIndex);
 
     void switchVisibilityOfLayer(int layerNumber);
-    void moveLayer(int i, int j);
+    void swapLayers(int i, int j);
 
     void copy();
     void paste();

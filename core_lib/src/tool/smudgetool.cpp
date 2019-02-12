@@ -16,6 +16,8 @@ GNU General Public License for more details.
 */
 #include "smudgetool.h"
 
+#include "pointerevent.h"
+
 #include <QPixmap>
 #include "vectorimage.h"
 #include "editor.h"
@@ -113,19 +115,6 @@ QCursor SmudgeTool::cursor()
     }
 }
 
-void SmudgeTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
-{
-    mCurrentWidth = properties.width;
-    if (properties.pressure && !mouseDevice)
-    {
-        mCurrentPressure = pressure;
-    }
-    else
-    {
-        mCurrentPressure = 1.0;
-    }
-}
-
 bool SmudgeTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Alt)
@@ -146,7 +135,7 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent*)
     return true;
 }
 
-void SmudgeTool::mousePressEvent(QMouseEvent *event)
+void SmudgeTool::pointerPressEvent(PointerEvent *event)
 {
     //qDebug() << "smudgetool: mousePressEvent";
     mEditor->backups()->saveStates();
@@ -203,38 +192,7 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
-
-    if (event->button() == Qt::LeftButton)
-    {
-
-        if (layer->type() == Layer::BITMAP)
-        {
-            drawStroke();
-            mScribbleArea->setAllDirty();
-            endStroke();
-            mEditor->backups()->bitmap(tr("Bitmap: Smudge"));
-        }
-        else if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-            vectorImage->applySelectionTransformation();
-            mScribbleArea->selectionTransformation.reset();
-            for (int k = 0; k < mScribbleArea->vectorSelection.curve.size(); k++)
-            {
-                int curveNumber = mScribbleArea->vectorSelection.curve.at(k);
-                vectorImage->curve(curveNumber).smoothCurve();
-            }
-            mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-            mEditor->backups()->vector(tr("Vector: Smudge"));
-        }
-    }
-}
-
-void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
+void SmudgeTool::pointerMoveEvent(PointerEvent *event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
@@ -268,6 +226,36 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
         }
         mScribbleArea->update();
         mScribbleArea->setAllDirty();
+    }
+}
+
+void SmudgeTool::pointerReleaseEvent(PointerEvent *event)
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer == NULL) { return; }
+
+    if (event->button() == Qt::LeftButton)
+    {
+        if (layer->type() == Layer::BITMAP)
+        {
+            drawStroke();
+            mScribbleArea->setAllDirty();
+            endStroke();
+            mEditor->backups()->bitmap(tr("Bitmap: Smudge"));
+        }
+        else if (layer->type() == Layer::VECTOR)
+        {
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            vectorImage->applySelectionTransformation();
+            mScribbleArea->selectionTransformation.reset();
+            for (int k = 0; k < mScribbleArea->vectorSelection.curve.size(); k++)
+            {
+                int curveNumber = mScribbleArea->vectorSelection.curve.at(k);
+                vectorImage->curve(curveNumber).smoothCurve();
+            }
+            mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+            mEditor->backups()->vector(tr("Vector: Smudge"));
+        }
     }
 }
 
