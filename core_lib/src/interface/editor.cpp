@@ -617,16 +617,16 @@ void Editor::fillWhiteAreas()
 void Editor::fillWhiteAreasRest()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
-    scrubTo(1);
-    do
+    for (int i = 1; i <= layerBitmap->getMaxKeyFramePosition(); i++)
     {
-        layerBitmap->fillWhiteAreas(currentFrame());
-        scrubNextKeyFrame();
-        emit updateTimeLine();
-        mObject->updateActiveFrames(currentFrame());
-    } while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame());
-    layerBitmap->fillWhiteAreas(currentFrame());
-    mScribbleArea->updateFrame(currentFrame());
+        if (layerBitmap->keyExists(i))
+        {
+            scrubTo(i);
+            layerBitmap->fillWhiteAreas(currentFrame());
+            mObject->updateActiveFrames(currentFrame());
+            mScribbleArea->updateFrame(currentFrame());
+        }
+    }
 }
 
 void Editor::toThinBlackLine()
@@ -640,29 +640,31 @@ void Editor::toThinBlackLine()
 void Editor::toThinBlackLineRest()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
-    scrubTo(1);
-    do
+    for (int i = 1; i <= layerBitmap->getMaxKeyFramePosition(); i++)
     {
-        layerBitmap->toThinBlackLine(currentFrame());
-        scrubNextKeyFrame();
-        mObject->updateActiveFrames(currentFrame());
-    } while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame());
-    layerBitmap->toThinBlackLine(currentFrame());
-    mScribbleArea->updateFrame(currentFrame());
+        if (layerBitmap->keyExists(i))
+        {
+            scrubTo(i);
+            layerBitmap->toThinBlackLine(currentFrame());
+            mObject->updateActiveFrames(currentFrame());
+            mScribbleArea->updateFrame(currentFrame());
+        }
+    }
 }
 
 void Editor::replaceThinLines()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
-    scrubTo(1);
-    do
+    for (int i = 1; i <= layerBitmap->getMaxKeyFramePosition(); i++)
     {
-        mObject->updateActiveFrames(currentFrame());
-        layerBitmap->replaceThinLine(currentFrame());
-        scrubNextKeyFrame();
-    } while (layerBitmap->getNextKeyFramePosition(currentFrame()) > currentFrame());
-    layerBitmap->replaceThinLine(currentFrame());
-    mScribbleArea->updateFrame(currentFrame());
+        if (layerBitmap->keyExists(i))
+        {
+            scrubTo(i);
+            layerBitmap->replaceThinLine(currentFrame());
+            mObject->updateActiveFrames(currentFrame());
+            mScribbleArea->updateFrame(currentFrame());
+        }
+    }
 }
 
 void Editor::clipboardChanged()

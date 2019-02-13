@@ -28,7 +28,7 @@ class LayerBitmap : public Layer
 
 public:
     const QRgb transp = qRgba(0, 0, 0, 0);
-    const QRgb thinline = qRgba(0, 0, 0, 255);
+    const QRgb thinline = qRgba(0, 1, 0, 255);
     const QRgb rosa = qRgba(255,230,230,255);
 
     LayerBitmap(Object* object);
