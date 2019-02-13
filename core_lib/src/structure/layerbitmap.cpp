@@ -552,7 +552,6 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("name", name());
     layerTag.setAttribute("visibility", visible());
     layerTag.setAttribute("type", type());
-    layerTag.setAttribute("parentid", parentId());
 
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
@@ -580,7 +579,6 @@ void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath, Progr
     }
     setName(element.attribute("name"));
     setVisible(element.attribute("visibility").toInt() == 1);
-    setParentId(element.attribute("parentid").toInt());
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

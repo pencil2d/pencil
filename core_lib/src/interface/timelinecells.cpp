@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QMessageBox>
 
 #include "object.h"
 #include "editor.h"
@@ -725,6 +726,13 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
             }
             else
             {
+                if (layer->getIsColorLayer())
+                {
+                    Q_UNUSED(QMessageBox::information(this, tr("Rename not allowed"),
+                                                      tr("You cannot rename color layers."),
+                                                      QMessageBox::Ok));
+                    return;
+                }
                 QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
                 bool ok;
@@ -734,7 +742,13 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
                 if (ok && !text.isEmpty())
                 {
                     text.replace(regex, "");
+                    QString orgName = layer->name();
                     mEditor->layers()->renameLayer(layer, text);
+                    Layer* colorlayer = mEditor->layers()->findLayerByName(orgName + "_C");
+                    if (colorlayer != nullptr)
+                    {
+                        mEditor->layers()->renameLayer(colorlayer, text + "_C");
+                    }
                 }
             }
         }

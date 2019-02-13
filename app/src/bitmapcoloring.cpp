@@ -65,22 +65,21 @@ void BitmapColoring::updateUI()
 
     Layer* layer = mEditor->layers()->currentLayer();
     setEnabled(true);
-    if (layer->type() == Layer::BITMAP && layer->parentId() == -1)
+    if (layer->type() == Layer::BITMAP && !layer->getIsColorLayer())
     {
         ui->tabWidgetColor->setEnabled(false);
         ui->tabWidgetScans->setEnabled(true);
-        bool colLayerExists = false;
-        for (int i = 0; i < mEditor->layers()->count(); i++)
+        if (layer->getHasColorLayer())
         {
-            if (mEditor->layers()->getLayer(i)->parentId() == layer->id())
-            {
-                ui->labx_3->setText(tr("To Layer: %1").arg(mEditor->layers()->getLayer(i)->name()));
-                colLayerExists = true;
-            }
+            ui->labx_3->setText(tr("To Layer: %1").arg(layer->name()));
+            ui->btnx_blackLine->setEnabled(true);
         }
-        colLayerExists == true ? ui->btnx_blackLine->setEnabled(true) : ui->btnx_blackLine->setEnabled(false);
+        else
+        {
+            ui->btnx_blackLine->setEnabled(false);
+        }
     }
-    else if (layer->type() == Layer::BITMAP && layer->parentId() > -1)
+    else if (layer->type() == Layer::BITMAP && layer->getIsColorLayer())
     {
         ui->tabWidgetColor->setEnabled(true);
         ui->tabWidgetScans->setEnabled(false);

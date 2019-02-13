@@ -1394,7 +1394,8 @@ void MainWindow2::updateZoomLabel()
 
 void MainWindow2::updateLayerMenu()
 {
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::BITMAP && !layer->getHasColorLayer() && !layer->getIsColorLayer())
         ui->actionAdd_Bitmap_Color_Layer->setEnabled(true);
     else
         ui->actionAdd_Bitmap_Color_Layer->setEnabled(false);

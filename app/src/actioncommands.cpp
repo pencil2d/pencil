@@ -655,9 +655,12 @@ Status ActionCommands::addNewBitmapColorLayer()
     QString name = mEditor->layers()->currentLayer()->name() + "_C";
     if (!name.isEmpty())
     {
+        LayerBitmap* parentlayer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+        parentlayer->setHasColorLayer(true);
         LayerBitmap* colorlayer = mEditor->layers()->createBitmapLayer(name);
-        colorlayer->initColorLayer(mEditor->layers()->currentLayer(), colorlayer);
-        colorlayer->setParentId(mEditor->layers()->currentLayer()->id());
+        colorlayer->initColorLayer(parentlayer, colorlayer);
+        colorlayer->setIsColorLayer(true);
+        emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex());
     }
     return Status::OK;
 }
