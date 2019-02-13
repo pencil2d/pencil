@@ -22,6 +22,7 @@ public:
 
     void initUI() override;
     void updateUI() override;
+    void visibilityChanged(bool visibility);
 
 signals:
 

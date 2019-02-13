@@ -54,8 +54,6 @@ BitmapColoring::~BitmapColoring()
 
 void BitmapColoring::initUI()
 {
-//    if (!isVisible()) { return; }
-
     updateUI();
 }
 
@@ -98,4 +96,10 @@ void BitmapColoring::updateUI()
     {
         setEnabled(false);
     }
+}
+
+void BitmapColoring::visibilityChanged(bool visibility)
+{
+    Q_UNUSED(visibility);
+    updateUI();
 }

@@ -1336,6 +1336,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mBitmapColoring, &BitmapColoring::updateUI);
+    connect(mBitmapColoring, &QDockWidget::visibilityChanged, mBitmapColoring, &BitmapColoring::visibilityChanged);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
 }
 
