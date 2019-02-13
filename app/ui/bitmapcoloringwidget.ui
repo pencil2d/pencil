@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>205</width>
-    <height>475</height>
+    <width>247</width>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QLabel" name="lab1_1a">
+       <widget class="QLabel" name="labcp_header">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -37,35 +37,42 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="lab1_2a">
+       <widget class="QLabel" name="labcp_1">
         <property name="text">
          <string>1. Select from scan</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="labcp_1x">
         <property name="text">
          <string>[x. Black line repairs...]</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labcp_2">
         <property name="text">
          <string>2. Remove white areas</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="labcp_3">
         <property name="text">
          <string>3. Thin the lines...</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="labcp_4">
         <property name="text">
          <string>4. Remove black line</string>
         </property>

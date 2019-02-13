@@ -69,6 +69,11 @@ void BitmapColoring::updateUI()
     {
         ui->tabWidgetColor->setEnabled(false);
         ui->tabWidgetScans->setEnabled(true);
+        ui->labcp_1->setEnabled(true);
+        ui->labcp_1x->setEnabled(true);
+        ui->labcp_2->setEnabled(false);
+        ui->labcp_3->setEnabled(false);
+        ui->labcp_4->setEnabled(false);
         if (layer->getHasColorLayer())
         {
             ui->labx_3->setText(tr("To Layer: %1").arg(layer->name()));
@@ -83,6 +88,11 @@ void BitmapColoring::updateUI()
     {
         ui->tabWidgetColor->setEnabled(true);
         ui->tabWidgetScans->setEnabled(false);
+        ui->labcp_1->setEnabled(false);
+        ui->labcp_1x->setEnabled(false);
+        ui->labcp_2->setEnabled(true);
+        ui->labcp_3->setEnabled(true);
+        ui->labcp_4->setEnabled(true);
     }
     else
     {
