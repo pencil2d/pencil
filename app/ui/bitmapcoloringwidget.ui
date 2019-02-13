@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>222</width>
+    <width>205</width>
     <height>475</height>
    </rect>
   </property>
@@ -32,21 +32,21 @@
          </font>
         </property>
         <property name="text">
-         <string>Bitmap coloring process:</string>
+         <string>Coloring process:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="lab1_2a">
         <property name="text">
-         <string>1. Select from scan (optional)</string>
+         <string>1. Select from scan</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>[x. Black line (for repairs!)]</string>
+         <string>[x. Black line repairs...]</string>
         </property>
        </widget>
       </item>
@@ -190,7 +190,7 @@
           </font>
          </property>
          <property name="text">
-          <string>From bitmap to color layer</string>
+          <string>Bitmap to Color layer</string>
          </property>
         </widget>
        </item>
