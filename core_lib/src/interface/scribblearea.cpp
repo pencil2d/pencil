@@ -237,22 +237,16 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
 void ScribbleArea::keyPressEvent(QKeyEvent *event)
 {
     // Don't handle this event on auto repeat
-    //
-    if (event->isAutoRepeat()) {
-        return;
-    }
+    if (event->isAutoRepeat()) { return; }
 
     mKeyboardInUse = true;
 
     if (mMouseInUse) { return; } // prevents shortcuts calls while drawing
-
     if (instantTool) { return; } // prevents shortcuts calls while using instant tool
-
 
     if (currentTool()->keyPressEvent(event))
     {
-        // has been handled by tool
-        return;
+        return; // has been handled by tool
     }
 
     // --- fixed control key shortcuts ---
@@ -325,7 +319,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         if (mSomethingSelected)
         {
             applyTransformedSelection();
-            paintTransformedSelection();
+            //paintTransformedSelection();
             deselectAll();
         }
         else
