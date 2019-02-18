@@ -49,20 +49,20 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-    friend class MoveTool;
+        friend class MoveTool;
     friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
 
 public:
-    ScribbleArea( QWidget *parent );
+    ScribbleArea(QWidget *parent);
     ~ScribbleArea();
 
     bool init();
-    void setCore( Editor* pCore ) { mEditor = pCore; }
+    void setCore(Editor* pCore) { mEditor = pCore; }
 
     void deleteSelection();
-    void setSelection( QRectF rect );
+    void setSelection(QRectF rect);
     void adjustSelection(float offsetX, float offsetY, qreal rotatedAngle);
     void applySelectionChanges();
     void displaySelectionProperties();
@@ -84,14 +84,14 @@ public:
 
     QVector<QPoint> calcSelectionCenterPoints();
 
-    void setEffect( SETTING e, bool isOn );
+    void setEffect(SETTING e, bool isOn);
 
     int showAllLayers() const { return mShowAllLayers; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    void setMoveMode( MoveMode moveMode ) { mMoveMode = moveMode; }
+    void setMoveMode(MoveMode moveMode) { mMoveMode = moveMode; }
     MoveMode getMoveMode() const { return mMoveMode; }
     void findMoveModeOfCornerInRange();
     MoveMode getMoveModeForSelectionAnchor();
@@ -102,7 +102,7 @@ public:
     QPointF getCentralPoint();
 
     void updateCurrentFrame();
-    void updateFrame( int frame );
+    void updateFrame(int frame);
     void updateAllFrames();
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frameNumber);
@@ -111,16 +111,16 @@ public:
     void setAllDirty() { mNeedUpdateAll = true; }
 
     BaseTool* currentTool();
-    BaseTool* getTool( ToolType eToolMode );
-    void setCurrentTool( ToolType eToolMode );
-    void setTemporaryTool( ToolType eToolMode );
+    BaseTool* getTool(ToolType eToolMode);
+    void setCurrentTool(ToolType eToolMode);
+    void setTemporaryTool(ToolType eToolMode);
     void setPrevTool();
 
     StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
 
     Editor* editor() const { return mEditor; }
 
-    void floodFillError( int errorType );
+    void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
     bool isTemporaryTool() const { return instantTool; }
@@ -128,8 +128,8 @@ public:
     void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
 
 signals:
-    void modification( int );
-    void multiLayerOnionSkinChanged( bool );
+    void modification(int);
+    void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
 
 public slots:
@@ -140,7 +140,7 @@ public slots:
     void paintTransformedSelection();
     void applyTransformedSelection();
     void cancelTransformedSelection();
-    void setModified( int layerNumber, int frameNumber );
+    void setModified(int layerNumber, int frameNumber);
 
     inline bool transformHasBeenModified() {
         return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0;
@@ -149,7 +149,7 @@ public slots:
     void selectAll();
     void deselectAll();
 
-    void setCurveSmoothing( int );
+    void setCurveSmoothing(int);
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
@@ -165,34 +165,34 @@ public slots:
 
 
 protected:
-    void tabletEvent( QTabletEvent* ) override;
-    void wheelEvent( QWheelEvent* ) override;
-    void mousePressEvent( QMouseEvent* ) override;
-    void mouseMoveEvent( QMouseEvent* ) override;
-    void mouseReleaseEvent( QMouseEvent* ) override;
-    void mouseDoubleClickEvent( QMouseEvent* ) override;
-    void keyPressEvent( QKeyEvent* ) override;
-    void keyReleaseEvent( QKeyEvent* ) override;
-    void paintEvent( QPaintEvent* ) override;
-    void resizeEvent( QResizeEvent* ) override;
+    void tabletEvent(QTabletEvent*) override;
+    void wheelEvent(QWheelEvent*) override;
+    void mousePressEvent(QMouseEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
+    void mouseDoubleClickEvent(QMouseEvent*) override;
+    void keyPressEvent(QKeyEvent*) override;
+    void keyReleaseEvent(QKeyEvent*) override;
+    void paintEvent(QPaintEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
 public:
-    void drawPolyline(QPainterPath path, QPen pen, bool useAA );
-    void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm );
-    void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm );
-    void drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA = true );
-    void drawPencil( QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColour, qreal opacity );
-    void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true, int useAA = 0 );
-    void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
-    void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
+    void drawPolyline(QPainterPath path, QPen pen, bool useAA);
+    void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
+    void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
+    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA = true);
+    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColour, qreal opacity);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true, int useAA = 0);
+    void blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
+    void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
     void paintBitmapBufferRect(const QRect& rect);
     void paintCanvasCursor(QPainter& painter);
     void clearBitmapBuffer();
-    void refreshBitmap( const QRectF& rect, int rad );
-    void refreshVector( const QRectF& rect, int rad );
-    void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
+    void refreshBitmap(const QRectF& rect, int rad);
+    void refreshVector(const QRectF& rect, int rad);
+    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
     void pointerMoveEvent(PointerEvent*);
@@ -213,7 +213,7 @@ public:
     QPointF getTransformOffset() { return mOffset; }
 
 private:
-    void drawCanvas( int frame, QRect rect );
+    void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter& painter);
 
@@ -227,26 +227,24 @@ private:
 
     Editor* mEditor = nullptr;
 
-    bool mIsSimplified  = false;
+    bool mIsSimplified = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
     int  mShowAllLayers = 1;
-    bool mUsePressure   = true;
+    bool mUsePressure = true;
     bool mMakeInvisible = false;
-    bool mToolCursors   = true;
+    bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;
     bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
 
     bool mNeedUpdateAll = false;
-  
 
-private: 
+private:
     bool mKeyboardInUse = false;
-    bool mMouseInUse    = false;
+    bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
     bool mPenHeldDown = false;
-
 
     // Double click handling for tablet input
     void handleDoubleClick();
@@ -255,7 +253,6 @@ private:
     // Microsoft suggests that a double click action should be no more than 500 ms
     int DOUBLE_CLICK_THRESHOLD = 500;
     QTimer* doubleClickTimer;
-
 
     qreal selectionTolerance = 8.0;
     QList<VertexRef> mClosestVertices;
@@ -276,8 +273,8 @@ private:
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
 
-	// Pixmap Cache keys
-	std::vector<QPixmapCache::Key> mPixmapCacheKeys;
+    // Pixmap Cache keys
+    std::vector<QPixmapCache::Key> mPixmapCacheKeys;
 
     // debug
     QRectF mDebugRect;

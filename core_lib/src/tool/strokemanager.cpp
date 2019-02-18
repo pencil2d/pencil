@@ -56,12 +56,12 @@ void StrokeManager::setPressure(float pressure)
     mTabletPressure = pressure;
 }
 
-void StrokeManager::pointerPressEvent(PointerEvent *event)
+void StrokeManager::pointerPressEvent(PointerEvent* event)
 {
     reset();
-    if ( !(event->button() == Qt::NoButton) ) // if the user is pressing the left/right button
+    if (!(event->button() == Qt::NoButton)) // if the user is pressing the left/right button
     {
-        qDebug() << "press";
+        //qDebug() << "press";
         mLastPressPixel = mCurrentPressPixel;
         mCurrentPressPixel = event->posF();
     }
@@ -72,7 +72,7 @@ void StrokeManager::pointerPressEvent(PointerEvent *event)
     setPressure(event->pressure());
 }
 
-void StrokeManager::pointerMoveEvent(PointerEvent *event)
+void StrokeManager::pointerMoveEvent(PointerEvent* event)
 {
     // only applied to drawing tools.
     if (mStabilizerLevel != -1)
@@ -86,13 +86,13 @@ void StrokeManager::pointerMoveEvent(PointerEvent *event)
         mCurrentPixel = event->posF();
         mLastInterpolated = mCurrentPixel;
     }
-        setPressure(event->pressure());
+    setPressure(event->pressure());
 }
 
-void StrokeManager::pointerReleaseEvent(PointerEvent *event)
+void StrokeManager::pointerReleaseEvent(PointerEvent* event)
 {
     // flush out stroke
-    if ( mStrokeStarted )
+    if (mStrokeStarted)
     {
         pointerMoveEvent(event);
     }
@@ -107,34 +107,34 @@ void StrokeManager::setStabilizerLevel(int level)
 
 void StrokeManager::smoothMousePos(QPointF pos)
 {
-
     // Smooth mouse position before drawing
     QPointF smoothPos;
 
-    if (mStabilizerLevel == StabilizationLevel::NONE) {
-
+    if (mStabilizerLevel == StabilizationLevel::NONE)
+    {
         mLastPixel = mCurrentPixel;
         mCurrentPixel = pos;
         mLastInterpolated = mCurrentPixel;
     }
-    else if (mStabilizerLevel == StabilizationLevel::SIMPLE) {
-
+    else if (mStabilizerLevel == StabilizationLevel::SIMPLE)
+    {
         // simple interpolation
-        smoothPos = QPointF( ( pos.x() + mCurrentPixel.x() ) / 2.0, ( pos.y() + mCurrentPixel.y() ) / 2.0 );
+        smoothPos = QPointF((pos.x() + mCurrentPixel.x()) / 2.0, (pos.y() + mCurrentPixel.y()) / 2.0);
         mLastPixel = mCurrentPixel;
         mCurrentPixel = smoothPos;
         mLastInterpolated = mCurrentPixel;
 
         // shift queue
-        while ( strokeQueue.size()  >= STROKE_QUEUE_LENGTH )
+        while (strokeQueue.size() >= STROKE_QUEUE_LENGTH)
         {
             strokeQueue.pop_front();
         }
 
-        strokeQueue.push_back( smoothPos );
-    } else if (mStabilizerLevel == StabilizationLevel::STRONG ) {
-
-        smoothPos = QPointF( ( pos.x() + mLastInterpolated.x() ) / 2.0, ( pos.y() + mLastInterpolated.y() ) / 2.0 );
+        strokeQueue.push_back(smoothPos);
+    }
+    else if (mStabilizerLevel == StabilizationLevel::STRONG)
+    {
+        smoothPos = QPointF((pos.x() + mLastInterpolated.x()) / 2.0, (pos.y() + mLastInterpolated.y()) / 2.0);
 
         mLastInterpolated = mCurrentPixel;
         mCurrentPixel = smoothPos;
@@ -143,7 +143,7 @@ void StrokeManager::smoothMousePos(QPointF pos)
 
     mousePos = pos;
 
-    if ( !mStrokeStarted )
+    if (!mStrokeStarted)
     {
         return;
     }
@@ -157,47 +157,49 @@ void StrokeManager::smoothMousePos(QPointF pos)
 
 QPointF StrokeManager::interpolateStart(QPointF firstPoint)
 {
-        if (mStabilizerLevel == StabilizationLevel::SIMPLE) {
-            // Clear queue
-            strokeQueue.clear();
-            pressureQueue.clear();
+    if (mStabilizerLevel == StabilizationLevel::SIMPLE) {
+        // Clear queue
+        strokeQueue.clear();
+        pressureQueue.clear();
 
-            mSingleshotTime.start();
-            previousTime = mSingleshotTime.elapsed();
+        mSingleshotTime.start();
+        previousTime = mSingleshotTime.elapsed();
 
-            mLastPixel = firstPoint;
+        mLastPixel = firstPoint;
+    }
+    else if (mStabilizerLevel == StabilizationLevel::STRONG)
+    {
+        mSingleshotTime.start();
+        previousTime = mSingleshotTime.elapsed();
+
+        int sampleSize = 5;
+
+        // Clear queue
+        strokeQueue.clear();
+        pressureQueue.clear();
+
+        assert(sampleSize > 0);
+
+        // fill strokeQueue with firstPoint x times
+        for (int i = sampleSize; i > 0; i--) {
+            strokeQueue.enqueue(firstPoint);
         }
-        else if (mStabilizerLevel == StabilizationLevel::STRONG){
 
-            mSingleshotTime.start();
-            previousTime = mSingleshotTime.elapsed();
+        // last interpolated stroke should always be firstPoint
+        mLastInterpolated = firstPoint;
 
-            int sampleSize = 5;
+        // draw and poll each millisecond
+        timer.setInterval(sampleSize);
+        timer.start();
+    }
+    else if (mStabilizerLevel == StabilizationLevel::NONE)
+    {
+        // Clear queue
+        strokeQueue.clear();
+        pressureQueue.clear();
 
-            // Clear queue
-            strokeQueue.clear();
-            pressureQueue.clear();
-
-            assert(sampleSize > 0);
-
-            // fill strokeQueue with firstPoint x times
-            for ( int i = sampleSize; i > 0; i--) {
-                strokeQueue.enqueue(firstPoint);
-            }
-
-            // last interpolated stroke should always be firstPoint
-            mLastInterpolated = firstPoint;
-
-            // draw and poll each millisecond
-            timer.setInterval(sampleSize);
-            timer.start();
-        } else if (mStabilizerLevel == StabilizationLevel::NONE) {
-            // Clear queue
-            strokeQueue.clear();
-            pressureQueue.clear();
-
-            mLastPixel = firstPoint;
-        }
+        mLastPixel = firstPoint;
+    }
     return firstPoint;
 }
 
@@ -226,22 +228,22 @@ QList<QPointF> StrokeManager::interpolateStroke()
     QList<QPointF> result;
 
     qreal x = 0,
-          y = 0,
-          pressure = 0;
+        y = 0,
+        pressure = 0;
 
-    if (mStabilizerLevel == StabilizationLevel::SIMPLE) {
-
+    if (mStabilizerLevel == StabilizationLevel::SIMPLE)
+    {
         result = tangentInpolOp(result);
 
     }
-    else if (mStabilizerLevel == StabilizationLevel::STRONG){
-
+    else if (mStabilizerLevel == StabilizationLevel::STRONG)
+    {
         result = meanInpolOp(result, x, y, pressure);
 
-    } else if (mStabilizerLevel == StabilizationLevel::NONE) {
-
+    }
+    else if (mStabilizerLevel == StabilizationLevel::NONE)
+    {
         result = noInpolOp(result);
-
     }
     return result;
 }
@@ -263,11 +265,11 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
 {
     int time = mSingleshotTime.elapsed();
     static const qreal smoothness = 1.f;
-    QLineF line( mLastPixel, mCurrentPixel);
+    QLineF line(mLastPixel, mCurrentPixel);
 
     qreal scaleFactor = line.length() * 3.f;
 
-    if ( !hasTangent && scaleFactor > 0.01f)
+    if (!hasTangent && scaleFactor > 0.01f)
     {
         hasTangent = true;
         /*
@@ -277,11 +279,11 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
          */
         m_previousTangent = (mCurrentPixel - mLastPixel) * smoothness / (3.0 * scaleFactor);
         //qDebug() << "previous tangent" << m_previousTangent;
-        QLineF _line(QPointF(0,0), m_previousTangent);
+        QLineF _line(QPointF(0, 0), m_previousTangent);
         // don't bother for small tangents, as they can induce single pixel wobbliness
         if (_line.length() < 2)
         {
-            m_previousTangent = QPointF(0,0);
+            m_previousTangent = QPointF(0, 0);
         }
     }
     else
@@ -291,7 +293,7 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
         //qDebug() << "scalefactor1=" << scaleFactor << m_previousTangent << newTangent;
         if (scaleFactor == 0)
         {
-            newTangent = QPointF(0,0);
+            newTangent = QPointF(0, 0);
         }
         else
         {
@@ -322,10 +324,11 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
 // Mean sampling interpolation operation
 QList<QPointF> StrokeManager::meanInpolOp(QList<QPointF> points, qreal x, qreal y, qreal pressure)
 {
-    for (int i = 0; i < strokeQueue.size(); i++) {
-           x += strokeQueue[i].x();
-           y += strokeQueue[i].y();
-           pressure += getPressure();
+    for (int i = 0; i < strokeQueue.size(); i++)
+    {
+        x += strokeQueue[i].x();
+        y += strokeQueue[i].y();
+        pressure += getPressure();
     }
 
     // get arichmic mean of x, y and pressure
@@ -335,7 +338,7 @@ QList<QPointF> StrokeManager::meanInpolOp(QList<QPointF> points, qreal x, qreal 
 
     // Use our interpolated points
     QPointF mNewInterpolated = mLastInterpolated;
-    mNewInterpolated = QPointF(x,y);
+    mNewInterpolated = QPointF(x, y);
 
     points << mLastPixel << mLastInterpolated << mNewInterpolated << mCurrentPixel;
 
@@ -350,10 +353,10 @@ void StrokeManager::interpolateEnd()
 {
     // Stop timer
     timer.stop();
-    if (mStabilizerLevel == StabilizationLevel::STRONG) {
+    if (mStabilizerLevel == StabilizationLevel::STRONG)
+    {
         if (!strokeQueue.isEmpty())
         {
-
             // How many samples should we get point from?
             // TODO: Qt slider.
             int sampleSize = 5;
@@ -364,8 +367,6 @@ void StrokeManager::interpolateEnd()
                 interpolatePoll();
                 interpolateStroke();
             }
-        } else {
-            // Do nothing
         }
     }
 }
