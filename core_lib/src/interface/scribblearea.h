@@ -59,7 +59,9 @@ public:
     ~ScribbleArea();
 
     bool init();
-    void setCore(Editor* pCore) { mEditor = pCore; }
+    void setEditor(Editor* e) { mEditor = e; }
+    StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
+    Editor* editor() const { return mEditor; }
 
     void deleteSelection();
     void setSelection(QRectF rect);
@@ -70,6 +72,14 @@ public:
 
     bool isSomethingSelected() const;
     QRectF getSelection() const { return mySelection; }
+    void calculateSelectionRect();
+    void calculateSelectionTransformation();
+    void paintTransformedSelection();
+    void applyTransformedSelection();
+    void cancelTransformedSelection();
+
+    inline bool transformHasBeenModified() { return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0; }
+
     QRectF mySelection;
     QRectF myTransformedSelection;
     QRectF myTempTransformedSelection;
@@ -107,6 +117,7 @@ public:
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frameNumber);
 
+    void setModified(int layerNumber, int frameNumber);
     bool shouldUpdateAll() const { return mNeedUpdateAll; }
     void setAllDirty() { mNeedUpdateAll = true; }
 
@@ -115,10 +126,6 @@ public:
     void setCurrentTool(ToolType eToolMode);
     void setTemporaryTool(ToolType eToolMode);
     void setPrevTool();
-
-    StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
-
-    Editor* editor() const { return mEditor; }
 
     void floodFillError(int errorType);
 
@@ -134,18 +141,6 @@ signals:
 
 public slots:
     void clearImage();
-    void calculateSelectionRect();
-    QTransform getSelectionTransformation() const { return selectionTransformation; }
-    void calculateSelectionTransformation();
-    void paintTransformedSelection();
-    void applyTransformedSelection();
-    void cancelTransformedSelection();
-    void setModified(int layerNumber, int frameNumber);
-
-    inline bool transformHasBeenModified() {
-        return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0;
-    }
-
     void selectAll();
     void deselectAll();
 
@@ -205,7 +200,6 @@ public:
     void handleDrawingOnEmptyFrame();
 
     BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
-    BitmapImage* mStrokeImg = nullptr; // used for brush strokes before they are finalized
 
     QPixmap mCursorImg;
     QPixmap mTransCursImg;
