@@ -44,6 +44,8 @@ class Editor;
 class BaseTool;
 class StrokeManager;
 class PointerEvent;
+class BitmapImage;
+class VectorImage;
 
 class ScribbleArea : public QWidget
 {
@@ -210,6 +212,9 @@ private:
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter& painter);
+
+    BitmapImage* currentBitmapImage(Layer* layer) const;
+    VectorImage* currentVectorImage(Layer* layer) const;
 
     MoveMode mMoveMode = MoveMode::NONE;
     ToolType mPrevTemporalToolType = ERASER;

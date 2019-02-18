@@ -98,17 +98,17 @@ void BaseTool::initialize(Editor* editor)
     loadSettings();
 }
 
-void BaseTool::pointerPressEvent(PointerEvent *event)
+void BaseTool::pointerPressEvent(PointerEvent* event)
 {
     event->accept();
 }
 
-void BaseTool::pointerMoveEvent(PointerEvent *event)
+void BaseTool::pointerMoveEvent(PointerEvent* event)
 {
     event->accept();
 }
 
-void BaseTool::pointerReleaseEvent(PointerEvent *event)
+void BaseTool::pointerReleaseEvent(PointerEvent* event)
 {
     event->accept();
 }

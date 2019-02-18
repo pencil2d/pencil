@@ -212,8 +212,7 @@ void ScribbleArea::updateAllVectorLayersAt(int frameNumber)
         Layer *layer = mEditor->object()->getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
-            auto vecLayer = static_cast<LayerVector*>(layer);
-            vecLayer->getLastVectorImageAtFrame(frameNumber, 0)->modification();
+            currentVectorImage(layer)->modification();
         }
     }
     updateFrame(mEditor->currentFrame());
@@ -602,12 +601,12 @@ bool ScribbleArea::areLayersSane() const
     if (layer == nullptr) { return false; }
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage* vectorImage = currentVectorImage(layer);
         if (vectorImage == nullptr) { return false; }
     }
     if (layer->type() == Layer::BITMAP)
     {
-        BitmapImage *bitmapImage = (static_cast<LayerBitmap*>(layer))->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        BitmapImage* bitmapImage = currentBitmapImage(layer);
         if (bitmapImage == nullptr) { return false; }
     }
     // ---- end checks ------
@@ -755,7 +754,7 @@ void ScribbleArea::paintBitmapBuffer()
     }
 
     // Clear the temporary pixel path
-    BitmapImage* targetImage = layer->getLastBitmapImageAtFrame(mEditor->currentFrame());
+    BitmapImage* targetImage = currentBitmapImage(layer);
     if (targetImage != nullptr)
     {
         QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
@@ -799,7 +798,7 @@ void ScribbleArea::paintBitmapBufferRect(const QRect& rect)
         Layer* layer = mEditor->layers()->currentLayer();
         Q_ASSERT(layer);
 
-        BitmapImage* targetImage = (static_cast<LayerBitmap*>(layer))->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        BitmapImage* targetImage = currentBitmapImage(layer);
 
         if (targetImage != nullptr)
         {
@@ -1016,8 +1015,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         Q_CHECK_PTR(layer);
         if (layer->type() == Layer::VECTOR)
         {
-            auto vecLayer = static_cast<LayerVector*>(layer);
-            vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->setModified(true);
+            currentVectorImage(layer)->setModified(true);
         }
     }
 
@@ -1033,7 +1031,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     {
         if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = currentVectorImage(layer);
             switch (currentTool()->type())
             {
             case SMUDGE:
@@ -1200,6 +1198,20 @@ void ScribbleArea::paintSelectionVisuals(QPainter& painter)
             painter.setPen(Qt::green);
         }
     }
+}
+
+BitmapImage* ScribbleArea::currentBitmapImage(Layer* layer) const
+{
+    Q_ASSERT(layer->type() == Layer::BITMAP);
+    auto bitmapLayer = static_cast<LayerBitmap*>(layer);
+    return bitmapLayer->getLastBitmapImageAtFrame(mEditor->currentFrame());
+}
+
+VectorImage* ScribbleArea::currentVectorImage(Layer* layer) const
+{
+    Q_ASSERT(layer->type() == Layer::VECTOR);
+    auto vectorLayer = (static_cast<LayerVector*>(layer));
+    return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 }
 
 void ScribbleArea::drawCanvas(int frame, QRect rect)
@@ -1420,7 +1432,7 @@ void ScribbleArea::calculateSelectionRect()
     if (layer == nullptr) { return; }
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage *vectorImage = currentVectorImage(layer);
         vectorImage->calculateSelectionRect();
         setSelection(vectorImage->getSelectionRect());
     }
@@ -1655,8 +1667,7 @@ void ScribbleArea::paintTransformedSelection()
         else if (layer->type() == Layer::VECTOR)
         {
             // vector transformation
-            LayerVector* layerVector = static_cast<LayerVector*>(layer);
-            VectorImage* vectorImage = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = currentVectorImage(layer);
             vectorImage->setSelectionTransformation(selectionTransformation);
 
         }
@@ -1703,7 +1714,7 @@ void ScribbleArea::applyTransformedSelection()
 
         if (layer->type() == Layer::BITMAP)
         {
-            BitmapImage* bitmapImage = dynamic_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+            BitmapImage* bitmapImage = currentBitmapImage(layer);
             BitmapImage transformedImage = bitmapImage->transformed(mySelection.toRect(), selectionTransformation, true);
 
             bitmapImage->clear(mySelection);
@@ -1711,7 +1722,7 @@ void ScribbleArea::applyTransformedSelection()
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = currentVectorImage(layer);
             vectorImage->applySelectionTransformation();
 
         }
@@ -1733,7 +1744,7 @@ void ScribbleArea::cancelTransformedSelection()
 
         if (layer->type() == Layer::VECTOR) {
 
-            VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = currentVectorImage(layer);
             vectorImage->setSelectionTransformation(QTransform());
         }
 
@@ -1811,8 +1822,7 @@ void ScribbleArea::displaySelectionProperties()
     if (layer == nullptr) { return; }
     if (layer->type() == Layer::VECTOR)
     {
-        LayerVector *layerVector = static_cast<LayerVector*>(layer);
-        VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage* vectorImage = currentVectorImage(layer);
         //vectorImage->applySelectionTransformation();
         if (currentTool()->type() == MOVE)
         {
@@ -1848,12 +1858,12 @@ void ScribbleArea::selectAll()
     {
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
         // as the drawing area is not limited
-        BitmapImage *bitmapImage = (static_cast<LayerBitmap*>(layer))->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        BitmapImage *bitmapImage = currentBitmapImage(layer);
         setSelection(bitmapImage->bounds());
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage *vectorImage = currentVectorImage(layer);
         vectorImage->selectAll();
         setSelection(vectorImage->getSelectionRect());
     }
@@ -1883,7 +1893,7 @@ void ScribbleArea::deselectAll()
     if (layer == nullptr) { return; }
     if (layer->type() == Layer::VECTOR)
     {
-        (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+        currentVectorImage(layer)->deselectAll();
     }
     mSomethingSelected = false;
 
@@ -1987,8 +1997,8 @@ void ScribbleArea::deleteSelection()
         mEditor->backup(tr("Delete Selection", "Undo Step: clear the selection area."));
 
         mClosestCurves.clear();
-        if (layer->type() == Layer::VECTOR) { (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deleteSelection(); }
-        if (layer->type() == Layer::BITMAP) { (static_cast<LayerBitmap*>(layer))->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear(mySelection); }
+        if (layer->type() == Layer::VECTOR) { currentVectorImage(layer)->deleteSelection(); }
+        if (layer->type() == Layer::BITMAP) { currentBitmapImage(layer)->clear(mySelection); }
         updateAllFrames();
     }
 }
@@ -2002,15 +2012,14 @@ void ScribbleArea::clearImage()
     {
         mEditor->backup(tr("Clear Image", "Undo step text"));
 
-        (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->clear();
+        currentVectorImage(layer)->clear();
         mClosestCurves.clear();
         mClosestVertices.clear();
     }
     else if (layer->type() == Layer::BITMAP)
     {
         mEditor->backup(tr("Clear Image", "Undo step text"));
-
-        (static_cast<LayerBitmap*>(layer))->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear();
+        currentBitmapImage(layer)->clear();
     }
     else
     {
