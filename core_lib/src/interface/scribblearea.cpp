@@ -215,7 +215,7 @@ void ScribbleArea::updateAllVectorLayersAt(int frameNumber)
             currentVectorImage(layer)->modification();
         }
     }
-    updateFrame(mEditor->currentFrame());
+    updateFrame(frameNumber);
 }
 
 void ScribbleArea::setModified(int layerNumber, int frameNumber)
