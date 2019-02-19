@@ -655,6 +655,373 @@ void BitmapImage::setBounds(QRect rect)
     updateBounds(rect);
 }
 
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage)
+{
+    Q_ASSERT(bitmapimage != nullptr);
+
+    BitmapImage* img = bitmapimage;
+    img->enableAutoCrop(true);
+    img->autoCrop();
+    QRgb rgba;
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            rgba = img->pixel(x, y);
+            if (qGray(rgba) >= mThreshold)
+            {
+                img->setPixel(x, y, transp);
+            }
+            else if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
+            {
+                qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
+                int alpha = static_cast<int>(255 * factor);
+                QRgb tmp  = qRgba(0, 0, 0, alpha);
+                img->setPixel(x , y, tmp);
+            }
+        }
+    }
+    img->modification();
+    return img;
+}
+
+void BitmapImage::toBlackLine(BitmapImage* bitmapimage)
+{
+    Q_ASSERT(bitmapimage != nullptr);
+
+    BitmapImage* img = bitmapimage;
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            if (qAlpha(img->pixel(x, y)) > 0)
+                img->setPixel(x, y, thinline);
+        }
+    }
+    bitmapimage->modification();
+}
+
+void BitmapImage::fillWhiteAreas(BitmapImage *bitmapimage)
+{
+    Q_ASSERT(bitmapimage != nullptr);
+
+    BitmapImage* img = bitmapimage;
+
+    // fill areas size 'area' or less with black
+    QVector<QPoint> points;
+    points.clear();
+    for (int x = img->left(); x < img->right(); x++)
+    {
+        for (int y = img->top(); y < img->bottom(); y++)
+        {
+            if (qAlpha(img->pixel(x, y)) < 1)
+            {
+                points.append(QPoint(x, y));
+                int areaSize = fillWithColor(QPoint(x, y), transp, rosa, bitmapimage);
+                if (areaSize <= mWhiteArea)
+                {   // replace rosa with thinline (black)
+                    fillWithColor(points.last(), rosa, thinline, bitmapimage);
+                    points.removeLast();
+                }
+            }
+        }
+    }
+    // replace rosa with trans
+    while (!points.isEmpty()) {
+        fillWithColor(points[0], rosa, transp, bitmapimage);
+        points.removeFirst();
+    }
+    bitmapimage->modification();
+}
+
+void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
+{
+    Q_ASSERT(bitmapimage != nullptr);
+
+    BitmapImage* img = bitmapimage;
+    bool N = true, E = true, S = true, W = true, black, search;
+
+    while (N || E || S || W)
+    {
+        if (N)  // from NORTH
+        {
+            // set 'black' to false. 'black' is set to true whenever a black pixel is removed
+            black = false;
+            // 'search' is true while pixels are transparent
+            // when thinline pixel is found, 'search' is set to false until next transparent pixel
+            search = true;
+            for (int x = img->left(); x < img->right(); x++)
+            {
+                for (int y = img->top(); y < img->bottom(); y++)
+                {
+                    if (search)
+                    {
+                        if (qAlpha(img->pixel(x,y)) > 0)
+                        {
+                            search = false;
+                            if (qAlpha(img->pixel(x,y+1)) > 0)
+                            {
+                                if ((qAlpha(img->pixel(x-1,y-1)) == 0 && qAlpha(img->pixel(x+1,y-1)) == 0) &&
+                                        (qAlpha(img->pixel(x+1, y)) > 0 || qAlpha(img->pixel(x-1, y)) >0 ||
+                                         qAlpha(img->pixel(x+1, y+1)) > 0 || qAlpha(img->pixel(x-1, y+1)) >0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                                else if ((qAlpha(img->pixel(x-1,y-1)) > 0 && qAlpha(img->pixel(x+1,y-1)) > 0) &&
+                                         (qAlpha(img->pixel(x+1,y)) > 0 && qAlpha(img->pixel(x-1,y)) > 0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                                else if ((qAlpha(img->pixel(x-1,y-1)) > 0 && qAlpha(img->pixel(x-1,y)) > 0) ||
+                                         (qAlpha(img->pixel(x+1,y-1)) > 0 && qAlpha(img->pixel(x+1,y)) > 0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->pixel(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            N = black; // if none 'black' is removed, N = false
+        }
+        if (E)  // from EAST
+        {
+            black = false;
+            search = true;
+            for (int y = img->top(); y < img->bottom(); y++)
+            {
+                for (int x = img->right(); x > img->left(); x--)
+                {
+                    if (search)
+                    {
+                        if (qAlpha(img->pixel(x,y)) > 0)
+                        {
+                            search = false;
+                            if (qAlpha(img->pixel(x-1,y)) > 0)
+                            {
+                                if ((qAlpha(img->pixel(x+1,y-1)) == 0 && qAlpha(img->pixel(x+1,y+1)) == 0) &&
+                                        (qAlpha(img->pixel(x,y-1)) > 0 || qAlpha(img->pixel(x,y+1)) >0 ||
+                                         qAlpha(img->pixel(x-1,y-1)) > 0 || qAlpha(img->pixel(x-1,y+1)) >0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                                else if ((qAlpha(img->pixel(x+1,y+1)) > 0 && qAlpha(img->pixel(x+1,y-1)) > 0) &&
+                                         (qAlpha(img->pixel(x,y+1)) > 0 && qAlpha(img->pixel(x,y-1)) > 0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                                else if ((qAlpha(img->pixel(x+1,y+1)) > 0 && qAlpha(img->pixel(x,y+1)) > 0) ||
+                                         (qAlpha(img->pixel(x+1,y-1)) > 0 && qAlpha(img->pixel(x,y-1)) > 0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->pixel(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            E = black; // if none 'black' is removed, E = false
+        }
+        if (S)  // from SOUTH
+        {
+            black = false;
+            search = true;
+            for (int x = img->left(); x < img->right(); x++)
+            {
+                for (int y = img->bottom(); y > img->top(); y--)
+                {
+                    if (search)
+                    {
+                        if (qAlpha(img->pixel(x,y)) > 0)
+                        {
+                            search = false;
+                            if (qAlpha(img->pixel(x,y-1)) > 0)
+                            {
+                                if ((qAlpha(img->pixel(x-1,y+1)) == 0 && qAlpha(img->pixel(x+1,y+1)) == 0) &&
+                                        (qAlpha(img->pixel(x-1, y)) > 0 || qAlpha(img->pixel(x+1, y)) >0 ||
+                                         qAlpha(img->pixel(x-1, y-1)) > 0 || qAlpha(img->pixel(x+1, y-1)) >0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                                else if ((qAlpha(img->pixel(x-1,y+1)) > 0 && qAlpha(img->pixel(x+1,y+1)) > 0) &&
+                                         (qAlpha(img->pixel(x+1,y)) > 0 && qAlpha(img->pixel(x-1,y)) > 0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                                else if ((qAlpha(img->pixel(x-1,y+1)) > 0 && qAlpha(img->pixel(x-1,y)) > 0) ||
+                                         (qAlpha(img->pixel(x+1,y+1)) > 0 && qAlpha(img->pixel(x+1,y)) > 0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->pixel(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            S = black; // if none 'black' is removed, S = false
+        }
+        if (W)  // from WEST
+        {
+            black = false;
+            search = true;
+            for (int y = img->top(); y <= img->bottom(); y++)
+            {
+                for (int x = img->left(); x < img->right(); x++)
+                {
+                    if (search)
+                    {
+                        if (qAlpha(img->pixel(x,y)) > 0)
+                        {
+                            search = false;
+                            if (qAlpha(img->pixel(x+1,y)) > 0)
+                            {
+                                if ((qAlpha(img->pixel(x-1,y-1)) == 0 && qAlpha(img->pixel(x-1,y+1)) == 0) &&
+                                        (qAlpha(img->pixel(x,y-1)) > 0 || qAlpha(img->pixel(x,y+1)) >0 ||
+                                         qAlpha(img->pixel(x+1,y-1)) > 0 || qAlpha(img->pixel(x+1,y+1)) >0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                                else if ((qAlpha(img->pixel(x-1,y+1)) > 0 && qAlpha(img->pixel(x-1,y-1)) > 0) &&
+                                         (qAlpha(img->pixel(x,y+1)) > 0 && qAlpha(img->pixel(x,y-1)) > 0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                                else if ((qAlpha(img->pixel(x-1,y+1)) > 0 && qAlpha(img->pixel(x,y+1)) > 0) ||
+                                         (qAlpha(img->pixel(x-1,y-1)) > 0 && qAlpha(img->pixel(x,y-1)) > 0))
+                                {
+                                    img->setPixel(x, y, transp);
+                                    black = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->pixel(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            W = black; // if none 'black' is removed, W = false
+        }
+    }
+    bitmapimage->modification();
+}
+
+void BitmapImage::replaceThinLine(BitmapImage *bitmapimage)
+{
+    Q_ASSERT(bitmapimage != nullptr);
+
+    BitmapImage* img = bitmapimage;
+
+    int r, g, b, a; //red, green, blue, alpha
+    QList<QPoint> points;
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            points.clear();
+            r=0; g=0; b=0; a=0;
+            if (img->pixel(x,y) == thinline)
+            {
+                if (img->pixel(x-1, y-1) != thinline) points.append(QPoint(x-1, y-1));
+                if (img->pixel(x-1, y  ) != thinline) points.append(QPoint(x-1, y  ));
+                if (img->pixel(x-1, y+1) != thinline) points.append(QPoint(x-1, y+1));
+                if (img->pixel(x  , y-1) != thinline) points.append(QPoint(x  , y-1));
+                if (img->pixel(x  , y+1) != thinline) points.append(QPoint(x  , y+1));
+                if (img->pixel(x+1, y-1) != thinline) points.append(QPoint(x+1, y-1));
+                if (img->pixel(x+1, y  ) != thinline) points.append(QPoint(x+1, y  ));
+                if (img->pixel(x+1, y+1) != thinline) points.append(QPoint(x+1, y+1));
+                for (int i = 0; i < points.size(); i++)
+                {
+                    r += qPow(qRed(img->pixel(points.at(i))), 2);
+                    g += qPow(qGreen(img->pixel(points.at(i))), 2);
+                    b += qPow(qBlue(img->pixel(points.at(i))), 2);
+                    a += qPow(qAlpha(img->pixel(points.at(i))), 2);
+                }
+                r = static_cast<int>(sqrt(r/points.size()));
+                g = static_cast<int>(sqrt(g/points.size()));
+                b = static_cast<int>(sqrt(b/points.size()));
+                a = static_cast<int>(sqrt(a/points.size()));
+                img->setPixel(x, y, qRgba(r, g, b, a));
+            }
+        }
+    }
+    bitmapimage->modification();
+}
+
+int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage *bitmapimage)
+{
+    Q_ASSERT(bitmapimage != nullptr);
+
+    BitmapImage* img = bitmapimage;
+    QList<QPoint> fillList;
+    fillList.clear();
+    // fill first pixel
+    img->setPixel(point, newColor);
+    int pixels = 1;
+    fillList.append(point);
+
+    QRect rect = img->bounds();
+    while (!fillList.isEmpty())
+    {
+        QPoint tmp = fillList.at(0);
+        if (rect.contains(QPoint(tmp.x() + 1, tmp.y())) && img->pixel(QPoint(tmp.x() + 1, tmp.y())) == orgColor)
+        {
+            img->setPixel(QPoint(tmp.x() + 1, tmp.y()), newColor);
+            fillList.append(QPoint(tmp.x() + 1, tmp.y()));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x(), tmp.y() + 1)) && img->pixel(QPoint(tmp.x(), tmp.y() + 1)) == orgColor)
+        {
+            img->setPixel(QPoint(tmp.x(), tmp.y() + 1), newColor);
+            fillList.append(QPoint(tmp.x(), tmp.y() + 1));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x() - 1, tmp.y())) && img->pixel(QPoint(tmp.x() - 1, tmp.y())) == orgColor)
+        {
+            img->setPixel(QPoint(tmp.x() - 1, tmp.y()), newColor);
+            fillList.append(QPoint(tmp.x() - 1, tmp.y()));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x(), tmp.y() - 1)) && img->pixel(QPoint(tmp.x(), tmp.y() - 1)) == orgColor)
+        {
+            img->setPixel(QPoint(tmp.x(), tmp.y() - 1), newColor);
+            fillList.append(QPoint(tmp.x(), tmp.y() - 1));
+            pixels++;
+        }
+        fillList.removeFirst();
+    }
+    bitmapimage->modification();
+    return pixels;
+}
+
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (mImage && !mImage->isNull())

@@ -591,9 +591,8 @@ void Editor::copyFromScan()
 
 void Editor::scanToTransparent()
 {
-    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
-    mObject->updateActiveFrames(currentFrame());
-    layerBitmap->scanToTransparent(currentFrame());
+    BitmapImage* bitmapimage = static_cast<BitmapImage*>(layers()->currentLayer()->getKeyFrameAt(currentFrame()));
+    bitmapimage = bitmapimage->scanToTransparent(bitmapimage);
     mScribbleArea->updateFrame(currentFrame());
 }
 
@@ -602,7 +601,7 @@ void Editor::toBlackLine()
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
     LayerBitmap* toLayer = static_cast<LayerBitmap*>(layers()->findLayerByName(layerBitmap->name() + "_C"));
     mObject->updateActiveFrames(currentFrame());
-    toLayer->singleInitColorLayer(layerBitmap, toLayer , currentFrame());
+    layerBitmap->singleInitColorLayer(layerBitmap, toLayer , currentFrame());
     mScribbleArea->updateFrame(currentFrame());
 }
 
@@ -610,7 +609,7 @@ void Editor::fillWhiteAreas()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
     mObject->updateActiveFrames(currentFrame());
-    layerBitmap->fillWhiteAreas(currentFrame());
+    layerBitmap->getBitmapImageAtFrame(currentFrame())->fillWhiteAreas(layerBitmap->getBitmapImageAtFrame(currentFrame()));
     mScribbleArea->updateFrame(currentFrame());
 }
 
@@ -622,7 +621,7 @@ void Editor::fillWhiteAreasRest()
         if (layerBitmap->keyExists(i))
         {
             scrubTo(i);
-            layerBitmap->fillWhiteAreas(currentFrame());
+            layerBitmap->getBitmapImageAtFrame(currentFrame())->fillWhiteAreas(layerBitmap->getBitmapImageAtFrame(currentFrame()));
             mObject->updateActiveFrames(currentFrame());
             mScribbleArea->updateFrame(currentFrame());
         }
@@ -633,7 +632,7 @@ void Editor::toThinBlackLine()
 {
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
     mObject->updateActiveFrames(currentFrame());
-    layerBitmap->toThinBlackLine(currentFrame());
+    layerBitmap->getBitmapImageAtFrame(currentFrame())->toThinBlackLine(layerBitmap->getBitmapImageAtFrame(currentFrame()));
     mScribbleArea->updateFrame(currentFrame());
 }
 
@@ -645,7 +644,7 @@ void Editor::toThinBlackLineRest()
         if (layerBitmap->keyExists(i))
         {
             scrubTo(i);
-            layerBitmap->toThinBlackLine(currentFrame());
+            layerBitmap->getBitmapImageAtFrame(currentFrame())->toThinBlackLine(layerBitmap->getBitmapImageAtFrame(currentFrame()));
             mObject->updateActiveFrames(currentFrame());
             mScribbleArea->updateFrame(currentFrame());
         }
@@ -660,7 +659,7 @@ void Editor::replaceThinLines()
         if (layerBitmap->keyExists(i))
         {
             scrubTo(i);
-            layerBitmap->replaceThinLine(currentFrame());
+            layerBitmap->getBitmapImageAtFrame(currentFrame())->replaceThinLine(layerBitmap->getBitmapImageAtFrame(currentFrame()));
             mObject->updateActiveFrames(currentFrame());
             mScribbleArea->updateFrame(currentFrame());
         }

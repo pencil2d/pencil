@@ -4,6 +4,7 @@
 #include "basedockwidget.h"
 #include "editor.h"
 #include "layerbitmap.h"
+#include "bitmapimage.h"
 
 class Layer;
 
@@ -32,6 +33,7 @@ private:
     Ui::BitmapColoringWidget* ui = nullptr;
     Editor* mEditor = nullptr;
     LayerBitmap* mLayerBitmap = nullptr;
+    BitmapImage* mBitmapImage;
 
 };
 

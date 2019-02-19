@@ -27,9 +27,6 @@ class LayerBitmap : public Layer
     Q_OBJECT
 
 public:
-    const QRgb transp = qRgba(0, 0, 0, 0);
-    const QRgb thinline = qRgba(1, 0, 0, 255);
-    const QRgb rosa = qRgba(255,230,230,255);
 
     LayerBitmap(Object* object);
     ~LayerBitmap() override;
@@ -41,22 +38,8 @@ public:
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
-    // color layer methods
     void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer);
     void singleInitColorLayer(Layer* fromLayer, LayerBitmap* colorlayer, int frame);
-    int getThreshold() { return mThreshold; }
-    void setThreshold(int threshold) { mThreshold = threshold; }
-    int getWhiteArea() { return mWhiteArea; }
-    void setWhiteArea(int whiteArea) { mWhiteArea = whiteArea; }
-    BitmapImage* scanToTransparent(int frame);
-
-    void toBlackLine(int frame);
-
-    void fillWhiteAreas(int frame);
-    void toThinBlackLine(int frame);
-    void replaceThinLine(int frame);
-    int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, int frame);
-    // color layer methods end
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
@@ -68,9 +51,6 @@ private:
     QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 
-    int mThreshold = 200;
-    const int mLowThreshold = 30; // threshold for images to be given transparency
-    int mWhiteArea = 6;
 };
 
 #endif

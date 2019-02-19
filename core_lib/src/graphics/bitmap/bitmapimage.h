@@ -20,18 +20,25 @@ GNU General Public License for more details.
 #include <memory>
 #include <QPainter>
 #include "keyframe.h"
+#include "layer.h"
+#include "layerbitmap.h"
 
+class Editor;
 
 class BitmapImage : public KeyFrame
 {
 public:
+    const QRgb transp = qRgba(0, 0, 0, 0);
+    const QRgb thinline = qRgba(1, 0, 0, 255);
+    const QRgb rosa = qRgba(255,230,230,255);
+
     BitmapImage();
     BitmapImage(const BitmapImage&);
     BitmapImage(const QRect &rectangle, const QColor& colour);
     BitmapImage(const QPoint& topLeft, const QImage& image);
     BitmapImage(const QPoint& topLeft, const QString& path);
 
-    ~BitmapImage();
+    ~BitmapImage() override;
     BitmapImage& operator=(const BitmapImage& a);
 
     BitmapImage* clone() override;
@@ -94,6 +101,20 @@ public:
     QRect& bounds() { autoCrop(); return mBounds; }
     void setBounds(QRect rect);
 
+    // coloring methods
+    int getThreshold() { return mThreshold; }
+    int getWhiteArea() { return mWhiteArea; }
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage);
+
+    void toBlackLine(BitmapImage* bitmapimage);
+
+    void fillWhiteAreas(BitmapImage* bitmapimage);
+    void toThinBlackLine(BitmapImage* bitmapimage);
+    void replaceThinLine(BitmapImage* bitmapimage);
+    int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* bitmapimage);
+    // color layer methods end
+
+
     /** Determines if the BitmapImage is minimally bounded.
      *
      *  A BitmapImage is minimally bounded if all edges contain
@@ -108,6 +129,10 @@ public:
     void enableAutoCrop(bool b) { mEnableAutoCrop = b; }
 
     Status writeFile(const QString& filename);
+
+public slots:
+    void setThreshold(int threshold) { mThreshold = threshold; }
+    void setWhiteArea(int whiteArea) { mWhiteArea = whiteArea; }
 
 protected:
     void updateBounds(QRect rectangle);
@@ -124,6 +149,11 @@ private:
     /** @see isMinimallyBounded() */
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
+
+    int mThreshold = 200;
+    const int mLowThreshold = 30; // threshold for images to be given transparency
+    int mWhiteArea = 6;
+
 };
 
 #endif
