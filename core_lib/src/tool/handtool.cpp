@@ -49,9 +49,9 @@ QCursor HandTool::cursor()
     return mIsHeld ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
 }
 
-void HandTool::pointerPressEvent(PointerEvent *)
+void HandTool::pointerPressEvent(PointerEvent*)
 {
-    mLastPixel = getLastPressPixel();
+    mLastPixel = getCurrentPixel();
     mIsHeld = true;
 
     mScribbleArea->updateToolCursor();
@@ -65,7 +65,6 @@ void HandTool::pointerMoveEvent(PointerEvent* event)
     }
 
     transformView(event->modifiers(), event->buttons());
-
     mLastPixel = getCurrentPixel();
 }
 
