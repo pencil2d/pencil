@@ -26,7 +26,7 @@ class PolylineTool : public BaseTool
 {
     Q_OBJECT
 public:
-    explicit PolylineTool( QObject *parent = 0 );
+    explicit PolylineTool(QObject* parent = 0);
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;
@@ -36,20 +36,20 @@ public:
     void pointerMoveEvent(PointerEvent* event) override;
     void pointerDoubleClickEvent(PointerEvent*) override;
 
-    bool keyPressEvent( QKeyEvent* event ) override;
+    bool keyPressEvent(QKeyEvent* event) override;
 
     void clear() override;
 
-    void setWidth( const qreal width ) override;
-    void setFeather( const qreal feather ) override;
-    void setAA( const int AA ) override;
+    void setWidth(const qreal width) override;
+    void setFeather(const qreal feather) override;
+    void setAA(const int AA) override;
 
 private:
     QList<QPointF> mPoints;
 
     void drawPolyline(QList<QPointF> points, QPointF endPoint);
     void cancelPolyline();
-    void endPolyline( QList<QPointF> points );
+    void endPolyline(QList<QPointF> points);
 };
 
 #endif // POLYLINETOOL_H

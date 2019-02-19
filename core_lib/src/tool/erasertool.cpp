@@ -30,8 +30,8 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 
-EraserTool::EraserTool( QObject *parent ) 
-	: StrokeTool( parent )
+EraserTool::EraserTool(QObject* parent)
+    : StrokeTool(parent)
 {
 }
 
@@ -48,18 +48,18 @@ void EraserTool::loadSettings()
     m_enabledProperties[STABILIZATION] = true;
 
 
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value( "eraserWidth" ).toDouble();
-    properties.feather = settings.value( "eraserFeather" ).toDouble();
+    properties.width = settings.value("eraserWidth").toDouble();
+    properties.feather = settings.value("eraserFeather").toDouble();
 
-    properties.pressure = settings.value( "eraserPressure" ).toBool();
+    properties.pressure = settings.value("eraserPressure").toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
 
     // First run
-    if ( properties.width <= 0 )
+    if (properties.width <= 0)
     {
         setWidth(25);
         setFeather(50);
@@ -73,29 +73,29 @@ void EraserTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("eraserWidth", width);
     settings.sync();
 }
 
-void EraserTool::setFeather( const qreal feather )
+void EraserTool::setFeather(const qreal feather)
 {
     // Set current property
     properties.feather = feather;
 
     // Update settings
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("eraserFeather", feather);
     settings.sync();
 }
 
-void EraserTool::setPressure( const bool pressure )
+void EraserTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
 
     // Update settings
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("eraserPressure", pressure);
     settings.sync();
 }
@@ -104,7 +104,7 @@ void EraserTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
 
-    QSettings settings( PENCIL2D, PENCIL2D);
+    QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("stabilizerLevel", level);
     settings.sync();
 }
@@ -115,7 +115,7 @@ QCursor EraserTool::cursor()
     return Qt::CrossCursor;
 }
 
-void EraserTool::pointerPressEvent(PointerEvent *)
+void EraserTool::pointerPressEvent(PointerEvent*)
 {
     mScribbleArea->setAllDirty();
 
@@ -124,7 +124,7 @@ void EraserTool::pointerPressEvent(PointerEvent *)
     mMouseDownPoint = getCurrentPoint();
 }
 
-void EraserTool::pointerMoveEvent(PointerEvent *)
+void EraserTool::pointerMoveEvent(PointerEvent*)
 {
     mCurrentPressure = m_pStrokeManager->getPressure();
     updateStrokes();
@@ -132,11 +132,11 @@ void EraserTool::pointerMoveEvent(PointerEvent *)
         m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
 }
 
-void EraserTool::pointerReleaseEvent(PointerEvent *)
+void EraserTool::pointerReleaseEvent(PointerEvent*)
 {
     mEditor->backup(typeName());
 
-    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)
     {
         paintAt(mMouseDownPoint);
@@ -150,38 +150,38 @@ void EraserTool::pointerReleaseEvent(PointerEvent *)
 }
 
 // draw a single paint dab at the given location
-void EraserTool::paintAt( QPointF point )
+void EraserTool::paintAt(QPointF point)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer->type() == Layer::BITMAP )
+    if (layer->type() == Layer::BITMAP)
     {
         qreal opacity = 1.0;
         mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
             opacity = m_pStrokeManager->getPressure();
-            mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+            mCurrentWidth = (mCurrentWidth + (m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
         }
 
         qreal brushWidth = mCurrentWidth;
 
         BlitRect rect;
 
-        rect.extend( point.toPoint() );
-        mScribbleArea->drawBrush( point,
-                                  brushWidth,
-                                  properties.feather,
-                                  QColor(255, 255, 255, 255),
-                                  opacity,
-                                  properties.useFeather,
-                                  properties.useAA );
+        rect.extend(point.toPoint());
+        mScribbleArea->drawBrush(point,
+                                 brushWidth,
+                                 properties.feather,
+                                 QColor(255, 255, 255, 255),
+                                 opacity,
+                                 properties.useFeather,
+                                 properties.useAA);
 
-        int rad = qRound( brushWidth ) / 2 + 2;
+        int rad = qRound(brushWidth) / 2 + 2;
 
-        //continously update buffer to update stroke behind grid.
+        //continuously update buffer to update stroke behind grid.
         mScribbleArea->paintBitmapBufferRect(rect);
 
-        mScribbleArea->refreshBitmap( rect, rad );
+        mScribbleArea->refreshBitmap(rect, rad);
     }
 }
 
@@ -192,11 +192,11 @@ void EraserTool::drawStroke()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if ( layer->type() == Layer::BITMAP )
+    if (layer->type() == Layer::BITMAP)
     {
-        for ( int i = 0; i < p.size(); i++ )
+        for (auto & i : p)
         {
-            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
+            i = mEditor->view()->mapScreenToCanvas(i);
         }
 
         qreal opacity = 1.0;
@@ -204,67 +204,67 @@ void EraserTool::drawStroke()
         if (properties.pressure)
         {
             opacity = m_pStrokeManager->getPressure();
-            mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+            mCurrentWidth = (mCurrentWidth + (m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
         }
 
         qreal brushWidth = mCurrentWidth;
-        qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
-        brushStep = qMax( 1.0, brushStep );
+        qreal brushStep = (0.5 * brushWidth) - ((properties.feather / 100.0) * brushWidth * 0.5);
+        brushStep = qMax(1.0, brushStep);
 
         BlitRect rect;
 
         QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
 
-        qreal distance = 4 * QLineF( b, a ).length();
-        int steps = qRound( distance ) / brushStep;
+        qreal distance = 4 * QLineF(b, a).length();
+        int steps = qRound(distance) / brushStep;
 
-        for ( int i = 0; i < steps; i++ )
+        for (int i = 0; i < steps; i++)
         {
-            QPointF point = mLastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - mLastBrushPoint ) / distance;
-            rect.extend( point.toPoint() );
-            mScribbleArea->drawBrush( point,
-                                      brushWidth,
-                                      properties.feather,
-                                      QColor(255, 255, 255, 255),
-                                      opacity,
-                                      properties.useFeather,
-                                      properties.useAA );
+            QPointF point = mLastBrushPoint + (i + 1) * (brushStep)* (b - mLastBrushPoint) / distance;
+            rect.extend(point.toPoint());
+            mScribbleArea->drawBrush(point,
+                                     brushWidth,
+                                     properties.feather,
+                                     QColor(255, 255, 255, 255),
+                                     opacity,
+                                     properties.useFeather,
+                                     properties.useAA);
 
-            if ( i == ( steps - 1 ) )
+            if (i == (steps - 1))
             {
                 mLastBrushPoint = point;
             }
         }
 
-        int rad = qRound( brushWidth ) / 2 + 2;
+        int rad = qRound(brushWidth) / 2 + 2;
 
-        //continously update buffer to update stroke behind grid.
+        // continuously update buffer to update stroke behind grid.
         mScribbleArea->paintBitmapBufferRect(rect);
 
-        mScribbleArea->refreshBitmap( rect, rad );
+        mScribbleArea->refreshBitmap(rect, rad);
     }
-    else if ( layer->type() == Layer::VECTOR )
+    else if (layer->type() == Layer::VECTOR)
     {
         mCurrentWidth = properties.width;
         if (properties.pressure)
         {
-            mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+            mCurrentWidth = (mCurrentWidth + (m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
         }
         qreal brushWidth = mCurrentWidth;
 
-        QPen pen( Qt::white, brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+        QPen pen(Qt::white, brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         int rad = qRound(brushWidth) / 2 + 2;
 
-        if ( p.size() == 4 )
+        if (p.size() == 4)
         {
-            QPainterPath path( p[ 0 ] );
-            path.cubicTo( p[ 1 ],
-                          p[ 2 ],
-                          p[ 3 ] );
+            QPainterPath path(p[0]);
+            path.cubicTo(p[1],
+                         p[2],
+                         p[3]);
             qDebug() << path;
-            mScribbleArea->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_Source );
-            mScribbleArea->refreshVector( path.boundingRect().toRect(), rad );
+            mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
+            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }
@@ -272,22 +272,22 @@ void EraserTool::drawStroke()
 void EraserTool::removeVectorPaint()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer->type() == Layer::BITMAP )
+    if (layer->type() == Layer::BITMAP)
     {
         mScribbleArea->paintBitmapBuffer();
         mScribbleArea->setAllDirty();
         mScribbleArea->clearBitmapBuffer();
     }
-    else if ( layer->type() == Layer::VECTOR )
+    else if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
+        VectorImage*vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         // Clear the area containing the last point
         //vectorImage->removeArea(lastPoint);
         // Clear the temporary pixel path
         mScribbleArea->clearBitmapBuffer();
         vectorImage->deleteSelectedPoints();
-        //update();
-        mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+
+        mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         mScribbleArea->setAllDirty();
     }
 }
@@ -295,21 +295,21 @@ void EraserTool::removeVectorPaint()
 void EraserTool::updateStrokes()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
+    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         drawStroke();
     }
 
-    if ( layer->type() == Layer::VECTOR )
+    if (layer->type() == Layer::VECTOR)
     {
         qreal radius = properties.width / 2;
-        QList<VertexRef> nearbyVertices = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )
-            ->getVerticesCloseTo( getCurrentPoint(), radius );
-        for ( int i = 0; i < nearbyVertices.size(); i++ )
+
+        VectorImage* currKey = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
+        QList<VertexRef> nearbyVertices = currKey->getVerticesCloseTo(getCurrentPoint(), radius);
+        for (auto nearbyVertice : nearbyVertices)
         {
-            ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setSelected( nearbyVertices.at( i ), true );
+            currKey->setSelected(nearbyVertice, true);
         }
-        //update();
         mScribbleArea->setAllDirty();
     }
 }

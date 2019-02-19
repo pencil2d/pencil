@@ -15,10 +15,9 @@ GNU General Public License for more details.
 
 */
 #include "smudgetool.h"
+#include <QPixmap>
 
 #include "pointerevent.h"
-
-#include <QPixmap>
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
@@ -31,8 +30,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "blitrect.h"
 
-SmudgeTool::SmudgeTool(QObject *parent) :
-    StrokeTool(parent)
+SmudgeTool::SmudgeTool(QObject* parent) : StrokeTool(parent)
 {
     toolMode = 0; // tool mode
 }
@@ -132,7 +130,7 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent*)
     return true;
 }
 
-void SmudgeTool::pointerPressEvent(PointerEvent *event)
+void SmudgeTool::pointerPressEvent(PointerEvent* event)
 {
     //qDebug() << "smudgetool: mousePressEvent";
 
@@ -188,7 +186,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent *event)
     }
 }
 
-void SmudgeTool::pointerMoveEvent(PointerEvent *event)
+void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
@@ -225,7 +223,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent *event)
     }
 }
 
-void SmudgeTool::pointerReleaseEvent(PointerEvent *event)
+void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }

@@ -209,7 +209,7 @@ void ScribbleArea::updateAllVectorLayersAt(int frameNumber)
 {
     for (int i = 0; i < mEditor->object()->getLayerCount(); i++)
     {
-        Layer *layer = mEditor->object()->getLayer(i);
+        Layer* layer = mEditor->object()->getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
             currentVectorImage(layer)->modification();
@@ -220,7 +220,7 @@ void ScribbleArea::updateAllVectorLayersAt(int frameNumber)
 
 void ScribbleArea::setModified(int layerNumber, int frameNumber)
 {
-    Layer *layer = mEditor->object()->getLayer(layerNumber);
+    Layer* layer = mEditor->object()->getLayer(layerNumber);
     if (layer)
     {
         layer->setModified(frameNumber, true);
@@ -462,7 +462,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     event.accept();
 }
 
-void ScribbleArea::pointerPressEvent(PointerEvent *event)
+void ScribbleArea::pointerPressEvent(PointerEvent* event)
 {
     if (event->button() & Qt::LeftButton || event->button() & Qt::RightButton)
     {
@@ -497,7 +497,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent *event)
     }
 }
 
-void ScribbleArea::pointerMoveEvent(PointerEvent *event)
+void ScribbleArea::pointerMoveEvent(PointerEvent* event)
 {
     const bool isPressed = event->button() == Qt::LeftButton;
     updateCanvasCursor();
@@ -547,7 +547,7 @@ void ScribbleArea::pointerMoveEvent(PointerEvent *event)
     }
 }
 
-void ScribbleArea::pointerReleaseEvent(PointerEvent *event)
+void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
 {
     if (currentTool()->isAdjusting)
     {

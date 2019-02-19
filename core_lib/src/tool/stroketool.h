@@ -55,7 +55,7 @@ protected:
     virtual bool emptyFrameActionEnabled();
 
 private:
-	QPointF mLastPixel = { 0, 0 };
+	QPointF mLastPixel { 0, 0 };
 };
 
 #endif // STROKETOOL_H
