@@ -354,7 +354,8 @@
        <item>
         <widget class="QPushButton" name="btn4_replaceThinLines">
          <property name="text">
-          <string>Replace ALL thin lines...</string>
+          <string>Replace ALL thin lines...
+Remove colored lines...</string>
          </property>
         </widget>
        </item>

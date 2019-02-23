@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QtMath>
 #include <QFile>
+#include <QElapsedTimer>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -655,7 +656,7 @@ void BitmapImage::setBounds(QRect rect)
     updateBounds(rect);
 }
 
-BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage)
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, bool green, bool blue)
 {
     Q_ASSERT(bitmapimage != nullptr);
 
@@ -666,12 +667,36 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage)
     for (int x = img->left(); x <= img->right(); x++)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
-        {
-            rgba = img->pixel(x, y);
+        {       // IF Threshold or above
+            rgba = img->constScanLine(x, y);
             if (qGray(rgba) >= mThreshold)
             {
                 img->setPixel(x, y, transp);
-            }
+            }   // IF Red line
+            else if(qRed(rgba) - 50 > qGreen(rgba))
+            {
+                if (red)
+                {
+                    QRgb tmp  = qRgba(254, 0, 0, 255);
+                    img->setPixel(x, y, tmp);
+                }
+                else
+                {
+                    img->setPixel(x, y, transp);
+                }
+            }   // IF Blue line
+            else if(qBlue(rgba) - 50 > qRed(rgba))
+            {
+                if (blue)
+                {
+                    QRgb tmp  = qRgba(0, 0, 254, 255);
+                    img->setPixel(x, y, tmp);
+                }
+                else
+                {
+                    img->setPixel(x, y, transp);
+                }
+            }   // IF in graduation area
             else if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
             {
                 qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
@@ -694,11 +719,11 @@ void BitmapImage::toBlackLine(BitmapImage* bitmapimage)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
-            if (qAlpha(img->pixel(x, y)) > 0)
+            if (qAlpha(img->constScanLine(x, y)) > 0)
                 img->setPixel(x, y, thinline);
         }
     }
-    bitmapimage->modification();
+    img->modification();
 }
 
 void BitmapImage::fillWhiteAreas(BitmapImage *bitmapimage)
@@ -731,14 +756,14 @@ void BitmapImage::fillWhiteAreas(BitmapImage *bitmapimage)
         fillWithColor(points[0], rosa, transp, bitmapimage);
         points.removeFirst();
     }
-    bitmapimage->modification();
+    img->modification();
 }
 
-void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
+void BitmapImage::toThinBlackLine(BitmapImage* colorImage)
 {
-    Q_ASSERT(bitmapimage != nullptr);
+    Q_ASSERT(colorImage != nullptr);
 
-    BitmapImage* img = bitmapimage;
+    BitmapImage* img = colorImage;
     bool N = true, E = true, S = true, W = true, black, search;
 
     while (N || E || S || W)
@@ -756,26 +781,26 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
                 {
                     if (search)
                     {
-                        if (qAlpha(img->pixel(x,y)) > 0)
+                        if (qAlpha(img->constScanLine(x,y)) > 0)
                         {
                             search = false;
-                            if (qAlpha(img->pixel(x,y+1)) > 0)
+                            if (qAlpha(img->constScanLine(x,y+1)) > 0)
                             {
-                                if ((qAlpha(img->pixel(x-1,y-1)) == 0 && qAlpha(img->pixel(x+1,y-1)) == 0) &&
-                                        (qAlpha(img->pixel(x+1, y)) > 0 || qAlpha(img->pixel(x-1, y)) >0 ||
-                                         qAlpha(img->pixel(x+1, y+1)) > 0 || qAlpha(img->pixel(x-1, y+1)) >0))
+                                if ((qAlpha(img->constScanLine(x-1,y-1)) == 0 && qAlpha(img->constScanLine(x+1,y-1)) == 0) &&
+                                        (qAlpha(img->constScanLine(x+1, y)) > 0 || qAlpha(img->constScanLine(x-1, y)) >0 ||
+                                         qAlpha(img->constScanLine(x+1, y+1)) > 0 || qAlpha(img->constScanLine(x-1, y+1)) >0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
                                 }
-                                else if ((qAlpha(img->pixel(x-1,y-1)) > 0 && qAlpha(img->pixel(x+1,y-1)) > 0) &&
-                                         (qAlpha(img->pixel(x+1,y)) > 0 && qAlpha(img->pixel(x-1,y)) > 0))
+                                else if ((qAlpha(img->constScanLine(x-1,y-1)) > 0 && qAlpha(img->constScanLine(x+1,y-1)) > 0) &&
+                                         (qAlpha(img->constScanLine(x+1,y)) > 0 && qAlpha(img->constScanLine(x-1,y)) > 0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
                                 }
-                                else if ((qAlpha(img->pixel(x-1,y-1)) > 0 && qAlpha(img->pixel(x-1,y)) > 0) ||
-                                         (qAlpha(img->pixel(x+1,y-1)) > 0 && qAlpha(img->pixel(x+1,y)) > 0))
+                                else if ((qAlpha(img->constScanLine(x-1,y-1)) > 0 && qAlpha(img->constScanLine(x-1,y)) > 0) ||
+                                         (qAlpha(img->constScanLine(x+1,y-1)) > 0 && qAlpha(img->constScanLine(x+1,y)) > 0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
@@ -785,7 +810,7 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
                     }
                     else
                     {
-                        if (qAlpha(img->pixel(x,y)) == 0)
+                        if (qAlpha(img->constScanLine(x,y)) == 0)
                             search = true;
                     }
                 }
@@ -802,26 +827,26 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
                 {
                     if (search)
                     {
-                        if (qAlpha(img->pixel(x,y)) > 0)
+                        if (qAlpha(img->constScanLine(x,y)) > 0)
                         {
                             search = false;
-                            if (qAlpha(img->pixel(x-1,y)) > 0)
+                            if (qAlpha(img->constScanLine(x-1,y)) > 0)
                             {
-                                if ((qAlpha(img->pixel(x+1,y-1)) == 0 && qAlpha(img->pixel(x+1,y+1)) == 0) &&
-                                        (qAlpha(img->pixel(x,y-1)) > 0 || qAlpha(img->pixel(x,y+1)) >0 ||
-                                         qAlpha(img->pixel(x-1,y-1)) > 0 || qAlpha(img->pixel(x-1,y+1)) >0))
+                                if ((qAlpha(img->constScanLine(x+1,y-1)) == 0 && qAlpha(img->constScanLine(x+1,y+1)) == 0) &&
+                                        (qAlpha(img->constScanLine(x,y-1)) > 0 || qAlpha(img->constScanLine(x,y+1)) >0 ||
+                                         qAlpha(img->constScanLine(x-1,y-1)) > 0 || qAlpha(img->constScanLine(x-1,y+1)) >0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
                                 }
-                                else if ((qAlpha(img->pixel(x+1,y+1)) > 0 && qAlpha(img->pixel(x+1,y-1)) > 0) &&
-                                         (qAlpha(img->pixel(x,y+1)) > 0 && qAlpha(img->pixel(x,y-1)) > 0))
+                                else if ((qAlpha(img->constScanLine(x+1,y+1)) > 0 && qAlpha(img->constScanLine(x+1,y-1)) > 0) &&
+                                         (qAlpha(img->constScanLine(x,y+1)) > 0 && qAlpha(img->constScanLine(x,y-1)) > 0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
                                 }
-                                else if ((qAlpha(img->pixel(x+1,y+1)) > 0 && qAlpha(img->pixel(x,y+1)) > 0) ||
-                                         (qAlpha(img->pixel(x+1,y-1)) > 0 && qAlpha(img->pixel(x,y-1)) > 0))
+                                else if ((qAlpha(img->constScanLine(x+1,y+1)) > 0 && qAlpha(img->constScanLine(x,y+1)) > 0) ||
+                                         (qAlpha(img->constScanLine(x+1,y-1)) > 0 && qAlpha(img->constScanLine(x,y-1)) > 0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
@@ -831,7 +856,7 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
                     }
                     else
                     {
-                        if (qAlpha(img->pixel(x,y)) == 0)
+                        if (qAlpha(img->constScanLine(x,y)) == 0)
                             search = true;
                     }
                 }
@@ -848,26 +873,26 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
                 {
                     if (search)
                     {
-                        if (qAlpha(img->pixel(x,y)) > 0)
+                        if (qAlpha(img->constScanLine(x,y)) > 0)
                         {
                             search = false;
-                            if (qAlpha(img->pixel(x,y-1)) > 0)
+                            if (qAlpha(img->constScanLine(x,y-1)) > 0)
                             {
-                                if ((qAlpha(img->pixel(x-1,y+1)) == 0 && qAlpha(img->pixel(x+1,y+1)) == 0) &&
-                                        (qAlpha(img->pixel(x-1, y)) > 0 || qAlpha(img->pixel(x+1, y)) >0 ||
-                                         qAlpha(img->pixel(x-1, y-1)) > 0 || qAlpha(img->pixel(x+1, y-1)) >0))
+                                if ((qAlpha(img->constScanLine(x-1,y+1)) == 0 && qAlpha(img->constScanLine(x+1,y+1)) == 0) &&
+                                        (qAlpha(img->constScanLine(x-1, y)) > 0 || qAlpha(img->constScanLine(x+1, y)) >0 ||
+                                         qAlpha(img->constScanLine(x-1, y-1)) > 0 || qAlpha(img->constScanLine(x+1, y-1)) >0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
                                 }
-                                else if ((qAlpha(img->pixel(x-1,y+1)) > 0 && qAlpha(img->pixel(x+1,y+1)) > 0) &&
-                                         (qAlpha(img->pixel(x+1,y)) > 0 && qAlpha(img->pixel(x-1,y)) > 0))
+                                else if ((qAlpha(img->constScanLine(x-1,y+1)) > 0 && qAlpha(img->constScanLine(x+1,y+1)) > 0) &&
+                                         (qAlpha(img->constScanLine(x+1,y)) > 0 && qAlpha(img->constScanLine(x-1,y)) > 0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
                                 }
-                                else if ((qAlpha(img->pixel(x-1,y+1)) > 0 && qAlpha(img->pixel(x-1,y)) > 0) ||
-                                         (qAlpha(img->pixel(x+1,y+1)) > 0 && qAlpha(img->pixel(x+1,y)) > 0))
+                                else if ((qAlpha(img->constScanLine(x-1,y+1)) > 0 && qAlpha(img->constScanLine(x-1,y)) > 0) ||
+                                         (qAlpha(img->constScanLine(x+1,y+1)) > 0 && qAlpha(img->constScanLine(x+1,y)) > 0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
@@ -877,7 +902,7 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
                     }
                     else
                     {
-                        if (qAlpha(img->pixel(x,y)) == 0)
+                        if (qAlpha(img->constScanLine(x,y)) == 0)
                             search = true;
                     }
                 }
@@ -894,26 +919,26 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
                 {
                     if (search)
                     {
-                        if (qAlpha(img->pixel(x,y)) > 0)
+                        if (qAlpha(img->constScanLine(x,y)) > 0)
                         {
                             search = false;
-                            if (qAlpha(img->pixel(x+1,y)) > 0)
+                            if (qAlpha(img->constScanLine(x+1,y)) > 0)
                             {
-                                if ((qAlpha(img->pixel(x-1,y-1)) == 0 && qAlpha(img->pixel(x-1,y+1)) == 0) &&
-                                        (qAlpha(img->pixel(x,y-1)) > 0 || qAlpha(img->pixel(x,y+1)) >0 ||
-                                         qAlpha(img->pixel(x+1,y-1)) > 0 || qAlpha(img->pixel(x+1,y+1)) >0))
+                                if ((qAlpha(img->constScanLine(x-1,y-1)) == 0 && qAlpha(img->constScanLine(x-1,y+1)) == 0) &&
+                                        (qAlpha(img->constScanLine(x,y-1)) > 0 || qAlpha(img->constScanLine(x,y+1)) >0 ||
+                                         qAlpha(img->constScanLine(x+1,y-1)) > 0 || qAlpha(img->constScanLine(x+1,y+1)) >0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
                                 }
-                                else if ((qAlpha(img->pixel(x-1,y+1)) > 0 && qAlpha(img->pixel(x-1,y-1)) > 0) &&
-                                         (qAlpha(img->pixel(x,y+1)) > 0 && qAlpha(img->pixel(x,y-1)) > 0))
+                                else if ((qAlpha(img->constScanLine(x-1,y+1)) > 0 && qAlpha(img->constScanLine(x-1,y-1)) > 0) &&
+                                         (qAlpha(img->constScanLine(x,y+1)) > 0 && qAlpha(img->constScanLine(x,y-1)) > 0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
                                 }
-                                else if ((qAlpha(img->pixel(x-1,y+1)) > 0 && qAlpha(img->pixel(x,y+1)) > 0) ||
-                                         (qAlpha(img->pixel(x-1,y-1)) > 0 && qAlpha(img->pixel(x,y-1)) > 0))
+                                else if ((qAlpha(img->constScanLine(x-1,y+1)) > 0 && qAlpha(img->constScanLine(x,y+1)) > 0) ||
+                                         (qAlpha(img->constScanLine(x-1,y-1)) > 0 && qAlpha(img->constScanLine(x,y-1)) > 0))
                                 {
                                     img->setPixel(x, y, transp);
                                     black = true;
@@ -923,7 +948,7 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
                     }
                     else
                     {
-                        if (qAlpha(img->pixel(x,y)) == 0)
+                        if (qAlpha(img->constScanLine(x,y)) == 0)
                             search = true;
                     }
                 }
@@ -931,7 +956,24 @@ void BitmapImage::toThinBlackLine(BitmapImage* bitmapimage)
             W = black; // if none 'black' is removed, W = false
         }
     }
-    bitmapimage->modification();
+    img->modification();
+}
+
+void BitmapImage::restoreColoredLines(BitmapImage *orgImage, BitmapImage *colorImage)
+{
+    qDebug() << "restore1" ;
+    Q_ASSERT(colorImage != nullptr);
+    qDebug() << "restore2" ;
+
+    for (int x = colorImage->left(); x <= colorImage->right(); x++)
+    {
+        for (int y = colorImage->top(); y <= colorImage->bottom(); y++)
+        {
+            if (colorImage->constScanLine(x, y) == thinline)
+                if (orgImage->constScanLine(x,y) == qRgba(254,0,0,255) || orgImage->constScanLine(x,y) == qRgba(0,0,254,255))
+                    colorImage->setPixel(x, y, orgImage->constScanLine(x, y));
+        }
+    }
 }
 
 void BitmapImage::replaceThinLine(BitmapImage *bitmapimage)
@@ -942,22 +984,24 @@ void BitmapImage::replaceThinLine(BitmapImage *bitmapimage)
 
     int r, g, b, a; //red, green, blue, alpha
     QList<QPoint> points;
+    QList<QRgb> rgblist;
+    rgblist << thinline << redline << blueline;
     for (int x = img->left(); x <= img->right(); x++)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
             points.clear();
             r=0; g=0; b=0; a=0;
-            if (img->pixel(x,y) == thinline)
+            if (rgblist.contains(img->pixel(x,y)))
             {
-                if (img->pixel(x-1, y-1) != thinline) points.append(QPoint(x-1, y-1));
-                if (img->pixel(x-1, y  ) != thinline) points.append(QPoint(x-1, y  ));
-                if (img->pixel(x-1, y+1) != thinline) points.append(QPoint(x-1, y+1));
-                if (img->pixel(x  , y-1) != thinline) points.append(QPoint(x  , y-1));
-                if (img->pixel(x  , y+1) != thinline) points.append(QPoint(x  , y+1));
-                if (img->pixel(x+1, y-1) != thinline) points.append(QPoint(x+1, y-1));
-                if (img->pixel(x+1, y  ) != thinline) points.append(QPoint(x+1, y  ));
-                if (img->pixel(x+1, y+1) != thinline) points.append(QPoint(x+1, y+1));
+                if (!rgblist.contains(img->pixel(x-1, y-1))) points.append(QPoint(x-1, y-1));
+                if (!rgblist.contains(img->pixel(x-1, y  ))) points.append(QPoint(x-1, y  ));
+                if (!rgblist.contains(img->pixel(x-1, y+1))) points.append(QPoint(x-1, y+1));
+                if (!rgblist.contains(img->pixel(x  , y-1))) points.append(QPoint(x  , y-1));
+                if (!rgblist.contains(img->pixel(x  , y+1))) points.append(QPoint(x  , y+1));
+                if (!rgblist.contains(img->pixel(x+1, y-1))) points.append(QPoint(x+1, y-1));
+                if (!rgblist.contains(img->pixel(x+1, y  ))) points.append(QPoint(x+1, y  ));
+                if (!rgblist.contains(img->pixel(x+1, y+1))) points.append(QPoint(x+1, y+1));
                 for (int i = 0; i < points.size(); i++)
                 {
                     r += qPow(qRed(img->pixel(points.at(i))), 2);
@@ -973,7 +1017,23 @@ void BitmapImage::replaceThinLine(BitmapImage *bitmapimage)
             }
         }
     }
-    bitmapimage->modification();
+    img->modification();
+}
+
+void BitmapImage::removeColoredLines(BitmapImage *bitmapimage)
+{
+    Q_ASSERT(bitmapimage != nullptr);
+
+    BitmapImage* img = bitmapimage;
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            if (qRed(img->constScanLine(x, y)) == 254 || qBlue(img->constScanLine(x,y)) == 254)
+                img->setPixel(x, y, transp);
+        }
+    }
+    img->modification();
 }
 
 int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage *bitmapimage)
@@ -1018,7 +1078,7 @@ int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, Bitma
         }
         fillList.removeFirst();
     }
-    bitmapimage->modification();
+    img->modification();
     return pixels;
 }
 

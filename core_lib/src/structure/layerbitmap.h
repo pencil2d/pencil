@@ -38,9 +38,6 @@ public:
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
-    void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer);
-    void singleInitColorLayer(Layer* fromLayer, LayerBitmap* colorlayer, int frame);
-
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
     KeyFrame* createKeyFrame(int position, Object*) override;

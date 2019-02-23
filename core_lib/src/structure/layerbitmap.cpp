@@ -47,30 +47,6 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-void LayerBitmap::initColorLayer(Layer *fromLayer, LayerBitmap *colorlayer)
-{
-    Q_ASSERT(fromLayer != nullptr && colorlayer != nullptr);
-    int max = fromLayer->getMaxKeyFramePosition();
-    for (int i = 1; i <=max; i++)
-    {
-        if (fromLayer->keyExists(i))
-        {
-            colorlayer->copyFrame(fromLayer, colorlayer, i);
-            colorlayer->getBitmapImageAtFrame(i)->toBlackLine(colorlayer->getBitmapImageAtFrame(i));
-        }
-    }
-}
-
-void LayerBitmap::singleInitColorLayer(Layer *fromLayer, LayerBitmap *colorlayer, int frame)
-{
-    Q_ASSERT(fromLayer != nullptr && colorlayer != nullptr);
-    if (fromLayer->keyExists(frame))
-    {
-        colorlayer->copyFrame(fromLayer, colorlayer, frame);
-        colorlayer->getBitmapImageAtFrame(frame)->toBlackLine(colorlayer->getBitmapImageAtFrame(frame));
-    }
-}
-
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
 {
     BitmapImage* pKeyFrame = new BitmapImage(topLeft, path);

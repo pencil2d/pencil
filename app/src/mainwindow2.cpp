@@ -626,6 +626,23 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     mColorPalette->refreshColorList();
     mEditor->layers()->notifyAnimationLengthChanged();
 
+    // identify color layers
+    for (int i = 1; i < mEditor->layers()->count(); i++)
+    {
+        Layer* color = mEditor->layers()->getLayer(i);
+        if (color->type() == Layer::BITMAP && color->name().endsWith("_C"))
+        {
+            QString tmp = color->name();
+            tmp.chop(2);
+            Layer* org = mEditor->layers()->findLayerByName(tmp);
+            if (org != nullptr)
+            {
+                color->setIsColorLayer(true);
+                org->setHasColorLayer(true);
+            }
+        }
+    }
+
     progress.setValue(progress.maximum());
 
     updateSaveState();

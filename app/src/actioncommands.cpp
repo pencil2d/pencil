@@ -658,7 +658,7 @@ Status ActionCommands::addNewBitmapColorLayer()
         LayerBitmap* parentlayer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
         parentlayer->setHasColorLayer(true);
         LayerBitmap* colorlayer = mEditor->layers()->createBitmapLayer(name);
-        parentlayer->initColorLayer(parentlayer, colorlayer);
+        mEditor->layers()->initColorLayer(parentlayer, colorlayer);
         colorlayer->setIsColorLayer(true);
         emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex());
     }
