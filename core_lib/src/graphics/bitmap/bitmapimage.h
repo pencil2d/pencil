@@ -106,7 +106,7 @@ public:
     // coloring methods
     int getThreshold() { return mThreshold; }
     int getWhiteArea() { return mWhiteArea; }
-    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool green, bool blue);
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool blue);
 
     void toBlackLine(BitmapImage* bitmapimage);
 

@@ -656,7 +656,7 @@ void BitmapImage::setBounds(QRect rect)
     updateBounds(rect);
 }
 
-BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, bool green, bool blue)
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, bool blue)
 {
     Q_ASSERT(bitmapimage != nullptr);
 
@@ -677,8 +677,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
             {
                 if (red)
                 {
-                    QRgb tmp  = qRgba(254, 0, 0, 255);
-                    img->setPixel(x, y, tmp);
+                    img->setPixel(x, y, redline);
                 }
                 else
                 {
@@ -689,14 +688,13 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
             {
                 if (blue)
                 {
-                    QRgb tmp  = qRgba(0, 0, 254, 255);
-                    img->setPixel(x, y, tmp);
+                    img->setPixel(x, y, blueline);
                 }
                 else
                 {
                     img->setPixel(x, y, transp);
                 }
-            }   // IF in graduation area
+            }   // IF in grayscale graduation area
             else if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
             {
                 qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);

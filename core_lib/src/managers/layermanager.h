@@ -61,6 +61,7 @@ public:
     LayerCamera* createCameraLayer(const QString& strLayerName);
     LayerSound*  createSoundLayer(const QString& strLayerName);
 
+    // color layer
     void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer, int frame = 0);
 
     // KeyFrame Management

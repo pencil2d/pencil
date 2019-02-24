@@ -592,7 +592,7 @@ void Editor::copyFromScan()
 void Editor::scanToTransparent()
 {
     BitmapImage* bitmapimage = static_cast<BitmapImage*>(layers()->currentLayer()->getKeyFrameAt(currentFrame()));
-    bitmapimage = bitmapimage->scanToTransparent(bitmapimage,true,true,true);
+    bitmapimage = bitmapimage->scanToTransparent(bitmapimage,true,true);
     mScribbleArea->updateFrame(currentFrame());
 }
 
@@ -638,9 +638,7 @@ void Editor::toThinBlackLine()
     if (colorLayer != nullptr)
     {
         colorLayer->getBitmapImageAtFrame(currentFrame())->toThinBlackLine(colorLayer->getBitmapImageAtFrame(currentFrame()));
-        qDebug() << "før restore...";
         orgLayer->getBitmapImageAtFrame(currentFrame())->restoreColoredLines(orgLayer->getBitmapImageAtFrame(currentFrame()), colorLayer->getBitmapImageAtFrame(currentFrame()));
-        qDebug() << "efter restore...";
         mScribbleArea->updateFrame(currentFrame());
     }
 }
@@ -658,9 +656,7 @@ void Editor::toThinBlackLineRest()
         {
             scrubTo(i);
             colorLayer->getBitmapImageAtFrame(currentFrame())->toThinBlackLine(colorLayer->getBitmapImageAtFrame(currentFrame()));
-            qDebug() << "før restore...";
             orgLayer->getBitmapImageAtFrame(currentFrame())->restoreColoredLines(orgLayer->getBitmapImageAtFrame(currentFrame()), colorLayer->getBitmapImageAtFrame(currentFrame()));
-            qDebug() << "efter restore...";
             mObject->updateActiveFrames(currentFrame());
             mScribbleArea->updateFrame(currentFrame());
         }
