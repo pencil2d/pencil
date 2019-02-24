@@ -265,7 +265,7 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     auto layerVector = static_cast<LayerVector*>(layer);
     VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
     mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo(getCurrentPoint(),
-                                                              mScribbleArea->selectionTolerance / mEditor->view()->scaling());
+                                                              mScribbleArea->mSelectionTolerance / mEditor->view()->scaling());
 }
 
 void MoveTool::whichAnchorPoint()

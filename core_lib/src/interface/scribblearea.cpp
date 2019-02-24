@@ -59,11 +59,11 @@ ScribbleArea::~ScribbleArea()
 bool ScribbleArea::init()
 {
     mPrefs = mEditor->preference();
-    doubleClickTimer = new QTimer(this);
+    mDoubleClickTimer = new QTimer(this);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
-    connect(doubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
-    doubleClickTimer->setInterval(50);
+    connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
+    mDoubleClickTimer->setInterval(50);
 
     const int curveSmoothingLevel = mPrefs->getInt(SETTING::CURVE_SMOOTHING);
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
@@ -241,7 +241,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
     mKeyboardInUse = true;
 
     if (mMouseInUse) { return; } // prevents shortcuts calls while drawing
-    if (instantTool) { return; } // prevents shortcuts calls while using instant tool
+    if (mInstantTool) { return; } // prevents shortcuts calls while using instant tool
 
     if (currentTool()->keyPressEvent(event))
     {
@@ -360,7 +360,7 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 
     if (mMouseInUse) { return; }
 
-    if (instantTool) // temporary tool
+    if (mInstantTool) // temporary tool
     {
         currentTool()->keyReleaseEvent(event);
         setPrevTool();
@@ -427,17 +427,17 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         {
             mStrokeManager->setTabletinUse(true);
             mStrokeManager->pointerPressEvent(&event);
-            if (isFirstClick)
+            if (mIsFirstClick)
             {
-                isFirstClick = false;
-                doubleClickTimer->start();
+                mIsFirstClick = false;
+                mDoubleClickTimer->start();
                 pointerPressEvent(&event);
             }
             else
             {
                 qreal distance = QLineF(currentTool()->getCurrentPressPoint(), currentTool()->getLastPressPoint()).length();
 
-                if (doubleClickMillis <= DOUBLE_CLICK_THRESHOLD && distance < 5.0) {
+                if (mDoubleClickMillis <= DOUBLE_CLICK_THRESHOLD && distance < 5.0) {
                     currentTool()->pointerDoubleClickEvent(&event);
                 }
                 else
@@ -567,7 +567,7 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
     currentTool()->pointerReleaseEvent(event);
 
     // ---- last check (at the very bottom of mouseRelease) ----
-    if (instantTool && !mKeyboardInUse) // temp tool and released all keys ?
+    if (mInstantTool && !mKeyboardInUse) // temp tool and released all keys ?
     {
         setPrevTool();
     }
@@ -575,13 +575,13 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
 
 void ScribbleArea::handleDoubleClick()
 {
-    doubleClickMillis += 100;
+    mDoubleClickMillis += 100;
 
-    if (doubleClickMillis >= DOUBLE_CLICK_THRESHOLD)
+    if (mDoubleClickMillis >= DOUBLE_CLICK_THRESHOLD)
     {
-        doubleClickMillis = 0;
-        isFirstClick = true;
-        doubleClickTimer->stop();
+        mDoubleClickMillis = 0;
+        mIsFirstClick = true;
+        mDoubleClickTimer->stop();
     }
 }
 
@@ -681,7 +681,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
     mMouseInUse = false;
 }
 
-void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *e)
+void ScribbleArea::mouseDoubleClickEvent(QMouseEvent* e)
 {
     if (mStrokeManager->isTabletInUse()) { e->ignore(); return; }
     PointerEvent event(e);
@@ -690,7 +690,7 @@ void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *e)
     currentTool()->pointerDoubleClickEvent(&event);
 }
 
-void ScribbleArea::resizeEvent(QResizeEvent *event)
+void ScribbleArea::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
     mCanvas = QPixmap(size());
@@ -874,7 +874,7 @@ void ScribbleArea::paintCanvasCursor(QPainter& painter)
     QPointF mousePos = currentTool()->getCurrentPoint();
     int centerCal = mCursorImg.width() / 2;
 
-    transformedCursorPos = view.map(mousePos);
+    mTransformedCursorPos = view.map(mousePos);
 
     // reset matrix
     view.reset();
@@ -883,8 +883,8 @@ void ScribbleArea::paintCanvasCursor(QPainter& painter)
     mCursorCenterPos.setX(centerCal);
     mCursorCenterPos.setY(centerCal);
 
-    painter.drawPixmap(QPoint(transformedCursorPos.x() - mCursorCenterPos.x(),
-                              transformedCursorPos.y() - mCursorCenterPos.y()),
+    painter.drawPixmap(QPoint(mTransformedCursorPos.x() - mCursorCenterPos.x(),
+                              mTransformedCursorPos.y() - mCursorCenterPos.y()),
                        mCursorImg);
 
     // update center of transformed img for rect only
@@ -915,8 +915,8 @@ void ScribbleArea::updateCanvasCursor()
     }
 
     // update cursor rect
-    QPoint translatedPos = QPoint(transformedCursorPos.x() - mCursorCenterPos.x(),
-                                  transformedCursorPos.y() - mCursorCenterPos.y());
+    QPoint translatedPos = QPoint(mTransformedCursorPos.x() - mCursorCenterPos.x(),
+                                  mTransformedCursorPos.y() - mCursorCenterPos.y());
 
     update(mTransCursImg.rect().adjusted(-1, -1, 1, 1)
            .translated(translatedPos));
@@ -1979,9 +1979,9 @@ void ScribbleArea::setTemporaryTool(ToolType eToolMode)
 {
     // Only switch to temporary tool if not already in this state
     // and temporary tool is not already the current tool.
-    if (!instantTool && currentTool()->type() != eToolMode)
+    if (!mInstantTool && currentTool()->type() != eToolMode)
     {
-        instantTool = true; // used to return to previous tool when finished (keyRelease).
+        mInstantTool = true; // used to return to previous tool when finished (keyRelease).
         mPrevTemporalToolType = currentTool()->type();
         editor()->tools()->setCurrentTool(eToolMode);
     }
@@ -2031,7 +2031,7 @@ void ScribbleArea::clearImage()
 void ScribbleArea::setPrevTool()
 {
     editor()->tools()->setCurrentTool(mPrevTemporalToolType);
-    instantTool = false;
+    mInstantTool = false;
 }
 
 void ScribbleArea::paletteColorChanged(QColor color)

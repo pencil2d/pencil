@@ -132,7 +132,7 @@ public:
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
-    bool isTemporaryTool() const { return instantTool; }
+    bool isTemporaryTool() const { return mInstantTool; }
 
     void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
 
@@ -222,7 +222,7 @@ private:
 
     BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
 
-    std::unique_ptr< StrokeManager > mStrokeManager;
+    std::unique_ptr<StrokeManager> mStrokeManager;
 
     Editor* mEditor = nullptr;
 
@@ -247,25 +247,28 @@ private:
 
     // Double click handling for tablet input
     void handleDoubleClick();
-    bool isFirstClick = true;
-    int doubleClickMillis = 0;
+    bool mIsFirstClick = true;
+    int mDoubleClickMillis = 0;
     // Microsoft suggests that a double click action should be no more than 500 ms
-    int DOUBLE_CLICK_THRESHOLD = 500;
-    QTimer* doubleClickTimer;
+    const int DOUBLE_CLICK_THRESHOLD = 500;
+    QTimer* mDoubleClickTimer;
 
-    qreal selectionTolerance = 8.0;
+    qreal mSelectionTolerance = 8.0;
     QList<VertexRef> mClosestVertices;
     QPointF mOffset;
     QPoint mCursorCenterPos;
 
-    QPointF transformedCursorPos;
+    QPointF mTransformedCursorPos;
 
     //instant tool (temporal eg. eraser)
-    bool instantTool = false; //whether or not using temporal tool
+    bool mInstantTool = false; //whether or not using temporal tool
     bool mSomethingSelected = false;
 
     VectorSelection vectorSelection;
     QTransform selectionTransformation;
+
+    QPolygonF mCurrentTransformSelection;
+    QPolygonF mLastTransformSelection;
 
     PreferenceManager* mPrefs = nullptr;
 
@@ -278,10 +281,7 @@ private:
     // debug
     QRectF mDebugRect;
     QLoggingCategory mLog;
-    std::deque< clock_t > mDebugTimeQue;
-
-    QPolygonF mCurrentTransformSelection;
-    QPolygonF mLastTransformSelection;
+    std::deque<clock_t> mDebugTimeQue;
 };
 
 #endif
