@@ -410,7 +410,7 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 void ScribbleArea::tabletEvent(QTabletEvent *e)
 {
     PointerEvent event(e);
-    updateCanvasCursor();
+
 
     if (event.pointerType() == QTabletEvent::Eraser)
     {
@@ -638,8 +638,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
     // Workaround for tablet issue (#677 part 2)
-    if (mStrokeManager->isTabletInUse()
-        || (!isMouseInUse() && currentTool()->type() != POLYLINE)) {
+    if (mStrokeManager->isTabletInUse() &&
+        (!isMouseInUse() && currentTool()->type() != POLYLINE)) {
         e->ignore(); return;
     }
 
