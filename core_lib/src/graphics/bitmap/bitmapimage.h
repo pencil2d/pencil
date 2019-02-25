@@ -109,6 +109,7 @@ public:
     int getWhiteArea() { return mWhiteArea; }
     BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool green, bool blue);
 
+    void getThresholdSuggestion(BitmapImage* img);
     void toBlackLine(BitmapImage* bitmapimage);
 
     void fillWhiteAreas(BitmapImage* bitmapimage);
