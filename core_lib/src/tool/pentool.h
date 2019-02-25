@@ -26,7 +26,7 @@ class PenTool : public StrokeTool
 {
     Q_OBJECT
 public:
-    PenTool(QObject *parent = 0);
+    PenTool(QObject* parent = 0);
     ToolType type() override { return PEN; }
     void loadSettings() override;
     QCursor cursor() override;

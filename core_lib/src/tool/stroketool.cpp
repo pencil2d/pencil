@@ -36,27 +36,26 @@ extern "C" {
 }
 #endif
 
-StrokeTool::StrokeTool( QObject *parent ) :
-BaseTool( parent )
+StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
 {
     detectWhichOSX();
 }
 
 void StrokeTool::startStroke()
 {
-    if(emptyFrameActionEnabled())
+    if (emptyFrameActionEnabled())
     {
         mScribbleArea->handleDrawingOnEmptyFrame();
     }
 
     mFirstDraw = true;
     mLastPixel = getCurrentPixel();
-    
+
     mStrokePoints.clear();
 
     //Experimental
-    QPointF startStrokes =  m_pStrokeManager->interpolateStart(mLastPixel);
-    mStrokePoints << mEditor->view()->mapScreenToCanvas( startStrokes );
+    QPointF startStrokes = m_pStrokeManager->interpolateStart(mLastPixel);
+    mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
 
     mStrokePressures.clear();
     mStrokePressures << m_pStrokeManager->getPressure();
@@ -66,12 +65,12 @@ void StrokeTool::startStroke()
 
 bool StrokeTool::keyPressEvent(QKeyEvent *event)
 {
-    switch ( event->key() ) {
+    switch (event->key()) {
     case Qt::Key_Alt:
-        mScribbleArea->setTemporaryTool( EYEDROPPER );
+        mScribbleArea->setTemporaryTool(EYEDROPPER);
         return true;
     case Qt::Key_Space:
-        mScribbleArea->setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
+        mScribbleArea->setTemporaryTool(HAND); // just call "setTemporaryTool()" to activate temporarily any tool
         return true;
     }
     return false;
@@ -101,12 +100,12 @@ void StrokeTool::endStroke()
 void StrokeTool::drawStroke()
 {
     QPointF pixel = getCurrentPixel();
-    if ( pixel != mLastPixel || !mFirstDraw )
+    if (pixel != mLastPixel || !mFirstDraw)
     {
 
         // get last pixel before interpolation initializes
-        QPointF startStrokes =  m_pStrokeManager->interpolateStart(getLastPixel());
-        mStrokePoints << mEditor->view()->mapScreenToCanvas( startStrokes );
+        QPointF startStrokes = m_pStrokeManager->interpolateStart(getLastPixel());
+        mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
         mStrokePressures << m_pStrokeManager->getPressure();
 
     }

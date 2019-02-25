@@ -182,6 +182,7 @@ void BrushTool::pointerMoveEvent(PointerEvent *)
 void BrushTool::pointerReleaseEvent(PointerEvent *)
 {
     Layer* layer = mEditor->layers()->currentLayer();
+    mEditor->backup(typeName());
 
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)

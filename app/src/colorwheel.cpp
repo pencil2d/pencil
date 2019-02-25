@@ -51,6 +51,11 @@ void ColorWheel::setColor(QColor color)
         return;
     }
 
+    if (color.hue() == -1) // grayscale color, keep the current hue
+    {
+        color.setHsv(mCurrentColor.hue(), color.saturation(), color.value(), color.alpha());
+    }
+
     mCurrentColor = color;
 
     drawSquareImage(color.hue());
@@ -67,19 +72,16 @@ QColor ColorWheel::pickColor(const QPoint& point)
     {
         qreal hue = 0;
         int r = qMin(width(), height()) / 2;
-        QString strDebug = "";
-        strDebug += QString("Radius=%1").arg(r);
-
         QPoint center(width() / 2, height() / 2);
-
         QPoint diff = point - center;
-        strDebug += QString(" Atan2=%1").arg(qAtan2(diff.y(), diff.x()));
 
         hue = qAtan2(-diff.y(), diff.x()) / M_PI * 180;
-
         hue = fmod((hue + 360), 360); // shift -180~180 to 0~360
 
-        strDebug += QString(" Hue=%1").arg(hue);
+        //QString strDebug = "";
+        //strDebug += QString("Radius=%1").arg(r);
+        //strDebug += QString(" Atan2=%1").arg(qAtan2(diff.y(), diff.x()));
+        //strDebug += QString(" Hue=%1").arg(hue);
         //qDebug() << strDebug;
 
         hue = (hue > 359) ? 359 : hue;

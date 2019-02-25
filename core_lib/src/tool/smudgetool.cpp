@@ -15,10 +15,9 @@ GNU General Public License for more details.
 
 */
 #include "smudgetool.h"
+#include <QPixmap>
 
 #include "pointerevent.h"
-
-#include <QPixmap>
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
@@ -31,8 +30,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "blitrect.h"
 
-SmudgeTool::SmudgeTool(QObject *parent) :
-    StrokeTool(parent)
+SmudgeTool::SmudgeTool(QObject* parent) : StrokeTool(parent)
 {
     toolMode = 0; // tool mode
 }
@@ -132,7 +130,7 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent*)
     return true;
 }
 
-void SmudgeTool::pointerPressEvent(PointerEvent *event)
+void SmudgeTool::pointerPressEvent(PointerEvent* event)
 {
     //qDebug() << "smudgetool: mousePressEvent";
 
@@ -151,10 +149,10 @@ void SmudgeTool::pointerPressEvent(PointerEvent *event)
         {
             mScribbleArea->mClosestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                 ->getCurvesCloseTo( getCurrentPoint(),
-                                    mScribbleArea->selectionTolerance / mEditor->view()->scaling() );
+                                    mScribbleArea->mSelectionTolerance / mEditor->view()->scaling() );
             mScribbleArea->mClosestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                 ->getVerticesCloseTo( getCurrentPoint(),
-                                      mScribbleArea->selectionTolerance / mEditor->view()->scaling() );
+                                      mScribbleArea->mSelectionTolerance / mEditor->view()->scaling() );
 
             if (mScribbleArea->mClosestVertices.size() > 0 || mScribbleArea->mClosestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
@@ -188,7 +186,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent *event)
     }
 }
 
-void SmudgeTool::pointerMoveEvent(PointerEvent *event)
+void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
@@ -217,7 +215,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent *event)
             {
                 mScribbleArea->mClosestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                     ->getVerticesCloseTo( getCurrentPoint(),
-                                          mScribbleArea->selectionTolerance / mEditor->view()->scaling() );
+                                          mScribbleArea->mSelectionTolerance / mEditor->view()->scaling() );
             }
         }
         mScribbleArea->update();
@@ -225,7 +223,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent *event)
     }
 }
 
-void SmudgeTool::pointerReleaseEvent(PointerEvent *event)
+void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }

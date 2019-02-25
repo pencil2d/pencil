@@ -55,7 +55,7 @@ QString BaseTool::TypeName(ToolType type)
     return map.at(type);
 }
 
-BaseTool::BaseTool(QObject *parent) : QObject(parent)
+BaseTool::BaseTool(QObject* parent) : QObject(parent)
 {
     m_enabledProperties.insert(WIDTH, false);
     m_enabledProperties.insert(FEATHER, false);
@@ -98,22 +98,22 @@ void BaseTool::initialize(Editor* editor)
     loadSettings();
 }
 
-void BaseTool::pointerPressEvent(PointerEvent *event)
+void BaseTool::pointerPressEvent(PointerEvent* event)
 {
     event->accept();
 }
 
-void BaseTool::pointerMoveEvent(PointerEvent *event)
+void BaseTool::pointerMoveEvent(PointerEvent* event)
 {
     event->accept();
 }
 
-void BaseTool::pointerReleaseEvent(PointerEvent *event)
+void BaseTool::pointerReleaseEvent(PointerEvent* event)
 {
     event->accept();
 }
 
-void BaseTool::pointerDoubleClickEvent(PointerEvent *event)
+void BaseTool::pointerDoubleClickEvent(PointerEvent* event)
 {
     pointerPressEvent(event);
 }

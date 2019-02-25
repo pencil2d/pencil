@@ -36,7 +36,6 @@ public:
     void pointerDoubleClickEvent(PointerEvent *) override;
 
 private:
-
     void transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons);
 
     QPointF mLastPixel;

@@ -96,7 +96,7 @@ void BucketTool::setTolerance(const int tolerance)
     settings.sync();
 }
 
-void BucketTool::pointerPressEvent(PointerEvent *event)
+void BucketTool::pointerPressEvent(PointerEvent* event)
 {
     startStroke();
     if (event->button() == Qt::LeftButton)
@@ -106,7 +106,7 @@ void BucketTool::pointerPressEvent(PointerEvent *event)
     startStroke();
 }
 
-void BucketTool::pointerMoveEvent(PointerEvent *event)
+void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::VECTOR)
@@ -118,7 +118,7 @@ void BucketTool::pointerMoveEvent(PointerEvent *event)
     }
 }
 
-void BucketTool::pointerReleaseEvent(PointerEvent *event)
+void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
     Layer* layer = editor()->layers()->currentLayer();
     if (layer == nullptr) { return; }

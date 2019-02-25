@@ -28,187 +28,182 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="68"/>
+        <location filename="../app/src/actioncommands.cpp" line="70"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>目前沒有音效層可供匯入音效，要創建新的音效層嗎？</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="69"/>
+        <location filename="../app/src/actioncommands.cpp" line="71"/>
         <source>Create sound layer</source>
         <translation>建立音效層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="70"/>
+        <location filename="../app/src/actioncommands.cpp" line="72"/>
         <source>Don&apos;t create layer</source>
         <translation>不建立圖層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="80"/>
+        <location filename="../app/src/actioncommands.cpp" line="82"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>圖層屬性</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="82"/>
+        <location filename="../app/src/actioncommands.cpp" line="84"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>音效層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="201"/>
+        <location filename="../app/src/actioncommands.cpp" line="204"/>
         <source>Exporting movie</source>
         <translation>正在輸出影片</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="253"/>
+        <location filename="../app/src/actioncommands.cpp" line="256"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>輸出完成。要打開影片嗎？</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="595"/>
-        <location filename="../app/src/actioncommands.cpp" line="612"/>
-        <location filename="../app/src/actioncommands.cpp" line="630"/>
-        <location filename="../app/src/actioncommands.cpp" line="648"/>
+        <location filename="../app/src/actioncommands.cpp" line="602"/>
+        <location filename="../app/src/actioncommands.cpp" line="615"/>
+        <location filename="../app/src/actioncommands.cpp" line="628"/>
+        <location filename="../app/src/actioncommands.cpp" line="641"/>
         <source>Layer Properties</source>
         <translation>圖層屬性</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="81"/>
-        <location filename="../app/src/actioncommands.cpp" line="596"/>
-        <location filename="../app/src/actioncommands.cpp" line="613"/>
-        <location filename="../app/src/actioncommands.cpp" line="631"/>
-        <location filename="../app/src/actioncommands.cpp" line="649"/>
+        <location filename="../app/src/actioncommands.cpp" line="83"/>
+        <location filename="../app/src/actioncommands.cpp" line="603"/>
+        <location filename="../app/src/actioncommands.cpp" line="616"/>
+        <location filename="../app/src/actioncommands.cpp" line="629"/>
+        <location filename="../app/src/actioncommands.cpp" line="642"/>
         <source>Layer name:</source>
         <translation>圖層名稱:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="108"/>
+        <location filename="../app/src/actioncommands.cpp" line="110"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
         <translation>目前畫格已經有一個音效了! 請選擇另一個畫格或圖層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="243"/>
+        <location filename="../app/src/actioncommands.cpp" line="246"/>
         <source>Finished. Open file location?</source>
         <translation>工作完成。要打開檔案嗎?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="314"/>
+        <location filename="../app/src/actioncommands.cpp" line="318"/>
         <source>Exporting image sequence...</source>
         <translation>輸出連續圖片中...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="314"/>
+        <location filename="../app/src/actioncommands.cpp" line="318"/>
         <source>Abort</source>
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="394"/>
+        <location filename="../app/src/actioncommands.cpp" line="400"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="395"/>
+        <location filename="../app/src/actioncommands.cpp" line="401"/>
         <source>Unable to export image.</source>
         <translation>無法匯出圖片</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="597"/>
+        <location filename="../app/src/actioncommands.cpp" line="604"/>
         <source>Bitmap Layer</source>
         <translation>點陣圖層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="614"/>
+        <location filename="../app/src/actioncommands.cpp" line="617"/>
         <source>Vector Layer</source>
         <translation>向量圖層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="632"/>
+        <location filename="../app/src/actioncommands.cpp" line="630"/>
         <source>Camera Layer</source>
         <translation>相機層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="650"/>
+        <location filename="../app/src/actioncommands.cpp" line="643"/>
         <source>Sound Layer</source>
         <translation>音效層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="671"/>
+        <location filename="../app/src/actioncommands.cpp" line="658"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>刪除圖層</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="672"/>
+        <location filename="../app/src/actioncommands.cpp" line="659"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>確定要刪除圖層嗎</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="681"/>
+        <location filename="../app/src/actioncommands.cpp" line="668"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>請至少保留一個相機層</translation>
-    </message>
-    <message>
-        <location filename="../app/src/actioncommands.cpp" line="704"/>
-        <source>Filename must be unique and not empty</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Pencil</source>
         <translation>鉛筆</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Eraser</source>
         <translation>橡皮擦</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Select</source>
         <translation>全選</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
         <source>Move</source>
         <translation>移動</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
         <source>Hand</source>
         <translation>手</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
         <source>Smudge</source>
         <translation>塗抹</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
         <source>Pen</source>
         <translation>鋼筆</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
         <source>Polyline</source>
         <translation>多邊形工具</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
         <source>Bucket</source>
         <translation>油漆桶</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
         <source>Eyedropper</source>
         <translation>吸管</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="52"/>
         <source>Brush</source>
         <translation>刷子</translation>
     </message>
@@ -229,6 +224,67 @@
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="38"/>
         <source>Camera size:</source>
         <translation>攝影機大小：</translation>
+    </message>
+</context>
+<context>
+    <name>CheckUpdatesDialog</name>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="27"/>
+        <source>Checking for Updates...</source>
+        <comment>status description in the check-for-update dialog</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="39"/>
+        <source>Download</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="40"/>
+        <source>Close</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="93"/>
+        <source>&lt;b&gt;You are using a Pencil2D nightly build&lt;/b&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="94"/>
+        <source>Please go %1 here %2 to check new nightly builds.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="104"/>
+        <source>&lt;b&gt;An error occurred while checking for updates&lt;/b&gt;</source>
+        <comment>error msg of check-for-update</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="105"/>
+        <source>Please check your internet connection and try again later.</source>
+        <comment>error msg of check-for-update</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
+        <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
+        <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
+        <source>&lt;b&gt;Pencil2D is up to date&lt;/b&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
+        <source>Version</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -356,48 +412,48 @@
 <context>
     <name>ColorPaletteWidget</name>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="104"/>
         <source>Add</source>
         <translation>增加</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Replace</source>
         <translation>取代</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Remove</source>
         <translation>移除</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="246"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="247"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="244"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="245"/>
         <source>Colour name</source>
         <translation>顏色名稱</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="544"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="482"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="545"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="483"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="546"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="484"/>
         <source>Delete</source>
         <translation>刪除</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="562"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="500"/>
         <source>Palette Restriction</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="563"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="501"/>
         <source>The palette requires at least one swatch to remain functional</source>
         <translation>調色盤需要保留至少一個顏色</translation>
     </message>
@@ -491,19 +547,19 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="550"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="553"/>
         <source>Paste</source>
         <translation>貼上</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="932"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="942"/>
         <source>Remove frame</source>
         <translation>刪除關鍵格</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="803"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="781"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="813"/>
         <source>Import Image</source>
         <translation>匯入圖像</translation>
     </message>
@@ -587,32 +643,37 @@
         <translation>範圍</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="162"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="149"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation>輸出影片的最後一個畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="165"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="152"/>
         <source>End Frame</source>
         <translation>終止畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="184"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="215"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>輸出影片的第一個畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="187"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
         <source>Start Frame</source>
         <translation>起始畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="212"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="238"/>
+        <source>Export keyframes only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="177"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="183"/>
         <source>To the end of sound clips</source>
         <translation>輸出直到聲音片段結尾</translation>
     </message>
@@ -625,7 +686,7 @@
         <translation>輸出GIF動畫</translation>
     </message>
     <message>
-        <location filename="../app/src/exportmoviedialog.cpp" line="31"/>
+        <location filename="../app/src/exportmoviedialog.cpp" line="32"/>
         <source>Export Movie</source>
         <translation>匯出影片</translation>
     </message>
@@ -696,6 +757,21 @@
         <location filename="../app/ui/exportmovieoptions.ui" line="236"/>
         <source>Loop</source>
         <translation>循環 </translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="249"/>
+        <source>Exporter Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="267"/>
+        <source>WebM and APNG only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="270"/>
+        <source>Transparency</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -801,72 +877,72 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="56"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="110"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
         <source>Could not open file</source>
         <translation>無法開啟檔案</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
         <translation>檔案不存在所以無法開啟。請檢查檔案路徑。</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>Invalid Save Path</source>
         <translation>無效的路徑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="232"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>該路徑是一個目錄 (&quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="240"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>目錄不存在 (&quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="247"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>沒有寫入權限 (&quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="282"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="291"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
         <source>Cannot Create Data Directory</source>
         <translation>無法建立資料目錄</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>無法創建目錄 &quot;%1&quot;，請確定您有足夠權限。</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; 是個檔案，請刪除檔案再試一次。</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="382"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
         <source>Miniz Error</source>
         <translation>Miniz 錯誤</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="399"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
         <source>Internal Error</source>
         <translation>內部錯誤</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="384"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="401"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>發生內部錯誤，您的檔案可能沒有儲存成功。</translation>
     </message>
@@ -944,102 +1020,113 @@
         <translation>格線</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="97"/>
+        <location filename="../app/ui/generalpage.ui" line="307"/>
+        <source>Advanced</source>
+        <comment>groupBox title in Preference</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="322"/>
+        <source>Cached Frame Number:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="96"/>
         <source>Czech</source>
         <translation>捷克語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="98"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="97"/>
         <source>Danish</source>
         <translation>丹麥語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="99"/>
         <source>English</source>
         <translation>英語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="99"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="98"/>
         <source>German</source>
         <translation>德語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
         <source>Estonian</source>
         <translation>愛沙尼亞語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="102"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>Spanish</source>
         <translation>西班牙語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="102"/>
         <source>French</source>
         <translation>法語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
         <source>Hebrew</source>
         <translation>希伯來語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
         <source>Hungarian</source>
         <translation>匈牙利語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
         <source>Indonesian</source>
         <translation>印尼語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
         <source>Italian</source>
         <translation>義大利語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Japanese</source>
         <translation>日語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Polish</source>
         <translation>波蘭語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Portuguese - Portugal</source>
         <translation>葡萄牙語 (葡萄牙)</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Portuguese - Brazil</source>
         <translation>葡萄牙語 - 巴西</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Russian</source>
         <translation>俄語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
         <source>Slovenian</source>
         <translation>斯洛維尼雅語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>Vietnamese</source>
         <translation>越南語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Chinese - China</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
         <source>Chinese - Taiwan</source>
         <translation>中文 - 台灣</translation>
     </message>
@@ -1094,12 +1181,12 @@
         <translation>高解析度繪圖板</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="215"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="218"/>
         <source>Restart Required</source>
         <translation>需要重新啟動</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="216"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="219"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>會在下次打開 Pencil2D 時改變顯示語言</translation>
     </message>
@@ -1162,7 +1249,7 @@
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/src/structure/layercamera.cpp" line="79"/>
+        <location filename="../core_lib/src/structure/layercamera.cpp" line="80"/>
         <source>Camera Layer</source>
         <translation>相機層</translation>
     </message>
@@ -1201,608 +1288,673 @@
         <translation>匯入</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="74"/>
+        <location filename="../app/ui/mainwindow2.ui" line="75"/>
         <source>Export</source>
         <translation>匯出</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="97"/>
+        <location filename="../app/ui/mainwindow2.ui" line="98"/>
         <source>Edit</source>
         <translation>編輯</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="101"/>
+        <location filename="../app/ui/mainwindow2.ui" line="102"/>
         <source>Selection</source>
         <translation>選擇</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="123"/>
+        <location filename="../app/ui/mainwindow2.ui" line="124"/>
         <source>View</source>
         <translation>檢視</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="127"/>
+        <location filename="../app/ui/mainwindow2.ui" line="128"/>
         <source>Onion Skin</source>
         <translation>描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="152"/>
+        <location filename="../app/ui/mainwindow2.ui" line="136"/>
+        <source>Zoom</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="166"/>
         <source>Animation</source>
         <translation>動畫</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="172"/>
-        <location filename="../app/ui/mainwindow2.ui" line="800"/>
+        <location filename="../app/ui/mainwindow2.ui" line="186"/>
+        <location filename="../app/ui/mainwindow2.ui" line="823"/>
         <source>Tools</source>
         <translation>工具</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="190"/>
+        <location filename="../app/ui/mainwindow2.ui" line="204"/>
         <source>Layer</source>
         <translation>圖層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="201"/>
-        <location filename="../app/ui/mainwindow2.ui" line="731"/>
+        <location filename="../app/ui/mainwindow2.ui" line="215"/>
+        <location filename="../app/ui/mainwindow2.ui" line="754"/>
         <source>Help</source>
         <translation>幫助</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="213"/>
+        <location filename="../app/ui/mainwindow2.ui" line="231"/>
         <source>Windows</source>
         <translation>視窗</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="232"/>
+        <location filename="../app/ui/mainwindow2.ui" line="250"/>
         <source>New</source>
         <translation>新增</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="241"/>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
         <source>Open</source>
         <translation>開啟</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="250"/>
+        <location filename="../app/ui/mainwindow2.ui" line="268"/>
         <source>Save</source>
         <translation>儲存</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="268"/>
+        <location filename="../app/ui/mainwindow2.ui" line="286"/>
         <source>Exit</source>
         <translation>離開</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="273"/>
-        <location filename="../app/ui/mainwindow2.ui" line="301"/>
+        <location filename="../app/ui/mainwindow2.ui" line="291"/>
+        <location filename="../app/ui/mainwindow2.ui" line="319"/>
         <source>Image Sequence...</source>
         <translation>連續圖像...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="278"/>
         <location filename="../app/ui/mainwindow2.ui" line="296"/>
+        <location filename="../app/ui/mainwindow2.ui" line="314"/>
         <source>Image...</source>
         <translation>圖像...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="283"/>
-        <location filename="../app/ui/mainwindow2.ui" line="306"/>
+        <location filename="../app/ui/mainwindow2.ui" line="301"/>
+        <location filename="../app/ui/mainwindow2.ui" line="324"/>
         <source>Movie...</source>
         <translation>影片...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="291"/>
-        <location filename="../app/ui/mainwindow2.ui" line="319"/>
+        <location filename="../app/ui/mainwindow2.ui" line="309"/>
+        <location filename="../app/ui/mainwindow2.ui" line="337"/>
         <source>Palette...</source>
         <translation>調色盤...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="314"/>
+        <location filename="../app/ui/mainwindow2.ui" line="332"/>
         <source>Sound...</source>
         <translation>音效...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="328"/>
+        <location filename="../app/ui/mainwindow2.ui" line="342"/>
+        <source>Image Sequence Numbered...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="351"/>
         <source>Undo</source>
         <translation>復原</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="340"/>
+        <location filename="../app/ui/mainwindow2.ui" line="363"/>
         <source>Redo</source>
         <translation>重做</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="349"/>
+        <location filename="../app/ui/mainwindow2.ui" line="372"/>
         <source>Cut</source>
         <translation>剪下</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="358"/>
+        <location filename="../app/ui/mainwindow2.ui" line="381"/>
         <source>Copy</source>
         <translation>複製</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="367"/>
+        <location filename="../app/ui/mainwindow2.ui" line="390"/>
         <source>Paste</source>
         <translation>貼上</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="372"/>
+        <location filename="../app/ui/mainwindow2.ui" line="395"/>
         <source>Crop</source>
         <translation>裁剪</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="377"/>
+        <location filename="../app/ui/mainwindow2.ui" line="400"/>
         <source>Crop To Selection</source>
         <translation>裁剪至選擇區域</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="382"/>
+        <location filename="../app/ui/mainwindow2.ui" line="405"/>
         <source>Select All</source>
         <translation>全選</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="387"/>
+        <location filename="../app/ui/mainwindow2.ui" line="410"/>
         <source>Deselect All</source>
         <translation>取消全選</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="396"/>
-        <location filename="../app/ui/mainwindow2.ui" line="595"/>
+        <location filename="../app/ui/mainwindow2.ui" line="419"/>
+        <location filename="../app/ui/mainwindow2.ui" line="618"/>
         <source>Clear Frame</source>
         <translation>清除畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="401"/>
+        <location filename="../app/ui/mainwindow2.ui" line="424"/>
         <source>Preferences</source>
         <translation>偏好設定</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="409"/>
+        <location filename="../app/ui/mainwindow2.ui" line="432"/>
         <source>Reset Windows</source>
         <translation>重設視窗</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="418"/>
+        <location filename="../app/ui/mainwindow2.ui" line="441"/>
         <source>Zoom In</source>
         <translation>放大</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="427"/>
+        <location filename="../app/ui/mainwindow2.ui" line="450"/>
         <source>Zoom Out</source>
         <translation>縮小</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="432"/>
+        <location filename="../app/ui/mainwindow2.ui" line="455"/>
         <source>Rotate Clockwise</source>
         <translation>順時針旋轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="437"/>
+        <location filename="../app/ui/mainwindow2.ui" line="460"/>
         <source>Rotate AntiClosewise</source>
         <translation>逆時針旋轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="442"/>
+        <location filename="../app/ui/mainwindow2.ui" line="465"/>
         <source>Reset Zoom/Rotate</source>
         <translation>重設縮放/旋轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="451"/>
+        <location filename="../app/ui/mainwindow2.ui" line="474"/>
         <source>Horizontal Flip</source>
         <translation>水平翻轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="460"/>
+        <location filename="../app/ui/mainwindow2.ui" line="483"/>
         <source>Vertical Flip</source>
         <translation>垂直翻轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="468"/>
+        <location filename="../app/ui/mainwindow2.ui" line="491"/>
         <source>Preview</source>
         <translation>預覽</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="476"/>
+        <location filename="../app/ui/mainwindow2.ui" line="499"/>
         <source>Grid</source>
         <translation>格線</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="488"/>
+        <location filename="../app/ui/mainwindow2.ui" line="511"/>
         <source>Previous</source>
         <translation>前一個</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="491"/>
+        <location filename="../app/ui/mainwindow2.ui" line="514"/>
         <source>Show previous onion skin</source>
         <translation>顯示先前描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="503"/>
+        <location filename="../app/ui/mainwindow2.ui" line="526"/>
         <source>Next</source>
         <translation>下一個</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="506"/>
+        <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Show next onion skin</source>
         <translation>顯示後續描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1280"/>
+        <location filename="../app/ui/mainwindow2.ui" line="538"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1388"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="527"/>
+        <location filename="../app/ui/mainwindow2.ui" line="550"/>
         <source>Loop</source>
         <translation>循環</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="536"/>
+        <location filename="../app/ui/mainwindow2.ui" line="559"/>
         <source>Next Frame</source>
         <translation>下一個畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="545"/>
+        <location filename="../app/ui/mainwindow2.ui" line="568"/>
         <source>Previous Frame</source>
         <translation>前一個畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="550"/>
+        <location filename="../app/ui/mainwindow2.ui" line="573"/>
         <source>Extend Frame</source>
         <translation>延伸畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="559"/>
+        <location filename="../app/ui/mainwindow2.ui" line="582"/>
         <source>Add Frame</source>
         <translation>加入畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="568"/>
+        <location filename="../app/ui/mainwindow2.ui" line="591"/>
         <source>Duplicate Frame</source>
         <translation>重製畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="577"/>
+        <location filename="../app/ui/mainwindow2.ui" line="600"/>
         <source>Remove Frame</source>
         <translation>移除畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="586"/>
+        <location filename="../app/ui/mainwindow2.ui" line="609"/>
         <source>Move</source>
         <translation>移動</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="604"/>
+        <location filename="../app/ui/mainwindow2.ui" line="627"/>
         <source>Select</source>
         <translation>選擇</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="613"/>
+        <location filename="../app/ui/mainwindow2.ui" line="636"/>
         <source>Brush</source>
         <translation>筆刷</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="622"/>
+        <location filename="../app/ui/mainwindow2.ui" line="645"/>
         <source>Polyline</source>
         <translation>折線</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="631"/>
+        <location filename="../app/ui/mainwindow2.ui" line="654"/>
         <source>Smudge</source>
         <translation>塗抹</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="640"/>
+        <location filename="../app/ui/mainwindow2.ui" line="663"/>
         <source>Pen</source>
         <translation>鋼筆</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="649"/>
+        <location filename="../app/ui/mainwindow2.ui" line="672"/>
         <source>Hand</source>
         <translation>手</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="658"/>
+        <location filename="../app/ui/mainwindow2.ui" line="681"/>
         <source>Pencil</source>
         <translation>鉛筆</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="667"/>
+        <location filename="../app/ui/mainwindow2.ui" line="690"/>
         <source>Bucket</source>
         <translation>顏料桶</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="676"/>
+        <location filename="../app/ui/mainwindow2.ui" line="699"/>
         <source>Eyedropper</source>
         <translation>取色器</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="685"/>
+        <location filename="../app/ui/mainwindow2.ui" line="708"/>
         <source>Eraser</source>
         <translation>橡皮擦</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="694"/>
+        <location filename="../app/ui/mainwindow2.ui" line="717"/>
         <source>New Bitmap Layer</source>
         <translation>新增點陣圖層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="703"/>
+        <location filename="../app/ui/mainwindow2.ui" line="726"/>
         <source>New Vector Layer</source>
         <translation>新增向量圖層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="712"/>
+        <location filename="../app/ui/mainwindow2.ui" line="735"/>
         <source>New Sound Layer</source>
         <translation>新增音效層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="721"/>
+        <location filename="../app/ui/mainwindow2.ui" line="744"/>
         <source>New Camera Layer</source>
         <translation>新增攝影機層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="726"/>
+        <location filename="../app/ui/mainwindow2.ui" line="749"/>
         <source>Delete Current Layer</source>
         <translation>刪除目前圖層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="736"/>
+        <location filename="../app/ui/mainwindow2.ui" line="759"/>
         <source>About</source>
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="741"/>
-        <location filename="../app/ui/mainwindow2.ui" line="744"/>
+        <location filename="../app/ui/mainwindow2.ui" line="764"/>
+        <location filename="../app/ui/mainwindow2.ui" line="767"/>
         <source>Reset to default</source>
         <translation>重設為預設值</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="781"/>
+        <location filename="../app/ui/mainwindow2.ui" line="804"/>
         <source>MultiLayer Onion Skin</source>
         <translation>多重圖層描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="792"/>
+        <location filename="../app/ui/mainwindow2.ui" line="815"/>
         <source>Range</source>
         <translation>範圍</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="865"/>
+        <location filename="../app/ui/mainwindow2.ui" line="888"/>
         <source>Pencil2D Website</source>
         <translation>Pencil2D 網站</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="870"/>
+        <location filename="../app/ui/mainwindow2.ui" line="893"/>
         <source>Report a Bug</source>
         <translation>回報 BUG</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="875"/>
+        <location filename="../app/ui/mainwindow2.ui" line="898"/>
         <source>Quick Reference Guide</source>
         <translation>快速上手指南</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="878"/>
+        <location filename="../app/ui/mainwindow2.ui" line="901"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="883"/>
-        <location filename="../app/ui/mainwindow2.ui" line="888"/>
+        <location filename="../app/ui/mainwindow2.ui" line="906"/>
+        <location filename="../app/ui/mainwindow2.ui" line="911"/>
         <source>Animated GIF...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="754"/>
-        <location filename="../app/ui/mainwindow2.ui" line="757"/>
+        <location filename="../app/ui/mainwindow2.ui" line="916"/>
+        <source>Check for Updates</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="921"/>
+        <source>Pencil2D Forum</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="926"/>
+        <source>Pencil2D Discord</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="931"/>
+        <source>200%</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="936"/>
+        <source>300%</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="941"/>
+        <source>400%</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="946"/>
+        <source>50%</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="951"/>
+        <source>33%</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="956"/>
+        <source>25%</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="961"/>
+        <source>100%</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="777"/>
+        <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <source>Next KeyFrame</source>
         <translation>下一個關鍵影格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <location filename="../app/ui/mainwindow2.ui" line="277"/>
         <source>Save As...</source>
         <translation>另存檔案為...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="767"/>
-        <location filename="../app/ui/mainwindow2.ui" line="770"/>
+        <location filename="../app/ui/mainwindow2.ui" line="790"/>
+        <location filename="../app/ui/mainwindow2.ui" line="793"/>
         <source>Previous KeyFrame</source>
         <translation>前一個關鍵影格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="808"/>
+        <location filename="../app/ui/mainwindow2.ui" line="831"/>
         <source>Timeline</source>
         <translation>時間軸</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="816"/>
+        <location filename="../app/ui/mainwindow2.ui" line="839"/>
         <source>Options</source>
         <translation>選項</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="824"/>
+        <location filename="../app/ui/mainwindow2.ui" line="847"/>
         <source>Color Wheel</source>
         <translation>色輪</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="832"/>
+        <location filename="../app/ui/mainwindow2.ui" line="855"/>
         <source>Color Palette</source>
         <translation>顏色調色盤</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="840"/>
+        <location filename="../app/ui/mainwindow2.ui" line="863"/>
         <source>Display Options</source>
         <translation>顯示選項</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="845"/>
+        <location filename="../app/ui/mainwindow2.ui" line="868"/>
         <source>Flip X</source>
         <translation>X翻轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="850"/>
+        <location filename="../app/ui/mainwindow2.ui" line="873"/>
         <source>Flip Y</source>
         <translation>Y翻轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="855"/>
+        <location filename="../app/ui/mainwindow2.ui" line="878"/>
         <source>Move Frame Forward</source>
         <translation>影格前移</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="860"/>
+        <location filename="../app/ui/mainwindow2.ui" line="883"/>
         <source>Move Frame Backward</source>
         <translation>影格後移</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="146"/>
+        <location filename="../app/src/mainwindow2.cpp" line="145"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="150"/>
+        <location filename="../app/src/mainwindow2.cpp" line="149"/>
         <source>Color inspector</source>
         <translation>顏色屬性</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="353"/>
+        <location filename="../app/src/mainwindow2.cpp" line="358"/>
         <source>Lock Windows</source>
         <translation>鎖定視窗</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="370"/>
+        <location filename="../app/src/mainwindow2.cpp" line="378"/>
         <source>Open Recent</source>
         <translation>最近開啟的</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="404"/>
+        <location filename="../app/src/mainwindow2.cpp" line="412"/>
         <source>
 
  You have successfully cleared the list</source>
         <translation>成功清除清單</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="505"/>
-        <location filename="../app/src/mainwindow2.cpp" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="524"/>
-        <location filename="../app/src/mainwindow2.cpp" line="584"/>
+        <location filename="../app/src/mainwindow2.cpp" line="513"/>
+        <location filename="../app/src/mainwindow2.cpp" line="523"/>
+        <location filename="../app/src/mainwindow2.cpp" line="532"/>
+        <location filename="../app/src/mainwindow2.cpp" line="592"/>
         <source>Could not open file</source>
         <translation>無法開啟檔案</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="506"/>
+        <location filename="../app/src/mainwindow2.cpp" line="514"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="516"/>
-        <source>The file you have selected does not exist, so we are unable to open it. Please check to make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
+        <location filename="../app/src/mainwindow2.cpp" line="524"/>
+        <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="525"/>
+        <location filename="../app/src/mainwindow2.cpp" line="533"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="534"/>
-        <location filename="../app/src/mainwindow2.cpp" line="697"/>
-        <location filename="../app/src/mainwindow2.cpp" line="756"/>
-        <location filename="../app/src/mainwindow2.cpp" line="832"/>
-        <location filename="../app/src/mainwindow2.cpp" line="885"/>
+        <location filename="../app/src/mainwindow2.cpp" line="542"/>
+        <location filename="../app/src/mainwindow2.cpp" line="705"/>
+        <location filename="../app/src/mainwindow2.cpp" line="764"/>
+        <location filename="../app/src/mainwindow2.cpp" line="840"/>
+        <location filename="../app/src/mainwindow2.cpp" line="986"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="535"/>
+        <location filename="../app/src/mainwindow2.cpp" line="543"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="541"/>
+        <location filename="../app/src/mainwindow2.cpp" line="549"/>
         <source>Opening document...</source>
         <translation>開啟文件...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="541"/>
-        <location filename="../app/src/mainwindow2.cpp" line="619"/>
-        <location filename="../app/src/mainwindow2.cpp" line="783"/>
-        <location filename="../app/src/mainwindow2.cpp" line="860"/>
+        <location filename="../app/src/mainwindow2.cpp" line="549"/>
+        <location filename="../app/src/mainwindow2.cpp" line="627"/>
+        <location filename="../app/src/mainwindow2.cpp" line="791"/>
+        <location filename="../app/src/mainwindow2.cpp" line="961"/>
         <source>Abort</source>
         <translation>中止</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="585"/>
+        <location filename="../app/src/mainwindow2.cpp" line="593"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="619"/>
+        <location filename="../app/src/mainwindow2.cpp" line="627"/>
         <source>Saving document...</source>
         <translation>儲存文件...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="660"/>
+        <location filename="../app/src/mainwindow2.cpp" line="668"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;發現錯誤，你的檔案可能並未成功保存。如果你看見這個訊息，請到&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;協助回報錯誤&lt;br&gt;並附上以下錯誤細節訊息:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="698"/>
+        <location filename="../app/src/mainwindow2.cpp" line="706"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>動畫已經修改。你想要儲存檔案嗎?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="726"/>
+        <location filename="../app/src/mainwindow2.cpp" line="734"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>您的動畫還沒儲存。要現在儲存嗎?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="727"/>
+        <location filename="../app/src/mainwindow2.cpp" line="735"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>不要再問我</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="757"/>
+        <location filename="../app/src/mainwindow2.cpp" line="765"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>無法匯入圖片。&lt;br&gt;&lt;b&gt;提示&lt;/b&gt; 使用點陣圖層來匯入點陣圖</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="783"/>
+        <location filename="../app/src/mainwindow2.cpp" line="791"/>
         <source>Importing image sequence...</source>
         <translation>匯入連續圖片</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="833"/>
-        <location filename="../app/src/mainwindow2.cpp" line="886"/>
+        <location filename="../app/src/mainwindow2.cpp" line="841"/>
+        <location filename="../app/src/mainwindow2.cpp" line="987"/>
         <source>was unable to import</source>
         <translation>無法匯入</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="860"/>
+        <location filename="../app/src/mainwindow2.cpp" line="919"/>
+        <source>Illegal numbering</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="961"/>
         <source>Importing Animated GIF...</source>
         <translation>匯入GIF動畫</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1105"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1110"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1213"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1218"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1125"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1233"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>重做</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1275"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1383"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
@@ -1810,13 +1962,13 @@
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="367"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation>切換圖層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="368"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="366"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
         <translation type="unfinished"/>
     </message>
@@ -1824,279 +1976,124 @@
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="546"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Black</source>
         <translation>黑色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="547"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>Red</source>
         <translation>紅色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="548"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Dark Red</source>
         <translation>深紅色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Orange</source>
         <translation>橙色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Dark Orange</source>
         <translation>深橙色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Yellow</source>
         <translation>黃色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Dark Yellow</source>
         <translation>深黃色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Green</source>
         <translation>綠色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Dark Green</source>
         <translation>深綠色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
         <source>Cyan</source>
         <translation>青色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
         <source>Dark Cyan</source>
         <translation>深青色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
         <source>Blue</source>
         <translation>藍色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="573"/>
         <source>Dark Blue</source>
         <translation>深藍色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="574"/>
         <source>White</source>
         <translation>白色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="575"/>
         <source>Very Light Grey</source>
         <translation>很淺灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="576"/>
         <source>Light Grey</source>
         <translation>淺灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="577"/>
         <source>Grey</source>
         <translation>灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="578"/>
         <source>Dark Grey</source>
         <translation>深灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="579"/>
         <source>Light Skin</source>
         <translation>淺膚色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="580"/>
         <source>Light Skin - shade</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="581"/>
         <source>Skin</source>
         <translation>膚色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="582"/>
         <source>Skin - shade</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="583"/>
         <source>Dark Skin</source>
         <translation>深膚色</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="584"/>
         <source>Dark Skin - shade</source>
         <translation>線</translation>
-    </message>
-</context>
-<context>
-    <name>PencilApplication</name>
-    <message>
-        <location filename="../app/src/main.cpp" line="73"/>
-        <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation>Pencil2D 是一款2D動畫軟體，可用點陣圖與向量圖兩種格式來製作傳統手繪動畫。Pencil2D 能在Windows, Mac OS 與 Linux下運行。</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="76"/>
-        <source>Path to the input pencil file.</source>
-        <translation>輸入的 Pencil2D 檔案路徑</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="79"/>
-        <location filename="../app/src/main.cpp" line="85"/>
-        <source>Render the file to &lt;output_path&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="80"/>
-        <location filename="../app/src/main.cpp" line="86"/>
-        <source>output_path</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="93"/>
-        <source>Name of the camera layer to use</source>
-        <translation>使用的相機層名稱</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="94"/>
-        <source>layer_name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="98"/>
-        <source>Width of the output frames</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="99"/>
-        <location filename="../app/src/main.cpp" line="104"/>
-        <source>integer</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="103"/>
-        <source>Height of the output frames</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="108"/>
-        <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="109"/>
-        <location filename="../app/src/main.cpp" line="116"/>
-        <source>frame</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="113"/>
-        <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="120"/>
-        <source>Render transparency when possible</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="139"/>
-        <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="149"/>
-        <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="159"/>
-        <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="164"/>
-        <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="184"/>
-        <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="190"/>
-        <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="201"/>
-        <source>Error: No input file specified.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="208"/>
-        <source>Error: the input file at &apos;%1&apos; does not exist</source>
-        <comment>Command line error</comment>
-        <translation>錯誤：檔案 &apos;%1&apos; 不存在</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="213"/>
-        <source>Error: the input path &apos;%1&apos; is not a file</source>
-        <comment>Command line error</comment>
-        <translation>錯誤：路徑 &apos;%1&apos; 不是一個檔案</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="241"/>
-        <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="272"/>
-        <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
-        <comment>Command line warning</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="292"/>
-        <source>Warning: Transparency is not currently supported in movie files</source>
-        <comment>Command line warning</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="294"/>
-        <source>Exporting movie...</source>
-        <comment>Command line task progress</comment>
-        <translation>匯出影片...</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="296"/>
-        <location filename="../app/src/main.cpp" line="301"/>
-        <source>Done.</source>
-        <comment>Command line task done</comment>
-        <translation>完成</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="299"/>
-        <source>Exporting image sequence...</source>
-        <comment>Command line task progress</comment>
-        <translation>輸出連續圖片中...</translation>
     </message>
 </context>
 <context>
@@ -2130,19 +2127,6 @@
         <location filename="../app/ui/preferencesdialog.ui" line="125"/>
         <source>Shortcuts</source>
         <translation>快捷鍵</translation>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="97"/>
-        <source>Checking environment...</source>
-        <translation>檢查環境中...</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="148"/>
-        <source>Done</source>
-        <translation>完成</translation>
     </message>
 </context>
 <context>
@@ -2199,1348 +2183,1510 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="282"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="284"/>
         <source>Vivid Pink</source>
         <translation>亮粉紅</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="283"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="285"/>
         <source>Strong Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="284"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="286"/>
         <source>Deep Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="285"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="287"/>
         <source>Light Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="286"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="288"/>
         <source>Moderate Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="287"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="289"/>
         <source>Dark Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="288"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="290"/>
         <source>Pale Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="289"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="291"/>
         <source>Grayish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="290"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="292"/>
         <source>Pinkish White</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="291"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="293"/>
         <source>Pinkish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="292"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="294"/>
         <source>Vivid Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="293"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="295"/>
         <source>Strong Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="294"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="296"/>
         <source>Deep Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="295"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="297"/>
         <source>Very Deep Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="296"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="298"/>
         <source>Moderate Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="297"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="299"/>
         <source>Dark Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="298"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="300"/>
         <source>Very Dark Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="299"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="301"/>
         <source>Light Grayish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="300"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="302"/>
         <source>Grayish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="301"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="303"/>
         <source>Dark Grayish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="302"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="304"/>
         <source>Blackish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="303"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="305"/>
         <source>Reddish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="304"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="306"/>
         <source>Dark Reddish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="305"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="307"/>
         <source>Reddish Black</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="306"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="308"/>
         <source>Vivid Yellowish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="307"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="309"/>
         <source>Strong Yellowish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="308"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="310"/>
         <source>Deep Yellowish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="309"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="311"/>
         <source>Light Yellowish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="310"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="312"/>
         <source>Moderate Yellowish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="311"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="313"/>
         <source>Dark Yellowish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="312"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="314"/>
         <source>Pale Yellowish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="313"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="315"/>
         <source>Grayish Yellowish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="314"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="316"/>
         <source>Brownish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="315"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="317"/>
         <source>Vivid Reddish Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="316"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="318"/>
         <source>Strong Reddish Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="317"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="319"/>
         <source>Deep Reddish Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="318"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="320"/>
         <source>Moderate Reddish Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="319"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="321"/>
         <source>Dark Reddish Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="320"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="322"/>
         <source>Grayish Reddish Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="321"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="323"/>
         <source>Strong Reddish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="322"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="324"/>
         <source>Deep Reddish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="323"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="325"/>
         <source>Light Reddish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="324"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="326"/>
         <source>Moderate Reddish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="325"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="327"/>
         <source>Dark Reddish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="326"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="328"/>
         <source>Light Grayish Reddish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="327"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="329"/>
         <source>Grayish Reddish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="328"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="330"/>
         <source>Dark Grayish Reddish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="329"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="331"/>
         <source>Vivid Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="330"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="332"/>
         <source>Brilliant Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="331"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="333"/>
         <source>Strong Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="332"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="334"/>
         <source>Deep Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="333"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="335"/>
         <source>Light Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="334"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="336"/>
         <source>Moderate Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="335"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="337"/>
         <source>Brownish Orange</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="336"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="338"/>
         <source>Strong Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="337"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="339"/>
         <source>Deep Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="338"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="340"/>
         <source>Light Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="339"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="341"/>
         <source>Moderate Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="340"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="342"/>
         <source>Dark Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="341"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="343"/>
         <source>Light Grayish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="342"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="344"/>
         <source>Grayish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="343"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="345"/>
         <source>Dark Grayish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="344"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="346"/>
         <source>Light Brownish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="345"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="347"/>
         <source>Brownish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="346"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="348"/>
         <source>Brownish Black</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="347"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="349"/>
         <source>Vivid Orange Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="348"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="350"/>
         <source>Brilliant Orange Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="349"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="351"/>
         <source>Strong Orange Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="350"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="352"/>
         <source>Deep Orange Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="351"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="353"/>
         <source>Light Orange Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="352"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="354"/>
         <source>Moderate Orange Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="353"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="355"/>
         <source>Dark Orange Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="354"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="356"/>
         <source>Pale Orange Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="355"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="357"/>
         <source>Strong Yellowish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="356"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="358"/>
         <source>Deep Yellowish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="357"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="359"/>
         <source>Light Yellowish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="358"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="360"/>
         <source>Moderate Yellowish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="359"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="361"/>
         <source>Dark Yellowish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="360"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="362"/>
         <source>Light Grayish Yellowish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="361"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="363"/>
         <source>Grayish Yellowish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="362"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="364"/>
         <source>Dark Grayish Yellowish Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="363"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="365"/>
         <source>Vivid Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="364"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="366"/>
         <source>Brilliant Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="365"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="367"/>
         <source>Strong Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="366"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="368"/>
         <source>Deep Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="367"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="369"/>
         <source>Light Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="368"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="370"/>
         <source>Moderate Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="369"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="371"/>
         <source>Dark Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="370"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="372"/>
         <source>Pale Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="371"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="373"/>
         <source>Grayish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="372"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="374"/>
         <source>Dark Grayish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="373"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="375"/>
         <source>Yellowish White</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="374"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="376"/>
         <source>Yellowish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="375"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="377"/>
         <source>Light Olive Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="376"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="378"/>
         <source>Moderate Olive Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="377"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="379"/>
         <source>Dark Olive Brown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="378"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="380"/>
         <source>Vivid Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="379"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="381"/>
         <source>Brilliant Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="380"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="382"/>
         <source>Strong Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="381"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="383"/>
         <source>Deep Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="382"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="384"/>
         <source>Light Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="383"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="385"/>
         <source>Moderate Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="384"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="386"/>
         <source>Dark Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="385"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="387"/>
         <source>Pale Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="386"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="388"/>
         <source>Grayish Greenish Yellow</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="387"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="389"/>
         <source>Light Olive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="388"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="390"/>
         <source>Moderate Olive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="389"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="391"/>
         <source>Dark Olive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="390"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="392"/>
         <source>Light Grayish Olive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="391"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="393"/>
         <source>Grayish Olive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="392"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="394"/>
         <source>Dark Grayish Olive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="393"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="395"/>
         <source>Light Olive Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="394"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="396"/>
         <source>Olive Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="395"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="397"/>
         <source>Olive Black</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="396"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="398"/>
         <source>Vivid Yellow Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="397"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="399"/>
         <source>Brilliant Yellow Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="398"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="400"/>
         <source>Strong Yellow Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="399"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="401"/>
         <source>Deep Yellow Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="400"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="402"/>
         <source>Light Yellow Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="401"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="403"/>
         <source>Moderate Yellow Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="402"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="404"/>
         <source>Pale Yellow Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="403"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="405"/>
         <source>Grayish Yellow Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="404"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="406"/>
         <source>Strong Olive Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="405"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="407"/>
         <source>Deep Olive Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="406"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="408"/>
         <source>Moderate Olive Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="407"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="409"/>
         <source>Dark Olive Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="408"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="410"/>
         <source>Grayish Olive Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="409"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="411"/>
         <source>Dark Grayish Olive Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="410"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="412"/>
         <source>Vivid Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="411"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="413"/>
         <source>Brilliant Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="412"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="414"/>
         <source>Strong Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="413"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="415"/>
         <source>Deep Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="414"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="416"/>
         <source>Very Deep Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="415"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="417"/>
         <source>Very Light Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="416"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="418"/>
         <source>Light Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="417"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="419"/>
         <source>Moderate Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="418"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="420"/>
         <source>Dark Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="419"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="421"/>
         <source>Very Dark Yellowish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="420"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="422"/>
         <source>Vivid Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="421"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="423"/>
         <source>Brilliant Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="422"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="424"/>
         <source>Strong Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="423"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="425"/>
         <source>Deep Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="424"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="426"/>
         <source>Very Light Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="425"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="427"/>
         <source>Light Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="426"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="428"/>
         <source>Moderate Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="427"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="429"/>
         <source>Dark Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="428"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="430"/>
         <source>Very Dark Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="429"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="431"/>
         <source>Very Pale Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="430"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="432"/>
         <source>Pale Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="431"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="433"/>
         <source>Grayish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="432"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="434"/>
         <source>Dark Grayish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="433"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="435"/>
         <source>Blackish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="434"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="436"/>
         <source>Greenish White</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="435"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="437"/>
         <source>Light Greenish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="436"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="438"/>
         <source>Greenish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="437"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="439"/>
         <source>Dark Greenish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="438"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="440"/>
         <source>Greenish Black</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="439"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="441"/>
         <source>Vivid Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="440"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="442"/>
         <source>Brilliant Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="441"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="443"/>
         <source>Strong Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="442"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="444"/>
         <source>Deep Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="443"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="445"/>
         <source>Very Light Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="444"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="446"/>
         <source>Light Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="445"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="447"/>
         <source>Moderate Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="446"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="448"/>
         <source>Dark Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="447"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="449"/>
         <source>Very Dark Bluish Green</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="448"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="450"/>
         <source>Vivid Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="449"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="451"/>
         <source>Brilliant Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="450"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="452"/>
         <source>Strong Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="451"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="453"/>
         <source>Deep Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="452"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="454"/>
         <source>Very Light Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="453"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="455"/>
         <source>Light Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="454"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="456"/>
         <source>Moderate Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="455"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="457"/>
         <source>Dark Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="456"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="458"/>
         <source>Very Dark Greenish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="457"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="459"/>
         <source>Vivid Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="458"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="460"/>
         <source>Brilliant Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="459"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="461"/>
         <source>Strong Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="460"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="462"/>
         <source>Deep Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="461"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="463"/>
         <source>Very Light Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="462"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="464"/>
         <source>Light Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="463"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="465"/>
         <source>Moderate Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="464"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="466"/>
         <source>Dark Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="465"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="467"/>
         <source>Very Pale Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="466"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="468"/>
         <source>Pale Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="467"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="469"/>
         <source>Grayish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="468"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="470"/>
         <source>Dark Grayish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="469"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="471"/>
         <source>Blackish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="470"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="472"/>
         <source>Bluish White</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="471"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="473"/>
         <source>Light Bluish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="472"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="474"/>
         <source>Bluish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="473"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="475"/>
         <source>Dark Bluish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="474"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="476"/>
         <source>Bluish Black</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="475"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="477"/>
         <source>Vivid Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="476"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="478"/>
         <source>Brilliant Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="477"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="479"/>
         <source>Strong Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="478"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="480"/>
         <source>Deep Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="479"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="481"/>
         <source>Very Light Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="480"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="482"/>
         <source>Light Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="481"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="483"/>
         <source>Moderate Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="482"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="484"/>
         <source>Dark Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="483"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="485"/>
         <source>Very Pale Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="484"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="486"/>
         <source>Pale Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="485"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="487"/>
         <source>Grayish Purplish Blue</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="486"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="488"/>
         <source>Vivid Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="487"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="489"/>
         <source>Brilliant Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="488"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="490"/>
         <source>Strong Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="489"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="491"/>
         <source>Deep Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="490"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="492"/>
         <source>Very Light Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="491"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="493"/>
         <source>Light Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="492"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="494"/>
         <source>Moderate Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="493"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="495"/>
         <source>Dark Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="494"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="496"/>
         <source>Very Pale Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="495"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="497"/>
         <source>Pale Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="496"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="498"/>
         <source>Grayish Violet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="497"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="499"/>
         <source>Vivid Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="498"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="500"/>
         <source>Brilliant Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="499"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="501"/>
         <source>Strong Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="500"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="502"/>
         <source>Deep Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="501"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="503"/>
         <source>Very Deep Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="502"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="504"/>
         <source>Very Light Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="503"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="505"/>
         <source>Light Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="504"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="506"/>
         <source>Moderate Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="505"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="507"/>
         <source>Dark Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="506"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="508"/>
         <source>Very Dark Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="507"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="509"/>
         <source>Very Pale Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="508"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="510"/>
         <source>Pale Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="509"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="511"/>
         <source>Grayish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="510"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="512"/>
         <source>Dark Grayish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="511"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="513"/>
         <source>Blackish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="512"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="514"/>
         <source>Purplish White</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="513"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="515"/>
         <source>Light Purplish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="514"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="516"/>
         <source>Purplish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="515"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="517"/>
         <source>Dark Purplish Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="516"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="518"/>
         <source>Purplish Black</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="517"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="519"/>
         <source>Vivid Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="518"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="520"/>
         <source>Strong Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="519"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="521"/>
         <source>Deep Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="520"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="522"/>
         <source>Very Deep Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="521"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="523"/>
         <source>Light Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="522"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="524"/>
         <source>Moderate Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="523"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="525"/>
         <source>Dark Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="524"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="526"/>
         <source>Very Dark Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="525"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="527"/>
         <source>Pale Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="526"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="528"/>
         <source>Grayish Reddish Purple</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="527"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="529"/>
         <source>Brilliant Purplish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="528"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="530"/>
         <source>Strong Purplish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="529"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="531"/>
         <source>Deep Purplish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="530"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="532"/>
         <source>Light Purplish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="531"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="533"/>
         <source>Moderate Purplish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="532"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="534"/>
         <source>Dark Purplish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="533"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="535"/>
         <source>Pale Purplish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="534"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="536"/>
         <source>Grayish Purplish Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="535"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="537"/>
         <source>Vivid Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="536"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="538"/>
         <source>Strong Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="537"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="539"/>
         <source>Deep Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="538"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="540"/>
         <source>Very Deep Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="539"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="541"/>
         <source>Moderate Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="540"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="542"/>
         <source>Dark Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="541"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="543"/>
         <source>Very Dark Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="542"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="544"/>
         <source>Light Grayish Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="543"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="545"/>
         <source>Grayish Purplish Red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="544"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="546"/>
         <source>White</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="545"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="547"/>
         <source>Light Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="546"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="548"/>
         <source>Medium Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="547"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="549"/>
         <source>Dark Gray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="548"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="550"/>
         <source>Black</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="29"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <source>Could not open file</source>
         <translation>無法開啟檔案</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="98"/>
+        <source>Checking environment...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="149"/>
+        <source>Done</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="74"/>
+        <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="77"/>
+        <source>Path to the input pencil file.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="80"/>
+        <location filename="../app/src/main.cpp" line="86"/>
+        <source>Render the file to &lt;output_path&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="81"/>
+        <location filename="../app/src/main.cpp" line="87"/>
+        <source>output_path</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="94"/>
+        <source>Name of the camera layer to use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="95"/>
+        <source>layer_name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="99"/>
+        <source>Width of the output frames</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="100"/>
+        <location filename="../app/src/main.cpp" line="105"/>
+        <source>integer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="104"/>
+        <source>Height of the output frames</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="109"/>
+        <source>The first frame you want to include in the exported movie</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="110"/>
+        <location filename="../app/src/main.cpp" line="117"/>
+        <source>frame</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="114"/>
+        <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="121"/>
+        <source>Render transparency when possible</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="140"/>
+        <source>Warning: width value %1 is not an integer, ignoring.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="150"/>
+        <source>Warning: height value %1 is not an integer, ignoring.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="160"/>
+        <source>Warning: start value %1 is not an integer, ignoring.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="165"/>
+        <source>Warning: start value must be at least 1, ignoring.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="185"/>
+        <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="191"/>
+        <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="202"/>
+        <source>Error: No input file specified.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="209"/>
+        <source>Error: the input file at &apos;%1&apos; does not exist</source>
+        <comment>Command line error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="214"/>
+        <source>Error: the input path &apos;%1&apos; is not a file</source>
+        <comment>Command line error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="243"/>
+        <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="276"/>
+        <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
+        <comment>Command line warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="298"/>
+        <source>Warning: Transparency is not currently supported in movie files</source>
+        <comment>Command line warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="300"/>
+        <source>Exporting movie...</source>
+        <comment>Command line task progress</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="302"/>
+        <location filename="../app/src/main.cpp" line="307"/>
+        <source>Done.</source>
+        <comment>Command line task done</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="305"/>
+        <source>Exporting image sequence...</source>
+        <comment>Command line task progress</comment>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3560,60 +3706,60 @@
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="740"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="527"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="741"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>您在隱藏的圖層上繪製！請選擇其他圖層（或使目前圖層可看見）。</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1931"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2004"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>刪除選擇</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1947"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1955"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2020"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2028"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>清除</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1982"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1983"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2056"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2060"/>
         <source>Out of bound.</source>
         <translation>超出界線</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2061"/>
         <source>Could not find a closed path.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1989"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2062"/>
         <source>Could not find the root index.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2063"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1990"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2063"/>
         <source>Flood fill error</source>
         <translation>填滿功能錯誤</translation>
     </message>
@@ -3664,7 +3810,7 @@
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="64"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="66"/>
         <source>Range</source>
         <translation>範圍</translation>
     </message>
@@ -3674,48 +3820,48 @@
         <translation>每秒畫格</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="54"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="55"/>
         <source>Start of playback loop</source>
         <translation>範圍起點</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="61"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="63"/>
         <source>End of playback loop</source>
         <translation>範圍終點</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="66"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="68"/>
         <source>Playback range</source>
         <translation>播放範圍</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="86"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="89"/>
         <source>Loop</source>
         <translation>循環</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="90"/>
         <source>Sound on/off</source>
         <translation>聲音開/關</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="89"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="91"/>
         <source>End</source>
         <translation>結束</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="90"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="192"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="92"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="194"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="187"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="189"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
@@ -3723,94 +3869,104 @@
 <context>
     <name>TimeLine</name>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="45"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
         <source>Timeline</source>
         <translation>時間軸</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="70"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
         <source>Layers:</source>
         <translation>圖層：</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="75"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="76"/>
         <source>Add Layer</source>
         <translation>新增圖層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="80"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="81"/>
         <source>Remove Layer</source>
         <translation>刪除圖層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="93"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
         <source>New Bitmap Layer</source>
         <translation>新增點陣圖層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
         <source>New Vector Layer</source>
         <translation>新增向量圖層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
         <source>New Sound Layer</source>
         <translation>新增音效層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="97"/>
         <source>New Camera Layer</source>
         <translation>新增攝影機層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="98"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="99"/>
         <source>&amp;Layer</source>
         <comment>Timeline add-layer menu</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="116"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="117"/>
         <source>Keys:</source>
         <translation>關鍵畫格</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="121"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="122"/>
         <source>Add Frame</source>
         <translation>加入畫格</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="126"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="127"/>
         <source>Remove Frame</source>
         <translation>刪除畫格</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="131"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="132"/>
         <source>Duplicate Frame</source>
         <translation>複製畫格</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="134"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="135"/>
+        <source>Zoom:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="142"/>
+        <source>Adjust frame width</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="145"/>
         <source>Onion skin:</source>
         <translation>描圖紙</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="138"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="149"/>
         <source>Toggle match keyframes</source>
         <translation>切換描圖紙畫格模式</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="285"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="300"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>刪除圖層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="310"/>
         <source>Please keep at least one camera layer in project</source>
         <translation>請至少保留一個相機層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="286"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="301"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>你確定要刪除圖層嗎： </translation>
     </message>
@@ -3818,12 +3974,12 @@
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="679"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="734"/>
         <source>Layer Properties</source>
         <translation>圖層屬性</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="680"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="735"/>
         <source>Layer name:</source>
         <translation>圖層名稱：</translation>
     </message>
@@ -3855,68 +4011,63 @@
         <translation>時間軸</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="60"/>
+        <location filename="../app/ui/timelinepage.ui" line="40"/>
         <source>Timeline length:</source>
         <comment>Preferences</comment>
         <translation>時間軸長度:</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="89"/>
+        <location filename="../app/ui/timelinepage.ui" line="69"/>
         <source>Drawing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="95"/>
+        <location filename="../app/ui/timelinepage.ui" line="75"/>
         <source>When drawing on an empty frame:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="102"/>
+        <location filename="../app/ui/timelinepage.ui" line="82"/>
         <source>Create a new (blank) key-frame and start drawing on it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="105"/>
+        <location filename="../app/ui/timelinepage.ui" line="85"/>
         <source>Create a new (blank) key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="115"/>
+        <location filename="../app/ui/timelinepage.ui" line="95"/>
         <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="118"/>
+        <location filename="../app/ui/timelinepage.ui" line="98"/>
         <source>Duplicate the previous key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="125"/>
+        <location filename="../app/ui/timelinepage.ui" line="105"/>
         <source>Keep drawing on the previous key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="137"/>
+        <location filename="../app/ui/timelinepage.ui" line="117"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="162"/>
+        <location filename="../app/ui/timelinepage.ui" line="142"/>
         <source>Playback</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="174"/>
+        <location filename="../app/ui/timelinepage.ui" line="154"/>
         <source>Show onion skin while playing</source>
         <translation>播放動畫時顯示描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="26"/>
-        <source>Frame size</source>
-        <translation>畫格寬度</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/timelinepage.ui" line="79"/>
+        <location filename="../app/ui/timelinepage.ui" line="59"/>
         <source>Short scrub</source>
         <translation type="unfinished"/>
     </message>
