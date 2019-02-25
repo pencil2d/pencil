@@ -656,7 +656,7 @@ void BitmapImage::setBounds(QRect rect)
     updateBounds(rect);
 }
 
-BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, bool blue)
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, bool green, bool blue)
 {
     Q_ASSERT(bitmapimage != nullptr);
 
@@ -684,11 +684,22 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
                     img->setPixel(x, y, transp);
                 }
             }   // IF Blue line
-            else if(qBlue(rgba) - 50 > qRed(rgba))
+            else if(qBlue(rgba) - 50 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
             {
                 if (blue)
                 {
                     img->setPixel(x, y, blueline);
+                }
+                else
+                {
+                    img->setPixel(x, y, transp);
+                }
+            }   // IF Green line
+            else if(qGreen(rgba) - 50 > qRed(rgba))
+            {
+                if (green)
+                {
+                    img->setPixel(x, y, greenline);
                 }
                 else
                 {
@@ -706,6 +717,11 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
     }
     img->modification();
     return img;
+}
+
+void BitmapImage::getThresholdSuggestion(BitmapImage* img)
+{
+    Q_ASSERT(img != nullptr);
 }
 
 void BitmapImage::toBlackLine(BitmapImage* bitmapimage)
@@ -980,10 +996,10 @@ void BitmapImage::replaceThinLine(BitmapImage *bitmapimage)
 
     BitmapImage* img = bitmapimage;
 
-    int r, g, b, a; //red, green, blue, alpha
-    QList<QPoint> points;
-    QList<QRgb> rgblist;
-    rgblist << thinline << redline << blueline;
+    int r, g, b, a;         //red, green, blue, alpha
+    QList<QPoint> points;   // QPoints to add in calculation
+    QList<QRgb> rgblist;    // QRgb's that should be excluded
+    rgblist << thinline << redline << greenline << blueline;
     for (int x = img->left(); x <= img->right(); x++)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
@@ -1027,7 +1043,9 @@ void BitmapImage::removeColoredLines(BitmapImage *bitmapimage)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
-            if (qRed(img->constScanLine(x, y)) == 254 || qBlue(img->constScanLine(x,y)) == 254)
+            if (qRed(img->constScanLine(x, y)) == 254 ||
+                    qBlue(img->constScanLine(x,y)) == 254 ||
+                    qGreen(img->constScanLine(x, y) == 254))
                 img->setPixel(x, y, transp);
         }
     }

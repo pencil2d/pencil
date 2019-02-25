@@ -592,7 +592,7 @@ void Editor::copyFromScan()
 void Editor::scanToTransparent()
 {
     BitmapImage* bitmapimage = static_cast<BitmapImage*>(layers()->currentLayer()->getKeyFrameAt(currentFrame()));
-    bitmapimage = bitmapimage->scanToTransparent(bitmapimage,true,true);
+    bitmapimage = bitmapimage->scanToTransparent(bitmapimage,true,true,true);
     mScribbleArea->updateFrame(currentFrame());
 }
 
