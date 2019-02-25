@@ -644,7 +644,7 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
         else
         {
             // forces drawing when points are coincident (mousedown)
-            painter.drawPoint(path.elementAt(0).x, path.elementAt(0).y);
+            painter.drawPoint(static_cast<int>(path.elementAt(0).x), static_cast<int>(path.elementAt(0).y));
         }
         painter.end();
     }
@@ -656,7 +656,7 @@ void BitmapImage::setBounds(QRect rect)
     updateBounds(rect);
 }
 
-BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, bool blue)
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, bool green, bool blue)
 {
     Q_ASSERT(bitmapimage != nullptr);
 
@@ -684,11 +684,22 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
                     img->setPixel(x, y, transp);
                 }
             }   // IF Blue line
-            else if(qBlue(rgba) - 50 > qRed(rgba))
+            else if(qBlue(rgba) - 50 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
             {
                 if (blue)
                 {
                     img->setPixel(x, y, blueline);
+                }
+                else
+                {
+                    img->setPixel(x, y, transp);
+                }
+            }   // IF Green line
+            else if(qGreen(rgba) - 50 > qRed(rgba) &&  qGreen(rgba) > qBlue(rgba))
+            {
+                if (green)
+                {
+                    img->setPixel(x, y, greenline);
                 }
                 else
                 {
@@ -959,16 +970,15 @@ void BitmapImage::toThinBlackLine(BitmapImage* colorImage)
 
 void BitmapImage::restoreColoredLines(BitmapImage *orgImage, BitmapImage *colorImage)
 {
-    qDebug() << "restore1" ;
     Q_ASSERT(colorImage != nullptr);
-    qDebug() << "restore2" ;
 
     for (int x = colorImage->left(); x <= colorImage->right(); x++)
     {
         for (int y = colorImage->top(); y <= colorImage->bottom(); y++)
         {
             if (colorImage->constScanLine(x, y) == thinline)
-                if (orgImage->constScanLine(x,y) == qRgba(254,0,0,255) || orgImage->constScanLine(x,y) == qRgba(0,0,254,255))
+                if (orgImage->constScanLine(x,y) == redline ||
+                        orgImage->constScanLine(x,y) == blueline || orgImage->constScanLine(x,y) == greenline)
                     colorImage->setPixel(x, y, orgImage->constScanLine(x, y));
         }
     }
@@ -1173,12 +1183,12 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
     // Get Eulcidian distance between colors
     // Not an accurate representation of human perception,
     // but it's the best any image editing program ever does
-    int diffRed = qPow(qRed(oldColor) - qRed(newColor), 2);
-    int diffGreen = qPow(qGreen(oldColor) - qGreen(newColor), 2);
-    int diffBlue = qPow(qBlue(oldColor) - qBlue(newColor), 2);
+    int diffRed = static_cast<int>(qPow(qRed(oldColor) - qRed(newColor), 2));
+    int diffGreen = static_cast<int>(qPow(qGreen(oldColor) - qGreen(newColor), 2));
+    int diffBlue = static_cast<int>(qPow(qBlue(oldColor) - qBlue(newColor), 2));
     // This may not be the best way to handle alpha since the other channels become less relevant as
     // the alpha is reduces (ex. QColor(0,0,0,0) is the same as QColor(255,255,255,0))
-    int diffAlpha = qPow(qAlpha(oldColor) - qAlpha(newColor), 2);
+    int diffAlpha = static_cast<int>(qPow(qAlpha(oldColor) - qAlpha(newColor), 2));
 
     bool isSimilar = (diffRed + diffGreen + diffBlue + diffAlpha) <= tolerance;
 
@@ -1206,7 +1216,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
     }
 
     // Square tolerance for use with compareColor
-    tolerance = qPow(tolerance, 2);
+    tolerance = static_cast<int>(qPow(tolerance, 2));
 
     QRgb oldColor = targetImage->pixel(point);
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));

@@ -32,6 +32,7 @@ public:
     const QRgb thinline = qRgba(1, 0, 0, 255);
     const QRgb rosa = qRgba(255,230,230,255);
     const QRgb redline = qRgba(254,0,0,255);
+    const QRgb greenline = qRgba(0,254,0,255);
     const QRgb blueline = qRgba(0,0,254,255);
 
     BitmapImage();
@@ -106,7 +107,7 @@ public:
     // coloring methods
     int getThreshold() { return mThreshold; }
     int getWhiteArea() { return mWhiteArea; }
-    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool blue);
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool green, bool blue);
 
     void toBlackLine(BitmapImage* bitmapimage);
 
@@ -116,7 +117,7 @@ public:
     void replaceThinLine(BitmapImage* bitmapimage);
     void removeColoredLines(BitmapImage* bitmapimage);
     int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* bitmapimage);
-    // color layer methods end
+    // coloring methods end
 
 
     /** Determines if the BitmapImage is minimally bounded.
