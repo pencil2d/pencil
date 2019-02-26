@@ -137,7 +137,6 @@ protected:
     StrokeManager* m_pStrokeManager = nullptr;
     qreal mAdjustmentStep = 0.0f;
 
-private:
 };
 
 #endif // BASETOOL_H

@@ -499,10 +499,10 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
 
 void ScribbleArea::pointerMoveEvent(PointerEvent* event)
 {
-    const bool isPressed = event->button() == Qt::LeftButton;
+    const bool isPressed = event->buttons() & Qt::LeftButton;
     updateCanvasCursor();
 
-    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
+    if (event->buttons() & (Qt::LeftButton | Qt::RightButton))
     {
         mOffset = getCurrentOffset();
 
