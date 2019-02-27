@@ -721,7 +721,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
 
 void BitmapImage::getThresholdSuggestion(BitmapImage* img)
 {
-    Q_ASSERT(img != nullptr);
+    Q_ASSERT(img != nullptr); // TODO
 }
 
 void BitmapImage::toBlackLine(BitmapImage* bitmapimage)
@@ -729,12 +729,23 @@ void BitmapImage::toBlackLine(BitmapImage* bitmapimage)
     Q_ASSERT(bitmapimage != nullptr);
 
     BitmapImage* img = bitmapimage;
+    QRgb rgba;
     for (int x = img->left(); x <= img->right(); x++)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
+            rgba = img->constScanLine(x, y);
             if (qAlpha(img->constScanLine(x, y)) > 0)
-                img->setPixel(x, y, thinline);
+            {
+                if(qRed(rgba) - 50 > qGreen(rgba))
+                        img->setPixel(x, y, redline);
+                else if(qBlue(rgba) - 50 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
+                        img->setPixel(x, y, blueline);
+                else if(qGreen(rgba) - 50 > qRed(rgba) && qGreen(rgba) > qBlue(rgba))
+                        img->setPixel(x, y, greenline);
+                else
+                    img->setPixel(x, y, thinline);
+            }
         }
     }
     img->modification();
@@ -743,26 +754,28 @@ void BitmapImage::toBlackLine(BitmapImage* bitmapimage)
 void BitmapImage::fillWhiteAreas(BitmapImage *bitmapimage)
 {
     Q_ASSERT(bitmapimage != nullptr);
-
-    BitmapImage* img = bitmapimage;
+//    BitmapImage* img = bitmapimage;
 
     // fill areas size 'area' or less with black
     QVector<QPoint> points;
     points.clear();
-    for (int x = img->left(); x < img->right(); x++)
+    QRgb active, previous = thinline;
+    for (int x = bitmapimage->left(); x < bitmapimage->right(); x++)
     {
-        for (int y = img->top(); y < img->bottom(); y++)
+        for (int y = bitmapimage->top(); y < bitmapimage->bottom(); y++)
         {
-            if (qAlpha(img->pixel(x, y)) < 1)
+            active =bitmapimage->constScanLine(x, y);
+            if (qAlpha(active) < 1)
             {
                 points.append(QPoint(x, y));
                 int areaSize = fillWithColor(QPoint(x, y), transp, rosa, bitmapimage);
                 if (areaSize <= mWhiteArea)
-                {   // replace rosa with thinline (black)
-                    fillWithColor(points.last(), rosa, thinline, bitmapimage);
+                {   // replace rosa with last color
+                    fillWithColor(points.last(), rosa, previous, bitmapimage);
                     points.removeLast();
                 }
             }
+            previous = active;
         }
     }
     // replace rosa with trans
@@ -770,7 +783,7 @@ void BitmapImage::fillWhiteAreas(BitmapImage *bitmapimage)
         fillWithColor(points[0], rosa, transp, bitmapimage);
         points.removeFirst();
     }
-    img->modification();
+    bitmapimage->modification();
 }
 
 void BitmapImage::toThinBlackLine(BitmapImage* colorImage)

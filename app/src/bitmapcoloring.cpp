@@ -37,10 +37,10 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
 
     connect(ui->btn1Select, &QPushButton::clicked, mEditor, &Editor::copyFromScan);
     connect(ui->btn1Next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
-//    connect(ui->sb1_Threshold, QOverload<int>(&QSpinBox::valueChanged), mBitmapImage, &BitmapImage::setThreshold);
+//    connect(ui->sb1_Threshold, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged) , mBitmapImage, &BitmapImage::setThreshold);
     connect(ui->btnx_blackLine, &QPushButton::clicked, mEditor, &Editor::toBlackLine);
 
-//    connect(ui->sb2_fillArea, SIGNAL(valueChanged(int)), mBitmapImage, SLOT(setWhiteArea(int)));
+//    connect(ui->sb2_fillArea, QOverload<int>::of(&QSpinBox::valueChanged) , mBitmapImage, &BitmapImage::setWhiteArea);
     connect(ui->btn2_fillRest, &QPushButton::clicked, mEditor, &Editor::fillWhiteAreasRest);
     connect(ui->btn2_repairs, &QPushButton::clicked, mEditor, &Editor::fillWhiteAreas);
     connect(ui->btn3_thinRest, &QPushButton::clicked, mEditor, &Editor::toThinBlackLineRest);
