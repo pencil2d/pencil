@@ -51,7 +51,7 @@ Q_SIGNALS:
 
 public slots:
     void toggleLoop(bool);
-    void toggleLoopControl(bool);
+    void setRangeState(bool);
 
     /// Work-around in case the FPS spin-box "valueChanged" signal doesn't work.
     void onFpsEditingFinished();

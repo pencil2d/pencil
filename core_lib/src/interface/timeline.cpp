@@ -367,7 +367,7 @@ void TimeLine::setPlaying(bool isPlaying)
 
 void TimeLine::setRangeState(bool range)
 {
-    mTimeControls->toggleLoopControl(range);
+    mTimeControls->setRangeState(range);
 }
 
 int TimeLine::getRangeLower()

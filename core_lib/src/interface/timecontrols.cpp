@@ -140,9 +140,10 @@ void TimeControls::toggleLoop(bool checked)
     mLoopButton->setChecked(checked);
 }
 
-void TimeControls::toggleLoopControl(bool checked)
+void TimeControls::setRangeState(bool checked)
 {
     mPlaybackRangeCheckBox->setChecked(checked);
+    mTimeline->updateLength();
 }
 
 void TimeControls::setEditor(Editor* editor)
@@ -229,7 +230,6 @@ void TimeControls::loopButtonClicked(bool bChecked)
 void TimeControls::playbackRangeClicked(bool bChecked)
 {
     mEditor->playback()->enableRangedPlayback(bChecked);
-    mTimeline->updateLength();
 }
 
 void TimeControls::loopStartValueChanged(int i)
