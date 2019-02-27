@@ -215,9 +215,9 @@ void TimeLine::initUI()
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
     connect(onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick);
 
-    connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);
-    connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick);
-    connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::updateLength);
+    connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);
+    connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);
+    connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::updateLength);
     connect(mTimeControls, &TimeControls::playButtonTriggered, this, &TimeLine::playButtonTriggered);
 
     connect(newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer);
@@ -343,7 +343,6 @@ void TimeLine::updateLength()
     int frameLength = getLength();
     mHScrollbar->setMaximum(qMax(0, frameLength - mTracks->width() / mTracks->getFrameSize()));
     mTimeControls->updateLength(frameLength);
-    update();
     updateContent();
 }
 
@@ -356,7 +355,7 @@ void TimeLine::updateContent()
 
 void TimeLine::setLoop(bool loop)
 {
-    mTimeControls->toggleLoop(loop);
+    mTimeControls->setLoop(loop);
 }
 
 void TimeLine::setPlaying(bool isPlaying)
