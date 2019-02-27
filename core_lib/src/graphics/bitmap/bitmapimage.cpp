@@ -715,6 +715,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
             }
         }
     }
+    img->autoCrop();
     img->modification();
     return img;
 }

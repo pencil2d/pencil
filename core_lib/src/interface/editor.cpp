@@ -536,7 +536,6 @@ void Editor::paste()
             qDebug() << "to be pasted --->" << tobePasted.image()->offset();
             if (mScribbleArea->isSomethingSelected())
             {
-                mObject->updateActiveFrames(currentFrame());
                 QRectF selection = mScribbleArea->getSelection();
                 if (g_clipboardBitmapImage.width() <= selection.width() && g_clipboardBitmapImage.height() <= selection.height())
                 {
@@ -640,6 +639,7 @@ void Editor::toThinBlackLine()
     {
         colorLayer->getBitmapImageAtFrame(currentFrame())->toThinBlackLine(colorLayer->getBitmapImageAtFrame(currentFrame()));
         orgLayer->getBitmapImageAtFrame(currentFrame())->restoreColoredLines(orgLayer->getBitmapImageAtFrame(currentFrame()), colorLayer->getBitmapImageAtFrame(currentFrame()));
+        mObject->updateActiveFrames(currentFrame());
         mScribbleArea->updateFrame(currentFrame());
     }
 }
