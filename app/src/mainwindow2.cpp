@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include <QFile>
 #include <QMessageBox>
 #include <QProgressDialog>
-#include <QFileIconProvider>
 #include <QTabletEvent>
 
 // core_lib headers
@@ -608,7 +607,6 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 
     setWindowTitle(object->filePath().prepend("[*]"));
     setWindowModified(false);
-    setWindowIcon(QFileIconProvider().icon(strFilePath));
 
     progress.setValue(progress.value() + 1);
 
