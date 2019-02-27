@@ -102,12 +102,10 @@ void StrokeTool::drawStroke()
     QPointF pixel = getCurrentPixel();
     if (pixel != mLastPixel || !mFirstDraw)
     {
-
         // get last pixel before interpolation initializes
         QPointF startStrokes = m_pStrokeManager->interpolateStart(getLastPixel());
         mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
         mStrokePressures << m_pStrokeManager->getPressure();
-
     }
     else
     {

@@ -499,7 +499,6 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
 
 void ScribbleArea::pointerMoveEvent(PointerEvent* event)
 {
-    const bool isPressed = event->buttons() & Qt::LeftButton;
     updateCanvasCursor();
 
     if (event->buttons() & (Qt::LeftButton | Qt::RightButton))
@@ -522,6 +521,7 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
         return;
     }
 
+    const bool isPressed = event->buttons() & Qt::LeftButton;
     if (isPressed && mQuickSizing)
     {
         if (isDoingAssistedToolAdjustment(event->modifiers()))
@@ -530,21 +530,7 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
         }
     }
 
-    if (currentTool()->isDrawingTool())
-    {
-        if (currentTool()->type() == POLYLINE)
-        {
-            currentTool()->pointerMoveEvent(event);
-        }
-        else if (event->buttons() & Qt::LeftButton)
-        {
-            currentTool()->pointerMoveEvent(event);
-        }
-    }
-    else
-    {
-        currentTool()->pointerMoveEvent(event);
-    }
+    currentTool()->pointerMoveEvent(event);
 }
 
 void ScribbleArea::pointerReleaseEvent(PointerEvent* event)

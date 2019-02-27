@@ -146,7 +146,7 @@ QCursor PencilTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PencilTool::pointerPressEvent(PointerEvent *)
+void PencilTool::pointerPressEvent(PointerEvent*)
 {
     mScribbleArea->setAllDirty();
 
@@ -162,15 +162,18 @@ void PencilTool::pointerPressEvent(PointerEvent *)
     }
 }
 
-void PencilTool::pointerMoveEvent(PointerEvent *)
+void PencilTool::pointerMoveEvent(PointerEvent* event)
 {
-    mCurrentPressure = m_pStrokeManager->getPressure();
-    drawStroke();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+    if (event->buttons() & Qt::LeftButton)
+    {
+        mCurrentPressure = m_pStrokeManager->getPressure();
+        drawStroke();
+        if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+            m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+    }
 }
 
-void PencilTool::pointerReleaseEvent(PointerEvent *)
+void PencilTool::pointerReleaseEvent(PointerEvent*)
 {
     mEditor->backup(typeName());
 

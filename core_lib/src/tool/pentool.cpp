@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
+#include "pointerevent.h"
 
 
 PenTool::PenTool(QObject* parent) : StrokeTool(parent)
@@ -121,15 +122,18 @@ void PenTool::pointerPressEvent(PointerEvent *)
     startStroke();
 }
 
-void PenTool::pointerMoveEvent(PointerEvent *)
+void PenTool::pointerMoveEvent(PointerEvent* event)
 {
-    mCurrentPressure = m_pStrokeManager->getPressure();
-    drawStroke();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+    if (event->buttons() & Qt::LeftButton)
+    {
+        mCurrentPressure = m_pStrokeManager->getPressure();
+        drawStroke();
+        if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+            m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+    }
 }
 
-void PenTool::pointerReleaseEvent(PointerEvent *)
+void PenTool::pointerReleaseEvent(PointerEvent*)
 {
     mEditor->backup(typeName());
 

@@ -28,10 +28,10 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "layervector.h"
 #include "vectorimage.h"
+#include "pointerevent.h"
 
 
-EraserTool::EraserTool(QObject* parent)
-    : StrokeTool(parent)
+EraserTool::EraserTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
@@ -46,7 +46,6 @@ void EraserTool::loadSettings()
     m_enabledProperties[FEATHER] = true;
     m_enabledProperties[PRESSURE] = true;
     m_enabledProperties[STABILIZATION] = true;
-
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -124,12 +123,15 @@ void EraserTool::pointerPressEvent(PointerEvent*)
     mMouseDownPoint = getCurrentPoint();
 }
 
-void EraserTool::pointerMoveEvent(PointerEvent*)
+void EraserTool::pointerMoveEvent(PointerEvent* event)
 {
-    mCurrentPressure = m_pStrokeManager->getPressure();
-    updateStrokes();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+    if (event->buttons() & Qt::LeftButton)
+    {
+        mCurrentPressure = m_pStrokeManager->getPressure();
+        updateStrokes();
+        if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+            m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+    }
 }
 
 void EraserTool::pointerReleaseEvent(PointerEvent*)

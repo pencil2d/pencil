@@ -28,6 +28,7 @@
 #include "object.h"
 #include "pointerevent.h"
 
+
 StrokeManager::StrokeManager()
 {
     m_timeshot = 0;

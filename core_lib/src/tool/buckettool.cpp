@@ -108,10 +108,10 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::VECTOR)
+    if (event->buttons() & Qt::LeftButton)
     {
-        if (event->buttons() & Qt::LeftButton)
+        Layer* layer = mEditor->layers()->currentLayer();
+        if (layer->type() == Layer::VECTOR)
         {
             drawStroke();
         }
