@@ -621,9 +621,9 @@ void Editor::fillWhiteAreasRest()
         if (layerBitmap->keyExists(i))
         {
             scrubTo(i);
-            layerBitmap->getBitmapImageAtFrame(currentFrame())->fillWhiteAreas(layerBitmap->getBitmapImageAtFrame(currentFrame()));
-            mObject->updateActiveFrames(currentFrame());
-            mScribbleArea->updateFrame(currentFrame());
+            layerBitmap->getBitmapImageAtFrame(i)->fillWhiteAreas(layerBitmap->getBitmapImageAtFrame(i));
+            mObject->updateActiveFrames(i);
+            mScribbleArea->updateFrame(i);
         }
     }
 }

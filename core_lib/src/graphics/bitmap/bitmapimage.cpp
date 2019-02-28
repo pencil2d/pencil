@@ -661,8 +661,8 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
     Q_ASSERT(bitmapimage != nullptr);
 
     BitmapImage* img = bitmapimage;
-    img->enableAutoCrop(true);
-    img->autoCrop();
+    img->enableAutoCrop(false);
+
     QRgb rgba;
     for (int x = img->left(); x <= img->right(); x++)
     {
@@ -715,7 +715,6 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool red, 
             }
         }
     }
-    img->autoCrop();
     img->modification();
     return img;
 }
@@ -754,25 +753,25 @@ void BitmapImage::toBlackLine(BitmapImage* bitmapimage)
 
 void BitmapImage::fillWhiteAreas(BitmapImage *bitmapimage)
 {
-    Q_ASSERT(bitmapimage != nullptr);
-//    BitmapImage* img = bitmapimage;
+    if(bitmapimage == nullptr) { return; }
+    BitmapImage* img = bitmapimage;
 
     // fill areas size 'area' or less with black
     QVector<QPoint> points;
     points.clear();
     QRgb active, previous = thinline;
-    for (int x = bitmapimage->left(); x < bitmapimage->right(); x++)
+    for (int x = img->left(); x < img->right(); x++)
     {
-        for (int y = bitmapimage->top(); y < bitmapimage->bottom(); y++)
+        for (int y = img->top(); y < img->bottom(); y++)
         {
-            active =bitmapimage->constScanLine(x, y);
+            active =img->pixel(x, y);
             if (qAlpha(active) < 1)
             {
                 points.append(QPoint(x, y));
-                int areaSize = fillWithColor(QPoint(x, y), transp, rosa, bitmapimage);
+                int areaSize = fillWithColor(QPoint(x, y), transp, rosa, img);
                 if (areaSize <= mWhiteArea)
                 {   // replace rosa with last color
-                    fillWithColor(points.last(), rosa, previous, bitmapimage);
+                    fillWithColor(points.last(), rosa, previous, img);
                     points.removeLast();
                 }
             }
@@ -781,10 +780,10 @@ void BitmapImage::fillWhiteAreas(BitmapImage *bitmapimage)
     }
     // replace rosa with trans
     while (!points.isEmpty()) {
-        fillWithColor(points[0], rosa, transp, bitmapimage);
+        fillWithColor(points[0], rosa, transp, img);
         points.removeFirst();
     }
-    bitmapimage->modification();
+    img->modification();
 }
 
 void BitmapImage::toThinBlackLine(BitmapImage* colorImage)
