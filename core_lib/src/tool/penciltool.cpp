@@ -37,7 +37,6 @@ PencilTool::PencilTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-
 void PencilTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
@@ -67,6 +66,13 @@ void PencilTool::loadSettings()
     }
 }
 
+void PencilTool::resetToDefault()
+{
+    properties.width = 1.0;
+    properties.feather = -1.0; // locks feather usage (can be changed)
+    properties.stabilizerLevel = -1;
+}
+
 void PencilTool::setWidth(const qreal width)
 {
     // Set current property
@@ -93,7 +99,6 @@ void PencilTool::setUseFeather(const bool usingFeather)
     settings.setValue("brushUseFeather", usingFeather);
     settings.sync();
 }
-
 
 void PencilTool::setInvisibility(const bool)
 {
@@ -176,9 +181,6 @@ void PencilTool::pointerMoveEvent(PointerEvent* event)
 void PencilTool::pointerReleaseEvent(PointerEvent*)
 {
     mEditor->backup(typeName());
-
-    Layer* layer = mEditor->layers()->currentLayer();
-
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)
     {
@@ -188,7 +190,8 @@ void PencilTool::pointerReleaseEvent(PointerEvent*)
     {
         drawStroke();
     }
-
+    
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
         paintBitmapStroke();
     else if (layer->type() == Layer::VECTOR)
@@ -199,23 +202,18 @@ void PencilTool::pointerReleaseEvent(PointerEvent*)
 // draw a single paint dab at the given location
 void PencilTool::paintAt(QPointF point)
 {
-    qDebug() << "Made a single dab at " << point;
+    //qDebug() << "Made a single dab at " << point;
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal opacity = 1.0;
-        mCurrentWidth = properties.width;
-        if (properties.pressure)
-        {
-            opacity = mCurrentPressure / 2;
-            mCurrentWidth *= mCurrentPressure;
-        }
-        qreal brushWidth = mCurrentWidth;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width * pressure;
         qreal fixedBrushFeather = properties.feather;
 
-        BlitRect rect;
+        mCurrentWidth = brushWidth;
 
-        rect.extend(point.toPoint());
+        BlitRect rect(point.toPoint());
         mScribbleArea->drawPencil(point,
                                   brushWidth,
                                   fixedBrushFeather,

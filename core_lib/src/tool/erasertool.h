@@ -28,6 +28,7 @@ public:
     explicit EraserTool( QObject* parent = 0 );
     ToolType type() override;
     void loadSettings() override;
+    void resetToDefault() override;
     QCursor cursor() override;
 
     void pointerMoveEvent( PointerEvent* ) override;

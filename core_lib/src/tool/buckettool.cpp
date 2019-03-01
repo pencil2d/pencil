@@ -53,6 +53,11 @@ void BucketTool::loadSettings()
     mPropertyEnabled[WIDTH] = true;
 }
 
+void BucketTool::resetToDefault()
+{
+    properties.tolerance = 10.0;
+}
+
 QCursor BucketTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))

@@ -40,16 +40,16 @@ class Properties
 public:
     qreal width = 1.f;
     qreal feather = 1.f;
-    bool pressure = true;
-    int invisibility = 0;
-    int preserveAlpha = 0;
-    bool vectorMergeEnabled = false;
-    bool bezier_state = false;
-    bool useFeather = true;
-    int useAA = 0;
-    int stabilizerLevel = 0;
+    bool  pressure = true;
+    int   invisibility = 0;
+    int   preserveAlpha = 0;
+    bool  vectorMergeEnabled = false;
+    bool  bezier_state = false;
+    bool  useFeather = true;
+    int   useAA = 0;
+    int   stabilizerLevel = 0;
     qreal tolerance = 0;
-    bool useFillContour = false;
+    bool  useFillContour = false;
 };
 
 const int ON = 1;
@@ -91,7 +91,8 @@ public:
     virtual void stopAdjusting();
     virtual void adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod);
 
-    virtual void clear() {}
+    virtual void clearToolData() {}
+    virtual void resetToDefault() {}
 
     static bool isAdjusting;
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);

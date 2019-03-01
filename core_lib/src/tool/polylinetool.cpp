@@ -63,6 +63,11 @@ void PolylineTool::loadSettings()
     }
 }
 
+void PolylineTool::resetToDefault()
+{
+    properties.width = 1.5; // PEN dependent
+}
+
 void PolylineTool::setWidth(const qreal width)
 {
     // Set current property
@@ -96,7 +101,7 @@ QCursor PolylineTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PolylineTool::clear()
+void PolylineTool::clearToolData()
 {
     mPoints.clear();
 }
@@ -145,7 +150,7 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
     mEditor->backup(typeName());
 
     endPolyline(mPoints);
-    clear();
+    clearToolData();
 }
 
 
@@ -157,7 +162,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         if (mPoints.size() > 0)
         {
             endPolyline(mPoints);
-            clear();
+            clearToolData();
             return true;
         }
         break;
@@ -166,7 +171,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         if (mPoints.size() > 0)
         {
             cancelPolyline();
-            clear();
+            clearToolData();
             return true;
         }
         break;

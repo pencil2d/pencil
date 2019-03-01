@@ -65,12 +65,9 @@ void BrushTool::loadSettings()
     properties.stabilizerLevel = settings.value("brushLineStabilization").toInt();
     properties.useAA = settings.value("brushAA").toInt();
 
-    if (properties.useFeather == true) {
-        properties.useAA = -1;
-    }
+    if (properties.useFeather == true) { properties.useAA = -1; }
 
     // First run
-    //
     if (properties.width <= 0)
     {
         setWidth(15);
@@ -80,6 +77,14 @@ void BrushTool::loadSettings()
     {
         setFeather(15);
     }
+}
+
+void BrushTool::resetToDefault()
+{
+    properties.width = 15.0;
+    properties.feather = 200.0;
+    properties.stabilizerLevel = -1;
+    properties.useFeather = false;
 }
 
 void BrushTool::setWidth(const qreal width)

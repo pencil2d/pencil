@@ -61,6 +61,12 @@ void SmudgeTool::loadSettings()
     }
 }
 
+void SmudgeTool::resetToDefault()
+{
+    properties.width = 25.0;
+    properties.feather = 200.0;
+}
+
 void SmudgeTool::setWidth(const qreal width)
 {
     // Set current property

@@ -61,6 +61,12 @@ void PenTool::loadSettings()
     mCurrentWidth = properties.width;
 }
 
+void PenTool::resetToDefault()
+{
+    properties.width = 1.5; // not supposed to use feather
+    properties.stabilizerLevel = -1;
+}
+
 void PenTool::setWidth(const qreal width)
 {
     // Set current property

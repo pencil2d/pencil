@@ -28,6 +28,7 @@ public:
     ToolType type() override;
     uint toolMode;  // 0=normal/smooth 1=smudge - todo: move to basetool? could be useful
     void loadSettings() override;
+    void resetToDefault() override;
     QCursor cursor() override;
 
     void pointerPressEvent(PointerEvent *) override;

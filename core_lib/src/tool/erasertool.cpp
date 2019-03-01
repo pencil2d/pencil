@@ -66,6 +66,12 @@ void EraserTool::loadSettings()
     }
 }
 
+void EraserTool::resetToDefault()
+{
+    properties.width = 25.0;
+    properties.feather = 50.0;
+}
+
 void EraserTool::setWidth(const qreal width)
 {
     // Set current property
