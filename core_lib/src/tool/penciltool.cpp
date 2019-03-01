@@ -46,31 +46,23 @@ void PencilTool::loadSettings()
     mPropertyEnabled[FILLCONTOUR] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.width = settings.value("pencilWidth").toDouble();
+    properties.width = settings.value("pencilWidth", 4).toDouble();
     properties.feather = 50;
-    properties.pressure = settings.value("pencilPressure").toBool();
-    properties.stabilizerLevel = settings.value("pencilLineStabilization").toInt();
+    properties.pressure = settings.value("pencilPressure", true).toBool();
+    properties.stabilizerLevel = settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt();
     properties.useAA = DISABLED;
     properties.useFeather = true;
     properties.useFillContour = false;
-
     //    properties.invisibility = 1;
     //    properties.preserveAlpha = 0;
-
-    if (properties.width <= 0)
-    {
-        // setting the default value to 4
-        // seems to give great results with pressure on
-        setWidth(4);
-        setPressure(true);
-    }
 }
 
 void PencilTool::resetToDefault()
 {
-    properties.width = 1.0;
-    properties.feather = -1.0; // locks feather usage (can be changed)
-    properties.stabilizerLevel = -1;
+    setWidth(4.0);
+    setFeather(50);
+    setUseFeather(true);
+    setStabilizerLevel(StabilizationLevel::STRONG);
 }
 
 void PencilTool::setWidth(const qreal width)

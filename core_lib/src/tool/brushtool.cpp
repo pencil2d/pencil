@@ -56,35 +56,26 @@ void BrushTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("brushWidth").toDouble();
-    properties.feather = settings.value("brushFeather", 15.0).toDouble();
+    properties.width = settings.value("brushWidth", 24.0).toDouble();
+    properties.feather = settings.value("brushFeather", 48.0).toDouble();
     properties.useFeather = settings.value("brushUseFeather", true).toBool();
-    properties.pressure = settings.value("brushPressure", false).toBool();
-    properties.invisibility = settings.value("brushInvisibility", true).toBool();
+    properties.pressure = settings.value("brushPressure", true).toBool();
+    properties.invisibility = settings.value("brushInvisibility", false).toBool();
     properties.preserveAlpha = OFF;
-    properties.stabilizerLevel = settings.value("brushLineStabilization").toInt();
-    properties.useAA = settings.value("brushAA").toInt();
+    properties.stabilizerLevel = settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt();
+    properties.useAA = settings.value("brushAA", 1).toInt();
 
     if (properties.useFeather == true) { properties.useAA = -1; }
-
-    // First run
-    if (properties.width <= 0)
-    {
-        setWidth(15);
-    }
-
-    if (std::isnan(properties.feather))
-    {
-        setFeather(15);
-    }
+    if (properties.width <= 0) { setWidth(15); }
+    if (std::isnan(properties.feather)) { setFeather(15); }
 }
 
 void BrushTool::resetToDefault()
 {
-    properties.width = 15.0;
-    properties.feather = 200.0;
-    properties.stabilizerLevel = -1;
-    properties.useFeather = false;
+    setWidth(24.0);
+    setFeather(48.0);
+    setStabilizerLevel(StabilizationLevel::STRONG);
+    setUseFeather(true);
 }
 
 void BrushTool::setWidth(const qreal width)
