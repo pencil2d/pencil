@@ -185,6 +185,20 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
     return layer;
 }
 
+Status LayerManager::copyLayer(Layer *fromLayer, Layer *toLayer)
+{
+    Q_ASSERT(fromLayer != nullptr && toLayer != nullptr);
+    int max = fromLayer->getMaxKeyFramePosition();
+    for (int i = 1; i <=max; i++)
+    {
+        if (fromLayer->keyExists(i))
+        {
+            toLayer->copyFrame(fromLayer, toLayer, i);
+        }
+    }
+    return Status::OK;
+}
+
 void LayerManager::initColorLayer(Layer *fromLayer, LayerBitmap *colorlayer, int frame)
 {
     Q_ASSERT(fromLayer != nullptr && colorlayer != nullptr);

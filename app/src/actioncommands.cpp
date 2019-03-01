@@ -652,6 +652,7 @@ Status ActionCommands::addNewSoundLayer()
 
 Status ActionCommands::addNewBitmapColorLayer()
 {
+    /*
     QString name = mEditor->layers()->currentLayer()->name() + "_C";
     if (!name.isEmpty())
     {
@@ -662,6 +663,8 @@ Status ActionCommands::addNewBitmapColorLayer()
         colorlayer->setIsColorLayer(true);
         emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex());
     }
+    */
+    mEditor->toBlackLine();
     return Status::OK;
 }
 

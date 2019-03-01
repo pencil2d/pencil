@@ -598,10 +598,21 @@ void Editor::scanToTransparent()
 
 void Editor::toBlackLine()
 {
-    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layers()->currentLayer());
-    LayerBitmap* toLayer = static_cast<LayerBitmap*>(layers()->findLayerByName(layerBitmap->name() + "_C"));
+    LayerBitmap* orgLayer = static_cast<LayerBitmap*>(layers()->currentLayer());
+    orgLayer->setHasColorLayer(true);
+    LayerBitmap* colorLayer = layers()->createBitmapLayer(orgLayer->name() + "_C");
+    colorLayer->setIsColorLayer(true);
+    layers()->copyLayer(orgLayer, colorLayer);
+    orgLayer->copyFrames(orgLayer,colorLayer, 1, orgLayer->getMaxKeyFramePosition(), 1);
     mObject->updateActiveFrames(currentFrame());
-    layers()->initColorLayer(layerBitmap, toLayer , currentFrame());
+    for (int i = 1; i <= colorLayer->getMaxKeyFramePosition(); i++)
+    {
+        if (colorLayer->keyExists(i))
+        {
+            scrubTo(i);
+            colorLayer->getBitmapImageAtFrame(i)->toBlackLine(colorLayer->getBitmapImageAtFrame(i));
+        }
+    }
     mScribbleArea->updateFrame(currentFrame());
 }
 

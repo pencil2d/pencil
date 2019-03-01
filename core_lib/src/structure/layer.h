@@ -69,6 +69,7 @@ public:
     bool getHasColorLayer() { return mHasColorLayer; }
     void setIsColorLayer(bool b) { mIsColorLayer = b; }
     bool getIsColorLayer() { return mIsColorLayer; }
+    void copyFrames(Layer* fromLayer, Layer* toLayer, int firstFrame, int lastFrame, int startAt, int loops = 1);
 
 
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
