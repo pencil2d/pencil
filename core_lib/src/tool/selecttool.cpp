@@ -69,7 +69,6 @@ void SelectTool::beginSelection()
         {
             mScribbleArea->mySelection.setTopLeft(getLastPoint());
             mScribbleArea->mySelection.setBottomRight(getLastPoint());
-
         }
     }
     else

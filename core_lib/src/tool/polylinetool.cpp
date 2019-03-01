@@ -42,25 +42,25 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[BEZIER] = true;
-    m_enabledProperties[ANTI_ALIASING] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[BEZIER] = true;
+    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("polyLineWidth").toDouble();
+    properties.width = settings.value("polyLineWidth", 8.0).toDouble();
     properties.feather = -1;
     properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value("brushAA").toBool();
     properties.stabilizerLevel = -1;
+}
 
-    // First run
-    if (properties.width <= 0)
-    {
-        setWidth(1.5);
-    }
+void PolylineTool::resetToDefault()
+{
+    setWidth(8.0);
+    setBezier(false);
 }
 
 void PolylineTool::setWidth(const qreal width)
@@ -96,7 +96,7 @@ QCursor PolylineTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PolylineTool::clear()
+void PolylineTool::clearToolData()
 {
     mPoints.clear();
 }
@@ -145,7 +145,7 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
     mEditor->backup(typeName());
 
     endPolyline(mPoints);
-    clear();
+    clearToolData();
 }
 
 
@@ -157,7 +157,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         if (mPoints.size() > 0)
         {
             endPolyline(mPoints);
-            clear();
+            clearToolData();
             return true;
         }
         break;
@@ -166,7 +166,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         if (mPoints.size() > 0)
         {
             cancelPolyline();
-            clear();
+            clearToolData();
             return true;
         }
         break;

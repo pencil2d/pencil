@@ -57,7 +57,7 @@ class ScribbleArea : public QWidget
     friend class BucketTool;
 
 public:
-    ScribbleArea(QWidget *parent);
+    ScribbleArea(QWidget* parent);
     ~ScribbleArea();
 
     bool init();

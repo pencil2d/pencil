@@ -40,16 +40,16 @@ class Properties
 public:
     qreal width = 1.f;
     qreal feather = 1.f;
-    bool pressure = true;
-    int invisibility = 0;
-    int preserveAlpha = 0;
-    bool vectorMergeEnabled = false;
-    bool bezier_state = false;
-    bool useFeather = true;
-    int useAA = 0;
-    int stabilizerLevel = 0;
+    bool  pressure = true;
+    int   invisibility = 0;
+    int   preserveAlpha = 0;
+    bool  vectorMergeEnabled = false;
+    bool  bezier_state = false;
+    bool  useFeather = true;
+    int   useAA = 0;
+    int   stabilizerLevel = 0;
     qreal tolerance = 0;
-    bool useFillContour = false;
+    bool  useFillContour = false;
 };
 
 const int ON = 1;
@@ -91,7 +91,8 @@ public:
     virtual void stopAdjusting();
     virtual void adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod);
 
-    virtual void clear() {}
+    virtual void clearToolData() {}
+    virtual void resetToDefault() {}
 
     static bool isAdjusting;
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
@@ -125,19 +126,21 @@ public:
     QPointF getLastPressPixel();
     QPointF getLastPressPoint();
 
-    bool isPropertyEnabled(ToolPropertyType t) { return m_enabledProperties[t]; }
+    bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
 
 protected:
-    QHash<ToolPropertyType, bool> m_enabledProperties;
-
+    StrokeManager* strokeManager() { return mStrokeManager; }
     Editor* editor() { return mEditor; }
+
+    QHash<ToolPropertyType, bool> mPropertyEnabled;
+
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
-    StrokeManager* m_pStrokeManager = nullptr;
-    qreal mAdjustmentStep = 0.0f;
 
 private:
+    StrokeManager* mStrokeManager = nullptr;
+    qreal mAdjustmentStep = 0.0f;
 };
 
 #endif // BASETOOL_H

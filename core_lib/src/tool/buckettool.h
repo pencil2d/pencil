@@ -30,6 +30,7 @@ public:
     explicit BucketTool(QObject* parent = nullptr);
     ToolType type() override;
     void loadSettings() override;
+    void resetToDefault() override;
     QCursor cursor() override;
 
     void pointerPressEvent(PointerEvent*) override;

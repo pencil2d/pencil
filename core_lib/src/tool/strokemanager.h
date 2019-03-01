@@ -63,7 +63,6 @@ public:
     QPointF getLastMeanPixel() const { return mLastInterpolated; }
     QPointF getMousePos() const { return mousePos; }
     QPointF getCurrentPressPixel() const { return mCurrentPressPixel; }
-    bool isPenPressed() const { return mPenIsHeld; }
 
 private:
     static const int STROKE_QUEUE_LENGTH = 3; // 4 points for cubic bezier
@@ -86,14 +85,12 @@ private:
     QPointF mousePos = { 0, 0 };
 
     QPointF m_previousTangent;
-    bool    hasTangent = false;
+    bool    mHasTangent = false;
     int     previousTime = 0;
     bool    mStrokeStarted = false;
     bool    mTabletInUse = false;
-    bool    mPenIsHeld = true;
     float   mTabletPressure = 1.f;
     int     mStabilizerLevel = 0;
-    qreal mMeanPressure;
 
     clock_t m_timeshot;
 };

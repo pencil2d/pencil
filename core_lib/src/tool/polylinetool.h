@@ -30,6 +30,7 @@ public:
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;
+    void resetToDefault() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
@@ -38,7 +39,7 @@ public:
 
     bool keyPressEvent(QKeyEvent* event) override;
 
-    void clear() override;
+    void clearToolData() override;
 
     void setWidth(const qreal width) override;
     void setFeather(const qreal feather) override;

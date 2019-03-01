@@ -71,7 +71,7 @@ public slots:
     void setUseFillContour(bool);
 
 private:
-    BaseTool * mCurrentTool = nullptr;
+    BaseTool* mCurrentTool = nullptr;
     ToolType  meTabletBackupTool = PENCIL;
     bool mIsSwitchedToEraser = false;
     QHash<ToolType, BaseTool*> mToolSetHash;

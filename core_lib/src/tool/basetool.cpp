@@ -35,7 +35,7 @@ bool BaseTool::isAdjusting = false;
 
 QString BaseTool::TypeName(ToolType type)
 {
-    static std::array< QString, TOOL_TYPE_COUNT > map;
+    static std::array<QString, TOOL_TYPE_COUNT> map;
 
     if (map[0].isEmpty())
     {
@@ -51,21 +51,20 @@ QString BaseTool::TypeName(ToolType type)
         map[EYEDROPPER] = tr("Eyedropper");
         map[BRUSH] = tr("Brush");
     }
-
     return map.at(type);
 }
 
 BaseTool::BaseTool(QObject* parent) : QObject(parent)
 {
-    m_enabledProperties.insert(WIDTH, false);
-    m_enabledProperties.insert(FEATHER, false);
-    m_enabledProperties.insert(USEFEATHER, false);
-    m_enabledProperties.insert(PRESSURE, false);
-    m_enabledProperties.insert(INVISIBILITY, false);
-    m_enabledProperties.insert(PRESERVEALPHA, false);
-    m_enabledProperties.insert(BEZIER, false);
-    m_enabledProperties.insert(ANTI_ALIASING, false);
-    m_enabledProperties.insert(STABILIZATION, false);
+    mPropertyEnabled.insert(WIDTH, false);
+    mPropertyEnabled.insert(FEATHER, false);
+    mPropertyEnabled.insert(USEFEATHER, false);
+    mPropertyEnabled.insert(PRESSURE, false);
+    mPropertyEnabled.insert(INVISIBILITY, false);
+    mPropertyEnabled.insert(PRESERVEALPHA, false);
+    mPropertyEnabled.insert(BEZIER, false);
+    mPropertyEnabled.insert(ANTI_ALIASING, false);
+    mPropertyEnabled.insert(STABILIZATION, false);
 }
 
 QCursor BaseTool::cursor()
@@ -76,25 +75,11 @@ QCursor BaseTool::cursor()
 void BaseTool::initialize(Editor* editor)
 {
     Q_ASSERT(editor);
-
-    if (editor == NULL)
-    {
-        qCritical("ERROR: editor is null!");
-    }
     mEditor = editor;
     mScribbleArea = editor->getScribbleArea();
-
-
     Q_ASSERT(mScribbleArea);
 
-    if (mScribbleArea == NULL)
-    {
-        qCritical("ERROR: mScribbleArea is null in editor!");
-    }
-
-
-    m_pStrokeManager = mEditor->getScribbleArea()->getStrokeManager();
-
+    mStrokeManager = mEditor->getScribbleArea()->getStrokeManager();
     loadSettings();
 }
 
@@ -138,7 +123,6 @@ bool BaseTool::isDrawingTool()
  */
 QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, float scalingFac, int windowWidth)
 {
-
     float propWidth = width * scalingFac;
     float propFeather = feather * scalingFac;
 
@@ -155,8 +139,8 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
         whA = qMax<float>(0, propWidth - xyA - 1);
         whB = qMax<float>(0, cursorWidth - propFeather / 4 - 2);
     }
-    else {
-
+    else
+    {
         cursorWidth = (propWidth + 0.5);
         whA = qMax<float>(0, propWidth - 1);
         whB = qMax<float>(0, cursorWidth / 4 - 2);
@@ -222,7 +206,8 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
         QPainter cursorPainter(&cursorPixmap);
         cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
 
-        switch(mode) {
+        switch(mode)
+        {
             case MoveMode::MIDDLE:
             {
                 if (type == SELECT) {
@@ -245,21 +230,12 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
                 break;
             }
             default:
-                if (type == SELECT) {
-                    return Qt::CrossCursor;
-                }
-                else
-                {
-                    return Qt::ArrowCursor;
-                }
+                return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
                 break;
         }
-
-
         cursorPainter.end();
     }
     return QCursor(cursorPixmap);
-
 }
 
 /**
@@ -370,17 +346,17 @@ void BaseTool::adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod) //of
 
 QPointF BaseTool::getCurrentPressPixel()
 {
-    return m_pStrokeManager->getCurrentPressPixel();
+    return strokeManager()->getCurrentPressPixel();
 }
 
 QPointF BaseTool::getCurrentPressPoint()
 {
-    return mEditor->view()->mapScreenToCanvas(m_pStrokeManager->getCurrentPressPixel());
+    return mEditor->view()->mapScreenToCanvas(strokeManager()->getCurrentPressPixel());
 }
 
 QPointF BaseTool::getCurrentPixel()
 {
-    return m_pStrokeManager->getCurrentPixel();
+    return strokeManager()->getCurrentPixel();
 }
 
 QPointF BaseTool::getCurrentPoint()
@@ -390,7 +366,7 @@ QPointF BaseTool::getCurrentPoint()
 
 QPointF BaseTool::getLastPixel()
 {
-    return m_pStrokeManager->getLastPixel();
+    return strokeManager()->getLastPixel();
 }
 
 QPointF BaseTool::getLastPoint()
@@ -400,7 +376,7 @@ QPointF BaseTool::getLastPoint()
 
 QPointF BaseTool::getLastPressPixel()
 {
-    return m_pStrokeManager->getLastPressPixel();
+    return strokeManager()->getLastPressPixel();
 }
 
 QPointF BaseTool::getLastPressPoint()
