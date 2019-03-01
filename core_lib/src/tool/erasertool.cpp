@@ -49,27 +49,21 @@ void EraserTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("eraserWidth").toDouble();
-    properties.feather = settings.value("eraserFeather").toDouble();
-
-    properties.pressure = settings.value("eraserPressure").toBool();
+    properties.width = settings.value("eraserWidth", 24.0).toDouble();
+    properties.feather = settings.value("eraserFeather", 48.0).toDouble();
+    properties.pressure = settings.value("eraserPressure", true).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
-    properties.stabilizerLevel = settings.value("stabilizerLevel").toInt();
-
-    // First run
-    if (properties.width <= 0)
-    {
-        setWidth(25);
-        setFeather(50);
-        setPressure(true);
-    }
+    properties.stabilizerLevel = settings.value("stabilizerLevel", StabilizationLevel::NONE).toInt();
 }
 
 void EraserTool::resetToDefault()
 {
-    properties.width = 25.0;
-    properties.feather = 50.0;
+    setWidth(24.0);
+    setFeather(48.0);
+    setUseFeather(false);
+    setPressure(true);
+    setStabilizerLevel(StabilizationLevel::NONE);
 }
 
 void EraserTool::setWidth(const qreal width)
