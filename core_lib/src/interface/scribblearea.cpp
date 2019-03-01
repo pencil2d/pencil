@@ -549,7 +549,7 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
         return;
     }
 
-    qDebug() << "release event";
+    //qDebug() << "release event";
     currentTool()->pointerReleaseEvent(event);
 
     // ---- last check (at the very bottom of mouseRelease) ----

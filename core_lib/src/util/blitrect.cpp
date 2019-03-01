@@ -21,7 +21,12 @@ BlitRect::BlitRect()
 {
 }
 
-void BlitRect::extend(QPoint p)
+BlitRect::BlitRect(const QPoint p)
+{
+    extend(p);
+}
+
+void BlitRect::extend(const QPoint p)
 {
     if (mInitialized == false)
     {

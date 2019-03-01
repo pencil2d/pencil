@@ -215,17 +215,12 @@ void BrushTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal opacity = 1.0;
-        if (properties.pressure)
-        {
-            opacity = mCurrentPressure / 2;
-        }
-        mCurrentWidth = properties.width;
-        qreal brushWidth = mCurrentWidth;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
-        BlitRect rect;
-
-        rect.extend(point.toPoint());
+        BlitRect rect(point.toPoint());
         mScribbleArea->drawBrush(point,
                                  brushWidth,
                                  properties.feather,
@@ -253,13 +248,10 @@ void BrushTool::drawStroke()
             p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
         }
 
-        qreal opacity = 1.0;
-        if (properties.pressure == true) {
-            opacity = mCurrentPressure / 2;
-        }
-
-        mCurrentWidth = properties.width;
-        qreal brushWidth = mCurrentWidth;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
         qreal brushStep = (0.5 * brushWidth);
         brushStep = qMax(1.0, brushStep);
@@ -365,11 +357,11 @@ void BrushTool::paintVectorStroke()
         curve.setVariableWidth(properties.pressure);
         curve.setColourNumber(mEditor->color()->frontColorNumber());
 
-        auto pLayerVector = static_cast<LayerVector*>(layer);
-        VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
 
-        if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected()) {
+        if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected())
+        {
             mScribbleArea->deselectAll();
         }
 

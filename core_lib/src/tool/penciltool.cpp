@@ -237,18 +237,13 @@ void PencilTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal opacity = 1.0;
-        mCurrentWidth = properties.width;
-        if (properties.pressure)
-        {
-            opacity = mCurrentPressure / 2;
-            mCurrentWidth = properties.width * mCurrentPressure;
-        }
-        qreal brushWidth = mCurrentWidth;
-        qreal fixedBrushFeather = properties.feather;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
-        qreal brushStep = (0.5 * brushWidth);
-        brushStep = qMax(1.0, brushStep);
+        qreal fixedBrushFeather = properties.feather;
+        qreal brushStep = qMax(1.0, (0.5 * brushWidth));
 
         BlitRect rect;
 
@@ -282,7 +277,7 @@ void PencilTool::drawStroke()
     else if (layer->type() == Layer::VECTOR)
     {
         properties.useFeather = false;
-        mCurrentWidth = 0;
+        mCurrentWidth = 0; // FIXME: WTF?
         QPen pen(mEditor->color()->frontColor(),
                  1,
                  Qt::DotLine,

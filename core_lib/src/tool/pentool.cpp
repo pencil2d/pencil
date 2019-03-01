@@ -159,20 +159,15 @@ void PenTool::pointerReleaseEvent(PointerEvent*)
 // draw a single paint dab at the given location
 void PenTool::paintAt(QPointF point)
 {
-    qDebug() << "Made a single dab at " << point;
+    //qDebug() << "Made a single dab at " << point;
+
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        mCurrentWidth = properties.width;
-        if (properties.pressure == true)
-        {
-            mCurrentWidth *= mCurrentPressure;
-        }
-        qreal brushWidth = mCurrentWidth;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
-        BlitRect rect;
-
-        rect.extend(point.toPoint());
         mScribbleArea->drawPen(point,
                                brushWidth,
                                mEditor->color()->frontColor(),
@@ -180,6 +175,7 @@ void PenTool::paintAt(QPointF point)
 
         int rad = qRound(brushWidth) / 2 + 2;
 
+        BlitRect rect(point.toPoint());
         mScribbleArea->refreshBitmap(rect, rad);
     }
 }
@@ -198,12 +194,9 @@ void PenTool::drawStroke()
             p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
         }
 
-        mCurrentWidth = properties.width;
-        if (properties.pressure == true)
-        {
-            mCurrentWidth = properties.width * mCurrentPressure;
-        }
-        qreal brushWidth = mCurrentWidth;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
         // TODO: Make popup widget for less important properties,
         // Eg. stepsize should be a slider.. will have fixed (0.3) value for now.
@@ -240,12 +233,8 @@ void PenTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        qreal brushWidth = 0;
-        brushWidth = properties.width;
-        if (properties.pressure == true)
-        {
-            brushWidth = properties.width * mCurrentPressure;
-        }
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width * pressure;
 
         int rad = qRound((brushWidth / 2 + 2) * mEditor->view()->scaling());
 
