@@ -613,6 +613,7 @@ bool ScribbleArea::allowSmudging()
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
     if (mStrokeManager->isTabletInUse()) { e->ignore(); return; }
+
     PointerEvent event(e);
     mMouseInUse = true;
 
@@ -623,12 +624,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
-    // Workaround for tablet issue (#677 part 2)
-    if (mStrokeManager->isTabletInUse() &&
-        (!isMouseInUse() && currentTool()->type() != POLYLINE)) {
-        e->ignore(); return;
-    }
-
     PointerEvent event(e);
 
     mStrokeManager->pointerMoveEvent(&event);
@@ -658,6 +653,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 {
+    // Workaround for tablet issue (#677 part 2)
     if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent event(e);
 
