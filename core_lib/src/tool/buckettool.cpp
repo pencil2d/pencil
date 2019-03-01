@@ -187,12 +187,12 @@ void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
 
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+    if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
     {
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+        strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
 
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
+    QList<QPointF> p = strokeManager()->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

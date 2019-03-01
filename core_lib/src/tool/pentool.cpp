@@ -126,10 +126,10 @@ void PenTool::pointerMoveEvent(PointerEvent* event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
-        mCurrentPressure = m_pStrokeManager->getPressure();
+        mCurrentPressure = strokeManager()->getPressure();
         drawStroke();
-        if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-            m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
+            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
 }
 
@@ -183,7 +183,7 @@ void PenTool::paintAt(QPointF point)
 void PenTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
+    QList<QPointF> p = strokeManager()->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

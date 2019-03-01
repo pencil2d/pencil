@@ -129,14 +129,17 @@ public:
     bool isDrawingTool();
 
 protected:
+    StrokeManager* strokeManager() { return mStrokeManager; }
+    Editor* editor() { return mEditor; }
+
     QHash<ToolPropertyType, bool> m_enabledProperties;
 
-    Editor* editor() { return mEditor; }
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
-    StrokeManager* m_pStrokeManager = nullptr;
-    qreal mAdjustmentStep = 0.0f;
 
+private:
+    StrokeManager* mStrokeManager = nullptr;
+    qreal mAdjustmentStep = 0.0f;
 };
 
 #endif // BASETOOL_H

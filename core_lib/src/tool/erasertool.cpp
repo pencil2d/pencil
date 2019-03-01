@@ -127,10 +127,10 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
-        mCurrentPressure = m_pStrokeManager->getPressure();
+        mCurrentPressure = strokeManager()->getPressure();
         updateStrokes();
-        if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-            m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
+            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
 }
 
@@ -161,8 +161,8 @@ void EraserTool::paintAt(QPointF point)
         mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
-            opacity = m_pStrokeManager->getPressure();
-            mCurrentWidth = (mCurrentWidth + (m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+            opacity = strokeManager()->getPressure();
+            mCurrentWidth = (mCurrentWidth + (strokeManager()->getPressure() * mCurrentWidth)) * 0.5;
         }
 
         qreal brushWidth = mCurrentWidth;
@@ -190,7 +190,7 @@ void EraserTool::paintAt(QPointF point)
 void EraserTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
+    QList<QPointF> p = strokeManager()->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -205,8 +205,8 @@ void EraserTool::drawStroke()
         mCurrentWidth = properties.width;
         if (properties.pressure)
         {
-            opacity = m_pStrokeManager->getPressure();
-            mCurrentWidth = (mCurrentWidth + (m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+            opacity = strokeManager()->getPressure();
+            mCurrentWidth = (mCurrentWidth + (strokeManager()->getPressure() * mCurrentWidth)) * 0.5;
         }
 
         qreal brushWidth = mCurrentWidth;
@@ -251,7 +251,7 @@ void EraserTool::drawStroke()
         mCurrentWidth = properties.width;
         if (properties.pressure)
         {
-            mCurrentWidth = (mCurrentWidth + (m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+            mCurrentWidth = (mCurrentWidth + (strokeManager()->getPressure() * mCurrentWidth)) * 0.5;
         }
         qreal brushWidth = mCurrentWidth;
 

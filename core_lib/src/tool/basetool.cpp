@@ -76,25 +76,11 @@ QCursor BaseTool::cursor()
 void BaseTool::initialize(Editor* editor)
 {
     Q_ASSERT(editor);
-
-    if (editor == NULL)
-    {
-        qCritical("ERROR: editor is null!");
-    }
     mEditor = editor;
     mScribbleArea = editor->getScribbleArea();
-
-
     Q_ASSERT(mScribbleArea);
 
-    if (mScribbleArea == NULL)
-    {
-        qCritical("ERROR: mScribbleArea is null in editor!");
-    }
-
-
-    m_pStrokeManager = mEditor->getScribbleArea()->getStrokeManager();
-
+    mStrokeManager = mEditor->getScribbleArea()->getStrokeManager();
     loadSettings();
 }
 
@@ -370,17 +356,17 @@ void BaseTool::adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod) //of
 
 QPointF BaseTool::getCurrentPressPixel()
 {
-    return m_pStrokeManager->getCurrentPressPixel();
+    return strokeManager()->getCurrentPressPixel();
 }
 
 QPointF BaseTool::getCurrentPressPoint()
 {
-    return mEditor->view()->mapScreenToCanvas(m_pStrokeManager->getCurrentPressPixel());
+    return mEditor->view()->mapScreenToCanvas(strokeManager()->getCurrentPressPixel());
 }
 
 QPointF BaseTool::getCurrentPixel()
 {
-    return m_pStrokeManager->getCurrentPixel();
+    return strokeManager()->getCurrentPixel();
 }
 
 QPointF BaseTool::getCurrentPoint()
@@ -390,7 +376,7 @@ QPointF BaseTool::getCurrentPoint()
 
 QPointF BaseTool::getLastPixel()
 {
-    return m_pStrokeManager->getLastPixel();
+    return strokeManager()->getLastPixel();
 }
 
 QPointF BaseTool::getLastPoint()
@@ -400,7 +386,7 @@ QPointF BaseTool::getLastPoint()
 
 QPointF BaseTool::getLastPressPixel()
 {
-    return m_pStrokeManager->getLastPressPixel();
+    return strokeManager()->getLastPressPixel();
 }
 
 QPointF BaseTool::getLastPressPoint()
