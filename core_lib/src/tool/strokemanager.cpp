@@ -35,7 +35,6 @@ StrokeManager::StrokeManager()
 
     mTabletInUse = false;
     mTabletPressure = 0;
-    mMeanPressure = 0;
 
     reset();
     connect(&timer, &QTimer::timeout, this, &StrokeManager::interpolatePollAndPaint);
@@ -47,7 +46,7 @@ void StrokeManager::reset()
     pressureQueue.clear();
     strokeQueue.clear();
     pressure = 0.0f;
-    hasTangent = false;
+    mHasTangent = false;
     timer.stop();
     mStabilizerLevel = -1;
 }
@@ -158,7 +157,8 @@ void StrokeManager::smoothMousePos(QPointF pos)
 
 QPointF StrokeManager::interpolateStart(QPointF firstPoint)
 {
-    if (mStabilizerLevel == StabilizationLevel::SIMPLE) {
+    if (mStabilizerLevel == StabilizationLevel::SIMPLE)
+    {
         // Clear queue
         strokeQueue.clear();
         pressureQueue.clear();
@@ -173,16 +173,16 @@ QPointF StrokeManager::interpolateStart(QPointF firstPoint)
         mSingleshotTime.start();
         previousTime = mSingleshotTime.elapsed();
 
-        int sampleSize = 5;
-
         // Clear queue
         strokeQueue.clear();
         pressureQueue.clear();
-
+    
+        const int sampleSize = 5;
         assert(sampleSize > 0);
 
         // fill strokeQueue with firstPoint x times
-        for (int i = sampleSize; i > 0; i--) {
+        for (int i = sampleSize; i > 0; i--)
+        {
             strokeQueue.enqueue(firstPoint);
         }
 
@@ -228,10 +228,6 @@ QList<QPointF> StrokeManager::interpolateStroke()
     // is nan initially
     QList<QPointF> result;
 
-    qreal x = 0,
-        y = 0,
-        pressure = 0;
-
     if (mStabilizerLevel == StabilizationLevel::SIMPLE)
     {
         result = tangentInpolOp(result);
@@ -239,6 +235,9 @@ QList<QPointF> StrokeManager::interpolateStroke()
     }
     else if (mStabilizerLevel == StabilizationLevel::STRONG)
     {
+        qreal x = 0;
+        qreal y = 0;
+        qreal pressure = 0;
         result = meanInpolOp(result, x, y, pressure);
 
     }
@@ -270,9 +269,9 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
 
     qreal scaleFactor = line.length() * 3.f;
 
-    if (!hasTangent && scaleFactor > 0.01f)
+    if (!mHasTangent && scaleFactor > 0.01f)
     {
-        hasTangent = true;
+        mHasTangent = true;
         /*
         qDebug() << "scaleFactor" << scaleFactor
                  << "current pixel " << mCurrentPixel
@@ -308,18 +307,12 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
         //c1 = mLastPixel;
         //c2 = mCurrentPixel;
         points << mLastPixel << c1 << c2 << mCurrentPixel;
-        /*
-        qDebug() << mLastPixel
-                 << c1
-                 << c2
-                 << mCurrentPixel;
-         */
+        //qDebug() << mLastPixel << c1 << c2 << mCurrentPixel;
         m_previousTangent = newTangent;
     }
 
     previousTime = time;
     return points;
-
 }
 
 // Mean sampling interpolation operation
@@ -332,7 +325,7 @@ QList<QPointF> StrokeManager::meanInpolOp(QList<QPointF> points, qreal x, qreal 
         pressure += getPressure();
     }
 
-    // get arichmic mean of x, y and pressure
+    // get arithmetic mean of x, y and pressure
     x /= strokeQueue.size();
     y /= strokeQueue.size();
     pressure /= strokeQueue.size();
