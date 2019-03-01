@@ -45,26 +45,17 @@ void SmudgeTool::loadSettings()
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
 
-
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.width = settings.value("smudgeWidth").toDouble();
-    properties.feather = settings.value("smudgeFeather").toDouble();
+    properties.width = settings.value("smudgeWidth", 24.0).toDouble();
+    properties.feather = settings.value("smudgeFeather", 48.0).toDouble();
     properties.pressure = false;
     properties.stabilizerLevel = -1;
-
-    // First run
-    if (properties.width <= 0)
-    {
-        setWidth(25);
-        setFeather(200);
-        setPressure(false);
-    }
 }
 
 void SmudgeTool::resetToDefault()
 {
-    properties.width = 25.0;
-    properties.feather = 200.0;
+    setWidth(24.0);
+    setFeather(48.0);
 }
 
 void SmudgeTool::setWidth(const qreal width)

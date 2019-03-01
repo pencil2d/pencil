@@ -48,24 +48,19 @@ void PolylineTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("polyLineWidth").toDouble();
+    properties.width = settings.value("polyLineWidth", 8.0).toDouble();
     properties.feather = -1;
     properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value("brushAA").toBool();
     properties.stabilizerLevel = -1;
-
-    // First run
-    if (properties.width <= 0)
-    {
-        setWidth(1.5);
-    }
 }
 
 void PolylineTool::resetToDefault()
 {
-    properties.width = 1.5; // PEN dependent
+    setWidth(8.0);
+    setBezier(false);
 }
 
 void PolylineTool::setWidth(const qreal width)

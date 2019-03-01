@@ -44,27 +44,21 @@ void PenTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("penWidth").toDouble();
-    properties.pressure = settings.value("penPressure").toBool();
+    properties.width = settings.value("penWidth", 12.0).toDouble();
+    properties.pressure = settings.value("penPressure", true).toBool();
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
-    properties.useAA = settings.value("penAA").toBool();
-    properties.stabilizerLevel = settings.value("penLineStabilization").toInt();
-
-    // First run
-    if (properties.width <= 0)
-    {
-        setWidth(1.5);
-        setPressure(true);
-    }
-
-    mCurrentWidth = properties.width;
+    properties.useAA = settings.value("penAA", true).toBool();
+    properties.stabilizerLevel = settings.value("penLineStabilization", StabilizationLevel::STRONG).toInt();
 }
 
 void PenTool::resetToDefault()
 {
-    properties.width = 1.5; // not supposed to use feather
-    properties.stabilizerLevel = -1;
+    setWidth(12.0);
+    setUseFeather(false);
+    setPressure(true);
+    setStabilizerLevel(StabilizationLevel::STRONG);
+    setAA(1);
 }
 
 void PenTool::setWidth(const qreal width)

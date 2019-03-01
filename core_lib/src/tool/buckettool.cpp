@@ -43,19 +43,22 @@ ToolType BucketTool::type()
 
 void BucketTool::loadSettings()
 {
-    properties.width = 4;
+    mPropertyEnabled[TOLERANCE] = true;
+    mPropertyEnabled[WIDTH] = true;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    properties.width = settings.value("fillThickness", 4.0).toDouble();
     properties.feather = 10;
     properties.stabilizerLevel = StabilizationLevel::NONE;
     properties.useAA = DISABLED;
-    properties.tolerance = 10;
-
-    mPropertyEnabled[TOLERANCE] = true;
-    mPropertyEnabled[WIDTH] = true;
+    properties.tolerance = settings.value("tolerance", 32.0).toDouble();
 }
 
 void BucketTool::resetToDefault()
 {
-    properties.tolerance = 10.0;
+    setWidth(4.0);
+    setTolerance(32.0);
 }
 
 QCursor BucketTool::cursor()
