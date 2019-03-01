@@ -42,10 +42,10 @@ ToolType EraserTool::type()
 
 void EraserTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[FEATHER] = true;
-    m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[STABILIZATION] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[FEATHER] = true;
+    mPropertyEnabled[PRESSURE] = true;
+    mPropertyEnabled[STABILIZATION] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 

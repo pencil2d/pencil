@@ -125,14 +125,14 @@ public:
     QPointF getLastPressPixel();
     QPointF getLastPressPoint();
 
-    bool isPropertyEnabled(ToolPropertyType t) { return m_enabledProperties[t]; }
+    bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
 
 protected:
     StrokeManager* strokeManager() { return mStrokeManager; }
     Editor* editor() { return mEditor; }
 
-    QHash<ToolPropertyType, bool> m_enabledProperties;
+    QHash<ToolPropertyType, bool> mPropertyEnabled;
 
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;

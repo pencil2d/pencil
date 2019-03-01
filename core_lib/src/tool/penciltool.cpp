@@ -40,11 +40,11 @@ PencilTool::PencilTool(QObject* parent) : StrokeTool(parent)
 
 void PencilTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[VECTORMERGE] = false;
-    m_enabledProperties[STABILIZATION] = true;
-    m_enabledProperties[FILLCONTOUR] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[PRESSURE] = true;
+    mPropertyEnabled[VECTORMERGE] = false;
+    mPropertyEnabled[STABILIZATION] = true;
+    mPropertyEnabled[FILLCONTOUR] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
     properties.width = settings.value("pencilWidth").toDouble();

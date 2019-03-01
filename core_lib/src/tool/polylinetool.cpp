@@ -42,9 +42,9 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[BEZIER] = true;
-    m_enabledProperties[ANTI_ALIASING] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[BEZIER] = true;
+    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 

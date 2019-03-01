@@ -36,11 +36,11 @@ PenTool::PenTool(QObject* parent) : StrokeTool(parent)
 
 void PenTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[VECTORMERGE] = true;
-    m_enabledProperties[ANTI_ALIASING] = true;
-    m_enabledProperties[STABILIZATION] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[PRESSURE] = true;
+    mPropertyEnabled[VECTORMERGE] = true;
+    mPropertyEnabled[ANTI_ALIASING] = true;
+    mPropertyEnabled[STABILIZATION] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 

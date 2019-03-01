@@ -49,8 +49,8 @@ void BucketTool::loadSettings()
     properties.useAA = DISABLED;
     properties.tolerance = 10;
 
-    m_enabledProperties[TOLERANCE] = true;
-    m_enabledProperties[WIDTH] = true;
+    mPropertyEnabled[TOLERANCE] = true;
+    mPropertyEnabled[WIDTH] = true;
 }
 
 QCursor BucketTool::cursor()

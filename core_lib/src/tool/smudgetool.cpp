@@ -42,8 +42,8 @@ ToolType SmudgeTool::type()
 
 void SmudgeTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[FEATHER] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[FEATHER] = true;
 
 
     QSettings settings(PENCIL2D, PENCIL2D);

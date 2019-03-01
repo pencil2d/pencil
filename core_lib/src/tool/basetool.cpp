@@ -57,15 +57,15 @@ QString BaseTool::TypeName(ToolType type)
 
 BaseTool::BaseTool(QObject* parent) : QObject(parent)
 {
-    m_enabledProperties.insert(WIDTH, false);
-    m_enabledProperties.insert(FEATHER, false);
-    m_enabledProperties.insert(USEFEATHER, false);
-    m_enabledProperties.insert(PRESSURE, false);
-    m_enabledProperties.insert(INVISIBILITY, false);
-    m_enabledProperties.insert(PRESERVEALPHA, false);
-    m_enabledProperties.insert(BEZIER, false);
-    m_enabledProperties.insert(ANTI_ALIASING, false);
-    m_enabledProperties.insert(STABILIZATION, false);
+    mPropertyEnabled.insert(WIDTH, false);
+    mPropertyEnabled.insert(FEATHER, false);
+    mPropertyEnabled.insert(USEFEATHER, false);
+    mPropertyEnabled.insert(PRESSURE, false);
+    mPropertyEnabled.insert(INVISIBILITY, false);
+    mPropertyEnabled.insert(PRESERVEALPHA, false);
+    mPropertyEnabled.insert(BEZIER, false);
+    mPropertyEnabled.insert(ANTI_ALIASING, false);
+    mPropertyEnabled.insert(STABILIZATION, false);
 }
 
 QCursor BaseTool::cursor()

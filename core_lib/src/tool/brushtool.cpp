@@ -46,13 +46,13 @@ ToolType BrushTool::type()
 
 void BrushTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[FEATHER] = true;
-    m_enabledProperties[USEFEATHER] = true;
-    m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[INVISIBILITY] = true;
-    m_enabledProperties[STABILIZATION] = true;
-    m_enabledProperties[ANTI_ALIASING] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[FEATHER] = true;
+    mPropertyEnabled[USEFEATHER] = true;
+    mPropertyEnabled[PRESSURE] = true;
+    mPropertyEnabled[INVISIBILITY] = true;
+    mPropertyEnabled[STABILIZATION] = true;
+    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
