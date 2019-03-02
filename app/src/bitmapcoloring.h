@@ -29,12 +29,21 @@ public:
 signals:
 
 public slots:
+    void colorMethodChanged();
+    // Prepare
+    void updateTraceBoxes();
+    void selectAreasChanged();
+    // Thin
+    void updateThinBoxes();
+    // Finish
+    void finishMethodChanged();
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;
     Editor* mEditor = nullptr;
     LayerBitmap* mLayerBitmap = nullptr;
     BitmapImage* mBitmapImage;
+    bool mSelectAreas = false;
 
 };
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>250</width>
+    <width>230</width>
     <height>450</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
     <number>4</number>
    </property>
    <item>
-    <widget class="QComboBox" name="cbLayer">
+    <widget class="QComboBox" name="cbLayerSelector">
      <item>
       <property name="text">
        <string>Same Layer</string>
@@ -54,7 +54,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QGroupBox" name="gb1Scans">
+        <widget class="QGroupBox" name="gb1Prepare">
          <property name="title">
           <string>Scanned Drawings</string>
          </property>
@@ -77,7 +77,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <widget class="QCheckBox" name="cbTrace">
+             <widget class="QCheckBox" name="cb1Trace">
               <property name="text">
                <string>Trace</string>
               </property>
@@ -118,14 +118,14 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QCheckBox" name="cbThreshold">
+             <widget class="QCheckBox" name="cb1Threshold">
               <property name="text">
                <string>Threshold</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sbThreshold">
+             <widget class="QSpinBox" name="sb1Threshold">
               <property name="minimum">
                <number>160</number>
               </property>
@@ -143,7 +143,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="gb2Filters">
+        <widget class="QGroupBox" name="gb2Prepare">
          <property name="title">
           <string>Filters</string>
          </property>
@@ -164,9 +164,12 @@
            <number>4</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <layout class="QHBoxLayout" name="hlTraceBlack">
             <item>
              <widget class="QCheckBox" name="cb2TraceBlack">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Trace Black</string>
               </property>
@@ -198,7 +201,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <layout class="QHBoxLayout" name="hlTraceRed">
             <item>
              <widget class="QCheckBox" name="cb2TraceRed">
               <property name="text">
@@ -232,7 +235,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <layout class="QHBoxLayout" name="hlTraceGreen">
             <item>
              <widget class="QCheckBox" name="cb2TraceGreen">
               <property name="text">
@@ -266,7 +269,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <layout class="QHBoxLayout" name="hlTraceBlue">
             <item>
              <widget class="QCheckBox" name="cb2TraceBlue">
               <property name="text">
@@ -303,7 +306,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="gb3Prepare">
          <property name="title">
           <string>Repeat Process</string>
          </property>
@@ -372,9 +375,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabThinning">
+     <widget class="QWidget" name="tabThinLine">
       <attribute name="title">
-       <string>Thinning</string>
+       <string>Thin line</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
@@ -401,7 +404,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_12">
             <item>
-             <widget class="QCheckBox" name="cbTrace_2">
+             <widget class="QCheckBox" name="cb1Thin">
               <property name="text">
                <string>Thin Lines</string>
               </property>
@@ -453,6 +456,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
              <widget class="QCheckBox" name="cb2ThinBlack">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Thin Black</string>
               </property>
@@ -664,21 +670,36 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_12">
        <item>
-        <widget class="QGroupBox" name="groupBox_3">
+        <widget class="QGroupBox" name="gb1Finish">
          <property name="title">
           <string>Line finish...</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <property name="leftMargin">
+           <number>4</number>
+          </property>
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="rightMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
+           <number>4</number>
+          </property>
           <item>
-           <widget class="QComboBox" name="cbFinishMethod">
+           <widget class="QComboBox" name="cb1FinishMethod">
             <item>
              <property name="text">
-              <string>Smoothing line</string>
+              <string>Blended line...</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Replace with chosen color</string>
+              <string>Replace line with color</string>
              </property>
             </item>
            </widget>
@@ -686,14 +707,14 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_19">
             <item>
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="lab1FinishLineColor">
               <property name="text">
                <string>Line color:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="btn1FinishLineColor">
               <property name="text">
                <string>Color...</string>
               </property>
@@ -729,6 +750,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_13">
             <item>
              <widget class="QCheckBox" name="cb2FinishBlack">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Apply to Black</string>
               </property>

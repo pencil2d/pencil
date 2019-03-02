@@ -33,6 +33,12 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
         mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+    ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
+    connect(ui->cb1Trace, &QCheckBox::stateChanged, this, &BitmapColoring::updateTraceBoxes);
+    connect(ui->cbLayerSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BitmapColoring::colorMethodChanged);
+    connect(ui->btnSelectAreas, &QPushButton::clicked, this, &BitmapColoring::selectAreasChanged);
+    connect(ui->cb1Thin, &QCheckBox::stateChanged, this, &BitmapColoring::updateThinBoxes);
+    connect(ui->cb1FinishMethod, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BitmapColoring::finishMethodChanged);
 /*
     connect(ui->btn1Select, &QPushButton::clicked, mEditor, &Editor::copyFromScan);
     connect(ui->btn1Next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
@@ -55,52 +61,97 @@ BitmapColoring::~BitmapColoring()
 
 void BitmapColoring::initUI()
 {
-    updateUI();
+    ui->btn1FinishLineColor->setEnabled(false);
 }
 
 void BitmapColoring::updateUI()
 {
-    if (!isVisible()) { return; }
 
-    Layer* layer = mEditor->layers()->currentLayer();
-    setEnabled(true);
-    if (layer->type() == Layer::BITMAP && !layer->getIsColorLayer())
-    {
-   /*     ui->tabWidgetColor->setEnabled(false);
-        ui->tabWidgetScans->setEnabled(true);
-        ui->labcp_1->setEnabled(true);
-        ui->labcp_1x->setEnabled(true);
-        ui->labcp_2->setEnabled(false);
-        ui->labcp_3->setEnabled(false);
-        ui->labcp_4->setEnabled(false); */
-        if (layer->getHasColorLayer())
-        {
- /*           ui->labx_3->setText(tr("To Layer: %1").arg(layer->name()));
-            ui->btnx_blackLine->setEnabled(true); */
-        }
-        else
-        {
-//            ui->btnx_blackLine->setEnabled(false);
-        }
-    }
-    else if (layer->type() == Layer::BITMAP && layer->getIsColorLayer())
-    {
-/*        ui->tabWidgetColor->setEnabled(true);
-        ui->tabWidgetScans->setEnabled(false);
-        ui->labcp_1->setEnabled(false);
-        ui->labcp_1x->setEnabled(false);
-        ui->labcp_2->setEnabled(true);
-        ui->labcp_3->setEnabled(true);
-        ui->labcp_4->setEnabled(true); */
-    }
-    else
-    {
-        setEnabled(false);
-    }
 }
 
 void BitmapColoring::visibilityChanged(bool visibility)
 {
     Q_UNUSED(visibility);
     updateUI();
+}
+
+void BitmapColoring::colorMethodChanged()
+{
+    if (ui->cbLayerSelector->currentIndex() == 0)
+    {
+        ui->cb2TraceBlack->setChecked(false);
+        ui->cb2TraceBlack->setEnabled(false);
+        ui->cb2ThinBlack->setChecked(false);
+        ui->cb2ThinBlack->setEnabled(false);
+        ui->cb2FinishBlack->setChecked(false);
+        ui->cb2FinishBlack->setEnabled(false);
+    }
+    else
+    {
+        ui->cb2TraceBlack->setEnabled(true);
+        ui->cb2ThinBlack->setEnabled(true);
+        ui->cb2FinishBlack->setEnabled(true);
+    }
+}
+
+void BitmapColoring::updateTraceBoxes()
+{
+    if (ui->cb1Trace->isChecked())
+    {
+        ui->gb2Prepare->setEnabled(true);
+        if (ui->cbLayerSelector->currentIndex() == 0)
+            ui->cb2TraceBlack->setEnabled(false);
+    }
+    else
+    {
+        ui->cb2TraceBlack->setChecked(false);
+        ui->cb2TraceRed->setChecked(false);
+        ui->cb2TraceGreen->setChecked(false);
+        ui->cb2TraceBlue->setChecked(false);
+        ui->gb2Prepare->setEnabled(false);
+    }
+}
+
+void BitmapColoring::selectAreasChanged()
+{
+    if (mSelectAreas)
+    {
+        ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
+        mSelectAreas = false;
+    }
+    else {
+        ui->btnSelectAreas->setIcon(QIcon(":/icons/select_yes.png"));
+        mSelectAreas = true;
+    }
+
+}
+
+void BitmapColoring::updateThinBoxes()
+{
+    if (ui->cb1Thin->isChecked())
+    {
+        ui->gb2Thin->setEnabled(true);
+        if (ui->cbLayerSelector->currentIndex() == 0)
+            ui->cb2ThinBlack->setEnabled(false);
+    }
+    else
+    {
+        ui->cb2ThinBlack->setChecked(false);
+        ui->cb2ThinRed->setChecked(false);
+        ui->cb2ThinGreen->setChecked(false);
+        ui->cb2ThinBlue->setChecked(false);
+        ui->gb2Thin->setEnabled(false);
+    }
+}
+
+void BitmapColoring::finishMethodChanged()
+{
+    if (ui->cb1FinishMethod->currentIndex() == 0)
+    {
+        ui->btn1FinishLineColor->setEnabled(false);
+    }
+    else
+    {
+        ui->btn1FinishLineColor->setEnabled(true);
+    }
 }
