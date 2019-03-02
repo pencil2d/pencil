@@ -38,11 +38,11 @@ GNU General Public License for more details.
 #include "vectorselection.h"
 #include "canvaspainter.h"
 #include "preferencemanager.h"
+#include "strokemanager.h"
 
 class Layer;
 class Editor;
 class BaseTool;
-class StrokeManager;
 class PointerEvent;
 class BitmapImage;
 class VectorImage;
@@ -132,6 +132,7 @@ public:
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
+    bool isPointerInUse() const { return mMouseInUse || mStrokeManager->isTabletInUse(); }
     bool isTemporaryTool() const { return mInstantTool; }
 
     void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
