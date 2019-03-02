@@ -199,31 +199,6 @@ Status LayerManager::copyLayer(Layer *fromLayer, Layer *toLayer)
     return Status::OK;
 }
 
-void LayerManager::initColorLayer(Layer *fromLayer, LayerBitmap *colorlayer, int frame)
-{
-    Q_ASSERT(fromLayer != nullptr && colorlayer != nullptr);
-    if (frame == 0)
-    {   // init color layer, all drawings
-        int max = fromLayer->getMaxKeyFramePosition();
-        for (int i = 1; i <=max; i++)
-        {
-            if (fromLayer->keyExists(i))
-            {
-                colorlayer->copyFrame(fromLayer, colorlayer, i);
-                colorlayer->getBitmapImageAtFrame(i)->toBlackLine(colorlayer->getBitmapImageAtFrame(i));
-            }
-        }
-    }
-    else
-    {   // single keyframe to color layer
-        if (fromLayer->keyExists(frame))
-        {
-            colorlayer->copyFrame(fromLayer, colorlayer, frame);
-            colorlayer->getBitmapImageAtFrame(frame)->toBlackLine(colorlayer->getBitmapImageAtFrame(frame));
-        }
-    }
-}
-
 int LayerManager::LastFrameAtFrame(int frameIndex)
 {
     Object* o = object();

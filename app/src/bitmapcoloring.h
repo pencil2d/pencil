@@ -5,12 +5,14 @@
 #include "editor.h"
 #include "layerbitmap.h"
 #include "bitmapimage.h"
+#include <QTabWidget>
 
 class Layer;
 
 namespace Ui
 {
 class BitmapColoringWidget;
+class BitmapTwoLayerColoring;
 }
 
 class BitmapColoring : public BaseDockWidget
@@ -24,6 +26,7 @@ public:
     void initUI() override;
     void updateUI() override;
     void visibilityChanged(bool visibility);
+    QTabWidget* getTabwidget();
 
 signals:
 

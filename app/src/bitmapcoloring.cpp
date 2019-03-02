@@ -21,7 +21,6 @@ GNU General Public License for more details.
 
 BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     BaseDockWidget(parent)
-
 {
     QWidget* innerWidget = new QWidget;
     setWindowTitle(tr("Bitmap Coloring"));
@@ -34,7 +33,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
         mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-
+/*
     connect(ui->btn1Select, &QPushButton::clicked, mEditor, &Editor::copyFromScan);
     connect(ui->btn1Next, &QPushButton::clicked, mEditor, &Editor::scrubNextKeyFrame);
 //    connect(ui->sb1_Threshold, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged) , mBitmapImage, &BitmapImage::setThreshold);
@@ -46,6 +45,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->btn3_thinRest, &QPushButton::clicked, mEditor, &Editor::toThinBlackLineRest);
     connect(ui->btn3_repairs, &QPushButton::clicked, mEditor, &Editor::toThinBlackLine);
     connect(ui->btn4_replaceThinLines, &QPushButton::clicked, mEditor, &Editor::replaceThinLines);
+    */
 }
 
 BitmapColoring::~BitmapColoring()
@@ -66,32 +66,32 @@ void BitmapColoring::updateUI()
     setEnabled(true);
     if (layer->type() == Layer::BITMAP && !layer->getIsColorLayer())
     {
-        ui->tabWidgetColor->setEnabled(false);
+   /*     ui->tabWidgetColor->setEnabled(false);
         ui->tabWidgetScans->setEnabled(true);
         ui->labcp_1->setEnabled(true);
         ui->labcp_1x->setEnabled(true);
         ui->labcp_2->setEnabled(false);
         ui->labcp_3->setEnabled(false);
-        ui->labcp_4->setEnabled(false);
+        ui->labcp_4->setEnabled(false); */
         if (layer->getHasColorLayer())
         {
-            ui->labx_3->setText(tr("To Layer: %1").arg(layer->name()));
-            ui->btnx_blackLine->setEnabled(true);
+ /*           ui->labx_3->setText(tr("To Layer: %1").arg(layer->name()));
+            ui->btnx_blackLine->setEnabled(true); */
         }
         else
         {
-            ui->btnx_blackLine->setEnabled(false);
+//            ui->btnx_blackLine->setEnabled(false);
         }
     }
     else if (layer->type() == Layer::BITMAP && layer->getIsColorLayer())
     {
-        ui->tabWidgetColor->setEnabled(true);
+/*        ui->tabWidgetColor->setEnabled(true);
         ui->tabWidgetScans->setEnabled(false);
         ui->labcp_1->setEnabled(false);
         ui->labcp_1x->setEnabled(false);
         ui->labcp_2->setEnabled(true);
         ui->labcp_3->setEnabled(true);
-        ui->labcp_4->setEnabled(true);
+        ui->labcp_4->setEnabled(true); */
     }
     else
     {
@@ -103,4 +103,9 @@ void BitmapColoring::visibilityChanged(bool visibility)
 {
     Q_UNUSED(visibility);
     updateUI();
+}
+
+QTabWidget *BitmapColoring::getTabwidget()
+{
+    return
 }

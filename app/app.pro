@@ -114,7 +114,8 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
-    ui/bitmapcoloringwidget.ui
+    ui/bitmapcoloringwidget.ui \
+    ui/bitmaptwolayercoloring.ui
 
 
 

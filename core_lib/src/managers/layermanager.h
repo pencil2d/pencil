@@ -63,7 +63,6 @@ public:
 
     // color layer
     Status copyLayer(Layer* fromLayer, Layer* toLayer);
-    void initColorLayer(Layer* fromLayer, LayerBitmap* colorlayer, int frame = 0);
 
     // KeyFrame Management
     int LastFrameAtFrame(int frameIndex);
