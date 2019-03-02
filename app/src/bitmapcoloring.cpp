@@ -104,8 +104,3 @@ void BitmapColoring::visibilityChanged(bool visibility)
     Q_UNUSED(visibility);
     updateUI();
 }
-
-QTabWidget *BitmapColoring::getTabwidget()
-{
-    return
-}
