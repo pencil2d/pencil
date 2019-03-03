@@ -68,7 +68,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
 
-    if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
+    if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
     }

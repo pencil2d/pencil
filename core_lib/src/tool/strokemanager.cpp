@@ -86,7 +86,10 @@ void StrokeManager::pointerMoveEvent(PointerEvent* event)
         mCurrentPixel = event->posF();
         mLastInterpolated = mCurrentPixel;
     }
-    setPressure(event->pressure());
+    if(event->isTabletEvent())
+    {
+        setPressure(event->pressure());
+    }
 }
 
 void StrokeManager::pointerReleaseEvent(PointerEvent* event)
