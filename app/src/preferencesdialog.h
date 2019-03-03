@@ -121,6 +121,7 @@ public slots:
     void flipInbetweenMsecSliderChanged(int value);
     void flipInbetweenMsecSpinboxChanged(int value);
     void layerVisibilityChanged(int);
+    void layerVisibilityThresholdChanged(int);
 
 private:
     Ui::TimelinePage* ui = nullptr;

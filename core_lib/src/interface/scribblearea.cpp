@@ -75,6 +75,15 @@ bool ScribbleArea::init()
     mIsSimplified = mPrefs->isOn(SETTING::OUTLINES);
     mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
 
+    const int visibilityValue = mPrefs->getInt(SETTING::LAYER_VISIBILITY);
+
+    // Visibility setting default -1
+    if (visibilityValue == -1) {
+        // Show all layers
+        mLayerVisibility = 2;
+    }
+    mLayerVisibility = visibilityValue;
+
     mBufferImg = new BitmapImage;
 
     QRect newSelection(QPoint(0, 0), QSize(0, 0));

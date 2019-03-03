@@ -231,7 +231,7 @@ private:
     bool mIsSimplified = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
-    int  mLayerVisibility = 1;
+    int  mLayerVisibility = 2;
     bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors = true;

@@ -78,7 +78,7 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     mFrameNumber = frame;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    mOpacityThreshold = settings.value("LayerVisibilityThreshold").toFloat();
+    mOpacityThreshold = settings.value(SETTING_LAYER_VISIBILITY_THRESHOLD).toFloat();
 
     //QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
     //QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());

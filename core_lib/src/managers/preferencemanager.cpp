@@ -104,6 +104,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::ONION_NEXT_FRAMES_NUM,    settings.value(SETTING_ONION_NEXT_FRAMES_NUM,  5).toInt());
     set(SETTING::ONION_WHILE_PLAYBACK,     settings.value(SETTING_ONION_WHILE_PLAYBACK,   0).toInt());
     set(SETTING::ONION_TYPE,               settings.value(SETTING_ONION_TYPE,             "relative").toString());
+    set(SETTING::LAYER_VISIBILITY,         settings.value(SETTING_LAYER_VISIBILITY,       -1).toInt());
     set(SETTING::LAYER_VISIBILITY_THRESHOLD, settings.value(SETTING_LAYER_VISIBILITY_THRESHOLD, 0.5f).toFloat());
 
     set(SETTING::FLIP_ROLL_MSEC,           settings.value(SETTING_FLIP_ROLL_MSEC,         100).toInt());
@@ -281,6 +282,9 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::FIELD_H:
         settings.setValue(SETTING_FIELD_H, value);
+        break;
+    case SETTING::LAYER_VISIBILITY:
+        settings.setValue(SETTING_LAYER_VISIBILITY, value);
         break;
     default:
         Q_ASSERT(false);

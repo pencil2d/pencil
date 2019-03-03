@@ -165,6 +165,10 @@ void Editor::settingUpdated(SETTING setting)
     case SETTING::FRAME_POOL_SIZE:
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
         break;
+    case SETTING::LAYER_VISIBILITY:
+        mScribbleArea->setLayerVisibility(mPreferenceManager->getInt(SETTING::LAYER_VISIBILITY));
+        emit updateTimeLine();
+        break;
     default:
         break;
     }

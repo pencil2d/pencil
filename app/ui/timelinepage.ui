@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>349</width>
-    <height>642</height>
+    <height>644</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -298,6 +298,32 @@
           <string>Layer Visibility</string>
          </property>
          <layout class="QVBoxLayout" name="LayerVisibilityLayout">
+          <item>
+           <widget class="QLabel" name="LabelVisibilityText">
+            <property name="text">
+             <string>Startup option</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="layerVisibilityComboBox">
+            <item>
+             <property name="text">
+              <string>Current layer only</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Relative</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>All Layers</string>
+             </property>
+            </item>
+           </widget>
+          </item>
           <item>
            <widget class="QLabel" name="labelVisibility">
             <property name="text">

@@ -224,6 +224,7 @@ enum StabilizationLevel
 #define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
 
+#define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"
