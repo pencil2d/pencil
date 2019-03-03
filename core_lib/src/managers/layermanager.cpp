@@ -266,6 +266,16 @@ Status LayerManager::deleteLayer(int index)
             return Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER;
     }
 
+    // resets layer flag, if color layer is deleted
+    if (layer->getIsColorLayer())
+    {
+        QString s = layer->name();
+        s.chop(2);
+        Layer* artLayer = findLayerByName(s);
+        if (artLayer != nullptr)
+            artLayer->setHasColorLayer(false);
+    }
+
     object()->deleteLayer(layer);
 
     // current layer is the last layer && we are deleting it

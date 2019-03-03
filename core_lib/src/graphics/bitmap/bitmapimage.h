@@ -106,16 +106,16 @@ public:
 
     // coloring methods
     int getThreshold() { return mThreshold; }
-    int getWhiteArea() { return mWhiteArea; }
-    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool green, bool blue);
+    int getSpotArea() { return mSpotArea; }
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
 
     void getThresholdSuggestion(BitmapImage* img);
-    void toBlackLine(BitmapImage* bitmapimage);
+    void traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
 
-    void fillWhiteAreas(BitmapImage* bitmapimage);
-    void toThinBlackLine(BitmapImage* colorImage);
+    void fillSpotAreas(BitmapImage* bitmapimage);
+    void toThinBlackLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);
     void restoreColoredLines(BitmapImage* orgImage, BitmapImage* colorImage);
-    void replaceThinLine(BitmapImage* bitmapimage);
+    void blendLines(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
     void removeColoredLines(BitmapImage* bitmapimage);
     int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* bitmapimage);
     // coloring methods end
@@ -138,7 +138,7 @@ public:
 
 public slots:
     void setThreshold(int threshold) { mThreshold = threshold; }
-    void setWhiteArea(int whiteArea) { mWhiteArea = whiteArea; }
+    void setSpotArea(int spotArea) { mSpotArea = spotArea; }
 
 protected:
     void updateBounds(QRect rectangle);
@@ -158,7 +158,7 @@ private:
 
     int mThreshold = 200;
     const int mLowThreshold = 30; // threshold for images to be given transparency
-    int mWhiteArea = 6;
+    int mSpotArea = 6;
 
 };
 

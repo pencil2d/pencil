@@ -50,26 +50,6 @@ Layer::~Layer()
     mKeyFrames.clear();
 }
 
-void Layer::copyFrames(Layer *fromLayer, Layer *toLayer, int firstFrame, int lastFrame, int startAt, int loops)
-{
-    for (int i = 0; i < loops; i++)
-     {
-         for (int j = firstFrame; j <= lastFrame; j++, startAt++)
-         {
-             if (fromLayer->keyExists(j))
-             {
-                 mObject->updateActiveFrames(j);
-                 KeyFrame* keyframe = fromLayer->getKeyFrameAt(j);
-                 KeyFrame* dupKey = keyframe->clone();
-                 if (toLayer->keyExists(startAt))
-                     toLayer->removeKeyFrame(startAt);
-                 toLayer->addKeyFrame(startAt, dupKey);
-                 toLayer->setModified(startAt, true);
-             }
-         }
-     }
-}
-
 void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action)
 {
     for (auto pair : mKeyFrames)

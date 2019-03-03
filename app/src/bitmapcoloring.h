@@ -30,19 +30,28 @@ signals:
 
 public slots:
     void colorMethodChanged();
+    void layerChanged(int index);
     // Prepare
     void updateTraceBoxes();
-    void selectAreasChanged();
+    void updateBtnSelect();
+    void setThreshold(int threshold);
+    void selectAreas();
+    void cancelSelectAreas();
+    void selectFromScans();
+    void prepareLines();
     // Thin
     void updateThinBoxes();
+    void setSpotArea(int size);
+    void thinLines();
     // Finish
-    void finishMethodChanged();
+    void updateFinishBoxes();
+    void blendLines();
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;
     Editor* mEditor = nullptr;
     LayerBitmap* mLayerBitmap = nullptr;
-    BitmapImage* mBitmapImage;
+    BitmapImage* mBitmapImage = nullptr;
     bool mSelectAreas = false;
 
 };

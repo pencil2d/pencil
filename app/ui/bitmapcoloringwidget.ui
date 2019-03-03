@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>230</width>
-    <height>450</height>
+    <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_13">
+  <layout class="QVBoxLayout" name="verticalLayout_15">
    <property name="spacing">
     <number>2</number>
    </property>
@@ -31,14 +31,17 @@
    </property>
    <item>
     <widget class="QComboBox" name="cbLayerSelector">
+     <property name="toolTip">
+      <string>Colorize on Same or Separate layer?</string>
+     </property>
      <item>
       <property name="text">
-       <string>Same Layer</string>
+       <string>On the Same Layer</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Separate Layer</string>
+       <string>On a Separate Layer</string>
       </property>
      </item>
     </widget>
@@ -52,13 +55,13 @@
       <attribute name="title">
        <string>Prepare</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QVBoxLayout" name="verticalLayout_13">
        <item>
-        <widget class="QGroupBox" name="gb1Prepare">
+        <widget class="QGroupBox" name="gb0Prepare">
          <property name="title">
-          <string>Scanned Drawings</string>
+          <string>Trace lines?</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
           <property name="spacing">
            <number>2</number>
           </property>
@@ -77,9 +80,9 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <widget class="QCheckBox" name="cb1Trace">
+             <widget class="QCheckBox" name="cb0Trace">
               <property name="text">
-               <string>Trace</string>
+               <string>Trace lines</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -99,22 +102,32 @@
               </property>
              </spacer>
             </item>
-            <item>
-             <widget class="QPushButton" name="btnSelectAreas">
-              <property name="toolTip">
-               <string>Select area from scanned Drawings</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../data/app.qrc">
-                <normaloff>:/icons/select.png</normaloff>:/icons/select.png</iconset>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="gb1Prepare">
+         <property name="title">
+          <string>Scanned Drawings?</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <property name="leftMargin">
+           <number>4</number>
+          </property>
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="rightMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
+           <number>4</number>
+          </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
@@ -134,6 +147,23 @@
               </property>
               <property name="value">
                <number>220</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnSelectAreas">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>Select areas from scanned Drawings</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../data/app.qrc">
+                <normaloff>:/icons/select.png</normaloff>:/icons/select.png</iconset>
               </property>
              </widget>
             </item>
@@ -337,6 +367,49 @@
         </widget>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QPushButton" name="btnSelectNext">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>Select - and go to next keyframe</string>
+           </property>
+           <property name="text">
+            <string>Select - Next</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_18">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSelectCancel">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>Cancel select areas</string>
+           </property>
+           <property name="text">
+            <string>Cancel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <spacer name="horizontalSpacer_6">
@@ -379,7 +452,7 @@
       <attribute name="title">
        <string>Thin line</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_9">
+      <layout class="QVBoxLayout" name="verticalLayout_14">
        <item>
         <widget class="QGroupBox" name="gb1Scans_2">
          <property name="title">
@@ -425,6 +498,60 @@
                </size>
               </property>
              </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="gbSpotAreas">
+         <property name="title">
+          <string>Fill spot areas?</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <property name="leftMargin">
+           <number>4</number>
+          </property>
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="rightMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
+           <number>4</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QCheckBox" name="cbSpotAreas">
+              <property name="toolTip">
+               <string>Fill small, unwanted areas in lines</string>
+              </property>
+              <property name="text">
+               <string>Fill spots areas</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="sbSpotAreas">
+              <property name="toolTip">
+               <string>Size of area to fill (1-15)</string>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>15</number>
+              </property>
+              <property name="value">
+               <number>6</number>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -672,7 +799,7 @@
        <item>
         <widget class="QGroupBox" name="gb1Finish">
          <property name="title">
-          <string>Line finish...</string>
+          <string>Blend lines?</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
@@ -691,36 +818,14 @@
            <number>4</number>
           </property>
           <item>
-           <widget class="QComboBox" name="cb1FinishMethod">
-            <item>
-             <property name="text">
-              <string>Blended line...</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Replace line with color</string>
-             </property>
-            </item>
+           <widget class="QCheckBox" name="cb1Finish">
+            <property name="text">
+             <string>Blend lines</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_19">
-            <item>
-             <widget class="QLabel" name="lab1FinishLineColor">
-              <property name="text">
-               <string>Line color:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btn1FinishLineColor">
-              <property name="text">
-               <string>Color...</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>

@@ -650,24 +650,6 @@ Status ActionCommands::addNewSoundLayer()
     return Status::OK;
 }
 
-Status ActionCommands::addNewBitmapColorLayer()
-{
-    /*
-    QString name = mEditor->layers()->currentLayer()->name() + "_C";
-    if (!name.isEmpty())
-    {
-        LayerBitmap* parentlayer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
-        parentlayer->setHasColorLayer(true);
-        LayerBitmap* colorlayer = mEditor->layers()->createBitmapLayer(name);
-        mEditor->layers()->initColorLayer(parentlayer, colorlayer);
-        colorlayer->setIsColorLayer(true);
-        emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex());
-    }
-    */
-    mEditor->toBlackLine();
-    return Status::OK;
-}
-
 Status ActionCommands::deleteCurrentLayer()
 {
     LayerManager* layerMgr = mEditor->layers();

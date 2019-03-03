@@ -276,7 +276,6 @@ void MainWindow2::createMenus()
     connect(ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewVectorLayer);
     connect(ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewSoundLayer);
     connect(ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer);
-    connect(ui->actionAdd_Bitmap_Color_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewBitmapColorLayer);
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
 
     /// --- View Menu ---

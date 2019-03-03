@@ -151,15 +151,6 @@ public: //slots
     void toggleShowAllLayers();
     void flipSelection(bool flipVertical);
 
-    void copyFromScan();
-    void scanToTransparent();
-    void toBlackLine();
-    void fillWhiteAreas();
-    void fillWhiteAreasRest();
-    void toThinBlackLine();
-    void toThinBlackLineRest();
-    void replaceThinLines();
-
     void toogleOnionSkinType();
 
     void settingUpdated(SETTING);
