@@ -35,7 +35,6 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
 
     connect(ui->cbLayerSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BitmapColoring::colorMethodChanged);
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &BitmapColoring::layerChanged);
 
     // Prepare
     connect(ui->cb0Trace, &QCheckBox::stateChanged, this, &BitmapColoring::updateTraceBoxes);
@@ -94,7 +93,7 @@ void BitmapColoring::updateUI()
         }
     }
     else
-    {
+    {   // If it is not a Bitmap Layer - disable
         ui->tabPrepare->setEnabled(false);
         ui->tabThinLine->setEnabled(false);
         ui->tabFinish->setEnabled(false);
@@ -124,12 +123,6 @@ void BitmapColoring::colorMethodChanged()
         ui->cb2ThinBlack->setEnabled(true);
         ui->cb2FinishBlack->setEnabled(true);
     }
-}
-
-void BitmapColoring::layerChanged(int index)
-{
-    Q_UNUSED(index);
-    updateUI();
 }
 
 void BitmapColoring::updateTraceBoxes()
@@ -215,6 +208,7 @@ void BitmapColoring::selectFromScans()
             ui->cb1Threshold->setChecked(false);
         }
     }
+    mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Select from scan"));
 }
 
 void BitmapColoring::prepareLines()
@@ -263,6 +257,7 @@ void BitmapColoring::prepareLines()
                                                             ui->cb2TraceRed->isChecked(),
                                                             ui->cb2TraceGreen->isChecked(),
                                                             ui->cb2TraceBlue->isChecked());
+            mEditor->backup(mEditor->layers()->currentLayerIndex() ,mEditor->currentFrame(), tr("Preparelines"));
         }
     }
     updateUI();
@@ -322,12 +317,13 @@ void BitmapColoring::thinLines()
 
             if (ui->cb1Thin->isChecked())
             {
-                mBitmapImage->toThinBlackLine(mBitmapImage,
+                mBitmapImage->toThinLine(mBitmapImage,
                                               ui->cb2ThinBlack->isChecked(),
                                               ui->cb2ThinRed->isChecked(),
                                               ui->cb2ThinGreen->isChecked(),
                                               ui->cb2ThinBlue->isChecked());
             }
+            mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Thin lines"));
         }
     }
     updateUI();
@@ -392,6 +388,7 @@ void BitmapColoring::blendLines()
                                                                    ui->cb2FinishGreen->isChecked(),
                                                                    ui->cb2FinishBlue->isChecked());
                 }
+                mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
             }
         }
     }

@@ -108,18 +108,11 @@ public:
     int getThreshold() { return mThreshold; }
     int getSpotArea() { return mSpotArea; }
     BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
-
-    void getThresholdSuggestion(BitmapImage* img);
     void traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
-
     void fillSpotAreas(BitmapImage* bitmapimage);
-    void toThinBlackLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);
-    void restoreColoredLines(BitmapImage* orgImage, BitmapImage* colorImage);
+    void toThinLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);
     void blendLines(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
-    void removeColoredLines(BitmapImage* bitmapimage);
     int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* bitmapimage);
-    // coloring methods end
-
 
     /** Determines if the BitmapImage is minimally bounded.
      *

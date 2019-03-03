@@ -30,7 +30,6 @@ signals:
 
 public slots:
     void colorMethodChanged();
-    void layerChanged(int index);
     // Prepare
     void updateTraceBoxes();
     void updateBtnSelect();

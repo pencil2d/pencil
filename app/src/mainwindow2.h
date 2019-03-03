@@ -112,7 +112,6 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    void updateLayerMenu();
 
     void importPalette();
     void exportPalette();

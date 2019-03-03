@@ -1353,7 +1353,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mBitmapColoring, &BitmapColoring::updateUI);
     connect(mBitmapColoring, &QDockWidget::visibilityChanged, mBitmapColoring, &BitmapColoring::visibilityChanged);
-    connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
 }
 
 void MainWindow2::makeConnections(Editor*, DisplayOptionWidget*)
@@ -1407,15 +1406,6 @@ void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
     statusBar()->showMessage(QString("Zoom: %0%1").arg(static_cast<double>(zoom), 0, 'f', 1).arg("%"));
-}
-
-void MainWindow2::updateLayerMenu()
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP && !layer->getHasColorLayer() && !layer->getIsColorLayer())
-        ui->actionAdd_Bitmap_Color_Layer->setEnabled(true);
-    else
-        ui->actionAdd_Bitmap_Color_Layer->setEnabled(false);
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

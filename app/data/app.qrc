@@ -61,9 +61,6 @@
         <file>icons/green.png</file>
         <file>icons/red.png</file>
         <file>icons/black.png</file>
-        <file>icons/select_ok.png</file>
-        <file>icons/select_no.png</file>
-        <file>icons/select_yes.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

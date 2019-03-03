@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QtMath>
 #include <QFile>
-#include <QElapsedTimer>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -719,11 +718,6 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
     return img;
 }
 
-void BitmapImage::getThresholdSuggestion(BitmapImage* img)
-{
-    Q_ASSERT(img != nullptr); // TODO
-}
-
 void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue)
 {
     Q_ASSERT(bitmapimage != nullptr);
@@ -803,7 +797,7 @@ void BitmapImage::fillSpotAreas(BitmapImage *bitmapimage)
     img->modification();
 }
 
-void BitmapImage::toThinBlackLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue)
+void BitmapImage::toThinLine(BitmapImage * colorImage, bool black, bool red, bool green, bool blue)
 {
     Q_ASSERT(colorImage != nullptr);
 
@@ -1015,22 +1009,6 @@ void BitmapImage::toThinBlackLine(BitmapImage* colorImage, bool black, bool red,
     img->modification();
 }
 
-void BitmapImage::restoreColoredLines(BitmapImage *orgImage, BitmapImage *colorImage)
-{
-    Q_ASSERT(colorImage != nullptr);
-
-    for (int x = colorImage->left(); x <= colorImage->right(); x++)
-    {
-        for (int y = colorImage->top(); y <= colorImage->bottom(); y++)
-        {
-            if (colorImage->constScanLine(x, y) == thinline)
-                if (orgImage->constScanLine(x,y) == redline ||
-                        orgImage->constScanLine(x,y) == blueline || orgImage->constScanLine(x,y) == greenline)
-                    colorImage->setPixel(x, y, orgImage->constScanLine(x, y));
-        }
-    }
-}
-
 void BitmapImage::blendLines(BitmapImage *bitmapimage, bool black, bool red, bool green, bool blue)
 {
     Q_ASSERT(bitmapimage != nullptr);
@@ -1073,24 +1051,6 @@ void BitmapImage::blendLines(BitmapImage *bitmapimage, bool black, bool red, boo
                 a = static_cast<int>(sqrt(a/points.size()));
                 img->setPixel(x, y, qRgba(r, g, b, a));
             }
-        }
-    }
-    img->modification();
-}
-
-void BitmapImage::removeColoredLines(BitmapImage *bitmapimage)
-{
-    Q_ASSERT(bitmapimage != nullptr);
-
-    BitmapImage* img = bitmapimage;
-    for (int x = img->left(); x <= img->right(); x++)
-    {
-        for (int y = img->top(); y <= img->bottom(); y++)
-        {
-            if (qRed(img->constScanLine(x, y)) == 254 ||
-                    qBlue(img->constScanLine(x,y)) == 254 ||
-                    qGreen(img->constScanLine(x, y) == 254))
-                img->setPixel(x, y, transp);
         }
     }
     img->modification();

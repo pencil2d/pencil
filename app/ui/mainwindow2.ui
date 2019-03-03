@@ -964,11 +964,6 @@
     <string>100%</string>
    </property>
   </action>
-  <action name="actionAdd_Bitmap_Color_Layer">
-   <property name="text">
-    <string>Add Bitmap Color Layer</string>
-   </property>
-  </action>
   <action name="actionFlip_inbetween">
    <property name="text">
     <string>Flip In-Between</string>

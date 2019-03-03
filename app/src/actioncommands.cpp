@@ -37,7 +37,6 @@ GNU General Public License for more details.
 
 #include "layercamera.h"
 #include "layersound.h"
-#include "layerbitmap.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"

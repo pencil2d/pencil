@@ -772,7 +772,6 @@ bool Editor::importBitmapImage(QString filePath, int space)
 
         BitmapImage importedBitmapImage(mScribbleArea->getCentralPoint().toPoint() - QPoint(img.width() / 2, img.height() / 2), img);
         bitmapImage->paste(&importedBitmapImage);
-//        layer->toTransparentScan(currentFrame());
 
         if (space > 1) {
             scrubTo(currentFrame() + space);
