@@ -93,7 +93,8 @@ private:
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
 
-    void applyRelativeLayerTransparency(float& startOpacity, int layerIndex, QPainter& painter);
+    /** @brief Creates a list of opacity values that is relative to the current index. */
+    QList<float> createRelativeOpacityList();
 private:
     CanvasPainterOptions mOptions;
 
