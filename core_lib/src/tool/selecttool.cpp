@@ -17,7 +17,6 @@ GNU General Public License for more details.
 #include "selecttool.h"
 
 #include "pointerevent.h"
-
 #include "vectorimage.h"
 #include "editor.h"
 #include "strokemanager.h"
@@ -26,8 +25,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 
-SelectTool::SelectTool(QObject* parent) :
-    BaseTool(parent)
+SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
 {
 }
 
@@ -37,7 +35,6 @@ void SelectTool::loadSettings()
     properties.feather = -1;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
-
 }
 
 QCursor SelectTool::cursor()
@@ -57,7 +54,7 @@ void SelectTool::beginSelection()
     mScribbleArea->paintTransformedSelection();
     mScribbleArea->applyTransformedSelection();
 
-    if (mScribbleArea->isSomethingSelected())// there is something selected
+    if (mScribbleArea->isSomethingSelected()) // there is something selected
     {
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
@@ -72,7 +69,6 @@ void SelectTool::beginSelection()
         {
             mScribbleArea->mySelection.setTopLeft(getLastPoint());
             mScribbleArea->mySelection.setBottomRight(getLastPoint());
-
         }
     }
     else
@@ -88,26 +84,26 @@ QPointF SelectTool::whichAnchorPoint()
     return mScribbleArea->whichAnchorPoint(mAnchorOriginPoint);
 }
 
-void SelectTool::pointerPressEvent(PointerEvent *event)
+void SelectTool::pointerPressEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == NULL) return;
+    if (mCurrentLayer == nullptr) return;
     if (!mCurrentLayer->isPaintable()) { return; }
     if (event->button() != Qt::LeftButton) { return; }
 
     beginSelection();
 }
 
-void SelectTool::pointerMoveEvent(PointerEvent *event)
+void SelectTool::pointerMoveEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == NULL) { return; }
+    if (mCurrentLayer == nullptr) { return; }
     if (!mCurrentLayer->isPaintable()) { return; }
     if (!mScribbleArea->isSomethingSelected()) { return; }
 
     mScribbleArea->updateToolCursor();
 
-    if (event->buttons() & Qt::LeftButton)
+    if (mScribbleArea->isPointerInUse()) // !mAnchorOriginPoint.isNull()
     {
         controlOffsetOrigin();
 
@@ -122,23 +118,25 @@ void SelectTool::pointerMoveEvent(PointerEvent *event)
     mScribbleArea->updateCurrentFrame();
 }
 
-void SelectTool::pointerReleaseEvent(PointerEvent *event)
+void SelectTool::pointerReleaseEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == NULL) return;
+    if (mCurrentLayer == nullptr) return;
     if (event->button() != Qt::LeftButton) return;
 
     // if there's a small very small distance between current and last point
     // discard the selection...
     // TODO: improve by adding a timer to check if the user is deliberately selecting
-    if (qSqrt(qPow(mAnchorOriginPoint.x()-getCurrentPoint().x(),2) +
-              qPow(mAnchorOriginPoint.y()-getCurrentPoint().y(),2)) < 5.0) {
+    if (QLineF(mAnchorOriginPoint, getCurrentPoint()).length() < 5.0)
+    {
         mScribbleArea->deselectAll();
     }
     if (maybeDeselect())
     {
         mScribbleArea->deselectAll();
-    } else {
+    }
+    else
+    {
         keepSelection();
     }
 

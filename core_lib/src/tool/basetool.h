@@ -40,16 +40,16 @@ class Properties
 public:
     qreal width = 1.f;
     qreal feather = 1.f;
-    bool pressure = true;
-    int invisibility = 0;
-    int preserveAlpha = 0;
-    bool vectorMergeEnabled = false;
-    bool bezier_state = false;
-    bool useFeather = true;
-    int useAA = 0;
-    int stabilizerLevel = 0;
+    bool  pressure = true;
+    int   invisibility = 0;
+    int   preserveAlpha = 0;
+    bool  vectorMergeEnabled = false;
+    bool  bezier_state = false;
+    bool  useFeather = true;
+    int   useAA = 0;
+    int   stabilizerLevel = 0;
     qreal tolerance = 0;
-    bool useFillContour = false;
+    bool  useFillContour = false;
 };
 
 const int ON = 1;
@@ -65,14 +65,10 @@ protected:
 
 public:
     static QString TypeName(ToolType);
-
-    static ToolPropertyType assistedSettingType; // dynamic cursor adjustment
-    static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
-
-    void initialize(Editor* editor);
-
     QString typeName() { return TypeName(type()); }
 
+    void initialize(Editor* editor);
+    
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
@@ -91,12 +87,13 @@ public:
     virtual void stopAdjusting();
     virtual void adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod);
 
-    virtual void clear() {}
+    virtual void clearToolData() {}
+    virtual void resetToDefault() {}
 
-    static bool isAdjusting;
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
     static QPixmap quickSizeCursor(float brushWidth, float brushFeather, float scalingFac);
     static QCursor selectMoveCursor(MoveMode mode, ToolType type);
+    static bool isAdjusting() { return msIsAdjusting; }
 
     virtual void setWidth(const qreal width);
     virtual void setFeather(const qreal feather);
@@ -125,19 +122,24 @@ public:
     QPointF getLastPressPixel();
     QPointF getLastPressPoint();
 
-    bool isPropertyEnabled(ToolPropertyType t) { return m_enabledProperties[t]; }
+    bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
 
 protected:
-    QHash<ToolPropertyType, bool> m_enabledProperties;
-
+    StrokeManager* strokeManager() { return mStrokeManager; }
     Editor* editor() { return mEditor; }
+
+    QHash<ToolPropertyType, bool> mPropertyEnabled;
+
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
-    StrokeManager* m_pStrokeManager = nullptr;
-    qreal mAdjustmentStep = 0.0f;
 
 private:
+    StrokeManager* mStrokeManager = nullptr;
+    qreal mAdjustmentStep = 0.0f;
+
+    static bool msIsAdjusting;
+    static qreal msOriginalPropertyValue;  // start from previous value (width, or feather ...)
 };
 
 #endif // BASETOOL_H

@@ -36,8 +36,8 @@ public:
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
 
-    VectorImage* getVectorImageAtFrame(int frameNumber);
-    VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment);
+    VectorImage* getVectorImageAtFrame(int frameNumber) const;
+    VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
 
     bool usesColour(int index);
     void removeColour(int index);

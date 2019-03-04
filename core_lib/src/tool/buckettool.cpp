@@ -43,14 +43,22 @@ ToolType BucketTool::type()
 
 void BucketTool::loadSettings()
 {
-    properties.width = 4;
+    mPropertyEnabled[TOLERANCE] = true;
+    mPropertyEnabled[WIDTH] = true;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    properties.width = settings.value("fillThickness", 4.0).toDouble();
     properties.feather = 10;
     properties.stabilizerLevel = StabilizationLevel::NONE;
     properties.useAA = DISABLED;
-    properties.tolerance = 10;
+    properties.tolerance = settings.value("tolerance", 32.0).toDouble();
+}
 
-    m_enabledProperties[TOLERANCE] = true;
-    m_enabledProperties[WIDTH] = true;
+void BucketTool::resetToDefault()
+{
+    setWidth(4.0);
+    setTolerance(32.0);
 }
 
 QCursor BucketTool::cursor()
@@ -96,7 +104,7 @@ void BucketTool::setTolerance(const int tolerance)
     settings.sync();
 }
 
-void BucketTool::pointerPressEvent(PointerEvent *event)
+void BucketTool::pointerPressEvent(PointerEvent* event)
 {
     startStroke();
     if (event->button() == Qt::LeftButton)
@@ -106,19 +114,19 @@ void BucketTool::pointerPressEvent(PointerEvent *event)
     startStroke();
 }
 
-void BucketTool::pointerMoveEvent(PointerEvent *event)
+void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::VECTOR)
+    if (event->buttons() & Qt::LeftButton)
     {
-        if (event->buttons() & Qt::LeftButton)
+        Layer* layer = mEditor->layers()->currentLayer();
+        if (layer->type() == Layer::VECTOR)
         {
             drawStroke();
         }
     }
 }
 
-void BucketTool::pointerReleaseEvent(PointerEvent *event)
+void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
     Layer* layer = editor()->layers()->currentLayer();
     if (layer == nullptr) { return; }
@@ -187,12 +195,12 @@ void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
 
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
+    if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
     {
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+        strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
 
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
+    QList<QPointF> p = strokeManager()->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

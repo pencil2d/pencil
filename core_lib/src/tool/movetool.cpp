@@ -18,9 +18,9 @@ GNU General Public License for more details.
 #include "movetool.h"
 
 #include <cassert>
-#include "pointerevent.h"
 #include <QMessageBox>
 
+#include "pointerevent.h"
 #include "editor.h"
 #include "toolmanager.h"
 #include "viewmanager.h"
@@ -31,8 +31,7 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 
-MoveTool::MoveTool(QObject* parent) :
-    BaseTool(parent)
+MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
 }
 
@@ -56,7 +55,7 @@ QCursor MoveTool::cursor()
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
 
-void MoveTool::pointerPressEvent(PointerEvent *event)
+void MoveTool::pointerPressEvent(PointerEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
@@ -64,12 +63,12 @@ void MoveTool::pointerPressEvent(PointerEvent *event)
     beginInteraction(event->modifiers(), mCurrentLayer);
 }
 
-void MoveTool::pointerMoveEvent(PointerEvent *event)
+void MoveTool::pointerMoveEvent(PointerEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
 
-    if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
+    if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
     }
@@ -87,7 +86,7 @@ void MoveTool::pointerMoveEvent(PointerEvent *event)
     mScribbleArea->updateCurrentFrame();
 }
 
-void MoveTool::pointerReleaseEvent(PointerEvent *)
+void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
     if (!mScribbleArea->isSomethingSelected())
         return;
@@ -122,8 +121,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
         }
         else
         {
-            offset = QPointF(mScribbleArea->getTransformOffset().x(),
-                         mScribbleArea->getTransformOffset().y()).toPoint();
+            offset = mScribbleArea->getTransformOffset().toPoint();
         }
 
         // maintain aspect ratio
@@ -132,7 +130,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
             offset = maintainAspectRatio(offset.x(), offset.y());
         }
 
-        mScribbleArea->adjustSelection(offset.x(),offset.y(), mRotatedAngle);
+        mScribbleArea->adjustSelection(offset.x(), offset.y(), mRotatedAngle);
         mScribbleArea->calculateSelectionTransformation();
         paintTransformedSelection();
 
@@ -145,7 +143,6 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
 
 void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
 {
-
     QRectF selectionRect = mScribbleArea->myTransformedSelection;
     if (!selectionRect.isNull())
     {
@@ -195,7 +192,7 @@ void MoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
     LayerVector* vecLayer = static_cast<LayerVector*>(layer);
     VectorImage* vectorImage = vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
-    if (mScribbleArea->mClosestCurves.size() > 0) // the user clicks near a curve
+    if (!mScribbleArea->mClosestCurves.empty()) // the user clicks near a curve
     {
         setCurveSelected(vectorImage, keyMod);
     }
@@ -268,7 +265,7 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     auto layerVector = static_cast<LayerVector*>(layer);
     VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
     mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo(getCurrentPoint(),
-                                                              mScribbleArea->selectionTolerance / mEditor->view()->scaling());
+                                                              mScribbleArea->mSelectionTolerance / mEditor->view()->scaling());
 }
 
 void MoveTool::whichAnchorPoint()
@@ -340,8 +337,9 @@ bool MoveTool::switchingLayer()
         if (mCurrentLayer->type() == Layer::BITMAP)
         {
             applySelectionChanges();
-
-        } else if (mCurrentLayer->type() == Layer::VECTOR) {
+        }
+        else if (mCurrentLayer->type() == Layer::VECTOR)
+        {
             applyTransformation();
         }
 
@@ -353,7 +351,8 @@ bool MoveTool::switchingLayer()
         cancelChanges();
         return true;
     }
-    else if (returnValue == QMessageBox::Cancel) {
+    else if (returnValue == QMessageBox::Cancel)
+    {
         return false;
     }
     return true;
@@ -362,10 +361,10 @@ bool MoveTool::switchingLayer()
 int MoveTool::showTransformWarning()
 {
     int returnValue = QMessageBox::warning(nullptr,
-                                   tr("Layer switch", "Windows title of layer switch pop-up."),
-                                   tr("You are about to switch layer, do you want to apply the transformation?"),
-                                   QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
-                                   QMessageBox::Yes);
+                                           tr("Layer switch", "Windows title of layer switch pop-up."),
+                                           tr("You are about to switch layer, do you want to apply the transformation?"),
+                                           QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
+                                           QMessageBox::Yes);
     return returnValue;
 }
 
@@ -377,7 +376,7 @@ void MoveTool::resetSelectionProperties()
 Layer* MoveTool::currentPaintableLayer()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) 
+    if (layer == nullptr)
         return nullptr;
     if (!layer->isPaintable())
         return nullptr;
