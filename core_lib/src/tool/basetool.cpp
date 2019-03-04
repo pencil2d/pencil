@@ -306,7 +306,7 @@ void BaseTool::adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod) //of
 
     qreal inc = qPow(msOriginalPropertyValue * 100, 0.5);
     qreal newValue = inc + argOffsetX;
-    int max = (propertyType == FEATHER) ? 64 : 200;
+    int max = (propertyType == FEATHER) ? 200 : 200;
     int min = (propertyType == FEATHER) ? 2 : 1;
 
     if (newValue < 0)
