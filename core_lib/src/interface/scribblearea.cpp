@@ -506,7 +506,7 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
         mOffset = getCurrentOffset();
 
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
-        if (currentTool()->isAdjusting)
+        if (currentTool()->isAdjusting())
         {
             currentTool()->adjustCursor(mOffset.x(), event->modifiers()); //updates cursors given org width or feather and x
             return;
@@ -535,7 +535,7 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
 
 void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
 {
-    if (currentTool()->isAdjusting)
+    if (currentTool()->isAdjusting())
     {
         currentTool()->stopAdjusting();
         mEditor->tools()->setWidth(currentTool()->properties.width);
@@ -881,7 +881,7 @@ void ScribbleArea::updateCanvasCursor()
     float scalingFac = mEditor->view()->scaling();
     qreal brushWidth = currentTool()->properties.width;
     qreal brushFeather = currentTool()->properties.feather;
-    if (currentTool()->isAdjusting)
+    if (currentTool()->isAdjusting())
     {
         mCursorImg = currentTool()->quickSizeCursor(brushWidth, brushFeather, scalingFac);
     }
@@ -892,7 +892,7 @@ void ScribbleArea::updateCanvasCursor()
     }
     else
     {
-        // if above does not comply, delocate image
+        // if above does not comply, deallocate image
         mCursorImg = QPixmap();
     }
 
