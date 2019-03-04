@@ -35,6 +35,11 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
 
     connect(ui->cbLayerSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BitmapColoring::colorMethodChanged);
+    connect(ui->cb2TraceBlack, &QCheckBox::stateChanged, this, &BitmapColoring::checkBlackBoxes);
+    connect(ui->cb2TraceRed, &QCheckBox::stateChanged, this, &BitmapColoring::checkRedBoxes);
+    connect(ui->cb2TraceGreen, &QCheckBox::stateChanged, this, &BitmapColoring::checkGreenBoxes);
+    connect(ui->cb2TraceBlue, &QCheckBox::stateChanged, this, &BitmapColoring::checkBlueBoxes);
+    connect(ui->cb3TraceAllKeyframes, &QCheckBox::stateChanged, this, &BitmapColoring::checkAllKeyframes);
 
     // Prepare
     connect(ui->cb0Trace, &QCheckBox::stateChanged, this, &BitmapColoring::updateTraceBoxes);
@@ -123,6 +128,36 @@ void BitmapColoring::colorMethodChanged()
         ui->cb2ThinBlack->setEnabled(true);
         ui->cb2FinishBlack->setEnabled(true);
     }
+}
+
+void BitmapColoring::checkBlackBoxes()
+{
+    ui->cb2ThinBlack->setChecked(ui->cb2TraceBlack->isChecked());
+    ui->cb2FinishBlack->setChecked(ui->cb2TraceBlack->isChecked());
+}
+
+void BitmapColoring::checkRedBoxes()
+{
+    ui->cb2ThinRed->setChecked(ui->cb2TraceRed->isChecked());
+    ui->cb2FinishRed->setChecked(ui->cb2TraceRed->isChecked());
+}
+
+void BitmapColoring::checkGreenBoxes()
+{
+    ui->cb2ThinGreen->setChecked(ui->cb2TraceGreen->isChecked());
+    ui->cb2FinishGreen->setChecked(ui->cb2TraceGreen->isChecked());
+}
+
+void BitmapColoring::checkBlueBoxes()
+{
+    ui->cb2ThinBlue->setChecked(ui->cb2TraceBlue->isChecked());
+    ui->cb2FinishBlue->setChecked(ui->cb2TraceBlue->isChecked());
+}
+
+void BitmapColoring::checkAllKeyframes()
+{
+    ui->cb3ThinAllKeyframes->setChecked(ui->cb3TraceAllKeyframes->isChecked());
+    ui->cb3FinishAllKeyframes->setChecked(ui->cb3TraceAllKeyframes->isChecked());
 }
 
 void BitmapColoring::updateTraceBoxes()
