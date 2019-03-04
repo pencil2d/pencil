@@ -280,9 +280,6 @@ void BitmapColoring::prepareLines()
 {
     if (mLayerBitmap == nullptr) { return; }
 
-    if (!ui->cb1Threshold->isChecked())
-        ui->tabPrepare->setEnabled(false);
-
     // if a separate layer is needed, we make one
     LayerBitmap* colorLayer = nullptr;
     if (ui->cbLayerSelector->currentIndex() == 0)
@@ -319,7 +316,6 @@ void BitmapColoring::prepareLines()
         if (mLayerBitmap->keyExists(i))
         {
             mEditor->scrubTo(i);
-            emit mEditor->updateTimeLine();
             if (ui->cbLayerSelector->currentIndex() == 1)
                 mLayerBitmap->copyFrame(mLayerBitmap, colorLayer, i);
             colorLayer->getBitmapImageAtFrame(i)->traceLine(colorLayer->getBitmapImageAtFrame(i),
@@ -330,7 +326,6 @@ void BitmapColoring::prepareLines()
             mEditor->backup(mEditor->layers()->currentLayerIndex() ,mEditor->currentFrame(), tr("Preparelines"));
         }
     }
-//    updateUI();
 }
 
 void BitmapColoring::updateThinBoxes()
@@ -360,8 +355,6 @@ void BitmapColoring::thinLines()
 {
     if (mLayerBitmap == nullptr) { return; }
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->layers()->currentLayer()->getMaxKeyFramePosition());
-
-    ui->tabThinLine->setEnabled(false);
 
     int firstFrame = 1, lastFrame = 1;
     if (ui->cb3ThinAllKeyframes->isChecked())
@@ -425,8 +418,6 @@ void BitmapColoring::blendLines()
     QString orgName = mLayerBitmap->name();
     orgName.chop(2);
     LayerBitmap* artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(orgName));
-
-    ui->tabFinish->setEnabled(false);
 
     int firstFrame = 1, lastFrame = 1;
     if (ui->cb3FinishAllKeyframes->isChecked())
