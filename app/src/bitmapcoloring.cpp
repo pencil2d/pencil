@@ -45,10 +45,10 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->cb0Trace, &QCheckBox::stateChanged, this, &BitmapColoring::updateTraceBoxes);
     connect(ui->cb1Threshold, &QCheckBox::stateChanged, this, &BitmapColoring::updateBtnSelect);
     connect(ui->sb1Threshold, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setThreshold);
-    connect(ui->btnSelectAreas, &QPushButton::clicked, this, &BitmapColoring::selectAreas);
+    connect(ui->btnSelectAreas, &QPushButton::clicked, this, &BitmapColoring::updateSelectButtonIcon);
     connect(ui->btnSelectNext, &QPushButton::clicked, this, &BitmapColoring::selectFromScans);
     connect(ui->btnSelectCancel, &QPushButton::clicked, this, &BitmapColoring::cancelSelectAreas);
-    connect(ui->btnApplyPrepare, &QPushButton::clicked, this, &BitmapColoring::prepareLines);
+    connect(ui->btnApplyPrepare, &QPushButton::clicked, this, &BitmapColoring::traceLines);
     // Thin
     connect(ui->cb1Thin, &QCheckBox::stateChanged, this, &BitmapColoring::updateThinBoxes);
     connect(ui->sbSpotAreas, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setSpotArea);
@@ -127,6 +127,20 @@ void BitmapColoring::colorMethodChanged()
         ui->cb2TraceBlack->setEnabled(true);
         ui->cb2ThinBlack->setEnabled(true);
         ui->cb2FinishBlack->setEnabled(true);
+    }
+}
+
+void BitmapColoring::updateSelectButtonIcon()
+{
+    if (mSelectAreas)
+    {
+        mSelectAreas = false;
+        ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
+    }
+    else
+    {
+        mSelectAreas = true;
+        ui->btnSelectAreas->setIcon(QIcon(":/icons/select_ok.png"));
     }
 }
 
@@ -218,6 +232,18 @@ void BitmapColoring::cancelSelectAreas()
     ui->btnSelectCancel->setEnabled(false);
 }
 
+void BitmapColoring::traceLines()
+{
+    if (ui->cb1Threshold->isChecked())
+    {
+        selectAreas();
+    }
+    else
+    {
+        prepareLines();
+    }
+}
+
 void BitmapColoring::selectFromScans()
 {
     ScribbleArea* scribble = mEditor->getScribbleArea();
@@ -233,60 +259,69 @@ void BitmapColoring::selectFromScans()
                                                        ui->cb2TraceRed->isChecked(),
                                                        ui->cb2TraceGreen->isChecked(),
                                                        ui->cb2TraceBlue->isChecked());
-        if (mEditor->currentFrame() < mEditor->layers()->currentLayer()->getMaxKeyFramePosition())
-        {
-            mEditor->scrubNextKeyFrame();
-        }
-        else
-        {
-            cancelSelectAreas();
-            ui->cb1Threshold->setChecked(false);
-        }
+    }
+    if (ui->cb0Trace->isChecked())
+    {
+        prepareLines();
     }
     mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Select from scan"));
+    if (mEditor->currentFrame() < mEditor->layers()->currentLayer()->getMaxKeyFramePosition())
+    {
+        mEditor->scrubNextKeyFrame();
+    }
+    else
+    {
+        cancelSelectAreas();
+        ui->cb1Threshold->setChecked(false);
+    }
 }
 
 void BitmapColoring::prepareLines()
 {
     if (mLayerBitmap == nullptr) { return; }
 
-    ui->tabPrepare->setEnabled(false);
+    if (!ui->cb1Threshold->isChecked())
+        ui->tabPrepare->setEnabled(false);
 
     // if a separate layer is needed, we make one
     LayerBitmap* colorLayer = nullptr;
     if (ui->cbLayerSelector->currentIndex() == 0)
-    {
+    {           // if coloring is on same layer...
         colorLayer = mLayerBitmap;
     }
     else
-    {
+    {           // if coloring is on separate layer...
         if (!mLayerBitmap->getHasColorLayer())
         {
             colorLayer = mEditor->layers()->createBitmapLayer(mLayerBitmap->name() + "_C");
             mLayerBitmap->setHasColorLayer(true);
             colorLayer->setIsColorLayer(true);
-            mEditor->layers()->copyLayer(mLayerBitmap, colorLayer);
         }
         else {
             colorLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(mLayerBitmap->name() + "_C"));
         }
     }
 
+    if (ui->cbLayerSelector->currentIndex() == 1)
+        colorLayer->setVisible(false);
     int firstFrame = 1, lastFrame = 1;
-    if (ui->cb3TraceAllKeyframes->isChecked())
-    {
-        lastFrame = colorLayer->getMaxKeyFramePosition();
-    }
-    else
+    if (!ui->cb3TraceAllKeyframes->isChecked() || ui->cb1Threshold->isChecked())
     {
         firstFrame = mEditor->currentFrame();
         lastFrame = firstFrame;
     }
+    else
+    {
+        lastFrame = mLayerBitmap->getMaxKeyFramePosition();
+    }
     for (int i = firstFrame; i <= lastFrame; i++)
     {
-        if (colorLayer->keyExists(i))
+        if (mLayerBitmap->keyExists(i))
         {
             mEditor->scrubTo(i);
+            emit mEditor->updateTimeLine();
+            if (ui->cbLayerSelector->currentIndex() == 1)
+                mLayerBitmap->copyFrame(mLayerBitmap, colorLayer, i);
             colorLayer->getBitmapImageAtFrame(i)->traceLine(colorLayer->getBitmapImageAtFrame(i),
                                                             ui->cb2TraceBlack->isChecked(),
                                                             ui->cb2TraceRed->isChecked(),
@@ -295,7 +330,7 @@ void BitmapColoring::prepareLines()
             mEditor->backup(mEditor->layers()->currentLayerIndex() ,mEditor->currentFrame(), tr("Preparelines"));
         }
     }
-    updateUI();
+//    updateUI();
 }
 
 void BitmapColoring::updateThinBoxes()

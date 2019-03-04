@@ -30,6 +30,7 @@ signals:
 
 public slots:
     void colorMethodChanged();
+    void updateSelectButtonIcon();
     void checkBlackBoxes();
     void checkRedBoxes();
     void checkGreenBoxes();
@@ -41,6 +42,7 @@ public slots:
     void setThreshold(int threshold);
     void selectAreas();
     void cancelSelectAreas();
+    void traceLines();
     void selectFromScans();
     void prepareLines();
     // Thin
