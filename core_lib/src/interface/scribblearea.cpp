@@ -491,6 +491,16 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
         setTemporaryTool(HAND);
     }
 
+    const bool isPressed = event->buttons() & Qt::LeftButton;
+    if (isPressed && mQuickSizing)
+    {
+        //qDebug() << "Start Adjusting" << event->buttons();
+        if (isDoingAssistedToolAdjustment(event->modifiers()))
+        {
+            return;
+        }
+    }
+
     if (event->button() == Qt::LeftButton)
     {
         currentTool()->pointerPressEvent(event);
@@ -520,16 +530,6 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
         event->accept();
         return;
     }
-
-    const bool isPressed = event->buttons() & Qt::LeftButton;
-    if (isPressed && mQuickSizing)
-    {
-        if (isDoingAssistedToolAdjustment(event->modifiers()))
-        {
-            return;
-        }
-    }
-
     currentTool()->pointerMoveEvent(event);
 }
 
@@ -892,8 +892,7 @@ void ScribbleArea::updateCanvasCursor()
     }
     else
     {
-        // if above does not comply, deallocate image
-        mCursorImg = QPixmap();
+        mCursorImg = QPixmap(); // if above does not comply, deallocate image
     }
 
     // update cursor rect
