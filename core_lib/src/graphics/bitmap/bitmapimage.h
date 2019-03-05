@@ -29,8 +29,8 @@ class BitmapImage : public KeyFrame
 {
 public:
     const QRgb transp = qRgba(0, 0, 0, 0);
-    const QRgb thinline = qRgba(1, 0, 0, 255);
     const QRgb rosa = qRgba(255,230,230,255);
+    const QRgb blackline = qRgba(1, 0, 0, 255);
     const QRgb redline = qRgba(254,0,0,255);
     const QRgb greenline = qRgba(0,254,0,255);
     const QRgb blueline = qRgba(0,0,254,255);

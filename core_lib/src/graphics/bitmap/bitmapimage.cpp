@@ -754,7 +754,7 @@ void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool
                 }
                 else if(black)
                 {
-                    img->setPixel(x, y, thinline);
+                    img->setPixel(x, y, blackline);
                 }
             }
         }
@@ -770,7 +770,7 @@ void BitmapImage::fillSpotAreas(BitmapImage *bitmapimage)
     // fill areas size 'area' or less with appropriate color
     QVector<QPoint> points;
     points.clear();
-    QRgb active, previous = thinline;
+    QRgb active, previous = blackline;
     for (int x = img->left(); x < img->right(); x++)
     {
         for (int y = img->top(); y < img->bottom(); y++)
@@ -805,7 +805,7 @@ void BitmapImage::toThinLine(BitmapImage * colorImage, bool black, bool red, boo
     bool N = true, E = true, S = true, W = true, pixelRemoved, search;
 
     QList<QRgb> colors;
-    if (black) colors.append(thinline);
+    if (black) colors.append(blackline);
     if (red) colors.append(redline);
     if (green) colors.append(greenline);
     if (blue) colors.append(blueline);
@@ -819,7 +819,7 @@ void BitmapImage::toThinLine(BitmapImage * colorImage, bool black, bool red, boo
             // set 'pixelRemoved' to false. 'pixelRemoved' is set to true whenever a pixel is removed
             pixelRemoved = false;
             // 'search' is true while pixels are transparent
-            // when thinline pixel is found, 'search' is set to false until next transparent pixel
+            // when blackline pixel is found, 'search' is set to false until next transparent pixel
             search = true;
             for (int x = img->left(); x < img->right(); x++)
             {
@@ -1018,7 +1018,7 @@ void BitmapImage::blendLines(BitmapImage *bitmapimage, bool black, bool red, boo
     int r, g, b, a;         //red, green, blue, alpha
     QList<QPoint> points;   // QPoints to add in calculation
     QList<QRgb> rgblist;    // QRgb's that should be excluded
-    if (black) rgblist << thinline;
+    if (black) rgblist << blackline;
     if (red) rgblist << redline;
     if (green) rgblist << greenline;
     if (blue) rgblist << blueline;

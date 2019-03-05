@@ -6,6 +6,7 @@
 #include "layerbitmap.h"
 #include "bitmapimage.h"
 #include <QTabWidget>
+#include "scribblearea.h"
 
 class Layer;
 
@@ -26,11 +27,13 @@ public:
     void updateUI() override;
     void visibilityChanged(bool visibility);
 
+    void prepareLines();
+
 signals:
 
 public slots:
     void colorMethodChanged();
-    void updateSelectButtonIcon();
+    void updateSelectButton();
     void checkBlackBoxes();
     void checkRedBoxes();
     void checkGreenBoxes();
@@ -40,11 +43,10 @@ public slots:
     void updateTraceBoxes();
     void updateBtnSelect();
     void setThreshold(int threshold);
-    void selectAreas();
-    void cancelSelectAreas();
     void traceLines();
-    void selectFromScans();
-    void prepareLines();
+    void selectYesNo();
+    void traceScansToTransparent();
+    void nextKey();
     // Thin
     void updateThinBoxes();
     void setSpotArea(int size);
@@ -56,6 +58,7 @@ public slots:
 private:
     Ui::BitmapColoringWidget* ui = nullptr;
     Editor* mEditor = nullptr;
+    ScribbleArea* mScribblearea = nullptr;
     LayerBitmap* mLayerBitmap = nullptr;
     BitmapImage* mBitmapImage = nullptr;
     bool mSelectAreas = false;
