@@ -44,7 +44,7 @@ public slots:
     void updateBtnSelect();
     void setThreshold(int threshold);
     void traceLines();
-    void selectYesNo();
+    void selectarea();
     void traceScansToTransparent();
     void nextKey();
     // Thin
@@ -62,6 +62,7 @@ private:
     LayerBitmap* mLayerBitmap = nullptr;
     BitmapImage* mBitmapImage = nullptr;
     bool mSelectAreas = false;
+    bool mApplyPressed = false;
 
 };
 

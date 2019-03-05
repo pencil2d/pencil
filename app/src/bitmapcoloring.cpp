@@ -43,7 +43,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->cb2TraceGreen, &QCheckBox::stateChanged, this, &BitmapColoring::checkGreenBoxes);
     connect(ui->cb2TraceBlue, &QCheckBox::stateChanged, this, &BitmapColoring::checkBlueBoxes);
     connect(ui->cb3TraceAllKeyframes, &QCheckBox::stateChanged, this, &BitmapColoring::checkAllKeyframes);
-    connect(mScribblearea, &ScribbleArea::newSelectionMade, this, &BitmapColoring::selectYesNo);
+    connect(mScribblearea, &ScribbleArea::newSelectionMade, this, &BitmapColoring::selectarea);
 
     // Prepare
     connect(ui->cb0Trace, &QCheckBox::stateChanged, this, &BitmapColoring::updateTraceBoxes);
@@ -215,6 +215,7 @@ void BitmapColoring::setThreshold(int threshold)
 
 void BitmapColoring::traceLines()
 {
+    mApplyPressed = true;   // to give access to select from scan
     if (mSelectAreas)
     {
         QMessageBox::information(
@@ -224,6 +225,7 @@ void BitmapColoring::traceLines()
         mEditor->scrubTo(1);
         return;
     }
+    mApplyPressed = false;  // to close access to select from scan
 
     if (ui->cb3TraceAllKeyframes->isChecked())
     {
@@ -248,12 +250,11 @@ void BitmapColoring::traceLines()
         prepareLines();
         emit mEditor->updateTimeLine();
     }
-
 }
 
-void BitmapColoring::selectYesNo()
+void BitmapColoring::selectarea()
 {
-    if (mSelectAreas && mLayerBitmap->keyExists(mEditor->currentFrame()))
+    if (mApplyPressed && mSelectAreas && mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
         traceScansToTransparent();
         prepareLines();
@@ -277,7 +278,6 @@ void BitmapColoring::traceScansToTransparent()
                                                    ui->cb2TraceGreen->isChecked(),
                                                    ui->cb2TraceBlue->isChecked());
     mScribblearea->deselectAll();
-
     mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Select from scan"));
 }
 
@@ -291,6 +291,7 @@ void BitmapColoring::nextKey()
     {
         ui->cb1Threshold->setChecked(false);
         updateBtnSelect(); // includes 'mSelectAreas = false'
+        mApplyPressed = false;
     }
 }
 
@@ -369,7 +370,6 @@ void BitmapColoring::thinLines()
         firstFrame = mEditor->currentFrame();
         lastFrame = firstFrame;
     }
-    mBitmapImage->setSpotArea(ui->sbSpotAreas->value());
     for (int i = firstFrame; i <= lastFrame; i++)
     {
         if (mLayerBitmap->keyExists(i))
