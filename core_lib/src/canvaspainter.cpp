@@ -202,7 +202,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
         paintedImage = bitmapLayer->getBitmapImageAtFrame(nFrame);
     }
 
-    if (paintedImage == nullptr)
+    if (paintedImage == nullptr || paintedImage->bounds().isEmpty())
     {
         return;
     }
