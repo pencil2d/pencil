@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "bitmapcoloring.h"
 #include "ui_bitmapcoloringwidget.h"
 #include "layermanager.h"
+#include "toolmanager.h"
 
 
 BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
@@ -36,20 +37,23 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
         mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
     ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
+    checkBlackBoxes();
+    checkRedBoxes();
+    checkGreenBoxes();
+    checkBlueBoxes();
 
-    connect(ui->cbLayerSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BitmapColoring::colorMethodChanged);
+    connect(ui->cbMethodSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BitmapColoring::colorMethodChanged);
     connect(ui->cb2TraceBlack, &QCheckBox::stateChanged, this, &BitmapColoring::checkBlackBoxes);
     connect(ui->cb2TraceRed, &QCheckBox::stateChanged, this, &BitmapColoring::checkRedBoxes);
     connect(ui->cb2TraceGreen, &QCheckBox::stateChanged, this, &BitmapColoring::checkGreenBoxes);
     connect(ui->cb2TraceBlue, &QCheckBox::stateChanged, this, &BitmapColoring::checkBlueBoxes);
     connect(ui->cb3TraceAllKeyframes, &QCheckBox::stateChanged, this, &BitmapColoring::checkAllKeyframes);
-    connect(mScribblearea, &ScribbleArea::newSelectionMade, this, &BitmapColoring::selectarea);
 
     // Prepare
     connect(ui->cb0Trace, &QCheckBox::stateChanged, this, &BitmapColoring::updateTraceBoxes);
     connect(ui->cb1Threshold, &QCheckBox::stateChanged, this, &BitmapColoring::updateBtnSelect);
     connect(ui->sb1Threshold, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setThreshold);
-    connect(ui->btnSelectAreas, &QPushButton::clicked, this, &BitmapColoring::updateSelectButton);
+    connect(ui->btnSelectAreas, &QPushButton::clicked, this, &BitmapColoring::activateSelectTool);
     connect(ui->btnApplyPrepare, &QPushButton::clicked, this, &BitmapColoring::traceLines);
     // Thin
     connect(ui->cb1Thin, &QCheckBox::stateChanged, this, &BitmapColoring::updateThinBoxes);
@@ -82,28 +86,28 @@ void BitmapColoring::updateUI()
     {
         if (mLayerBitmap->getHasColorLayer())
         {
-            ui->tabPrepare->setEnabled(true);
-            ui->tabThinLine->setEnabled(false);
-            ui->tabFinish->setEnabled(false);
+            ui->tab1->setEnabled(true);
+            ui->tab2->setEnabled(false);
+            ui->tab3->setEnabled(false);
         }
         else if (mLayerBitmap->getIsColorLayer())
         {
-            ui->tabPrepare->setEnabled(false);
-            ui->tabThinLine->setEnabled(true);
-            ui->tabFinish->setEnabled(true);
+            ui->tab1->setEnabled(false);
+            ui->tab2->setEnabled(true);
+            ui->tab3->setEnabled(true);
         }
         else
         {
-            ui->tabPrepare->setEnabled(true);
-            ui->tabThinLine->setEnabled(true);
-            ui->tabFinish->setEnabled(true);
+            ui->tab1->setEnabled(true);
+            ui->tab2->setEnabled(true);
+            ui->tab3->setEnabled(true);
         }
     }
     else
     {   // If it is not a Bitmap Layer - disable
-        ui->tabPrepare->setEnabled(false);
-        ui->tabThinLine->setEnabled(false);
-        ui->tabFinish->setEnabled(false);
+        ui->tab1->setEnabled(false);
+        ui->tab2->setEnabled(false);
+        ui->tab3->setEnabled(false);
     }
 }
 
@@ -115,7 +119,7 @@ void BitmapColoring::visibilityChanged(bool visibility)
 
 void BitmapColoring::colorMethodChanged()
 {
-    if (ui->cbLayerSelector->currentIndex() == 0)
+    if (ui->cbMethodSelector->currentIndex() == 0)
     {
         ui->cb2TraceBlack->setChecked(false);
         ui->cb2TraceBlack->setEnabled(false);
@@ -132,42 +136,74 @@ void BitmapColoring::colorMethodChanged()
     }
 }
 
-void BitmapColoring::updateSelectButton()
+void BitmapColoring::activateSelectTool()
 {
-    if (mSelectAreas)
-    {
-        mSelectAreas = false;
-        ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
-    }
-    else
-    {
-        mSelectAreas = true;
-        ui->btnSelectAreas->setIcon(QIcon(":/icons/select_ok.png"));
-    }
+    ToolManager* tool = mEditor->tools();
+    tool->setCurrentTool(SELECT);
 }
 
 void BitmapColoring::checkBlackBoxes()
 {
-    ui->cb2ThinBlack->setChecked(ui->cb2TraceBlack->isChecked());
-    ui->cb2FinishBlack->setChecked(ui->cb2TraceBlack->isChecked());
+    if (ui->cb2TraceBlack->isChecked())
+    {
+        ui->cb2ThinBlack->show();
+        ui->cb2FinishBlack->show();
+        ui->cb2ThinBlack->setChecked(ui->cb2TraceBlack->isChecked());
+        ui->cb2FinishBlack->setChecked(ui->cb2TraceBlack->isChecked());
+    }
+    else
+    {
+        ui->cb2ThinBlack->hide();
+        ui->cb2FinishBlack->hide();
+    }
 }
 
 void BitmapColoring::checkRedBoxes()
 {
-    ui->cb2ThinRed->setChecked(ui->cb2TraceRed->isChecked());
-    ui->cb2FinishRed->setChecked(ui->cb2TraceRed->isChecked());
+    if (ui->cb2TraceRed->isChecked())
+    {
+        ui->cb2ThinRed->show();
+        ui->cb2FinishRed->show();
+        ui->cb2ThinRed->setChecked(ui->cb2TraceRed->isChecked());
+        ui->cb2FinishRed->setChecked(ui->cb2TraceRed->isChecked());
+    }
+    else
+    {
+        ui->cb2ThinRed->hide();
+        ui->cb2FinishRed->hide();
+    }
 }
 
 void BitmapColoring::checkGreenBoxes()
 {
-    ui->cb2ThinGreen->setChecked(ui->cb2TraceGreen->isChecked());
-    ui->cb2FinishGreen->setChecked(ui->cb2TraceGreen->isChecked());
+    if (ui->cb2TraceGreen->isChecked())
+    {
+        ui->cb2ThinGreen->show();
+        ui->cb2FinishGreen->show();
+        ui->cb2ThinGreen->setChecked(ui->cb2TraceGreen->isChecked());
+        ui->cb2FinishGreen->setChecked(ui->cb2TraceGreen->isChecked());
+    }
+    else
+    {
+        ui->cb2ThinGreen->hide();
+        ui->cb2FinishGreen->hide();
+    }
 }
 
 void BitmapColoring::checkBlueBoxes()
 {
-    ui->cb2ThinBlue->setChecked(ui->cb2TraceBlue->isChecked());
-    ui->cb2FinishBlue->setChecked(ui->cb2TraceBlue->isChecked());
+    if (ui->cb2TraceBlue->isChecked())
+    {
+        ui->cb2ThinBlue->show();
+        ui->cb2FinishBlue->show();
+        ui->cb2ThinBlue->setChecked(ui->cb2TraceBlue->isChecked());
+        ui->cb2FinishBlue->setChecked(ui->cb2TraceBlue->isChecked());
+    }
+    else
+    {
+        ui->cb2ThinBlue->hide();
+        ui->cb2FinishBlue->hide();
+    }
 }
 
 void BitmapColoring::checkAllKeyframes()
@@ -181,7 +217,7 @@ void BitmapColoring::updateTraceBoxes()
     if (ui->cb0Trace->isChecked())
     {
         ui->gb2Prepare->setEnabled(true);
-        if (ui->cbLayerSelector->currentIndex() == 0)
+        if (ui->cbMethodSelector->currentIndex() == 0)
             ui->cb2TraceBlack->setEnabled(false);
     }
     else
@@ -215,31 +251,18 @@ void BitmapColoring::setThreshold(int threshold)
 
 void BitmapColoring::traceLines()
 {
-    mApplyPressed = true;   // to give access to select from scan
-    if (mSelectAreas)
-    {
-        QMessageBox::information(
-            this,
-            tr("Please select"),
-            tr("Select from scanned drawings..."));
-        mEditor->scrubTo(1);
-        return;
-    }
-    mApplyPressed = false;  // to close access to select from scan
+    if (ui->cb1Threshold->isChecked() && !mScribblearea->isSomethingSelected()) { return; }
 
     if (ui->cb3TraceAllKeyframes->isChecked())
     {
-        for (int i = 1; i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
+        for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
         {
             if (mLayerBitmap->keyExists(i))
             {
                 mEditor->scrubTo(i);
                 if (ui->cb1Threshold->isChecked())
-                {
                     traceScansToTransparent();
-                }
                 prepareLines();
-                emit mEditor->updateTimeLine();
             }
         }
     }
@@ -248,23 +271,12 @@ void BitmapColoring::traceLines()
         if (ui->cb1Threshold->isChecked())
             traceScansToTransparent();
         prepareLines();
-        emit mEditor->updateTimeLine();
-    }
-}
-
-void BitmapColoring::selectarea()
-{
-    if (mApplyPressed && mSelectAreas && mLayerBitmap->keyExists(mEditor->currentFrame()))
-    {
-        traceScansToTransparent();
-        prepareLines();
-        nextKey();
     }
 }
 
 void BitmapColoring::traceScansToTransparent()
 {
-    if (mSelectAreas)
+    if (ui->cb1Threshold->isChecked())
     {
         mEditor->copy();
         mEditor->layers()->currentLayer()->removeKeyFrame(mEditor->currentFrame());
@@ -277,22 +289,6 @@ void BitmapColoring::traceScansToTransparent()
                                                    ui->cb2TraceRed->isChecked(),
                                                    ui->cb2TraceGreen->isChecked(),
                                                    ui->cb2TraceBlue->isChecked());
-    mScribblearea->deselectAll();
-    mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Select from scan"));
-}
-
-void BitmapColoring::nextKey()
-{
-    if (mEditor->currentFrame() < mEditor->layers()->currentLayer()->getMaxKeyFramePosition())
-    {
-        mEditor->scrubNextKeyFrame();
-    }
-    else
-    {
-        ui->cb1Threshold->setChecked(false);
-        updateBtnSelect(); // includes 'mSelectAreas = false'
-        mApplyPressed = false;
-    }
 }
 
 void BitmapColoring::prepareLines()
@@ -301,8 +297,7 @@ void BitmapColoring::prepareLines()
     if (!mLayerBitmap->keyExists(mEditor->currentFrame())) { return; }
 
     LayerBitmap* colorLayer = nullptr;
-    // if a separate layer is needed, we make one
-    if (ui->cbLayerSelector->currentIndex() == 0)
+    if (ui->cbMethodSelector->currentIndex() == 0)
     {           // if coloring is on same layer...
         colorLayer = mLayerBitmap;
     }
@@ -319,7 +314,7 @@ void BitmapColoring::prepareLines()
         }
     }
 
-    if (ui->cbLayerSelector->currentIndex() == 1)
+    if (ui->cbMethodSelector->currentIndex() == 1)
     {
         colorLayer->setVisible(false);
         mLayerBitmap->copyFrame(mLayerBitmap, colorLayer, mEditor->currentFrame());
@@ -329,7 +324,6 @@ void BitmapColoring::prepareLines()
                                                                           ui->cb2TraceRed->isChecked(),
                                                                           ui->cb2TraceGreen->isChecked(),
                                                                           ui->cb2TraceBlue->isChecked());
-    mEditor->backup(mEditor->layers()->currentLayerIndex() ,mEditor->currentFrame(), tr("Preparelines"));
 }
 
 void BitmapColoring::updateThinBoxes()
@@ -337,7 +331,7 @@ void BitmapColoring::updateThinBoxes()
     if (ui->cb1Thin->isChecked())
     {
         ui->gb2Thin->setEnabled(true);
-        if (ui->cbLayerSelector->currentIndex() == 0)
+        if (ui->cbMethodSelector->currentIndex() == 0)
             ui->cb2ThinBlack->setEnabled(false);
     }
     else
@@ -400,7 +394,7 @@ void BitmapColoring::updateFinishBoxes()
     if (ui->cb1Finish->isChecked())
     {
         ui->gb2Finish->setEnabled(true);
-        if (ui->cbLayerSelector->currentIndex() == 0)
+        if (ui->cbMethodSelector->currentIndex() == 0)
             ui->cb2FinishBlack->setEnabled(false);
     }
     else
@@ -444,7 +438,7 @@ void BitmapColoring::blendLines()
                                               ui->cb2FinishRed->isChecked(),
                                               ui->cb2FinishGreen->isChecked(),
                                               ui->cb2FinishBlue->isChecked());
-                if (ui->cbLayerSelector->currentIndex() == 1 && artLayer != nullptr)
+                if (ui->cbMethodSelector->currentIndex() == 1 && artLayer != nullptr)
                 {
                     artLayer->getBitmapImageAtFrame(i)->blendLines(artLayer->getBitmapImageAtFrame(i),
                                                                    false, // don't mess with the original

@@ -138,7 +138,6 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     else
     {
         keepSelection();
-        emit mScribbleArea->newSelectionMade();
     }
 
     mScribbleArea->updateToolCursor();

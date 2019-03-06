@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>230</width>
+    <width>234</width>
     <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_15">
+  <layout class="QVBoxLayout" name="verticalLayout_14">
    <property name="spacing">
     <number>2</number>
    </property>
@@ -30,30 +30,41 @@
     <number>4</number>
    </property>
    <item>
-    <widget class="QComboBox" name="cbLayerSelector">
-     <property name="toolTip">
-      <string>Colorize on Same or Separate layer?</string>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <property name="text">
-       <string>On the Same Layer</string>
-      </property>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Methods: </string>
+       </property>
+      </widget>
      </item>
      <item>
-      <property name="text">
-       <string>On a Separate Layer</string>
-      </property>
+      <widget class="QComboBox" name="cbMethodSelector">
+       <property name="toolTip">
+        <string>Colorize on Same or Separate layer?</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>On the Same Layer</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>On a Separate Layer</string>
+        </property>
+       </item>
+      </widget>
      </item>
-    </widget>
+    </layout>
    </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tabPrepare">
+     <widget class="QWidget" name="tab1">
       <attribute name="title">
-       <string>Prepare</string>
+       <string>1</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_13">
        <item>
@@ -188,7 +199,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Select areas from scanned Drawings</string>
+               <string>Activate Select tool</string>
               </property>
               <property name="text">
                <string/>
@@ -437,11 +448,11 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabThinLine">
+     <widget class="QWidget" name="tab2">
       <attribute name="title">
-       <string>Thin line</string>
+       <string>2</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_14">
+      <layout class="QVBoxLayout" name="verticalLayout_15">
        <item>
         <widget class="QGroupBox" name="gb1Scans_2">
          <property name="title">
@@ -465,6 +476,9 @@
           </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <property name="spacing">
+             <number>6</number>
+            </property>
             <item>
              <widget class="QCheckBox" name="cb1Thin">
               <property name="text">
@@ -742,7 +756,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_17">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <spacer name="horizontalSpacer_16">
            <property name="orientation">
@@ -773,16 +787,16 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>80</height>
+           <height>59</height>
           </size>
          </property>
         </spacer>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabFinish">
+     <widget class="QWidget" name="tab3">
       <attribute name="title">
-       <string>Finish</string>
+       <string>3</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_12">
        <item>

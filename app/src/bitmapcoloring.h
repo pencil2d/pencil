@@ -27,33 +27,32 @@ public:
     void updateUI() override;
     void visibilityChanged(bool visibility);
 
-    void prepareLines();
-
 signals:
 
 public slots:
     void colorMethodChanged();
-    void updateSelectButton();
+    void activateSelectTool();
     void checkBlackBoxes();
     void checkRedBoxes();
     void checkGreenBoxes();
     void checkBlueBoxes();
     void checkAllKeyframes();
-    // Prepare
+    // 1: Prepare
     void updateTraceBoxes();
     void updateBtnSelect();
     void setThreshold(int threshold);
     void traceLines();
-    void selectarea();
-    void traceScansToTransparent();
-    void nextKey();
-    // Thin
+    // 2: Thin
     void updateThinBoxes();
     void setSpotArea(int size);
     void thinLines();
-    // Finish
+    // 3: Finish
     void updateFinishBoxes();
     void blendLines();
+
+protected:
+    void traceScansToTransparent();
+    void prepareLines();
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;
