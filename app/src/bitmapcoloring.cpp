@@ -301,6 +301,7 @@ void BitmapColoring::traceLines()
             traceScansToTransparent();
         prepareLines();
     }
+    mScribblearea->deselectAll();
 }
 
 void BitmapColoring::traceScansToTransparent()
