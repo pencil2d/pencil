@@ -37,6 +37,7 @@ public slots:
     void checkGreenBoxes();
     void checkBlueBoxes();
     void checkAllKeyframes();
+    void tabClicked(int index);
     // 1: Prepare
     void updateTraceBoxes();
     void updateBtnSelect();
