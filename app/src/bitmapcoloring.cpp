@@ -400,16 +400,7 @@ void BitmapColoring::thinLines()
     {
         if (mLayerBitmap->keyExists(mEditor->currentFrame()))
         {
-            mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-            if (ui->cbSpotAreas->isChecked())
-            {
-                mBitmapImage->fillSpotAreas(mBitmapImage);
-            }
-            mBitmapImage->toThinLine(mBitmapImage,
-                                     ui->cb2ThinBlack->isChecked(),
-                                     ui->cb2ThinRed->isChecked(),
-                                     ui->cb2ThinGreen->isChecked(),
-                                     ui->cb2ThinBlue->isChecked());
+            thinLayers();
         }
     }
     else
@@ -426,18 +417,7 @@ void BitmapColoring::thinLines()
             if (mLayerBitmap->keyExists(i))
             {
                 mEditor->scrubTo(i);
-                mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(i);
-                if (ui->cbSpotAreas->isChecked())
-                {
-                    mBitmapImage->fillSpotAreas(mBitmapImage);
-                }
-
-                mBitmapImage->toThinLine(mBitmapImage,
-                                         ui->cb2ThinBlack->isChecked(),
-                                         ui->cb2ThinRed->isChecked(),
-                                         ui->cb2ThinGreen->isChecked(),
-                                         ui->cb2ThinBlue->isChecked());
-                mEditor->backup(tr("Thin lines"));
+                thinLayers();
                 keysThinned++;
                 mProgress->setValue(keysThinned);
                 QApplication::processEvents();
@@ -450,6 +430,21 @@ void BitmapColoring::thinLines()
         mProgress->close();
     }
     ui->cbSpotAreas->setChecked(false);
+}
+
+void BitmapColoring::thinLayers()
+{
+    mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+    if (ui->cbSpotAreas->isChecked())
+    {
+        mBitmapImage->fillSpotAreas(mBitmapImage);
+    }
+    mBitmapImage->toThinLine(mBitmapImage,
+                             ui->cb2ThinBlack->isChecked(),
+                             ui->cb2ThinRed->isChecked(),
+                             ui->cb2ThinGreen->isChecked(),
+                             ui->cb2ThinBlue->isChecked());
+    mEditor->backup(tr("Thin lines"));
     updateUI();
 }
 
@@ -457,11 +452,11 @@ void BitmapColoring::updateFinishBoxes()
 {
     if (mLayerBitmap->getHasColorLayer())
     {
-        ui->gb2Finish->setEnabled(false);
+        ui->tab3->setEnabled(false);
     }
     else
     {
-        ui->gb2Finish->setEnabled(true);
+        ui->tab3->setEnabled(true);
         if (ui->cbMethodSelector->currentIndex() == 0)
             ui->cb2FinishBlack->setEnabled(false);
     }
@@ -470,57 +465,59 @@ void BitmapColoring::updateFinishBoxes()
 void BitmapColoring::blendLines()
 {
     if (mLayerBitmap == nullptr) { return; }
-    mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->layers()->currentLayer()->getMaxKeyFramePosition());
 
     QString orgName = mLayerBitmap->name();
     orgName.chop(2);
     LayerBitmap* artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(orgName));
 
-    int firstFrame = mLayerBitmap->firstKeyFramePosition(), lastFrame = 1;
-    if (ui->cb3FinishAllKeyframes->isChecked())
+    if (!ui->cb3FinishAllKeyframes->isChecked())
     {
-        lastFrame = mLayerBitmap->getMaxKeyFramePosition();
+        blendLayers(artLayer);
     }
     else
     {
-        firstFrame = mEditor->currentFrame();
-        lastFrame = firstFrame;
-    }
+        QProgressDialog progress(tr("Blending lines in bitmaps..."), tr("Abort"), 0, 100, this);
+        hideQuestionMark(progress);
+        progress.setWindowModality(Qt::WindowModal);
+        progress.show();
+        int keysToBlend = mLayerBitmap->keyFrameCount();
+        progress.setMaximum(keysToBlend);
+        int keysBlended = 0;
 
-    QProgressDialog progress(tr("Blending lines in bitmaps..."), tr("Abort"), 0, 100, this);
-    hideQuestionMark(progress);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-    int keysToBlend = mLayerBitmap->keyFrameCount();
-    progress.setMaximum(keysToBlend);
-    int keysBlended = 0;
-
-    for (int i = firstFrame; i <= lastFrame; i++)
-    {
-        if (mLayerBitmap->keyExists(i))
+        for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
         {
-            progress.setValue(keysBlended++);
-            QApplication::processEvents();
-            mEditor->scrubTo(i);
-            mLayerBitmap->getBitmapImageAtFrame(i)->blendLines(mLayerBitmap->getBitmapImageAtFrame(i),
-                                                               ui->cb2FinishBlack->isChecked(),
-                                                               ui->cb2FinishRed->isChecked(),
-                                                               ui->cb2FinishGreen->isChecked(),
-                                                               ui->cb2FinishBlue->isChecked());
-            if (ui->cbMethodSelector->currentIndex() == 1 && artLayer != nullptr)
+            if (mLayerBitmap->keyExists(i))
             {
-                artLayer->getBitmapImageAtFrame(i)->blendLines(artLayer->getBitmapImageAtFrame(i),
-                                                               false, // don't mess with the original
-                                                               ui->cb2FinishRed->isChecked(),
-                                                               ui->cb2FinishGreen->isChecked(),
-                                                               ui->cb2FinishBlue->isChecked());
-            }
-            mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
-            if (progress.wasCanceled())
-            {
-                break;
+                progress.setValue(keysBlended++);
+                QApplication::processEvents();
+                mEditor->scrubTo(i);
+                blendLayers(artLayer);
+                if (progress.wasCanceled())
+                {
+                    break;
+                }
             }
         }
     }
+}
+
+void BitmapColoring::blendLayers(LayerBitmap *artLayer)
+{
+    mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame())->blendLines(mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame()),
+                                                       ui->cb2FinishBlack->isChecked(),
+                                                       ui->cb2FinishRed->isChecked(),
+                                                       ui->cb2FinishGreen->isChecked(),
+                                                       ui->cb2FinishBlue->isChecked());
+    mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
+    if (ui->cbMethodSelector->currentIndex() == 1 && artLayer != nullptr)
+    {
+        artLayer->getBitmapImageAtFrame(mEditor->currentFrame())->blendLines(artLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
+                                                           ui->cb2FinishBlack->isChecked(),
+                                                           ui->cb2FinishRed->isChecked(),
+                                                           ui->cb2FinishGreen->isChecked(),
+                                                           ui->cb2FinishBlue->isChecked());
+        mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
+    }
+    updateUI();
 }
 

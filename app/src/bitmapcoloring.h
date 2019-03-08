@@ -54,6 +54,8 @@ public slots:
 protected:
     void traceScansToTransparent();
     void prepareLines();
+    void thinLayers();
+    void blendLayers(LayerBitmap* artLayer);
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;
