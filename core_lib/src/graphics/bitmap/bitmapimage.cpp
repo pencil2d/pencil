@@ -660,7 +660,8 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
     Q_ASSERT(bitmapimage != nullptr);
 
     BitmapImage* img = bitmapimage;
-    img->enableAutoCrop(false);
+    img->enableAutoCrop(true);
+    img->autoCrop();
 
     QRgb rgba;
     for (int x = img->left(); x <= img->right(); x++)
@@ -764,7 +765,7 @@ void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool
 
 void BitmapImage::fillSpotAreas(BitmapImage *bitmapimage)
 {
-    if(bitmapimage == nullptr) { return; }
+    if (bitmapimage == nullptr) { return; }
     BitmapImage* img = bitmapimage;
 
     // fill areas size 'area' or less with appropriate color

@@ -31,7 +31,6 @@ signals:
 
 public slots:
     void colorMethodChanged();
-    void activateSelectTool();
     void checkBlackBoxes();
     void checkRedBoxes();
     void checkGreenBoxes();
@@ -41,6 +40,7 @@ public slots:
     // 1: Prepare
     void updateTraceBoxes();
     void updateBtnSelect();
+    void activateSelectTool();
     void setThreshold(int threshold);
     void traceLines();
     // 2: Thin
@@ -62,7 +62,6 @@ private:
     LayerBitmap* mLayerBitmap = nullptr;
     BitmapImage* mBitmapImage = nullptr;
     bool mSelectAreas = false;
-    bool mApplyPressed = false;
 
 };
 

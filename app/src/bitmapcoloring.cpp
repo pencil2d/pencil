@@ -56,12 +56,12 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->cb1Threshold, &QCheckBox::stateChanged, this, &BitmapColoring::updateBtnSelect);
     connect(ui->sb1Threshold, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setThreshold);
     connect(ui->btnSelectAreas, &QPushButton::clicked, this, &BitmapColoring::activateSelectTool);
-    connect(ui->btnApplyPrepare, &QPushButton::clicked, this, &BitmapColoring::traceLines);
+    connect(ui->btnApplyTrace, &QPushButton::clicked, this, &BitmapColoring::traceLines);
     // Thin
     connect(ui->sbSpotAreas, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setSpotArea);
     connect(ui->btnApplyThin, &QPushButton::clicked, this, &BitmapColoring::thinLines);
     // Finish
-    connect(ui->btnApplyFinish, &QPushButton::clicked, this, &BitmapColoring::blendLines);
+    connect(ui->btnApplyBlend, &QPushButton::clicked, this, &BitmapColoring::blendLines);
 
     updateUI();
 }
@@ -109,6 +109,7 @@ void BitmapColoring::updateUI()
         ui->tab2->setEnabled(false);
         ui->tab3->setEnabled(false);
     }
+    mScribblearea->updateCurrentFrame();
 }
 
 void BitmapColoring::visibilityChanged(bool visibility)
@@ -135,12 +136,6 @@ void BitmapColoring::colorMethodChanged()
         ui->cb2FinishBlack->setEnabled(true);
         ui->cb2TraceBlack->setChecked(true);
     }
-}
-
-void BitmapColoring::activateSelectTool()
-{
-    ToolManager* tool = mEditor->tools();
-    tool->setCurrentTool(SELECT);
 }
 
 void BitmapColoring::checkBlackBoxes()
@@ -260,6 +255,21 @@ void BitmapColoring::updateBtnSelect()
     }
 }
 
+void BitmapColoring::activateSelectTool()
+{
+    if (!mSelectAreas)
+    {
+        mSelectAreas = true;
+        ui->btnSelectAreas->setIcon(QIcon(":/icons/select_ok.png"));
+        ToolManager* tool = mEditor->tools();
+        tool->setCurrentTool(SELECT);
+    }
+    else {
+        mSelectAreas = false;
+        ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
+    }
+}
+
 void BitmapColoring::setThreshold(int threshold)
 {
     mBitmapImage->setThreshold(threshold);
@@ -267,33 +277,39 @@ void BitmapColoring::setThreshold(int threshold)
 
 void BitmapColoring::traceLines()
 {
+    if (mSelectAreas && !mScribblearea->isSomethingSelected())
+    {
+        QMessageBox::information(this, tr("No selection!"), tr("Please select area with select tool..."));
+        return;
+    }
+
     if (ui->cb3TraceAllKeyframes->isChecked())
     {
-        QProgressDialog progress(tr("Tracing lines in bitmaps..."), tr("Abort"), 0, 100, this);
-        hideQuestionMark(progress);
-        progress.setWindowModality(Qt::WindowModal);
-        progress.show();
+        QProgressDialog* mProgress = new QProgressDialog(tr("Tracing lines in bitmaps..."), tr("Abort"), 0, 100, this);
+        mProgress->setWindowModality(Qt::WindowModal);
+        mProgress->show();
         int keysToTrace = mLayerBitmap->keyFrameCount();
-        progress.setMaximum(keysToTrace);
+        mProgress->setMaximum(keysToTrace);
+        mProgress->setValue(0);
         int keysTraced = 0;
 
         for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
         {
             if (mLayerBitmap->keyExists(i))
             {
-                progress.setValue(keysTraced++);
+                mProgress->setValue(keysTraced++);
                 QApplication::processEvents();
                 mEditor->scrubTo(i);
                 if (ui->cb1Threshold->isChecked())
                     traceScansToTransparent();
                 prepareLines();
-                if (progress.wasCanceled())
+                if (mProgress->wasCanceled())
                 {
                     break;
                 }
             }
         }
-        progress.close();
+        mProgress->close();
     }
     else if (mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
@@ -379,52 +395,61 @@ void BitmapColoring::setSpotArea(int size)
 void BitmapColoring::thinLines()
 {
     if (mLayerBitmap == nullptr) { return; }
-    mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->layers()->currentLayer()->getMaxKeyFramePosition());
 
-    int firstFrame = 1, lastFrame = 1;
-    if (ui->cb3ThinAllKeyframes->isChecked())
+    if (!ui->cb3ThinAllKeyframes->isChecked())
     {
-        lastFrame = mLayerBitmap->getMaxKeyFramePosition();
-    }
-    else
-    {
-        firstFrame = mEditor->currentFrame();
-        lastFrame = firstFrame;
-    }
-
-    QProgressDialog progress(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
-    hideQuestionMark(progress);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-    int keysToThin = mLayerBitmap->keyFrameCount();
-    progress.setMaximum(keysToThin);
-    int keysThinned = 0;
-
-    for (int i = firstFrame; i <= lastFrame; i++)
-    {
-        if (mLayerBitmap->keyExists(i))
+        if (mLayerBitmap->keyExists(mEditor->currentFrame()))
         {
-            progress.setValue(keysThinned++);
-            QApplication::processEvents();
-            mEditor->scrubTo(i);
-            mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(i);
+            mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
             if (ui->cbSpotAreas->isChecked())
             {
-                mBitmapImage->fillSpotAreas(mLayerBitmap->getBitmapImageAtFrame(i));
+                mBitmapImage->fillSpotAreas(mBitmapImage);
             }
-
             mBitmapImage->toThinLine(mBitmapImage,
                                      ui->cb2ThinBlack->isChecked(),
                                      ui->cb2ThinRed->isChecked(),
                                      ui->cb2ThinGreen->isChecked(),
                                      ui->cb2ThinBlue->isChecked());
-            mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Thin lines"));
-            if (progress.wasCanceled())
+        }
+    }
+    else
+    {
+        QProgressDialog* mProgress = new QProgressDialog(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
+        mProgress->setWindowModality(Qt::WindowModal);
+        mProgress->show();
+        mProgress->setMaximum(mLayerBitmap->keyFrameCount());
+        mProgress->setValue(0);
+        int keysThinned = 0;
+
+        for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
+        {
+            if (mLayerBitmap->keyExists(i))
+            {
+                mEditor->scrubTo(i);
+                mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(i);
+                if (ui->cbSpotAreas->isChecked())
+                {
+                    mBitmapImage->fillSpotAreas(mBitmapImage);
+                }
+
+                mBitmapImage->toThinLine(mBitmapImage,
+                                         ui->cb2ThinBlack->isChecked(),
+                                         ui->cb2ThinRed->isChecked(),
+                                         ui->cb2ThinGreen->isChecked(),
+                                         ui->cb2ThinBlue->isChecked());
+                mEditor->backup(tr("Thin lines"));
+                keysThinned++;
+                mProgress->setValue(keysThinned);
+                QApplication::processEvents();
+            }
+            if (mProgress->wasCanceled())
             {
                 break;
             }
         }
+        mProgress->close();
     }
+    ui->cbSpotAreas->setChecked(false);
     updateUI();
 }
 
@@ -451,7 +476,7 @@ void BitmapColoring::blendLines()
     orgName.chop(2);
     LayerBitmap* artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(orgName));
 
-    int firstFrame = 1, lastFrame = 1;
+    int firstFrame = mLayerBitmap->firstKeyFramePosition(), lastFrame = 1;
     if (ui->cb3FinishAllKeyframes->isChecked())
     {
         lastFrame = mLayerBitmap->getMaxKeyFramePosition();

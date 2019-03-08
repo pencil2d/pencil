@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>234</width>
-    <height>344</height>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,6 +67,21 @@
        <string>Tracing</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_13">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
        <item>
         <widget class="QGroupBox" name="gb1Prepare">
          <property name="title">
@@ -374,7 +389,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="btnApplyPrepare">
+          <widget class="QPushButton" name="btnApplyTrace">
            <property name="text">
             <string>Apply</string>
            </property>
@@ -402,6 +417,21 @@
        <string>Thinning</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_15">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
        <item>
         <widget class="QGroupBox" name="gbSpotAreas">
          <property name="title">
@@ -694,6 +724,21 @@
        <string>Blending</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_12">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
        <item>
         <widget class="QGroupBox" name="gb2Finish">
          <property name="title">
@@ -904,7 +949,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="btnApplyFinish">
+          <widget class="QPushButton" name="btnApplyBlend">
            <property name="text">
             <string>Apply</string>
            </property>
