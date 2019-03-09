@@ -35,9 +35,9 @@ public slots:
     void checkRedBoxes();
     void checkGreenBoxes();
     void checkBlueBoxes();
-    void checkAllKeyframes();
-    void tabClicked(int index);
-    // 1: Prepare
+    void checkAllKeyframesBoxes();
+    void tabWidgetClicked(int index);
+    // 1: Trace
     void updateTraceBoxes();
     void updateBtnSelect();
     void activateSelectTool();
@@ -47,15 +47,16 @@ public slots:
     void updateThinBoxes();
     void setSpotArea(int size);
     void thinLines();
-    // 3: Finish
-    void updateFinishBoxes();
+    // 3: Blend
+    void updateBlendBoxes();
     void blendLines();
 
 protected:
     void traceScansToTransparent();
     void prepareLines();
-    void thinLayers();
-    void blendLayers(LayerBitmap* artLayer);
+    void trace();
+    void thin();
+    void blend(LayerBitmap* artLayer);
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;
