@@ -521,11 +521,11 @@ void BitmapColoring::blend(LayerBitmap *artLayer)
     mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
     if (ui->cbMethodSelector->currentIndex() == 1 && artLayer != nullptr)
     {
-        artLayer->getBitmapImageAtFrame(mEditor->currentFrame())->blendLines(artLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
-                                                           ui->cb2BlendBlack->isChecked(),
-                                                           ui->cb2BlendRed->isChecked(),
-                                                           ui->cb2BlendGreen->isChecked(),
-                                                           ui->cb2BlendBlue->isChecked());
+        artLayer->getBitmapImageAtFrame(mEditor->currentFrame())->traceLine(artLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
+                                                                            false,
+                                                                            false,
+                                                                            false,
+                                                                            false);
         mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
     }
     updateUI();
