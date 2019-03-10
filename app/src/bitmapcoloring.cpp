@@ -372,6 +372,7 @@ void BitmapColoring::blendLines()
     QString orgName = mLayerBitmap->name();
     orgName.chop(2);
     LayerBitmap* artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(orgName));
+    if (artLayer == nullptr) { return; }
 
     if (!ui->cb3BlendAllKeyframes->isChecked() && mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
@@ -442,7 +443,7 @@ void BitmapColoring::trace()
 {
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
     mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
-                                                   true,
+                                                   ui->cb2TraceBlack->isChecked(), // true;
                                                    ui->cb2TraceRed->isChecked(),
                                                    ui->cb2TraceGreen->isChecked(),
                                                    ui->cb2TraceBlue->isChecked());
@@ -475,12 +476,14 @@ void BitmapColoring::blend(LayerBitmap *artLayer)
     mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
     if (ui->cbMethodSelector->currentIndex() == 1 && artLayer != nullptr)
     {
+        mLayerBitmap = artLayer;
         artLayer->getBitmapImageAtFrame(mEditor->currentFrame())->traceLine(artLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
                                                                             false,
                                                                             false,
                                                                             false,
                                                                             false);
         mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
+        mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     }
     updateUI();
 }
