@@ -52,7 +52,6 @@ public slots:
     void blendLines();
 
 protected:
-    void traceScansToTransparent();
     void prepareLines();
     void trace();
     void thin();

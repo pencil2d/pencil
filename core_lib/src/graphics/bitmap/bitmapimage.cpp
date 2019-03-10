@@ -660,8 +660,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
     Q_ASSERT(bitmapimage != nullptr);
 
     BitmapImage* img = bitmapimage;
-    img->enableAutoCrop(true);
-    img->autoCrop();
+    img->enableAutoCrop(false);
 
     QRgb rgba;
     for (int x = img->left(); x <= img->right(); x++)
@@ -673,7 +672,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
             {
                 img->setPixel(x, y, transp);
             }   // IF Red line
-            else if(qRed(rgba) - 50 > qGreen(rgba))
+            else if(qRed(rgba) -40 > qGreen(rgba) && qRed(rgba) > qBlue(rgba))
             {
                 if (red)
                 {
@@ -684,7 +683,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
                     img->setPixel(x, y, transp);
                 }
             }   // IF Blue line
-            else if(qBlue(rgba) - 50 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
+            else if(qBlue(rgba) -40 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
             {
                 if (blue)
                 {
@@ -695,7 +694,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
                     img->setPixel(x, y, transp);
                 }
             }   // IF Green line
-            else if(qGreen(rgba) - 50 > qRed(rgba) &&  qGreen(rgba) > qBlue(rgba))
+            else if(qGreen(rgba) -40 > qRed(rgba) &&  qGreen(rgba) > qBlue(rgba))
             {
                 if (green)
                 {
@@ -765,7 +764,8 @@ void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool
 
 void BitmapImage::fillSpotAreas(BitmapImage *bitmapimage)
 {
-    if (bitmapimage == nullptr) { return; }
+    Q_ASSERT(bitmapimage != nullptr);
+
     BitmapImage* img = bitmapimage;
 
     // fill areas size 'area' or less with appropriate color

@@ -142,15 +142,8 @@ void BitmapColoring::checkBlackBoxes()
 {
     if (ui->cb2TraceBlack->isChecked())
     {
-        ui->cb2ThinBlack->show();
-        ui->cb2BlendBlack->show();
         ui->cb2ThinBlack->setChecked(ui->cb2TraceBlack->isChecked());
         ui->cb2BlendBlack->setChecked(ui->cb2TraceBlack->isChecked());
-    }
-    else
-    {
-        ui->cb2ThinBlack->hide();
-        ui->cb2BlendBlack->hide();
     }
 }
 
@@ -158,15 +151,8 @@ void BitmapColoring::checkRedBoxes()
 {
     if (ui->cb2TraceRed->isChecked())
     {
-        ui->cb2ThinRed->show();
-        ui->cb2BlendRed->show();
         ui->cb2ThinRed->setChecked(ui->cb2TraceRed->isChecked());
         ui->cb2BlendRed->setChecked(ui->cb2TraceRed->isChecked());
-    }
-    else
-    {
-        ui->cb2ThinRed->hide();
-        ui->cb2BlendRed->hide();
     }
 }
 
@@ -174,15 +160,8 @@ void BitmapColoring::checkGreenBoxes()
 {
     if (ui->cb2TraceGreen->isChecked())
     {
-        ui->cb2ThinGreen->show();
-        ui->cb2BlendGreen->show();
         ui->cb2ThinGreen->setChecked(ui->cb2TraceGreen->isChecked());
         ui->cb2BlendGreen->setChecked(ui->cb2TraceGreen->isChecked());
-    }
-    else
-    {
-        ui->cb2ThinGreen->hide();
-        ui->cb2BlendGreen->hide();
     }
 }
 
@@ -190,15 +169,8 @@ void BitmapColoring::checkBlueBoxes()
 {
     if (ui->cb2TraceBlue->isChecked())
     {
-        ui->cb2ThinBlue->show();
-        ui->cb2BlendBlue->show();
         ui->cb2ThinBlue->setChecked(ui->cb2TraceBlue->isChecked());
         ui->cb2BlendBlue->setChecked(ui->cb2TraceBlue->isChecked());
-    }
-    else
-    {
-        ui->cb2ThinBlue->hide();
-        ui->cb2BlendBlue->hide();
     }
 }
 
@@ -346,12 +318,9 @@ void BitmapColoring::thinLines()
 {
     if (mLayerBitmap == nullptr) { return; }
 
-    if (!ui->cb3ThinAllKeyframes->isChecked())
+    if (!ui->cb3ThinAllKeyframes->isChecked() && mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
-        if (mLayerBitmap->keyExists(mEditor->currentFrame()))
-        {
-            thin();
-        }
+        thin();
     }
     else
     {
@@ -366,10 +335,10 @@ void BitmapColoring::thinLines()
         {
             if (mLayerBitmap->keyExists(i))
             {
-                mEditor->scrubTo(i);
-                thin();
                 mProgress->setValue(keysThinned++);
                 QApplication::processEvents();
+                mEditor->scrubTo(i);
+                thin();
             }
             if (mProgress->wasCanceled())
             {
@@ -404,7 +373,7 @@ void BitmapColoring::blendLines()
     orgName.chop(2);
     LayerBitmap* artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(orgName));
 
-    if (!ui->cb3BlendAllKeyframes->isChecked())
+    if (!ui->cb3BlendAllKeyframes->isChecked() && mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
         blend(artLayer);
     }
@@ -436,28 +405,8 @@ void BitmapColoring::blendLines()
 }
 
 // protected functions
-void BitmapColoring::traceScansToTransparent()
-{
-    if (ui->cb1Threshold->isChecked())
-    {
-        mEditor->copy();
-        mEditor->layers()->currentLayer()->removeKeyFrame(mEditor->currentFrame());
-        mEditor->layers()->currentLayer()->addNewKeyFrameAt(mEditor->currentFrame());
-        mEditor->paste();
-    }
-    mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-    mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
-                                                   true,
-                                                   ui->cb2TraceRed->isChecked(),
-                                                   ui->cb2TraceGreen->isChecked(),
-                                                   ui->cb2TraceBlue->isChecked());
-}
-
 void BitmapColoring::prepareLines()
 {
-    if (mLayerBitmap == nullptr) { return; }
-    if (!mLayerBitmap->keyExists(mEditor->currentFrame())) { return; }
-
     LayerBitmap* colorLayer = nullptr;
     if (ui->cbMethodSelector->currentIndex() == 0)
     {           // if coloring is on same layer...
@@ -471,7 +420,8 @@ void BitmapColoring::prepareLines()
             mLayerBitmap->setHasColorLayer(true);
             colorLayer->setIsColorLayer(true);
         }
-        else {
+        else
+        {
             colorLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(mLayerBitmap->name() + "_C"));
         }
     }
@@ -490,8 +440,12 @@ void BitmapColoring::prepareLines()
 
 void BitmapColoring::trace()
 {
-    if (ui->cb1Threshold->isChecked())
-        traceScansToTransparent();
+    mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+    mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
+                                                   true,
+                                                   ui->cb2TraceRed->isChecked(),
+                                                   ui->cb2TraceGreen->isChecked(),
+                                                   ui->cb2TraceBlue->isChecked());
     prepareLines();
 }
 
