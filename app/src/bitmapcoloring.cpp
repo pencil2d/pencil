@@ -50,6 +50,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->cb2TraceGreen, &QCheckBox::stateChanged, this, &BitmapColoring::checkGreenBoxes);
     connect(ui->cb2TraceBlue, &QCheckBox::stateChanged, this, &BitmapColoring::checkBlueBoxes);
     connect(ui->cb3TraceAllKeyframes, &QCheckBox::stateChanged, this, &BitmapColoring::checkAllKeyframesBoxes);
+    connect(ui->btnResetTrace, &QPushButton::clicked, this, &BitmapColoring::resetColoringDock);
 
     // Prepare
     connect(ui->tabWidget, &QTabWidget::tabBarClicked, this, &BitmapColoring::tabWidgetClicked);
@@ -196,6 +197,16 @@ void BitmapColoring::tabWidgetClicked(int index)
     default:
         updateTraceBoxes();
     }
+}
+
+void BitmapColoring::resetColoringDock()
+{
+    ui->cbMethodSelector->setCurrentIndex(0);
+    ui->cb1Threshold->setChecked(false);
+    ui->cb2TraceRed->setChecked(false);
+    ui->cb2TraceGreen->setChecked(false);
+    ui->cb2TraceBlue->setChecked(false);
+    ui->cb3TraceAllKeyframes->setChecked(false);
 }
 
 // public Trace funtions
@@ -443,7 +454,7 @@ void BitmapColoring::trace()
 {
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
     mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
-                                                   ui->cb2TraceBlack->isChecked(), // true;
+                                                   ui->cb2TraceBlack->isChecked(),
                                                    ui->cb2TraceRed->isChecked(),
                                                    ui->cb2TraceGreen->isChecked(),
                                                    ui->cb2TraceBlue->isChecked());
@@ -476,14 +487,12 @@ void BitmapColoring::blend(LayerBitmap *artLayer)
     mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
     if (ui->cbMethodSelector->currentIndex() == 1 && artLayer != nullptr)
     {
-        mLayerBitmap = artLayer;
         artLayer->getBitmapImageAtFrame(mEditor->currentFrame())->traceLine(artLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
                                                                             false,
                                                                             false,
                                                                             false,
                                                                             false);
         mEditor->backup(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame(), tr("Blend lines"));
-        mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     }
     updateUI();
 }

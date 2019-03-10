@@ -37,6 +37,7 @@ public slots:
     void checkBlueBoxes();
     void checkAllKeyframesBoxes();
     void tabWidgetClicked(int index);
+    void resetColoringDock();
     // 1: Trace
     void updateTraceBoxes();
     void updateBtnSelect();
