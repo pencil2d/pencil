@@ -452,6 +452,13 @@ void BitmapColoring::prepareLines()
 
 void BitmapColoring::trace()
 {
+    if (mSelectAreas)
+    {
+        mEditor->copy();
+        mLayerBitmap->removeKeyFrame(mEditor->currentFrame());
+        mLayerBitmap->addNewKeyFrameAt(mEditor->currentFrame());
+        mEditor->paste();
+    }
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
     mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
                                                    ui->cb2TraceBlack->isChecked(),
