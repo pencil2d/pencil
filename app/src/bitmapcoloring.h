@@ -30,8 +30,6 @@ public:
 signals:
 
 public slots:
-    void colorMethodChanged();
-    void checkBlackBoxes();
     void checkRedBoxes();
     void checkGreenBoxes();
     void checkBlueBoxes();
