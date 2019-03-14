@@ -70,7 +70,7 @@ void ActiveFramePool::resize(int n)
 {
     n = std::min(n, 1500);
     n = std::max(n, 10);
-    mMaxSize = n;
+    mMaxSize = static_cast<unsigned>(n);
     discardLeastUsedFrames();
 }
 
