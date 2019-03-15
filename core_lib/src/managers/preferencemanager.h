@@ -68,6 +68,8 @@ enum class SETTING
     LAYOUT_LOCK,
     DRAW_ON_EMPTY_FRAME_ACTION,
     FRAME_POOL_SIZE,
+    ASK_FOR_PRESET,
+    DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };
 

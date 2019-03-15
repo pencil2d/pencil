@@ -68,6 +68,7 @@ GNU General Public License for more details.
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
+#include "presetdialog.h"
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -94,14 +95,41 @@ MainWindow2::MainWindow2(QWidget *parent) :
     ui->setupUi(this);
 
     // Initialize order
-    // 1. object 2. editor 3. scribble area 4. other widgets
-    Object* object = new Object();
-    object->init();
-    object->createDefaultLayers();
-
+    // 1. editor 2. object 3. scribble area 4. other widgets
     mEditor = new Editor(this);
     mEditor->setScribbleArea(ui->scribbleArea);
     mEditor->init();
+
+    Object* object = nullptr;
+    if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+    {
+        PresetDialog presetDialog(mEditor->preference(), this);
+        if (presetDialog.exec() == QDialog::Accepted)
+        {
+            FileManager fm(this);
+            object = fm.load(presetDialog.getPreset());
+            if (!fm.error().ok()) object = nullptr;
+        }
+    }
+    else {
+        int preset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+        if (preset > 0)
+        {
+            FileManager fm(this);
+            QString filePath = PresetDialog::getPresetPath(preset);
+            if (!filePath.isEmpty())
+            {
+                object = fm.load(filePath);
+                if (!fm.error().ok()) object = nullptr;
+            }
+        }
+    }
+    if (object == nullptr)
+    {
+        object = new Object();
+        object->init();
+    }
+    object->setFilePath(QString());
     mEditor->setObject(object);
 
     ui->scribbleArea->setEditor(mEditor);
@@ -448,7 +476,6 @@ void MainWindow2::newDocument(bool force)
     {
         Object* object = new Object();
         object->init();
-        object->createDefaultLayers();
         mEditor->setObject(object);
         mEditor->scrubTo(0);
         mEditor->view()->resetView();
@@ -642,6 +669,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 
     Status st = fm.save(mEditor->object(), strSavedFileName);
 
+
     if (!st.ok())
     {
 #if QT_VERSION >= 0x050400
@@ -669,6 +697,11 @@ bool MainWindow2::saveObject(QString strSavedFileName)
                                                            "Please be sure to include the following details in your issue:")), st.details().html());
         errorDialog.exec();
         return false;
+    }
+    else
+    {
+        mEditor->object()->setFilePath(strSavedFileName);
+        mEditor->object()->setModified(false);
     }
 
     QSettings settings(PENCIL2D, PENCIL2D);

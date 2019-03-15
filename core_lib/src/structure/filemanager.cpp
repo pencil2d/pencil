@@ -396,9 +396,6 @@ Status FileManager::save(Object* object, QString sFileName)
             deleteBackupFile(sBackupFile);
     }
 
-    object->setFilePath(sFileName);
-    object->setModified(false);
-
     progressForward();
 
     if (!saveLayersOK)

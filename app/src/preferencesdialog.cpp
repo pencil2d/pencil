@@ -19,12 +19,17 @@ GNU General Public License for more details.
 #include <QComboBox>
 #include <QMessageBox>
 #include <QSlider>
+#include <QDir>
+#include <QStandardPaths>
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
 #include "ui_filespage.h"
 #include "ui_toolspage.h"
 #include "util.h"
+#include "filemanager.h"
+#include "presetdialog.h"
+#include "errordialog.h"
 
 
 PreferencesDialog::PreferencesDialog(QWidget* parent) :
@@ -425,11 +430,39 @@ void TimelinePage::flipInbetweenMsecSpinboxChanged(int value)
     mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
 }
 
-
 FilesPage::FilesPage()
     : ui(new Ui::FilesPage)
 {
     ui->setupUi(this);
+
+    mPresetDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    if (!mPresetDir.exists("presets")) mPresetDir.mkpath("presets");
+    mPresetDir.cd("presets");
+    mPresets = new QSettings(mPresetDir.filePath("presets.ini"), QSettings::IniFormat, this);
+    bool ok = true;
+    foreach (const QString key, mPresets->allKeys())
+    {
+        int index = key.toInt(&ok);
+        if (!ok || index == 0 || !mPresetDir.exists(QString("%1.pclx").arg(index))) continue;
+        mMaxPresetIndex = qMax(mMaxPresetIndex, index);
+        QString name = mPresets->value(key, QString()).toString();
+        if (name.isEmpty()) continue;
+        QListWidgetItem *item = new QListWidgetItem(name);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        item->setData(Qt::UserRole, index);
+        ui->startupPresets->addItem(item);
+    }
+    QListWidgetItem *defaultItem = new QListWidgetItem("Default");
+    ui->startupPresets->addItem(defaultItem);
+    defaultItem->setData(Qt::UserRole, QVariant(0));
+    defaultItem->setBackground(this->palette().background());
+    mStartPreset = mDefaultPreset = defaultItem;
+
+    connect(ui->addPreset, &QPushButton::clicked, this, &FilesPage::addPreset);
+    connect(ui->removePreset, &QPushButton::clicked, this, &FilesPage::removePreset);
+    connect(ui->setDefaultPreset, &QPushButton::clicked, this, &FilesPage::setDefaultPreset);
+    connect(ui->askPresetCheckBox, &QCheckBox::stateChanged, this, &FilesPage::askForPresetChange);
+    connect(ui->startupPresets, &QListWidget::itemChanged, this, &FilesPage::presetChanged);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->autosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange);
@@ -441,10 +474,103 @@ FilesPage::~FilesPage()
     delete ui;
 }
 
+void FilesPage::addPreset()
+{
+    mMaxPresetIndex++;
+    FileManager fm(this);
+    Status st = fm.save(mManager->object(), PresetDialog::getPresetPath(mMaxPresetIndex));
+    if (!st.ok())
+    {
+        ErrorDialog errorDialog(st.title(),
+                                st.description().append(tr("<br><br>An error has occurred and your file may not have saved successfully."
+                                                           "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
+                                                           "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
+                                                           "Please be sure to include the following details in your issue:")), st.details().html());
+        errorDialog.exec();
+        return;
+    }
+    QListWidgetItem *newItem = new QListWidgetItem("Untitled Preset");
+    newItem->setFlags(newItem->flags() | Qt::ItemIsEditable);
+    newItem->setData(Qt::UserRole, QVariant(mMaxPresetIndex));
+    mStartPreset->setBackground(this->palette().light());
+    mStartPreset = newItem;
+    mStartPreset->setBackground(this->palette().background());
+    ui->startupPresets->addItem(newItem);
+    mManager->set(SETTING::DEFAULT_PRESET, mMaxPresetIndex);
+    mPresets->setValue(QString::number(mMaxPresetIndex), newItem->text());
+}
+
+void FilesPage::removePreset()
+{
+    if (ui->startupPresets->count() > 1 && !ui->startupPresets->selectedItems().empty())
+    {
+        bool ok = true;
+        foreach (const QListWidgetItem *item, ui->startupPresets->selectedItems())
+        {
+            int index = item->data(Qt::UserRole).toInt(&ok);
+            Q_ASSERT(ok);
+            if (index == 0) continue;
+            ui->startupPresets->takeItem(ui->startupPresets->row(item));
+            mPresets->remove(QString::number(index));
+            QFile presetFile(PresetDialog::getPresetPath(index));
+            if (presetFile.exists()) presetFile.remove();
+            if (item == mStartPreset)
+            {
+                mStartPreset = mDefaultPreset;
+                mStartPreset->setBackground(this->palette().background());
+                mManager->set(SETTING::DEFAULT_PRESET, 0);
+            }
+        }
+    }
+}
+
+void FilesPage::setDefaultPreset()
+{
+    QListWidgetItem *item = ui->startupPresets->selectedItems().last();
+    mStartPreset->setBackground(this->palette().light());
+    mStartPreset = item;
+    mStartPreset->setBackground(this->palette().background());
+    bool ok = true;
+    mManager->set(SETTING::DEFAULT_PRESET, item->data(Qt::UserRole).toInt(&ok));
+    Q_ASSERT(ok);
+}
+
+void FilesPage::presetChanged(QListWidgetItem *item)
+{
+    // Remove characters that may be problematic for ini files
+    item->setText(item->text().remove(QChar('@')).remove(QChar('/')).remove(QChar('\\')));
+
+    bool ok = true;
+    int index = item->data(Qt::UserRole).toInt(&ok);
+    Q_ASSERT(ok);
+    mPresets->setValue(QString::number(index), item->text());
+}
+
 void FilesPage::updateValues()
 {
+    ui->askPresetCheckBox->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
+    bool ok = true;
+    int defaultPreset = mManager->getInt(SETTING::DEFAULT_PRESET);
+    if (defaultPreset != mStartPreset->data(Qt::UserRole).toInt())
+    {
+        for (int i=0; i < ui->startupPresets->count(); i++)
+        {
+            if(ui->startupPresets->item(i)->data(Qt::UserRole).toInt(&ok) == defaultPreset)
+            {
+                mStartPreset->setBackground(this->palette().light());
+                mStartPreset = ui->startupPresets->item(i);
+                mStartPreset->setBackground(this->palette().background());
+            }
+            Q_ASSERT(ok);
+        }
+    }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+}
+
+void FilesPage::askForPresetChange(int b)
+{
+    mManager->set(SETTING::ASK_FOR_PRESET, b != Qt::Unchecked);
 }
 
 void FilesPage::autosaveChange(int b)
