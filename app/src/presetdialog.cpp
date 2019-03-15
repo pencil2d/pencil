@@ -43,6 +43,15 @@ QString PresetDialog::getPresetPath(int index)
     return QString();
 }
 
+int PresetDialog::exec()
+{
+    if (ui->presetComboBox->count() == 1)
+    {
+        return QDialog::Accepted;
+    }
+    return QDialog::exec();
+}
+
 void PresetDialog::initPresets()
 {
     // Make sure the standard data directory for this app exists and navigate to it

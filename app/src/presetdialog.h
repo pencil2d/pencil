@@ -23,6 +23,9 @@ public:
     QString getPreset();
     static QString getPresetPath(int index);
 
+public slots:
+    int exec() override;
+
 private:
     void initPresets();
 
