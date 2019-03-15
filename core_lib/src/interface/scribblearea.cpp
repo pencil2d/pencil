@@ -103,7 +103,7 @@ bool ScribbleArea::init()
     QPixmapCache::setCacheLimit(100 * 1024); // unit is kb, so it's 100MB cache
 
     int nLength = mEditor->layers()->animationLength();
-    mPixmapCacheKeys.resize(std::max(nLength, 240));
+    mPixmapCacheKeys.resize(static_cast<unsigned>(std::max(nLength, 240)));
 
     mNeedUpdateAll = false;
 
@@ -142,6 +142,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::MULTILAYER_ONION:
         mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
         updateAllFrames();
+        break;
     default:
         break;
     }
@@ -182,11 +183,11 @@ void ScribbleArea::updateFrame(int frame)
     Q_ASSERT(frame >= 0);
     if (mPixmapCacheKeys.size() <= static_cast<unsigned>(frame))
     {
-        mPixmapCacheKeys.resize(frame + 10); // a buffer
+        mPixmapCacheKeys.resize(static_cast<unsigned>(frame + 10)); // a buffer
     }
 
-    QPixmapCache::remove(mPixmapCacheKeys[frameNumber]);
-    mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+    QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(frameNumber)]);
+    mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::Key();
 
     update();
 }
@@ -538,7 +539,7 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
     if (currentTool()->isAdjusting())
     {
         currentTool()->stopAdjusting();
-        mEditor->tools()->setWidth(currentTool()->properties.width);
+        mEditor->tools()->setWidth(static_cast<float>(currentTool()->properties.width));
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
@@ -766,8 +767,8 @@ void ScribbleArea::paintBitmapBuffer()
 
     // Update the cache for the last key-frame.
     auto lastKeyFramePosition = mEditor->layers()->LastFrameAtFrame(frameNumber);
-    QPixmapCache::remove(mPixmapCacheKeys[lastKeyFramePosition]);
-    mPixmapCacheKeys[lastKeyFramePosition] = QPixmapCache::Key();
+    QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
+    mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)] = QPixmapCache::Key();
     layer->setModified(frameNumber, true);
 
     mBufferImg->clear();
@@ -810,8 +811,8 @@ void ScribbleArea::paintBitmapBufferRect(const QRect& rect)
         int frameNumber = mEditor->currentFrame();
         layer->setModified(frameNumber, true);
 
-        QPixmapCache::remove(mPixmapCacheKeys[frameNumber]);
-        mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+        QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(frameNumber)]);
+        mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::Key();
 
         drawCanvas(frameNumber, rect.adjusted(-1, -1, 1, 1));
         update(rect);
@@ -865,8 +866,8 @@ void ScribbleArea::paintCanvasCursor(QPainter& painter)
     mCursorCenterPos.setX(centerCal);
     mCursorCenterPos.setY(centerCal);
 
-    painter.drawPixmap(QPoint(mTransformedCursorPos.x() - mCursorCenterPos.x(),
-                              mTransformedCursorPos.y() - mCursorCenterPos.y()),
+    painter.drawPixmap(QPoint(static_cast<int>(mTransformedCursorPos.x() - mCursorCenterPos.x()),
+                              static_cast<int>(mTransformedCursorPos.y() - mCursorCenterPos.y())),
                        mCursorImg);
 
     // update center of transformed img for rect only
@@ -883,12 +884,12 @@ void ScribbleArea::updateCanvasCursor()
     qreal brushFeather = currentTool()->properties.feather;
     if (currentTool()->isAdjusting())
     {
-        mCursorImg = currentTool()->quickSizeCursor(brushWidth, brushFeather, scalingFac);
+        mCursorImg = currentTool()->quickSizeCursor(static_cast<float>(brushWidth), static_cast<float>(brushFeather), scalingFac);
     }
     else if (mEditor->preference()->isOn(SETTING::DOTTED_CURSOR))
     {
         bool useFeather = currentTool()->properties.useFeather;
-        mCursorImg = currentTool()->canvasCursor(brushWidth, brushFeather, useFeather, scalingFac, width());
+        mCursorImg = currentTool()->canvasCursor(static_cast<float>(brushWidth), static_cast<float>(brushFeather), useFeather, scalingFac, width());
     }
     else
     {
@@ -896,8 +897,8 @@ void ScribbleArea::updateCanvasCursor()
     }
 
     // update cursor rect
-    QPoint translatedPos = QPoint(mTransformedCursorPos.x() - mCursorCenterPos.x(),
-                                  mTransformedCursorPos.y() - mCursorCenterPos.y());
+    QPoint translatedPos = QPoint(static_cast<int>(mTransformedCursorPos.x() - mCursorCenterPos.x()),
+                                  static_cast<int>(mTransformedCursorPos.y() - mCursorCenterPos.y()));
 
     update(mTransCursImg.rect().adjusted(-1, -1, 1, 1)
            .translated(translatedPos));
@@ -979,13 +980,13 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         int curIndex = mEditor->currentFrame();
         int frameNumber = mEditor->layers()->LastFrameAtFrame(curIndex);
 
-        QPixmapCache::Key cachedKey = mPixmapCacheKeys[frameNumber];
+        QPixmapCache::Key cachedKey = mPixmapCacheKeys[static_cast<unsigned>(frameNumber)];
 
         if (!QPixmapCache::find(cachedKey, &mCanvas))
         {
             drawCanvas(mEditor->currentFrame(), event->rect());
 
-            mPixmapCacheKeys[frameNumber] = QPixmapCache::insert(mCanvas);
+            mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
             //qDebug() << "Repaint canvas!";
         }
     }
