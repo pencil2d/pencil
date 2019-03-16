@@ -18,7 +18,7 @@ class PresetDialog : public QDialog
 
 public:
     explicit PresetDialog(PreferenceManager *preferences, QWidget *parent = nullptr);
-    ~PresetDialog();
+    ~PresetDialog() override;
 
     QString getPreset();
     static QString getPresetPath(int index);

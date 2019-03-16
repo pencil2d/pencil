@@ -100,37 +100,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
     mEditor->setScribbleArea(ui->scribbleArea);
     mEditor->init();
 
-    Object* object = nullptr;
-    if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
-    {
-        PresetDialog presetDialog(mEditor->preference(), this);
-        if (presetDialog.exec() == QDialog::Accepted)
-        {
-            FileManager fm(this);
-            object = fm.load(presetDialog.getPreset());
-            if (!fm.error().ok()) object = nullptr;
-        }
-    }
-    else {
-        int preset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
-        if (preset > 0)
-        {
-            FileManager fm(this);
-            QString filePath = PresetDialog::getPresetPath(preset);
-            if (!filePath.isEmpty())
-            {
-                object = fm.load(filePath);
-                if (!fm.error().ok()) object = nullptr;
-            }
-        }
-    }
-    if (object == nullptr)
-    {
-        object = new Object();
-        object->init();
-    }
-    object->setFilePath(QString());
-    mEditor->setObject(object);
+    loadNewObject();
 
     ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
@@ -474,9 +444,7 @@ void MainWindow2::newDocument(bool force)
 {
     if (force || maybeSave())
     {
-        Object* object = new Object();
-        object->init();
-        mEditor->setObject(object);
+        loadNewObject();
         mEditor->scrubTo(0);
         mEditor->view()->resetView();
 
@@ -1088,6 +1056,41 @@ void MainWindow2::resetAndDockAllSubWidgets()
         dock->setFloating(false);
         dock->show();
     }
+}
+
+bool MainWindow2::loadNewObject()
+{
+    Object* object = nullptr;
+    if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+    {
+        PresetDialog presetDialog(mEditor->preference(), this);
+        if (presetDialog.exec() == QDialog::Accepted)
+        {
+            FileManager fm(this);
+            object = fm.load(presetDialog.getPreset());
+            if (!fm.error().ok()) object = nullptr;
+        }
+    }
+    else {
+        int preset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+        if (preset > 0)
+        {
+            FileManager fm(this);
+            QString filePath = PresetDialog::getPresetPath(preset);
+            if (!filePath.isEmpty())
+            {
+                object = fm.load(filePath);
+                if (!fm.error().ok()) object = nullptr;
+            }
+        }
+    }
+    if (object == nullptr)
+    {
+        object = new Object();
+        object->init();
+    }
+    object->setFilePath(QString());
+    mEditor->setObject(object);
 }
 
 void MainWindow2::readSettings()
