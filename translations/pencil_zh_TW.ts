@@ -860,7 +860,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
-        <source>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</source>
+        <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -877,72 +877,72 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
         <source>Could not open file</source>
         <translation>無法開啟檔案</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="59"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
         <translation>檔案不存在所以無法開啟。請檢查檔案路徑。</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="113"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="237"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="252"/>
         <source>Invalid Save Path</source>
         <translation>無效的路徑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="232"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>該路徑是一個目錄 (&quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="240"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>目錄不存在 (&quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="247"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>沒有寫入權限 (&quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="289"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
         <source>Cannot Create Data Directory</source>
         <translation>無法建立資料目錄</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="290"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>無法創建目錄 &quot;%1&quot;，請確定您有足夠權限。</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="299"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; 是個檔案，請刪除檔案再試一次。</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="390"/>
         <source>Miniz Error</source>
         <translation>Miniz 錯誤</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="407"/>
         <source>Internal Error</source>
         <translation>內部錯誤</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="384"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="401"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="391"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="408"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>發生內部錯誤，您的檔案可能沒有儲存成功。</translation>
     </message>
@@ -1031,102 +1031,117 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="96"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="97"/>
         <source>Czech</source>
         <translation>捷克語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="97"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="98"/>
         <source>Danish</source>
         <translation>丹麥語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="99"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>English</source>
         <translation>英語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="98"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="99"/>
         <source>German</source>
         <translation>德語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
         <source>Estonian</source>
         <translation>愛沙尼亞語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="102"/>
         <source>Spanish</source>
         <translation>西班牙語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="102"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="96"/>
+        <source>Catalan </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
+        <source>Greek</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
         <source>French</source>
         <translation>法語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
         <source>Hebrew</source>
         <translation>希伯來語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
         <source>Hungarian</source>
         <translation>匈牙利語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Indonesian</source>
         <translation>印尼語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Italian</source>
         <translation>義大利語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Japanese</source>
         <translation>日語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <source>Kabyle</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Polish</source>
         <translation>波蘭語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
         <source>Portuguese - Portugal</source>
         <translation>葡萄牙語 (葡萄牙)</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>Portuguese - Brazil</source>
         <translation>葡萄牙語 - 巴西</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Russian</source>
         <translation>俄語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
         <source>Slovenian</source>
         <translation>斯洛維尼雅語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>Vietnamese</source>
         <translation>越南語</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="117"/>
         <source>Chinese - China</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="118"/>
         <source>Chinese - Taiwan</source>
         <translation>中文 - 台灣</translation>
     </message>
@@ -1181,12 +1196,12 @@
         <translation>高解析度繪圖板</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="218"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="221"/>
         <source>Restart Required</source>
         <translation>需要重新啟動</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="219"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="222"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>會在下次打開 Pencil2D 時改變顯示語言</translation>
     </message>
@@ -1323,484 +1338,494 @@
         <translation>動畫</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="186"/>
-        <location filename="../app/ui/mainwindow2.ui" line="823"/>
+        <location filename="../app/ui/mainwindow2.ui" line="189"/>
+        <location filename="../app/ui/mainwindow2.ui" line="826"/>
         <source>Tools</source>
         <translation>工具</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="204"/>
+        <location filename="../app/ui/mainwindow2.ui" line="207"/>
         <source>Layer</source>
         <translation>圖層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="215"/>
-        <location filename="../app/ui/mainwindow2.ui" line="754"/>
+        <location filename="../app/ui/mainwindow2.ui" line="218"/>
+        <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Help</source>
         <translation>幫助</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="231"/>
+        <location filename="../app/ui/mainwindow2.ui" line="234"/>
         <source>Windows</source>
         <translation>視窗</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="250"/>
+        <location filename="../app/ui/mainwindow2.ui" line="253"/>
         <source>New</source>
         <translation>新增</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <location filename="../app/ui/mainwindow2.ui" line="262"/>
         <source>Open</source>
         <translation>開啟</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="268"/>
+        <location filename="../app/ui/mainwindow2.ui" line="271"/>
         <source>Save</source>
         <translation>儲存</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="286"/>
+        <location filename="../app/ui/mainwindow2.ui" line="289"/>
         <source>Exit</source>
         <translation>離開</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="291"/>
-        <location filename="../app/ui/mainwindow2.ui" line="319"/>
+        <location filename="../app/ui/mainwindow2.ui" line="294"/>
+        <location filename="../app/ui/mainwindow2.ui" line="322"/>
         <source>Image Sequence...</source>
         <translation>連續圖像...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="296"/>
-        <location filename="../app/ui/mainwindow2.ui" line="314"/>
+        <location filename="../app/ui/mainwindow2.ui" line="299"/>
+        <location filename="../app/ui/mainwindow2.ui" line="317"/>
         <source>Image...</source>
         <translation>圖像...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="301"/>
-        <location filename="../app/ui/mainwindow2.ui" line="324"/>
+        <location filename="../app/ui/mainwindow2.ui" line="304"/>
+        <location filename="../app/ui/mainwindow2.ui" line="327"/>
         <source>Movie...</source>
         <translation>影片...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="309"/>
-        <location filename="../app/ui/mainwindow2.ui" line="337"/>
+        <location filename="../app/ui/mainwindow2.ui" line="312"/>
+        <location filename="../app/ui/mainwindow2.ui" line="340"/>
         <source>Palette...</source>
         <translation>調色盤...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="332"/>
+        <location filename="../app/ui/mainwindow2.ui" line="335"/>
         <source>Sound...</source>
         <translation>音效...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="342"/>
+        <location filename="../app/ui/mainwindow2.ui" line="345"/>
         <source>Image Sequence Numbered...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="351"/>
+        <location filename="../app/ui/mainwindow2.ui" line="354"/>
         <source>Undo</source>
         <translation>復原</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="363"/>
+        <location filename="../app/ui/mainwindow2.ui" line="366"/>
         <source>Redo</source>
         <translation>重做</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="372"/>
+        <location filename="../app/ui/mainwindow2.ui" line="375"/>
         <source>Cut</source>
         <translation>剪下</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="381"/>
+        <location filename="../app/ui/mainwindow2.ui" line="384"/>
         <source>Copy</source>
         <translation>複製</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="390"/>
+        <location filename="../app/ui/mainwindow2.ui" line="393"/>
         <source>Paste</source>
         <translation>貼上</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="395"/>
+        <location filename="../app/ui/mainwindow2.ui" line="398"/>
         <source>Crop</source>
         <translation>裁剪</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="400"/>
+        <location filename="../app/ui/mainwindow2.ui" line="403"/>
         <source>Crop To Selection</source>
         <translation>裁剪至選擇區域</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="405"/>
+        <location filename="../app/ui/mainwindow2.ui" line="408"/>
         <source>Select All</source>
         <translation>全選</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="410"/>
+        <location filename="../app/ui/mainwindow2.ui" line="413"/>
         <source>Deselect All</source>
         <translation>取消全選</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="419"/>
-        <location filename="../app/ui/mainwindow2.ui" line="618"/>
+        <location filename="../app/ui/mainwindow2.ui" line="422"/>
+        <location filename="../app/ui/mainwindow2.ui" line="621"/>
         <source>Clear Frame</source>
         <translation>清除畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="424"/>
+        <location filename="../app/ui/mainwindow2.ui" line="427"/>
         <source>Preferences</source>
         <translation>偏好設定</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="432"/>
+        <location filename="../app/ui/mainwindow2.ui" line="435"/>
         <source>Reset Windows</source>
         <translation>重設視窗</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="441"/>
+        <location filename="../app/ui/mainwindow2.ui" line="444"/>
         <source>Zoom In</source>
         <translation>放大</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="450"/>
+        <location filename="../app/ui/mainwindow2.ui" line="453"/>
         <source>Zoom Out</source>
         <translation>縮小</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="455"/>
+        <location filename="../app/ui/mainwindow2.ui" line="458"/>
         <source>Rotate Clockwise</source>
         <translation>順時針旋轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="460"/>
+        <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate AntiClosewise</source>
         <translation>逆時針旋轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="465"/>
+        <location filename="../app/ui/mainwindow2.ui" line="468"/>
         <source>Reset Zoom/Rotate</source>
         <translation>重設縮放/旋轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="474"/>
+        <location filename="../app/ui/mainwindow2.ui" line="477"/>
         <source>Horizontal Flip</source>
         <translation>水平翻轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="483"/>
+        <location filename="../app/ui/mainwindow2.ui" line="486"/>
         <source>Vertical Flip</source>
         <translation>垂直翻轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="491"/>
+        <location filename="../app/ui/mainwindow2.ui" line="494"/>
         <source>Preview</source>
         <translation>預覽</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="499"/>
+        <location filename="../app/ui/mainwindow2.ui" line="502"/>
         <source>Grid</source>
         <translation>格線</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="511"/>
+        <location filename="../app/ui/mainwindow2.ui" line="514"/>
         <source>Previous</source>
         <translation>前一個</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="514"/>
+        <location filename="../app/ui/mainwindow2.ui" line="517"/>
         <source>Show previous onion skin</source>
         <translation>顯示先前描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="526"/>
+        <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Next</source>
         <translation>下一個</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="529"/>
+        <location filename="../app/ui/mainwindow2.ui" line="532"/>
         <source>Show next onion skin</source>
         <translation>顯示後續描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="538"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1388"/>
+        <location filename="../app/ui/mainwindow2.ui" line="541"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1392"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="550"/>
+        <location filename="../app/ui/mainwindow2.ui" line="553"/>
         <source>Loop</source>
         <translation>循環</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="559"/>
+        <location filename="../app/ui/mainwindow2.ui" line="562"/>
         <source>Next Frame</source>
         <translation>下一個畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="568"/>
+        <location filename="../app/ui/mainwindow2.ui" line="571"/>
         <source>Previous Frame</source>
         <translation>前一個畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="573"/>
+        <location filename="../app/ui/mainwindow2.ui" line="576"/>
         <source>Extend Frame</source>
         <translation>延伸畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="582"/>
+        <location filename="../app/ui/mainwindow2.ui" line="585"/>
         <source>Add Frame</source>
         <translation>加入畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="591"/>
+        <location filename="../app/ui/mainwindow2.ui" line="594"/>
         <source>Duplicate Frame</source>
         <translation>重製畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="600"/>
+        <location filename="../app/ui/mainwindow2.ui" line="603"/>
         <source>Remove Frame</source>
         <translation>移除畫格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="609"/>
+        <location filename="../app/ui/mainwindow2.ui" line="612"/>
         <source>Move</source>
         <translation>移動</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="627"/>
+        <location filename="../app/ui/mainwindow2.ui" line="630"/>
         <source>Select</source>
         <translation>選擇</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="636"/>
+        <location filename="../app/ui/mainwindow2.ui" line="639"/>
         <source>Brush</source>
         <translation>筆刷</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="645"/>
+        <location filename="../app/ui/mainwindow2.ui" line="648"/>
         <source>Polyline</source>
         <translation>折線</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="654"/>
+        <location filename="../app/ui/mainwindow2.ui" line="657"/>
         <source>Smudge</source>
         <translation>塗抹</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="663"/>
+        <location filename="../app/ui/mainwindow2.ui" line="666"/>
         <source>Pen</source>
         <translation>鋼筆</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="672"/>
+        <location filename="../app/ui/mainwindow2.ui" line="675"/>
         <source>Hand</source>
         <translation>手</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="681"/>
+        <location filename="../app/ui/mainwindow2.ui" line="684"/>
         <source>Pencil</source>
         <translation>鉛筆</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="690"/>
+        <location filename="../app/ui/mainwindow2.ui" line="693"/>
         <source>Bucket</source>
         <translation>顏料桶</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="699"/>
+        <location filename="../app/ui/mainwindow2.ui" line="702"/>
         <source>Eyedropper</source>
         <translation>取色器</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="708"/>
+        <location filename="../app/ui/mainwindow2.ui" line="711"/>
         <source>Eraser</source>
         <translation>橡皮擦</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="717"/>
+        <location filename="../app/ui/mainwindow2.ui" line="720"/>
         <source>New Bitmap Layer</source>
         <translation>新增點陣圖層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="726"/>
+        <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>New Vector Layer</source>
         <translation>新增向量圖層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="735"/>
+        <location filename="../app/ui/mainwindow2.ui" line="738"/>
         <source>New Sound Layer</source>
         <translation>新增音效層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="744"/>
+        <location filename="../app/ui/mainwindow2.ui" line="747"/>
         <source>New Camera Layer</source>
         <translation>新增攝影機層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="749"/>
+        <location filename="../app/ui/mainwindow2.ui" line="752"/>
         <source>Delete Current Layer</source>
         <translation>刪除目前圖層</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="759"/>
+        <location filename="../app/ui/mainwindow2.ui" line="762"/>
         <source>About</source>
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="764"/>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
+        <location filename="../app/ui/mainwindow2.ui" line="770"/>
         <source>Reset to default</source>
         <translation>重設為預設值</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="804"/>
+        <location filename="../app/ui/mainwindow2.ui" line="807"/>
         <source>MultiLayer Onion Skin</source>
         <translation>多重圖層描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="815"/>
+        <location filename="../app/ui/mainwindow2.ui" line="818"/>
         <source>Range</source>
         <translation>範圍</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="888"/>
+        <location filename="../app/ui/mainwindow2.ui" line="891"/>
         <source>Pencil2D Website</source>
         <translation>Pencil2D 網站</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="893"/>
+        <location filename="../app/ui/mainwindow2.ui" line="896"/>
         <source>Report a Bug</source>
         <translation>回報 BUG</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="898"/>
+        <location filename="../app/ui/mainwindow2.ui" line="901"/>
         <source>Quick Reference Guide</source>
         <translation>快速上手指南</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="901"/>
+        <location filename="../app/ui/mainwindow2.ui" line="904"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="906"/>
-        <location filename="../app/ui/mainwindow2.ui" line="911"/>
+        <location filename="../app/ui/mainwindow2.ui" line="909"/>
+        <location filename="../app/ui/mainwindow2.ui" line="914"/>
         <source>Animated GIF...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="916"/>
+        <location filename="../app/ui/mainwindow2.ui" line="919"/>
         <source>Check for Updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="921"/>
+        <location filename="../app/ui/mainwindow2.ui" line="924"/>
         <source>Pencil2D Forum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="926"/>
+        <location filename="../app/ui/mainwindow2.ui" line="929"/>
         <source>Pencil2D Discord</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="931"/>
+        <location filename="../app/ui/mainwindow2.ui" line="934"/>
         <source>200%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="936"/>
+        <location filename="../app/ui/mainwindow2.ui" line="939"/>
         <source>300%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="941"/>
+        <location filename="../app/ui/mainwindow2.ui" line="944"/>
         <source>400%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="946"/>
+        <location filename="../app/ui/mainwindow2.ui" line="949"/>
         <source>50%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="951"/>
+        <location filename="../app/ui/mainwindow2.ui" line="954"/>
         <source>33%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="956"/>
+        <location filename="../app/ui/mainwindow2.ui" line="959"/>
         <source>25%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="961"/>
+        <location filename="../app/ui/mainwindow2.ui" line="964"/>
         <source>100%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="777"/>
+        <location filename="../app/ui/mainwindow2.ui" line="969"/>
+        <source>Flip In-Between</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="974"/>
+        <source>Flip Rolling</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
+        <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next KeyFrame</source>
         <translation>下一個關鍵影格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="277"/>
+        <location filename="../app/ui/mainwindow2.ui" line="280"/>
         <source>Save As...</source>
         <translation>另存檔案為...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="790"/>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
+        <location filename="../app/ui/mainwindow2.ui" line="796"/>
         <source>Previous KeyFrame</source>
         <translation>前一個關鍵影格</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="831"/>
+        <location filename="../app/ui/mainwindow2.ui" line="834"/>
         <source>Timeline</source>
         <translation>時間軸</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="839"/>
+        <location filename="../app/ui/mainwindow2.ui" line="842"/>
         <source>Options</source>
         <translation>選項</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="847"/>
+        <location filename="../app/ui/mainwindow2.ui" line="850"/>
         <source>Color Wheel</source>
         <translation>色輪</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="855"/>
+        <location filename="../app/ui/mainwindow2.ui" line="858"/>
         <source>Color Palette</source>
         <translation>顏色調色盤</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="863"/>
+        <location filename="../app/ui/mainwindow2.ui" line="866"/>
         <source>Display Options</source>
         <translation>顯示選項</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="868"/>
+        <location filename="../app/ui/mainwindow2.ui" line="871"/>
         <source>Flip X</source>
         <translation>X翻轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="873"/>
+        <location filename="../app/ui/mainwindow2.ui" line="876"/>
         <source>Flip Y</source>
         <translation>Y翻轉</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="878"/>
+        <location filename="../app/ui/mainwindow2.ui" line="881"/>
         <source>Move Frame Forward</source>
         <translation>影格前移</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="883"/>
+        <location filename="../app/ui/mainwindow2.ui" line="886"/>
         <source>Move Frame Backward</source>
         <translation>影格後移</translation>
     </message>
@@ -1815,146 +1840,146 @@
         <translation>顏色屬性</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="358"/>
+        <location filename="../app/src/mainwindow2.cpp" line="360"/>
         <source>Lock Windows</source>
         <translation>鎖定視窗</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="378"/>
+        <location filename="../app/src/mainwindow2.cpp" line="380"/>
         <source>Open Recent</source>
         <translation>最近開啟的</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="412"/>
+        <location filename="../app/src/mainwindow2.cpp" line="414"/>
         <source>
 
  You have successfully cleared the list</source>
         <translation>成功清除清單</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="513"/>
-        <location filename="../app/src/mainwindow2.cpp" line="523"/>
-        <location filename="../app/src/mainwindow2.cpp" line="532"/>
-        <location filename="../app/src/mainwindow2.cpp" line="592"/>
+        <location filename="../app/src/mainwindow2.cpp" line="515"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
+        <location filename="../app/src/mainwindow2.cpp" line="534"/>
+        <location filename="../app/src/mainwindow2.cpp" line="594"/>
         <source>Could not open file</source>
         <translation>無法開啟檔案</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="514"/>
+        <location filename="../app/src/mainwindow2.cpp" line="516"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="524"/>
+        <location filename="../app/src/mainwindow2.cpp" line="526"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="533"/>
+        <location filename="../app/src/mainwindow2.cpp" line="535"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="542"/>
-        <location filename="../app/src/mainwindow2.cpp" line="705"/>
-        <location filename="../app/src/mainwindow2.cpp" line="764"/>
-        <location filename="../app/src/mainwindow2.cpp" line="840"/>
-        <location filename="../app/src/mainwindow2.cpp" line="986"/>
+        <location filename="../app/src/mainwindow2.cpp" line="544"/>
+        <location filename="../app/src/mainwindow2.cpp" line="707"/>
+        <location filename="../app/src/mainwindow2.cpp" line="766"/>
+        <location filename="../app/src/mainwindow2.cpp" line="842"/>
+        <location filename="../app/src/mainwindow2.cpp" line="988"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="543"/>
+        <location filename="../app/src/mainwindow2.cpp" line="545"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="549"/>
+        <location filename="../app/src/mainwindow2.cpp" line="551"/>
         <source>Opening document...</source>
         <translation>開啟文件...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="549"/>
-        <location filename="../app/src/mainwindow2.cpp" line="627"/>
-        <location filename="../app/src/mainwindow2.cpp" line="791"/>
-        <location filename="../app/src/mainwindow2.cpp" line="961"/>
+        <location filename="../app/src/mainwindow2.cpp" line="551"/>
+        <location filename="../app/src/mainwindow2.cpp" line="629"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
+        <location filename="../app/src/mainwindow2.cpp" line="963"/>
         <source>Abort</source>
         <translation>中止</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="593"/>
+        <location filename="../app/src/mainwindow2.cpp" line="595"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="627"/>
+        <location filename="../app/src/mainwindow2.cpp" line="629"/>
         <source>Saving document...</source>
         <translation>儲存文件...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="668"/>
+        <location filename="../app/src/mainwindow2.cpp" line="670"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;發現錯誤，你的檔案可能並未成功保存。如果你看見這個訊息，請到&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;協助回報錯誤&lt;br&gt;並附上以下錯誤細節訊息:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="706"/>
+        <location filename="../app/src/mainwindow2.cpp" line="708"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>動畫已經修改。你想要儲存檔案嗎?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="734"/>
+        <location filename="../app/src/mainwindow2.cpp" line="736"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>您的動畫還沒儲存。要現在儲存嗎?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="735"/>
+        <location filename="../app/src/mainwindow2.cpp" line="737"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>不要再問我</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="765"/>
+        <location filename="../app/src/mainwindow2.cpp" line="767"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>無法匯入圖片。&lt;br&gt;&lt;b&gt;提示&lt;/b&gt; 使用點陣圖層來匯入點陣圖</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="791"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
         <source>Importing image sequence...</source>
         <translation>匯入連續圖片</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="841"/>
-        <location filename="../app/src/mainwindow2.cpp" line="987"/>
+        <location filename="../app/src/mainwindow2.cpp" line="843"/>
+        <location filename="../app/src/mainwindow2.cpp" line="989"/>
         <source>was unable to import</source>
         <translation>無法匯入</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="919"/>
+        <location filename="../app/src/mainwindow2.cpp" line="921"/>
         <source>Illegal numbering</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="961"/>
+        <location filename="../app/src/mainwindow2.cpp" line="963"/>
         <source>Importing Animated GIF...</source>
         <translation>匯入GIF動畫</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1213"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1218"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1217"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1222"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1233"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1237"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>重做</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1383"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1387"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
@@ -1962,13 +1987,13 @@
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="364"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation>切換圖層</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="366"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
         <translation type="unfinished"/>
     </message>
@@ -3518,12 +3543,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
         <source>Could not open file</source>
         <translation>無法開啟檔案</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="32"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"/>
     </message>
@@ -3693,7 +3718,7 @@
 <context>
     <name>RecentFileMenu</name>
     <message>
-        <location filename="../core_lib/src/interface/recentfilemenu.h" line="38"/>
+        <location filename="../core_lib/src/interface/recentfilemenu.h" line="35"/>
         <source>Open Recent</source>
         <translation>最近開啟</translation>
     </message>
@@ -3706,60 +3731,60 @@
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="740"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="734"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="741"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="735"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>您在隱藏的圖層上繪製！請選擇其他圖層（或使目前圖層可看見）。</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2004"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1997"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>刪除選擇</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2020"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2028"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2013"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2021"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>清除</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2047"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2056"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2048"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2060"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2052"/>
         <source>Out of bound.</source>
         <translation>超出界線</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2061"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2053"/>
         <source>Could not find a closed path.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2062"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2054"/>
         <source>Could not find the root index.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2063"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2063"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
         <source>Flood fill error</source>
         <translation>填滿功能錯誤</translation>
     </message>
@@ -3974,12 +3999,12 @@
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="734"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="731"/>
         <source>Layer Properties</source>
         <translation>圖層屬性</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="735"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="732"/>
         <source>Layer name:</source>
         <translation>圖層名稱：</translation>
     </message>
@@ -4006,68 +4031,88 @@
 <context>
     <name>TimelinePage</name>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="20"/>
+        <location filename="../app/ui/timelinepage.ui" line="38"/>
         <source>Timeline</source>
         <translation>時間軸</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="40"/>
+        <location filename="../app/ui/timelinepage.ui" line="58"/>
         <source>Timeline length:</source>
         <comment>Preferences</comment>
         <translation>時間軸長度:</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="69"/>
+        <location filename="../app/ui/timelinepage.ui" line="87"/>
         <source>Drawing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="75"/>
+        <location filename="../app/ui/timelinepage.ui" line="93"/>
         <source>When drawing on an empty frame:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="82"/>
+        <location filename="../app/ui/timelinepage.ui" line="100"/>
         <source>Create a new (blank) key-frame and start drawing on it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="85"/>
+        <location filename="../app/ui/timelinepage.ui" line="103"/>
         <source>Create a new (blank) key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="95"/>
+        <location filename="../app/ui/timelinepage.ui" line="113"/>
         <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="98"/>
+        <location filename="../app/ui/timelinepage.ui" line="116"/>
         <source>Duplicate the previous key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="105"/>
+        <location filename="../app/ui/timelinepage.ui" line="123"/>
         <source>Keep drawing on the previous key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="117"/>
+        <location filename="../app/ui/timelinepage.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="142"/>
+        <location filename="../app/ui/timelinepage.ui" line="160"/>
         <source>Playback</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="154"/>
+        <location filename="../app/ui/timelinepage.ui" line="172"/>
         <source>Show onion skin while playing</source>
         <translation>播放動畫時顯示描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="59"/>
+        <location filename="../app/ui/timelinepage.ui" line="180"/>
+        <source>Flip and Roll</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="188"/>
+        <source>Maximum numbers of drawings in roll</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="240"/>
+        <source>Msecs per drawing in flip inbetween</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="289"/>
+        <source>Msecs per drawing in flip roll</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="77"/>
         <source>Short scrub</source>
         <translation type="unfinished"/>
     </message>
@@ -4352,37 +4397,37 @@
 <context>
     <name>ToolsPage</name>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="17"/>
+        <location filename="../app/ui/toolspage.ui" line="44"/>
         <source>Onion skin</source>
         <translation>描圖紙</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="23"/>
+        <location filename="../app/ui/toolspage.ui" line="50"/>
         <source>Maximum onion opacity %</source>
         <translation>最大透明度</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="49"/>
+        <location filename="../app/ui/toolspage.ui" line="76"/>
         <source>Minimum onion opacity %</source>
         <translation>最小透明度</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="75"/>
+        <location filename="../app/ui/toolspage.ui" line="102"/>
         <source>Number of previous onion frames shown</source>
         <translation>描圖紙: 顯示前方張數</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="104"/>
+        <location filename="../app/ui/toolspage.ui" line="131"/>
         <source>Number of next onion frames shown</source>
         <translation>描圖紙: 顯示後方張數</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="136"/>
+        <location filename="../app/ui/toolspage.ui" line="163"/>
         <source>Brush Tools</source>
         <translation>筆刷工具</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="142"/>
+        <location filename="../app/ui/toolspage.ui" line="169"/>
         <source>Use Quick Sizing</source>
         <translation>筆刷寬度快速調整</translation>
     </message>
