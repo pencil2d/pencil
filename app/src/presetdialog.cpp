@@ -1,5 +1,5 @@
-#include "PresetDialog.h"
-#include "ui_PresetDialog.h"
+#include "presetdialog.h"
+#include "ui_presetdialog.h"
 
 #include <QFile>
 #include <QStandardPaths>
