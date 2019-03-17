@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QTextStream>
 #include <QProgressDialog>
 #include <QApplication>
+#include <QFile>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -38,7 +39,7 @@ GNU General Public License for more details.
 Object::Object(QObject* parent) : QObject(parent)
 {
     setData(new ObjectData());
-    mActiveFramePool.reset(new ActiveFramePool(FRAME_POOL_SIZE));
+    mActiveFramePool.reset(new ActiveFramePool(400));
 }
 
 Object::~Object()
@@ -240,7 +241,7 @@ Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
     return nullptr;
 }
 
-bool Object::moveLayer(int i, int j)
+bool Object::swapLayers(int i, int j)
 {
     if (i < 0 || i >= mLayers.size())
     {
@@ -265,7 +266,6 @@ void Object::deleteLayer(int i)
 {
     if (i > -1 && i < mLayers.size())
     {
-        disconnect(mLayers[i], 0, 0, 0); // disconnect the layer from this object
         delete mLayers.takeAt(i);
     }
 }
@@ -276,7 +276,6 @@ void Object::deleteLayer(Layer* layer)
 
     if (it != mLayers.end())
     {
-        disconnect(layer, 0, 0, 0);
         delete layer;
         mLayers.erase(it);
     }
@@ -321,7 +320,7 @@ bool Object::isColourInUse(int index)
         Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
-            LayerVector* layerVector = (LayerVector*)layer;
+            LayerVector* layerVector = static_cast<LayerVector*>(layer);
 
             if (layerVector->usesColour(index))
             {
@@ -340,7 +339,7 @@ void Object::removeColour(int index)
         Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
-            LayerVector* layerVector = (LayerVector*)layer;
+            LayerVector* layerVector = static_cast<LayerVector*>(layer);
             layerVector->removeColour(index);
         }
     }
@@ -374,10 +373,8 @@ void Object::exportPaletteGPL(QFile& file)
     out << "Name: " << fileName << "\n";
     out << "#" << "\n";
 
-    for (int i = 0; i < mPalette.size(); i++)
+    for (ColourRef ref : mPalette)
     {
-        ColourRef ref = mPalette.at(i);
-
         QColor toRgb = ref.colour.toRgb();
         out << QString("%1 %2 %3").arg(toRgb.red()).arg(toRgb.green()).arg(toRgb.blue());
         out << " " << ref.name << "\n";
@@ -426,65 +423,69 @@ bool Object::exportPalette(QString filePath)
     return true;
 }
 
+/* Import the .gpl GIMP palette format.
+ *
+ * This functions supports importing both the old and new .gpl formats.
+ * This should load colors the same as GIMP, with the following intentional exceptions:
+ * - Whitespace before and after a name does not appear in the name
+ * - The last line is processed, even if there is not a trailing newline
+ * - Colours without a name will use our automatic naming system rather than "Untitled"
+ */
 void Object::importPaletteGPL(QFile& file)
 {
-
     QTextStream in(&file);
     QString line;
 
-    bool hashFound = false;
-    bool colorFound = false;
-    while (in.readLineInto(&line))
+    // First line must start with "GIMP Palette"
+    // Displaying an error here would be nice
+    in.readLineInto(&line);
+    if (!line.startsWith("GIMP Palette")) return;
+
+    in.readLineInto(&line);
+
+    // There are two GPL formats, the new one must start with "Name: " on the second line
+    if (line.startsWith("Name: "))
     {
-        quint8 red = 0;
-        quint8 green = 0;
-        quint8 blue = 0;
+        in.readLineInto(&line);
+        // The new format contains an optional thrid line starting with "Columns: "
+        if (line.startsWith("Columns: "))
+        {
+            // Skip to next line
+            in.readLineInto(&line);
+        }
+    }
+
+    // Colours inherit the value from the previous colour for missing channels
+    // Some palettes may rely on this behavior so we should try to replicate it
+    QColor prevColour(Qt::black);
+
+    do
+    {
+        // Ignore comments and empty lines
+        if (line.isEmpty() || line.startsWith("#")) continue;
+
+        int red = 0;
+        int green = 0;
+        int blue = 0;
 
         int countInLine = 0;
-        QString name;
+        QString name = "";
 
-        if (!colorFound)
+        for(const QString& snip : line.split(QRegExp("\\s|\\t"), QString::SkipEmptyParts))
         {
-            hashFound = (line == "#") ? true : false;
-        }
-
-        if (!hashFound)
-        {
-            continue;
-        }
-        else if (!colorFound)
-        {
-            colorFound = true;
-            continue;
-        }
-
-        for (QString snip : line.split(" "))
-        {
-            if (countInLine == 0) // assume red
+            switch (countInLine)
             {
+            case 0:
                 red = snip.toInt();
-            }
-            else if (countInLine == 1) // assume green
-            {
+                break;
+            case 1:
                 green = snip.toInt();
-            }
-            else if (countInLine == 2) // assume blue
-            {
+                break;
+            case 2:
                 blue = snip.toInt();
-            }
-            else
-            {
-
-                // assume last bit of line is a name
-                // gimp interprets as untitled
-                if (snip == "---")
-                {
-                    name = "untitled";
-                }
-                else
-                {
-                    name += snip + " ";
-                }
+                break;
+            default:
+                name += snip + " ";
             }
             countInLine++;
         }
@@ -492,11 +493,22 @@ void Object::importPaletteGPL(QFile& file)
         // trim additional spaces
         name = name.trimmed();
 
-        if (QColor(red, green, blue).isValid())
+        // Get values from previous colour if necessary
+        if (countInLine < 2) green = prevColour.green();
+        if (countInLine < 3) blue = prevColour.blue();
+
+        // GIMP assigns colours the name "Untitled" by default now
+        // so in addition to missing names, we also use automatic
+        // naming for this
+        if (name.isEmpty() || name == "Untitled") name = QString();
+
+        QColor colour(red, green, blue);
+        if (colour.isValid())
         {
-            mPalette.append(ColourRef(QColor(red,green,blue), name));
+            mPalette.append(ColourRef(colour, name));
+            prevColour = colour;
         }
-    }
+    } while (in.readLineInto(&line));
 }
 
 void Object::importPalettePencil(QFile& file)
@@ -602,7 +614,7 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             // paints the bitmap images
             if (layer->type() == Layer::BITMAP)
             {
-                LayerBitmap* layerBitmap = (LayerBitmap*)layer;
+                LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
 
                 BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
                 if (bitmap)
@@ -612,7 +624,7 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             // paints the vector images
             if (layer->type() == Layer::VECTOR)
             {
-                LayerVector* layerVector = (LayerVector*)layer;
+                LayerVector* layerVector = static_cast<LayerVector*>(layer);
                 VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
                 if (vec)
                     vec->paintImage(painter, false, false, antialiasing);
@@ -657,6 +669,8 @@ bool Object::exportFrames(int frameStart, int frameEnd,
                           QString filePath,
                           QString format,
                           bool transparency,
+                          bool exportKeyframesOnly,
+                          QString layerName,
                           bool antialiasing,
                           QProgressDialog* progress = nullptr,
                           int progressMax = 50)
@@ -677,6 +691,17 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         format = "JPG";
         extension = ".jpg";
         transparency = false; // JPG doesn't support transparency so we have to include the background
+    }
+    if (formatStr == "TIFF" || formatStr == "tiff" || formatStr == "TIF" || formatStr == "tif")
+    {
+        format = "TIFF";
+        extension = ".tiff";
+    }
+    if (formatStr == "BMP" || formatStr == "bmp")
+    {
+        format = "BMP";
+        extension = ".bmp";
+        transparency = false;
     }
     if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {
@@ -714,8 +739,16 @@ bool Object::exportFrames(int frameStart, int frameEnd,
             frameNumberString.prepend("0");
         }
         QString sFileName = filePath + frameNumberString + extension;
-
-        exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+        Layer* layer = findLayerByName(layerName);
+        if (exportKeyframesOnly)
+        {
+            if (layer->keyExists(currentFrame))
+                exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+        }
+        else
+        {
+            exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+        }
     }
 
     return true;
@@ -824,4 +857,9 @@ void Object::updateActiveFrames(int frame) const
             mActiveFramePool->put(key);
         }
     }
+}
+
+void Object::setActiveFramePoolSize(int n)
+{
+    mActiveFramePool->resize(n);
 }

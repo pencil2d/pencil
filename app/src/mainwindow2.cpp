@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include <QFile>
 #include <QMessageBox>
 #include <QProgressDialog>
-#include <QFileIconProvider>
 #include <QTabletEvent>
 
 // core_lib headers
@@ -105,7 +104,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
     mEditor->init();
     mEditor->setObject(object);
 
-    ui->scribbleArea->setCore(mEditor);
+    ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
 
     mEditor->setScribbleArea(ui->scribbleArea);
@@ -124,7 +123,6 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
 
-    //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
     mEditor->updateObject();
@@ -177,7 +175,6 @@ void MainWindow2::createDockWidgets()
         << mToolOptions
         << mToolBox;
 
-//    mColorInspector->setFloating(true);
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
 
@@ -201,7 +198,6 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     setDockNestingEnabled(true);
-    //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
     /*
     mPreview = new PreviewWidget( this );
@@ -227,14 +223,14 @@ void MainWindow2::createDockWidgets()
 
 void MainWindow2::createMenus()
 {
-    // ---------- File Menu -------------
+    //--- File Menu ---
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument);
     connect(ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument);
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument);
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow2::close);
 
-    /// --- Export Menu ---
+    //--- Export Menu ---
     //connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
     connect(ui->actionExport_Image, &QAction::triggered, mCommands, &ActionCommands::exportImage);
     connect(ui->actionExport_ImageSeq, &QAction::triggered, mCommands, &ActionCommands::exportImageSequence);
@@ -243,17 +239,18 @@ void MainWindow2::createMenus()
 
     connect(ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette);
 
-    /// --- Import Menu ---
+    //--- Import Menu ---
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
+    connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importImageSequenceNumbered);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
     connect(ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
 
-    /// --- Edit Menu ---
+    //--- Edit Menu ---
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::cut);
@@ -266,19 +263,26 @@ void MainWindow2::createMenus()
     connect(ui->actionDeselect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
-    /// --- Layer Menu ---
+    //--- Layer Menu ---
     connect(ui->actionNew_Bitmap_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewBitmapLayer);
     connect(ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewVectorLayer);
     connect(ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewSoundLayer);
     connect(ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer);
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
 
-    /// --- View Menu ---
+    //--- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
     connect(ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
     connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
+    connect(ui->actionZoom400, &QAction::triggered, mEditor->view(), &ViewManager::scale400);
+    connect(ui->actionZoom300, &QAction::triggered, mEditor->view(), &ViewManager::scale300);
+    connect(ui->actionZoom200, &QAction::triggered, mEditor->view(), &ViewManager::scale200);
+    connect(ui->actionZoom100, &QAction::triggered, mEditor->view(), &ViewManager::scale100);
+    connect(ui->actionZoom50, &QAction::triggered, mEditor->view(), &ViewManager::scale50);
+    connect(ui->actionZoom33, &QAction::triggered, mEditor->view(), &ViewManager::scale33);
+    connect(ui->actionZoom25, &QAction::triggered, mEditor->view(), &ViewManager::scale25);
     connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
     connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
 
@@ -291,7 +295,7 @@ void MainWindow2::createMenus()
     bindActionWithSetting(ui->actionOnionNext, SETTING::NEXT_ONION);
     bindActionWithSetting(ui->actionMultiLayerOnionSkin, SETTING::MULTILAYER_ONION);
 
-    /// --- Animation Menu ---
+    //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
     connect(ui->actionPlay, &QAction::triggered, mCommands, &ActionCommands::PlayStop);
 
@@ -304,6 +308,8 @@ void MainWindow2::createMenus()
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mEditor, &Editor::updateCurrentFrame);
+    connect(ui->actionFlip_inbetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipInBetween);
+    connect(ui->actionFlip_rolling, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::addNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
@@ -315,7 +321,7 @@ void MainWindow2::createMenus()
     connect(ui->actionMove_Frame_Forward, &QAction::triggered, mCommands, &ActionCommands::moveFrameForward);
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
 
-    /// --- Tool Menu ---
+    //--- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
     connect(ui->actionSelect, &QAction::triggered, mToolBox, &ToolBoxWidget::selectOn);
     connect(ui->actionBrush, &QAction::triggered, mToolBox, &ToolBoxWidget::brushOn);
@@ -329,10 +335,10 @@ void MainWindow2::createMenus()
     connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::eraserOn);
     connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools);
 
-    /// --- Window Menu ---
+    //--- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
     winMenu->clear();
-    QAction* actions[] =
+    const std::vector<QAction*> actions
     {
         mToolBox->toggleViewAction(),
         mToolOptions->toggleViewAction(),
@@ -359,14 +365,17 @@ void MainWindow2::createMenus()
     bindActionWithSetting(lockWidgets, SETTING::LAYOUT_LOCK);
     connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
 
-    // -------------- Help Menu ---------------
+    //--- Help Menu ---
     connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
     connect(ui->actionQuick_Guide, &QAction::triggered, mCommands, &ActionCommands::quickGuide);
-    connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
     connect(ui->actionWebsite, &QAction::triggered, mCommands, &ActionCommands::website);
+    connect(ui->actionForum, &QAction::triggered, mCommands, &ActionCommands::forum);
+    connect(ui->actionDiscord, &QAction::triggered, mCommands, &ActionCommands::discord);
+    connect(ui->actionCheck_for_Updates, &QAction::triggered, mCommands, &ActionCommands::checkForUpdates);
     connect(ui->actionReport_Bug, &QAction::triggered, mCommands, &ActionCommands::reportbug);
+    connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
 
-    // --------------- Menus ------------------
+    //--- Menus ---
     mRecentFileMenu = new RecentFileMenu(tr("Open Recent"), this);
     mRecentFileMenu->loadFromDisk();
     ui->menuFile->insertMenu(ui->actionSave, mRecentFileMenu);
@@ -400,7 +409,7 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty())
     {
         mRecentFileMenu->clear();
-        QMessageBox::information(this, 0,
+        QMessageBox::information(this, nullptr,
                                  tr("\n\n You have successfully cleared the list"),
                                  QMessageBox::Ok);
     }
@@ -504,8 +513,8 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     {
         ErrorDialog errorDialog(tr("Could not open file"),
                                 tr("The file you have selected is a directory, so we are unable to open it. "
-                                   "If you are are trying to open a project that uses the old structure, please "
-                                   "open the file ending with .pcl, not the data folder."),
+                                   "If you are are trying to open a project that uses the old structure, "
+                                   "please open the file ending with .pcl, not the data folder."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
         errorDialog.exec();
         return false;
@@ -513,8 +522,8 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     if (!fileInfo.exists())
     {
         ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("The file you have selected does not exist, so we are unable to open it. Please check "
-                                   "to make sure that you've entered the correct path and that the file is accessible and try again."),
+                                tr("The file you have selected does not exist, so we are unable to open it. "
+                                   "Please make sure that you've entered the correct path and that the file is accessible and try again."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
         errorDialog.exec();
         return false;
@@ -561,9 +570,9 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
         progress.setRange(0, max + 3);
     });
 
-    strFilePath = QFileInfo(strFilePath).absoluteFilePath();
+    QString fullPath = fileInfo.absoluteFilePath();
 
-    Object* object = fm.load(strFilePath);
+    Object* object = fm.load(fullPath);
 
     if (!fm.error().ok())
     {
@@ -572,18 +581,17 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
         dd << QString("Raw file path: ").append(strFilePath)
            << QString("Resolved file path: ").append(fileInfo.absoluteFilePath());
         dd.collect(error.details());
-        ErrorDialog errorDialog(error.title(),
-                                error.description(),
-                                dd.str());
+        ErrorDialog errorDialog(error.title(), error.description(), dd.str());
         errorDialog.exec();
         newDocument(true);
         return false;
     }
 
-    if (object == nullptr) {
+    if (object == nullptr)
+    {
         ErrorDialog errorDialog(tr("Could not open file"),
                                 tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
-                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fullPath));
         errorDialog.exec();
         newDocument(true);
         return false;
@@ -599,7 +607,6 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 
     setWindowTitle(object->filePath().prepend("[*]"));
     setWindowModified(false);
-    setWindowIcon(QFileIconProvider().icon(strFilePath));
 
     progress.setValue(progress.value() + 1);
 
@@ -610,7 +617,6 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     progress.setValue(progress.maximum());
 
     updateSaveState();
-
     return true;
 }
 
@@ -652,7 +658,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
         if (eLog.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             QTextStream out(&eLog);
-            out << st.details().str(); // .replace("<br>", "\n", Qt::CaseInsensitive);
+            out << st.details().str();
         }
         eLog.close();
 
@@ -766,7 +772,9 @@ void MainWindow2::importImage()
 
 void MainWindow2::importImageSequence()
 {
-    auto imageSeqDialog = new ImportImageSeqDialog(this);
+    ImportImageSeqDialog* imageSeqDialog = new ImportImageSeqDialog(this);
+    OnScopeExit(delete imageSeqDialog);
+
     imageSeqDialog->exec();
     if (imageSeqDialog->result() == QDialog::Rejected)
     {
@@ -791,26 +799,30 @@ void MainWindow2::importImageSequence()
 
     QString failedFiles;
     bool failedImport = false;
-    for (QString strImgFile : files)
+    for (const QString& strImgFile : files)
     {
         QString strImgFileLower = strImgFile.toLower();
 
         if (strImgFileLower.endsWith(".png") ||
             strImgFileLower.endsWith(".jpg") ||
             strImgFileLower.endsWith(".jpeg") ||
-            strImgFileLower.endsWith(".bmp"))
+            strImgFileLower.endsWith(".bmp") ||
+            strImgFileLower.endsWith(".tif") ||
+            strImgFileLower.endsWith(".tiff"))
         {
             mEditor->importImage(strImgFile);
 
             imagesImportedSoFar++;
             progress.setValue(imagesImportedSoFar);
-            QApplication::processEvents();  // Required to make progress bar update on-screen.
+            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
 
             if (progress.wasCanceled())
             {
                 break;
             }
-        } else {
+        }
+        else
+        {
             failedFiles += strImgFile + "\n";
             if (!failedImport)
             {
@@ -834,10 +846,102 @@ void MainWindow2::importImageSequence()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
-
     progress.close();
 
     mIsImportingImageSequence = false;
+}
+
+void MainWindow2::importImageSequenceNumbered()
+{
+    FileDialog fileDialog(this);
+    QString strFilePath = fileDialog.openFile(FileType::IMAGE);
+
+    if (strFilePath.isEmpty()) { return; }
+    if (!QFile::exists(strFilePath)) { return; }
+
+    addLayerByFilename(strFilePath);
+}
+
+void MainWindow2::addLayerByFilename(QString strFilePath)
+{
+    // local vars for testing file validity
+    int dot = strFilePath.lastIndexOf(".");
+    int slash = strFilePath.lastIndexOf("/");
+    QString fName = strFilePath.mid(slash + 1);
+    QString path = strFilePath.left(slash + 1);
+    QString digit = strFilePath.mid(slash + 1, dot - slash - 1);
+
+    // Find number of digits (min: 1, max: digit.length - 1)
+    int digits = 0;
+    for (int i = digit.length() - 1; i > 0; i--)
+    {
+        if (digit.at(i).isDigit())
+        {
+            digits++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    if (digits < 1) { return; }
+    digit = strFilePath.mid(dot - digits, digits);
+    QString prefix = strFilePath.mid(slash + 1, dot - slash - digits - 1);
+    QString suffix = strFilePath.mid(dot, strFilePath.length() - 1);
+
+    QDir dir = strFilePath.left(strFilePath.lastIndexOf("/"));
+    QStringList sList = dir.entryList(QDir::Files, QDir::Name);
+    if (sList.isEmpty()) { return; }
+
+    // List of files is not empty. Let's go find the relevant files
+    QStringList finalList;
+    int validLength = prefix.length() + digit.length() + suffix.length();
+    for (int i = 0; i < sList.size(); i++)
+    {
+        if (sList[i].startsWith(prefix) &&
+                sList[i].length() == validLength &&
+                sList[i].mid(sList[i].lastIndexOf(".") - digits, digits).toInt() > 0 &&
+                sList[i].endsWith(suffix))
+        {
+            finalList.append(sList[i]);
+        }
+    }
+    if (finalList.isEmpty()) { return; }
+
+    // List of relevant files is not empty. Let's validate them
+    dot = finalList[0].lastIndexOf(".");
+
+    QString msg = "";
+    for (int i = 0; i < finalList.size(); i++)
+    {
+        if (!(finalList[i].mid(dot - digits, digits).toInt()
+                && (finalList[i].mid(dot - digits, digits).toInt() > 0)))
+        {
+            msg = tr("Illegal numbering");
+        }
+        if (msg.length() > 0)
+        {
+            QMessageBox msgBox;
+            msgBox.setText(msg);
+            msgBox.exec();
+            return;
+        }
+    }
+    prefix = mCommands->nameSuggest(prefix);
+    mEditor->layers()->createBitmapLayer(prefix);
+    Layer *layer = mEditor->layers()->findLayerByName(prefix);
+    Q_ASSERT(layer != nullptr);
+    LayerManager* lMgr = mEditor->layers();
+    lMgr->setCurrentLayer(layer);
+    for (int i = 0; i < finalList.size(); i++)
+    {
+        mEditor->scrubTo(finalList[i].mid(dot - digits, digits).toInt());
+        bool ok = mEditor->importImage(path + finalList[i]);
+        if (!ok) { return;}
+        layer->addNewKeyFrameAt(finalList[i].mid(dot - digits, digits).toInt());
+    }
+    ui->scribbleArea->updateCurrentFrame();
+    mTimeLine->updateContent();
 }
 
 void MainWindow2::importGIF()
@@ -860,24 +964,25 @@ void MainWindow2::importGIF()
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
-    bool failedImport = false;
+    bool importOK = true;
     QString strImgFileLower = gifDialog->getFilePath();
 
     if (strImgFileLower.endsWith(".gif"))
     {
-        mEditor->importGIF(strImgFileLower, space);
+        bool ok = mEditor->importGIF(strImgFileLower, space);
+        if (!ok)
+            importOK = false;
 
         progress.setValue(50);
-        QApplication::processEvents();  // Required to make progress bar update on-screen.
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
 
-    } else {
-        if (!failedImport)
-        {
-            failedImport = true;
-        }
+    }
+    else
+    {
+        importOK = false;
     }
 
-    if (failedImport)
+    if (!importOK)
     {
         QMessageBox::warning(this,
                              tr("Warning"),
@@ -1022,6 +1127,13 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionReset_View->setShortcut(cmdKeySeq(CMD_RESET_ZOOM_ROTATE));
     ui->actionZoom_In->setShortcut(cmdKeySeq(CMD_ZOOM_IN));
     ui->actionZoom_Out->setShortcut(cmdKeySeq(CMD_ZOOM_OUT));
+    ui->actionZoom400->setShortcut(cmdKeySeq(CMD_ZOOM_400));
+    ui->actionZoom300->setShortcut(cmdKeySeq(CMD_ZOOM_300));
+    ui->actionZoom200->setShortcut(cmdKeySeq(CMD_ZOOM_200));
+    ui->actionZoom100->setShortcut(cmdKeySeq(CMD_ZOOM_100));
+    ui->actionZoom50->setShortcut(cmdKeySeq(CMD_ZOOM_50));
+    ui->actionZoom33->setShortcut(cmdKeySeq(CMD_ZOOM_33));
+    ui->actionZoom25->setShortcut(cmdKeySeq(CMD_ZOOM_25));
     ui->actionRotate_Clockwise->setShortcut(cmdKeySeq(CMD_ROTATE_CLOCK));
     ui->actionRotate_Anticlosewise->setShortcut(cmdKeySeq(CMD_ROTATE_ANTI_CLOCK));
     ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_FLIP_HORIZONTAL));
@@ -1042,6 +1154,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
+    ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
+    ui->actionFlip_rolling->setShortcut(cmdKeySeq(CMD_FLIP_ROLLING));
 
     ShortcutFilter* shortcutfilter = new ShortcutFilter(ui->scribbleArea, this);
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
@@ -1189,7 +1303,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::duplicateKeyClick, mCommands, &ActionCommands::duplicateKey);
 
     connect(pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound);
-    connect(pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps);
+    connect(pTimeline, &TimeLine::fpsChanged, pPlaybackManager, &PlaybackManager::setFps);
 
     connect(pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
@@ -1263,7 +1377,7 @@ void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
 void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
-    statusBar()->showMessage(QString("Zoom: %0%1").arg(zoom, 0, 'f', 1).arg("%"));
+    statusBar()->showMessage(QString("Zoom: %0%1").arg(static_cast<double>(zoom), 0, 'f', 1).arg("%"));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

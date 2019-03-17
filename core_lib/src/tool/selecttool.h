@@ -34,10 +34,11 @@ public:
 
 private:
 
-    void mousePressEvent(QMouseEvent*) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
-    bool keyPressEvent(QKeyEvent *event) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
+
+    bool keyPressEvent(QKeyEvent* event) override;
 
     QPointF whichAnchorPoint();
     void controlOffsetOrigin();
@@ -48,14 +49,11 @@ private:
     inline bool isSelectionPointValid() { return mAnchorOriginPoint != getLastPoint(); }
     bool maybeDeselect();
 
-
     // Store selection origin so we can calculate
     // the selection rectangle in mousePressEvent.
     QPointF mAnchorOriginPoint;
     MoveMode mOldMoveMode;
-
     Layer* mCurrentLayer = nullptr;
-
 };
 
 #endif

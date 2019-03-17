@@ -50,11 +50,10 @@ class LayerCamera : public Layer
     Q_OBJECT
 
 public:
-    // constructor
     LayerCamera(Object* object);
     ~LayerCamera();
 
-    void loadImageAtFrame(int frame, float dx, float dy, float rotate, float scale);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
     
     void editProperties() override;
     QDomElement createDomElement(QDomDocument& doc) override;
@@ -77,6 +76,8 @@ protected:
 private:
     void linearInterpolateTransform(Camera*);
 
+    int mFieldW = 800;
+    int mFieldH = 600;
     QRect viewRect;
     CameraPropertiesDialog* dialog = nullptr;
 };

@@ -26,10 +26,10 @@ GNU General Public License for more details.
     QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 
 #define PENCIL_IMAGE_FILTER \
-   QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)" )
+   QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
 
 #define PENCIL_IMAGE_SEQ_FILTER \
-    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);" )
+    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -111,6 +111,13 @@ enum StabilizationLevel
 #define CMD_ROTATE_CLOCK "CmdRotateClockwise"
 #define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClosewise"
 #define CMD_RESET_ZOOM_ROTATE "CmdResetZoomRotate"
+#define CMD_ZOOM_400 "CmdZoom400"
+#define CMD_ZOOM_300 "CmdZoom300"
+#define CMD_ZOOM_200 "CmdZoom200"
+#define CMD_ZOOM_100 "CmdZoom100"
+#define CMD_ZOOM_50 "CmdZoom50"
+#define CMD_ZOOM_33 "CmdZoom33"
+#define CMD_ZOOM_25 "CmdZoom25"
 #define CMD_FLIP_HORIZONTAL "CmdFlipHorizontal"
 #define CMD_FLIP_VERTICAL "CmdFlipVertical"
 #define CMD_PREVIEW "CmdPreview"
@@ -119,6 +126,8 @@ enum StabilizationLevel
 #define CMD_ONIONSKIN_NEXT "CmdOnionSkinNext"
 #define CMD_PLAY "CmdPlay"
 #define CMD_LOOP "CmdLoop"
+#define CMD_FLIP_INBETWEEN "CmdFlipInBetween"
+#define CMD_FLIP_ROLLING "CmdFlipRolling"
 #define CMD_GOTO_NEXT_FRAME "CmdGotoNextFrame"
 #define CMD_GOTO_PREV_FRAME "CmdGotoPreviousFrame"
 #define CMD_GOTO_NEXT_KEY_FRAME "CmdGotoNextKeyFrame"
@@ -174,6 +183,9 @@ enum StabilizationLevel
 #define SETTING_CURVE_SMOOTHING     "CurveSmoothing"
 #define SETTING_DISPLAY_EFFECT      "RenderEffect"
 #define SETTING_SHORT_SCRUB         "ShortScrub"
+#define SETTING_FPS                 "Fps"
+#define SETTING_FIELD_W             "FieldW"
+#define SETTING_FIELD_H             "FieldH"
 #define SETTING_FRAME_SIZE          "FrameSize"
 #define SETTING_TIMELINE_SIZE       "TimelineSize"
 #define SETTING_LABEL_FONT_SIZE     "LabelFontSize"
@@ -195,7 +207,9 @@ enum StabilizationLevel
 #define SETTING_ONION_BLUE       "OnionBlue"
 #define SETTING_ONION_RED        "OnionRed"
 
-#define SETTING_GRID_SIZE        "GridSize"
+#define SETTING_FRAME_POOL_SIZE "FramePoolSize"
+#define SETTING_GRID_SIZE_W      "GridSizeW"
+#define SETTING_GRID_SIZE_H      "GridSizeH"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
@@ -203,6 +217,10 @@ enum StabilizationLevel
 #define SETTING_ONION_NEXT_FRAMES_NUM   "OnionNextFramesNum"
 #define SETTING_ONION_WHILE_PLAYBACK    "OnionWhilePlayback"
 #define SETTING_ONION_TYPE              "OnionType"
+#define SETTING_FLIP_ROLL_MSEC          "FlipRoll"
+#define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
+#define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
+
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"
 

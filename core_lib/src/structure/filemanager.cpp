@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "filemanager.h"
 
+#include <clocale>
 #include <ctime>
 #include <QDir>
 #include "pencildef.h"
@@ -25,25 +26,26 @@ GNU General Public License for more details.
 #include "object.h"
 #include "layercamera.h"
 
+namespace
+{
+    QString openErrorTitle = QObject::tr("Could not open file");
+    QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
+                             "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
+                             "or you can try to use a backup file if you have one. If you contact us through one of "
+                             "our official channels we may be able to help you. For reporting issues, "
+                             "the best places to reach us are:");
+    QString contactLinks = "<ul>"
+                           "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
+                           "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
+                           "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
+                           "</ul>";
+}
 
-QString openErrorTitle = QObject::tr("Could not open file");
-QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
-                         "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
-                         "or you can try to use a backup file if you have one. If you contact us through one of "
-                         "our offical channels we may be able to help you. For reporting issues, "
-                         "the best places to reach us are:");
-QString contactLinks = "<ul>"
-                       "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
-                       "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
-                       "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
-                       "</ul>";
-
-
-FileManager::FileManager(QObject *parent) : QObject(parent),
+FileManager::FileManager(QObject* parent) : QObject(parent),
 mLog("FileManager")
 {
     ENABLE_DEBUG_LOG(mLog, false);
-    srand(time(nullptr));
+    srand(static_cast<uint>(time(nullptr)));
 }
 
 Object* FileManager::load(QString sFileName)
@@ -103,7 +105,7 @@ Object* FileManager::load(QString sFileName)
     if (!file.exists())
     {
         dd << "Main XML file does not exist";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
     if (!file.open(QFile::ReadOnly))
     {
@@ -117,21 +119,21 @@ Object* FileManager::load(QString sFileName)
     {
         qCDebug(mLog) << "Couldn't open the main XML file.";
         dd << "Error parsing or opening the main XML file";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
 
     QDomDocumentType type = xmlDoc.doctype();
     if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
     {
         dd << QString("Invalid main XML doctype: ").append(type.name());
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
 
     QDomElement root = xmlDoc.documentElement();
     if (root.isNull())
     {
         dd << "Main XML root node is null";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc.append(contactLinks)));
+        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
 
     loadPalette(obj);
@@ -206,6 +208,11 @@ bool FileManager::isOldForamt(const QString& fileName) const
 
 Status FileManager::save(Object* object, QString sFileName)
 {
+    // It's important that we save the file as En_US to avoid decimals being changed.
+    // issue: #940
+
+    std::setlocale(LC_NUMERIC, "En_US");
+
     DebugDetails dd;
     dd << "FileManager::save";
     dd << ("sFileName = " + sFileName);
@@ -332,6 +339,7 @@ Status FileManager::save(Object* object, QString sFileName)
 
     // -------- save main XML file -----------
     QFile file(sMainXMLFile);
+    std::setlocale(LC_ALL, "");
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);

@@ -167,7 +167,7 @@ QString FileDialog::openFileFilters( FileType fileType )
         case FileType::GIF: return tr("Animated GIF (*.gif)");
         case FileType::MOVIE: { Q_ASSERT(false); return PENCIL_MOVIE_EXT; } // currently not supported
         case FileType::SOUND: return tr( "Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)" );
-        case FileType::PALETTE: return tr( "Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)" );
+        case FileType::PALETTE: return tr( "Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)" );
         default: Q_ASSERT( false );
     }
     return "";
@@ -183,7 +183,7 @@ QString FileDialog::saveFileFilters( FileType fileType )
         case FileType::GIF: return tr("Animated GIF (*.gif)");
         case FileType::MOVIE: return tr( "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)" );
         case FileType::SOUND: return "";
-        case FileType::PALETTE: return tr( "Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)" );
+        case FileType::PALETTE: return tr( "Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)" );
         default: Q_ASSERT( false );
     }
     return "";

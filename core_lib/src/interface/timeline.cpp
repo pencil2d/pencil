@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include <QMessageBox>
 #include <QLabel>
 #include <QWheelEvent>
+#include <QSlider>
 
 #include "layer.h"
 #include "editor.h"
@@ -131,6 +132,16 @@ void TimeLine::initUI()
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
 
+    QLabel* zoomLabel = new QLabel(tr("Zoom:"));
+    zoomLabel->setIndent(5);
+
+    QSlider* zoomSlider = new QSlider(this);
+    zoomSlider->setRange(4, 40);
+    zoomSlider->setFixedWidth(74);
+    zoomSlider->setValue(mTracks->getFrameSize());
+    zoomSlider->setToolTip(tr("Adjust frame width"));
+    zoomSlider->setOrientation(Qt::Horizontal);
+
     QLabel* onionLabel = new QLabel(tr("Onion skin:"));
 
     QToolButton* onionTypeButton = new QToolButton(this);
@@ -142,6 +153,9 @@ void TimeLine::initUI()
     timelineButtons->addWidget(addKeyButton);
     timelineButtons->addWidget(removeKeyButton);
     timelineButtons->addWidget(duplicateKeyButton);
+    timelineButtons->addSeparator();
+    timelineButtons->addWidget(zoomLabel);
+    timelineButtons->addWidget(zoomSlider);
     timelineButtons->addSeparator();
     timelineButtons->addWidget(onionLabel);
     timelineButtons->addWidget(onionTypeButton);
@@ -198,11 +212,12 @@ void TimeLine::initUI()
     connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::addKeyClick);
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
+    connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
     connect(onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick);
 
-    connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);
-    connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick);
-    connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::updateLength);
+    connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);
+    connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);
+    connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::updateLength);
     connect(mTimeControls, &TimeControls::playButtonTriggered, this, &TimeLine::playButtonTriggered);
 
     connect(newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer);
@@ -328,7 +343,6 @@ void TimeLine::updateLength()
     int frameLength = getLength();
     mHScrollbar->setMaximum(qMax(0, frameLength - mTracks->width() / mTracks->getFrameSize()));
     mTimeControls->updateLength(frameLength);
-    update();
     updateContent();
 }
 
@@ -341,7 +355,7 @@ void TimeLine::updateContent()
 
 void TimeLine::setLoop(bool loop)
 {
-    mTimeControls->toggleLoop(loop);
+    mTimeControls->setLoop(loop);
 }
 
 void TimeLine::setPlaying(bool isPlaying)
@@ -352,7 +366,7 @@ void TimeLine::setPlaying(bool isPlaying)
 
 void TimeLine::setRangeState(bool range)
 {
-    mTimeControls->toggleLoopControl(range);
+    mTimeControls->setRangeState(range);
 }
 
 int TimeLine::getRangeLower()

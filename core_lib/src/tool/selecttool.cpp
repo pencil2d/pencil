@@ -16,17 +16,16 @@ GNU General Public License for more details.
 */
 #include "selecttool.h"
 
-#include <QMouseEvent>
-
+#include "pointerevent.h"
 #include "vectorimage.h"
 #include "editor.h"
+#include "strokemanager.h"
 #include "layervector.h"
 #include "scribblearea.h"
 #include "layermanager.h"
 #include "toolmanager.h"
 
-SelectTool::SelectTool(QObject* parent) :
-    BaseTool(parent)
+SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
 {
 }
 
@@ -36,24 +35,12 @@ void SelectTool::loadSettings()
     properties.feather = -1;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
-
 }
 
 QCursor SelectTool::cursor()
 {
     MoveMode mode = mScribbleArea->getMoveModeForSelectionAnchor();
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
-}
-
-void SelectTool::mousePressEvent(QMouseEvent* event)
-{
-
-    mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == NULL) return;
-    if (!mCurrentLayer->isPaintable()) { return; }
-    if (event->button() != Qt::LeftButton) { return; }
-
-    beginSelection();
 }
 
 void SelectTool::beginSelection()
@@ -67,7 +54,7 @@ void SelectTool::beginSelection()
     mScribbleArea->paintTransformedSelection();
     mScribbleArea->applyTransformedSelection();
 
-    if (mScribbleArea->isSomethingSelected())// there is something selected
+    if (mScribbleArea->isSomethingSelected()) // there is something selected
     {
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
@@ -82,7 +69,6 @@ void SelectTool::beginSelection()
         {
             mScribbleArea->mySelection.setTopLeft(getLastPoint());
             mScribbleArea->mySelection.setBottomRight(getLastPoint());
-
         }
     }
     else
@@ -98,35 +84,26 @@ QPointF SelectTool::whichAnchorPoint()
     return mScribbleArea->whichAnchorPoint(mAnchorOriginPoint);
 }
 
-void SelectTool::mouseReleaseEvent(QMouseEvent* event)
+void SelectTool::pointerPressEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == NULL) return;
-    if (event->button() != Qt::LeftButton) return;
+    if (mCurrentLayer == nullptr) return;
+    if (!mCurrentLayer->isPaintable()) { return; }
+    if (event->button() != Qt::LeftButton) { return; }
 
-    if (maybeDeselect())
-    {
-        mScribbleArea->deselectAll();
-    } else {
-        keepSelection();
-    }
-
-    mScribbleArea->updateToolCursor();
-
-    mScribbleArea->updateCurrentFrame();
-    mScribbleArea->setAllDirty();
+    beginSelection();
 }
 
-void SelectTool::mouseMoveEvent(QMouseEvent* event)
+void SelectTool::pointerMoveEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == NULL) { return; }
+    if (mCurrentLayer == nullptr) { return; }
     if (!mCurrentLayer->isPaintable()) { return; }
     if (!mScribbleArea->isSomethingSelected()) { return; }
 
     mScribbleArea->updateToolCursor();
 
-    if (event->buttons() & Qt::LeftButton)
+    if (mScribbleArea->isPointerInUse()) // !mAnchorOriginPoint.isNull()
     {
         controlOffsetOrigin();
 
@@ -139,6 +116,34 @@ void SelectTool::mouseMoveEvent(QMouseEvent* event)
     }
 
     mScribbleArea->updateCurrentFrame();
+}
+
+void SelectTool::pointerReleaseEvent(PointerEvent* event)
+{
+    mCurrentLayer = mEditor->layers()->currentLayer();
+    if (mCurrentLayer == nullptr) return;
+    if (event->button() != Qt::LeftButton) return;
+
+    // if there's a small very small distance between current and last point
+    // discard the selection...
+    // TODO: improve by adding a timer to check if the user is deliberately selecting
+    if (QLineF(mAnchorOriginPoint, getCurrentPoint()).length() < 5.0)
+    {
+        mScribbleArea->deselectAll();
+    }
+    if (maybeDeselect())
+    {
+        mScribbleArea->deselectAll();
+    }
+    else
+    {
+        keepSelection();
+    }
+
+    mScribbleArea->updateToolCursor();
+
+    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->setAllDirty();
 }
 
 bool SelectTool::maybeDeselect()
@@ -154,8 +159,7 @@ void SelectTool::controlOffsetOrigin()
     if (mScribbleArea->getMoveMode() != MoveMode::NONE)
     {
         if (mCurrentLayer->type() == Layer::BITMAP) {
-            offset = QPointF(mScribbleArea->getTransformOffset().x(),
-                                 mScribbleArea->getTransformOffset().y()).toPoint();
+            offset = QPointF(mScribbleArea->getTransformOffset());
         }
 
         mScribbleArea->adjustSelection(offset.x(),offset.y(), mScribbleArea->myRotatedAngle);

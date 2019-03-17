@@ -29,21 +29,23 @@ GNU General Public License for more details.
 #include "object.h"
 #include "assert.h"
 
+class PointerEvent;
+
 class StrokeManager : public QObject
 {
 public:
     StrokeManager();
 
-    void tabletEvent(QTabletEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
+    void pointerPressEvent(PointerEvent* event);
+    void pointerMoveEvent(PointerEvent* event);
+    void pointerReleaseEvent(PointerEvent* event);
     void setPressure(float pressure);
     void setStabilizerLevel(int level);
 
     float getPressure() { return mTabletPressure; }
     int getStabilizerLevel() { return mStabilizerLevel; }
     bool isTabletInUse() { return mTabletInUse; }
+    void setTabletinUse(bool inUse) { mTabletInUse = inUse; }
 
     QList<QPointF> interpolateStroke();
     void interpolatePoll();
@@ -51,7 +53,7 @@ public:
     void interpolatePollAndPaint();
     void interpolateEnd();
     void smoothMousePos(QPointF pos);
-    QList<QPointF> meanInpolOp( QList<QPointF> points, qreal x, qreal y, qreal pressure );
+    QList<QPointF> meanInpolOp(QList<QPointF> points, qreal x, qreal y, qreal pressure);
     QList<QPointF> noInpolOp(QList<QPointF> points);
     QList<QPointF> tangentInpolOp(QList<QPointF> points);
 
@@ -60,14 +62,12 @@ public:
     QPointF getLastPixel() const { return mLastPixel; }
     QPointF getLastMeanPixel() const { return mLastInterpolated; }
     QPointF getMousePos() const { return mousePos; }
+    QPointF getCurrentPressPixel() const { return mCurrentPressPixel; }
 
 private:
-
     static const int STROKE_QUEUE_LENGTH = 3; // 4 points for cubic bezier
 
     void reset();
-
-    QPointF getEventPosition(QMouseEvent *);
 
     float pressure = 1.0f; // last pressure
     QQueue<QPointF> strokeQueue;
@@ -76,27 +76,23 @@ private:
     QTimer timer;
 
     QTime mSingleshotTime;
+    QPointF mCurrentPressPixel = { 0, 0 };
     QPointF mLastPressPixel2 = { 0, 0 };
     QPointF mLastPressPixel = { 0, 0 };
-    QPointF mCurrentPixel   = { 0, 0 };
-    QPointF mLastPixel      = { 0, 0 };
+    QPointF mCurrentPixel = { 0, 0 };
+    QPointF mLastPixel = { 0, 0 };
     QPointF mLastInterpolated = { 0, 0 };
     QPointF mousePos = { 0, 0 };
 
     QPointF m_previousTangent;
-    bool    hasTangent   = false;
+    bool    mHasTangent = false;
     int     previousTime = 0;
-
     bool    mStrokeStarted = false;
-
     bool    mTabletInUse = false;
     float   mTabletPressure = 1.f;
     int     mStabilizerLevel = 0;
-    QPointF mTabletPosition;
-    qreal mMeanPressure;
 
     clock_t m_timeshot;
-
 };
 
 #endif // STROKEMANAGER_H

@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "layer.h"
 
 class BitmapImage;
+class QDir;
 
 class LayerBitmap : public Layer
 {
@@ -42,6 +43,7 @@ protected:
 
 private:
     void loadImageAtFrame(QString strFilePath, QPoint topLeft, int frameNumber);
+    QString filePath(KeyFrame* key, const QDir& dataFolder) const;
     QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 };

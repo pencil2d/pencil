@@ -25,12 +25,14 @@ class ColourRef
 {
 public:
     ColourRef();
-    ColourRef(QColor theColour, QString theName = "");
+    ColourRef(QColor theColour, QString theName = QString());
     bool operator==(ColourRef colourRef1);
     bool operator!=(ColourRef colourRef1);
 
     QColor colour;
     QString name;
+
+    static QString getDefaultColorName(const QColor c);
 };
 
 QDebug& operator<<(QDebug debug, const ColourRef &colourRef);

@@ -30,9 +30,24 @@ GNU General Public License for more details.
 #include "object.h"
 #include "editor.h"
 #include "pencildef.h"
+#include "macosxnative.h"
 
 #include <CoreFoundation/CoreFoundation.h>
 
+namespace PlatformHandler
+{
+
+    void configurePlatformSpecificSettings()
+    {
+        MacOSXNative::removeUnwantedMenuItems();
+    }
+
+    bool isDarkMode()
+    {
+        return MacOSXNative::isDarkMode();
+    }
+
+}
 
 extern "C" {
 // this is not declared in Carbon.h anymore, but it's in the framework
@@ -59,11 +74,13 @@ void detectWhichOSX()
 void disableCoalescing()
 {
     SetMouseCoalescingEnabled(gIsMouseCoalecing, NULL);
+    //MacOSXNative::setMouseCoalescingEnabled(false);
 }
 
 void enableCoalescing()
 {
     SetMouseCoalescingEnabled(true, NULL);
+    //MacOSXNative::setMouseCoalescingEnabled(true);
 }
 
 void Editor::importMovie(QString filePath, int fps)

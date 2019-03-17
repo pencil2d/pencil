@@ -64,6 +64,7 @@
      <addaction name="actionImport_Image"/>
      <addaction name="actionImport_ImageSeq"/>
      <addaction name="actionImport_Movie"/>
+     <addaction name="actionImport_ImageSeqNum"/>
      <addaction name="actionImport_Gif"/>
      <addaction name="actionImport_Sound"/>
      <addaction name="separator"/>
@@ -130,10 +131,23 @@
      <addaction name="actionOnionNext"/>
      <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
+    <widget class="QMenu" name="menuZoom">
+     <property name="title">
+      <string>Zoom</string>
+     </property>
+     <addaction name="actionZoom400"/>
+     <addaction name="actionZoom300"/>
+     <addaction name="actionZoom200"/>
+     <addaction name="actionZoom100"/>
+     <addaction name="actionZoom50"/>
+     <addaction name="actionZoom33"/>
+     <addaction name="actionZoom25"/>
+    </widget>
     <addaction name="actionReset_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
+    <addaction name="menuZoom"/>
     <addaction name="separator"/>
     <addaction name="actionRotate_Clockwise"/>
     <addaction name="actionRotate_Anticlosewise"/>
@@ -166,6 +180,9 @@
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
+    <addaction name="separator"/>
+    <addaction name="actionFlip_inbetween"/>
+    <addaction name="actionFlip_rolling"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -204,6 +221,10 @@
     <addaction name="actionQuick_Guide"/>
     <addaction name="separator"/>
     <addaction name="actionWebsite"/>
+    <addaction name="actionForum"/>
+    <addaction name="actionDiscord"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheck_for_Updates"/>
     <addaction name="actionReport_Bug"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
@@ -317,6 +338,11 @@
   <action name="actionImport_Palette">
    <property name="text">
     <string>Palette...</string>
+   </property>
+  </action>
+  <action name="actionImport_ImageSeqNum">
+   <property name="text">
+    <string>Image Sequence Numbered...</string>
    </property>
   </action>
   <action name="actionUndo">
@@ -886,6 +912,66 @@
   <action name="actionExport_Animated_GIF">
    <property name="text">
     <string>Animated GIF...</string>
+   </property>
+  </action>
+  <action name="actionCheck_for_Updates">
+   <property name="text">
+    <string>Check for Updates</string>
+   </property>
+  </action>
+  <action name="actionForum">
+   <property name="text">
+    <string>Pencil2D Forum</string>
+   </property>
+  </action>
+  <action name="actionDiscord">
+   <property name="text">
+    <string>Pencil2D Discord</string>
+   </property>
+  </action>
+  <action name="actionZoom200">
+   <property name="text">
+    <string>200%</string>
+   </property>
+  </action>
+  <action name="actionZoom300">
+   <property name="text">
+    <string>300%</string>
+   </property>
+  </action>
+  <action name="actionZoom400">
+   <property name="text">
+    <string>400%</string>
+   </property>
+  </action>
+  <action name="actionZoom50">
+   <property name="text">
+    <string>50%</string>
+   </property>
+  </action>
+  <action name="actionZoom33">
+   <property name="text">
+    <string>33%</string>
+   </property>
+  </action>
+  <action name="actionZoom25">
+   <property name="text">
+    <string>25%</string>
+   </property>
+  </action>
+  <action name="actionZoom100">
+   <property name="text">
+    <string>100%</string>
+   </property>
+  </action>
+  <action name="actionFlip_inbetween">
+   <property name="text">
+    <string>Flip In-Between</string>
+   </property>
+  </action>
+  <action name="actionFlip_rolling">
+   <property name="text">
+    <string>Flip Rolling</string>
    </property>
   </action>
  </widget>

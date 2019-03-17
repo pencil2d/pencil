@@ -30,14 +30,16 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *) override;
-    void mouseReleaseEvent(QMouseEvent *) override;
-    void mouseMoveEvent(QMouseEvent *) override;
-    void mouseDoubleClickEvent(QMouseEvent *) override;
+    void pointerPressEvent(PointerEvent *) override;
+    void pointerReleaseEvent(PointerEvent *) override;
+    void pointerMoveEvent(PointerEvent *) override;
+    void pointerDoubleClickEvent(PointerEvent *) override;
 
 private:
+    void transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons);
+
     QPointF mLastPixel;
-    int mButtonsDown = 0;
+    bool mIsHeld = false;
 };
 
 #endif

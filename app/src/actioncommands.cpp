@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QDesktopServices>
 #include <QStandardPaths>
+#include <QFileDialog>
 
 #include "pencildef.h"
 #include "editor.h"
@@ -47,6 +48,7 @@ GNU General Public License for more details.
 #include "exportimagedialog.h"
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
+#include "checkupdatesdialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -195,6 +197,7 @@ Status ActionCommands::exportMovie(bool isGif)
     desc.exportSize = dialog->getExportSize();
     desc.strCameraName = dialog->getSelectedCameraName();
     desc.loop = dialog->getLoop();
+    desc.alpha = dialog->getTransparency();
 
     DoubleProgressDialog progressDlg;
     progressDlg.setWindowModality(Qt::WindowModal);
@@ -303,12 +306,13 @@ Status ActionCommands::exportImageSequence()
     QString strFilePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
+    bool exportKeyframesOnly = dialog->getExportKeyframesOnly();
     bool useTranparency = dialog->getTransparency();
     int startFrame = dialog->getStartFrame();
     int endFrame  = dialog->getEndFrame();
 
     QString sCameraLayerName = dialog->getCameraLayerName();
-    LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA));
 
     // Show a progress dialog, as this can take a while if you have lots of frames.
     QProgressDialog progress(tr("Exporting image sequence..."), tr("Abort"), 0, 100, mParent);
@@ -322,6 +326,8 @@ Status ActionCommands::exportImageSequence()
                                     strFilePath,
                                     exportFormat,
                                     useTranparency,
+                                    exportKeyframesOnly,
+                                    mEditor->layers()->currentLayer()->name(),
                                     true,
                                     &progress,
                                     100);
@@ -375,7 +381,7 @@ Status ActionCommands::exportImage()
 
     // Export
     QString sCameraLayerName = dialog->getCameraLayerName();
-    LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA));
 
     QTransform view = cameraLayer->getViewAtFrame(mEditor->currentFrame());
 
@@ -535,7 +541,7 @@ void ActionCommands::removeKey()
 void ActionCommands::duplicateKey()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) return;
+    if (layer == nullptr) return;
 
     KeyFrame* key = layer->getKeyFrameAt(mEditor->currentFrame());
     if (key == nullptr) return;
@@ -557,7 +563,8 @@ void ActionCommands::duplicateKey()
     }
     else
     {
-        key->setFileName(""); // don't share filename
+        dupKey->setFileName(""); // don't share filename
+        dupKey->modification();
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
@@ -594,7 +601,7 @@ Status ActionCommands::addNewBitmapLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Bitmap Layer"), &ok);
+                                         nameSuggest(tr("Bitmap Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createBitmapLayer(text);
@@ -607,12 +614,11 @@ Status ActionCommands::addNewVectorLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Vector Layer"), &ok);
+                                         nameSuggest(tr("Vector Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
     }
-
     return Status::OK;
 }
 
@@ -621,12 +627,11 @@ Status ActionCommands::addNewCameraLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Camera Layer"), &ok);
+                                         nameSuggest(tr("Camera Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createCameraLayer(text);
     }
-
     return Status::OK;
 }
 
@@ -635,15 +640,13 @@ Status ActionCommands::addNewSoundLayer()
     bool ok = false;
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
-                                                 tr("Sound Layer"), &ok);
+                                                 nameSuggest(tr("Sound Layer")), &ok);
     if (ok && !strLayerName.isEmpty())
     {
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
         mEditor->layers()->setCurrentLayer(layer);
-
-        return Status::OK;
-    }
-    return Status::FAIL;
+   }
+    return Status::OK;
 }
 
 Status ActionCommands::deleteCurrentLayer()
@@ -666,6 +669,33 @@ Status ActionCommands::deleteCurrentLayer()
         }
     }
     return Status::OK;
+}
+
+QString ActionCommands::nameSuggest(QString s)
+{
+    LayerManager* layerMgr = mEditor->layers();
+    // if no layers: return 's'
+    if (layerMgr->count() == 0)
+    {
+        return s;
+    }
+    QVector<QString> sLayers;
+    // fill Vector with layer names
+    for (int i = 0; i < layerMgr->count(); i++)
+    {
+        sLayers.append(layerMgr->getLayer(i)->name());
+    }
+    // if 's' is not in list, then return 's'
+    if (!sLayers.contains(s))
+    {
+        return s;
+    }
+    int j = 2;
+    QString tmp = s;
+    do {
+        tmp = s + " " + QString::number(j++);
+    } while (sLayers.contains(tmp));
+    return tmp;
 }
 
 
@@ -692,10 +722,29 @@ void ActionCommands::website()
     QDesktopServices::openUrl(QUrl(url));
 }
 
+void ActionCommands::forum()
+{
+    QString url = "https://discuss.pencil2d.org/";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::discord()
+{
+    QString url = "https://discord.gg/8FxdV2g";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
 void ActionCommands::reportbug()
 {
     QString url = "https://github.com/pencil2d/pencil/issues";
     QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::checkForUpdates()
+{
+    CheckUpdatesDialog dialog;
+    dialog.startChecking();
+    dialog.exec();
 }
 
 void ActionCommands::about()

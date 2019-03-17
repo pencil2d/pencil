@@ -41,7 +41,8 @@ struct CanvasPainterOptions
     bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
     bool  bGrid = false;
-    int   nGridSize = 50; /* This is the grid size IN PIXELS. The grid will scale with the image, though */
+    int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
+    int   nGridSizeH = 50; /* This is the grid Heigth IN PIXELS. The grid will scale with the image, though */
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;

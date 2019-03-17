@@ -49,7 +49,7 @@ void ToolOptionWidget::initUI()
     ui->sizeSlider->setValue(settings.value("brushWidth", "3").toDouble());
     ui->brushSpinBox->setValue(settings.value("brushWidth", "3").toDouble());
 
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, 2, 64);
+    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, 2, 200);
     ui->featherSlider->setValue(settings.value("brushFeather", "5").toDouble());
     ui->featherSpinBox->setValue(settings.value("brushFeather", "5").toDouble());
 
@@ -78,7 +78,7 @@ void ToolOptionWidget::updateUI()
     setVectorMergeEnabled(p.vectorMergeEnabled);
     setAA(p.useAA);
     setStabilizerLevel(p.stabilizerLevel);
-    setTolerance(p.tolerance);
+    setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
 }
 
@@ -132,7 +132,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
     case ANTI_ALIASING: setAA(p.useAA); break;
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
-    case TOLERANCE: setTolerance(p.tolerance); break;
+    case TOLERANCE: setTolerance(static_cast<int>(p.tolerance)); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case BEZIER: setBezier(p.bezier_state); break;
     default:

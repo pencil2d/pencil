@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 #include <QSettings>
 #include <QPixmap>
-#include <QMouseEvent>
+#include "pointerevent.h"
 
 #include "layermanager.h"
 #include "colormanager.h"
@@ -37,34 +37,32 @@ PencilTool::PencilTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-
 void PencilTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[VECTORMERGE] = false;
-    m_enabledProperties[STABILIZATION] = true;
-    m_enabledProperties[FILLCONTOUR] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[PRESSURE] = true;
+    mPropertyEnabled[VECTORMERGE] = false;
+    mPropertyEnabled[STABILIZATION] = true;
+    mPropertyEnabled[FILLCONTOUR] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.width = settings.value("pencilWidth").toDouble();
+    properties.width = settings.value("pencilWidth", 4).toDouble();
     properties.feather = 50;
-    properties.pressure = settings.value("pencilPressure").toBool();
-    properties.stabilizerLevel = settings.value("pencilLineStabilization").toInt();
+    properties.pressure = settings.value("pencilPressure", true).toBool();
+    properties.stabilizerLevel = settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt();
     properties.useAA = DISABLED;
     properties.useFeather = true;
     properties.useFillContour = false;
-
     //    properties.invisibility = 1;
     //    properties.preserveAlpha = 0;
+}
 
-    if (properties.width <= 0)
-    {
-        // setting the default value to 4
-        // seems to give great results with pressure on
-        setWidth(4);
-        setPressure(true);
-    }
+void PencilTool::resetToDefault()
+{
+    setWidth(4.0);
+    setFeather(50);
+    setUseFeather(true);
+    setStabilizerLevel(StabilizationLevel::STRONG);
 }
 
 void PencilTool::setWidth(const qreal width)
@@ -93,7 +91,6 @@ void PencilTool::setUseFeather(const bool usingFeather)
     settings.setValue("brushUseFeather", usingFeather);
     settings.sync();
 }
-
 
 void PencilTool::setInvisibility(const bool)
 {
@@ -146,111 +143,69 @@ QCursor PencilTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PencilTool::mousePressEvent(QMouseEvent* event)
+void PencilTool::pointerPressEvent(PointerEvent*)
 {
-    mLastBrushPoint = getCurrentPoint();
-
-    if (event->button() == Qt::LeftButton)
-    {
-        mScribbleArea->setAllDirty();
-        startStroke(); //start and appends first stroke
-
-        if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-            // in case of bitmap, first pixel(mouseDown) is drawn
-        {
-            drawStroke();
-        }
-        else if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
-        {
-            if (!mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
-            {
-                mScribbleArea->toggleThinLines();
-            }
-        }
-    }
+    mScribbleArea->setAllDirty();
 
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
-}
 
-void PencilTool::mouseMoveEvent(QMouseEvent* event)
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
+    startStroke();
+
+    // note: why are we doing this on device press event?
+    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
     {
-        if (event->buttons() & Qt::LeftButton)
-        {
-            drawStroke();
-            if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-            {
-                m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
-            }
-        }
+        mScribbleArea->toggleThinLines();
     }
 }
 
-void PencilTool::mouseReleaseEvent(QMouseEvent* event)
+void PencilTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton)
     {
-        mEditor->backup(typeName());
-
-        Layer* layer = mEditor->layers()->currentLayer();
-        if (mScribbleArea->isLayerPaintable())
-        {
-            qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
-            if (distance < 1)
-            {
-                paintAt(mMouseDownPoint);
-            }
-            else
-            {
-                drawStroke();
-            }
-        }
-
-        if (layer->type() == Layer::BITMAP)
-            paintBitmapStroke();
-        else if (layer->type() == Layer::VECTOR)
-            paintVectorStroke(layer);
+        mCurrentPressure = strokeManager()->getPressure();
+        drawStroke();
+        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
+            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
-    endStroke();
 }
 
-void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+void PencilTool::pointerReleaseEvent(PointerEvent*)
 {
-    mCurrentWidth = properties.width;
-
-    if (properties.pressure && !mouseDevice)
+    mEditor->backup(typeName());
+    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    if (distance < 1)
     {
-        mCurrentPressure = pressure;
+        paintAt(mMouseDownPoint);
     }
     else
     {
-        mCurrentPressure = 1.0;
+        drawStroke();
     }
+    
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::BITMAP)
+        paintBitmapStroke();
+    else if (layer->type() == Layer::VECTOR)
+        paintVectorStroke(layer);
+    endStroke();
 }
 
 // draw a single paint dab at the given location
 void PencilTool::paintAt(QPointF point)
 {
-    qDebug() << "Made a single dab at " << point;
+    //qDebug() << "Made a single dab at " << point;
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal opacity = 1.0;
-        mCurrentWidth = properties.width;
-        if (properties.pressure)
-        {
-            opacity = mCurrentPressure / 2;
-            mCurrentWidth *= mCurrentPressure;
-        }
-        qreal brushWidth = mCurrentWidth;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width * pressure;
         qreal fixedBrushFeather = properties.feather;
 
-        BlitRect rect;
+        mCurrentWidth = brushWidth;
 
-        rect.extend(point.toPoint());
+        BlitRect rect(point.toPoint());
         mScribbleArea->drawPencil(point,
                                   brushWidth,
                                   fixedBrushFeather,
@@ -266,24 +221,19 @@ void PencilTool::paintAt(QPointF point)
 void PencilTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
+    QList<QPointF> p = strokeManager()->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal opacity = 1.0;
-        mCurrentWidth = properties.width;
-        if (properties.pressure)
-        {
-            opacity = mCurrentPressure / 2;
-            mCurrentWidth = properties.width * mCurrentPressure;
-        }
-        qreal brushWidth = mCurrentWidth;
-        qreal fixedBrushFeather = properties.feather;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
-        qreal brushStep = (0.5 * brushWidth);
-        brushStep = qMax(1.0, brushStep);
+        qreal fixedBrushFeather = properties.feather;
+        qreal brushStep = qMax(1.0, (0.5 * brushWidth));
 
         BlitRect rect;
 
@@ -317,7 +267,7 @@ void PencilTool::drawStroke()
     else if (layer->type() == Layer::VECTOR)
     {
         properties.useFeather = false;
-        mCurrentWidth = 0;
+        mCurrentWidth = 0; // FIXME: WTF?
         QPen pen(mEditor->color()->frontColor(),
                  1,
                  Qt::DotLine,
@@ -348,6 +298,9 @@ void PencilTool::paintBitmapStroke()
 
 void PencilTool::paintVectorStroke(Layer* layer)
 {
+    if (mStrokePoints.empty())
+        return;
+
     // Clear the temporary pixel path
     mScribbleArea->clearBitmapBuffer();
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();

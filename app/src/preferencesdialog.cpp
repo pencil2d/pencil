@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <QComboBox>
 #include <QMessageBox>
+#include <QSlider>
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
@@ -26,7 +27,7 @@ GNU General Public License for more details.
 #include "util.h"
 
 
-PreferencesDialog::PreferencesDialog( QWidget* parent ) :
+PreferencesDialog::PreferencesDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::PreferencesDialog)
 {
@@ -86,26 +87,27 @@ void PreferencesDialog::updateRecentListBtn(bool isEmpty)
     }
 }
 
-GeneralPage::GeneralPage(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::GeneralPage)
+GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 {
     ui->setupUi(this);
 
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
 
+    ui->languageCombo->addItem(tr("Catalan ") + " (Catalan)", "ca");
     ui->languageCombo->addItem(tr("Czech") + " (Czech)", "cs");
     ui->languageCombo->addItem(tr("Danish") + " (Danish)", "da");
     ui->languageCombo->addItem(tr("German") + " (German)", "de");
+    ui->languageCombo->addItem(tr("Greek") + " (Greek)", "el");
     ui->languageCombo->addItem(tr("English") + " (English)", "en");
-    ui->languageCombo->addItem(tr("Estonian") + " (Estonian)", "et");
     ui->languageCombo->addItem(tr("Spanish") + " (Spanish)", "es");
+    ui->languageCombo->addItem(tr("Estonian") + " (Estonian)", "et");
     ui->languageCombo->addItem(tr("French") + " (French)", "fr");
     ui->languageCombo->addItem(tr("Hebrew") + " (Hebrew)", "he");
     ui->languageCombo->addItem(tr("Hungarian") + " (Hungarian)", "hu_HU");
     ui->languageCombo->addItem(tr("Indonesian") + " (Indonesian)", "id");
     ui->languageCombo->addItem(tr("Italian") + " (Italian)", "it");
     ui->languageCombo->addItem(tr("Japanese") + " (Japanese)", "ja");
+    ui->languageCombo->addItem(tr("Kabyle") + " (Kabyle)", "kab");
     ui->languageCombo->addItem(tr("Polish") + " (Polish)", "pl");
     ui->languageCombo->addItem(tr("Portuguese - Portugal") + "(Portuguese - Portugal)", "pt");
     ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt_BR");
@@ -118,20 +120,20 @@ GeneralPage::GeneralPage(QWidget* parent) :
     int value = settings.value("windowOpacity").toInt();
     ui->windowOpacityLevel->setValue(100 - value);
 
-    QPixmap previewCheckerboard( ":background/checkerboard.png" );
-    QPixmap previewWhite(32,32);
-    QPixmap previewGrey(32,32);
-    QPixmap previewDots( ":background/dots.png" );
-    QPixmap previewWeave( ":background/weave.jpg" );
+    QPixmap previewCheckerboard(":background/checkerboard.png");
+    QPixmap previewWhite(32, 32);
+    QPixmap previewGrey(32, 32);
+    QPixmap previewDots(":background/dots.png");
+    QPixmap previewWeave(":background/weave.jpg");
 
-    previewWhite.fill( Qt::white );
-    previewGrey.fill( Qt:: lightGray );
+    previewWhite.fill(Qt::white);
+    previewGrey.fill(Qt::lightGray);
 
-    ui->checkerBackgroundButton->setIcon( previewCheckerboard.scaled(32, 32) );
-    ui->whiteBackgroundButton->setIcon( previewWhite );
-    ui->greyBackgroundButton->setIcon( previewGrey );
-    ui->dotsBackgroundButton->setIcon( previewDots.scaled(32, 32) );
-    ui->weaveBackgroundButton->setIcon( previewWeave.scaled(32, 32) );
+    ui->checkerBackgroundButton->setIcon(previewCheckerboard.scaled(32, 32));
+    ui->whiteBackgroundButton->setIcon(previewWhite);
+    ui->greyBackgroundButton->setIcon(previewGrey);
+    ui->dotsBackgroundButton->setIcon(previewDots.scaled(32, 32));
+    ui->weaveBackgroundButton->setIcon(previewWeave.scaled(32, 32));
     ui->backgroundButtons->setId(ui->checkerBackgroundButton, 1);
     ui->backgroundButtons->setId(ui->whiteBackgroundButton, 2);
     ui->backgroundButtons->setId(ui->greyBackgroundButton, 3);
@@ -141,17 +143,19 @@ GeneralPage::GeneralPage(QWidget* parent) :
     auto buttonClicked = static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked);
     auto curIndexChagned = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
     auto spinValueChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    connect(ui->languageCombo,curIndexChagned, this, &GeneralPage::languageChanged);
+    connect(ui->languageCombo, curIndexChagned, this, &GeneralPage::languageChanged);
     connect(ui->windowOpacityLevel, &QSlider::valueChanged, this, &GeneralPage::windowOpacityChange);
-    connect(ui->backgroundButtons, buttonClicked, this, &GeneralPage::backgroundChange);
+    connect(ui->backgroundButtons, buttonClicked, this, &GeneralPage::backgroundChanged);
     connect(ui->shadowsBox, &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged);
     connect(ui->toolCursorsBox, &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged);
     connect(ui->antialiasingBox, &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged);
-    connect(ui->curveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChange);
+    connect(ui->curveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChanged);
     connect(ui->highResBox, &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged);
     connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
-    connect(ui->gridSizeInput, spinValueChanged, this, &GeneralPage::gridSizeChange);
+    connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridWidthChanged);
+    connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridHeightChanged);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
+    connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
 }
 
 GeneralPage::~GeneralPage()
@@ -161,9 +165,9 @@ GeneralPage::~GeneralPage()
 
 void GeneralPage::updateValues()
 {
-    int index = ui->languageCombo->findData( mManager->getString( SETTING::LANGUAGE ) );
+    int index = ui->languageCombo->findData(mManager->getString(SETTING::LANGUAGE));
 
-    if ( index >= 0 )
+    if (index >= 0)
     {
         SignalBlocker b(ui->languageCombo);
         ui->languageCombo->setCurrentIndex(index);
@@ -181,8 +185,10 @@ void GeneralPage::updateValues()
     ui->antialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
     SignalBlocker b6(ui->dottedCursorBox);
     ui->dottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
-    SignalBlocker b7(ui->gridSizeInput);
-    ui->gridSizeInput->setValue(mManager->getInt(SETTING::GRID_SIZE));
+    SignalBlocker b7(ui->gridSizeInputW);
+    ui->gridSizeInputW->setValue(mManager->getInt(SETTING::GRID_SIZE_W));
+    SignalBlocker b11(ui->gridSizeInputH);
+    ui->gridSizeInputH->setValue(mManager->getInt(SETTING::GRID_SIZE_H));
     SignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
 
@@ -191,6 +197,9 @@ void GeneralPage::updateValues()
 
     SignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
+
+    SignalBlocker b12(ui->framePoolSizeSpin);
+    ui->framePoolSizeSpin->setValue(mManager->getInt(SETTING::FRAME_POOL_SIZE));
 
     int buttonIdx = 1;
     if (bgName == "checkerboard") buttonIdx = 1;
@@ -203,7 +212,7 @@ void GeneralPage::updateValues()
     ui->backgroundButtons->button(buttonIdx)->setChecked(true);
 }
 
-void GeneralPage::languageChanged( int i )
+void GeneralPage::languageChanged(int i)
 {
     QString strLocale = ui->languageCombo->itemData(i).toString();
     mManager->set(SETTING::LANGUAGE, strLocale);
@@ -213,11 +222,11 @@ void GeneralPage::languageChanged( int i )
                          tr("The language change will take effect after a restart of Pencil2D"));
 }
 
-void GeneralPage::backgroundChange(int value)
+void GeneralPage::backgroundChanged(int value)
 {
     QString brushName = "white";
     switch (value)
-	{
+    {
     case 1: brushName = "checkerboard"; break;
     case 2: brushName = "white"; break;
     case 3: brushName = "grey"; break;
@@ -229,39 +238,44 @@ void GeneralPage::backgroundChange(int value)
     mManager->set(SETTING::BACKGROUND_STYLE, brushName);
 }
 
-void GeneralPage::curveSmoothingChange(int value)
+void GeneralPage::curveSmoothingChanged(int value)
 {
     mManager->set(SETTING::CURVE_SMOOTHING, value);
 }
 
-void GeneralPage::highResCheckboxStateChanged( int b )
+void GeneralPage::highResCheckboxStateChanged(int b)
 {
-    mManager->set( SETTING::HIGH_RESOLUTION, b != Qt::Unchecked );
+    mManager->set(SETTING::HIGH_RESOLUTION, b != Qt::Unchecked);
 }
 
-void GeneralPage::shadowsCheckboxStateChanged( int b )
+void GeneralPage::shadowsCheckboxStateChanged(int b)
 {
-    mManager->set( SETTING::SHADOW, b != Qt::Unchecked );
+    mManager->set(SETTING::SHADOW, b != Qt::Unchecked);
 }
 
-void GeneralPage::antiAliasCheckboxStateChanged( int b )
+void GeneralPage::antiAliasCheckboxStateChanged(int b)
 {
-    mManager->set( SETTING::ANTIALIAS, b != Qt::Unchecked );
+    mManager->set(SETTING::ANTIALIAS, b != Qt::Unchecked);
 }
 
 void GeneralPage::toolCursorsCheckboxStateChanged(int b)
 {
-    mManager->set( SETTING::TOOL_CURSOR, b != Qt::Unchecked );
+    mManager->set(SETTING::TOOL_CURSOR, b != Qt::Unchecked);
 }
 
 void GeneralPage::dottedCursorCheckboxStateChanged(int b)
 {
-    mManager->set( SETTING::DOTTED_CURSOR, b != Qt::Unchecked );
+    mManager->set(SETTING::DOTTED_CURSOR, b != Qt::Unchecked);
 }
 
-void GeneralPage::gridSizeChange(int value)
+void GeneralPage::gridWidthChanged(int value)
 {
-    mManager->set(SETTING::GRID_SIZE, value);
+    mManager->set(SETTING::GRID_SIZE_W, value);
+}
+
+void GeneralPage::gridHeightChanged(int value)
+{
+    mManager->set(SETTING::GRID_SIZE_H, value);
 }
 
 void GeneralPage::gridCheckBoxStateChanged(int b)
@@ -269,20 +283,30 @@ void GeneralPage::gridCheckBoxStateChanged(int b)
     mManager->set(SETTING::GRID, b != Qt::Unchecked);
 }
 
-TimelinePage::TimelinePage(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::TimelinePage)
+void GeneralPage::frameCacheNumberChanged(int value)
+{
+    mManager->set(SETTING::FRAME_POOL_SIZE, value);
+}
+
+TimelinePage::TimelinePage()
+    : ui(new Ui::TimelinePage)
 {
     ui->setupUi(this);
-    
+
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    connect(ui->frameSize, &QSlider::valueChanged, this, &TimelinePage::frameSizeChange);
+    auto sliderChanged = static_cast<void(QSlider::*)(int)>(&QSlider::valueChanged);
     connect(ui->timelineLength, spinBoxValueChange, this, &TimelinePage::timelineLengthChanged);
-    connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChange);
-    connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
-    connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
-    connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::radioButtonToggled);
+    connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChanged);
+    connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
+    connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
+    connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &TimelinePage::playbackStateChanged);
+    connect(ui->flipRollMsecsSlider, sliderChanged, this, &TimelinePage::flipRollMsecSliderChanged);
+    connect(ui->flipRollMsecsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollMsecSpinboxChanged);
+    connect(ui->flipRollNumDrawingsSlider, sliderChanged, this, &TimelinePage::flipRollNumDrawingdSliderChanged);
+    connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
+    connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
+    connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
 }
 
 TimelinePage::~TimelinePage()
@@ -292,16 +316,9 @@ TimelinePage::~TimelinePage()
 
 void TimelinePage::updateValues()
 {
-    SignalBlocker b1(ui->scrubBox); 
+    SignalBlocker b1(ui->scrubBox);
     ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
 
-    int frameSize = mManager->getInt(SETTING::FRAME_SIZE);
-    if (frameSize <= 0)
-        frameSize = 6;
-
-    SignalBlocker b2(ui->frameSize);
-    ui->frameSize->setValue(frameSize);
-    
     SignalBlocker b3(ui->timelineLength);
     ui->timelineLength->setValue(mManager->getInt(SETTING::TIMELINE_SIZE));
     if (mManager->getString(SETTING::TIMELINE_SIZE).toInt() <= 0)
@@ -311,7 +328,8 @@ void TimelinePage::updateValues()
     SignalBlocker b5(ui->radioButtonDuplicate);
     SignalBlocker b6(ui->radioButtonDrawOnPrev);
     int action = mManager->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
-    switch (action) {
+    switch (action)
+    {
     case CREATE_NEW_KEY:
         ui->radioButtonAddNewKey->setChecked(true);
         break;
@@ -327,6 +345,12 @@ void TimelinePage::updateValues()
 
     SignalBlocker b7(ui->onionWhilePlayback);
     ui->onionWhilePlayback->setChecked(mManager->getInt(SETTING::ONION_WHILE_PLAYBACK));
+    ui->flipRollMsecsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
+    ui->flipRollNumDrawingsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
+    ui->flipInBtwnMsecSlider->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
+    ui->flipRollMsecsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
+    ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
+    ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -334,22 +358,12 @@ void TimelinePage::timelineLengthChanged(int value)
     mManager->set(SETTING::TIMELINE_SIZE, value);
 }
 
-void TimelinePage::fontSizeChange(int value)
+void TimelinePage::fontSizeChanged(int value)
 {
     mManager->set(SETTING::LABEL_FONT_SIZE, value);
 }
 
-void TimelinePage::frameSizeChange(int value)
-{
-    mManager->set(SETTING::FRAME_SIZE, value);
-}
-
-void TimelinePage::labelChange(bool value)
-{
-    mManager->set(SETTING::DRAW_LABEL, value);
-}
-
-void TimelinePage::scrubChange(int value)
+void TimelinePage::scrubChanged(int value)
 {
     mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
 }
@@ -359,25 +373,61 @@ void TimelinePage::playbackStateChanged(int value)
     mManager->set(SETTING::ONION_WHILE_PLAYBACK, value);
 }
 
-void TimelinePage::radioButtonToggled(bool)
+void TimelinePage::drawEmptyKeyRadioButtonToggled(bool)
 {
-    if(ui->radioButtonAddNewKey->isChecked())
+    if (ui->radioButtonAddNewKey->isChecked())
     {
         mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, CREATE_NEW_KEY);
     }
-    else if(ui->radioButtonDuplicate->isChecked())
+    else if (ui->radioButtonDuplicate->isChecked())
     {
         mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, DUPLICATE_PREVIOUS_KEY);
     }
-    else if(ui->radioButtonDrawOnPrev->isChecked())
+    else if (ui->radioButtonDrawOnPrev->isChecked())
     {
         mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, KEEP_DRAWING_ON_PREVIOUS_KEY);
     }
 }
 
-FilesPage::FilesPage(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::FilesPage)
+void TimelinePage::flipRollMsecSliderChanged(int value)
+{
+    ui->flipRollMsecsSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_MSEC, value);
+}
+
+void TimelinePage::flipRollMsecSpinboxChanged(int value)
+{
+    ui->flipRollMsecsSlider->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_MSEC, value);
+}
+
+void TimelinePage::flipRollNumDrawingdSliderChanged(int value)
+{
+    ui->flipRollNumDrawingsSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_DRAWINGS, value);
+}
+
+void TimelinePage::flipRollNumDrawingdSpinboxChanged(int value)
+{
+    ui->flipRollNumDrawingsSlider->setValue(value);
+    mManager->set(SETTING::FLIP_ROLL_DRAWINGS, value);
+}
+
+void TimelinePage::flipInbetweenMsecSliderChanged(int value)
+{
+    ui->flipInBtwnMsecSpinBox->setValue(value);
+    mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+
+void TimelinePage::flipInbetweenMsecSpinboxChanged(int value)
+{
+    ui->flipInBtwnMsecSlider->setValue(value);
+    mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+
+
+FilesPage::FilesPage()
+    : ui(new Ui::FilesPage)
 {
     ui->setupUi(this);
 
@@ -407,9 +457,8 @@ void FilesPage::autosaveNumberChange(int number)
     mManager->set(SETTING::AUTO_SAVE_NUMBER, number);
 }
 
-ToolsPage::ToolsPage(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::ToolsPage)
+ToolsPage::ToolsPage()
+    : ui(new Ui::ToolsPage)
 {
     ui->setupUi(this);
 
@@ -440,7 +489,7 @@ void ToolsPage::onionMaxOpacityChange(int value)
     mManager->set(SETTING::ONION_MAX_OPACITY, value);
 }
 
-void ToolsPage::quickSizingChange( int b )
+void ToolsPage::quickSizingChange(int b)
 {
     mManager->set(SETTING::QUICK_SIZING, b != Qt::Unchecked);
 }
@@ -459,3 +508,5 @@ void ToolsPage::onionNextFramesNumChange(int value)
 {
     mManager->set(SETTING::ONION_NEXT_FRAMES_NUM, value);
 }
+
+

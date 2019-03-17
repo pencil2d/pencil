@@ -26,7 +26,8 @@ INCLUDEPATH += src \
     src/tool \
     src/util \
     ui \
-    src/managers
+    src/managers \
+    src/external
 
 # Input
 HEADERS +=  \
@@ -81,6 +82,7 @@ HEADERS +=  \
     src/tool/strokemanager.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
+    src/util/colordictionary.h \
     src/util/fileformat.h \
     src/util/pencildef.h \
     src/util/pencilerror.h \
@@ -93,7 +95,10 @@ HEADERS +=  \
     src/movieexporter.h \
     src/miniz.h \
     src/qminiz.h \
-    src/activeframepool.h
+    src/activeframepool.h \
+    src/external/platformhandler.h \
+    src/external/macosx/macosxnative.h \
+    src/util/pointerevent.h
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
@@ -155,7 +160,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/movieexporter.cpp \
     src/miniz.cpp \
     src/qminiz.cpp \
-    src/activeframepool.cpp
+    src/activeframepool.cpp \
+    src/util/pointerevent.cpp
 
 FORMS += \
     ui/camerapropertiesdialog.ui
@@ -169,18 +175,12 @@ win32 {
 
 macx {
     INCLUDEPATH += src/external/macosx
+    LIBS += -framework AppKit
     SOURCES += src/external/macosx/macosx.cpp
+    OBJECTIVE_SOURCES += src/external/macosx/macosxnative.mm
 }
 
 unix:!macx {
     INCLUDEPATH += src/external/linux
     SOURCES += src/external/linux/linux.cpp
-}
-
-contains(QT_ARCH, i386) {
-    message("32-bit")
-    DEFINES += "FRAME_POOL_SIZE=200"
-} else {
-    message("64-bit")
-    DEFINES += "FRAME_POOL_SIZE=400"
 }

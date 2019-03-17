@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>369</width>
-    <height>377</height>
+    <width>337</width>
+    <height>465</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="outerLay">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
     <widget class="QScrollArea" name="scrollArea">
      <property name="minimumSize">
       <size>
@@ -38,9 +38,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>332</width>
-        <height>510</height>
+        <y>-173</y>
+        <width>300</width>
+        <height>618</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="lay">
@@ -239,8 +239,35 @@
           <string comment="groupBox title in Preference">Grid</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QSpinBox" name="gridSizeInput">
+          <item row="2" column="0">
+           <widget class="QLabel" name="labGridH">
+            <property name="text">
+             <string>Grid Heigth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labGridW">
+            <property name="text">
+             <string>Grid Width</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="gridSizeInputH">
+            <property name="minimum">
+             <number>5</number>
+            </property>
+            <property name="maximum">
+             <number>9999</number>
+            </property>
+            <property name="value">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="gridSizeInputW">
             <property name="minimumSize">
              <size>
               <width>80</width>
@@ -254,17 +281,82 @@
              </size>
             </property>
             <property name="minimum">
-             <number>1</number>
+             <number>5</number>
             </property>
             <property name="maximum">
-             <number>512</number>
+             <number>9999</number>
+            </property>
+            <property name="value">
+             <number>100</number>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item row="0" column="0" colspan="2">
            <widget class="QCheckBox" name="gridCheckBox">
             <property name="text">
              <string>Enable Grid</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="advancedBox">
+         <property name="title">
+          <string comment="groupBox title in Preference">Advanced</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="cacheLabel">
+            <property name="text">
+             <string>Cached Frame Number:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="framePoolSizeSpin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>11</number>
+            </property>
+            <property name="maximum">
+             <number>1500</number>
+            </property>
+            <property name="value">
+             <number>200</number>
             </property>
            </widget>
           </item>
@@ -277,6 +369,25 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>languageCombo</tabstop>
+  <tabstop>windowOpacityLevel</tabstop>
+  <tabstop>shadowsBox</tabstop>
+  <tabstop>toolCursorsBox</tabstop>
+  <tabstop>dottedCursorBox</tabstop>
+  <tabstop>checkerBackgroundButton</tabstop>
+  <tabstop>whiteBackgroundButton</tabstop>
+  <tabstop>greyBackgroundButton</tabstop>
+  <tabstop>dotsBackgroundButton</tabstop>
+  <tabstop>weaveBackgroundButton</tabstop>
+  <tabstop>antialiasingBox</tabstop>
+  <tabstop>curveSmoothingLevel</tabstop>
+  <tabstop>highResBox</tabstop>
+  <tabstop>gridCheckBox</tabstop>
+  <tabstop>gridSizeInputW</tabstop>
+  <tabstop>gridSizeInputH</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <slots>

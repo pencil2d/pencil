@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QStandardPaths>
 #include <QThread>
+#include <QtMath>
 
 #include "object.h"
 #include "layercamera.h"
@@ -94,7 +95,7 @@ Status MovieExporter::run(const Object* obj,
 {
     majorProgress(0.f, 0.03f);
     minorProgress(0.f);
-    progressMessage(QApplication::tr("Checking environment..."));
+    progressMessage(QObject::tr("Checking environment..."));
 
     clock_t t1 = clock();
 
@@ -145,7 +146,7 @@ Status MovieExporter::run(const Object* obj,
     }
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
-    progressMessage(QApplication::tr("Done"));
+    progressMessage(QObject::tr("Done"));
     
     clock_t t2 = clock() - t1;
     qDebug("MOVIE = %.1f sec", static_cast<float>(t2) / CLOCKS_PER_SEC);
@@ -201,10 +202,11 @@ Status MovieExporter::assembleAudio(const Object* obj,
 
     int clipCount = 0;
 
-    QString strCmd, filterComplex, amixInput;
+    QString strCmd, filterComplex, amergeInput, panChannelLayout;
     strCmd += QString("\"%1\"").arg(ffmpegPath);
 
-    for (SoundClip* clip : allSoundClips)
+    int wholeLen = qCeil((endFrame - startFrame) * 44100.0 / fps);
+    for (auto clip : allSoundClips)
     {
         if (mCanceled)
         {
@@ -216,16 +218,19 @@ Status MovieExporter::assembleAudio(const Object* obj,
 
         // Offset the sound to its correct position
         // See https://superuser.com/questions/716320/ffmpeg-placing-audio-at-specific-location
-        filterComplex += QString("[%1:a:0] adelay=%2S|%2S [ad%1];")
-                    .arg(clipCount).arg(qRound(44100.0 * (clip->pos() - 1) / fps));
-        amixInput += QString("[ad%1]").arg(clipCount);
+        filterComplex += QString("[%1:a:0] aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=mono,volume=1,adelay=%2S|%2S,apad=whole_len=%3[ad%1];")
+                    .arg(clipCount).arg(qRound(44100.0 * (clip->pos() - 1) / fps)).arg(wholeLen);
+        amergeInput += QString("[ad%1]").arg(clipCount);
+        panChannelLayout += QString("c%1+").arg(clipCount);
 
         clipCount++;
     }
+    // Remove final '+'
+    panChannelLayout.chop(1);
     // Output arguments
     // Mix audio
-    strCmd += QString(" -filter_complex \"%1%2 amix=inputs=%3 [out]\"")
-            .arg(filterComplex).arg(amixInput).arg(clipCount);
+    strCmd += QString(" -filter_complex \"%1%2 amerge=inputs=%3, pan=mono|c0=%4 [out]\"")
+            .arg(filterComplex).arg(amergeInput).arg(clipCount).arg(panChannelLayout);
     // Convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
     // Supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
     strCmd += " -ar 44100 -acodec pcm_s16le -ac 2 -map \"[out]\" -y";
@@ -273,7 +278,7 @@ Status MovieExporter::generateMovie(
     int frameStart = mDesc.startFrame;
     int frameEnd = mDesc.endFrame;
     const QSize exportSize = mDesc.exportSize;
-    bool transparency = false;
+    bool transparency = mDesc.alpha;
     QString strCameraName = mDesc.strCameraName;
     bool loop = mDesc.loop;
 
@@ -330,7 +335,7 @@ Status MovieExporter::generateMovie(
         strCmd += QString(" -i \"%1\" ").arg(tempAudioPath);
     }
 
-    if(strOutputFile.endsWith(".apng"))
+    if (strOutputFile.endsWith(".apng", Qt::CaseInsensitive))
     {
         strCmd += QString(" -plays %1").arg(loop ? "0" : "1");
     }
@@ -339,6 +344,12 @@ Status MovieExporter::generateMovie(
     {
         strCmd += QString(" -pix_fmt yuv420p");
     }
+
+    if (strOutputFile.endsWith(".avi", Qt::CaseInsensitive))
+    {
+        strCmd += " -q:v 5";
+    }
+
     strCmd += " -y";
     strCmd += QString(" \"%1\"").arg(strOutputFile);
 

@@ -107,11 +107,10 @@ void LayerManager::setCurrentLayer(int layerIndex)
         return;
     }
 
-    if (editor()->currentLayerIndex() != layerIndex)
-    {
-        editor()->setCurrentLayerIndex(layerIndex);
-        Q_EMIT currentLayerChanged(layerIndex);
-    }
+    // Do not check if layer index has changed
+    // because the current layer may have changed either way
+    editor()->setCurrentLayerIndex(layerIndex);
+    Q_EMIT currentLayerChanged(layerIndex);
 
     if (object())
     {
@@ -259,6 +258,11 @@ Status LayerManager::deleteLayer(int index)
         index == currentLayerIndex())
     {
         setCurrentLayer(currentLayerIndex() - 1);
+    }
+    if (index >= currentLayerIndex())
+    {
+        // current layer has changed, so trigger updates
+        setCurrentLayer(currentLayerIndex());
     }
 
     Q_EMIT layerDeleted(index);

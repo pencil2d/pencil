@@ -17,14 +17,19 @@ GNU General Public License for more details.
 
 #include "activeframepool.h"
 #include "keyframe.h"
+#include "pencildef.h"
 #include <QDebug>
 
 
-ActiveFramePool::ActiveFramePool(int maxSize)
+ActiveFramePool::ActiveFramePool(unsigned long n)
 {
+    size_t maxSize = n;
+
     Q_ASSERT(maxSize > 10);
     mMaxSize = maxSize;
 }
+
+ActiveFramePool::~ActiveFramePool() {}
 
 void ActiveFramePool::put(KeyFrame* key)
 {
@@ -43,19 +48,7 @@ void ActiveFramePool::put(KeyFrame* key)
     key->addEventListener(this);
     key->loadFile();
 
-    if (mCacheFramesMap.size() > mMaxSize)
-    {
-        list_iterator_t last = mCacheFramesList.end();
-        last--;
-        
-        KeyFrame* lastKeyFrame = *last;
-        unloadFrame(lastKeyFrame);
-
-        mCacheFramesMap.erase(lastKeyFrame);
-        mCacheFramesList.pop_back();
-
-        lastKeyFrame->removeEventListner(this);
-    }
+    discardLeastUsedFrames();
 }
 
 size_t ActiveFramePool::size() const
@@ -73,6 +66,14 @@ void ActiveFramePool::clear()
     mCacheFramesMap.clear();
 }
 
+void ActiveFramePool::resize(int n)
+{
+    n = std::min(n, 1500);
+    n = std::max(n, 10);
+    mMaxSize = n;
+    discardLeastUsedFrames();
+}
+
 bool ActiveFramePool::isFrameInPool(KeyFrame* key)
 {
     auto it = mCacheFramesMap.find(key);
@@ -86,6 +87,23 @@ void ActiveFramePool::onKeyFrameDestroy(KeyFrame* key)
     {
         mCacheFramesList.erase(it->second);
         mCacheFramesMap.erase(it);
+    }
+}
+
+void ActiveFramePool::discardLeastUsedFrames()
+{
+    while (mCacheFramesMap.size() > mMaxSize)
+    {
+        list_iterator_t last = mCacheFramesList.end();
+        last--;
+
+        KeyFrame* lastKeyFrame = *last;
+        unloadFrame(lastKeyFrame);
+
+        mCacheFramesMap.erase(lastKeyFrame);
+        mCacheFramesList.pop_back();
+
+        lastKeyFrame->removeEventListner(this);
     }
 }
 

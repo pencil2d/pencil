@@ -268,13 +268,13 @@ TEST_CASE("FileManager File-saving")
     {
         FileManager fm;
 
-        // 1. Create a animation with 500 frames & save it
+        // 1. Create a animation with 150 frames & save it
         Object* o1 = new Object;
         o1->init();
         o1->createDefaultLayers();
-        LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
 
-        for (int i = 100; i < 500; ++i) 
+        LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
+        for (int i = 100; i < 150; ++i) 
         {
             layer->addNewKeyFrameAt(i);
             auto bitmap = layer->getBitmapImageAtFrame(i);
@@ -288,23 +288,24 @@ TEST_CASE("FileManager File-saving")
 
         // 2. Load the animation back and then make some frames unloaded by active frame pool
         Object* o2 = fm.load(animationPath);
-        
+        o2->setActiveFramePoolSize(20);
+
         layer = dynamic_cast<LayerBitmap*>(o2->getLayer(2));
-        for (int i = 1; i < 500; ++i)
+        for (int i = 1; i < 150; ++i)
             o2->updateActiveFrames(i);
 
         // 3. Move those unloaded frames around
-        for (int i = 100; i < 200; ++i)
+        for (int i = 100; i < 150; ++i)
             layer->setFrameSelected(i, true);
 
-        layer->moveSelectedFrames(-98);
+        layer->moveSelectedFrames(-55);
         fm.save(o2, animationPath);
         delete o2;
 
         // 4. Check no lost frames 
         Object* o3 = fm.load(animationPath);
         layer = dynamic_cast<LayerBitmap*>(o3->getLayer(2));
-        for (int i = 2; i < 500; ++i)
+        for (int i = 2; i < 150; ++i)
         {
             auto bitmap = layer->getBitmapImageAtFrame(i);
             if (bitmap)

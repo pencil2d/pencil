@@ -29,7 +29,7 @@ class ImportImageSeqDialog : public ImportExportDialog
     Q_OBJECT
 
 public:
-    explicit ImportImageSeqDialog(QWidget *parent = 0, Mode mode = ImportExportDialog::Import, FileType fileType = FileType::IMAGE_SEQUENCE);
+    explicit ImportImageSeqDialog(QWidget *parent = nullptr, Mode mode = ImportExportDialog::Import, FileType fileType = FileType::IMAGE_SEQUENCE);
     ~ImportImageSeqDialog();
 
     int getSpace();

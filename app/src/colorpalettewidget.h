@@ -43,7 +43,7 @@ class ColorPaletteWidget : public BaseDockWidget
 public:
 
     explicit ColorPaletteWidget(QWidget* parent);
-    ~ColorPaletteWidget();
+    ~ColorPaletteWidget() override;
 
     void initUI() override;
     void updateUI() override;
@@ -86,8 +86,6 @@ private slots:
 private:
     void updateItemColor(int, QColor);
     void updateGridUI();
-
-    QString getDefaultColorName(QColor c);
 
     Ui::ColorPalette* ui = nullptr;
     QActionGroup* mLayoutModeActionGroup = nullptr;

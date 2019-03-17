@@ -67,7 +67,7 @@ Q_SIGNALS:
     void newCameraLayer();
 
     void soundClick( bool );
-    void fpsClick( int );
+    void fpsChanged( int );
     void onionPrevClick();
     void onionNextClick();
     void playButtonTriggered();
@@ -81,6 +81,7 @@ protected:
 
 private:
     void deleteCurrentLayer();
+
 
     QScrollBar* mHScrollbar = nullptr;
     QScrollBar* mVScrollbar = nullptr;

@@ -41,7 +41,7 @@ public:
 
     void modification() { mIsModified = true; }
     void setModified(bool b) { mIsModified = b; }
-    bool isModified() const { return mIsModified; };
+    bool isModified() const { return mIsModified; }
 
     void setSelected(bool b) { mIsSelected = b; }
     bool isSelected() const { return mIsSelected; }
@@ -53,7 +53,7 @@ public:
     void removeEventListner(KeyFrameEventListener*);
 
     virtual KeyFrame* clone() { return nullptr; }
-    virtual void loadFile() {};
+    virtual void loadFile() {}
     virtual void unloadFile() {}
     virtual bool isLoaded() { return true; }
 
