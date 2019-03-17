@@ -10,7 +10,7 @@ Pencil2D Website: <https://www.pencil2d.org/>
 
 ## Download ###
 
-### Pencil2D 0.6.2 (26 September 2018)
+### Pencil2D 0.6.3 (17 March 2019)
 
 [What's new?](https://www.pencil2d.org/2018/09/maintenance-release-0.6.2.html)
 
@@ -18,10 +18,10 @@ Pencil2D Website: <https://www.pencil2d.org/>
 | :--------------: | :---------------: | :-------------: | :---------------: |
 | [Download][w64]  | [Download][w32]   | [Download][mac] | [Download][lnx]   |
 
-[w64]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-win64-0.6.2.zip
-[w32]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-win32-0.6.2.zip
-[mac]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-mac-0.6.2.zip
-[lnx]: https://github.com/pencil2d/pencil/releases/download/v0.6.2/pencil2d-linux-amd64-0.6.2.AppImage
+[w64]: https://github.com/pencil2d/pencil/releases/download/v0.6.3/pencil2d-win64-0.6.3.zip
+[w32]: https://github.com/pencil2d/pencil/releases/download/v0.6.3/pencil2d-win32-0.6.3.zip
+[mac]: https://github.com/pencil2d/pencil/releases/download/v0.6.3/pencil2d-mac-0.6.3.zip
+[lnx]: https://github.com/pencil2d/pencil/releases/download/v0.6.3/pencil2d-linux-amd64-0.6.3.AppImage
 
 ### Nightly builds
 
