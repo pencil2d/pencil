@@ -65,6 +65,7 @@ public:
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
+    void pegBarReg();
 
 public:
     void setOpacity(int opacity);

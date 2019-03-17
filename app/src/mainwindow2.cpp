@@ -44,7 +44,10 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "viewmanager.h"
 
+#include "layer.h"
 #include "layercamera.h"
+#include "layerbitmap.h"
+#include "bitmapimage.h"
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
@@ -261,6 +264,7 @@ void MainWindow2::createMenus()
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
     connect(ui->actionSelect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::deselectAll);
+    connect(ui->actionPegbarRegistration, &QAction::triggered, this, &MainWindow2::pegBarReg);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     //--- Layer Menu ---
@@ -414,6 +418,35 @@ void MainWindow2::clearRecentFilesList()
                                  QMessageBox::Ok);
     }
     getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
+}
+
+void MainWindow2::pegBarReg()
+{
+    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP) { return; }
+    if (!ui->scribbleArea->isSomethingSelected())
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Please select an area around center peg!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    mEditor->scrubTo(mEditor->layers()->currentLayer()->firstKeyFramePosition());
+    QRectF rect = ui->scribbleArea->getSelection();
+    LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+    BitmapImage* img = layerbitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+    int peg_x = img->findLeft(rect, 121);
+    int peg_y = img->findTop(rect, 121);
+    for (int i = mEditor->currentFrame() + 1; i <= mEditor->layers()->lastKeyFrameIndex(); i++)
+    {
+        if (layerbitmap->keyExists(i))
+        {
+            img = layerbitmap->getBitmapImageAtFrame(i);
+            int tmp_x = img->findLeft(rect, 121);
+            int tmp_y = img->findTop(rect, 121);
+            img->moveTopLeft(QPoint(img->left() + (peg_x - tmp_x), img->top() + (peg_y - tmp_y)));
+        }
+    }
 }
 
 void MainWindow2::closeEvent(QCloseEvent* event)
