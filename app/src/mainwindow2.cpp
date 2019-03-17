@@ -426,7 +426,8 @@ void MainWindow2::pegBarReg()
     if (!ui->scribbleArea->isSomethingSelected())
     {
         QMessageBox::information(this, nullptr,
-                                 tr("Please select an area around center peg!"),
+                                 tr("Please select an area around center peg!\n"
+                                    "Area must cover all pegs to be aligned."),
                                  QMessageBox::Ok);
         return;
     }
@@ -443,6 +444,13 @@ void MainWindow2::pegBarReg()
         {
             img = layerbitmap->getBitmapImageAtFrame(i);
             int tmp_x = img->findLeft(rect, 121);
+            if (tmp_x == 10000)
+            {
+                QMessageBox::information(this, nullptr,
+                                         tr("Peg bar not found!"),
+                                         QMessageBox::Ok);
+                return;
+            }
             int tmp_y = img->findTop(rect, 121);
             img->moveTopLeft(QPoint(img->left() + (peg_x - tmp_x), img->top() + (peg_y - tmp_y)));
         }

@@ -666,7 +666,7 @@ int BitmapImage::findLeft(QRectF rect, int grayValue)
             }
         }
     }
-    return -1;
+    return 10000;
 }
 
 int BitmapImage::findTop(QRectF rect, int grayValue)
@@ -685,7 +685,7 @@ int BitmapImage::findTop(QRectF rect, int grayValue)
             }
         }
     }
-    return -1;
+    return 10000;
 }
 
 Status BitmapImage::writeFile(const QString& filename)
