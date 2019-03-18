@@ -193,7 +193,9 @@ void PlaybackManager::playFlipInBetween()
     {
         mFlipList.clear();
         mFlipList.append(prev);
+        mFlipList.append(prev);
         mFlipList.append(start);
+        mFlipList.append(next);
         mFlipList.append(next);
         mFlipList.append(start);
     }
