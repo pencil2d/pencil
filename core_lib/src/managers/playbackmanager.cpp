@@ -393,16 +393,14 @@ void PlaybackManager::timerTick()
 
 void PlaybackManager::flipTimerTick()
 {
-    int curr = mFlipList[0];
-    int pos = mFlipList.indexOf(curr);
-    if (pos == mFlipList.count() - 1)
+    if (mFlipList.count() < 2)
     {
         mFlipTimer->stop();
         emit playStateChanged(false);
     }
     else
     {
-        editor()->scrubTo(mFlipList[pos + 1]);
+        editor()->scrubTo(mFlipList[1]);
         mFlipList.removeFirst();
     }
 }
