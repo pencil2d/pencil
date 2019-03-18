@@ -395,9 +395,10 @@ void PlaybackManager::timerTick()
 
 void PlaybackManager::flipTimerTick()
 {
-    if (mFlipList.count() < 2)
+    if (mFlipList.count() < 2 || editor()->currentFrame() != mFlipList[0])
     {
         mFlipTimer->stop();
+        editor()->scrubTo(mFlipList.last());
         emit playStateChanged(false);
     }
     else
