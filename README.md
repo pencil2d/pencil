@@ -12,7 +12,7 @@ Pencil2D Website: <https://www.pencil2d.org/>
 
 ### Pencil2D 0.6.3 (17 March 2019)
 
-[What's new?](https://www.pencil2d.org/2018/09/maintenance-release-0.6.2.html)
+[What's new?](https://www.pencil2d.org/2019/03/pencil2d-0.6.3-release.html)
 
 | Windows 64 bit   | Windows 32 bit    | Mac             | Linux             |
 | :--------------: | :---------------: | :-------------: | :---------------: |
