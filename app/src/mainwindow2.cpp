@@ -48,6 +48,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layerbitmap.h"
 #include "bitmapimage.h"
+#include "pegbarregistration.h"
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
@@ -264,7 +265,7 @@ void MainWindow2::createMenus()
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
     connect(ui->actionSelect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::deselectAll);
-    connect(ui->actionPegbarRegistration, &QAction::triggered, this, &MainWindow2::pegBarReg);
+    connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::pegBarReg);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     //--- Layer Menu ---
@@ -422,6 +423,7 @@ void MainWindow2::clearRecentFilesList()
 
 void MainWindow2::pegBarReg()
 {
+
     if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP) { return; }
     if (!ui->scribbleArea->isSomethingSelected())
     {
@@ -432,27 +434,56 @@ void MainWindow2::pegBarReg()
         return;
     }
 
-    mEditor->scrubTo(mEditor->layers()->currentLayer()->firstKeyFramePosition());
-    QRectF rect = ui->scribbleArea->getSelection();
-    LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
-    BitmapImage* img = layerbitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-    int peg_x = img->findLeft(rect, 121);
-    int peg_y = img->findTop(rect, 121);
-    for (int i = mEditor->currentFrame() + 1; i <= mEditor->layers()->lastKeyFrameIndex(); i++)
+    if (!mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
     {
-        if (layerbitmap->keyExists(i))
+        QMessageBox::information(this, nullptr,
+                                 tr("No reference Key selected!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    PegBarRegistration* pegreg = new PegBarRegistration(this);
+    pegreg->initLayerList(mEditor);
+    int ret = pegreg->exec();
+    QStringList* sl = pegreg->getLayerList();
+    if (sl->isEmpty())
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("No Layer selected!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    if (ret == pegreg->Accepted)
+    {
+        // register Reference
+        QRectF rect = ui->scribbleArea->getSelection();
+        LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+        BitmapImage* img = layerbitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+        int peg_x = img->findLeft(rect, 121);
+        int peg_y = img->findTop(rect, 121);
+
+        // move other layers
+        for (int i = 0; i < sl->count(); i++)
         {
-            img = layerbitmap->getBitmapImageAtFrame(i);
-            int tmp_x = img->findLeft(rect, 121);
-            if (tmp_x == 10000)
+            layerbitmap = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(sl->at(i)));
+            for (int k = layerbitmap->firstKeyFramePosition(); k <= layerbitmap->getMaxKeyFramePosition(); k++)
             {
-                QMessageBox::information(this, nullptr,
-                                         tr("Peg bar not found!"),
-                                         QMessageBox::Ok);
-                return;
+                if (layerbitmap->keyExists(k))
+                {
+                    img = layerbitmap->getBitmapImageAtFrame(k);
+                    int tmp_x = img->findLeft(rect, 121);
+                    if (tmp_x == 10000)
+                    {
+                        QMessageBox::information(this, nullptr,
+                                                 tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k),
+                                                 QMessageBox::Ok);
+                        return;
+                    }
+                    int tmp_y = img->findTop(rect, 121);
+                    img->moveTopLeft(QPoint(img->left() + (peg_x - tmp_x), img->top() + (peg_y - tmp_y)));
+                }
             }
-            int tmp_y = img->findTop(rect, 121);
-            img->moveTopLeft(QPoint(img->left() + (peg_x - tmp_x), img->top() + (peg_y - tmp_y)));
         }
     }
 }
