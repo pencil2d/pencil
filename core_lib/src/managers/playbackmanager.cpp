@@ -187,12 +187,15 @@ void PlaybackManager::playFlipInBetween()
     int prev = layerMgr->currentLayer()->getPreviousKeyFramePosition(start);
     int next = layerMgr->currentLayer()->getNextKeyFramePosition(start);
 
-    if (layerMgr->currentLayer()->keyExists(prev) &&
-        layerMgr->currentLayer()->keyExists(next))
+    if (prev < start && next > start &&
+            layerMgr->currentLayer()->keyExists(prev) &&
+            layerMgr->currentLayer()->keyExists(next))
     {
         mFlipList.clear();
         mFlipList.append(prev);
+        mFlipList.append(prev);
         mFlipList.append(start);
+        mFlipList.append(next);
         mFlipList.append(next);
         mFlipList.append(start);
     }
@@ -392,17 +395,16 @@ void PlaybackManager::timerTick()
 
 void PlaybackManager::flipTimerTick()
 {
-    int curr = editor()->currentFrame();
-    int pos = mFlipList.indexOf(curr);
-    if (pos == mFlipList.count() - 1)
+    if (mFlipList.count() < 2 || editor()->currentFrame() != mFlipList[0])
     {
         mFlipTimer->stop();
+        editor()->scrubTo(mFlipList.last());
         emit playStateChanged(false);
     }
     else
     {
-        editor()->scrubTo(mFlipList[pos + 1]);
-        mFlipList.removeAt(pos);
+        editor()->scrubTo(mFlipList[1]);
+        mFlipList.removeFirst();
     }
 }
 
