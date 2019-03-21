@@ -485,6 +485,7 @@ void MainWindow2::pegBarReg()
                 }
             }
         }
+        ui->scribbleArea->deselectAll();
     }
 }
 

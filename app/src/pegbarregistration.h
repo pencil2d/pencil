@@ -20,9 +20,6 @@ public:
     void initLayerList(Editor* editor);
     QStringList* getLayerList();
 
-public slots:
-    void layerSelectionChanged();
-
 private:
     Ui::PegBarRegistration *ui;
     Editor* mEditor = nullptr;

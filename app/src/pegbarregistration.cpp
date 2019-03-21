@@ -5,6 +5,7 @@
 #include "layer.h"
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QDebug>
 
 PegBarRegistration::PegBarRegistration(QWidget *parent) :
     QDialog(parent),
@@ -12,8 +13,6 @@ PegBarRegistration::PegBarRegistration(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->rbActiveLayer, &QRadioButton::toggled, this, &PegBarRegistration::layerSelectionChanged);
-    connect(ui->rbSelectedLayers, &QRadioButton::toggled, this, &PegBarRegistration::layerSelectionChanged);
     mLayernames = new QStringList();
     mLayernames->clear();
 }
@@ -30,7 +29,8 @@ void PegBarRegistration::initLayerList(Editor *editor)
     {
         if (mEditor->layers()->getLayer(i)->type() == Layer::BITMAP)
         {
-            mLayernames->append(mEditor->layers()->getLayer(i)->name());
+            QListWidgetItem* item = new QListWidgetItem(mEditor->layers()->getLayer(i)->name());
+            ui->lwLayers->addItem(item);
         }
     }
     ui->labRefKey->setText(mEditor->layers()->currentLayer()->name() +
@@ -40,35 +40,10 @@ void PegBarRegistration::initLayerList(Editor *editor)
 QStringList *PegBarRegistration::getLayerList()
 {
     mLayernames->clear();
-    if (ui->rbActiveLayer->isChecked())
-    {
-        mLayernames->append(mEditor->layers()->currentLayer()->name());
-        return mLayernames;
-    }
-
     for (int i = 0; i < ui->lwLayers->count(); i++)
     {
         if (ui->lwLayers->item(i)->isSelected())
             mLayernames->append(ui->lwLayers->item(i)->text());
     }
     return mLayernames;
-}
-
-void PegBarRegistration::layerSelectionChanged()
-{
-    if (ui->rbActiveLayer->isChecked())
-    {
-        ui->lwLayers->clear();
-        ui->lwLayers->setEnabled(false);
-    }
-    else
-    {
-        ui->lwLayers->clear();
-        ui->lwLayers->setEnabled(true);
-        for (int i = 0; i < mLayernames->count() ; i++)
-        {
-            QListWidgetItem* item = new QListWidgetItem(mLayernames->at(i));
-            ui->lwLayers->addItem(item);
-        }
-    }
 }
