@@ -426,11 +426,9 @@ void BitmapColoring::trace()
         mLayerBitmap->addNewKeyFrameAt(mEditor->currentFrame());
         mEditor->paste();
     }
-    bool black;
-    ui->cbMethodSelector->currentIndex() == 0 ? black = false: black = true;
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
     mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
-                                                   black,
+                                                   mSelectAreas,
                                                    ui->cb2TraceRed->isChecked(),
                                                    ui->cb2TraceGreen->isChecked(),
                                                    ui->cb2TraceBlue->isChecked());
