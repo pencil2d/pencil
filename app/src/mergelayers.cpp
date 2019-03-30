@@ -63,20 +63,7 @@ void MergeLayers::mergeLayers()
         mFromLayer = static_cast<LayerVector*>(mEditor->layers()->findLayerByName(ui->cbFromLayer->currentText()));
         mToLayer   = static_cast<LayerVector*>(mEditor->layers()->findLayerByName(ui->cbToLayer->currentText()));
     }
-
-    for (int i = mFromLayer->firstKeyFramePosition(); i <= mFromLayer->getMaxKeyFramePosition(); i++)
-    {
-        mEditor->scrubTo(i);
-        if (mFromLayer->keyExists(i))
-        {
-            mEditor->layers()->setCurrentLayer(mFromLayer);
-            mEditor->copy();
-            mEditor->layers()->setCurrentLayer(mToLayer);
-            if (!mToLayer->keyExists(i))
-                mToLayer->addNewKeyFrameAt(i);
-            mEditor->paste();
-        }
-    }
+    mEditor->layers()->mergeLayers(mFromLayer, mToLayer);
     mEditor->layers()->setCurrentLayer(mFromLayer);
     if (ui->cbDeleteLayer->isChecked())
         mEditor->layers()->deleteLayer(mEditor->layers()->currentLayerIndex());
