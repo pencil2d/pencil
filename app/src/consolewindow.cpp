@@ -6,6 +6,8 @@
 #include <QMediaPlayer>
 
 #include "mainwindow2.h"
+#include "editor.h"
+#include "toolmanager.h"
 
 ConsoleWindow::ConsoleWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,6 +24,7 @@ ConsoleWindow::ConsoleWindow(QWidget *parent) :
     ui->prompt->setFocus();
 
     mMainWindow = new MainWindow2(this);
+    mMainWindow->show();
 
     // Play music
     QMediaPlaylist *playlist = new QMediaPlaylist();
@@ -95,7 +98,7 @@ void ConsoleWindow::runCommand()
     }
     else if (command.startsWith(tr("look ")))
     {
-        printLook(command.mid(5));
+        printLook(command.mid(tr("look ").size()));
     }
     else if (command == tr("close") || command == tr("quit"))
     {
@@ -104,6 +107,44 @@ void ConsoleWindow::runCommand()
 
         // Quit application
         close();
+    }
+    else if ((QStringList() << tr("equip") << tr("pick") << tr("pickup") << tr("pick up") << tr("grab")).contains(command))
+    {
+        print(tr("What do you want to %1? To specify, use the action: %2 <object>").arg(command, command.toUpper()));
+    }
+    else if (command.startsWith(tr("equip ")) || command.startsWith(tr("pick ")) || command.startsWith(tr("pickup ")) || command.startsWith(tr("grab ")))
+    {
+        if (command.startsWith(tr("pick up ")))
+        {
+            printEquip(tr("pick up"), command.mid(tr("pick up ").size()));
+        }
+        else
+        {
+            printEquip(command.left(command.indexOf(' ')), command.mid(command.indexOf(' ') + 1));
+        }
+    }
+    else if (command == "version")
+    {
+        print("Pencil2D ASCII Version v0.1");
+    }
+    else if (command == tr("press"))
+    {
+        // TODO
+    }
+    else if (command.startsWith("press "))
+    {
+        // TODO
+    }
+    else if (command == tr("move") || command == "go to")
+    {
+        // TOOD
+    }
+    else if (command.startsWith("move ") || command.startsWith("go to "))
+    {
+        // TOOD
+    }
+    else if (command == tr("release")) {
+        // TODO
     }
 }
 
@@ -198,5 +239,25 @@ void ConsoleWindow::printLook(QString arg)
     else
     {
         print(tr("I don't know where to look for that."));
+    }
+}
+
+void ConsoleWindow::printEquip(QString term, QString arg)
+{
+    // List of tools supported by Pencil2D ASCII Version
+    QHash<QString,ToolType> allowableTools;
+    allowableTools["pencil"] = ToolType::PENCIL;
+    allowableTools["eraser"] = ToolType::ERASER;
+    allowableTools["pen"] = ToolType::PEN;
+    allowableTools["brush"] = ToolType::BRUSH;
+
+    if (allowableTools.contains(arg))
+    {
+        mMainWindow->mEditor->tools()->setCurrentTool(allowableTools[arg]);
+        print(tr("You %1 the %2. To use it, you have to PRESS <x> <y>, MOVE <x> <y> zero or more times, and then RELEASE.").arg(term, arg));
+    }
+    else
+    {
+        print(tr("You can't %1 the %2.").arg(term, arg));
     }
 }

@@ -21,6 +21,7 @@ public:
     void print(QString s);
     void printHelp();
     void printLook(QString arg);
+    void printEquip(QString term, QString arg);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
