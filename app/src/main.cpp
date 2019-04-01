@@ -25,6 +25,7 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "mainwindow2.h"
+#include "consolewindow.h"
 #include "pencilapplication.h"
 #include "layermanager.h"
 #include "layercamera.h"
@@ -311,6 +312,15 @@ int handleArguments(PencilApplication& app)
     return 0;
 }
 
+int runConsole(PencilApplication& app)
+{
+    Q_UNUSED(app);
+    ConsoleWindow consoleWindow;
+    PlatformHandler::configurePlatformSpecificSettings();
+    consoleWindow.show();
+    return PencilApplication::exec();
+}
+
 int main(int argc, char* argv[])
 {
     Q_INIT_RESOURCE(core_lib);
@@ -331,5 +341,5 @@ int main(int argc, char* argv[])
 
     installTranslator(app);
 
-    return handleArguments(app);
+    return runConsole(app);
 }
