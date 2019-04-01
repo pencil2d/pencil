@@ -162,7 +162,7 @@ public slots:
     void showLayerNotVisibleWarning();
 
 
-protected:
+public:
     void tabletEvent(QTabletEvent*) override;
     void wheelEvent(QWheelEvent*) override;
     void mousePressEvent(QMouseEvent*) override;

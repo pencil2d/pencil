@@ -23,6 +23,10 @@ public:
     void printLook(QString arg);
     void printEquip(QString term, QString arg);
 
+    void doPress(QStringList args);
+    void doMove(QStringList args);
+    void doRelease();
+
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
@@ -37,6 +41,8 @@ private:
     bool mIsOnSplash = true;
     bool mHasLookedLamp = false;
     int mDiscardedPaper = 0;
+    QPointF mCurrentPos;
+    bool mIsDrawing = false;
 };
 
 #endif // CONSOLEWINDOW_H

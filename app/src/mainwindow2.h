@@ -54,6 +54,7 @@ class MainWindow2 : public QMainWindow
 {
     Q_OBJECT
 
+    friend class ConsoleWindow;
 public:
     explicit MainWindow2(QWidget* parent = nullptr);
     ~MainWindow2() override;

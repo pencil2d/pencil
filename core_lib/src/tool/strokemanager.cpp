@@ -74,18 +74,10 @@ void StrokeManager::pointerPressEvent(PointerEvent* event)
 
 void StrokeManager::pointerMoveEvent(PointerEvent* event)
 {
-    // only applied to drawing tools.
-    if (mStabilizerLevel != -1)
-    {
-        smoothMousePos(event->posF());
-    }
-    else
-    {
-        // No smoothing
-        mLastPixel = mCurrentPixel;
-        mCurrentPixel = event->posF();
-        mLastInterpolated = mCurrentPixel;
-    }
+    // No smoothing
+    mLastPixel = mCurrentPixel;
+    mCurrentPixel = event->posF();
+    mLastInterpolated = mCurrentPixel;
     if(event->isTabletEvent())
     {
         setPressure(event->pressure());
@@ -230,6 +222,9 @@ QList<QPointF> StrokeManager::interpolateStroke()
 {
     // is nan initially
     QList<QPointF> result;
+    // Disable stroke interpolation
+    noInpolOp(result);
+    return result;
 
     if (mStabilizerLevel == StabilizationLevel::SIMPLE)
     {

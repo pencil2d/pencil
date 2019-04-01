@@ -6,8 +6,11 @@
 #include <QMediaPlayer>
 
 #include "mainwindow2.h"
+#include "ui_mainwindow2.h"
 #include "editor.h"
 #include "toolmanager.h"
+#include "pointerevent.h"
+#include "viewmanager.h"
 
 ConsoleWindow::ConsoleWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,6 +28,7 @@ ConsoleWindow::ConsoleWindow(QWidget *parent) :
 
     mMainWindow = new MainWindow2(this);
     mMainWindow->show();
+    //mMainWindow->mEditor->view()->setCanvasSize(QSize(100, 100));
 
     // Play music
     QMediaPlaylist *playlist = new QMediaPlaylist();
@@ -80,7 +84,7 @@ void ConsoleWindow::runCommand()
     // Get command
     QString command = ui->prompt->text().trimmed();
     // Clean command for robustness
-    command = command.toLower().replace(QRegularExpression("[^A-Za-z 0-9\\.]"), "");
+    command = command.toLower().replace(QRegularExpression("[^A-Za-z 0-9\\.\\-]"), "");
     // Echo to output
     ui->console->appendPlainText("> " + command);
     // Clear prompt
@@ -94,7 +98,7 @@ void ConsoleWindow::runCommand()
     }
     else if (command == tr("look"))
     {
-
+        printLook("");
     }
     else if (command.startsWith(tr("look ")))
     {
@@ -129,22 +133,26 @@ void ConsoleWindow::runCommand()
     }
     else if (command == tr("press"))
     {
-        // TODO
+        print(tr("Press needs x and y coordinates of where to start pressing. Use PRESS <x> <y>"));
     }
-    else if (command.startsWith("press "))
+    else if (command.startsWith(tr("press ")))
     {
-        // TODO
+        doPress(command.mid(tr("press ").size()).split(' '));
     }
-    else if (command == tr("move") || command == "go to")
+    else if (command == tr("move") || command == tr("go to"))
     {
-        // TOOD
+        print(tr("Move needs x and y coordinates of where to move to. Use MOVE <x> <y>"));
     }
-    else if (command.startsWith("move ") || command.startsWith("go to "))
+    else if (command.startsWith(tr("move ")))
     {
-        // TOOD
+        doMove(command.mid(tr("move ").size()).split(' '));
+    }
+    else if (command.startsWith(tr("go to ")))
+    {
+        doMove(command.mid(tr("go to ").size()).split(' '));
     }
     else if (command == tr("release")) {
-        // TODO
+        doRelease();
     }
 }
 
@@ -260,4 +268,89 @@ void ConsoleWindow::printEquip(QString term, QString arg)
     {
         print(tr("You can't %1 the %2.").arg(term, arg));
     }
+}
+
+void ConsoleWindow::doPress(QStringList args)
+{
+    // Check to make sure we haven't already pressed
+    if (mIsDrawing)
+    {
+        print(tr("Can't press because you are already drawing. Use RELEASE first to finish drawing the previous stroke."));
+        return;
+    }
+
+    // Check for exactly two arguments (x, y)
+    if (args.size() != 2)
+    {
+        print(tr("Press needs x and y coordinates of where to start pressing. Use PRESS <x> <y>"));
+        return;
+    }
+
+    // Try to parse arguments into numbers
+    float x, y;
+    bool ok, succeeded = true;
+    x = args[0].toFloat(&ok);
+    succeeded &= ok;
+    y = args[1].toFloat(&ok);
+    succeeded &= ok;
+    if (!succeeded)
+    {
+        print(tr("Could not understand positions %1 and %2. Please use numerical positions.").arg(args[0], args[1]));
+        return;
+    }
+
+    mCurrentPos = QPointF(static_cast<double>(x), static_cast<double>(y));
+    mIsDrawing = true;
+
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, mCurrentPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    mMainWindow->ui->scribbleArea->mousePressEvent(e);
+}
+
+void ConsoleWindow::doMove(QStringList args)
+{
+    // Check to make sure we've already pressed
+    if (!mIsDrawing)
+    {
+        print(tr("Can't move because you are not currently drawing. Use PRESS <x> <y> first."));
+        return;
+    }
+
+    // Check for exactly two arguments (x, y)
+    if (args.size() != 2)
+    {
+        print(tr("Move needs x and y coordinates of where to move to. Use MOVE <x> <y>"));
+        return;
+    }
+
+    // Try to parse arguments into numbers
+    float x, y;
+    bool ok, succeeded = true;
+    x = args[0].toFloat(&ok);
+    succeeded &= ok;
+    y = args[1].toFloat(&ok);
+    succeeded &= ok;
+    if (!succeeded)
+    {
+        print(tr("Could not understand positions %1 and %2. Please use numerical positions.").arg(args[0], args[1]));
+        return;
+    }
+
+    mCurrentPos = QPointF(static_cast<double>(x), static_cast<double>(y));
+
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseMove, mCurrentPos, Qt::NoButton, Qt::LeftButton, Qt::NoModifier);
+    mMainWindow->ui->scribbleArea->mouseMoveEvent(e);
+}
+
+void ConsoleWindow::doRelease()
+{
+    // Check to make sure we've already pressed
+    if (!mIsDrawing)
+    {
+        print(tr("Can't release because you are not currently drawing. Use PRESS <x> <y> first."));
+        return;
+    }
+
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonRelease, mCurrentPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    mMainWindow->ui->scribbleArea->mouseReleaseEvent(e);
+    mIsDrawing = false;
 }
