@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>900</width>
+    <height>950</height>
    </rect>
   </property>
   <property name="font">
@@ -39,6 +39,25 @@
      <number>0</number>
     </property>
     <item>
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <family>Courier New</family>
+        <pointsize>26</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding:10px 0;</string>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;div style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Pencil2D ASCII Version: A Text-Based Animation Adventure&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QPlainTextEdit" name="console">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -57,6 +76,48 @@
       </property>
       <property name="readOnly">
        <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string>
+
+                                   N8888888D
+                             OZ$$$ZZZZZZZZZZZ$Z$$Z
+                          $ZZZZZZZZZZZZZZZZZZZZZZZ$Z$N
+                       8$Z$ZZZZZZZZ$$$$$$$$$ZZZZZZZZ$ZZ ..NWWN..
+                     ZZZZZZZZZ$77777777777777777$ZZZWW8+==:::::=+Z
+                   8$ZZZZZZ7777777777777777777777OWW=======+++++=:++
+                  ZZZZZZ$777777777777IIIII77777WW+:::===++++++++++++?7
+                8$ZZZZZ777777777???????????+NW=:+77:,,,,~+++++++++?????
+               OZZZZ$$7777777??+?????????DWD77?,:,,,,7+....+++++????????
+              8$ZZZZ7777777???????????IWW:::::,,,7?,...?=...~????????????
+             N$ZZZZ777777???????????WW?IIIII$$:.,..=7....I..:,?????????II$
+             $ZZZZ777777?????????NW$I?IIIIIIIIII7....,7,,:=7:::?????IIIIII
+            $ZZZZ777777???????OWWI?IIIIIIIIIIIIII??.  .7:::~7~~~IIIIIIIIIIZ
+           NZZZ$$77777??????WW?IIIIIIIIIIIIIIIIII?+Z::::7:~~??~~~IIIIII777O
+           ZZZZZ77777????WW7IIIIIIIIIIIIIIIIIII+++II$?~~~7~~~7~~~IIII77777O
+           ZZZZ$77777?NWNIIIIIIIIIIIIIIIIIII+++7IIIIIII~~~7~~~7~~=7777777OO
+          DZZZZ$777$WW?IIIIIIIIIIIIIIIIII?++IIIIIIIIII7=~~~7~~I+==77777OOON
+          8ZZZZ777$W++++=I$IIIIIIIIIIII++?IIIIIIIIIIII7$~~~7~~~7==OOOOOOOO
+          8ZZZ$77OW++====~~~~OI?IIII+++7IIIIIIIIIIIIIII7=~~=+==7=$OOOOOO8
+          8ZZZ$7OW+====~~~~::::ZI?++77IIIIIIIIIIIIII7777O$I+II$Z$$OOOOOO
+          8ZZZ$OW====~~~::::,,,::IIIIIIIIIIIIIIIII777777O$$$Z$$O$$OOOON
+          DZZZOW~~~~~~::::,,,:::::Z7IIIIIIIIII7I777777778$$$Z$$Z$Z88
+           ZZZW~~~~::::,,,,::::~~~~7IIIIIIIII777777777778$$$$$O$$WWN
+           Z8W~~::::,,,::::::~~~~~==7IIII777777777777777O$$Z$$DWWZ$Z
+            W~:::,,,,:::::~~~~~====+?7II777777777777777$$$$ZWWOZZZZD
+            :::,,,:::::~~~~~=====++++$77777777777777777O$WWN77ZZZZ$
+           NNNN::::::~~~~=====+++++??Z7777777777777777ZWW7777ZZZZZ
+          N???+DD~~~~~=====+++++??????77777777777777WW$77777ZZZZ$8
+          +?????IN~~=====+++++????IIII77777777777WW$7777777ZZZZZZ
+        N???????ONN===+++++????IIIIII777777777WWD?77777777$ZZZZZ
+       N????++? NDNO++++????IIIIIIIIIZ77777ZWN?I77777777ZZZZ$$8
+      N+?+?ZNNNDDDDN+?????IIIIIIIIII?777$WW77777777777$ZZZZZZ
+     NNNNNNDDDDDDDDN???IIIIIIIIIIIIIZ7WWO77777777777ZZZZZZZZ
+     NDDDDDDDDDDDNNOIIIIIII7II7IIIIDWD7777777777$ZZZZZZZ$Z
+                        NNNND8OOZZZZ$$$$$$$$ZZZZZZZZ$Z$O
+                          $ZZZZZZZZZZZZZZZZZZZZZZZ$Z$N
+                             8$$ZZZZZZZZZZZZZZZZ$O
+                                   N8888888D</string>
       </property>
      </widget>
     </item>
@@ -90,7 +151,7 @@
          <string notr="true">border:none;background:transparent;</string>
         </property>
         <property name="text">
-         <string/>
+         <string>Press enter to begin</string>
         </property>
        </widget>
       </item>

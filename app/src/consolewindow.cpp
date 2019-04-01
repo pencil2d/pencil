@@ -3,6 +3,8 @@
 
 #include <QRegularExpression>
 
+#include "mainwindow2.h"
+
 ConsoleWindow::ConsoleWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ConsoleWindow)
@@ -16,6 +18,8 @@ ConsoleWindow::ConsoleWindow(QWidget *parent) :
     // Styling
     ui->prompt->setAttribute(Qt::WA_MacShowFocusRect, 0);
     ui->prompt->setFocus();
+
+    mMainWindow = new MainWindow2(this);
 }
 
 ConsoleWindow::~ConsoleWindow()

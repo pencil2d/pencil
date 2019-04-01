@@ -7,6 +7,8 @@ namespace Ui {
 class ConsoleWindow;
 }
 
+class MainWindow2;
+
 class ConsoleWindow : public QMainWindow
 {
     Q_OBJECT
@@ -23,6 +25,8 @@ private slots:
 
 private:
     Ui::ConsoleWindow *ui;
+
+    MainWindow2 *mMainWindow;
 };
 
 #endif // CONSOLEWINDOW_H
