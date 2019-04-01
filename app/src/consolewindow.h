@@ -26,6 +26,7 @@ public:
     void doPress(QStringList args);
     void doMove(QStringList args);
     void doRelease();
+    void doPlugSpeaker(bool shouldPlay);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;

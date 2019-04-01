@@ -129,7 +129,7 @@ void ConsoleWindow::runCommand()
     }
     else if (command == "version")
     {
-        print("Pencil2D ASCII Version v0.1");
+        print("Pencil2D ASCII Edition v0.1");
     }
     else if (command == tr("press"))
     {
@@ -153,6 +153,36 @@ void ConsoleWindow::runCommand()
     }
     else if (command == tr("release")) {
         doRelease();
+    }
+    else if (command == tr("unplug"))
+    {
+        print("What do you want to unplug? To specify, use the action: UNPLUG <object>");
+    }
+    else if (command.startsWith(tr("unplug ")))
+    {
+        if (command == tr("unplug speaker"))
+        {
+            doPlugSpeaker(false);
+        }
+        else
+        {
+            print(tr("Cannot unplug %1").arg(command.mid(tr("unplug ").size())));
+        }
+    }
+    else if (command == tr("plug in"))
+    {
+        print("What do you want to plug in? To specify, use the action: PLUG IN <object>");
+    }
+    else if (command.startsWith(tr("plug in ")))
+    {
+        if (command == tr("plug in speaker"))
+        {
+            doPlugSpeaker(true);
+        }
+        else
+        {
+            print(tr("Cannot plug in %1").arg(command.mid(tr("plug in ").size())));
+        }
     }
 }
 
@@ -353,4 +383,32 @@ void ConsoleWindow::doRelease()
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonRelease, mCurrentPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
     mMainWindow->ui->scribbleArea->mouseReleaseEvent(e);
     mIsDrawing = false;
+}
+
+void ConsoleWindow::doPlugSpeaker(bool shouldPlay)
+{
+    if (shouldPlay)
+    {
+        if (mSpeaker->state() == QMediaPlayer::PlayingState)
+        {
+            print(tr("The speaker is already plugged in!"));
+        }
+        else
+        {
+            mSpeaker->play();
+            print(tr("Plugged in speaker :)"));
+        }
+    }
+    else
+    {
+        if(mSpeaker->state() != QMediaPlayer::PlayingState)
+        {
+            print(tr("The speaker is already unplugged!"));
+        }
+        else
+        {
+            mSpeaker->pause();
+            print(tr("Unplugged speaker ;("));
+        }
+    }
 }

@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Pencil2D ASCII Version</string>
+   <string>Pencil2D ASCII Edition</string>
   </property>
   <property name="styleSheet">
    <string notr="true">color:limegreen;background:black;</string>
@@ -50,7 +50,7 @@
        <string notr="true">padding:10px 0;</string>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;div style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Pencil2D ASCII Version: A Text-Based Animation Adventure&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;div style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Pencil2D ASCII Edition: A Text-Based Animation Adventure&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
