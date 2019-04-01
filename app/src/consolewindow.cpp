@@ -2,6 +2,8 @@
 #include "ui_consolewindow.h"
 
 #include <QRegularExpression>
+#include <QMediaPlaylist>
+#include <QMediaPlayer>
 
 #include "mainwindow2.h"
 
@@ -20,6 +22,14 @@ ConsoleWindow::ConsoleWindow(QWidget *parent) :
     ui->prompt->setFocus();
 
     mMainWindow = new MainWindow2(this);
+
+    // Play music
+    QMediaPlaylist *playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl("qrc:/audio/electric-city.wav"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    mSpeaker = new QMediaPlayer();
+    mSpeaker->setPlaylist(playlist);
+    mSpeaker->play();
 }
 
 ConsoleWindow::~ConsoleWindow()
@@ -31,15 +41,10 @@ bool ConsoleWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == ui->prompt)
     {
-        if (event->type() == QEvent::FocusIn)
+        if (event->type() == QEvent::FocusOut)
         {
-            ui->promptPrefix->setStyleSheet("border:none;background:rgba(0,255,0,0.25);");
-            ui->prompt->setStyleSheet("border:none;background:rgba(0,255,0,0.25);");
-        }
-        else if (event->type() == QEvent::FocusOut)
-        {
-            ui->promptPrefix->setStyleSheet("border:none;background:transparent;");
-            ui->prompt->setStyleSheet("border:none;background:transparent;");
+            // Keep focus on prompt
+            ui->prompt->setFocus();
         }
     }
     return false;
@@ -47,6 +52,27 @@ bool ConsoleWindow::eventFilter(QObject *watched, QEvent *event)
 
 void ConsoleWindow::runCommand()
 {
+    // Handle exiting the splash screen
+    if (mIsOnSplash)
+    {
+        // Remove title
+        ui->title->hide();
+        // Remove logo
+        ui->console->clear();
+
+        // Clear prompt
+        ui->prompt->setText("");
+        // Make prompt editable
+        ui->prompt->setReadOnly(false);
+
+        // Show help text
+        // TODO
+
+        // Prevent this code from being run again
+        mIsOnSplash = false;
+        return;
+    }
+
     // Get command
     QString command = ui->prompt->text().trimmed();
     // Clean command for robustness

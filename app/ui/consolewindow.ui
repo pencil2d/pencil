@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Pencil2D ASCII Version</string>
   </property>
   <property name="styleSheet">
    <string notr="true">color:limegreen;background:black;</string>
@@ -39,7 +39,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="title">
       <property name="font">
        <font>
         <family>Courier New</family>
@@ -134,6 +134,9 @@
           <pointsize>18</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background:rgba(0,255,0,0.25);</string>
+        </property>
         <property name="text">
          <string>&gt; </string>
         </property>
@@ -148,10 +151,13 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">border:none;background:transparent;</string>
+         <string notr="true">border:none;background:rgba(0,255,0,0.25);</string>
         </property>
         <property name="text">
          <string>Press enter to begin</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

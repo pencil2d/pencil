@@ -8,6 +8,7 @@ class ConsoleWindow;
 }
 
 class MainWindow2;
+class QMediaPlayer;
 
 class ConsoleWindow : public QMainWindow
 {
@@ -27,6 +28,8 @@ private:
     Ui::ConsoleWindow *ui;
 
     MainWindow2 *mMainWindow;
+    QMediaPlayer *mSpeaker;
+    bool mIsOnSplash = true;
 };
 
 #endif // CONSOLEWINDOW_H
