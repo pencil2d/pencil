@@ -98,7 +98,8 @@ HEADERS +=  \
     src/activeframepool.h \
     src/external/platformhandler.h \
     src/external/macosx/macosxnative.h \
-    src/util/pointerevent.h
+    src/util/pointerevent.h \
+    src/util/asciiimage.h
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
@@ -161,7 +162,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/miniz.cpp \
     src/qminiz.cpp \
     src/activeframepool.cpp \
-    src/util/pointerevent.cpp
+    src/util/pointerevent.cpp \
+    src/util/asciiimage.cpp
 
 FORMS += \
     ui/camerapropertiesdialog.ui

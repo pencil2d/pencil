@@ -9,6 +9,8 @@ class ConsoleWindow;
 
 class MainWindow2;
 class QMediaPlayer;
+class LayerCamera;
+class LayerBitmap;
 
 class ConsoleWindow : public QMainWindow
 {
@@ -22,6 +24,7 @@ public:
     void printHelp();
     void printLook(QString arg);
     void printEquip(QString term, QString arg);
+    void printPaper(QStringList args);
 
     void doPress(QStringList args);
     void doMove(QStringList args);
@@ -44,6 +47,8 @@ private:
     int mDiscardedPaper = 0;
     QPointF mCurrentPos;
     bool mIsDrawing = false;
+    LayerCamera *mCamLayer;
+    LayerBitmap *mDrawingLayer;
 };
 
 #endif // CONSOLEWINDOW_H

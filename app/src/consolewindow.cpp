@@ -11,6 +11,11 @@
 #include "toolmanager.h"
 #include "pointerevent.h"
 #include "viewmanager.h"
+#include "colormanager.h"
+#include "layermanager.h"
+#include "layercamera.h"
+#include "layerbitmap.h"
+#include "asciiimage.h"
 
 ConsoleWindow::ConsoleWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -27,7 +32,18 @@ ConsoleWindow::ConsoleWindow(QWidget *parent) :
     ui->prompt->setFocus();
 
     mMainWindow = new MainWindow2(this);
-    mMainWindow->show();
+    mMainWindow->mEditor->color()->setColor(Qt::black);
+    LayerManager *lm = mMainWindow->mEditor->layers();
+    mCamLayer = lm->createCameraLayer("ASCII Camera");
+    mCamLayer->setViewRect(QRect(mMainWindow->mEditor->view()->mapScreenToCanvas(QPoint(0, 0)).toPoint(), QSize(50, 50)));
+    LayerCamera *curCam;
+    while ((curCam = static_cast<LayerCamera*>(lm->getLastCameraLayer())) != mCamLayer)
+    {
+        lm->deleteLayer(lm->getIndex(curCam));
+    }
+    mDrawingLayer = lm->createBitmapLayer("ASCII Bitmap");
+    lm->setCurrentLayer(mDrawingLayer);
+
     //mMainWindow->mEditor->view()->setCanvasSize(QSize(100, 100));
 
     // Play music
@@ -184,6 +200,30 @@ void ConsoleWindow::runCommand()
             print(tr("Cannot plug in %1").arg(command.mid(tr("plug in ").size())));
         }
     }
+    else if (command == "iddqd")
+    {
+        // A debug command to display the main window
+        if (mMainWindow->isVisible())
+        {
+            mMainWindow->hide();
+        }
+        else
+        {
+            mMainWindow->show();
+        }
+    }
+    else if (command == tr("render"))
+    {
+        printPaper(QStringList() << "50" << "50");
+    }
+    else if (command == tr("render "))
+    {
+        printPaper(command.mid(tr("render ").size()).split(" "));
+    }
+    else
+    {
+        // TODO
+    }
 }
 
 void ConsoleWindow::print(QString s)
@@ -298,6 +338,37 @@ void ConsoleWindow::printEquip(QString term, QString arg)
     {
         print(tr("You can't %1 the %2.").arg(term, arg));
     }
+}
+
+void ConsoleWindow::printPaper(QStringList args)
+{
+    // Check for exactly two arguments (x, y)
+    if (args.size() != 2)
+    {
+        print(tr("Needs exactly needs x and y coordinates of where to start pressing. Use PRESS <x> <y>"));
+        return;
+    }
+
+    QSize cameraSize = mCamLayer->getViewSize();
+    int currentFrame = mMainWindow->mEditor->currentFrame();
+    QImage imageToExport(cameraSize, QImage::Format_ARGB32_Premultiplied);
+
+    QColor bgColor = Qt::white;
+    bgColor.setAlpha(0);
+    imageToExport.fill(bgColor);
+
+    //QTransform centralizeCamera;
+    //centralizeCamera.translate(cameraSize.width() / 2, cameraSize.height() / 2);
+
+    QPainter painter(&imageToExport);
+    painter.setWorldTransform(mCamLayer->getViewAtFrame(currentFrame));
+    painter.setWindow(QRect(0, 0, cameraSize.width(), cameraSize.height()));
+
+    mMainWindow->mEditor->object()->paintImage(painter, currentFrame, false, true);
+    imageToExport.save("/Users/connor/Downloads/ascii.png");
+
+    QString output = AsciiImage::convert(imageToExport);
+    print(output);
 }
 
 void ConsoleWindow::doPress(QStringList args)

@@ -66,6 +66,8 @@ public:
     QRect getViewRect();
     QSize getViewSize();
 
+    void setViewRect(QRect rect);
+
 signals:
     void resolutionChanged();
 

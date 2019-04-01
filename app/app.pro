@@ -61,7 +61,8 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/consolewindow.h
+    src/consolewindow.h \
+    src/AsciiPreviewDialog.h
 
 SOURCES += \
     src/main.cpp \
@@ -91,7 +92,8 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
-    src/consolewindow.cpp
+    src/consolewindow.cpp \
+    src/AsciiPreviewDialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -114,7 +116,8 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
-    ui/consolewindow.ui
+    ui/consolewindow.ui \
+    src/AsciiPreviewDialog.ui
 
 
 

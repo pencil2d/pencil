@@ -307,7 +307,8 @@ void ViewManager::flipVertical(bool b)
 void ViewManager::setCanvasSize(QSize size)
 {
     mCanvasSize = size;
-    mCentre = QTransform::fromTranslate(mCanvasSize.width() / 2.f, mCanvasSize.height() / 2.f);
+    // Don't center on resize because the camera must stay in the top left
+    //mCentre = QTransform::fromTranslate(mCanvasSize.width() / 2.f, mCanvasSize.height() / 2.f);
 
     updateViewTransforms();
     Q_EMIT viewChanged();

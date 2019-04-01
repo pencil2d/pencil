@@ -69,6 +69,8 @@ public:
     int animationLength(bool includeSounds = true);
     void notifyAnimationLengthChanged();
 
+    int getIndex(Layer*) const;
+
 Q_SIGNALS:
     void currentLayerChanged(int index);
     void layerCountChanged(int count);
@@ -76,8 +78,6 @@ Q_SIGNALS:
     void layerDeleted(int index);
 
 private:
-    int getIndex(Layer*) const;
-
     int mLastCameraLayerIdx = 0;
 };
 

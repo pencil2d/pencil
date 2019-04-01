@@ -215,6 +215,11 @@ QSize LayerCamera::getViewSize()
     return viewRect.size();
 }
 
+void LayerCamera::setViewRect(QRect rect)
+{
+    viewRect = rect;
+}
+
 void LayerCamera::loadImageAtFrame( int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale)
 {
     if ( keyExists( frameNumber ) )
