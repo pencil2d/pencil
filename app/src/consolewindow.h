@@ -18,6 +18,10 @@ public:
     explicit ConsoleWindow(QWidget *parent = nullptr);
     ~ConsoleWindow() override;
 
+    void print(QString s);
+    void printHelp();
+    void printLook(QString arg);
+
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
@@ -30,6 +34,8 @@ private:
     MainWindow2 *mMainWindow;
     QMediaPlayer *mSpeaker;
     bool mIsOnSplash = true;
+    bool mHasLookedLamp = false;
+    int mDiscardedPaper = 0;
 };
 
 #endif // CONSOLEWINDOW_H
