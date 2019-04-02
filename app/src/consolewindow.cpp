@@ -277,7 +277,7 @@ void ConsoleWindow::printLook(QString arg)
     arg = arg.trimmed();
     if (arg.isEmpty())
     {
-        QString baseMessage = tr("Ye find yeself in yon animation studio. The room is small and dark with no obvious exits. The only source of illumination is a LAMP on a DRAWING TABLE in the center of the room. PAPER and various TOOLS are neatly organized on top of the table. A WASTEBIN is beside the table. %1");
+        QString baseMessage = tr("Ye find yeself in yon animation studio. The room is small and dark with no obvious exits. The only source of illumination is a LAMP on a DRAWING TABLE in the center of the room. PAPER and various TOOLS are neatly organized on top of the table. A WASTEBIN and a BOOK are beside the table. %1");
         if (mSpeaker->state() == QMediaPlayer::PlayingState)
         {
             print(baseMessage.arg(tr("You can hear music playing from a SPEAKER behind you.")));
@@ -324,11 +324,19 @@ void ConsoleWindow::printLook(QString arg)
     }
     else if (arg == tr("tools") || arg == tr("items"))
     {
-        // TODO
+        print(tr("There are various drawing implements lined up around the edge of the desk. You can see PENCILs, ERASERs, PENs, and BRUSHes. You could probably PICK UP one of them and use it. For example you could PICK UP PEN 2 for the 2 sized pen."));
     }
     else if ((QStringList() << tr("desk") << tr("table") << tr("drawing desk") << tr("drawing table")).contains(arg))
     {
-        // TODO
+        print(tr("There is a large desk in the center of the room. On it are various objects including PAPER and TOOLS. To the left is a WASTEBIN and to the right a BOOK."));
+    }
+    else if (arg == tr("paper") || arg == tr("pages"))
+    {
+        print(tr("There is a seemingly infinte number of papers on the desk. You could probably use some of the TOOLS to draw on them. You also have the urge to FLIP through them. If you want to take a closer look at the top paper, you can VIEW it."));
+    }
+    else if (arg == tr("book") || arg == tr("spellbook"))
+    {
+        print(tr("You pick up the book an skim through it. It appears to be a spellbook written in some mystic language. The only words you even recognize are OPEN and SAVE. Perhaps they are some kind of incantations you can use."));
     }
     else if ((QStringList() << tr("wastebin") << tr("garbage bin") << tr("garbage") << tr("trash bin") << tr("trash")).contains(arg))
     {
@@ -612,7 +620,7 @@ void ConsoleWindow::doPlay()
     {
         mMainWindow->mEditor->playback()->play();
 
-        print(tr("You pick up the papers and start to flip them between your fingers. As you VIEW them, the still drawings come to life!"));
+        print(tr("You pick up the papers and start to flip them between your fingers. As you VIEW them, the still drawings come to life! At any time you can STOP."));
     }
     else
     {
