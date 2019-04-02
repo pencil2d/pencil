@@ -51,7 +51,7 @@ ConsoleWindow::ConsoleWindow(QWidget *parent) :
 
     // Play music
     QMediaPlaylist *playlist = new QMediaPlaylist();
-    playlist->addMedia(QUrl("qrc:/audio/electric-city.wav"));
+    playlist->addMedia(QUrl("qrc:/audio/electric-city.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     mSpeaker = new QMediaPlayer();
     mSpeaker->setPlaylist(playlist);
