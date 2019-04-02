@@ -1,5 +1,5 @@
 #include "asciipreviewdialog.h"
-#include "ui_AsciiPreviewDialog.h"
+#include "ui_asciipreviewdialog.h"
 
 #include <QDebug>
 
