@@ -87,7 +87,7 @@ after_build:
     cd %APPVEYOR_BUILD_FOLDER%\util &
     call %PYTHON%\\python.exe nightly-build-upload.py "%WIN32_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
     echo "32 Bit deployed" )
-    if %APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME=="pencil2d/pencil" (
+    if %APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME%=="pencil2d/pencil" (
     echo "deploying to google drive" &
     cd %APPVEYOR_BUILD_FOLDER%\util &
     move /y "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-pr-%APPVEYOR_PULL_REQUEST_NUMBER%.zip" &
@@ -119,7 +119,7 @@ after_build:
     cd %APPVEYOR_BUILD_FOLDER%\util &
     call %PYTHON%\\python.exe nightly-build-upload.py "%WIN64_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
     echo "64 Bit Deployed" )
-    if %APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME=="pencil2d/pencil" (
+    if %APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME%=="pencil2d/pencil" (
     echo "deploying to google drive" &
     cd %APPVEYOR_BUILD_FOLDER%\util &
     move /y "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-pr-%APPVEYOR_PULL_REQUEST_NUMBER%.zip" &

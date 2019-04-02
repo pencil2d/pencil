@@ -151,7 +151,7 @@ after_success:
     echo "Operation done";
   fi'
   # Upload internal pull request to google drive
-  - 'if [ \( "$TRAVIS_PULL_REQUEST_SLUG" == "pencil2d/pencil" ]; then
+  - 'if [ "$TRAVIS_PULL_REQUEST_SLUG" == "pencil2d/pencil" ]; then
     echo "Initiate deployment on Google Drive";
     cd "$TRAVIS_BUILD_DIR/util";
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
