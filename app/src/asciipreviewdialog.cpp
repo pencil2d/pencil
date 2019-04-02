@@ -23,3 +23,8 @@ void AsciiPreviewDialog::setText(QString s)
     ui->textDisplay->setText(s);
     qDebug() << mMetrics.size(0, s);
 }
+
+void AsciiPreviewDialog::setPageNumber(int n)
+{
+    setWindowTitle(tr("Previewing Page #%1").arg(n));
+}

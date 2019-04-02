@@ -16,6 +16,7 @@ public:
     ~AsciiPreviewDialog();
 
     void setText(QString s);
+    void setPageNumber(int n);
 
 private:
     Ui::AsciiPreviewDialog *ui;

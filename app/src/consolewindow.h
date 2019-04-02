@@ -24,7 +24,7 @@ public:
     void print(QString s);
     void printHelp();
     void printLook(QString arg);
-    void printEquip(QString term, QString arg);
+    void printEquip(QString term, QStringList args);
     void printPaper(QStringList args);
     void printPaper(QSize renderSize=QSize());
 
@@ -32,6 +32,9 @@ public:
     void doMove(QStringList args);
     void doRelease();
     void doPlugSpeaker(bool shouldPlay);
+    void doPage(QString arg);
+    void doPlay();
+    void doStop();
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;

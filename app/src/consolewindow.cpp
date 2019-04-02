@@ -11,6 +11,7 @@
 #include "toolmanager.h"
 #include "pointerevent.h"
 #include "viewmanager.h"
+#include "playbackmanager.h"
 #include "colormanager.h"
 #include "layermanager.h"
 #include "layercamera.h"
@@ -138,11 +139,11 @@ void ConsoleWindow::runCommand()
     {
         if (command.startsWith(tr("pick up ")))
         {
-            printEquip(tr("pick up"), command.mid(tr("pick up ").size()));
+            printEquip(tr("pick up"), command.mid(tr("pick up ").size()).split(' '));
         }
         else
         {
-            printEquip(command.left(command.indexOf(' ')), command.mid(command.indexOf(' ') + 1));
+            printEquip(command.left(command.indexOf(' ')), command.mid(command.indexOf(' ') + 1).split(' '));
         }
     }
     else if (command == "version")
@@ -214,13 +215,25 @@ void ConsoleWindow::runCommand()
             mMainWindow->show();
         }
     }
-    else if (command == tr("render"))
+    else if (command == tr("view") || command == tr("render"))
     {
         printPaper(RENDER_SIZE);
     }
-    else if (command.startsWith(tr("render ")))
+    else if (command.startsWith("view ") || command.startsWith(tr("render ")))
     {
-        printPaper(command.mid(tr("render ").size()).split(" "));
+        printPaper(command.mid(command.indexOf(' ') + 1).split(" "));
+    }
+    else if (command.startsWith(tr("page")))
+    {
+        doPage(command.mid(tr("page").size()).trimmed());
+    }
+    else if (command == tr("flip") || command == tr("play"))
+    {
+        doPlay();
+    }
+    else if (command == tr("stop") || command == tr("pause"))
+    {
+        doStop();
     }
     else
     {
@@ -231,11 +244,13 @@ void ConsoleWindow::runCommand()
 void ConsoleWindow::frameChanged(int index)
 {
     Q_UNUSED(index);
+    if (!mPreviewDialog->isVisible()) return;
     printPaper();
 }
 
 void ConsoleWindow::frameUpdate()
 {
+    if (!mPreviewDialog->isVisible()) return;
     printPaper();
 }
 
@@ -333,8 +348,13 @@ void ConsoleWindow::printLook(QString arg)
     }
 }
 
-void ConsoleWindow::printEquip(QString term, QString arg)
+void ConsoleWindow::printEquip(QString term, QStringList args)
 {
+    if (args.size() > 2)
+    {
+        print(tr("Too many words, %1 only supports <object> and <size> (in that order).").arg(term));
+    }
+
     // List of tools supported by Pencil2D ASCII Version
     QHash<QString,ToolType> allowableTools;
     allowableTools["pencil"] = ToolType::PENCIL;
@@ -342,14 +362,27 @@ void ConsoleWindow::printEquip(QString term, QString arg)
     allowableTools["pen"] = ToolType::PEN;
     allowableTools["brush"] = ToolType::BRUSH;
 
-    if (allowableTools.contains(arg))
+    if (allowableTools.contains(args[0]))
     {
-        mMainWindow->mEditor->tools()->setCurrentTool(allowableTools[arg]);
-        print(tr("You %1 the %2. To use it, you have to PRESS <x> <y>, MOVE <x> <y> zero or more times, and then RELEASE.").arg(term, arg));
+        if (args.size() == 2)
+        {
+            bool ok = true;
+            float s = args[1].toFloat(&ok);
+            if (!ok)
+            {
+                print(tr("%1 is not a valid size, ignoring. Please use a number next time").arg(args[1]));
+            }
+            else
+            {
+                mMainWindow->mEditor->tools()->getTool(allowableTools[args[0]])->setWidth(s);
+            }
+        }
+        mMainWindow->mEditor->tools()->setCurrentTool(allowableTools[args[0]]);
+        print(tr("You %1 the %2 with size %3. To use it, you have to PRESS <x> <y>, MOVE <x> <y> zero or more times, and then RELEASE. It is also helpful to VIEW what you are doing.").arg(term, args[0], QString::number(mMainWindow->mEditor->tools()->getTool(allowableTools[args[0]])->properties.width)));
     }
     else
     {
-        print(tr("You can't %1 the %2.").arg(term, arg));
+        print(tr("You can't %1 the %2.").arg(term, args[0]));
     }
 }
 
@@ -365,15 +398,11 @@ void ConsoleWindow::printPaper(QSize renderSize)
 
     QSize cameraSize = mCamLayer->getViewSize();
     int currentFrame = mMainWindow->mEditor->currentFrame();
-    qDebug() << currentFrame;
     QImage imageToExport(renderSize, QImage::Format_ARGB32_Premultiplied);
 
     QColor bgColor = Qt::white;
     bgColor.setAlpha(0);
     imageToExport.fill(bgColor);
-
-    //QTransform centralizeCamera;
-    //centralizeCamera.translate(cameraSize.width() / 2, cameraSize.height() / 2);
 
     QPainter painter(&imageToExport);
     painter.setWorldTransform(mCamLayer->getViewAtFrame(currentFrame));
@@ -384,7 +413,6 @@ void ConsoleWindow::printPaper(QSize renderSize)
     {
         mMainWindow->ui->scribbleArea->mBufferImg->paintImage(painter);
     }
-    imageToExport.save("/Users/connor/Downloads/ascii.png");
 
     // Convert image to ASCII
 
@@ -393,6 +421,7 @@ void ConsoleWindow::printPaper(QSize renderSize)
     // Display image in preview dialog
 
     mPreviewDialog->setText(output);
+    mPreviewDialog->setPageNumber(currentFrame);
     mPreviewDialog->show();
 }
 
@@ -534,5 +563,64 @@ void ConsoleWindow::doPlugSpeaker(bool shouldPlay)
             mSpeaker->pause();
             print(tr("Unplugged speaker ;("));
         }
+    }
+}
+
+void ConsoleWindow::doPage(QString arg)
+{
+    if (arg.isEmpty())
+    {
+        print(tr("The current page is %1. You can use PAGE PREVIOUS, PAGE NEXT, or PAGE <number> to navigate through your pile of PAPERS.").arg(mMainWindow->mEditor->currentFrame()));
+    }
+    else if (arg == tr("next") || arg == tr("forward") || arg == tr("forwards"))
+    {
+        mMainWindow->mEditor->scrubForward();
+        print(tr("You put the current PAPER off to the side to VIEW the next one. It is page #%1").arg(mMainWindow->mEditor->currentFrame()));
+    }
+    else if (arg == tr("previous") || arg == tr("back") || arg == tr("backward") || arg == tr("backwards"))
+    {
+        mMainWindow->mEditor->scrubBackward();
+        print(tr("You put the previous PAPER over the current paper to VIEW it. It is page #%1").arg(mMainWindow->mEditor->currentFrame()));
+    }
+    else
+    {
+        bool ok = true;
+        int n = arg.toInt(&ok);
+        if (!ok || n <= 0)
+        {
+            print(tr("%1 is not a page number. All page numbers are positive whole numbers.").arg(arg));
+        }
+        else
+        {
+            mMainWindow->mEditor->scrubTo(n);
+            print(tr("You rummage through your papers until you find page %1. You put in on top so you can VIEW it.").arg(n));
+        }
+    }
+}
+
+void ConsoleWindow::doPlay()
+{
+    if (!mMainWindow->mEditor->playback()->isPlaying())
+    {
+        mMainWindow->mEditor->playback()->play();
+
+        print(tr("You pick up the papers and start to flip them between your fingers. As you VIEW them, the still drawings come to life!"));
+    }
+    else
+    {
+        print(tr("You're already flipping through the papers."));
+    }
+}
+
+void ConsoleWindow::doStop()
+{
+    if (mMainWindow->mEditor->playback()->isPlaying())
+    {
+        mMainWindow->mEditor->playback()->stop();
+        print(tr("You stop flipping the papers. That was fun."));
+    }
+    else
+    {
+        print(tr("You can't stop what you don't start!"));
     }
 }
