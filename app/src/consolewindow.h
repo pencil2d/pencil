@@ -11,6 +11,7 @@ class MainWindow2;
 class QMediaPlayer;
 class LayerCamera;
 class LayerBitmap;
+class AsciiPreviewDialog;
 
 class ConsoleWindow : public QMainWindow
 {
@@ -25,7 +26,7 @@ public:
     void printLook(QString arg);
     void printEquip(QString term, QString arg);
     void printPaper(QStringList args);
-    void printPaper(QSize renderSize);
+    void printPaper(QSize renderSize=QSize());
 
     void doPress(QStringList args);
     void doMove(QStringList args);
@@ -37,6 +38,8 @@ protected:
 
 private slots:
     void runCommand();
+    void frameChanged(int index);
+    void frameUpdate();
 
 private:
     Ui::ConsoleWindow *ui;
@@ -52,6 +55,8 @@ private:
     bool mIsDrawing = false;
     LayerCamera *mCamLayer;
     LayerBitmap *mDrawingLayer;
+    AsciiPreviewDialog *mPreviewDialog;
+    QSize mCurrentRenderSize;
 };
 
 #endif // CONSOLEWINDOW_H

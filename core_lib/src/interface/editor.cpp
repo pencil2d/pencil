@@ -878,7 +878,7 @@ void Editor::scrubTo(int frame)
     int oldFrame = mFrame;
     mFrame = frame;
 
-    Q_EMIT currentFrameChanged(oldFrame);
+    //Q_EMIT currentFrameChanged(oldFrame);
     Q_EMIT currentFrameChanged(frame);
 
     // FIXME: should not emit Timeline update here.

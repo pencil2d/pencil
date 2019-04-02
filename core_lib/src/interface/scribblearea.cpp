@@ -503,6 +503,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
+        qDebug() << "Calling pointerPressEvent on tool";
         currentTool()->pointerPressEvent(event);
     }
 }
@@ -530,6 +531,7 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
         event->accept();
         return;
     }
+    qDebug() << "Calling pointerMoveEvent on tool";
     currentTool()->pointerMoveEvent(event);
 }
 
@@ -550,6 +552,7 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
     }
 
     //qDebug() << "release event";
+    qDebug() << "Calling pointerReleaseEvent on tool";
     currentTool()->pointerReleaseEvent(event);
 
     // ---- last check (at the very bottom of mouseRelease) ----

@@ -45,7 +45,8 @@ ConsoleWindow::ConsoleWindow(QWidget *parent) :
     mDrawingLayer = lm->createBitmapLayer("ASCII Bitmap");
     lm->setCurrentLayer(mDrawingLayer);
 
-    //mMainWindow->mEditor->view()->setCanvasSize(QSize(100, 100));
+    mPreviewDialog = new AsciiPreviewDialog(this);
+    connect(mMainWindow->mEditor, &Editor::currentFrameChanged, this, &ConsoleWindow::frameChanged);
 
     // Play music
     QMediaPlaylist *playlist = new QMediaPlaylist();
@@ -223,8 +224,19 @@ void ConsoleWindow::runCommand()
     }
     else
     {
-        print("I do not understand that.");
+        print(tr("I do not understand that."));
     }
+}
+
+void ConsoleWindow::frameChanged(int index)
+{
+    Q_UNUSED(index);
+    printPaper();
+}
+
+void ConsoleWindow::frameUpdate()
+{
+    printPaper();
 }
 
 void ConsoleWindow::print(QString s)
@@ -343,10 +355,17 @@ void ConsoleWindow::printEquip(QString term, QString arg)
 
 void ConsoleWindow::printPaper(QSize renderSize)
 {
+    if (renderSize.isEmpty())
+    {
+        renderSize = mCurrentRenderSize;
+    }
+    mCurrentRenderSize = renderSize;
+
     // Render image
 
     QSize cameraSize = mCamLayer->getViewSize();
     int currentFrame = mMainWindow->mEditor->currentFrame();
+    qDebug() << currentFrame;
     QImage imageToExport(renderSize, QImage::Format_ARGB32_Premultiplied);
 
     QColor bgColor = Qt::white;
@@ -361,6 +380,10 @@ void ConsoleWindow::printPaper(QSize renderSize)
     painter.setWindow(QRect(QPoint(0, 0), cameraSize));
 
     mMainWindow->mEditor->object()->paintImage(painter, currentFrame, false, true);
+    if (mIsDrawing)
+    {
+        mMainWindow->ui->scribbleArea->mBufferImg->paintImage(painter);
+    }
     imageToExport.save("/Users/connor/Downloads/ascii.png");
 
     // Convert image to ASCII
@@ -368,9 +391,9 @@ void ConsoleWindow::printPaper(QSize renderSize)
     QString output = AsciiImage::convert(imageToExport);
 
     // Display image in preview dialog
-    AsciiPreviewDialog *asciiPreviewDialog = new AsciiPreviewDialog(this);
-    asciiPreviewDialog->setText(output);
-    asciiPreviewDialog->show();
+
+    mPreviewDialog->setText(output);
+    mPreviewDialog->show();
 }
 
 void ConsoleWindow::printPaper(QStringList args)
@@ -432,6 +455,7 @@ void ConsoleWindow::doPress(QStringList args)
 
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, mCurrentPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
     mMainWindow->ui->scribbleArea->mousePressEvent(e);
+    frameUpdate();
 }
 
 void ConsoleWindow::doMove(QStringList args)
@@ -467,6 +491,7 @@ void ConsoleWindow::doMove(QStringList args)
 
     QMouseEvent *e = new QMouseEvent(QEvent::MouseMove, mCurrentPos, Qt::NoButton, Qt::LeftButton, Qt::NoModifier);
     mMainWindow->ui->scribbleArea->mouseMoveEvent(e);
+    frameUpdate();
 }
 
 void ConsoleWindow::doRelease()
@@ -481,6 +506,7 @@ void ConsoleWindow::doRelease()
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonRelease, mCurrentPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
     mMainWindow->ui->scribbleArea->mouseReleaseEvent(e);
     mIsDrawing = false;
+    frameUpdate();
 }
 
 void ConsoleWindow::doPlugSpeaker(bool shouldPlay)

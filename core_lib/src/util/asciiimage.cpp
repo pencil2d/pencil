@@ -36,6 +36,6 @@ QChar AsciiImage::getPixel(QColor c, ushort alpha)
     }
 
     // Algorithm and mappings from https://github.com/zachwill/asciifi/blob/master/static/js/application.js
-    return ASCII_LIST[qFloor(c.valueF() * ASCII_LIST.size())];
+    return ASCII_LIST[qMin(qFloor(c.valueF() * ASCII_LIST.size()), ASCII_LIST.size()-1)];
 }
 
