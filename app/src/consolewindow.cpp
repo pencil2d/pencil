@@ -16,6 +16,7 @@
 #include "layercamera.h"
 #include "layerbitmap.h"
 #include "asciiimage.h"
+#include "asciipreviewdialog.h"
 
 ConsoleWindow::ConsoleWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -214,15 +215,15 @@ void ConsoleWindow::runCommand()
     }
     else if (command == tr("render"))
     {
-        printPaper(QStringList() << "50" << "50");
+        printPaper(RENDER_SIZE);
     }
-    else if (command == tr("render "))
+    else if (command.startsWith(tr("render ")))
     {
         printPaper(command.mid(tr("render ").size()).split(" "));
     }
     else
     {
-        // TODO
+        print("I do not understand that.");
     }
 }
 
@@ -340,18 +341,13 @@ void ConsoleWindow::printEquip(QString term, QString arg)
     }
 }
 
-void ConsoleWindow::printPaper(QStringList args)
+void ConsoleWindow::printPaper(QSize renderSize)
 {
-    // Check for exactly two arguments (x, y)
-    if (args.size() != 2)
-    {
-        print(tr("Needs exactly needs x and y coordinates of where to start pressing. Use PRESS <x> <y>"));
-        return;
-    }
+    // Render image
 
     QSize cameraSize = mCamLayer->getViewSize();
     int currentFrame = mMainWindow->mEditor->currentFrame();
-    QImage imageToExport(cameraSize, QImage::Format_ARGB32_Premultiplied);
+    QImage imageToExport(renderSize, QImage::Format_ARGB32_Premultiplied);
 
     QColor bgColor = Qt::white;
     bgColor.setAlpha(0);
@@ -362,13 +358,44 @@ void ConsoleWindow::printPaper(QStringList args)
 
     QPainter painter(&imageToExport);
     painter.setWorldTransform(mCamLayer->getViewAtFrame(currentFrame));
-    painter.setWindow(QRect(0, 0, cameraSize.width(), cameraSize.height()));
+    painter.setWindow(QRect(QPoint(0, 0), cameraSize));
 
     mMainWindow->mEditor->object()->paintImage(painter, currentFrame, false, true);
     imageToExport.save("/Users/connor/Downloads/ascii.png");
 
+    // Convert image to ASCII
+
     QString output = AsciiImage::convert(imageToExport);
-    print(output);
+
+    // Display image in preview dialog
+    AsciiPreviewDialog *asciiPreviewDialog = new AsciiPreviewDialog(this);
+    asciiPreviewDialog->setText(output);
+    asciiPreviewDialog->show();
+}
+
+void ConsoleWindow::printPaper(QStringList args)
+{
+    // Check for exactly two arguments (x, y)
+    if (args.size() != 2)
+    {
+        print(tr("You must specify either no arugments or a width and height to view . Use RENDER <x> <y>"));
+        return;
+    }
+
+    // Try to parse arguments into numbers
+    qreal w, h;
+    bool ok, succeeded = true;
+    w = args[0].toDouble(&ok);
+    succeeded &= ok;
+    h = args[1].toDouble(&ok);
+    succeeded &= ok;
+    if (!succeeded)
+    {
+        print(tr("Could not understand sizes %1 and %2. Please use numerical sizes.").arg(args[0], args[1]));
+        return;
+    }
+
+    printPaper(QSize(w,h));
 }
 
 void ConsoleWindow::doPress(QStringList args)

@@ -32,7 +32,7 @@ QChar AsciiImage::getPixel(QColor c, ushort alpha)
 {
     if(!c.isValid() || alpha == 0)
     {
-        return ' ';
+        return QChar::Nbsp;
     }
 
     // Algorithm and mappings from https://github.com/zachwill/asciifi/blob/master/static/js/application.js

@@ -62,7 +62,7 @@ HEADERS += \
     src/colorslider.h \
     src/checkupdatesdialog.h \
     src/consolewindow.h \
-    src/AsciiPreviewDialog.h
+    src/asciipreviewdialog.h
 
 SOURCES += \
     src/main.cpp \
@@ -93,7 +93,7 @@ SOURCES += \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
     src/consolewindow.cpp \
-    src/AsciiPreviewDialog.cpp
+    src/asciipreviewdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -117,7 +117,7 @@ FORMS += \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
     ui/consolewindow.ui \
-    src/AsciiPreviewDialog.ui
+    ui/asciipreviewdialog.ui
 
 
 

@@ -25,6 +25,7 @@ public:
     void printLook(QString arg);
     void printEquip(QString term, QString arg);
     void printPaper(QStringList args);
+    void printPaper(QSize renderSize);
 
     void doPress(QStringList args);
     void doMove(QStringList args);
@@ -39,6 +40,8 @@ private slots:
 
 private:
     Ui::ConsoleWindow *ui;
+
+    const QSize RENDER_SIZE{100, 50};
 
     MainWindow2 *mMainWindow;
     QMediaPlayer *mSpeaker;

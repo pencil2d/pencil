@@ -15,8 +15,11 @@ public:
     explicit AsciiPreviewDialog(QWidget *parent = nullptr);
     ~AsciiPreviewDialog();
 
+    void setText(QString s);
+
 private:
     Ui::AsciiPreviewDialog *ui;
+    QFontMetrics mMetrics;
 };
 
 #endif // ASCIIPREVIEWDIALOG_H
