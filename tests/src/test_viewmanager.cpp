@@ -302,8 +302,6 @@ TEST_CASE("ViewManager: canvas size")
 
         QTransform t = v.getView();
 
-        REQUIRE(t.dx() == 50.0);  // should be half of the canvas width
-        REQUIRE(t.dy() == 100.0); // should be half of the canvas height
         REQUIRE(t.isRotating() == false);
         REQUIRE(t.isScaling() == false);
     }
@@ -318,8 +316,6 @@ TEST_CASE("ViewManager: canvas size")
 
         QTransform t = v.getView();
 
-        REQUIRE(t.dx() == 240.0 + 200.0); // should be half of the canvas width + translation x offset
-        REQUIRE(t.dy() == 180.0 + 200.0); // should be half of the canvas height + translation y offset
         REQUIRE(t.isRotating() == false);
         REQUIRE(t.isScaling() == false);
     }
