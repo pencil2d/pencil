@@ -35,6 +35,8 @@ public:
     void doPage(QString arg);
     void doPlay();
     void doStop();
+    void doOpen();
+    void doSave();
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;

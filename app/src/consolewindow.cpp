@@ -235,6 +235,14 @@ void ConsoleWindow::runCommand()
     {
         doStop();
     }
+    else if (command == tr("open"))
+    {
+        doOpen();
+    }
+    else if (command == tr("save"))
+    {
+        doSave();
+    }
     else
     {
         print(tr("I do not understand that."));
@@ -622,5 +630,44 @@ void ConsoleWindow::doStop()
     else
     {
         print(tr("You can't stop what you don't start!"));
+    }
+}
+
+void ConsoleWindow::doOpen()
+{
+    mMainWindow->openDocument();
+    mMainWindow->mEditor->color()->setColor(Qt::black);
+    LayerManager *lm = mMainWindow->mEditor->layers();
+    mCamLayer = (LayerCamera *) lm->findLayerByName("ASCII Camera", Layer::CAMERA);
+    if (mCamLayer == nullptr)
+    {
+        mCamLayer = lm->createCameraLayer("ASCII Camera");
+        mCamLayer->setViewRect(QRect(mMainWindow->mEditor->view()->mapScreenToCanvas(QPoint(0, 0)).toPoint(), QSize(50, 50)));
+    }
+    else
+    {
+        QSize camSize = mCamLayer->getViewSize();
+        mMainWindow->mEditor->view()->translate(camSize.width(), camSize.height());
+    }
+    LayerCamera *curCam;
+    mDrawingLayer = (LayerBitmap*) lm->findLayerByName("ASCII Bitmap", Layer::BITMAP);
+    if (mDrawingLayer == nullptr)
+    {
+        mDrawingLayer = lm->createBitmapLayer("ASCII Bitmap");
+    }
+    lm->setCurrentLayer(mDrawingLayer);
+}
+
+void ConsoleWindow::doSave()
+{
+    bool success = mMainWindow->saveAsNewDocument();
+
+    if (success)
+    {
+        print(tr("You magically command the papers to save. You're not sure what happend, but you feel like it worked."));
+    }
+    else
+    {
+        print(tr("You magically command the papers to save, but nothing happens."));
     }
 }

@@ -484,7 +484,7 @@ void MainWindow2::openDocument()
 
 bool MainWindow2::saveAsNewDocument()
 {
-    FileDialog fileDialog(this);
+    FileDialog fileDialog(nullptr);
     QString fileName = fileDialog.saveFile(FileType::ANIMATION);
     if (fileName.isEmpty())
     {
@@ -622,7 +622,8 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 
 bool MainWindow2::saveObject(QString strSavedFileName)
 {
-    QProgressDialog progress(tr("Saving document..."), tr("Abort"), 0, 100, this);
+    // Remove progress dialog, does not play well when the main window is hidden
+    QProgressDialog progress(tr("Saving document..."), tr("Abort"), 0, 100, nullptr);
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
