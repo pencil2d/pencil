@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QMessageBox>
 
 #include "object.h"
 #include "editor.h"
@@ -491,7 +492,21 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             }
             else
             {
-                mEditor->layers()->setCurrentLayer(layerNumber);
+                if (event->button() == Qt::RightButton)
+                {
+                    // if types dont match...
+                    if (mEditor->layers()->currentLayer()->type() != mEditor->layers()->getLayer(layerNumber)->type())
+                    {
+                        QMessageBox::information(this, tr("Merge impossible"),
+                                                 tr("The two layers must be of same type!"),
+                                                 QMessageBox::Ok);
+                        return;
+                    }
+                }
+                else
+                {
+                    mEditor->layers()->setCurrentLayer(layerNumber);
+                }
             }
         }
         if (layerNumber == -1)

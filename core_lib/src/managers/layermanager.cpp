@@ -273,6 +273,8 @@ Status LayerManager::deleteLayer(int index)
 
 void LayerManager::mergeLayers(Layer *fromLayer, Layer *toLayer)
 {
+    if (fromLayer == nullptr || toLayer == nullptr) { return; }
+
     for (int i = fromLayer->firstKeyFramePosition(); i <= fromLayer->getMaxKeyFramePosition(); i++)
     {
         editor()->scrubTo(i);

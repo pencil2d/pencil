@@ -211,8 +211,6 @@
     <addaction name="actionNew_Sound_Layer"/>
     <addaction name="actionNew_Camera_Layer"/>
     <addaction name="separator"/>
-    <addaction name="actionMerge_Layer"/>
-    <addaction name="separator"/>
     <addaction name="actionDelete_Current_Layer"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
