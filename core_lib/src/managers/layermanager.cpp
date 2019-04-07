@@ -288,6 +288,7 @@ void LayerManager::mergeLayers(Layer *fromLayer, Layer *toLayer)
             editor()->paste();
         }
     }
+    deleteLayer(getIndex(fromLayer));
 }
 
 Status LayerManager::renameLayer(Layer* layer, const QString& newName)
