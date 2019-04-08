@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -210,8 +210,6 @@
     <addaction name="actionNew_Vector_Layer"/>
     <addaction name="actionNew_Sound_Layer"/>
     <addaction name="actionNew_Camera_Layer"/>
-    <addaction name="separator"/>
-    <addaction name="actionMerge_Layer"/>
     <addaction name="separator"/>
     <addaction name="actionDelete_Current_Layer"/>
    </widget>

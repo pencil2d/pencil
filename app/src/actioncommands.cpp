@@ -49,7 +49,6 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
-#include "mergelayers.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -647,39 +646,6 @@ Status ActionCommands::addNewSoundLayer()
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
         mEditor->layers()->setCurrentLayer(layer);
    }
-    return Status::OK;
-}
-
-Status ActionCommands::mergeLayers()
-{
-    if (!(mEditor->layers()->currentLayer()->type() == Layer::BITMAP ||
-          mEditor->layers()->currentLayer()->type() == Layer::VECTOR))
-    {
-        QMessageBox::information(nullptr, nullptr,
-                                 tr("Only Bitmap and Vector Layers\n"
-                                    "can be merged."));
-        return Status::NOT_SUPPORTED;
-    }
-
-    int type = mEditor->layers()->currentLayer()->type();
-    int layers = 0;
-    for (int i = 0; i < mEditor->layers()->count(); i++)
-    {
-        if (mEditor->layers()->getLayer(i)->type() == type)
-            layers++;
-    }
-    if (layers < 2)
-    {
-        QMessageBox::information(nullptr, tr("Merge not possible"),
-                                 tr("Only one layer of that type!"));
-        return Status::NOT_SUPPORTED;
-    }
-
-    MergeLayers* merge = new MergeLayers();
-    if (merge == nullptr)
-        return Status::FAIL;
-    merge->initDialog(mEditor);
-    merge->exec();
     return Status::OK;
 }
 
