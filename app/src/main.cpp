@@ -233,7 +233,6 @@ int handleArguments(PencilApplication& app)
         }
         return PencilApplication::exec();
     }
-
     mainWindow.openFile(inputPath);
 
     if (!parser.value(cameraOption).isEmpty())
@@ -290,8 +289,8 @@ int handleArguments(PencilApplication& app)
             { "WEBM", true },
             { "APNG", true },
         };
-        bool asMovie = formatMapping[format];
 
+        bool asMovie = formatMapping[format];
         if (asMovie)
         {
             if (transparency)
