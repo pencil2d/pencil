@@ -63,6 +63,10 @@ public:
     void paintLayerGutter(QPainter& painter);
     bool didDetatchLayer();
 
+    void showContextMenu(QPoint pos);
+    void deleteLayer();
+    void mergeLayers();
+
 Q_SIGNALS:
     void mouseMovedY(int);
     void lengthChanged(int);

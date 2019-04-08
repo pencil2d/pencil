@@ -20,6 +20,8 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QMessageBox>
+#include <QMenu>
 
 #include "object.h"
 #include "editor.h"
@@ -164,9 +166,40 @@ void TimeLineCells::updateContent()
     update();
 }
 
-
 bool TimeLineCells::didDetatchLayer() {
     return abs(getMouseMoveY()) > mLayerDetatchThreshold;
+}
+
+void TimeLineCells::showContextMenu(QPoint pos)
+{
+    pos = this->mapToGlobal(pos);
+    int index = mEditor->layers()->currentLayerIndex();
+
+    QMenu* menu = new QMenu();
+    if (mEditor->layers()->currentLayerIndex() > 0 &&
+            mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
+            mEditor->layers()->getLayer(index)->type() == mEditor->layers()->getLayer(index-1)->type())
+    {
+        menu->addAction(tr("Merge onto Layer: %1").arg(mEditor->layers()->getLayer(index-1)->name()), this, &TimeLineCells::mergeLayers);
+        menu->addSeparator();
+    }
+    menu->addAction(tr("Delete Layer: %1").arg(mEditor->layers()->currentLayer()->name()), this, &TimeLineCells::deleteLayer);
+
+    menu->exec(pos);
+}
+
+void TimeLineCells::deleteLayer()
+{
+    mEditor->layers()->deleteLayer(mEditor->layers()->currentLayerIndex());
+}
+
+void TimeLineCells::mergeLayers()
+{
+    int index = mEditor->layers()->currentLayerIndex();
+    if (mEditor->layers()->getLayer(index)->type() == mEditor->layers()->getLayer(index-1)->type())
+    {
+        mEditor->layers()->mergeLayers(mEditor->layers()->currentLayer(), mEditor->layers()->getLayer(index-1));
+    }
 }
 
 void TimeLineCells::drawContent()
@@ -492,6 +525,10 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             else
             {
                 mEditor->layers()->setCurrentLayer(layerNumber);
+                if (event->button() == Qt::RightButton)
+                {
+                    showContextMenu(event->pos());
+                }
             }
         }
         if (layerNumber == -1)

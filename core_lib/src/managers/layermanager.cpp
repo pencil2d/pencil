@@ -273,6 +273,8 @@ Status LayerManager::deleteLayer(int index)
 
 void LayerManager::mergeLayers(Layer *fromLayer, Layer *toLayer)
 {
+    if (fromLayer == nullptr || toLayer == nullptr) { return; }
+
     for (int i = fromLayer->firstKeyFramePosition(); i <= fromLayer->getMaxKeyFramePosition(); i++)
     {
         editor()->scrubTo(i);
@@ -286,6 +288,7 @@ void LayerManager::mergeLayers(Layer *fromLayer, Layer *toLayer)
             editor()->paste();
         }
     }
+    deleteLayer(getIndex(fromLayer));
 }
 
 Status LayerManager::renameLayer(Layer* layer, const QString& newName)
