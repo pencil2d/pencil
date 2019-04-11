@@ -150,7 +150,7 @@
     <addaction name="menuZoom"/>
     <addaction name="separator"/>
     <addaction name="actionRotate_Clockwise"/>
-    <addaction name="actionRotate_Anticlosewise"/>
+    <addaction name="actionRotate_Anticlockwise"/>
     <addaction name="separator"/>
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
@@ -458,9 +458,9 @@
     <string>Rotate Clockwise</string>
    </property>
   </action>
-  <action name="actionRotate_Anticlosewise">
+  <action name="actionRotate_Anticlockwise">
    <property name="text">
-    <string>Rotate AntiClosewise</string>
+    <string>Rotate Anticlockwise</string>
    </property>
   </action>
   <action name="actionReset_View">
