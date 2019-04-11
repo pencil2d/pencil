@@ -941,6 +941,7 @@ void Editor::removeKey()
 
     backup(tr("Remove frame"));
 
+    mScribbleArea->deselectAll();
     layer->removeKeyFrame(currentFrame());
 
     scrubBackward();
