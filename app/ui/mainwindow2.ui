@@ -470,8 +470,8 @@
   </action>
   <action name="actionHorizontal_Flip">
    <property name="icon">
-    <iconset>
-     <normaloff>:/icons/mirror.png</normaloff>:/icons/mirror.png</iconset>
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
    </property>
    <property name="text">
     <string>Horizontal Flip</string>
@@ -479,8 +479,8 @@
   </action>
   <action name="actionVertical_Flip">
    <property name="icon">
-    <iconset>
-     <normaloff>:/icons/mirrorV.png</normaloff>:/icons/mirrorV.png</iconset>
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
    </property>
    <property name="text">
     <string>Vertical Flip</string>
