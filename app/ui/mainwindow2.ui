@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -777,10 +777,10 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Next KeyFrame</string>
+    <string>Next Keyframe</string>
    </property>
    <property name="toolTip">
-    <string>Next KeyFrame</string>
+    <string>Next Keyframe</string>
    </property>
   </action>
   <action name="actionPrev_KeyFrame">
