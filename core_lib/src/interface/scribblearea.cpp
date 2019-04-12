@@ -1869,6 +1869,7 @@ void ScribbleArea::deselectAll()
     mySelection = QRectF();
     myTransformedSelection = QRectF();
     myTempTransformedSelection = QRectF();
+    mCurrentTransformSelection = QRectF();
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) { return; }
@@ -1885,6 +1886,9 @@ void ScribbleArea::deselectAll()
 
     // clear all the data tools may have accumulated
     editor()->tools()->cleanupAllToolsData();
+
+    // Update cursor
+    setCursor(currentTool()->cursor());
 
     updateCurrentFrame();
 }
