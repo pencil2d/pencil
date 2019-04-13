@@ -714,7 +714,7 @@ QPointF ScribbleArea::getCurrentOffset()
 void ScribbleArea::showLayerNotVisibleWarning()
 {
     QMessageBox::warning(this, tr("Warning"),
-                         tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
+                         tr("You are trying to modify a hidden layer! Please select another layer (or make the current layer visible)."),
                          QMessageBox::Ok,
                          QMessageBox::Ok);
 }
