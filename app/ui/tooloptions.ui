@@ -111,7 +111,7 @@
      <item>
       <widget class="SpinSlider" name="toleranceSlider" native="true">
        <property name="toolTip">
-        <string>The extend to which the color variation will be treated as being equal</string>
+        <string>The extent to which the color variation will be treated as being equal</string>
        </property>
       </widget>
      </item>

@@ -148,7 +148,7 @@ void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
     QSignalBlocker b(ui->colorListWidget);
     ui->colorListWidget->setCurrentRow(colorIndex);
 
-    if (colorIndex > 0)
+    if (colorIndex >= 0)
     {
         emit colorChanged(newColor);
     }
