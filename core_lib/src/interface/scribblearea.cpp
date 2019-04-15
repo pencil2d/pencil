@@ -660,7 +660,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
     mStrokeManager->pointerReleaseEvent(&event);
 
     pointerReleaseEvent(&event);
-    mMouseInUse = false;
+    mMouseInUse = (e->buttons() & Qt::RightButton) || (e->buttons() & Qt::LeftButton);
 }
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent* e)
