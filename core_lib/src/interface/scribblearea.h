@@ -88,7 +88,7 @@ public:
     qreal myRotatedAngle = 0.0;
     QList<int> mClosestCurves;
 
-    bool areLayersSane() const;
+    bool isKeyframeSane() const;
     bool isLayerPaintable() const;
     bool allowSmudging();
 
@@ -245,6 +245,7 @@ private:
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
     bool mPenHeldDown = false;
+    bool mIgnoreInput = false;
 
     // Double click handling for tablet input
     void handleDoubleClick();

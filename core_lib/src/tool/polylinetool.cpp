@@ -180,7 +180,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
 
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
-    if (!mScribbleArea->areLayersSane())
+    if (!mScribbleArea->isKeyframeSane())
     {
         return;
     }
@@ -238,7 +238,7 @@ void PolylineTool::cancelPolyline()
 
 void PolylineTool::endPolyline(QList<QPointF> points)
 {
-    if (!mScribbleArea->areLayersSane())
+    if (!mScribbleArea->isKeyframeSane())
     {
         return;
     }
