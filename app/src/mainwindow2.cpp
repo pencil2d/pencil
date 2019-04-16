@@ -423,8 +423,14 @@ void MainWindow2::clearRecentFilesList()
 
 void MainWindow2::pegBarReg()
 {
+    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Layer type not supported!"),
+                                 QMessageBox::Ok);
+        return;
+    }
 
-    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP) { return; }
     if (!ui->scribbleArea->isSomethingSelected())
     {
         QMessageBox::information(this, nullptr,
@@ -443,10 +449,21 @@ void MainWindow2::pegBarReg()
     }
 
     PegBarRegistration* pegreg = new PegBarRegistration(this);
-    pegreg->initLayerList(mEditor);
+    QStringList bitmaplayers;
+    for (int i = 0; i < mEditor->layers()->count(); i++)
+    {
+        if (mEditor->layers()->getLayer(i)->type() == Layer::BITMAP)
+        {
+            bitmaplayers.append(mEditor->layers()->getLayer(i)->name());
+            qDebug() << mEditor->layers()->getLayer(i)->name();
+        }
+    }
+
+    pegreg->setLayerList(bitmaplayers);
+    pegreg->setLabText(mEditor->layers()->currentLayer()->name() + ", " + QString::number(mEditor->currentFrame()));
     int ret = pegreg->exec();
-    QStringList* sl = pegreg->getLayerList();
-    if (sl->isEmpty())
+    bitmaplayers = pegreg->getLayerList();
+    if (bitmaplayers.isEmpty())
     {
         QMessageBox::information(this, nullptr,
                                  tr("No Layer selected!"),
@@ -456,36 +473,14 @@ void MainWindow2::pegBarReg()
 
     if (ret == pegreg->Accepted)
     {
-        // register Reference
-        QRectF rect = ui->scribbleArea->getSelection();
-        LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
-        BitmapImage* img = layerbitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-        int peg_x = img->findLeft(rect, 121);
-        int peg_y = img->findTop(rect, 121);
-
-        // move other layers
-        for (int i = 0; i < sl->count(); i++)
+        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
+        if (statusint.errorcode == Status::FAIL)
         {
-            layerbitmap = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(sl->at(i)));
-            for (int k = layerbitmap->firstKeyFramePosition(); k <= layerbitmap->getMaxKeyFramePosition(); k++)
-            {
-                if (layerbitmap->keyExists(k))
-                {
-                    img = layerbitmap->getBitmapImageAtFrame(k);
-                    int tmp_x = img->findLeft(rect, 121);
-                    if (tmp_x == 10000)
-                    {
-                        QMessageBox::information(this, nullptr,
-                                                 tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k),
-                                                 QMessageBox::Ok);
-                        return;
-                    }
-                    int tmp_y = img->findTop(rect, 121);
-                    img->moveTopLeft(QPoint(img->left() + (peg_x - tmp_x), img->top() + (peg_y - tmp_y)));
-                }
-            }
+            QMessageBox::information(this, nullptr,
+                                     tr("Peg bar alignment failed!"),
+                                     QMessageBox::Ok);
+            return;
         }
-        ui->scribbleArea->deselectAll();
     }
 }
 

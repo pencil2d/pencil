@@ -92,8 +92,9 @@ public:
     QSize size() { autoCrop(); return mBounds.size(); }
 
     // peg bar registration
-    int findLeft(QRectF rect, int grayValue);
-    int findTop(QRectF rect, int grayValue);
+    Status::StatusInt findLeft(QRectF rect, int grayValue);
+    Status::StatusInt findTop(QRectF rect, int grayValue);
+
 
     QRect& bounds() { autoCrop(); return mBounds; }
 

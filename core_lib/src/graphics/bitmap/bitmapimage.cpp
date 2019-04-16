@@ -650,8 +650,9 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
-int BitmapImage::findLeft(QRectF rect, int grayValue)
+Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
 {
+    Status::StatusInt retValues;
     int left = static_cast<int>(rect.left());
     int right = static_cast<int>(rect.right());
     int top = static_cast<int>(rect.top());
@@ -662,15 +663,20 @@ int BitmapImage::findLeft(QRectF rect, int grayValue)
         {
             if (qGray(constScanLine(x,y)) < grayValue)
             {
-                return x;
+                retValues.value = x;
+                retValues.errorcode = Status::OK;
+                return retValues;
             }
         }
     }
-    return 10000;
+    retValues.value = -1;
+    retValues.errorcode = Status::FAIL;
+    return retValues;
 }
 
-int BitmapImage::findTop(QRectF rect, int grayValue)
+Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
 {
+    Status::StatusInt retValues;
     int left = static_cast<int>(rect.left());
     int right = static_cast<int>(rect.right());
     int top = static_cast<int>(rect.top());
@@ -681,11 +687,15 @@ int BitmapImage::findTop(QRectF rect, int grayValue)
         {
             if (qGray(constScanLine(x,y)) < grayValue)
             {
-                return y;
+                retValues.value = y;
+                retValues.errorcode = Status::OK;
+                return retValues;
             }
         }
     }
-    return 10000;
+    retValues.value = -1;
+    retValues.errorcode = Status::FAIL;
+    return retValues;
 }
 
 Status BitmapImage::writeFile(const QString& filename)

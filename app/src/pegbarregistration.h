@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QStringList>
-#include "editor.h"
 
 namespace Ui {
 class PegBarRegistration;
@@ -17,13 +16,13 @@ public:
     explicit PegBarRegistration(QWidget *parent = nullptr);
     ~PegBarRegistration();
 
-    void initLayerList(Editor* editor);
-    QStringList* getLayerList();
+    void setLayerList(QStringList layerList);
+    QStringList getLayerList();
+    void setLabText(QString txt);
 
 private:
     Ui::PegBarRegistration *ui;
-    Editor* mEditor = nullptr;
-    QStringList* mLayernames = nullptr;
+    QStringList mLayernames;
 };
 
 #endif // PEGBARREGISTRATION_H
