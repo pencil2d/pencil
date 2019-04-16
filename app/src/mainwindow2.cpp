@@ -455,7 +455,6 @@ void MainWindow2::pegBarReg()
         if (mEditor->layers()->getLayer(i)->type() == Layer::BITMAP)
         {
             bitmaplayers.append(mEditor->layers()->getLayer(i)->name());
-            qDebug() << mEditor->layers()->getLayer(i)->name();
         }
     }
 

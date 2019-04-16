@@ -1026,12 +1026,12 @@ Status::StatusInt Editor::pegBarAlignment(QStringList layers)
                     return retLeft;
                 }
                 retRight = img->findTop(rect, 121);
-                if (retLeft.errorcode == Status::FAIL)
+                if (retRight.errorcode == Status::FAIL)
                 {
                     QMessageBox::information(nullptr, nullptr,
                                              tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k),
                                              QMessageBox::Ok);
-                    return retLeft;
+                    return retRight;
                 }
                 img->moveTopLeft(QPoint(img->left() + (peg_x - retLeft.value), img->top() + (peg_y - retRight.value)));
             }

@@ -653,6 +653,8 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
 Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
 {
     Status::StatusInt retValues;
+    retValues.value = -1;
+    retValues.errorcode = Status::FAIL;
     int left = static_cast<int>(rect.left());
     int right = static_cast<int>(rect.right());
     int top = static_cast<int>(rect.top());
@@ -661,7 +663,7 @@ Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
     {
         for (int y = top; y <= bottom; y++)
         {
-            if (qGray(constScanLine(x,y)) < grayValue)
+            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
             {
                 retValues.value = x;
                 retValues.errorcode = Status::OK;
@@ -669,14 +671,14 @@ Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
             }
         }
     }
-    retValues.value = -1;
-    retValues.errorcode = Status::FAIL;
     return retValues;
 }
 
 Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
 {
     Status::StatusInt retValues;
+    retValues.value = -1;
+    retValues.errorcode = Status::FAIL;
     int left = static_cast<int>(rect.left());
     int right = static_cast<int>(rect.right());
     int top = static_cast<int>(rect.top());
@@ -685,7 +687,7 @@ Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
     {
         for (int x = left; x <= right; x++)
         {
-            if (qGray(constScanLine(x,y)) < grayValue)
+            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
             {
                 retValues.value = y;
                 retValues.errorcode = Status::OK;
@@ -693,8 +695,6 @@ Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
             }
         }
     }
-    retValues.value = -1;
-    retValues.errorcode = Status::FAIL;
     return retValues;
 }
 
