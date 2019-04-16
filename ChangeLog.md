@@ -1,3 +1,67 @@
+## Pencil2D 0.6.3 - 17 March 2019
+
+### New Features
+
+* #978  Implement Flipping / Rolling Feature -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1068 Add support for tif/tiff import and export -- [Andrey Nevdokimof](https://github.com/nevdokimof)
+* #1074 Migrate timeline "frame size" slider widget from preferences to timeline -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1109 Function to import images by filename -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1115 / `bfd3d74` Add support for transparency: WebM and APNG
+* #1126 Check for updates & forum/discord links in Help menu
+* #1136 Export only keyframes possible in `exportImageSequence` -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1145 Zoom shortcuts for 25% up to 400% -- [David Lamhauge](https://github.com/davidlamhauge)
+
+### Enhancements
+
+* #1065 Fixed error message dialog typo --[Mattia Rizzolo](https://github.com/mapreri)
+* #1066 Implement individual division lines for the grid system -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1086 Prevent layers to have the same name
+* #1091 Filename suggestion (numbers) for new layers in Pencil2D
+* #1100 AVI format movie exports with considerable lower quality than other formats
+* #1102 add a frame pool cache option (preferences). -- [Lucas Mongrain](https://github.com/0x72D0)
+* #1108 Improved *.gpl import algorithm
+* #1143 Fps and field size in settings
+* #1147 Layers swap place more logically -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1176 Make default file filter for palettes match all supported formats
+
+### Fixes
+
+* #926 Scrubber should move to start of range
+* #1059 Use tablet events for tablet input 
+* #1089 Copy and Paste Doesn't Function
+* #1090 Minor image export bugs -- [Philippe Rzetelski](https://github.com/przet)
+* #1092 Loading a file removes the application icon on windows until next restart
+* #1093 Loading a file and exiting will change "open recent" file order -- [Matthew McGonagle](https://github.com/MatthewMcGonagle)
+* #1094 *.gpl file palette importer miss-handling whitespace and names -- [Andrey Nevdokimof](https://github.com/nevdokimof)
+* #1095 Pencil2D crashes after selecting the camera layer when move tool is selected
+* #1096 Pencil2D crashes when drawing on vector layer under specific conditions
+* #1101 Range input boxes come activated even when the checkbox is not ticked during application initialization -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1107 FFix most warnings in core_lib/structure from g++
+* #1111 Fix rename optimization during save
+* #1132 Master resolve warnings (NULL and C-style Casts) -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1134 Remove Show Tab Bar from the View menu on mac
+* #1135 Error counting digits fixed
+* #1137 Improve darkmode QDockWidget titlebar
+* #1139 Fix audio volume in movie export
+* #1141 Resolved warnings for NULL and old-casts -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1142 Force light theme on mac os
+* #1144 Renable dark mode on macOS
+* #1154 The Drawing tools left round marks on most strokes
+* #1155 Fix pressure artifacts at end of brush stroke
+* #1157 Sound export audio samples synchronization issues
+* #1166 Fix XML fields corrupting because of locale decimal types.
+* #1168 Fix tablet events and cleanup events handling
+* #1175 Grayscale color wheel
+* #1181 Fix canvas bugs
+* #1188 Miscellaneous fixes: Fixes regression for #677. Fixes duplicate selection box.
+
+* b1064ab Fix auto-crop being disabled in duplicate frames.
+* aafd048 Fix: mistakingly empty the filename of source keyframe when duplicating a frame
+* 4f7b4bb Fix sound key length
+
+Translations
+* Added translation: Catalan, Greek and Kabyle.
+
 ## Pencil2D 0.6.2 - 26 September 2018
 
 * #378 Disable onion skins while playing animation.

@@ -481,9 +481,14 @@ void Editor::updateAutoSaveCounter()
     mAutosaveCounter++;
     if (mAutosaveCounter >= mAutosaveNumber)
     {
-        mAutosaveCounter = 0;
+        resetAutoSaveCounter();
         emit needSave();
     }
+}
+
+void Editor::resetAutoSaveCounter()
+{
+    mAutosaveCounter = 0;
 }
 
 void Editor::cut()
@@ -942,6 +947,7 @@ void Editor::removeKey()
 
     backup(tr("Remove frame"));
 
+    mScribbleArea->deselectAll();
     layer->removeKeyFrame(currentFrame());
 
     scrubBackward();

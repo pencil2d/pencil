@@ -1174,7 +1174,7 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
-        <source>Grid Heigth</source>
+        <source>Grid Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -136,6 +136,8 @@ BitmapImage BitmapImage::copy()
 
 BitmapImage BitmapImage::copy(QRect rectangle)
 {
+    if (rectangle.isEmpty() || mBounds.isEmpty()) return BitmapImage();
+
     QRect intersection2 = rectangle.translated(-mBounds.topLeft());
     BitmapImage result = BitmapImage(rectangle.topLeft(), image()->copy(intersection2));
     return result;

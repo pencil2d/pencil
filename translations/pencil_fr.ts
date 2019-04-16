@@ -1173,7 +1173,7 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
-        <source>Grid Heigth</source>
+        <source>Grid Height</source>
         <translation>Hauteur de grille</translation>
     </message>
     <message>
