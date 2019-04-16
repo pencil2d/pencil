@@ -296,7 +296,8 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         }
         else
         {
-            mEditor->layers()->gotoPreviouslayer();
+            mEditor->layers()->gotoNextLayer();
+        //gotoPreviouslayer();
             event->ignore();
         }
         break;
@@ -310,7 +311,8 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         }
         else
         {
-            mEditor->layers()->gotoNextLayer();
+            mEditor->layers()->gotoPreviouslayer();
+                    //gotoNextLayer();
             event->ignore();
         }
         break;
