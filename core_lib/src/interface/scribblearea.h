@@ -58,7 +58,7 @@ class ScribbleArea : public QWidget
 
 public:
     ScribbleArea(QWidget* parent);
-    ~ScribbleArea();
+    ~ScribbleArea() override;
 
     bool init();
     void setEditor(Editor* e) { mEditor = e; }
