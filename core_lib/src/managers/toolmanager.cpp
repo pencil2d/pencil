@@ -88,7 +88,7 @@ void ToolManager::setDefaultTool()
 
 void ToolManager::setCurrentTool(ToolType eToolType)
 {
-    if (mCurrentTool != NULL)
+    if (mCurrentTool != nullptr)
     {
        leavingThisTool();
     }
@@ -130,7 +130,7 @@ void ToolManager::setWidth(float newWidth)
         newWidth = 1.f;
     }
 
-    currentTool()->setWidth(newWidth);
+    currentTool()->setWidth(static_cast<qreal>(newWidth));
     Q_EMIT penWidthValueChanged(newWidth);
     Q_EMIT toolPropertyChanged(currentTool()->type(), WIDTH);
 }
@@ -142,7 +142,7 @@ void ToolManager::setFeather(float newFeather)
         newFeather = 0.f;
     }
 
-    currentTool()->setFeather(newFeather);
+    currentTool()->setFeather(static_cast<qreal>(newFeather));
     Q_EMIT penFeatherValueChanged(newFeather);
     Q_EMIT toolPropertyChanged(currentTool()->type(), FEATHER);
 }

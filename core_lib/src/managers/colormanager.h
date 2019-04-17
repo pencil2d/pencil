@@ -28,7 +28,7 @@ class ColorManager : public BaseManager
     Q_OBJECT
 public:
     explicit ColorManager(Editor* editor);
-    ~ColorManager();
+    ~ColorManager() override;
 
     bool init() override;
     Status load(Object*) override;
