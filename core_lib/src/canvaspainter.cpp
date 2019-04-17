@@ -118,8 +118,8 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
     if (layer->keyFrameCount() == 0)
         return;
 
-    qreal minOpacity = mOptions.fOnionSkinMinOpacity / 100;
-    qreal maxOpacity = mOptions.fOnionSkinMaxOpacity / 100;
+    qreal minOpacity = static_cast<qreal>(mOptions.fOnionSkinMinOpacity / 100);
+    qreal maxOpacity = static_cast<qreal>(mOptions.fOnionSkinMaxOpacity / 100);
 
     if (mOptions.bPrevOnionSkin && mFrameNumber > 1)
     {
@@ -255,7 +255,7 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
     // to our (not yet) scaled bitmap
     mScaledBitmap = origImage.copy();
 
-    if (mOptions.scaling >= 1.0)
+    if (mOptions.scaling >= 1.0f)
     {
         // TODO: Qt doesn't handle huge upscaled qimages well...
         // possible solution, myPaintLib canvas renderer splits its canvas up in chunks.
