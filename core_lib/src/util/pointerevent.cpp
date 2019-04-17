@@ -2,13 +2,12 @@
 
 PointerEvent::PointerEvent(QMouseEvent* event)
 {
-    this->mouseEvent = event;
+    mMouseEvent = event;
 }
 
 PointerEvent::PointerEvent(QTabletEvent* event)
 {
-    this->tabletEvent = event;
-    mWidgetPos = event->posF();
+    mTabletEvent = event;
 }
 
 PointerEvent::~PointerEvent()
@@ -17,112 +16,100 @@ PointerEvent::~PointerEvent()
 
 QPoint PointerEvent::pos() const
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        return mouseEvent->pos();
+        return mMouseEvent->pos();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        return this->tabletEvent->pos();
+        return mTabletEvent->pos();
     }
-    else
-    {
-        // if we land here... the incoming input was
-        // neither tablet nor mouse
-        return mWidgetPos.toPoint();
-    }
+    Q_ASSERT(false);
+    return QPoint();
 }
 
 QPointF PointerEvent::posF() const
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        return mouseEvent->localPos();
+        return mMouseEvent->localPos();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        return this->tabletEvent->posF();
+        return mTabletEvent->posF();
     }
-    else
-    {
-        return mWidgetPos;
-    }
+    Q_ASSERT(false);
+    return QPointF();
 }
 
 Qt::MouseButton PointerEvent::button() const
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        return this->mouseEvent->button();
+        return mMouseEvent->button();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        return this->tabletEvent->button();
+        return mTabletEvent->button();
     }
-    else
-    {
-        // if we land here... the incoming input was
-        // neither tablet nor mouse
-        Q_ASSERT(false);
-        return Qt::NoButton;
-    }
+    // if we land here... the incoming input was
+    // neither tablet nor mouse
+    Q_ASSERT(false);
+    return Qt::NoButton;
 }
 
 Qt::MouseButtons PointerEvent::buttons() const
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        return this->mouseEvent->buttons();
+        return mMouseEvent->buttons();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        return this->tabletEvent->buttons();
+        return mTabletEvent->buttons();
     }
-    else
-    {
-        // if we land here... the incoming input was
-        // neither tablet nor mouse
-        Q_ASSERT(false);
-        return Qt::NoButton;
-    }
+    // if we land here... the incoming input was
+    // neither tablet nor mouse
+    Q_ASSERT(false);
+    return Qt::NoButton;
 }
 
 qreal PointerEvent::pressure() const
 {
-    if (this->tabletEvent)
+    if (mTabletEvent)
     {
-        return this->tabletEvent->pressure();
+        return mTabletEvent->pressure();
     }
     return 1.0;
 }
 
 qreal PointerEvent::rotation() const
 {
-    if (this->tabletEvent)
+    if (mTabletEvent)
     {
-        return this->tabletEvent->rotation();
+        return mTabletEvent->rotation();
     }
     return 0.0;
 }
 
 qreal PointerEvent::tangentialPressure() const
 {
-    if (this->tabletEvent)
+    if (mTabletEvent)
     {
-        return this->tabletEvent->tangentialPressure();
+        return mTabletEvent->tangentialPressure();
     }
     return 0.0;
 }
 
 int PointerEvent::x() const
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        return this->mouseEvent->x();
+        return mMouseEvent->x();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        return this->tabletEvent->x();
+        return mTabletEvent->x();
     }
     else
     {
@@ -134,13 +121,13 @@ int PointerEvent::x() const
 
 int PointerEvent::y() const
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        return this->mouseEvent->y();
+        return mMouseEvent->y();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        return this->tabletEvent->y();
+        return mTabletEvent->y();
     }
     else
     {
@@ -151,7 +138,7 @@ int PointerEvent::y() const
 
 bool PointerEvent::isTabletEvent() const
 {
-    if (this->tabletEvent)
+    if (mTabletEvent)
     {
         return true;
     }
@@ -163,30 +150,28 @@ bool PointerEvent::isTabletEvent() const
 
 Qt::KeyboardModifiers PointerEvent::modifiers() const
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        return this->mouseEvent->modifiers();
+        return mMouseEvent->modifiers();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        return this->tabletEvent->modifiers();
+        return mTabletEvent->modifiers();
     }
-    else
-    {
-        Q_ASSERT(false);
-        return Qt::NoModifier;
-    }
+
+    Q_ASSERT(false);
+    return Qt::NoModifier;
 }
 
 void PointerEvent::accept()
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        this->mouseEvent->accept();
+        mMouseEvent->accept();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        this->tabletEvent->accept();
+        mTabletEvent->accept();
     }
     else
     {
@@ -196,13 +181,13 @@ void PointerEvent::accept()
 
 void PointerEvent::ignore()
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        this->mouseEvent->ignore();
+        mMouseEvent->ignore();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        this->tabletEvent->ignore();
+        mTabletEvent->ignore();
     }
     else
     {
@@ -212,31 +197,31 @@ void PointerEvent::ignore()
 
 QEvent::Type PointerEvent::type() const
 {
-    if (this->mouseEvent)
+    if (mMouseEvent)
     {
-        return this->mouseEvent->type();
+        return mMouseEvent->type();
     }
-    else if (this->tabletEvent)
+    else if (mTabletEvent)
     {
-        return this->tabletEvent->type();
+        return mTabletEvent->type();
     }
     return QEvent::None;
 }
 
 QTabletEvent::TabletDevice PointerEvent::device() const
 {
-    if (this->tabletEvent)
+    if (mTabletEvent)
     {
-        return this->tabletEvent->device();
+        return mTabletEvent->device();
     }
     return QTabletEvent::TabletDevice::NoDevice;
 }
 
 QTabletEvent::PointerType PointerEvent::pointerType() const
 {
-    if (this->tabletEvent)
+    if (mTabletEvent)
     {
-        return this->tabletEvent->pointerType();
+        return mTabletEvent->pointerType();
     }
     return QTabletEvent::PointerType::UnknownPointer;
 }

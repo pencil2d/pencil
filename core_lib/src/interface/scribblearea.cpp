@@ -491,6 +491,16 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
         setTemporaryTool(HAND);
     }
 
+    const bool isPressed = event->buttons() & Qt::LeftButton;
+    if (isPressed && mQuickSizing)
+    {
+        //qDebug() << "Start Adjusting" << event->buttons();
+        if (isDoingAssistedToolAdjustment(event->modifiers()))
+        {
+            return;
+        }
+    }
+
     if (event->button() == Qt::LeftButton)
     {
         currentTool()->pointerPressEvent(event);
@@ -520,16 +530,6 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
         event->accept();
         return;
     }
-
-    const bool isPressed = event->buttons() & Qt::LeftButton;
-    if (isPressed && mQuickSizing)
-    {
-        if (isDoingAssistedToolAdjustment(event->modifiers()))
-        {
-            return;
-        }
-    }
-
     currentTool()->pointerMoveEvent(event);
 }
 
@@ -892,8 +892,7 @@ void ScribbleArea::updateCanvasCursor()
     }
     else
     {
-        // if above does not comply, deallocate image
-        mCursorImg = QPixmap();
+        mCursorImg = QPixmap(); // if above does not comply, deallocate image
     }
 
     // update cursor rect
@@ -1122,8 +1121,8 @@ void ScribbleArea::paintSelectionVisuals(QPainter& painter)
     // outline of the transformed selection
     painter.setWorldMatrixEnabled(false);
     painter.setOpacity(1.0);
-    mCurrentTransformSelection = mEditor->view()->getView().mapToPolygon(myTempTransformedSelection.toAlignedRect());
-    mLastTransformSelection = mEditor->view()->getView().mapToPolygon(myTransformedSelection.toAlignedRect());
+    mCurrentTransformSelection = mEditor->view()->getView().mapToPolygon(myTempTransformedSelection.toRect());
+    mLastTransformSelection = mEditor->view()->getView().mapToPolygon(myTransformedSelection.toRect());
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer != nullptr)
@@ -1644,7 +1643,7 @@ void ScribbleArea::paintTransformedSelection()
     {
         if (layer->type() == Layer::BITMAP)
         {
-            mCanvasPainter.setTransformedSelection(mySelection.toAlignedRect(), selectionTransformation);
+            mCanvasPainter.setTransformedSelection(mySelection.toRect(), selectionTransformation);
         }
         else if (layer->type() == Layer::VECTOR)
         {
@@ -1747,7 +1746,7 @@ void ScribbleArea::setSelection(QRectF rect)
 
     if (layer->type() == Layer::BITMAP)
     {
-        rect = rect.toAlignedRect();
+        rect = rect.toRect();
     }
     mySelection = rect;
     myTransformedSelection = rect;
@@ -1870,6 +1869,7 @@ void ScribbleArea::deselectAll()
     mySelection = QRectF();
     myTransformedSelection = QRectF();
     myTempTransformedSelection = QRectF();
+    mCurrentTransformSelection = QRectF();
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) { return; }
@@ -1886,6 +1886,9 @@ void ScribbleArea::deselectAll()
 
     // clear all the data tools may have accumulated
     editor()->tools()->cleanupAllToolsData();
+
+    // Update cursor
+    setCursor(currentTool()->cursor());
 
     updateCurrentFrame();
 }
