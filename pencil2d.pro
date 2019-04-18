@@ -9,6 +9,10 @@ SUBDIRS = \ # sub-project names
     app \
     tests
 
+# use flags for gdb
+#SOURCES += main.cpp
+QMAKE_CXXFLAGS += -std=c++0x -g
+
 # build the project sequentially as listed in SUBDIRS !
 CONFIG += ordered
 

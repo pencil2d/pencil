@@ -31,6 +31,8 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "platformhandler.h"
 
+#include <cinttypes>
+
 
 void installTranslator(PencilApplication& app)
 {
