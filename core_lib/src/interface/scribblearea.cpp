@@ -296,6 +296,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         }
         else
         {
+            //Next layer is above current in timeline
             mEditor->layers()->gotoNextLayer();
         //gotoPreviouslayer();
             event->ignore();
@@ -311,6 +312,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         }
         else
         {
+            //Previous layer is below current in timeline
             mEditor->layers()->gotoPreviouslayer();
                     //gotoNextLayer();
             event->ignore();

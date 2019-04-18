@@ -624,6 +624,9 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             // paints the vector images
             if (layer->type() == Layer::VECTOR)
             {
+                if(!layer->keyExists((frameNumber))){
+                    return;
+                }
                 LayerVector* layerVector = static_cast<LayerVector*>(layer);
                 VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
                 if (vec)
