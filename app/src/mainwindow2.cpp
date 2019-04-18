@@ -274,7 +274,7 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
-    connect(ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
+    connect(ui->actionRotate_Anticlockwise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
     connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
     connect(ui->actionZoom400, &QAction::triggered, mEditor->view(), &ViewManager::scale400);
     connect(ui->actionZoom300, &QAction::triggered, mEditor->view(), &ViewManager::scale300);
@@ -684,6 +684,8 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     updateSaveState();
 
     progress.setValue(progress.maximum());
+
+    mEditor->resetAutoSaveCounter();
 
     return true;
 }
@@ -1135,7 +1137,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionZoom33->setShortcut(cmdKeySeq(CMD_ZOOM_33));
     ui->actionZoom25->setShortcut(cmdKeySeq(CMD_ZOOM_25));
     ui->actionRotate_Clockwise->setShortcut(cmdKeySeq(CMD_ROTATE_CLOCK));
-    ui->actionRotate_Anticlosewise->setShortcut(cmdKeySeq(CMD_ROTATE_ANTI_CLOCK));
+    ui->actionRotate_Anticlockwise->setShortcut(cmdKeySeq(CMD_ROTATE_ANTI_CLOCK));
     ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_FLIP_HORIZONTAL));
     ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
     ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));

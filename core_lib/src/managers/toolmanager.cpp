@@ -202,7 +202,7 @@ void ToolManager::setStabilizerLevel(int level)
 
 void ToolManager::setTolerance(int newTolerance)
 {
-    if (newTolerance < 0) { newTolerance = 1; }
+    newTolerance = qMax(0, newTolerance);
 
     currentTool()->setTolerance(newTolerance);
     Q_EMIT toleranceValueChanged(newTolerance);

@@ -150,6 +150,19 @@ after_success:
     fi;
     echo "Operation done";
   fi'
+  # Upload internal pull request to google drive
+  - 'if [ "$TRAVIS_PULL_REQUEST_SLUG" == "pencil2d/pencil" ]; then
+    echo "Initiate deployment on Google Drive";
+    cd "$TRAVIS_BUILD_DIR/util";
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      mv "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-pr-$TRAVIS_PULL_REQUEST.AppImage";
+      python3 pr-build-upload.py "$LINUX_PR_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-pr-$TRAVIS_PULL_REQUEST.AppImage";
+    fi;
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      mv "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-pr-$TRAVIS_PULL_REQUEST.zip";
+      python3 pr-build-upload.py "$OSX_PR_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-pr-$TRAVIS_PULL_REQUEST.zip";
+    fi;
+  fi'
 
   # Deploy doxygen documentation to github pages
   - 'if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_OS_NAME" == "linux" ]; then
