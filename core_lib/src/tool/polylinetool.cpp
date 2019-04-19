@@ -180,11 +180,6 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
 
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
-    if (!mScribbleArea->isKeyframeSane())
-    {
-        return;
-    }
-
     if (points.size() > 0)
     {
         QPen pen(mEditor->color()->frontColor(),
@@ -238,11 +233,6 @@ void PolylineTool::cancelPolyline()
 
 void PolylineTool::endPolyline(QList<QPointF> points)
 {
-    if (!mScribbleArea->isKeyframeSane())
-    {
-        return;
-    }
-
     Layer* layer = mEditor->layers()->currentLayer();
 
     if (layer->type() == Layer::VECTOR)

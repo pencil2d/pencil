@@ -245,7 +245,6 @@ private:
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
     bool mPenHeldDown = false;
-    bool mIgnoreInput = false;
 
     // Double click handling for tablet input
     void handleDoubleClick();

@@ -464,15 +464,6 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
 
 void ScribbleArea::pointerPressEvent(PointerEvent* event)
 {
-    mIgnoreInput = false;
-    if (currentTool()->isDrawingTool()) {
-        if (!isKeyframeSane())
-        {
-            mIgnoreInput = true;
-            return;
-        }
-    }
-
     if (event->button() & Qt::LeftButton || event->button() & Qt::RightButton)
     {
         mOffset = getCurrentOffset();
@@ -520,8 +511,6 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
 {
     updateCanvasCursor();
 
-    if (mIgnoreInput) { return; }
-
     if (event->buttons() & (Qt::LeftButton | Qt::RightButton))
     {
         mOffset = getCurrentOffset();
@@ -546,8 +535,6 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
 
 void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
 {
-    if (mIgnoreInput) { return; }
-
     if (currentTool()->isAdjusting())
     {
         currentTool()->stopAdjusting();
@@ -586,36 +573,16 @@ void ScribbleArea::handleDoubleClick()
 
 bool ScribbleArea::isLayerPaintable() const
 {
-    if (!isKeyframeSane())
-        return false;
-
     Layer* layer = mEditor->layers()->currentLayer();
+    if (layer == nullptr) { return false; }
+
     return layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR;
 }
 
 bool ScribbleArea::isKeyframeSane() const
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    // ---- checks ------
     if (layer == nullptr) { return false; }
-
-    int action = mPrefs->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
-    KeyFrame* lastKeyframe = layer->getLastKeyFrameAtPosition(mEditor->currentFrame());
-    KeyFrame* currentKeyframe = layer->getKeyFrameAt(mEditor->currentFrame());
-
-    // the first frame has to exist to use this action
-    if (action == DUPLICATE_PREVIOUS_KEY) {
-        if (lastKeyframe == nullptr) { return false; }
-    }
-    if (currentKeyframe == nullptr) {
-        // We can assume keyframe is sane here because a
-        // keyframe will be created before drawing on the canvas.
-        if (action != (CREATE_NEW_KEY | DUPLICATE_PREVIOUS_KEY)) {
-            return false;
-        }
-    }
-
-    // ---- end checks ------
 
     return true;
 }
@@ -943,47 +910,30 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
         switch (action)
         {
-        case CREATE_NEW_KEY:
-            mEditor->addNewKey();
-            mEditor->scrubTo(frameNumber);  // Refresh timeline.
-
-            // Hack to clear previous frame's content.
-            if (layer->type() == Layer::BITMAP  &&  previousKeyFrame)
-            {
-                auto asBitmapImage = dynamic_cast<BitmapImage *> (previousKeyFrame);
-
-                if (asBitmapImage)
-                {
-                    drawCanvas(frameNumber, asBitmapImage->bounds());
-                }
+        case KEEP_DRAWING_ON_PREVIOUS_KEY:
+        {
+            if (previousKeyFrame == nullptr) {
+                mEditor->addNewKey();
             }
-
-            if (layer->type() == Layer::VECTOR)
-            {
-                auto asVectorImage = dynamic_cast<VectorImage *> (previousKeyFrame);
-
-                if (asVectorImage)
-                {
-                    auto copy(*asVectorImage);
-                    copy.selectAll();
-
-                    drawCanvas(frameNumber, copy.getSelectionRect().toRect());
-                }
-            }
-
             break;
+        }
         case DUPLICATE_PREVIOUS_KEY:
         {
             if (previousKeyFrame)
             {
                 KeyFrame* dupKey = previousKeyFrame->clone();
                 layer->addKeyFrame(frameNumber, dupKey);
-                mEditor->scrubTo(frameNumber);  // Refresh timeline.
+                mEditor->scrubTo(frameNumber);
+                break;
             }
-            break;
+            // if the previous keyframe doesn't exist,
+            // fallthrough and create empty keyframe
         }
-        case KEEP_DRAWING_ON_PREVIOUS_KEY:
-            // No action needed.
+        case CREATE_NEW_KEY:
+            mEditor->addNewKey();
+
+            // Refresh canvas
+            drawCanvas(frameNumber, mCanvas.rect());
             break;
         default:
             break;
