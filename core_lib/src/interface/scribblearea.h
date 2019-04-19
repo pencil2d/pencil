@@ -88,7 +88,6 @@ public:
     qreal myRotatedAngle = 0.0;
     QList<int> mClosestCurves;
 
-    bool isKeyframeSane() const;
     bool isLayerPaintable() const;
     bool allowSmudging();
 

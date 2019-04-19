@@ -579,14 +579,6 @@ bool ScribbleArea::isLayerPaintable() const
     return layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR;
 }
 
-bool ScribbleArea::isKeyframeSane() const
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) { return false; }
-
-    return true;
-}
-
 bool ScribbleArea::allowSmudging()
 {
     ToolType toolType = currentTool()->type();
