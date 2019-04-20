@@ -166,7 +166,6 @@ public: //slots
 
     void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
     bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
-    void resetAutoSaveCounter();
 
 protected:
     // Need to move to somewhere...

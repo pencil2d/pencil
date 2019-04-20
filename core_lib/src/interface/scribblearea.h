@@ -161,20 +161,9 @@ signals:
 
 public slots:
     void clearImage();
-    void calculateSelectionRect();
     QTransform getSelectionTransformation() const { return selectionTransformation; }
     void setSelectionTransform(QTransform newTransform) { selectionTransformation = newTransform; }
-
-    void calculateSelectionTransformation();
-    void paintTransformedSelection();
     void paintTransformedSelection(QRectF selectionToTransform);
-    void applyTransformedSelection();
-    void cancelTransformedSelection();
-    void setModified( int layerNumber, int frameNumber );
-
-    inline bool transformHasBeenModified() {
-        return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0;
-    }
 
     void selectAll();
     void deselectAll();

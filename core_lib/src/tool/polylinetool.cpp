@@ -144,7 +144,7 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
     mPoints << getCurrentPoint();
 
     endPolyline( mPoints );
-    clear();
+    clearToolData();
 }
 
 

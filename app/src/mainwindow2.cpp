@@ -721,8 +721,6 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 
     progress.setValue(progress.maximum());
 
-    mEditor->resetAutoSaveCounter();
-
     return true;
 }
 
