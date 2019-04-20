@@ -1,10 +1,10 @@
-#include "pegbarregistration.h"
+#include "pegbaralignmentdialog.h"
 #include "ui_pegbarregistration.h"
 
 #include <QListWidget>
 #include <QListWidgetItem>
 
-PegBarRegistration::PegBarRegistration(QWidget *parent) :
+PegBarAlignmentDialog::PegBarAlignmentDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PegBarRegistration)
 {
@@ -13,12 +13,12 @@ PegBarRegistration::PegBarRegistration(QWidget *parent) :
     mLayernames.clear();
 }
 
-PegBarRegistration::~PegBarRegistration()
+PegBarAlignmentDialog::~PegBarAlignmentDialog()
 {
     delete ui;
 }
 
-void PegBarRegistration::setLayerList(QStringList layerList)
+void PegBarAlignmentDialog::setLayerList(QStringList layerList)
 {
      mLayernames = layerList;
      for (int i = 0; i < mLayernames.count(); i++)
@@ -27,7 +27,7 @@ void PegBarRegistration::setLayerList(QStringList layerList)
      }
 }
 
-QStringList PegBarRegistration::getLayerList()
+QStringList PegBarAlignmentDialog::getLayerList()
 {
     mLayernames.clear();
     for (int i = 0; i < ui->lwLayers->count(); i++)
@@ -38,7 +38,7 @@ QStringList PegBarRegistration::getLayerList()
     return mLayernames;
 }
 
-void PegBarRegistration::setLabText(QString txt)
+void PegBarAlignmentDialog::setLabText(QString txt)
 {
     ui->labRefKey->setText(txt);
 }

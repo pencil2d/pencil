@@ -35,6 +35,7 @@ INCLUDEPATH += \
 
 HEADERS += \
     src/mainwindow2.h \
+    src/pegbaralignmentdialog.h \
     src/shortcutfilter.h \
     src/timeline2.h \
     src/actioncommands.h \
@@ -60,12 +61,12 @@ HEADERS += \
     src/spinslider.h \
     src/doubleprogressdialog.h \
     src/colorslider.h \
-    src/checkupdatesdialog.h \
-    src/pegbarregistration.h
+    src/checkupdatesdialog.h
 
 SOURCES += \
     src/main.cpp \
     src/mainwindow2.cpp \
+    src/pegbaralignmentdialog.cpp \
     src/shortcutfilter.cpp \
     src/timeline2.cpp \
     src/actioncommands.cpp \
@@ -90,11 +91,11 @@ SOURCES += \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
-    src/checkupdatesdialog.cpp \
-    src/pegbarregistration.cpp
+    src/checkupdatesdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
+    ui/pegbaralignmentdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
@@ -113,8 +114,7 @@ FORMS += \
     ui/timelinepage.ui \
     ui/filespage.ui \
     ui/toolspage.ui \
-    ui/toolboxwidget.ui \
-    ui/pegbarregistration.ui
+    ui/toolboxwidget.ui
 
 
 

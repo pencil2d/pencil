@@ -44,18 +44,13 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "viewmanager.h"
 
-#include "layer.h"
-#include "layercamera.h"
-#include "layerbitmap.h"
-#include "bitmapimage.h"
-#include "pegbarregistration.h"
+#include "pegbaralignmentdialog.h"
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
 #include "backupelement.h"
 
 // app headers
-#include "scribblearea.h"
 #include "colorbox.h"
 #include "colorinspector.h"
 #include "colorpalettewidget.h"
@@ -448,7 +443,7 @@ void MainWindow2::pegBarReg()
         return;
     }
 
-    PegBarRegistration* pegreg = new PegBarRegistration(this);
+    PegBarAlignmentDialog* pegreg = new PegBarAlignmentDialog(this);
     QStringList bitmaplayers;
     for (int i = 0; i < mEditor->layers()->count(); i++)
     {

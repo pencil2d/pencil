@@ -1,5 +1,5 @@
-#ifndef PEGBARREGISTRATION_H
-#define PEGBARREGISTRATION_H
+#ifndef PEGBARALIGNMENTDIALOG_H
+#define PEGBARALIGNMENTDIALOG_H
 
 #include <QDialog>
 #include <QStringList>
@@ -8,13 +8,13 @@ namespace Ui {
 class PegBarRegistration;
 }
 
-class PegBarRegistration : public QDialog
+class PegBarAlignmentDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PegBarRegistration(QWidget *parent = nullptr);
-    ~PegBarRegistration();
+    explicit PegBarAlignmentDialog(QWidget *parent = nullptr);
+    ~PegBarAlignmentDialog();
 
     void setLayerList(QStringList layerList);
     QStringList getLayerList();
@@ -25,4 +25,4 @@ private:
     QStringList mLayernames;
 };
 
-#endif // PEGBARREGISTRATION_H
+#endif // PEGBARALIGNMENTDIALOG_H
