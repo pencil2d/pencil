@@ -69,7 +69,7 @@ Q_SIGNALS:
     void deleteCurrentLayer();
 
     void soundClick( bool );
-    void fpsClick( int );
+    void fpsChanged( int );
     void onionPrevClick();
     void onionNextClick();
     void playButtonTriggered();

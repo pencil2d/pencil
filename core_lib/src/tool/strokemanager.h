@@ -53,7 +53,7 @@ public:
     void interpolatePollAndPaint();
     void interpolateEnd();
     void smoothMousePos(QPointF pos);
-    QList<QPointF> meanInpolOp( QList<QPointF> points, qreal x, qreal y, qreal pressure );
+    QList<QPointF> meanInpolOp(QList<QPointF> points, qreal x, qreal y, qreal pressure);
     QList<QPointF> noInpolOp(QList<QPointF> points);
     QList<QPointF> tangentInpolOp(QList<QPointF> points);
 
@@ -63,10 +63,8 @@ public:
     QPointF getLastMeanPixel() const { return mLastInterpolated; }
     QPointF getMousePos() const { return mousePos; }
     QPointF getCurrentPressPixel() const { return mCurrentPressPixel; }
-    bool isPenPressed() const { return mPenIsHeld; }
 
 private:
-
     static const int STROKE_QUEUE_LENGTH = 3; // 4 points for cubic bezier
 
     void reset();
@@ -81,26 +79,20 @@ private:
     QPointF mCurrentPressPixel = { 0, 0 };
     QPointF mLastPressPixel2 = { 0, 0 };
     QPointF mLastPressPixel = { 0, 0 };
-    QPointF mCurrentPixel   = { 0, 0 };
-    QPointF mLastPixel      = { 0, 0 };
+    QPointF mCurrentPixel = { 0, 0 };
+    QPointF mLastPixel = { 0, 0 };
     QPointF mLastInterpolated = { 0, 0 };
     QPointF mousePos = { 0, 0 };
 
     QPointF m_previousTangent;
-    bool    hasTangent   = false;
+    bool    mHasTangent = false;
     int     previousTime = 0;
-
     bool    mStrokeStarted = false;
-
     bool    mTabletInUse = false;
-
-    bool mPenIsHeld = true;
     float   mTabletPressure = 1.f;
     int     mStabilizerLevel = 0;
-    qreal mMeanPressure;
 
     clock_t m_timeshot;
-
 };
 
 #endif // STROKEMANAGER_H

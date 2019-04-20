@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
+#include "pointerevent.h"
 
 
 PenTool::PenTool(QObject* parent) : StrokeTool(parent)
@@ -37,29 +38,29 @@ PenTool::PenTool(QObject* parent) : StrokeTool(parent)
 
 void PenTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[VECTORMERGE] = true;
-    m_enabledProperties[ANTI_ALIASING] = true;
-    m_enabledProperties[STABILIZATION] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[PRESSURE] = true;
+    mPropertyEnabled[VECTORMERGE] = true;
+    mPropertyEnabled[ANTI_ALIASING] = true;
+    mPropertyEnabled[STABILIZATION] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("penWidth").toDouble();
-    properties.pressure = settings.value("penPressure").toBool();
+    properties.width = settings.value("penWidth", 12.0).toDouble();
+    properties.pressure = settings.value("penPressure", true).toBool();
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
-    properties.useAA = settings.value("penAA").toBool();
-    properties.stabilizerLevel = settings.value("penLineStabilization").toInt();
+    properties.useAA = settings.value("penAA", true).toBool();
+    properties.stabilizerLevel = settings.value("penLineStabilization", StabilizationLevel::STRONG).toInt();
+}
 
-    // First run
-    if (properties.width <= 0)
-    {
-        setWidth(1.5);
-        setPressure(true);
-    }
-
-    mCurrentWidth = properties.width;
+void PenTool::resetToDefault()
+{
+    setWidth(12.0);
+    setUseFeather(false);
+    setPressure(true);
+    setStabilizerLevel(StabilizationLevel::STRONG);
+    setAA(1);
 }
 
 void PenTool::setWidth(const qreal width)
@@ -123,15 +124,18 @@ void PenTool::pointerPressEvent(PointerEvent *)
     startStroke();
 }
 
-void PenTool::pointerMoveEvent(PointerEvent *)
+void PenTool::pointerMoveEvent(PointerEvent* event)
 {
-    mCurrentPressure = m_pStrokeManager->getPressure();
-    drawStroke();
-    if (properties.stabilizerLevel != m_pStrokeManager->getStabilizerLevel())
-        m_pStrokeManager->setStabilizerLevel(properties.stabilizerLevel);
+    if (event->buttons() & Qt::LeftButton)
+    {
+        mCurrentPressure = strokeManager()->getPressure();
+        drawStroke();
+        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
+            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
+    }
 }
 
-void PenTool::pointerReleaseEvent(PointerEvent *)
+void PenTool::pointerReleaseEvent(PointerEvent*)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -160,20 +164,15 @@ void PenTool::pointerReleaseEvent(PointerEvent *)
 // draw a single paint dab at the given location
 void PenTool::paintAt(QPointF point)
 {
-    qDebug() << "Made a single dab at " << point;
+    //qDebug() << "Made a single dab at " << point;
+
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        mCurrentWidth = properties.width;
-        if (properties.pressure == true)
-        {
-            mCurrentWidth *= mCurrentPressure;
-        }
-        qreal brushWidth = mCurrentWidth;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
-        BlitRect rect;
-
-        rect.extend(point.toPoint());
         mScribbleArea->drawPen(point,
                                brushWidth,
                                mEditor->color()->frontColor(),
@@ -181,6 +180,7 @@ void PenTool::paintAt(QPointF point)
 
         int rad = qRound(brushWidth) / 2 + 2;
 
+        BlitRect rect(point.toPoint());
         mScribbleArea->refreshBitmap(rect, rad);
     }
 }
@@ -188,7 +188,7 @@ void PenTool::paintAt(QPointF point)
 void PenTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
+    QList<QPointF> p = strokeManager()->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -199,12 +199,9 @@ void PenTool::drawStroke()
             p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
         }
 
-        mCurrentWidth = properties.width;
-        if (properties.pressure == true)
-        {
-            mCurrentWidth = properties.width * mCurrentPressure;
-        }
-        qreal brushWidth = mCurrentWidth;
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
         // TODO: Make popup widget for less important properties,
         // Eg. stepsize should be a slider.. will have fixed (0.3) value for now.
@@ -241,12 +238,8 @@ void PenTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        qreal brushWidth = 0;
-        brushWidth = properties.width;
-        if (properties.pressure == true)
-        {
-            brushWidth = properties.width * mCurrentPressure;
-        }
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width * pressure;
 
         int rad = qRound((brushWidth / 2 + 2) * mEditor->view()->scaling());
 

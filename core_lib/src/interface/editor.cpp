@@ -568,11 +568,11 @@ bool Editor::importImage(QString filePath, bool isSequence)
 bool Editor::importGIF(QString filePath, int numOfImages)
 {
     Layer* layer = layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP) {
+    if (layer->type() == Layer::BITMAP)
+    {
         return importBitmapImage(filePath, numOfImages);
-    } else {
-        return false;
     }
+    return false;
 }
 
 void Editor::updateFrame(int frameNumber)

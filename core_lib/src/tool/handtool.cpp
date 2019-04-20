@@ -35,8 +35,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 
-HandTool::HandTool(QObject *parent) :
-    BaseTool(parent)
+HandTool::HandTool(QObject* parent) : BaseTool(parent)
 {
 }
 
@@ -54,34 +53,33 @@ QCursor HandTool::cursor()
     return mIsHeld ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
 }
 
-void HandTool::pointerPressEvent(PointerEvent *)
+void HandTool::pointerPressEvent(PointerEvent*)
 {
-    mLastPixel = getLastPressPixel();
+    mLastPixel = getCurrentPixel();
     mIsHeld = true;
 
     mScribbleArea->updateToolCursor();
     mEditor->backups()->saveStates();
 }
 
-void HandTool::pointerMoveEvent(PointerEvent *event)
+void HandTool::pointerMoveEvent(PointerEvent* event)
 {
-    if ( event->buttons() == Qt::NoButton )
+    if (event->buttons() == Qt::NoButton)
     {
         return;
     }
 
     transformView(event->modifiers(), event->buttons());
-
     mLastPixel = getCurrentPixel();
     mEditor->backups()->saveStates();
 }
 
-void HandTool::pointerReleaseEvent(PointerEvent *event)
+void HandTool::pointerReleaseEvent(PointerEvent* event)
 {
     //---- stop the hand tool if this was mid button
-    if ( event->button() == Qt::MidButton )
+    if (event->button() == Qt::MidButton)
     {
-        qDebug( "[HandTool] Stop Hand Tool" );
+        qDebug("[HandTool] Stop Hand Tool");
         mScribbleArea->setPrevTool();
     }
     mIsHeld = false;
@@ -95,9 +93,9 @@ void HandTool::pointerReleaseEvent(PointerEvent *event)
     }
 }
 
-void HandTool::pointerDoubleClickEvent(PointerEvent *event)
+void HandTool::pointerDoubleClickEvent(PointerEvent* event)
 {
-    if ( event->button() == Qt::RightButton )
+    if (event->button() == Qt::RightButton)
     {
         mEditor->view()->resetView();
     }
@@ -107,29 +105,29 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
 {
     bool isTranslate = keyMod == Qt::NoModifier;
     bool isRotate = keyMod & Qt::AltModifier;
-    bool isScale = (keyMod & Qt::ControlModifier) || ( buttons & Qt::RightButton );
+    bool isScale = (keyMod & Qt::ControlModifier) || (buttons & Qt::RightButton);
 
     ViewManager* viewMgr = mEditor->view();
 
-    if ( isTranslate )
+    if (isTranslate)
     {
         QPointF d = getCurrentPoint() - getLastPoint();
         QPointF offset = viewMgr->translation() + d;
-        viewMgr->translate( offset );
+        viewMgr->translate(offset);
     }
-    else if ( isRotate )
+    else if (isRotate)
     {
-        QPoint centralPixel( mScribbleArea->width() / 2, mScribbleArea->height() / 2 );
-        QVector2D startV( getLastPixel() - centralPixel );
-        QVector2D curV( getCurrentPixel() - centralPixel );
+        QPoint centralPixel(mScribbleArea->width() / 2, mScribbleArea->height() / 2);
+        QVector2D startV(getLastPixel() - centralPixel);
+        QVector2D curV(getCurrentPixel() - centralPixel);
 
-        float angleOffset = ( atan2( curV.y(), curV.x() ) - atan2( startV.y(), startV.x() ) ) * 180.0 / M_PI;
+        float angleOffset = (atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x())) * 180.0 / M_PI;
         float newAngle = viewMgr->rotation() + angleOffset;
         viewMgr->rotate(newAngle);
     }
-    else if ( isScale )
+    else if (isScale)
     {
-        float delta = ( getCurrentPixel().y() - mLastPixel.y() ) / 100.f;
+        float delta = (getCurrentPixel().y() - mLastPixel.y()) / 100.f;
         float scaleValue = viewMgr->scaling() * (1.f + delta);
         viewMgr->scale(scaleValue);
     }

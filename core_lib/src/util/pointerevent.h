@@ -22,11 +22,6 @@ public:
     QPointF posF() const;
 
     /**
-     * returns QPointF of current position in the given widget.
-     */
-    inline QPointF widgetPos() { return mWidgetPos; }
-
-    /**
      * Returns a value between 0 and 1 for tablet events,
      * otherwise 1.0
      */
@@ -72,9 +67,8 @@ public:
     QTabletEvent::PointerType pointerType() const;
 
 private:
-    QTabletEvent* tabletEvent = nullptr;
-    QMouseEvent* mouseEvent = nullptr;
-    QPointF mWidgetPos;
+    QTabletEvent* mTabletEvent = nullptr;
+    QMouseEvent* mMouseEvent = nullptr;
 };
 
 #endif // POINTEREVENT_H

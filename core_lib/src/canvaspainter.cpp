@@ -202,7 +202,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
         paintedImage = bitmapLayer->getBitmapImageAtFrame(nFrame);
     }
 
-    if (paintedImage == nullptr)
+    if (paintedImage == nullptr || paintedImage->bounds().isEmpty())
     {
         return;
     }
@@ -458,14 +458,14 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
     {
         painter.setWorldMatrixEnabled(false);
         QTransform center = QTransform::fromTranslate(viewRect.width() / 2.0, viewRect.height() / 2.0);
-        boundingRect = viewRect.toRect();
+        boundingRect = viewRect.toAlignedRect();
         mCameraRect = center.mapRect(mCameraRect);
     }
     else
     {
         painter.setWorldMatrixEnabled(true);
         QTransform viewInverse = mViewTransform.inverted();
-        boundingRect = viewInverse.mapRect(viewRect).toRect();
+        boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
 
         QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);

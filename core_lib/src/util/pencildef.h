@@ -114,7 +114,7 @@ enum StabilizationLevel
 #define CMD_ZOOM_IN "CmdZoomIn"
 #define CMD_ZOOM_OUT "CmdZoomOut"
 #define CMD_ROTATE_CLOCK "CmdRotateClockwise"
-#define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClosewise"
+#define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClockwise"
 #define CMD_RESET_ZOOM_ROTATE "CmdResetZoomRotate"
 #define CMD_ZOOM_400 "CmdZoom400"
 #define CMD_ZOOM_300 "CmdZoom300"

@@ -12,6 +12,8 @@ class QProgressBar;
 
 class CheckUpdatesDialog : public QDialog
 {
+    Q_OBJECT
+
 public:
     CheckUpdatesDialog();
     ~CheckUpdatesDialog();
