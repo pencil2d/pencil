@@ -91,7 +91,7 @@ public:
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
 
-    // peg bar registration
+    // peg bar alignment
     Status::StatusInt findLeft(QRectF rect, int grayValue);
     Status::StatusInt findTop(QRectF rect, int grayValue);
 
