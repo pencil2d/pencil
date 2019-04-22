@@ -1,12 +1,12 @@
 #include "pegbaralignmentdialog.h"
-#include "ui_pegbarregistration.h"
+#include "ui_pegbaralignmentdialog.h"
 
 #include <QListWidget>
 #include <QListWidgetItem>
 
 PegBarAlignmentDialog::PegBarAlignmentDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::PegBarRegistration)
+    ui(new Ui::PegBarAlignmentDialog)
 {
     ui->setupUi(this);
 

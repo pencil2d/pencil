@@ -5,7 +5,7 @@
 #include <QStringList>
 
 namespace Ui {
-class PegBarRegistration;
+class PegBarAlignmentDialog;
 }
 
 class PegBarAlignmentDialog : public QDialog
@@ -21,7 +21,7 @@ public:
     void setLabText(QString txt);
 
 private:
-    Ui::PegBarRegistration *ui;
+    Ui::PegBarAlignmentDialog *ui;
     QStringList mLayernames;
 };
 
