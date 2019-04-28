@@ -536,6 +536,11 @@ void ActionCommands::removeKey()
     {
         layer->addNewKeyFrameAt(1);
     }
+    //Ensure there are no null keyframes
+    if(!layer->keyExists(1))
+    {
+        layer->addNewKeyFrameAt(1);
+    }
 }
 
 void ActionCommands::duplicateKey()
