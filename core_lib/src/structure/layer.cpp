@@ -610,17 +610,19 @@ bool Layer::moveSelectedFrames(int offset)
                         isBetween = false;
                 }
 
-                if (fromPos == 1)
-                {
-                    // If the first frame is moving, we need to create a new first frame
-                    //addNewKeyFrameAt(1);
-                }
-
                 // Update the position of the selected frame
                 selectedFrame->setPos(toPos);
                 mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
             }
             indexInSelection = indexInSelection + step;
+
+            // If the first frame is moving, we need to create a
+            // new first frame to avoid a nullptr
+            if (fromPos == 1)
+            {
+                addNewKeyFrameAt(1);
+            }
+
         }
 
         // Update selection lists
@@ -632,6 +634,8 @@ bool Layer::moveSelectedFrames(int offset)
         {
             mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
         }
+
+
         return true;
     }
     return false;

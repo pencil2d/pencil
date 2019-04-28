@@ -1841,9 +1841,14 @@ void ScribbleArea::selectAll()
 
     if (layer->type() == Layer::BITMAP)
     {
-        // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
+        // Selects the drawn area (bigger or smaller than the screen).
+        // It may be more accurate to select all this way
         // as the drawing area is not limited
         BitmapImage *bitmapImage = currentBitmapImage(layer);
+
+        // If the keyframe is missing, do nothingdeb
+//        if(bitmapImage == nullptr) return;
+
         setSelection(bitmapImage->bounds());
     }
     else if (layer->type() == Layer::VECTOR)
