@@ -1229,7 +1229,7 @@ void MainWindow2::undoActSetText()
 
     if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
     {
-        ui->actionRedo->setText(QString("%1   %2 %3").arg("Redo", "Menu item text")
+        ui->actionRedo->setText(QString("%1   %2 %3").arg(tr("Redo", "Menu item text"))
                                 .arg(QString::number(mEditor->mBackupIndex + 2))
                                 .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
         ui->actionRedo->setEnabled(true);
