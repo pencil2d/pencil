@@ -380,6 +380,13 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
     // Don't change view if tool is in use
     if (mMouseInUse) return;
 
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA && !layer->visible())
+    {
+        showLayerNotVisibleWarning(); // FIXME: crash when using tablets
+        return;
+    }
+
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
     //qDebug() <<"angle"<<angle<<"pixels"<<pixels;
@@ -476,7 +483,8 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
         return;
     }
 
-    if (currentTool()->type() != HAND && (event->button() != Qt::RightButton))
+    bool isCameraLayer = mEditor->layers()->currentLayer()->type() == Layer::CAMERA;
+    if ((currentTool()->type() != HAND || isCameraLayer) && (event->button() != Qt::RightButton) && (event->button() != Qt::MidButton || isCameraLayer))
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if (!layer->visible())
@@ -639,7 +647,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
     mStrokeManager->pointerReleaseEvent(&event);
 
     pointerReleaseEvent(&event);
-    mMouseInUse = false;
+    mMouseInUse = (e->buttons() & Qt::RightButton) || (e->buttons() & Qt::LeftButton);
 }
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent* e)
@@ -693,7 +701,7 @@ QPointF ScribbleArea::getCurrentOffset()
 void ScribbleArea::showLayerNotVisibleWarning()
 {
     QMessageBox::warning(this, tr("Warning"),
-                         tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
+                         tr("You are trying to modify a hidden layer! Please select another layer (or make the current layer visible)."),
                          QMessageBox::Ok,
                          QMessageBox::Ok);
 }
