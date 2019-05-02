@@ -49,7 +49,6 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
-#include "scribblearea.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -545,7 +544,7 @@ void ActionCommands::duplicateKey()
     if (layer == nullptr) return;
     if (!layer->visible())
     {
-        mEditor->getScribbleArea()->showLayerNotVisibleWarning();
+        mEditor->showLayerNotVisibleWarning();
         return;
     }
 

@@ -994,6 +994,11 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     emit updateTimeLine();
 }
 
+void Editor::showLayerNotVisibleWarning()
+{
+    return mScribbleArea->showLayerNotVisibleWarning();
+}
+
 void Editor::swapLayers(int i, int j)
 {
     mObject->swapLayers(i, j);
