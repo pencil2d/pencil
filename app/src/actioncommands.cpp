@@ -542,6 +542,11 @@ void ActionCommands::duplicateKey()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) return;
+    if (!layer->visible())
+    {
+        mEditor->showLayerNotVisibleWarning();
+        return;
+    }
 
     KeyFrame* key = layer->getKeyFrameAt(mEditor->currentFrame());
     if (key == nullptr) return;
