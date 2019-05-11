@@ -4,6 +4,7 @@ configuration:
 environment:
   MSBUILD_FLAGS: /verbosity:minimal
   FFMPEG_VERSION: 4.1.1
+  OPENSSL_VERSION: 1.0.2r
   matrix:
 
     # MSVC x86
@@ -74,7 +75,13 @@ after_build:
     echo "move ffmpeg.exe and delete ffmpeg leftovers" &
     del bin\plugins\ffmpeg-%FFMPEG_VERSION%-win32-static.zip &
     move /y bin\plugins\ffmpeg-%FFMPEG_VERSION%-win32-static\bin\ffmpeg.exe bin\plugins &
-    rmdir /q /s bin\plugins\ffmpeg-%FFMPEG_VERSION%-win32-static &
+    echo "Copying OpenSSL binaries" &
+    call curl.exe -o bin\openssl-%OPENSSL_VERSION%-i386-win32.zip  "https://indy.fulgan.com/SSL/openssl-%OPENSSL_VERSION%-i386-win32.zip" &
+    call 7z.exe x bin\openssl-%OPENSSL_VERSION%-i386-win32.zip -o"bin\" &
+    del bin\openssl-%OPENSSL_VERSION%-i386-win32.zip &
+    move /y bin\openssl-%OPENSSL_VERSION%-i386-win32\libeay32.dll bin\ &
+    move /y bin\openssl-%OPENSSL_VERSION%-i386-win32\ssleay32.dll bin\ &
+    rmdir /q /sbin\openssl-%OPENSSL_VERSION%-i386-win32 &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
     echo "zipping" &
@@ -106,6 +113,13 @@ after_build:
     echo "move ffmpeg.exe and delete ffmpeg leftovers" &
     del bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static.zip &
     move /y bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static\bin\ffmpeg.exe bin\plugins &
+    rmdir /q /s bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static &
+    echo "Copying OpenSSL binaries" &
+    call curl.exe -o bin\openssl-%OPENSSL_VERSION%-x64_86-win64.zip "https://indy.fulgan.com/SSL/openssl-%OPENSSL_VERSION%-x64_86-win64.zip" &
+    call 7z.exe x bin\openssl-%OPENSSL_VERSION%-x64_86-win64.zip -o"bin\" &
+    del bin\openssl-%OPENSSL_VERSION%-x64_86-win64.zip &
+    move /y bin\openssl-%OPENSSL_VERSION%-x64_86-win64\libeay32.dll bin\ &
+    move /y bin\openssl-%OPENSSL_VERSION%-x64_86-win64\ssleay32.dll bin\ &
     rmdir /q /s bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
