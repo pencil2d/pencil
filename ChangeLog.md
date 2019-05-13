@@ -1,3 +1,38 @@
+## Pencil2D 0.6.4 - 17 June 2019
+
+### Enhancements
+
+- c9e1ba6: Fix canvas flip icons in main menu
+- 4b6e55a: Tweak frame flipping timing & behavior.
+- 4f31fe6: Set minimum value for the bucket fill tolerance to 0.
+- 1a1238d: Reset the autosave counter if the user manually saves.
+- 8cc1f8b, e1db3a7: Add more warnings when attempting to modify a hidden layer.
+- 676092a: Improving tabbing order of the camera layer properties dialog.
+- ca3b651: Automatically select the first action when first viewing the shortcut preferences.
+
+### Fixes
+
+- 0e041d9: Fix crash when trying to manually scrub while flipping.
+- #940 Fix saving issue with certain locales.
+- 96dca6d: Fix some move export issues on Windows.
+- 97f5891, 7a41226, 168bb1f: Fix various English typos throughout the program.
+- d3a41d3, fddf846, ef235f0: Fix some subtle display issues.
+- b43b024: Fix potential program crash when deleting a keyframe while a selection is active (by [Oliver Stevns](https://github.com/CandyFace) | alternate solution by [ryyharris](https://github.com/ryyharris)).
+- 9942932: Fix transformations temporarily applying to all frames during playback.
+- 5aa4d9c: Fix the first item in the color palette not changing the bitmap brush color.
+- b293c28: Fix a partial file wipe issue when using Save As to convert pclx files to pcl files.
+- 624b470: Fix the cursor getting stuck with the wrong icon sometimes when deselecting.
+- 673ec0c: Fix selection changing size during moving sometimes.
+- 1dc46e6: Fix bucket tool occasionally filling the wrong pixel.
+- c0af82a: Fix semi-permanent display bug when right clicking in the middle of a stroke.
+- e33fabb: Fix autocropping for frames loaded from a file.
+- a61ec8b: Fix general UI & Tooltip typos. (by[mapreri](https://github.com/mapreri))
+- #1015 Fix inverted active layer focus shortcuts (by [ryyharris](https://github.com/ryyharris)).
+- #1170 Fix incorrect redo text (by [ryyharris](https://github.com/ryyharris)).
+- #1192 Fix crash for Flipping & Rolling feature when clicking on timeline + General improvements (by [davidlamhauge](https://github.com/davidlamhauge))
+- #1195 Fix update checker on Windows.
+- #1211, c24487d: Fix crash on vector layers when drawing on empty frame without existing previous keyframe.
+
 ## Pencil2D 0.6.3 - 17 March 2019
 
 ### New Features
