@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include "filemanager.h"
 
-#include <clocale>
 #include <ctime>
 #include <QDir>
 #include "pencildef.h"
@@ -208,11 +207,6 @@ bool FileManager::isOldForamt(const QString& fileName) const
 
 Status FileManager::save(Object* object, QString sFileName)
 {
-    // It's important that we save the file as En_US to avoid decimals being changed.
-    // issue: #940
-
-    std::setlocale(LC_NUMERIC, "En_US");
-
     DebugDetails dd;
     dd << "FileManager::save";
     dd << ("sFileName = " + sFileName);
@@ -339,7 +333,6 @@ Status FileManager::save(Object* object, QString sFileName)
 
     // -------- save main XML file -----------
     QFile file(sMainXMLFile);
-    std::setlocale(LC_ALL, "");
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);

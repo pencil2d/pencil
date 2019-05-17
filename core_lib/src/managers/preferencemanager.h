@@ -87,7 +87,7 @@ class PreferenceManager : public BaseManager
 
 public:
     explicit PreferenceManager(Editor* editor);
-    ~PreferenceManager();
+    ~PreferenceManager() override;
 
     virtual bool init() override;
     Status load(Object*) override;

@@ -38,11 +38,11 @@ GNU General Public License for more details.
 #include "vectorselection.h"
 #include "canvaspainter.h"
 #include "preferencemanager.h"
+#include "strokemanager.h"
 
 class Layer;
 class Editor;
 class BaseTool;
-class StrokeManager;
 class PointerEvent;
 class BitmapImage;
 class VectorImage;
@@ -58,7 +58,7 @@ class ScribbleArea : public QWidget
 
 public:
     ScribbleArea(QWidget* parent);
-    ~ScribbleArea();
+    ~ScribbleArea() override;
 
     bool init();
     void setEditor(Editor* e) { mEditor = e; }
@@ -88,7 +88,6 @@ public:
     qreal myRotatedAngle = 0.0;
     QList<int> mClosestCurves;
 
-    bool areLayersSane() const;
     bool isLayerPaintable() const;
     bool allowSmudging();
 
@@ -132,6 +131,7 @@ public:
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
+    bool isPointerInUse() const { return mMouseInUse || mStrokeManager->isTabletInUse(); }
     bool isTemporaryTool() const { return mInstantTool; }
 
     void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);

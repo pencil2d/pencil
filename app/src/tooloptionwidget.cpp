@@ -53,7 +53,7 @@ void ToolOptionWidget::initUI()
     ui->featherSlider->setValue(settings.value("brushFeather", "5").toDouble());
     ui->featherSpinBox->setValue(settings.value("brushFeather", "5").toDouble());
 
-    ui->toleranceSlider->init(tr("Color Tolerance"), SpinSlider::LINEAR, SpinSlider::INTEGER, 1, 100);
+    ui->toleranceSlider->init(tr("Color Tolerance"), SpinSlider::LINEAR, SpinSlider::INTEGER, 0, 100);
     ui->toleranceSlider->setValue(settings.value("Tolerance", "50").toInt());
     ui->toleranceSpinBox->setValue(settings.value("Tolerance", "50").toInt());
 }

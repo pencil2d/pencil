@@ -28,9 +28,8 @@ GNU General Public License for more details.
 
 
 // ---- shared static variables ---- ( only one instance for all the tools )
-ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
-qreal BaseTool::OriginalSettingValue;  // start value (width, feather ..)
-bool BaseTool::isAdjusting = false;
+qreal BaseTool::msOriginalPropertyValue;  // start value (width, feather ..)
+bool BaseTool::msIsAdjusting = false;
 
 
 QString BaseTool::TypeName(ToolType type)
@@ -132,7 +131,8 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
     float whA = 0.0f;
     float whB = 0.0f;
 
-    if (useFeather) {
+    if (useFeather)
+    {
         cursorWidth = propWidth + 0.5 * propFeather;
         xyA = 1 + propFeather / 2;
         xyB = 1 + propFeather / 8;
@@ -148,8 +148,9 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
 
     float radius = cursorWidth / 2;
 
-    // delocate when cursor width gets some value larger than the widget
-    if (cursorWidth > windowWidth * 2) {
+    // deallocate when cursor width gets some value larger than the widget
+    if (cursorWidth > windowWidth * 2)
+    {
         return QPixmap(0, 0);
     }
 
@@ -171,7 +172,8 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
         cursorPainter.drawLine(QPointF(radius, radius - 2), QPointF(radius, radius + 2));
 
         // Draw outer circle
-        if (useFeather) {
+        if (useFeather)
+        {
             cursorPen.setStyle(Qt::DotLine);
             cursorPen.setColor(QColor(0, 0, 0, 255));
             cursorPainter.setPen(cursorPen);
@@ -244,8 +246,8 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
  */
 QPixmap BaseTool::quickSizeCursor(float brushWidth, float brushFeather, float scalingFac)
 {
-    float propWidth = brushWidth * scalingFac;
-    float propFeather = brushFeather * scalingFac;
+    float propWidth = qMax(static_cast<float>(0), brushWidth) * scalingFac;
+    float propFeather = qMax(static_cast<float>(0), brushFeather) * scalingFac;
     float cursorWidth = propWidth + 0.5 * propFeather;
 
     if (cursorWidth < 1) { cursorWidth = 1; }
@@ -274,27 +276,26 @@ QPixmap BaseTool::quickSizeCursor(float brushWidth, float brushFeather, float sc
     return cursorPixmap;
 }
 
-void BaseTool::startAdjusting(ToolPropertyType argSettingType, qreal argStep)
+void BaseTool::startAdjusting(ToolPropertyType propertyType, qreal step)
 {
-    isAdjusting = true;
-    assistedSettingType = argSettingType;
-    mAdjustmentStep = argStep;
-    if (argSettingType == WIDTH)
+    msIsAdjusting = true;
+    mAdjustmentStep = step;
+    if (propertyType == WIDTH)
     {
-        OriginalSettingValue = properties.width;
+        msOriginalPropertyValue = properties.width;
     }
-    else if (argSettingType == FEATHER)
+    else if (propertyType == FEATHER)
     {
-        OriginalSettingValue = properties.feather;
+        msOriginalPropertyValue = properties.feather;
     }
-    mEditor->getScribbleArea()->updateCanvasCursor();
+    mScribbleArea->updateCanvasCursor();
 }
 
 void BaseTool::stopAdjusting()
 {
-    isAdjusting = false;
+    msIsAdjusting = false;
     mAdjustmentStep = 0;
-    OriginalSettingValue = 0;
+    msOriginalPropertyValue = 0;
     mEditor->getScribbleArea()->updateCanvasCursor();
 }
 
@@ -303,9 +304,9 @@ void BaseTool::adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod) //of
     ToolPropertyType propertyType;
     propertyType = (keyMod & Qt::ControlModifier) ? FEATHER : WIDTH;
 
-    qreal inc = qPow(OriginalSettingValue * 100, 0.5);
+    qreal inc = qPow(msOriginalPropertyValue * 100, 0.5);
     qreal newValue = inc + argOffsetX;
-    int max = (propertyType == FEATHER) ? 64 : 200;
+    int max = (propertyType == FEATHER) ? 200 : 200;
     int min = (propertyType == FEATHER) ? 2 : 1;
 
     if (newValue < 0)

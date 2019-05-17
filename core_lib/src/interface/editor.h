@@ -143,6 +143,7 @@ public: //slots
     void removeKey();
 
     void switchVisibilityOfLayer(int layerNumber);
+    void showLayerNotVisibleWarning();
     void swapLayers(int i, int j);
 
     void backup(QString undoText);
@@ -163,6 +164,7 @@ public: //slots
 
     void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
     bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
+    void resetAutoSaveCounter();
 
 protected:
     // Need to move to somewhere...

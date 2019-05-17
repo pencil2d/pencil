@@ -242,7 +242,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="labGridH">
             <property name="text">
-             <string>Grid Heigth</string>
+             <string>Grid Height</string>
             </property>
            </widget>
           </item>

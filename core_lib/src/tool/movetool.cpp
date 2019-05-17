@@ -68,7 +68,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
 
-    if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
+    if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
     }
@@ -362,7 +362,7 @@ int MoveTool::showTransformWarning()
 {
     int returnValue = QMessageBox::warning(nullptr,
                                            tr("Layer switch", "Windows title of layer switch pop-up."),
-                                           tr("You are about to switch layer, do you want to apply the transformation?"),
+                                           tr("You are about to switch away, do you want to apply the transformation?"),
                                            QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
                                            QMessageBox::Yes);
     return returnValue;

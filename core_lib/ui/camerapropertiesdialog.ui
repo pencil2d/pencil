@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>CameraPropertiesDialog</class>
  <widget class="QDialog" name="CameraPropertiesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>246</width>
+    <height>120</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Camera Properties</string>
   </property>
@@ -63,6 +71,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>nameBox</tabstop>
+  <tabstop>widthBox</tabstop>
+  <tabstop>heightBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

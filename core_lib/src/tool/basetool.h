@@ -65,14 +65,10 @@ protected:
 
 public:
     static QString TypeName(ToolType);
-
-    static ToolPropertyType assistedSettingType; // dynamic cursor adjustment
-    static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
-
-    void initialize(Editor* editor);
-
     QString typeName() { return TypeName(type()); }
 
+    void initialize(Editor* editor);
+    
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
@@ -94,10 +90,10 @@ public:
     virtual void clearToolData() {}
     virtual void resetToDefault() {}
 
-    static bool isAdjusting;
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
     static QPixmap quickSizeCursor(float brushWidth, float brushFeather, float scalingFac);
     static QCursor selectMoveCursor(MoveMode mode, ToolType type);
+    static bool isAdjusting() { return msIsAdjusting; }
 
     virtual void setWidth(const qreal width);
     virtual void setFeather(const qreal feather);
@@ -141,6 +137,9 @@ protected:
 private:
     StrokeManager* mStrokeManager = nullptr;
     qreal mAdjustmentStep = 0.0f;
+
+    static bool msIsAdjusting;
+    static qreal msOriginalPropertyValue;  // start from previous value (width, or feather ...)
 };
 
 #endif // BASETOOL_H

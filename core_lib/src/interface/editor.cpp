@@ -484,9 +484,14 @@ void Editor::updateAutoSaveCounter()
     mAutosaveCounter++;
     if (mAutosaveCounter >= mAutosaveNumber)
     {
-        mAutosaveCounter = 0;
+        resetAutoSaveCounter();
         emit needSave();
     }
+}
+
+void Editor::resetAutoSaveCounter()
+{
+    mAutosaveCounter = 0;
 }
 
 void Editor::cut()
@@ -933,6 +938,12 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         return nullptr;
     }
 
+    if (!layer->visible())
+    {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return nullptr;
+    }
+
     while (layer->keyExists(frameIndex))
     {
         frameIndex += 1;
@@ -949,6 +960,14 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
 void Editor::removeKey()
 {
     Layer* layer = layers()->currentLayer();
+    Q_ASSERT(layer != nullptr);
+
+    if (!layer->visible())
+    {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return;
+    }
+
     if (!layer->keyExistsWhichCovers(currentFrame()))
     {
         return;
@@ -956,6 +975,7 @@ void Editor::removeKey()
 
     backup(tr("Remove frame"));
 
+    mScribbleArea->deselectAll();
     layer->removeKeyFrame(currentFrame());
 
     scrubBackward();
@@ -987,6 +1007,11 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     mScribbleArea->updateAllFrames();
 
     emit updateTimeLine();
+}
+
+void Editor::showLayerNotVisibleWarning()
+{
+    return mScribbleArea->showLayerNotVisibleWarning();
 }
 
 void Editor::swapLayers(int i, int j)

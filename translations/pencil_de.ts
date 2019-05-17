@@ -153,57 +153,57 @@
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Pencil</source>
         <translation>Bleistift</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Eraser</source>
         <translation>Radierer</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Select</source>
         <translation>Auswahl</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Move</source>
         <translation>Verschieben</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
         <source>Hand</source>
         <translation>Hand</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
         <source>Smudge</source>
         <translation>Verwischen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
         <source>Pen</source>
         <translation>Stift</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
         <source>Polyline</source>
         <translation>Polygonzug</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
         <source>Bucket</source>
         <translation>Fülleimer</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
         <source>Eyedropper</source>
         <translation>Pipette</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="52"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
         <source>Brush</source>
         <translation>Pinsel</translation>
     </message>
@@ -860,8 +860,8 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
-        <source>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</source>
-        <translation>Pencil2D-Palette (*.xml);; Gimp-Palette (*.gpl)</translation>
+        <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
@@ -877,72 +877,72 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
         <source>Could not open file</source>
         <translation>Konnte Datei nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="59"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="113"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="237"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="252"/>
         <source>Invalid Save Path</source>
         <translation>Ungültiger Speicherpfad</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="232"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Der Pfad („%1“) zeigt auf ein Verzeichnis.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="240"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Das Verzeichnis („%1“) existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="247"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Der Pfad („%1“) ist nicht beschreibbar.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="289"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
         <source>Cannot Create Data Directory</source>
         <translation>Kann Datenverzeichnis nicht erstellen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="290"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="299"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>„%1“ ist eine Datei. Bitte löschen Sie die Datei und versuchen Sie es erneut.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="390"/>
         <source>Miniz Error</source>
         <translation>Miniz-Fehler</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="407"/>
         <source>Internal Error</source>
         <translation>Interner Fehler</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="384"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="401"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="391"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="408"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Ein interner Fehler ist aufgetreten. Ihre Datei wurde möglicherweise nicht erfolgreich gespeichert.</translation>
     </message>
@@ -1031,102 +1031,117 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="96"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="97"/>
         <source>Czech</source>
         <translation>Tschechisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="97"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="98"/>
         <source>Danish</source>
         <translation>Dänisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="99"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="98"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="99"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
         <source>Estonian</source>
         <translation>Estnisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="102"/>
         <source>Spanish</source>
         <translation>Spanisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="102"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="96"/>
+        <source>Catalan </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
+        <source>Greek</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
         <source>French</source>
         <translation>Französisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
         <source>Hebrew</source>
         <translation>Hebräisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
         <source>Hungarian</source>
         <translation>Ungarisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Indonesian</source>
         <translation>Indonesisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Italian</source>
         <translation>Italienisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Japanese</source>
         <translation>Japanisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <source>Kabyle</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Polish</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
         <source>Portuguese - Portugal</source>
         <translation>Portugiesisch - Portugal</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>Portuguese - Brazil</source>
         <translation>Portugiesisch – Brasilien</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Russian</source>
         <translation>Russisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
         <source>Slovenian</source>
         <translation>Slowenisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>Vietnamese</source>
         <translation>Vietnamesisch</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="117"/>
         <source>Chinese - China</source>
         <translation>Chinesisch - China</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="118"/>
         <source>Chinese - Taiwan</source>
         <translation>Chinesisch – Taiwan</translation>
     </message>
@@ -1157,7 +1172,7 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
-        <source>Grid Heigth</source>
+        <source>Grid Height</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1181,12 +1196,12 @@
         <translation>Hochauflösende Tablet-Position</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="218"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="221"/>
         <source>Restart Required</source>
         <translation>Neustart erforderlich</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="219"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="222"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Die Sprachänderung wird nach einem Neustart von Pencil2D wirksam werden.</translation>
     </message>
@@ -1323,509 +1338,519 @@
         <translation>Animation</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="186"/>
-        <location filename="../app/ui/mainwindow2.ui" line="823"/>
+        <location filename="../app/ui/mainwindow2.ui" line="189"/>
+        <location filename="../app/ui/mainwindow2.ui" line="826"/>
         <source>Tools</source>
         <translation>Werkzeuge</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="204"/>
+        <location filename="../app/ui/mainwindow2.ui" line="207"/>
         <source>Layer</source>
         <translation>Ebene</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="215"/>
-        <location filename="../app/ui/mainwindow2.ui" line="754"/>
+        <location filename="../app/ui/mainwindow2.ui" line="218"/>
+        <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="231"/>
+        <location filename="../app/ui/mainwindow2.ui" line="234"/>
         <source>Windows</source>
         <translation>Fenster</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="250"/>
+        <location filename="../app/ui/mainwindow2.ui" line="253"/>
         <source>New</source>
         <translation>Neu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <location filename="../app/ui/mainwindow2.ui" line="262"/>
         <source>Open</source>
         <translation>Öffnen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="268"/>
+        <location filename="../app/ui/mainwindow2.ui" line="271"/>
         <source>Save</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="286"/>
+        <location filename="../app/ui/mainwindow2.ui" line="289"/>
         <source>Exit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="291"/>
-        <location filename="../app/ui/mainwindow2.ui" line="319"/>
+        <location filename="../app/ui/mainwindow2.ui" line="294"/>
+        <location filename="../app/ui/mainwindow2.ui" line="322"/>
         <source>Image Sequence...</source>
         <translation>Bildsequenz...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="296"/>
-        <location filename="../app/ui/mainwindow2.ui" line="314"/>
+        <location filename="../app/ui/mainwindow2.ui" line="299"/>
+        <location filename="../app/ui/mainwindow2.ui" line="317"/>
         <source>Image...</source>
         <translation>Bild...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="301"/>
-        <location filename="../app/ui/mainwindow2.ui" line="324"/>
+        <location filename="../app/ui/mainwindow2.ui" line="304"/>
+        <location filename="../app/ui/mainwindow2.ui" line="327"/>
         <source>Movie...</source>
         <translation>Film...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="309"/>
-        <location filename="../app/ui/mainwindow2.ui" line="337"/>
+        <location filename="../app/ui/mainwindow2.ui" line="312"/>
+        <location filename="../app/ui/mainwindow2.ui" line="340"/>
         <source>Palette...</source>
         <translation>Palette...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="332"/>
+        <location filename="../app/ui/mainwindow2.ui" line="335"/>
         <source>Sound...</source>
         <translation>Ton...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="342"/>
+        <location filename="../app/ui/mainwindow2.ui" line="345"/>
         <source>Image Sequence Numbered...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="351"/>
+        <location filename="../app/ui/mainwindow2.ui" line="354"/>
         <source>Undo</source>
         <translation>Rückgängig</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="363"/>
+        <location filename="../app/ui/mainwindow2.ui" line="366"/>
         <source>Redo</source>
         <translation>Wiederholen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="372"/>
+        <location filename="../app/ui/mainwindow2.ui" line="375"/>
         <source>Cut</source>
         <translation>Ausschneiden</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="381"/>
+        <location filename="../app/ui/mainwindow2.ui" line="384"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="390"/>
+        <location filename="../app/ui/mainwindow2.ui" line="393"/>
         <source>Paste</source>
         <translation>Einfügen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="395"/>
+        <location filename="../app/ui/mainwindow2.ui" line="398"/>
         <source>Crop</source>
         <translation>Zuschneiden</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="400"/>
+        <location filename="../app/ui/mainwindow2.ui" line="403"/>
         <source>Crop To Selection</source>
         <translation>Auf Auswahl zuscheiden</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="405"/>
+        <location filename="../app/ui/mainwindow2.ui" line="408"/>
         <source>Select All</source>
         <translation>Alles auswählen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="410"/>
+        <location filename="../app/ui/mainwindow2.ui" line="413"/>
         <source>Deselect All</source>
         <translation>Nichts auswählen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="419"/>
-        <location filename="../app/ui/mainwindow2.ui" line="618"/>
+        <location filename="../app/ui/mainwindow2.ui" line="422"/>
+        <location filename="../app/ui/mainwindow2.ui" line="621"/>
         <source>Clear Frame</source>
         <translation>Einzelbild leeren</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="424"/>
+        <location filename="../app/ui/mainwindow2.ui" line="427"/>
         <source>Preferences</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="432"/>
+        <location filename="../app/ui/mainwindow2.ui" line="435"/>
         <source>Reset Windows</source>
         <translation>Fenster zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="441"/>
+        <location filename="../app/ui/mainwindow2.ui" line="444"/>
         <source>Zoom In</source>
         <translation>Hineinzoomen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="450"/>
+        <location filename="../app/ui/mainwindow2.ui" line="453"/>
         <source>Zoom Out</source>
         <translation>Herauszoomen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="455"/>
+        <location filename="../app/ui/mainwindow2.ui" line="458"/>
         <source>Rotate Clockwise</source>
         <translation>Im Uhrzeigersinn rotieren</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="460"/>
+        <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate AntiClosewise</source>
         <translation>Gegen den Uhrzeigersinn rotieren</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="465"/>
+        <location filename="../app/ui/mainwindow2.ui" line="468"/>
         <source>Reset Zoom/Rotate</source>
         <translation>Zoom/Drehung zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="474"/>
+        <location filename="../app/ui/mainwindow2.ui" line="477"/>
         <source>Horizontal Flip</source>
         <translation>Horizontal spiegeln</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="483"/>
+        <location filename="../app/ui/mainwindow2.ui" line="486"/>
         <source>Vertical Flip</source>
         <translation>Vertikal spiegeln</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="491"/>
+        <location filename="../app/ui/mainwindow2.ui" line="494"/>
         <source>Preview</source>
         <translation>Vorschau</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="499"/>
+        <location filename="../app/ui/mainwindow2.ui" line="502"/>
         <source>Grid</source>
         <translation>Raster</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="511"/>
+        <location filename="../app/ui/mainwindow2.ui" line="514"/>
         <source>Previous</source>
         <translation>Vorige</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="514"/>
+        <location filename="../app/ui/mainwindow2.ui" line="517"/>
         <source>Show previous onion skin</source>
         <translation>Zeige vorige Zwiebelhaut</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="526"/>
+        <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Next</source>
         <translation>Nächste</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="529"/>
+        <location filename="../app/ui/mainwindow2.ui" line="532"/>
         <source>Show next onion skin</source>
         <translation>Zeige nächste Zwiebelhaut</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="538"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1388"/>
+        <location filename="../app/ui/mainwindow2.ui" line="541"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1392"/>
         <source>Play</source>
         <translation>Abspielen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="550"/>
+        <location filename="../app/ui/mainwindow2.ui" line="553"/>
         <source>Loop</source>
         <translation>Wiederholen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="559"/>
+        <location filename="../app/ui/mainwindow2.ui" line="562"/>
         <source>Next Frame</source>
         <translation>Nächstes Einzelbild</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="568"/>
+        <location filename="../app/ui/mainwindow2.ui" line="571"/>
         <source>Previous Frame</source>
         <translation>Vorheriges Einzelbild</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="573"/>
+        <location filename="../app/ui/mainwindow2.ui" line="576"/>
         <source>Extend Frame</source>
         <translation>Einzelbild erweitern</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="582"/>
+        <location filename="../app/ui/mainwindow2.ui" line="585"/>
         <source>Add Frame</source>
         <translation>Einzelbild hinzufügen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="591"/>
+        <location filename="../app/ui/mainwindow2.ui" line="594"/>
         <source>Duplicate Frame</source>
         <translation>Einzelbild duplizieren</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="600"/>
+        <location filename="../app/ui/mainwindow2.ui" line="603"/>
         <source>Remove Frame</source>
         <translation>Einzelbild entfernen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="609"/>
+        <location filename="../app/ui/mainwindow2.ui" line="612"/>
         <source>Move</source>
         <translation>Verschieben</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="627"/>
+        <location filename="../app/ui/mainwindow2.ui" line="630"/>
         <source>Select</source>
         <translation>Auswählen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="636"/>
+        <location filename="../app/ui/mainwindow2.ui" line="639"/>
         <source>Brush</source>
         <translation>Pinsel</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="645"/>
+        <location filename="../app/ui/mainwindow2.ui" line="648"/>
         <source>Polyline</source>
         <translation>Polygonzug</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="654"/>
+        <location filename="../app/ui/mainwindow2.ui" line="657"/>
         <source>Smudge</source>
         <translation>Verwischen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="663"/>
+        <location filename="../app/ui/mainwindow2.ui" line="666"/>
         <source>Pen</source>
         <translation>Stift</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="672"/>
+        <location filename="../app/ui/mainwindow2.ui" line="675"/>
         <source>Hand</source>
         <translation>Hand</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="681"/>
+        <location filename="../app/ui/mainwindow2.ui" line="684"/>
         <source>Pencil</source>
         <translation>Bleistift</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="690"/>
+        <location filename="../app/ui/mainwindow2.ui" line="693"/>
         <source>Bucket</source>
         <translation>Farbeimer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="699"/>
+        <location filename="../app/ui/mainwindow2.ui" line="702"/>
         <source>Eyedropper</source>
         <translation>Pipette</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="708"/>
+        <location filename="../app/ui/mainwindow2.ui" line="711"/>
         <source>Eraser</source>
         <translation>Radierer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="717"/>
+        <location filename="../app/ui/mainwindow2.ui" line="720"/>
         <source>New Bitmap Layer</source>
         <translation>Neue Rasterbild-Ebene</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="726"/>
+        <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>New Vector Layer</source>
         <translation>Neue Vektor-Ebene</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="735"/>
+        <location filename="../app/ui/mainwindow2.ui" line="738"/>
         <source>New Sound Layer</source>
         <translation>Neue Ton-Ebene</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="744"/>
+        <location filename="../app/ui/mainwindow2.ui" line="747"/>
         <source>New Camera Layer</source>
         <translation>Neue Kamera-Ebene</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="749"/>
+        <location filename="../app/ui/mainwindow2.ui" line="752"/>
         <source>Delete Current Layer</source>
         <translation>Aktuelle Ebene löschen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="759"/>
+        <location filename="../app/ui/mainwindow2.ui" line="762"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="764"/>
         <location filename="../app/ui/mainwindow2.ui" line="767"/>
+        <location filename="../app/ui/mainwindow2.ui" line="770"/>
         <source>Reset to default</source>
         <translation>Auf Standard zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="804"/>
+        <location filename="../app/ui/mainwindow2.ui" line="807"/>
         <source>MultiLayer Onion Skin</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="815"/>
+        <location filename="../app/ui/mainwindow2.ui" line="818"/>
         <source>Range</source>
         <translation>Bereich</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="888"/>
+        <location filename="../app/ui/mainwindow2.ui" line="891"/>
         <source>Pencil2D Website</source>
         <translation>Pencil2D-Website</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="893"/>
+        <location filename="../app/ui/mainwindow2.ui" line="896"/>
         <source>Report a Bug</source>
         <translation>Einen Fehler melden</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="898"/>
+        <location filename="../app/ui/mainwindow2.ui" line="901"/>
         <source>Quick Reference Guide</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="901"/>
+        <location filename="../app/ui/mainwindow2.ui" line="904"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="906"/>
-        <location filename="../app/ui/mainwindow2.ui" line="911"/>
+        <location filename="../app/ui/mainwindow2.ui" line="909"/>
+        <location filename="../app/ui/mainwindow2.ui" line="914"/>
         <source>Animated GIF...</source>
         <translation>Animiertes GIF...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="916"/>
+        <location filename="../app/ui/mainwindow2.ui" line="919"/>
         <source>Check for Updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="921"/>
+        <location filename="../app/ui/mainwindow2.ui" line="924"/>
         <source>Pencil2D Forum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="926"/>
+        <location filename="../app/ui/mainwindow2.ui" line="929"/>
         <source>Pencil2D Discord</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="931"/>
+        <location filename="../app/ui/mainwindow2.ui" line="934"/>
         <source>200%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="936"/>
+        <location filename="../app/ui/mainwindow2.ui" line="939"/>
         <source>300%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="941"/>
+        <location filename="../app/ui/mainwindow2.ui" line="944"/>
         <source>400%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="946"/>
+        <location filename="../app/ui/mainwindow2.ui" line="949"/>
         <source>50%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="951"/>
+        <location filename="../app/ui/mainwindow2.ui" line="954"/>
         <source>33%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="956"/>
+        <location filename="../app/ui/mainwindow2.ui" line="959"/>
         <source>25%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="961"/>
+        <location filename="../app/ui/mainwindow2.ui" line="964"/>
         <source>100%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="777"/>
+        <location filename="../app/ui/mainwindow2.ui" line="969"/>
+        <source>Flip In-Between</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="974"/>
+        <source>Flip Rolling</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
+        <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next KeyFrame</source>
         <translation>Nächstes Schlüsselbild</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="277"/>
+        <location filename="../app/ui/mainwindow2.ui" line="280"/>
         <source>Save As...</source>
         <translation>Speichern unter...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="790"/>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
+        <location filename="../app/ui/mainwindow2.ui" line="796"/>
         <source>Previous KeyFrame</source>
         <translation>Voriges Schlüsselbild</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="831"/>
+        <location filename="../app/ui/mainwindow2.ui" line="834"/>
         <source>Timeline</source>
         <translation>Zeitleiste</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="839"/>
+        <location filename="../app/ui/mainwindow2.ui" line="842"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="847"/>
+        <location filename="../app/ui/mainwindow2.ui" line="850"/>
         <source>Color Wheel</source>
         <translation>Farbrad</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="855"/>
+        <location filename="../app/ui/mainwindow2.ui" line="858"/>
         <source>Color Palette</source>
         <translation>Farbpalette</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="863"/>
+        <location filename="../app/ui/mainwindow2.ui" line="866"/>
         <source>Display Options</source>
         <translation>Anzeige-Optionen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="868"/>
+        <location filename="../app/ui/mainwindow2.ui" line="871"/>
         <source>Flip X</source>
         <translation>Horizontal spiegeln</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="873"/>
+        <location filename="../app/ui/mainwindow2.ui" line="876"/>
         <source>Flip Y</source>
         <translation>Vertikal spiegeln</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="878"/>
+        <location filename="../app/ui/mainwindow2.ui" line="881"/>
         <source>Move Frame Forward</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="883"/>
+        <location filename="../app/ui/mainwindow2.ui" line="886"/>
         <source>Move Frame Backward</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="145"/>
+        <location filename="../app/src/mainwindow2.cpp" line="144"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Farbpalette: &lt;br&gt;&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;An Zeigerposition umschalten</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="149"/>
+        <location filename="../app/src/mainwindow2.cpp" line="148"/>
         <source>Color inspector</source>
         <translation>Farbinspektor</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="358"/>
+        <location filename="../app/src/mainwindow2.cpp" line="359"/>
         <source>Lock Windows</source>
         <translation>Fenster sperren</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="378"/>
+        <location filename="../app/src/mainwindow2.cpp" line="379"/>
         <source>Open Recent</source>
         <translation>Zuletzt geöffnet</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="412"/>
+        <location filename="../app/src/mainwindow2.cpp" line="413"/>
         <source>
 
  You have successfully cleared the list</source>
@@ -1834,52 +1859,52 @@
 Sie haben die Liste erfolgreich geleert</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="513"/>
-        <location filename="../app/src/mainwindow2.cpp" line="523"/>
-        <location filename="../app/src/mainwindow2.cpp" line="532"/>
+        <location filename="../app/src/mainwindow2.cpp" line="514"/>
+        <location filename="../app/src/mainwindow2.cpp" line="524"/>
+        <location filename="../app/src/mainwindow2.cpp" line="533"/>
         <location filename="../app/src/mainwindow2.cpp" line="592"/>
         <source>Could not open file</source>
         <translation>Konnte Datei nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="514"/>
+        <location filename="../app/src/mainwindow2.cpp" line="515"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="524"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="533"/>
+        <location filename="../app/src/mainwindow2.cpp" line="534"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="542"/>
-        <location filename="../app/src/mainwindow2.cpp" line="705"/>
-        <location filename="../app/src/mainwindow2.cpp" line="764"/>
-        <location filename="../app/src/mainwindow2.cpp" line="840"/>
-        <location filename="../app/src/mainwindow2.cpp" line="986"/>
+        <location filename="../app/src/mainwindow2.cpp" line="543"/>
+        <location filename="../app/src/mainwindow2.cpp" line="703"/>
+        <location filename="../app/src/mainwindow2.cpp" line="762"/>
+        <location filename="../app/src/mainwindow2.cpp" line="842"/>
+        <location filename="../app/src/mainwindow2.cpp" line="988"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="543"/>
+        <location filename="../app/src/mainwindow2.cpp" line="544"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="549"/>
+        <location filename="../app/src/mainwindow2.cpp" line="550"/>
         <source>Opening document...</source>
         <translation>Dokument wird geöffnet...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="549"/>
-        <location filename="../app/src/mainwindow2.cpp" line="627"/>
+        <location filename="../app/src/mainwindow2.cpp" line="550"/>
+        <location filename="../app/src/mainwindow2.cpp" line="625"/>
         <location filename="../app/src/mainwindow2.cpp" line="791"/>
-        <location filename="../app/src/mainwindow2.cpp" line="961"/>
+        <location filename="../app/src/mainwindow2.cpp" line="962"/>
         <source>Abort</source>
         <translation>Abbrechen</translation>
     </message>
@@ -1889,37 +1914,37 @@ Sie haben die Liste erfolgreich geleert</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="627"/>
+        <location filename="../app/src/mainwindow2.cpp" line="625"/>
         <source>Saving document...</source>
         <translation>Dokument wird gespeichert...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="668"/>
+        <location filename="../app/src/mainwindow2.cpp" line="666"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Ein Fehler ist aufgetreten und Ihre Datei wurde womöglich nicht erfolgreich gespeichert. Falls Sie glauben, dass es sich hierbei um einen Programmfehler in Pencil2D handelt, erstellen Sie bitte auf Englisch eine neue Meldung unter:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Bitte fügen Sie Ihrer Meldung unbedingt die folgenden Details bei:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="706"/>
+        <location filename="../app/src/mainwindow2.cpp" line="704"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Diese Animation wurde geändert.
  Möchten Sie Ihre Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="734"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Die Animation wurde noch nicht gespeichert.
  Möchten Sie sie jetzt speichern?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="735"/>
+        <location filename="../app/src/mainwindow2.cpp" line="733"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Nicht mehr fragen</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="765"/>
+        <location filename="../app/src/mainwindow2.cpp" line="763"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Bild kann nicht importiert werden.&lt;br&gt;&lt;b&gt;TIPP:&lt;/b&gt; Verwenden Sie eine Rasterebene um Rasterbilder zu importieren.</translation>
     </message>
@@ -1929,36 +1954,36 @@ Sie haben die Liste erfolgreich geleert</translation>
         <translation>Bildsequenz wird importiert...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="841"/>
-        <location filename="../app/src/mainwindow2.cpp" line="987"/>
+        <location filename="../app/src/mainwindow2.cpp" line="843"/>
+        <location filename="../app/src/mainwindow2.cpp" line="989"/>
         <source>was unable to import</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="919"/>
+        <location filename="../app/src/mainwindow2.cpp" line="920"/>
         <source>Illegal numbering</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="961"/>
+        <location filename="../app/src/mainwindow2.cpp" line="962"/>
         <source>Importing Animated GIF...</source>
         <translation>Animiertes GIF wird importiert...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1213"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1218"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1217"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1222"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Rückgängig</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1233"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1237"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Wiederholen</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1383"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1387"/>
         <source>Stop</source>
         <translation type="unfinished"/>
     </message>
@@ -1966,13 +1991,13 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="364"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="366"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
         <source>You are about to switch layer, do you want to apply the transformation?</source>
         <translation type="unfinished"/>
     </message>
@@ -3525,12 +3550,12 @@ Sie haben die Liste erfolgreich geleert</translation>
         <translation>Schwarz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
         <source>Could not open file</source>
         <translation>Konnte Datei nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="32"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"/>
     </message>
@@ -3700,7 +3725,7 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>RecentFileMenu</name>
     <message>
-        <location filename="../core_lib/src/interface/recentfilemenu.h" line="38"/>
+        <location filename="../core_lib/src/interface/recentfilemenu.h" line="35"/>
         <source>Open Recent</source>
         <translation>Zuletzt geöffnet</translation>
     </message>
@@ -3713,60 +3738,60 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="740"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="716"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="741"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="717"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Sie zeichnen auf einer ausgeblendeten Ebene! Bitte wählen Sie eine andere Ebene aus (oder blenden Sie die aktuelle Ebene ein)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2004"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1978"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Auswahl löschen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2020"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2028"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1994"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2002"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Bild leeren</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2028"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2056"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2029"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2060"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2033"/>
         <source>Out of bound.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2061"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2034"/>
         <source>Could not find a closed path.</source>
         <translation>Konnte keinen geschlossenen Pfad finden.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2062"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2035"/>
         <source>Could not find the root index.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2063"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2036"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Fehler: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2063"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2036"/>
         <source>Flood fill error</source>
         <translation type="unfinished"/>
     </message>
@@ -3863,12 +3888,12 @@ Sie haben die Liste erfolgreich geleert</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="92"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="194"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="195"/>
         <source>Start</source>
         <translation>Anfang</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="189"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="190"/>
         <source>Stop</source>
         <translation type="unfinished"/>
     </message>
@@ -3981,12 +4006,12 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="734"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="731"/>
         <source>Layer Properties</source>
         <translation>Ebeneneigenschaften</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="735"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="732"/>
         <source>Layer name:</source>
         <translation>Ebenenname:</translation>
     </message>
@@ -4013,68 +4038,88 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>TimelinePage</name>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="20"/>
+        <location filename="../app/ui/timelinepage.ui" line="38"/>
         <source>Timeline</source>
         <translation>Zeitleiste</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="40"/>
+        <location filename="../app/ui/timelinepage.ui" line="58"/>
         <source>Timeline length:</source>
         <comment>Preferences</comment>
         <translation>Länge der Zeitleiste:</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="69"/>
+        <location filename="../app/ui/timelinepage.ui" line="87"/>
         <source>Drawing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="75"/>
+        <location filename="../app/ui/timelinepage.ui" line="93"/>
         <source>When drawing on an empty frame:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="82"/>
+        <location filename="../app/ui/timelinepage.ui" line="100"/>
         <source>Create a new (blank) key-frame and start drawing on it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="85"/>
+        <location filename="../app/ui/timelinepage.ui" line="103"/>
         <source>Create a new (blank) key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="95"/>
+        <location filename="../app/ui/timelinepage.ui" line="113"/>
         <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="98"/>
+        <location filename="../app/ui/timelinepage.ui" line="116"/>
         <source>Duplicate the previous key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="105"/>
+        <location filename="../app/ui/timelinepage.ui" line="123"/>
         <source>Keep drawing on the previous key-frame</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="117"/>
+        <location filename="../app/ui/timelinepage.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="142"/>
+        <location filename="../app/ui/timelinepage.ui" line="160"/>
         <source>Playback</source>
         <translation>Wiedergabe</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="154"/>
+        <location filename="../app/ui/timelinepage.ui" line="172"/>
         <source>Show onion skin while playing</source>
         <translation>Zeige Zwiebelhaut während der Wiedergabe</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="59"/>
+        <location filename="../app/ui/timelinepage.ui" line="180"/>
+        <source>Flip and Roll</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="188"/>
+        <source>Maximum numbers of drawings in roll</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="240"/>
+        <source>Msecs per drawing in flip inbetween</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="289"/>
+        <source>Msecs per drawing in flip roll</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="77"/>
         <source>Short scrub</source>
         <translation>Kurzer Positionszeiger</translation>
     </message>
@@ -4359,37 +4404,37 @@ Sie haben die Liste erfolgreich geleert</translation>
 <context>
     <name>ToolsPage</name>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="17"/>
+        <location filename="../app/ui/toolspage.ui" line="44"/>
         <source>Onion skin</source>
         <translation>Zwiebelhaut</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="23"/>
+        <location filename="../app/ui/toolspage.ui" line="50"/>
         <source>Maximum onion opacity %</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="49"/>
+        <location filename="../app/ui/toolspage.ui" line="76"/>
         <source>Minimum onion opacity %</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="75"/>
+        <location filename="../app/ui/toolspage.ui" line="102"/>
         <source>Number of previous onion frames shown</source>
         <translation>Anzahl angezeigter vorhergehender Zwiebelhautbilder</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="104"/>
+        <location filename="../app/ui/toolspage.ui" line="131"/>
         <source>Number of next onion frames shown</source>
         <translation>Anzahl angezeigter nachfolgender Zwiebelhautbilder</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="136"/>
+        <location filename="../app/ui/toolspage.ui" line="163"/>
         <source>Brush Tools</source>
         <translation>Pinsel-Werkzeuge</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="142"/>
+        <location filename="../app/ui/toolspage.ui" line="169"/>
         <source>Use Quick Sizing</source>
         <translation type="unfinished"/>
     </message>

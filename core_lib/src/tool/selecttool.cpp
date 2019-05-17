@@ -103,7 +103,7 @@ void SelectTool::pointerMoveEvent(PointerEvent* event)
 
     mScribbleArea->updateToolCursor();
 
-    if (event->buttons() & Qt::LeftButton)
+    if (mScribbleArea->isPointerInUse()) // !mAnchorOriginPoint.isNull()
     {
         controlOffsetOrigin();
 
