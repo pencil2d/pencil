@@ -32,11 +32,14 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
+#include "selectionmanager.h"
 #include "util.h"
 #include "app_util.h"
 
 #include "layercamera.h"
 #include "layersound.h"
+#include "layerbitmap.h"
+#include "layervector.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
@@ -415,6 +418,36 @@ void ActionCommands::flipSelectionY()
 {
     bool flipVertical = true;
     mEditor->flipSelection(flipVertical);
+}
+
+void ActionCommands::selectAll()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    int currentFrame = mEditor->currentFrame();
+
+    Q_ASSERT(layer);
+    if (layer == nullptr) { return; }
+
+    QRectF rect;
+    if (layer->type() == Layer::BITMAP)
+    {
+        // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
+        // as the drawing area is not limited
+        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(currentFrame);
+        rect = bitmapImage->bounds();
+    }
+    else if (layer->type() == Layer::VECTOR)
+    {
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(currentFrame);
+        vectorImage->selectAll();
+        rect = vectorImage->getSelectionRect();
+    }
+    mEditor->select()->setSelection(rect);
+}
+
+void ActionCommands::deselectAll()
+{
+    mEditor->deselectAll();
 }
 
 void ActionCommands::ZoomIn()
