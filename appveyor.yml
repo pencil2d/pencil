@@ -81,7 +81,7 @@ after_build:
     del bin\openssl-%OPENSSL_VERSION%-i386-win32.zip &
     move /y bin\openssl-%OPENSSL_VERSION%-i386-win32\libeay32.dll bin\ &
     move /y bin\openssl-%OPENSSL_VERSION%-i386-win32\ssleay32.dll bin\ &
-    rmdir /q /sbin\openssl-%OPENSSL_VERSION%-i386-win32 &
+    rmdir /q /s bin\openssl-%OPENSSL_VERSION%-i386-win32 &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
     echo "zipping" &
@@ -120,7 +120,7 @@ after_build:
     del bin\openssl-%OPENSSL_VERSION%-x64_86-win64.zip &
     move /y bin\openssl-%OPENSSL_VERSION%-x64_86-win64\libeay32.dll bin\ &
     move /y bin\openssl-%OPENSSL_VERSION%-x64_86-win64\ssleay32.dll bin\ &
-    rmdir /q /s bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static &
+    rmdir /q /s bin\openssl-%OPENSSL_VERSION%-x64_86-win64 bin\ &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
     echo "zipping" &
