@@ -1,4 +1,4 @@
-## Pencil2D 0.6.4 - 7 June 2019
+## Pencil2D 0.6.4 - 31 May 2019
 
 ### Enhancements
 
@@ -62,7 +62,7 @@
 ### Fixes
 
 * #926 Scrubber should move to start of range
-* #1059 Use tablet events for tablet input 
+* #1059 Use tablet events for tablet input
 * #1089 Copy and Paste Doesn't Function
 * #1090 Minor image export bugs -- [Philippe Rzetelski](https://github.com/przet)
 * #1092 Loading a file removes the application icon on windows until next restart
@@ -181,7 +181,7 @@ Fixes:
 * #412, #814 Duplicate key wasn't working in some cases.
 * #831 App crashed when duplicating a sound key.
 * #830 Can't save .pcl multiple times after importing sound layers.
-* #845 The framerate wasn't accurate when playing animation. 
+* #845 The framerate wasn't accurate when playing animation.
 * #828 The app stalled when using dotted cursor and zooming-in very much.
 * #739, #889 Vector outlines are not drawn when Horizontal Flip and Show Outlines Only are activated. -- [Martin van Zijl](https://github.com/martinvanzijl)
 * #735, #913 Some shortcuts are broken, file extensions are case-sensitive in image sequence import -- [Nick](https://github.com/Spark01)
