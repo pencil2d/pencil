@@ -1,4 +1,4 @@
-## Pencil2D 0.6.4 - 17 June 2019
+## Pencil2D 0.6.4 - 7 June 2019
 
 ### Enhancements
 
@@ -89,13 +89,15 @@
 * #1175 Grayscale color wheel
 * #1181 Fix canvas bugs
 * #1188 Miscellaneous fixes: Fixes regression for #677. Fixes duplicate selection box.
+* #1120 Windows Nightly Builds not working
 
-* b1064ab Fix auto-crop being disabled in duplicate frames.
-* aafd048 Fix: mistakingly empty the filename of source keyframe when duplicating a frame
-* 4f7b4bb Fix sound key length
+* `b1064ab` Fix auto-crop being disabled in duplicate frames.
+* `aafd048` Fix: mistakingly empty the filename of source keyframe when duplicating a frame
+* `4f7b4bb` Fix sound key length
 
 Translations
-* Added translation: Catalan, Greek and Kabyle.
+* Added translations: Catalan, Greek and Kabyle.
+* `8f42d46` Updated most recent translations from Transifex
 
 ## Pencil2D 0.6.2 - 26 September 2018
 
