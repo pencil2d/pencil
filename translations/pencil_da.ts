@@ -153,57 +153,57 @@
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Pencil</source>
         <translation>Blyant</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Eraser</source>
         <translation>Viskelæder</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Select</source>
         <translation>Marker</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Move</source>
         <translation>Bevæg</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
         <source>Hand</source>
         <translation>Hånd</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
         <source>Smudge</source>
         <translation>Udtvær</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
         <source>Pen</source>
         <translation>Fyldepen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
         <source>Polyline</source>
         <translation>Linje</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
         <source>Bucket</source>
         <translation>Malerspand</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
         <source>Eyedropper</source>
         <translation>Pipette</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="52"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
         <source>Brush</source>
         <translation>Pensel</translation>
     </message>
@@ -861,7 +861,7 @@
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
-        <translation type="unfinished"/>
+        <translation>Palet (*.xml *.gpl);;Pencil2D Palet (*.xml);;GIMP Palet (*.gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
@@ -1063,12 +1063,12 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="96"/>
         <source>Catalan </source>
-        <translation type="unfinished"/>
+        <translation>Catalansk</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="100"/>
         <source>Greek</source>
-        <translation type="unfinished"/>
+        <translation>Græsk</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="104"/>
@@ -1103,7 +1103,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Kabyle</source>
-        <translation type="unfinished"/>
+        <translation>Kabylsk</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
@@ -1172,7 +1172,7 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
-        <source>Grid Heigth</source>
+        <source>Grid Height</source>
         <translation>Gitter højde</translation>
     </message>
     <message>
@@ -1760,12 +1760,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="969"/>
         <source>Flip In-Between</source>
-        <translation type="unfinished"/>
+        <translation>Flip in-between</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="974"/>
         <source>Flip Rolling</source>
-        <translation type="unfinished"/>
+        <translation>Flip rullende</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
@@ -1830,27 +1830,27 @@
         <translation>Flyt frame tilbage</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="145"/>
+        <location filename="../app/src/mainwindow2.cpp" line="144"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>farve palet:&lt;br&gt;tryk på &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;Slå til/fra ved markøren</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="149"/>
+        <location filename="../app/src/mainwindow2.cpp" line="148"/>
         <source>Color inspector</source>
         <translation>Farveinspektor</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="360"/>
+        <location filename="../app/src/mainwindow2.cpp" line="359"/>
         <source>Lock Windows</source>
         <translation>Lås vinduer</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="380"/>
+        <location filename="../app/src/mainwindow2.cpp" line="379"/>
         <source>Open Recent</source>
         <translation>Åben Seneste</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="414"/>
+        <location filename="../app/src/mainwindow2.cpp" line="413"/>
         <source>
 
  You have successfully cleared the list</source>
@@ -1859,97 +1859,97 @@
 Du har slettet listen</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="525"/>
-        <location filename="../app/src/mainwindow2.cpp" line="534"/>
-        <location filename="../app/src/mainwindow2.cpp" line="594"/>
+        <location filename="../app/src/mainwindow2.cpp" line="514"/>
+        <location filename="../app/src/mainwindow2.cpp" line="524"/>
+        <location filename="../app/src/mainwindow2.cpp" line="533"/>
+        <location filename="../app/src/mainwindow2.cpp" line="592"/>
         <source>Could not open file</source>
         <translation>Kunne ikke åbne fil</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="516"/>
+        <location filename="../app/src/mainwindow2.cpp" line="515"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>Filen du valgte er en mappe som vi ikke kan åbne. Hvis du prøver at åbne et projekt der bruger den gamle struktur, åbn venligst en fil med endelsen .pcl, og ikke en mappe.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="526"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>Filen du har valgt eksisterer ikke, så vi kan ikke åbne den. Vær venligst sikker på at du har angivet den korrekte sti, at filen er tilgængelig og prøv igen.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="535"/>
+        <location filename="../app/src/mainwindow2.cpp" line="534"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Programmet har ikke tilladelse til at læse den valgte fil. Kontroller venligst læserettighederne til filn og prøv igen.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="544"/>
-        <location filename="../app/src/mainwindow2.cpp" line="707"/>
-        <location filename="../app/src/mainwindow2.cpp" line="766"/>
+        <location filename="../app/src/mainwindow2.cpp" line="543"/>
+        <location filename="../app/src/mainwindow2.cpp" line="703"/>
+        <location filename="../app/src/mainwindow2.cpp" line="762"/>
         <location filename="../app/src/mainwindow2.cpp" line="842"/>
         <location filename="../app/src/mainwindow2.cpp" line="988"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="545"/>
+        <location filename="../app/src/mainwindow2.cpp" line="544"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Programmet har ikke rettigheder til at skrive til den valgte fil. Kontroller venligst at du har skriverettigheder til til filen, før du prøver at gemme den. Alternativt kan du bruge Gem som... og gemme til en gyldig mappe.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="551"/>
+        <location filename="../app/src/mainwindow2.cpp" line="550"/>
         <source>Opening document...</source>
         <translation>Åbner dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="551"/>
-        <location filename="../app/src/mainwindow2.cpp" line="629"/>
-        <location filename="../app/src/mainwindow2.cpp" line="793"/>
-        <location filename="../app/src/mainwindow2.cpp" line="963"/>
+        <location filename="../app/src/mainwindow2.cpp" line="550"/>
+        <location filename="../app/src/mainwindow2.cpp" line="625"/>
+        <location filename="../app/src/mainwindow2.cpp" line="791"/>
+        <location filename="../app/src/mainwindow2.cpp" line="962"/>
         <source>Abort</source>
         <translation>Om</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="595"/>
+        <location filename="../app/src/mainwindow2.cpp" line="593"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>En ukendt fejl opstod under hentning af filen, og vi kan ikke hente den.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="629"/>
+        <location filename="../app/src/mainwindow2.cpp" line="625"/>
         <source>Saving document...</source>
         <translation>Gemmer dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="670"/>
+        <location filename="../app/src/mainwindow2.cpp" line="666"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;En fejl opstod og din fil er måske ikke gemt korrekt. Hvis du tror at det skyldes Pencil2D, opret venligst en sag hos:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Venligst inkluder følgende i din sag:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="708"/>
+        <location filename="../app/src/mainwindow2.cpp" line="704"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Animationen er ændret
 Ønsker du at gemme dine ændringer?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="736"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Animationen er endnu ikke gemt.
 Ønsker du at gemme nu?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="737"/>
+        <location filename="../app/src/mainwindow2.cpp" line="733"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Spørg ikke igen</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="767"/>
+        <location filename="../app/src/mainwindow2.cpp" line="763"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Kan ikke importere billede.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Brug Bitmap lag til at importere bitmaps.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="793"/>
+        <location filename="../app/src/mainwindow2.cpp" line="791"/>
         <source>Importing image sequence...</source>
         <translation>Importerer billedsekvens...</translation>
     </message>
@@ -1960,12 +1960,12 @@ Du har slettet listen</translation>
         <translation>kunne ikke importere</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="921"/>
+        <location filename="../app/src/mainwindow2.cpp" line="920"/>
         <source>Illegal numbering</source>
         <translation>Ugyldig nummerering</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="963"/>
+        <location filename="../app/src/mainwindow2.cpp" line="962"/>
         <source>Importing Animated GIF...</source>
         <translation>Importerer animeret GIF...</translation>
     </message>
@@ -3735,60 +3735,60 @@ Du har slettet listen</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="734"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="716"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="735"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="717"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Du tegner på et usynligt lag!, Vær venlig at vælge et andet lag (eller lav det nuværende lag synligt).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1997"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1978"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Slet valgte</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2013"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2021"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1994"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2002"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Rens billede</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2047"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2028"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Der er et mellemrum i din tegning (eller måske har du zoomet for meget)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2048"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2029"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Desværre! Dette virker ikke altid. Prøv venligst igen (zoom lidt, klik på et andet punkt)&lt;br&gt;hvis det ikke virker, zoom lidt mere, og kontroller at dine stier er forbundet ved tryk på F1).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2052"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2033"/>
         <source>Out of bound.</source>
         <translation>Udenfor grænser</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2053"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2034"/>
         <source>Could not find a closed path.</source>
         <translation>Kunne ikke finde en lukket sti.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2054"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2035"/>
         <source>Could not find the root index.</source>
         <translation>Kunne ikke finde rod indekset.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2036"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Fejl: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2036"/>
         <source>Flood fill error</source>
         <translation>Fejl ved farveudfyldning</translation>
     </message>
@@ -3885,12 +3885,12 @@ Du har slettet listen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="92"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="194"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="195"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="189"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="190"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
@@ -4098,22 +4098,22 @@ Du har slettet listen</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="180"/>
         <source>Flip and Roll</source>
-        <translation type="unfinished"/>
+        <translation>Flip og rul</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="188"/>
         <source>Maximum numbers of drawings in roll</source>
-        <translation type="unfinished"/>
+        <translation>Maksimum antal tegninger i rul</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="240"/>
         <source>Msecs per drawing in flip inbetween</source>
-        <translation type="unfinished"/>
+        <translation>Msek pr tegning i flip in-between</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="289"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation type="unfinished"/>
+        <translation>Msek pr tegning i flip rul</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>

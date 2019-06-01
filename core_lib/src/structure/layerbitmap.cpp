@@ -48,6 +48,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
 {
     BitmapImage* pKeyFrame = new BitmapImage(topLeft, path);
+    pKeyFrame->enableAutoCrop(true);
     pKeyFrame->setPos(frameNumber);
     loadKey(pKeyFrame);
 }
@@ -114,8 +115,7 @@ Status LayerBitmap::presave(const QString& sDataFolder)
         // Move to temporary locations first to avoid overwritting anything we shouldn't be
         // Ex: Frame A moves from 1 -> 2, Frame B moves from 2 -> 3. Make sure A does not overwrite B
         QString tmpName = QString::asprintf("t_%03d.%03d.png", id(), b->pos());
-        QDir sA, sB;
-        if ((sA=QFileInfo(b->fileName()).dir()) != (sB=dataFolder)) {
+        if (QFileInfo(b->fileName()).dir() != dataFolder) {
             // Copy instead of move if the data folder itself has changed
             QFile::copy(b->fileName(), tmpName);
         }

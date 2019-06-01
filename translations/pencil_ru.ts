@@ -141,69 +141,69 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="659"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation>Вы уверены, что хотите удалить слой:</translation>
+        <translation>Вы уверены, что хотите удалить слой: </translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="668"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
-        <translation>Пожалуйста, сохраните хотя бы один слой камеры в проекте.</translation>
+        <translation>Пожалуйста, оставьте хотя бы один слой камеры в проекте</translation>
     </message>
 </context>
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Pencil</source>
         <translation>Карандаш</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Eraser</source>
         <translation>Ластик</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Select</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Move</source>
         <translation>Перемещение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
         <source>Hand</source>
         <translation>Рука</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
         <source>Smudge</source>
         <translation>Коррекция</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
         <source>Pen</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
         <source>Polyline</source>
         <translation>Ломаная</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
         <source>Bucket</source>
         <translation>Заливка</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
         <source>Eyedropper</source>
         <translation>Пипетка</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="52"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
         <source>Brush</source>
         <translation>Кисть</translation>
     </message>
@@ -440,7 +440,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="483"/>
         <source>Cancel</source>
-        <translation>Отмена </translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="484"/>
@@ -1172,7 +1172,7 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
-        <source>Grid Heigth</source>
+        <source>Grid Height</source>
         <translation>Высота Сетки</translation>
     </message>
     <message>
@@ -1830,27 +1830,27 @@
         <translation>Переместить кадр назад</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="145"/>
+        <location filename="../app/src/mainwindow2.cpp" line="144"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Цветовая палитра: &lt;br&gt;используйте &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt; переключатель на курсоре</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="149"/>
+        <location filename="../app/src/mainwindow2.cpp" line="148"/>
         <source>Color inspector</source>
         <translation>Инспектор цвета</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="360"/>
+        <location filename="../app/src/mainwindow2.cpp" line="359"/>
         <source>Lock Windows</source>
         <translation>Закрепить окна</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="380"/>
+        <location filename="../app/src/mainwindow2.cpp" line="379"/>
         <source>Open Recent</source>
         <translation>Последние документы</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="414"/>
+        <location filename="../app/src/mainwindow2.cpp" line="413"/>
         <source>
 
  You have successfully cleared the list</source>
@@ -1859,97 +1859,97 @@
  Вы успешно очистили список</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="525"/>
-        <location filename="../app/src/mainwindow2.cpp" line="534"/>
-        <location filename="../app/src/mainwindow2.cpp" line="594"/>
+        <location filename="../app/src/mainwindow2.cpp" line="514"/>
+        <location filename="../app/src/mainwindow2.cpp" line="524"/>
+        <location filename="../app/src/mainwindow2.cpp" line="533"/>
+        <location filename="../app/src/mainwindow2.cpp" line="592"/>
         <source>Could not open file</source>
         <translation>Невозможно открыть файл</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="516"/>
+        <location filename="../app/src/mainwindow2.cpp" line="515"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>Выбранный вами файл является каталогом, поэтому мы не можем его открыть. Если вы пытаетесь открыть проект, который использует старую структуру, пожалуйста, откройте файл, заканчивающийся на .pcl, а не каталог данных.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="526"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>Выбранный вами файл не существует, поэтому мы не можем его открыть. Убедитесь, что вы ввели правильный путь, и что файл доступен, и повторите попытку.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="535"/>
+        <location filename="../app/src/mainwindow2.cpp" line="534"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Эта программа не имеет разрешения на чтение выбранного вами файла. Пожалуйста, проверьте, что у вас есть права на чтение этого файла и попробуйте снова.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="544"/>
-        <location filename="../app/src/mainwindow2.cpp" line="707"/>
-        <location filename="../app/src/mainwindow2.cpp" line="766"/>
+        <location filename="../app/src/mainwindow2.cpp" line="543"/>
+        <location filename="../app/src/mainwindow2.cpp" line="703"/>
+        <location filename="../app/src/mainwindow2.cpp" line="762"/>
         <location filename="../app/src/mainwindow2.cpp" line="842"/>
         <location filename="../app/src/mainwindow2.cpp" line="988"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="545"/>
+        <location filename="../app/src/mainwindow2.cpp" line="544"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Эта программа в настоящее время не имеет разрешения на запись в выбранный вами файл. Пожалуйста, убедитесь, что у вас есть разрешение на запись этого файла, прежде чем пытаться сохранить его. Кроме того, вы можете использовать опцию меню Сохранить как..., чтобы сохранить в доступном для записи месте.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="551"/>
+        <location filename="../app/src/mainwindow2.cpp" line="550"/>
         <source>Opening document...</source>
         <translation>Открытие документа...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="551"/>
-        <location filename="../app/src/mainwindow2.cpp" line="629"/>
-        <location filename="../app/src/mainwindow2.cpp" line="793"/>
-        <location filename="../app/src/mainwindow2.cpp" line="963"/>
+        <location filename="../app/src/mainwindow2.cpp" line="550"/>
+        <location filename="../app/src/mainwindow2.cpp" line="625"/>
+        <location filename="../app/src/mainwindow2.cpp" line="791"/>
+        <location filename="../app/src/mainwindow2.cpp" line="962"/>
         <source>Abort</source>
-        <translation>Отмена</translation>
+        <translation>Прервать</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="595"/>
+        <location filename="../app/src/mainwindow2.cpp" line="593"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>При попытке загрузить файл произошла неизвестная ошибка, и мы не можем загрузить ваш файл.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="629"/>
+        <location filename="../app/src/mainwindow2.cpp" line="625"/>
         <source>Saving document...</source>
         <translation>Сохранение документа...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="670"/>
+        <location filename="../app/src/mainwindow2.cpp" line="666"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Произошла ошибка, и ваш файл, возможно, не был успешно сохранён. Если вы считаете, что эта ошибка связана с Pencil2D, создайте новую проблему по адресу: &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https: //github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;. Обязательно укажите следующие детали в вашем обращении:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="708"/>
+        <location filename="../app/src/mainwindow2.cpp" line="704"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Эта анимация была изменена.
  Вы хотите сохранить свои изменения?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="736"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Анимация ещё не сохранена.
  Вы хотите сохранить её сейчас?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="737"/>
+        <location filename="../app/src/mainwindow2.cpp" line="733"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Больше не спрашивать</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="767"/>
+        <location filename="../app/src/mainwindow2.cpp" line="763"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Невозможно импортировать изображение. &lt;br&gt;&lt;b&gt;СОВЕТ&lt;/b&gt;: Используйте растровый слой для импорта растровых изображений.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="793"/>
+        <location filename="../app/src/mainwindow2.cpp" line="791"/>
         <source>Importing image sequence...</source>
         <translation>Импорт последовательности изображений...</translation>
     </message>
@@ -1960,12 +1960,12 @@
         <translation>не удалось импортировать</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="921"/>
+        <location filename="../app/src/mainwindow2.cpp" line="920"/>
         <source>Illegal numbering</source>
         <translation>неправильная нумерация</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="963"/>
+        <location filename="../app/src/mainwindow2.cpp" line="962"/>
         <source>Importing Animated GIF...</source>
         <translation>Импорт анимированного GIF...</translation>
     </message>
@@ -3735,60 +3735,60 @@
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="734"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="716"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="735"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="717"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Вы рисуете на скрытом слое! Пожалуйста, выберите другой слой или сделайте текущий видимым.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1997"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1978"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Удалить выделение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2013"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2021"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1994"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2002"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Очистить изображение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2047"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2028"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>В вашем рисунке есть промежуток (или, может быть, вы слишком сильно увеличили масштаб).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2048"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2029"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Сожалеем! Это не всегда работает. Пожалуйста, попробуйте ещё раз (немного увеличьте масштаб, щёлкните в другом месте...), &lt;br&gt;если это не работает, немного увеличьте масштаб и проверьте, что ваши пути связаны, нажав F1.).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2052"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2033"/>
         <source>Out of bound.</source>
         <translation>Вне границы.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2053"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2034"/>
         <source>Could not find a closed path.</source>
         <translation>Не удалось найти закрытый путь.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2054"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2035"/>
         <source>Could not find the root index.</source>
         <translation>Не удалось найти корневой индекс.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2036"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Ошибка: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2055"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2036"/>
         <source>Flood fill error</source>
         <translation>Ошибка заливки</translation>
     </message>
@@ -3885,12 +3885,12 @@
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="92"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="194"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="195"/>
         <source>Start</source>
         <translation>В начало</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="189"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="190"/>
         <source>Stop</source>
         <translation>Стоп</translation>
     </message>
@@ -3997,7 +3997,7 @@
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="301"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation>Вы уверены, что хотите удалить слой:</translation>
+        <translation>Вы уверены, что хотите удалить слой: </translation>
     </message>
 </context>
 <context>

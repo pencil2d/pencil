@@ -246,8 +246,8 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
  */
 QPixmap BaseTool::quickSizeCursor(float brushWidth, float brushFeather, float scalingFac)
 {
-    float propWidth = brushWidth * scalingFac;
-    float propFeather = brushFeather * scalingFac;
+    float propWidth = qMax(static_cast<float>(0), brushWidth) * scalingFac;
+    float propFeather = qMax(static_cast<float>(0), brushFeather) * scalingFac;
     float cursorWidth = propWidth + 0.5 * propFeather;
 
     if (cursorWidth < 1) { cursorWidth = 1; }
