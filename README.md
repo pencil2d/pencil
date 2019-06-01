@@ -10,7 +10,7 @@ Pencil2D Website: <https://www.pencil2d.org/>
 
 ## Download ###
 
-### Pencil2D 0.6.4 (5 May 2019)
+### Pencil2D 0.6.4 (31 May 2019)
 
 [What's new?](https://www.pencil2d.org/2019/05/pencil2d-0.6.4-release.html)
 
