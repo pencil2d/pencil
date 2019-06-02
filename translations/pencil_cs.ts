@@ -66,19 +66,19 @@
         <translation>Dokončeno. Otevřít záznam nyní?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="602"/>
-        <location filename="../app/src/actioncommands.cpp" line="615"/>
-        <location filename="../app/src/actioncommands.cpp" line="628"/>
-        <location filename="../app/src/actioncommands.cpp" line="641"/>
+        <location filename="../app/src/actioncommands.cpp" line="607"/>
+        <location filename="../app/src/actioncommands.cpp" line="620"/>
+        <location filename="../app/src/actioncommands.cpp" line="633"/>
+        <location filename="../app/src/actioncommands.cpp" line="646"/>
         <source>Layer Properties</source>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="83"/>
-        <location filename="../app/src/actioncommands.cpp" line="603"/>
-        <location filename="../app/src/actioncommands.cpp" line="616"/>
-        <location filename="../app/src/actioncommands.cpp" line="629"/>
-        <location filename="../app/src/actioncommands.cpp" line="642"/>
+        <location filename="../app/src/actioncommands.cpp" line="608"/>
+        <location filename="../app/src/actioncommands.cpp" line="621"/>
+        <location filename="../app/src/actioncommands.cpp" line="634"/>
+        <location filename="../app/src/actioncommands.cpp" line="647"/>
         <source>Layer name:</source>
         <translation>Název vrstvy:</translation>
     </message>
@@ -113,38 +113,38 @@
         <translation>Obrázek nelze vyvést.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="604"/>
+        <location filename="../app/src/actioncommands.cpp" line="609"/>
         <source>Bitmap Layer</source>
         <translation>Bitmapová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="617"/>
+        <location filename="../app/src/actioncommands.cpp" line="622"/>
         <source>Vector Layer</source>
         <translation>Vektorová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="630"/>
+        <location filename="../app/src/actioncommands.cpp" line="635"/>
         <source>Camera Layer</source>
         <translation>Kamerová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="643"/>
+        <location filename="../app/src/actioncommands.cpp" line="648"/>
         <source>Sound Layer</source>
         <translation>Zvuková vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="658"/>
+        <location filename="../app/src/actioncommands.cpp" line="663"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Smazat vrstvu</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="659"/>
+        <location filename="../app/src/actioncommands.cpp" line="664"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Opravdu chcete smazat vrstvu: </translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="668"/>
+        <location filename="../app/src/actioncommands.cpp" line="673"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Ponechejte, prosím, v projektu alespoň jednu vrstvu s kamerou</translation>
@@ -211,17 +211,17 @@
 <context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="6"/>
+        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
         <source>Camera Properties</source>
         <translation>Vlastnosti kamery</translation>
     </message>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
+        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="22"/>
         <source>Camera name:</source>
         <translation>Název kamery:</translation>
     </message>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="38"/>
+        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="46"/>
         <source>Camera size:</source>
         <translation>Velikost kamery:</translation>
     </message>
@@ -547,19 +547,19 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="553"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="537"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="558"/>
         <source>Paste</source>
         <translation>Vložit</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="942"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="961"/>
         <source>Remove frame</source>
         <translation>Odstranit snímek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="781"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="813"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="786"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="818"/>
         <source>Import Image</source>
         <translation>Zavést obrázek</translation>
     </message>
@@ -877,72 +877,72 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
         <source>Could not open file</source>
         <translation>Nepodařilo se otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="59"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
         <translation>Soubor není, takže jej nelze otevřít. Podívejte se, prosím, a ujistěte se, že je cesta správná a že soubor je přístupný a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="113"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Tento program nemá oprávnění ke čtení vybraného souboru. Ověřte, prosím, že máte oprávnění k tomuto souboru a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="237"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="252"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>Invalid Save Path</source>
         <translation>Neplatná ukládací cesta</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="232"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Cesta (&quot;%1&quot;) ukazuje na adresář.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="240"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Adresář (&quot;%1&quot;) neexistuje.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="247"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Cesta (&quot;%1&quot;) není zapisovatelná.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="289"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
         <source>Cannot Create Data Directory</source>
         <translation>Nelze vytvořit adresář s daty</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="290"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>Nepodařilo se vytvořit adresář &quot;%1&quot;. Ujistěte se, prosím, že máte dostatečná oprávnění.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="299"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; je soubor. Smažte, prosím, soubor a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="390"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
         <source>Miniz Error</source>
         <translation>Chyba Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="407"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
         <source>Internal Error</source>
         <translation>Vnitřní chyba</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="391"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="408"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="384"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="401"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Vyskytla se vnitřní chyba. Soubor se nemuselo podařit uložit úspěšně.</translation>
     </message>
@@ -1490,11 +1490,6 @@
         <translation>Otočit po směru hodinových ručiček</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="463"/>
-        <source>Rotate AntiClosewise</source>
-        <translation>Otočit proti směru hodinových ručiček</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="468"/>
         <source>Reset Zoom/Rotate</source>
         <translation>Vrátit na výchozí zvětšení/otočení</translation>
@@ -1541,7 +1536,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1392"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1394"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -1672,6 +1667,12 @@
         <translation>Vrátit na výchozí</translation>
     </message>
     <message>
+        <location filename="../app/ui/mainwindow2.ui" line="780"/>
+        <location filename="../app/ui/mainwindow2.ui" line="783"/>
+        <source>Next Keyframe</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../app/ui/mainwindow2.ui" line="807"/>
         <source>MultiLayer Onion Skin</source>
         <translation>Vícevrstvý cibulový vzhled</translation>
@@ -1768,15 +1769,14 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="780"/>
-        <location filename="../app/ui/mainwindow2.ui" line="783"/>
-        <source>Next KeyFrame</source>
-        <translation>Další klíčový snímek</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="280"/>
         <source>Save As...</source>
         <translation>Uložit jako...</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="463"/>
+        <source>Rotate Anticlockwise</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
@@ -1883,10 +1883,10 @@
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="543"/>
-        <location filename="../app/src/mainwindow2.cpp" line="703"/>
-        <location filename="../app/src/mainwindow2.cpp" line="762"/>
-        <location filename="../app/src/mainwindow2.cpp" line="842"/>
-        <location filename="../app/src/mainwindow2.cpp" line="988"/>
+        <location filename="../app/src/mainwindow2.cpp" line="705"/>
+        <location filename="../app/src/mainwindow2.cpp" line="764"/>
+        <location filename="../app/src/mainwindow2.cpp" line="844"/>
+        <location filename="../app/src/mainwindow2.cpp" line="990"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -1903,8 +1903,8 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="550"/>
         <location filename="../app/src/mainwindow2.cpp" line="625"/>
-        <location filename="../app/src/mainwindow2.cpp" line="791"/>
-        <location filename="../app/src/mainwindow2.cpp" line="962"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
+        <location filename="../app/src/mainwindow2.cpp" line="964"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
@@ -1924,66 +1924,67 @@
         <translation>&lt;br&gt;&lt;br&gt;Vyskytla se chyba, a tak soubor nemusí být úspěšně uložen. Pokud si myslíte, že potíže souvisí s Pencil2D, vytvořte, prosím, nové téma na:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Ujistěte se, prosím, že do záznamu o problému zahrnete následující podrobnosti:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="704"/>
+        <location filename="../app/src/mainwindow2.cpp" line="706"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Tato animace byla změněna.
 Přejete si uložit změny?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="732"/>
+        <location filename="../app/src/mainwindow2.cpp" line="734"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Animace ještě není uložena.
 Chcete ji uložit nyní?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="733"/>
+        <location filename="../app/src/mainwindow2.cpp" line="735"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Už se znovu neptat</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="763"/>
+        <location filename="../app/src/mainwindow2.cpp" line="765"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Obrázek nelze zavést.&lt;br&gt;&lt;b&gt;Rada:&lt;/b&gt; K zavedení bitmap použijte bitmapovou vrstvu.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="791"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
         <source>Importing image sequence...</source>
         <translation>Zavádí se řada obrázků...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="843"/>
-        <location filename="../app/src/mainwindow2.cpp" line="989"/>
+        <location filename="../app/src/mainwindow2.cpp" line="845"/>
+        <location filename="../app/src/mainwindow2.cpp" line="991"/>
         <source>was unable to import</source>
         <translation>nebylo možno zavést</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="920"/>
+        <location filename="../app/src/mainwindow2.cpp" line="922"/>
         <source>Illegal numbering</source>
         <translation>Neplatné číslování</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="962"/>
+        <location filename="../app/src/mainwindow2.cpp" line="964"/>
         <source>Importing Animated GIF...</source>
         <translation>Zavádí se animovaný GIF...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1217"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1222"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1219"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1224"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1237"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1232"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1239"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1387"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1389"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
@@ -1998,8 +1999,8 @@ Chcete ji uložit nyní?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
-        <source>You are about to switch layer, do you want to apply the transformation?</source>
-        <translation>Chystáte se přepnout vrstvy. Chcete použít proměnu?</translation>
+        <source>You are about to switch away, do you want to apply the transformation?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3547,12 +3548,12 @@ Chcete ji uložit nyní?</translation>
         <translation>Černá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <source>Could not open file</source>
         <translation>Nepodařilo se otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="32"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation>Při zpracování souboru se vyskytla chyba. Obyčejně to znamená, že váš projekt byl alespoň částečně poškozen. Můžete to zkusit znovu s novou verzí Pencil2D, nebo můžete vyzkoušet použít záložní soubor, pokud nějaký máte. Pokud se s námi spojíte přes jeden z našich veřejných kanálů, můžeme vám být schopni pomoci. Pro hlášení potíží jsou nejlepšími místy, jak nás dosáhnout:</translation>
     </message>
@@ -3567,153 +3568,153 @@ Chcete ji uložit nyní?</translation>
         <translation>Hotovo</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="74"/>
+        <location filename="../app/src/main.cpp" line="75"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
         <translation>Pencil2D je animační/kreslicí program pro operační systémy Mac OS X, Windows a Linux. Dovolí vám tvořit tradiční ručně kreslenou animaci pomocí bitmapové i vektorové grafiky</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="77"/>
+        <location filename="../app/src/main.cpp" line="78"/>
         <source>Path to the input pencil file.</source>
         <translation>Cesta k výstupnímu souboru Pencilu.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="80"/>
-        <location filename="../app/src/main.cpp" line="86"/>
+        <location filename="../app/src/main.cpp" line="81"/>
+        <location filename="../app/src/main.cpp" line="87"/>
         <source>Render the file to &lt;output_path&gt;</source>
         <translation>Zpracovat soubor do &lt;output_path&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="81"/>
-        <location filename="../app/src/main.cpp" line="87"/>
+        <location filename="../app/src/main.cpp" line="82"/>
+        <location filename="../app/src/main.cpp" line="88"/>
         <source>output_path</source>
         <translation>výstupní_cesta</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="94"/>
+        <location filename="../app/src/main.cpp" line="95"/>
         <source>Name of the camera layer to use</source>
         <translation>Název vrstvy s kamerou, která se má použít</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="95"/>
+        <location filename="../app/src/main.cpp" line="96"/>
         <source>layer_name</source>
         <translation>název_vrstvy</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="99"/>
+        <location filename="../app/src/main.cpp" line="100"/>
         <source>Width of the output frames</source>
         <translation>Šířka výstupních snímků</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="100"/>
-        <location filename="../app/src/main.cpp" line="105"/>
+        <location filename="../app/src/main.cpp" line="101"/>
+        <location filename="../app/src/main.cpp" line="106"/>
         <source>integer</source>
         <translation>Celé číslo</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="104"/>
+        <location filename="../app/src/main.cpp" line="105"/>
         <source>Height of the output frames</source>
         <translation>Výška výstupních snímků</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="109"/>
+        <location filename="../app/src/main.cpp" line="110"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>První snímek, který chcete zahrnout do vyvedeného filmu</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="110"/>
-        <location filename="../app/src/main.cpp" line="117"/>
+        <location filename="../app/src/main.cpp" line="111"/>
+        <location filename="../app/src/main.cpp" line="118"/>
         <source>frame</source>
         <translation>snímek</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="114"/>
+        <location filename="../app/src/main.cpp" line="115"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
         <translation>Poslední snímek, který chcete zahrnout do vyvedeného obrazového záznamu. Také může být poslední nebo poslední-zvuk pro automatické použití posledního snímku obsahujícího animaci nebo zvuk, v tomto pořadí</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="121"/>
+        <location filename="../app/src/main.cpp" line="122"/>
         <source>Render transparency when possible</source>
         <translation>Vykreslovat průhlednost, když je to možné</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="140"/>
+        <location filename="../app/src/main.cpp" line="141"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
         <translation>Varování: Hodnota pro šířku %1 není celé číslo. Přehlíží se.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="150"/>
+        <location filename="../app/src/main.cpp" line="151"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
         <translation>Varování: Hodnota pro výšku %1 není celé číslo. Přehlíží se.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="160"/>
+        <location filename="../app/src/main.cpp" line="161"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
         <translation>Varování: Začáteční hodnota %1 není celé číslo. Přehlíží se.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="165"/>
+        <location filename="../app/src/main.cpp" line="166"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
         <translation>Varování: Začáteční hodnota musí být alespoň %1. Přehlíží se.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="185"/>
+        <location filename="../app/src/main.cpp" line="186"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
         <translation>Varování: Koncová hodnota %1 není celé číslo, poslední nebo poslední-zvuk. Přehlíží se.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="191"/>
+        <location filename="../app/src/main.cpp" line="192"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
         <translation>Varování: Koncová hodnota %1 je menší než začáteční %2. Přehlíží se.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="202"/>
+        <location filename="../app/src/main.cpp" line="203"/>
         <source>Error: No input file specified.</source>
         <translation>Chyba: Nestanoven vstupní soubor.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="209"/>
+        <location filename="../app/src/main.cpp" line="210"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
         <translation>Chyba: Vstupní soubor v &apos;%1&apos; neexistuje</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="214"/>
+        <location filename="../app/src/main.cpp" line="215"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
         <translation>Chyba: Vstupní cesta &apos;%1&apos; není soubor</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="243"/>
+        <location filename="../app/src/main.cpp" line="244"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
         <translation>Varování: Daná kamerová vrstva %1 nebyla nalezena. Přehlíží se.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="276"/>
+        <location filename="../app/src/main.cpp" line="277"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
         <translation>Varování: Výstupní formát není stanoven nebo není podporován. Používá se PNG.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="298"/>
+        <location filename="../app/src/main.cpp" line="299"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
         <translation>Varování: Průhlednost není v současnosti v souborech s obrazovým záznamem podporována.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="300"/>
+        <location filename="../app/src/main.cpp" line="301"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
         <translation>Vyvádí se obrazový záznam...</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="302"/>
-        <location filename="../app/src/main.cpp" line="307"/>
+        <location filename="../app/src/main.cpp" line="303"/>
+        <location filename="../app/src/main.cpp" line="308"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
         <translation>Hotovo.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="305"/>
+        <location filename="../app/src/main.cpp" line="306"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
         <translation>Vyvádí se řada obrázků...</translation>
@@ -3735,60 +3736,60 @@ Chcete ji uložit nyní?</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="716"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="704"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="717"/>
-        <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation>Kreslíte na skrytou vrstvu! Vyberte, prosím, jinou vrstvu (nebo nynější vrstvu udělejte viditelnou).</translation>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
+        <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1978"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Smazat výběr</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1994"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2002"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1969"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1977"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Smazat obrázek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2028"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2003"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Ve vaší kresbě je mezera (nebo jste možná provedl moc velké přiblížení).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2029"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2004"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Promiňte. Toto vždy nepracuje. Zkuste to, prosím, znovu (trošku přibližte pohled, klepněte na jíné místo... )&lt;br&gt; Pokud toto nepracuje, trošku přibližte pohled, a ověřte, že jsou cesty spojeny, stisknutím F1.).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2033"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2008"/>
         <source>Out of bound.</source>
         <translation>Zakázáno.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2034"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2009"/>
         <source>Could not find a closed path.</source>
         <translation>Nepodařilo se najít zavřenou cestu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2035"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2010"/>
         <source>Could not find the root index.</source>
         <translation>Nepodařilo se najít kořenový index.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2036"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2011"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Chyba: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2036"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2011"/>
         <source>Flood fill error</source>
         <translation>Chyba výplně</translation>
     </message>
@@ -3817,8 +3818,8 @@ Chcete ji uložit nyní?</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
-        <source>clear</source>
-        <translation>Vymazat</translation>
+        <source>Clear</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
@@ -3826,12 +3827,12 @@ Chcete ji uložit nyní?</translation>
         <translation>Obnovit výchozí nastavení klávesových zkratek</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="92"/>
+        <location filename="../app/src/shortcutspage.cpp" line="95"/>
         <source>Shortcut Conflict!</source>
         <translation>Střet mezi klávesovými zkratkami!</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="93"/>
+        <location filename="../app/src/shortcutspage.cpp" line="96"/>
         <source>%1 is already used, overwrite?</source>
         <translation>%1 se již používá. Přepsat?</translation>
     </message>
@@ -4082,8 +4083,8 @@ Chcete ji uložit nyní?</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="135"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Použije se na nástroje tužky, mazání, pera, lomené čáry, plechovky a štětce)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Eraser, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="160"/>
@@ -4322,11 +4323,6 @@ Chcete ji uložit nyní?</translation>
         <translation>Vyplnit obrys</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="114"/>
-        <source>The extend to which the color variation will be treated as being equal</source>
-        <translation>Rozsah, po který se bude s barevným kolísáním zacházet jako se stejným</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
         <translation>Bézier</translation>
@@ -4371,6 +4367,11 @@ Chcete ji uložit nyní?</translation>
         <location filename="../app/ui/tooloptions.ui" line="154"/>
         <source>Make invisible</source>
         <translation>Zneviditelnit</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="114"/>
+        <source>The extent to which the color variation will be treated as being equal</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
