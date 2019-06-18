@@ -1555,12 +1555,12 @@ void ScribbleArea::adjustSelection(float offsetX, float offsetY, qreal rotationO
         QPointF curPoint = currentTool()->getCurrentPoint();
         QPointF anchorPoint = transformedSelection.center();
 
-        myRotatedAngle = ( atan2( curPoint.y() - anchorPoint.y(), curPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI;
+        myRotatedAngle = ( atan2( curPoint.y() - anchorPoint.y(), curPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI - rotationOffset;
         if (constrainRotation)
         {
-            myRotatedAngle = qRound(myRotatedAngle / 15) * 15;
+            const int incrementAmount = mPrefs->getInt(SETTING::ROTATION_INCREMENT);
+            myRotatedAngle = qRound(myRotatedAngle / incrementAmount) * incrementAmount;
         }
-        myRotatedAngle -= rotationOffset;
         break;
     }
     default:

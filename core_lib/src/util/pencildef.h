@@ -192,6 +192,7 @@ enum StabilizationLevel
 #define SETTING_DRAW_LABEL          "DrawLabel"
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
+#define SETTING_ROTATION_INCREMENT  "RotationIncrement"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"

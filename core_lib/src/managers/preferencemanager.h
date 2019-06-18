@@ -68,6 +68,7 @@ enum class SETTING
     LAYOUT_LOCK,
     DRAW_ON_EMPTY_FRAME_ACTION,
     FRAME_POOL_SIZE,
+    ROTATION_INCREMENT,
     COUNT, // COUNT must always be the last one.
 };
 
