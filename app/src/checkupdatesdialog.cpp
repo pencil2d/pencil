@@ -78,7 +78,7 @@ void CheckUpdatesDialog::startChecking()
 void CheckUpdatesDialog::regularBuildCheck()
 {
     mNetworkManager = new QNetworkAccessManager(this);
-    QUrl url("https://github.com/pencil2d/pencil/releases.atom");
+    QUrl url("http://github.com/pencil2d/pencil/releases.atom");
 
     QNetworkRequest req;
     req.setUrl(url);
@@ -153,7 +153,7 @@ bool CheckUpdatesDialog::compareVersion(QString currentVersion, QString latestVe
 
 QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
 {
-    // XML source: https://github.com/pencil2d/pencil/releases.atom
+    // XML source: http://github.com/pencil2d/pencil/releases.atom
     
     QXmlStreamReader xmlReader(xml);
 

@@ -48,7 +48,7 @@ public:
     bool somethingSelected() const { return mSomethingSelected; }
 
     void calculateSelectionTransformation();
-    void adjustSelection(float offsetX, float offsetY, qreal rotatedAngle);
+    void adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset);
     MoveMode moveModeForAnchorInRange(QPointF lastPos);
     void setCurves(QList<int> curves) { mClosestCurves = curves; }
     void setVertices(QList<VertexRef> vertices) { mClosestVertices = vertices; }
@@ -86,7 +86,8 @@ public:
     QRectF myTempTransformedSelection;
     QRectF myTransformedSelection;
 
-    int myRotatedAngle;
+    qreal myRotatedAngle;
+    qreal rotationOffset = 0.0;
 
     VectorSelection vectorSelection;
 

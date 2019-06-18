@@ -209,7 +209,7 @@ QPointF SelectionManager::whichAnchorPoint(QPointF currentPoint, QPointF anchorP
     return anchorPoint;
 }
 
-void SelectionManager::adjustSelection(float offsetX, float offsetY, qreal rotatedAngle)
+void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset)
 {
     QRectF& transformedSelection = myTransformedSelection;
 
@@ -243,8 +243,11 @@ void SelectionManager::adjustSelection(float offsetX, float offsetY, qreal rotat
     }
     case MoveMode::ROTATION:
     {
-        myTempTransformedSelection = transformedSelection;
-        myRotatedAngle = rotatedAngle;
+        myTempTransformedSelection =
+            transformedSelection; // @ necessary?
+        QPointF anchorPoint = transformedSelection.center();
+        myRotatedAngle = ( atan2( currentPoint.y() - anchorPoint.y(), currentPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI - rotationOffset;
+        qDebug() << currentPoint << anchorPoint << myRotatedAngle << rotationOffset;
         break;
     }
     default:

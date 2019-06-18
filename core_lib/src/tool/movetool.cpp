@@ -138,10 +138,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
             offset = selectMan->offsetFromAspectRatio(offset.x(), offset.y());
         }
 
-        mRotatedAngle = (getCurrentPixel().x() -
-                         getLastPressPixel().x()) + mRotatedAngle;
-
-        selectMan->adjustSelection(offset.x(), offset.y(), mRotatedAngle);
+        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), mRotatedAngle);
         selectMan->calculateSelectionTransformation();
         paintTransformedSelection();
 
@@ -160,8 +157,6 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     {
         mEditor->backup(typeName());
     }
-
-    selectMan->myRotatedAngle = mRotatedAngle;
 
     if (keyMod != Qt::ShiftModifier)
     {
@@ -183,6 +178,12 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     if (layer->type() == Layer::VECTOR)
     {
         createVectorSelection(keyMod, layer);
+    }
+
+    if(selectMan->getMoveMode() == MoveMode::ROTATION) {
+        QPointF curPoint = getCurrentPoint();
+        QPointF anchorPoint = selectionRect.center();
+        mRotatedAngle = ( atan2( curPoint.y() - anchorPoint.y(), curPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI;
     }
 }
 
