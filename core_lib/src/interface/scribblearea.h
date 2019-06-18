@@ -67,7 +67,7 @@ public:
 
     void deleteSelection();
     void setSelection(QRectF rect);
-    void adjustSelection(float offsetX, float offsetY, qreal rotatedAngle);
+    void adjustSelection(float offsetX, float offsetY, qreal rotationOffset);
     void applySelectionChanges();
     void displaySelectionProperties();
     void resetSelectionProperties();
@@ -86,6 +86,7 @@ public:
     QRectF myTransformedSelection;
     QRectF myTempTransformedSelection;
     qreal myRotatedAngle = 0.0;
+    qreal mRotationOffset = 0.0;
     QList<int> mClosestCurves;
 
     bool isLayerPaintable() const;

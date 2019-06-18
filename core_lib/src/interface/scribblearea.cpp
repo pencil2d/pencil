@@ -1508,7 +1508,7 @@ QPointF ScribbleArea::whichAnchorPoint(QPointF anchorPoint)
     return anchorPoint;
 }
 
-void ScribbleArea::adjustSelection(float offsetX, float offsetY, qreal rotatedAngle)
+void ScribbleArea::adjustSelection(float offsetX, float offsetY, qreal rotationOffset)
 {
     QRectF& transformedSelection = myTransformedSelection;
 
@@ -1552,8 +1552,10 @@ void ScribbleArea::adjustSelection(float offsetX, float offsetY, qreal rotatedAn
     {
         myTempTransformedSelection =
             transformedSelection; // @ necessary?
-        myRotatedAngle = (currentTool()->getCurrentPixel().x() -
-                          currentTool()->getLastPressPixel().x()) + rotatedAngle;
+        QPointF curPoint = currentTool()->getCurrentPoint();
+        QPointF anchorPoint = transformedSelection.center();
+        myRotatedAngle = ( atan2( curPoint.y() - anchorPoint.y(), curPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI - rotationOffset;
+        qDebug() << curPoint << anchorPoint << myRotatedAngle << rotationOffset;
         break;
     }
     default:
