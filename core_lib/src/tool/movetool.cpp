@@ -130,7 +130,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
             offset = maintainAspectRatio(offset.x(), offset.y());
         }
 
-        mScribbleArea->adjustSelection(offset.x(), offset.y(), mRotatedAngle);
+        mScribbleArea->adjustSelection(offset.x(), offset.y(), mRotatedAngle, keyMod & Qt::ShiftModifier);
         mScribbleArea->calculateSelectionTransformation();
         paintTransformedSelection();
 

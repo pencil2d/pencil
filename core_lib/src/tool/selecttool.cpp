@@ -162,7 +162,7 @@ void SelectTool::controlOffsetOrigin()
             offset = QPointF(mScribbleArea->getTransformOffset());
         }
 
-        mScribbleArea->adjustSelection(offset.x(),offset.y(), mScribbleArea->myRotatedAngle);
+        mScribbleArea->adjustSelection(offset.x(),offset.y(), mScribbleArea->myRotatedAngle, false);
     }
     else
     {
