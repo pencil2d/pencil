@@ -40,8 +40,7 @@ void SelectTool::loadSettings()
 QCursor SelectTool::cursor()
 {
     MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
-    BaseTool* tool = mEditor->tools()->currentTool();
-    return tool->selectMoveCursor(mode, type());
+    return this->selectMoveCursor(mode, type());
 }
 
 void SelectTool::beginSelection()
@@ -63,13 +62,13 @@ void SelectTool::beginSelection()
             static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
         }
 
-        mAnchorOriginPoint = selectMan->whichAnchorPoint(getLastPoint(), mAnchorOriginPoint);
+        mAnchorOriginPoint = selectMan->whichAnchorPoint(getLastPoint());
 
         // the user did not click on one of the corners
         if (selectMan->validateMoveMode(getLastPoint()) == MoveMode::NONE)
         {
-            selectMan->mySelection.setTopLeft(getLastPoint());
-            selectMan->mySelection.setBottomRight(getLastPoint());
+            const QRectF& newRect = QRectF(getLastPoint(), getLastPoint());
+            selectMan->setSelection(newRect);
         }
     }
     else
@@ -116,7 +115,7 @@ void SelectTool::pointerMoveEvent(PointerEvent* event)
         {
             static_cast<LayerVector*>(mCurrentLayer)->
                     getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->
-                    select(selectMan->myTempTransformedSelection);
+                    select(selectMan->myTempTransformedSelectionRect());
         }
     }
 
@@ -166,13 +165,13 @@ void SelectTool::keepSelection()
 {
     auto selectMan = mEditor->select();
     if (mCurrentLayer->type() == Layer::BITMAP) {
-        if (!selectMan->myTempTransformedSelection.isValid())
+        if (!selectMan->myTempTransformedSelectionRect().isValid())
         {
-            selectMan->setSelection(selectMan->myTempTransformedSelection.normalized());
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect().normalized());
         }
         else
         {
-            selectMan->setSelection(selectMan->myTempTransformedSelection);
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect());
         }
     }
     else if (mCurrentLayer->type() == Layer::VECTOR)
@@ -194,7 +193,7 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 
         auto selectMan = mEditor->select();
 
-        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), selectMan->myRotatedAngle);
+        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), selectMan->myRotation());
     }
     else
     {
@@ -209,8 +208,8 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
  */
 void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint)
 {
-    int mouseX = currentPoint.x();
-    int mouseY = currentPoint.y();
+    qreal mouseX = currentPoint.x();
+    qreal mouseY = currentPoint.y();
 
     QRectF selectRect;
 
@@ -236,7 +235,7 @@ void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint
         selectRect.setBottom(mouseY);
     }
 
-    mEditor->select()->myTempTransformedSelection = selectRect;
+    mEditor->select()->setTempTransformedSelectionRect(selectRect);
 }
 
 bool SelectTool::keyPressEvent(QKeyEvent* event)

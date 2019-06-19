@@ -98,7 +98,7 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     if (!selectMan->somethingSelected())
         return;
 
-    mRotatedAngle = selectMan->myRotatedAngle;
+    mRotatedAngle = selectMan->myRotation();
     updateTransformation();
 
     selectMan->updatePolygons();
@@ -110,8 +110,7 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
 void MoveTool::updateTransformation()
 {
     auto selectMan = mEditor->select();
-    // update the transformed selection
-    selectMan->myTransformedSelection = selectMan->myTempTransformedSelection;
+    selectMan->updateTransformedSelection();
 
     // make sure transform is correct
     selectMan->calculateSelectionTransformation();
@@ -125,11 +124,10 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
     auto selectMan = mEditor->select();
     if (selectMan->somethingSelected())
     {
-        QPointF offset;
-        if (layer->type() == Layer::VECTOR) {
-            offset = offsetFromPressPos();
-        } else {
-            offset = offsetFromPressPos().toPoint();
+        QPointF offset = offsetFromPressPos();
+        if(layer->type() == Layer::BITMAP)
+        {
+            offset = offset.toPoint();
         }
 
         // maintain aspect ratio
@@ -152,7 +150,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
 void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
 {
     auto selectMan = mEditor->select();
-    QRectF selectionRect = selectMan->myTransformedSelection;
+    QRectF selectionRect = selectMan->myTransformedSelectionRect();
     if (!selectionRect.isNull())
     {
         mEditor->backup(typeName());
@@ -264,7 +262,7 @@ void MoveTool::cancelChanges()
 
 void MoveTool::applySelectionChanges()
 {
-    mEditor->select()->myRotatedAngle = 0;
+    mEditor->select()->setRotation(0);
     mRotatedAngle = 0;
 
     mScribbleArea->applySelectionChanges();

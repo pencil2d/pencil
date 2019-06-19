@@ -26,19 +26,22 @@ public:
     Status save(Object*) override;
     void workingLayerChanged(Layer*) override;
 
-    QVector<QPoint> calcSelectionCenterPoints();
+    QVector<QPointF> calcSelectionCenterPoints();
 
     void updatePolygons();
+    void updateTransformedSelection() { mTransformedSelection = mTempTransformedSelection; }
 
     QRectF mappedSelection();
 
-    QPointF whichAnchorPoint(QPointF currentPoint, QPointF anchorPoint);
+    QPointF whichAnchorPoint(QPointF currentPoint);
     QPointF getTransformOffset() { return mOffset; }
     QPointF offsetFromAspectRatio(qreal offsetX, qreal offsetY);
 
     void flipSelection(bool flipVertical);
 
     void setSelection(QRectF rect);
+
+    void translate(QPointF point);
 
     MoveMode getMoveModeForSelectionAnchor(QPointF pos);
     MoveMode validateMoveMode(QPointF pos);
@@ -63,7 +66,7 @@ public:
     void setSelectionTransform(QTransform transform) { mSelectionTransform = transform; }
     void resetSelectionTransform();
 
-    inline bool transformHasBeenModified() { return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0; }
+    inline bool transformHasBeenModified() { return (mSelection != mTempTransformedSelection) || mRotatedAngle != mOldRotatedAngle; }
 
     /** @brief SelectionManager::resetSelectionTransformProperties
      * should be used whenever translate, rotate, transform, scale
@@ -76,20 +79,26 @@ public:
 
     bool isOutsideSelectionArea(QPointF point);
 
-    float selectionTolerance() const;
+    qreal selectionTolerance() const;
 
 
     QPolygonF currentSelectionPolygonF() const { return mCurrentSelectionPolygonF; }
     QPolygonF lastSelectionPolygonF() const { return mLastSelectionPolygonF; }
 
-    QRectF mySelection;
-    QRectF myTempTransformedSelection;
-    QRectF myTransformedSelection;
-
-    qreal myRotatedAngle;
-    qreal rotationOffset = 0.0;
+    void setSomethingSelected(bool selected) { mSomethingSelected = selected; }
 
     VectorSelection vectorSelection;
+
+    const QRectF& mySelectionRect() { return mSelection; }
+    const QRectF& myTempTransformedSelectionRect() { return mTempTransformedSelection; }
+    const QRectF& myTransformedSelectionRect() { return mTransformedSelection; }
+    const qreal& myRotation() { return mRotatedAngle; }
+
+    void setSelectionRect(const QRectF& rect) { mSelection = rect; }
+    void setTempTransformedSelectionRect(const QRectF& rect) { mTempTransformedSelection = rect; }
+    void setTransformedSelectionRect(const QRectF& rect) { mTransformedSelection = rect; }
+    void setRotation(const qreal& rotation) { mRotatedAngle = rotation; }
+
 
 signals:
     void selectionChanged();
@@ -97,6 +106,12 @@ signals:
     void needDeleteSelection();
 
 private:
+
+    QRectF mSelection;
+    QRectF mTempTransformedSelection;
+    QRectF mTransformedSelection;
+    qreal mRotatedAngle;
+    qreal mOldRotatedAngle;
 
     bool mSomethingSelected;
     QPolygonF mLastSelectionPolygonF;
@@ -110,7 +125,7 @@ private:
 
     QTransform mSelectionTransform;
 
-    float mSelectionTolerance = 8.0;
+    qreal mSelectionTolerance = 8.0;
 };
 
 #endif // SELECTIONMANAGER_H

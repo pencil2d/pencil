@@ -113,6 +113,9 @@ public:
     bool isPointerInUse() const { return mMouseInUse || mStrokeManager->isTabletInUse(); }
     bool isTemporaryTool() const { return mInstantTool; }
 
+    void keyEvent(QKeyEvent* event);
+    void keyEventForSelection(QKeyEvent* event);
+
 signals:
     void modification(int);
     void multiLayerOnionSkinChanged(bool);
