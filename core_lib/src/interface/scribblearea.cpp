@@ -1550,8 +1550,7 @@ void ScribbleArea::adjustSelection(float offsetX, float offsetY, qreal rotationO
     }
     case MoveMode::ROTATION:
     {
-        myTempTransformedSelection =
-            transformedSelection; // @ necessary?
+        myTempTransformedSelection = transformedSelection;
         QPointF curPoint = currentTool()->getCurrentPoint();
         QPointF anchorPoint = transformedSelection.center();
 
