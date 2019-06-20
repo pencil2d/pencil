@@ -1076,11 +1076,10 @@ void ScribbleArea::paintSelectionVisuals()
     Object* object = mEditor->object();
 
     auto selectMan = mEditor->select();
+    selectMan->updatePolygons();
 
     if (selectMan->currentSelectionPolygonF().isEmpty()) { return; }
     if (selectMan->currentSelectionPolygonF().count() < 4) { return; }
-
-    selectMan->updatePolygons();
 
     QPolygonF lastSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->lastSelectionPolygonF());
     QPolygonF currentSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->currentSelectionPolygonF());
