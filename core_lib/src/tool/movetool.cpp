@@ -101,6 +101,11 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     mRotatedAngle = selectMan->myRotation();
     updateTransformation();
 
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::VECTOR) {
+        applyTransformation();
+    }
+
     selectMan->updatePolygons();
 
     mScribbleArea->updateToolCursor();
