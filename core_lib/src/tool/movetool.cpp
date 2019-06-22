@@ -129,16 +129,18 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
     auto selectMan = mEditor->select();
     if (selectMan->somethingSelected())
     {
+
         QPointF offset = offsetFromPressPos();
-        if(layer->type() == Layer::BITMAP)
-        {
-            offset = offset.toPoint();
-        }
 
         // maintain aspect ratio
         if (keyMod == Qt::ShiftModifier)
         {
             offset = selectMan->offsetFromAspectRatio(offset.x(), offset.y());
+        }
+
+        if(layer->type() == Layer::BITMAP)
+        {
+            offset = offset.toPoint();
         }
 
         selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), mRotatedAngle);
