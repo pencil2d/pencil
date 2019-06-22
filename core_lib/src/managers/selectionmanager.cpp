@@ -17,7 +17,7 @@ SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor),
     mTempTransformedSelection(QRectF()),
     mTransformedSelection(QRectF()),
     mRotatedAngle(0),
-    mOldRotatedAngle(0),
+    mRotationOffset(0),
     mSomethingSelected(false),
     mLastSelectionPolygonF(QPolygonF()),
     mCurrentSelectionPolygonF(QPolygonF()),
@@ -53,7 +53,7 @@ void SelectionManager::resetSelectionTransformProperties()
 {
     mOffset = QPointF(0, 0);
     mRotatedAngle = 0;
-    mOldRotatedAngle = 0;
+    mRotationOffset = 0;
     mSelectionTransform.reset();
 }
 
@@ -72,6 +72,16 @@ bool SelectionManager::isOutsideSelectionArea(QPointF point)
 {
     return (!mTransformedSelection.contains(point)
             && validateMoveMode(point) == MoveMode::NONE);
+}
+
+bool SelectionManager::transformHasBeenModified()
+{
+    return (mSelection != mTempTransformedSelection) || rotationHasBeenModified();
+}
+
+bool SelectionManager::rotationHasBeenModified()
+{
+    return !qFuzzyCompare(qAbs(mRotatedAngle),qAbs(mRotationOffset));
 }
 
 void SelectionManager::deleteSelection()
@@ -246,8 +256,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
             transformedSelection; // @ necessary?
         QPointF anchorPoint = transformedSelection.center();
         mRotatedAngle = ( atan2( currentPoint.y() - anchorPoint.y(), currentPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI - rotationOffset;
-        mOldRotatedAngle = mRotatedAngle;
-        qDebug() << currentPoint << anchorPoint << mRotatedAngle << rotationOffset;
+        mRotationOffset = rotationOffset;
         break;
     }
     default:

@@ -66,7 +66,8 @@ public:
     void setSelectionTransform(QTransform transform) { mSelectionTransform = transform; }
     void resetSelectionTransform();
 
-    inline bool transformHasBeenModified() { return (mSelection != mTempTransformedSelection) || mRotatedAngle != mOldRotatedAngle; }
+    bool transformHasBeenModified();
+    bool rotationHasBeenModified();
 
     /** @brief SelectionManager::resetSelectionTransformProperties
      * should be used whenever translate, rotate, transform, scale
@@ -111,7 +112,7 @@ private:
     QRectF mTempTransformedSelection;
     QRectF mTransformedSelection;
     qreal mRotatedAngle;
-    qreal mOldRotatedAngle;
+    qreal mRotationOffset;
 
     bool mSomethingSelected;
     QPolygonF mLastSelectionPolygonF;
