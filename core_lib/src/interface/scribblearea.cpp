@@ -509,9 +509,7 @@ void ScribbleArea::pointerMoveEvent(PointerEvent* event)
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
         if (currentTool()->isAdjusting())
         {
-            // TODO: make sure this doesn't break anything
-            // was mOffset.x()... but that should be independent and only accessible in selectino context
-            currentTool()->adjustCursor(event->modifiers()); //updates cursors given org width or feather and x
+            currentTool()->adjustCursor(event->modifiers());
             return;
         }
     }
