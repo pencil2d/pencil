@@ -126,7 +126,8 @@ private:
 
     QTransform mSelectionTransform;
 
-    qreal mSelectionTolerance = 8.0;
+    const qreal mSelectionTolerance = 8.0;
+    const qreal mMarginInPixels = 15.0;
 };
 
 #endif // SELECTIONMANAGER_H
