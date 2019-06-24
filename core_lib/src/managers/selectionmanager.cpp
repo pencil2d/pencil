@@ -147,45 +147,34 @@ MoveMode SelectionManager::moveModeForAnchorInRange(QPointF lastPos)
 
 MoveMode SelectionManager::getMoveModeForSelectionAnchor(QPointF pos)
 {
-    const double marginInPixels = mMarginInPixels;
-    const double radius = marginInPixels / 2;
     const double calculatedSelectionTol = selectionTolerance();
 
     if (mCurrentSelectionPolygonF.count() < 4) { return MoveMode::NONE; }
 
+    QPointF topLeftCorner = mCurrentSelectionPolygonF[0];
 
-    QRectF topLeftCorner = QRectF(mCurrentSelectionPolygonF[0].x() - radius,
-                                                                     mCurrentSelectionPolygonF[0].y() - radius,
-                                                                     marginInPixels, marginInPixels);
+    QPointF topRightCorner = mCurrentSelectionPolygonF[1];
 
-    QRectF topRightCorner = QRectF(mCurrentSelectionPolygonF[1].x() - radius,
-                                                                      mCurrentSelectionPolygonF[1].y() - radius,
-                                                                      marginInPixels, marginInPixels);
+    QPointF bottomRightCorner = mCurrentSelectionPolygonF[2];
 
-    QRectF bottomRightCorner = QRectF(mCurrentSelectionPolygonF[2].x() - radius,
-                                                                         mCurrentSelectionPolygonF[2].y() - radius,
-                                                                         marginInPixels, marginInPixels);
-
-    QRectF bottomLeftCorner = QRectF(mCurrentSelectionPolygonF[3].x() - radius,
-                                                                        mCurrentSelectionPolygonF[3].y() - radius,
-                                                                        marginInPixels, marginInPixels);
+    QPointF bottomLeftCorner = mCurrentSelectionPolygonF[3];
 
     QPointF currentPos = pos;
 
-    if (QLineF(currentPos, topLeftCorner.center()).length() < calculatedSelectionTol)
+    if (QLineF(currentPos, topLeftCorner).length() < calculatedSelectionTol)
     {
         return MoveMode::TOPLEFT;
     }
-    else if (QLineF(currentPos, topRightCorner.center()).length() < calculatedSelectionTol)
+    else if (QLineF(currentPos, topRightCorner).length() < calculatedSelectionTol)
     {
         return MoveMode::TOPRIGHT;
     }
-    else if (QLineF(currentPos, bottomLeftCorner.center()).length() < calculatedSelectionTol)
+    else if (QLineF(currentPos, bottomLeftCorner).length() < calculatedSelectionTol)
     {
         return MoveMode::BOTTOMLEFT;
 
     }
-    else if (QLineF(currentPos, bottomRightCorner.center()).length() < calculatedSelectionTol)
+    else if (QLineF(currentPos, bottomRightCorner).length() < calculatedSelectionTol)
     {
         return MoveMode::BOTTOMRIGHT;
     }
