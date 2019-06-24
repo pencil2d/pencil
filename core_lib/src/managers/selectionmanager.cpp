@@ -81,7 +81,7 @@ bool SelectionManager::transformHasBeenModified()
 
 bool SelectionManager::rotationHasBeenModified()
 {
-    return !qFuzzyCompare(qAbs(mRotatedAngle),qAbs(mRotationOffset));
+    return !qFuzzyCompare(mRotatedAngle,0);
 }
 
 void SelectionManager::deleteSelection()
