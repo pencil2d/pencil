@@ -17,7 +17,6 @@ SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor),
     mTempTransformedSelection(QRectF()),
     mTransformedSelection(QRectF()),
     mRotatedAngle(0),
-    mRotationOffset(0),
     mSomethingSelected(false),
     mLastSelectionPolygonF(QPolygonF()),
     mCurrentSelectionPolygonF(QPolygonF()),
@@ -53,7 +52,6 @@ void SelectionManager::resetSelectionTransformProperties()
 {
     mOffset = QPointF(0, 0);
     mRotatedAngle = 0;
-    mRotationOffset = 0;
     mSelectionTransform.reset();
 }
 
@@ -247,7 +245,6 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
             transformedSelection; // @ necessary?
         QPointF anchorPoint = transformedSelection.center();
         mRotatedAngle = ( atan2( currentPoint.y() - anchorPoint.y(), currentPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI - rotationOffset;
-        mRotationOffset = rotationOffset;
         break;
     }
     default:

@@ -112,7 +112,6 @@ private:
     QRectF mTempTransformedSelection;
     QRectF mTransformedSelection;
     qreal mRotatedAngle;
-    qreal mRotationOffset;
 
     bool mSomethingSelected;
     QPolygonF mLastSelectionPolygonF;
