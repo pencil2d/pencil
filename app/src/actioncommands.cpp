@@ -32,11 +32,14 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
+#include "selectionmanager.h"
 #include "util.h"
 #include "app_util.h"
 
 #include "layercamera.h"
 #include "layersound.h"
+#include "layerbitmap.h"
+#include "layervector.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
@@ -415,6 +418,16 @@ void ActionCommands::flipSelectionY()
 {
     bool flipVertical = true;
     mEditor->flipSelection(flipVertical);
+}
+
+void ActionCommands::selectAll()
+{
+    mEditor->selectAll();
+}
+
+void ActionCommands::deselectAll()
+{
+    mEditor->deselectAll();
 }
 
 void ActionCommands::ZoomIn()
