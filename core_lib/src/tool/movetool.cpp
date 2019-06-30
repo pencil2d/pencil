@@ -48,12 +48,39 @@ void MoveTool::loadSettings()
     properties.useFeather = false;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
+
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
 }
 
 QCursor MoveTool::cursor()
 {
     MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+}
+
+void MoveTool::updateSettings(const SETTING setting)
+{
+    switch (setting)
+    {
+    case SETTING::ROTATION_INCREMENT:
+    {
+        mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
+        break;
+    }
+    default:
+        break;
+
+    }
+}
+
+int MoveTool::rotationAngleIncrement()
+{
+    if (mCachedRotIncrement != mRotationIncrement)
+    {
+        mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
+        mCachedRotIncrement = mRotationIncrement;
+    }
+    return mCachedRotIncrement;
 }
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
@@ -138,12 +165,19 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
             offset = selectMan->offsetFromAspectRatio(offset.x(), offset.y());
         }
 
+        int rotationIncrement = 0;
+        if (selectMan->getMoveMode() == MoveMode::ROTATION && keyMod & Qt::ShiftModifier)
+        {
+            rotationIncrement = rotationAngleIncrement();
+        }
+
         if(layer->type() == Layer::BITMAP)
         {
             offset = offset.toPoint();
         }
 
-        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), mRotatedAngle, keyMod & Qt::ShiftModifier ? mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT) : 0);
+        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), mRotatedAngle, rotationIncrement);
+
         selectMan->calculateSelectionTransformation();
         paintTransformedSelection();
 
