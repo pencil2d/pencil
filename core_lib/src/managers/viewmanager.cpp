@@ -98,6 +98,16 @@ QRectF ViewManager::mapScreenToCanvas(const QRectF& rect)
     return mViewCanvasInverse.mapRect(rect);
 }
 
+QPolygonF ViewManager::mapPolygonToScreen(const QPolygonF &polygon)
+{
+    return mViewCanvas.map(polygon);
+}
+
+QPolygonF ViewManager::mapPolygonToCanvas(const QPolygonF &polygon)
+{
+    return mViewCanvasInverse.map(polygon);
+}
+
 QPainterPath ViewManager::mapScreenToCanvas(const QPainterPath& path)
 {
     return mViewCanvasInverse.map(path);

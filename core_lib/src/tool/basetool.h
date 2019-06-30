@@ -85,7 +85,7 @@ public:
     // dynamic cursor adjustment
     virtual void startAdjusting(ToolPropertyType argSettingType, qreal argStep);
     virtual void stopAdjusting();
-    virtual void adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod);
+    virtual void adjustCursor(Qt::KeyboardModifiers keyMod);
 
     virtual void clearToolData() {}
     virtual void resetToDefault() {}
