@@ -45,6 +45,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "preferencemanager.h"
 #include "soundmanager.h"
+#include "selectionmanager.h"
 #include "backupmanager.h"
 
 #include "scribblearea.h"
@@ -81,6 +82,7 @@ bool Editor::init()
     mViewManager = new ViewManager(this);
     mPreferenceManager = new PreferenceManager(this);
     mSoundManager = new SoundManager(this);
+    mSelectionManager = new SelectionManager(this);
     mBackupManager = new BackupManager(this);
 
     mAllManagers =
@@ -92,6 +94,7 @@ bool Editor::init()
         mViewManager,
         mPreferenceManager,
         mSoundManager,
+        mSelectionManager,
         mBackupManager
     };
 
@@ -176,7 +179,7 @@ void Editor::cut()
 {
     copy();
     mScribbleArea->deleteSelection();
-    mScribbleArea->deselectAll();
+    deselectAll();
 }
 
 void Editor::copy()
@@ -190,9 +193,9 @@ void Editor::copy()
     if (layer->type() == Layer::BITMAP)
     {
         LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
-        if (mScribbleArea->isSomethingSelected())
+        if (select()->somethingSelected())
         {
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
+            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(select()->mySelectionRect().toRect());  // copy part of the image
         }
         else
         {
@@ -221,9 +224,9 @@ void Editor::paste()
 
             // TODO: paste doesn't remember location, will always paste on top of old image.
             qDebug() << "to be pasted --->" << tobePasted.image()->size();
-            if (mScribbleArea->isSomethingSelected())
+            if (select()->somethingSelected())
             {
-                QRectF selection = mScribbleArea->getSelection();
+                QRectF selection = select()->mySelectionRect();
                 if (g_clipboardBitmapImage.width() <= selection.width() && g_clipboardBitmapImage.height() <= selection.height())
                 {
                     tobePasted.moveTopLeft(selection.topLeft());
@@ -240,11 +243,10 @@ void Editor::paste()
         }
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
-            mScribbleArea->deselectAll();
+            deselectAll();
             VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
-
-            mScribbleArea->setSelection(vectorImage->getSelectionRect());
+            select()->setSelection(vectorImage->getSelectionRect());
             backups()->vector(tr("Vector: Paste"));
         }
     }
@@ -575,6 +577,46 @@ bool Editor::importGIF(QString filePath, int numOfImages)
     return false;
 }
 
+qreal Editor::viewScaleInversed()
+{
+    return view()->getViewInverse().m11();
+}
+
+void Editor::selectAll()
+{
+    Layer* layer = layers()->currentLayer();
+
+    QRectF rect;
+    if (layer->type() == Layer::BITMAP)
+    {
+        // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
+        // as the drawing area is not limited
+        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mFrame);
+        rect = bitmapImage->bounds();
+    }
+    else if (layer->type() == Layer::VECTOR)
+    {
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        vectorImage->selectAll();
+        rect = vectorImage->getSelectionRect();
+    }
+    select()->setSelection(rect);
+    emit updateCurrentFrame();
+}
+
+void Editor::deselectAll()
+{
+    Layer* layer = layers()->currentLayer();
+    if (layer == nullptr) { return; }
+
+    if (layer->type() == Layer::VECTOR)
+    {
+        static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame, 0)->deselectAll();
+    }
+
+    select()->resetSelectionProperties();
+}
+
 void Editor::updateFrame(int frameNumber)
 {
     mScribbleArea->updateFrame(frameNumber);
@@ -656,6 +698,12 @@ KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex, bool ignoreKeyExis
     if (layer == nullptr)
     {
         Q_ASSERT(false);
+        return nullptr;
+    }
+
+    if (!layer->visible())
+    {
+        mScribbleArea->showLayerNotVisibleWarning();
         return nullptr;
     }
 
@@ -752,6 +800,13 @@ void Editor::addKeyContaining(int layerId, int frameIndex, KeyFrame* key)
 void Editor::removeKeyAt(int layerIndex, int frameIndex)
 {
     Layer* layer = layers()->getLayer(layerIndex);
+
+    if (!layer->visible())
+    {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return;
+    }
+
     if (!layer->keyExistsWhichCovers(frameIndex))
     {
         return;
@@ -826,6 +881,11 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     mScribbleArea->updateAllFrames();
 
     emit updateTimeLine();
+}
+
+void Editor::showLayerNotVisibleWarning()
+{
+    return mScribbleArea->showLayerNotVisibleWarning();
 }
 
 void Editor::swapLayers(int i, int j)

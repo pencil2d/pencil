@@ -265,7 +265,7 @@ void TimeLine::extendLength(int frame)
     int currentLength = mTracks->getFrameLength();
     if(frame > (currentLength * 0.75))
     {
-        int newLength = std::max(frame, currentLength) * 1.5;
+        int newLength = static_cast<int>(std::max(frame, currentLength) * 1.5);
 
         if (newLength > 9999)
             newLength = 9999;

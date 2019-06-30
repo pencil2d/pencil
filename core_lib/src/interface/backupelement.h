@@ -198,16 +198,28 @@ public:
     enum { Id = 1 };
 
     SelectionElement(SelectionType backupSelectionType,
-                     QRectF backupTempSelection,
-                     QRectF backupSelection,
+                     QRectF backupTempSelectionRect,
+                     QRectF backupSelectionRect,
+                     QRectF backupTransformedSelectionRect,
+                     qreal backupRotationAngle,
+                     bool backupIsSelected,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
-    QRectF oldSelection = QRectF();
-    QRectF newSelection = QRectF();
+    QRectF oldSelectionRect = QRectF();
+    QRectF newSelectionRect = QRectF();
 
-    QRectF oldTempSelection = QRectF();
-    QRectF newTempSelection = QRectF();
+    QRectF oldTempSelectionRect = QRectF();
+    QRectF newTempSelectionRect = QRectF();
+
+    QRectF oldTransformedSelectionRect = QRectF();
+    QRectF newTransformedSelectionRect = QRectF();
+
+    qreal oldRotationAngle = 0.0;
+    qreal newRotationAngle = 0.0;
+
+    bool oldIsSelected = false;
+    bool newIsSelected = false;
 
     SelectionType selectionType;
 
@@ -236,8 +248,13 @@ public:
     enum { Id = 2 };
     TransformElement(KeyFrame* backupKeyFrame,
                      int backupLayerId,
-                     int backupFramePos, QRectF backupSelection,
-                     QRectF backupTempSelection, QTransform backupTransform,
+                     int backupFramePos,
+                     QRectF backupSelectionRect,
+                     QRectF backupTempSelectionRect,
+                     QRectF backupTransformedSelectionRect,
+                     qreal backupRotationAngle,
+                     bool backupIsSelected,
+                     QTransform backupTransform,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
@@ -247,6 +264,15 @@ public:
 
     QRectF oldSelectionRectTemp;
     QRectF newSelectionRectTemp;
+
+    QRectF oldTransformedSelectionRect;
+    QRectF newTransformedSelectionRect;
+
+    qreal oldRotationAngle;
+    qreal newRotationAngle;
+
+    bool oldIsSelected = false;
+    bool newIsSelected = false;
 
     QTransform oldTransform;
     QTransform newTransform;
@@ -269,7 +295,7 @@ public:
     void apply(QRectF tempRect,
                BitmapImage* bitmapImage,
                VectorImage* vectorImage,
-               QRectF selectionRect,
+               QRectF selectionRect, QRectF transformedRect, qreal rotationAngle, bool isSelected,
                QTransform transform,
                int frameIndex,
                int layerId);

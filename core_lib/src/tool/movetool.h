@@ -45,9 +45,7 @@ private:
     void cancelChanges();
     void applyTransformation();
     void applySelectionChanges();
-    void resetSelectionProperties();
     void paintTransformedSelection();
-    void whichAnchorPoint();
     void setAnchorToLastPoint();
     void updateTransformation();
 
@@ -61,10 +59,8 @@ private:
     void setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
     void setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
 
-    bool transformHasBeenModified();
-    bool canDeselect();
+    QPointF offsetFromPressPos();
 
-    QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
     Layer* currentPaintableLayer();
 
     QPointF anchorOriginPoint;

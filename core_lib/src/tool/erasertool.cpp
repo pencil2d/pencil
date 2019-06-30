@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "backupmanager.h"
 #include "viewmanager.h"
 #include "colormanager.h"
+#include "selectionmanager.h"
 
 #include "layervector.h"
 #include "vectorimage.h"
@@ -338,8 +339,8 @@ void EraserTool::paintVectorStroke()
         VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
         vectorImage->addCurve( curve, mEditor->view()->scaling(), false );
 
-        if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected()) {
-            mScribbleArea->deselectAll();
+        if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected()) {
+            mEditor->deselectAll();
         }
 
         vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);

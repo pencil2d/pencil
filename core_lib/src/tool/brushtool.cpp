@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "backupmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 #include "scribblearea.h"
 #include "blitrect.h"
 #include "pointerevent.h"
@@ -361,9 +362,9 @@ void BrushTool::paintVectorStroke()
         VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
 
-        if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected())
+        if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected())
         {
-            mScribbleArea->deselectAll();
+            mEditor->deselectAll();
         }
 
         vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);

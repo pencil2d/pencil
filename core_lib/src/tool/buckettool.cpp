@@ -157,7 +157,7 @@ void BucketTool::paintBitmap(Layer* layer)
 
     BitmapImage* targetImage = ((LayerBitmap*)targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
 
-    QPoint point = getLastPoint().toPoint();
+    QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
     BitmapImage::floodFill(targetImage,
                            cameraRect,

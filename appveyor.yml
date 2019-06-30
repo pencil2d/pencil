@@ -3,7 +3,6 @@ configuration:
 
 environment:
   MSBUILD_FLAGS: /verbosity:minimal
-  FFMPEG_VERSION: 4.1.1
   matrix:
 
     # MSVC x86
@@ -69,12 +68,12 @@ after_build:
     dir /s &
     md bin\plugins\ &
     echo "Copying ffmpeg plugin" &
-    call curl.exe -o bin\plugins\ffmpeg-%FFMPEG_VERSION%-win32-static.zip "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-%FFMPEG_VERSION%-win32-static.zip" &
-    call 7z.exe x bin\plugins\ffmpeg-%FFMPEG_VERSION%-win32-static.zip -o"bin\plugins" &
+    call curl.exe -o bin\plugins\ffmpeg-4.1.1-win32-static.zip "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-4.1.1-win32-static.zip" &
+    call 7z.exe x bin\plugins\ffmpeg-4.1.1-win32-static.zip -o"bin\plugins" &
     echo "move ffmpeg.exe and delete ffmpeg leftovers" &
-    del bin\plugins\ffmpeg-%FFMPEG_VERSION%-win32-static.zip &
-    move /y bin\plugins\ffmpeg-%FFMPEG_VERSION%-win32-static\bin\ffmpeg.exe bin\plugins &
-    rmdir /q /s bin\plugins\ffmpeg-%FFMPEG_VERSION%-win32-static &
+    del bin\plugins\ffmpeg-4.1.1-win32-static.zip &
+    move /y bin\plugins\ffmpeg-4.1.1-win32-static\bin\ffmpeg.exe bin\plugins &
+    rmdir /q /s bin\plugins\ffmpeg-4.1.1-win32-static &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
     echo "zipping" &
@@ -87,12 +86,6 @@ after_build:
     echo "deploying to google drive" &
     cd %APPVEYOR_BUILD_FOLDER%\util &
     call %PYTHON%\\python.exe nightly-build-upload.py "%WIN32_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
-    echo "32 Bit deployed" )
-    if %APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME%=="pencil2d/pencil" (
-    echo "deploying to google drive" &
-    cd %APPVEYOR_BUILD_FOLDER%\util &
-    move /y "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-pr-%APPVEYOR_PULL_REQUEST_NUMBER%.zip" &
-    call %PYTHON%\\python.exe pr-build-upload.py "%WIN32_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-pr-%APPVEYOR_PULL_REQUEST_NUMBER%.zip" &
     echo "32 Bit deployed" ) )
 
   - if %PLATFORM_%==amd64 (
@@ -101,12 +94,12 @@ after_build:
     dir /s &
     md bin\plugins\ &
     echo "Copying ffmpeg plugin" &
-    call curl.exe -o bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static.zip "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-%FFMPEG_VERSION%-win64-static.zip" &
-    call 7z.exe x bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static.zip -o"bin\plugins" &
+    call curl.exe -o bin\plugins\ffmpeg-4.1.1-win64-static.zip "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.1.1-win64-static.zip" &
+    call 7z.exe x bin\plugins\ffmpeg-4.1.1-win64-static.zip -o"bin\plugins" &
     echo "move ffmpeg.exe and delete ffmpeg leftovers" &
-    del bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static.zip &
-    move /y bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static\bin\ffmpeg.exe bin\plugins &
-    rmdir /q /s bin\plugins\ffmpeg-%FFMPEG_VERSION%-win64-static &
+    del bin\plugins\ffmpeg-4.1.1-win64-static.zip &
+    move /y bin\plugins\ffmpeg-4.1.1-win64-static\bin\ffmpeg.exe bin\plugins &
+    rmdir /q /s bin\plugins\ffmpeg-4.1.1-win64-static &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
     echo "zipping" &
@@ -119,10 +112,4 @@ after_build:
     echo "deploying to google drive" &
     cd %APPVEYOR_BUILD_FOLDER%\util &
     call %PYTHON%\\python.exe nightly-build-upload.py "%WIN64_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
-    echo "64 Bit Deployed" )
-    if %APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME%=="pencil2d/pencil" (
-    echo "deploying to google drive" &
-    cd %APPVEYOR_BUILD_FOLDER%\util &
-    move /y "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-pr-%APPVEYOR_PULL_REQUEST_NUMBER%.zip" &
-    call %PYTHON%\\python.exe pr-build-upload.py "%WIN64_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-pr-%APPVEYOR_PULL_REQUEST_NUMBER%.zip" &
     echo "64 Bit Deployed" ) )

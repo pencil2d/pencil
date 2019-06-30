@@ -645,7 +645,7 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
         else
         {
             // forces drawing when points are coincident (mousedown)
-            painter.drawPoint(path.elementAt(0).x, path.elementAt(0).y);
+            painter.drawPoint(static_cast<int>(path.elementAt(0).x), static_cast<int>(path.elementAt(0).y));
         }
         painter.end();
     }
@@ -745,12 +745,12 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
     // Get Eulcidian distance between colors
     // Not an accurate representation of human perception,
     // but it's the best any image editing program ever does
-    int diffRed = qPow(qRed(oldColor) - qRed(newColor), 2);
-    int diffGreen = qPow(qGreen(oldColor) - qGreen(newColor), 2);
-    int diffBlue = qPow(qBlue(oldColor) - qBlue(newColor), 2);
+    int diffRed = static_cast<int>(qPow(qRed(oldColor) - qRed(newColor), 2));
+    int diffGreen = static_cast<int>(qPow(qGreen(oldColor) - qGreen(newColor), 2));
+    int diffBlue = static_cast<int>(qPow(qBlue(oldColor) - qBlue(newColor), 2));
     // This may not be the best way to handle alpha since the other channels become less relevant as
     // the alpha is reduces (ex. QColor(0,0,0,0) is the same as QColor(255,255,255,0))
-    int diffAlpha = qPow(qAlpha(oldColor) - qAlpha(newColor), 2);
+    int diffAlpha = static_cast<int>(qPow(qAlpha(oldColor) - qAlpha(newColor), 2));
 
     bool isSimilar = (diffRed + diffGreen + diffBlue + diffAlpha) <= tolerance;
 
@@ -778,7 +778,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
     }
 
     // Square tolerance for use with compareColor
-    tolerance = qPow(tolerance, 2);
+    tolerance = static_cast<int>(qPow(tolerance, 2));
 
     QRgb oldColor = targetImage->pixel(point);
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));

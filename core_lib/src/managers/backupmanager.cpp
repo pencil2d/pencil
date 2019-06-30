@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "backupmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 
 #include "scribblearea.h"
 #include "backupelement.h"
@@ -148,6 +149,9 @@ void BackupManager::bitmap(QString description)
                              mFrameIndex,
                              mSelectionRect,
                              mTempSelectionRect,
+                             mTransformedSelectionRect,
+                             mSelectionRotationAngle,
+                             mIsSelected,
                              mSelectionTransform,
                              editor(), element);
     }
@@ -172,6 +176,9 @@ void BackupManager::selection()
     SelectionElement* element = new SelectionElement(SelectionType::SELECTION,
                                                      mTempSelectionRect,
                                                      mSelectionRect,
+                                                     mTransformedSelectionRect,
+                                                     mSelectionRotationAngle,
+                                                     mIsSelected,
                                                      editor());
     mUndoStack->push(element);
     emit updateBackup();
@@ -182,12 +189,18 @@ void BackupManager::deselect()
     SelectionElement* element = new SelectionElement(SelectionType::DESELECT,
                                                      mTempSelectionRect,
                                                      mSelectionRect,
+                                                     mTransformedSelectionRect,
+                                                     mSelectionRotationAngle,
+                                                     mIsSelected,
                                                      editor());
    new TransformElement(mKeyframe,
                          mLayerId,
                          mFrameIndex,
                          mSelectionRect,
                          mTempSelectionRect,
+                         mTransformedSelectionRect,
+                         mSelectionRotationAngle,
+                         mIsSelected,
                          mSelectionTransform,
                          editor(), element);
     mUndoStack->push(element);
@@ -200,12 +213,18 @@ void BackupManager::clearSelection()
     SelectionElement* element = new SelectionElement(SelectionType::DESELECT,
                                                      mTempSelectionRect,
                                                      mSelectionRect,
+                                                     mTransformedSelectionRect,
+                                                     mSelectionRotationAngle,
+                                                     mIsSelected,
                                                      editor());
     new TransformElement(mKeyframe,
                           mLayerId,
                           mFrameIndex,
                           mSelectionRect,
                           mTempSelectionRect,
+                          mTransformedSelectionRect,
+                          mSelectionRotationAngle,
+                          mIsSelected,
                           mSelectionTransform,
                           editor(), element);
 
@@ -230,6 +249,9 @@ void BackupManager::transform()
                                                      mFrameIndex,
                                                      mSelectionRect,
                                                      mTempSelectionRect,
+                                                     mTransformedSelectionRect,
+                                                     mSelectionRotationAngle,
+                                                     mIsSelected,
                                                      mSelectionTransform,
                                                      editor());
     mUndoStack->push(element);
@@ -496,15 +518,19 @@ void BackupManager::saveStates()
     mFrameIndex = editor()->currentFrame();
     mFrameIndex = BackupManager::getActiveFrameIndex(mLayer, mFrameIndex, emptyFrameSettingVal);
 
-    mIsSelected = editor()->getScribbleArea()->isSomethingSelected();
-    mSelectionRect = editor()->getScribbleArea()->mySelection;
-    mTempSelectionRect = editor()->getScribbleArea()->myTempTransformedSelection;
+    auto selectMan = editor()->select();
+    mIsSelected = selectMan->somethingSelected();
+    mSelectionRect = selectMan->mySelectionRect();
+    mTempSelectionRect = selectMan->myTempTransformedSelectionRect();
+    mTransformedSelectionRect = selectMan->myTransformedSelectionRect();
+    mSelectionRotationAngle = selectMan->myRotation();
+    mMoveOffset = selectMan->getTransformOffset();
+    mSelectionTransform = selectMan->selectionTransform();
+    mMoveMode = selectMan->getMoveMode();
+
     mLayerName = mLayer->name();
     mLayerIndex = editor()->currentLayerIndex();
     mLayerType = mLayer->type();
-    mMoveOffset = editor()->getScribbleArea()->getTransformOffset();
-    mSelectionTransform = editor()->getScribbleArea()->getSelectionTransformation();
-    mMoveMode = editor()->getScribbleArea()->getMoveMode();
 
     ViewManager* viewMgr = editor()->view();
     mTranslation = viewMgr->translation();

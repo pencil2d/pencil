@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "backupmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 
 #include "editor.h"
 #include "scribblearea.h"
@@ -287,9 +288,9 @@ void PenTool::paintVectorStroke(Layer* layer)
     VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
     vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
 
-    if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected())
+    if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected())
     {
-        mScribbleArea->deselectAll();
+        mEditor->deselectAll();
     }
 
     vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);

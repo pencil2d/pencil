@@ -33,11 +33,14 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "preferencemanager.h"
 #include "backupmanager.h"
+#include "selectionmanager.h"
 #include "util.h"
 #include "app_util.h"
 
 #include "layercamera.h"
 #include "layersound.h"
+#include "layerbitmap.h"
+#include "layervector.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
@@ -422,15 +425,15 @@ void ActionCommands::flipSelectionY()
     mEditor->flipSelection(flipVertical);
 }
 
-void ActionCommands::deselectAll()
-{
-    mEditor->backups()->saveStates();
-    mEditor->deselectAllSelections();
-}
-
 void ActionCommands::selectAll()
 {
     mEditor->selectAll();
+}
+
+void ActionCommands::deselectAll()
+{
+    mEditor->backups()->saveStates();
+    mEditor->deselectAll();
 }
 
 void ActionCommands::ZoomIn()
@@ -578,6 +581,11 @@ void ActionCommands::duplicateKey()
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) return;
+    if (!layer->visible())
+    {
+        mEditor->showLayerNotVisibleWarning();
+        return;
+    }
 
     KeyFrame* key = layer->getKeyFrameAt(mEditor->currentFrame());
     if (key == nullptr) return;

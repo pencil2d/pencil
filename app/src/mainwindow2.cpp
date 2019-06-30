@@ -51,6 +51,7 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 
 #include "layercamera.h"
 #include "actioncommands.h"
@@ -1301,8 +1302,8 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
     connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
-    connect(editor, &Editor::deselectAll, scribbleArea, &ScribbleArea::deselectAll);
-    connect(editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll);
+//    connect(editor, &Editor::deselectAll, scribbleArea, &ScribbleArea::deselectAll);
+//    connect(editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll);
 
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
     //connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );

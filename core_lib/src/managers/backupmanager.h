@@ -76,8 +76,6 @@ private:
     int mFrameIndex = 0;
     int mLayerIndex = 0;
 
-    bool mIsSelected = false;
-
     float mRotation = 0;
     float mScale = 0;
 
@@ -91,8 +89,13 @@ private:
     Camera* mCamera = nullptr;
     KeyFrame* mKeyframe = nullptr;
 
+    bool mIsSelected = false;
+
     QRectF mSelectionRect = QRectF();
     QRectF mTempSelectionRect = QRectF();
+    QRectF mTransformedSelectionRect = QRectF();
+
+    qreal mSelectionRotationAngle = 0.0;
 
     QPointF mTranslation = QPointF(0,0);
     QPointF mMoveOffset = QPointF(0,0);
