@@ -110,7 +110,6 @@ private:
 
     int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
     qreal rotatedAngleFromPos(const QPointF& currentPoint, const QPointF& anchorPoint, const qreal& currentRotatedOffset) const;
-    qreal radToDeg(const qreal& radians) const;
 
     QRectF mSelection;
     QRectF mTempTransformedSelection;

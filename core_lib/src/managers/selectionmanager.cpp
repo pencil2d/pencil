@@ -6,6 +6,7 @@
 #include "bitmapimage.h"
 
 #include "layervector.h"
+#include "mathutils.h"
 
 //#ifdef QT_DEBUG
 #include <QDebug>
@@ -264,12 +265,7 @@ int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const 
 qreal SelectionManager::rotatedAngleFromPos(const QPointF& currentPoint, const QPointF& anchorPoint, const qreal& currentRotatedOffset) const
 {
     qreal deltaPoint = atan2( currentPoint.y() - anchorPoint.y(), currentPoint.x() - anchorPoint.x());
-    return radToDeg(deltaPoint) - currentRotatedOffset;
-}
-
-qreal SelectionManager::radToDeg(const qreal& radians) const
-{
-    return radians * 180.0 / M_PI;
+    return MathUtils::radToDeg(deltaPoint) - currentRotatedOffset;
 }
 
 void SelectionManager::setSelection(QRectF rect)
