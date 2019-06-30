@@ -32,32 +32,32 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    void keyAdded(int keySpacing, bool keyExisted, QString description);
+    void keyAdded(const int& keySpacing, const bool& keyExisted, const QString& description);
     void keyAdded();
     void keyRemoved();
-    void bitmap(QString description);
-    void vector(QString description);
+    void bitmap(const QString& description);
+    void vector(const QString& description);
     void cameraMotion();
     void layerAdded();
-    void layerDeleted(std::map<int, KeyFrame*, std::greater<int>> oldKeys);
+    void layerDeleted(const std::map<int, KeyFrame*, std::greater<int>>& oldKeys);
     void layerRenamed();
-    void layerMoved(int backupNewLayerIndex);
+    void layerMoved(const int& backupNewLayerIndex);
 
-    void importBitmap(std::map<int, KeyFrame*, std::greater<int>> canvasKeys,
-                      std::map<int, KeyFrame*, std::less<int> > importedKeys);
+    void importBitmap(const std::map<int, KeyFrame*, std::greater<int>>& canvasKeys,
+                      const std::map<int, KeyFrame*, std::less<int>>& importedKeys);
     void selection();
     void deselect();
     void clearSelection();
     void transform();
-    void cameraProperties(QRect backupViewRect);
-    void frameDragged(int backupFrameOffset);
-    void flipView(bool backupIsFlipped, DIRECTION backupFlipDirection);
-    void toggleSetting(bool backupToggleState, SETTING backupType);
+    void cameraProperties(const QRect& backupViewRect);
+    void frameDragged(const int& backupFrameOffset);
+    void flipView(const bool& backupIsFlipped, const DIRECTION& backupFlipDirection);
+    void toggleSetting(bool backupToggleState, const SETTING& backupType);
     void saveStates();
 
-    void restoreKey(int layerId, int frame, KeyFrame* keyFrame);
+    void restoreKey(const int& layerId, const int& frame, KeyFrame* keyFrame);
 
-    static int getActiveFrameIndex(Layer* layer, int frameIndex, bool usingPreviousFrameAction);
+    static int getActiveFrameIndex(Layer* layer, const int& frameIndex, const bool& usingPreviousFrameAction);
 
     const BackupElement* currentBackup();
 
@@ -67,8 +67,8 @@ Q_SIGNALS:
     void updateBackup();
 
 private:
-    void restoreKey(BackupElement* element);
-    void restoreLayerKeys(BackupElement* element);
+    void restoreKey(const BackupElement* element);
+    void restoreLayerKeys(const BackupElement* element);
 
     QUndoStack* mUndoStack;
 

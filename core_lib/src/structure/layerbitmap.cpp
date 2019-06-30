@@ -67,7 +67,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
     loadKey(pKeyFrame);
 }
 
-void LayerBitmap::putBitmapIntoFrame(KeyFrame* keyframe, int frameIndex)
+void LayerBitmap::putBitmapIntoFrame(KeyFrame* keyframe, const int& frameIndex)
 {
     BitmapImage* currentBitmap = getBitmapImageAtFrame(frameIndex);
 

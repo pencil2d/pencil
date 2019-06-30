@@ -51,7 +51,7 @@ public:
 
     Editor* editor() { return mEditor; }
 
-    virtual int type() { return UNDEFINED; }
+    virtual int type() const { return UNDEFINED; }
     virtual void undo() { Q_ASSUME(true); } // should never end here
     virtual void redo() { Q_ASSUME(true); } // should never end here
 private:
@@ -155,7 +155,7 @@ public:
 
     bool isFirstRedo = true;
 
-    int type() override { return ADD_KEY_MODIF; }
+    int type() const override { return ADD_KEY_MODIF; }
     void undo() override;
     void redo() override;
     int id() const override { return Id; }
@@ -184,7 +184,7 @@ public:
 
     bool isFirstRedo = true;
 
-    int type() override { return REMOVE_KEY_MODIF; }
+    int type() const override { return REMOVE_KEY_MODIF; }
     void undo() override;
     void redo() override;
     int id() const override { return Id; }

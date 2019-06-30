@@ -77,9 +77,9 @@ const BackupElement* BackupManager::currentBackup()
     }
 }
 
-void BackupManager::keyAdded(int keySpacing, bool keyExisted, QString description)
+void BackupManager::keyAdded(const int& keySpacing, const bool& keyExisted, const QString& description)
 {
-    if (mLayer == NULL) { return; }
+    if (mLayer == nullptr) { return; }
 
     AddKeyFrameElement* element = new AddKeyFrameElement(mFrameIndex,
                                                          mLayerId,
@@ -94,7 +94,7 @@ void BackupManager::keyAdded(int keySpacing, bool keyExisted, QString descriptio
 
 void BackupManager::keyAdded()
 {
-    if (mLayer == NULL) { return; }
+    if (mLayer == nullptr) { return; }
 
     AddKeyFrameElement* element = new AddKeyFrameElement(mFrameIndex,
                                                          mLayerId,
@@ -106,8 +106,8 @@ void BackupManager::keyAdded()
     emit updateBackup();
 }
 
-void BackupManager::importBitmap(std::map<int, KeyFrame*, std::greater<int>> canvasKeys,
-                                 std::map<int, KeyFrame*, std::less<int>> importedKeys)
+void BackupManager::importBitmap(const std::map<int, KeyFrame*, std::greater<int>>& canvasKeys,
+                                 const std::map<int, KeyFrame*, std::less<int>>& importedKeys)
 {
     if (mLayer->type() != Layer::BITMAP) { return; }
 
@@ -132,7 +132,7 @@ void BackupManager::keyRemoved()
 
 }
 
-void BackupManager::bitmap(QString description)
+void BackupManager::bitmap(const QString& description)
 {
     if (!mBitmap) { return; }
     AddBitmapElement* element = new AddBitmapElement(mBitmap,
@@ -159,7 +159,7 @@ void BackupManager::bitmap(QString description)
     emit updateBackup();
 }
 
-void BackupManager::vector(QString description)
+void BackupManager::vector(const QString& description)
 {
     if (!mVector) { return; }
     AddVectorElement* element = new AddVectorElement(mVector,
@@ -267,20 +267,22 @@ void BackupManager::transform()
  * @param usingPreviousFrameAction <- This is whether DRAW_ON_EMPTY_FRAME_ACTION is active
  * @return frameindex
  */
-int BackupManager::getActiveFrameIndex(Layer* layer, int frameIndex, bool usingPreviousFrameAction) {
+int BackupManager::getActiveFrameIndex(Layer* layer, const int& frameIndex, const bool& usingPreviousFrameAction)
+{
+    int activeFrameIndex = frameIndex;
     if (!layer->keyExists(frameIndex)) {
         if (usingPreviousFrameAction)
         {
-            frameIndex = layer->getPreviousKeyFramePosition(frameIndex);
+            activeFrameIndex = layer->getPreviousKeyFramePosition(frameIndex);
         }
     }
-    return frameIndex;
+    return activeFrameIndex;
 }
 
-void BackupManager::restoreLayerKeys(BackupElement* backupElement)
+void BackupManager::restoreLayerKeys(const BackupElement* backupElement)
 {
 
-    DeleteLayerElement* lastBackupLayerElem = (DeleteLayerElement*)backupElement;
+    const DeleteLayerElement* lastBackupLayerElem = static_cast<const DeleteLayerElement*>(backupElement);
     LayerManager* layerMgr = editor()->layers();
     Layer* layer = nullptr;
 
@@ -334,7 +336,7 @@ void BackupManager::restoreLayerKeys(BackupElement* backupElement)
     editor()->scrubTo(oldFrameIndex);
 }
 
-void BackupManager::restoreKey(BackupElement* backupElement)
+void BackupManager::restoreKey(const BackupElement* backupElement)
 {
     Layer* layer = nullptr;
     KeyFrame* keyFrame = nullptr;
@@ -344,7 +346,7 @@ void BackupManager::restoreKey(BackupElement* backupElement)
 
     if (backupElement->type() == ADD_KEY_MODIF)
     {
-        AddKeyFrameElement* lastBackupElement = (AddKeyFrameElement*)backupElement;
+        const AddKeyFrameElement* lastBackupElement = static_cast<const AddKeyFrameElement*>(backupElement);
         layerIndex = lastBackupElement->newLayerIndex;
         frame = lastBackupElement->newFrameIndex;
         layerId = lastBackupElement->newLayerId;
@@ -356,7 +358,7 @@ void BackupManager::restoreKey(BackupElement* backupElement)
     }
     else // REMOVE_KEY_MODIF
     {
-        RemoveKeyFrameElement* lastBackupElement = (RemoveKeyFrameElement*)backupElement;
+        const RemoveKeyFrameElement* lastBackupElement = static_cast<const RemoveKeyFrameElement*>(backupElement);
         layerIndex = lastBackupElement->oldLayerIndex;
         frame = lastBackupElement->oldFrameIndex;
         layerId = lastBackupElement->oldLayerId;
@@ -367,7 +369,7 @@ void BackupManager::restoreKey(BackupElement* backupElement)
     }
 }
 
-void BackupManager::restoreKey(int layerId, int frame, KeyFrame *keyFrame)
+void BackupManager::restoreKey(const int& layerId, const int& frame, KeyFrame *keyFrame)
 {
     Layer* layer = editor()->layers()->findLayerById(layerId);
 
@@ -424,7 +426,7 @@ void BackupManager::layerAdded()
     emit updateBackup();
 }
 
-void BackupManager::layerDeleted(std::map<int, KeyFrame*, std::greater<int> > oldKeys)
+void BackupManager::layerDeleted(const std::map<int, KeyFrame*, std::greater<int> >& oldKeys)
 {
 
     DeleteLayerElement* element = new DeleteLayerElement(mLayerName,
@@ -448,7 +450,7 @@ void BackupManager::layerRenamed()
     emit updateBackup();
 }
 
-void BackupManager::cameraProperties(QRect backupViewRect)
+void BackupManager::cameraProperties(const QRect& backupViewRect)
 {
     CameraPropertiesElement* element = new CameraPropertiesElement(mLayerName,
                                                                    backupViewRect,
@@ -458,7 +460,7 @@ void BackupManager::cameraProperties(QRect backupViewRect)
     emit updateBackup();
 }
 
-void BackupManager::frameDragged(int backupFrameOffset)
+void BackupManager::frameDragged(const int& backupFrameOffset)
 {
     DragFrameElement* element = new DragFrameElement(mLayerId,
                                                      backupFrameOffset,
@@ -468,7 +470,7 @@ void BackupManager::frameDragged(int backupFrameOffset)
     emit updateBackup();
 }
 
-void BackupManager::flipView(bool backupIsFlipped, DIRECTION backupFlipDirection)
+void BackupManager::flipView(const bool& backupIsFlipped, const DIRECTION& backupFlipDirection)
 {
     FlipViewElement* element = new FlipViewElement(backupIsFlipped,
                                                    backupFlipDirection,
@@ -478,7 +480,7 @@ void BackupManager::flipView(bool backupIsFlipped, DIRECTION backupFlipDirection
     emit updateBackup();
 }
 
-void BackupManager::toggleSetting(bool /*backupToggleState*/, SETTING /*backupType*/)
+void BackupManager::toggleSetting(bool /*backupToggleState*/, const SETTING& /*backupType*/)
 {
 //    ToggleSettingElement* element = new ToggleSettingElement(backupToggleState,
 //                                                             backupType,
@@ -488,7 +490,7 @@ void BackupManager::toggleSetting(bool /*backupToggleState*/, SETTING /*backupTy
 //    emit updateBackup();
 }
 
-void BackupManager::layerMoved(int backupNewLayerIndex)
+void BackupManager::layerMoved(const int& backupNewLayerIndex)
 {
     MoveLayerElement* element = new MoveLayerElement(mLayerIndex,
                                                      backupNewLayerIndex,
