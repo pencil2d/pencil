@@ -149,7 +149,7 @@ Status MovieExporter::run(const Object* obj,
     progressMessage(QObject::tr("Done"));
     
     clock_t t2 = clock() - t1;
-    qDebug("MOVIE = %.1f sec", static_cast<float>(t2) / CLOCKS_PER_SEC);
+    qDebug("MOVIE = %.1f sec", static_cast<double>(t2 / CLOCKS_PER_SEC));
 
     return Status::OK;
 }
@@ -282,7 +282,7 @@ Status MovieExporter::generateMovie(
     QString strCameraName = mDesc.strCameraName;
     bool loop = mDesc.loop;
 
-    auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
+    auto cameraLayer = static_cast<LayerCamera*>(obj->findLayerByName(strCameraName, Layer::CAMERA));
     if (cameraLayer == nullptr)
     {
         cameraLayer = obj->getLayersByType< LayerCamera >().front();
@@ -314,7 +314,7 @@ Status MovieExporter::generateMovie(
      * frameWindow variable which is designed to take up a maximum of
      * about 1GB of memory
      */
-    int frameWindow = (int) (1e9 / (camSize.width() * camSize.height() * 4.0));
+    int frameWindow = static_cast<int>(1e9 / (camSize.width() * camSize.height() * 4.0));
 
     // Build FFmpeg command
 
@@ -430,7 +430,7 @@ Status MovieExporter::generateGif(
     bool loop = mDesc.loop;
     int bytesWritten;
 
-    auto cameraLayer = (LayerCamera*)obj->findLayerByName(strCameraName, Layer::CAMERA);
+    auto cameraLayer = static_cast<LayerCamera*>(obj->findLayerByName(strCameraName, Layer::CAMERA));
     if (cameraLayer == nullptr)
     {
         cameraLayer = obj->getLayersByType< LayerCamera >().front();
@@ -550,7 +550,7 @@ Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> p
             {
                 QString frame = output.mid(6, output.indexOf(' '));
 
-                progress(frame.toInt() / (float)(mDesc.endFrame - mDesc.startFrame));
+                progress(frame.toInt() / static_cast<float>(mDesc.endFrame - mDesc.startFrame));
             }
         }
 
@@ -666,12 +666,12 @@ Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float
             {
                 framesGenerated++;
 
-                const float percentGenerated = framesGenerated / (float)(frameEnd - frameStart);
-                const float percentConverted = lastFrameProcessed / (float)(frameEnd - frameStart);
+                const float percentGenerated = framesGenerated / static_cast<float>(frameEnd - frameStart);
+                const float percentConverted = lastFrameProcessed / static_cast<float>(frameEnd - frameStart);
                 progress((percentGenerated + percentConverted) / 2);
             }
-            const float percentGenerated = framesGenerated / (float)(frameEnd - frameStart);
-            const float percentConverted = lastFrameProcessed / (float)(frameEnd - frameStart);
+            const float percentGenerated = framesGenerated / static_cast<float>(frameEnd - frameStart);
+            const float percentConverted = lastFrameProcessed / static_cast<float>(frameEnd - frameStart);
             progress((percentGenerated + percentConverted) / 2);
         }
 

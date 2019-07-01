@@ -33,7 +33,7 @@ class LayerManager : public BaseManager
 
 public:
     explicit LayerManager(Editor* editor);
-    ~LayerManager();
+    ~LayerManager() override;
     bool init() override;
     Status load(Object*) override;
     Status save(Object*) override;

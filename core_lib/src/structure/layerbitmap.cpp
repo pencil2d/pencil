@@ -50,6 +50,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
 {
     BitmapImage* pKeyFrame = new BitmapImage(topLeft, path);
+    pKeyFrame->enableAutoCrop(true);
     pKeyFrame->setPos(frameNumber);
     loadKey(pKeyFrame);
 }

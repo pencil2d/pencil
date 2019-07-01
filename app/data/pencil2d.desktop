@@ -13,6 +13,9 @@ Keywords=picture;drawing;vector;bitmap;cartoon;
 
 # Translations
 
+
+
+# Translations
 Name[he]=Pencil2D
 GenericName[he]=תוכנת הנפשה
 Comment[he]=צרו הנפשה מסורתית מצויירת ביד באמצעות כלי מפת ביטים וכלים וקטוריים
@@ -31,8 +34,12 @@ Comment[pt_BR]=Crie animações tradicionais feitas à mão usando gráficos de 
 Icon[pt_BR]=pencil2d
 Name[ru]=Pencil2D
 GenericName[ru]=Анимационное ПО
-Comment[ru]=Создавайте традиционную рисованную анимацию используя растровую и векторную графики.
+Comment[ru]=Создавайте традиционную рисованную анимацию, используя растровую и векторную графики.
 Icon[ru]=pencil2d
+Name[nl_NL]=Pencil2D
+GenericName[nl_NL]=Animatie software
+Comment[nl_NL]=Maak traditionele handgetekende animaties met Bitmap en Vector afbeeldingen
+Icon[nl_NL]=pencil2d
 Name[it]=Pencil2D
 Icon[it]=pencil2d
 Name[ca]=Pencil2D

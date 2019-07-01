@@ -72,7 +72,9 @@ Layer* LayerManager::getLastCameraLayer()
 
 Layer* LayerManager::currentLayer()
 {
-    return currentLayer(0);
+    Layer* layer = currentLayer(0);
+    Q_ASSERT(layer != nullptr);
+    return layer;
 }
 
 Layer* LayerManager::currentLayer(int incr)
