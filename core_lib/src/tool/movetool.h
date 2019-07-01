@@ -51,8 +51,6 @@ private:
     void updateTransformation();
     void updateSettings(const SETTING setting);
 
-    int rotationAngleIncrement();
-
     int showTransformWarning();
 
     void beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer);
@@ -71,7 +69,6 @@ private:
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;
     int mRotationIncrement = 0;
-    int mCachedRotIncrement = -1;
 };
 
 #endif
