@@ -1084,9 +1084,9 @@ Status::StatusInt Editor::pegBarAlignment(QStringList layers)
     Status::StatusInt retLeft;
     Status::StatusInt retRight;
 
-    QRectF rect = mScribbleArea->getSelection();
     LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
     BitmapImage* img = layerbitmap->getBitmapImageAtFrame(currentFrame());
+    QRectF rect = select()->mySelectionRect();
     retLeft = img->findLeft(rect, 121);
     retRight = img->findTop(rect, 121);
     if (retLeft.errorcode == Status::FAIL || retRight.errorcode == Status::FAIL)
@@ -1126,7 +1126,7 @@ Status::StatusInt Editor::pegBarAlignment(QStringList layers)
             }
         }
     }
-    mScribbleArea->deselectAll();
+    deselectAll();
 
     return retLeft;
 }

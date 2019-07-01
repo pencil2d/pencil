@@ -426,8 +426,7 @@ void MainWindow2::pegBarReg()
                                  QMessageBox::Ok);
         return;
     }
-
-    if (!ui->scribbleArea->isSomethingSelected())
+    if (!mEditor->select()->somethingSelected())
     {
         QMessageBox::information(this, nullptr,
                                  tr("Please select an area around center peg!\n"
