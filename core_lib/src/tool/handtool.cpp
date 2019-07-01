@@ -110,10 +110,6 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
 
         qreal angleOffset = static_cast<qreal>(atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x()));
         angleOffset = MathUtils::radToDeg(angleOffset);
-        if (keyMod & Qt::ShiftModifier)
-        {
-            angleOffset = qRound(angleOffset / 15) * 15;
-        }
         float newAngle = viewMgr->rotation() + static_cast<float>(angleOffset);
         viewMgr->rotate(newAngle);
     }

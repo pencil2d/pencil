@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
+#include "mathutils.h"
 #include "vectorimage.h"
 
 
@@ -213,7 +214,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         QPointF curPoint = getCurrentPoint();
         QPointF anchorPoint = selectionRect.center();
-        mRotatedAngle = ( atan2( curPoint.y() - anchorPoint.y(), curPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI - selectMan->myRotation();
+        mRotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, curPoint)) - selectMan->myRotation();
     }
 }
 

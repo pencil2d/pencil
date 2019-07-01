@@ -244,7 +244,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     {
         mTempTransformedSelection = transformedSelection;
         QPointF anchorPoint = transformedSelection.center();
-        qreal rotatedAngle = rotatedAngleFromPos(currentPoint, anchorPoint, rotationOffset);
+        qreal rotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
         if (rotationIncrement > 0) {
             mRotatedAngle = constrainRotationToAngle(rotatedAngle, rotationIncrement);
         } else {
@@ -260,12 +260,6 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
 int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
-}
-
-qreal SelectionManager::rotatedAngleFromPos(const QPointF& currentPoint, const QPointF& anchorPoint, const qreal& currentRotatedOffset) const
-{
-    qreal deltaPoint = atan2( currentPoint.y() - anchorPoint.y(), currentPoint.x() - anchorPoint.x());
-    return MathUtils::radToDeg(deltaPoint) - currentRotatedOffset;
 }
 
 void SelectionManager::setSelection(QRectF rect)

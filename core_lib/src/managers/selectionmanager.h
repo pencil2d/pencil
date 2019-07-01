@@ -109,7 +109,6 @@ signals:
 private:
 
     int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
-    qreal rotatedAngleFromPos(const QPointF& currentPoint, const QPointF& anchorPoint, const qreal& currentRotatedOffset) const;
 
     QRectF mSelection;
     QRectF mTempTransformedSelection;
