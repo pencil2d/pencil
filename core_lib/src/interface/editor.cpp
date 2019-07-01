@@ -46,6 +46,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "preferencemanager.h"
 #include "soundmanager.h"
+#include "selectionmanager.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -83,6 +84,7 @@ bool Editor::init()
     mViewManager = new ViewManager(this);
     mPreferenceManager = new PreferenceManager(this);
     mSoundManager = new SoundManager(this);
+    mSelectionManager = new SelectionManager(this);
 
     mAllManagers =
     {
@@ -92,7 +94,8 @@ bool Editor::init()
         mPlaybackManager,
         mViewManager,
         mPreferenceManager,
-        mSoundManager
+        mSoundManager,
+        mSelectionManager
     };
 
     for (BaseManager* pManager : mAllManagers)
@@ -247,10 +250,11 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
                 element->layer = backupLayer;
                 element->frame = backupFrame;
                 element->undoText = undoText;
-                element->somethingSelected = getScribbleArea()->isSomethingSelected();
-                element->mySelection = getScribbleArea()->mySelection;
-                element->myTransformedSelection = getScribbleArea()->myTransformedSelection;
-                element->myTempTransformedSelection = getScribbleArea()->myTempTransformedSelection;
+                element->somethingSelected = select()->somethingSelected();
+                element->mySelection = select()->mySelectionRect();
+                element->myTransformedSelection = select()->myTransformedSelectionRect();
+                element->myTempTransformedSelection = select()->myTempTransformedSelectionRect();
+                element->rotationAngle = select()->myRotation();
                 mBackupList.append(element);
                 mBackupIndex++;
             }
@@ -264,10 +268,11 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
                 element->layer = backupLayer;
                 element->frame = backupFrame;
                 element->undoText = undoText;
-                element->somethingSelected = getScribbleArea()->isSomethingSelected();
-                element->mySelection = getScribbleArea()->mySelection;
-                element->myTransformedSelection = getScribbleArea()->myTransformedSelection;
-                element->myTempTransformedSelection = getScribbleArea()->myTempTransformedSelection;
+                element->somethingSelected = select()->somethingSelected();
+                element->mySelection = select()->mySelectionRect();
+                element->myTransformedSelection = select()->myTransformedSelectionRect();
+                element->myTempTransformedSelection = select()->myTempTransformedSelectionRect();
+                element->rotationAngle = select()->myRotation();
                 mBackupList.append(element);
                 mBackupIndex++;
             }
@@ -357,7 +362,12 @@ void Editor::restoreKey()
 void BackupBitmapElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
-    editor->getScribbleArea()->setSelection(mySelection);
+    auto selectMan = editor->select();
+    selectMan->setSelection(mySelection);
+    selectMan->setTransformedSelectionRect(myTransformedSelection);
+    selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
+    selectMan->setRotation(rotationAngle);
+    selectMan->setSomethingSelected(somethingSelected);
 
     editor->updateFrame(this->frame);
     editor->scrubTo(this->frame);
@@ -382,7 +392,12 @@ void BackupBitmapElement::restore(Editor* editor)
 void BackupVectorElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
-    editor->getScribbleArea()->setSelection(mySelection);
+    auto selectMan = editor->select();
+    selectMan->setSelection(mySelection);
+    selectMan->setTransformedSelectionRect(myTransformedSelection);
+    selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
+    selectMan->setRotation(rotationAngle);
+    selectMan->setSomethingSelected(somethingSelected);
 
     editor->updateFrameAndVector(this->frame);
     editor->scrubTo(this->frame);
@@ -446,7 +461,16 @@ void Editor::undo()
         mBackupList[mBackupIndex]->restore(this);
         mBackupIndex--;
         mScribbleArea->cancelTransformedSelection();
-        mScribbleArea->calculateSelectionRect(); // really ugly -- to improve
+
+        Layer* layer = layers()->currentLayer();
+        if (layer == nullptr) { return; }
+
+        select()->resetSelectionTransform();
+        if (layer->type() == Layer::VECTOR) {
+            VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(mFrame);
+            vectorImage->calculateSelectionRect();
+            select()->setSelection(vectorImage->getSelectionRect());
+        }
         emit updateBackup();
     }
 }
@@ -495,7 +519,7 @@ void Editor::cut()
 {
     copy();
     mScribbleArea->deleteSelection();
-    mScribbleArea->deselectAll();
+    deselectAll();
 }
 
 void Editor::copy()
@@ -509,9 +533,9 @@ void Editor::copy()
     if (layer->type() == Layer::BITMAP)
     {
         LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
-        if (mScribbleArea->isSomethingSelected())
+        if (select()->somethingSelected())
         {
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(mScribbleArea->getSelection().toRect());  // copy part of the image
+            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(select()->mySelectionRect().toRect());  // copy part of the image
         }
         else
         {
@@ -539,9 +563,9 @@ void Editor::paste()
 
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
             qDebug() << "to be pasted --->" << tobePasted.image()->size();
-            if (mScribbleArea->isSomethingSelected())
+            if (select()->somethingSelected())
             {
-                QRectF selection = mScribbleArea->getSelection();
+                QRectF selection = select()->mySelectionRect();
                 if (g_clipboardBitmapImage.width() <= selection.width() && g_clipboardBitmapImage.height() <= selection.height())
                 {
                     tobePasted.moveTopLeft(selection.topLeft());
@@ -557,10 +581,10 @@ void Editor::paste()
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
             backup(tr("Paste"));
-            mScribbleArea->deselectAll();
+            deselectAll();
             VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
-            mScribbleArea->setSelection(vectorImage->getSelectionRect());
+            select()->setSelection(vectorImage->getSelectionRect());
         }
     }
     mScribbleArea->updateCurrentFrame();
@@ -852,6 +876,46 @@ bool Editor::importGIF(QString filePath, int numOfImages)
     return false;
 }
 
+qreal Editor::viewScaleInversed()
+{
+    return view()->getViewInverse().m11();
+}
+
+void Editor::selectAll()
+{
+    Layer* layer = layers()->currentLayer();
+
+    QRectF rect;
+    if (layer->type() == Layer::BITMAP)
+    {
+        // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
+        // as the drawing area is not limited
+        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mFrame);
+        rect = bitmapImage->bounds();
+    }
+    else if (layer->type() == Layer::VECTOR)
+    {
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        vectorImage->selectAll();
+        rect = vectorImage->getSelectionRect();
+    }
+    select()->setSelection(rect);
+    emit updateCurrentFrame();
+}
+
+void Editor::deselectAll()
+{
+    Layer* layer = layers()->currentLayer();
+    if (layer == nullptr) { return; }
+
+    if (layer->type() == Layer::VECTOR)
+    {
+        static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame, 0)->deselectAll();
+    }
+
+    select()->resetSelectionProperties();
+}
+
 void Editor::updateFrame(int frameNumber)
 {
     mScribbleArea->updateFrame(frameNumber);
@@ -924,6 +988,12 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         return nullptr;
     }
 
+    if (!layer->visible())
+    {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return nullptr;
+    }
+
     while (layer->keyExists(frameIndex))
     {
         frameIndex += 1;
@@ -940,6 +1010,14 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
 void Editor::removeKey()
 {
     Layer* layer = layers()->currentLayer();
+    Q_ASSERT(layer != nullptr);
+
+    if (!layer->visible())
+    {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return;
+    }
+
     if (!layer->keyExistsWhichCovers(currentFrame()))
     {
         return;
@@ -947,7 +1025,7 @@ void Editor::removeKey()
 
     backup(tr("Remove frame"));
 
-    mScribbleArea->deselectAll();
+    deselectAll();
     layer->removeKeyFrame(currentFrame());
 
     scrubBackward();
@@ -979,6 +1057,11 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     mScribbleArea->updateAllFrames();
 
     emit updateTimeLine();
+}
+
+void Editor::showLayerNotVisibleWarning()
+{
+    return mScribbleArea->showLayerNotVisibleWarning();
 }
 
 void Editor::swapLayers(int i, int j)

@@ -37,6 +37,7 @@ class LayerManager;
 class PlaybackManager;
 class ViewManager;
 class PreferenceManager;
+class SelectionManager;
 class SoundManager;
 class ScribbleArea;
 class TimeLine;
@@ -57,6 +58,7 @@ class Editor : public QObject
         Q_PROPERTY(ViewManager*     view     READ view)
         Q_PROPERTY(PreferenceManager* preference READ preference)
         Q_PROPERTY(SoundManager*    sound    READ sound)
+        Q_PROPERTY(SelectionManager* select READ select)
 
 public:
     explicit Editor(QObject* parent = nullptr);
@@ -74,6 +76,7 @@ public:
     ViewManager*       view() const { return mViewManager; }
     PreferenceManager* preference() const { return mPreferenceManager; }
     SoundManager*      sound() const { return mSoundManager; }
+    SelectionManager*  select() const { return mSelectionManager; }
 
     Object* object() const { return mObject.get(); }
     Status setObject(Object* object);
@@ -94,6 +97,10 @@ public:
     int  allLayers();
     bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
     bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
+
+    qreal viewScaleInversed();
+    void deselectAll();
+    void selectAll();
 
     QString workingDir() const;
 
@@ -138,6 +145,7 @@ public: //slots
     void removeKey();
 
     void switchVisibilityOfLayer(int layerNumber);
+    void showLayerNotVisibleWarning();
     void swapLayers(int i, int j);
     Status::StatusInt pegBarAlignment(QStringList layers);
 
@@ -184,6 +192,7 @@ private:
     ViewManager*       mViewManager = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
     SoundManager*      mSoundManager = nullptr;
+    SelectionManager* mSelectionManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 

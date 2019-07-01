@@ -32,7 +32,7 @@ class RecentFileMenu : public QMenu
     Q_OBJECT
 
 public:
-    explicit RecentFileMenu(QString title = tr("Open Recent"), QWidget* parent = 0);
+    explicit RecentFileMenu(QString title = tr("Open Recent"), QWidget* parent = nullptr);
     ~RecentFileMenu();
 
     static const int MAX_RECENT_FILES = 10;

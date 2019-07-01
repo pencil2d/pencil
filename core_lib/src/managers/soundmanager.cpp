@@ -173,7 +173,7 @@ void SoundManager::onDurationChanged(SoundPlayer* player, int64_t duration)
     double fps = static_cast<double>(editor()->fps());
 
     double frameLength = duration * fps / 1000.0;
-    clip->setLength(frameLength);
+    clip->setLength(static_cast<int>(frameLength));
     clip->setDuration(duration);
 
     emit soundClipDurationChanged();

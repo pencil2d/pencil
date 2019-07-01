@@ -299,13 +299,13 @@ void BaseTool::stopAdjusting()
     mEditor->getScribbleArea()->updateCanvasCursor();
 }
 
-void BaseTool::adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod) //offsetx x-lastx ...
+void BaseTool::adjustCursor(Qt::KeyboardModifiers keyMod)
 {
     ToolPropertyType propertyType;
     propertyType = (keyMod & Qt::ControlModifier) ? FEATHER : WIDTH;
 
     qreal inc = qPow(msOriginalPropertyValue * 100, 0.5);
-    qreal newValue = inc + argOffsetX;
+    qreal newValue = inc + getCurrentPoint().x();
     int max = (propertyType == FEATHER) ? 200 : 200;
     int min = (propertyType == FEATHER) ? 2 : 1;
 

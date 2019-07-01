@@ -42,14 +42,23 @@ void AboutDialog::init()
 	QStringList devText;
 	devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
 #if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
-    devText << "commit: " S__GIT_COMMIT_HASH ;
-	devText << "date: " S__GIT_TIMESTAMP ;
+    devText << "commit: " S__GIT_COMMIT_HASH
+            << "date: " S__GIT_TIMESTAMP;
 #endif
 #if !defined(PENCIL2D_RELEASE)
     devText << "Development build";
 #endif
-	devText << QString("Operating System: %1").arg(QSysInfo::prettyProductName());
-	devText << QString("CPU Architecture: %1").arg(QSysInfo::buildCpuArchitecture());
+    devText << QString("Operating System: %1").arg(QSysInfo::prettyProductName())
+            << QString("CPU Architecture: %1").arg(QSysInfo::buildCpuArchitecture());
+    if(QString(qVersion()) == QT_VERSION_STR)
+    {
+        devText << QString("Qt Version: %1").arg(QT_VERSION_STR);
+    }
+    else
+    {
+        devText << QString("Compile-Time Qt Version: %1").arg(QT_VERSION_STR)
+                << QString("Runtime Qt Version: %1").arg(qVersion());
+    }
     ui->devInfoText->setText(devText.join("<br>"));
 
 	QPushButton* copyToClipboardButton = new QPushButton(tr("Copy to clipboard", "Copy system info from About Dialog"));
