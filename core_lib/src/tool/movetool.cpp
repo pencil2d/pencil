@@ -48,6 +48,7 @@ void MoveTool::loadSettings()
     properties.useFeather = false;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
+    mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
 }
@@ -71,16 +72,6 @@ void MoveTool::updateSettings(const SETTING setting)
         break;
 
     }
-}
-
-int MoveTool::rotationAngleIncrement()
-{
-    if (mCachedRotIncrement != mRotationIncrement)
-    {
-        mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
-        mCachedRotIncrement = mRotationIncrement;
-    }
-    return mCachedRotIncrement;
 }
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
@@ -168,7 +159,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
         int rotationIncrement = 0;
         if (selectMan->getMoveMode() == MoveMode::ROTATION && keyMod & Qt::ShiftModifier)
         {
-            rotationIncrement = rotationAngleIncrement();
+            rotationIncrement = mRotationIncrement;
         }
 
         if(layer->type() == Layer::BITMAP)

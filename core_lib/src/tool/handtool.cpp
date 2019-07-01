@@ -108,8 +108,8 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
         QVector2D startV(getLastPixel() - centralPixel);
         QVector2D curV(getCurrentPixel() - centralPixel);
 
-        qreal deltaPoint = static_cast<qreal>(atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x()));
-        qreal angleOffset = MathUtils::radToDeg(deltaPoint);
+        qreal angleOffset = static_cast<qreal>(atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x()));
+        angleOffset = MathUtils::radToDeg(angleOffset);
         if (keyMod & Qt::ShiftModifier)
         {
             angleOffset = qRound(angleOffset / 15) * 15;
