@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "ui_bitmapcoloringwidget.h"
 #include "layermanager.h"
 #include "toolmanager.h"
+#include "selectionmanager.h"
 #include "app_util.h"
 
 
@@ -232,7 +233,7 @@ void BitmapColoring::traceLines()
 {
     if (mLayerBitmap == nullptr) { return; }
 
-    if (mSelectAreas && !mScribblearea->isSomethingSelected())
+    if (mSelectAreas && !mEditor->select()->somethingSelected())
     {
         QMessageBox::information(this, tr("No selection!"), tr("Please select area with select tool..."));
         return;
@@ -268,7 +269,7 @@ void BitmapColoring::traceLines()
     {
         trace();
     }
-    mScribblearea->deselectAll();
+    mEditor->deselectAll();
     ui->cb1Threshold->setChecked(false);
     updateBtnSelect();
 }
