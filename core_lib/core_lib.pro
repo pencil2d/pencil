@@ -51,6 +51,8 @@ HEADERS +=  \
     src/interface/backgroundwidget.h \
     src/interface/historyviewerwidget.h \
     src/managers/basemanager.h \
+    src/managers/canvasmanager.h \
+    src/managers/keyframemanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -126,6 +128,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/backupelement.cpp \
     src/interface/historyviewerwidget.cpp \
     src/managers/basemanager.cpp \
+    src/managers/canvasmanager.cpp \
+    src/managers/keyframemanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \

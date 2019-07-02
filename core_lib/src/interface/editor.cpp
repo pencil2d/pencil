@@ -47,6 +47,8 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "selectionmanager.h"
 #include "backupmanager.h"
+#include "keyframemanager.h"
+#include "canvasmanager.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -84,6 +86,8 @@ bool Editor::init()
     mSoundManager = new SoundManager(this);
     mSelectionManager = new SelectionManager(this);
     mBackupManager = new BackupManager(this);
+    mKeyFrameManager = new KeyFrameManager(this);
+    mCanvasManager = new CanvasManager(this);
 
     mAllManagers =
     {
@@ -95,7 +99,9 @@ bool Editor::init()
         mPreferenceManager,
         mSoundManager,
         mSelectionManager,
-        mBackupManager
+        mBackupManager,
+        mKeyFrameManager,
+        mCanvasManager
     };
 
     for (BaseManager* pManager : mAllManagers)
