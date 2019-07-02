@@ -6,6 +6,7 @@
 #include "bitmapimage.h"
 
 #include "layervector.h"
+#include "mathutils.h"
 
 //#ifdef QT_DEBUG
 #include <QDebug>
@@ -207,7 +208,7 @@ QPointF SelectionManager::whichAnchorPoint(QPointF currentPoint)
     return anchorPoint;
 }
 
-void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset)
+void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement)
 {
     QRectF& transformedSelection = mTransformedSelection;
 
@@ -241,10 +242,14 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     }
     case MoveMode::ROTATION:
     {
-        mTempTransformedSelection =
-            transformedSelection; // @ necessary?
+        mTempTransformedSelection = transformedSelection;
         QPointF anchorPoint = transformedSelection.center();
-        mRotatedAngle = ( atan2( currentPoint.y() - anchorPoint.y(), currentPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI - rotationOffset;
+        qreal rotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
+        if (rotationIncrement > 0) {
+            mRotatedAngle = constrainRotationToAngle(rotatedAngle, rotationIncrement);
+        } else {
+            mRotatedAngle = rotatedAngle;
+        }
         break;
     }
     default:
@@ -252,6 +257,10 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     }
 }
 
+int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
+{
+    return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
+}
 
 void SelectionManager::setSelection(QRectF rect)
 {

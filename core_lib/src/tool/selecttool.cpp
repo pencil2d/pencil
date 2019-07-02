@@ -193,7 +193,7 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 
         auto selectMan = mEditor->select();
 
-        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), selectMan->myRotation());
+        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), selectMan->myRotation(), 0);
     }
     else
     {

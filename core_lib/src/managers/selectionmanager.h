@@ -51,7 +51,7 @@ public:
     bool somethingSelected() const { return mSomethingSelected; }
 
     void calculateSelectionTransformation();
-    void adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset);
+    void adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement=0);
     MoveMode moveModeForAnchorInRange(QPointF lastPos);
     void setCurves(QList<int> curves) { mClosestCurves = curves; }
     void setVertices(QList<VertexRef> vertices) { mClosestVertices = vertices; }
@@ -107,6 +107,8 @@ signals:
     void needDeleteSelection();
 
 private:
+
+    int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
 
     QRectF mSelection;
     QRectF mTempTransformedSelection;
