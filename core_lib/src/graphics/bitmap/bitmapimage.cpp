@@ -83,7 +83,7 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
     return *this;
 }
 
-BitmapImage* BitmapImage::clone()
+BitmapImage* BitmapImage::clone() const
 {
     return new BitmapImage(*this);
 }

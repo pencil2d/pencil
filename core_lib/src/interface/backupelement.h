@@ -61,9 +61,9 @@ private:
 class AddBitmapElement : public BackupElement
 {
 public:
-    AddBitmapElement(BitmapImage* backupBitmap, BitmapImage* bufferImage,
-                     int backupLayerId,
-                     int backupFrameIndex,
+    AddBitmapElement(const BitmapImage* backupBitmap,
+                     const int& backupLayerId,
+                     const int& backupFrameIndex,
                      QString description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
@@ -100,9 +100,9 @@ public:
 class AddVectorElement : public BackupElement
 {
 public:
-    AddVectorElement(VectorImage* backupVector,
-                     int backupFrameIndex,
-                     int backupLayerId,
+    AddVectorElement(const VectorImage* backupVector,
+                     const int& backupFrameIndex,
+                     const int& backupLayerId,
                      QString description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
@@ -129,10 +129,10 @@ class AddKeyFrameElement : public BackupElement
 {
 public:
     enum { Id = 5 };
-    AddKeyFrameElement(int backupFrameIndex,
-                       int backupLayerId,
-                       int backupKeySpacing,
-                       bool backupKeyExisted,
+    AddKeyFrameElement(const int& backupFrameIndex,
+                       const int& backupLayerId,
+                       const int& backupKeySpacing,
+                       const bool& backupKeyExisted,
                        QString description,
                        Editor* editor,
                        QUndoCommand* parent = nullptr);
@@ -140,15 +140,16 @@ public:
 
     int newLayerIndex = 0;
     int newFrameIndex = 0;
-    int oldFrameIndex = 0;
-    int oldLayerId = 0;
-    int newLayerId = 0;
+
+    int oldFrameIndex;
+    int oldLayerId;
+    int oldKeySpacing;
+    bool oldKeyExisted;
+
+    int newLayerId;
 
     std::map<int, KeyFrame*>oldKeyFrames;
     std::map<int, KeyFrame*>newKeyFrames;
-
-    int oldKeySpacing = 0;
-    bool oldKeyExisted = false;
 
     KeyFrame* newKey = nullptr;
     int emptyFrameSettingVal = -1;
@@ -166,8 +167,8 @@ class RemoveKeyFrameElement : public BackupElement
 {
 public:
     enum { Id = 4 };
-    RemoveKeyFrameElement(KeyFrame* backupBitmap,
-                          int backupLayerId,
+    RemoveKeyFrameElement(const KeyFrame* backupBitmap,
+                          const int& backupLayerId,
                           Editor* editor,
                           QUndoCommand* parent = nullptr);
 
@@ -197,12 +198,12 @@ public:
 
     enum { Id = 1 };
 
-    SelectionElement(SelectionType backupSelectionType,
-                     QRectF backupTempSelectionRect,
-                     QRectF backupSelectionRect,
-                     QRectF backupTransformedSelectionRect,
-                     qreal backupRotationAngle,
-                     bool backupIsSelected,
+    SelectionElement(const SelectionType& backupSelectionType,
+                     const QRectF& backupTempSelectionRect,
+                     const QRectF& backupSelectionRect,
+                     const QRectF& backupTransformedSelectionRect,
+                     const qreal& backupRotationAngle,
+                     const bool& backupIsSelected,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
@@ -234,10 +235,10 @@ public:
     void redoSelection();
     void undoDeselection();
     void undoSelection();
-    void apply(int layerId,
-               int frameIndex,
-               BitmapImage* bitmap,
-               VectorImage* vector);
+    void apply(const int& layerId,
+               const int& frameIndex,
+               const BitmapImage* bitmap,
+               const VectorImage* vector);
 };
 
 class TransformElement : public BackupElement
@@ -246,15 +247,15 @@ class TransformElement : public BackupElement
 public:
 
     enum { Id = 2 };
-    TransformElement(KeyFrame* backupKeyFrame,
-                     int backupLayerId,
-                     int backupFramePos,
-                     QRectF backupSelectionRect,
-                     QRectF backupTempSelectionRect,
-                     QRectF backupTransformedSelectionRect,
-                     qreal backupRotationAngle,
-                     bool backupIsSelected,
-                     QTransform backupTransform,
+    TransformElement(const KeyFrame* backupKeyFrame,
+                     const int& backupLayerId,
+                     const int& backupFramePos,
+                     const QRectF& backupSelectionRect,
+                     const QRectF& backupTempSelectionRect,
+                     const QRectF& backupTransformedSelectionRect,
+                     const qreal& backupRotationAngle,
+                     const bool& backupIsSelected,
+                     const QTransform& backupTransform,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
@@ -292,13 +293,16 @@ public:
     bool isFirstRedo = true;
     void undo() override;
     void redo() override;
-    void apply(QRectF tempRect,
-               BitmapImage* bitmapImage,
-               VectorImage* vectorImage,
-               QRectF selectionRect, QRectF transformedRect, qreal rotationAngle, bool isSelected,
-               QTransform transform,
-               int frameIndex,
-               int layerId);
+    void apply(const QRectF& tempRect,
+               const BitmapImage* bitmapImage,
+               const VectorImage* vectorImage,
+               const QRectF& selectionRect,
+               const QRectF& transformedRect,
+               const qreal& rotationAngle,
+               const bool& isSelected,
+               const QTransform& transform,
+               const int& frameIndex,
+               const int& layerId);
 
     bool mergeWith(const QUndoCommand *other) override;
     int id() const override { return Id; }
@@ -311,9 +315,9 @@ class ImportBitmapElement : public BackupElement
 public:
     enum { Id = 7 };
 
-    ImportBitmapElement(std::map<int, KeyFrame*, std::greater<int>>backupCanvasKeyFrames,
-                        std::map<int, KeyFrame*, std::less<int> > backupImportedKeyFrames,
-                        int backupLayerId,
+    ImportBitmapElement(const std::map<int, KeyFrame*, std::greater<int> >& backupCanvasKeyFrames,
+                        const std::map<int, KeyFrame*, std::less<int> >& backupImportedKeyFrames,
+                        const int& backupLayerId,
                         Editor* editor,
                         QUndoCommand* parent = nullptr);
 
@@ -337,9 +341,9 @@ class CameraMotionElement : public BackupElement
 public:
 
     enum { Id = 3 };
-    CameraMotionElement(QPointF backupTranslation,
-                        float backupRotation,
-                        float backupScale,
+    CameraMotionElement(const QPointF& backupTranslation,
+                        const float& backupRotation,
+                        const float& backupScale,
                         Editor* editor,
                         QUndoCommand* parent = nullptr);
 
@@ -386,12 +390,12 @@ public:
 class DeleteLayerElement : public BackupElement
 {
 public:
-    DeleteLayerElement(QString backupLayerName,
-                       Layer::LAYER_TYPE backupType,
-                       std::map<int, KeyFrame*, std::greater<int> >,
-                       int backupFrameIndex,
-                       int backupLayerIndex,
-                       int backupLayerId,
+    DeleteLayerElement(const QString& backupLayerName,
+                       const Layer::LAYER_TYPE& backupType,
+                       const std::map<int, KeyFrame*, std::greater<int> >&,
+                       const int& backupFrameIndex,
+                       const int& backupLayerIndex,
+                       const int& backupLayerId,
                        Editor* editor,
                        QUndoCommand* parent = nullptr);
 
@@ -414,8 +418,8 @@ public:
 class RenameLayerElement : public BackupElement
 {
 public:
-    RenameLayerElement(QString backupLayerName,
-                       int backupLayerId,
+    RenameLayerElement(const QString& backupLayerName,
+                       const int& backupLayerId,
                        Editor* editor,
                        QUndoCommand* parent = nullptr);
 
@@ -437,9 +441,9 @@ public:
 class CameraPropertiesElement : public BackupElement
 {
 public:
-    CameraPropertiesElement(QString backupLayerName,
-                            QRect backupViewRect,
-                            int backupLayerId,
+    CameraPropertiesElement(const QString& backupLayerName,
+                            const QRect& backupViewRect,
+                            const int& backupLayerId,
                             Editor* editor,
                             QUndoCommand* parent = nullptr);
 
@@ -464,8 +468,8 @@ public:
 class DragFrameElement : public BackupElement
 {
 public:
-    DragFrameElement(int backupLayerIndex,
-                     int backupFrameOffset,
+    DragFrameElement(const int& backupLayerIndex,
+                     const int& backupFrameOffset,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
@@ -484,8 +488,8 @@ public:
 class FlipViewElement : public BackupElement
 {
 public:
-    FlipViewElement(bool backupFlipEnabled,
-                    DIRECTION backupFlipDirection,
+    FlipViewElement(const bool& backupFlipEnabled,
+                    const DIRECTION& backupFlipDirection,
                     Editor* editor,
                     QUndoCommand* parent = nullptr);
 
@@ -503,8 +507,8 @@ class MoveLayerElement : public BackupElement
 {
 
 public:
-    MoveLayerElement(int backupOldLayerIndex,
-                     int backupNewLayerIndex,
+    MoveLayerElement(const int& backupOldLayerIndex,
+                     const int& backupNewLayerIndex,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 

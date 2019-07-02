@@ -37,7 +37,7 @@ public:
     VectorImage(const VectorImage&);
     virtual ~VectorImage();
 
-    VectorImage* clone() override;
+    VectorImage* clone() const override;
 
     void setObject(Object* pObj) { mObject = pObj; }
 

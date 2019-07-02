@@ -47,33 +47,31 @@ BackupElement::~BackupElement()
 {
 }
 
-AddKeyFrameElement::AddKeyFrameElement(int backupFrameIndex,
-                                       int backupLayerId,
-                                       int backupKeySpacing,
-                                       bool backupKeyExisted,
+AddKeyFrameElement::AddKeyFrameElement(const int& backupFrameIndex,
+                                       const int& backupLayerId,
+                                       const int& backupKeySpacing,
+                                       const bool& backupKeyExisted,
                                        QString description,
                                        Editor *editor,
                                        QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
+    Layer* layer = editor->layers()->currentLayer();
     newLayerIndex = editor->currentLayerIndex();
     newFrameIndex = editor->currentFrame();
 
     oldFrameIndex = backupFrameIndex;
+
     oldLayerId = backupLayerId;
+    newLayerId = layer->id();
 
     oldKeyExisted = backupKeyExisted;
-
     oldKeySpacing = backupKeySpacing;
-
-    Layer* layer = editor->layers()->currentLayer();
 
     emptyFrameSettingVal = editor->preference()->
             getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
     newFrameIndex = editor->currentFrame();
     newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, emptyFrameSettingVal);
-
-    newLayerId = layer->id();
 
     newKey = layer->getLastKeyFrameAtPosition(oldFrameIndex)->clone();
     oldKeyFrames.insert(std::make_pair(oldFrameIndex, newKey));
@@ -185,14 +183,14 @@ bool AddKeyFrameElement::mergeWith(const QUndoCommand *other)
 }
 
 
-RemoveKeyFrameElement::RemoveKeyFrameElement(KeyFrame* backupKey,
-                                             int backupLayerId,
+RemoveKeyFrameElement::RemoveKeyFrameElement(const KeyFrame* backupKey,
+                                             const int& backupLayerId,
                                              Editor *editor,
                                              QUndoCommand *parent) : BackupElement(editor, parent)
 {
     oldFrameIndex = backupKey->pos();
     oldLayerId = backupLayerId;
-    oldKey = backupKey;
+    oldKey = backupKey->clone();
 
     Layer* layer = editor->layers()->findLayerById(oldLayerId);
 
@@ -200,25 +198,25 @@ RemoveKeyFrameElement::RemoveKeyFrameElement(KeyFrame* backupKey,
     {
         case Layer::BITMAP:
         {
-            oldBitmap = static_cast<BitmapImage*>(backupKey);
+            oldBitmap = static_cast<BitmapImage*>(oldKey);
             setText(QObject::tr("Remove Bitmap Key"));
             break;
         }
         case Layer::VECTOR:
         {
-            oldVector = static_cast<VectorImage*>(backupKey);
+            oldVector = static_cast<VectorImage*>(oldKey);
             setText(QObject::tr("Remove Vector Key"));
             break;
         }
         case Layer::SOUND:
         {
-            oldClip = static_cast<SoundClip*>(backupKey);
+            oldClip = static_cast<SoundClip*>(oldKey);
             setText(QObject::tr("Remove Sound Key"));
             break;
         }
         case Layer::CAMERA:
         {
-            oldCamera = static_cast<Camera*>(backupKey);
+            oldCamera = static_cast<Camera*>(oldKey);
             setText(QObject::tr("Remove Camera key"));
             break;
         }
@@ -260,17 +258,15 @@ void RemoveKeyFrameElement::redo()
 
 }
 
-AddBitmapElement::AddBitmapElement(BitmapImage* backupBitmap,
-                                   BitmapImage* backupBufferBitmap,
-                                   int backupLayerId,
-                                   int backupFrameIndex,
+AddBitmapElement::AddBitmapElement(const BitmapImage* backupBitmap,
+                                   const int& backupLayerId,
+                                   const int& backupFrameIndex,
                                    QString description,
                                    Editor *editor,
                                    QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
     oldBitmap = backupBitmap->clone();
-    oldBufferImage = backupBufferBitmap->clone();
 
     oldFrameIndex = backupFrameIndex;
     newLayerIndex = editor->currentLayerIndex();
@@ -376,15 +372,15 @@ void AddBitmapElement::redoTransform()
     scribbleArea->paintTransformedSelection();
 }
 
-AddVectorElement::AddVectorElement(VectorImage* backupVector,
-                                   int backupFrameIndex,
-                                   int backupLayerId,
+AddVectorElement::AddVectorElement(const VectorImage* backupVector,
+                                   const int& backupFrameIndex,
+                                   const int& backupLayerId,
                                    QString description,
                                    Editor* editor,
                                    QUndoCommand* parent) : BackupElement(editor, parent)
 {
 
-    oldVector = backupVector;
+    oldVector = backupVector->clone();
     oldFrameIndex = backupFrameIndex;
 
     newLayerIndex = editor->layers()->currentLayerIndex();
@@ -430,11 +426,14 @@ void AddVectorElement::redo()
     editor()->scrubTo(newFrameIndex);
 }
 
-SelectionElement::SelectionElement(SelectionType backupSelectionType, QRectF backupTempSelectionRect,
-                                         QRectF backupSelectionRect, QRectF backupTransformedSelectionRect,
-                                         qreal backupRotationAngle, bool backupIsSelected,
-                                         Editor* editor,
-                                         QUndoCommand* parent) : BackupElement(editor, parent)
+SelectionElement::SelectionElement(const SelectionType& backupSelectionType,
+                                   const QRectF& backupTempSelectionRect,
+                                   const QRectF& backupSelectionRect,
+                                   const QRectF& backupTransformedSelectionRect,
+                                   const qreal& backupRotationAngle,
+                                   const bool& backupIsSelected,
+                                   Editor* editor,
+                                   QUndoCommand* parent) : BackupElement(editor, parent)
 {
 
     oldTempSelectionRect = backupTempSelectionRect;
@@ -507,10 +506,10 @@ void SelectionElement::undoDeselection()
     scribbleArea->paintTransformedSelection();
 }
 
-void SelectionElement::apply(int layerId,
-                             int frameIndex,
-                             BitmapImage* bitmap,
-                             VectorImage* vector)
+void SelectionElement::apply(const int& layerId,
+                             const int& frameIndex,
+                             const BitmapImage* bitmap,
+                             const VectorImage* vector)
 {
     Layer* layer = editor()->layers()->findLayerById(layerId);
     Layer* currentLayer = editor()->layers()->currentLayer();
@@ -619,17 +618,17 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
     }
 }
 
-TransformElement::TransformElement(KeyFrame* backupKeyFrame,
-                               int backupLayerId,
-                               int backupFramePos,
-                               QRectF backupSelectionRect,
-                               QRectF backupTempSelectionRect,
-                               QRectF backupTransformedSelectionRect,
-                               qreal backupRotationAngle,
-                               bool backupIsSelected,
-                               QTransform backupTransform,
-                               Editor *editor,
-                               QUndoCommand *parent) : BackupElement(editor, parent)
+TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
+                                   const int& backupLayerId,
+                                   const int& backupFramePos,
+                                   const QRectF& backupSelectionRect,
+                                   const QRectF& backupTempSelectionRect,
+                                   const QRectF& backupTransformedSelectionRect,
+                                   const qreal& backupRotationAngle,
+                                   const bool& backupIsSelected,
+                                   const QTransform& backupTransform,
+                                   Editor *editor,
+                                   QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
 
@@ -660,18 +659,19 @@ TransformElement::TransformElement(KeyFrame* backupKeyFrame,
     int emptyFrameSettingVal = editor->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
 
     newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, emptyFrameSettingVal);
+    KeyFrame* oldKeyFrame = backupKeyFrame->clone();
 
     switch(layer->type())
     {
         case Layer::BITMAP:
         {
-            oldBitmap = static_cast<BitmapImage*>(backupKeyFrame);
+            oldBitmap = static_cast<BitmapImage*>(oldKeyFrame);
             newBitmap = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(newFrameIndex);
             break;
         }
         case Layer::VECTOR:
         {
-            oldVector = static_cast<VectorImage*>(backupKeyFrame);
+            oldVector = static_cast<VectorImage*>(oldKeyFrame);
             newVector = static_cast<LayerVector*>(layer)->
                     getVectorImageAtFrame(newFrameIndex)->clone();
             break;
@@ -715,16 +715,16 @@ void TransformElement::redo()
           newLayerId);
 }
 
-void TransformElement::apply(QRectF tempRect,
-                             BitmapImage* bitmapImage,
-                             VectorImage* vectorImage,
-                             QRectF selectionRect,
-                             QRectF transformedRect,
-                             qreal rotationAngle,
-                             bool isSelected,
-                             QTransform transform,
-                             int frameIndex,
-                             int layerId)
+void TransformElement::apply(const QRectF& tempRect,
+                             const BitmapImage* bitmapImage,
+                             const VectorImage* vectorImage,
+                             const QRectF& selectionRect,
+                             const QRectF& transformedRect,
+                             const qreal& rotationAngle,
+                             const bool& isSelected,
+                             const QTransform& transform,
+                             const int& frameIndex,
+                             const int& layerId)
 {
 
     Layer* layer = editor()->layers()->findLayerById(layerId);
@@ -805,9 +805,9 @@ bool TransformElement::mergeWith(const QUndoCommand *other)
     return true;
 }
 
-ImportBitmapElement::ImportBitmapElement(std::map<int, KeyFrame*, std::greater<int>> backupCanvasKeyFrames,
-                                         std::map<int, KeyFrame*, std::less<int>> backupImportedKeyFrames,
-                                         int backupLayerId,
+ImportBitmapElement::ImportBitmapElement(const std::map<int, KeyFrame*, std::greater<int>>& backupCanvasKeyFrames,
+                                         const std::map<int, KeyFrame*, std::less<int>>& backupImportedKeyFrames,
+                                         const int& backupLayerId,
                                          Editor *editor,
                                          QUndoCommand *parent) : BackupElement(editor, parent)
 {
@@ -856,9 +856,9 @@ void ImportBitmapElement::redo()
     }
 }
 
-CameraMotionElement::CameraMotionElement(QPointF backupTranslation,
-                                         float backupRotation,
-                                         float backupScale,
+CameraMotionElement::CameraMotionElement(const QPointF& backupTranslation,
+                                         const float& backupRotation,
+                                         const float& backupScale,
                                          Editor* editor,
                                          QUndoCommand* parent) : BackupElement(editor, parent)
 {
@@ -993,12 +993,12 @@ void AddLayerElement::redo()
 
 }
 
-DeleteLayerElement::DeleteLayerElement(QString backupLayerName,
-                                       Layer::LAYER_TYPE backupType,
-                                       std::map<int, KeyFrame*, std::greater<int> > backupLayerKeys,
-                                       int backupFrameIndex,
-                                       int backupLayerIndex,
-                                       int backupLayerId,
+DeleteLayerElement::DeleteLayerElement(const QString& backupLayerName,
+                                       const Layer::LAYER_TYPE& backupType,
+                                       const std::map<int, KeyFrame*, std::greater<int> >& backupLayerKeys,
+                                       const int& backupFrameIndex,
+                                       const int& backupLayerIndex,
+                                       const int& backupLayerId,
                                        Editor* editor,
                                        QUndoCommand* parent) : BackupElement(editor, parent)
 {
@@ -1051,7 +1051,10 @@ void DeleteLayerElement::redo()
 
 }
 
-RenameLayerElement::RenameLayerElement(QString backupLayerName, int backupLayerId, Editor *editor, QUndoCommand *parent) : BackupElement(editor, parent)
+RenameLayerElement::RenameLayerElement(const QString& backupLayerName,
+                                       const int& backupLayerId,
+                                       Editor *editor,
+                                       QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
     oldLayerName = backupLayerName;
@@ -1078,11 +1081,11 @@ void RenameLayerElement::redo()
 
 }
 
-CameraPropertiesElement::CameraPropertiesElement(QString backupLayerName,
-                                                         QRect backupViewRect,
-                                                         int backupLayerId,
-                                                         Editor *editor,
-                                                         QUndoCommand *parent) : BackupElement(editor, parent)
+CameraPropertiesElement::CameraPropertiesElement(const QString& backupLayerName,
+                                                 const QRect& backupViewRect,
+                                                 const int& backupLayerId,
+                                                 Editor *editor,
+                                                 QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
     oldLayerId = backupLayerId;
@@ -1136,8 +1139,8 @@ void CameraPropertiesElement::redo()
     editor()->updateCurrentFrame();
 }
 
-DragFrameElement::DragFrameElement(int backupLayerId,
-                                   int backupFrameOffset,
+DragFrameElement::DragFrameElement(const int& backupLayerId,
+                                   const int& backupFrameOffset,
                                    Editor* editor,
                                    QUndoCommand* parent) : BackupElement(editor, parent)
 {
@@ -1193,7 +1196,10 @@ void DragFrameElement::redo()
     editor()->updateCurrentFrame();
 }
 
-FlipViewElement::FlipViewElement(bool backupFlipState, DIRECTION backupFlipDirection, Editor *editor, QUndoCommand *parent) : BackupElement(editor, parent)
+FlipViewElement::FlipViewElement(const bool& backupFlipState,
+                                 const DIRECTION& backupFlipDirection,
+                                 Editor *editor,
+                                 QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
 
@@ -1237,7 +1243,10 @@ void FlipViewElement::redo()
     }
 }
 
-MoveLayerElement::MoveLayerElement(int backupOldLayerIndex, int backupNewLayerIndex, Editor* editor, QUndoCommand* parent) : BackupElement(editor, parent)
+MoveLayerElement::MoveLayerElement(const int& backupOldLayerIndex,
+                                   const int& backupNewLayerIndex,
+                                   Editor* editor,
+                                   QUndoCommand* parent) : BackupElement(editor, parent)
 {
 
 

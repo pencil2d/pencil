@@ -34,7 +34,7 @@ public:
     ~BitmapImage();
     BitmapImage& operator=(const BitmapImage& a);
 
-    BitmapImage* clone() override;
+    BitmapImage* clone() const override;
     void loadFile() override;
     void unloadFile() override;
     bool isLoaded() override;

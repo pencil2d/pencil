@@ -38,7 +38,7 @@ VectorImage::~VectorImage()
 {
 }
 
-VectorImage* VectorImage::clone()
+VectorImage* VectorImage::clone() const
 {
     return new VectorImage(*this);
 }

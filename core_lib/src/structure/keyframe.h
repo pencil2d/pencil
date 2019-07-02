@@ -52,7 +52,7 @@ public:
     void addEventListener(KeyFrameEventListener*);
     void removeEventListner(KeyFrameEventListener*);
 
-    virtual KeyFrame* clone() { return nullptr; }
+    virtual KeyFrame* clone() const { return nullptr; }
     virtual void loadFile() {}
     virtual void unloadFile() {}
     virtual bool isLoaded() { return true; }

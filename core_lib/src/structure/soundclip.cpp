@@ -36,7 +36,7 @@ SoundClip::~SoundClip()
     //QFile::remove( fileName() );
 }
 
-SoundClip* SoundClip::clone()
+SoundClip* SoundClip::clone() const
 {
     return new SoundClip(*this);
 }

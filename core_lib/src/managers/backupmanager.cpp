@@ -136,7 +136,6 @@ void BackupManager::bitmap(const QString& description)
 {
     if (!mBitmap) { return; }
     AddBitmapElement* element = new AddBitmapElement(mBitmap,
-                                                     mBufferImage->clone(),
                                                      mLayerId,
                                                      mFrameIndex,
                                                      description,
