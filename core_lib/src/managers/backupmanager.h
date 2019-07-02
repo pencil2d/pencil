@@ -83,7 +83,6 @@ private:
 
     Layer* mLayer = nullptr;
     BitmapImage* mBitmap = nullptr;
-    BitmapImage* mBufferImage = nullptr;
     VectorImage* mVector = nullptr;
     SoundClip* mClip = nullptr;
     Camera* mCamera = nullptr;

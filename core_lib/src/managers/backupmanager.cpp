@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "selectionmanager.h"
 
-#include "scribblearea.h"
 #include "backupelement.h"
 
 #include "layerbitmap.h"
@@ -510,7 +509,6 @@ void BackupManager::saveStates()
     mClip = nullptr;
     mKeyframe = nullptr;
 
-    mBufferImage = editor()->getScribbleArea()->mBufferImg->clone();
     mLayer = editor()->layers()->currentLayer();
     mLayerId = mLayer->id();
 
