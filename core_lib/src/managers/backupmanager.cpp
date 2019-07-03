@@ -172,9 +172,7 @@ void BackupManager::vector(const QString& description)
 void BackupManager::selection()
 {
     SelectionElement* element = new SelectionElement(SelectionType::SELECTION,
-                                                     mTempSelectionRect,
                                                      mSelectionRect,
-                                                     mTransformedSelectionRect,
                                                      mSelectionRotationAngle,
                                                      mIsSelected,
                                                      editor());
@@ -185,57 +183,12 @@ void BackupManager::selection()
 void BackupManager::deselect()
 {
     SelectionElement* element = new SelectionElement(SelectionType::DESELECT,
-                                                     mTempSelectionRect,
-                                                     mSelectionRect,
                                                      mTransformedSelectionRect,
                                                      mSelectionRotationAngle,
                                                      mIsSelected,
                                                      editor());
-   new TransformElement(mKeyframe,
-                         mLayerId,
-                         mFrameIndex,
-                         mSelectionRect,
-                         mTempSelectionRect,
-                         mTransformedSelectionRect,
-                         mSelectionRotationAngle,
-                         mIsSelected,
-                         mSelectionTransform,
-                         editor(), element);
     mUndoStack->push(element);
 
-    emit updateBackup();
-}
-
-void BackupManager::clearSelection()
-{
-    SelectionElement* element = new SelectionElement(SelectionType::DESELECT,
-                                                     mTempSelectionRect,
-                                                     mSelectionRect,
-                                                     mTransformedSelectionRect,
-                                                     mSelectionRotationAngle,
-                                                     mIsSelected,
-                                                     editor());
-    new TransformElement(mKeyframe,
-                          mLayerId,
-                          mFrameIndex,
-                          mSelectionRect,
-                          mTempSelectionRect,
-                          mTransformedSelectionRect,
-                          mSelectionRotationAngle,
-                          mIsSelected,
-                          mSelectionTransform,
-                          editor(), element);
-
-
-
-    if (mLayer->type() == Layer::BITMAP) {
-        element->setText(tr("Bitmap Clear Selection"));
-    } else if (mLayer->type() == Layer::VECTOR) {
-        element->setText(tr("Vector: Clear Selection"));
-    } else {
-        return;
-    }
-    mUndoStack->push(element);
     emit updateBackup();
 }
 

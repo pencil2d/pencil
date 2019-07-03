@@ -428,24 +428,17 @@ void RemoveKeyFrameElement::redo()
 }
 
 SelectionElement::SelectionElement(const SelectionType& backupSelectionType,
-                                   const QRectF& backupTempSelectionRect,
                                    const QRectF& backupSelectionRect,
-                                   const QRectF& backupTransformedSelectionRect,
                                    const qreal& backupRotationAngle,
                                    const bool& backupIsSelected,
                                    Editor* editor,
                                    QUndoCommand* parent) : BackupElement(editor, parent)
 {
-
-    oldTempSelectionRect = backupTempSelectionRect;
     oldSelectionRect = backupSelectionRect;
-    oldTransformedSelectionRect = backupTransformedSelectionRect;
     oldRotationAngle = backupRotationAngle;
     oldIsSelected = backupIsSelected;
 
-    newTempSelectionRect = editor->select()->myTempTransformedSelectionRect();
-    newSelectionRect = editor->select()->mySelectionRect();
-    newTransformedSelectionRect = editor->select()->myTransformedSelectionRect();
+    newSelectionRect = editor->select()->myTransformedSelectionRect();
     newRotationAngle = editor->select()->myRotation();
     newIsSelected = editor->select()->somethingSelected();
 
@@ -474,9 +467,7 @@ void SelectionElement::undoSelection()
 
     auto selectMan = editor()->select();
 
-    selectMan->setSelectionRect(oldSelectionRect);
-    selectMan->setTempTransformedSelectionRect(oldTempSelectionRect);
-    selectMan->setTransformedSelectionRect(oldTransformedSelectionRect);
+    selectMan->setSelection(oldSelectionRect);
     selectMan->setRotation(oldRotationAngle);
     selectMan->setSomethingSelected(oldIsSelected);
 
@@ -491,49 +482,12 @@ void SelectionElement::undoDeselection()
     ScribbleArea* scribbleArea = editor()->getScribbleArea();
 
     auto selectMan = editor()->select();
-    selectMan->setSelectionRect(oldSelectionRect);
-    selectMan->setTempTransformedSelectionRect(oldTempSelectionRect);
-    selectMan->setTransformedSelectionRect(oldTransformedSelectionRect);
+    selectMan->resetSelectionTransform();
+    selectMan->setSelection(oldSelectionRect);
     selectMan->setRotation(oldRotationAngle);
     selectMan->setSomethingSelected(oldIsSelected);
 
-    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
-    selectMan->setSelectionTransform(childElem->oldTransform);
-    apply(childElem->oldLayerId,
-          childElem->oldFrameIndex,
-          childElem->oldBitmap,
-          childElem->oldVector);
-
     scribbleArea->paintTransformedSelection();
-}
-
-void SelectionElement::apply(const int& layerId,
-                             const int& frameIndex,
-                             const BitmapImage* bitmap,
-                             const VectorImage* vector)
-{
-    Layer* layer = editor()->layers()->findLayerById(layerId);
-    Layer* currentLayer = editor()->layers()->currentLayer();
-
-    if (currentLayer != layer) {
-        editor()->layers()->setCurrentLayer(layer);
-    }
-
-    switch(layer->type())
-    {
-        case Layer::BITMAP:
-        {
-            *static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(frameIndex) = *bitmap;
-            break;
-        }
-        case Layer::VECTOR:
-        {
-            *static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex) = *vector;
-            break;
-        }
-        default:
-            break;
-    }
 }
 
 void SelectionElement::redo()
@@ -552,12 +506,9 @@ void SelectionElement::redoSelection()
 {
     auto selectMan = editor()->select();
 
-    selectMan->setSelectionRect(newSelectionRect);
-    selectMan->setTempTransformedSelectionRect(newTempSelectionRect);
-    selectMan->setTransformedSelectionRect(newTransformedSelectionRect);
+    selectMan->setSelection(newSelectionRect);
     selectMan->setRotation(newRotationAngle);
     selectMan->setSomethingSelected(newIsSelected);
-
     selectMan->calculateSelectionTransformation();
 
     // TODO: remove scribblearea as a dependency...
@@ -571,21 +522,9 @@ void SelectionElement::redoDeselection()
     ScribbleArea* scribbleArea = editor()->getScribbleArea();
 
     auto selectMan = editor()->select();
-    selectMan->setSelectionRect(newSelectionRect);
-    selectMan->setTempTransformedSelectionRect(newTempSelectionRect);
-    selectMan->setTransformedSelectionRect(newTransformedSelectionRect);
-    selectMan->setRotation(newRotationAngle);
-    selectMan->setSomethingSelected(newIsSelected);
-
-    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
-    selectMan->setSelectionTransform(childElem->newTransform);
-    apply(childElem->newLayerId,
-          childElem->newFrameIndex,
-          childElem->newBitmap,
-          childElem->newVector);
 
     scribbleArea->applyTransformedSelection();
-    scribbleArea->paintTransformedSelection();
+    selectMan->resetSelectionProperties();
 
     editor()->deselectAll();
 }
@@ -601,15 +540,11 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
     SelectionType otherType = otherSelectionElement->selectionType;
     if (selectionType == SelectionType::SELECTION && otherType == selectionType) {
         newSelectionRect = otherSelectionElement->newSelectionRect;
-        newTempSelectionRect = otherSelectionElement->newTempSelectionRect;
-        newTransformedSelectionRect = otherSelectionElement->newTransformedSelectionRect;
         newIsSelected = otherSelectionElement->newIsSelected;
         newRotationAngle = otherSelectionElement->newRotationAngle;
 
         auto selectMan = editor()->select();
         selectMan->setSelectionRect(newSelectionRect);
-        selectMan->setTempTransformedSelectionRect(newTempSelectionRect);
-        selectMan->setTransformedSelectionRect(newTransformedSelectionRect);
         selectMan->setRotation(newRotationAngle);
         selectMan->setSomethingSelected(newIsSelected);
 

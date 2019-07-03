@@ -199,9 +199,7 @@ public:
     enum { Id = 1 };
 
     SelectionElement(const SelectionType& backupSelectionType,
-                     const QRectF& backupTempSelectionRect,
                      const QRectF& backupSelectionRect,
-                     const QRectF& backupTransformedSelectionRect,
                      const qreal& backupRotationAngle,
                      const bool& backupIsSelected,
                      Editor* editor,
@@ -209,12 +207,6 @@ public:
 
     QRectF oldSelectionRect = QRectF();
     QRectF newSelectionRect = QRectF();
-
-    QRectF oldTempSelectionRect = QRectF();
-    QRectF newTempSelectionRect = QRectF();
-
-    QRectF oldTransformedSelectionRect = QRectF();
-    QRectF newTransformedSelectionRect = QRectF();
 
     qreal oldRotationAngle = 0.0;
     qreal newRotationAngle = 0.0;
@@ -235,10 +227,6 @@ public:
     void redoSelection();
     void undoDeselection();
     void undoSelection();
-    void apply(const int& layerId,
-               const int& frameIndex,
-               const BitmapImage* bitmap,
-               const VectorImage* vector);
 };
 
 class TransformElement : public BackupElement
