@@ -31,7 +31,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 #include "editor.h"
-#include "scribblearea.h"
 #include "backupelement.h"
 
 #include "vectorimage.h"
