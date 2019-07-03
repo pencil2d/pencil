@@ -71,6 +71,8 @@ bool ScribbleArea::init()
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::updateCurrentFrame);
     connect(mEditor->select(), &SelectionManager::needPaintAndApply, this, &ScribbleArea::applySelectionChanges);
     connect(mEditor->select(), &SelectionManager::needDeleteSelection, this, &ScribbleArea::deleteSelection);
+    connect(mEditor->canvas(), &CanvasManager::needPaint, this, &ScribbleArea::updateCurrentFrame);
+    connect(mEditor, &Editor::needPaint, this, &ScribbleArea::updateCurrentFrame);
 
     mDoubleClickTimer->setInterval(50);
 

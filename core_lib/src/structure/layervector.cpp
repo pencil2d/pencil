@@ -202,3 +202,8 @@ void LayerVector::putVectorImageIntoFrame(KeyFrame *keyframe, const int frameInd
     VectorImage newVectorImg = *static_cast<VectorImage*>(keyframe);
     static_cast<VectorImage*>(currentVectorImg)->paste(newVectorImg);
 }
+
+void LayerVector::replaceLastVectorAtFrame(const VectorImage *replaceWithVector)
+{
+    *static_cast<VectorImage*>(getLastKeyFrameAtPosition(replaceWithVector->pos())) = *replaceWithVector;
+}

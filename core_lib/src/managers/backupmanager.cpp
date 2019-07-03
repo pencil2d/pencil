@@ -144,7 +144,6 @@ void BackupManager::bitmap(const QString& description)
     {
         new TransformElement(mKeyframe,
                              mLayerId,
-                             mFrameIndex,
                              mSelectionRect,
                              mTempSelectionRect,
                              mTransformedSelectionRect,
@@ -197,7 +196,6 @@ void BackupManager::transform()
     if (!mIsSelected) { return; }
     TransformElement* element = new TransformElement(mKeyframe,
                                                      mLayerId,
-                                                     mFrameIndex,
                                                      mSelectionRect,
                                                      mTempSelectionRect,
                                                      mTransformedSelectionRect,

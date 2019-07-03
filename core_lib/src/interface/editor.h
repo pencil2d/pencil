@@ -179,6 +179,9 @@ public: //slots
     void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
     bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
 
+signals:
+    void needPaint();
+
 protected:
     // Need to move to somewhere...
     void dragEnterEvent(QDragEnterEvent*);

@@ -41,6 +41,7 @@ public:
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
 
     void putVectorImageIntoFrame(KeyFrame* keyframe, const int frameIndex);
+    void replaceLastVectorAtFrame(const VectorImage* replaceWithVector);
 
     bool usesColour(int index);
     void removeColour(int index);

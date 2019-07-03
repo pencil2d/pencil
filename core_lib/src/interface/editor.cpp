@@ -621,6 +621,7 @@ void Editor::deselectAll()
     }
 
     select()->resetSelectionProperties();
+    emit needPaint();
 }
 
 void Editor::updateFrame(int frameNumber)

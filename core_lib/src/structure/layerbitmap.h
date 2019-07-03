@@ -39,6 +39,7 @@ public:
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
     void putBitmapIntoFrame(KeyFrame* keyframe, const int& frameIndex);
+    void replaceLastBitmapAtFrame(const BitmapImage* replaceWithImage);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;

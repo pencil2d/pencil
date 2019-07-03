@@ -48,6 +48,8 @@ void CanvasManager::paintTransformedSelection(Layer* layer, KeyFrame* keyframe,
         vectorImage->setSelectionTransformation(selectionTransform);
 
     }
+
+    emit needPaint();
 }
 
 void CanvasManager::applyTransformedSelection(Layer* layer,
@@ -74,6 +76,8 @@ void CanvasManager::applyTransformedSelection(Layer* layer,
         vectorImage->applySelectionTransformation();
 
     }
+
+    emit needPaint();
 }
 
 void CanvasManager::ignoreTransformedSelection()

@@ -237,7 +237,6 @@ public:
     enum { Id = 2 };
     TransformElement(const KeyFrame* backupKeyFrame,
                      const int& backupLayerId,
-                     const int& backupFramePos,
                      const QRectF& backupSelectionRect,
                      const QRectF& backupTempSelectionRect,
                      const QRectF& backupTransformedSelectionRect,
@@ -247,6 +246,23 @@ public:
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
+    void undo() override;
+    void redo() override;
+    void apply(const QRectF& tempRect,
+               const BitmapImage* bitmapImage,
+               const VectorImage* vectorImage,
+               const QRectF& selectionRect,
+               const QRectF& transformedRect,
+               const qreal& rotationAngle,
+               const bool& isSelected,
+               const QTransform& transform,
+               const int& layerId);
+
+    bool mergeWith(const QUndoCommand *other) override;
+    int id() const override { return Id; }
+
+    int oldFrameIndex = 0;
+    int newFrameIndex = 0;
 
     QRectF oldSelectionRect;
     QRectF newSelectionRect;
@@ -275,25 +291,7 @@ public:
     int oldLayerId = 0;
     int newLayerId = 0;
 
-    int oldFrameIndex = 0;
-    int newFrameIndex = 0;
-
     bool isFirstRedo = true;
-    void undo() override;
-    void redo() override;
-    void apply(const QRectF& tempRect,
-               const BitmapImage* bitmapImage,
-               const VectorImage* vectorImage,
-               const QRectF& selectionRect,
-               const QRectF& transformedRect,
-               const qreal& rotationAngle,
-               const bool& isSelected,
-               const QTransform& transform,
-               const int& frameIndex,
-               const int& layerId);
-
-    bool mergeWith(const QUndoCommand *other) override;
-    int id() const override { return Id; }
 };
 
 class QProgressDialog;

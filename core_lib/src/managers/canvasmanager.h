@@ -9,6 +9,7 @@ class CanvasPainter;
 
 class CanvasManager : public BaseManager
 {
+    Q_OBJECT
 public:
     explicit CanvasManager(Editor* editor);
     ~CanvasManager() override;
@@ -32,6 +33,9 @@ public:
     void ignoreTransformedSelection();
 
     CanvasPainter* canvasPainter() { return mCanvasPainter; }
+
+signals:
+    void needPaint();
 
 private:
     Editor* mEditor = nullptr;
