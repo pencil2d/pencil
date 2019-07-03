@@ -47,7 +47,6 @@ public:
                       const std::map<int, KeyFrame*, std::less<int>>& importedKeys);
     void selection();
     void deselect();
-    void clearSelection();
     void transform();
     void cameraProperties(const QRect& backupViewRect);
     void frameDragged(const int& backupFrameOffset);

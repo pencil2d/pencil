@@ -306,8 +306,6 @@ void ScribbleArea::keyEventForSelection(QKeyEvent* event)
         break;
     case Qt::Key_Backspace:
         deleteSelection();
-        mEditor->deselectAll();
-        backupMan->transform();
         break;
     case Qt::Key_Space:
         setTemporaryTool(HAND); // just call "setTemporaryTool()" to activate temporarily any tool
@@ -1519,9 +1517,14 @@ void ScribbleArea::deleteSelection()
 
         selectMan->clearCurves();
         auto keyframeMan = mEditor->keyframes();
-        if (layer->type() == Layer::VECTOR) { keyframeMan->currentVectorImage(layer)->deleteSelection(); }
-        if (layer->type() == Layer::BITMAP) { keyframeMan->currentBitmapImage(layer)->clear(selectMan->mySelectionRect()); }
-        mEditor->backups()->clearSelection();
+        if (layer->type() == Layer::VECTOR) {
+            keyframeMan->currentVectorImage(layer)->deleteSelection();
+            mEditor->backups()->vector("Vector: Clear Selection");
+        }
+        if (layer->type() == Layer::BITMAP) {
+            keyframeMan->currentBitmapImage(layer)->clear(selectMan->mySelectionRect());
+            mEditor->backups()->bitmap("Bitmap: Clear Selection");
+        }
         updateAllFrames();
     }
 }
