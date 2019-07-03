@@ -174,9 +174,9 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     {
         if (selectMan->isOutsideSelectionArea(getCurrentPoint()))
         {
-            //mEditor->backups()->saveStates();
             applyTransformation();
             mEditor->deselectAll();
+            mEditor->backups()->deselect();
         }
     }
 
@@ -269,10 +269,12 @@ void MoveTool::setAnchorToLastPoint()
 
 void MoveTool::cancelChanges()
 {
+    mEditor->backups()->saveStates();
     auto selectMan = mEditor->select();
     mScribbleArea->cancelTransformedSelection();
     selectMan->resetSelectionProperties();
     mEditor->deselectAll();
+    mEditor->backups()->deselect();
 }
 
 void MoveTool::applySelectionChanges()
