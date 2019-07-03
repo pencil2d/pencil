@@ -63,7 +63,6 @@ class AddBitmapElement : public BackupElement
 public:
     AddBitmapElement(const BitmapImage* backupBitmap,
                      const int& backupLayerId,
-                     const int& backupFrameIndex,
                      QString description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
@@ -85,9 +84,6 @@ public:
     BitmapImage* oldBitmap = nullptr;
     BitmapImage* newBitmap = nullptr;
 
-    BitmapImage* oldBufferImage = nullptr;
-    Layer* layer = nullptr;
-
     bool isFirstRedo = true;
 
     void undo() override;
@@ -101,7 +97,6 @@ class AddVectorElement : public BackupElement
 {
 public:
     AddVectorElement(const VectorImage* backupVector,
-                     const int& backupFrameIndex,
                      const int& backupLayerId,
                      QString description,
                      Editor* editor,

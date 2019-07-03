@@ -51,7 +51,6 @@ BackupElement::~BackupElement()
 
 AddBitmapElement::AddBitmapElement(const BitmapImage* backupBitmap,
                                    const int& backupLayerId,
-                                   const int& backupFrameIndex,
                                    QString description,
                                    Editor *editor,
                                    QUndoCommand *parent) : BackupElement(editor, parent)
@@ -59,7 +58,7 @@ AddBitmapElement::AddBitmapElement(const BitmapImage* backupBitmap,
 
     oldBitmap = backupBitmap->clone();
 
-    oldFrameIndex = backupFrameIndex;
+    oldFrameIndex = oldBitmap->pos();
     newLayerIndex = editor->currentLayerIndex();
     oldLayerId = backupLayerId;
 
@@ -89,7 +88,7 @@ AddBitmapElement::AddBitmapElement(const BitmapImage* backupBitmap,
 
 void AddBitmapElement::undo()
 {
-    layer = editor()->layers()->findLayerById(oldLayerId);
+    Layer* layer = editor()->layers()->findLayerById(oldLayerId);
 
     if (editor()->select()->somethingSelected())
     {
@@ -97,7 +96,7 @@ void AddBitmapElement::undo()
     }
     else
     {
-        *static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(oldFrameIndex) = *oldBitmap;
+        static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(oldBitmap);
     }
 
     editor()->scrubTo(oldFrameIndex);
@@ -112,7 +111,8 @@ void AddBitmapElement::redo()
     }
     else
     {
-        *static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(newFrameIndex) = *newBitmap;
+        Layer* layer = editor()->layers()->findLayerById(newLayerId);
+        static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(newBitmap);
     }
 
     editor()->scrubTo(newFrameIndex);
@@ -121,51 +121,47 @@ void AddBitmapElement::redo()
 void AddBitmapElement::undoTransform()
 {
     const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
-    ScribbleArea* scribbleArea = editor()->getScribbleArea();
 
     BitmapImage* oldBitmapClone = oldBitmap->clone();
 
     // make the cloned bitmap the new canvas image.
-    *static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(oldFrameIndex) = *oldBitmapClone;
+    Layer* layer = editor()->layers()->findLayerById(oldLayerId);
+    static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(oldBitmapClone);
 
     // set selections so the transform will be correct
     auto selectMan = editor()->select();
 
+    selectMan->setSelectionTransform(childElem->oldTransform);
     selectMan->setSelectionRect(childElem->oldSelectionRect);
     selectMan->setTempTransformedSelectionRect(childElem->oldSelectionRectTemp);
     selectMan->setTransformedSelectionRect(childElem->oldTransformedSelectionRect);
     selectMan->setRotation(childElem->oldRotationAngle);
     selectMan->setSomethingSelected(childElem->oldIsSelected);
 
-    scribbleArea->paintTransformedSelection();
+    editor()->canvas()->paintTransformedSelection(layer, oldBitmapClone, childElem->oldTransform, childElem->oldSelectionRect);
 }
 
 void AddBitmapElement::redoTransform()
 {
     const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
-    ScribbleArea* scribbleArea = editor()->getScribbleArea();
-    layer = editor()->layers()->findLayerById(newLayerId);
+    Layer* layer = editor()->layers()->findLayerById(newLayerId);
 
     BitmapImage* newBitmapClone = newBitmap->clone();
 
-    *static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(newFrameIndex) = *newBitmapClone;
+    static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(newBitmapClone);
 
-    // reset transform and set selections
     auto selectMan = editor()->select();
-    selectMan->setSelectionTransform(QTransform());
+    selectMan->setSelectionTransform(childElem->newTransform);
     selectMan->setSelectionRect(childElem->newSelectionRect);
     selectMan->setTempTransformedSelectionRect(childElem->newSelectionRectTemp);
     selectMan->setTransformedSelectionRect(childElem->newTransformedSelectionRect);
     selectMan->setRotation(childElem->newRotationAngle);
     selectMan->setSomethingSelected(childElem->newIsSelected);
 
-    // finally paint the transformation to apply to canvas
-    scribbleArea->paintTransformedSelection();
+    editor()->canvas()->paintTransformedSelection(layer, newBitmapClone, childElem->oldTransform, childElem->oldSelectionRect);
 }
 
-
 AddVectorElement::AddVectorElement(const VectorImage* backupVector,
-                                   const int& backupFrameIndex,
                                    const int& backupLayerId,
                                    QString description,
                                    Editor* editor,
@@ -173,7 +169,7 @@ AddVectorElement::AddVectorElement(const VectorImage* backupVector,
 {
 
     oldVector = backupVector->clone();
-    oldFrameIndex = backupFrameIndex;
+    oldFrameIndex = oldVector->pos();
 
     newLayerIndex = editor->layers()->currentLayerIndex();
     newFrameIndex = editor->currentFrame();

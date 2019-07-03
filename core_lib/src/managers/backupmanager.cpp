@@ -136,7 +136,6 @@ void BackupManager::bitmap(const QString& description)
     if (!mBitmap) { return; }
     AddBitmapElement* element = new AddBitmapElement(mBitmap,
                                                      mLayerId,
-                                                     mFrameIndex,
                                                      description,
                                                      editor());
 
@@ -160,7 +159,6 @@ void BackupManager::vector(const QString& description)
 {
     if (!mVector) { return; }
     AddVectorElement* element = new AddVectorElement(mVector,
-                                                     mFrameIndex,
                                                      mLayerId,
                                                      description,
                                                      editor());
