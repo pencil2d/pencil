@@ -181,6 +181,7 @@ public: //slots
 
 signals:
     void needPaint();
+    void needPaintAtFrame(int frameIndex);
 
 protected:
     // Need to move to somewhere...

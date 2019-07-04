@@ -749,6 +749,7 @@ void ImportBitmapElement::undo()
         editor()->addKeyFrameToLayerId(oldLayerId, key.first, true);
         static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(key.second, key.second->pos());
     }
+    editor()->updateCurrentFrame();
 }
 
 void ImportBitmapElement::redo()
@@ -766,6 +767,7 @@ void ImportBitmapElement::redo()
         editor()->addKeyFrameToLayerId(newLayerId, key.first, true);
         static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(key.second, key.second->pos());
     }
+    editor()->updateCurrentFrame();
 }
 
 CameraMotionElement::CameraMotionElement(const QPointF& backupTranslation,

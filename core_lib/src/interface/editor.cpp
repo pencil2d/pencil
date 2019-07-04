@@ -626,7 +626,7 @@ void Editor::deselectAll()
 
 void Editor::updateFrame(int frameNumber)
 {
-    mScribbleArea->updateFrame(frameNumber);
+    emit needPaintAtFrame(frameNumber);
 }
 
 void Editor::updateFrameAndVector(int frameNumber)
@@ -636,7 +636,7 @@ void Editor::updateFrameAndVector(int frameNumber)
 
 void Editor::updateCurrentFrame()
 {
-    mScribbleArea->updateCurrentFrame();
+    emit needPaint();
 }
 
 void Editor::setCurrentLayerIndex(int i)
