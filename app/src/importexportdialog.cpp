@@ -93,6 +93,11 @@ void ImportExportDialog::hideOptionsGroupBox(bool hide)
     ui->optionsGroupBox->setHidden(hide);
 }
 
+void ImportExportDialog::hidePreviewGroupBox(bool hide)
+{
+    ui->previewGroupBox->setHidden(hide);
+}
+
 QGroupBox* ImportExportDialog::getPreviewGroupBox()
 {
     return ui->previewGroupBox;

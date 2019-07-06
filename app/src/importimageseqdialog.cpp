@@ -41,6 +41,7 @@ ImportImageSeqDialog::ImportImageSeqDialog(QWidget* parent, Mode mode, FileType 
         hideOptionsGroupBox(true);
     } else {
         hideInstructionsLabel(true);
+        hidePreviewGroupBox(true);
     }
 
     uiGroupBoxPreview = new Ui::ImportImageSeqPreviewGroupBox;
