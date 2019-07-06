@@ -619,7 +619,7 @@ Status ActionCommands::addNewBitmapLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Bitmap Layer"), &ok);
+                                         mEditor->layers()->nameSuggestLayer(tr("Bitmap Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createBitmapLayer(text);
@@ -632,7 +632,7 @@ Status ActionCommands::addNewVectorLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Vector Layer"), &ok);
+                                         mEditor->layers()->nameSuggestLayer(tr("Vector Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
@@ -645,7 +645,7 @@ Status ActionCommands::addNewCameraLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         tr("Camera Layer"), &ok);
+                                         mEditor->layers()->nameSuggestLayer(tr("Camera Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createCameraLayer(text);
@@ -658,7 +658,7 @@ Status ActionCommands::addNewSoundLayer()
     bool ok = false;
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
-                                                 tr("Sound Layer"), &ok);
+                                                 mEditor->layers()->nameSuggestLayer(tr("Sound Layer")), &ok);
     if (ok && !strLayerName.isEmpty())
     {
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
