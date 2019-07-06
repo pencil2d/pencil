@@ -144,6 +144,7 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
+    void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void showLayerNotVisibleWarning();
     void swapLayers(int i, int j);
@@ -166,6 +167,11 @@ public: //slots
     void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
     bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
     void resetAutoSaveCounter();
+
+    void createNewBitmapLayer(const QString& name);
+    void createNewVectorLayer(const QString& name);
+    void createNewSoundLayer(const QString& name);
+    void createNewCameraLayer(const QString& name);
 
 protected:
     // Need to move to somewhere...

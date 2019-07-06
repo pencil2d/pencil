@@ -619,7 +619,7 @@ Status ActionCommands::addNewBitmapLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         nameSuggest(tr("Bitmap Layer")), &ok);
+                                         tr("Bitmap Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createBitmapLayer(text);
@@ -632,7 +632,7 @@ Status ActionCommands::addNewVectorLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         nameSuggest(tr("Vector Layer")), &ok);
+                                         tr("Vector Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
@@ -645,7 +645,7 @@ Status ActionCommands::addNewCameraLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         nameSuggest(tr("Camera Layer")), &ok);
+                                         tr("Camera Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createCameraLayer(text);
@@ -658,7 +658,7 @@ Status ActionCommands::addNewSoundLayer()
     bool ok = false;
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
-                                                 nameSuggest(tr("Sound Layer")), &ok);
+                                                 tr("Sound Layer"), &ok);
     if (ok && !strLayerName.isEmpty())
     {
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -688,34 +688,6 @@ Status ActionCommands::deleteCurrentLayer()
     }
     return Status::OK;
 }
-
-QString ActionCommands::nameSuggest(QString s)
-{
-    LayerManager* layerMgr = mEditor->layers();
-    // if no layers: return 's'
-    if (layerMgr->count() == 0)
-    {
-        return s;
-    }
-    QVector<QString> sLayers;
-    // fill Vector with layer names
-    for (int i = 0; i < layerMgr->count(); i++)
-    {
-        sLayers.append(layerMgr->getLayer(i)->name());
-    }
-    // if 's' is not in list, then return 's'
-    if (!sLayers.contains(s))
-    {
-        return s;
-    }
-    int j = 2;
-    QString tmp = s;
-    do {
-        tmp = s + " " + QString::number(j++);
-    } while (sLayers.contains(tmp));
-    return tmp;
-}
-
 
 void ActionCommands::help()
 {

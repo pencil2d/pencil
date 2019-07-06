@@ -46,7 +46,11 @@ signals:
 
 protected:
     QGroupBox* getOptionsGroupBox();
+    QGroupBox* getPreviewGroupBox();
     void setFileExtension(QString extension);
+    void hideOptionsGroupBox(bool hide);
+    void hideInstructionsLabel(bool hide);
+    void setInstructionsLabel(const QString& text);
 
 private slots:
     void browse();

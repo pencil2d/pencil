@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>455</width>
-    <height>146</height>
+    <height>156</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,6 +23,13 @@
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="instructionsLabel">
+     <property name="text">
+      <string>Instructions</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QGroupBox" name="fileGroupBox">
      <property name="enabled">
@@ -56,6 +63,13 @@
     <widget class="QGroupBox" name="optionsGroupBox">
      <property name="title">
       <string>Options</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="previewGroupBox">
+     <property name="title">
+      <string>Imports</string>
      </property>
     </widget>
    </item>

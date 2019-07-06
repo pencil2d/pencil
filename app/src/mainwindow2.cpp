@@ -775,176 +775,41 @@ void MainWindow2::importImage()
 
 void MainWindow2::importImageSequence()
 {
+    mIsImportingImageSequence = true;
+
     ImportImageSeqDialog* imageSeqDialog = new ImportImageSeqDialog(this);
     OnScopeExit(delete imageSeqDialog);
+    imageSeqDialog->setCore(mEditor);
+
+    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
 
     imageSeqDialog->exec();
     if (imageSeqDialog->result() == QDialog::Rejected)
     {
         return;
     }
-
-    // Flag this so we don't prompt the user about auto-save in the middle of the import.
-    mIsImportingImageSequence = true;
-
-    QStringList files = imageSeqDialog->getFilePaths();
-    int number = imageSeqDialog->getSpace();
-
-    // Show a progress dialog, as this can take a while if you have lots of images.
-    QProgressDialog progress(tr("Importing image sequence..."), tr("Abort"), 0, 100, this);
-    hideQuestionMark(progress);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-
-    int totalImagesToImport = files.count();
-    progress.setMaximum(totalImagesToImport);
-    int imagesImportedSoFar = 0;
-
-    QString failedFiles;
-    bool failedImport = false;
-    for (const QString& strImgFile : files)
-    {
-        QString strImgFileLower = strImgFile.toLower();
-
-        if (strImgFileLower.endsWith(".png") ||
-            strImgFileLower.endsWith(".jpg") ||
-            strImgFileLower.endsWith(".jpeg") ||
-            strImgFileLower.endsWith(".bmp") ||
-            strImgFileLower.endsWith(".tif") ||
-            strImgFileLower.endsWith(".tiff"))
-        {
-            mEditor->importImage(strImgFile);
-
-            imagesImportedSoFar++;
-            progress.setValue(imagesImportedSoFar);
-            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-
-            if (progress.wasCanceled())
-            {
-                break;
-            }
-        }
-        else
-        {
-            failedFiles += strImgFile + "\n";
-            if (!failedImport)
-            {
-                failedImport = true;
-            }
-        }
-
-        for (int i = 1; i < number; i++)
-        {
-            mEditor->scrubForward();
-        }
-    }
-
-    if (failedImport)
-    {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("was unable to import") + failedFiles,
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
-    progress.close();
+    imageSeqDialog->importArbitrarySequence();
 
     mIsImportingImageSequence = false;
 }
 
 void MainWindow2::importImageSequenceNumbered()
 {
-    FileDialog fileDialog(this);
-    QString strFilePath = fileDialog.openFile(FileType::IMAGE);
+    ImportImageSeqDialog* imageSeqDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::IMAGE, ImportCriteria::Numbered);
+    OnScopeExit(delete imageSeqDialog);
+    imageSeqDialog->setCore(mEditor);
 
-    if (strFilePath.isEmpty()) { return; }
-    if (!QFile::exists(strFilePath)) { return; }
+    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
 
-    addLayerByFilename(strFilePath);
-}
-
-void MainWindow2::addLayerByFilename(QString strFilePath)
-{
-    // local vars for testing file validity
-    int dot = strFilePath.lastIndexOf(".");
-    int slash = strFilePath.lastIndexOf("/");
-    QString fName = strFilePath.mid(slash + 1);
-    QString path = strFilePath.left(slash + 1);
-    QString digit = strFilePath.mid(slash + 1, dot - slash - 1);
-
-    // Find number of digits (min: 1, max: digit.length - 1)
-    int digits = 0;
-    for (int i = digit.length() - 1; i > 0; i--)
+    mIsImportingImageSequence = true;
+    imageSeqDialog->exec();
+    if (imageSeqDialog->result() == QDialog::Rejected)
     {
-        if (digit.at(i).isDigit())
-        {
-            digits++;
-        }
-        else
-        {
-            break;
-        }
+        return;
     }
-    if (digits < 1) { return; }
-    digit = strFilePath.mid(dot - digits, digits);
-    QString prefix = strFilePath.mid(slash + 1, dot - slash - digits - 1);
-    QString suffix = strFilePath.mid(dot, strFilePath.length() - 1);
 
-    QDir dir = strFilePath.left(strFilePath.lastIndexOf("/"));
-    QStringList sList = dir.entryList(QDir::Files, QDir::Name);
-    if (sList.isEmpty()) { return; }
-
-    // List of files is not empty. Let's go find the relevant files
-    QStringList finalList;
-    int validLength = prefix.length() + digit.length() + suffix.length();
-    for (int i = 0; i < sList.size(); i++)
-    {
-        if (sList[i].startsWith(prefix) &&
-                sList[i].length() == validLength &&
-                sList[i].mid(sList[i].lastIndexOf(".") - digits, digits).toInt() > 0 &&
-                sList[i].endsWith(suffix))
-        {
-            finalList.append(sList[i]);
-        }
-    }
-    if (finalList.isEmpty()) { return; }
-
-    // List of relevant files is not empty. Let's validate them
-    dot = finalList[0].lastIndexOf(".");
-
-    QString msg = "";
-    for (int i = 0; i < finalList.size(); i++)
-    {
-        if (!(finalList[i].mid(dot - digits, digits).toInt()
-                && (finalList[i].mid(dot - digits, digits).toInt() > 0)))
-        {
-            msg = tr("Illegal numbering");
-        }
-        if (msg.length() > 0)
-        {
-            QMessageBox msgBox;
-            msgBox.setText(msg);
-            msgBox.exec();
-            return;
-        }
-    }
-    prefix = mCommands->nameSuggest(prefix);
-    mEditor->layers()->createBitmapLayer(prefix);
-    Layer *layer = mEditor->layers()->findLayerByName(prefix);
-    Q_ASSERT(layer != nullptr);
-    LayerManager* lMgr = mEditor->layers();
-    lMgr->setCurrentLayer(layer);
-    for (int i = 0; i < finalList.size(); i++)
-    {
-        mEditor->scrubTo(finalList[i].mid(dot - digits, digits).toInt());
-        bool ok = mEditor->importImage(path + finalList[i]);
-        if (!ok) { return;}
-        layer->addNewKeyFrameAt(finalList[i].mid(dot - digits, digits).toInt());
-    }
-    ui->scribbleArea->updateCurrentFrame();
-    mTimeLine->updateContent();
+    imageSeqDialog->importNumberedSequence();
+    mIsImportingImageSequence = false;
 }
 
 void MainWindow2::importGIF()

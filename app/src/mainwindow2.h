@@ -79,7 +79,6 @@ public:
     void importImage();
     void importImageSequence();
     void importImageSequenceNumbered();
-    void addLayerByFilename(QString strFilePath);
     void importMovie();
     void importGIF();
 

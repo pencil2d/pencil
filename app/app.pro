@@ -92,6 +92,7 @@ SOURCES += \
     src/checkupdatesdialog.cpp
 
 FORMS += \
+    ui/importimageseqpreview.ui \
     ui/mainwindow2.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \

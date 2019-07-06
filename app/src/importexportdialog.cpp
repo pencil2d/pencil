@@ -55,6 +55,16 @@ QString ImportExportDialog::getAbsolutePath()
     return info.absolutePath();
 }
 
+void ImportExportDialog::hideInstructionsLabel(bool hide)
+{
+    ui->instructionsLabel->setHidden(hide);
+}
+
+void ImportExportDialog::setInstructionsLabel(const QString& text)
+{
+    ui->instructionsLabel->setText(text);
+}
+
 void ImportExportDialog::init()
 {
     switch (mMode)
@@ -76,6 +86,16 @@ void ImportExportDialog::init()
 QGroupBox* ImportExportDialog::getOptionsGroupBox()
 {
     return ui->optionsGroupBox;
+}
+
+void ImportExportDialog::hideOptionsGroupBox(bool hide)
+{
+    ui->optionsGroupBox->setHidden(hide);
+}
+
+QGroupBox* ImportExportDialog::getPreviewGroupBox()
+{
+    return ui->previewGroupBox;
 }
 
 void ImportExportDialog::setFileExtension(QString extension)
