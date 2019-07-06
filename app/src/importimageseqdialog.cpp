@@ -37,7 +37,7 @@ ImportImageSeqDialog::ImportImageSeqDialog(QWidget* parent, Mode mode, FileType 
         setInstructionsLabel(tr("Select an image that matches the criteria: Name000.png, eg. Joe001.png \n"
                              "The preview box below will show the rest of the images matching the same criteria.\n\n"
                              "A new layer will be created and the imports will be added to that layer \n"
-                             "Keyframes will be added based on the image index, eg. Name002.png, will create a keyframe on pos 2"));
+                             "Keyframes will be added based on the image index, eg. Name002.png, will create a keyframe on pos 2 \non the timeline."));
         hideOptionsGroupBox(true);
     } else {
         hideInstructionsLabel(true);
