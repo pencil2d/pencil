@@ -244,7 +244,7 @@ void MainWindow2::createMenus()
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
-    connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importImageSequenceNumbered);
+    connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importPredefinedImageSet);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
@@ -793,9 +793,9 @@ void MainWindow2::importImageSequence()
     mIsImportingImageSequence = false;
 }
 
-void MainWindow2::importImageSequenceNumbered()
+void MainWindow2::importPredefinedImageSet()
 {
-    ImportImageSeqDialog* imageSeqDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::IMAGE, ImportCriteria::Numbered);
+    ImportImageSeqDialog* imageSeqDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::IMAGE, ImportCriteria::PredefinedSet);
     OnScopeExit(delete imageSeqDialog);
     imageSeqDialog->setCore(mEditor);
 
@@ -808,7 +808,7 @@ void MainWindow2::importImageSequenceNumbered()
         return;
     }
 
-    imageSeqDialog->importNumberedSequence();
+    imageSeqDialog->importPredefinedSet();
     mIsImportingImageSequence = false;
 }
 

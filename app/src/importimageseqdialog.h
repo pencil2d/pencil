@@ -39,7 +39,7 @@ struct NumberedFiles {
     Status pathsValid() const;
 };
 
-enum ImportCriteria { Arbitrary, Numbered };
+enum ImportCriteria { Arbitrary, PredefinedSet };
 
 class ImportImageSeqDialog : public ImportExportDialog
 {
@@ -53,7 +53,7 @@ public:
     ~ImportImageSeqDialog();
 
     void importArbitrarySequence();
-    void importNumberedSequence();
+    void importPredefinedSet();
     int getSpace();
 
     void setCore(Editor* editor) { mEditor = editor; }
@@ -75,6 +75,10 @@ private:
     int keyFramePosFromFilePath(const QString& path);
 
 private:
+
+    void setupLayout();
+    void setupPredefinedLayout();
+
     Ui::ImportImageSeqOptions *uiOptionsBox;
     Ui::ImportImageSeqPreviewGroupBox *uiGroupBoxPreview;
 

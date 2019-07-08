@@ -30,37 +30,55 @@ GNU General Public License for more details.
 ImportImageSeqDialog::ImportImageSeqDialog(QWidget* parent, Mode mode, FileType fileType, ImportCriteria importCriteria) :
     ImportExportDialog(parent, mode, fileType), mParent(parent), mImportCriteria(importCriteria), mFileType(fileType)
 {
+
     uiOptionsBox = new Ui::ImportImageSeqOptions;
     uiOptionsBox->setupUi(getOptionsGroupBox());
-
-    if (importCriteria == ImportCriteria::Numbered) {
-        setInstructionsLabel(tr("Select an image that matches the criteria: Name000.png, eg. Joe001.png \n"
-                             "The preview box below will show the rest of the images matching the same criteria.\n\n"
-                             "A new layer will be created and the imports will be added to that layer \n"
-                             "Keyframes will be added based on the image index, eg. Name002.png, will create a keyframe on pos 2 \non the timeline."));
-        hideOptionsGroupBox(true);
-    } else {
-        hideInstructionsLabel(true);
-        hidePreviewGroupBox(true);
-    }
 
     uiGroupBoxPreview = new Ui::ImportImageSeqPreviewGroupBox;
     uiGroupBoxPreview->setupUi(getPreviewGroupBox());
 
-    if (fileType == FileType::GIF) {
+    if (importCriteria == ImportCriteria::PredefinedSet) {
+        setupPredefinedLayout();
+    } else {
+        setupLayout();
+    }
+}
+
+void ImportImageSeqDialog::setupLayout()
+{
+
+    hideInstructionsLabel(true);
+    hidePreviewGroupBox(true);
+
+    if (mFileType == FileType::GIF) {
         setWindowTitle(tr("Import Animated GIF"));
     } else {
         setWindowTitle(tr("Import image sequence"));
     }
 
     connect(uiOptionsBox->spaceSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ImportImageSeqDialog::setSpace);
+}
+
+void ImportImageSeqDialog::setupPredefinedLayout()
+{
+    setWindowTitle(tr("Import predefined set"));
+    setInstructionsLabel(tr("Select an image that matches the criteria: Name000.png, eg. Joe001.png \n"
+                         "The preview box below will show the rest of the images matching the same criteria.\n\n"
+                         "A new layer will be created and the imports will be added to that layer \n"
+                         "Keyframes will be added based on the image index, eg. Name002.png, will create a keyframe on pos 2 \non the timeline."));
+    hideOptionsGroupBox(true);
+
     connect(this, &ImportImageSeqDialog::filePathsChanged, this, &ImportImageSeqDialog::updatePreviewList);
 }
 
 ImportImageSeqDialog::~ImportImageSeqDialog()
 {
-    delete uiOptionsBox;
-    delete uiGroupBoxPreview;
+    if (uiOptionsBox) {
+        delete uiOptionsBox;
+    }
+    if (uiGroupBoxPreview) {
+        delete uiGroupBoxPreview;
+    }
 }
 
 int ImportImageSeqDialog::getSpace()
@@ -71,7 +89,7 @@ int ImportImageSeqDialog::getSpace()
 void ImportImageSeqDialog::updatePreviewList(const QStringList& list)
 {
 
-    if (mImportCriteria == ImportCriteria::Numbered)
+    if (mImportCriteria == ImportCriteria::PredefinedSet)
     {
         uiGroupBoxPreview->listWidget->addItems(getFilePaths());
     } else {
@@ -232,7 +250,7 @@ NumberedFiles ImportImageSeqDialog::numberedFiles()
     return numberedFiles;
 }
 
-void ImportImageSeqDialog::importNumberedSequence()
+void ImportImageSeqDialog::importPredefinedSet()
 {
     NumberedFiles numbFiles = numberedFiles();
 
@@ -258,7 +276,7 @@ void ImportImageSeqDialog::importNumberedSequence()
 
 QStringList ImportImageSeqDialog::getFilePaths()
 {
-    if (mImportCriteria == ImportCriteria::Numbered)
+    if (mImportCriteria == ImportCriteria::PredefinedSet)
     {
         NumberedFiles numFiles = numberedFiles();
 

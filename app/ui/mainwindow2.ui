@@ -342,7 +342,7 @@
   </action>
   <action name="actionImport_ImageSeqNum">
    <property name="text">
-    <string>Image Sequence Numbered...</string>
+    <string>Image Predefined set...</string>
    </property>
   </action>
   <action name="actionUndo">
