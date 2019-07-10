@@ -21,11 +21,14 @@ GNU General Public License for more details.
 #include "util.h"
 
 #include "editor.h"
+#include "predefinedsetmodel.h"
 
 #include <QProgressDialog>
 #include <QMessageBox>
 #include <QDir>
 #include <QtDebug>
+#include <QDialogButtonBox>
+#include <QPushButton>
 
 ImportImageSeqDialog::ImportImageSeqDialog(QWidget* parent, Mode mode, FileType fileType, ImportCriteria importCriteria) :
     ImportExportDialog(parent, mode, fileType), mParent(parent), mImportCriteria(importCriteria), mFileType(fileType)
@@ -61,11 +64,9 @@ void ImportImageSeqDialog::setupLayout()
 
 void ImportImageSeqDialog::setupPredefinedLayout()
 {
-    setWindowTitle(tr("Import predefined set"));
-    setInstructionsLabel(tr("Select an image that matches the criteria: Name000.png, eg. Joe001.png \n"
-                         "The preview box below will show the rest of the images matching the same criteria.\n\n"
-                         "A new layer will be created and the imports will be added to that layer \n"
-                         "Keyframes will be added based on the image index, eg. Name002.png, will create a keyframe on pos 2 \non the timeline."));
+    setWindowTitle(tr("Import predefined keyframe set"));
+    setInstructionsLabel(tr("Select an image that matches the criteria: MyFile000.png, eg. Joe001.png \n"
+                         "The importer will search and find images matching the same criteria. You can see the result in the preview box below."));
     hideOptionsGroupBox(true);
 
     connect(this, &ImportImageSeqDialog::filePathsChanged, this, &ImportImageSeqDialog::updatePreviewList);
@@ -88,13 +89,56 @@ int ImportImageSeqDialog::getSpace()
 
 void ImportImageSeqDialog::updatePreviewList(const QStringList& list)
 {
-
+    Q_UNUSED(list);
     if (mImportCriteria == ImportCriteria::PredefinedSet)
     {
-        uiGroupBoxPreview->listWidget->addItems(getFilePaths());
-    } else {
-        uiGroupBoxPreview->listWidget->addItems(list);
+        const PredefinedKeySet& keySet = generatePredefinedKeySet();
+
+        Status status = Status::OK;
+        status = validateKeySet(keySet, list);
+
+        QPushButton* okButton = getDialogButtonBox()->button(QDialogButtonBox::StandardButton::Ok);
+        if (status == Status::FAIL)
+        {
+            QMessageBox::warning(mParent,
+                                 status.title(),
+                                 status.description(),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+            okButton->setEnabled(false);
+        } else {
+            okButton->setEnabled(true);
+        }
+        setPreviewModel(keySet);
     }
+}
+
+const PredefinedKeySet ImportImageSeqDialog::generatePredefinedKeySet() const
+{
+    PredefinedKeySet keySet;
+    const PredefinedKeySetParams& setParams = predefinedKeySetParams();
+
+    const QStringList& filenames = setParams.filenames;
+    const int& digits = setParams.digits;
+    const QString& folderPath = setParams.folderPath;
+
+    for (int i = 0; i < filenames.size(); i++)
+    {
+        const int& frameIndex = filenames[i].mid(setParams.dot - digits, digits).toInt();
+        const QString& absolutePath = folderPath + filenames[i];
+
+        keySet.insert(frameIndex, absolutePath);
+    }
+    keySet.setLayerName(setParams.prefix);
+    return keySet;
+}
+
+void ImportImageSeqDialog::setPreviewModel(const PredefinedKeySet& keySet)
+{
+    PredefinedSetModel* previewModel = new PredefinedSetModel(nullptr, keySet);
+    uiGroupBoxPreview->tableView->setModel(previewModel);
+    uiGroupBoxPreview->tableView->setColumnWidth(0, 500);
+    uiGroupBoxPreview->tableView->setColumnWidth(1, 100);
 }
 
 ImportExportDialog::Mode ImportImageSeqDialog::getMode()
@@ -179,10 +223,10 @@ void ImportImageSeqDialog::importArbitrarySequence()
     progress.close();
 }
 
-NumberedFiles ImportImageSeqDialog::numberedFiles()
+const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() const
 {
     QString strFilePath = getFilePath();
-    NumberedFiles numberedFiles;
+    PredefinedKeySetParams setParams;
 
     // local vars for testing file validity
     int dot = strFilePath.lastIndexOf(".");
@@ -207,7 +251,7 @@ NumberedFiles ImportImageSeqDialog::numberedFiles()
 
     if (digits < 1)
     {
-        return numberedFiles;
+        return setParams;
     }
 
     digit = strFilePath.mid(dot - digits, digits);
@@ -216,7 +260,7 @@ NumberedFiles ImportImageSeqDialog::numberedFiles()
 
     QDir dir = strFilePath.left(strFilePath.lastIndexOf("/"));
     QStringList sList = dir.entryList(QDir::Files, QDir::Name);
-    if (sList.isEmpty()) { return numberedFiles; }
+    if (sList.isEmpty()) { return setParams; }
 
     // List of files is not empty. Let's go find the relevant files
     QStringList finalList;
@@ -231,7 +275,7 @@ NumberedFiles ImportImageSeqDialog::numberedFiles()
             finalList.append(sList[i]);
         }
     }
-    if (finalList.isEmpty()) { return numberedFiles; }
+    if (finalList.isEmpty()) { return setParams; }
 
     // List of relevant files is not empty. Let's validate them
     dot = finalList[0].lastIndexOf(".");
@@ -241,33 +285,47 @@ NumberedFiles ImportImageSeqDialog::numberedFiles()
         absolutePaths << path + fileName;
     }
 
-    numberedFiles.dot = dot;
-    numberedFiles.digits = digits;
-    numberedFiles.filenames = finalList;
-    numberedFiles.folderPath = path;
-    numberedFiles.absolutePaths = absolutePaths;
-    numberedFiles.prefix = prefix;
-    return numberedFiles;
+    setParams.dot = dot;
+    setParams.digits = digits;
+    setParams.filenames = finalList;
+    setParams.folderPath = path;
+    setParams.absolutePaths = absolutePaths;
+    setParams.prefix = prefix;
+    return setParams;
 }
 
 void ImportImageSeqDialog::importPredefinedSet()
 {
-    NumberedFiles numbFiles = numberedFiles();
+    PredefinedKeySet keySet = generatePredefinedKeySet();
 
-    const QStringList& list = numbFiles.filenames;
-    const int& dot = numbFiles.dot;
-    const int& digits = numbFiles.digits;
-    const QString& folderPath = numbFiles.folderPath;
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progress(tr("Importing images..."), tr("Abort"), 0, 100, mParent);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
 
-    mEditor->createNewBitmapLayer(numbFiles.prefix);
+    int totalImagesToImport = keySet.size();
+    int imagesImportedSoFar = 0;
+    progress.setMaximum(totalImagesToImport);
 
-    for (int i = 0; i < list.size(); i++)
+    mEditor->createNewBitmapLayer(keySet.layerName());
+
+    for (int i = 0; i < keySet.size(); i++)
     {
-        const int& frameIndex = list[i].mid(dot - digits, digits).toInt();
-        const QString& absolutePath = folderPath + list[i];
+        const int& frameIndex = keySet.keyFrameIndexAt(i);
+        const QString& filePath = keySet.filePathAt(i);
 
         mEditor->scrubTo(frameIndex);
-        bool ok = mEditor->importImage(absolutePath);
+        bool ok = mEditor->importImage(filePath);
+        imagesImportedSoFar++;
+
+        progress.setValue(imagesImportedSoFar);
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
+
+        if (progress.wasCanceled())
+        {
+            break;
+        }
+
         if (!ok) { return;}
     }
 
@@ -276,51 +334,30 @@ void ImportImageSeqDialog::importPredefinedSet()
 
 QStringList ImportImageSeqDialog::getFilePaths()
 {
-    if (mImportCriteria == ImportCriteria::PredefinedSet)
-    {
-        NumberedFiles numFiles = numberedFiles();
-
-        Status status = numFiles.pathsValid();
-        if (status == Status::OK) {
-            return numFiles.absolutePaths;
-        } else {
-            QMessageBox::warning(mParent,
-                                 status.title(),
-                                 status.description(),
-                                 QMessageBox::Ok,
-                                 QMessageBox::Ok);
-        }
-        return QStringList();
-    }
     return ImportExportDialog::getFilePaths();
 }
 
-Status NumberedFiles::pathsValid() const
+Status ImportImageSeqDialog::validateKeySet(const PredefinedKeySet& keySet, const QStringList& filepaths)
 {
     QString msg = "";
     QString failedPathsString;
 
     Status status = Status::OK;
 
-    if (filenames.isEmpty()) { status = Status::FAIL; }
+    if (filepaths.isEmpty()) { status = Status::FAIL; }
 
-    for (int i = 0; i < filenames.size(); i++)
+    for (int i = 0; i < filepaths.size(); i++)
     {
-        const int& frameIndex = filenames[i].mid(dot - digits, digits).toInt();
-        if (!(frameIndex && (frameIndex > 0)))
-        {
+        if (keySet.isEmpty()) {
             status = Status::FAIL;
-            failedPathsString += filenames[i] +  ", ";
+            failedPathsString += filepaths[i] +  ", ";
         }
     }
 
-    if (filenames.size() > 0 && status == Status::FAIL)
+    if (status == Status::FAIL)
     {
-        status.setTitle("Invalid paths");
-        status.setDescription(QString("The following files had one or more invalid names: ").arg(failedPathsString));
-    } else if (status == Status::FAIL) {
-        status.setTitle("Input file");
-        status.setDescription("The input file did not match the criteria for importing. Read the instructions and try again");
+        status.setTitle(tr("Invalid path"));
+        status.setDescription(QString(tr("The following file did not meet the criteria: \n%1 \n\nRead the instructions and try again")).arg(failedPathsString));
     }
 
     return status;

@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "importexportdialog.h"
 #include "ui_importexportdialog.h"
 #include <QFileInfo>
+#include <QDialogButtonBox>
 
 ImportExportDialog::ImportExportDialog(QWidget* parent, Mode eMode, FileType eFileType) : QDialog(parent)
 {
@@ -38,6 +39,12 @@ ImportExportDialog::~ImportExportDialog()
 {
     delete ui;
 }
+
+QDialogButtonBox* ImportExportDialog::getDialogButtonBox()
+{
+    return ui->buttonBox;
+}
+
 
 QString ImportExportDialog::getFilePath() const
 {

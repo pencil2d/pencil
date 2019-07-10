@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include "importexportdialog.h"
 #include "pencilerror.h"
+#include "predefinedsetmodel.h"
 
 class Editor;
 
@@ -28,15 +29,17 @@ class ImportImageSeqOptions;
 class ImportImageSeqPreviewGroupBox;
 }
 
-struct NumberedFiles {
+struct PredefinedKeySetParams {
     int dot;
     int digits;
     QStringList filenames;
+    QStringList absolutePaths;
     QString folderPath;
     QString prefix;
-    QStringList absolutePaths;
 
     Status pathsValid() const;
+
+    int count() const { return filenames.count();}
 };
 
 enum ImportCriteria { Arbitrary, PredefinedSet };
@@ -50,7 +53,7 @@ public:
                                   Mode mode = ImportExportDialog::Import,
                                   FileType fileType = FileType::IMAGE_SEQUENCE,
                                   ImportCriteria importCriteria = ImportCriteria::Arbitrary);
-    ~ImportImageSeqDialog();
+    ~ImportImageSeqDialog() override;
 
     void importArbitrarySequence();
     void importPredefinedSet();
@@ -69,15 +72,18 @@ private slots:
     void setSpace(int number);
     void updatePreviewList(const QStringList& list);
 
-    NumberedFiles numberedFiles();
+    const PredefinedKeySetParams predefinedKeySetParams() const;
 
 private:
     int keyFramePosFromFilePath(const QString& path);
 
 private:
 
+    const PredefinedKeySet generatePredefinedKeySet() const;
+    void setPreviewModel(const PredefinedKeySet& predefinedKeySet);
     void setupLayout();
     void setupPredefinedLayout();
+    Status validateKeySet(const PredefinedKeySet& keySet, const QStringList& filepaths);
 
     Ui::ImportImageSeqOptions *uiOptionsBox;
     Ui::ImportImageSeqPreviewGroupBox *uiGroupBoxPreview;

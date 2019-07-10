@@ -26,6 +26,8 @@ namespace Ui {
 class ImportExportDialog;
 }
 
+class QDialogButtonBox;
+
 class ImportExportDialog : public QDialog
 {
     Q_OBJECT
@@ -47,6 +49,8 @@ signals:
 protected:
     QGroupBox* getOptionsGroupBox();
     QGroupBox* getPreviewGroupBox();
+    QDialogButtonBox* getDialogButtonBox();
+
     void setFileExtension(QString extension);
     void hideOptionsGroupBox(bool hide);
     void hidePreviewGroupBox(bool hide);

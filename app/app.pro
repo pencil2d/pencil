@@ -35,6 +35,7 @@ INCLUDEPATH += \
 
 HEADERS += \
     src/mainwindow2.h \
+    src/predefinedsetmodel.h \
     src/shortcutfilter.h \
     src/timeline2.h \
     src/actioncommands.h \
@@ -65,6 +66,7 @@ HEADERS += \
 SOURCES += \
     src/main.cpp \
     src/mainwindow2.cpp \
+    src/predefinedsetmodel.cpp \
     src/shortcutfilter.cpp \
     src/timeline2.cpp \
     src/actioncommands.cpp \
