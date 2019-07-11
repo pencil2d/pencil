@@ -9,7 +9,10 @@ PegBarAlignmentDialog::PegBarAlignmentDialog(QWidget *parent) :
     ui(new Ui::PegBarAlignmentDialog)
 {
     ui->setupUi(this);
+    connect(ui->btnAlign, &QPushButton::clicked, this, &PegBarAlignmentDialog::alignOk);
+    connect(ui->lwLayers, &QListWidget::clicked, this, &PegBarAlignmentDialog::layerListUpdate);
 
+    ui->btnAlign->setEnabled(false);
     mLayernames.clear();
 }
 
@@ -29,17 +32,66 @@ void PegBarAlignmentDialog::setLayerList(QStringList layerList)
 
 QStringList PegBarAlignmentDialog::getLayerList()
 {
-    mLayernames.clear();
+    QStringList selectedLayers;
+    selectedLayers.clear();
     for (int i = 0; i < ui->lwLayers->count(); i++)
     {
         if (ui->lwLayers->item(i)->isSelected())
-            mLayernames.append(ui->lwLayers->item(i)->text());
+            selectedLayers.append(ui->lwLayers->item(i)->text());
     }
-    return mLayernames;
+    return selectedLayers;
 }
 
-void PegBarAlignmentDialog::setLabText(QString txt)
+void PegBarAlignmentDialog::setLabRefKey()
 {
-    ui->labRefKey->setText(txt);
+    ui->labRefKey->setText(refLayer + " - " + QString::number(refkey));
+}
+
+void PegBarAlignmentDialog::setAreaSelected(bool b)
+{
+    areaSelected = b;
+    setBtnAlignEnabled();
+}
+
+void PegBarAlignmentDialog::setReferenceSelected(bool b)
+{
+    referenceSelected = b;
+    setBtnAlignEnabled();
+}
+
+void PegBarAlignmentDialog::setLayerSelected(bool b)
+{
+    layerSelected = b;
+    setBtnAlignEnabled();
+}
+
+void PegBarAlignmentDialog::setBtnAlignEnabled()
+{
+    if (areaSelected && referenceSelected && layerSelected)
+        ui->btnAlign->setEnabled(true);
+    else
+        ui->btnAlign->setEnabled(false);
+}
+
+void PegBarAlignmentDialog::setRefLayer(QString s)
+{
+    refLayer = s;
+    setLabRefKey();
+}
+
+void PegBarAlignmentDialog::setRefKey(int i)
+{
+    refkey = i;
+    setLabRefKey();
+}
+
+void PegBarAlignmentDialog::alignOk()
+{
+    emit alignPressed();
+}
+
+void PegBarAlignmentDialog::layerListUpdate()
+{
+    emit layerListClicked();
 }
 

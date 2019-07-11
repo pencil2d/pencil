@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include <QMainWindow>
 #include "preferencemanager.h"
+#include "pegbaralignmentdialog.h"
 
 
 template<typename T> class QList;
@@ -66,6 +67,7 @@ public:
     void updateSaveState();
     void clearRecentFilesList();
     void pegBarReg();
+    void updatePegReg();
 
 public:
     void setOpacity(int opacity);
@@ -121,6 +123,8 @@ private:
 
     void changePlayState(bool isPlaying);
 
+    void alignPegs();
+
     void makeConnections(Editor*);
     void makeConnections(Editor*, ColorBox* colorBox);
     void makeConnections(Editor*, ColorInspector*);
@@ -147,6 +151,8 @@ private:
 
     // backup
     BackupElement* mBackupAtSave = nullptr;
+
+    PegBarAlignmentDialog* pegreg = nullptr;
 
 private:
     ActionCommands* mCommands = nullptr;

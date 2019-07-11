@@ -45,7 +45,6 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "selectionmanager.h"
 
-#include "pegbaralignmentdialog.h"
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
@@ -426,24 +425,8 @@ void MainWindow2::pegBarReg()
                                  QMessageBox::Ok);
         return;
     }
-    if (!mEditor->select()->somethingSelected())
-    {
-        QMessageBox::information(this, nullptr,
-                                 tr("Please select an area around center peg!\n"
-                                    "Area must cover all pegs to be aligned."),
-                                 QMessageBox::Ok);
-        return;
-    }
 
-    if (!mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
-    {
-        QMessageBox::information(this, nullptr,
-                                 tr("No reference Key selected!"),
-                                 QMessageBox::Ok);
-        return;
-    }
-
-    PegBarAlignmentDialog* pegreg = new PegBarAlignmentDialog(this);
+    pegreg = new PegBarAlignmentDialog(this);
     QStringList bitmaplayers;
     for (int i = 0; i < mEditor->layers()->count(); i++)
     {
@@ -452,30 +435,51 @@ void MainWindow2::pegBarReg()
             bitmaplayers.append(mEditor->layers()->getLayer(i)->name());
         }
     }
-
     pegreg->setLayerList(bitmaplayers);
-    pegreg->setLabText(mEditor->layers()->currentLayer()->name() + ", " + QString::number(mEditor->currentFrame()));
-    int ret = pegreg->exec();
-    bitmaplayers = pegreg->getLayerList();
-    if (bitmaplayers.isEmpty())
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updatePegReg);
+    connect(mEditor, &Editor::currentFrameChanged, this, &MainWindow2::updatePegReg);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updatePegReg);
+    connect(pegreg, &PegBarAlignmentDialog::alignPressed, this, &MainWindow2::alignPegs);
+    connect(pegreg, &PegBarAlignmentDialog::layerListClicked, this, &MainWindow2::updatePegReg);
+    pegreg->setRefLayer(mEditor->layers()->currentLayer()->name());
+    pegreg->setRefKey(mEditor->currentFrame());
+    pegreg->setLabRefKey();
+    pegreg->show();
+
+    updatePegReg();
+}
+
+void MainWindow2::updatePegReg()
+{
+    // is something selected in scribblearea?
+    if (mEditor->select()->somethingSelected())
+        pegreg->setAreaSelected(true);
+    else
+        pegreg->setAreaSelected(false);
+
+    // is the reference key valid?
+    if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
     {
-        QMessageBox::information(this, nullptr,
-                                 tr("No Layer selected!"),
-                                 QMessageBox::Ok);
-        return;
+        pegreg->setRefLayer(mEditor->layers()->currentLayer()->name());
+        pegreg->setRefKey(mEditor->currentFrame());
+        pegreg->setReferenceSelected(true);
+    }
+    else
+        pegreg->setReferenceSelected(false);
+
+    QStringList bitmaplayers;
+    bitmaplayers = pegreg->getLayerList();
+
+    // has minimum one layer been selected?
+    if (bitmaplayers.isEmpty())
+        pegreg->setLayerSelected(false);
+    else
+    {
+        pegreg->setRefLayer(mEditor->layers()->currentLayer()->name());
+        pegreg->setLayerSelected(true);
     }
 
-    if (ret == pegreg->Accepted)
-    {
-        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
-        if (statusint.errorcode == Status::FAIL)
-        {
-            QMessageBox::information(this, nullptr,
-                                     tr("Peg bar alignment failed!"),
-                                     QMessageBox::Ok);
-            return;
-        }
-    }
+   pegreg->setBtnAlignEnabled();
 }
 
 void MainWindow2::closeEvent(QCloseEvent* event)
@@ -1457,4 +1461,33 @@ void MainWindow2::changePlayState(bool isPlaying)
         ui->actionPlay->setIcon(mStartIcon);
     }
     update();
+}
+
+void MainWindow2::alignPegs()
+{
+    QStringList bitmaplayers;
+    bitmaplayers = pegreg->getLayerList();
+    if (bitmaplayers.isEmpty())
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("No layers selected!"),
+                                 QMessageBox::Ok);
+    }
+    else
+    {
+        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
+        if (statusint.errorcode == Status::FAIL)
+        {
+            QMessageBox::information(this, nullptr,
+                                     tr("Peg bar alignment failed!"),
+                                     QMessageBox::Ok);
+            return;
+        }
+        disconnect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updatePegReg);
+        disconnect(mEditor, &Editor::currentFrameChanged, this, &MainWindow2::updatePegReg);
+        disconnect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updatePegReg);
+        disconnect(pegreg, &PegBarAlignmentDialog::alignPressed, this, &MainWindow2::alignPegs);
+        disconnect(pegreg, &PegBarAlignmentDialog::layerListClicked, this, &MainWindow2::updatePegReg);
+        pegreg->close();
+    }
 }
