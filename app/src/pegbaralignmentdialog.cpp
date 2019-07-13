@@ -9,7 +9,8 @@ PegBarAlignmentDialog::PegBarAlignmentDialog(QWidget *parent) :
     ui(new Ui::PegBarAlignmentDialog)
 {
     ui->setupUi(this);
-    connect(ui->btnAlign, &QPushButton::clicked, this, &PegBarAlignmentDialog::alignOk);
+    connect(ui->btnAlign, &QPushButton::clicked, this, &PegBarAlignmentDialog::alignClicked);
+    connect(ui->btnCancel, &QPushButton::clicked, this, &PegBarAlignmentDialog::cancelClicked);
     connect(ui->lwLayers, &QListWidget::clicked, this, &PegBarAlignmentDialog::layerListUpdate);
 
     ui->btnAlign->setEnabled(false);
@@ -23,6 +24,7 @@ PegBarAlignmentDialog::~PegBarAlignmentDialog()
 
 void PegBarAlignmentDialog::setLayerList(QStringList layerList)
 {
+    ui->lwLayers->clear();
      mLayernames = layerList;
      for (int i = 0; i < mLayernames.count(); i++)
      {
@@ -85,7 +87,12 @@ void PegBarAlignmentDialog::setRefKey(int i)
     setLabRefKey();
 }
 
-void PegBarAlignmentDialog::alignOk()
+void PegBarAlignmentDialog::cancelClicked()
+{
+    emit cancelPressed();
+}
+
+void PegBarAlignmentDialog::alignClicked()
 {
     emit alignPressed();
 }

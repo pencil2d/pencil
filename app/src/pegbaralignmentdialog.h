@@ -27,6 +27,7 @@ public:
     void setLayerSelected(bool b);
 
 signals:
+    void cancelPressed();
     void alignPressed();
     void layerListClicked();
 
@@ -42,7 +43,8 @@ private:
     bool referenceSelected = false;
     bool layerSelected = false;
 
-    void alignOk();
+    void cancelClicked();
+    void alignClicked();
     void layerListUpdate();
     QString refLayer = "";
     int refkey = 0;

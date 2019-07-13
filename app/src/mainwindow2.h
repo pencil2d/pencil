@@ -67,6 +67,8 @@ public:
     void updateSaveState();
     void clearRecentFilesList();
     void pegBarReg();
+    void closePegReg();
+    void updatePegRegLayers();
     void updatePegReg();
 
 public:
