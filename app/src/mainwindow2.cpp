@@ -454,6 +454,13 @@ void MainWindow2::pegBarReg()
 
 void MainWindow2::closePegReg()
 {
+    disconnect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updatePegReg);
+    disconnect(mEditor, &Editor::currentFrameChanged, this, &MainWindow2::updatePegReg);
+    disconnect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updatePegReg);
+    disconnect(mEditor->layers(), &LayerManager::layerCountChanged, this, &MainWindow2::updatePegRegLayers);
+    disconnect(pegreg, &PegBarAlignmentDialog::cancelPressed, this, &MainWindow2::closePegReg);
+    disconnect(pegreg, &PegBarAlignmentDialog::alignPressed, this, &MainWindow2::alignPegs);
+    disconnect(pegreg, &PegBarAlignmentDialog::layerListClicked, this, &MainWindow2::updatePegReg);
     pegreg->close();
     pegreg = nullptr;
 }
@@ -1514,13 +1521,6 @@ void MainWindow2::alignPegs()
                                      QMessageBox::Ok);
             return;
         }
-        disconnect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updatePegReg);
-        disconnect(mEditor, &Editor::currentFrameChanged, this, &MainWindow2::updatePegReg);
-        disconnect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updatePegReg);
-        disconnect(mEditor->layers(), &LayerManager::layerCountChanged, this, &MainWindow2::updatePegRegLayers);
-        disconnect(pegreg, &PegBarAlignmentDialog::cancelPressed, this, &MainWindow2::closePegReg);
-        disconnect(pegreg, &PegBarAlignmentDialog::alignPressed, this, &MainWindow2::alignPegs);
-        disconnect(pegreg, &PegBarAlignmentDialog::layerListClicked, this, &MainWindow2::updatePegReg);
         closePegReg();
     }
 }
