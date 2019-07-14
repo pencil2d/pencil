@@ -25,11 +25,11 @@ PegBarAlignmentDialog::~PegBarAlignmentDialog()
 void PegBarAlignmentDialog::setLayerList(QStringList layerList)
 {
     ui->lwLayers->clear();
-     mLayernames = layerList;
-     for (int i = 0; i < mLayernames.count(); i++)
-     {
-         ui->lwLayers->addItem(mLayernames.at(i));
-     }
+    mLayernames = layerList;
+    for (int i = 0; i < mLayernames.count(); i++)
+    {
+        ui->lwLayers->addItem(mLayernames.at(i));
+    }
 }
 
 QStringList PegBarAlignmentDialog::getLayerList()

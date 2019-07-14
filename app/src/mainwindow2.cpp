@@ -418,14 +418,6 @@ void MainWindow2::clearRecentFilesList()
 
 void MainWindow2::pegBarReg()
 {
-    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP)
-    {
-        QMessageBox::information(this, nullptr,
-                                 tr("Layer type not supported!"),
-                                 QMessageBox::Ok);
-        return;
-    }
-
     if (pegreg != nullptr)
     {
         QMessageBox::information(this, nullptr,
