@@ -23,11 +23,8 @@ GNU General Public License for more details.
 #include <QClipboard>
 #include <QTimer>
 #include <QImageReader>
-#include <QFileDialog>
-#include <QInputDialog>
 #include <QDragEnterEvent>
 #include <QDropEvent>
-#include <QMessageBox>
 
 #include "object.h"
 #include "objectdata.h"
@@ -1107,19 +1104,16 @@ Status::StatusInt Editor::pegBarAlignment(QStringList layers)
             {
                 img = layerbitmap->getBitmapImageAtFrame(k);
                 retLeft = img->findLeft(rect, 121);
+                const QString body = tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
                 if (retLeft.errorcode == Status::FAIL)
                 {
-                    QMessageBox::information(nullptr, nullptr,
-                                             tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k),
-                                             QMessageBox::Ok);
+                    emit needDisplayInfoNoTitle(body);
                     return retLeft;
                 }
                 retRight = img->findTop(rect, 121);
                 if (retRight.errorcode == Status::FAIL)
                 {
-                    QMessageBox::information(nullptr, nullptr,
-                                             tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k),
-                                             QMessageBox::Ok);
+                    emit needDisplayInfoNoTitle(body);
                     return retRight;
                 }
                 img->moveTopLeft(QPoint(img->left() + (peg_x - retLeft.value), img->top() + (peg_y - retRight.value)));

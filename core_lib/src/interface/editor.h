@@ -122,6 +122,8 @@ Q_SIGNALS:
     void currentFrameChanged(int n);
 
     void needSave();
+    void needDisplayInfo(const QString& title, const QString& body);
+    void needDisplayInfoNoTitle(const QString& body);
 
 public: //slots
     void clearCurrentFrame();

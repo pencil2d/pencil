@@ -1368,6 +1368,8 @@ void MainWindow2::importPalette()
 void MainWindow2::makeConnections(Editor* editor)
 {
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
+    connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
+    connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1515,4 +1517,14 @@ void MainWindow2::alignPegs()
         }
         closePegReg();
     }
+}
+
+void MainWindow2::displayMessageBox(const QString& title, const QString& body)
+{
+    QMessageBox::information(this, tr(qPrintable(title)), tr(qPrintable(body)), QMessageBox::Ok);
+}
+
+void MainWindow2::displayMessageBoxNoTitle(const QString& body)
+{
+    QMessageBox::information(this, nullptr, tr(qPrintable(body)), QMessageBox::Ok);
 }
