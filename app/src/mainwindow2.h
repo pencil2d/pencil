@@ -96,6 +96,9 @@ public:
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
 
+    void displayMessageBox(const QString& title, const QString& body);
+    void displayMessageBoxNoTitle(const QString& body);
+
 Q_SIGNALS:
     void updateRecentFilesList(bool b);
 
