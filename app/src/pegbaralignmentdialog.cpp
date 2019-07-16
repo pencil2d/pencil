@@ -3,15 +3,24 @@
 
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QMessageBox>
+#include "layermanager.h"
+#include "selectionmanager.h"
 
-PegBarAlignmentDialog::PegBarAlignmentDialog(QWidget *parent) :
+PegBarAlignmentDialog::PegBarAlignmentDialog(Editor *editor, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PegBarAlignmentDialog)
 {
     ui->setupUi(this);
-    connect(ui->btnAlign, &QPushButton::clicked, this, &PegBarAlignmentDialog::alignClicked);
+    mEditor = editor;
+    connect(ui->btnAlign, &QPushButton::clicked, this, &PegBarAlignmentDialog::alignPegs);
     connect(ui->btnCancel, &QPushButton::clicked, this, &PegBarAlignmentDialog::cancelClicked);
-    connect(ui->lwLayers, &QListWidget::clicked, this, &PegBarAlignmentDialog::layerListUpdate);
+    connect(ui->lwLayers, &QListWidget::clicked, this, &PegBarAlignmentDialog::updatePegRegDialog);
+
+    connect(mEditor->layers(), &LayerManager::layerCountChanged, this, &PegBarAlignmentDialog::updatePegRegLayers);
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &PegBarAlignmentDialog::updatePegRegDialog);
+    connect(mEditor, &Editor::currentFrameChanged, this, &PegBarAlignmentDialog::updatePegRegDialog);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &PegBarAlignmentDialog::updatePegRegDialog);
 
     ui->btnAlign->setEnabled(false);
     mLayernames.clear();
@@ -67,6 +76,79 @@ void PegBarAlignmentDialog::setLayerSelected(bool b)
     setBtnAlignEnabled();
 }
 
+void PegBarAlignmentDialog::updatePegRegLayers()
+{
+    QStringList bitmaplayers;
+    for (int i = 0; i < mEditor->layers()->count(); i++)
+    {
+        if (mEditor->layers()->getLayer(i)->type() == Layer::BITMAP)
+        {
+            bitmaplayers.append(mEditor->layers()->getLayer(i)->name());
+        }
+    }
+    setLayerList(bitmaplayers);
+}
+
+void PegBarAlignmentDialog::updatePegRegDialog()
+{
+    // is something selected in scribblearea?
+    if (mEditor->select()->somethingSelected())
+        setAreaSelected(true);
+    else
+        setAreaSelected(false);
+
+    // is the reference key valid?
+    setRefLayer(mEditor->layers()->currentLayer()->name());
+    setRefKey(mEditor->currentFrame());
+
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
+            mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+    {
+        setReferenceSelected(true);
+    }
+    else
+        setReferenceSelected(false);
+
+    // has minimum one layer been selected?
+    QStringList bitmaplayers;
+    bitmaplayers = getLayerList();
+
+    if (bitmaplayers.isEmpty())
+        setLayerSelected(false);
+    else
+    {
+        setRefLayer(mEditor->layers()->currentLayer()->name());
+        setRefKey(mEditor->currentFrame());
+        setLayerSelected(true);
+    }
+
+    setBtnAlignEnabled();
+}
+
+void PegBarAlignmentDialog::alignPegs()
+{
+    QStringList bitmaplayers;
+    bitmaplayers = getLayerList();
+    if (bitmaplayers.isEmpty())
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("No layers selected!"),
+                                 QMessageBox::Ok);
+    }
+    else
+    {
+        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
+        if (statusint.errorcode == Status::FAIL)
+        {
+            QMessageBox::information(this, nullptr,
+                                     tr("Peg bar alignment failed!"),
+                                     QMessageBox::Ok);
+            return;
+        }
+        emit closedialog();
+    }
+}
+
 void PegBarAlignmentDialog::setBtnAlignEnabled()
 {
     if (areaSelected && referenceSelected && layerSelected)
@@ -89,16 +171,5 @@ void PegBarAlignmentDialog::setRefKey(int i)
 
 void PegBarAlignmentDialog::cancelClicked()
 {
-    emit cancelPressed();
+    emit closedialog();
 }
-
-void PegBarAlignmentDialog::alignClicked()
-{
-    emit alignPressed();
-}
-
-void PegBarAlignmentDialog::layerListUpdate()
-{
-    emit layerListClicked();
-}
-

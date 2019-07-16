@@ -66,10 +66,8 @@ public:
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
-    void pegBarReg();
-    void closePegReg();
-    void updatePegRegLayers();
-    void updatePegReg();
+    void openPegAlignDialog();
+    void closePegAlignDialog();
 
 public:
     void setOpacity(int opacity);
@@ -128,8 +126,6 @@ private:
 
     void changePlayState(bool isPlaying);
 
-    void alignPegs();
-
     void makeConnections(Editor*);
     void makeConnections(Editor*, ColorBox* colorBox);
     void makeConnections(Editor*, ColorInspector*);
@@ -157,7 +153,7 @@ private:
     // backup
     BackupElement* mBackupAtSave = nullptr;
 
-    PegBarAlignmentDialog* pegreg = nullptr;
+    PegBarAlignmentDialog* mPegAlign = nullptr;
 
 private:
     ActionCommands* mCommands = nullptr;

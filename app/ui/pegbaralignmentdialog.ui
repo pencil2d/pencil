@@ -64,7 +64,7 @@
      <item>
       <widget class="QLabel" name="labSelectLayers">
        <property name="text">
-        <string>3) Select at least one layer to align.</string>
+        <string>3) Select at least one layer to align. (Bitmaps only!)</string>
        </property>
       </widget>
      </item>

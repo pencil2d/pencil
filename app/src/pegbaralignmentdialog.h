@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QStringList>
+#include "editor.h"
 
 namespace Ui {
 class PegBarAlignmentDialog;
@@ -13,7 +14,7 @@ class PegBarAlignmentDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PegBarAlignmentDialog(QWidget *parent = nullptr);
+    explicit PegBarAlignmentDialog(Editor* editor, QWidget *parent = nullptr);
     ~PegBarAlignmentDialog();
 
     void setLayerList(QStringList layerList);
@@ -26,19 +27,22 @@ public:
     void setReferenceSelected(bool b);
     void setLayerSelected(bool b);
 
-signals:
-    void cancelPressed();
-    void alignPressed();
-    void layerListClicked();
+    void updatePegRegLayers();
+    void updatePegRegDialog();
+    void alignPegs();
 
 public slots:
     void setBtnAlignEnabled();
     void setRefLayer(QString s);
     void setRefKey(int i);
 
+signals:
+    void closedialog();
+
 private:
     Ui::PegBarAlignmentDialog *ui;
     QStringList mLayernames;
+    Editor* mEditor = nullptr;
     bool areaSelected = false;
     bool referenceSelected = false;
     bool layerSelected = false;

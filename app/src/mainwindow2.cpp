@@ -258,7 +258,7 @@ void MainWindow2::createMenus()
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
-    connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::pegBarReg);
+    connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
@@ -416,9 +416,9 @@ void MainWindow2::clearRecentFilesList()
     getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
 }
 
-void MainWindow2::pegBarReg()
+void MainWindow2::openPegAlignDialog()
 {
-    if (pegreg != nullptr)
+    if (mPegAlign != nullptr)
     {
         QMessageBox::information(this, nullptr,
                                  tr("Dialog is already open!"),
@@ -426,90 +426,21 @@ void MainWindow2::pegBarReg()
         return;
     }
 
-    pegreg = new PegBarAlignmentDialog(this);
-    updatePegRegLayers();
-    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updatePegReg);
-    connect(mEditor, &Editor::currentFrameChanged, this, &MainWindow2::updatePegReg);
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updatePegReg);
-    connect(mEditor->layers(), &LayerManager::layerCountChanged, this, &MainWindow2::updatePegRegLayers);
-    connect(pegreg, &PegBarAlignmentDialog::cancelPressed, this, &MainWindow2::closePegReg);
-    connect(pegreg, &PegBarAlignmentDialog::alignPressed, this, &MainWindow2::alignPegs);
-    connect(pegreg, &PegBarAlignmentDialog::layerListClicked, this, &MainWindow2::updatePegReg);
-    pegreg->setRefLayer(mEditor->layers()->currentLayer()->name());
-    pegreg->setRefKey(mEditor->currentFrame());
-    pegreg->setLabRefKey();
-    pegreg->setWindowFlag(Qt::WindowStaysOnTopHint);
-    pegreg->show();
-
-    updatePegReg();
+    mPegAlign = new PegBarAlignmentDialog(mEditor, this);
+    connect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
+    mPegAlign->updatePegRegLayers();
+    mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
+    mPegAlign->setRefKey(mEditor->currentFrame());
+    mPegAlign->setLabRefKey();
+    mPegAlign->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mPegAlign->show();
 }
 
-void MainWindow2::closePegReg()
+void MainWindow2::closePegAlignDialog()
 {
-    disconnect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updatePegReg);
-    disconnect(mEditor, &Editor::currentFrameChanged, this, &MainWindow2::updatePegReg);
-    disconnect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updatePegReg);
-    disconnect(mEditor->layers(), &LayerManager::layerCountChanged, this, &MainWindow2::updatePegRegLayers);
-    disconnect(pegreg, &PegBarAlignmentDialog::cancelPressed, this, &MainWindow2::closePegReg);
-    disconnect(pegreg, &PegBarAlignmentDialog::alignPressed, this, &MainWindow2::alignPegs);
-    disconnect(pegreg, &PegBarAlignmentDialog::layerListClicked, this, &MainWindow2::updatePegReg);
-    pegreg->close();
-    pegreg = nullptr;
-}
-
-void MainWindow2::updatePegRegLayers()
-{
-
-    QStringList bitmaplayers;
-    for (int i = 0; i < mEditor->layers()->count(); i++)
-    {
-        if (mEditor->layers()->getLayer(i)->type() == Layer::BITMAP)
-        {
-            bitmaplayers.append(mEditor->layers()->getLayer(i)->name());
-        }
-    }
-    pegreg->setLayerList(bitmaplayers);
-}
-
-void MainWindow2::updatePegReg()
-{
-    // is something selected in scribblearea?
-    if (mEditor->select()->somethingSelected())
-        pegreg->setAreaSelected(true);
-    else
-        pegreg->setAreaSelected(false);
-
-    // is the reference key valid?
-    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP)
-    {
-        QMessageBox::information(this, nullptr,
-                                 tr("Layer type not supported!"),
-                                 QMessageBox::Ok);
-        return;
-    }
-
-    pegreg->setRefLayer(mEditor->layers()->currentLayer()->name());
-    pegreg->setRefKey(mEditor->currentFrame());
-    if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
-    {
-        pegreg->setReferenceSelected(true);
-    }
-    else
-        pegreg->setReferenceSelected(false);
-
-    QStringList bitmaplayers;
-    bitmaplayers = pegreg->getLayerList();
-
-    // has minimum one layer been selected?
-    if (bitmaplayers.isEmpty())
-        pegreg->setLayerSelected(false);
-    else
-    {
-        pegreg->setRefLayer(mEditor->layers()->currentLayer()->name());
-        pegreg->setLayerSelected(true);
-    }
-
-   pegreg->setBtnAlignEnabled();
+    disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
+    mPegAlign->close();
+    mPegAlign = nullptr;
 }
 
 void MainWindow2::closeEvent(QCloseEvent* event)
@@ -1494,11 +1425,11 @@ void MainWindow2::changePlayState(bool isPlaying)
     }
     update();
 }
-
+/*
 void MainWindow2::alignPegs()
 {
     QStringList bitmaplayers;
-    bitmaplayers = pegreg->getLayerList();
+    bitmaplayers = mPegreg->getLayerList();
     if (bitmaplayers.isEmpty())
     {
         QMessageBox::information(this, nullptr,
@@ -1518,7 +1449,7 @@ void MainWindow2::alignPegs()
         closePegReg();
     }
 }
-
+*/
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)
 {
     QMessageBox::information(this, tr(qPrintable(title)), tr(qPrintable(body)), QMessageBox::Ok);
