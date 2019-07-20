@@ -58,11 +58,11 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.6.4</string>
+	<string>${QMAKE_FULL_VERSION}</string>
 	<key>CFBundleSignature</key>
 	<string>PC2D</string>
 	<key>CFBundleVersion</key>
-	<string>0.6.4.0</string>
+	<string>${QMAKE_FULL_VERSION}</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.graphics-design</string>
 	<key>LSMinimumSystemVersion</key>
