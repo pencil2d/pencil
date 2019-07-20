@@ -132,6 +132,8 @@ macx {
     FILE_ICONS.path = Contents/Resources
     QMAKE_BUNDLE_DATA += FILE_ICONS
 
+    QMAKE_TARGET_BUNDLE_PREFIX += org.pencil2d
+
     LIBS += -framework AppKit
 }
 
