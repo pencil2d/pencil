@@ -50,6 +50,7 @@ public:
     int    count();
 
     Status deleteLayer(int index);
+    void duplicateLayer(Layer* fromLayer, Layer* toLayer);
     void mergeLayers(Layer* fromLayer, Layer* toLayer);
     Status renameLayer(Layer*, const QString& newName);
     void notifyLayerChanged(Layer*);

@@ -183,6 +183,11 @@ void TimeLineCells::showContextMenu(QPoint pos)
         menu->addAction(tr("Merge onto Layer: %1").arg(mEditor->layers()->getLayer(index-1)->name()), this, &TimeLineCells::mergeLayers);
         menu->addSeparator();
     }
+
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        menu->addAction(tr("Duplicate Layer: %1").arg(mEditor->layers()->currentLayer()->name()), this, &TimeLineCells::duplicateLayer);
+    }
     menu->addAction(tr("Delete Layer: %1").arg(mEditor->layers()->currentLayer()->name()), this, &TimeLineCells::deleteLayer);
 
     menu->exec(pos);
@@ -191,6 +196,13 @@ void TimeLineCells::showContextMenu(QPoint pos)
 void TimeLineCells::deleteLayer()
 {
     mEditor->layers()->deleteLayer(mEditor->layers()->currentLayerIndex());
+}
+
+void TimeLineCells::duplicateLayer()
+{
+    QString newLayerName = mEditor->layers()->currentLayer()->name() + "_copy";
+    mEditor->layers()->createBitmapLayer(newLayerName);
+    mEditor->layers()->duplicateLayer(mEditor->layers()->currentLayer(), mEditor->layers()->findLayerByName(newLayerName));
 }
 
 void TimeLineCells::mergeLayers()

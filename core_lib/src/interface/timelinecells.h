@@ -65,6 +65,7 @@ public:
 
     void showContextMenu(QPoint pos);
     void deleteLayer();
+    void duplicateLayer();
     void mergeLayers();
 
 Q_SIGNALS:
