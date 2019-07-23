@@ -47,7 +47,7 @@ private:
     bool referenceSelected = false;
     bool layerSelected = false;
 
-    void cancelClicked();
+    void closeClicked();
     void alignClicked();
     void layerListUpdate();
     QString refLayer = "";

@@ -141,7 +141,10 @@
      <item>
       <widget class="QPushButton" name="btnCancel">
        <property name="text">
-        <string>Cancel</string>
+        <string>Close</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -149,6 +152,9 @@
       <widget class="QPushButton" name="btnAlign">
        <property name="text">
         <string>Align Peg Bars</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

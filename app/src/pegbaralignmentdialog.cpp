@@ -14,8 +14,9 @@ PegBarAlignmentDialog::PegBarAlignmentDialog(Editor *editor, QWidget *parent) :
     ui->setupUi(this);
     mEditor = editor;
     connect(ui->btnAlign, &QPushButton::clicked, this, &PegBarAlignmentDialog::alignPegs);
-    connect(ui->btnCancel, &QPushButton::clicked, this, &PegBarAlignmentDialog::cancelClicked);
+    connect(ui->btnCancel, &QPushButton::clicked, this, &PegBarAlignmentDialog::closeClicked);
     connect(ui->lwLayers, &QListWidget::clicked, this, &PegBarAlignmentDialog::updatePegRegDialog);
+    connect(this, &QDialog::finished, this, &PegBarAlignmentDialog::closeClicked);
 
     connect(mEditor->layers(), &LayerManager::layerCountChanged, this, &PegBarAlignmentDialog::updatePegRegLayers);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &PegBarAlignmentDialog::updatePegRegDialog);
@@ -141,7 +142,7 @@ void PegBarAlignmentDialog::alignPegs()
         if (statusint.errorcode == Status::FAIL)
         {
             QMessageBox::information(this, nullptr,
-                                     tr("Peg bar alignment failed!"),
+                                     tr("Peg hole not found!\nCheck selection, and please try again."),
                                      QMessageBox::Ok);
             return;
         }
@@ -169,7 +170,8 @@ void PegBarAlignmentDialog::setRefKey(int i)
     setLabRefKey();
 }
 
-void PegBarAlignmentDialog::cancelClicked()
+void PegBarAlignmentDialog::closeClicked()
 {
     emit closedialog();
+    close();
 }

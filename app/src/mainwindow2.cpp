@@ -439,7 +439,6 @@ void MainWindow2::openPegAlignDialog()
 void MainWindow2::closePegAlignDialog()
 {
     disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
-    mPegAlign->close();
     mPegAlign = nullptr;
 }
 
