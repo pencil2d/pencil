@@ -27,7 +27,7 @@ class BackgroundWidget : public QWidget
     Q_OBJECT
 public:
     BackgroundWidget( QWidget* parent );
-    ~BackgroundWidget();
+    ~BackgroundWidget() override;
 
     void init(PreferenceManager* prefs);
 

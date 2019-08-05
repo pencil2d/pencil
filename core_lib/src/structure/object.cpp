@@ -241,7 +241,7 @@ Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
     return nullptr;
 }
 
-bool Object::moveLayer(int i, int j)
+bool Object::swapLayers(int i, int j)
 {
     if (i < 0 || i >= mLayers.size())
     {
@@ -429,7 +429,7 @@ bool Object::exportPalette(QString filePath)
  * This should load colors the same as GIMP, with the following intentional exceptions:
  * - Whitespace before and after a name does not appear in the name
  * - The last line is processed, even if there is not a trailing newline
- * - Colours without a name will use are automatic naming system rather than "Untitled"
+ * - Colours without a name will use our automatic naming system rather than "Untitled"
  */
 void Object::importPaletteGPL(QFile& file)
 {

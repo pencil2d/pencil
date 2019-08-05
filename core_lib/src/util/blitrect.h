@@ -25,7 +25,8 @@ class BlitRect : public QRect
 {
 public:
     explicit BlitRect();
-    void extend(QPoint p);
+    explicit BlitRect(const QPoint p);
+    void extend(const QPoint p);
 
 private:
     bool mInitialized = false;

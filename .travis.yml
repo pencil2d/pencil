@@ -49,7 +49,7 @@ addons:
       - python3-pip
 
 before_install:
-  - | 
+  - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
         brew update;
         ver=$(python -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/');
@@ -57,8 +57,7 @@ before_install:
         if [ "$ver" -le "27" ]; then
             brew upgrade python;
         fi
-        brew install p7zip;
-        brew install qt;
+        brew install p7zip qt gpg;
         brew link qt --force;
     fi
 
@@ -107,22 +106,23 @@ after_success:
       curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage;
       chmod 755 linuxdeployqt-continuous-x86_64.AppImage;
       LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -extra-plugins=iconengines/libqsvgicon.so -appimage;
-      mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
+      mv Pencil2D*.AppImage* "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       echo "cleaning...";
       make clean;
       mv bin Pencil2D;
-      echo "Fixing info.plist";
       cd Pencil2D;
-      plutil -replace CFBundleExecutable -string pencil2d Pencil2D.app/Contents/Info.plist;
-      plutil -replace CFBundleIdentifier -string org.pencil2d.Pencil2D Pencil2D.app/Contents/Info.plist;
 
       echo "Copying ffmpeg plugin";
       mkdir Pencil2D.app/Contents/MacOS/plugins;
-      wget -P Pencil2D.app/Contents/MacOS/plugins https://evermeet.cx/pub/ffmpeg/ffmpeg-3.4.2.7z;
-      7z x Pencil2D.app/Contents/MacOS/plugins/ffmpeg-3.4.2.7z -o"Pencil2D.app/Contents/MacOS/plugins";
-      rm Pencil2D.app/Contents/MacOs/plugins/ffmpeg-3.4.2.7z;
+      wget -O ffmpeg.7z https://evermeet.cx/ffmpeg/getrelease/7z;
+      wget -O ffmpeg.7z.sig https://evermeet.cx/ffmpeg/getrelease/7z/sig;
+      echo "trusted-key 0x476C4B611A660874" > ~/.gnupg/gpg.conf;
+      curl https://evermeet.cx/ffmpeg/0x1A660874.asc | gpg --import;
+      gpg --verify ffmpeg.7z.sig ffmpeg.7z;
+      7z x ffmpeg.7z -o"Pencil2D.app/Contents/MacOS/plugins";
+      rm ffmpeg.7z ffmpeg.7z.sig;
 
       echo "Copying necessary Qt frameworks";
       macdeployqt Pencil2D.app;
@@ -149,6 +149,19 @@ after_success:
       python3 nightly-build-upload.py "$OSX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
     fi;
     echo "Operation done";
+  fi'
+  # Upload internal pull request to google drive
+  - 'if [ "$TRAVIS_PULL_REQUEST_SLUG" == "pencil2d/pencil" ]; then
+    echo "Initiate deployment on Google Drive";
+    cd "$TRAVIS_BUILD_DIR/util";
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      mv "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-pr-$TRAVIS_PULL_REQUEST.AppImage";
+      python3 pr-build-upload.py "$LINUX_PR_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-pr-$TRAVIS_PULL_REQUEST.AppImage";
+    fi;
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      mv "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-pr-$TRAVIS_PULL_REQUEST.zip";
+      python3 pr-build-upload.py "$OSX_PR_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-pr-$TRAVIS_PULL_REQUEST.zip";
+    fi;
   fi'
 
   # Deploy doxygen documentation to github pages

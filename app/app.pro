@@ -35,6 +35,7 @@ INCLUDEPATH += \
 
 HEADERS += \
     src/mainwindow2.h \
+    src/pegbaralignmentdialog.h \
     src/shortcutfilter.h \
     src/timeline2.h \
     src/actioncommands.h \
@@ -66,6 +67,7 @@ HEADERS += \
 SOURCES += \
     src/main.cpp \
     src/mainwindow2.cpp \
+    src/pegbaralignmentdialog.cpp \
     src/shortcutfilter.cpp \
     src/timeline2.cpp \
     src/actioncommands.cpp \
@@ -95,6 +97,7 @@ SOURCES += \
 
 FORMS += \
     ui/mainwindow2.ui \
+    ui/pegbaralignmentdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
@@ -134,6 +137,8 @@ macx {
     FILE_ICONS.files = data/icons/mac_pcl_icon.icns data/icons/mac_pclx_icon.icns
     FILE_ICONS.path = Contents/Resources
     QMAKE_BUNDLE_DATA += FILE_ICONS
+
+    QMAKE_TARGET_BUNDLE_PREFIX += org.pencil2d
 
     LIBS += -framework AppKit
 }

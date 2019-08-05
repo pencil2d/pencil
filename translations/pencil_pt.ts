@@ -28,123 +28,123 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="68"/>
+        <location filename="../app/src/actioncommands.cpp" line="70"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Não existe uma camada de som para importar o ficheiro. Criar uma nova?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="69"/>
+        <location filename="../app/src/actioncommands.cpp" line="71"/>
         <source>Create sound layer</source>
         <translation>Criar Camada de Som</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="70"/>
+        <location filename="../app/src/actioncommands.cpp" line="72"/>
         <source>Don&apos;t create layer</source>
         <translation>Não Criar Camada</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="80"/>
+        <location filename="../app/src/actioncommands.cpp" line="82"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>Propriedades da Camada</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="82"/>
+        <location filename="../app/src/actioncommands.cpp" line="84"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>Camada de Som</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="201"/>
+        <location filename="../app/src/actioncommands.cpp" line="204"/>
         <source>Exporting movie</source>
-        <translation>Exportando vídeo</translation>
+        <translation>A exportar vídeo</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="253"/>
+        <location filename="../app/src/actioncommands.cpp" line="256"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>Concluído. Abrir o vídeo agora?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="595"/>
-        <location filename="../app/src/actioncommands.cpp" line="608"/>
-        <location filename="../app/src/actioncommands.cpp" line="622"/>
-        <location filename="../app/src/actioncommands.cpp" line="636"/>
+        <location filename="../app/src/actioncommands.cpp" line="607"/>
+        <location filename="../app/src/actioncommands.cpp" line="620"/>
+        <location filename="../app/src/actioncommands.cpp" line="633"/>
+        <location filename="../app/src/actioncommands.cpp" line="646"/>
         <source>Layer Properties</source>
         <translation>Propriedades da Camada</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="81"/>
-        <location filename="../app/src/actioncommands.cpp" line="596"/>
-        <location filename="../app/src/actioncommands.cpp" line="609"/>
-        <location filename="../app/src/actioncommands.cpp" line="623"/>
-        <location filename="../app/src/actioncommands.cpp" line="637"/>
+        <location filename="../app/src/actioncommands.cpp" line="83"/>
+        <location filename="../app/src/actioncommands.cpp" line="608"/>
+        <location filename="../app/src/actioncommands.cpp" line="621"/>
+        <location filename="../app/src/actioncommands.cpp" line="634"/>
+        <location filename="../app/src/actioncommands.cpp" line="647"/>
         <source>Layer name:</source>
         <translation>Nome da Camada:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="108"/>
+        <location filename="../app/src/actioncommands.cpp" line="110"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
         <translation>Já existe um clipe de som neste quadro! Por favor seleccione outro quadro ou camada</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="243"/>
+        <location filename="../app/src/actioncommands.cpp" line="246"/>
         <source>Finished. Open file location?</source>
         <translation>Finalizado. Abrir localização do ficheiro?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="314"/>
+        <location filename="../app/src/actioncommands.cpp" line="318"/>
         <source>Exporting image sequence...</source>
-        <translation>Exportando sequência de imagens</translation>
+        <translation>A exportar sequência de imagens</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="314"/>
+        <location filename="../app/src/actioncommands.cpp" line="318"/>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="394"/>
+        <location filename="../app/src/actioncommands.cpp" line="400"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="395"/>
+        <location filename="../app/src/actioncommands.cpp" line="401"/>
         <source>Unable to export image.</source>
         <translation>Não é possível exportar imagem</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="597"/>
+        <location filename="../app/src/actioncommands.cpp" line="609"/>
         <source>Bitmap Layer</source>
         <translation>Camada Bitmap</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="610"/>
+        <location filename="../app/src/actioncommands.cpp" line="622"/>
         <source>Vector Layer</source>
         <translation>Camada Vectorial</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="624"/>
+        <location filename="../app/src/actioncommands.cpp" line="635"/>
         <source>Camera Layer</source>
         <translation>Camada da Câmara</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="638"/>
+        <location filename="../app/src/actioncommands.cpp" line="648"/>
         <source>Sound Layer</source>
         <translation>Camada de Som</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="655"/>
+        <location filename="../app/src/actioncommands.cpp" line="663"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Excluir Camada</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="656"/>
+        <location filename="../app/src/actioncommands.cpp" line="664"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Tem certeza de que quer excluir a camada:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="665"/>
+        <location filename="../app/src/actioncommands.cpp" line="673"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Por favor, mantenha pelo menos uma câmara no projecto</translation>
@@ -211,19 +211,80 @@
 <context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="6"/>
+        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
         <source>Camera Properties</source>
         <translation>Propriedades da Câmara</translation>
     </message>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
+        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="22"/>
         <source>Camera name:</source>
         <translation>Nome da câmera:</translation>
     </message>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="38"/>
+        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="46"/>
         <source>Camera size:</source>
         <translation>Tamanho da câmara:</translation>
+    </message>
+</context>
+<context>
+    <name>CheckUpdatesDialog</name>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="27"/>
+        <source>Checking for Updates...</source>
+        <comment>status description in the check-for-update dialog</comment>
+        <translation>A verificar atualizações...</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="39"/>
+        <source>Download</source>
+        <translation>Descarregar</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="40"/>
+        <source>Close</source>
+        <translation>Fechar</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="93"/>
+        <source>&lt;b&gt;You are using a Pencil2D nightly build&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Está a usar a compilação noturna (nightly build) de Pencil2D&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="94"/>
+        <source>Please go %1 here %2 to check new nightly builds.</source>
+        <translation>Por favor vá a %1 aqui %2 para verificar se existem novas compilações noturnas (nightly builds).</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="104"/>
+        <source>&lt;b&gt;An error occurred while checking for updates&lt;/b&gt;</source>
+        <comment>error msg of check-for-update</comment>
+        <translation>&lt;b&gt;Surgiu um erro ao tentar verificar se existiam atualizações&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="105"/>
+        <source>Please check your internet connection and try again later.</source>
+        <comment>error msg of check-for-update</comment>
+        <translation>Por favor verifique a sua ligação à Internet e tente novamente mais tarde.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
+        <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Está disponível uma nova versão de Pencil2D!&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
+        <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
+        <translation>Pencil2D %1 está disponível neste momento -- tem %2. Quer descarregar esta atualização?</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
+        <source>&lt;b&gt;Pencil2D is up to date&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Pencil2D está atualizado&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
+        <source>Version</source>
+        <translation>Versão</translation>
     </message>
 </context>
 <context>
@@ -295,7 +356,7 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="133"/>
         <source>Native color dialog window</source>
-        <translation>Janela de diálogo de cor nativa</translation>
+        <translation>Janela de diálogo da cor original</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="258"/>
@@ -351,50 +412,50 @@
 <context>
     <name>ColorPaletteWidget</name>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="104"/>
         <source>Add</source>
         <translation>Adicionar</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Replace</source>
         <translation>Substituir</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="107"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Remove</source>
         <translation>Remover</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="246"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="247"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="244"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="245"/>
         <source>Colour name</source>
         <translation>Nome da cor</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="544"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="482"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation>A cor (ou cores) que está a tentar excluir está a ser utilizada.</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="545"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="483"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="546"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="484"/>
         <source>Delete</source>
         <translation>Excluir</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="562"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="500"/>
         <source>Palette Restriction</source>
         <translation>Restrição de Paleta de Cores</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="563"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="501"/>
         <source>The palette requires at least one swatch to remain functional</source>
-        <translation>A paleta necessita de pelo menos uma amostra de cor para permanecer funcional </translation>
+        <translation>A paleta necessita de pelo menos uma amostra de cor para continuar funcionando</translation>
     </message>
 </context>
 <context>
@@ -486,19 +547,19 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="550"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="537"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="558"/>
         <source>Paste</source>
         <translation>Colar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="926"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="961"/>
         <source>Remove frame</source>
         <translation>Remover quadro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="797"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="786"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="818"/>
         <source>Import Image</source>
         <translation>Importar imagem</translation>
     </message>
@@ -567,42 +628,52 @@
         <translation>BMP</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="101"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="98"/>
+        <source>TIFF</source>
+        <translation>TIFF</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="106"/>
         <source>Transparency</source>
         <translation>Transparência</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="111"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="116"/>
         <source>Range</source>
         <translation>Intervalo</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="157"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="149"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation>Último quadro a ser incluído na exportação do vídeo</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="160"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="152"/>
         <source>End Frame</source>
         <translation>Último Quadro</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="179"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="215"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>Primeiro quadro a ser incluído na exportação do vídeo</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="182"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
         <source>Start Frame</source>
         <translation>Primeiro Quadro</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="207"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="238"/>
+        <source>Export keyframes only</source>
+        <translation>Exportar apenas os quadros-chave</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="177"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;O último quadro é colocado como quadro-chave editável (útil quando quiser exportar apenas até ao último quadro animado) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="213"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="183"/>
         <source>To the end of sound clips</source>
         <translation>Até ao final dos clipes de som</translation>
     </message>
@@ -615,7 +686,7 @@
         <translation>Exportar GIF Animado</translation>
     </message>
     <message>
-        <location filename="../app/src/exportmoviedialog.cpp" line="31"/>
+        <location filename="../app/src/exportmoviedialog.cpp" line="32"/>
         <source>Export Movie</source>
         <translation>Exportar vídeo</translation>
     </message>
@@ -686,6 +757,21 @@
         <location filename="../app/ui/exportmovieoptions.ui" line="236"/>
         <source>Loop</source>
         <translation>Repetir</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="249"/>
+        <source>Exporter Settings</source>
+        <translation>Configurações de Exportação</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="267"/>
+        <source>WebM and APNG only</source>
+        <translation>Apenas WebM e APNG</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="270"/>
+        <source>Transparency</source>
+        <translation>Transparência</translation>
     </message>
 </context>
 <context>
@@ -774,8 +860,8 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
-        <source>Pencil2D Palette (*.xml);; Gimp Palette (*.gpl)</source>
-        <translation>Paleta Pencil2D (*.xml);; Paleta Gimp (*.gpl)</translation>
+        <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
@@ -791,72 +877,72 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="56"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="110"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
         <source>Could not open file</source>
         <translation>Não foi possível abrir o ficheiro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
-        <translation>O ficheiro não existe, por isso não é possível abri-lo. Por favor certifique-se que o caminho do diretório está correto e o ficheiro está acessível e tente novamente.</translation>
+        <translation>O ficheiro selecionado não existe por isso não pode ser aberto. Por favor verifique se introduziu o caminho corretamente e se o ficheiro está acessível, e tente novamente.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation>Este programa não tem permissão para ler o ficheiro que selecionou. Por favor certifique-se que tem permissões de leitura para este ficheiro e tente novamente.</translation>
+        <translation>Não tem permissões para ler o ficheiro seleccionado. Por favor certifique-se que tem permissões de leitura para este ficheiro e tente novamente.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>Invalid Save Path</source>
         <translation>Caminho de gravação inválido</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="232"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
-        <translation>O caminho (&quot;%1&quot;) aponta para um directório.</translation>
+        <translation>O caminho (&quot;%1&quot;) aponta para um diretório.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="240"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
-        <translation>O directório (&quot;%1&quot;) não existe.</translation>
+        <translation>O diretório (&quot;%1&quot;) não existe.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="247"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>O caminho (&quot;%1&quot;) não está acessível para escrita</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="282"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="291"/>
-        <source>Cannot Create Data Directory</source>
-        <translation>Não é possível criar um directório de dados</translation>
-    </message>
-    <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
-        <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
-        <translation>Falha na criação do directório &quot;%1&quot;. Verifique se tem permissões suficientes.</translation>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <source>Cannot Create Data Directory</source>
+        <translation>Não é possível criar um diretório de dados</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
+        <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
+        <translation>Falha na criação do diretório &quot;%1&quot;. Verifique se tem permissões suficientes.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; é um ficheiro. Por favor exclua o ficheiro e tente novamente.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="382"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
         <source>Miniz Error</source>
-        <translation>Erro da Biblioteca Miniz</translation>
+        <translation>Erro na Biblioteca Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="399"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
         <source>Internal Error</source>
         <translation>Erro interno</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="384"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="401"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Um erro interno ocorreu. O ficheiro pode não ter sido gravado com sucesso.</translation>
     </message>
@@ -934,6 +1020,17 @@
         <translation>Grelha</translation>
     </message>
     <message>
+        <location filename="../app/ui/generalpage.ui" line="307"/>
+        <source>Advanced</source>
+        <comment>groupBox title in Preference</comment>
+        <translation>Avançado</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="322"/>
+        <source>Cached Frame Number:</source>
+        <translation>Número de quadro em cache:</translation>
+    </message>
+    <message>
         <location filename="../app/src/preferencesdialog.cpp" line="97"/>
         <source>Czech</source>
         <translation>Checo</translation>
@@ -944,7 +1041,7 @@
         <translation>Dinamarquês</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>English</source>
         <translation>Inglês</translation>
     </message>
@@ -954,7 +1051,7 @@
         <translation>Alemão</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
         <source>Estonian</source>
         <translation>Estónia</translation>
     </message>
@@ -964,72 +1061,87 @@
         <translation>Espanhol</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="96"/>
+        <source>Catalan </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
+        <source>Greek</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
         <source>French</source>
         <translation>Francês</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
         <source>Hebrew</source>
         <translation>Hebreu</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
         <source>Hungarian</source>
         <translation>Húngaro</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Indonesian</source>
         <translation>Indonésio</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Italian</source>
         <translation>Italiano</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Japanese</source>
         <translation>Japonês</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <source>Kabyle</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>Polish</source>
         <translation>Polónia</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
         <source>Portuguese - Portugal</source>
         <translation>Português - Portugal</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>Portuguese - Brazil</source>
         <translation>Português - Brasil</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Russian</source>
         <translation>Russo</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
         <source>Slovenian</source>
         <translation>Eslovénia</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>Vietnamese</source>
         <translation>Vietname</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="117"/>
         <source>Chinese - China</source>
         <translation>Chinês - China</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="118"/>
         <source>Chinese - Taiwan</source>
         <translation>Chinês - Taiwan</translation>
     </message>
@@ -1059,7 +1171,17 @@
         <translation>Cursor Pontilhado</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="267"/>
+        <location filename="../app/ui/generalpage.ui" line="245"/>
+        <source>Grid Height</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="252"/>
+        <source>Grid Width</source>
+        <translation>Largura da Grelha</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="297"/>
         <source>Enable Grid</source>
         <translation>Activar Grelha</translation>
     </message>
@@ -1074,12 +1196,12 @@
         <translation>Alta resolução para tablet</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="212"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="221"/>
         <source>Restart Required</source>
         <translation>Reinício requerido</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="213"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="222"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>A mudança de idioma tomará efeito após reiniciar Pencil2D</translation>
     </message>
@@ -1142,7 +1264,7 @@
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/src/structure/layercamera.cpp" line="79"/>
+        <location filename="../core_lib/src/structure/layercamera.cpp" line="80"/>
         <source>Camera Layer</source>
         <translation>Camada da Câmara</translation>
     </message>
@@ -1181,484 +1303,554 @@
         <translation>Importar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="74"/>
+        <location filename="../app/ui/mainwindow2.ui" line="75"/>
         <source>Export</source>
         <translation>Exportar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="97"/>
+        <location filename="../app/ui/mainwindow2.ui" line="98"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="101"/>
+        <location filename="../app/ui/mainwindow2.ui" line="102"/>
         <source>Selection</source>
         <translation>Selecção</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="123"/>
+        <location filename="../app/ui/mainwindow2.ui" line="124"/>
         <source>View</source>
         <translation>Visualizar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="127"/>
+        <location filename="../app/ui/mainwindow2.ui" line="128"/>
         <source>Onion Skin</source>
         <translation>Transparência</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="152"/>
+        <location filename="../app/ui/mainwindow2.ui" line="136"/>
+        <source>Zoom</source>
+        <translation>Aproximação</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="166"/>
         <source>Animation</source>
         <translation>Animação</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="172"/>
-        <location filename="../app/ui/mainwindow2.ui" line="800"/>
+        <location filename="../app/ui/mainwindow2.ui" line="189"/>
+        <location filename="../app/ui/mainwindow2.ui" line="826"/>
         <source>Tools</source>
         <translation>Ferramentas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="190"/>
+        <location filename="../app/ui/mainwindow2.ui" line="207"/>
         <source>Layer</source>
         <translation>Camada</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="201"/>
-        <location filename="../app/ui/mainwindow2.ui" line="731"/>
+        <location filename="../app/ui/mainwindow2.ui" line="218"/>
+        <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="213"/>
+        <location filename="../app/ui/mainwindow2.ui" line="234"/>
         <source>Windows</source>
         <translation>Janelas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="232"/>
+        <location filename="../app/ui/mainwindow2.ui" line="253"/>
         <source>New</source>
         <translation>Novo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="241"/>
+        <location filename="../app/ui/mainwindow2.ui" line="262"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="250"/>
+        <location filename="../app/ui/mainwindow2.ui" line="271"/>
         <source>Save</source>
         <translation>Gravar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="268"/>
+        <location filename="../app/ui/mainwindow2.ui" line="289"/>
         <source>Exit</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="273"/>
-        <location filename="../app/ui/mainwindow2.ui" line="301"/>
+        <location filename="../app/ui/mainwindow2.ui" line="294"/>
+        <location filename="../app/ui/mainwindow2.ui" line="322"/>
         <source>Image Sequence...</source>
         <translation>Sequência de imagens...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="278"/>
-        <location filename="../app/ui/mainwindow2.ui" line="296"/>
+        <location filename="../app/ui/mainwindow2.ui" line="299"/>
+        <location filename="../app/ui/mainwindow2.ui" line="317"/>
         <source>Image...</source>
         <translation>Imagem...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="283"/>
-        <location filename="../app/ui/mainwindow2.ui" line="306"/>
+        <location filename="../app/ui/mainwindow2.ui" line="304"/>
+        <location filename="../app/ui/mainwindow2.ui" line="327"/>
         <source>Movie...</source>
         <translation>Vídeo...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="291"/>
-        <location filename="../app/ui/mainwindow2.ui" line="319"/>
+        <location filename="../app/ui/mainwindow2.ui" line="312"/>
+        <location filename="../app/ui/mainwindow2.ui" line="340"/>
         <source>Palette...</source>
         <translation>Paleta...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="314"/>
+        <location filename="../app/ui/mainwindow2.ui" line="335"/>
         <source>Sound...</source>
         <translation>Som...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="328"/>
+        <location filename="../app/ui/mainwindow2.ui" line="345"/>
+        <source>Image Sequence Numbered...</source>
+        <translation>Sequência de imagens numeradas...</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="354"/>
         <source>Undo</source>
         <translation>Desfazer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="340"/>
+        <location filename="../app/ui/mainwindow2.ui" line="366"/>
         <source>Redo</source>
         <translation>Refazer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="349"/>
+        <location filename="../app/ui/mainwindow2.ui" line="375"/>
         <source>Cut</source>
         <translation>Cortar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="358"/>
+        <location filename="../app/ui/mainwindow2.ui" line="384"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="367"/>
+        <location filename="../app/ui/mainwindow2.ui" line="393"/>
         <source>Paste</source>
         <translation>Colar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="372"/>
+        <location filename="../app/ui/mainwindow2.ui" line="398"/>
         <source>Crop</source>
         <translation>Recortar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="377"/>
+        <location filename="../app/ui/mainwindow2.ui" line="403"/>
         <source>Crop To Selection</source>
         <translation>Ajustar à selecção</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="382"/>
+        <location filename="../app/ui/mainwindow2.ui" line="408"/>
         <source>Select All</source>
         <translation>Seleccionar Tudo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="387"/>
+        <location filename="../app/ui/mainwindow2.ui" line="413"/>
         <source>Deselect All</source>
         <translation>Desmarcar Tudo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="396"/>
-        <location filename="../app/ui/mainwindow2.ui" line="595"/>
+        <location filename="../app/ui/mainwindow2.ui" line="422"/>
+        <location filename="../app/ui/mainwindow2.ui" line="621"/>
         <source>Clear Frame</source>
         <translation>Limpar Quadro</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="401"/>
+        <location filename="../app/ui/mainwindow2.ui" line="427"/>
         <source>Preferences</source>
         <translation>Preferências</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="409"/>
+        <location filename="../app/ui/mainwindow2.ui" line="435"/>
         <source>Reset Windows</source>
         <translation>Reiniciar Janelas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="418"/>
+        <location filename="../app/ui/mainwindow2.ui" line="444"/>
         <source>Zoom In</source>
         <translation>Aproximar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="427"/>
+        <location filename="../app/ui/mainwindow2.ui" line="453"/>
         <source>Zoom Out</source>
         <translation>Afastar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="432"/>
+        <location filename="../app/ui/mainwindow2.ui" line="458"/>
         <source>Rotate Clockwise</source>
         <translation>Girar no sentido horário</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="437"/>
-        <source>Rotate AntiClosewise</source>
-        <translation>Girar no sentido anti-horário</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="442"/>
+        <location filename="../app/ui/mainwindow2.ui" line="468"/>
         <source>Reset Zoom/Rotate</source>
         <translation>Restaurar zoom/rotação</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="451"/>
+        <location filename="../app/ui/mainwindow2.ui" line="477"/>
         <source>Horizontal Flip</source>
         <translation>Virar horizontalmente</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="460"/>
+        <location filename="../app/ui/mainwindow2.ui" line="486"/>
         <source>Vertical Flip</source>
         <translation>Virar verticalmente</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="468"/>
+        <location filename="../app/ui/mainwindow2.ui" line="494"/>
         <source>Preview</source>
         <translation>Pré-visualização</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="476"/>
+        <location filename="../app/ui/mainwindow2.ui" line="502"/>
         <source>Grid</source>
         <translation>Grelha</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="488"/>
+        <location filename="../app/ui/mainwindow2.ui" line="514"/>
         <source>Previous</source>
         <translation>Anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="491"/>
+        <location filename="../app/ui/mainwindow2.ui" line="517"/>
         <source>Show previous onion skin</source>
         <translation>Mostrar transparência anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="503"/>
+        <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Next</source>
         <translation>Seguinte</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="506"/>
+        <location filename="../app/ui/mainwindow2.ui" line="532"/>
         <source>Show next onion skin</source>
         <translation>Mostra transparência seguinte</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="515"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1278"/>
+        <location filename="../app/ui/mainwindow2.ui" line="541"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1394"/>
         <source>Play</source>
         <translation>Reproduzir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="527"/>
+        <location filename="../app/ui/mainwindow2.ui" line="553"/>
         <source>Loop</source>
         <translation>Repetir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="536"/>
+        <location filename="../app/ui/mainwindow2.ui" line="562"/>
         <source>Next Frame</source>
         <translation>Quadro seguinte</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="545"/>
+        <location filename="../app/ui/mainwindow2.ui" line="571"/>
         <source>Previous Frame</source>
         <translation>Quadro anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="550"/>
+        <location filename="../app/ui/mainwindow2.ui" line="576"/>
         <source>Extend Frame</source>
         <translation>Estender quadro</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="559"/>
+        <location filename="../app/ui/mainwindow2.ui" line="585"/>
         <source>Add Frame</source>
         <translation>Adicionar quadro</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="568"/>
+        <location filename="../app/ui/mainwindow2.ui" line="594"/>
         <source>Duplicate Frame</source>
         <translation>Duplicar quadro</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="577"/>
+        <location filename="../app/ui/mainwindow2.ui" line="603"/>
         <source>Remove Frame</source>
         <translation>Remover quadro</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="586"/>
+        <location filename="../app/ui/mainwindow2.ui" line="612"/>
         <source>Move</source>
         <translation>Mover</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="604"/>
+        <location filename="../app/ui/mainwindow2.ui" line="630"/>
         <source>Select</source>
         <translation>Seleccionar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="613"/>
+        <location filename="../app/ui/mainwindow2.ui" line="639"/>
         <source>Brush</source>
         <translation>Pincel</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="622"/>
+        <location filename="../app/ui/mainwindow2.ui" line="648"/>
         <source>Polyline</source>
         <translation>Polilinha</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="631"/>
+        <location filename="../app/ui/mainwindow2.ui" line="657"/>
         <source>Smudge</source>
         <translation>Espalhar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="640"/>
+        <location filename="../app/ui/mainwindow2.ui" line="666"/>
         <source>Pen</source>
         <translation>Caneta</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="649"/>
+        <location filename="../app/ui/mainwindow2.ui" line="675"/>
         <source>Hand</source>
         <translation>Mão</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="658"/>
+        <location filename="../app/ui/mainwindow2.ui" line="684"/>
         <source>Pencil</source>
         <translation>Lápis</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="667"/>
+        <location filename="../app/ui/mainwindow2.ui" line="693"/>
         <source>Bucket</source>
         <translation>Balde</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="676"/>
+        <location filename="../app/ui/mainwindow2.ui" line="702"/>
         <source>Eyedropper</source>
         <translation>Conta-gotas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="685"/>
+        <location filename="../app/ui/mainwindow2.ui" line="711"/>
         <source>Eraser</source>
         <translation>Borracha</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="694"/>
+        <location filename="../app/ui/mainwindow2.ui" line="720"/>
         <source>New Bitmap Layer</source>
         <translation>Nova Camada Bitmap</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="703"/>
+        <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>New Vector Layer</source>
         <translation>Nova Camada Vectorial</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="712"/>
+        <location filename="../app/ui/mainwindow2.ui" line="738"/>
         <source>New Sound Layer</source>
         <translation>Nova Camada de Som</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="721"/>
+        <location filename="../app/ui/mainwindow2.ui" line="747"/>
         <source>New Camera Layer</source>
         <translation>Nova camada da câmara</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="726"/>
+        <location filename="../app/ui/mainwindow2.ui" line="752"/>
         <source>Delete Current Layer</source>
         <translation>Excluir Camada Actual</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="736"/>
+        <location filename="../app/ui/mainwindow2.ui" line="762"/>
         <source>About</source>
         <translation>Sobre</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="741"/>
-        <location filename="../app/ui/mainwindow2.ui" line="744"/>
+        <location filename="../app/ui/mainwindow2.ui" line="767"/>
+        <location filename="../app/ui/mainwindow2.ui" line="770"/>
         <source>Reset to default</source>
         <translation>Restaurar definições padrão</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="781"/>
+        <location filename="../app/ui/mainwindow2.ui" line="780"/>
+        <location filename="../app/ui/mainwindow2.ui" line="783"/>
+        <source>Next Keyframe</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="807"/>
         <source>MultiLayer Onion Skin</source>
         <translation>Transparência Multicamadas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="792"/>
+        <location filename="../app/ui/mainwindow2.ui" line="818"/>
         <source>Range</source>
         <translation>Intervalo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="865"/>
+        <location filename="../app/ui/mainwindow2.ui" line="891"/>
         <source>Pencil2D Website</source>
         <translation>Site Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="870"/>
+        <location filename="../app/ui/mainwindow2.ui" line="896"/>
         <source>Report a Bug</source>
         <translation>Reportar falha</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="875"/>
+        <location filename="../app/ui/mainwindow2.ui" line="901"/>
         <source>Quick Reference Guide</source>
         <translation>Manual de Consulta Rápida</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="878"/>
+        <location filename="../app/ui/mainwindow2.ui" line="904"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="883"/>
-        <location filename="../app/ui/mainwindow2.ui" line="888"/>
+        <location filename="../app/ui/mainwindow2.ui" line="909"/>
+        <location filename="../app/ui/mainwindow2.ui" line="914"/>
         <source>Animated GIF...</source>
         <translation>GIF Animado</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="754"/>
-        <location filename="../app/ui/mainwindow2.ui" line="757"/>
-        <source>Next KeyFrame</source>
-        <translation>Quadro-chave seguinte</translation>
+        <location filename="../app/ui/mainwindow2.ui" line="919"/>
+        <source>Check for Updates</source>
+        <translation>Verificar atualizações</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <location filename="../app/ui/mainwindow2.ui" line="924"/>
+        <source>Pencil2D Forum</source>
+        <translation>Fórum Pencil2D</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="929"/>
+        <source>Pencil2D Discord</source>
+        <translation>Pencil2D Discord</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="934"/>
+        <source>200%</source>
+        <translation>200%</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="939"/>
+        <source>300%</source>
+        <translation>300%</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="944"/>
+        <source>400%</source>
+        <translation>400%</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="949"/>
+        <source>50%</source>
+        <translation>50%</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="954"/>
+        <source>33%</source>
+        <translation>33%</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="959"/>
+        <source>25%</source>
+        <translation>25%</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="964"/>
+        <source>100%</source>
+        <translation>100%</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="969"/>
+        <source>Flip In-Between</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="974"/>
+        <source>Flip Rolling</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="280"/>
         <source>Save As...</source>
         <translation>Gravar Como...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="767"/>
-        <location filename="../app/ui/mainwindow2.ui" line="770"/>
+        <location filename="../app/ui/mainwindow2.ui" line="463"/>
+        <source>Rotate Anticlockwise</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="793"/>
+        <location filename="../app/ui/mainwindow2.ui" line="796"/>
         <source>Previous KeyFrame</source>
         <translation>Quadro-chave anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="808"/>
+        <location filename="../app/ui/mainwindow2.ui" line="834"/>
         <source>Timeline</source>
         <translation>Linha do tempo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="816"/>
+        <location filename="../app/ui/mainwindow2.ui" line="842"/>
         <source>Options</source>
         <translation>Opções</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="824"/>
+        <location filename="../app/ui/mainwindow2.ui" line="850"/>
         <source>Color Wheel</source>
         <translation>Roda de Cores</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="832"/>
+        <location filename="../app/ui/mainwindow2.ui" line="858"/>
         <source>Color Palette</source>
         <translation>Paleta de Cores</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="840"/>
+        <location filename="../app/ui/mainwindow2.ui" line="866"/>
         <source>Display Options</source>
         <translation>Opções de visualização</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="845"/>
+        <location filename="../app/ui/mainwindow2.ui" line="871"/>
         <source>Flip X</source>
         <translation>Virar X</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="850"/>
+        <location filename="../app/ui/mainwindow2.ui" line="876"/>
         <source>Flip Y</source>
         <translation>Virar Y</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="855"/>
+        <location filename="../app/ui/mainwindow2.ui" line="881"/>
         <source>Move Frame Forward</source>
         <translation>Mover Quadro para Frente</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="860"/>
+        <location filename="../app/ui/mainwindow2.ui" line="886"/>
         <source>Move Frame Backward</source>
         <translation>Mover Quadro para Trás</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="146"/>
+        <location filename="../app/src/mainwindow2.cpp" line="144"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Paleta de cores:&lt;br&gt;Utilize &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;para alternar no cursor</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="150"/>
+        <location filename="../app/src/mainwindow2.cpp" line="148"/>
         <source>Color inspector</source>
         <translation>Selector de cor</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="353"/>
+        <location filename="../app/src/mainwindow2.cpp" line="359"/>
         <source>Lock Windows</source>
         <translation>Bloquear Janelas</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="370"/>
+        <location filename="../app/src/mainwindow2.cpp" line="379"/>
         <source>Open Recent</source>
         <translation>Abrir Recente</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="404"/>
+        <location filename="../app/src/mainwindow2.cpp" line="413"/>
         <source>
 
  You have successfully cleared the list</source>
@@ -1666,125 +1858,131 @@
 Acabou de limpar a lista com sucesso</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="505"/>
-        <location filename="../app/src/mainwindow2.cpp" line="515"/>
+        <location filename="../app/src/mainwindow2.cpp" line="514"/>
         <location filename="../app/src/mainwindow2.cpp" line="524"/>
-        <location filename="../app/src/mainwindow2.cpp" line="584"/>
+        <location filename="../app/src/mainwindow2.cpp" line="533"/>
+        <location filename="../app/src/mainwindow2.cpp" line="592"/>
         <source>Could not open file</source>
         <translation>Não foi possível abrir o ficheiro</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="506"/>
+        <location filename="../app/src/mainwindow2.cpp" line="515"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
-        <translation>O ficheiro que selecionou é um diretório, por isso não pode ser aberto. Se está a tentar abrir um projeto que usa a antiga estrutura, por favor abra o ficheiro que termina com a extensão .pcl e não a pasta de dados.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="516"/>
-        <source>The file you have selected does not exist, so we are unable to open it. Please check to make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
-        <translation>O ficheiro que selecionou não existe, por isso não pode ser aberto. Por favor confirme se introduziu o caminho completo e que o ficheiro está acessível e tente de novo.</translation>
+        <translation>O ficheiro selecionado é um diretório e não pode ser aberto. Se está a tentar abrir um projeto que utiliza o método antigo, por favor abra o ficheiro que tenha a extensão .pcl e não a pasta de dados.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="525"/>
-        <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation>O programa não tem permissão para ler o ficheiro que selecionou. Por favor verifique se tem as permissões de escrita para este ficheiro e tente de novo.</translation>
+        <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
+        <translation>O ficheiro selecionado não existe por isso não pode ser aberto. Por favor verifique se introduziu o caminho corretamente e se o ficheiro está acessível, e tente novamente.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="534"/>
-        <location filename="../app/src/mainwindow2.cpp" line="697"/>
-        <location filename="../app/src/mainwindow2.cpp" line="756"/>
-        <location filename="../app/src/mainwindow2.cpp" line="830"/>
-        <location filename="../app/src/mainwindow2.cpp" line="883"/>
+        <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
+        <translation>Não tem permissão para ler o ficheiro selecionado. Por favor certifique-se se tem permissão de escrita para este ficheiro e tente novamente.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="543"/>
+        <location filename="../app/src/mainwindow2.cpp" line="705"/>
+        <location filename="../app/src/mainwindow2.cpp" line="764"/>
+        <location filename="../app/src/mainwindow2.cpp" line="844"/>
+        <location filename="../app/src/mainwindow2.cpp" line="990"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="535"/>
+        <location filename="../app/src/mainwindow2.cpp" line="544"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
-        <translation>Este programa não tem neste momento permissões para gravar no ficheiro que selecionou. Por favor certifique-se que tem permissões de escrita neste ficheiro antes de o tentar gravar. Como alternativa, pode usar  opção do menu Gravar Como... para gravar numa localização onde se pode gravar.</translation>
+        <translation>Não tem permissões para gravar no ficheiro seleccionado. Por favor verifique se tem permissões de escrita para este ficheiro antes de o tentar gravar. Como alternativa pode utilizar a opção do menu Gravar Como... para gravar numa localização onde se pode gravar.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="541"/>
+        <location filename="../app/src/mainwindow2.cpp" line="550"/>
         <source>Opening document...</source>
         <translation>Abrindo documento...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="541"/>
-        <location filename="../app/src/mainwindow2.cpp" line="619"/>
-        <location filename="../app/src/mainwindow2.cpp" line="783"/>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="550"/>
+        <location filename="../app/src/mainwindow2.cpp" line="625"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
+        <location filename="../app/src/mainwindow2.cpp" line="964"/>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="585"/>
+        <location filename="../app/src/mainwindow2.cpp" line="593"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>Um erro interno ocorreu enquanto carregava o ficheiro. Não é possível carregar o ficheiro.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="619"/>
+        <location filename="../app/src/mainwindow2.cpp" line="625"/>
         <source>Saving document...</source>
         <translation>Gravando documento...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="660"/>
+        <location filename="../app/src/mainwindow2.cpp" line="666"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;Ocorreu um erro e seu ficheiro pode não ter sido gravado com sucesso. Se você achar que é um problema com Pencil2D, por favor crie um tópico em: &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Por favor, certifique-se de incluir os seguintes detalhes:</translation>
+        <translation>&lt;br&gt;&lt;br&gt;Ocorreu um erro e o ficheiro pode não ter sido gravado correctamente. Se você achar que é um problema com Pencil2D, por favor crie um tópico em: &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Por favor, certifique-se de incluir os seguintes detalhes:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="698"/>
+        <location filename="../app/src/mainwindow2.cpp" line="706"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Esta animação foi modificada. 
 Deseja gravar as alterações?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="726"/>
+        <location filename="../app/src/mainwindow2.cpp" line="734"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
-        <translation>A animação não foi gravada. Quer gravá-la agora?</translation>
+        <translation>A animação ainda não foi guardada. Quer gravá-la agora?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="727"/>
+        <location filename="../app/src/mainwindow2.cpp" line="735"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Não voltar a perguntar</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="757"/>
+        <location filename="../app/src/mainwindow2.cpp" line="765"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Não é possível importar imagem. &lt;br&gt;&lt;b&gt;DICA:&lt;/b&gt; Use uma Camada Bitmap para importar bitmaps.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="783"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
         <source>Importing image sequence...</source>
         <translation>Importando sequência de imagens...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="831"/>
-        <location filename="../app/src/mainwindow2.cpp" line="884"/>
+        <location filename="../app/src/mainwindow2.cpp" line="845"/>
+        <location filename="../app/src/mainwindow2.cpp" line="991"/>
         <source>was unable to import</source>
         <translation>Não foi possível importar</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="858"/>
+        <location filename="../app/src/mainwindow2.cpp" line="922"/>
+        <source>Illegal numbering</source>
+        <translation>Numeração incorreta</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="964"/>
         <source>Importing Animated GIF...</source>
         <translation>Importando GIF Animado...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1103"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1108"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1219"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1224"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Desfazer</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1123"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1232"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1239"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Refazer</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1273"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1389"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
@@ -1792,293 +1990,138 @@ Deseja gravar as alterações?</translation>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="367"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="364"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation>Troca de camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="368"/>
-        <source>You are about to switch layer, do you want to apply the transformation?</source>
-        <translation>Está prestes a trocar de camada, quer aplicar as alterações?</translation>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
+        <source>You are about to switch away, do you want to apply the transformation?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
         <source>Black</source>
         <translation>Preto</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="550"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
         <source>Red</source>
         <translation>Vermelho</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="551"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
         <source>Dark Red</source>
         <translation>Vermelho escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="552"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
         <source>Orange</source>
         <translation>Laranja</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
         <source>Dark Orange</source>
         <translation>Laranja escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="554"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
         <source>Yellow</source>
         <translation>Amarelo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="555"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
         <source>Dark Yellow</source>
         <translation>Amarelo escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="556"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
         <source>Green</source>
         <translation>Verde</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="557"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
         <source>Dark Green</source>
         <translation>Verde escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="558"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
         <source>Cyan</source>
         <translation>Ciano</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
         <source>Dark Cyan</source>
         <translation>Ciano escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="560"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
         <source>Blue</source>
         <translation>Azul</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="573"/>
         <source>Dark Blue</source>
         <translation>Azul escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="574"/>
         <source>White</source>
         <translation>Branco</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="575"/>
         <source>Very Light Grey</source>
         <translation>Cinza muito claro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="576"/>
         <source>Light Grey</source>
         <translation>Cinza claro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="577"/>
         <source>Grey</source>
         <translation>Cinza</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="578"/>
         <source>Dark Grey</source>
         <translation>Cinza escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="579"/>
         <source>Light Skin</source>
         <translation>Pele clara</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="580"/>
         <source>Light Skin - shade</source>
         <translation>Pele clara - sombra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="581"/>
         <source>Skin</source>
         <translation>Pele</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="582"/>
         <source>Skin - shade</source>
         <translation>Pele - sombra</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="583"/>
         <source>Dark Skin</source>
         <translation>Pele escura</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="584"/>
         <source>Dark Skin - shade</source>
         <translation>Pele escura - sombra</translation>
-    </message>
-</context>
-<context>
-    <name>PencilApplication</name>
-    <message>
-        <location filename="../app/src/main.cpp" line="73"/>
-        <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation>Pencil2D é um programa de animação/desenho para Mac OS X, Windows e Linux. Permite criar animações tradicionais feitas a mão (desenhos animados) utilizando bitmaps e vectores gráficos.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="76"/>
-        <source>Path to the input pencil file.</source>
-        <translation>Caminho para o ficheiro de Pencil2D</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="79"/>
-        <location filename="../app/src/main.cpp" line="85"/>
-        <source>Render the file to &lt;output_path&gt;</source>
-        <translation>Renderizar o ficheiro no  &lt;output_path&gt;</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="80"/>
-        <location filename="../app/src/main.cpp" line="86"/>
-        <source>output_path</source>
-        <translation>caminho_saída</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="93"/>
-        <source>Name of the camera layer to use</source>
-        <translation>Nome da Câmara a utilizar</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="94"/>
-        <source>layer_name</source>
-        <translation>Nome_Camada</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="98"/>
-        <source>Width of the output frames</source>
-        <translation>Largura dos quadros de saída</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="99"/>
-        <location filename="../app/src/main.cpp" line="104"/>
-        <source>integer</source>
-        <translation>Número Inteiro</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="103"/>
-        <source>Height of the output frames</source>
-        <translation>Altura dos quadros de saída</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="108"/>
-        <source>The first frame you want to include in the exported movie</source>
-        <translation>Primeiro quadro a ser incluído na exportação do vídeo</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="109"/>
-        <location filename="../app/src/main.cpp" line="116"/>
-        <source>frame</source>
-        <translation>Quadro</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="113"/>
-        <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation>Último quadro a ser incluído na exportação do vídeo. Poderá ser utilizado automaticamente por um quadro contendo uma animação ou som</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="120"/>
-        <source>Render transparency when possible</source>
-        <translation>Renderizar transparência quando possível</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="139"/>
-        <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation>Aviso: valor da largura %1 não é um número inteiro. Ignorando.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="149"/>
-        <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation>Aviso: valor da altura %1 não é um número inteiro. Ignorando.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="159"/>
-        <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation>Aviso: valor de início %1 não é um número inteiro. Ignorando.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="164"/>
-        <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation>Aviso: valor de início deve ser pelo menos 1. Ignorando.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="184"/>
-        <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation>Aviso: valor final %1 não é um número inteiro. Ignorando.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="190"/>
-        <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation>Aviso: valor final %1 é mais pequeno que o valor de início %2. Ignorando.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="201"/>
-        <source>Error: No input file specified.</source>
-        <translation>Erro: Nenhum ficheiro especificado.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="208"/>
-        <source>Error: the input file at &apos;%1&apos; does not exist</source>
-        <comment>Command line error</comment>
-        <translation>Erro: o ficheiro em &apos;%1&apos; não existe</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="213"/>
-        <source>Error: the input path &apos;%1&apos; is not a file</source>
-        <comment>Command line error</comment>
-        <translation>Erro: O caminho seleccionado &apos;%1&apos; não é um ficheiro</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="241"/>
-        <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation>Aviso: a camada da câmara especificada %1 não foi encontrada. Ignorando.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="272"/>
-        <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
-        <comment>Command line warning</comment>
-        <translation>Aviso: O formato de saída não foi especificado ou não é suportado. Utilizar PNG.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="292"/>
-        <source>Warning: Transparency is not currently supported in movie files</source>
-        <comment>Command line warning</comment>
-        <translation>Aviso: Transparência não é actualmente suportada em ficheiros de vídeo</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="294"/>
-        <source>Exporting movie...</source>
-        <comment>Command line task progress</comment>
-        <translation>Exportando vídeo...</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="296"/>
-        <location filename="../app/src/main.cpp" line="301"/>
-        <source>Done.</source>
-        <comment>Command line task done</comment>
-        <translation>Concluído.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="299"/>
-        <source>Exporting image sequence...</source>
-        <comment>Command line task progress</comment>
-        <translation>Exportando Sequência de Imagens</translation>
     </message>
 </context>
 <context>
@@ -2115,19 +2158,6 @@ Deseja gravar as alterações?</translation>
     </message>
 </context>
 <context>
-    <name>QApplication</name>
-    <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="97"/>
-        <source>Checking environment...</source>
-        <translation>Verificando o sistema...</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="148"/>
-        <source>Done</source>
-        <translation>Concluído</translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="26"/>
@@ -2136,13 +2166,9 @@ Deseja gravar as alterações?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</source>
-        <translation>Imagens (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp)</translation>
-    </message>
-    <message>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</source>
-        <translation>Imagens (*.png *.jpg *.jpeg *.bmp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);</translation>
+        <source>Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</source>
+        <translation>Imagens (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
@@ -2185,1355 +2211,1517 @@ Deseja gravar as alterações?</translation>
         <translation>Ficheiro de Animação Pencil PCLX(*.pclx);;Antigo Ficheiro de Animação Pencil PCL(*.pcl)</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="282"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="284"/>
         <source>Vivid Pink</source>
         <translation>Cor de Rosa Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="283"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="285"/>
         <source>Strong Pink</source>
         <translation>Cor de Rosa Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="284"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="286"/>
         <source>Deep Pink</source>
         <translation>Cor de Rosa Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="285"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="287"/>
         <source>Light Pink</source>
         <translation>Cor de Rosa Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="286"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="288"/>
         <source>Moderate Pink</source>
         <translation>Cor de Rosa Médio</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="287"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="289"/>
         <source>Dark Pink</source>
         <translation>Cor de Rosa Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="288"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="290"/>
         <source>Pale Pink</source>
         <translation>Cor de Rosa Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="289"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="291"/>
         <source>Grayish Pink</source>
         <translation>Cor de Rosa Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="290"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="292"/>
         <source>Pinkish White</source>
         <translation>Branco Rosáceo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="291"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="293"/>
         <source>Pinkish Gray</source>
         <translation>Cinzento Rosáceo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="292"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="294"/>
         <source>Vivid Red</source>
         <translation>Vermelho Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="293"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="295"/>
         <source>Strong Red</source>
         <translation>Vermelho Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="294"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="296"/>
         <source>Deep Red</source>
         <translation>Vermelho Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="295"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="297"/>
         <source>Very Deep Red</source>
         <translation>Vermelho Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="296"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="298"/>
         <source>Moderate Red</source>
         <translation>Vermelho Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="297"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="299"/>
         <source>Dark Red</source>
         <translation>Vermelho Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="298"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="300"/>
         <source>Very Dark Red</source>
         <translation>Vermelho Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="299"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="301"/>
         <source>Light Grayish Red</source>
         <translation>Vermelho Claro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="300"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="302"/>
         <source>Grayish Red</source>
         <translation>Vermelho Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="301"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="303"/>
         <source>Dark Grayish Red</source>
         <translation>Vermelho Escuro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="302"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="304"/>
         <source>Blackish Red</source>
         <translation>Vermelho Enegrecido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="303"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="305"/>
         <source>Reddish Gray</source>
         <translation>Cinzento Avermelhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="304"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="306"/>
         <source>Dark Reddish Gray</source>
         <translation>Cinzento Avermelhado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="305"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="307"/>
         <source>Reddish Black</source>
         <translation>Preto Avermelhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="306"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="308"/>
         <source>Vivid Yellowish Pink</source>
         <translation>Rosa Amarelado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="307"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="309"/>
         <source>Strong Yellowish Pink</source>
         <translation>Rosa Amarelado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="308"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="310"/>
         <source>Deep Yellowish Pink</source>
         <translation>Rosa Amarelado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="309"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="311"/>
         <source>Light Yellowish Pink</source>
         <translation>Rosa Amarelado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="310"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="312"/>
         <source>Moderate Yellowish Pink</source>
         <translation>Roa Amarelado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="311"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="313"/>
         <source>Dark Yellowish Pink</source>
         <translation>Rosa Amarelado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="312"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="314"/>
         <source>Pale Yellowish Pink</source>
         <translation>Rosa Amarelado Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="313"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="315"/>
         <source>Grayish Yellowish Pink</source>
         <translation>Rosa Amarelado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="314"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="316"/>
         <source>Brownish Pink</source>
         <translation>Rosa Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="315"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="317"/>
         <source>Vivid Reddish Orange</source>
         <translation>Laranja Avermelhado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="316"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="318"/>
         <source>Strong Reddish Orange</source>
         <translation>Laranja Avermelhado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="317"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="319"/>
         <source>Deep Reddish Orange</source>
         <translation>Laranja Avermelhado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="318"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="320"/>
         <source>Moderate Reddish Orange</source>
         <translation>Laranja Avermelhado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="319"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="321"/>
         <source>Dark Reddish Orange</source>
         <translation>Laranja Avermelhado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="320"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="322"/>
         <source>Grayish Reddish Orange</source>
         <translation>Laranja Avermelhado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="321"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="323"/>
         <source>Strong Reddish Brown</source>
         <translation>Castanho Avermelhado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="322"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="324"/>
         <source>Deep Reddish Brown</source>
         <translation>Castanho Avermelhado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="323"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="325"/>
         <source>Light Reddish Brown</source>
         <translation>Castanho Avermelhado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="324"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="326"/>
         <source>Moderate Reddish Brown</source>
         <translation>Castanho Avermelhado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="325"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="327"/>
         <source>Dark Reddish Brown</source>
         <translation>Castanho Avermelhado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="326"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="328"/>
         <source>Light Grayish Reddish Brown</source>
         <translation>Castanho Avermelhado Acinzentado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="327"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="329"/>
         <source>Grayish Reddish Brown</source>
         <translation>Castanho Avermelhado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="328"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="330"/>
         <source>Dark Grayish Reddish Brown</source>
         <translation>Castanho Avermelhado Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="329"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="331"/>
         <source>Vivid Orange</source>
         <translation>Laranja Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="330"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="332"/>
         <source>Brilliant Orange</source>
         <translation>Laranja Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="331"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="333"/>
         <source>Strong Orange</source>
         <translation>Laranja Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="332"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="334"/>
         <source>Deep Orange</source>
         <translation>Laranja Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="333"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="335"/>
         <source>Light Orange</source>
         <translation>Laranja Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="334"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="336"/>
         <source>Moderate Orange</source>
         <translation>Laranja Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="335"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="337"/>
         <source>Brownish Orange</source>
         <translation>Laranja Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="336"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="338"/>
         <source>Strong Brown</source>
         <translation>Castanho Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="337"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="339"/>
         <source>Deep Brown</source>
         <translation>Castanho Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="338"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="340"/>
         <source>Light Brown</source>
         <translation>Castanho Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="339"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="341"/>
         <source>Moderate Brown</source>
         <translation>Castanho Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="340"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="342"/>
         <source>Dark Brown</source>
         <translation>Castanho Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="341"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="343"/>
         <source>Light Grayish Brown</source>
         <translation>Castanho Claro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="342"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="344"/>
         <source>Grayish Brown</source>
         <translation>Castanho Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="343"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="345"/>
         <source>Dark Grayish Brown</source>
         <translation>Castanho Escuro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="344"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="346"/>
         <source>Light Brownish Gray</source>
         <translation>Cinzento Claro Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="345"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="347"/>
         <source>Brownish Gray</source>
         <translation>Cinzento Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="346"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="348"/>
         <source>Brownish Black</source>
         <translation>Preto Acastanhado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="347"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="349"/>
         <source>Vivid Orange Yellow</source>
         <translation>Amarelo-Laranja Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="348"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="350"/>
         <source>Brilliant Orange Yellow</source>
         <translation>Amarelo-Laranja Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="349"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="351"/>
         <source>Strong Orange Yellow</source>
         <translation>Amarelo-Laranja Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="350"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="352"/>
         <source>Deep Orange Yellow</source>
         <translation>Amarelo-Laranja Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="351"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="353"/>
         <source>Light Orange Yellow</source>
         <translation>Amarelo-Laranja Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="352"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="354"/>
         <source>Moderate Orange Yellow</source>
         <translation>Amarelo-Laranja Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="353"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="355"/>
         <source>Dark Orange Yellow</source>
         <translation>Amarelo-Laranja Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="354"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="356"/>
         <source>Pale Orange Yellow</source>
         <translation>Amarelo-Laranja Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="355"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="357"/>
         <source>Strong Yellowish Brown</source>
         <translation>Castanho Amarelado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="356"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="358"/>
         <source>Deep Yellowish Brown</source>
         <translation>Castanho Amarelado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="357"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="359"/>
         <source>Light Yellowish Brown</source>
         <translation>Castanho Amarelado Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="358"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="360"/>
         <source>Moderate Yellowish Brown</source>
         <translation>Castanho Amarelado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="359"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="361"/>
         <source>Dark Yellowish Brown</source>
         <translation>Castanho Amarelado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="360"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="362"/>
         <source>Light Grayish Yellowish Brown</source>
         <translation>Castanho Amarelado Claro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="361"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="363"/>
         <source>Grayish Yellowish Brown</source>
         <translation>Castanho Amarelado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="362"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="364"/>
         <source>Dark Grayish Yellowish Brown</source>
         <translation>Castanho Amarelado Escuro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="363"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="365"/>
         <source>Vivid Yellow</source>
         <translation>Amarelo Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="364"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="366"/>
         <source>Brilliant Yellow</source>
         <translation>Amarelo Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="365"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="367"/>
         <source>Strong Yellow</source>
         <translation>Amarelo Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="366"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="368"/>
         <source>Deep Yellow</source>
         <translation>Amarelo Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="367"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="369"/>
         <source>Light Yellow</source>
         <translation>Amarelo Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="368"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="370"/>
         <source>Moderate Yellow</source>
         <translation>Amarelo Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="369"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="371"/>
         <source>Dark Yellow</source>
         <translation>Amarelo Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="370"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="372"/>
         <source>Pale Yellow</source>
         <translation>Amarelo Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="371"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="373"/>
         <source>Grayish Yellow</source>
         <translation>Amarelo Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="372"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="374"/>
         <source>Dark Grayish Yellow</source>
         <translation>Amarelo Escuro Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="373"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="375"/>
         <source>Yellowish White</source>
         <translation>Branco Amarelado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="374"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="376"/>
         <source>Yellowish Gray</source>
         <translation>Cinzento Amarelado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="375"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="377"/>
         <source>Light Olive Brown</source>
         <translation>Castanho Oliva Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="376"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="378"/>
         <source>Moderate Olive Brown</source>
         <translation>Castanho Oliva Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="377"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="379"/>
         <source>Dark Olive Brown</source>
         <translation>Castanho Oliva Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="378"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="380"/>
         <source>Vivid Greenish Yellow</source>
         <translation>Amarelo Esverdeado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="379"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="381"/>
         <source>Brilliant Greenish Yellow</source>
         <translation>Amarelo Esverdeado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="380"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="382"/>
         <source>Strong Greenish Yellow</source>
         <translation>Amarelo Esverdeado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="381"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="383"/>
         <source>Deep Greenish Yellow</source>
         <translation>Amarelo Esverdeado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="382"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="384"/>
         <source>Light Greenish Yellow</source>
         <translation>Amarelo Esverdeado Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="383"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="385"/>
         <source>Moderate Greenish Yellow</source>
         <translation>Amarelo Esverdeado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="384"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="386"/>
         <source>Dark Greenish Yellow</source>
         <translation>Amarelo Esverdeado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="385"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="387"/>
         <source>Pale Greenish Yellow</source>
         <translation>Amarelo Esverdeado Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="386"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="388"/>
         <source>Grayish Greenish Yellow</source>
         <translation>Amarelo Esverdeado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="387"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="389"/>
         <source>Light Olive</source>
         <translation>Oliva Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="388"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="390"/>
         <source>Moderate Olive</source>
         <translation>Oliva Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="389"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="391"/>
         <source>Dark Olive</source>
         <translation>Oliva Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="390"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="392"/>
         <source>Light Grayish Olive</source>
         <translation>Oliva Acinzentado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="391"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="393"/>
         <source>Grayish Olive</source>
         <translation>Oliva Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="392"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="394"/>
         <source>Dark Grayish Olive</source>
         <translation>Oliva Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="393"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="395"/>
         <source>Light Olive Gray</source>
         <translation>Cinzento Oliva Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="394"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="396"/>
         <source>Olive Gray</source>
         <translation>Cinzento Oliva</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="395"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="397"/>
         <source>Olive Black</source>
         <translation>Preto Oliva</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="396"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="398"/>
         <source>Vivid Yellow Green</source>
         <translation>Verde Amarelo Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="397"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="399"/>
         <source>Brilliant Yellow Green</source>
         <translation>Verde Amarelo Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="398"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="400"/>
         <source>Strong Yellow Green</source>
         <translation>Verde Amarelo Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="399"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="401"/>
         <source>Deep Yellow Green</source>
         <translation>Verde Amarelo Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="400"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="402"/>
         <source>Light Yellow Green</source>
         <translation>Verde Amarelo Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="401"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="403"/>
         <source>Moderate Yellow Green</source>
         <translation>Verde Amarelo Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="402"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="404"/>
         <source>Pale Yellow Green</source>
         <translation>Verde Amarelo Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="403"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="405"/>
         <source>Grayish Yellow Green</source>
         <translation>Verde Amarelo Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="404"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="406"/>
         <source>Strong Olive Green</source>
         <translation>Verde Oliva Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="405"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="407"/>
         <source>Deep Olive Green</source>
         <translation>Verde Oliva Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="406"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="408"/>
         <source>Moderate Olive Green</source>
         <translation>Verde Oliva Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="407"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="409"/>
         <source>Dark Olive Green</source>
         <translation>Verde Oliva Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="408"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="410"/>
         <source>Grayish Olive Green</source>
         <translation>Verde Oliva Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="409"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="411"/>
         <source>Dark Grayish Olive Green</source>
         <translation>Verde Oliva Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="410"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="412"/>
         <source>Vivid Yellowish Green</source>
         <translation>Verde Amarelado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="411"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="413"/>
         <source>Brilliant Yellowish Green</source>
         <translation>Verde Amarelado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="412"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="414"/>
         <source>Strong Yellowish Green</source>
         <translation>Verde Amarelado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="413"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="415"/>
         <source>Deep Yellowish Green</source>
         <translation>Verde Amarelado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="414"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="416"/>
         <source>Very Deep Yellowish Green</source>
         <translation>Verde Amarelado Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="415"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="417"/>
         <source>Very Light Yellowish Green</source>
         <translation>Verde Amarelado Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="416"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="418"/>
         <source>Light Yellowish Green</source>
         <translation>Verde Amarelado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="417"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="419"/>
         <source>Moderate Yellowish Green</source>
         <translation>Verde Amarelado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="418"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="420"/>
         <source>Dark Yellowish Green</source>
         <translation>Verde Amarelado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="419"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="421"/>
         <source>Very Dark Yellowish Green</source>
         <translation>Verde Amarelado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="420"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="422"/>
         <source>Vivid Green</source>
         <translation>Verde Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="421"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="423"/>
         <source>Brilliant Green</source>
         <translation>Verde Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="422"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="424"/>
         <source>Strong Green</source>
         <translation>Verde Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="423"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="425"/>
         <source>Deep Green</source>
         <translation>Verde Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="424"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="426"/>
         <source>Very Light Green</source>
         <translation>Verde Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="425"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="427"/>
         <source>Light Green</source>
         <translation>Verde Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="426"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="428"/>
         <source>Moderate Green</source>
         <translation>Verde Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="427"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="429"/>
         <source>Dark Green</source>
         <translation>Verde Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="428"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="430"/>
         <source>Very Dark Green</source>
         <translation>Verde Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="429"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="431"/>
         <source>Very Pale Green</source>
         <translation>Verde Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="430"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="432"/>
         <source>Pale Green</source>
         <translation>Verde Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="431"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="433"/>
         <source>Grayish Green</source>
         <translation>Verde Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="432"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="434"/>
         <source>Dark Grayish Green</source>
         <translation>Verde Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="433"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="435"/>
         <source>Blackish Green</source>
         <translation>Verde Enegrecido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="434"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="436"/>
         <source>Greenish White</source>
         <translation>Branco Esverdeado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="435"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="437"/>
         <source>Light Greenish Gray</source>
         <translation>Cinzento Esverdeado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="436"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="438"/>
         <source>Greenish Gray</source>
         <translation>Cinzento Esverdeado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="437"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="439"/>
         <source>Dark Greenish Gray</source>
         <translation>Cinzento Esverdeado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="438"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="440"/>
         <source>Greenish Black</source>
         <translation>Preto Esverdeado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="439"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="441"/>
         <source>Vivid Bluish Green</source>
         <translation>Verde Azulado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="440"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="442"/>
         <source>Brilliant Bluish Green</source>
         <translation>Verde Azulado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="441"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="443"/>
         <source>Strong Bluish Green</source>
         <translation>Verde Azulado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="442"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="444"/>
         <source>Deep Bluish Green</source>
         <translation>Verde Azulado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="443"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="445"/>
         <source>Very Light Bluish Green</source>
         <translation>Verde Azulado Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="444"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="446"/>
         <source>Light Bluish Green</source>
         <translation>Verde Azulado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="445"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="447"/>
         <source>Moderate Bluish Green</source>
         <translation>Verde Azulado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="446"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="448"/>
         <source>Dark Bluish Green</source>
         <translation>Verde Azulado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="447"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="449"/>
         <source>Very Dark Bluish Green</source>
         <translation>Verde Azulado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="448"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="450"/>
         <source>Vivid Greenish Blue</source>
         <translation>Azul Esverdeado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="449"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="451"/>
         <source>Brilliant Greenish Blue</source>
         <translation>Azul Esverdeado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="450"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="452"/>
         <source>Strong Greenish Blue</source>
         <translation>Azul Esverdeado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="451"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="453"/>
         <source>Deep Greenish Blue</source>
         <translation>Azul Esverdeado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="452"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="454"/>
         <source>Very Light Greenish Blue</source>
         <translation>Azul Esverdeado Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="453"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="455"/>
         <source>Light Greenish Blue</source>
         <translation>Azul Esverdeado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="454"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="456"/>
         <source>Moderate Greenish Blue</source>
         <translation>Azul Esverdeado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="455"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="457"/>
         <source>Dark Greenish Blue</source>
         <translation>Azul Esverdeado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="456"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="458"/>
         <source>Very Dark Greenish Blue</source>
         <translation>Azul Esverdeado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="457"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="459"/>
         <source>Vivid Blue</source>
         <translation>Azul Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="458"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="460"/>
         <source>Brilliant Blue</source>
         <translation>Azul Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="459"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="461"/>
         <source>Strong Blue</source>
         <translation>Azul Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="460"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="462"/>
         <source>Deep Blue</source>
         <translation>Azul Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="461"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="463"/>
         <source>Very Light Blue</source>
         <translation>Azul Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="462"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="464"/>
         <source>Light Blue</source>
         <translation>Azul Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="463"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="465"/>
         <source>Moderate Blue</source>
         <translation>Azul Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="464"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="466"/>
         <source>Dark Blue</source>
         <translation>Azul Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="465"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="467"/>
         <source>Very Pale Blue</source>
         <translation>Azul Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="466"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="468"/>
         <source>Pale Blue</source>
         <translation>Azul Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="467"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="469"/>
         <source>Grayish Blue</source>
         <translation>Azul Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="468"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="470"/>
         <source>Dark Grayish Blue</source>
         <translation>Azul Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="469"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="471"/>
         <source>Blackish Blue</source>
         <translation>Azul Enegrecido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="470"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="472"/>
         <source>Bluish White</source>
         <translation>Branco Azulado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="471"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="473"/>
         <source>Light Bluish Gray</source>
         <translation>Cinzento Azulado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="472"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="474"/>
         <source>Bluish Gray</source>
         <translation>Cinzento Azulado </translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="473"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="475"/>
         <source>Dark Bluish Gray</source>
         <translation>Cinzento Azulado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="474"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="476"/>
         <source>Bluish Black</source>
         <translation>Preto Azulado </translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="475"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="477"/>
         <source>Vivid Purplish Blue</source>
         <translation>Azul Púrpura Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="476"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="478"/>
         <source>Brilliant Purplish Blue</source>
         <translation>Azul Púrpura Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="477"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="479"/>
         <source>Strong Purplish Blue</source>
         <translation>Azul Púrpura Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="478"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="480"/>
         <source>Deep Purplish Blue</source>
         <translation>Azul Púrpura Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="479"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="481"/>
         <source>Very Light Purplish Blue</source>
         <translation>Azul Púrpura Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="480"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="482"/>
         <source>Light Purplish Blue</source>
         <translation>Azul Púrpura Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="481"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="483"/>
         <source>Moderate Purplish Blue</source>
         <translation>Azul Púrpura Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="482"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="484"/>
         <source>Dark Purplish Blue</source>
         <translation>Azul Púrpura Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="483"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="485"/>
         <source>Very Pale Purplish Blue</source>
         <translation>Azul Púrpura Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="484"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="486"/>
         <source>Pale Purplish Blue</source>
         <translation>Azul Púrpura Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="485"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="487"/>
         <source>Grayish Purplish Blue</source>
         <translation>Azul Púrpura Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="486"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="488"/>
         <source>Vivid Violet</source>
         <translation>Violeta Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="487"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="489"/>
         <source>Brilliant Violet</source>
         <translation>Violeta Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="488"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="490"/>
         <source>Strong Violet</source>
         <translation>Violeta Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="489"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="491"/>
         <source>Deep Violet</source>
         <translation>Violeta Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="490"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="492"/>
         <source>Very Light Violet</source>
         <translation>Violeta Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="491"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="493"/>
         <source>Light Violet</source>
         <translation>Violeta Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="492"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="494"/>
         <source>Moderate Violet</source>
         <translation>Violeta Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="493"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="495"/>
         <source>Dark Violet</source>
         <translation>Violeta Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="494"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="496"/>
         <source>Very Pale Violet</source>
         <translation>Violeta Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="495"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="497"/>
         <source>Pale Violet</source>
         <translation>Violeta Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="496"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="498"/>
         <source>Grayish Violet</source>
         <translation>Violeta Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="497"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="499"/>
         <source>Vivid Purple</source>
         <translation>Roxo Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="498"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="500"/>
         <source>Brilliant Purple</source>
         <translation>Roxo Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="499"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="501"/>
         <source>Strong Purple</source>
         <translation>Roxo Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="500"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="502"/>
         <source>Deep Purple</source>
         <translation>Roxo Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="501"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="503"/>
         <source>Very Deep Purple</source>
         <translation>Roxo Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="502"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="504"/>
         <source>Very Light Purple</source>
         <translation>Roxo Muito Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="503"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="505"/>
         <source>Light Purple</source>
         <translation>Roxo Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="504"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="506"/>
         <source>Moderate Purple</source>
         <translation>Roxo Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="505"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="507"/>
         <source>Dark Purple</source>
         <translation>Roxo Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="506"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="508"/>
         <source>Very Dark Purple</source>
         <translation>Roxo Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="507"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="509"/>
         <source>Very Pale Purple</source>
         <translation>Roxo Muito Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="508"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="510"/>
         <source>Pale Purple</source>
         <translation>Roxo Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="509"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="511"/>
         <source>Grayish Purple</source>
         <translation>Roxo Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="510"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="512"/>
         <source>Dark Grayish Purple</source>
         <translation>Roxo Acinzentado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="511"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="513"/>
         <source>Blackish Purple</source>
         <translation>Roxo Enegrecido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="512"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="514"/>
         <source>Purplish White</source>
         <translation>Branco Arroxado </translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="513"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="515"/>
         <source>Light Purplish Gray</source>
         <translation>Cinzento Arroxado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="514"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="516"/>
         <source>Purplish Gray</source>
         <translation>Cinzento Arroxado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="515"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="517"/>
         <source>Dark Purplish Gray</source>
         <translation>Cinzento Arroxado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="516"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="518"/>
         <source>Purplish Black</source>
         <translation>Preto Arroxado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="517"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="519"/>
         <source>Vivid Reddish Purple</source>
         <translation>Roxo Avermelhado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="518"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="520"/>
         <source>Strong Reddish Purple</source>
         <translation>Roxo Avermelhado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="519"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="521"/>
         <source>Deep Reddish Purple</source>
         <translation>Roxo Avermelhado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="520"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="522"/>
         <source>Very Deep Reddish Purple</source>
         <translation>Roxo Avermelhado Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="521"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="523"/>
         <source>Light Reddish Purple</source>
         <translation>Roxo Avermelhado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="522"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="524"/>
         <source>Moderate Reddish Purple</source>
         <translation>Roxo Avermelhado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="523"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="525"/>
         <source>Dark Reddish Purple</source>
         <translation>Roxo Avermelhado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="524"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="526"/>
         <source>Very Dark Reddish Purple</source>
         <translation>Roxo Avermelhado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="525"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="527"/>
         <source>Pale Reddish Purple</source>
         <translation>Roxo Avermelhado Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="526"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="528"/>
         <source>Grayish Reddish Purple</source>
         <translation>Roxo Avermelhado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="527"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="529"/>
         <source>Brilliant Purplish Pink</source>
         <translation>Rosa Arroxado Brilhante</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="528"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="530"/>
         <source>Strong Purplish Pink</source>
         <translation>Rosa Arroxado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="529"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="531"/>
         <source>Deep Purplish Pink</source>
         <translation>Rosa Arroxado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="530"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="532"/>
         <source>Light Purplish Pink</source>
         <translation>Rosa Arroxado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="531"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="533"/>
         <source>Moderate Purplish Pink</source>
         <translation>Rosa Arroxado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="532"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="534"/>
         <source>Dark Purplish Pink</source>
         <translation>Rosa Arroxado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="533"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="535"/>
         <source>Pale Purplish Pink</source>
         <translation>Rosa Arroxado Pálido</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="534"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="536"/>
         <source>Grayish Purplish Pink</source>
         <translation>Rosa Arroxado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="535"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="537"/>
         <source>Vivid Purplish Red</source>
         <translation>Vermelho Arroxado Vivo</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="536"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="538"/>
         <source>Strong Purplish Red</source>
         <translation>Vermelho Arroxado Forte</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="537"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="539"/>
         <source>Deep Purplish Red</source>
         <translation>Vermelho Arroxado Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="538"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="540"/>
         <source>Very Deep Purplish Red</source>
         <translation>Vermelho Arroxado Muito Intenso</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="539"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="541"/>
         <source>Moderate Purplish Red</source>
         <translation>Vermelho Arroxado Moderado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="540"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="542"/>
         <source>Dark Purplish Red</source>
         <translation>Vermelho Arroxado Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="541"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="543"/>
         <source>Very Dark Purplish Red</source>
         <translation>Vermelho Arroxado Muito Escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="542"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="544"/>
         <source>Light Grayish Purplish Red</source>
         <translation>Vermelho Arroxado Acinzentado Suave</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="543"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="545"/>
         <source>Grayish Purplish Red</source>
         <translation>Vermelho Arroxado Acinzentado</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="544"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="546"/>
         <source>White</source>
         <translation>Branco</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="545"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="547"/>
         <source>Light Gray</source>
         <translation>Cinzento Claro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="546"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="548"/>
         <source>Medium Gray</source>
         <translation>Cinzento Médio</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="547"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="549"/>
         <source>Dark Gray</source>
         <translation>Cinzento escuro</translation>
     </message>
     <message>
-        <location filename="../app/src/colordictionary.h" line="548"/>
+        <location filename="../core_lib/src/util/colordictionary.h" line="550"/>
         <source>Black</source>
         <translation>Preto</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="29"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <source>Could not open file</source>
         <translation>Não foi possível abrir o ficheiro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
-        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our offical channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
-        <translation>Ocorreu um erro ao processar o seu ficheiro. Normalmente isto significa que o seu projeto está pelo menos parcialmente corrompido. Pode tentar de novo com uma nova versão do Pencil2D ou pode tentar usar um ficheiro de cópia de segurança se tiver um. Se contactar a equipa de programadores do Pencil2D, talvez possam ajudá-lo. Para reportar problemas, os melhores locais para o fazer são:</translation>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
+        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
+        <translation>Houve um erro ao processar o seu ficheiro. Isso pode significar que o seu projecto ficou parcialmente corrompido. Pode tentar novamente com uma versão mais recente de Pencil2D, ou pode tentar utilizar uma cópia de segurança caso tenha uma. Pode contactar-nos através de um dos nossos canais oficiais para podermos ajudá-lo. Para reportar problemas, a melhor forma de entrar em contacto connosco é através de:</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="98"/>
+        <source>Checking environment...</source>
+        <translation>A verificar o sistema...</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="149"/>
+        <source>Done</source>
+        <translation>Concluído</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="75"/>
+        <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
+        <translation>Pencil2D é um programa de animação/desenho para Mac OS X, Windows e Linux. Permite criar animações tradicionais feitas a mão (desenhos animados) utilizando gráficos bitmaps e vetoriais.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="78"/>
+        <source>Path to the input pencil file.</source>
+        <translation>Caminho para o ficheiro Pencil2D</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="81"/>
+        <location filename="../app/src/main.cpp" line="87"/>
+        <source>Render the file to &lt;output_path&gt;</source>
+        <translation>Renderizar o ficheiro para&lt;output_path&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="82"/>
+        <location filename="../app/src/main.cpp" line="88"/>
+        <source>output_path</source>
+        <translation>caminho_de_saída</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="95"/>
+        <source>Name of the camera layer to use</source>
+        <translation>Nome da camada da câmara a usar</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="96"/>
+        <source>layer_name</source>
+        <translation>nome_da_camada</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="100"/>
+        <source>Width of the output frames</source>
+        <translation>Largura dos quadros de saída</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="101"/>
+        <location filename="../app/src/main.cpp" line="106"/>
+        <source>integer</source>
+        <translation>número inteiro</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="105"/>
+        <source>Height of the output frames</source>
+        <translation>Altura dos quadros de saída</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="110"/>
+        <source>The first frame you want to include in the exported movie</source>
+        <translation>O primeiro quadro que quer incluir no filme exportado</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="111"/>
+        <location filename="../app/src/main.cpp" line="118"/>
+        <source>frame</source>
+        <translation>quadro</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="115"/>
+        <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
+        <translation>O último quadro que quer incluir no filme exportado. Pode ser também o último ou o último som para usar automaticamente o último quadro que contém a animação ou som, respetivamente..</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="122"/>
+        <source>Render transparency when possible</source>
+        <translation>Renderizar transparência quando possível</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="141"/>
+        <source>Warning: width value %1 is not an integer, ignoring.</source>
+        <translation>Aviso: valor da largura %1 não é um número inteiro. A ignorar.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="151"/>
+        <source>Warning: height value %1 is not an integer, ignoring.</source>
+        <translation>Aviso: valor da altura %1 não é um número inteiro. A ignorar.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="161"/>
+        <source>Warning: start value %1 is not an integer, ignoring.</source>
+        <translation>Aviso: valor de início %1 não é um número inteiro. A ignorar.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="166"/>
+        <source>Warning: start value must be at least 1, ignoring.</source>
+        <translation>Aviso: valor de início deve ser pelo menos 1. A ignorar.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="186"/>
+        <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
+        <translation>Aviso: valor final %1 não é um número inteiro, último ou último som. A ignorar.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="192"/>
+        <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
+        <translation>Aviso: valor final %1 é mais pequeno que o valor de início %2. A ignorar.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="203"/>
+        <source>Error: No input file specified.</source>
+        <translation>Erro: nenhum ficheiro de entrada especificado.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="210"/>
+        <source>Error: the input file at &apos;%1&apos; does not exist</source>
+        <comment>Command line error</comment>
+        <translation>Erro: o ficheiro de entrada em &apos;%1&apos; não existe</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="215"/>
+        <source>Error: the input path &apos;%1&apos; is not a file</source>
+        <comment>Command line error</comment>
+        <translation>Erro: o caminho de entrada &apos;%1&apos; não é um ficheiro</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="244"/>
+        <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
+        <translation>Aviso: a camada da câmara especificada %1 não foi encontrada. A ignorar.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="277"/>
+        <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
+        <comment>Command line warning</comment>
+        <translation>Aviso: o formato de saída não foi especificado ou não é suportado. A utilizar PNG.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="299"/>
+        <source>Warning: Transparency is not currently supported in movie files</source>
+        <comment>Command line warning</comment>
+        <translation>Aviso: a transparência não é atualmente suportada em ficheiros de vídeo</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="301"/>
+        <source>Exporting movie...</source>
+        <comment>Command line task progress</comment>
+        <translation>A exportar vídeo...</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="303"/>
+        <location filename="../app/src/main.cpp" line="308"/>
+        <source>Done.</source>
+        <comment>Command line task done</comment>
+        <translation>Concluído.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="306"/>
+        <source>Exporting image sequence...</source>
+        <comment>Command line task progress</comment>
+        <translation>A exportar sequência de imagens...</translation>
     </message>
 </context>
 <context>
     <name>RecentFileMenu</name>
     <message>
-        <location filename="../core_lib/src/interface/recentfilemenu.h" line="38"/>
+        <location filename="../core_lib/src/interface/recentfilemenu.h" line="35"/>
         <source>Open Recent</source>
         <translation>Abrir Recente</translation>
     </message>
@@ -3546,60 +3734,60 @@ Deseja gravar as alterações?</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="525"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="704"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="526"/>
-        <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation>Você está desenhando em uma camada oculta! Por favor, seleccione outra camada (ou torne a camada actual visível).</translation>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
+        <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1929"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Excluir selecção</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1945"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1969"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1977"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Limpar Imagem</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1980"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2003"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
-        <translation>Há uma abertura no seu desenho (ou talvez tenha aumentado o zoom demasiado).</translation>
+        <translation>Há uma abertura no seu desenho (ou talvez tenha aumentado o zoom em excesso).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1981"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2004"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Desculpe! Isto nem sempre funciona. Por favor tente novamente (aumente um pouco o zoom, clique em outro lugar... )&lt;br&gt;Caso não funcione, aumente um pouco o zoom e certifique-se que os caminhos estão conectados pressionando F1).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1985"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2008"/>
         <source>Out of bound.</source>
         <translation>Fora do limite</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1986"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2009"/>
         <source>Could not find a closed path.</source>
         <translation>Não é possível encontrar um caminho fechado.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1987"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2010"/>
         <source>Could not find the root index.</source>
         <translation>Não é possível encontrar o índice principal</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2011"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Erro: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1988"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2011"/>
         <source>Flood fill error</source>
         <translation>Erro de preenchimento</translation>
     </message>
@@ -3628,8 +3816,8 @@ Deseja gravar as alterações?</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
-        <source>clear</source>
-        <translation>Limpar</translation>
+        <source>Clear</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
@@ -3637,12 +3825,12 @@ Deseja gravar as alterações?</translation>
         <translation>Restaurar atalhos padrão</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="92"/>
+        <location filename="../app/src/shortcutspage.cpp" line="95"/>
         <source>Shortcut Conflict!</source>
         <translation>Conflito de Atalhos</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="93"/>
+        <location filename="../app/src/shortcutspage.cpp" line="96"/>
         <source>%1 is already used, overwrite?</source>
         <translation>%1 já está utilizada, substituir?</translation>
     </message>
@@ -3650,7 +3838,7 @@ Deseja gravar as alterações?</translation>
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="64"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="66"/>
         <source>Range</source>
         <translation>Intervalo</translation>
     </message>
@@ -3660,48 +3848,48 @@ Deseja gravar as alterações?</translation>
         <translation>Quadros por segundo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="54"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="55"/>
         <source>Start of playback loop</source>
         <translation>Início do ciclo de reprodução</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="61"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="63"/>
         <source>End of playback loop</source>
         <translation>Fim do ciclo de reprodução</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="66"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="68"/>
         <source>Playback range</source>
         <translation>Intervalo da reprodução</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="86"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>
         <source>Play</source>
         <translation>Reproduzir</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="89"/>
         <source>Loop</source>
         <translation>Repetir</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="90"/>
         <source>Sound on/off</source>
         <translation>Ligar/Desligar som</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="89"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="91"/>
         <source>End</source>
         <translation>Fim</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="90"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="192"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="92"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="195"/>
         <source>Start</source>
         <translation>Início</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="187"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="190"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
@@ -3709,94 +3897,104 @@ Deseja gravar as alterações?</translation>
 <context>
     <name>TimeLine</name>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="45"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
         <source>Timeline</source>
         <translation>Linha do tempo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="70"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
         <source>Layers:</source>
         <translation>Camadas:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="75"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="76"/>
         <source>Add Layer</source>
         <translation>Adicionar Camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="80"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="81"/>
         <source>Remove Layer</source>
         <translation>Excluir Camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="93"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
         <source>New Bitmap Layer</source>
         <translation>Nova Camada Bitmap</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
         <source>New Vector Layer</source>
         <translation>Nova Camada Vectorial</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
         <source>New Sound Layer</source>
         <translation>Nova Camada de Som</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="97"/>
         <source>New Camera Layer</source>
         <translation>Nova camada de câmara</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="98"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="99"/>
         <source>&amp;Layer</source>
         <comment>Timeline add-layer menu</comment>
         <translation>&amp;Camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="116"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="117"/>
         <source>Keys:</source>
         <translation>Chaves:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="121"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="122"/>
         <source>Add Frame</source>
         <translation>Adicionar quadro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="126"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="127"/>
         <source>Remove Frame</source>
         <translation>Remover quadro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="131"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="132"/>
         <source>Duplicate Frame</source>
         <translation>Duplicar quadro</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="134"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="135"/>
+        <source>Zoom:</source>
+        <translation>Aproximação:</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="142"/>
+        <source>Adjust frame width</source>
+        <translation>Ajustar largura do quadro</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="145"/>
         <source>Onion skin:</source>
         <translation>Transparência:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="138"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="149"/>
         <source>Toggle match keyframes</source>
         <translation>Alternância quadros-chaves</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="285"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="300"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Excluir Camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="310"/>
         <source>Please keep at least one camera layer in project</source>
         <translation>Por favor, mantenha pelo menos uma câmara no projecto</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="286"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="301"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Tem certeza de que quer excluir a camada: </translation>
     </message>
@@ -3804,12 +4002,12 @@ Deseja gravar as alterações?</translation>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="679"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="731"/>
         <source>Layer Properties</source>
         <translation>Propriedades da Camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="680"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="732"/>
         <source>Layer name:</source>
         <translation>Nome da Camada:</translation>
     </message>
@@ -3836,73 +4034,88 @@ Deseja gravar as alterações?</translation>
 <context>
     <name>TimelinePage</name>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="20"/>
+        <location filename="../app/ui/timelinepage.ui" line="38"/>
         <source>Timeline</source>
         <translation>Linha do tempo</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="60"/>
+        <location filename="../app/ui/timelinepage.ui" line="58"/>
         <source>Timeline length:</source>
         <comment>Preferences</comment>
         <translation>Comprimento Linha do Tempo</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="89"/>
+        <location filename="../app/ui/timelinepage.ui" line="87"/>
         <source>Drawing</source>
         <translation>Desenho</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="95"/>
+        <location filename="../app/ui/timelinepage.ui" line="93"/>
         <source>When drawing on an empty frame:</source>
         <translation>Quando desenhe num quadro vazio:</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="102"/>
+        <location filename="../app/ui/timelinepage.ui" line="100"/>
         <source>Create a new (blank) key-frame and start drawing on it.</source>
         <translation>Adicione um novo quadro-chave e comece a desenhar nele. </translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="105"/>
+        <location filename="../app/ui/timelinepage.ui" line="103"/>
         <source>Create a new (blank) key-frame</source>
         <translation>Adicione um quadro-chave novo</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="115"/>
+        <location filename="../app/ui/timelinepage.ui" line="113"/>
         <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
         <translation>Duplique o quadro-chave anterior e comece a desenhar nele.</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="118"/>
+        <location filename="../app/ui/timelinepage.ui" line="116"/>
         <source>Duplicate the previous key-frame</source>
         <translation>Duplicar quadro-chave anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="125"/>
+        <location filename="../app/ui/timelinepage.ui" line="123"/>
         <source>Keep drawing on the previous key-frame</source>
         <translation>Continue desenhando no quadro-chave anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="137"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Erasor, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Aplica-se às ferramentas: Lápis, Borracha, Caneta, Polilinha, Balde e Pincéis.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../app/ui/timelinepage.ui" line="135"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Eraser, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="162"/>
+        <location filename="../app/ui/timelinepage.ui" line="160"/>
         <source>Playback</source>
         <translation>Ciclo de reprodução</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="174"/>
+        <location filename="../app/ui/timelinepage.ui" line="172"/>
         <source>Show onion skin while playing</source>
         <translation>Mostrar transparência enquanto reproduz animação</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="26"/>
-        <source>Frame size</source>
-        <translation>Tamanho do quadro</translation>
+        <location filename="../app/ui/timelinepage.ui" line="180"/>
+        <source>Flip and Roll</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="79"/>
+        <location filename="../app/ui/timelinepage.ui" line="188"/>
+        <source>Maximum numbers of drawings in roll</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="240"/>
+        <source>Msecs per drawing in flip inbetween</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="289"/>
+        <source>Msecs per drawing in flip roll</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="77"/>
         <source>Short scrub</source>
         <translation>Indicador pequeno</translation>
     </message>
@@ -4108,11 +4321,6 @@ Deseja gravar as alterações?</translation>
         <translation>Encher contorno</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="114"/>
-        <source>The extend to which the color variation will be treated as being equal</source>
-        <translation>Intervalo que ajusta a expansão da cor por igual</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
         <translation>Bézier</translation>
@@ -4159,6 +4367,11 @@ Deseja gravar as alterações?</translation>
         <translation>Tornar oculto</translation>
     </message>
     <message>
+        <location filename="../app/ui/tooloptions.ui" line="114"/>
+        <source>The extent to which the color variation will be treated as being equal</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
         <source>Invisible</source>
         <translation>Oculto</translation>
@@ -4187,37 +4400,37 @@ Deseja gravar as alterações?</translation>
 <context>
     <name>ToolsPage</name>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="17"/>
+        <location filename="../app/ui/toolspage.ui" line="44"/>
         <source>Onion skin</source>
         <translation>Transparência</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="23"/>
+        <location filename="../app/ui/toolspage.ui" line="50"/>
         <source>Maximum onion opacity %</source>
         <translation>Opacidade máxima da transparência (%)</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="49"/>
+        <location filename="../app/ui/toolspage.ui" line="76"/>
         <source>Minimum onion opacity %</source>
         <translation>Opacidade mínima da transparência (%)</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="75"/>
+        <location filename="../app/ui/toolspage.ui" line="102"/>
         <source>Number of previous onion frames shown</source>
         <translation>Mostra número de transparências nos quadros anteriores</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="104"/>
+        <location filename="../app/ui/toolspage.ui" line="131"/>
         <source>Number of next onion frames shown</source>
         <translation>Mostra número de transparências nos quadros seguintes</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="136"/>
+        <location filename="../app/ui/toolspage.ui" line="163"/>
         <source>Brush Tools</source>
         <translation>Ferramenta Pincel</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="142"/>
+        <location filename="../app/ui/toolspage.ui" line="169"/>
         <source>Use Quick Sizing</source>
         <translation>Usar dimensionamento rápido</translation>
     </message>

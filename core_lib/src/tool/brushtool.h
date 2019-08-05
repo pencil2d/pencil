@@ -19,48 +19,42 @@ GNU General Public License for more details.
 #define BRUSHTOOL_H
 
 #include "stroketool.h"
-#include "bitmapimage.h"
+
 
 class BrushTool : public StrokeTool
 {
     Q_OBJECT
+
 public:
-    explicit BrushTool( QObject *parent = 0 );
+    explicit BrushTool(QObject* parent = 0);
     ToolType type() override;
     void loadSettings() override;
+    void resetToDefault() override;
     QCursor cursor() override;
 
-    void mouseMoveEvent( QMouseEvent* ) override;
-    void mousePressEvent( QMouseEvent* ) override;
-    void mouseReleaseEvent( QMouseEvent* ) override;
-
-    void tabletMoveEvent( QTabletEvent* ) override;
-    void tabletPressEvent( QTabletEvent* ) override;
-    void tabletReleaseEvent( QTabletEvent* ) override;
-
-    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
+    void pointerMoveEvent(PointerEvent*) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
 
     void drawStroke();
     void paintVectorStroke();
     void paintBitmapStroke();
-    void paintAt( QPointF point );
+    void paintAt(QPointF point);
 
-    void setWidth( const qreal width ) override;
-    void setFeather( const qreal feather ) override;
-    void setUseFeather( const bool usingFeather ) override;
-    void setPressure( const bool pressure ) override;
-    void setInvisibility( const bool invisibility) override;
-    void setAA( const int useAA ) override;
-    void setStabilizerLevel( const int level ) override;
+    void setWidth(const qreal width) override;
+    void setFeather(const qreal feather) override;
+    void setUseFeather(const bool usingFeather) override;
+    void setPressure(const bool pressure) override;
+    void setInvisibility(const bool invisibility) override;
+    void setAA(const int useAA) override;
+    void setStabilizerLevel(const int level) override;
 
 protected:
     QPointF mLastBrushPoint;
-
     QPointF mMouseDownPoint;
 
-    BitmapImage mImg;
     QColor mCurrentPressuredColor;
-    qreal mOpacity;
+    qreal mOpacity = 1.0;
 };
 
 #endif // BRUSHTOOL_H

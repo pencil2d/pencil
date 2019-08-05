@@ -65,6 +65,8 @@ void PreferenceManager::loadPrefs()
     set(SETTING::SHADOW,                   settings.value(SETTING_SHADOW,                 false).toBool());
     set(SETTING::QUICK_SIZING,             settings.value(SETTING_QUICK_SIZING,           true).toBool());
 
+    set(SETTING::ROTATION_INCREMENT,       settings.value(SETTING_ROTATION_INCREMENT,     15).toInt());
+
     set(SETTING::WINDOW_OPACITY,           settings.value(SETTING_WINDOW_OPACITY,         0).toInt());
     set(SETTING::CURVE_SMOOTHING,          settings.value(SETTING_CURVE_SMOOTHING,        20).toInt());
 
@@ -104,6 +106,10 @@ void PreferenceManager::loadPrefs()
     set(SETTING::ONION_NEXT_FRAMES_NUM,    settings.value(SETTING_ONION_NEXT_FRAMES_NUM,  5).toInt());
     set(SETTING::ONION_WHILE_PLAYBACK,     settings.value(SETTING_ONION_WHILE_PLAYBACK,   0).toInt());
     set(SETTING::ONION_TYPE,               settings.value(SETTING_ONION_TYPE,             "relative").toString());
+
+    set(SETTING::FLIP_ROLL_MSEC,           settings.value(SETTING_FLIP_ROLL_MSEC,         100).toInt());
+    set(SETTING::FLIP_ROLL_DRAWINGS,       settings.value(SETTING_FLIP_ROLL_DRAWINGS,     5).toInt());
+    set(SETTING::FLIP_INBETWEEN_MSEC,      settings.value(SETTING_FLIP_INBETWEEN_MSEC,    100).toInt());
 
     set(SETTING::LANGUAGE,                 settings.value(SETTING_LANGUAGE).toString());
 }
@@ -216,6 +222,15 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::ONION_NEXT_FRAMES_NUM:
         settings.setValue(SETTING_ONION_NEXT_FRAMES_NUM, value);
         break;
+    case SETTING::FLIP_ROLL_MSEC :
+        settings.setValue(SETTING_FLIP_ROLL_MSEC, value);
+        break;
+    case SETTING::FLIP_ROLL_DRAWINGS :
+        settings.setValue(SETTING_FLIP_ROLL_DRAWINGS, value);
+        break;
+    case SETTING::FLIP_INBETWEEN_MSEC :
+        settings.setValue(SETTING_FLIP_INBETWEEN_MSEC, value);
+        break;
     case SETTING::GRID_SIZE_W:
         settings.setValue(SETTING_GRID_SIZE_W, value);
         break;
@@ -230,6 +245,9 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::ONION_WHILE_PLAYBACK:
         settings.setValue(SETTING_ONION_WHILE_PLAYBACK, value);
+        break;
+    case SETTING::ROTATION_INCREMENT:
+        settings.setValue(SETTING_ROTATION_INCREMENT, value);
         break;
     case SETTING::FPS:
         settings.setValue(SETTING_FPS, value);

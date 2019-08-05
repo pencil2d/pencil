@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "polylinetool.h"
 
+
 #include "editor.h"
 #include "scribblearea.h"
 
@@ -24,14 +25,13 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
-
+#include "pointerevent.h"
 #include "layervector.h"
 #include "layerbitmap.h"
 #include "vectorimage.h"
 
 
-PolylineTool::PolylineTool( QObject *parent ) :
-BaseTool( parent )
+PolylineTool::PolylineTool(QObject* parent) : BaseTool(parent)
 {
 }
 
@@ -42,25 +42,25 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
-    m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[BEZIER] = true;
-    m_enabledProperties[ANTI_ALIASING] = true;
+    mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[BEZIER] = true;
+    mPropertyEnabled[ANTI_ALIASING] = true;
 
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value( "polyLineWidth" ).toDouble();
+    properties.width = settings.value("polyLineWidth", 8.0).toDouble();
     properties.feather = -1;
     properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
-    properties.useAA = settings.value( "brushAA").toBool();
+    properties.useAA = settings.value("brushAA").toBool();
     properties.stabilizerLevel = -1;
+}
 
-    // First run
-    if ( properties.width <= 0 )
-    {
-        setWidth(1.5);
-    }
+void PolylineTool::resetToDefault()
+{
+    setWidth(8.0);
+    setBezier(false);
 }
 
 void PolylineTool::setWidth(const qreal width)
@@ -69,24 +69,24 @@ void PolylineTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("polyLineWidth", width);
     settings.sync();
 }
 
-void PolylineTool::setFeather( const qreal feather )
+void PolylineTool::setFeather(const qreal feather)
 {
-    Q_UNUSED( feather );
+    Q_UNUSED(feather);
     properties.feather = -1;
 }
 
-void PolylineTool::setAA( const int AA )
+void PolylineTool::setAA(const int AA)
 {
     // Set current property
     properties.useAA = AA;
 
     // Update settings
-    QSettings settings( PENCIL2D, PENCIL2D );
+    QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("brushAA", AA);
     settings.sync();
 }
@@ -96,22 +96,22 @@ QCursor PolylineTool::cursor()
     return Qt::CrossCursor;
 }
 
-void PolylineTool::clear()
+void PolylineTool::clearToolData()
 {
     mPoints.clear();
 }
 
-void PolylineTool::mousePressEvent( QMouseEvent *event )
+void PolylineTool::pointerPressEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if ( event->button() == Qt::LeftButton )
+    if (event->button() == Qt::LeftButton)
     {
-        if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
+        if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
             mScribbleArea->handleDrawingOnEmptyFrame();
 
-            if ( layer->type() == Layer::VECTOR )
+            if (layer->type() == Layer::VECTOR)
             {
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
                 if (mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
@@ -125,47 +125,48 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
     }
 }
 
-void PolylineTool::mouseReleaseEvent(QMouseEvent*)
-{}
-
-void PolylineTool::mouseMoveEvent(QMouseEvent*)
+void PolylineTool::pointerMoveEvent(PointerEvent*)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
+    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
-       drawPolyline( mPoints, getCurrentPoint() );
+        drawPolyline(mPoints, getCurrentPoint());
     }
 }
 
-void PolylineTool::mouseDoubleClickEvent(QMouseEvent* event)
+void PolylineTool::pointerReleaseEvent(PointerEvent *)
+{}
+
+void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
 {
+    // include the current point before ending the line.
+    mPoints << getCurrentPoint();
+
     mEditor->backup(typeName());
 
-    if ( BezierCurve::eLength( m_pStrokeManager->getLastPressPixel() - event->pos() ) < 2.0 )
-    {
-        endPolyline( mPoints );
-        clear();
-    }
+    endPolyline(mPoints);
+    clearToolData();
 }
+
 
 bool PolylineTool::keyPressEvent(QKeyEvent* event)
 {
-    switch ( event->key() )
+    switch (event->key())
     {
     case Qt::Key_Return:
-        if ( mPoints.size() > 0 )
+        if (mPoints.size() > 0)
         {
-            endPolyline( mPoints );
-            clear();
+            endPolyline(mPoints);
+            clearToolData();
             return true;
         }
         break;
 
     case Qt::Key_Escape:
-        if ( mPoints.size() > 0 )
+        if (mPoints.size() > 0)
         {
-            cancelPolyline( );
-            clear();
+            cancelPolyline();
+            clearToolData();
             return true;
         }
         break;
@@ -179,46 +180,41 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
 
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
-    if ( !mScribbleArea->areLayersSane() )
+    if (points.size() > 0)
     {
-        return;
-    }
-
-    if ( points.size() > 0 )
-    {
-        QPen pen( mEditor->color()->frontColor(),
-                   properties.width,
-                   Qt::SolidLine,
-                   Qt::RoundCap,
-                   Qt::RoundJoin );
+        QPen pen(mEditor->color()->frontColor(),
+                 properties.width,
+                 Qt::SolidLine,
+                 Qt::RoundCap,
+                 Qt::RoundJoin);
         Layer* layer = mEditor->layers()->currentLayer();
 
         // Bitmap by default
         QPainterPath tempPath;
-        if ( properties.bezier_state )
+        if (properties.bezier_state)
         {
-            tempPath = BezierCurve( points ).getSimplePath();
+            tempPath = BezierCurve(points).getSimplePath();
         }
         else
         {
-            tempPath = BezierCurve( points ).getStraightPath();
+            tempPath = BezierCurve(points).getStraightPath();
         }
-        tempPath.lineTo( endPoint );
+        tempPath.lineTo(endPoint);
 
         // Vector otherwise
-        if ( layer->type() == Layer::VECTOR )
+        if (layer->type() == Layer::VECTOR)
         {
-            if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
+            if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
             {
-                tempPath = mEditor->view()->mapCanvasToScreen( tempPath );
-                if ( mScribbleArea->makeInvisible() == true )
+                tempPath = mEditor->view()->mapCanvasToScreen(tempPath);
+                if (mScribbleArea->makeInvisible() == true)
                 {
-                    pen.setWidth( 0 );
-                    pen.setStyle( Qt::DotLine );
+                    pen.setWidth(0);
+                    pen.setStyle(Qt::DotLine);
                 }
                 else
                 {
-                    pen.setWidth(properties.width * mEditor->view()->scaling() );
+                    pen.setWidth(properties.width * mEditor->view()->scaling());
                 }
             }
         }
@@ -235,38 +231,33 @@ void PolylineTool::cancelPolyline()
     mScribbleArea->updateCurrentFrame();
 }
 
-void PolylineTool::endPolyline( QList<QPointF> points )
+void PolylineTool::endPolyline(QList<QPointF> points)
 {
-    if ( !mScribbleArea->areLayersSane() )
-    {
-        return;
-    }
-
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if ( layer->type() == Layer::VECTOR )
+    if (layer->type() == Layer::VECTOR)
     {
-        BezierCurve curve = BezierCurve( points );
-        if ( mScribbleArea->makeInvisible() == true )
+        BezierCurve curve = BezierCurve(points);
+        if (mScribbleArea->makeInvisible() == true)
         {
-            curve.setWidth( 0 );
+            curve.setWidth(0);
         }
         else
         {
-            curve.setWidth( properties.width );
+            curve.setWidth(properties.width);
         }
-        curve.setColourNumber( mEditor->color()->frontColorNumber() );
-        curve.setVariableWidth( false );
-        curve.setInvisibility( mScribbleArea->makeInvisible() );
+        curve.setColourNumber(mEditor->color()->frontColorNumber());
+        curve.setVariableWidth(false);
+        curve.setInvisibility(mScribbleArea->makeInvisible());
 
-        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, mEditor->view()->scaling() );
+        ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->addCurve(curve, mEditor->view()->scaling());
     }
-    if ( layer->type() == Layer::BITMAP )
+    if (layer->type() == Layer::BITMAP)
     {
-        drawPolyline( points, points.last() );
-        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
-        bitmapImage->paste( mScribbleArea->mBufferImg );
+        drawPolyline(points, points.last());
+        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        bitmapImage->paste(mScribbleArea->mBufferImg);
     }
     mScribbleArea->mBufferImg->clear();
-    mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+    mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

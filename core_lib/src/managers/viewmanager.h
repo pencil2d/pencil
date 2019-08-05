@@ -48,6 +48,9 @@ public:
     QRectF mapCanvasToScreen(const QRectF& rect);
     QRectF mapScreenToCanvas(const QRectF& rect);
 
+    QPolygonF mapPolygonToScreen(const QPolygonF& polygon);
+    QPolygonF mapPolygonToCanvas(const QPolygonF& polygon);
+
     QPainterPath mapCanvasToScreen(const QPainterPath& path);
     QPainterPath mapScreenToCanvas(const QPainterPath& path);
 

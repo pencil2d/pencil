@@ -88,7 +88,7 @@ void ToolManager::setDefaultTool()
 
 void ToolManager::setCurrentTool(ToolType eToolType)
 {
-    if (mCurrentTool != NULL)
+    if (mCurrentTool != nullptr)
     {
        leavingThisTool();
     }
@@ -104,9 +104,9 @@ bool ToolManager::leavingThisTool()
 
 void ToolManager::cleanupAllToolsData()
 {
-    foreach(BaseTool* pTool, mToolSetHash.values())
+    foreach(BaseTool* tool, mToolSetHash)
     {
-        pTool->clear();
+        tool->clearToolData();
     }
 }
 
@@ -115,24 +115,11 @@ void ToolManager::resetAllTools()
     // Reset can be useful to solve some pencil settings problems.
     // Beta-testers should be recommended to reset before sending tool related issues.
     // This can prevent from users to stop working on their project.
-    getTool(PEN)->properties.width = 1.5; // not supposed to use feather
-    getTool(PEN)->properties.stabilizerLevel = -1;
-    getTool(POLYLINE)->properties.width = 1.5; // PEN dependent
-    getTool(PENCIL)->properties.width = 1.0;
-    getTool(PENCIL)->properties.feather = -1.0; // locks feather usage (can be changed)
-    getTool(PENCIL)->properties.stabilizerLevel = -1;
-    getTool(ERASER)->properties.width = 25.0;
-    getTool(ERASER)->properties.feather = 50.0;
-    getTool(BRUSH)->properties.width = 15.0;
-    getTool(BRUSH)->properties.feather = 200.0;
-    getTool(BRUSH)->properties.stabilizerLevel = -1;
-    getTool(BRUSH)->properties.useFeather = false;
-    getTool(SMUDGE)->properties.width = 25.0;
-    getTool(SMUDGE)->properties.feather = 200.0;
-    getTool(BUCKET)->properties.tolerance = 10.0;
 
-    // todo: add all the default settings
-
+    foreach(BaseTool* tool, mToolSetHash)
+    {
+        tool->resetToDefault();
+    }
     qDebug("tools restored to default settings");
 }
 
@@ -143,7 +130,7 @@ void ToolManager::setWidth(float newWidth)
         newWidth = 1.f;
     }
 
-    currentTool()->setWidth(newWidth);
+    currentTool()->setWidth(static_cast<qreal>(newWidth));
     Q_EMIT penWidthValueChanged(newWidth);
     Q_EMIT toolPropertyChanged(currentTool()->type(), WIDTH);
 }
@@ -155,7 +142,7 @@ void ToolManager::setFeather(float newFeather)
         newFeather = 0.f;
     }
 
-    currentTool()->setFeather(newFeather);
+    currentTool()->setFeather(static_cast<qreal>(newFeather));
     Q_EMIT penFeatherValueChanged(newFeather);
     Q_EMIT toolPropertyChanged(currentTool()->type(), FEATHER);
 }
@@ -215,10 +202,7 @@ void ToolManager::setStabilizerLevel(int level)
 
 void ToolManager::setTolerance(int newTolerance)
 {
-    if (newTolerance < 0)
-    {
-        newTolerance = 1;
-    }
+    newTolerance = qMax(0, newTolerance);
 
     currentTool()->setTolerance(newTolerance);
     Q_EMIT toleranceValueChanged(newTolerance);

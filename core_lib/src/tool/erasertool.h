@@ -28,17 +28,12 @@ public:
     explicit EraserTool( QObject* parent = 0 );
     ToolType type() override;
     void loadSettings() override;
+    void resetToDefault() override;
     QCursor cursor() override;
 
-    void mouseMoveEvent( QMouseEvent* ) override;
-    void mousePressEvent( QMouseEvent* ) override;
-    void mouseReleaseEvent( QMouseEvent* ) override;
-
-    void tabletPressEvent( QTabletEvent* ) override;
-    void tabletMoveEvent( QTabletEvent* ) override;
-    void tabletReleaseEvent( QTabletEvent* ) override;
-
-    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
+    void pointerMoveEvent( PointerEvent* ) override;
+    void pointerPressEvent( PointerEvent* ) override;
+    void pointerReleaseEvent( PointerEvent* ) override;
 
     void drawStroke();
     void paintAt( QPointF point );

@@ -40,7 +40,7 @@ namespace
                            "</ul>";
 }
 
-FileManager::FileManager(QObject *parent) : QObject(parent),
+FileManager::FileManager(QObject* parent) : QObject(parent),
 mLog("FileManager")
 {
     ENABLE_DEBUG_LOG(mLog, false);

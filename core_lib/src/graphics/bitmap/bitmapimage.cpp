@@ -32,6 +32,7 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
 {
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
+    mEnableAutoCrop = a.mEnableAutoCrop;
     mImage = std::make_shared<QImage>(*a.mImage);
 }
 
@@ -135,6 +136,8 @@ BitmapImage BitmapImage::copy()
 
 BitmapImage BitmapImage::copy(QRect rectangle)
 {
+    if (rectangle.isEmpty() || mBounds.isEmpty()) return BitmapImage();
+
     QRect intersection2 = rectangle.translated(-mBounds.topLeft());
     BitmapImage result = BitmapImage(rectangle.topLeft(), image()->copy(intersection2));
     return result;
@@ -642,11 +645,59 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
         else
         {
             // forces drawing when points are coincident (mousedown)
-            painter.drawPoint(path.elementAt(0).x, path.elementAt(0).y);
+            painter.drawPoint(static_cast<int>(path.elementAt(0).x), static_cast<int>(path.elementAt(0).y));
         }
         painter.end();
     }
     modification();
+}
+
+Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
+{
+    Status::StatusInt retValues;
+    retValues.value = -1;
+    retValues.errorcode = Status::FAIL;
+    int left = static_cast<int>(rect.left());
+    int right = static_cast<int>(rect.right());
+    int top = static_cast<int>(rect.top());
+    int bottom = static_cast<int>(rect.bottom());
+    for (int x = left; x <= right; x++)
+    {
+        for (int y = top; y <= bottom; y++)
+        {
+            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
+            {
+                retValues.value = x;
+                retValues.errorcode = Status::OK;
+                return retValues;
+            }
+        }
+    }
+    return retValues;
+}
+
+Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
+{
+    Status::StatusInt retValues;
+    retValues.value = -1;
+    retValues.errorcode = Status::FAIL;
+    int left = static_cast<int>(rect.left());
+    int right = static_cast<int>(rect.right());
+    int top = static_cast<int>(rect.top());
+    int bottom = static_cast<int>(rect.bottom());
+    for (int y = top; y <= bottom; y++)
+    {
+        for (int x = left; x <= right; x++)
+        {
+            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
+            {
+                retValues.value = y;
+                retValues.errorcode = Status::OK;
+                return retValues;
+            }
+        }
+    }
+    return retValues;
 }
 
 Status BitmapImage::writeFile(const QString& filename)
@@ -742,12 +793,12 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
     // Get Eulcidian distance between colors
     // Not an accurate representation of human perception,
     // but it's the best any image editing program ever does
-    int diffRed = qPow(qRed(oldColor) - qRed(newColor), 2);
-    int diffGreen = qPow(qGreen(oldColor) - qGreen(newColor), 2);
-    int diffBlue = qPow(qBlue(oldColor) - qBlue(newColor), 2);
+    int diffRed = static_cast<int>(qPow(qRed(oldColor) - qRed(newColor), 2));
+    int diffGreen = static_cast<int>(qPow(qGreen(oldColor) - qGreen(newColor), 2));
+    int diffBlue = static_cast<int>(qPow(qBlue(oldColor) - qBlue(newColor), 2));
     // This may not be the best way to handle alpha since the other channels become less relevant as
     // the alpha is reduces (ex. QColor(0,0,0,0) is the same as QColor(255,255,255,0))
-    int diffAlpha = qPow(qAlpha(oldColor) - qAlpha(newColor), 2);
+    int diffAlpha = static_cast<int>(qPow(qAlpha(oldColor) - qAlpha(newColor), 2));
 
     bool isSimilar = (diffRed + diffGreen + diffBlue + diffAlpha) <= tolerance;
 
@@ -775,7 +826,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
     }
 
     // Square tolerance for use with compareColor
-    tolerance = qPow(tolerance, 2);
+    tolerance = static_cast<int>(qPow(tolerance, 2));
 
     QRgb oldColor = targetImage->pixel(point);
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
