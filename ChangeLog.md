@@ -1,3 +1,38 @@
+## Pencil2D 0.6.4 - 31 May 2019
+
+### Enhancements
+
+- c9e1ba6: Fix canvas flip icons in main menu
+- 4b6e55a: Tweak frame flipping timing & behavior.
+- 4f31fe6: Set minimum value for the bucket fill tolerance to 0.
+- 1a1238d: Reset the autosave counter if the user manually saves.
+- 8cc1f8b, e1db3a7: Add more warnings when attempting to modify a hidden layer.
+- 676092a: Improving tabbing order of the camera layer properties dialog.
+- ca3b651: Automatically select the first action when first viewing the shortcut preferences.
+
+### Fixes
+
+- 0e041d9: Fix crash when trying to manually scrub while flipping.
+- #940 Fix saving issue with certain locales.
+- 96dca6d: Fix some move export issues on Windows.
+- 97f5891, 7a41226, 168bb1f: Fix various English typos throughout the program.
+- d3a41d3, fddf846, ef235f0: Fix some subtle display issues.
+- b43b024: Fix potential program crash when deleting a keyframe while a selection is active (by [Oliver Stevns](https://github.com/CandyFace) | alternate solution by [ryyharris](https://github.com/ryyharris)).
+- 9942932: Fix transformations temporarily applying to all frames during playback.
+- 5aa4d9c: Fix the first item in the color palette not changing the bitmap brush color.
+- b293c28: Fix a partial file wipe issue when using Save As to convert pclx files to pcl files.
+- 624b470: Fix the cursor getting stuck with the wrong icon sometimes when deselecting.
+- 673ec0c: Fix selection changing size during moving sometimes.
+- 1dc46e6: Fix bucket tool occasionally filling the wrong pixel.
+- c0af82a: Fix semi-permanent display bug when right clicking in the middle of a stroke.
+- e33fabb: Fix autocropping for frames loaded from a file.
+- a61ec8b: Fix general UI & Tooltip typos. (by[mapreri](https://github.com/mapreri))
+- #1015 Fix inverted active layer focus shortcuts (by [ryyharris](https://github.com/ryyharris)).
+- #1170 Fix incorrect redo text (by [ryyharris](https://github.com/ryyharris)).
+- #1192 Fix crash for Flipping & Rolling feature when clicking on timeline + General improvements (by [davidlamhauge](https://github.com/davidlamhauge))
+- #1195 Fix update checker on Windows.
+- #1211, c24487d: Fix crash on vector layers when drawing on empty frame without existing previous keyframe.
+
 ## Pencil2D 0.6.3 - 17 March 2019
 
 ### New Features
@@ -27,7 +62,7 @@
 ### Fixes
 
 * #926 Scrubber should move to start of range
-* #1059 Use tablet events for tablet input 
+* #1059 Use tablet events for tablet input
 * #1089 Copy and Paste Doesn't Function
 * #1090 Minor image export bugs -- [Philippe Rzetelski](https://github.com/przet)
 * #1092 Loading a file removes the application icon on windows until next restart
@@ -54,13 +89,15 @@
 * #1175 Grayscale color wheel
 * #1181 Fix canvas bugs
 * #1188 Miscellaneous fixes: Fixes regression for #677. Fixes duplicate selection box.
+* #1120 Windows Nightly Builds not working
 
-* b1064ab Fix auto-crop being disabled in duplicate frames.
-* aafd048 Fix: mistakingly empty the filename of source keyframe when duplicating a frame
-* 4f7b4bb Fix sound key length
+* `b1064ab` Fix auto-crop being disabled in duplicate frames.
+* `aafd048` Fix: mistakingly empty the filename of source keyframe when duplicating a frame
+* `4f7b4bb` Fix sound key length
 
 Translations
-* Added translation: Catalan, Greek and Kabyle.
+* Added translations: Catalan, Greek and Kabyle.
+* `8f42d46` Updated most recent translations from Transifex
 
 ## Pencil2D 0.6.2 - 26 September 2018
 
@@ -144,7 +181,7 @@ Fixes:
 * #412, #814 Duplicate key wasn't working in some cases.
 * #831 App crashed when duplicating a sound key.
 * #830 Can't save .pcl multiple times after importing sound layers.
-* #845 The framerate wasn't accurate when playing animation. 
+* #845 The framerate wasn't accurate when playing animation.
 * #828 The app stalled when using dotted cursor and zooming-in very much.
 * #739, #889 Vector outlines are not drawn when Horizontal Flip and Show Outlines Only are activated. -- [Martin van Zijl](https://github.com/martinvanzijl)
 * #735, #913 Some shortcuts are broken, file extensions are case-sensitive in image sequence import -- [Nick](https://github.com/Spark01)

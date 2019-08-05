@@ -45,6 +45,8 @@ public:
     // edit
     void flipSelectionX();
     void flipSelectionY();
+    void selectAll();
+    void deselectAll();
 
     // view
     void ZoomIn();

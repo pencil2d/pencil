@@ -109,7 +109,7 @@ enum StabilizationLevel
 #define CMD_ZOOM_IN "CmdZoomIn"
 #define CMD_ZOOM_OUT "CmdZoomOut"
 #define CMD_ROTATE_CLOCK "CmdRotateClockwise"
-#define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClosewise"
+#define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClockwise"
 #define CMD_RESET_ZOOM_ROTATE "CmdResetZoomRotate"
 #define CMD_ZOOM_400 "CmdZoom400"
 #define CMD_ZOOM_300 "CmdZoom300"
@@ -192,6 +192,7 @@ enum StabilizationLevel
 #define SETTING_DRAW_LABEL          "DrawLabel"
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
+#define SETTING_ROTATION_INCREMENT  "RotationIncrement"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"

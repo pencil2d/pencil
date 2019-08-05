@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include "handtool.h"
 
-#include <cmath>
 #include <QtMath>
 #include <QPixmap>
 #include <QVector2D>
@@ -29,6 +28,7 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "viewmanager.h"
 #include "scribblearea.h"
+#include "mathutils.h"
 
 
 HandTool::HandTool(QObject* parent) : BaseTool(parent)
@@ -108,13 +108,14 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
         QVector2D startV(getLastPixel() - centralPixel);
         QVector2D curV(getCurrentPixel() - centralPixel);
 
-        float angleOffset = (atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x())) * 180.0 / M_PI;
-        float newAngle = viewMgr->rotation() + angleOffset;
+        qreal angleOffset = static_cast<qreal>(atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x()));
+        angleOffset = MathUtils::radToDeg(angleOffset);
+        float newAngle = viewMgr->rotation() + static_cast<float>(angleOffset);
         viewMgr->rotate(newAngle);
     }
     else if (isScale)
     {
-        float delta = (getCurrentPixel().y() - mLastPixel.y()) / 100.f;
+        float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
         float scaleValue = viewMgr->scaling() * (1.f + delta);
         viewMgr->scale(scaleValue);
     }

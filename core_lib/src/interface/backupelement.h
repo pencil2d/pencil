@@ -33,6 +33,7 @@ public:
 
     QString undoText;
     bool somethingSelected;
+    qreal rotationAngle;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 
     virtual int type() { return UNDEFINED; }

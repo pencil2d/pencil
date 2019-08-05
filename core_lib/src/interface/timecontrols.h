@@ -33,7 +33,7 @@ class TimeControls : public QToolBar
     Q_OBJECT
 
 public:
-    TimeControls(TimeLine* parent = 0);
+    TimeControls(TimeLine* parent = nullptr);
     void initUI();
     void updateUI();
     void setEditor(Editor* editor);

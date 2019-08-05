@@ -43,15 +43,14 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 
-#include "layercamera.h"
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
 #include "backupelement.h"
 
 // app headers
-#include "scribblearea.h"
 #include "colorbox.h"
 #include "colorinspector.h"
 #include "colorpalettewidget.h"
@@ -259,8 +258,9 @@ void MainWindow2::createMenus()
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
-    connect(ui->actionSelect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::selectAll);
-    connect(ui->actionDeselect_All, &QAction::triggered, ui->scribbleArea, &ScribbleArea::deselectAll);
+    connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
+    connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
+    connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     //--- Layer Menu ---
@@ -274,7 +274,7 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
-    connect(ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
+    connect(ui->actionRotate_Anticlockwise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
     connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
     connect(ui->actionZoom400, &QAction::triggered, mEditor->view(), &ViewManager::scale400);
     connect(ui->actionZoom300, &QAction::triggered, mEditor->view(), &ViewManager::scale300);
@@ -414,6 +414,32 @@ void MainWindow2::clearRecentFilesList()
                                  QMessageBox::Ok);
     }
     getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
+}
+
+void MainWindow2::openPegAlignDialog()
+{
+    if (mPegAlign != nullptr)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Dialog is already open!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    mPegAlign = new PegBarAlignmentDialog(mEditor, this);
+    connect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
+    mPegAlign->updatePegRegLayers();
+    mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
+    mPegAlign->setRefKey(mEditor->currentFrame());
+    mPegAlign->setLabRefKey();
+    mPegAlign->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mPegAlign->show();
+}
+
+void MainWindow2::closePegAlignDialog()
+{
+    disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
+    mPegAlign = nullptr;
 }
 
 void MainWindow2::closeEvent(QCloseEvent* event)
@@ -684,6 +710,8 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     updateSaveState();
 
     progress.setValue(progress.maximum());
+
+    mEditor->resetAutoSaveCounter();
 
     return true;
 }
@@ -1135,7 +1163,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionZoom33->setShortcut(cmdKeySeq(CMD_ZOOM_33));
     ui->actionZoom25->setShortcut(cmdKeySeq(CMD_ZOOM_25));
     ui->actionRotate_Clockwise->setShortcut(cmdKeySeq(CMD_ROTATE_CLOCK));
-    ui->actionRotate_Anticlosewise->setShortcut(cmdKeySeq(CMD_ROTATE_ANTI_CLOCK));
+    ui->actionRotate_Anticlockwise->setShortcut(cmdKeySeq(CMD_ROTATE_ANTI_CLOCK));
     ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_FLIP_HORIZONTAL));
     ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
     ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));
@@ -1227,7 +1255,7 @@ void MainWindow2::undoActSetText()
 
     if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
     {
-        ui->actionRedo->setText(QString("%1   %2 %3").arg("Redo", "Menu item text")
+        ui->actionRedo->setText(QString("%1   %2 %3").arg(tr("Redo", "Menu item text"))
                                 .arg(QString::number(mEditor->mBackupIndex + 2))
                                 .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
         ui->actionRedo->setEnabled(true);
@@ -1270,6 +1298,8 @@ void MainWindow2::importPalette()
 void MainWindow2::makeConnections(Editor* editor)
 {
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
+    connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
+    connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1393,4 +1423,38 @@ void MainWindow2::changePlayState(bool isPlaying)
         ui->actionPlay->setIcon(mStartIcon);
     }
     update();
+}
+/*
+void MainWindow2::alignPegs()
+{
+    QStringList bitmaplayers;
+    bitmaplayers = mPegreg->getLayerList();
+    if (bitmaplayers.isEmpty())
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("No layers selected!"),
+                                 QMessageBox::Ok);
+    }
+    else
+    {
+        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
+        if (statusint.errorcode == Status::FAIL)
+        {
+            QMessageBox::information(this, nullptr,
+                                     tr("Peg bar alignment failed!"),
+                                     QMessageBox::Ok);
+            return;
+        }
+        closePegReg();
+    }
+}
+*/
+void MainWindow2::displayMessageBox(const QString& title, const QString& body)
+{
+    QMessageBox::information(this, tr(qPrintable(title)), tr(qPrintable(body)), QMessageBox::Ok);
+}
+
+void MainWindow2::displayMessageBoxNoTitle(const QString& body)
+{
+    QMessageBox::information(this, nullptr, tr(qPrintable(body)), QMessageBox::Ok);
 }
