@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include <QMainWindow>
 #include "preferencemanager.h"
+#include "pegbaralignmentdialog.h"
 
 
 template<typename T> class QList;
@@ -66,6 +67,8 @@ public:
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
+    void openPegAlignDialog();
+    void closePegAlignDialog();
 
 public:
     void setOpacity(int opacity);
@@ -91,6 +94,9 @@ public:
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
+
+    void displayMessageBox(const QString& title, const QString& body);
+    void displayMessageBoxNoTitle(const QString& body);
 
 Q_SIGNALS:
     void updateRecentFilesList(bool b);
@@ -148,6 +154,8 @@ private:
 
     // backup
     BackupElement* mBackupAtSave = nullptr;
+
+    PegBarAlignmentDialog* mPegAlign = nullptr;
 
 private:
     ActionCommands* mCommands = nullptr;

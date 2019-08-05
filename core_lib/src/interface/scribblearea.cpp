@@ -1287,9 +1287,6 @@ QPointF ScribbleArea::getCentralPoint()
     return mEditor->view()->mapScreenToCanvas(QPointF(width() / 2, height() / 2));
 }
 
-/************************************************************************************/
-// selection handling
-
 void ScribbleArea::paintTransformedSelection()
 {
     Layer* layer = mEditor->layers()->currentLayer();

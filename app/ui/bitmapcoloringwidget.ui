@@ -698,7 +698,7 @@
             <item>
              <widget class="QCheckBox" name="cb2BlendRed">
               <property name="text">
-               <string>Apply to Red</string>
+               <string>Blend Red</string>
               </property>
              </widget>
             </item>
@@ -732,7 +732,7 @@
             <item>
              <widget class="QCheckBox" name="cb2BlendGreen">
               <property name="text">
-               <string>Apply to Green</string>
+               <string>Blend Green</string>
               </property>
              </widget>
             </item>
@@ -766,7 +766,7 @@
             <item>
              <widget class="QCheckBox" name="cb2BlendBlue">
               <property name="text">
-               <string>Apply to Blue</string>
+               <string>Blend Blue</string>
               </property>
              </widget>
             </item>

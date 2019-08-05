@@ -117,6 +117,8 @@
     <addaction name="actionSelect_All"/>
     <addaction name="actionDeselect_All"/>
     <addaction name="separator"/>
+    <addaction name="actionPegbarAlignment"/>
+    <addaction name="separator"/>
     <addaction name="actionPreference"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -972,6 +974,11 @@
   <action name="actionFlip_rolling">
    <property name="text">
     <string>Flip Rolling</string>
+   </property>
+  </action>
+  <action name="actionPegbarAlignment">
+   <property name="text">
+    <string>Peg bar Alignment</string>
    </property>
   </action>
  </widget>

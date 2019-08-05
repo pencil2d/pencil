@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
+#include "mathutils.h"
 #include "vectorimage.h"
 
 
@@ -48,12 +49,30 @@ void MoveTool::loadSettings()
     properties.useFeather = false;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
+    mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
+
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
 }
 
 QCursor MoveTool::cursor()
 {
     MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+}
+
+void MoveTool::updateSettings(const SETTING setting)
+{
+    switch (setting)
+    {
+    case SETTING::ROTATION_INCREMENT:
+    {
+        mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
+        break;
+    }
+    default:
+        break;
+
+    }
 }
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
@@ -138,12 +157,19 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
             offset = selectMan->offsetFromAspectRatio(offset.x(), offset.y());
         }
 
+        int rotationIncrement = 0;
+        if (selectMan->getMoveMode() == MoveMode::ROTATION && keyMod & Qt::ShiftModifier)
+        {
+            rotationIncrement = mRotationIncrement;
+        }
+
         if(layer->type() == Layer::BITMAP)
         {
             offset = offset.toPoint();
         }
 
-        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), mRotatedAngle);
+        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), mRotatedAngle, rotationIncrement);
+
         selectMan->calculateSelectionTransformation();
         paintTransformedSelection();
 
@@ -188,7 +214,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         QPointF curPoint = getCurrentPoint();
         QPointF anchorPoint = selectionRect.center();
-        mRotatedAngle = ( atan2( curPoint.y() - anchorPoint.y(), curPoint.x() - anchorPoint.x() ) ) * 180.0 / M_PI;
+        mRotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, curPoint)) - selectMan->myRotation();
     }
 }
 

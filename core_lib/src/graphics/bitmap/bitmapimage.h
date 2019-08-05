@@ -101,6 +101,11 @@ public:
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
 
+    // peg bar alignment
+    Status::StatusInt findLeft(QRectF rect, int grayValue);
+    Status::StatusInt findTop(QRectF rect, int grayValue);
+
+
     QRect& bounds() { autoCrop(); return mBounds; }
     void setBounds(QRect rect);
 

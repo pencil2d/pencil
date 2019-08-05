@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include <QList>
 
 
+
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
 {
     setName(tr("Bitmap Layer"));
