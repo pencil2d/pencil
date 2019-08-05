@@ -50,7 +50,7 @@
 	<key>CFBundleIconFile</key>
 	<string>pencil2d.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -58,13 +58,15 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.6.4</string>
+	<string>${QMAKE_FULL_VERSION}</string>
 	<key>CFBundleSignature</key>
 	<string>PC2D</string>
 	<key>CFBundleVersion</key>
-	<string>0.6.4.0</string>
+	<string>${QMAKE_FULL_VERSION}</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.graphics-design</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHighResolutionCapable</key>
 	<string>True</string>
 	<key>NSPrincipalClass</key>

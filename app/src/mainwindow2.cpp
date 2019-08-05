@@ -53,14 +53,12 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "selectionmanager.h"
 
-#include "layercamera.h"
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
 #include "backupelement.h"
 
 // app headers
-#include "scribblearea.h"
 #include "colorbox.h"
 #include "colorinspector.h"
 #include "colorpalettewidget.h"
@@ -288,6 +286,7 @@ void MainWindow2::createMenus()
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
+    connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
@@ -445,6 +444,32 @@ void MainWindow2::clearRecentFilesList()
                                  QMessageBox::Ok);
     }
     getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
+}
+
+void MainWindow2::openPegAlignDialog()
+{
+    if (mPegAlign != nullptr)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Dialog is already open!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    mPegAlign = new PegBarAlignmentDialog(mEditor, this);
+    connect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
+    mPegAlign->updatePegRegLayers();
+    mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
+    mPegAlign->setRefKey(mEditor->currentFrame());
+    mPegAlign->setLabRefKey();
+    mPegAlign->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mPegAlign->show();
+}
+
+void MainWindow2::closePegAlignDialog()
+{
+    disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
+    mPegAlign = nullptr;
 }
 
 void MainWindow2::closeEvent(QCloseEvent* event)
@@ -1280,6 +1305,8 @@ void MainWindow2::importPalette()
 void MainWindow2::makeConnections(Editor* editor)
 {
     connect(editor->backups(), &BackupManager::updateBackup, this, &MainWindow2::updateSaveState);
+    connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
+    connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1407,4 +1434,38 @@ void MainWindow2::changePlayState(bool isPlaying)
         ui->actionPlay->setIcon(mStartIcon);
     }
     update();
+}
+/*
+void MainWindow2::alignPegs()
+{
+    QStringList bitmaplayers;
+    bitmaplayers = mPegreg->getLayerList();
+    if (bitmaplayers.isEmpty())
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("No layers selected!"),
+                                 QMessageBox::Ok);
+    }
+    else
+    {
+        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
+        if (statusint.errorcode == Status::FAIL)
+        {
+            QMessageBox::information(this, nullptr,
+                                     tr("Peg bar alignment failed!"),
+                                     QMessageBox::Ok);
+            return;
+        }
+        closePegReg();
+    }
+}
+*/
+void MainWindow2::displayMessageBox(const QString& title, const QString& body)
+{
+    QMessageBox::information(this, tr(qPrintable(title)), tr(qPrintable(body)), QMessageBox::Ok);
+}
+
+void MainWindow2::displayMessageBoxNoTitle(const QString& body)
+{
+    QMessageBox::information(this, nullptr, tr(qPrintable(body)), QMessageBox::Ok);
 }

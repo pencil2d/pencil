@@ -127,6 +127,8 @@ Q_SIGNALS:
     void currentFrameChanged(int n);
 
     void needSave();
+    void needDisplayInfo(const QString& title, const QString& body);
+    void needDisplayInfoNoTitle(const QString& body);
 
 public: //slots
     void clearCurrentFrame();
@@ -164,6 +166,7 @@ public: //slots
     void switchVisibilityOfLayer(int layerNumber);
     void showLayerNotVisibleWarning();
     void swapLayers(int i, int j);
+    Status::StatusInt pegBarAlignment(QStringList layers);
 
     void copy();
     void paste();
