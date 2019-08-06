@@ -902,8 +902,8 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
                 KeyFrame* dupKey = previousKeyFrame->clone();
                 layer->addKeyFrame(frameNumber, dupKey);
                 mEditor->scrubTo(frameNumber);
+                break;
             }
-            break;
             // if the previous keyframe doesn't exist,
             // fallthrough and create empty keyframe
         }
