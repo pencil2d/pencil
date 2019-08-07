@@ -85,6 +85,18 @@ void ColorInspector::initUI()
         ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
     }
 
+    QSize size2 = ui->lastColorButton->sizeHint();
+    QSize size = ui->lastColorButton->size();
+    qDebug() <<"sizehint: " << size.width() <<" " << size.height()<<"\n";
+    qDebug() <<"size: " << size2.width() <<" " << size2.height()<<"\n";
+    QPixmap pixmap(size);
+    QPainter swatchPainter(&pixmap);
+    swatchPainter.drawTiledPixmap(0, 0, size.width(), size.height(), QPixmap(":/background/checkerboard.png"));
+    swatchPainter.end();
+    QIcon ButtonIcon(pixmap);
+    ui->lastColorButton->setIcon(ButtonIcon);
+    ui->lastColorButton->setIconSize(pixmap.rect().size());
+
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
     connect(ui->GreenspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
@@ -97,6 +109,8 @@ void ColorInspector::initUI()
     connect(ui->green_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
     connect(ui->blue_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
     connect(ui->alpha_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
+
+    connect(ui->lastColorButton, &QPushButton::clicked, this, &ColorInspector::lastColorButtonClicked);
 
     connect(editor(), &Editor::objectLoaded, this, &ColorInspector::updateUI);
 }
@@ -124,8 +138,30 @@ void ColorInspector::onSliderChanged(QColor color)
     emit colorChanged(color);
 }
 
+void ColorInspector::lastColorButtonClicked()
+{
+    qDebug("lastColorButtonClicked...");
+    // save current color and set current color to last color.
+    // last color will update when movie is modified.
+
+    if (!mOldColors.empty())
+    {
+        if (mOldColors.last() == mCurrentColor)
+        {
+            return;
+        }
+
+        // force save current color to history.
+        isColorUsed = true;
+        QColor last = mOldColors.last();
+        setColor(last);
+        emit colorChanged(last);
+    }
+}
+
 void ColorInspector::setColor(QColor newColor)
 {
+    qDebug("setColor...");
     // this is a UI update function, never emit any signals
     // grab the color from color manager, and then update itself, that's it.
 
@@ -135,6 +171,30 @@ void ColorInspector::setColor(QColor newColor)
     if (newColor == mCurrentColor)
     {
         return;
+    }
+
+    // to avoid log unused color to history.
+    if (isColorUsed)
+    {
+        // update last color.
+        QSize size2 = ui->lastColorButton->sizeHint();
+        QSize size = ui->lastColorButton->size();
+        qDebug() <<"sizehint: " << size.width() <<" " << size.height()<<"\n";
+        qDebug() <<"size: " << size2.width() <<" " << size2.height()<<"\n";
+        QPixmap pixmap(size);
+        pixmap.fill(mCurrentColor);
+        QIcon ButtonIcon(pixmap);
+        ui->lastColorButton->setIcon(ButtonIcon);
+        ui->lastColorButton->setIconSize(pixmap.rect().size());
+
+        // log current color to history, make history length <= 10.
+        mOldColors.append(mCurrentColor);
+        if (mOldColors.size() > 10)
+        {
+            mOldColors.pop_front();
+        }
+
+        isColorUsed = false;
     }
 
     if(isRgbColors)
@@ -191,6 +251,12 @@ void ColorInspector::setColor(QColor newColor)
     ui->color->setPalette(p2);
 
     update();
+}
+
+void ColorInspector::saveColor()
+{
+    qDebug("saveColor...");
+    isColorUsed = true;
 }
 
 QColor ColorInspector::color()

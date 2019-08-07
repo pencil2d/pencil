@@ -1312,6 +1312,7 @@ void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector
 {
     connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setColor);
     connect(editor->color(), &ColorManager::colorChanged, colorInspector, &ColorInspector::setColor);
+    connect(editor, &Editor::updateBackup, colorInspector, &ColorInspector::saveColor);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)

@@ -350,6 +350,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="lastColorButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>16</width>
@@ -359,7 +365,7 @@
        <property name="maximumSize">
         <size>
          <width>30</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="autoFillBackground">
@@ -375,6 +381,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="moreColorButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>8</width>
@@ -384,7 +396,7 @@
        <property name="maximumSize">
         <size>
          <width>12</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="autoFillBackground">

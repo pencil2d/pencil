@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #define COLORSPINBOXGROUP_H
 
 #include <QPaintEvent>
+#include <QLinkedList>
 #include "basedockwidget.h"
 
 namespace Ui {
@@ -46,17 +47,21 @@ signals:
 
 public slots:
     void setColor(QColor newColor);
+    void saveColor();
 
 private slots:
     void onModeChanged();
     void onColorChanged();
     void onSliderChanged(QColor color);
-    
+    void lastColorButtonClicked();
+
 private:
 
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;
     QColor mCurrentColor;
+    QLinkedList<QColor> mOldColors;
+    bool isColorUsed = false;
 };
 
 #endif // COLORSPINBOXGROUP_H
