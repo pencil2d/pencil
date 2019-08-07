@@ -38,6 +38,9 @@ public:
     void initUI() override;
     void updateUI() override;
 
+    void updateLastColorButton(QColor *color = nullptr);
+    bool eventFilter(QObject *target, QEvent *event);
+
 protected:
     void paintEvent(QPaintEvent *) override;
 
@@ -60,8 +63,10 @@ private:
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;
     QColor mCurrentColor;
+
     QLinkedList<QColor> mOldColors;
     bool isColorUsed = false;
+    QSize mLastColorSize;
 };
 
 #endif // COLORSPINBOXGROUP_H

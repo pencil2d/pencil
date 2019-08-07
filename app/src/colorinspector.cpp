@@ -43,6 +43,8 @@ ColorInspector::ColorInspector(QWidget *parent) :
     colorModeChangeGroup->addButton(ui->hsvButton);
     colorModeChangeGroup->addButton(ui->rgbButton);
     colorModeChangeGroup->setExclusive(true);
+
+    ui->lastColorButton->installEventFilter(this);
 }
 
 ColorInspector::~ColorInspector()
@@ -85,18 +87,6 @@ void ColorInspector::initUI()
         ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
     }
 
-    QSize size2 = ui->lastColorButton->sizeHint();
-    QSize size = ui->lastColorButton->size();
-    qDebug() <<"sizehint: " << size.width() <<" " << size.height()<<"\n";
-    qDebug() <<"size: " << size2.width() <<" " << size2.height()<<"\n";
-    QPixmap pixmap(size);
-    QPainter swatchPainter(&pixmap);
-    swatchPainter.drawTiledPixmap(0, 0, size.width(), size.height(), QPixmap(":/background/checkerboard.png"));
-    swatchPainter.end();
-    QIcon ButtonIcon(pixmap);
-    ui->lastColorButton->setIcon(ButtonIcon);
-    ui->lastColorButton->setIconSize(pixmap.rect().size());
-
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
     connect(ui->GreenspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
@@ -119,6 +109,42 @@ void ColorInspector::updateUI()
 {
     QColor newColor = editor()->color()->frontColor();
     setColor(newColor);
+}
+
+void ColorInspector::updateLastColorButton(QColor *color)
+{
+    qDebug() <<"updateLastColorButton:" <<mLastColorSize.width()<<" "<<mLastColorSize.height()<<"\n";
+    QPixmap pixmap(mLastColorSize);
+
+    if (color == nullptr)
+    {
+        QPainter swatchPainter(&pixmap);
+        swatchPainter.drawTiledPixmap(0, 0, mLastColorSize.width(), mLastColorSize.height(), QPixmap(":/background/checkerboard.png"));
+        swatchPainter.end();
+    }
+    else
+    {
+        pixmap.fill(*color);
+    }
+
+    QIcon ButtonIcon(pixmap);
+    ui->lastColorButton->setIcon(ButtonIcon);
+    ui->lastColorButton->setIconSize(pixmap.rect().size());
+}
+
+bool ColorInspector::eventFilter(QObject *target, QEvent *event)
+{
+    if (target == ui->lastColorButton)
+    {
+        if (event->type() == QEvent::Resize)
+        {
+            QResizeEvent *resizeEvent = static_cast<QResizeEvent *>(event);
+            mLastColorSize = resizeEvent->size();
+            qDebug() <<"eventFilter:" <<mLastColorSize.width()<<" "<<mLastColorSize.height()<<"\n";
+            updateLastColorButton(mOldColors.empty() ? nullptr : &mOldColors.last());
+        }
+    }
+    return BaseDockWidget::eventFilter(target, event);
 }
 
 void ColorInspector::onSliderChanged(QColor color)
@@ -177,15 +203,7 @@ void ColorInspector::setColor(QColor newColor)
     if (isColorUsed)
     {
         // update last color.
-        QSize size2 = ui->lastColorButton->sizeHint();
-        QSize size = ui->lastColorButton->size();
-        qDebug() <<"sizehint: " << size.width() <<" " << size.height()<<"\n";
-        qDebug() <<"size: " << size2.width() <<" " << size2.height()<<"\n";
-        QPixmap pixmap(size);
-        pixmap.fill(mCurrentColor);
-        QIcon ButtonIcon(pixmap);
-        ui->lastColorButton->setIcon(ButtonIcon);
-        ui->lastColorButton->setIconSize(pixmap.rect().size());
+        updateLastColorButton(&mCurrentColor);
 
         // log current color to history, make history length <= 10.
         mOldColors.append(mCurrentColor);
