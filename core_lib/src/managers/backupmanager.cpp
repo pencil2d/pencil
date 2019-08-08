@@ -91,7 +91,7 @@ void BackupManager::keyAdded(const int& keySpacing, const bool& keyExisted, cons
     emit updateBackup();
 }
 
-void BackupManager::keyAdded()
+void BackupManager::keyAdded(const QString& description)
 {
     if (mLayer == nullptr) { return; }
 
@@ -99,7 +99,7 @@ void BackupManager::keyAdded()
                                                          mLayerId,
                                                          false,
                                                          false,
-                                                         "",
+                                                         description,
                                                          editor());
     mUndoStack->push(element);
     emit updateBackup();

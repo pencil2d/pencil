@@ -611,7 +611,7 @@ void ActionCommands::duplicateKey()
         dupKey->setFileName(""); // don't share filename
         dupKey->modification();
     }
-    backups->keyAdded();
+    backups->keyAdded(layer->description() + tr(": Duplicate key"));
 
     mEditor->layers()->notifyAnimationLengthChanged();
 }

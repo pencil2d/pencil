@@ -33,7 +33,7 @@ public:
     Status save(Object*) override;
 
     void keyAdded(const int& keySpacing, const bool& keyExisted, const QString& description);
-    void keyAdded();
+    void keyAdded(const QString& description = "");
     void keyRemoved();
     void bitmap(const QString& description);
     void vector(const QString& description);

@@ -125,6 +125,18 @@ public:
 
     bool isPaintable() const;
 
+    QString description() const {
+        switch(meType)
+        {
+            case LAYER_TYPE::BITMAP: { return tr("Bitmap"); }
+            case LAYER_TYPE::VECTOR: { return tr("Vector"); }
+            case LAYER_TYPE::SOUND: { return tr("Sound"); }
+            case LAYER_TYPE::CAMERA: { return tr("Camera"); }
+        default:
+            return "";
+        }
+    }
+
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;

@@ -248,10 +248,10 @@ AddKeyFrameElement::AddKeyFrameElement(const int& backupFrameIndex,
     {
         switch (layer->type())
         {
-        case Layer::BITMAP: description = QObject::tr("New Bitmap Key"); break;
-        case Layer::VECTOR: description = QObject::tr("New Vector Key"); break;
-        case Layer::SOUND: description = QObject::tr("New Sound Key"); break;
-        case Layer::CAMERA: description = QObject::tr("New Camera Key"); break;
+        case Layer::BITMAP: description = QObject::tr("Bitmap: New key"); break;
+        case Layer::VECTOR: description = QObject::tr("Vector: New Key"); break;
+        case Layer::SOUND: description = QObject::tr("Sound: New Key"); break;
+        case Layer::CAMERA: description = QObject::tr("Camera: New Key"); break;
         default: break;
         }
     }
