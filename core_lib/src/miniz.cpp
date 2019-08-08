@@ -2976,7 +2976,7 @@ void tinfl_decompressor_free(tinfl_decompressor *pDecomp)
 #ifndef MINIZ_NO_ARCHIVE_APIS
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 /* ------------------- .ZIP archive reading */
@@ -2987,10 +2987,16 @@ extern "C" {
 #include <sys/stat.h>
 
 #if defined(_MSC_VER) || defined(__MINGW64__)
+#include <codecvt>
+#include <string>
 static FILE *mz_fopen(const char *pFilename, const char *pMode)
 {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring sWideFilename = converter.from_bytes(pFilename);
+    std::wstring sWideMode = converter.from_bytes(pMode);
+
     FILE *pFile = NULL;
-    fopen_s(&pFile, pFilename, pMode);
+    _wfopen_s(&pFile, sWideFilename.c_str(), sWideMode.c_str());
     return pFile;
 }
 static FILE *mz_freopen(const char *pPath, const char *pMode, FILE *pStream)
@@ -7651,7 +7657,7 @@ mz_bool mz_zip_end(mz_zip_archive *pZip)
 }
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /*#ifndef MINIZ_NO_ARCHIVE_APIS*/

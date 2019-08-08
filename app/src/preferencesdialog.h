@@ -166,6 +166,8 @@ public slots:
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
     void quickSizingChange(int);
+    void setRotationIncrement(int);
+    void rotationIncrementChange(int);
 private:
     Ui::ToolsPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;

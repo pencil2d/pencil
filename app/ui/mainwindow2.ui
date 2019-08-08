@@ -117,6 +117,8 @@
     <addaction name="actionSelect_All"/>
     <addaction name="actionDeselect_All"/>
     <addaction name="separator"/>
+    <addaction name="actionPegbarAlignment"/>
+    <addaction name="separator"/>
     <addaction name="actionPreference"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -997,6 +999,11 @@
   <action name="actionLayerFull">
    <property name="text">
     <string>All Layers</string>
+   </property>
+  </action>
+  <action name="actionPegbarAlignment">
+   <property name="text">
+    <string>Peg bar Alignment</string>
    </property>
   </action>
  </widget>
