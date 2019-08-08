@@ -895,6 +895,8 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
             }
             break;
         }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
         case DUPLICATE_PREVIOUS_KEY:
         {
             if (previousKeyFrame)
@@ -907,6 +909,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
             // if the previous keyframe doesn't exist,
             // fallthrough and create empty keyframe
         }
+#pragma GCC diagnostic pop
         case CREATE_NEW_KEY:
             mEditor->addNewKey();
 
