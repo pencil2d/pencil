@@ -395,9 +395,12 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>12</width>
+         <width>32</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="autoFillBackground">
         <bool>false</bool>

@@ -16,8 +16,11 @@ GNU General Public License for more details.
 #ifndef COLORSPINBOXGROUP_H
 #define COLORSPINBOXGROUP_H
 
+#include <memory>
 #include <QPaintEvent>
-#include <QLinkedList>
+#include <QList>
+#include <QMenu>
+#include <QSignalMapper>
 #include "basedockwidget.h"
 
 namespace Ui {
@@ -56,7 +59,10 @@ private slots:
     void onModeChanged();
     void onColorChanged();
     void onSliderChanged(QColor color);
+
     void lastColorButtonClicked();
+    void onMoreColorButtonClicked();
+    void useOldColor(int index);
 
 private:
 
@@ -64,9 +70,13 @@ private:
     bool isRgbColors = true;
     QColor mCurrentColor;
 
-    QLinkedList<QColor> mOldColors;
-    bool isColorUsed = false;
+    // for color history
+    QList<QColor> mOldColors;
     QSize mLastColorSize;
+    bool isColorUsed = false;
+    std::shared_ptr<QMenu> mColorMenu;
+    std::shared_ptr<QSignalMapper> mSignalMap;
+    QList<std::shared_ptr<QAction>> mCtxActions;
 };
 
 #endif // COLORSPINBOXGROUP_H

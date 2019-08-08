@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QStylePainter>
 #include <QButtonGroup>
+#include <QMenu>
+#include <QSignalMapper>
 
 #include "colorslider.h"
 #include "pencildef.h"
@@ -44,6 +46,7 @@ ColorInspector::ColorInspector(QWidget *parent) :
     colorModeChangeGroup->addButton(ui->rgbButton);
     colorModeChangeGroup->setExclusive(true);
 
+    // to get correct button size.
     ui->lastColorButton->installEventFilter(this);
 }
 
@@ -87,6 +90,8 @@ void ColorInspector::initUI()
         ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
     }
 
+    connect(ui->moreColorButton, &QPushButton::clicked, this, &ColorInspector::onMoreColorButtonClicked);
+
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
     connect(ui->GreenspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
@@ -113,7 +118,6 @@ void ColorInspector::updateUI()
 
 void ColorInspector::updateLastColorButton(QColor *color)
 {
-    qDebug() <<"updateLastColorButton:" <<mLastColorSize.width()<<" "<<mLastColorSize.height()<<"\n";
     QPixmap pixmap(mLastColorSize);
 
     if (color == nullptr)
@@ -140,7 +144,6 @@ bool ColorInspector::eventFilter(QObject *target, QEvent *event)
         {
             QResizeEvent *resizeEvent = static_cast<QResizeEvent *>(event);
             mLastColorSize = resizeEvent->size();
-            qDebug() <<"eventFilter:" <<mLastColorSize.width()<<" "<<mLastColorSize.height()<<"\n";
             updateLastColorButton(mOldColors.empty() ? nullptr : &mOldColors.last());
         }
     }
@@ -166,7 +169,6 @@ void ColorInspector::onSliderChanged(QColor color)
 
 void ColorInspector::lastColorButtonClicked()
 {
-    qDebug("lastColorButtonClicked...");
     // save current color and set current color to last color.
     // last color will update when movie is modified.
 
@@ -185,9 +187,54 @@ void ColorInspector::lastColorButtonClicked()
     }
 }
 
+void ColorInspector::onMoreColorButtonClicked()
+{
+    // clear old menu by disconnect and delete map/action/menu
+    // if disconnect is need?
+    foreach (std::shared_ptr<QAction> a, mCtxActions)
+    {
+        disconnect(a.get(), SIGNAL(triggered()), mSignalMap.get(), SLOT(map()));
+    }
+    mSignalMap.reset();
+    mColorMenu.reset();
+    mCtxActions.clear();
+
+    // make new menu
+    mColorMenu = std::make_shared<QMenu>(this);
+    mSignalMap = std::make_shared<QSignalMapper>(this);
+    for (int i = mOldColors.size() - 1; i >= 0; i--)
+    {
+        QColor color = mOldColors.at(i);
+        QPixmap pixmap(32, 32);
+        pixmap.fill(color);
+        auto name = color.name(QColor::HexArgb);
+        std::shared_ptr<QAction> a = std::make_shared<QAction>(pixmap, name);
+        mCtxActions.append(std::move(a));
+        mColorMenu->addAction(a.get());
+        mSignalMap->setMapping(a.get(), i);
+        connect(a.get(), SIGNAL(triggered()), mSignalMap.get(), SLOT(map()));
+    }
+    connect(mSignalMap.get(), SIGNAL(mapped(int)),this, SLOT(useOldColor(int)));
+    mColorMenu->move(cursor().pos());
+    mColorMenu->exec();
+}
+
+void ColorInspector::useOldColor(int index)
+{
+    if (mOldColors.at(index) == mCurrentColor)
+    {
+        return;
+    }
+
+    // force save current color to history.
+    isColorUsed = true;
+    QColor last = mOldColors.at(index);
+    setColor(last);
+    emit colorChanged(last);
+}
+
 void ColorInspector::setColor(QColor newColor)
 {
-    qDebug("setColor...");
     // this is a UI update function, never emit any signals
     // grab the color from color manager, and then update itself, that's it.
 
@@ -273,7 +320,6 @@ void ColorInspector::setColor(QColor newColor)
 
 void ColorInspector::saveColor()
 {
-    qDebug("saveColor...");
     isColorUsed = true;
 }
 
