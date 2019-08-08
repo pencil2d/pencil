@@ -164,6 +164,7 @@ enum StabilizationLevel
 #define CMD_INCREASE_SIZE "CmdIncreaseSize"
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"
 #define CMD_EXIT "CmdExit"
+#define CMD_USE_LAST_COLOR "CmdUseLastColor"
 
 // Save / Export
 #define LAST_PCLX_PATH          "LastFilePath"

@@ -43,6 +43,7 @@ public:
 
     void updateLastColorButton(QColor *color = nullptr);
     bool eventFilter(QObject *target, QEvent *event);
+    void setLastColorShortcut(QKeySequence keySequence);
 
 protected:
     void paintEvent(QPaintEvent *) override;

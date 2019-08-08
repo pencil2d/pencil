@@ -150,6 +150,11 @@ bool ColorInspector::eventFilter(QObject *target, QEvent *event)
     return BaseDockWidget::eventFilter(target, event);
 }
 
+void ColorInspector::setLastColorShortcut(QKeySequence keySequence)
+{
+    ui->lastColorButton->setShortcut(keySequence);
+}
+
 void ColorInspector::onSliderChanged(QColor color)
 {
     if (isRgbColors) {

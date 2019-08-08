@@ -1227,6 +1227,8 @@ void MainWindow2::setupKeyboardShortcuts()
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
+
+    mColorInspector->setLastColorShortcut(cmdKeySeq(CMD_USE_LAST_COLOR));
 }
 
 void MainWindow2::clearKeyboardShortcuts()
