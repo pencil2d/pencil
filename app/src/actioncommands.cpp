@@ -592,7 +592,6 @@ void ActionCommands::duplicateKey()
 
     KeyFrame* dupKey = key->clone();
 
-    backups->saveStates();
     int nextEmptyFrame = mEditor->currentFrame() + 1;
     while (layer->keyExistsWhichCovers(nextEmptyFrame))
     {
@@ -601,6 +600,7 @@ void ActionCommands::duplicateKey()
 
     layer->addKeyFrame(nextEmptyFrame, dupKey);
     mEditor->scrubTo(nextEmptyFrame);
+    backups->saveStates();
 
     if (layer->type() == Layer::SOUND)
     {
