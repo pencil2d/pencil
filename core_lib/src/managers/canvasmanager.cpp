@@ -45,6 +45,7 @@ void CanvasManager::paintTransformedSelection(Layer* layer, KeyFrame* keyframe,
     {
         // vector transformation
         VectorImage* vectorImage = static_cast<VectorImage*>(keyframe);
+        vectorImage->setSelectionRect(selectionRect);
         vectorImage->setSelectionTransformation(selectionTransform);
 
     }
