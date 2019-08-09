@@ -382,10 +382,21 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
     if (mMouseInUse) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::CAMERA && !layer->visible())
+    if (layer->type() == Layer::CAMERA)
     {
-        showLayerNotVisibleWarning(); // FIXME: crash when using tablets
-        return;
+        if (!layer->visible()) {
+            showLayerNotVisibleWarning(); // FIXME: crash when using tablets
+            return;
+        }
+
+        BackupManager* backups = mEditor->backups();
+        if (event->phase() == Qt::ScrollBegin) {
+            backups->saveStates();
+        }
+
+        if (event->phase() == Qt::ScrollEnd) {
+            backups->cameraMotion();
+        }
     }
 
     const QPoint pixels = event->pixelDelta();

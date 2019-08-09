@@ -71,7 +71,6 @@ void HandTool::pointerMoveEvent(PointerEvent* event)
 
     transformView(event->modifiers(), event->buttons());
     mLastPixel = getCurrentPixel();
-    mEditor->backups()->saveStates();
 }
 
 void HandTool::pointerReleaseEvent(PointerEvent* event)
