@@ -393,21 +393,9 @@ RemoveKeyFrameElement::RemoveKeyFrameElement(const KeyFrame* backupKey,
 
 void RemoveKeyFrameElement::undo()
 {
-    Layer* layer = editor()->layers()->findLayerById(oldLayerId);
-
     qDebug() << "undo: old frame index" << oldFrameIndex;
-
-    if (layer->type() != Layer::SOUND)
-    {
-
-        qDebug() << "restore key";
-        editor()->backups()->restoreKey(this);
-    }
-    else
-    {
-        editor()->removeKeyAtLayerId(oldLayerId, oldFrameIndex);
-        editor()->backups()->restoreKey(this);
-    }
+    qDebug() << "restore key";
+    editor()->backups()->restoreKey(this);
 }
 
 void RemoveKeyFrameElement::redo()
