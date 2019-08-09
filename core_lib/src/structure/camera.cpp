@@ -51,6 +51,7 @@ void Camera::assign(const Camera& rhs)
     mTranslate = rhs.mTranslate;
     mRotate = rhs.mRotate;
     mScale = rhs.mScale;
+    mNeedUpdateView = true;
     updateViewTransform();
     modification();
 }

@@ -586,6 +586,11 @@ qreal Editor::viewScaleInversed()
     return view()->getViewInverse().m11();
 }
 
+void Editor::updateView()
+{
+    view()->updateViewTransforms();
+}
+
 void Editor::selectAll()
 {
     Layer* layer = layers()->currentLayer();

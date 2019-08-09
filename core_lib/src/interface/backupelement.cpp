@@ -786,7 +786,7 @@ CameraMotionElement::CameraMotionElement(const QPointF& backupTranslation,
     newRotation = viewMgr->rotation();
     newScale = viewMgr->scaling();
 
-    setText(QObject::tr("New Camera Motion"));
+    setText(QObject::tr("Camera: New motion"));
 
 }
 

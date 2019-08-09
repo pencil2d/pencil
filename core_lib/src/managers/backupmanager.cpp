@@ -350,6 +350,7 @@ void BackupManager::restoreKey(const int& layerId, const int& frame, KeyFrame *k
         default:
             break;
     }
+    editor()->updateView();
 }
 
 void BackupManager::cameraMotion()

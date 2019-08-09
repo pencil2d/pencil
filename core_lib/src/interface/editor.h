@@ -149,6 +149,7 @@ public: //slots
     void scrubPreviousKeyFrame();
     void scrubForward();
     void scrubBackward();
+    void updateView();
 
     KeyFrame* addNewKey();
     KeyFrame* addKeyFrame(int layerIndex, int frameIndex);
