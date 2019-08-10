@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include <QSignalMapper>
 #include "basedockwidget.h"
 
+#include "colorqueuemodel.h"
+
 namespace Ui {
 class ColorInspector;
 }
@@ -41,8 +43,7 @@ public:
     void initUI() override;
     void updateUI() override;
 
-    void updateLastColorButton(QColor *color = nullptr);
-    bool eventFilter(QObject *target, QEvent *event);
+    void updateLastColorButton(const QColor& color);
     void setLastColorShortcut(QKeySequence keySequence);
 
 protected:
@@ -56,6 +57,8 @@ public slots:
     void setColor(QColor newColor);
     void saveColor();
 
+    void recentColorChanged(const QModelIndex &index);
+
 private slots:
     void onModeChanged();
     void onColorChanged();
@@ -67,17 +70,23 @@ private slots:
 
 private:
 
+    bool eventFilter(QObject *target, QEvent *event) override;
+    void updateRecentColors(Swatch recentColor);
+
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;
     QColor mCurrentColor;
 
     // for color history
-    QList<QColor> mOldColors;
+    QList<Swatch> mOldColors;
     QSize mLastColorSize;
-    bool isColorUsed = false;
+    bool mIsColorUsed = false;
+    bool mAddedRecent = false;
     std::shared_ptr<QMenu> mColorMenu;
     std::shared_ptr<QSignalMapper> mSignalMap;
     QList<std::shared_ptr<QAction>> mCtxActions;
+
+    ColorQueueModel* mColorQueueModel;
 };
 
 #endif // COLORSPINBOXGROUP_H

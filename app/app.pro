@@ -34,6 +34,7 @@ INCLUDEPATH += \
     ../core_lib/src/external
 
 HEADERS += \
+    src/colorqueuemodel.h \
     src/mainwindow2.h \
     src/pegbaralignmentdialog.h \
     src/shortcutfilter.h \
@@ -64,6 +65,7 @@ HEADERS += \
     src/checkupdatesdialog.h
 
 SOURCES += \
+    src/colorqueuemodel.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
     src/pegbaralignmentdialog.cpp \

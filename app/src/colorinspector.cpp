@@ -23,11 +23,13 @@ GNU General Public License for more details.
 #include <QButtonGroup>
 #include <QMenu>
 #include <QSignalMapper>
+#include <QListView>
 
 #include "colorslider.h"
 #include "pencildef.h"
 #include "editor.h"
 #include "colormanager.h"
+#include "colourref.h"
 
 
 ColorInspector::ColorInspector(QWidget *parent) :
@@ -46,7 +48,12 @@ ColorInspector::ColorInspector(QWidget *parent) :
     colorModeChangeGroup->addButton(ui->rgbButton);
     colorModeChangeGroup->setExclusive(true);
 
-    // to get correct button size.
+    mColorQueueModel = new ColorQueueModel(this, QWidget::palette().color(QWidget::backgroundRole()));
+    ui->recentColorsList->setViewMode(QListView::IconMode);
+    ui->recentColorsList->setStyleSheet("QListView { background: transparent;}");
+
+    ui->recentColorsList->setModel(mColorQueueModel);
+    ui->recentColorsList->setMouseTracking(true);
     ui->lastColorButton->installEventFilter(this);
 }
 
@@ -107,6 +114,8 @@ void ColorInspector::initUI()
 
     connect(ui->lastColorButton, &QPushButton::clicked, this, &ColorInspector::lastColorButtonClicked);
 
+    connect(ui->recentColorsList, &QListView::clicked, this, &ColorInspector::recentColorChanged);
+
     connect(editor(), &Editor::objectLoaded, this, &ColorInspector::updateUI);
 }
 
@@ -116,38 +125,50 @@ void ColorInspector::updateUI()
     setColor(newColor);
 }
 
-void ColorInspector::updateLastColorButton(QColor *color)
-{
-    QPixmap pixmap(mLastColorSize);
-
-    if (color == nullptr)
-    {
-        QPainter swatchPainter(&pixmap);
-        swatchPainter.drawTiledPixmap(0, 0, mLastColorSize.width(), mLastColorSize.height(), QPixmap(":/background/checkerboard.png"));
-        swatchPainter.end();
-    }
-    else
-    {
-        pixmap.fill(*color);
-    }
-
-    QIcon ButtonIcon(pixmap);
-    ui->lastColorButton->setIcon(ButtonIcon);
-    ui->lastColorButton->setIconSize(pixmap.rect().size());
-}
-
 bool ColorInspector::eventFilter(QObject *target, QEvent *event)
-{
+ {
     if (target == ui->lastColorButton)
     {
         if (event->type() == QEvent::Resize)
         {
             QResizeEvent *resizeEvent = static_cast<QResizeEvent *>(event);
             mLastColorSize = resizeEvent->size();
-            updateLastColorButton(mOldColors.empty() ? nullptr : &mOldColors.last());
+            updateLastColorButton(mOldColors.isEmpty() ? QColor(0,0,0,0) : mOldColors.first().color);
         }
     }
     return BaseDockWidget::eventFilter(target, event);
+ }
+
+void ColorInspector::updateRecentColors(Swatch recentSwatch)
+{
+    recentSwatch.description = ColourRef::getDefaultColorName(recentSwatch.color);
+    mColorQueueModel->addColor(recentSwatch);
+}
+
+void ColorInspector::recentColorChanged(const QModelIndex &index)
+{
+    QList<Swatch> allSwatches = mColorQueueModel->swatches();
+    for (int i = 0; i < allSwatches.count(); i++)
+    {
+        QColor swatchColor = allSwatches.at(i).color;
+        if (i == index.row()) {
+            emit colorChanged(swatchColor);
+            return;
+        }
+    }
+}
+
+void ColorInspector::updateLastColorButton(const QColor& color)
+{
+    QPixmap pixmap(mLastColorSize);
+    QPainter swatchPainter(&pixmap);
+    const QRect colorRect = QRect(QPoint(0,0), mLastColorSize);
+    swatchPainter.drawTiledPixmap(colorRect, QPixmap(":/background/checkerboard.png"));
+    swatchPainter.fillRect(colorRect, color);
+    swatchPainter.end();
+
+    ui->lastColorButton->setIcon(QIcon(pixmap));
+    ui->lastColorButton->setIconSize(pixmap.rect().size());
 }
 
 void ColorInspector::setLastColorShortcut(QKeySequence keySequence)
@@ -179,16 +200,15 @@ void ColorInspector::lastColorButtonClicked()
 
     if (!mOldColors.empty())
     {
-        if (mOldColors.last() == mCurrentColor)
+        if (mOldColors.first().color == mCurrentColor)
         {
             return;
         }
 
         // force save current color to history.
-        isColorUsed = true;
-        QColor last = mOldColors.last();
-        setColor(last);
-        emit colorChanged(last);
+        mIsColorUsed = true;
+        QColor color = mOldColors.first().color;
+        emit colorChanged(color);
     }
 }
 
@@ -207,14 +227,19 @@ void ColorInspector::onMoreColorButtonClicked()
     // make new menu
     mColorMenu = std::make_shared<QMenu>(this);
     mSignalMap = std::make_shared<QSignalMapper>(this);
-    for (int i = mOldColors.size() - 1; i >= 0; i--)
+    for (int i = 0; i < mOldColors.size(); i++)
     {
-        QColor color = mOldColors.at(i);
+        Swatch swatch = mOldColors.at(i);
+        QColor color = swatch.color;
+        QString name = swatch.description;
         QPixmap pixmap(32, 32);
-        pixmap.fill(color);
-        auto name = color.name(QColor::HexArgb);
+        pixmap.fill(Qt::transparent);
+        const QRect colorRect = QRect(QPoint(0,0),pixmap.size());
+        QPainter painter(&pixmap);
+        painter.drawTiledPixmap(colorRect, QPixmap(":/background/checkerboard.png"));
+        painter.fillRect(colorRect, color);
         std::shared_ptr<QAction> a = std::make_shared<QAction>(pixmap, name);
-        mCtxActions.append(std::move(a));
+        mCtxActions.prepend(std::move(a));
         mColorMenu->addAction(a.get());
         mSignalMap->setMapping(a.get(), i);
         connect(a.get(), SIGNAL(triggered()), mSignalMap.get(), SLOT(map()));
@@ -226,16 +251,20 @@ void ColorInspector::onMoreColorButtonClicked()
 
 void ColorInspector::useOldColor(int index)
 {
-    if (mOldColors.at(index) == mCurrentColor)
+    if (mOldColors.at(index).color == mCurrentColor)
     {
         return;
     }
 
     // force save current color to history.
-    isColorUsed = true;
-    QColor last = mOldColors.at(index);
-    setColor(last);
-    emit colorChanged(last);
+    mIsColorUsed = true;
+    Swatch swatch = mOldColors.at(index);
+
+    QColor color = swatch.color;
+    updateRecentColors(swatch);
+    mAddedRecent = true;
+    emit colorChanged(color);
+    mAddedRecent = false;
 }
 
 void ColorInspector::setColor(QColor newColor)
@@ -252,19 +281,25 @@ void ColorInspector::setColor(QColor newColor)
     }
 
     // to avoid log unused color to history.
-    if (isColorUsed)
+    if (mIsColorUsed)
     {
         // update last color.
-        updateLastColorButton(&mCurrentColor);
+        updateLastColorButton(mCurrentColor);
 
         // log current color to history, make history length <= 10.
-        mOldColors.append(mCurrentColor);
+        Swatch swatch = Swatch(ColourRef::getDefaultColorName(mCurrentColor), mCurrentColor);
+        mOldColors.prepend(swatch);
+
+        if (!mAddedRecent) {
+            updateRecentColors(swatch);
+            mAddedRecent = false;
+        }
         if (mOldColors.size() > 10)
         {
-            mOldColors.pop_front();
+            mOldColors.pop_back();
         }
 
-        isColorUsed = false;
+        mIsColorUsed = false;
     }
 
     if(isRgbColors)
@@ -325,7 +360,7 @@ void ColorInspector::setColor(QColor newColor)
 
 void ColorInspector::saveColor()
 {
-    isColorUsed = true;
+    mIsColorUsed = true;
 }
 
 QColor ColorInspector::color()
