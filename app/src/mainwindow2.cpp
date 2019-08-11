@@ -1228,7 +1228,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
 
-    mColorInspector->setLastColorShortcut(cmdKeySeq(CMD_USE_LAST_COLOR));
+    mColorInspector->setCarouselShortcuts(cmdKeySeq(CMD_CYCLE_CAROUSEL_LEFT), cmdKeySeq(CMD_CYCLE_CAROUSEL_RIGHT));
 }
 
 void MainWindow2::clearKeyboardShortcuts()
@@ -1314,7 +1314,7 @@ void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector
 {
     connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setColor);
     connect(editor->color(), &ColorManager::colorChanged, colorInspector, &ColorInspector::setColor);
-    connect(editor, &Editor::updateBackup, colorInspector, &ColorInspector::saveColor);
+    connect(editor, &Editor::updateBackup, colorInspector, &ColorInspector::saveRecentColor);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)

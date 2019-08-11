@@ -34,6 +34,7 @@ INCLUDEPATH += \
     ../core_lib/src/external
 
 HEADERS += \
+    src/colorcarousel.h \
     src/colorqueuemodel.h \
     src/mainwindow2.h \
     src/pegbaralignmentdialog.h \
@@ -65,6 +66,7 @@ HEADERS += \
     src/checkupdatesdialog.h
 
 SOURCES += \
+    src/colorcarousel.cpp \
     src/colorqueuemodel.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
@@ -96,6 +98,7 @@ SOURCES += \
     src/checkupdatesdialog.cpp
 
 FORMS += \
+    ui/colorcarousel.ui \
     ui/mainwindow2.ui \
     ui/pegbaralignmentdialog.ui \
     ui/timeline2.ui \

@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>271</width>
-    <height>243</height>
+    <width>285</width>
+    <height>207</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -355,37 +355,6 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="lastColorButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QFrame" name="colorWrapper">
        <property name="autoFillBackground">
         <bool>true</bool>
@@ -442,113 +411,46 @@
       <number>5</number>
      </property>
      <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Recent colors:</string>
+      <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0" columnstretch="0,0,0">
+       <property name="leftMargin">
+        <number>5</number>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QListView" name="recentColorsList">
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>16</height>
-        </size>
+       <property name="topMargin">
+        <number>5</number>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>120</width>
-         <height>16</height>
-        </size>
+       <property name="rightMargin">
+        <number>5</number>
        </property>
-       <property name="autoFillBackground">
-        <bool>true</bool>
+       <property name="bottomMargin">
+        <number>5</number>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+       <property name="horizontalSpacing">
+        <number>5</number>
        </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>0</number>
-       </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="autoScroll">
-        <bool>false</bool>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="movement">
-        <enum>QListView::Static</enum>
-       </property>
-       <property name="flow">
-        <enum>QListView::LeftToRight</enum>
-       </property>
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="gridSize">
-        <size>
-         <width>22</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="viewMode">
-        <enum>QListView::IconMode</enum>
-       </property>
-       <property name="modelColumn">
-        <number>0</number>
-       </property>
-       <property name="uniformItemSizes">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="moreColorButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>32</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>32</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../data/app.qrc">
-         <normaloff>:/app/icons/new/svg/more_options.svg</normaloff>:/app/icons/new/svg/more_options.svg</iconset>
-       </property>
-      </widget>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Recent colors</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="ColorCarousel" name="colorCarousel" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>170</width>
+           <height>22</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -561,6 +463,12 @@
    <header>colorslider.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>ColorCarousel</class>
+   <extends>QWidget</extends>
+   <header>colorcarousel.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>RedspinBox</tabstop>
@@ -568,8 +476,6 @@
   <tabstop>BluespinBox</tabstop>
   <tabstop>AlphaspinBox</tabstop>
  </tabstops>
- <resources>
-  <include location="../data/app.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

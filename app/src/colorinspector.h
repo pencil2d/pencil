@@ -16,12 +16,12 @@ GNU General Public License for more details.
 #ifndef COLORSPINBOXGROUP_H
 #define COLORSPINBOXGROUP_H
 
+#include "basedockwidget.h"
+
 #include <memory>
 #include <QPaintEvent>
 #include <QList>
-#include <QMenu>
-#include <QSignalMapper>
-#include "basedockwidget.h"
+#include <QItemSelection>
 
 #include "colorqueuemodel.h"
 
@@ -29,6 +29,7 @@ namespace Ui {
 class ColorInspector;
 }
 
+class ColorCarousel;
 class ColorInspector : public BaseDockWidget
 {
     Q_OBJECT
@@ -43,8 +44,7 @@ public:
     void initUI() override;
     void updateUI() override;
 
-    void updateLastColorButton(const QColor& color);
-    void setLastColorShortcut(QKeySequence keySequence);
+    void setCarouselShortcuts(const QKeySequence& leftArrow, const QKeySequence& rightArrow);
 
 protected:
     void paintEvent(QPaintEvent *) override;
@@ -53,40 +53,21 @@ signals:
     void colorChanged(const QColor& c);
     void modeChange(const bool& isRgb);
 
+
 public slots:
     void setColor(QColor newColor);
-    void saveColor();
-
-    void recentColorChanged(const QModelIndex &index);
+    void saveRecentColor();
+    void onRecentColorUpdated(const QColor& color);
 
 private slots:
     void onModeChanged();
     void onColorChanged();
     void onSliderChanged(QColor color);
 
-    void lastColorButtonClicked();
-    void onMoreColorButtonClicked();
-    void useOldColor(int index);
-
 private:
-
-    bool eventFilter(QObject *target, QEvent *event) override;
-    void updateRecentColors(Swatch recentColor);
-
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;
     QColor mCurrentColor;
-
-    // for color history
-    QList<Swatch> mOldColors;
-    QSize mLastColorSize;
-    bool mIsColorUsed = false;
-    bool mAddedRecent = false;
-    std::shared_ptr<QMenu> mColorMenu;
-    std::shared_ptr<QSignalMapper> mSignalMap;
-    QList<std::shared_ptr<QAction>> mCtxActions;
-
-    ColorQueueModel* mColorQueueModel;
 };
 
 #endif // COLORSPINBOXGROUP_H
