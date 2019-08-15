@@ -627,6 +627,8 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                     // Did we move to another frame ?
                     if (frameNumber != mLastFrameNumber)
                     {
+
+                        mEditor->backups()->saveStates();
                         // Check if the frame we clicked was selected
                         if (mCanMoveFrame) {
 
@@ -635,7 +637,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 
                             int offset = frameNumber - mLastFrameNumber;
 
-                            mEditor->backups()->saveStates();
                             mNumOfFramesOffset += offset;
                             currentLayer->moveSelectedFrames(offset);
                             mEditor->layers()->notifyAnimationLengthChanged();
