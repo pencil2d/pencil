@@ -931,9 +931,8 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
         {
             if (previousKeyFrame == nullptr) {
                 mEditor->addNewKey();
+                mEditor->backups()->keyAdded();
             }
-            qDebug() << "test";
-            mEditor->backups()->keyAdded();
             break;
         }
         case DUPLICATE_PREVIOUS_KEY:
