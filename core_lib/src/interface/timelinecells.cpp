@@ -592,6 +592,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         }
         break;
     }
+    mEditor->backups()->saveStates();
 }
 
 void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
@@ -692,19 +693,10 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
         mToLayer = getInbetweenLayerNumber(event->pos().y());
         if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
         {
-            // Bubble the from layer up or down to the to layer
-            if (mToLayer < mFromLayer) // bubble up
-            {
-                for (int i = mFromLayer - 1; i >= mToLayer; i--)
-                    mEditor->swapLayers(i, i + 1);
-            }
-            else // bubble down
-            {
-                for (int i = mFromLayer + 1; i <= mToLayer; i++)
-                    mEditor->swapLayers(i, i - 1);
-            }
+            mEditor->moveLayers(mFromLayer, mToLayer);
         }
-        mEditor->backups()->layerMoved(layerNumber);
+        mEditor->layers()->setCurrentLayer(mToLayer);
+        mEditor->backups()->layerMoved(mToLayer);
     }
     emit mouseMovedY(0);
     mTimeLine->updateContent();

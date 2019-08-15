@@ -898,16 +898,17 @@ void Editor::showLayerNotVisibleWarning()
     return mScribbleArea->showLayerNotVisibleWarning();
 }
 
-void Editor::swapLayers(int i, int j)
+void Editor::moveLayers(const int& fromIndex, const int& toIndex)
 {
-    mObject->swapLayers(i, j);
-    if (j < i)
+    if (toIndex < fromIndex) // bubble up
     {
-        layers()->setCurrentLayer(j + 1);
+        for (int i = fromIndex - 1; i >= toIndex; i--)
+            mObject->swapLayers(i, i + 1);
     }
-    else
+    else // bubble down
     {
-        layers()->setCurrentLayer(j);
+        for (int i = fromIndex + 1; i <= toIndex; i++)
+            mObject->swapLayers(i, i - 1);
     }
     emit updateTimeLine();
     mScribbleArea->updateAllFrames();

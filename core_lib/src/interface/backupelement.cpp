@@ -1150,25 +1150,23 @@ MoveLayerElement::MoveLayerElement(const int& backupOldLayerIndex,
                                    Editor* editor,
                                    QUndoCommand* parent) : BackupElement(editor, parent)
 {
-
-
     oldLayerIndex = backupOldLayerIndex;
     newLayerIndex = backupNewLayerIndex;
-    qDebug() << newLayerIndex;
-    qDebug() << editor->currentLayerIndex();
 
     setText(QObject::tr("Move layer"));
 }
 
 void MoveLayerElement::undo()
 {
-    editor()->swapLayers(newLayerIndex, oldLayerIndex);
+    editor()->moveLayers(newLayerIndex, oldLayerIndex);
+    editor()->layers()->setCurrentLayer(oldLayerIndex);
 }
 
 void MoveLayerElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    editor()->swapLayers(oldLayerIndex, newLayerIndex);
+    editor()->moveLayers(oldLayerIndex, newLayerIndex);
+    editor()->layers()->setCurrentLayer(newLayerIndex);
 
 }

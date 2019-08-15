@@ -166,7 +166,7 @@ public: //slots
 
     void switchVisibilityOfLayer(int layerNumber);
     void showLayerNotVisibleWarning();
-    void swapLayers(int i, int j);
+    void moveLayers(const int& fromIndex, const int& toIndex);
     Status::StatusInt pegBarAlignment(QStringList layers);
 
     void copy();
