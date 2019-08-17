@@ -65,6 +65,8 @@ public:
     QRgb pixel(QPoint p);
     void setPixel(int x, int y, QRgb colour);
     void setPixel(QPoint p, QRgb colour);
+    void setAllAlteredPixels(QRgb color);
+
     QRgb constScanLine(int x, int y);
     void scanLine(int x, int y, QRgb colour);
     void clear();
