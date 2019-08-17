@@ -56,6 +56,15 @@ void SelectionManager::resetSelectionTransformProperties()
     mSelectionTransform.reset();
 }
 
+/**
+ * @brief SelectionManager::sync
+ * Sync the selection properties
+ */
+void SelectionManager::sync()
+{
+    setSelection(myTransformedSelectionRect());
+}
+
 void SelectionManager::updatePolygons()
 {
     mCurrentSelectionPolygonF = mTempTransformedSelection;

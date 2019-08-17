@@ -125,8 +125,10 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     updateTransformation();
 
     Layer* layer = mEditor->layers()->currentLayer();
+
     if (layer->type() == Layer::VECTOR) {
         applyTransformation();
+        selectMan->sync();
     }
 
     selectMan->updatePolygons();

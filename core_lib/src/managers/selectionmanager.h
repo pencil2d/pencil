@@ -30,6 +30,7 @@ public:
 
     void updatePolygons();
     void updateTransformedSelection() { mTransformedSelection = mTempTransformedSelection; }
+    void sync();
 
     QRectF mappedSelection();
 
