@@ -541,7 +541,7 @@ void BitmapImage::setPixel(QPoint p, QRgb colour)
     modification();
 }
 
-void BitmapImage::setAllAlteredPixels(QRgb color)
+void BitmapImage::fillNonAlpha(QRgb color)
 {
     if (mBounds.isEmpty()) { return; }
 
