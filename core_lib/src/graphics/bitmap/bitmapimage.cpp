@@ -541,14 +541,12 @@ void BitmapImage::setPixel(QPoint p, QRgb colour)
     modification();
 }
 
-void BitmapImage::fillNonAlpha(QRgb color)
+void BitmapImage::fillNonAlpha(const QRgb &color)
 {
     if (mBounds.isEmpty()) { return; }
 
     BitmapImage fill(bounds(), color);
     paste(&fill, QPainter::CompositionMode_SourceIn);
-
-    modification();
 }
 
 void BitmapImage::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing)
