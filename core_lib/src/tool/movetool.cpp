@@ -198,13 +198,15 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     	mEditor->backups()->saveStates();
     }
 
-    if (keyMod != Qt::ShiftModifier)
-    {
-        if (selectMan->isOutsideSelectionArea(getCurrentPoint()))
+    if (selectMan->somethingSelected()) {
+        if (keyMod != Qt::ShiftModifier)
         {
-            applyTransformation();
-            mEditor->deselectAll();
-            mEditor->backups()->deselect();
+            if (selectMan->isOutsideSelectionArea(getCurrentPoint()))
+            {
+                applyTransformation();
+                mEditor->deselectAll();
+                mEditor->backups()->deselect();
+            }
         }
     }
 
