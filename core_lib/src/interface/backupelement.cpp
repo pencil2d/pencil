@@ -455,6 +455,13 @@ void SelectionElement::undoSelection()
     selectMan->setSomethingSelected(oldIsSelected);
 
     editor()->deselectAll();
+
+    Layer* layer = editor()->layers()->currentLayer();
+    KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
+    editor()->canvas()->applyTransformedSelection(layer,
+                                                  cKeyFrame,
+                                                  selectMan->selectionTransform(),
+                                                  oldSelectionRect);
 }
 
 void SelectionElement::undoDeselection()
