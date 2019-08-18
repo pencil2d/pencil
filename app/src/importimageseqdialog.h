@@ -38,8 +38,6 @@ struct PredefinedKeySetParams {
     QString prefix;
 
     Status pathsValid() const;
-
-    int count() const { return filenames.count();}
 };
 
 enum ImportCriteria { Arbitrary, PredefinedSet };
