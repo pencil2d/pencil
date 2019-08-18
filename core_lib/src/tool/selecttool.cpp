@@ -49,6 +49,15 @@ void SelectTool::beginSelection()
     // Store original click position for help with selection rectangle.
     mAnchorOriginPoint = getLastPoint();
 
+    QPointF lastPoint = getLastPoint();
+    QPointF currentPoint = getCurrentPoint();
+
+    if (mCurrentLayer->type() == Layer::BITMAP) {
+        lastPoint = lastPoint.toPoint();
+        mAnchorOriginPoint = lastPoint;
+        currentPoint = currentPoint.toPoint();
+    }
+
     auto selectMan = mEditor->select();
     selectMan->calculateSelectionTransformation();
 
@@ -63,18 +72,18 @@ void SelectTool::beginSelection()
             static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
         }
 
-        mAnchorOriginPoint = selectMan->whichAnchorPoint(getLastPoint());
+        mAnchorOriginPoint = selectMan->whichAnchorPoint(lastPoint);
 
         // the user did not click on one of the corners
-        if (selectMan->validateMoveMode(getLastPoint()) == MoveMode::NONE)
+        if (selectMan->validateMoveMode(lastPoint) == MoveMode::NONE)
         {
-            const QRectF& newRect = QRectF(getLastPoint(), getLastPoint());
+            QRectF newRect = QRectF(lastPoint, lastPoint);
             selectMan->setSelection(newRect);
         }
     }
     else
     {
-        selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(),1,1));
+        selectMan->setSelection(QRectF(currentPoint.x(), currentPoint.y(),1,1));
         mMoveMode = MoveMode::NONE;
     }
     mScribbleArea->update();
@@ -104,13 +113,19 @@ void SelectTool::pointerMoveEvent(PointerEvent* event)
 
     if (!selectMan->somethingSelected()) { return; }
 
+    QPointF currentPoint = getCurrentPoint();
+
+    if (mCurrentLayer->type() == Layer::BITMAP) {
+        currentPoint = currentPoint.toPoint();
+    }
+
     selectMan->updatePolygons();
 
     mScribbleArea->updateToolCursor();
 
     if (mScribbleArea->isPointerInUse())
     {
-        controlOffsetOrigin(getCurrentPoint(), mAnchorOriginPoint);
+        controlOffsetOrigin(currentPoint, mAnchorOriginPoint);
 
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
@@ -193,13 +208,16 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 
     if (mMoveMode != MoveMode::NONE)
     {
+        QPointF currentPoint = getCurrentPoint();
         if (editor()->layers()->currentLayer()->type() == Layer::BITMAP) {
             offset = QPointF(offset).toPoint();
+            currentPoint = currentPoint.toPoint();
+
         }
 
         auto selectMan = mEditor->select();
 
-        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), selectMan->myRotation(), 0);
+        selectMan->adjustSelection(currentPoint, offset.x(), offset.y(), selectMan->myRotation(), 0);
     }
     else
     {
