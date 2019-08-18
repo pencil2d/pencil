@@ -126,6 +126,14 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
 
     Layer* layer = mEditor->layers()->currentLayer();
 
+    if (selectMan->selectionMoved()) {
+        mEditor->backups()->transform();
+    } else {
+        if (selectMan->somethingSelected()) {
+            mEditor->backups()->selection();
+        }
+    }
+
     if (layer->type() == Layer::VECTOR) {
         applyTransformation();
         selectMan->sync();
@@ -137,7 +145,6 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     mScribbleArea->updateCurrentFrame();
 
     mScribbleArea->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
-    mEditor->backups()->transform();
 }
 
 void MoveTool::updateTransformation()
@@ -241,13 +248,19 @@ void MoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
     LayerVector* vecLayer = static_cast<LayerVector*>(layer);
     VectorImage* vectorImage = vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
-    if (!mEditor->select()->closestCurves().empty()) // the user clicks near a curve
+    auto selectMan = mEditor->select();
+    if (!selectMan->closestCurves().empty()) // the user clicks near a curve
     {
         setCurveSelected(vectorImage, keyMod);
     }
     else if (vectorImage->getLastAreaNumber(getLastPoint()) > -1)
     {
         setAreaSelected(vectorImage, keyMod);
+    }
+    if (!selectMan->somethingSelected()) {
+
+        vectorImage->calculateSelectionRect();
+        selectMan->setSelection(vectorImage->getSelectionRect());
     }
     mScribbleArea->update();
 }

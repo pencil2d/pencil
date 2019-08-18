@@ -271,6 +271,11 @@ int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const 
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
 
+bool SelectionManager::selectionMoved() const
+{
+    return !mSelectionTransform.isIdentity();
+}
+
 void SelectionManager::setSelection(QRectF rect)
 {
     resetSelectionTransformProperties();
