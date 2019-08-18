@@ -57,6 +57,8 @@ private:
     QPointF mAnchorOriginPoint;
     MoveMode mMoveMode;
     Layer* mCurrentLayer = nullptr;
+
+    bool mPointOutsideSelection = false;
 };
 
 #endif

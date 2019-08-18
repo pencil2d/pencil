@@ -58,7 +58,10 @@ void SelectTool::beginSelection()
         currentPoint = currentPoint.toPoint();
     }
 
+    mEditor->backups()->saveStates();
+
     auto selectMan = mEditor->select();
+
     selectMan->calculateSelectionTransformation();
 
     // paint and apply the transformation
@@ -67,6 +70,9 @@ void SelectTool::beginSelection()
 
     if (selectMan->somethingSelected()) // there is something selected
     {
+        if (!selectMan->mySelectionRect().contains(getCurrentPoint())) {
+            mPointOutsideSelection = true;
+        }
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
             static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
@@ -146,16 +152,21 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     if (event->button() != Qt::LeftButton) return;
     auto selectMan = mEditor->select();
 
+    mMoveMode = MoveMode::NONE;
+
     // if there's a small very small distance between current and last point
     // discard the selection...
     // TODO: improve by adding a timer to check if the user is deliberately selecting
     if (QLineF(mAnchorOriginPoint, getCurrentPoint()).length() < 5.0)
     {
         mEditor->deselectAll();
+        // no backup here, since we didn't intend to make a selection in the first place
     }
+
     if (maybeDeselect())
     {
         mEditor->deselectAll();
+        mEditor->backups()->deselect();
     }
     else
     {
@@ -166,16 +177,16 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
-    if (!selectMan->mySelectionRect().isEmpty())
-    {
-        mEditor->backups()->selection();
-    }
     //mScribbleArea->setAllDirty();
 }
 
 bool SelectTool::maybeDeselect()
 {
-    return (!isSelectionPointValid() && mEditor->select()->validateMoveMode(getLastPoint()) == MoveMode::NONE);
+    if (mPointOutsideSelection) {
+        mPointOutsideSelection = false;
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -200,6 +211,8 @@ void SelectTool::keepSelection()
         VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         selectMan->setSelection(vectorImage->getSelectionRect());
     }
+
+    mEditor->backups()->selection();
 }
 
 void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
