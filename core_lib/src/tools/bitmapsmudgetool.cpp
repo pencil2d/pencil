@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "smudgetool.h"
+#include "bitmapsmudgetool.h"
 #include <QPixmap>
 
 #include "pointerevent.h"
@@ -31,17 +31,17 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "blitrect.h"
 
-SmudgeTool::SmudgeTool(QObject* parent) : StrokeTool(parent)
+BitmapSmudgeTool::BitmapSmudgeTool(QObject* parent) : StrokeTool(parent)
 {
     toolMode = 0; // tool mode
 }
 
-ToolType SmudgeTool::type()
+ToolType BitmapSmudgeTool::type()
 {
     return SMUDGE;
 }
 
-void SmudgeTool::loadSettings()
+void BitmapSmudgeTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
@@ -53,13 +53,13 @@ void SmudgeTool::loadSettings()
     properties.stabilizerLevel = -1;
 }
 
-void SmudgeTool::resetToDefault()
+void BitmapSmudgeTool::resetToDefault()
 {
     setWidth(24.0);
     setFeather(48.0);
 }
 
-void SmudgeTool::setWidth(const qreal width)
+void BitmapSmudgeTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
@@ -70,7 +70,7 @@ void SmudgeTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void SmudgeTool::setFeather(const qreal feather)
+void BitmapSmudgeTool::setFeather(const qreal feather)
 {
     // Set current property
     properties.feather = feather;
@@ -81,7 +81,7 @@ void SmudgeTool::setFeather(const qreal feather)
     settings.sync();
 }
 
-void SmudgeTool::setPressure(const bool pressure)
+void BitmapSmudgeTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
@@ -92,13 +92,13 @@ void SmudgeTool::setPressure(const bool pressure)
     settings.sync();
 }
 
-bool SmudgeTool::emptyFrameActionEnabled()
+bool BitmapSmudgeTool::emptyFrameActionEnabled()
 {
     // Disabled till we get it working for vector layers...
     return false;
 }
 
-QCursor SmudgeTool::cursor()
+QCursor BitmapSmudgeTool::cursor()
 {
     qDebug() << "smudge tool";
     if (toolMode == 0) { //normal mode
@@ -109,7 +109,7 @@ QCursor SmudgeTool::cursor()
     }
 }
 
-bool SmudgeTool::keyPressEvent(QKeyEvent *event)
+bool BitmapSmudgeTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Alt)
     {
@@ -120,7 +120,7 @@ bool SmudgeTool::keyPressEvent(QKeyEvent *event)
     return false;
 }
 
-bool SmudgeTool::keyReleaseEvent(QKeyEvent*)
+bool BitmapSmudgeTool::keyReleaseEvent(QKeyEvent*)
 {
 
     toolMode = 0; // default mode
@@ -129,7 +129,7 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent*)
     return true;
 }
 
-void SmudgeTool::pointerPressEvent(PointerEvent* event)
+void BitmapSmudgeTool::pointerPressEvent(PointerEvent* event)
 {
     //qDebug() << "smudgetool: mousePressEvent";
 
@@ -183,7 +183,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
     }
 }
 
-void SmudgeTool::pointerMoveEvent(PointerEvent* event)
+void BitmapSmudgeTool::pointerMoveEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
@@ -225,7 +225,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
     mScribbleArea->setAllDirty();
 }
 
-void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
+void BitmapSmudgeTool::pointerReleaseEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
@@ -257,7 +257,7 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
     }
 }
 
-void SmudgeTool::drawStroke()
+void BitmapSmudgeTool::drawStroke()
 {
     if (!mScribbleArea->isLayerPaintable()) return;
 
@@ -343,7 +343,7 @@ void SmudgeTool::drawStroke()
     }
 }
 
-QPointF SmudgeTool::offsetFromPressPos()
+QPointF BitmapSmudgeTool::offsetFromPressPos()
 {
     return getCurrentPoint() - getCurrentPressPoint();
 }

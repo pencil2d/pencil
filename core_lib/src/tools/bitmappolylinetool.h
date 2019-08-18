@@ -22,11 +22,11 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 
-class PolylineTool : public BaseTool
+class BitmapPolylineTool : public BaseTool
 {
     Q_OBJECT
 public:
-    explicit PolylineTool(QObject* parent = 0);
+    explicit BitmapPolylineTool(QObject* parent = 0);
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;

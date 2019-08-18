@@ -23,12 +23,12 @@ GNU General Public License for more details.
 class Layer;
 class SelectionManager;
 
-class SelectTool : public BaseTool
+class BitmapSelectTool : public BaseTool
 {
     Q_OBJECT
 
 public:
-    explicit SelectTool(QObject* parent = 0);
+    explicit BitmapSelectTool(QObject* parent = 0);
     ToolType type() override { return SELECT; }
     void loadSettings() override;
     QCursor cursor() override;

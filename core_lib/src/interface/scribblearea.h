@@ -52,10 +52,9 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-        friend class MoveTool;
-    friend class EditTool;
-    friend class SmudgeTool;
-    friend class BucketTool;
+    friend class BitmapMoveTool;
+    friend class BitmapSmudgeTool;
+    friend class BitmapBucketTool;
 
 public:
     ScribbleArea(QWidget* parent);

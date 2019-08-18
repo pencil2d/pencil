@@ -21,11 +21,11 @@ GNU General Public License for more details.
 #include "basetool.h"
 
 
-class EyedropperTool : public BaseTool
+class BitmapEyedropperTool : public BaseTool
 {
     Q_OBJECT
 public:
-    explicit EyedropperTool( QObject* parent = 0 );
+    explicit BitmapEyedropperTool( QObject* parent = 0 );
     ToolType type() override { return EYEDROPPER; }
     void loadSettings() override;
     QCursor cursor() override;

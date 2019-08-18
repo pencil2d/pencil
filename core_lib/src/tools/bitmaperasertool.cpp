@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "erasertool.h"
+#include "bitmaperasertool.h"
 
 #include <QSettings>
 #include <QPixmap>
@@ -31,16 +31,16 @@ GNU General Public License for more details.
 #include "pointerevent.h"
 
 
-EraserTool::EraserTool(QObject* parent) : StrokeTool(parent)
+BitmapEraserTool::BitmapEraserTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-ToolType EraserTool::type()
+ToolType BitmapEraserTool::type()
 {
     return ERASER;
 }
 
-void EraserTool::loadSettings()
+void BitmapEraserTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
@@ -57,7 +57,7 @@ void EraserTool::loadSettings()
     properties.stabilizerLevel = settings.value("stabilizerLevel", StabilizationLevel::NONE).toInt();
 }
 
-void EraserTool::resetToDefault()
+void BitmapEraserTool::resetToDefault()
 {
     setWidth(24.0);
     setFeather(48.0);
@@ -66,7 +66,7 @@ void EraserTool::resetToDefault()
     setStabilizerLevel(StabilizationLevel::NONE);
 }
 
-void EraserTool::setWidth(const qreal width)
+void BitmapEraserTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
@@ -77,7 +77,7 @@ void EraserTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void EraserTool::setFeather(const qreal feather)
+void BitmapEraserTool::setFeather(const qreal feather)
 {
     // Set current property
     properties.feather = feather;
@@ -88,7 +88,7 @@ void EraserTool::setFeather(const qreal feather)
     settings.sync();
 }
 
-void EraserTool::setPressure(const bool pressure)
+void BitmapEraserTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
@@ -99,7 +99,7 @@ void EraserTool::setPressure(const bool pressure)
     settings.sync();
 }
 
-void EraserTool::setStabilizerLevel(const int level)
+void BitmapEraserTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
 
@@ -109,12 +109,12 @@ void EraserTool::setStabilizerLevel(const int level)
 }
 
 
-QCursor EraserTool::cursor()
+QCursor BitmapEraserTool::cursor()
 {
     return Qt::CrossCursor;
 }
 
-void EraserTool::pointerPressEvent(PointerEvent*)
+void BitmapEraserTool::pointerPressEvent(PointerEvent*)
 {
     mScribbleArea->setAllDirty();
 
@@ -123,7 +123,7 @@ void EraserTool::pointerPressEvent(PointerEvent*)
     mMouseDownPoint = getCurrentPoint();
 }
 
-void EraserTool::pointerMoveEvent(PointerEvent* event)
+void BitmapEraserTool::pointerMoveEvent(PointerEvent* event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
@@ -134,7 +134,7 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void EraserTool::pointerReleaseEvent(PointerEvent*)
+void BitmapEraserTool::pointerReleaseEvent(PointerEvent*)
 {
     mEditor->backup(typeName());
 
@@ -152,7 +152,7 @@ void EraserTool::pointerReleaseEvent(PointerEvent*)
 }
 
 // draw a single paint dab at the given location
-void EraserTool::paintAt(QPointF point)
+void BitmapEraserTool::paintAt(QPointF point)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
@@ -187,7 +187,7 @@ void EraserTool::paintAt(QPointF point)
     }
 }
 
-void EraserTool::drawStroke()
+void BitmapEraserTool::drawStroke()
 {
     StrokeTool::drawStroke();
     QList<QPointF> p = strokeManager()->interpolateStroke();
@@ -271,7 +271,7 @@ void EraserTool::drawStroke()
     }
 }
 
-void EraserTool::removeVectorPaint()
+void BitmapEraserTool::removeVectorPaint()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
@@ -294,7 +294,7 @@ void EraserTool::removeVectorPaint()
     }
 }
 
-void EraserTool::updateStrokes()
+void BitmapEraserTool::updateStrokes()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)

@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "selecttool.h"
+#include "bitmapselecttool.h"
 #include "pointerevent.h"
 #include "vectorimage.h"
 #include "editor.h"
@@ -25,11 +25,11 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 #include "selectionmanager.h"
 
-SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
+BitmapSelectTool::BitmapSelectTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-void SelectTool::loadSettings()
+void BitmapSelectTool::loadSettings()
 {
     properties.width = -1;
     properties.feather = -1;
@@ -37,13 +37,13 @@ void SelectTool::loadSettings()
     properties.useAA = -1;
 }
 
-QCursor SelectTool::cursor()
+QCursor BitmapSelectTool::cursor()
 {
     MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
     return this->selectMoveCursor(mode, type());
 }
 
-void SelectTool::beginSelection()
+void BitmapSelectTool::beginSelection()
 {
     // Store original click position for help with selection rectangle.
     mAnchorOriginPoint = getLastPoint();
@@ -79,7 +79,7 @@ void SelectTool::beginSelection()
     mScribbleArea->update();
 }
 
-void SelectTool::pointerPressEvent(PointerEvent* event)
+void BitmapSelectTool::pointerPressEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) return;
@@ -94,7 +94,7 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     beginSelection();
 }
 
-void SelectTool::pointerMoveEvent(PointerEvent* event)
+void BitmapSelectTool::pointerMoveEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) { return; }
@@ -122,7 +122,7 @@ void SelectTool::pointerMoveEvent(PointerEvent* event)
     mScribbleArea->updateCurrentFrame();
 }
 
-void SelectTool::pointerReleaseEvent(PointerEvent* event)
+void BitmapSelectTool::pointerReleaseEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) return;
@@ -152,16 +152,16 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 //    mScribbleArea->setAllDirty();
 }
 
-bool SelectTool::maybeDeselect()
+bool BitmapSelectTool::maybeDeselect()
 {
     return (!isSelectionPointValid() && mEditor->select()->validateMoveMode(getLastPoint()) == MoveMode::NONE);
 }
 
 /**
- * @brief SelectTool::keepSelection
+ * @brief BitmapSelectTool::keepSelection
  * Keep selection rect and normalize if invalid
  */
-void SelectTool::keepSelection()
+void BitmapSelectTool::keepSelection()
 {
     auto selectMan = mEditor->select();
     if (mCurrentLayer->type() == Layer::BITMAP) {
@@ -181,7 +181,7 @@ void SelectTool::keepSelection()
     }
 }
 
-void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
+void BitmapSelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 {
     QPointF offset = offsetFromPressPos();
 
@@ -203,10 +203,10 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 }
 
 /**
- * @brief SelectTool::manageSelectionOrigin
+ * @brief BitmapSelectTool::manageSelectionOrigin
  * switches anchor point when crossing threshold
  */
-void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint)
+void BitmapSelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint)
 {
     qreal mouseX = currentPoint.x();
     qreal mouseY = currentPoint.y();
@@ -238,7 +238,7 @@ void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint
     mEditor->select()->setTempTransformedSelectionRect(selectRect);
 }
 
-bool SelectTool::keyPressEvent(QKeyEvent* event)
+bool BitmapSelectTool::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {
@@ -253,7 +253,7 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
     return false;
 }
 
-QPointF SelectTool::offsetFromPressPos()
+QPointF BitmapSelectTool::offsetFromPressPos()
 {
     return getCurrentPoint() - getCurrentPressPoint();
 }

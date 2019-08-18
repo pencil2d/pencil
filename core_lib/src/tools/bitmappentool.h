@@ -15,39 +15,40 @@ GNU General Public License for more details.
 
 */
 
-#ifndef ERASERTOOL_H
-#define ERASERTOOL_H
+#ifndef PENTOOL_H
+#define PENTOOL_H
 
 #include "stroketool.h"
 
-class EraserTool : public StrokeTool
+class Layer;
+
+class BitmapPenTool : public StrokeTool
 {
     Q_OBJECT
-
 public:
-    explicit EraserTool( QObject* parent = 0 );
-    ToolType type() override;
+    BitmapPenTool(QObject* parent = 0);
+    ToolType type() override { return PEN; }
     void loadSettings() override;
-    void resetToDefault() override;
     QCursor cursor() override;
+    void resetToDefault() override;
 
-    void pointerMoveEvent( PointerEvent* ) override;
-    void pointerPressEvent( PointerEvent* ) override;
-    void pointerReleaseEvent( PointerEvent* ) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
 
     void drawStroke();
-    void paintAt( QPointF point );
-    void removeVectorPaint();
-    void updateStrokes();
+    void paintAt(QPointF point);
+    void paintVectorStroke(Layer *layer);
+    void paintBitmapStroke();
 
-    void setWidth( const qreal width ) override;
-    void setFeather( const qreal feather ) override;
-    void setPressure( const bool pressure ) override;
+    void setWidth(const qreal width) override;
+    void setPressure(const bool pressure) override;
+    void setAA(const int AA) override;
     void setStabilizerLevel(const int level) override;
 
-protected:
+private:
     QPointF mLastBrushPoint;
     QPointF mMouseDownPoint;
 };
 
-#endif // ERASERTOOL_H
+#endif // PENTOOL_H

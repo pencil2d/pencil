@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 
-#include "brushtool.h"
+#include "bitmapbrushtool.h"
 
 #include <cmath>
 #include <QSettings>
@@ -36,16 +36,16 @@ GNU General Public License for more details.
 #include "pointerevent.h"
 
 
-BrushTool::BrushTool(QObject* parent) : StrokeTool(parent)
+BitmapBrushTool::BitmapBrushTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-ToolType BrushTool::type()
+ToolType BitmapBrushTool::type()
 {
     return BRUSH;
 }
 
-void BrushTool::loadSettings()
+void BitmapBrushTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
@@ -71,7 +71,7 @@ void BrushTool::loadSettings()
     if (std::isnan(properties.feather)) { setFeather(15); }
 }
 
-void BrushTool::resetToDefault()
+void BitmapBrushTool::resetToDefault()
 {
     setWidth(24.0);
     setFeather(48.0);
@@ -79,7 +79,7 @@ void BrushTool::resetToDefault()
     setUseFeather(true);
 }
 
-void BrushTool::setWidth(const qreal width)
+void BitmapBrushTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
@@ -90,7 +90,7 @@ void BrushTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void BrushTool::setUseFeather(const bool usingFeather)
+void BitmapBrushTool::setUseFeather(const bool usingFeather)
 {
     // Set current property
     properties.useFeather = usingFeather;
@@ -101,7 +101,7 @@ void BrushTool::setUseFeather(const bool usingFeather)
     settings.sync();
 }
 
-void BrushTool::setFeather(const qreal feather)
+void BitmapBrushTool::setFeather(const qreal feather)
 {
     // Set current property
     properties.feather = feather;
@@ -112,7 +112,7 @@ void BrushTool::setFeather(const qreal feather)
     settings.sync();
 }
 
-void BrushTool::setInvisibility(const bool invisibility)
+void BitmapBrushTool::setInvisibility(const bool invisibility)
 {
     // force value
     properties.invisibility = invisibility;
@@ -122,7 +122,7 @@ void BrushTool::setInvisibility(const bool invisibility)
     settings.sync();
 }
 
-void BrushTool::setPressure(const bool pressure)
+void BitmapBrushTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
@@ -133,7 +133,7 @@ void BrushTool::setPressure(const bool pressure)
     settings.sync();
 }
 
-void BrushTool::setStabilizerLevel(const int level)
+void BitmapBrushTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
 
@@ -142,7 +142,7 @@ void BrushTool::setStabilizerLevel(const int level)
     settings.sync();
 }
 
-void BrushTool::setAA(const int AA)
+void BitmapBrushTool::setAA(const int AA)
 {
     // Set current property
     properties.useAA = AA;
@@ -153,7 +153,7 @@ void BrushTool::setAA(const int AA)
     settings.sync();
 }
 
-QCursor BrushTool::cursor()
+QCursor BitmapBrushTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
@@ -162,7 +162,7 @@ QCursor BrushTool::cursor()
     return Qt::CrossCursor;
 }
 
-void BrushTool::pointerPressEvent(PointerEvent*)
+void BitmapBrushTool::pointerPressEvent(PointerEvent*)
 {
     mScribbleArea->setAllDirty();
     mMouseDownPoint = getCurrentPoint();
@@ -171,7 +171,7 @@ void BrushTool::pointerPressEvent(PointerEvent*)
     startStroke();
 }
 
-void BrushTool::pointerMoveEvent(PointerEvent* event)
+void BitmapBrushTool::pointerMoveEvent(PointerEvent* event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
@@ -182,7 +182,7 @@ void BrushTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void BrushTool::pointerReleaseEvent(PointerEvent*)
+void BitmapBrushTool::pointerReleaseEvent(PointerEvent*)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     mEditor->backup(typeName());
@@ -206,7 +206,7 @@ void BrushTool::pointerReleaseEvent(PointerEvent*)
 }
 
 // draw a single paint dab at the given location
-void BrushTool::paintAt(QPointF point)
+void BitmapBrushTool::paintAt(QPointF point)
 {
     //qDebug() << "Made a single dab at " << point;
     Layer* layer = mEditor->layers()->currentLayer();
@@ -231,7 +231,7 @@ void BrushTool::paintAt(QPointF point)
     }
 }
 
-void BrushTool::drawStroke()
+void BitmapBrushTool::drawStroke()
 {
     StrokeTool::drawStroke();
     QList<QPointF> p = strokeManager()->interpolateStroke();
@@ -324,7 +324,7 @@ void BrushTool::drawStroke()
     }
 }
 
-void BrushTool::paintBitmapStroke()
+void BitmapBrushTool::paintBitmapStroke()
 {
     mScribbleArea->paintBitmapBuffer();
     mScribbleArea->setAllDirty();
@@ -333,7 +333,7 @@ void BrushTool::paintBitmapStroke()
 
 // This function uses the points from DrawStroke
 // and turns them into vector lines.
-void BrushTool::paintVectorStroke()
+void BitmapBrushTool::paintVectorStroke()
 {
     if (mStrokePoints.empty())
         return;

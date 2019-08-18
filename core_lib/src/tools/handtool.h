@@ -15,8 +15,8 @@ GNU General Public License for more details.
 
 */
 
-#ifndef HANDTOOL_H
-#define HANDTOOL_H
+#ifndef BITMAPHANDTOOL_H
+#define BITMAPHANDTOOL_H
 
 #include "basetool.h"
 

@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 
-#include "eyedroppertool.h"
+#include "bitmapeyedroppertool.h"
 
 #include <QPainter>
 #include <QPixmap>
@@ -32,11 +32,11 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 
-EyedropperTool::EyedropperTool(QObject* parent) : BaseTool(parent)
+BitmapEyedropperTool::BitmapEyedropperTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-void EyedropperTool::loadSettings()
+void BitmapEyedropperTool::loadSettings()
 {
     properties.width = -1;
     properties.feather = -1;
@@ -44,7 +44,7 @@ void EyedropperTool::loadSettings()
     properties.useAA = -1;
 }
 
-QCursor EyedropperTool::cursor()
+QCursor BitmapEyedropperTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
@@ -56,7 +56,7 @@ QCursor EyedropperTool::cursor()
     }
 }
 
-QCursor EyedropperTool::cursor(const QColor colour)
+QCursor BitmapEyedropperTool::cursor(const QColor colour)
 {
     QPixmap icon(":icons/eyedropper.png");
 
@@ -73,10 +73,10 @@ QCursor EyedropperTool::cursor(const QColor colour)
     return QCursor(pixmap, 0, 15);
 }
 
-void EyedropperTool::pointerPressEvent(PointerEvent*)
+void BitmapEyedropperTool::pointerPressEvent(PointerEvent*)
 {}
 
-void EyedropperTool::pointerMoveEvent(PointerEvent*)
+void BitmapEyedropperTool::pointerMoveEvent(PointerEvent*)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
@@ -123,7 +123,7 @@ void EyedropperTool::pointerMoveEvent(PointerEvent*)
     }
 }
 
-void EyedropperTool::pointerReleaseEvent(PointerEvent* event)
+void BitmapEyedropperTool::pointerReleaseEvent(PointerEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -135,7 +135,7 @@ void EyedropperTool::pointerReleaseEvent(PointerEvent* event)
     }
 }
 
-void EyedropperTool::updateFrontColor()
+void BitmapEyedropperTool::updateFrontColor()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) { return; }

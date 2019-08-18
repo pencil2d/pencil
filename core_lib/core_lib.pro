@@ -23,7 +23,7 @@ INCLUDEPATH += src \
     src/graphics/vector \
     src/interface \
     src/structure \
-    src/tool \
+    src/tools \
     src/util \
     ui \
     src/managers \
@@ -68,20 +68,22 @@ HEADERS +=  \
     src/structure/object.h \
     src/structure/objectdata.h \
     src/structure/filemanager.h \
-    src/tool/basetool.h \
-    src/tool/brushtool.h \
-    src/tool/buckettool.h \
-    src/tool/erasertool.h \
-    src/tool/eyedroppertool.h \
-    src/tool/handtool.h \
-    src/tool/movetool.h \
-    src/tool/penciltool.h \
-    src/tool/pentool.h \
-    src/tool/polylinetool.h \
-    src/tool/selecttool.h \
-    src/tool/smudgetool.h \
-    src/tool/strokemanager.h \
-    src/tool/stroketool.h \
+    src/tools/basetool.h \
+    src/tools/bitmapbrushtool.h \
+    src/tools/bitmapbuckettool.h \
+    src/tools/bitmaperasertool.h \
+    src/tools/bitmapeyedroppertool.h \
+    src/tools/handtool.h \
+    src/tools/bitmapmovetool.h \
+    src/tools/bitmappenciltool.h \
+    src/tools/bitmappentool.h \
+    src/tools/bitmappolylinetool.h \
+    src/tools/bitmapselecttool.h \
+    src/tools/bitmapsmudgetool.h \
+    src/tools/strokemanager.h \
+    src/tools/stroketool.h \
+    src/tools/vectorbrushtool.h \
+    src/tools/vectorpentool.h \
     src/util/blitrect.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
@@ -139,20 +141,22 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/structure/soundclip.cpp \
     src/structure/objectdata.cpp \
     src/structure/filemanager.cpp \
-    src/tool/basetool.cpp \
-    src/tool/brushtool.cpp \
-    src/tool/buckettool.cpp \
-    src/tool/erasertool.cpp \
-    src/tool/eyedroppertool.cpp \
-    src/tool/handtool.cpp \
-    src/tool/movetool.cpp \
-    src/tool/penciltool.cpp \
-    src/tool/pentool.cpp \
-    src/tool/polylinetool.cpp \
-    src/tool/selecttool.cpp \
-    src/tool/smudgetool.cpp \
-    src/tool/strokemanager.cpp \
-    src/tool/stroketool.cpp \
+    src/tools/basetool.cpp \
+    src/tools/bitmapbrushtool.cpp \
+    src/tools/bitmapbuckettool.cpp \
+    src/tools/bitmaperasertool.cpp \
+    src/tools/bitmapeyedroppertool.cpp \
+    src/tools/handtool.cpp \
+    src/tools/bitmapmovetool.cpp \
+    src/tools/bitmappenciltool.cpp \
+    src/tools/bitmappentool.cpp \
+    src/tools/bitmappolylinetool.cpp \
+    src/tools/bitmapselecttool.cpp \
+    src/tools/bitmapsmudgetool.cpp \
+    src/tools/strokemanager.cpp \
+    src/tools/stroketool.cpp \
+    src/tools/vectorbrushtool.cpp \
+    src/tools/vectorpentool.cpp \
     src/util/blitrect.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \

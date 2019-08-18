@@ -15,19 +15,19 @@ GNU General Public License for more details.
 
 */
 
-#ifndef PENCILTOOL_H
-#define PENCILTOOL_H
+#ifndef VECTORPENTOOL_H
+#define VECTORPENTOOL_H
 
 #include "stroketool.h"
 #include <QColor>
 
 class Layer;
 
-class PencilTool : public StrokeTool
+class VectorPenTool : public StrokeTool
 {
     Q_OBJECT
 public:
-    explicit PencilTool(QObject* parent);
+    explicit VectorPenTool(QObject* parent);
     ToolType type() override { return PENCIL; }
     void loadSettings() override;
     QCursor cursor() override;
@@ -38,24 +38,19 @@ public:
     void pointerReleaseEvent(PointerEvent*) override;
 
     void drawStroke();
-    void paintAt(QPointF point);
     void paintVectorStroke(Layer* layer);
-    void paintBitmapStroke();
 
     void setWidth(const qreal width) override;
-    void setFeather(const qreal feather) override;
-    void setUseFeather(const bool useFeather) override;
     void setInvisibility(const bool invisibility) override;
     void setPressure(const bool pressure) override;
-    void setPreserveAlpha(const bool preserveAlpha) override;
     void setStabilizerLevel(const int level) override;
     void setUseFillContour(const bool useFillContour) override;
 
 private:
     QColor mCurrentPressuredColor{ 0, 0, 0, 255 };
     QPointF mLastBrushPoint{ 0, 0 };
-    qreal mOpacity = 1.0f;
+    qreal mOpacity = 1.0;
     QPointF mMouseDownPoint;
 };
 
-#endif // PENCILTOOL_H
+#endif // VECTORPENTOOL_H

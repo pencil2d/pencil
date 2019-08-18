@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 
-#include "polylinetool.h"
+#include "bitmappolylinetool.h"
 
 
 #include "editor.h"
@@ -31,16 +31,16 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 
-PolylineTool::PolylineTool(QObject* parent) : BaseTool(parent)
+BitmapPolylineTool::BitmapPolylineTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-ToolType PolylineTool::type()
+ToolType BitmapPolylineTool::type()
 {
     return POLYLINE;
 }
 
-void PolylineTool::loadSettings()
+void BitmapPolylineTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[BEZIER] = true;
@@ -57,13 +57,13 @@ void PolylineTool::loadSettings()
     properties.stabilizerLevel = -1;
 }
 
-void PolylineTool::resetToDefault()
+void BitmapPolylineTool::resetToDefault()
 {
     setWidth(8.0);
     setBezier(false);
 }
 
-void PolylineTool::setWidth(const qreal width)
+void BitmapPolylineTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
@@ -74,13 +74,13 @@ void PolylineTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void PolylineTool::setFeather(const qreal feather)
+void BitmapPolylineTool::setFeather(const qreal feather)
 {
     Q_UNUSED(feather);
     properties.feather = -1;
 }
 
-void PolylineTool::setAA(const int AA)
+void BitmapPolylineTool::setAA(const int AA)
 {
     // Set current property
     properties.useAA = AA;
@@ -91,17 +91,17 @@ void PolylineTool::setAA(const int AA)
     settings.sync();
 }
 
-QCursor PolylineTool::cursor()
+QCursor BitmapPolylineTool::cursor()
 {
     return Qt::CrossCursor;
 }
 
-void PolylineTool::clearToolData()
+void BitmapPolylineTool::clearToolData()
 {
     mPoints.clear();
 }
 
-void PolylineTool::pointerPressEvent(PointerEvent* event)
+void BitmapPolylineTool::pointerPressEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -125,7 +125,7 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
     }
 }
 
-void PolylineTool::pointerMoveEvent(PointerEvent*)
+void BitmapPolylineTool::pointerMoveEvent(PointerEvent*)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
@@ -134,10 +134,10 @@ void PolylineTool::pointerMoveEvent(PointerEvent*)
     }
 }
 
-void PolylineTool::pointerReleaseEvent(PointerEvent *)
+void BitmapPolylineTool::pointerReleaseEvent(PointerEvent *)
 {}
 
-void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
+void BitmapPolylineTool::pointerDoubleClickEvent(PointerEvent*)
 {
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
@@ -149,7 +149,7 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
 }
 
 
-bool PolylineTool::keyPressEvent(QKeyEvent* event)
+bool BitmapPolylineTool::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {
@@ -178,7 +178,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     return false;
 }
 
-void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
+void BitmapPolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
     if (points.size() > 0)
     {
@@ -224,14 +224,14 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 }
 
 
-void PolylineTool::cancelPolyline()
+void BitmapPolylineTool::cancelPolyline()
 {
     // Clear the in-progress polyline from the bitmap buffer.
     mScribbleArea->clearBitmapBuffer();
     mScribbleArea->updateCurrentFrame();
 }
 
-void PolylineTool::endPolyline(QList<QPointF> points)
+void BitmapPolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 

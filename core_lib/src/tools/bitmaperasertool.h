@@ -15,46 +15,39 @@ GNU General Public License for more details.
 
 */
 
-#ifndef BRUSHTOOL_H
-#define BRUSHTOOL_H
+#ifndef BITMAPERASERTOOL_H
+#define BITMAPERASERTOOL_H
 
 #include "stroketool.h"
 
-
-class BrushTool : public StrokeTool
+class BitmapEraserTool : public StrokeTool
 {
     Q_OBJECT
 
 public:
-    explicit BrushTool(QObject* parent = 0);
+    explicit BitmapEraserTool( QObject* parent = 0 );
     ToolType type() override;
     void loadSettings() override;
     void resetToDefault() override;
     QCursor cursor() override;
 
-    void pointerMoveEvent(PointerEvent*) override;
-    void pointerPressEvent(PointerEvent*) override;
-    void pointerReleaseEvent(PointerEvent*) override;
+    void pointerMoveEvent( PointerEvent* ) override;
+    void pointerPressEvent( PointerEvent* ) override;
+    void pointerReleaseEvent( PointerEvent* ) override;
 
     void drawStroke();
-    void paintVectorStroke();
-    void paintBitmapStroke();
-    void paintAt(QPointF point);
+    void paintAt( QPointF point );
+    void removeVectorPaint();
+    void updateStrokes();
 
-    void setWidth(const qreal width) override;
-    void setFeather(const qreal feather) override;
-    void setUseFeather(const bool usingFeather) override;
-    void setPressure(const bool pressure) override;
-    void setInvisibility(const bool invisibility) override;
-    void setAA(const int useAA) override;
+    void setWidth( const qreal width ) override;
+    void setFeather( const qreal feather ) override;
+    void setPressure( const bool pressure ) override;
     void setStabilizerLevel(const int level) override;
 
 protected:
     QPointF mLastBrushPoint;
     QPointF mMouseDownPoint;
-
-    QColor mCurrentPressuredColor;
-    qreal mOpacity = 1.0;
 };
 
-#endif // BRUSHTOOL_H
+#endif // BITMAPERASERTOOL_H

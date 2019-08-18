@@ -26,11 +26,11 @@ class Layer;
 class VectorImage;
 
 
-class MoveTool : public BaseTool
+class BitmapMoveTool : public BaseTool
 {
     Q_OBJECT
 public:
-    explicit MoveTool(QObject* parent);
+    explicit BitmapMoveTool(QObject* parent);
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;

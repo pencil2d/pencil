@@ -27,7 +27,7 @@ INCLUDEPATH += \
     ../core_lib/src/graphics/vector \
     ../core_lib/src/interface \
     ../core_lib/src/structure \
-    ../core_lib/src/tool \
+    ../core_lib/src/tools \
     ../core_lib/src/util \
     ../core_lib/ui \
     ../core_lib/src/managers \

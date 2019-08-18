@@ -17,17 +17,17 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 
 #include <cmath>
-#include "pentool.h"
-#include "penciltool.h"
-#include "brushtool.h"
-#include "buckettool.h"
-#include "erasertool.h"
-#include "eyedroppertool.h"
+#include "bitmappentool.h"
+#include "bitmappenciltool.h"
+#include "bitmapbrushtool.h"
+#include "bitmapbuckettool.h"
+#include "bitmaperasertool.h"
+#include "bitmapeyedroppertool.h"
 #include "handtool.h"
-#include "movetool.h"
-#include "polylinetool.h"
-#include "selecttool.h"
-#include "smudgetool.h"
+#include "bitmapmovetool.h"
+#include "bitmappolylinetool.h"
+#include "bitmapselecttool.h"
+#include "bitmapsmudgetool.h"
 #include "editor.h"
 
 
@@ -39,17 +39,17 @@ bool ToolManager::init()
 {
     mIsSwitchedToEraser = false;
 
-    mToolSetHash.insert(PEN, new PenTool(this));
-    mToolSetHash.insert(PENCIL, new PencilTool(this));
-    mToolSetHash.insert(BRUSH, new BrushTool(this));
-    mToolSetHash.insert(ERASER, new EraserTool(this));
-    mToolSetHash.insert(BUCKET, new BucketTool(this));
-    mToolSetHash.insert(EYEDROPPER, new EyedropperTool(this));
+    mToolSetHash.insert(PEN, new BitmapPenTool(this));
+    mToolSetHash.insert(PENCIL, new BitmapPencilTool(this));
+    mToolSetHash.insert(BRUSH, new BitmapBrushTool(this));
+    mToolSetHash.insert(ERASER, new BitmapEraserTool(this));
+    mToolSetHash.insert(BUCKET, new BitmapBucketTool(this));
+    mToolSetHash.insert(EYEDROPPER, new BitmapEyedropperTool(this));
     mToolSetHash.insert(HAND, new HandTool(this));
-    mToolSetHash.insert(MOVE, new MoveTool(this));
-    mToolSetHash.insert(POLYLINE, new PolylineTool(this));
-    mToolSetHash.insert(SELECT, new SelectTool(this));
-    mToolSetHash.insert(SMUDGE, new SmudgeTool(this));
+    mToolSetHash.insert(MOVE, new BitmapMoveTool(this));
+    mToolSetHash.insert(POLYLINE, new BitmapPolylineTool(this));
+    mToolSetHash.insert(SELECT, new BitmapSelectTool(this));
+    mToolSetHash.insert(SMUDGE, new BitmapSmudgeTool(this));
 
     foreach(BaseTool* pTool, mToolSetHash.values())
     {

@@ -15,40 +15,40 @@ GNU General Public License for more details.
 
 */
 
-#ifndef PENTOOL_H
-#define PENTOOL_H
+#ifndef BITMAPBUCKETTOOL_H
+#define BITMAPBUCKETTOOL_H
 
 #include "stroketool.h"
 
 class Layer;
+class VectorImage;
 
-class PenTool : public StrokeTool
+class BitmapBucketTool : public StrokeTool
 {
     Q_OBJECT
 public:
-    PenTool(QObject* parent = 0);
-    ToolType type() override { return PEN; }
+    explicit BitmapBucketTool(QObject* parent = nullptr);
+    ToolType type() override;
     void loadSettings() override;
-    QCursor cursor() override;
     void resetToDefault() override;
+    QCursor cursor() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
 
-    void drawStroke();
-    void paintAt(QPointF point);
-    void paintVectorStroke(Layer *layer);
-    void paintBitmapStroke();
-
+    void setTolerance(const int tolerance) override;
     void setWidth(const qreal width) override;
-    void setPressure(const bool pressure) override;
-    void setAA(const int AA) override;
-    void setStabilizerLevel(const int level) override;
+
+    void paintBitmap(Layer* layer);
+    void paintVector(Layer* layer);
+    void drawStroke();
+
+    void applyChanges();
 
 private:
-    QPointF mLastBrushPoint;
-    QPointF mMouseDownPoint;
+
+    VectorImage* vectorImage = nullptr;
 };
 
-#endif // PENTOOL_H
+#endif // BITMAPBUCKETTOOL_H

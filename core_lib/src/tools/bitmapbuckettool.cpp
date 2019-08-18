@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "buckettool.h"
+#include "bitmapbuckettool.h"
 
 #include <QPixmap>
 #include <QPainter>
@@ -32,16 +32,16 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 
-BucketTool::BucketTool(QObject* parent) : StrokeTool(parent)
+BitmapBucketTool::BitmapBucketTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-ToolType BucketTool::type()
+ToolType BitmapBucketTool::type()
 {
     return BUCKET;
 }
 
-void BucketTool::loadSettings()
+void BitmapBucketTool::loadSettings()
 {
     mPropertyEnabled[TOLERANCE] = true;
     mPropertyEnabled[WIDTH] = true;
@@ -55,17 +55,17 @@ void BucketTool::loadSettings()
     properties.tolerance = settings.value("tolerance", 32.0).toDouble();
 }
 
-void BucketTool::resetToDefault()
+void BitmapBucketTool::resetToDefault()
 {
     setWidth(4.0);
     setTolerance(32.0);
 }
 
-QCursor BucketTool::cursor()
+QCursor BitmapBucketTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        QPixmap pixmap(":icons/bucketTool.png");
+        QPixmap pixmap(":icons/BitmapBucketTool.png");
         QPainter painter(&pixmap);
         painter.end();
 
@@ -82,7 +82,7 @@ QCursor BucketTool::cursor()
  * @param width
  * set fill thickness
  */
-void BucketTool::setWidth(const qreal width)
+void BitmapBucketTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
@@ -93,7 +93,7 @@ void BucketTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void BucketTool::setTolerance(const int tolerance)
+void BitmapBucketTool::setTolerance(const int tolerance)
 {
     // Set current property
     properties.tolerance = tolerance;
@@ -104,7 +104,7 @@ void BucketTool::setTolerance(const int tolerance)
     settings.sync();
 }
 
-void BucketTool::pointerPressEvent(PointerEvent* event)
+void BitmapBucketTool::pointerPressEvent(PointerEvent* event)
 {
     startStroke();
     if (event->button() == Qt::LeftButton)
@@ -114,7 +114,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
     startStroke();
 }
 
-void BucketTool::pointerMoveEvent(PointerEvent* event)
+void BitmapBucketTool::pointerMoveEvent(PointerEvent* event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
@@ -126,7 +126,7 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void BucketTool::pointerReleaseEvent(PointerEvent* event)
+void BitmapBucketTool::pointerReleaseEvent(PointerEvent* event)
 {
     Layer* layer = editor()->layers()->currentLayer();
     if (layer == nullptr) { return; }
@@ -146,7 +146,7 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
     endStroke();
 }
 
-void BucketTool::paintBitmap(Layer* layer)
+void BitmapBucketTool::paintBitmap(Layer* layer)
 {
     Layer* targetLayer = layer; // by default
     int layerNumber = editor()->layers()->currentLayerIndex(); // by default
@@ -165,7 +165,7 @@ void BucketTool::paintBitmap(Layer* layer)
     mScribbleArea->setAllDirty();
 }
 
-void BucketTool::paintVector(Layer* layer)
+void BitmapBucketTool::paintVector(Layer* layer)
 {
     mScribbleArea->clearBitmapBuffer();
 
@@ -186,12 +186,12 @@ void BucketTool::paintVector(Layer* layer)
     mScribbleArea->setAllDirty();
 }
 
-void BucketTool::applyChanges()
+void BitmapBucketTool::applyChanges()
 {
     mScribbleArea->applyTransformedSelection();
 }
 
-void BucketTool::drawStroke()
+void BitmapBucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
 
