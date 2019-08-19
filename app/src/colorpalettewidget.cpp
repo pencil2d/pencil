@@ -38,7 +38,9 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "colorbox.h"
 #include "scribblearea.h"
+#include "layerbitmap.h"
 #include "colormanager.h"
+#include "layermanager.h"
 
 
 ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) :
@@ -104,6 +106,12 @@ void ColorPaletteWidget::showContextMenu(const QPoint &pos)
     menu->addAction(tr("Add"), this, &ColorPaletteWidget::addItem, 0);
     menu->addAction(tr("Replace"),  this, &ColorPaletteWidget::replaceItem, 0);
     menu->addAction(tr("Remove"), this, &ColorPaletteWidget::removeItem, 0);
+    if (editor()->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        menu->addSeparator();
+        menu->addAction(tr("Replace linecolor, active drawing"), this, &ColorPaletteWidget::replaceLineColorSingle, 0);
+        menu->addAction(tr("Replace linecolor, ALL drawings"), this, &ColorPaletteWidget::replaceLineColor, 0);
+    }
 
     menu->exec(globalPos);
 }
@@ -141,6 +149,45 @@ void ColorPaletteWidget::removeItem()
 {
     QSignalBlocker b(ui->colorListWidget);
     clickRemoveColorButton();
+}
+
+void ColorPaletteWidget::replaceLineColorSingle()
+{
+    mReplaceLineColorAll = false;
+    replaceLineColor();
+}
+
+void ColorPaletteWidget::replaceLineColor()
+{
+    if (mMultipleSelected) { return; }
+
+    const ColourRef colourRef = editor()->object()->getColour(ui->colorListWidget->currentRow());
+    QRgb newlinecolor = colourRef.colour.rgb();
+
+    LayerBitmap *layerbitmap = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
+
+    if (!mReplaceLineColorAll)
+    {
+        if (layerbitmap->keyExists(editor()->currentFrame()))
+        {
+            layerbitmap->getBitmapImageAtFrame(editor()->currentFrame())->fillNonAlphaPixels(newlinecolor);
+            editor()->updateFrame(editor()->currentFrame());
+        }
+    }
+    else
+    {
+        int org = editor()->currentFrame();
+        for (int i = 1; i <= layerbitmap->getMaxKeyFramePosition(); i++)
+        {
+            if (layerbitmap->keyExists(i))
+            {
+                editor()->scrubTo(i);
+                layerbitmap->getBitmapImageAtFrame(i)->fillNonAlphaPixels(newlinecolor);
+            }
+        }
+        editor()->scrubTo(org);
+    }
+    mReplaceLineColorAll = true;
 }
 
 void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
