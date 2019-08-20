@@ -38,9 +38,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-173</y>
-        <width>300</width>
-        <height>618</height>
+        <y>-184</y>
+        <width>299</width>
+        <height>627</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="lay">
@@ -256,7 +256,7 @@
           <item row="2" column="1">
            <widget class="QSpinBox" name="gridSizeInputH">
             <property name="minimum">
-             <number>5</number>
+             <number>1</number>
             </property>
             <property name="maximum">
              <number>9999</number>
@@ -281,7 +281,7 @@
              </size>
             </property>
             <property name="minimum">
-             <number>5</number>
+             <number>1</number>
             </property>
             <property name="maximum">
              <number>9999</number>
