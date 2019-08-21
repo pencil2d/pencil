@@ -824,12 +824,12 @@ void Editor::removeKeyAt(int layerIndex, int frameIndex)
 
     layer->removeKeyFrame(frameIndex);
 
-    while (!layer->keyExists(frameIndex) && frameIndex > 1)
+    if (!layer->keyExists(frameIndex) && frameIndex > 1)
     {
         frameIndex -= 1;
     }
 
-    scrubPreviousKeyFrame();
+    scrubTo(frameIndex);
 
     if (layerIndex != currentLayerIndex())
     {
