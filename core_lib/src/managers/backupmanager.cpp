@@ -147,8 +147,11 @@ void BackupManager::bitmap(const QString& description)
                              mTempSelectionRect,
                              mTransformedSelectionRect,
                              mSelectionRotationAngle,
+                             mSelectionScaleX,
+                             mSelectionScaleY,
                              mIsSelected,
                              mSelectionTransform,
+                             description,
                              editor(), element);
     }
     mUndoStack->push(element);
@@ -189,7 +192,7 @@ void BackupManager::deselect()
     emit updateBackup();
 }
 
-void BackupManager::transform()
+void BackupManager::transform(const QString& description)
 {
     if (!mIsSelected) { return; }
     TransformElement* element = new TransformElement(mKeyframe,
@@ -198,8 +201,11 @@ void BackupManager::transform()
                                                      mTempSelectionRect,
                                                      mTransformedSelectionRect,
                                                      mSelectionRotationAngle,
+                                                     mSelectionScaleX,
+                                                     mSelectionScaleY,
                                                      mIsSelected,
                                                      mSelectionTransform,
+                                                     description,
                                                      editor());
     mUndoStack->push(element);
     emit updateBackup();
@@ -475,6 +481,8 @@ void BackupManager::saveStates()
     mSelectionRotationAngle = selectMan->myRotation();
     mMoveOffset = selectMan->getTransformOffset();
     mSelectionTransform = selectMan->selectionTransform();
+    mSelectionScaleX = selectMan->myScaleX();
+    mSelectionScaleY = selectMan->myScaleY();
     mMoveMode = selectMan->getMoveMode();
 
     mLayerName = mLayer->name();

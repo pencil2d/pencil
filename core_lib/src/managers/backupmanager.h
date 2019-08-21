@@ -47,7 +47,7 @@ public:
                       const std::map<int, KeyFrame*, std::less<int>>& importedKeys);
     void selection();
     void deselect();
-    void transform();
+    void transform(const QString& description);
     void cameraProperties(const QRect& backupViewRect);
     void frameDragged(const int& backupFrameOffset);
     void flipView(const bool& backupIsFlipped, const DIRECTION& backupFlipDirection);
@@ -94,6 +94,8 @@ private:
     QRectF mTransformedSelectionRect = QRectF();
 
     qreal mSelectionRotationAngle = 0.0;
+    qreal mSelectionScaleX = 0.0;
+    qreal mSelectionScaleY = 0.0;
 
     QPointF mTranslation = QPointF(0,0);
     QPointF mMoveOffset = QPointF(0,0);

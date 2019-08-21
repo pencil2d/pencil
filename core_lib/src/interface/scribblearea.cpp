@@ -280,32 +280,32 @@ void ScribbleArea::keyEventForSelection(QKeyEvent* event)
     case Qt::Key_Right:
         selectMan->translate(QPointF(1, 0));
         paintTransformedSelection();
-        backupMan->transform();
+        backupMan->transform(tr("Transform right"));
         break;
     case Qt::Key_Left:
         selectMan->translate(QPointF(-1, 0));
         paintTransformedSelection();
-        backupMan->transform();
+        backupMan->transform(tr("Transform left"));
         break;
     case Qt::Key_Up:
         selectMan->translate(QPointF(0, -1));
         paintTransformedSelection();
-        backupMan->transform();
+        backupMan->transform(tr("Transform up"));
         break;
     case Qt::Key_Down:
         selectMan->translate(QPointF(0, 1));
         paintTransformedSelection();
-        backupMan->transform();
+        backupMan->transform(tr("Transform down"));
         break;
     case Qt::Key_Return:
         applyTransformedSelection();
         mEditor->deselectAll();
-        backupMan->transform();
+        backupMan->transform("Deselect all");
         break;
     case Qt::Key_Escape:
         mEditor->deselectAll();
         cancelTransformedSelection();
-        backupMan->transform();
+        backupMan->transform("Cancel transformation");
         break;
     case Qt::Key_Backspace:
         deleteSelection();

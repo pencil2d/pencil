@@ -127,7 +127,7 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     Layer* layer = mEditor->layers()->currentLayer();
 
     if (selectMan->selectionMoved()) {
-        mEditor->backups()->transform();
+        mEditor->backups()->transform(tr("Transformed image"));
     } else {
         if (selectMan->somethingSelected()) {
             mEditor->backups()->selection();
@@ -352,7 +352,7 @@ bool MoveTool::leavingThisTool()
 
     if (mEditor->select()->transformHasBeenModified()) {
         mEditor->backups()->saveStates();
-        mEditor->backups()->transform();
+        mEditor->backups()->transform(tr("Transform applied"));
     }
     return true;
 }

@@ -415,14 +415,18 @@ Status ActionCommands::exportImage()
 
 void ActionCommands::flipSelectionX()
 {
+    mEditor->backups()->saveStates();
     bool flipVertical = false;
     mEditor->flipSelection(flipVertical);
+    mEditor->backups()->transform(tr("Flip Selection X"));
 }
 
 void ActionCommands::flipSelectionY()
 {
+    mEditor->backups()->saveStates();
     bool flipVertical = true;
     mEditor->flipSelection(flipVertical);
+    mEditor->backups()->transform(tr("Flip Selection Y"));
 }
 
 void ActionCommands::selectAll()

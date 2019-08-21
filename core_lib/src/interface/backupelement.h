@@ -231,13 +231,16 @@ public:
 
     enum { Id = 2 };
     TransformElement(const KeyFrame* backupKeyFrame,
-                     const int& backupLayerId,
+                     const int backupLayerId,
                      const QRectF& backupSelectionRect,
                      const QRectF& backupTempSelectionRect,
                      const QRectF& backupTransformedSelectionRect,
-                     const qreal& backupRotationAngle,
-                     const bool& backupIsSelected,
+                     const qreal backupRotationAngle,
+                     const qreal backupScaleX,
+                     const qreal backupScaleY,
+                     const bool backupIsSelected,
                      const QTransform& backupTransform,
+                     const QString& description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
@@ -248,12 +251,13 @@ public:
                const VectorImage* vectorImage,
                const QRectF& selectionRect,
                const QRectF& transformedRect,
-               const qreal& rotationAngle,
-               const bool& isSelected,
+               const qreal rotationAngle,
+               const qreal scaleX,
+               const qreal scaleY,
+               const bool isSelected,
                const QTransform& transform,
-               const int& layerId);
+               const int layerId);
 
-    bool mergeWith(const QUndoCommand *other) override;
     int id() const override { return Id; }
 
     int oldFrameIndex = 0;
@@ -270,6 +274,12 @@ public:
 
     qreal oldRotationAngle;
     qreal newRotationAngle;
+
+    qreal oldScaleX;
+    qreal oldScaleY;
+
+    qreal newScaleX;
+    qreal newScaleY;
 
     bool oldIsSelected = false;
     bool newIsSelected = false;

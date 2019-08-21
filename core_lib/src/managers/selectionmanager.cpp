@@ -266,7 +266,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     }
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
+int SelectionManager::constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
@@ -283,6 +283,8 @@ void SelectionManager::setSelection(QRectF rect)
     mTransformedSelection = rect;
     mTempTransformedSelection = rect;
     mSomethingSelected = (mSelection.isNull() ? false : true);
+    mScaleX = 1.0;
+    mScaleY = 1.0;
 
     emit selectionChanged();
 }
@@ -295,13 +297,8 @@ void SelectionManager::calculateSelectionTransformation()
 
     mSelectionTransform.translate(centerPoints[0].x(), centerPoints[0].y());
     mSelectionTransform.rotate(mRotatedAngle);
+    mSelectionTransform.scale(mScaleX,mScaleY);
 
-    if (mSelection.width() > 0 && mSelection.height() > 0) // can't divide by 0
-    {
-        qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
-        qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
-        mSelectionTransform.scale(scaleX, scaleY);
-    }
     mSelectionTransform.translate(-centerPoints[1].x(), -centerPoints[1].y());
 }
 
@@ -371,8 +368,8 @@ void SelectionManager::flipSelection(bool flipVertical)
     // reset transformation for vector selections
     mSelectionTransform.reset();
     mSelectionTransform *= _translate * scale * translate;
-
-    emit needPaintAndApply();
+    mScaleX = scale.m11();
+    mScaleY = scale.m22();
 }
 
 void SelectionManager::translate(QPointF point)

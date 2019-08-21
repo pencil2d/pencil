@@ -535,13 +535,16 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
 }
 
 TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
-                                   const int& backupLayerId,
+                                   const int backupLayerId,
                                    const QRectF& backupSelectionRect,
                                    const QRectF& backupTempSelectionRect,
                                    const QRectF& backupTransformedSelectionRect,
-                                   const qreal& backupRotationAngle,
-                                   const bool& backupIsSelected,
+                                   const qreal backupRotationAngle,
+                                   const qreal backupScaleX,
+                                   const qreal backupScaleY,
+                                   const bool backupIsSelected,
                                    const QTransform& backupTransform,
+                                   const QString& description,
                                    Editor *editor,
                                    QUndoCommand *parent) : BackupElement(editor, parent)
 {
@@ -556,6 +559,8 @@ TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
     oldIsSelected = backupIsSelected;
 
     oldTransform = backupTransform;
+    oldScaleX = backupScaleX;
+    oldScaleY = backupScaleY;
 
     Layer* newLayer = editor->layers()->currentLayer();
     newLayerId = newLayer->id();
@@ -568,6 +573,8 @@ TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
     newRotationAngle = selectMan->myRotation();
     newIsSelected = selectMan->somethingSelected();
     newTransform = selectMan->selectionTransform();
+    newScaleX = selectMan->myScaleX();
+    newScaleY = selectMan->myScaleY();
 
     Layer* layer = editor->layers()->findLayerById(backupLayerId);
     int emptyFrameSettingVal = editor->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
@@ -594,7 +601,7 @@ TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
             break;
     }
 
-    setText("Moved Image");
+    setText(description);
 }
 
 void TransformElement::undo()
@@ -605,6 +612,8 @@ void TransformElement::undo()
           oldSelectionRect,
           oldTransformedSelectionRect,
           oldRotationAngle,
+          oldScaleX,
+          oldScaleY,
           oldIsSelected,
           oldTransform,
           oldLayerId);
@@ -622,6 +631,8 @@ void TransformElement::redo()
           newSelectionRect,
           newTransformedSelectionRect,
           newRotationAngle,
+          newScaleX,
+          newScaleY,
           newIsSelected,
           newTransform,
           newLayerId);
@@ -632,10 +643,12 @@ void TransformElement::apply(const QRectF& tempRect,
                              const VectorImage* vectorImage,
                              const QRectF& selectionRect,
                              const QRectF& transformedRect,
-                             const qreal& rotationAngle,
-                             const bool& isSelected,
+                             const qreal rotationAngle,
+                             const qreal scaleX,
+                             const qreal scaleY,
+                             const bool isSelected,
                              const QTransform& transform,
-                             const int& layerId)
+                             const int layerId)
 {
 
     Layer* layer = editor()->layers()->findLayerById(layerId);
@@ -653,6 +666,7 @@ void TransformElement::apply(const QRectF& tempRect,
     selectMan->setTransformedSelectionRect(transformedRect);
     selectMan->setRotation(rotationAngle);
     selectMan->setSomethingSelected(isSelected);
+    selectMan->setScale(scaleX, scaleY);
 
     switch(layer->type())
     {
@@ -678,38 +692,6 @@ void TransformElement::apply(const QRectF& tempRect,
                                                   cKeyFrame,
                                                   transform,
                                                   selectionRect);
-}
-
-bool TransformElement::mergeWith(const QUndoCommand *other)
-{
-    if (other->id() != id())
-    {
-        return false;
-    }
-    const TransformElement* elem = static_cast<const TransformElement*>(other);
-
-    newBitmap = elem->newBitmap;
-    newVector = elem->newVector;
-    newSelectionRect = elem->newSelectionRect;
-    newTransformedSelectionRect = elem->newTransformedSelectionRect;
-    newSelectionRectTemp = elem->newSelectionRectTemp;
-    newTransform = elem->newTransform;
-    newFrameIndex = elem->newFrameIndex;
-    newLayerId = elem->newLayerId;
-    newRotationAngle = elem->newRotationAngle;
-    newIsSelected = elem->newIsSelected;
-
-    apply(newSelectionRectTemp,
-          newBitmap,
-          newVector,
-          newSelectionRect,
-          newTransformedSelectionRect,
-          newRotationAngle,
-          newIsSelected,
-          newTransform,
-          newLayerId);
-
-    return true;
 }
 
 ImportBitmapElement::ImportBitmapElement(const std::map<int, KeyFrame*, std::greater<int>>& backupCanvasKeyFrames,

@@ -94,12 +94,15 @@ public:
     const QRectF& mySelectionRect() { return mSelection; }
     const QRectF& myTempTransformedSelectionRect() { return mTempTransformedSelection; }
     const QRectF& myTransformedSelectionRect() { return mTransformedSelection; }
-    const qreal& myRotation() { return mRotatedAngle; }
+    qreal myRotation() const { return mRotatedAngle; }
+    qreal myScaleX() const { return mScaleX; }
+    qreal myScaleY() const { return mScaleY; }
 
     void setSelectionRect(const QRectF& rect) { mSelection = rect; }
     void setTempTransformedSelectionRect(const QRectF& rect) { mTempTransformedSelection = rect; }
     void setTransformedSelectionRect(const QRectF& rect) { mTransformedSelection = rect; }
-    void setRotation(const qreal& rotation) { mRotatedAngle = rotation; }
+    void setRotation(const qreal rotation) { mRotatedAngle = rotation; }
+    void setScale(const qreal scaleX, const qreal scaleY) { mScaleX = scaleX; mScaleY = scaleY; }
 
     bool selectionMoved() const;
 
@@ -111,12 +114,14 @@ signals:
 
 private:
 
-    int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
+    int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
 
     QRectF mSelection;
     QRectF mTempTransformedSelection;
     QRectF mTransformedSelection;
     qreal mRotatedAngle;
+    qreal mScaleX;
+    qreal mScaleY;
 
     bool mSomethingSelected;
     QPolygonF mLastSelectionPolygonF;
