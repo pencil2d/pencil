@@ -88,7 +88,6 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     Q_UNUSED(rect);
 
     paintBackground();
-    paintOnionSkin(painter);
 
     //painter.setClipRect(aligned); // this aligned rect is valid only for bitmap images.
     paintCurrentFrame(painter);
@@ -127,7 +126,13 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
         qreal opacity = maxOpacity;
 
-        int onionFrameNumber = layer->getPreviousFrameNumber(mFrameNumber, mOptions.bIsOnionAbsolute);
+        int onionFrameNumber = mFrameNumber;
+        if (mOptions.bIsOnionAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber+1, true);
+        }
+        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
+
         int onionPosition = 0;
 
         while (onionPosition < mOptions.nPrevOnionSkinCount && onionFrameNumber > 0)
@@ -361,6 +366,11 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
 
         if (layer->visible() == false)
             continue;
+
+        if (i == mCurrentLayerIndex) {
+            paintOnionSkin(painter);
+            painter.setOpacity(1.0);
+        }
 
         if (i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0)
         {
