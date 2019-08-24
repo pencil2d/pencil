@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "editor.h"
 #include "colormanager.h"
+#include "util/util.h"
 
 
 ColorInspector::ColorInspector(QWidget *parent) :
@@ -87,9 +88,13 @@ void ColorInspector::initUI()
 
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    clearFocusOnFinished(ui->RedspinBox);
     connect(ui->GreenspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    clearFocusOnFinished(ui->GreenspinBox);
     connect(ui->BluespinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    clearFocusOnFinished(ui->BluespinBox);
     connect(ui->AlphaspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    clearFocusOnFinished(ui->AlphaspinBox);
     connect(ui->rgbButton, &QPushButton::clicked, this, &ColorInspector::onModeChanged);
     connect(ui->hsvButton, &QPushButton::clicked, this, &ColorInspector::onModeChanged);
 
