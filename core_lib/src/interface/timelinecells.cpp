@@ -360,7 +360,12 @@ void TimeLineCells::paintOnionSkin(QPainter& painter)
 
     if (mEditor->preference()->isOn(SETTING::PREV_ONION) && prevOnionSkinCount > 0)
     {
-        int onionFrameNumber = layer->getPreviousFrameNumber(frameNumber, isAbsolute);
+        int onionFrameNumber = frameNumber;
+        if (isAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber+1, true);
+        }
+        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isAbsolute);
         int onionPosition = 0;
 
         while (onionPosition < prevOnionSkinCount && onionFrameNumber > 0)
