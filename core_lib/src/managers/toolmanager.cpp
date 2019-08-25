@@ -121,7 +121,7 @@ Status ToolManager::save(Object*)
 
 ToolType ToolManager::safeToolType(const ToolType& type)
 {
-    if (type == INVALID_TOOL || type == CLEAR) {
+    if (type == INVALID_TOOL) {
         return mFallbackToolType;
     }
     return type;

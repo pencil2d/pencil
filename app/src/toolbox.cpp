@@ -128,7 +128,6 @@ void ToolBoxWidget::initUI()
     ui->smudgeButton->setWhatsThis( tr( "Smudge Tool (%1)" )
         .arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
 
-    mToolButtons.insert(CLEAR, ui->clearButton);
     mToolButtons.insert(PENCIL, ui->pencilButton);
     mToolButtons.insert(ERASER, ui->eraserButton);
     mToolButtons.insert(SELECT, ui->selectButton);
@@ -151,6 +150,8 @@ void ToolBoxWidget::initUI()
 
     delete ui->toolGroup->layout();
     FlowLayout* flowlayout = new FlowLayout;{}
+
+    flowlayout->addWidget(ui->clearButton);
 
     QMapIterator<ToolType, QToolButton*> i(mToolButtons);
     while (i.hasNext()) {

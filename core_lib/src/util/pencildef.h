@@ -39,8 +39,7 @@ GNU General Public License for more details.
 enum ToolType : int
 {
     INVALID_TOOL = -1,
-    CLEAR = 0,
-    ERASER = 1,
+    ERASER = 0,
     SELECT,
     MOVE,
     HAND,
