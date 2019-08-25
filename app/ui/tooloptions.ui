@@ -50,6 +50,9 @@
      </item>
      <item>
       <widget class="QToolButton" name="usePressureButton">
+       <property name="toolTip">
+        <string>Pressure sensitivity</string>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
