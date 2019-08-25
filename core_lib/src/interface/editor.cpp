@@ -356,7 +356,7 @@ void Editor::updateObject()
     setCurrentLayerIndex(mObject->data()->getCurrentLayer());
 
     mAutosaveCounter = 0;
-    mAutosaveNerverAskAgain = false;
+    mAutosaveNeverAskAgain = false;
 
     if (mScribbleArea)
     {

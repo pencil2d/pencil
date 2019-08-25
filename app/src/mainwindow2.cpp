@@ -1354,7 +1354,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::deleteCurrentLayer, mCommands, &ActionCommands::deleteCurrentLayer);
     connect(pTimeline, &TimeLine::modifiedCamera, mCommands, &ActionCommands::editCameraProperties);
 
-    connect(pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType);
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);

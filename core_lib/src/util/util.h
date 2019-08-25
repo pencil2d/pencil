@@ -21,8 +21,11 @@ GNU General Public License for more details.
 #include <functional>
 #include <QTransform>
 
+class QAbstractSpinBox;
 
 QTransform RectMapTransform( QRectF source, QRectF target );
+
+void clearFocusOnFinished(QAbstractSpinBox *spinBox);
 
 class ScopeGuard
 {

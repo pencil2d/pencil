@@ -164,10 +164,14 @@ QString FileDialog::openFileFilters( FileType fileType )
         case FileType::ANIMATION: return PFF_OPEN_ALL_FILE_FILTER;
         case FileType::IMAGE: return PENCIL_IMAGE_FILTER;
         case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_SEQ_FILTER;
-        case FileType::GIF: return tr("Animated GIF (*.gif)");
+        case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
         case FileType::MOVIE: { Q_ASSERT(false); return PENCIL_MOVIE_EXT; } // currently not supported
-        case FileType::SOUND: return tr( "Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)" );
-        case FileType::PALETTE: return tr( "Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)" );
+        case FileType::SOUND: return QString("%1 (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)").arg("Sounds");
+        case FileType::PALETTE:
+            return QString("%1 (*.xml *.gpl);;%2 (*.xml);;%3 (*.gpl)")
+                .arg(tr("Palette"))
+                .arg(tr("Pencil2D Palette"))
+                .arg(tr("GIMP Palette"));
         default: Q_ASSERT( false );
     }
     return "";
@@ -180,10 +184,14 @@ QString FileDialog::saveFileFilters( FileType fileType )
         case FileType::ANIMATION: return PFF_SAVE_ALL_FILE_FILTER;
         case FileType::IMAGE: return "";
         case FileType::IMAGE_SEQUENCE: return "";
-        case FileType::GIF: return tr("Animated GIF (*.gif)");
-        case FileType::MOVIE: return tr( "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)" );
+        case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
+        case FileType::MOVIE: return "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)";
         case FileType::SOUND: return "";
-        case FileType::PALETTE: return tr( "Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)" );
+        case FileType::PALETTE:
+            return QString("%1 (*.xml *.gpl);;%2 (*.xml);;%3 (*.gpl)")
+                .arg(tr("Palette"))
+                .arg(tr("Pencil2D Palette"))
+                .arg(tr("GIMP Palette"));
         default: Q_ASSERT( false );
     }
     return "";

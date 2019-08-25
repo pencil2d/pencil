@@ -401,7 +401,7 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="307"/>
         <source>Large Swatch</source>
-        <translation>打色块</translation>
+        <translation>大色块</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="310"/>
@@ -1827,7 +1827,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="886"/>
         <source>Move Frame Backward</source>
-        <translation>先后移动帧</translation>
+        <translation>向后移动帧</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="144"/>

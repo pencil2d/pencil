@@ -182,6 +182,7 @@ public: //slots
 
     void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
     bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
+    void resetAutoSaveCounter();
 
 signals:
     void needPaint();
@@ -223,7 +224,7 @@ private:
     bool mIsAutosave = true;
     int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
-    bool mAutosaveNerverAskAgain = false;
+    bool mAutosaveNeverAskAgain = false;
 
     void makeConnections();
 
