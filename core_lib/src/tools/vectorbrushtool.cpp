@@ -19,30 +19,23 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QSettings>
-#include <QPixmap>
-#include <QPainter>
 
-#include "beziercurve.h"
-#include "vectorimage.h"
-#include "layervector.h"
-#include "editor.h"
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
 #include "scribblearea.h"
-#include "blitrect.h"
 #include "pointerevent.h"
+
+#include "beziercurve.h"
+#include "vectorimage.h"
+#include "layervector.h"
+#include "editor.h"
 
 
 VectorBrushTool::VectorBrushTool(QObject* parent) : StrokeTool(parent)
 {
-}
-
-ToolType VectorBrushTool::type()
-{
-    return BRUSH;
 }
 
 void VectorBrushTool::loadSettings()
@@ -146,7 +139,7 @@ void VectorBrushTool::pointerReleaseEvent(PointerEvent*)
     mEditor->backup(typeName());
 
     drawStroke();
-    paintVectorStroke();
+    paintStroke();
     endStroke();
 }
 
@@ -178,7 +171,7 @@ void VectorBrushTool::drawStroke()
 
 // This function uses the points from DrawStroke
 // and turns them into vector lines.
-void VectorBrushTool::paintVectorStroke()
+void VectorBrushTool::paintStroke()
 {
     if (mStrokePoints.empty())
         return;

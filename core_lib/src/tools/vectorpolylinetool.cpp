@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 
-#include "bitmappolylinetool.h"
+#include "vectorpolylinetool.h"
 
 
 #include "editor.h"
@@ -26,43 +26,35 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "viewmanager.h"
 #include "pointerevent.h"
+#include "layervector.h"
 #include "layerbitmap.h"
-#include "beziercurve.h"
+#include "vectorimage.h"
 
-BitmapPolylineTool::BitmapPolylineTool(QObject* parent) : BaseTool(parent)
+
+VectorPolylineTool::VectorPolylineTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-QCursor BitmapPolylineTool::cursor()
-{
-    return Qt::CrossCursor;
-}
-
-ToolType BitmapPolylineTool::type()
-{
-    return POLYLINE;
-}
-
-void BitmapPolylineTool::loadSettings()
+void VectorPolylineTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[BEZIER] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
     properties.width = settings.value("polyLineWidth", 8.0).toDouble();
     properties.pressure = false;
-    properties.useAA = settings.value("brushAA").toBool();
+    properties.invisibility = OFF;
+    properties.stabilizerLevel = -1;
 }
 
-void BitmapPolylineTool::resetToDefault()
+void VectorPolylineTool::resetToDefault()
 {
     setWidth(8.0);
     setBezier(false);
 }
 
-void BitmapPolylineTool::setWidth(const qreal width)
+void VectorPolylineTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
@@ -73,48 +65,46 @@ void BitmapPolylineTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void BitmapPolylineTool::setFeather(const qreal feather)
+QCursor VectorPolylineTool::cursor()
 {
-    Q_UNUSED(feather);
-    properties.feather = -1;
+    return Qt::CrossCursor;
 }
 
-void BitmapPolylineTool::setAA(const int AA)
-{
-    // Set current property
-    properties.useAA = AA;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushAA", AA);
-    settings.sync();
-}
-
-void BitmapPolylineTool::clearToolData()
+void VectorPolylineTool::clearToolData()
 {
     mPoints.clear();
 }
 
-void BitmapPolylineTool::pointerPressEvent(PointerEvent* event)
+void VectorPolylineTool::pointerPressEvent(PointerEvent* event)
 {
+    Layer* layer = mEditor->layers()->currentLayer();
+    Q_ASSERT(layer->type() == Layer::VECTOR);
+
     if (event->button() == Qt::LeftButton)
     {
         mScribbleArea->handleDrawingOnEmptyFrame();
+
+
+        static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+        if (mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
+        {
+            mScribbleArea->toggleThinLines();
+        }
 
         mPoints << getCurrentPoint();
         mScribbleArea->setAllDirty();
     }
 }
 
-void BitmapPolylineTool::pointerMoveEvent(PointerEvent*)
+void VectorPolylineTool::pointerMoveEvent(PointerEvent*)
 {
     drawPolyline(mPoints, getCurrentPoint());
 }
 
-void BitmapPolylineTool::pointerReleaseEvent(PointerEvent *)
+void VectorPolylineTool::pointerReleaseEvent(PointerEvent *)
 {}
 
-void BitmapPolylineTool::pointerDoubleClickEvent(PointerEvent*)
+void VectorPolylineTool::pointerDoubleClickEvent(PointerEvent*)
 {
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
@@ -125,7 +115,8 @@ void BitmapPolylineTool::pointerDoubleClickEvent(PointerEvent*)
     clearToolData();
 }
 
-bool BitmapPolylineTool::keyPressEvent(QKeyEvent* event)
+
+bool VectorPolylineTool::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {
@@ -154,7 +145,7 @@ bool BitmapPolylineTool::keyPressEvent(QKeyEvent* event)
     return false;
 }
 
-void BitmapPolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
+void VectorPolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
     if (points.size() > 0)
     {
@@ -164,6 +155,7 @@ void BitmapPolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
                  Qt::RoundCap,
                  Qt::RoundJoin);
 
+        // Bitmap by default
         QPainterPath tempPath;
         if (properties.bezier_state)
         {
@@ -175,25 +167,49 @@ void BitmapPolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         }
         tempPath.lineTo(endPoint);
 
+        // Vector otherwise
+        tempPath = mEditor->view()->mapCanvasToScreen(tempPath);
+        if (mScribbleArea->makeInvisible() == true)
+        {
+            pen.setWidth(0);
+            pen.setStyle(Qt::DotLine);
+        }
+        else
+        {
+            pen.setWidth(properties.width * mEditor->view()->scaling());
+        }
+
         mScribbleArea->drawPolyline(tempPath, pen, properties.useAA);
     }
 }
 
 
-void BitmapPolylineTool::cancelPolyline()
+void VectorPolylineTool::cancelPolyline()
 {
     // Clear the in-progress polyline from the bitmap buffer.
     mScribbleArea->clearBitmapBuffer();
     mScribbleArea->updateCurrentFrame();
 }
 
-void BitmapPolylineTool::endPolyline(QList<QPointF> points)
+void VectorPolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
-    drawPolyline(points, points.last());
-    BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-    bitmapImage->paste(mScribbleArea->mBufferImg);
+    BezierCurve curve = BezierCurve(points);
+    if (mScribbleArea->makeInvisible() == true)
+    {
+        curve.setWidth(0);
+    }
+    else
+    {
+        curve.setWidth(properties.width);
+    }
+    curve.setColourNumber(mEditor->color()->frontColorNumber());
+    curve.setVariableWidth(false);
+    curve.setInvisibility(mScribbleArea->makeInvisible());
+
+    VectorImage* vecImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    vecImage->addCurve(curve, mEditor->view()->scaling());
 
     mScribbleArea->mBufferImg->clear();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());

@@ -41,10 +41,8 @@ public:
     void paintVectorStroke(Layer* layer);
 
     void setWidth(const qreal width) override;
-    void setInvisibility(const bool invisibility) override;
     void setPressure(const bool pressure) override;
     void setStabilizerLevel(const int level) override;
-    void setUseFillContour(const bool useFillContour) override;
 
 private:
     QColor mCurrentPressuredColor{ 0, 0, 0, 255 };

@@ -15,53 +15,48 @@ GNU General Public License for more details.
 
 */
 
-#ifndef MOVETOOL_H
-#define MOVETOOL_H
+#ifndef VECTORSELECTTOOL_H
+#define VECTORSELECTTOOL_H
 
 #include "basetool.h"
-#include "movemode.h"
-#include "preferencemanager.h"
 
 class Layer;
+class SelectionManager;
 
-class BitmapMoveTool : public BaseTool
+class VectorSelectTool : public BaseTool
 {
     Q_OBJECT
+
 public:
-    explicit BitmapMoveTool(QObject* parent);
-    ToolType type() override;
+    explicit VectorSelectTool(QObject* parent = 0);
+    ToolType type() override { return SELECT; }
     void loadSettings() override;
     QCursor cursor() override;
+
+private:
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
 
-    bool leavingThisTool() override;
-    bool switchingLayer() override;
+    bool keyPressEvent(QKeyEvent* event) override;
 
-private:
-    void cancelChanges();
-    void applyTransformation();
-    void applySelectionChanges();
-    void paintTransformedSelection();
-    void setAnchorToLastPoint();
-    void updateTransformation();
-    void updateSettings(const SETTING setting);
+    void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
+    void controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint);
 
-    int showTransformWarning();
-
-    void beginInteraction(Qt::KeyboardModifiers keyMod);
-    void transformSelection(Qt::KeyboardModifiers keyMod);
+    void beginSelection();
+    void keepSelection();
 
     QPointF offsetFromPressPos();
 
-    Layer* currentPaintableLayer();
+    inline bool isSelectionPointValid() { return mAnchorOriginPoint != getLastPoint(); }
+    bool maybeDeselect();
 
-    QPointF anchorOriginPoint;
+    // Store selection origin so we can calculate
+    // the selection rectangle in mousePressEvent.
+    QPointF mAnchorOriginPoint;
+    MoveMode mMoveMode;
     Layer* mCurrentLayer = nullptr;
-    qreal mRotatedAngle = 0.0;
-    int mRotationIncrement = 0;
 };
 
-#endif
+#endif // VECTORSELECTTOOL_H

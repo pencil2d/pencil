@@ -19,18 +19,12 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QSettings>
-#include <QPixmap>
-#include <QPainter>
 
-#include "beziercurve.h"
-#include "vectorimage.h"
-#include "layervector.h"
 #include "editor.h"
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "viewmanager.h"
-#include "selectionmanager.h"
 #include "scribblearea.h"
 #include "blitrect.h"
 #include "pointerevent.h"
@@ -61,8 +55,6 @@ void BitmapBrushTool::loadSettings()
     properties.feather = settings.value("brushFeather", 48.0).toDouble();
     properties.useFeather = settings.value("brushUseFeather", true).toBool();
     properties.pressure = settings.value("brushPressure", true).toBool();
-    properties.invisibility = settings.value("brushInvisibility", false).toBool();
-    properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt();
     properties.useAA = settings.value("brushAA", 1).toInt();
 
@@ -109,16 +101,6 @@ void BitmapBrushTool::setFeather(const qreal feather)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("brushFeather", feather);
-    settings.sync();
-}
-
-void BitmapBrushTool::setInvisibility(const bool invisibility)
-{
-    // force value
-    properties.invisibility = invisibility;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushInvisibility", invisibility);
     settings.sync();
 }
 
@@ -184,7 +166,6 @@ void BitmapBrushTool::pointerMoveEvent(PointerEvent* event)
 
 void BitmapBrushTool::pointerReleaseEvent(PointerEvent*)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
     mEditor->backup(typeName());
 
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
@@ -197,11 +178,7 @@ void BitmapBrushTool::pointerReleaseEvent(PointerEvent*)
         drawStroke();
     }
 
-    if (layer->type() == Layer::BITMAP)
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
-        paintVectorStroke();
-
+    paintStroke();
     endStroke();
 }
 
@@ -236,53 +213,50 @@ void BitmapBrushTool::drawStroke()
     StrokeTool::drawStroke();
     QList<QPointF> p = strokeManager()->interpolateStroke();
 
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    if (layer->type() == Layer::BITMAP)
+    auto viewMan = mEditor->view();
+    for (int i = 0; i < p.size(); i++)
     {
-        for (int i = 0; i < p.size(); i++)
+        p[i] = viewMan->mapScreenToCanvas(p[i]);
+    }
+
+    qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+    qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+    qreal brushWidth = properties.width * pressure;
+    mCurrentWidth = brushWidth;
+
+    qreal brushStep = (0.5 * brushWidth);
+    brushStep = qMax(1.0, brushStep);
+
+    BlitRect rect;
+
+    QPointF a = mLastBrushPoint;
+    QPointF b = getCurrentPoint();
+
+    qreal distance = 4 * QLineF(b, a).length();
+    int steps = qRound(distance / brushStep);
+
+    for (int i = 0; i < steps; i++)
+    {
+        QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
+
+        rect.extend(point.toPoint());
+        mScribbleArea->drawBrush(point,
+                                 brushWidth,
+                                 properties.feather,
+                                 mEditor->color()->frontColor(),
+                                 opacity,
+                                 properties.useFeather,
+                                 properties.useAA);
+        if (i == (steps - 1))
         {
-            p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
+            mLastBrushPoint = getCurrentPoint();
         }
+    }
 
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal brushWidth = properties.width * pressure;
-        mCurrentWidth = brushWidth;
+    int rad = qRound(brushWidth / 2 + 2);
 
-        qreal brushStep = (0.5 * brushWidth);
-        brushStep = qMax(1.0, brushStep);
-
-        BlitRect rect;
-
-        QPointF a = mLastBrushPoint;
-        QPointF b = getCurrentPoint();
-
-        qreal distance = 4 * QLineF(b, a).length();
-        int steps = qRound(distance / brushStep);
-
-        for (int i = 0; i < steps; i++)
-        {
-            QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
-
-            rect.extend(point.toPoint());
-            mScribbleArea->drawBrush(point,
-                                     brushWidth,
-                                     properties.feather,
-                                     mEditor->color()->frontColor(),
-                                     opacity,
-                                     properties.useFeather,
-                                     properties.useAA);
-            if (i == (steps - 1))
-            {
-                mLastBrushPoint = getCurrentPoint();
-            }
-        }
-
-        int rad = qRound(brushWidth / 2 + 2);
-
-        mScribbleArea->paintBitmapBufferRect(rect);
-        mScribbleArea->refreshBitmap(rect, rad);
+    mScribbleArea->paintBitmapBufferRect(rect);
+    mScribbleArea->refreshBitmap(rect, rad);
 
         // Line visualizer
         // for debugging
@@ -299,72 +273,11 @@ void BitmapBrushTool::drawStroke()
 //                   Qt::RoundJoin );
 //        mScribbleArea->drawPolyline(tempPath, pen, true);
 
-    }
-    else if (layer->type() == Layer::VECTOR)
-    {
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1;
-        qreal brushWidth = properties.width * pressure;
-
-        int rad = qRound((brushWidth / 2 + 2) * mEditor->view()->scaling());
-
-        QPen pen(mEditor->color()->frontColor(),
-                 brushWidth * mEditor->view()->scaling(),
-                 Qt::SolidLine,
-                 Qt::RoundCap,
-                 Qt::RoundJoin);
-
-        if (p.size() == 4)
-        {
-            QPainterPath path(p[0]);
-            path.cubicTo(p[1], p[2], p[3]);
-
-            mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
-        }
-    }
 }
 
-void BitmapBrushTool::paintBitmapStroke()
+void BitmapBrushTool::paintStroke()
 {
     mScribbleArea->paintBitmapBuffer();
     mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
-}
-
-// This function uses the points from DrawStroke
-// and turns them into vector lines.
-void BitmapBrushTool::paintVectorStroke()
-{
-    if (mStrokePoints.empty())
-        return;
-
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    if (layer->type() == Layer::VECTOR && mStrokePoints.size() > -1)
-    {
-        // Clear the temporary pixel path
-        mScribbleArea->clearBitmapBuffer();
-        qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-
-        BezierCurve curve(mStrokePoints, mStrokePressures, tol);
-        curve.setWidth(properties.width);
-        curve.setFeather(properties.feather);
-        curve.setFilled(false);
-        curve.setInvisibility(properties.invisibility);
-        curve.setVariableWidth(properties.pressure);
-        curve.setColourNumber(mEditor->color()->frontColorNumber());
-
-        VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
-        vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
-
-        if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected())
-        {
-            mEditor->deselectAll();
-        }
-
-        vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
-
-        mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-        mScribbleArea->setAllDirty();
-    }
 }

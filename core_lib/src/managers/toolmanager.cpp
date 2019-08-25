@@ -28,8 +28,22 @@ GNU General Public License for more details.
 #include "bitmappolylinetool.h"
 #include "bitmapselecttool.h"
 #include "bitmapsmudgetool.h"
+#include "vectorpentool.h"
+#include "vectorpenciltool.h"
+#include "vectorbuckettool.h"
+#include "vectorselecttool.h"
+#include "vectorerasertool.h"
+#include "vectorbrushtool.h"
+#include "vectorpolylinetool.h"
+#include "vectormovetool.h"
+#include "vectorsmudgetool.h"
+#include "vectoreyedroppertool.h"
+#include "notool.h"
 #include "editor.h"
 
+#include <QSettings>
+
+#include <QDebug>
 
 ToolManager::ToolManager(Editor* editor) : BaseManager(editor)
 {
@@ -39,26 +53,64 @@ bool ToolManager::init()
 {
     mIsSwitchedToEraser = false;
 
-    mToolSetHash.insert(PEN, new BitmapPenTool(this));
-    mToolSetHash.insert(PENCIL, new BitmapPencilTool(this));
-    mToolSetHash.insert(BRUSH, new BitmapBrushTool(this));
-    mToolSetHash.insert(ERASER, new BitmapEraserTool(this));
-    mToolSetHash.insert(BUCKET, new BitmapBucketTool(this));
-    mToolSetHash.insert(EYEDROPPER, new BitmapEyedropperTool(this));
-    mToolSetHash.insert(HAND, new HandTool(this));
-    mToolSetHash.insert(MOVE, new BitmapMoveTool(this));
-    mToolSetHash.insert(POLYLINE, new BitmapPolylineTool(this));
-    mToolSetHash.insert(SELECT, new BitmapSelectTool(this));
-    mToolSetHash.insert(SMUDGE, new BitmapSmudgeTool(this));
+    mVectorToolSetHash.insert(PEN, new VectorPenTool(this));
+    mVectorToolSetHash.insert(PENCIL, new VectorPencilTool(this));
+    mVectorToolSetHash.insert(BRUSH, new VectorBrushTool(this));
+    mVectorToolSetHash.insert(ERASER, new VectorEraserTool(this));
+    mVectorToolSetHash.insert(BUCKET, new VectorBucketTool(this));
+    mVectorToolSetHash.insert(EYEDROPPER, new VectorEyedropperTool(this));
+    mVectorToolSetHash.insert(MOVE, new VectorMoveTool(this));
+    mVectorToolSetHash.insert(POLYLINE, new VectorPolylineTool(this));
+    mVectorToolSetHash.insert(SELECT, new VectorSelectTool(this));
+    mVectorToolSetHash.insert(SMUDGE, new VectorSmudgeTool(this));
+    mVectorToolSetHash.insert(HAND, new HandTool(this));
 
-    foreach(BaseTool* pTool, mToolSetHash.values())
+    mBitmapToolSetHash.insert(SMUDGE, new BitmapSmudgeTool(this));
+    mBitmapToolSetHash.insert(SELECT, new BitmapSelectTool(this));
+    mBitmapToolSetHash.insert(POLYLINE, new BitmapPolylineTool(this));
+    mBitmapToolSetHash.insert(MOVE, new BitmapMoveTool(this));
+    mBitmapToolSetHash.insert(EYEDROPPER, new BitmapEyedropperTool(this));
+    mBitmapToolSetHash.insert(BUCKET, new BitmapBucketTool(this));
+    mBitmapToolSetHash.insert(ERASER, new BitmapEraserTool(this));
+    mBitmapToolSetHash.insert(BRUSH, new BitmapBrushTool(this));
+    mBitmapToolSetHash.insert(PENCIL, new BitmapPencilTool(this));
+    mBitmapToolSetHash.insert(PEN, new BitmapPenTool(this));
+    mBitmapToolSetHash.insert(HAND, new HandTool(this));
+
+    foreach(BaseTool* pTool, mVectorToolSetHash.values())
     {
         pTool->initialize(editor());
     }
 
-    setDefaultTool();
+    foreach(BaseTool* pTool, mBitmapToolSetHash.values())
+    {
+        pTool->initialize(editor());
+    }
+
+    setDefaultTool(mLayerType);
 
     return true;
+}
+
+void ToolManager::workingLayerChanged(Layer* layer)
+{
+    Layer::LAYER_TYPE layerType = layer->type();
+    if (layerType == Layer::CAMERA || layerType == Layer::SOUND) {
+        setCurrentTool(HAND, layerType);
+    } else {
+
+        QSettings settings (PENCIL2D, PENCIL2D);
+        ToolType toolType = INVALID_TOOL;
+        if (layerType == Layer::VECTOR) {
+            toolType = static_cast<ToolType>(settings.value(SETTING_TOOL_VECTOR_LASTUSED).toInt());
+        } else {
+            toolType = static_cast<ToolType>(settings.value(SETTING_TOOL_BITMAP_LASTUSED).toInt());
+        }
+
+        setCurrentTool(toolType, layerType);
+    }
+    mLayerType = layerType;
+
 }
 
 Status ToolManager::load(Object*)
@@ -71,30 +123,49 @@ Status ToolManager::save(Object*)
     return Status::OK;
 }
 
-BaseTool* ToolManager::getTool(ToolType eToolType)
+ToolType ToolManager::safeToolType(const ToolType& type)
 {
-    return mToolSetHash[eToolType];
+    if (type == INVALID_TOOL || type == CLEAR) {
+        return mFallbackToolType;
+    }
+    return type;
 }
 
-void ToolManager::setDefaultTool()
+BaseTool* ToolManager::getTool(const ToolType eToolType, const Layer::LAYER_TYPE layerType)
+{
+    BaseTool* tool = nullptr;
+    ToolType toolType = safeToolType(eToolType);
+    if (layerType == Layer::BITMAP) {
+        tool = mBitmapToolSetHash[toolType];
+    } else if (layerType == Layer::VECTOR) {
+        tool = mVectorToolSetHash[toolType];
+    } else {
+        // hack: one of the toolsets should be selected, doesn't matter which...
+        tool = mBitmapToolSetHash[toolType];
+    }
+    return tool;
+}
+
+void ToolManager::setDefaultTool(const Layer::LAYER_TYPE layerType)
 {
     // Set default tool
     // (called by the main window init)
     ToolType defaultToolType = PENCIL;
 
-    setCurrentTool(defaultToolType);
-    meTabletBackupTool = defaultToolType;
+    setCurrentTool(defaultToolType, layerType);
+    mFallbackToolType = defaultToolType;
 }
 
-void ToolManager::setCurrentTool(ToolType eToolType)
+void ToolManager::setCurrentTool(const ToolType eToolType, const Layer::LAYER_TYPE layerType)
 {
     if (mCurrentTool != nullptr)
     {
        leavingThisTool();
     }
 
-    mCurrentTool = getTool(eToolType);
+    mCurrentTool = getTool(eToolType, layerType);
     Q_EMIT toolChanged(eToolType);
+
 }
 
 bool ToolManager::leavingThisTool()
@@ -104,10 +175,20 @@ bool ToolManager::leavingThisTool()
 
 void ToolManager::cleanupAllToolsData()
 {
-    foreach(BaseTool* tool, mToolSetHash)
+    foreach(BaseTool* tool, mBitmapToolSetHash)
     {
         tool->clearToolData();
     }
+
+    foreach(BaseTool* tool, mVectorToolSetHash)
+    {
+        tool->clearToolData();
+    }
+}
+
+void ToolManager::updateCurrentTool()
+{
+    setCurrentTool(mCurrentTool->type(), mLayerType);
 }
 
 void ToolManager::resetAllTools()
@@ -116,7 +197,12 @@ void ToolManager::resetAllTools()
     // Beta-testers should be recommended to reset before sending tool related issues.
     // This can prevent from users to stop working on their project.
 
-    foreach(BaseTool* tool, mToolSetHash)
+    foreach(BaseTool* tool, mBitmapToolSetHash)
+    {
+        tool->resetToDefault();
+    }
+
+    foreach(BaseTool* tool, mVectorToolSetHash)
     {
         tool->resetToDefault();
     }
@@ -246,8 +332,8 @@ void ToolManager::tabletSwitchToEraser()
     {
         mIsSwitchedToEraser = true;
 
-        meTabletBackupTool = mCurrentTool->type();
-        setCurrentTool(ERASER);
+        mFallbackToolType = mCurrentTool->type();
+        setCurrentTool(ERASER, mLayerType);
     }
 }
 
@@ -256,10 +342,10 @@ void ToolManager::tabletRestorePrevTool()
     if (mIsSwitchedToEraser)
     {
         mIsSwitchedToEraser = false;
-        if (meTabletBackupTool == INVALID_TOOL)
+        if (mFallbackToolType == INVALID_TOOL)
         {
-            meTabletBackupTool = PENCIL;
+            mFallbackToolType = PENCIL;
         }
-        setCurrentTool(meTabletBackupTool);
+        setCurrentTool(mFallbackToolType, mLayerType);
     }
 }

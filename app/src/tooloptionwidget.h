@@ -53,18 +53,18 @@ public slots:
     void setVisibility(BaseTool*);
 
 private:
-    void setPenWidth(qreal);
-    void setPenFeather(qreal);
-    void setUseFeather(bool);
-    void setPenInvisibility(int);
-    void setPressure(int);
-    void setPreserveAlpha(int);
-    void setVectorMergeEnabled(int);
-    void setAA(int);
-    void setStabilizerLevel(int);
+    void setPenWidth(const qreal);
+    void setFeather(const qreal);
+    void setFeatherEnabled(const bool enabled);
+    void setStrokeInvisibilityEnabled(const bool enabled);
+    void setPressureEnabled(const bool enabled);
+    void setPreserveAlphaEnabled(const bool enabled);
+    void setVectorMergeEnabled(const bool enabled);
+    void setAAEnabled(const bool enabled);
+    void setStabilizerLevel(const int level);
     void setTolerance(int);
-    void setFillContour(int);
-    void setBezier(bool);
+    void setFillContourEnabled(const bool enabled);
+    void setBezierEnabled(const bool enabled);
 
     void disableAllOptions();
     void createUI();

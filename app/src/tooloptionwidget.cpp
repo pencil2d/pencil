@@ -70,16 +70,16 @@ void ToolOptionWidget::updateUI()
     const Properties& p = currentTool->properties;
 
     setPenWidth(p.width);
-    setPenFeather(p.feather);
-    setUseFeather(p.useFeather);
-    setPressure(p.pressure);
-    setPenInvisibility(p.invisibility);
-    setPreserveAlpha(p.preserveAlpha);
+    setFeather(p.feather);
+    setFeatherEnabled(p.useFeather);
+    setPressureEnabled(p.pressure);
+    setStrokeInvisibilityEnabled(p.invisibility);
+    setPreserveAlphaEnabled(p.preserveAlpha);
     setVectorMergeEnabled(p.vectorMergeEnabled);
-    setAA(p.useAA);
+    setAAEnabled(p.useAA);
     setStabilizerLevel(p.stabilizerLevel);
     setTolerance(static_cast<int>(p.tolerance));
-    setFillContour(p.useFillContour);
+    setFillContourEnabled(p.useFillContour);
 }
 
 void ToolOptionWidget::createUI()
@@ -90,7 +90,7 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     auto toolManager = editor->tools();
 
     connect(ui->useBezierBox, &QCheckBox::clicked, toolManager, &ToolManager::setBezier);
-    connect(ui->usePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure);
+    connect(ui->usePressureButton, &QCheckBox::clicked, toolManager, &ToolManager::setPressure);
     connect(ui->makeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility);
     connect(ui->preserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha);
 
@@ -124,17 +124,17 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     switch (ePropertyType)
     {
     case WIDTH: setPenWidth(p.width); break;
-    case FEATHER: setPenFeather(p.feather); break;
-    case USEFEATHER: setUseFeather(p.useFeather); break;
-    case PRESSURE: setPressure(p.pressure); break;
-    case INVISIBILITY: setPenInvisibility(p.invisibility); break;
-    case PRESERVEALPHA: setPreserveAlpha(p.preserveAlpha); break;
+    case FEATHER: setFeather(p.feather); break;
+    case USEFEATHER: setFeatherEnabled(p.useFeather); break;
+    case PRESSURE: setPressureEnabled(p.pressure); break;
+    case INVISIBILITY: setStrokeInvisibilityEnabled(p.invisibility); break;
+    case PRESERVEALPHA: setPreserveAlphaEnabled(p.preserveAlpha); break;
     case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
-    case ANTI_ALIASING: setAA(p.useAA); break;
+    case ANTI_ALIASING: setAAEnabled(p.useAA); break;
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case TOLERANCE: setTolerance(static_cast<int>(p.tolerance)); break;
-    case FILLCONTOUR: setFillContour(p.useFillContour); break;
-    case BEZIER: setBezier(p.bezier_state); break;
+    case FILLCONTOUR: setFillContourEnabled(p.useFillContour); break;
+    case BEZIER: setBezierEnabled(p.bezier_state); break;
     default:
         Q_ASSERT(false);
         break;
@@ -149,7 +149,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->useFeatherBox->setVisible(tool->isPropertyEnabled(FEATHER));
     ui->featherSpinBox->setVisible(tool->isPropertyEnabled(FEATHER));
     ui->useBezierBox->setVisible(tool->isPropertyEnabled(BEZIER));
-    ui->usePressureBox->setVisible(tool->isPropertyEnabled(PRESSURE));
+    ui->usePressureButton->setVisible(tool->isPropertyEnabled(PRESSURE));
     ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
     ui->preserveAlphaBox->setVisible(tool->isPropertyEnabled(PRESERVEALPHA));
     ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
@@ -169,7 +169,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
         case SMUDGE:
             ui->sizeSlider->setVisible(false);
             ui->brushSpinBox->setVisible(false);
-            ui->usePressureBox->setVisible(false);
+            ui->usePressureButton->setVisible(false);
             ui->featherSlider->setVisible(false);
             ui->featherSpinBox->setVisible(false);
             ui->useFeatherBox->setVisible(false);
@@ -177,7 +177,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
         case PENCIL:
             ui->sizeSlider->setVisible(false);
             ui->brushSpinBox->setVisible(false);
-            ui->usePressureBox->setVisible(false);
+            ui->usePressureButton->setVisible(false);
             break;
         case BUCKET:
             ui->sizeSlider->setLabel(tr("Stroke Thickness"));
@@ -218,81 +218,57 @@ void ToolOptionWidget::onToolChanged(ToolType)
 void ToolOptionWidget::setPenWidth(qreal width)
 {
     SignalBlocker b(ui->sizeSlider);
-    ui->sizeSlider->setEnabled(true);
     ui->sizeSlider->setValue(width);
 
     SignalBlocker b2(ui->brushSpinBox);
-    ui->brushSpinBox->setEnabled(true);
     ui->brushSpinBox->setValue(width);
 }
 
-void ToolOptionWidget::setPenFeather(qreal featherValue)
+void ToolOptionWidget::setFeather(const qreal featherValue)
 {
     SignalBlocker b(ui->featherSlider);
-    ui->featherSlider->setEnabled(true);
     ui->featherSlider->setValue(featherValue);
 
     SignalBlocker b2(ui->featherSpinBox);
-    ui->featherSpinBox->setEnabled(true);
     ui->featherSpinBox->setValue(featherValue);
 }
 
-void ToolOptionWidget::setUseFeather(bool useFeather)
+void ToolOptionWidget::setFeatherEnabled(const bool enabled)
 {
     SignalBlocker b(ui->useFeatherBox);
-    ui->useFeatherBox->setEnabled(true);
-    ui->useFeatherBox->setChecked(useFeather);
+    ui->useFeatherBox->setChecked(enabled);
+    ui->featherSpinBox->setEnabled(enabled);
+    ui->featherSlider->setEnabled(enabled);
 }
 
-void ToolOptionWidget::setPenInvisibility(int x)
+void ToolOptionWidget::setStrokeInvisibilityEnabled(const bool enabled)
 {
     SignalBlocker b(ui->makeInvisibleBox);
-    ui->makeInvisibleBox->setEnabled(true);
-    ui->makeInvisibleBox->setChecked(x > 0);
+    ui->makeInvisibleBox->setChecked(enabled);
 }
 
-void ToolOptionWidget::setPressure(int x)
+void ToolOptionWidget::setPressureEnabled(const bool enabled)
 {
-    SignalBlocker b(ui->usePressureBox);
-    ui->usePressureBox->setEnabled(true);
-    ui->usePressureBox->setChecked(x > 0);
+    SignalBlocker b(ui->usePressureButton);
+    ui->usePressureButton->setChecked(enabled);
 }
 
-void ToolOptionWidget::setPreserveAlpha(int x)
+void ToolOptionWidget::setPreserveAlphaEnabled(const bool enabled)
 {
     SignalBlocker b(ui->preserveAlphaBox);
-    ui->preserveAlphaBox->setEnabled(true);
-    ui->preserveAlphaBox->setChecked(x > 0);
+    ui->preserveAlphaBox->setChecked(enabled);
 }
 
-void ToolOptionWidget::setVectorMergeEnabled(int x)
+void ToolOptionWidget::setVectorMergeEnabled(const bool enabled)
 {
     SignalBlocker b(ui->vectorMergeBox);
-    ui->vectorMergeBox->setEnabled(true);
-    ui->vectorMergeBox->setChecked(x > 0);
+    ui->vectorMergeBox->setChecked(enabled);
 }
 
-void ToolOptionWidget::setAA(int x)
+void ToolOptionWidget::setAAEnabled(const bool state)
 {
     SignalBlocker b(ui->useAABox);
-    ui->useAABox->setEnabled(true);
-    ui->useAABox->setVisible(false);
-
-    auto layerType = editor()->layers()->currentLayer()->type();
-
-    if (layerType == Layer::BITMAP)
-    {
-        if (x == -1)
-        {
-            ui->useAABox->setEnabled(false);
-            ui->useAABox->setVisible(false);
-        }
-        else
-        {
-            ui->useAABox->setVisible(true);
-        }
-        ui->useAABox->setChecked(x > 0);
-    }
+    ui->useAABox->setChecked(state);
 }
 
 void ToolOptionWidget::setStabilizerLevel(int x)
@@ -303,25 +279,22 @@ void ToolOptionWidget::setStabilizerLevel(int x)
 void ToolOptionWidget::setTolerance(int tolerance)
 {
     SignalBlocker b(ui->toleranceSlider);
-    ui->toleranceSlider->setEnabled(true);
     ui->toleranceSlider->setValue(tolerance);
 
     SignalBlocker b2(ui->toleranceSpinBox);
-    ui->toleranceSpinBox->setEnabled(true);
     ui->toleranceSpinBox->setValue(tolerance);
 }
 
-void ToolOptionWidget::setFillContour(int useFill)
+void ToolOptionWidget::setFillContourEnabled(const bool enabled)
 {
     SignalBlocker b(ui->fillContourBox);
-    ui->fillContourBox->setEnabled(true);
-    ui->fillContourBox->setChecked(useFill > 0);
+    ui->fillContourBox->setChecked(enabled);
 }
 
-void ToolOptionWidget::setBezier(bool useBezier)
+void ToolOptionWidget::setBezierEnabled(const bool enabled)
 {
     SignalBlocker b(ui->useBezierBox);
-    ui->useBezierBox->setChecked(useBezier);
+    ui->useBezierBox->setChecked(enabled);
 }
 
 void ToolOptionWidget::disableAllOptions()
@@ -332,7 +305,7 @@ void ToolOptionWidget::disableAllOptions()
     ui->featherSpinBox->hide();
     ui->useFeatherBox->hide();
     ui->useBezierBox->hide();
-    ui->usePressureBox->hide();
+    ui->usePressureButton->hide();
     ui->makeInvisibleBox->hide();
     ui->preserveAlphaBox->hide();
     ui->vectorMergeBox->hide();

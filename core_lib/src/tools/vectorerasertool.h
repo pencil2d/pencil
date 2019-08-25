@@ -15,41 +15,37 @@ GNU General Public License for more details.
 
 */
 
-#ifndef VECTORBRUSHTOOL_H
-#define VECTORBRUSHTOOL_H
+#ifndef VECTORERASERTOOL_H
+#define VECTORERASERTOOL_H
 
 #include "stroketool.h"
 
-
-class VectorBrushTool : public StrokeTool
+class VectorEraserTool : public StrokeTool
 {
     Q_OBJECT
 
 public:
-    explicit VectorBrushTool(QObject* parent = 0);
-    ToolType type() override { return BRUSH; }
+    explicit VectorEraserTool( QObject* parent = 0 );
+    ToolType type() override { return ERASER; }
     void loadSettings() override;
     void resetToDefault() override;
     QCursor cursor() override;
 
-    void pointerMoveEvent(PointerEvent*) override;
-    void pointerPressEvent(PointerEvent*) override;
-    void pointerReleaseEvent(PointerEvent*) override;
+    void pointerMoveEvent( PointerEvent* ) override;
+    void pointerPressEvent( PointerEvent* ) override;
+    void pointerReleaseEvent( PointerEvent* ) override;
 
     void drawStroke();
-    void paintStroke();
+    void eraseStroke();
+    void updateStrokes();
 
-    void setWidth(const qreal width) override;
-    void setPressure(const bool pressure) override;
-    void setInvisibility(const bool invisibility) override;
+    void setWidth( const qreal width ) override;
+    void setPressure( const bool pressure ) override;
     void setStabilizerLevel(const int level) override;
 
 protected:
     QPointF mLastBrushPoint;
     QPointF mMouseDownPoint;
-
-    QColor mCurrentPressuredColor;
-    qreal mOpacity = 1.0;
 };
 
-#endif // VECTORBRUSHTOOL_H
+#endif // VECTORERASERTOOL_H

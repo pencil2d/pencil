@@ -14,42 +14,42 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-
-#ifndef VECTORBRUSHTOOL_H
-#define VECTORBRUSHTOOL_H
+#ifndef VECTORPENCILTOOL_H
+#define VECTORPENCILTOOL_H
 
 #include "stroketool.h"
+#include <QColor>
 
+class Layer;
 
-class VectorBrushTool : public StrokeTool
+class VectorPencilTool : public StrokeTool
 {
     Q_OBJECT
-
 public:
-    explicit VectorBrushTool(QObject* parent = 0);
-    ToolType type() override { return BRUSH; }
+    explicit VectorPencilTool(QObject* parent);
+    ToolType type() override { return PENCIL; }
     void loadSettings() override;
-    void resetToDefault() override;
     QCursor cursor() override;
+    void resetToDefault() override;
 
-    void pointerMoveEvent(PointerEvent*) override;
     void pointerPressEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
 
     void drawStroke();
-    void paintStroke();
+    void paintVectorStroke(Layer* layer);
 
     void setWidth(const qreal width) override;
-    void setPressure(const bool pressure) override;
     void setInvisibility(const bool invisibility) override;
+    void setPressure(const bool pressure) override;
     void setStabilizerLevel(const int level) override;
+    void setUseFillContour(const bool useFillContour) override;
 
-protected:
-    QPointF mLastBrushPoint;
+private:
+    QColor mCurrentPressuredColor{ 0, 0, 0, 255 };
+    QPointF mLastBrushPoint{ 0, 0 };
+    qreal mOpacity = 1.0f;
     QPointF mMouseDownPoint;
-
-    QColor mCurrentPressuredColor;
-    qreal mOpacity = 1.0;
 };
 
-#endif // VECTORBRUSHTOOL_H
+#endif // VECTORPENCILTOOL_H

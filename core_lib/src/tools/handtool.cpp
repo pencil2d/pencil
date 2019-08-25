@@ -37,11 +37,6 @@ HandTool::HandTool(QObject* parent) : BaseTool(parent)
 
 void HandTool::loadSettings()
 {
-    properties.width = -1;
-    properties.feather = -1;
-    properties.useFeather = false;
-    properties.stabilizerLevel = -1;
-    properties.useAA = -1;
 }
 
 QCursor HandTool::cursor()

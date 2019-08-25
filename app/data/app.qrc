@@ -56,6 +56,8 @@
         <file>icons/new/arrow-horizontal.png</file>
         <file>icons/new/arrow-selectmove.png</file>
         <file>icons/new/arrow-vertical.png</file>
+        <file>icons/new/pressure-icon.png</file>
+        <file>icons/new/svg/pressure-icon.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

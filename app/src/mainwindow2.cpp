@@ -122,7 +122,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
 
-    mEditor->tools()->setDefaultTool();
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    mEditor->tools()->setDefaultTool(currentLayer->type());
     ui->background->init(mEditor->preference());
     mEditor->updateObject();
 
@@ -322,17 +323,17 @@ void MainWindow2::createMenus()
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
 
     //--- Tool Menu ---
-    connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
-    connect(ui->actionSelect, &QAction::triggered, mToolBox, &ToolBoxWidget::selectOn);
-    connect(ui->actionBrush, &QAction::triggered, mToolBox, &ToolBoxWidget::brushOn);
-    connect(ui->actionPolyline, &QAction::triggered, mToolBox, &ToolBoxWidget::polylineOn);
-    connect(ui->actionSmudge, &QAction::triggered, mToolBox, &ToolBoxWidget::smudgeOn);
-    connect(ui->actionPen, &QAction::triggered, mToolBox, &ToolBoxWidget::penOn);
-    connect(ui->actionHand, &QAction::triggered, mToolBox, &ToolBoxWidget::handOn);
-    connect(ui->actionPencil, &QAction::triggered, mToolBox, &ToolBoxWidget::pencilOn);
-    connect(ui->actionBucket, &QAction::triggered, mToolBox, &ToolBoxWidget::bucketOn);
-    connect(ui->actionEyedropper, &QAction::triggered, mToolBox, &ToolBoxWidget::eyedropperOn);
-    connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::eraserOn);
+    connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionSelect, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionBrush, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionPolyline, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionSmudge, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionPen, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionHand, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionPencil, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionBucket, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionEyedropper, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
+    connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::setToolOn);
     connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools);
 
     //--- Window Menu ---
@@ -1355,6 +1356,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolBox, &ToolBoxWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor*, DisplayOptionWidget*)

@@ -80,10 +80,19 @@ HEADERS +=  \
     src/tools/bitmappolylinetool.h \
     src/tools/bitmapselecttool.h \
     src/tools/bitmapsmudgetool.h \
+    src/tools/notool.h \
     src/tools/strokemanager.h \
     src/tools/stroketool.h \
     src/tools/vectorbrushtool.h \
+    src/tools/vectorbuckettool.h \
+    src/tools/vectorerasertool.h \
+    src/tools/vectoreyedroppertool.h \
+    src/tools/vectormovetool.h \
+    src/tools/vectorpenciltool.h \
     src/tools/vectorpentool.h \
+    src/tools/vectorpolylinetool.h \
+    src/tools/vectorselecttool.h \
+    src/tools/vectorsmudgetool.h \
     src/util/blitrect.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
@@ -153,10 +162,19 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tools/bitmappolylinetool.cpp \
     src/tools/bitmapselecttool.cpp \
     src/tools/bitmapsmudgetool.cpp \
+    src/tools/notool.cpp \
     src/tools/strokemanager.cpp \
     src/tools/stroketool.cpp \
     src/tools/vectorbrushtool.cpp \
+    src/tools/vectorbuckettool.cpp \
+    src/tools/vectorerasertool.cpp \
+    src/tools/vectoreyedroppertool.cpp \
+    src/tools/vectormovetool.cpp \
+    src/tools/vectorpenciltool.cpp \
     src/tools/vectorpentool.cpp \
+    src/tools/vectorpolylinetool.cpp \
+    src/tools/vectorselecttool.cpp \
+    src/tools/vectorsmudgetool.cpp \
     src/util/blitrect.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \

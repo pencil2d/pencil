@@ -19,6 +19,9 @@ GNU General Public License for more details.
 
 #include "pencildef.h"
 #include "basedockwidget.h"
+#include "layer.h"
+
+#include <QMap>
 
 class QToolButton;
 class QGridLayout;
@@ -27,6 +30,7 @@ class SpinSlider;
 class DisplayOptionWidget;
 class ToolOptionWidget;
 class Editor;
+class QAbstractButton;
 
 namespace Ui {
 class ToolBoxWidget;
@@ -44,17 +48,11 @@ public:
     void updateUI() override;
 
 public slots:
-    void pencilOn();
-    void eraserOn();
-    void selectOn();
-    void moveOn();
-    void penOn();
-    void handOn();
-    void polylineOn();
-    void bucketOn();
-    void eyedropperOn();
-    void brushOn();
-    void smudgeOn();
+    void setToolOn();
+
+    void saveToolUsed(ToolType toolType);
+
+    void setTool(const ToolType toolType);
 
 signals:
     void clearButtonClicked();
@@ -64,6 +62,11 @@ private:
     bool leavingTool(QToolButton*);
 
     Ui::ToolBoxWidget* ui = nullptr;
+    Layer::LAYER_TYPE mLayerType = Layer::UNDEFINED;
+
+    typedef QMap<ToolType, QToolButton*> ToolButtons;
+
+    ToolButtons mToolButtons;
 };
 
 #endif

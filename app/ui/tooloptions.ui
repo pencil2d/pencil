@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>164</width>
-    <height>341</height>
+    <height>373</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,10 +48,43 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QToolButton" name="usePressureButton">
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../data/app.qrc">
+         <normaloff>:/icons/new/pressure-icon.png</normaloff>:/icons/new/pressure-icon.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>12</width>
+         <height>18</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoRaise">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="useFeatherBox">
+       <property name="toolTip">
+        <string>Enable or disable feathering</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="SpinSlider" name="featherSlider" native="true">
        <property name="toolTip">
@@ -85,16 +118,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="useFeatherBox">
-     <property name="toolTip">
-      <string>Enable or disable feathering</string>
-     </property>
-     <property name="text">
-      <string>Use Feather</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="fillContourBox">
@@ -131,13 +154,6 @@
     <widget class="QCheckBox" name="useBezierBox">
      <property name="text">
       <string>Bezier</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="usePressureBox">
-     <property name="text">
-      <string comment="Brush">Pressure</string>
      </property>
     </widget>
    </item>
@@ -237,6 +253,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../data/app.qrc"/>
+ </resources>
  <connections/>
 </ui>

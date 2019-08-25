@@ -1,3 +1,6 @@
+#ifndef VECTORBUCKETTOOL_H
+#define VECTORBUCKETTOOL_H
+
 /*
 
 Pencil - Traditional Animation Software
@@ -15,41 +18,36 @@ GNU General Public License for more details.
 
 */
 
-#ifndef VECTORBRUSHTOOL_H
-#define VECTORBRUSHTOOL_H
-
 #include "stroketool.h"
 
+class Layer;
+class VectorImage;
 
-class VectorBrushTool : public StrokeTool
+class VectorBucketTool : public StrokeTool
 {
     Q_OBJECT
-
 public:
-    explicit VectorBrushTool(QObject* parent = 0);
-    ToolType type() override { return BRUSH; }
+    explicit VectorBucketTool(QObject* parent = nullptr);
+    ToolType type() override { return BUCKET; }
     void loadSettings() override;
     void resetToDefault() override;
     QCursor cursor() override;
 
-    void pointerMoveEvent(PointerEvent*) override;
     void pointerPressEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
 
-    void drawStroke();
-    void paintStroke();
-
+    void setTolerance(const int tolerance) override;
     void setWidth(const qreal width) override;
-    void setPressure(const bool pressure) override;
-    void setInvisibility(const bool invisibility) override;
-    void setStabilizerLevel(const int level) override;
 
-protected:
-    QPointF mLastBrushPoint;
-    QPointF mMouseDownPoint;
+    void paintStroke(Layer* layer);
+    void drawStroke();
 
-    QColor mCurrentPressuredColor;
-    qreal mOpacity = 1.0;
+    void applyChanges();
+
+private:
+
+    VectorImage* vectorImage = nullptr;
 };
 
-#endif // VECTORBRUSHTOOL_H
+#endif // VECTORBUCKETTOOL_H

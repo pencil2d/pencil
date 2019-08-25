@@ -16,15 +16,12 @@ GNU General Public License for more details.
 */
 #include "bitmappentool.h"
 
-#include <QPixmap>
-
-#include "vectorimage.h"
-#include "layervector.h"
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
@@ -35,11 +32,20 @@ BitmapPenTool::BitmapPenTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
+
+QCursor BitmapPenTool::cursor()
+{
+    if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
+    {
+        return QCursor(QPixmap(":icons/pen.png"), -5, 0);
+    }
+    return Qt::CrossCursor;
+}
+
 void BitmapPenTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[PRESSURE] = true;
-    mPropertyEnabled[VECTORMERGE] = true;
     mPropertyEnabled[ANTI_ALIASING] = true;
     mPropertyEnabled[STABILIZATION] = true;
 
@@ -47,8 +53,6 @@ void BitmapPenTool::loadSettings()
 
     properties.width = settings.value("penWidth", 12.0).toDouble();
     properties.pressure = settings.value("penPressure", true).toBool();
-    properties.invisibility = OFF;
-    properties.preserveAlpha = OFF;
     properties.useAA = settings.value("penAA", true).toBool();
     properties.stabilizerLevel = settings.value("penLineStabilization", StabilizationLevel::STRONG).toInt();
 }
@@ -104,15 +108,6 @@ void BitmapPenTool::setStabilizerLevel(const int level)
     settings.sync();
 }
 
-QCursor BitmapPenTool::cursor()
-{
-    if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
-    {
-        return QCursor(QPixmap(":icons/pen.png"), -5, 0);
-    }
-    return Qt::CrossCursor;
-}
-
 void BitmapPenTool::pointerPressEvent(PointerEvent *)
 {
     mScribbleArea->setAllDirty();
@@ -138,8 +133,6 @@ void BitmapPenTool::pointerReleaseEvent(PointerEvent*)
 {
     mEditor->backup(typeName());
 
-    Layer* layer = mEditor->layers()->currentLayer();
-
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)
     {
@@ -150,10 +143,7 @@ void BitmapPenTool::pointerReleaseEvent(PointerEvent*)
         drawStroke();
     }
 
-    if (layer->type() == Layer::BITMAP)
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
-        paintVectorStroke(layer);
+    paintStroke();
     endStroke();
 }
 
@@ -186,110 +176,52 @@ void BitmapPenTool::drawStroke()
     StrokeTool::drawStroke();
     QList<QPointF> p = strokeManager()->interpolateStroke();
 
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    if (layer->type() == Layer::BITMAP)
+    for (int i = 0; i < p.size(); i++)
     {
-        for (int i = 0; i < p.size(); i++)
-        {
-            p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
-        }
-
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-        qreal brushWidth = properties.width * pressure;
-        mCurrentWidth = brushWidth;
-
-        // TODO: Make popup widget for less important properties,
-        // Eg. stepsize should be a slider.. will have fixed (0.3) value for now.
-        qreal brushStep = (0.5 * brushWidth);
-        brushStep = qMax(1.0, brushStep);
-
-        BlitRect rect;
-
-        QPointF a = mLastBrushPoint;
-        QPointF b = getCurrentPoint();
-
-        qreal distance = 4 * QLineF(b, a).length();
-        int steps = qRound(distance / brushStep);
-
-        for (int i = 0; i < steps; i++)
-        {
-            QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
-            rect.extend(point.toPoint());
-            mScribbleArea->drawPen(point,
-                                   brushWidth,
-                                   mEditor->color()->frontColor(),
-                                   properties.useAA);
-
-            if (i == (steps - 1))
-            {
-                mLastBrushPoint = getCurrentPoint();
-            }
-        }
-
-        int rad = qRound(brushWidth) / 2 + 2;
-
-        mScribbleArea->paintBitmapBufferRect(rect);
-        mScribbleArea->refreshBitmap(rect, rad);
+        p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
     }
-    else if (layer->type() == Layer::VECTOR)
+
+    qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+    qreal brushWidth = properties.width * pressure;
+    mCurrentWidth = brushWidth;
+
+    // TODO: Make popup widget for less important properties,
+    // Eg. stepsize should be a slider.. will have fixed (0.3) value for now.
+    qreal brushStep = (0.5 * brushWidth);
+    brushStep = qMax(1.0, brushStep);
+
+    BlitRect rect;
+
+    QPointF a = mLastBrushPoint;
+    QPointF b = getCurrentPoint();
+
+    qreal distance = 4 * QLineF(b, a).length();
+    int steps = qRound(distance / brushStep);
+
+    for (int i = 0; i < steps; i++)
     {
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-        qreal brushWidth = properties.width * pressure;
+        QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
+        rect.extend(point.toPoint());
+        mScribbleArea->drawPen(point,
+                               brushWidth,
+                               mEditor->color()->frontColor(),
+                               properties.useAA);
 
-        int rad = qRound((brushWidth / 2 + 2) * mEditor->view()->scaling());
-
-        QPen pen(mEditor->color()->frontColor(),
-                 brushWidth * mEditor->view()->scaling(),
-                 Qt::SolidLine,
-                 Qt::RoundCap,
-                 Qt::RoundJoin);
-
-        if (p.size() == 4)
+        if (i == (steps - 1))
         {
-            QPainterPath path(p[0]);
-            path.cubicTo(p[1], p[2], p[3]);
-            mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
+            mLastBrushPoint = getCurrentPoint();
         }
     }
+
+    int rad = qRound(brushWidth) / 2 + 2;
+
+    mScribbleArea->paintBitmapBufferRect(rect);
+    mScribbleArea->refreshBitmap(rect, rad);
 }
 
-void BitmapPenTool::paintBitmapStroke()
+void BitmapPenTool::paintStroke()
 {
     mScribbleArea->paintBitmapBuffer();
     mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
-}
-
-void BitmapPenTool::paintVectorStroke(Layer* layer)
-{
-    if (mStrokePoints.empty())
-        return;
-
-    // Clear the temporary pixel path
-    mScribbleArea->clearBitmapBuffer();
-    qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-
-    BezierCurve curve(mStrokePoints, mStrokePressures, tol);
-    curve.setWidth(properties.width);
-    curve.setFeather(properties.feather);
-    curve.setFilled(false);
-    curve.setInvisibility(properties.invisibility);
-    curve.setVariableWidth(properties.pressure);
-    curve.setColourNumber(mEditor->color()->frontColorNumber());
-
-    auto pLayerVector = static_cast<LayerVector*>(layer);
-    VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-    vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
-
-    if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected())
-    {
-        mEditor->deselectAll();
-    }
-
-    vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
-
-    mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-    mScribbleArea->setAllDirty();
 }

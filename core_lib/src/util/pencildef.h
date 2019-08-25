@@ -39,17 +39,18 @@ GNU General Public License for more details.
 enum ToolType : int
 {
     INVALID_TOOL = -1,
-    PENCIL = 0,
-    ERASER,
+    CLEAR = 0,
+    ERASER = 1,
     SELECT,
     MOVE,
     HAND,
     SMUDGE,
-    PEN,
     POLYLINE,
+    PEN,
+    BRUSH,
+    PENCIL,
     BUCKET,
     EYEDROPPER,
-    BRUSH,
     TOOL_TYPE_COUNT
 };
 
@@ -174,6 +175,9 @@ enum StabilizationLevel
 #define SETTING_AUTO_SAVE           "AutoSave"
 #define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
 #define SETTING_TOOL_CURSOR         "ToolCursors"
+#define SETTING_TOOL_BITMAP_LASTUSED       "LastUsedToolBitmap"
+#define SETTING_TOOL_VECTOR_LASTUSED       "LastUsedToolVector"
+#define SETTING_TOOL_CAMERA_LASTUSED       "LastUsedToolCamera"
 #define SETTING_DOTTED_CURSOR       "DottedCursors"
 #define SETTING_HIGH_RESOLUTION     "HighResPosition"
 #define SETTING_BACKGROUND_STYLE    "Background"

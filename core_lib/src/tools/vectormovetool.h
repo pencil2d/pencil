@@ -15,21 +15,23 @@ GNU General Public License for more details.
 
 */
 
-#ifndef MOVETOOL_H
-#define MOVETOOL_H
+#ifndef VECTORMOVETOOL_H
+#define VECTORMOVETOOL_H
 
 #include "basetool.h"
 #include "movemode.h"
 #include "preferencemanager.h"
 
 class Layer;
+class VectorImage;
 
-class BitmapMoveTool : public BaseTool
+
+class VectorMoveTool : public BaseTool
 {
     Q_OBJECT
 public:
-    explicit BitmapMoveTool(QObject* parent);
-    ToolType type() override;
+    explicit VectorMoveTool(QObject* parent);
+    ToolType type() override {return MOVE; }
     void loadSettings() override;
     QCursor cursor() override;
 
@@ -51,8 +53,13 @@ private:
 
     int showTransformWarning();
 
-    void beginInteraction(Qt::KeyboardModifiers keyMod);
+    void beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer);
+    void createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void transformSelection(Qt::KeyboardModifiers keyMod);
+    void storeClosestVectorCurve(Layer* layer);
+
+    void setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
+    void setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
 
     QPointF offsetFromPressPos();
 
@@ -64,4 +71,4 @@ private:
     int mRotationIncrement = 0;
 };
 
-#endif
+#endif // VECTORMOVETOOL_H

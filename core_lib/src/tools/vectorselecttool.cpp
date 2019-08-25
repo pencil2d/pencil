@@ -14,31 +14,32 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "bitmapselecttool.h"
-
+#include "vectorselecttool.h"
+#include "pointerevent.h"
+#include "vectorimage.h"
+#include "editor.h"
 #include "strokemanager.h"
+#include "layervector.h"
 #include "scribblearea.h"
 #include "layermanager.h"
+#include "toolmanager.h"
 #include "selectionmanager.h"
 
-#include "pointerevent.h"
-#include "editor.h"
-
-BitmapSelectTool::BitmapSelectTool(QObject* parent) : BaseTool(parent)
+VectorSelectTool::VectorSelectTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-void BitmapSelectTool::loadSettings()
+void VectorSelectTool::loadSettings()
 {
 }
 
-QCursor BitmapSelectTool::cursor()
+QCursor VectorSelectTool::cursor()
 {
     MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
     return this->selectMoveCursor(mode, type());
 }
 
-void BitmapSelectTool::beginSelection()
+void VectorSelectTool::beginSelection()
 {
     // Store original click position for help with selection rectangle.
     mAnchorOriginPoint = getLastPoint();
@@ -52,6 +53,7 @@ void BitmapSelectTool::beginSelection()
 
     if (selectMan->somethingSelected()) // there is something selected
     {
+        static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
         mAnchorOriginPoint = selectMan->whichAnchorPoint(getLastPoint());
 
         // the user did not click on one of the corners
@@ -69,13 +71,15 @@ void BitmapSelectTool::beginSelection()
     mScribbleArea->update();
 }
 
-void BitmapSelectTool::pointerPressEvent(PointerEvent* event)
+void VectorSelectTool::pointerPressEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) return;
     if (!mCurrentLayer->isPaintable()) { return; }
     if (event->button() != Qt::LeftButton) { return; }
     auto selectMan = mEditor->select();
+
+    Q_ASSERT(mEditor->layers()->currentLayer()->type() == Layer::VECTOR);
 
     mMoveMode = selectMan->validateMoveMode(getCurrentPoint());
 
@@ -84,7 +88,7 @@ void BitmapSelectTool::pointerPressEvent(PointerEvent* event)
     beginSelection();
 }
 
-void BitmapSelectTool::pointerMoveEvent(PointerEvent* event)
+void VectorSelectTool::pointerMoveEvent(PointerEvent* event)
 {
     Q_UNUSED(event);
     mCurrentLayer = mEditor->layers()->currentLayer();
@@ -101,12 +105,16 @@ void BitmapSelectTool::pointerMoveEvent(PointerEvent* event)
     if (mScribbleArea->isPointerInUse())
     {
         controlOffsetOrigin(getCurrentPoint(), mAnchorOriginPoint);
+
+        static_cast<LayerVector*>(mCurrentLayer)->
+            getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->
+            select(selectMan->myTempTransformedSelectionRect());
     }
 
     mScribbleArea->updateCurrentFrame();
 }
 
-void BitmapSelectTool::pointerReleaseEvent(PointerEvent* event)
+void VectorSelectTool::pointerReleaseEvent(PointerEvent* event)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) return;
@@ -135,31 +143,26 @@ void BitmapSelectTool::pointerReleaseEvent(PointerEvent* event)
     mScribbleArea->updateCurrentFrame();
 }
 
-bool BitmapSelectTool::maybeDeselect()
+bool VectorSelectTool::maybeDeselect()
 {
     return (!isSelectionPointValid() && mEditor->select()->validateMoveMode(getLastPoint()) == MoveMode::NONE);
 }
 
 /**
- * @brief BitmapSelectTool::keepSelection
+ * @brief VectorSelectTool::keepSelection
  * Keep selection rect and normalize if invalid
  */
-void BitmapSelectTool::keepSelection()
+void VectorSelectTool::keepSelection()
 {
     auto selectMan = mEditor->select();
-    if (!selectMan->myTempTransformedSelectionRect().isValid())
-    {
-        selectMan->setSelection(selectMan->myTempTransformedSelectionRect().normalized());
-    }
-    else
-    {
-        selectMan->setSelection(selectMan->myTempTransformedSelectionRect());
-    }
+
+    VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    selectMan->setSelection(vectorImage->getSelectionRect());
 }
 
-void BitmapSelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
+void VectorSelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 {
-    QPointF offset = offsetFromPressPos().toPoint();
+    QPointF offset = offsetFromPressPos();
 
     if (mMoveMode != MoveMode::NONE)
     {
@@ -174,10 +177,10 @@ void BitmapSelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorP
 }
 
 /**
- * @brief BitmapSelectTool::manageSelectionOrigin
+ * @brief VectorSelectTool::manageSelectionOrigin
  * switches anchor point when crossing threshold
  */
-void BitmapSelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint)
+void VectorSelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint)
 {
     qreal mouseX = currentPoint.x();
     qreal mouseY = currentPoint.y();
@@ -209,7 +212,7 @@ void BitmapSelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF origi
     mEditor->select()->setTempTransformedSelectionRect(selectRect);
 }
 
-bool BitmapSelectTool::keyPressEvent(QKeyEvent* event)
+bool VectorSelectTool::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {
@@ -224,7 +227,7 @@ bool BitmapSelectTool::keyPressEvent(QKeyEvent* event)
     return false;
 }
 
-QPointF BitmapSelectTool::offsetFromPressPos()
+QPointF VectorSelectTool::offsetFromPressPos()
 {
     return getCurrentPoint() - getCurrentPressPoint();
 }

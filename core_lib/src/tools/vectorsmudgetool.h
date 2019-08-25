@@ -15,38 +15,40 @@ GNU General Public License for more details.
 
 */
 
-#ifndef BITMAPERASERTOOL_H
-#define BITMAPERASERTOOL_H
+#ifndef VECTORSMUDGETOOL_H
+#define VECTORSMUDGETOOL_H
 
 #include "stroketool.h"
 
-class BitmapEraserTool : public StrokeTool
+class VectorSmudgeTool : public StrokeTool
 {
     Q_OBJECT
-
 public:
-    explicit BitmapEraserTool( QObject* parent = 0 );
-    ToolType type() override;
+    explicit VectorSmudgeTool(QObject* parent = 0);
+    ToolType type() override { return SMUDGE; }
+    uint toolMode;  // 0=normal/smooth 1=smudge - todo: move to basetool? could be useful
     void loadSettings() override;
     void resetToDefault() override;
     QCursor cursor() override;
 
-    void pointerMoveEvent( PointerEvent* ) override;
-    void pointerPressEvent( PointerEvent* ) override;
-    void pointerReleaseEvent( PointerEvent* ) override;
+    void pointerPressEvent(PointerEvent *) override;
+    void pointerReleaseEvent(PointerEvent *) override;
+    void pointerMoveEvent(PointerEvent *) override;
 
-    void drawStroke();
-    void paintAt( QPointF point );
-    void paintStroke();
+    bool keyPressEvent(QKeyEvent *) override;
+    bool keyReleaseEvent(QKeyEvent *) override;
 
     void setWidth( const qreal width ) override;
-    void setFeather( const qreal feather ) override;
     void setPressure( const bool pressure ) override;
-    void setStabilizerLevel(const int level) override;
 
 protected:
+    bool emptyFrameActionEnabled() override;
+
+private:
+
+    QPointF offsetFromPressPos();
+
     QPointF mLastBrushPoint;
-    QPointF mMouseDownPoint;
 };
 
-#endif // BITMAPERASERTOOL_H
+#endif // VECTORSMUDGETOOL_H

@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include "basetool.h"
 #include "basemanager.h"
 
+#include "layer.h"
+
 class ScribbleArea;
 
 class ToolManager : public BaseManager
@@ -34,11 +36,14 @@ public:
     bool init() override;
     Status load(Object*) override;
     Status save(Object*) override;
+    void workingLayerChanged(Layer* layer) override;
 
     BaseTool* currentTool() { return mCurrentTool; }
-    BaseTool* getTool(ToolType eToolType);
-    void setDefaultTool();
-    void setCurrentTool(ToolType eToolType);
+    BaseTool* getTool(const ToolType eToolType, const Layer::LAYER_TYPE layerType);
+
+    void updateCurrentTool();
+    void setDefaultTool(const Layer::LAYER_TYPE layerType);
+    void setCurrentTool(const ToolType eToolType, const Layer::LAYER_TYPE layerType);
     void cleanupAllToolsData();
     bool leavingThisTool();
 
@@ -69,12 +74,17 @@ public slots:
     void setStabilizerLevel(int);
     void setTolerance(int);
     void setUseFillContour(bool);
+    ToolType safeToolType(const ToolType& type);
 
 private:
     BaseTool* mCurrentTool = nullptr;
-    ToolType  meTabletBackupTool = PENCIL;
+    ToolType  mFallbackToolType = PENCIL;
+    ToolType mPreviousValidTool;
     bool mIsSwitchedToEraser = false;
-    QHash<ToolType, BaseTool*> mToolSetHash;
+    QHash<ToolType, BaseTool*> mVectorToolSetHash;
+    QHash<ToolType, BaseTool*> mBitmapToolSetHash;
+
+    Layer::LAYER_TYPE mLayerType = Layer::LAYER_TYPE::UNDEFINED;
 
     int mOldValue = 0;
 

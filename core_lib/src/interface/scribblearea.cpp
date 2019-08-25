@@ -1460,7 +1460,8 @@ BaseTool* ScribbleArea::currentTool()
 
 BaseTool* ScribbleArea::getTool(ToolType eToolType)
 {
-    return editor()->tools()->getTool(eToolType);
+    Layer* currentLayer = editor()->layers()->currentLayer();
+    return editor()->tools()->getTool(eToolType, currentLayer->type());
 }
 
 // TODO: check this method
@@ -1503,7 +1504,8 @@ void ScribbleArea::setTemporaryTool(ToolType eToolMode)
     {
         mInstantTool = true; // used to return to previous tool when finished (keyRelease).
         mPrevTemporalToolType = currentTool()->type();
-        editor()->tools()->setCurrentTool(eToolMode);
+        Layer* currentLayer =  editor()->layers()->currentLayer();
+        editor()->tools()->setCurrentTool(eToolMode, currentLayer->type());
     }
 }
 
@@ -1551,7 +1553,8 @@ void ScribbleArea::clearImage()
 
 void ScribbleArea::setPrevTool()
 {
-    editor()->tools()->setCurrentTool(mPrevTemporalToolType);
+    Layer* layer = mEditor->layers()->currentLayer();
+    editor()->tools()->setCurrentTool(mPrevTemporalToolType, layer->type());
     mInstantTool = false;
 }
 

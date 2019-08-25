@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 
-#include "bitmapmovetool.h"
+#include "vectormovetool.h"
 
 #include <cassert>
 #include <QMessageBox>
@@ -27,31 +27,32 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "selectionmanager.h"
 #include "scribblearea.h"
+#include "layervector.h"
 #include "layermanager.h"
 #include "mathutils.h"
+#include "vectorimage.h"
 
-BitmapMoveTool::BitmapMoveTool(QObject* parent) : BaseTool(parent)
+
+VectorMoveTool::VectorMoveTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-ToolType BitmapMoveTool::type()
+void VectorMoveTool::loadSettings()
 {
-    return MOVE;
-}
-
-void BitmapMoveTool::loadSettings()
-{
+    properties.width = -1;
+    properties.stabilizerLevel = -1;
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
-    connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &BitmapMoveTool::updateSettings);
+
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &VectorMoveTool::updateSettings);
 }
 
-QCursor BitmapMoveTool::cursor()
+QCursor VectorMoveTool::cursor()
 {
     MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
 
-void BitmapMoveTool::updateSettings(const SETTING setting)
+void VectorMoveTool::updateSettings(const SETTING setting)
 {
     switch (setting)
     {
@@ -66,18 +67,20 @@ void BitmapMoveTool::updateSettings(const SETTING setting)
     }
 }
 
-void BitmapMoveTool::pointerPressEvent(PointerEvent* event)
+void VectorMoveTool::pointerPressEvent(PointerEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
 
     mEditor->select()->updatePolygons();
 
+    Q_ASSERT(mEditor->layers()->currentLayer()->type() == Layer::VECTOR);
+
     setAnchorToLastPoint();
-    beginInteraction(event->modifiers());
+    beginInteraction(event->modifiers(), mCurrentLayer);
 }
 
-void BitmapMoveTool::pointerMoveEvent(PointerEvent* event)
+void VectorMoveTool::pointerMoveEvent(PointerEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
@@ -93,11 +96,13 @@ void BitmapMoveTool::pointerMoveEvent(PointerEvent* event)
         // the user is moving the mouse without pressing it
         // update cursor to reflect selection corner interaction
         mScribbleArea->updateToolCursor();
+
+        storeClosestVectorCurve(mCurrentLayer);
     }
     mScribbleArea->updateCurrentFrame();
 }
 
-void BitmapMoveTool::pointerReleaseEvent(PointerEvent*)
+void VectorMoveTool::pointerReleaseEvent(PointerEvent*)
 {
     auto selectMan = mEditor->select();
     if (!selectMan->somethingSelected())
@@ -105,6 +110,7 @@ void BitmapMoveTool::pointerReleaseEvent(PointerEvent*)
 
     mRotatedAngle = selectMan->myRotation();
     updateTransformation();
+    applyTransformation();
 
     selectMan->updatePolygons();
 
@@ -112,7 +118,7 @@ void BitmapMoveTool::pointerReleaseEvent(PointerEvent*)
     mScribbleArea->updateCurrentFrame();
 }
 
-void BitmapMoveTool::updateTransformation()
+void VectorMoveTool::updateTransformation()
 {
     auto selectMan = mEditor->select();
     selectMan->updateTransformedSelection();
@@ -124,17 +130,18 @@ void BitmapMoveTool::updateTransformation()
     paintTransformedSelection();
 }
 
-void BitmapMoveTool::transformSelection(Qt::KeyboardModifiers keyMod)
+void VectorMoveTool::transformSelection(Qt::KeyboardModifiers keyMod)
 {
     auto selectMan = mEditor->select();
     if (selectMan->somethingSelected())
     {
-        QPoint offset = offsetFromPressPos().toPoint();
+
+        QPointF offset = offsetFromPressPos();
 
         // maintain aspect ratio
         if (keyMod == Qt::ShiftModifier)
         {
-            offset = selectMan->offsetFromAspectRatio(offset.x(), offset.y()).toPoint();
+            offset = selectMan->offsetFromAspectRatio(offset.x(), offset.y());
         }
 
         int rotationIncrement = 0;
@@ -155,7 +162,7 @@ void BitmapMoveTool::transformSelection(Qt::KeyboardModifiers keyMod)
     }
 }
 
-void BitmapMoveTool::beginInteraction(Qt::KeyboardModifiers keyMod)
+void VectorMoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
 {
     auto selectMan = mEditor->select();
     QRectF selectionRect = selectMan->myTransformedSelectionRect();
@@ -181,6 +188,8 @@ void BitmapMoveTool::beginInteraction(Qt::KeyboardModifiers keyMod)
         }
     }
 
+    createVectorSelection(keyMod, layer);
+
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         QPointF curPoint = getCurrentPoint();
         QPointF anchorPoint = selectionRect.center();
@@ -188,12 +197,73 @@ void BitmapMoveTool::beginInteraction(Qt::KeyboardModifiers keyMod)
     }
 }
 
-void BitmapMoveTool::setAnchorToLastPoint()
+/**
+ * @brief VectorMoveTool::createVectorSelection
+ * In vector the selection rectangle is based on the bounding box of the curves
+ * We can therefore create a selection just by clicking near/on a curve
+ */
+void VectorMoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
+{
+    LayerVector* vecLayer = static_cast<LayerVector*>(layer);
+    VectorImage* vectorImage = vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+
+    if (!mEditor->select()->closestCurves().empty()) // the user clicks near a curve
+    {
+        setCurveSelected(vectorImage, keyMod);
+    }
+    else if (vectorImage->getLastAreaNumber(getLastPoint()) > -1)
+    {
+        setAreaSelected(vectorImage, keyMod);
+    }
+    mScribbleArea->update();
+}
+
+void VectorMoveTool::setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod)
+{
+    auto selectMan = mEditor->select();
+    if (!vectorImage->isSelected(selectMan->closestCurves()))
+    {
+        if (keyMod != Qt::ShiftModifier)
+        {
+            applyTransformation();
+        }
+        vectorImage->setSelected(selectMan->closestCurves(), true);
+        selectMan->setSelection(vectorImage->getSelectionRect());
+    }
+}
+
+void VectorMoveTool::setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod)
+{
+    int areaNumber = vectorImage->getLastAreaNumber(getLastPoint());
+    if (!vectorImage->isAreaSelected(areaNumber))
+    {
+        if (keyMod != Qt::ShiftModifier)
+        {
+            applyTransformation();
+        }
+        vectorImage->setAreaSelected(areaNumber, true);
+        mEditor->select()->setSelection(vectorImage->getSelectionRect());
+    }
+}
+
+/**
+ * @brief VectorMoveTool::storeClosestVectorCurve
+ * stores the curves closest to the mouse position in mClosestCurves
+ */
+void VectorMoveTool::storeClosestVectorCurve(Layer* layer)
+{
+    auto selectMan = mEditor->select();
+    auto layerVector = static_cast<LayerVector*>(layer);
+    VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    selectMan->setCurves(pVecImg->getCurvesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
+}
+
+void VectorMoveTool::setAnchorToLastPoint()
 {
     anchorOriginPoint = getLastPoint();
 }
 
-void BitmapMoveTool::cancelChanges()
+void VectorMoveTool::cancelChanges()
 {
     auto selectMan = mEditor->select();
     mScribbleArea->cancelTransformedSelection();
@@ -201,7 +271,7 @@ void BitmapMoveTool::cancelChanges()
     mEditor->deselectAll();
 }
 
-void BitmapMoveTool::applySelectionChanges()
+void VectorMoveTool::applySelectionChanges()
 {
     mEditor->select()->setRotation(0);
     mRotatedAngle = 0;
@@ -209,23 +279,23 @@ void BitmapMoveTool::applySelectionChanges()
     mScribbleArea->applySelectionChanges();
 }
 
-void BitmapMoveTool::applyTransformation()
+void VectorMoveTool::applyTransformation()
 {
     mScribbleArea->applyTransformedSelection();
 }
 
-void BitmapMoveTool::paintTransformedSelection()
+void VectorMoveTool::paintTransformedSelection()
 {
     mScribbleArea->paintTransformedSelection();
 }
 
-bool BitmapMoveTool::leavingThisTool()
+bool VectorMoveTool::leavingThisTool()
 {
-    applySelectionChanges();
+    applyTransformation();
     return true;
 }
 
-bool BitmapMoveTool::switchingLayer()
+bool VectorMoveTool::switchingLayer()
 {
     auto selectMan = mEditor->select();
     if (!selectMan->transformHasBeenModified())
@@ -238,7 +308,7 @@ bool BitmapMoveTool::switchingLayer()
 
     if (returnValue == QMessageBox::Yes)
     {
-        applySelectionChanges();
+        applyTransformation();
         mEditor->deselectAll();
         return true;
     }
@@ -254,7 +324,7 @@ bool BitmapMoveTool::switchingLayer()
     return true;
 }
 
-int BitmapMoveTool::showTransformWarning()
+int VectorMoveTool::showTransformWarning()
 {
     int returnValue = QMessageBox::warning(nullptr,
                                            tr("Layer switch", "Windows title of layer switch pop-up."),
@@ -264,7 +334,7 @@ int BitmapMoveTool::showTransformWarning()
     return returnValue;
 }
 
-Layer* BitmapMoveTool::currentPaintableLayer()
+Layer* VectorMoveTool::currentPaintableLayer()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr)
@@ -274,7 +344,7 @@ Layer* BitmapMoveTool::currentPaintableLayer()
     return layer;
 }
 
-QPointF BitmapMoveTool::offsetFromPressPos()
+QPointF VectorMoveTool::offsetFromPressPos()
 {
     return getCurrentPoint() - getCurrentPressPoint();
 }

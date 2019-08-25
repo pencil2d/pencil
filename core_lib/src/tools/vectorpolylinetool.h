@@ -15,41 +15,40 @@ GNU General Public License for more details.
 
 */
 
-#ifndef VECTORBRUSHTOOL_H
-#define VECTORBRUSHTOOL_H
+#ifndef VECTORPOLYLINETOOL_H
+#define VECTORPOLYLINETOOL_H
 
-#include "stroketool.h"
+#include <QPointF>
 
+#include "basetool.h"
 
-class VectorBrushTool : public StrokeTool
+class VectorPolylineTool : public BaseTool
 {
     Q_OBJECT
-
 public:
-    explicit VectorBrushTool(QObject* parent = 0);
-    ToolType type() override { return BRUSH; }
+    explicit VectorPolylineTool(QObject* parent = 0);
+    ToolType type() override { return POLYLINE; }
     void loadSettings() override;
-    void resetToDefault() override;
     QCursor cursor() override;
+    void resetToDefault() override;
 
-    void pointerMoveEvent(PointerEvent*) override;
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent* event) override;
+    void pointerDoubleClickEvent(PointerEvent*) override;
 
-    void drawStroke();
-    void paintStroke();
+    bool keyPressEvent(QKeyEvent* event) override;
+
+    void clearToolData() override;
 
     void setWidth(const qreal width) override;
-    void setPressure(const bool pressure) override;
-    void setInvisibility(const bool invisibility) override;
-    void setStabilizerLevel(const int level) override;
 
-protected:
-    QPointF mLastBrushPoint;
-    QPointF mMouseDownPoint;
+private:
+    QList<QPointF> mPoints;
 
-    QColor mCurrentPressuredColor;
-    qreal mOpacity = 1.0;
+    void drawPolyline(QList<QPointF> points, QPointF endPoint);
+    void cancelPolyline();
+    void endPolyline(QList<QPointF> points);
 };
 
-#endif // VECTORBRUSHTOOL_H
+#endif // VECTORPOLYLINETOOL_H

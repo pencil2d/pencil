@@ -14,102 +14,126 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "vectorpentool.h"
+#include "vectorpenciltool.h"
 
+#include <QSettings>
 #include <QPixmap>
+#include "pointerevent.h"
 
-#include "vectorimage.h"
-#include "layervector.h"
+#include "layermanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
-#include "layermanager.h"
 #include "viewmanager.h"
+#include "preferencemanager.h"
 #include "selectionmanager.h"
+
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
-#include "pointerevent.h"
+#include "layervector.h"
+#include "vectorimage.h"
 
 
-VectorPenTool::VectorPenTool(QObject* parent) : StrokeTool(parent)
+VectorPencilTool::VectorPencilTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-void VectorPenTool::loadSettings()
+void VectorPencilTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[PRESSURE] = true;
-    mPropertyEnabled[VECTORMERGE] = true;
+    mPropertyEnabled[VECTORMERGE] = false;
     mPropertyEnabled[STABILIZATION] = true;
+    mPropertyEnabled[FILLCONTOUR] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-
-    properties.width = settings.value("penWidth", 12.0).toDouble();
-    properties.pressure = settings.value("penPressure", true).toBool();
-    properties.invisibility = OFF;
-    properties.stabilizerLevel = settings.value("penLineStabilization", StabilizationLevel::STRONG).toInt();
+    properties.width = settings.value("pencilWidth", 4).toDouble();
+    properties.pressure = settings.value("pencilPressure", true).toBool();
+    properties.stabilizerLevel = settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt();
+    properties.useAA = DISABLED;
+    properties.useFillContour = false;
 }
 
-void VectorPenTool::resetToDefault()
+void VectorPencilTool::resetToDefault()
 {
-    setWidth(12.0);
-    setPressure(true);
+    setWidth(4.0);
     setStabilizerLevel(StabilizationLevel::STRONG);
 }
 
-void VectorPenTool::setWidth(const qreal width)
+void VectorPencilTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
 
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("penWidth", width);
+    settings.setValue("pencilWidth", width);
     settings.sync();
 }
 
-void VectorPenTool::setPressure(const bool pressure)
+void VectorPencilTool::setInvisibility(const bool)
+{
+    // force value
+    properties.invisibility = 1;
+}
+
+void VectorPencilTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
 
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("penPressure", pressure);
+    settings.setValue("pencilPressure", pressure);
     settings.sync();
 }
 
-void VectorPenTool::setStabilizerLevel(const int level)
+void VectorPencilTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("penLineStabilization", level);
+    settings.setValue("pencilLineStabilization", level);
     settings.sync();
 }
 
-QCursor VectorPenTool::cursor()
+void VectorPencilTool::setUseFillContour(const bool useFillContour)
+{
+    properties.useFillContour = useFillContour;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("FillContour", useFillContour);
+    settings.sync();
+}
+
+QCursor VectorPencilTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/pen.png"), -5, 0);
+        return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
     }
     return Qt::CrossCursor;
 }
 
-void VectorPenTool::pointerPressEvent(PointerEvent *)
+void VectorPencilTool::pointerPressEvent(PointerEvent*)
 {
     mScribbleArea->setAllDirty();
 
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
+    startStroke();
+
     Q_ASSERT(mEditor->layers()->currentLayer()->type() == Layer::VECTOR);
 
-    startStroke();
+    // note: why are we doing this on device press event?
+    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    {
+        mScribbleArea->toggleThinLines();
+    }
 }
 
-void VectorPenTool::pointerMoveEvent(PointerEvent* event)
+void VectorPencilTool::pointerMoveEvent(PointerEvent* event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
@@ -120,43 +144,42 @@ void VectorPenTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void VectorPenTool::pointerReleaseEvent(PointerEvent*)
+void VectorPencilTool::pointerReleaseEvent(PointerEvent*)
 {
     mEditor->backup(typeName());
+    drawStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
-
-    drawStroke();
     paintVectorStroke(layer);
     endStroke();
 }
 
-void VectorPenTool::drawStroke()
+void VectorPencilTool::drawStroke()
 {
     StrokeTool::drawStroke();
     QList<QPointF> p = strokeManager()->interpolateStroke();
 
-    qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-    qreal brushWidth = properties.width * pressure;
-
-    int rad = qRound((brushWidth / 2 + 2) * mEditor->view()->scaling());
-
+    mCurrentWidth = 0; // FIXME: WTF?
     QPen pen(mEditor->color()->frontColor(),
-             brushWidth * mEditor->view()->scaling(),
-             Qt::SolidLine,
+             1,
+             Qt::DotLine,
              Qt::RoundCap,
              Qt::RoundJoin);
+
+    int rad = qRound((mCurrentWidth / 2 + 2) * mEditor->view()->scaling());
 
     if (p.size() == 4)
     {
         QPainterPath path(p[0]);
-        path.cubicTo(p[1], p[2], p[3]);
+        path.cubicTo(p[1],
+                     p[2],
+                     p[3]);
         mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
         mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
     }
 }
 
-void VectorPenTool::paintVectorStroke(Layer* layer)
+void VectorPencilTool::paintVectorStroke(Layer* layer)
 {
     if (mStrokePoints.empty())
         return;
@@ -166,23 +189,31 @@ void VectorPenTool::paintVectorStroke(Layer* layer)
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
     BezierCurve curve(mStrokePoints, mStrokePressures, tol);
-    curve.setWidth(properties.width);
-    curve.setFeather(properties.feather);
+    curve.setWidth(0);
+    curve.setFeather(0);
     curve.setFilled(false);
-    curve.setInvisibility(properties.invisibility);
-    curve.setVariableWidth(properties.pressure);
+    curve.setInvisibility(true);
+    curve.setVariableWidth(false);
     curve.setColourNumber(mEditor->color()->frontColorNumber());
+    VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
-    auto pLayerVector = static_cast<LayerVector*>(layer);
-    VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-    vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
+    vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), properties.vectorMergeEnabled);
+
+    if (properties.useFillContour)
+    {
+        vectorImage->fillContour(mStrokePoints,
+                                 mEditor->color()->frontColorNumber());
+    }
 
     if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected())
     {
         mEditor->deselectAll();
     }
 
+    // select last/newest curve
     vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
+
+    // TODO: selection doesn't apply on enter
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();

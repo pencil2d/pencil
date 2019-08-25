@@ -15,33 +15,28 @@ GNU General Public License for more details.
 
 */
 
-#ifndef BITMAPBUCKETTOOL_H
-#define BITMAPBUCKETTOOL_H
+#ifndef VECTOREYEDROPPERTOOL_H
+#define VECTOREYEDROPPERTOOL_H
 
-#include "stroketool.h"
+#include "basetool.h"
 
-class Layer;
 
-class BitmapBucketTool : public StrokeTool
+class VectorEyedropperTool : public BaseTool
 {
     Q_OBJECT
 public:
-    explicit BitmapBucketTool(QObject* parent = nullptr);
-    ToolType type() override;
+    explicit VectorEyedropperTool( QObject* parent = 0 );
+    ToolType type() override { return EYEDROPPER; }
     void loadSettings() override;
-    void resetToDefault() override;
     QCursor cursor() override;
+    QCursor cursor( const QColor colour );
 
-    void pointerPressEvent(PointerEvent*) override;
-    void pointerMoveEvent(PointerEvent*) override { }
-    void pointerReleaseEvent(PointerEvent*) override;
+    void pointerPressEvent( PointerEvent* ) override;
+    void pointerReleaseEvent( PointerEvent* event ) override;
+    void pointerMoveEvent( PointerEvent* ) override;
 
-    void setTolerance(const int tolerance) override;
-    void setWidth(const qreal width) override;
-
-    void paintBitmap(Layer* layer);
-
-private:
+    /** Updates front color for bitmap and color index for vector */
+    void updateFrontColor();
 };
 
-#endif // BITMAPBUCKETTOOL_H
+#endif // VECTOREYEDROPPERTOOL_H
