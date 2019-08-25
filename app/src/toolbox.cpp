@@ -253,12 +253,8 @@ void ToolBoxWidget::setToolOn()
 void ToolBoxWidget::saveToolUsed(ToolType toolType)
 {
     QSettings settings (PENCIL2D, PENCIL2D);
-    if (mLayerType == Layer::VECTOR) {
-        settings.setValue(SETTING_TOOL_VECTOR_LASTUSED, static_cast<int>(toolType));
-    } else if (mLayerType == Layer::BITMAP) {
-        settings.setValue(SETTING_TOOL_BITMAP_LASTUSED, static_cast<int>(toolType));
-    } else {
-        settings.setValue(SETTING_TOOL_CAMERA_LASTUSED, static_cast<int>(toolType));
+    if (mLayerType == Layer::VECTOR || mLayerType == Layer::BITMAP) {
+        settings.setValue(SETTING_TOOL_LASTUSED, static_cast<int>(toolType));
     }
 }
 

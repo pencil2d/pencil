@@ -101,11 +101,7 @@ void ToolManager::workingLayerChanged(Layer* layer)
 
         QSettings settings (PENCIL2D, PENCIL2D);
         ToolType toolType = INVALID_TOOL;
-        if (layerType == Layer::VECTOR) {
-            toolType = static_cast<ToolType>(settings.value(SETTING_TOOL_VECTOR_LASTUSED).toInt());
-        } else {
-            toolType = static_cast<ToolType>(settings.value(SETTING_TOOL_BITMAP_LASTUSED).toInt());
-        }
+        toolType = static_cast<ToolType>(settings.value(SETTING_TOOL_LASTUSED).toInt());
 
         setCurrentTool(toolType, layerType);
     }
