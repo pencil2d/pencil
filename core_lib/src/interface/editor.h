@@ -180,8 +180,8 @@ public: //slots
 
     void settingUpdated(SETTING);
 
-    void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
-    bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
+    void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
+    bool autoSaveNeverAskAgain() { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
 
 signals:
