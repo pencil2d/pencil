@@ -88,7 +88,6 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     Q_UNUSED(rect);
 
     paintBackground();
-    paintOnionSkin(painter);
 
     //painter.setClipRect(aligned); // this aligned rect is valid only for bitmap images.
     paintCurrentFrame(painter);
@@ -118,8 +117,8 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
     if (layer->keyFrameCount() == 0)
         return;
 
-    qreal minOpacity = mOptions.fOnionSkinMinOpacity / 100;
-    qreal maxOpacity = mOptions.fOnionSkinMaxOpacity / 100;
+    qreal minOpacity = static_cast<qreal>(mOptions.fOnionSkinMinOpacity / 100);
+    qreal maxOpacity = static_cast<qreal>(mOptions.fOnionSkinMaxOpacity / 100);
 
     if (mOptions.bPrevOnionSkin && mFrameNumber > 1)
     {
@@ -127,7 +126,13 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
         qreal opacity = maxOpacity;
 
-        int onionFrameNumber = layer->getPreviousFrameNumber(mFrameNumber, mOptions.bIsOnionAbsolute);
+        int onionFrameNumber = mFrameNumber;
+        if (mOptions.bIsOnionAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber+1, true);
+        }
+        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
+
         int onionPosition = 0;
 
         while (onionPosition < mOptions.nPrevOnionSkinCount && onionFrameNumber > 0)
@@ -255,7 +260,7 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
     // to our (not yet) scaled bitmap
     mScaledBitmap = origImage.copy();
 
-    if (mOptions.scaling >= 1.0)
+    if (mOptions.scaling >= 1.0f)
     {
         // TODO: Qt doesn't handle huge upscaled qimages well...
         // possible solution, myPaintLib canvas renderer splits its canvas up in chunks.
@@ -362,6 +367,11 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
         if (layer->visible() == false)
             continue;
 
+        if (i == mCurrentLayerIndex) {
+            paintOnionSkin(painter);
+            painter.setOpacity(1.0);
+        }
+
         if (i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0)
         {
             switch (layer->type())
@@ -458,14 +468,14 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
     {
         painter.setWorldMatrixEnabled(false);
         QTransform center = QTransform::fromTranslate(viewRect.width() / 2.0, viewRect.height() / 2.0);
-        boundingRect = viewRect.toRect();
+        boundingRect = viewRect.toAlignedRect();
         mCameraRect = center.mapRect(mCameraRect);
     }
     else
     {
         painter.setWorldMatrixEnabled(true);
         QTransform viewInverse = mViewTransform.inverted();
-        boundingRect = viewInverse.mapRect(viewRect).toRect();
+        boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
 
         QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);

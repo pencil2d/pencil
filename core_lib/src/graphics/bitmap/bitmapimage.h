@@ -65,6 +65,8 @@ public:
     QRgb pixel(QPoint p);
     void setPixel(int x, int y, QRgb colour);
     void setPixel(QPoint p, QRgb colour);
+    void fillNonAlphaPixels(const QRgb color);
+
     QRgb constScanLine(int x, int y);
     void scanLine(int x, int y, QRgb colour);
     void clear();
@@ -90,6 +92,11 @@ public:
     int width() { autoCrop(); return mBounds.width(); }
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
+
+    // peg bar alignment
+    Status::StatusInt findLeft(QRectF rect, int grayValue);
+    Status::StatusInt findTop(QRectF rect, int grayValue);
+
 
     QRect& bounds() { autoCrop(); return mBounds; }
 

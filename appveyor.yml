@@ -68,12 +68,12 @@ after_build:
     dir /s &
     md bin\plugins\ &
     echo "Copying ffmpeg plugin" &
-    call curl.exe -o bin\plugins\ffmpeg-3.4.1-win32-static.zip "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-3.4.1-win32-static.zip" &
-    call 7z.exe x bin\plugins\ffmpeg-3.4.1-win32-static.zip -o"bin\plugins" &
+    call curl.exe -o bin\plugins\ffmpeg-4.1.1-win32-static.zip "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-4.1.1-win32-static.zip" &
+    call 7z.exe x bin\plugins\ffmpeg-4.1.1-win32-static.zip -o"bin\plugins" &
     echo "move ffmpeg.exe and delete ffmpeg leftovers" &
-    del bin\plugins\ffmpeg-3.4.1-win32-static.zip &
-    move /y bin\plugins\ffmpeg-3.4.1-win32-static\bin\ffmpeg.exe bin\plugins &
-    rmdir /q /s bin\plugins\ffmpeg-3.4.1-win32-static &
+    del bin\plugins\ffmpeg-4.1.1-win32-static.zip &
+    move /y bin\plugins\ffmpeg-4.1.1-win32-static\bin\ffmpeg.exe bin\plugins &
+    rmdir /q /s bin\plugins\ffmpeg-4.1.1-win32-static &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
     echo "zipping" &
@@ -94,12 +94,12 @@ after_build:
     dir /s &
     md bin\plugins\ &
     echo "Copying ffmpeg plugin" &
-    call curl.exe -o bin\plugins\ffmpeg-3.4.1-win64-static.zip "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.4.1-win64-static.zip" &
-    call 7z.exe x bin\plugins\ffmpeg-3.4.1-win64-static.zip -o"bin\plugins" &
+    call curl.exe -o bin\plugins\ffmpeg-4.1.1-win64-static.zip "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.1.1-win64-static.zip" &
+    call 7z.exe x bin\plugins\ffmpeg-4.1.1-win64-static.zip -o"bin\plugins" &
     echo "move ffmpeg.exe and delete ffmpeg leftovers" &
-    del bin\plugins\ffmpeg-3.4.1-win64-static.zip &
-    move /y bin\plugins\ffmpeg-3.4.1-win64-static\bin\ffmpeg.exe bin\plugins &
-    rmdir /q /s bin\plugins\ffmpeg-3.4.1-win64-static &
+    del bin\plugins\ffmpeg-4.1.1-win64-static.zip &
+    move /y bin\plugins\ffmpeg-4.1.1-win64-static\bin\ffmpeg.exe bin\plugins &
+    rmdir /q /s bin\plugins\ffmpeg-4.1.1-win64-static &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
     echo "zipping" &

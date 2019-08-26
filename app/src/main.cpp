@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QFileInfo>
 #include <QDebug>
+#include <clocale>
 
 #include "editor.h"
 #include "mainwindow2.h"
@@ -313,6 +314,11 @@ int handleArguments(PencilApplication& app)
 
 int main(int argc, char* argv[])
 {
+
+    // iss #940
+    // Force dot separator on numbers because some localizations
+    // uses comma as separator.
+    std::setlocale(LC_NUMERIC, "en_US.UTF-8");
     Q_INIT_RESOURCE(core_lib);
 
     QSettings settings(PENCIL2D, PENCIL2D);

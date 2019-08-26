@@ -65,6 +65,8 @@ void PreferenceManager::loadPrefs()
     set(SETTING::SHADOW,                   settings.value(SETTING_SHADOW,                 false).toBool());
     set(SETTING::QUICK_SIZING,             settings.value(SETTING_QUICK_SIZING,           true).toBool());
 
+    set(SETTING::ROTATION_INCREMENT,       settings.value(SETTING_ROTATION_INCREMENT,     15).toInt());
+
     set(SETTING::WINDOW_OPACITY,           settings.value(SETTING_WINDOW_OPACITY,         0).toInt());
     set(SETTING::CURVE_SMOOTHING,          settings.value(SETTING_CURVE_SMOOTHING,        20).toInt());
 
@@ -78,8 +80,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::FIELD_H,                  settings.value(SETTING_FIELD_H,                600).toInt());
 
     // Files
-    set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              true ).toBool());
-    set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       25).toInt());
+    set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       256).toInt());
     set(SETTING::ASK_FOR_PRESET,           settings.value(SETTING_ASK_FOR_PRESET,         true).toBool());
     set(SETTING::DEFAULT_PRESET,           settings.value(SETTING_DEFAULT_PRESET,         0).toInt());
 
@@ -245,6 +246,9 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::ONION_WHILE_PLAYBACK:
         settings.setValue(SETTING_ONION_WHILE_PLAYBACK, value);
+        break;
+    case SETTING::ROTATION_INCREMENT:
+        settings.setValue(SETTING_ROTATION_INCREMENT, value);
         break;
     case SETTING::FPS:
         settings.setValue(SETTING_FPS, value);

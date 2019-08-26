@@ -246,8 +246,8 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
  */
 QPixmap BaseTool::quickSizeCursor(float brushWidth, float brushFeather, float scalingFac)
 {
-    float propWidth = brushWidth * scalingFac;
-    float propFeather = brushFeather * scalingFac;
+    float propWidth = qMax(static_cast<float>(0), brushWidth) * scalingFac;
+    float propFeather = qMax(static_cast<float>(0), brushFeather) * scalingFac;
     float cursorWidth = propWidth + 0.5 * propFeather;
 
     if (cursorWidth < 1) { cursorWidth = 1; }
@@ -299,13 +299,13 @@ void BaseTool::stopAdjusting()
     mEditor->getScribbleArea()->updateCanvasCursor();
 }
 
-void BaseTool::adjustCursor(qreal argOffsetX, Qt::KeyboardModifiers keyMod) //offsetx x-lastx ...
+void BaseTool::adjustCursor(Qt::KeyboardModifiers keyMod)
 {
     ToolPropertyType propertyType;
     propertyType = (keyMod & Qt::ControlModifier) ? FEATHER : WIDTH;
 
     qreal inc = qPow(msOriginalPropertyValue * 100, 0.5);
-    qreal newValue = inc + argOffsetX;
+    qreal newValue = inc + getCurrentPoint().x();
     int max = (propertyType == FEATHER) ? 200 : 200;
     int min = (propertyType == FEATHER) ? 2 : 1;
 

@@ -53,7 +53,7 @@ void ToolOptionWidget::initUI()
     ui->featherSlider->setValue(settings.value("brushFeather", "5").toDouble());
     ui->featherSpinBox->setValue(settings.value("brushFeather", "5").toDouble());
 
-    ui->toleranceSlider->init(tr("Color Tolerance"), SpinSlider::LINEAR, SpinSlider::INTEGER, 1, 100);
+    ui->toleranceSlider->init(tr("Color Tolerance"), SpinSlider::LINEAR, SpinSlider::INTEGER, 0, 100);
     ui->toleranceSlider->setValue(settings.value("Tolerance", "50").toInt());
     ui->toleranceSpinBox->setValue(settings.value("Tolerance", "50").toInt());
 }
@@ -99,7 +99,9 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     auto spinboxValueChanged = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
     connect(ui->brushSpinBox, spinboxValueChanged, toolManager, &ToolManager::setWidth);
+    clearFocusOnFinished(ui->brushSpinBox);
     connect(ui->featherSpinBox, spinboxValueChanged, toolManager, &ToolManager::setFeather);
+    clearFocusOnFinished(ui->featherSpinBox);
 
     connect(ui->useFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather);
 
@@ -110,6 +112,7 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->toleranceSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setTolerance);
     connect(ui->toleranceSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setTolerance);
+    clearFocusOnFinished(ui->toleranceSpinBox);
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
 

@@ -39,6 +39,7 @@ GNU General Public License for more details.
 #include "canvaspainter.h"
 #include "preferencemanager.h"
 #include "strokemanager.h"
+#include "selectionpainter.h"
 
 class Layer;
 class Editor;
@@ -58,7 +59,7 @@ class ScribbleArea : public QWidget
 
 public:
     ScribbleArea(QWidget* parent);
-    ~ScribbleArea();
+    ~ScribbleArea() override;
 
     bool init();
     void setEditor(Editor* e) { mEditor = e; }
@@ -66,33 +67,15 @@ public:
     Editor* editor() const { return mEditor; }
 
     void deleteSelection();
-    void setSelection(QRectF rect);
-    void adjustSelection(float offsetX, float offsetY, qreal rotatedAngle);
     void applySelectionChanges();
     void displaySelectionProperties();
-    void resetSelectionProperties();
 
-    bool isSomethingSelected() const;
-    QRectF getSelection() const { return mySelection; }
-    void calculateSelectionRect();
-    void calculateSelectionTransformation();
     void paintTransformedSelection();
     void applyTransformedSelection();
     void cancelTransformedSelection();
 
-    inline bool transformHasBeenModified() { return (mySelection != myTempTransformedSelection) || myRotatedAngle != 0; }
-
-    QRectF mySelection;
-    QRectF myTransformedSelection;
-    QRectF myTempTransformedSelection;
-    qreal myRotatedAngle = 0.0;
-    QList<int> mClosestCurves;
-
-    bool areLayersSane() const;
     bool isLayerPaintable() const;
     bool allowSmudging();
-
-    void flipSelection(bool flipVertical);
 
     QVector<QPoint> calcSelectionCenterPoints();
 
@@ -102,13 +85,6 @@ public:
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
-
-    void setMoveMode(MoveMode moveMode) { mMoveMode = moveMode; }
-    MoveMode getMoveMode() const { return mMoveMode; }
-    void findMoveModeOfCornerInRange();
-    MoveMode getMoveModeForSelectionAnchor();
-
-    QPointF whichAnchorPoint(QPointF anchorPoint);
 
     QRectF getCameraRect();
     QPointF getCentralPoint();
@@ -123,6 +99,8 @@ public:
     bool shouldUpdateAll() const { return mNeedUpdateAll; }
     void setAllDirty() { mNeedUpdateAll = true; }
 
+    void flipSelection(bool flipVertical);
+
     BaseTool* currentTool();
     BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
@@ -135,7 +113,8 @@ public:
     bool isPointerInUse() const { return mMouseInUse || mStrokeManager->isTabletInUse(); }
     bool isTemporaryTool() const { return mInstantTool; }
 
-    void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
+    void keyEvent(QKeyEvent* event);
+    void keyEventForSelection(QKeyEvent* event);
 
 signals:
     void modification(int);
@@ -144,9 +123,6 @@ signals:
 
 public slots:
     void clearImage();
-    void selectAll();
-    void deselectAll();
-
     void setCurveSmoothing(int);
     void toggleThinLines();
     void toggleOutlines();
@@ -156,8 +132,6 @@ public slots:
     void paletteColorChanged(QColor);
 
     bool isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod);
-
-    QPointF getCurrentOffset();
 
     void showLayerNotVisibleWarning();
 
@@ -207,12 +181,10 @@ public:
     QPixmap mCursorImg;
     QPixmap mTransCursImg;
 
-    QPointF getTransformOffset() { return mOffset; }
-
 private:
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
-    void paintSelectionVisuals(QPainter& painter);
+    void paintSelectionVisuals();
 
     BitmapImage* currentBitmapImage(Layer* layer) const;
     VectorImage* currentVectorImage(Layer* layer) const;
@@ -254,27 +226,18 @@ private:
     const int DOUBLE_CLICK_THRESHOLD = 500;
     QTimer* mDoubleClickTimer;
 
-    qreal mSelectionTolerance = 8.0;
-    QList<VertexRef> mClosestVertices;
-    QPointF mOffset;
     QPoint mCursorCenterPos;
 
     QPointF mTransformedCursorPos;
 
     //instant tool (temporal eg. eraser)
     bool mInstantTool = false; //whether or not using temporal tool
-    bool mSomethingSelected = false;
-
-    VectorSelection vectorSelection;
-    QTransform selectionTransformation;
-
-    QPolygonF mCurrentTransformSelection;
-    QPolygonF mLastTransformSelection;
 
     PreferenceManager* mPrefs = nullptr;
 
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
+    SelectionPainter mSelectionPainter;
 
     // Pixmap Cache keys
     std::vector<QPixmapCache::Key> mPixmapCacheKeys;

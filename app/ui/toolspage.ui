@@ -33,7 +33,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>286</width>
+        <width>313</width>
         <height>566</height>
        </rect>
       </property>
@@ -41,7 +41,7 @@
        <item>
         <widget class="QGroupBox" name="onionSkinBox">
          <property name="title">
-          <string>Onion skin</string>
+          <string>Onion Skin</string>
          </property>
          <layout class="QVBoxLayout" name="lay">
           <item>
@@ -154,6 +154,13 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QCheckBox" name="onionSkinMode">
+            <property name="text">
+             <string>Skip empty frames</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -167,6 +174,45 @@
            <widget class="QCheckBox" name="useQuickSizingBox">
             <property name="text">
              <string>Use Quick Sizing</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="moveBox">
+         <property name="title">
+          <string>Move Tool</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QLabel" name="rotationIncrementLabel">
+            <property name="text">
+             <string>Rotation snap increment</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="rotationIncrementSlider">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>359</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="rotationIncrementDisplay">
+            <property name="text">
+             <string>15 degrees</string>
             </property>
            </widget>
           </item>

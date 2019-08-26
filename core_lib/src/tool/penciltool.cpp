@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "viewmanager.h"
 #include "preferencemanager.h"
+#include "selectionmanager.h"
 
 #include "editor.h"
 #include "scribblearea.h"
@@ -322,9 +323,9 @@ void PencilTool::paintVectorStroke(Layer* layer)
                                  mEditor->color()->frontColorNumber());
     }
 
-    if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected())
+    if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected())
     {
-        mScribbleArea->deselectAll();
+        mEditor->deselectAll();
     }
 
     // select last/newest curve

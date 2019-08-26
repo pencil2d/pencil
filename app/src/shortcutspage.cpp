@@ -47,6 +47,9 @@ ShortcutsPage::ShortcutsPage( QWidget* parent )
     connect( ui->keySequenceEdit, &QKeySequenceEdit::editingFinished, this, &ShortcutsPage::keyCapLineEditTextChanged );
     connect( ui->restoreShortcutsButton, &QPushButton::clicked, this, &ShortcutsPage::restoreShortcutsButtonClicked );
     connect( ui->clearButton, &QPushButton::clicked, this, &ShortcutsPage::clearButtonClicked );
+
+    ui->treeView->selectionModel()->select(QItemSelection(m_treeModel->index(0, 0), m_treeModel->index(0, m_treeModel->columnCount() - 1)), QItemSelectionModel::Select);
+    tableItemClicked(m_treeModel->index(0, 0));
 }
 
 void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
