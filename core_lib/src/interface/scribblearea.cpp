@@ -390,13 +390,8 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         }
 
         BackupManager* backups = mEditor->backups();
-        if (event->phase() == Qt::ScrollBegin) {
-            backups->saveStates();
-        }
-
-        if (event->phase() == Qt::ScrollEnd) {
-            backups->cameraMotion();
-        }
+        backups->saveStates();
+        backups->cameraMotion();
     }
 
     const QPoint pixels = event->pixelDelta();
