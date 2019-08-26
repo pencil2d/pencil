@@ -51,6 +51,8 @@ public:
     // view
     void ZoomIn();
     void ZoomOut();
+    void zoomTo(const float value);
+    void resetView();
     void rotateClockwise();
     void rotateCounterClockwise();
     void toggleMirror();

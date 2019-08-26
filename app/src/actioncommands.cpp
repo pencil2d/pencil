@@ -445,26 +445,78 @@ void ActionCommands::deselectAll()
     mEditor->backups()->deselect();
 }
 
+void ActionCommands::resetView()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA) {
+        mEditor->backups()->saveStates();
+        mEditor->view()->resetView();
+        mEditor->backups()->cameraMotion();
+    } else {
+        mEditor->view()->resetView();
+    }
+}
+
+void ActionCommands::zoomTo(const float value)
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA) {
+        mEditor->backups()->saveStates();
+        mEditor->view()->scale(value);
+        mEditor->backups()->cameraMotion();
+    } else {
+        mEditor->view()->scale(value);
+    }
+}
+
 void ActionCommands::ZoomIn()
 {
-    mEditor->view()->scaleUp();
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA) {
+        mEditor->backups()->saveStates();
+        mEditor->view()->scaleUp();
+        mEditor->backups()->cameraMotion();
+    } else {
+        mEditor->view()->scaleUp();
+    }
 }
 
 void ActionCommands::ZoomOut()
 {
-    mEditor->view()->scaleDown();
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA) {
+        mEditor->backups()->saveStates();
+        mEditor->view()->scaleDown();
+        mEditor->backups()->cameraMotion();
+    } else {
+        mEditor->view()->scaleDown();
+    }
 }
 
 void ActionCommands::rotateClockwise()
 {
     float currentRotation = mEditor->view()->rotation();
-    mEditor->view()->rotate(currentRotation + 15.f);
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA) {
+        mEditor->backups()->saveStates();
+        mEditor->view()->rotate(currentRotation + 15.f);
+        mEditor->backups()->cameraMotion();
+    } else {
+        mEditor->view()->rotate(currentRotation + 15.f);
+    }
 }
 
 void ActionCommands::rotateCounterClockwise()
 {
     float currentRotation = mEditor->view()->rotation();
-    mEditor->view()->rotate(currentRotation - 15.f);
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA) {
+        mEditor->backups()->saveStates();
+        mEditor->view()->rotate(currentRotation - 15.f);
+        mEditor->backups()->cameraMotion();
+    } else {
+        mEditor->view()->rotate(currentRotation - 15.f);
+    }
 }
 
 void ActionCommands::toggleMirror()

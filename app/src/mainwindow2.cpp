@@ -303,14 +303,14 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
     connect(ui->actionRotate_Anticlockwise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
-    connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
-    connect(ui->actionZoom400, &QAction::triggered, mEditor->view(), &ViewManager::scale400);
-    connect(ui->actionZoom300, &QAction::triggered, mEditor->view(), &ViewManager::scale300);
-    connect(ui->actionZoom200, &QAction::triggered, mEditor->view(), &ViewManager::scale200);
-    connect(ui->actionZoom100, &QAction::triggered, mEditor->view(), &ViewManager::scale100);
-    connect(ui->actionZoom50, &QAction::triggered, mEditor->view(), &ViewManager::scale50);
-    connect(ui->actionZoom33, &QAction::triggered, mEditor->view(), &ViewManager::scale33);
-    connect(ui->actionZoom25, &QAction::triggered, mEditor->view(), &ViewManager::scale25);
+    connect(ui->actionReset_View, &QAction::triggered, mCommands, &ActionCommands::resetView);
+    connect(ui->actionZoom400,  &QAction::triggered, this, [this]{ mCommands->zoomTo(4); });
+    connect(ui->actionZoom300,  &QAction::triggered, this, [this]{ mCommands->zoomTo(3); });
+    connect(ui->actionZoom200,  &QAction::triggered, this, [this]{ mCommands->zoomTo(2); });
+    connect(ui->actionZoom100,  &QAction::triggered, this, [this]{ mCommands->zoomTo(1); });
+    connect(ui->actionZoom50,  &QAction::triggered, this, [this]{ mCommands->zoomTo(0.5f); });
+    connect(ui->actionZoom33,  &QAction::triggered, this, [this]{ mCommands->zoomTo(0.33f); });
+    connect(ui->actionZoom25,  &QAction::triggered, this, [this]{ mCommands->zoomTo(0.25f); });
     connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
     connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
 
