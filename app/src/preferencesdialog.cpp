@@ -456,6 +456,9 @@ FilesPage::FilesPage()
     ui->startupPresets->addItem(defaultItem);
     defaultItem->setData(Qt::UserRole, QVariant(0));
     defaultItem->setBackground(this->palette().background());
+    QFont boldFont = defaultItem->font();
+    boldFont.setBold(true);
+    defaultItem->setFont(boldFont);
     mStartPreset = mDefaultPreset = defaultItem;
 
     connect(ui->addPreset, &QPushButton::clicked, this, &FilesPage::addPreset);
@@ -492,11 +495,7 @@ void FilesPage::addPreset()
     QListWidgetItem *newItem = new QListWidgetItem("Untitled Preset");
     newItem->setFlags(newItem->flags() | Qt::ItemIsEditable);
     newItem->setData(Qt::UserRole, QVariant(mMaxPresetIndex));
-    mStartPreset->setBackground(this->palette().light());
-    mStartPreset = newItem;
-    mStartPreset->setBackground(this->palette().background());
     ui->startupPresets->addItem(newItem);
-    mManager->set(SETTING::DEFAULT_PRESET, mMaxPresetIndex);
     mPresets->setValue(QString::number(mMaxPresetIndex), newItem->text());
 }
 
@@ -527,9 +526,13 @@ void FilesPage::removePreset()
 void FilesPage::setDefaultPreset()
 {
     QListWidgetItem *item = ui->startupPresets->selectedItems().last();
-    mStartPreset->setBackground(this->palette().light());
+    mStartPreset->setBackground(palette().light());
+    QFont font = mStartPreset->font();
+    item->setFont(font);
+    item->setBackground(palette().background());
+    font.setBold(false);
+    mStartPreset->setFont(font);
     mStartPreset = item;
-    mStartPreset->setBackground(this->palette().background());
     bool ok = true;
     mManager->set(SETTING::DEFAULT_PRESET, item->data(Qt::UserRole).toInt(&ok));
     Q_ASSERT(ok);
@@ -557,8 +560,13 @@ void FilesPage::updateValues()
         {
             if(ui->startupPresets->item(i)->data(Qt::UserRole).toInt(&ok) == defaultPreset)
             {
+                QFont font = mStartPreset->font();
+                font.setBold(false);
+                mStartPreset->setFont(font);
                 mStartPreset->setBackground(this->palette().light());
                 mStartPreset = ui->startupPresets->item(i);
+                font.setBold(true);
+                mStartPreset->setFont(font);
                 mStartPreset->setBackground(this->palette().background());
             }
             Q_ASSERT(ok);
