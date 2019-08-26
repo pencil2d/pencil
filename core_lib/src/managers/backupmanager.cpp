@@ -363,7 +363,9 @@ void BackupManager::cameraMotion()
 {
     if (mLayer == NULL) { return; }
 
-    CameraMotionElement* element = new CameraMotionElement(mTranslation,
+    CameraMotionElement* element = new CameraMotionElement(mFrameIndex,
+                                                           mLayerId,
+                                                           mTranslation,
                                                            mRotation,
                                                            mScale,
                                                            editor());

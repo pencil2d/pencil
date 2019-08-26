@@ -332,9 +332,11 @@ class CameraMotionElement : public BackupElement
 public:
 
     enum { Id = 3 };
-    CameraMotionElement(const QPointF& backupTranslation,
-                        const float& backupRotation,
-                        const float& backupScale,
+    CameraMotionElement(const int backupFrameIndex,
+                        const int backupLayerId,
+                        const QPointF& backupTranslation,
+                        const float backupRotation,
+                        const float backupScale,
                         Editor* editor,
                         QUndoCommand* parent = nullptr);
 
@@ -346,6 +348,9 @@ public:
     QPointF newTranslation = QPointF(0,0);
     float  newRotation = 0.0f;
     float newScale = 0.0f;
+
+    int frameIndex = 0;
+    int layerId = 0;
 
     bool isFirstRedo = true;
 

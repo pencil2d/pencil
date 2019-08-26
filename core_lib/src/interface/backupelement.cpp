@@ -747,12 +747,17 @@ void ImportBitmapElement::redo()
     editor()->updateCurrentFrame();
 }
 
-CameraMotionElement::CameraMotionElement(const QPointF& backupTranslation,
-                                         const float& backupRotation,
-                                         const float& backupScale,
+CameraMotionElement::CameraMotionElement(const int backupFrameIndex,
+                                         const int backupLayerId,
+                                         const QPointF& backupTranslation,
+                                         const float backupRotation,
+                                         const float backupScale,
                                          Editor* editor,
                                          QUndoCommand* parent) : BackupElement(editor, parent)
 {
+
+    frameIndex = backupFrameIndex;
+    layerId = backupLayerId;
 
     oldTranslation = backupTranslation;
     oldRotation = backupRotation;
@@ -780,11 +785,13 @@ void CameraMotionElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
+    Layer* layer = editor()->layers()->findLayerById(layerId);
+    editor()->scrubTo(layer, frameIndex);
+
     ViewManager* viewMgr = editor()->view();
     viewMgr->translate(newTranslation);
     viewMgr->rotate(newRotation);
     viewMgr->scale(newScale);
-
 }
 
 bool CameraMotionElement::mergeWith(const QUndoCommand *other)

@@ -44,6 +44,7 @@ class SoundManager;
 class ScribbleArea;
 class TimeLine;
 class BackupElement;
+class Layer;
 
 class BackupManager;
 class ActiveFramePool;
@@ -104,6 +105,7 @@ public:
     void setCurrentLayerIndex(int i);
 
     void scrubTo(int frameNumber);
+    void scrubTo(Layer* layer, const int frameIndex);
 
     int  allLayers();
     bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);

@@ -653,6 +653,12 @@ void Editor::setCurrentLayerIndex(int i)
     }
 }
 
+void Editor::scrubTo(Layer* layer, const int frameIndex)
+{
+    layers()->setCurrentLayer(layer);
+    scrubTo(frameIndex);
+}
+
 void Editor::scrubTo(int frame)
 {
     if (frame < 1) { frame = 1; }
