@@ -109,8 +109,9 @@ void ColorPaletteWidget::showContextMenu(const QPoint &pos)
     if (editor()->layers()->currentLayer()->type() == Layer::BITMAP)
     {
         menu->addSeparator();
-        menu->addAction(tr("Replace linecolor, active drawing"), this, &ColorPaletteWidget::replaceLineColorSingle, 0);
-        menu->addAction(tr("Replace linecolor, ALL drawings"), this, &ColorPaletteWidget::replaceLineColor, 0);
+        QMenu* replaceLineColor = menu->addMenu(tr("Replace Line Color"));
+        replaceLineColor->addAction(tr("Current keyframe"), this, &ColorPaletteWidget::replaceLineColor, 0);
+        replaceLineColor->addAction(tr("All keyframes on current layer"), this, &ColorPaletteWidget::replaceLineColorForAllKeyFrames, 0);
     }
 
     menu->exec(globalPos);
@@ -151,13 +152,13 @@ void ColorPaletteWidget::removeItem()
     clickRemoveColorButton();
 }
 
-void ColorPaletteWidget::replaceLineColorSingle()
+void ColorPaletteWidget::replaceLineColor()
 {
     mReplaceLineColorAll = false;
-    replaceLineColor();
+    replaceLineColorForAllKeyFrames();
 }
 
-void ColorPaletteWidget::replaceLineColor()
+void ColorPaletteWidget::replaceLineColorForAllKeyFrames()
 {
     if (mMultipleSelected) { return; }
 
@@ -176,7 +177,7 @@ void ColorPaletteWidget::replaceLineColor()
     }
     else
     {
-        int org = editor()->currentFrame();
+        int currentFrame = editor()->currentFrame();
         for (int i = 1; i <= layerbitmap->getMaxKeyFramePosition(); i++)
         {
             if (layerbitmap->keyExists(i))
@@ -185,7 +186,7 @@ void ColorPaletteWidget::replaceLineColor()
                 layerbitmap->getBitmapImageAtFrame(i)->fillNonAlphaPixels(newlinecolor);
             }
         }
-        editor()->scrubTo(org);
+        editor()->scrubTo(currentFrame);
     }
     mReplaceLineColorAll = true;
 }

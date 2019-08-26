@@ -79,8 +79,8 @@ private slots:
     void addItem();
     void replaceItem();
     void removeItem();
-    void replaceLineColorSingle();
     void replaceLineColor();
+    void replaceLineColorForAllKeyFrames();
     void showPaletteReminder();
 
     bool showPaletteWarning();
