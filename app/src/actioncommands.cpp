@@ -431,13 +431,16 @@ void ActionCommands::flipSelectionY()
 
 void ActionCommands::selectAll()
 {
+    mEditor->backups()->saveStates();
     mEditor->selectAll();
+    mEditor->backups()->selection();
 }
 
 void ActionCommands::deselectAll()
 {
     mEditor->backups()->saveStates();
     mEditor->deselectAll();
+    mEditor->backups()->deselect();
 }
 
 void ActionCommands::ZoomIn()
