@@ -438,6 +438,8 @@ void ActionCommands::selectAll()
 
 void ActionCommands::deselectAll()
 {
+    if (!mEditor->select()->somethingSelected()) { return; }
+
     mEditor->backups()->saveStates();
     mEditor->deselectAll();
     mEditor->backups()->deselect();
