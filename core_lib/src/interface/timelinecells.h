@@ -114,6 +114,7 @@ private:
     int mLastFrameNumber = -1;
     int mMouseMoveY = 0;
     int mMouseMoveX = 0;
+    int mPrevFrame = 0;
     int mFrameOffset = 0;
     int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;
