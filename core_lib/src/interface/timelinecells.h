@@ -76,6 +76,7 @@ public slots:
     void setMouseMoveY(int x);
 
 protected:
+    void trackScrubber();
     void drawContent();
     void paintOnionSkin(QPainter& painter);
     void paintEvent(QPaintEvent* event);

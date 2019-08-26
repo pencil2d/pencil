@@ -424,21 +424,14 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             paintOnionSkin(painter);
         }
 
-        // --- draw the position of the current frame
-        if (mEditor->playback()->isPlaying() && mEditor->currentFrame() < mFrameOffset)
+        if (mEditor->playback()->isPlaying())
         {
-            mFrameOffset = mEditor->currentFrame() - 1;
-            emit offsetChanged(mFrameOffset);
-            mTimeLine->updateContent();
+            trackScrubber();
         }
-        else
+
+        // --- draw the position of the current frame
+        if (mEditor->currentFrame() > mFrameOffset)
         {
-            if (mEditor->playback()->isPlaying() && width() < (mEditor->currentFrame() - mFrameOffset + 1) * mFrameSize)
-            {
-                mFrameOffset = mFrameOffset + ((mEditor->currentFrame() - mFrameOffset) / 2);
-                emit offsetChanged(mFrameOffset);
-                mTimeLine->updateContent();
-            }
             painter.setBrush(QColor(255, 0, 0, 128));
             painter.setPen(Qt::NoPen);
             //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
@@ -771,5 +764,24 @@ void TimeLineCells::setMouseMoveY(int x)
     if (x == 0)
     {
         update();
+    }
+}
+
+void TimeLineCells::trackScrubber()
+{
+    if (mEditor->currentFrame() < mFrameOffset)
+    {
+        mFrameOffset = mEditor->currentFrame() - 1;
+        emit offsetChanged(mFrameOffset);
+        mTimeLine->updateContent();
+    }
+    else
+    {
+        if (width() < (mEditor->currentFrame() - mFrameOffset + 1) * mFrameSize)
+        {
+            mFrameOffset = mFrameOffset + ((mEditor->currentFrame() - mFrameOffset) / 2);
+            emit offsetChanged(mFrameOffset);
+            mTimeLine->updateContent();
+        }
     }
 }
