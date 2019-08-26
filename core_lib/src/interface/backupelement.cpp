@@ -776,6 +776,9 @@ void CameraMotionElement::undo()
 {
     ViewManager* viewMgr = editor()->view();
 
+    Layer* layer = editor()->layers()->findLayerById(layerId);
+    editor()->scrubTo(layer, frameIndex);
+
     viewMgr->translate(oldTranslation);
     viewMgr->rotate(oldRotation);
     viewMgr->scale(oldScale);
