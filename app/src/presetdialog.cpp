@@ -26,10 +26,21 @@ PresetDialog::~PresetDialog()
 
 QString PresetDialog::getPreset()
 {
+    int index = getPresetIndex();
+    return PresetDialog::getPresetPath(index);
+}
+
+int PresetDialog::getPresetIndex()
+{
     bool ok = true;
     int index = ui->presetComboBox->currentData().toInt(&ok);
     Q_ASSERT(ok);
-    return PresetDialog::getPresetPath(index);
+    return index;
+}
+
+bool PresetDialog::shouldAlwaysUse()
+{
+    return ui->alwaysUse->isChecked();
 }
 
 QString PresetDialog::getPresetPath(int index)

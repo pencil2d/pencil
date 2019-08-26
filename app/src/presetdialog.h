@@ -21,6 +21,8 @@ public:
     ~PresetDialog() override;
 
     QString getPreset();
+    int getPresetIndex();
+    bool shouldAlwaysUse();
     static QString getPresetPath(int index);
 
 public slots:

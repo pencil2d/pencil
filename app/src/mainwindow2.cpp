@@ -1066,6 +1066,12 @@ bool MainWindow2::loadNewObject()
         PresetDialog presetDialog(mEditor->preference(), this);
         if (presetDialog.exec() == QDialog::Accepted)
         {
+            if (presetDialog.shouldAlwaysUse())
+            {
+                mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
+                mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetDialog.getPresetIndex());
+            }
+
             FileManager fm(this);
             object = fm.load(presetDialog.getPreset());
             if (!fm.error().ok()) object = nullptr;
