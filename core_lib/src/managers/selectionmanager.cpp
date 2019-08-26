@@ -297,7 +297,21 @@ void SelectionManager::calculateSelectionTransformation()
 
     mSelectionTransform.translate(centerPoints[0].x(), centerPoints[0].y());
     mSelectionTransform.rotate(mRotatedAngle);
-    mSelectionTransform.scale(mScaleX,mScaleY);
+
+    if (mSelection.isValid())
+    {
+        qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
+        qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
+
+        if (mScaleX < 0) {
+            scaleX = -scaleX;
+        }
+        if (mScaleY < 0) {
+            scaleY = -scaleY;
+        }
+        mSelectionTransform.scale(scaleX, scaleY);
+    }
+    mSelectionTransform.fromScale(mScaleX,mScaleY);
 
     mSelectionTransform.translate(-centerPoints[1].x(), -centerPoints[1].y());
 }
