@@ -57,7 +57,7 @@ public:
 
     void restoreKey(const int& layerId, const int& frame, KeyFrame* keyFrame);
 
-    static int getActiveFrameIndex(Layer* layer, const int& frameIndex, const bool& usingPreviousFrameAction);
+    static int getActiveFrameIndex(Layer* layer, const int frameIndex, const DrawOnEmptyFrameAction frameAction);
 
     const BackupElement* currentBackup();
 
@@ -107,6 +107,8 @@ private:
     MoveMode mMoveMode;
 
     Layer::LAYER_TYPE mLayerType;
+
+    DrawOnEmptyFrameAction mEmptyFrameSettingVal;
 
 };
 

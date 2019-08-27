@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "layer.h"
 #include "vectorselection.h"
+#include "preferencemanager.h"
 
 class Editor;
 class BackupManager;
@@ -64,6 +65,7 @@ class AddBitmapElement : public BackupElement
 public:
     AddBitmapElement(const BitmapImage* backupBitmap,
                      const int& backupLayerId,
+                     const DrawOnEmptyFrameAction& frameAction,
                      QString description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
@@ -99,6 +101,7 @@ class AddVectorElement : public BackupElement
 public:
     AddVectorElement(const VectorImage* backupVector,
                      const int& backupLayerId,
+                     const DrawOnEmptyFrameAction& backupFrameAction,
                      QString description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
@@ -125,13 +128,17 @@ class AddKeyFrameElement : public BackupElement
 {
 public:
     enum { Id = 5 };
-    AddKeyFrameElement(const int& backupFrameIndex,
-                       const int& backupLayerId,
-                       const int& backupKeySpacing,
-                       const bool& backupKeyExisted,
+    AddKeyFrameElement(const int backupFrameIndex,
+                       const int backupLayerId,
+                       const DrawOnEmptyFrameAction& backupFrameAction,
+                       const int backupKeySpacing,
+                       const bool backupKeyExisted,
                        QString description,
                        Editor* editor,
                        QUndoCommand* parent = nullptr);
+
+    void undoSequence();
+    void redoSequence();
 
 
     int newLayerIndex = 0;
@@ -242,6 +249,7 @@ public:
     enum { Id = 2 };
     TransformElement(const KeyFrame* backupKeyFrame,
                      const int backupLayerId,
+                     const DrawOnEmptyFrameAction& backupFrameAction,
                      const QRectF& backupSelectionRect,
                      const QRectF& backupTempSelectionRect,
                      const QRectF& backupTransformedSelectionRect,

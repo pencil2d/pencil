@@ -82,6 +82,7 @@ void BackupManager::keyAdded(const int& keySpacing, const bool& keyExisted, cons
 
     AddKeyFrameElement* element = new AddKeyFrameElement(mFrameIndex,
                                                          mLayerId,
+                                                         mEmptyFrameSettingVal,
                                                          keySpacing,
                                                          keyExisted,
                                                          description,
@@ -97,6 +98,7 @@ void BackupManager::keyAdded(const QString& description)
 
     AddKeyFrameElement* element = new AddKeyFrameElement(mFrameIndex,
                                                          mLayerId,
+                                                         mEmptyFrameSettingVal,
                                                          false,
                                                          false,
                                                          description,
@@ -136,6 +138,7 @@ void BackupManager::bitmap(const QString& description)
     if (!mBitmap) { return; }
     AddBitmapElement* element = new AddBitmapElement(mBitmap,
                                                      mLayerId,
+                                                     mEmptyFrameSettingVal,
                                                      description,
                                                      editor());
 
@@ -143,6 +146,7 @@ void BackupManager::bitmap(const QString& description)
     {
         new TransformElement(mKeyframe,
                              mLayerId,
+                             mEmptyFrameSettingVal,
                              mSelectionRect,
                              mTempSelectionRect,
                              mTransformedSelectionRect,
@@ -163,6 +167,7 @@ void BackupManager::vector(const QString& description)
     if (!mVector) { return; }
     AddVectorElement* element = new AddVectorElement(mVector,
                                                      mLayerId,
+                                                     mEmptyFrameSettingVal,
                                                      description,
                                                      editor());
     mUndoStack->push(element);
@@ -203,6 +208,7 @@ void BackupManager::transform(const QString& description)
     if (!mIsSelected) { return; }
     TransformElement* element = new TransformElement(mKeyframe,
                                                      mLayerId,
+                                                     mEmptyFrameSettingVal,
                                                      mSelectionRect,
                                                      mTempSelectionRect,
                                                      mTransformedSelectionRect,
@@ -226,11 +232,11 @@ void BackupManager::transform(const QString& description)
  * @param usingPreviousFrameAction <- This is whether DRAW_ON_EMPTY_FRAME_ACTION is active
  * @return frameindex
  */
-int BackupManager::getActiveFrameIndex(Layer* layer, const int& frameIndex, const bool& usingPreviousFrameAction)
+int BackupManager::getActiveFrameIndex(Layer* layer, const int frameIndex, const DrawOnEmptyFrameAction& frameAction)
 {
     int activeFrameIndex = frameIndex;
     if (!layer->keyExists(frameIndex)) {
-        if (usingPreviousFrameAction)
+        if (frameAction == DrawOnEmptyFrameAction::KEEP_DRAWING_ON_PREVIOUS_KEY)
         {
             activeFrameIndex = layer->getPreviousKeyFramePosition(frameIndex);
         }
@@ -476,10 +482,10 @@ void BackupManager::saveStates()
     mLayer = editor()->layers()->currentLayer();
     mLayerId = mLayer->id();
 
-    int emptyFrameSettingVal = editor()->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
+    mEmptyFrameSettingVal = static_cast<DrawOnEmptyFrameAction>(editor()->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION));
 
     mFrameIndex = editor()->currentFrame();
-    mFrameIndex = BackupManager::getActiveFrameIndex(mLayer, mFrameIndex, emptyFrameSettingVal);
+    mFrameIndex = BackupManager::getActiveFrameIndex(mLayer, mFrameIndex, mEmptyFrameSettingVal);
 
     auto selectMan = editor()->select();
     mIsSelected = selectMan->somethingSelected();

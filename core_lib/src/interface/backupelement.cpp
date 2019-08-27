@@ -50,6 +50,7 @@ BackupElement::~BackupElement()
 
 AddBitmapElement::AddBitmapElement(const BitmapImage* backupBitmap,
                                    const int& backupLayerId,
+                                   const DrawOnEmptyFrameAction& frameAction,
                                    QString description,
                                    Editor *editor,
                                    QUndoCommand *parent) : BackupElement(editor, parent)
@@ -64,10 +65,8 @@ AddBitmapElement::AddBitmapElement(const BitmapImage* backupBitmap,
     Layer* layer = editor->layers()->currentLayer();
     newLayerId = layer->id();
 
-    emptyFrameSettingVal = editor->preference()->
-            getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
     newFrameIndex = editor->currentFrame();
-    newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, emptyFrameSettingVal);
+    newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, frameAction);
 
     newBitmap = static_cast<LayerBitmap*>(layer)->
             getBitmapImageAtFrame(newFrameIndex)->clone();
@@ -162,6 +161,7 @@ void AddBitmapElement::redoTransform()
 
 AddVectorElement::AddVectorElement(const VectorImage* backupVector,
                                    const int& backupLayerId,
+                                   const DrawOnEmptyFrameAction& backupFrameAction,
                                    QString description,
                                    Editor* editor,
                                    QUndoCommand* parent) : BackupElement(editor, parent)
@@ -177,10 +177,7 @@ AddVectorElement::AddVectorElement(const VectorImage* backupVector,
     Layer* layer = editor->layers()->currentLayer();
     newLayerId = layer->id();
 
-    emptyFrameSettingVal = editor->preference()->
-            getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
-
-    newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, emptyFrameSettingVal);
+    newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, backupFrameAction);
     newVector = static_cast<LayerVector*>(layer)->
             getVectorImageAtFrame(newFrameIndex)->clone();
 
@@ -213,10 +210,11 @@ void AddVectorElement::redo()
     editor()->scrubTo(newFrameIndex);
 }
 
-AddKeyFrameElement::AddKeyFrameElement(const int& backupFrameIndex,
-                                       const int& backupLayerId,
-                                       const int& backupKeySpacing,
-                                       const bool& backupKeyExisted,
+AddKeyFrameElement::AddKeyFrameElement(const int backupFrameIndex,
+                                       const int backupLayerId,
+                                       const DrawOnEmptyFrameAction& backupFrameAction,
+                                       const int backupKeySpacing,
+                                       const bool backupKeyExisted,
                                        QString description,
                                        Editor *editor,
                                        QUndoCommand *parent) : BackupElement(editor, parent)
@@ -237,7 +235,7 @@ AddKeyFrameElement::AddKeyFrameElement(const int& backupFrameIndex,
     emptyFrameSettingVal = editor->preference()->
             getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
     newFrameIndex = editor->currentFrame();
-    newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, emptyFrameSettingVal);
+    newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, backupFrameAction);
 
     newKey = layer->getLastKeyFrameAtPosition(oldFrameIndex)->clone();
     oldKeyFrames.insert(std::make_pair(oldFrameIndex, newKey));
@@ -258,26 +256,42 @@ AddKeyFrameElement::AddKeyFrameElement(const int& backupFrameIndex,
     setText(description);
 }
 
+void AddKeyFrameElement::undoSequence()
+{
+    qDebug() << "oldKeyFrames: " << oldKeyFrames;
+    for (auto map : oldKeyFrames)
+    {
+        qDebug() << "did A key exist before:" << oldKeyExisted;
+        if (!oldKeyExisted) {
+            editor()->removeKeyAtLayerId(oldLayerId, map.first);
+        }
+    }
+}
+
 void AddKeyFrameElement::undo()
 {
     qDebug() << "key remove triggered";
     bool isSequence = (oldKeySpacing > 1) ? true : false;
     if (isSequence)
     {
-        qDebug() << "oldKeyFrames: " << oldKeyFrames;
-        for (auto map : oldKeyFrames)
-        {
-            qDebug() << "did A key exist before:" << oldKeyExisted;
-            if (!oldKeyExisted) {
-                editor()->removeKeyAtLayerId(oldLayerId, map.first);
-            }
-        }
+        undoSequence();
     }
     else
     {
         editor()->removeKeyAtLayerId(oldLayerId, oldFrameIndex);
     }
     editor()->updateCurrentFrame();
+}
+
+void AddKeyFrameElement::redoSequence()
+{
+    qDebug() << "nnnew:" << newKeyFrames;
+    for (auto map : newKeyFrames)
+    {
+        newFrameIndex = map.first;
+        newKey = map.second;
+        editor()->backups()->restoreKey(this);
+    }
 }
 
 void AddKeyFrameElement::redo()
@@ -292,13 +306,7 @@ void AddKeyFrameElement::redo()
     {
         if (isSequence)
         {
-            qDebug() << "nnnew:" << newKeyFrames;
-            for (auto map : newKeyFrames)
-            {
-                newFrameIndex = map.first;
-                newKey = map.second;
-                editor()->backups()->restoreKey(this);
-            }
+            redoSequence();
         }
         else
         {
@@ -571,6 +579,7 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
 
 TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
                                    const int backupLayerId,
+                                   const DrawOnEmptyFrameAction& backupFrameAction,
                                    const QRectF& backupSelectionRect,
                                    const QRectF& backupTempSelectionRect,
                                    const QRectF& backupTransformedSelectionRect,
@@ -612,9 +621,8 @@ TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
     newScaleY = selectMan->myScaleY();
 
     Layer* layer = editor->layers()->findLayerById(backupLayerId);
-    int emptyFrameSettingVal = editor->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
 
-    newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, emptyFrameSettingVal);
+    newFrameIndex = BackupManager::getActiveFrameIndex(layer, newFrameIndex, backupFrameAction);
     KeyFrame* oldKeyFrame = backupKeyFrame->clone();
 
     switch(layer->type())
