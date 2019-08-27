@@ -625,14 +625,14 @@ void ActionCommands::removeKey()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    mEditor->backups()->saveStates();
+    backups->saveStates();
 
-    mEditor->removeCurrentKey();
+    if (layer->keyFrameCount() == 1) {
+        mEditor->clearCurrentFrame();
+    } else {
+        mEditor->removeCurrentKey();
 
-    backups->keyRemoved();
-    if (layer->keyFrameCount() == 0)
-    {
-        layer->addNewKeyFrameAt(1);
+        backups->keyRemoved();
     }
 }
 

@@ -404,12 +404,10 @@ void RemoveKeyFrameElement::redo()
 
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    if (oldFrameIndex > 1)
-    {
-        qDebug() << "RemoveKeyFrame triggered";
-        editor()->removeKeyAtLayerId(oldLayerId, oldFrameIndex);
-    }
 
+    qDebug() << "RemoveKeyFrame triggered";
+    editor()->removeKeyAtLayerId(oldLayerId, oldFrameIndex);
+    editor()->scrubTo(oldFrameIndex);
 }
 
 SelectionElement::SelectionElement(const int backupLayerId,
