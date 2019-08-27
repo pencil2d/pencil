@@ -425,7 +425,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             paintOnionSkin(painter);
         }
 
-        if (mPrevFrame != mEditor->currentFrame())
+        if (mPrevFrame != mEditor->currentFrame()  || mEditor->playback()->isPlaying())
         {
             mPrevFrame = mEditor->currentFrame();
             trackScrubber();
@@ -771,7 +771,7 @@ void TimeLineCells::setMouseMoveY(int x)
 
 void TimeLineCells::trackScrubber()
 {
-    if (mEditor->currentFrame() < mFrameOffset)
+    if (mEditor->currentFrame() <= mFrameOffset)
     {
         // Move the timeline back if the scrubber is offscreen to the left
         mFrameOffset = mEditor->currentFrame() - 1;
