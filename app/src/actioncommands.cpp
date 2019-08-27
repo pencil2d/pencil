@@ -815,26 +815,28 @@ void ActionCommands::editCameraProperties()
     CameraPropertiesDialog* dialog = nullptr;
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
 
-    QRect viewRect = layer->getViewRect();
+    const QRect currentViewRect = layer->getViewRect();
     mEditor->backups()->saveStates();
 
     if ( dialog == NULL )
     {
-        dialog = new CameraPropertiesDialog( layer->name(), viewRect.width(), viewRect.height() );
+        dialog = new CameraPropertiesDialog(layer->name(), currentViewRect.width(), currentViewRect.height());
     }
-    dialog->setName( layer->name() );
-    dialog->setWidth(viewRect.width());
-    dialog->setHeight(viewRect.height());
+    dialog->setName(layer->name());
+    dialog->setWidth(currentViewRect.width());
+    dialog->setHeight(currentViewRect.height());
     int result = dialog->exec();
     if (result == QDialog::Accepted)
     {
-        layer->setName( dialog->getName() );
+
+        layer->setName(dialog->getName());
         QSettings settings (PENCIL2D, PENCIL2D);
         settings.setValue(SETTING_FIELD_W, dialog->getWidth());
         settings.setValue(SETTING_FIELD_H, dialog->getHeight());
-        viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
-        layer->setViewRect(viewRect);
-        mEditor->backups()->cameraProperties(viewRect);
+        QRect newViewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
+        layer->setViewRect(newViewRect);
+
+        mEditor->backups()->cameraProperties(currentViewRect);
     }
 }
 
