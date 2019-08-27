@@ -144,7 +144,6 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
         else if (layer->type() == Layer::VECTOR )
         {
             paintVector(layer);
-            mEditor->backups()->vector(tr("Vector: Bucket"));
         }
     }
     endStroke();
@@ -188,6 +187,10 @@ void BucketTool::paintVector(Layer* layer)
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();
+
+    if (vectorImage->isSelected()) {
+        mEditor->backups()->vector(tr("Vector: Bucket"));
+    }
 }
 
 void BucketTool::applyChanges()

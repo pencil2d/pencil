@@ -705,6 +705,15 @@ bool VectorImage::isSelected(int curveNumber)
     return mCurves[curveNumber].isSelected();
 }
 
+bool VectorImage::isSelected()
+{
+    bool anySelected = false;
+    for (BezierCurve curve : mCurves) {
+        anySelected = curve.isSelected();
+    }
+    return anySelected;
+}
+
 /**
  * @brief VectorImage::isSelected
  * @param curveNumber: The curve you wish to check

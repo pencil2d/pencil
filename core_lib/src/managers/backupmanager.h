@@ -57,7 +57,7 @@ public:
 
     void restoreKey(const int& layerId, const int& frame, KeyFrame* keyFrame);
 
-    static int getActiveFrameIndex(Layer* layer, const int frameIndex, const DrawOnEmptyFrameAction frameAction);
+    static int getActiveFrameIndex(Layer* layer, const int frameIndex, const DrawOnEmptyFrameAction& frameAction);
 
     const BackupElement* currentBackup();
 
