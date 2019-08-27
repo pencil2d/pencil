@@ -8,6 +8,7 @@
 #include "layer.h"
 #include "direction.h"
 #include "movemode.h"
+#include "vectorselection.h"
 
 class BitmapImage;
 class VectorImage;
@@ -92,6 +93,8 @@ private:
     QRectF mSelectionRect = QRectF();
     QRectF mTempSelectionRect = QRectF();
     QRectF mTransformedSelectionRect = QRectF();
+
+    VectorSelection mVectorSelection;
 
     qreal mSelectionRotationAngle = 0.0;
     qreal mSelectionScaleX = 0.0;

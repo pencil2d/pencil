@@ -268,14 +268,16 @@ void MoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
 void MoveTool::setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod)
 {
     auto selectMan = mEditor->select();
-    if (!vectorImage->isSelected(selectMan->closestCurves()))
+    QList<int> selectedCurves = selectMan->closestCurves();
+    if (!vectorImage->isSelected(selectedCurves))
     {
         if (keyMod != Qt::ShiftModifier)
         {
             applyTransformation();
         }
-        vectorImage->setSelected(selectMan->closestCurves(), true);
+        vectorImage->setSelected(selectedCurves, true);
         selectMan->setSelection(vectorImage->getSelectionRect());
+        selectMan->addCurvesToVectorSelection(selectedCurves);
     }
 }
 

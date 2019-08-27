@@ -129,6 +129,11 @@ void LayerManager::setCurrentLayer(int layerIndex)
     }
 }
 
+void LayerManager::setCurrentLayerFromId(const int layerId)
+{
+    setCurrentLayer(findLayerById(layerId));
+}
+
 void LayerManager::setCurrentLayer(Layer* layer)
 {
     setCurrentLayer(getIndex(layer));

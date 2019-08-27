@@ -23,13 +23,13 @@ VectorSelection::VectorSelection()
 
 void VectorSelection::clear()
 {
-    vertex.clear();
-    curve.clear();
+    vertices.clear();
+    curves.clear();
 }
 
 void VectorSelection::add(int curveNumber)
 {
-    curve << curveNumber;
+    curves << curveNumber;
 }
 
 void VectorSelection::add(QList<int> list)
@@ -39,7 +39,7 @@ void VectorSelection::add(QList<int> list)
 
 void VectorSelection::add(VertexRef point)
 {
-    vertex << point;
+    vertices << point;
     add(point.curveNumber);
 }
 

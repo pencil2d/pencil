@@ -171,7 +171,10 @@ void BackupManager::vector(const QString& description)
 
 void BackupManager::selection()
 {
-    SelectionElement* element = new SelectionElement(SelectionType::SELECTION,
+    SelectionElement* element = new SelectionElement(mLayerId,
+                                                     mFrameIndex,
+                                                     mVectorSelection,
+                                                     SelectionType::SELECTION,
                                                      mSelectionRect,
                                                      mSelectionRotationAngle,
                                                      mIsSelected,
@@ -182,7 +185,10 @@ void BackupManager::selection()
 
 void BackupManager::deselect()
 {
-    SelectionElement* element = new SelectionElement(SelectionType::DESELECT,
+    SelectionElement* element = new SelectionElement(mLayerId,
+                                                     mFrameIndex,
+                                                     mVectorSelection,
+                                                     SelectionType::DESELECT,
                                                      mTransformedSelectionRect,
                                                      mSelectionRotationAngle,
                                                      mIsSelected,
@@ -486,6 +492,7 @@ void BackupManager::saveStates()
     mSelectionScaleX = selectMan->myScaleX();
     mSelectionScaleY = selectMan->myScaleY();
     mMoveMode = selectMan->getMoveMode();
+    mVectorSelection = selectMan->vectorSelection();
 
     mLayerName = mLayer->name();
     mLayerIndex = editor()->currentLayerIndex();

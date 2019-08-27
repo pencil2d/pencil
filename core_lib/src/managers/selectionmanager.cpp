@@ -403,6 +403,17 @@ void SelectionManager::resetSelectionProperties()
     mLastSelectionPolygonF = QPolygonF();
 
     mSomethingSelected = false;
-    vectorSelection.clear();
+    mVectorSelection.clear();
+}
+
+void SelectionManager::addCurvesAndVerticesToVectorSelection(const QList<int> curves, const QList<VertexRef> vertices)
+{
+    mVectorSelection.add(curves);
+    mVectorSelection.add(vertices);
+}
+
+void SelectionManager::addCurvesToVectorSelection(const QList<int> curves)
+{
+    mVectorSelection.add(curves);
 }
 

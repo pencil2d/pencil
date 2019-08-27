@@ -1015,10 +1015,10 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                 // ------------ vertices of the edited curves
                 colour = QColor(200, 200, 200);
                 painter.setBrush(colour);
-                VectorSelection vectorSelection = selectMan->vectorSelection;
-                for (int k = 0; k < vectorSelection.curve.size(); k++)
+                VectorSelection vectorSelection = selectMan->vectorSelection();
+                for (int k = 0; k < vectorSelection.curves.size(); k++)
                 {
-                    int curveNumber = vectorSelection.curve.at(k);
+                    int curveNumber = vectorSelection.curves.at(k);
 
                     for (int vertexNumber = -1; vertexNumber < vectorImage->getCurveSize(curveNumber); vertexNumber++)
                     {
@@ -1033,9 +1033,9 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                 // ------------ selected vertices of the edited curves
                 colour = QColor(100, 100, 255);
                 painter.setBrush(colour);
-                for (int k = 0; k < vectorSelection.vertex.size(); k++)
+                for (int k = 0; k < vectorSelection.vertices.size(); k++)
                 {
-                    VertexRef vertexRef = vectorSelection.vertex.at(k);
+                    VertexRef vertexRef = vectorSelection.vertices.at(k);
                     QPointF vertexPoint = vectorImage->getVertex(vertexRef);
                     QRectF rectangle0 = QRectF(mEditor->view()->mapCanvasToScreen(vertexPoint) - QPointF(3.0, 3.0), QSizeF(7, 7));
                     painter.drawRect(rectangle0);
@@ -1044,7 +1044,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                 colour = QColor(255, 0, 0);
                 painter.setBrush(colour);
                 QList<VertexRef> closestVertices = selectMan->closestVertices();
-                if (vectorSelection.curve.size() > 0)
+                if (vectorSelection.curves.size() > 0)
                 {
                     for (int k = 0; k < closestVertices.size(); k++)
                     {

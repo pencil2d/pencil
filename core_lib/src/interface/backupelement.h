@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "movemode.h"
 #include "pencildef.h"
 #include "layer.h"
+#include "vectorselection.h"
 
 class Editor;
 class BackupManager;
@@ -193,12 +194,21 @@ public:
 
     enum { Id = 1 };
 
-    SelectionElement(const SelectionType& backupSelectionType,
+    SelectionElement(const int backupLayerId,
+                     const int backupFrameIndex,
+                     const VectorSelection& backupVectorSelection,
+                     const SelectionType& backupSelectionType,
                      const QRectF& backupSelectionRect,
                      const qreal& backupRotationAngle,
                      const bool& backupIsSelected,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
+
+    const int layerId;
+    const int frameIndex;
+
+    VectorSelection oldVectorSelection;
+    VectorSelection newVectorSelection;
 
     QRectF oldSelectionRect = QRectF();
     QRectF newSelectionRect = QRectF();

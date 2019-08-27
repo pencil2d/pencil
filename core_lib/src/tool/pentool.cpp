@@ -293,8 +293,6 @@ void PenTool::paintVectorStroke(Layer* layer)
         mEditor->deselectAll();
     }
 
-    vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
-
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();
 }

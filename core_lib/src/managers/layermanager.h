@@ -48,6 +48,7 @@ public:
     int    currentLayerIndex();
     void   setCurrentLayer(int nIndex);
     void   setCurrentLayer(Layer* layer);
+    void   setCurrentLayerFromId(const int layerId);
     int    count();
 
     Status deleteLayer(int index);

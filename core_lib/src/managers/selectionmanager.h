@@ -63,6 +63,11 @@ public:
     const QList<int> closestCurves() { return mClosestCurves; }
     const QList<VertexRef> closestVertices() { return mClosestVertices; }
 
+    const VectorSelection vectorSelection() { return mVectorSelection; }
+    void setVectorSelection(const VectorSelection& vectorSelection) { mVectorSelection = vectorSelection; }
+    void addCurvesAndVerticesToVectorSelection(const QList<int> curves, const QList<VertexRef> vertices);
+    void addCurvesToVectorSelection(const QList<int> curves);
+
     QTransform selectionTransform() { return mSelectionTransform; }
     void setSelectionTransform(QTransform transform) { mSelectionTransform = transform; }
     void resetSelectionTransform();
@@ -89,8 +94,6 @@ public:
 
     void setSomethingSelected(bool selected) { mSomethingSelected = selected; }
 
-    VectorSelection vectorSelection;
-
     const QRectF& mySelectionRect() { return mSelection; }
     const QRectF& myTempTransformedSelectionRect() { return mTempTransformedSelection; }
     const QRectF& myTransformedSelectionRect() { return mTransformedSelection; }
@@ -116,6 +119,7 @@ private:
 
     int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
 
+    VectorSelection mVectorSelection;
     QRectF mSelection;
     QRectF mTempTransformedSelection;
     QRectF mTransformedSelection;

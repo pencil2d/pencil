@@ -340,11 +340,6 @@ void PencilTool::paintVectorStroke(Layer* layer)
         mEditor->deselectAll();
     }
 
-    // select last/newest curve
-    vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
-
-    // TODO: selection doesn't apply on enter
-
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();
 }

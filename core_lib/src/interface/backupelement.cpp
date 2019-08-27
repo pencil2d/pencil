@@ -412,20 +412,29 @@ void RemoveKeyFrameElement::redo()
 
 }
 
-SelectionElement::SelectionElement(const SelectionType& backupSelectionType,
+SelectionElement::SelectionElement(const int backupLayerId,
+                                   const int backupFrameIndex,
+                                   const VectorSelection& backupVectorSelection,
+                                   const SelectionType& backupSelectionType,
                                    const QRectF& backupSelectionRect,
                                    const qreal& backupRotationAngle,
                                    const bool& backupIsSelected,
                                    Editor* editor,
-                                   QUndoCommand* parent) : BackupElement(editor, parent)
+                                   QUndoCommand* parent) : BackupElement(editor, parent),
+    layerId(backupLayerId),
+    frameIndex(backupFrameIndex)
 {
     oldSelectionRect = backupSelectionRect;
     oldRotationAngle = backupRotationAngle;
     oldIsSelected = backupIsSelected;
 
+    oldVectorSelection = backupVectorSelection;
+
     newSelectionRect = editor->select()->myTransformedSelectionRect();
     newRotationAngle = editor->select()->myRotation();
     newIsSelected = editor->select()->somethingSelected();
+
+    newVectorSelection = editor->select()->vectorSelection();
 
     selectionType = backupSelectionType;
 
@@ -439,6 +448,7 @@ SelectionElement::SelectionElement(const SelectionType& backupSelectionType,
 
 void SelectionElement::undo()
 {
+    editor()->scrubTo(layerId, frameIndex);
     if (selectionType == SelectionType::SELECTION) {
         undoSelection();
     } else {
@@ -454,9 +464,15 @@ void SelectionElement::undoSelection()
     selectMan->setRotation(oldRotationAngle);
     selectMan->setSomethingSelected(oldIsSelected);
 
+    Layer* layer = editor()->layers()->findLayerById(layerId);
+    if (layer->type() == Layer::VECTOR) {
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
+        vectorImage->setSelected(oldVectorSelection.curves, true);
+        selectMan->setVectorSelection(oldVectorSelection);
+    }
+
     editor()->deselectAll();
 
-    Layer* layer = editor()->layers()->currentLayer();
     KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
     editor()->canvas()->applyTransformedSelection(layer,
                                                   cKeyFrame,
@@ -471,12 +487,20 @@ void SelectionElement::undoDeselection()
     selectMan->setSelection(oldSelectionRect);
     selectMan->setRotation(oldRotationAngle);
     selectMan->setSomethingSelected(oldIsSelected);
+
+    Layer* layer = editor()->layers()->findLayerById(layerId);
+    if (layer->type() == Layer::VECTOR) {
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
+        vectorImage->setSelected(oldVectorSelection.curves, true);
+        selectMan->setVectorSelection(oldVectorSelection);
+    }
 }
 
 void SelectionElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
+    editor()->scrubTo(layerId, frameIndex);
     if (selectionType == SelectionType::SELECTION) {
         redoSelection();
     } else {
@@ -493,18 +517,31 @@ void SelectionElement::redoSelection()
     selectMan->setRotation(newRotationAngle);
     selectMan->setSomethingSelected(newIsSelected);
     selectMan->calculateSelectionTransformation();
+
+    Layer* layer = editor()->layers()->findLayerById(layerId);
+    if (layer->type() == Layer::VECTOR) {
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
+        vectorImage->setSelected(newVectorSelection.curves, true);
+        selectMan->setVectorSelection(newVectorSelection);
+    }
 }
 
 void SelectionElement::redoDeselection()
 {
     auto selectMan = editor()->select();
 
-    Layer* layer = editor()->layers()->currentLayer();
+    Layer* layer = editor()->layers()->findLayerById(layerId);
     KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
     editor()->canvas()->applyTransformedSelection(layer,
                                                   cKeyFrame,
                                                   selectMan->selectionTransform(),
                                                   selectMan->mySelectionRect());
+
+    if (layer->type() == Layer::VECTOR) {
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
+        vectorImage->setSelected(newVectorSelection.curves, true);
+        selectMan->setVectorSelection(newVectorSelection);
+    }
 
     editor()->deselectAll();
 }

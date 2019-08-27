@@ -33,8 +33,10 @@ public:
     void add(VertexRef point);
     void add(QList<VertexRef> points);
 
-    QList<VertexRef> vertex;
-    QList<int> curve;
+    bool isEmpty() const { return vertices.isEmpty() && curves.isEmpty(); }
+
+    QList<VertexRef> vertices;
+    QList<int> curves;
 };
 
 #endif // VECTORSELECTION_H

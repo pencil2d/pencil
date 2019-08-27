@@ -367,8 +367,6 @@ void BrushTool::paintVectorStroke()
             mEditor->deselectAll();
         }
 
-        vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
-
         mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         mScribbleArea->setAllDirty();
     }

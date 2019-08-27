@@ -174,8 +174,8 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
                 }
 
                 vectorImage->setSelected(selectMan->closestVertices(), true);
-                selectMan->vectorSelection.add(selectMan->closestCurves());
-                selectMan->vectorSelection.add(selectMan->closestVertices());
+                selectMan->addCurvesAndVerticesToVectorSelection(selectMan->closestCurves(),
+                                                                 selectMan->closestVertices());
 
                 mScribbleArea->update();
             }
@@ -250,9 +250,9 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 
             auto selectMan = mEditor->select();
             selectMan->resetSelectionTransform();
-            for (int k = 0; k < selectMan->vectorSelection.curve.size(); k++)
+            for (int k = 0; k < selectMan->vectorSelection().curves.size(); k++)
             {
-                int curveNumber = selectMan->vectorSelection.curve.at(k);
+                int curveNumber = selectMan->vectorSelection().curves.at(k);
                 vectorImage->curve(curveNumber).smoothCurve();
             }
             mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());

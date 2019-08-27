@@ -608,6 +608,7 @@ void Editor::selectAll()
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
         vectorImage->selectAll();
         rect = vectorImage->getSelectionRect();
+        select()->addCurvesToVectorSelection(vectorImage->getSelectedCurveNumbers());
     }
     select()->setSelection(rect);
     emit updateCurrentFrame();
@@ -651,6 +652,12 @@ void Editor::setCurrentLayerIndex(int i)
     {
         mgr->workingLayerChanged(layer);
     }
+}
+
+void Editor::scrubTo(const int layerId, const int frameIndex)
+{
+    layers()->setCurrentLayerFromId(layerId);
+    scrubTo(frameIndex);
 }
 
 void Editor::scrubTo(Layer* layer, const int frameIndex)
