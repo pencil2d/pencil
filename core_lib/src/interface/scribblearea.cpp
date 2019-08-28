@@ -181,16 +181,20 @@ void ScribbleArea::updateCurrentFrame()
 
 void ScribbleArea::updateFrame(int frame)
 {
-    int frameNumber = mEditor->layers()->LastFrameAtFrame(frame);
+    Status::StatusInt status = mEditor->layers()->LastFrameAtLayer(frame);
 
+    int frameNumber = status.value;
     Q_ASSERT(frame >= 0);
-    if (mPixmapCacheKeys.size() <= static_cast<unsigned>(frame))
-    {
-        mPixmapCacheKeys.resize(static_cast<unsigned>(frame + 10)); // a buffer
-    }
 
-    QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(frameNumber)]);
-    mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::Key();
+    if (status.errorcode == Status::OK)  {
+        if (mPixmapCacheKeys.size() <= static_cast<unsigned>(frame))
+        {
+            mPixmapCacheKeys.resize(static_cast<unsigned>(frame + 10)); // a buffer
+        }
+
+        QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(frameNumber)]);
+        mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::Key();
+    }
 
     update();
 }
@@ -216,7 +220,10 @@ void ScribbleArea::updateAllVectorLayersAt(int frameNumber)
         Layer* layer = mEditor->object()->getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
-            mEditor->keyframes()->currentVectorImage(layer)->modification();
+            VectorImage* vectorImage = mEditor->keyframes()->currentVectorImage(layer);
+            if (vectorImage) {
+                vectorImage->modification();
+            }
         }
     }
     updateFrame(frameNumber);
@@ -762,9 +769,14 @@ void ScribbleArea::paintBitmapBuffer()
     update(rect);
 
     // Update the cache for the last key-frame.
-    auto lastKeyFramePosition = mEditor->layers()->LastFrameAtFrame(frameNumber);
-    QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
-    mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)] = QPixmapCache::Key();
+    auto status = mEditor->layers()->LastFrameAtLayer(frameNumber);
+
+    int lastKeyFramePosition = status.value;
+
+    if (status.errorcode == Status::OK) {
+        QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
+        mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)] = QPixmapCache::Key();
+    }
     layer->setModified(frameNumber, true);
 
     mBufferImg->clear();
@@ -963,16 +975,20 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
-        int frameNumber = mEditor->layers()->LastFrameAtFrame(curIndex);
+        Status::StatusInt status = mEditor->layers()->LastFrameAtLayer(curIndex);
 
-        QPixmapCache::Key cachedKey = mPixmapCacheKeys[static_cast<unsigned>(frameNumber)];
+        int frameNumber = status.value;
 
-        if (!QPixmapCache::find(cachedKey, &mCanvas))
-        {
-            drawCanvas(mEditor->currentFrame(), event->rect());
+        if (status.errorcode == Status::OK) {
+            QPixmapCache::Key cachedKey = mPixmapCacheKeys[static_cast<unsigned>(frameNumber)];
 
-            mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
-            //qDebug() << "Repaint canvas!";
+            if (!QPixmapCache::find(cachedKey, &mCanvas))
+            {
+                drawCanvas(mEditor->currentFrame(), event->rect());
+
+                mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
+                //qDebug() << "Repaint canvas!";
+            }
         }
     }
 

@@ -331,9 +331,10 @@ LayerSound* LayerManager::createSoundLayerContaining(const int layerId, const in
 }
 
 
-int LayerManager::LastFrameAtFrame( int frameIndex )
+Status::StatusInt LayerManager::LastFrameAtLayer(int frameIndex)
 {
     Object* o = object();
+    Status::StatusInt status;
     for (int i = frameIndex; i >= 0; i -= 1)
     {
         for (int layerIndex = 0; layerIndex < o->getLayerCount(); ++layerIndex)
@@ -341,11 +342,15 @@ int LayerManager::LastFrameAtFrame( int frameIndex )
             auto pLayer = o->getLayer(layerIndex);
             if (pLayer->keyExists(i))
             {
-                return i;
+                status.value = i;
+                status.errorcode = Status::OK;
+                return status;
             }
         }
     }
-    return -1;
+    status.value = -1;
+    status.errorcode = Status::FAIL;
+    return status;
 }
 
 int LayerManager::firstKeyFrameIndex()

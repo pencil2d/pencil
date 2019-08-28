@@ -87,7 +87,7 @@ public:
 
 
     // KeyFrame Management
-    int LastFrameAtFrame(int frameIndex);
+    Status::StatusInt LastFrameAtLayer(int frameIndex);
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 
