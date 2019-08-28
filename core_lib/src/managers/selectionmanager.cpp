@@ -366,17 +366,16 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
-    qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
-    qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
     QVector<QPointF> centerPoints = calcSelectionCenterPoints();
 
     QTransform translate = QTransform::fromTranslate(centerPoints[0].x(), centerPoints[0].y());
     QTransform _translate = QTransform::fromTranslate(-centerPoints[1].x(), -centerPoints[1].y());
-    QTransform scale = QTransform::fromScale(-scaleX, scaleY);
+
+    QTransform scale = QTransform::fromScale(-mScaleX, mScaleY);
 
     if (flipVertical)
     {
-        scale = QTransform::fromScale(scaleX, -scaleY);
+        scale = QTransform::fromScale(mScaleX, -mScaleY);
     }
 
     // reset transformation for vector selections
