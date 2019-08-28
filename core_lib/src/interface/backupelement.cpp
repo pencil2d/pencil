@@ -415,7 +415,7 @@ void RemoveKeyFrameElement::redo()
 
     qDebug() << "RemoveKeyFrame triggered";
     editor()->removeKeyAtLayerId(oldLayerId, oldFrameIndex);
-    editor()->scrubTo(oldFrameIndex);
+    editor()->scrubTo(oldLayerId, oldFrameIndex);
 }
 
 SelectionElement::SelectionElement(const int backupLayerId,

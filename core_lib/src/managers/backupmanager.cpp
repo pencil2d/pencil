@@ -319,7 +319,7 @@ void BackupManager::restoreKey(const BackupElement* backupElement)
         layer = object()->findLayerById(layerId);
 
         restoreKey(layerId, frame, keyFrame);
-
+        editor()->scrubTo(layerId, frame);
     }
     else // REMOVE_KEY_MODIF
     {
@@ -331,6 +331,7 @@ void BackupManager::restoreKey(const BackupElement* backupElement)
         layer = editor()->layers()->findLayerById(layerId);
 
         restoreKey(layerId, frame, keyFrame);
+        editor()->scrubTo(layerId, frame);
     }
 }
 
