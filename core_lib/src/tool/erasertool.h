@@ -39,8 +39,6 @@ public:
     void paintAt( QPointF point );
     void removeVectorPaint();
     void updateStrokes();
-    void paintBitmapStroke();
-    void paintVectorStroke();
 
     void setWidth( const qreal width ) override;
     void setFeather( const qreal feather ) override;
