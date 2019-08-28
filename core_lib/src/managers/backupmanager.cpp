@@ -123,7 +123,8 @@ void BackupManager::importBitmap(const std::map<int, KeyFrame*, std::greater<int
 
 void BackupManager::keyRemoved()
 {
-    if (mLayer == NULL) { return; }
+    if (mLayer == nullptr) { return; }
+    if (mKeyframe == nullptr) { return; }
 
     RemoveKeyFrameElement* element = new RemoveKeyFrameElement(mKeyframe,
                                                                mLayerId,
