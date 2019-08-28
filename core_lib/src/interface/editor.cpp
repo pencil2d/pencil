@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include "objectdata.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
+#include "camera.h"
 #include "soundclip.h"
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -589,6 +590,7 @@ qreal Editor::viewScaleInversed()
 void Editor::updateView()
 {
     view()->updateViewTransforms();
+    emit needPaint();
 }
 
 void Editor::selectAll()
@@ -984,7 +986,29 @@ void Editor::prepareSave()
     }
 }
 
+/**
+ * @brief Editor::clearCurrentFrame
+ * Depending no the context, this will clear the keyframe..
+ * for bitmap and vector that means wiping the canvas
+ * for camera it will reset the view
+ */
 void Editor::clearCurrentFrame()
 {
-    mScribbleArea->clearImage();
+    Layer* layer = layers()->currentLayer();
+    switch(layer->type()) {
+    case Layer::BITMAP:
+    case Layer::VECTOR: {
+        mScribbleArea->clearImage();
+        break;
+    }
+    case Layer::CAMERA: {
+        Camera* camera = static_cast<LayerCamera*>(layer)->getCameraAtFrame(currentFrame());
+        camera->reset();
+        backups()->cameraMotion(tr("Camera: reset view"));
+        updateView();
+        break;
+    }
+    default:
+        break;
+    }
 }

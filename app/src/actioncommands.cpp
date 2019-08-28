@@ -451,7 +451,7 @@ void ActionCommands::resetView()
     if (layer->type() == Layer::CAMERA) {
         mEditor->backups()->saveStates();
         mEditor->view()->resetView();
-        mEditor->backups()->cameraMotion();
+        mEditor->backups()->cameraMotion(tr("Camera: reset view"));
     } else {
         mEditor->view()->resetView();
     }
@@ -463,7 +463,7 @@ void ActionCommands::zoomTo(const float value)
     if (layer->type() == Layer::CAMERA) {
         mEditor->backups()->saveStates();
         mEditor->view()->scale(value);
-        mEditor->backups()->cameraMotion();
+        mEditor->backups()->cameraMotion(tr("Camera: zoom view"));
     } else {
         mEditor->view()->scale(value);
     }
@@ -475,7 +475,7 @@ void ActionCommands::ZoomIn()
     if (layer->type() == Layer::CAMERA) {
         mEditor->backups()->saveStates();
         mEditor->view()->scaleUp();
-        mEditor->backups()->cameraMotion();
+        mEditor->backups()->cameraMotion(tr("Camera: zoom view"));
     } else {
         mEditor->view()->scaleUp();
     }
@@ -487,7 +487,7 @@ void ActionCommands::ZoomOut()
     if (layer->type() == Layer::CAMERA) {
         mEditor->backups()->saveStates();
         mEditor->view()->scaleDown();
-        mEditor->backups()->cameraMotion();
+        mEditor->backups()->cameraMotion(tr("Camera: zoom view"));
     } else {
         mEditor->view()->scaleDown();
     }
@@ -500,7 +500,7 @@ void ActionCommands::rotateClockwise()
     if (layer->type() == Layer::CAMERA) {
         mEditor->backups()->saveStates();
         mEditor->view()->rotate(currentRotation + 15.f);
-        mEditor->backups()->cameraMotion();
+        mEditor->backups()->cameraMotion(tr("Camera: rotate view"));
     } else {
         mEditor->view()->rotate(currentRotation + 15.f);
     }
@@ -513,7 +513,7 @@ void ActionCommands::rotateCounterClockwise()
     if (layer->type() == Layer::CAMERA) {
         mEditor->backups()->saveStates();
         mEditor->view()->rotate(currentRotation - 15.f);
-        mEditor->backups()->cameraMotion();
+        mEditor->backups()->cameraMotion(tr("Camera: rotate view"));
     } else {
         mEditor->view()->rotate(currentRotation - 15.f);
     }
@@ -627,11 +627,11 @@ void ActionCommands::removeKey()
 
     backups->saveStates();
 
-    if (layer->keyFrameCount() == 1) {
+    // sound layer can as the only layer type, have no keyframes...
+    if (layer->keyFrameCount() == 1 && layer->type() != Layer::SOUND) {
         mEditor->clearCurrentFrame();
     } else {
         mEditor->removeCurrentKey();
-
         backups->keyRemoved();
     }
 }

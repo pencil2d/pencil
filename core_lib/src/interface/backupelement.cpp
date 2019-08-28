@@ -795,6 +795,7 @@ CameraMotionElement::CameraMotionElement(const int backupFrameIndex,
                                          const QPointF& backupTranslation,
                                          const float backupRotation,
                                          const float backupScale,
+                                         const QString& description,
                                          Editor* editor,
                                          QUndoCommand* parent) : BackupElement(editor, parent)
 {
@@ -811,7 +812,11 @@ CameraMotionElement::CameraMotionElement(const int backupFrameIndex,
     newRotation = viewMgr->rotation();
     newScale = viewMgr->scaling();
 
-    setText(QObject::tr("Camera: New motion"));
+    if (description.isEmpty()) {
+        setText(QObject::tr("Camera: New motion"));
+    } else {
+        setText(description);
+    }
 
 }
 
@@ -842,13 +847,19 @@ void CameraMotionElement::redo()
 
 bool CameraMotionElement::mergeWith(const QUndoCommand *other)
 {
-    if (other->id() != id())
+    if (other->id() != id() || other->text() != text())
     {
         return false;
     }
+
     newTranslation = static_cast<const CameraMotionElement*>(other)->newTranslation;
     newRotation = static_cast<const CameraMotionElement*>(other)->newRotation;
     newScale = static_cast<const CameraMotionElement*>(other)->newScale;
+
+    ViewManager* viewMgr = editor()->view();
+    viewMgr->translate(newTranslation);
+    viewMgr->rotate(newRotation);
+    viewMgr->scale(newScale);
     return true;
 }
 

@@ -355,6 +355,7 @@ public:
                         const QPointF& backupTranslation,
                         const float backupRotation,
                         const float backupScale,
+                        const QString& description,
                         Editor* editor,
                         QUndoCommand* parent = nullptr);
 

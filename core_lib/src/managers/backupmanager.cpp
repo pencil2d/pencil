@@ -371,7 +371,7 @@ void BackupManager::restoreKey(const int& layerId, const int& frame, KeyFrame *k
     editor()->updateView();
 }
 
-void BackupManager::cameraMotion()
+void BackupManager::cameraMotion(const QString& description)
 {
     if (mLayer == NULL) { return; }
 
@@ -380,6 +380,7 @@ void BackupManager::cameraMotion()
                                                            mTranslation,
                                                            mRotation,
                                                            mScale,
+                                                           description,
                                                            editor());
     mUndoStack->push(element);
 

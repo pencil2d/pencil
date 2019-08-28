@@ -38,7 +38,7 @@ public:
     void keyRemoved();
     void bitmap(const QString& description);
     void vector(const QString& description);
-    void cameraMotion();
+    void cameraMotion(const QString& description = "");
     void layerAdded();
     void layerDeleted(const std::map<int, KeyFrame*, std::greater<int>>& oldKeys);
     void layerRenamed();
