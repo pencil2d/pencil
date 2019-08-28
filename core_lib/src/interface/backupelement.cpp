@@ -97,7 +97,7 @@ void AddBitmapElement::undo()
         static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(oldBitmap);
     }
 
-    editor()->scrubTo(oldFrameIndex);
+    editor()->scrubTo(oldLayerId, oldFrameIndex);
 }
 
 void AddBitmapElement::redo()
@@ -113,7 +113,7 @@ void AddBitmapElement::redo()
         static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(newBitmap);
     }
 
-    editor()->scrubTo(newFrameIndex);
+    editor()->scrubTo(newLayerId, newFrameIndex);
 }
 
 void AddBitmapElement::undoTransform()
@@ -193,7 +193,7 @@ void AddVectorElement::undo()
     *static_cast<LayerVector*>(layer)->
             getVectorImageAtFrame(oldFrameIndex) = *oldVector;
 
-    editor()->scrubTo(oldFrameIndex);
+    editor()->scrubTo(oldLayerId, oldFrameIndex);
 }
 
 void AddVectorElement::redo()
@@ -207,7 +207,7 @@ void AddVectorElement::redo()
     *static_cast<LayerVector*>(layer)->
             getVectorImageAtFrame(newFrameIndex) = *newVector;
 
-    editor()->scrubTo(newFrameIndex);
+    editor()->scrubTo(newLayerId, newFrameIndex);
 }
 
 AddKeyFrameElement::AddKeyFrameElement(const int backupFrameIndex,
