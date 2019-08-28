@@ -781,7 +781,10 @@ void TimeLineCells::trackScrubber()
     else if (width() < (mEditor->currentFrame() - mFrameOffset + 1) * mFrameSize)
     {
         // Move timeline forward if the scrubber is offscreen to the right
-        mFrameOffset = mFrameOffset + ((mEditor->currentFrame() - mFrameOffset) / 2);
+        if (mEditor->playback()->isPlaying())
+            mFrameOffset = mFrameOffset + ((mEditor->currentFrame() - mFrameOffset) / 2);
+        else
+            mFrameOffset = mEditor->currentFrame() - width() / mFrameSize;
         emit offsetChanged(mFrameOffset);
         mTimeLine->updateContent();
     }
