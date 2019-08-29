@@ -565,11 +565,13 @@ bool SelectionElement::mergeWith(const QUndoCommand *other)
         newSelectionRect = otherSelectionElement->newSelectionRect;
         newIsSelected = otherSelectionElement->newIsSelected;
         newRotationAngle = otherSelectionElement->newRotationAngle;
+        newVectorSelection = otherSelectionElement->newVectorSelection;
 
         auto selectMan = editor()->select();
         selectMan->setSelectionRect(newSelectionRect);
         selectMan->setRotation(newRotationAngle);
         selectMan->setSomethingSelected(newIsSelected);
+        selectMan->setVectorSelection(newVectorSelection);
 
         return true;
     } else {

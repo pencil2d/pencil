@@ -29,12 +29,16 @@ void VectorSelection::clear()
 
 void VectorSelection::add(int curveNumber)
 {
-    curves << curveNumber;
+    curves.append(curveNumber);
 }
 
 void VectorSelection::add(QList<int> list)
 {
-    if (list.size() > 0) add(list[0]);
+    if (list.size() > 0)
+
+    for (int num : list) {
+        add(num);
+    }
 }
 
 void VectorSelection::add(VertexRef point)
@@ -45,5 +49,8 @@ void VectorSelection::add(VertexRef point)
 
 void VectorSelection::add(QList<VertexRef> list)
 {
-    if (list.size() > 0) add(list[0]);
+    if (list.size() > 0)
+    for (VertexRef ref : list) {
+        add(ref);
+    }
 }
