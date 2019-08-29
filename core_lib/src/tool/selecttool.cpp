@@ -49,6 +49,16 @@ void SelectTool::beginSelection()
     // Store original click position for help with selection rectangle.
     mAnchorOriginPoint = getLastPoint();
 
+    auto selectMan = mEditor->select();
+
+    // checks whether anchorPoint and selection is still valid
+    // otherwise make sure selection will be deselected on release
+    if (selectMan->somethingSelected()) {
+        if (maybeDeselect()) {
+            mDeselectSelection = true;
+        }
+    }
+
     QPointF lastPoint = getLastPoint();
     QPointF currentPoint = getCurrentPoint();
 
@@ -60,8 +70,6 @@ void SelectTool::beginSelection()
 
     mEditor->backups()->saveStates();
 
-    auto selectMan = mEditor->select();
-
     selectMan->calculateSelectionTransformation();
 
     // paint and apply the transformation
@@ -70,7 +78,7 @@ void SelectTool::beginSelection()
 
     if (selectMan->somethingSelected()) // there is something selected
     {
-        if (!selectMan->mySelectionRect().contains(getCurrentPoint())) {
+        if (!selectMan->myTempTransformedSelectionRect().contains(getCurrentPoint())) {
             mPointOutsideSelection = true;
         }
         if (mCurrentLayer->type() == Layer::VECTOR)
@@ -160,13 +168,15 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     if (QLineF(mAnchorOriginPoint, getCurrentPoint()).length() < 5.0)
     {
         mEditor->deselectAll();
+        mDeselectSelection = false;
         // no backup here, since we didn't intend to make a selection in the first place
     }
 
-    if (maybeDeselect())
+    if (mDeselectSelection)
     {
         mEditor->deselectAll();
         mEditor->backups()->deselect();
+        mDeselectSelection = false;
     }
     else
     {
@@ -182,11 +192,8 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
 bool SelectTool::maybeDeselect()
 {
-    if (mPointOutsideSelection) {
-        mPointOutsideSelection = false;
-        return true;
-    }
-    return false;
+    return (!isSelectionPointValid() &&
+                mEditor->select()->validateMoveMode(getLastPoint()) == MoveMode::NONE);
 }
 
 /**
@@ -226,12 +233,10 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
         if (editor()->layers()->currentLayer()->type() == Layer::BITMAP) {
             offset = QPointF(offset).toPoint();
             currentPoint = currentPoint.toPoint();
+            auto selectMan = mEditor->select();
 
+            selectMan->adjustSelection(currentPoint, offset.x(), offset.y(), selectMan->myRotation(), 0);
         }
-
-        auto selectMan = mEditor->select();
-
-        selectMan->adjustSelection(currentPoint, offset.x(), offset.y(), selectMan->myRotation(), 0);
     }
     else
     {

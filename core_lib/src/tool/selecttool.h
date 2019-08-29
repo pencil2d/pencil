@@ -59,6 +59,7 @@ private:
     Layer* mCurrentLayer = nullptr;
 
     bool mPointOutsideSelection = false;
+    bool mDeselectSelection = false;
 };
 
 #endif
