@@ -243,10 +243,12 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importImageSequenceNumbered);
+    connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
-    connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
+    connect(ui->actionImport_MovieAudio, &QAction::triggered, this, &MainWindow2::importMovieAudio);
+
     connect(ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
 
     //--- Edit Menu ---
@@ -1027,7 +1029,7 @@ void MainWindow2::importGIF()
     mIsImportingImageSequence = false;
 }
 
-void MainWindow2::importMovie()
+void MainWindow2::importMovieVideo()
 {
     FileDialog fileDialog(this);
     QString filePath = fileDialog.openFile(FileType::MOVIE);
@@ -1035,7 +1037,56 @@ void MainWindow2::importMovie()
     {
         return;
     }
-    mEditor->importMovie(filePath, mEditor->playback()->fps());
+
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = true;
+
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progress(tr("Importing movie video..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
+    bool ok = mEditor->importMovieVideo(filePath, mEditor->playback()->fps(), progress);
+
+    if (!ok)
+    {
+        QMessageBox::warning(this,
+                             tr("Warning"),
+                             tr("was unable to import") + filePath,
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
+
+    progress.setValue(100);
+    progress.close();
+
+    mIsImportingImageSequence = false;
+}
+
+void MainWindow2::importMovieAudio()
+{
+    FileDialog fileDialog(this);
+    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    if (filePath.isEmpty())
+    {
+        return;
+    }
+
+    bool ok = mEditor->importMovieAudio(filePath);
+
+    if (!ok)
+    {
+        QMessageBox::warning(this,
+                             tr("Warning"),
+                             tr("was unable to import") + filePath,
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
 }
 
 void MainWindow2::lockWidgets(bool shouldLock)
@@ -1130,7 +1181,8 @@ void MainWindow2::setupKeyboardShortcuts()
 
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
-    ui->actionImport_Movie->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE));
+    ui->actionImport_MovieVideo->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_VIDEO));
+    ui->actionImport_MovieAudio->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_AUDIO));
     ui->actionImport_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
     ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
 

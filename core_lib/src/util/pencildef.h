@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #endif
 
 #define PENCIL_MOVIE_EXT \
-    QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
+    QObject::tr( "AVI(*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;MKV(*.mkv);;OGV(*.ogv);;SWF(*.swf);;FLV(*.flv);;WEBM(*.webm);;WMV(*.wmv)" )
 
 #define PENCIL_IMAGE_FILTER \
    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
@@ -88,7 +88,8 @@ enum StabilizationLevel
 #define CMD_SAVE_AS "CmdSaveAs"
 #define CMD_IMPORT_IMAGE "CmdImportImage"
 #define CMD_IMPORT_IMAGE_SEQ "CmdImportImageSequence"
-#define CMD_IMPORT_MOVIE "CmdImportMovie"
+#define CMD_IMPORT_MOVIE_VIDEO "CmdImportMovieVideo"
+#define CMD_IMPORT_MOVIE_AUDIO "CmdImportMovieAudio"
 #define CMD_IMPORT_PALETTE "CmdImportPalette"
 #define CMD_IMPORT_SOUND "CmdImportSound"
 #define CMD_EXPORT_IMAGE_SEQ "CmdExportImageSequence"

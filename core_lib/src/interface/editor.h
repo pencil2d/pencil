@@ -26,6 +26,7 @@ GNU General Public License for more details.
 
 class QDragEnterEvent;
 class QDropEvent;
+class QProgressDialog;
 class Object;
 class KeyFrame;
 class LayerCamera;
@@ -104,8 +105,6 @@ public:
 
     QString workingDir() const;
 
-    void importMovie(QString filePath, int fps);
-
     // backup
     int mBackupIndex;
     BackupElement* currentBackup();
@@ -131,6 +130,8 @@ public: //slots
     void cut();
 
     bool importImage(QString filePath);
+    bool importMovieVideo(QString filePath, int fps, QProgressDialog  &progress);
+    bool importMovieAudio(QString filePath);
     bool importGIF(QString filePath, int numOfImages = 0);
     void updateFrame(int frameNumber);
     void restoreKey();

@@ -16,6 +16,8 @@ GNU General Public License for more details.
 */
 #include "util.h"
 #include <QAbstractSpinBox>
+#include <QApplication>
+#include <QStandardPaths>
 
 QTransform RectMapTransform( QRectF source, QRectF target )
 {
@@ -59,4 +61,46 @@ SignalBlocker::~SignalBlocker()
 void clearFocusOnFinished(QAbstractSpinBox *spinBox)
 {
     QObject::connect(spinBox, &QAbstractSpinBox::editingFinished, spinBox, &QAbstractSpinBox::clearFocus);
+}
+
+QString ffprobeLocation()
+{
+#ifdef _WIN32
+    return QApplication::applicationDirPath() + "/plugins/ffprobe.exe";
+#elif __APPLE__
+    return QApplication::applicationDirPath() + "/plugins/ffprobe";
+#else
+    QString ffprobePath = QStandardPaths::findExecutable(
+        "ffprobe",
+        QStringList()
+        << QApplication::applicationDirPath() + "/plugins"
+        << QApplication::applicationDirPath() + "/../plugins" // linuxdeployqt in FHS-like mode
+    );
+    if (!ffprobePath.isEmpty())
+    {
+        return ffprobePath;
+    }
+    return QStandardPaths::findExecutable("ffprobe"); // ffprobe is a standalone project.
+#endif
+}
+
+QString ffmpegLocation()
+{
+#ifdef _WIN32
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
+#elif __APPLE__
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg";
+#else
+    QString ffmpegPath = QStandardPaths::findExecutable(
+        "ffmpeg",
+        QStringList()
+        << QApplication::applicationDirPath() + "/plugins"
+        << QApplication::applicationDirPath() + "/../plugins" // linuxdeployqt in FHS-like mode
+    );
+    if (!ffmpegPath.isEmpty())
+    {
+        return ffmpegPath;
+    }
+    return QStandardPaths::findExecutable("ffmpeg"); // ffmpeg is a standalone project.
+#endif
 }

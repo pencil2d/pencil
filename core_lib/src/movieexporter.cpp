@@ -31,27 +31,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layersound.h"
 #include "soundclip.h"
-
-QString ffmpegLocation()
-{
-#ifdef _WIN32
-    return QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
-#elif __APPLE__
-    return QApplication::applicationDirPath() + "/plugins/ffmpeg";
-#else
-    QString ffmpegPath = QStandardPaths::findExecutable(
-        "ffmpeg",
-        QStringList()
-        << QApplication::applicationDirPath() + "/plugins"
-        << QApplication::applicationDirPath() + "/../plugins" // linuxdeployqt in FHS-like mode
-    );
-    if (!ffmpegPath.isEmpty())
-    {
-        return ffmpegPath;
-    }
-    return QStandardPaths::findExecutable("ffmpeg"); // ffmpeg is a standalone project.
-#endif
-}
+#include "util.h"
 
 MovieExporter::MovieExporter()
 {
@@ -240,7 +220,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     // Output path
     strCmd += " " + mTempWorkDir + "/tmpaudio.wav";
 
-    STATUS_CHECK(executeFFMpeg(strCmd, progress));
+    STATUS_CHECK(MovieExporter::executeFFMpeg(strCmd, mDesc.endFrame - mDesc.startFrame, progress));
     qDebug() << "audio file: " + tempAudioPath;
 
     return Status::OK;
@@ -524,7 +504,7 @@ Status MovieExporter::generateGif(
  *  @return Returns Status::OK if everything went well, and Status::FAIL
  *  and error is detected (usually a non-zero exit code for ffmpeg).
  */
-Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> progress)
+Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<void(float)> progress)
 {
     qDebug() << strCmd;
 
@@ -550,7 +530,7 @@ Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> p
             {
                 QString frame = output.mid(6, output.indexOf(' '));
 
-                progress(frame.toInt() / static_cast<float>(mDesc.endFrame - mDesc.startFrame));
+                progress(frame.toInt() / static_cast<float>(frames));
             }
         }
 

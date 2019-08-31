@@ -53,12 +53,13 @@ public:
     QString error();
 
     void cancel() { mCanceled = true; }
+
+    static Status executeFFMpeg(QString strCmd, int frames, std::function<void(float)> progress);
 private:
     Status assembleAudio(const Object* obj, QString ffmpegPath, std::function<void(float)> progress);
     Status generateMovie(const Object *obj, QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);
     Status generateGif(const Object *obj, QString ffmpeg, QString strOut, std::function<void(float)>  progress);
 
-    Status executeFFMpeg(QString strCmd, std::function<void(float)> progress);
     Status executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<bool(QProcess&,int)> writeFrame);
     Status checkInputParameters(const ExportMovieDesc&);
 

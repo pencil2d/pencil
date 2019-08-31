@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -63,10 +63,12 @@
      <addaction name="separator"/>
      <addaction name="actionImport_Image"/>
      <addaction name="actionImport_ImageSeq"/>
-     <addaction name="actionImport_Movie"/>
      <addaction name="actionImport_ImageSeqNum"/>
+     <addaction name="actionImport_MovieVideo"/>
      <addaction name="actionImport_Gif"/>
+     <addaction name="separator"/>
      <addaction name="actionImport_Sound"/>
+     <addaction name="actionImport_MovieAudio"/>
      <addaction name="separator"/>
      <addaction name="actionImport_Palette"/>
     </widget>
@@ -324,12 +326,9 @@
     <string>Image Sequence...</string>
    </property>
   </action>
-  <action name="actionImport_Movie">
+  <action name="actionImport_MovieVideo">
    <property name="text">
-    <string>Movie...</string>
-   </property>
-   <property name="visible">
-    <bool>false</bool>
+    <string>Movie Video...</string>
    </property>
   </action>
   <action name="actionImport_Sound">
@@ -979,6 +978,16 @@
   <action name="actionPegbarAlignment">
    <property name="text">
     <string>Peg bar Alignment</string>
+   </property>
+  </action>
+  <action name="actionImport_Movie_2">
+   <property name="text">
+    <string>Movie...</string>
+   </property>
+  </action>
+  <action name="actionImport_MovieAudio">
+   <property name="text">
+    <string>Movie Audio...</string>
    </property>
   </action>
  </widget>

@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QImageReader>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QProgressDialog>
 
 #include "object.h"
 #include "objectdata.h"
@@ -861,6 +862,150 @@ bool Editor::importImage(QString filePath)
         return false;
     }
     }
+}
+
+bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progress)
+{
+    Layer* layer = layers()->currentLayer();
+    if (layer->type() != Layer::BITMAP)
+    {
+        return false;
+    }
+
+    qDebug() << "-------IMPORT MOVIE VIDEO------" << filePath;
+
+    // --------- Import all the temporary frames ----------
+    QTemporaryDir tempDir;
+    if (!tempDir.isValid())
+    {
+        qDebug() << "Could not create a temporary folder";
+        return false;
+    }
+
+    QString ffmpegPath = ffmpegLocation();
+    if (!QFile::exists(ffmpegPath))
+    {
+        qDebug() << "Please place ffmpeg.exe in plugins directory";
+        return false;
+    }
+
+    // Get frame estimate
+    int frames = 1;
+    QString ffprobePath = ffprobeLocation();
+    if (QFileInfo::exists(ffprobePath))
+    {
+        QString probeCmd = QString("\"%1\"").arg(ffprobePath);
+        probeCmd += QString(" -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1");
+        probeCmd += QString(" \"%1\"").arg(filePath);
+        QProcess ffprobe;
+        ffprobe.setReadChannel(QProcess::StandardOutput);
+        ffprobe.start(probeCmd);
+        ffprobe.waitForFinished();
+        if (ffprobe.exitStatus() == QProcess::NormalExit)
+        {
+            double seconds = QString(ffprobe.readAll()).toDouble();
+            frames = qCeil(seconds * fps);
+        }
+    }
+    else
+    {
+        qDebug() << "Please place ffprobe.exe in plugins directory";
+    }
+
+    QString strCmd = QString("\"%1\"").arg(ffmpegPath);
+    strCmd += QString(" -i \"%1\"").arg(filePath);
+    strCmd += QString(" -r %1").arg(fps);
+    strCmd += QString(" \"%1\"").arg(tempDir.filePath("%05d.png"));
+
+    Status st = MovieExporter::executeFFMpeg(strCmd, frames, [&progress](float f) {
+        progress.setValue(qFloor(qMin(f, 1.0f) * 50));
+        QApplication::processEvents();
+    });
+    if (!st.ok())
+    {
+        qDebug() << "ffmpeg conversion failed";
+    }
+
+    progress.setValue(50);
+    int i = 1;
+    frames = QDir(tempDir.path()).count();
+    QString currentFile(tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0'))));
+    while (QFileInfo::exists(currentFile))
+    {
+        importBitmapImage(currentFile);
+        progress.setValue(50 + i / static_cast<float>(frames) * 50);
+        QApplication::processEvents();
+        i++;
+        currentFile = tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0')));
+    }
+
+    return true;
+}
+
+bool Editor::importMovieAudio(QString filePath)
+{
+    Layer* layer = layers()->currentLayer();
+    if (layer->type() != Layer::SOUND)
+    {
+        return false;
+    }
+
+    qDebug() << "-------IMPORT MOVIE AUDIO------" << filePath;
+
+    QTemporaryDir tempDir;
+    if (!tempDir.isValid())
+    {
+        qDebug() << "Could not create a temporary folder";
+        return false;
+    }
+    QString audioPath = tempDir.filePath("audio.wav");
+
+    QString ffmpegPath = ffmpegLocation();
+    if (!QFile::exists(ffmpegPath))
+    {
+        qDebug() << "Please place ffmpeg.exe in plugins directory";
+        return false;
+    }
+
+    QString strCmd = QString("\"%1\"").arg(ffmpegPath);
+    strCmd += QString(" -i \"%1\"").arg(filePath);
+    strCmd += QString(" \"%1\"").arg(audioPath);
+    QProcess ffmpeg;
+    ffmpeg.start(strCmd);
+    ffmpeg.waitForFinished();
+    if (ffmpeg.exitStatus() == QProcess::CrashExit)
+    {
+        qDebug() << "ffmpeg conversion failed";
+        return false;
+    }
+
+    int currentFrame = this->currentFrame();
+    SoundClip* key = nullptr;
+
+    if (layer->keyExists(currentFrame))
+    {
+        key = static_cast<SoundClip*>(layer->getKeyFrameAt(currentFrame));
+        if (!key->fileName().isEmpty())
+        {
+            qDebug() << "frame already exists at location";
+            return false;
+        }
+    }
+    else
+    {
+        key = new SoundClip();
+        layer->addKeyFrame(currentFrame, key);
+    }
+
+    Status st = sound()->loadSound(key, audioPath);
+
+    if (!st.ok())
+    {
+        layer->removeKeyFrame(currentFrame);
+        return false;
+    }
+
+    return true;
 }
 
 bool Editor::importGIF(QString filePath, int numOfImages)
