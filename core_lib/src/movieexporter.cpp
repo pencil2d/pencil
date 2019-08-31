@@ -533,7 +533,9 @@ Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bo
                 bool shouldContinue = progress(frame.toInt() / static_cast<float>(frames));
                 if (!shouldContinue)
                 {
-                    ffmpeg.kill();
+                    ffmpeg.terminate();
+                    ffmpeg.waitForFinished(3000);
+                    if (ffmpeg.state() == QProcess::Running) ffmpeg.kill();
                     ffmpeg.waitForFinished();
                     return Status::CANCELED;
                 }
@@ -623,6 +625,7 @@ Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float
             if (mCanceled)
             {
                 ffmpeg.terminate();
+                if (ffmpeg.state() == QProcess::Running) ffmpeg.kill();
                 return Status::CANCELED;
             }
 

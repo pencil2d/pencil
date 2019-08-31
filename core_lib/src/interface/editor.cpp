@@ -947,7 +947,7 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
     return QFileInfo::exists(tempDir.filePath("00001.png"));
 }
 
-bool Editor::importMovieAudio(QString filePath)
+bool Editor::importMovieAudio(QString filePath, QProgressDialog &progress)
 {
     Layer* layer = layers()->currentLayer();
     if (layer->type() != Layer::SOUND)
@@ -976,13 +976,61 @@ bool Editor::importMovieAudio(QString filePath)
     strCmd += QString(" -i \"%1\"").arg(filePath);
     strCmd += QString(" \"%1\"").arg(audioPath);
     QProcess ffmpeg;
+    ffmpeg.setReadChannel(QProcess::StandardOutput);
+    // FFmpeg writes to stderr only for some reason, so we just read both channels together
+    ffmpeg.setProcessChannelMode(QProcess::MergedChannels);
     ffmpeg.start(strCmd);
-    ffmpeg.waitForFinished();
+    if (ffmpeg.waitForStarted())
+    {
+        while(ffmpeg.state() == QProcess::Running)
+        {
+            if(!ffmpeg.waitForReadyRead()) break;
+
+            QString output(ffmpeg.readAll());
+            QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+            for (const QString& s : sList)
+            {
+                qDebug() << "[stdout]" << s;
+            }
+
+            QApplication::processEvents();
+
+            if (progress.wasCanceled())
+            {
+                ffmpeg.terminate();
+                ffmpeg.waitForFinished(3000);
+                if (ffmpeg.state() == QProcess::Running) ffmpeg.kill();
+                ffmpeg.waitForFinished();
+                return true;
+            }
+        }
+
+        QString output(ffmpeg.readAll());
+        QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+        for (const QString& s : sList)
+        {
+            qDebug() << "[stdout]" << s;
+        }
+
+        if(ffmpeg.exitStatus() != QProcess::NormalExit)
+        {
+            qDebug() << "ERROR: FFmpeg crashed";
+            return false;
+        }
+    }
+    else
+    {
+        qDebug() << "ERROR: Could not execute FFmpeg.";
+        return false;
+    }
     if (ffmpeg.exitStatus() == QProcess::CrashExit)
     {
         qDebug() << "ffmpeg conversion failed";
         return false;
     }
+    if(progress.wasCanceled()) return true;
+    progress.setValue(90);
+    QApplication::processEvents();
 
     int currentFrame = this->currentFrame();
     SoundClip* key = nullptr;

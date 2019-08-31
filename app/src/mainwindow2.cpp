@@ -1075,7 +1075,14 @@ void MainWindow2::importMovieAudio()
         return;
     }
 
-    bool ok = mEditor->importMovieAudio(filePath);
+    // Show a progress dialog. The progress isn't actually tracked, but this will allow the operation to be cancelled
+    QProgressDialog progress(tr("Importing movie video..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setValue(0);
+    progress.show();
+
+    bool ok = mEditor->importMovieAudio(filePath, progress);
 
     if (!ok)
     {
@@ -1087,6 +1094,9 @@ void MainWindow2::importMovieAudio()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+
+    progress.setValue(100);
+    progress.close();
 }
 
 void MainWindow2::lockWidgets(bool shouldLock)
