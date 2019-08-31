@@ -912,6 +912,8 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
         qDebug() << "Please place ffprobe.exe in plugins directory";
     }
 
+    if (progress.wasCanceled()) return true;
+
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
     strCmd += QString(" -i \"%1\"").arg(filePath);
     strCmd += QString(" -r %1").arg(fps);
@@ -920,12 +922,14 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
     Status st = MovieExporter::executeFFMpeg(strCmd, frames, [&progress](float f) {
         progress.setValue(qFloor(qMin(f, 1.0f) * 50));
         QApplication::processEvents();
+        return !progress.wasCanceled();
     });
-    if (!st.ok())
+    if (!st.ok() && st.code() != Status::CANCELED)
     {
         qDebug() << "ffmpeg conversion failed";
     }
 
+    if(progress.wasCanceled()) return true;
     progress.setValue(50);
     int i = 1;
     frames = QDir(tempDir.path()).count();
@@ -933,7 +937,8 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
     while (QFileInfo::exists(currentFile))
     {
         importBitmapImage(currentFile);
-        progress.setValue(50 + i / static_cast<float>(frames) * 50);
+        if (progress.wasCanceled()) return true;
+        progress.setValue(qFloor(50 + i / static_cast<qreal>(frames) * 50));
         QApplication::processEvents();
         i++;
         currentFile = tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0')));

@@ -54,7 +54,7 @@ public:
 
     void cancel() { mCanceled = true; }
 
-    static Status executeFFMpeg(QString strCmd, int frames, std::function<void(float)> progress);
+    static Status executeFFMpeg(QString strCmd, int frames, std::function<bool(float)> progress);
 private:
     Status assembleAudio(const Object* obj, QString ffmpegPath, std::function<void(float)> progress);
     Status generateMovie(const Object *obj, QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);

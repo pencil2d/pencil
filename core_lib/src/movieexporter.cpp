@@ -220,7 +220,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     // Output path
     strCmd += " " + mTempWorkDir + "/tmpaudio.wav";
 
-    STATUS_CHECK(MovieExporter::executeFFMpeg(strCmd, mDesc.endFrame - mDesc.startFrame, progress));
+    STATUS_CHECK(MovieExporter::executeFFMpeg(strCmd, mDesc.endFrame - mDesc.startFrame, [&progress, this] (float f) { progress(f); return !mCanceled; }));
     qDebug() << "audio file: " + tempAudioPath;
 
     return Status::OK;
@@ -504,7 +504,7 @@ Status MovieExporter::generateGif(
  *  @return Returns Status::OK if everything went well, and Status::FAIL
  *  and error is detected (usually a non-zero exit code for ffmpeg).
  */
-Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<void(float)> progress)
+Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bool(float)> progress)
 {
     qDebug() << strCmd;
 
@@ -530,7 +530,13 @@ Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<vo
             {
                 QString frame = output.mid(6, output.indexOf(' '));
 
-                progress(frame.toInt() / static_cast<float>(frames));
+                bool shouldContinue = progress(frame.toInt() / static_cast<float>(frames));
+                if (!shouldContinue)
+                {
+                    ffmpeg.kill();
+                    ffmpeg.waitForFinished();
+                    return Status::CANCELED;
+                }
             }
         }
 
