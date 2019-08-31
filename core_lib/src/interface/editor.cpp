@@ -939,7 +939,7 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
         currentFile = tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0')));
     }
 
-    return true;
+    return QFileInfo::exists(tempDir.filePath("00001.png"));
 }
 
 bool Editor::importMovieAudio(QString filePath)
