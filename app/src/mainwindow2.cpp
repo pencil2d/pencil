@@ -894,6 +894,12 @@ void MainWindow2::importImageSequenceNumbered()
 
 void MainWindow2::addLayerByFilename(QString strFilePath)
 {
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progress(tr("Importing movie video..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
     // local vars for testing file validity
     int dot = strFilePath.lastIndexOf(".");
     int slash = strFilePath.lastIndexOf("/");
@@ -957,6 +963,12 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
             return;
         }
     }
+    progress.setValue(5);
+    QApplication::processEvents();
+
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = true;
+
     prefix = mCommands->nameSuggest(prefix);
     mEditor->layers()->createBitmapLayer(prefix);
     Layer *layer = mEditor->layers()->findLayerByName(prefix);
@@ -967,11 +979,19 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
     {
         mEditor->scrubTo(finalList[i].mid(dot - digits, digits).toInt());
         bool ok = mEditor->importImage(path + finalList[i]);
-        if (!ok) { return;}
+        if (!ok) { break; }
         layer->addNewKeyFrameAt(finalList[i].mid(dot - digits, digits).toInt());
+        if (progress.wasCanceled()) { break; }
+        progress.setValue(qFloor(5 + (i+1) / static_cast<qreal>(finalList.size()) * 95));
+        QApplication::processEvents();
     }
+    mIsImportingImageSequence = false;
     ui->scribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
+    mEditor->layers()->notifyAnimationLengthChanged();
+
+    progress.setValue(100);
+    progress.close();
 }
 
 void MainWindow2::importGIF()
