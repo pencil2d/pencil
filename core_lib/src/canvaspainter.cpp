@@ -454,12 +454,14 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
     QRect boundingRect;
     mCameraRect = cameraLayer->getViewRect();
 
+    QRegion rg2(mCameraRect);
     if (isCameraMode)
     {
         painter.setWorldMatrixEnabled(false);
         QTransform center = QTransform::fromTranslate(viewRect.width() / 2.0, viewRect.height() / 2.0);
         boundingRect = viewRect.toAlignedRect();
         mCameraRect = center.mapRect(mCameraRect);
+        rg2 = center.map(rg2);
     }
     else
     {
@@ -469,7 +471,7 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
 
         QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
-
+        rg2 = camTransform.map(rg2);
     }
 
     painter.setOpacity(1.0);
@@ -477,7 +479,6 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
     painter.setBrush(QColor(0, 0, 0, 80));
 
     QRegion rg1(boundingRect);
-    QRegion rg2(mCameraRect);
     QRegion rg3 = rg1.subtracted(rg2);
 
     painter.setClipRegion(rg3);
