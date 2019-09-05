@@ -429,43 +429,40 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         editor()->tools()->tabletRestorePrevTool();
     }
 
-    if (isLayerPaintable())
+    if (event.type() == QTabletEvent::TabletPress)
     {
-        if (event.type() == QTabletEvent::TabletPress)
+        mStrokeManager->setTabletinUse(true);
+        mStrokeManager->pointerPressEvent(&event);
+        if (mIsFirstClick)
         {
-            mStrokeManager->setTabletinUse(true);
-            mStrokeManager->pointerPressEvent(&event);
-            if (mIsFirstClick)
-            {
-                mIsFirstClick = false;
-                mDoubleClickTimer->start();
-                pointerPressEvent(&event);
+            mIsFirstClick = false;
+            mDoubleClickTimer->start();
+            pointerPressEvent(&event);
+        }
+        else
+        {
+            qreal distance = QLineF(currentTool()->getCurrentPressPoint(), currentTool()->getLastPressPoint()).length();
+
+            if (mDoubleClickMillis <= DOUBLE_CLICK_THRESHOLD && distance < 5.0) {
+                currentTool()->pointerDoubleClickEvent(&event);
             }
             else
             {
-                qreal distance = QLineF(currentTool()->getCurrentPressPoint(), currentTool()->getLastPressPoint()).length();
-
-                if (mDoubleClickMillis <= DOUBLE_CLICK_THRESHOLD && distance < 5.0) {
-                    currentTool()->pointerDoubleClickEvent(&event);
-                }
-                else
-                {
-                    // in case we handled the event as double click but really should have handled it as single click.
-                    pointerPressEvent(&event);
-                }
+                // in case we handled the event as double click but really should have handled it as single click.
+                pointerPressEvent(&event);
             }
         }
-        else if (event.type() == QTabletEvent::TabletMove)
-        {
-            mStrokeManager->pointerMoveEvent(&event);
-            pointerMoveEvent(&event);
-        }
-        else if (event.type() == QTabletEvent::TabletRelease)
-        {
-            mStrokeManager->pointerReleaseEvent(&event);
-            pointerReleaseEvent(&event);
-            mStrokeManager->setTabletinUse(false);
-        }
+    }
+    else if (event.type() == QTabletEvent::TabletMove)
+    {
+        mStrokeManager->pointerMoveEvent(&event);
+        pointerMoveEvent(&event);
+    }
+    else if (event.type() == QTabletEvent::TabletRelease)
+    {
+        mStrokeManager->pointerReleaseEvent(&event);
+        pointerReleaseEvent(&event);
+        mStrokeManager->setTabletinUse(false);
     }
     event.accept();
 }
