@@ -110,26 +110,33 @@ public:
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
 
-    int  getLayerCount() const;
+    LayerBitmap* bitmapLayerContaining(const int layerId, const int layerIndex);
+    LayerVector* vectorLayerContaining(const int layerId, const int layerIndex);
+    LayerSound* addSoundLayerContaining(const int layerId, const int layerIndex);
+    LayerCamera* addCameraLayerContaining(const int layerId, const int layerIndex);
+
+    int getLayerCount() const;
+    int getLastLayerIndex() const;
     Layer* getLayer(int i) const;
-    Layer* findLayerByName(QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
+	Layer* findLayerByName( QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED ) const;
+    Layer* findLayerById(int layerId) const;
 
     bool swapLayers(int i, int j);
     void deleteLayer(int i);
-    void deleteLayer(Layer*);
-
-    template<typename T>
-    std::vector<T*> getLayersByType() const
-    {
-        std::vector<T*> result;
-        for (Layer* layer : mLayers)
-        {
-            T* t = dynamic_cast<T*>(layer);
-            if (t)
-                result.push_back(t);
-        }
-        return result;
-    }
+    void deleteLayerWithId(int layerId);
+	
+	template< typename T >
+	std::vector< T* > getLayersByType() const
+	{
+		std::vector< T* > result;
+		for ( Layer* layer : mLayers)
+		{
+			T* t = dynamic_cast<T*>(layer);
+			if ( t )
+			    result.push_back(t);
+		}
+		return result;
+	}
 
     // these functions need to be moved to somewhere...
     bool exportFrames(int frameStart, int frameEnd, LayerCamera* cameraLayer, QSize exportSize, QString filePath, QString format,

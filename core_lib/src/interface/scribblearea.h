@@ -186,9 +186,6 @@ private:
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals();
 
-    BitmapImage* currentBitmapImage(Layer* layer) const;
-    VectorImage* currentVectorImage(Layer* layer) const;
-
     MoveMode mMoveMode = MoveMode::NONE;
     ToolType mPrevTemporalToolType = ERASER;
     ToolType mPrevToolType = PEN; // previous tool (except temporal)
@@ -236,7 +233,6 @@ private:
     PreferenceManager* mPrefs = nullptr;
 
     QPixmap mCanvas;
-    CanvasPainter mCanvasPainter;
     SelectionPainter mSelectionPainter;
 
     // Pixmap Cache keys

@@ -37,7 +37,7 @@ public:
     VectorImage(const VectorImage&);
     virtual ~VectorImage();
 
-    VectorImage* clone() override;
+    VectorImage* clone() const override;
 
     void setObject(Object* pObj) { mObject = pObj; }
 
@@ -58,6 +58,7 @@ public:
     void setSelected(VertexRef vertexRef, bool YesOrNo);
     void setSelected(QList<int> curveList, bool YesOrNo);
     void setSelected(QList<VertexRef> vertexList, bool YesOrNo);
+    bool isSelected();
     bool isSelected(int curveNumber);
     bool isSelected(int curveNumber, int vertexNumber);
     bool isSelected(VertexRef vertexRef);

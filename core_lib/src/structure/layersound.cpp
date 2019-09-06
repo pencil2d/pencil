@@ -29,6 +29,13 @@ LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
     setName(tr("Sound Layer"));
 }
 
+LayerSound::LayerSound(const int layerId, Object* object) : Layer(object, Layer::SOUND)
+{
+    setName(tr("Sound Layer"));
+    setId(layerId);
+}
+
+
 LayerSound::~LayerSound()
 {
 }

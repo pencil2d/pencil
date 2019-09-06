@@ -38,7 +38,7 @@ VectorImage::~VectorImage()
 {
 }
 
-VectorImage* VectorImage::clone()
+VectorImage* VectorImage::clone() const
 {
     return new VectorImage(*this);
 }
@@ -703,6 +703,15 @@ bool VectorImage::isPathFilled()
 bool VectorImage::isSelected(int curveNumber)
 {
     return mCurves[curveNumber].isSelected();
+}
+
+bool VectorImage::isSelected()
+{
+    bool anySelected = false;
+    for (BezierCurve curve : mCurves) {
+        anySelected = curve.isSelected();
+    }
+    return anySelected;
 }
 
 /**

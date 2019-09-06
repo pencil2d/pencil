@@ -21,6 +21,11 @@ GNU General Public License for more details.
 #include "pointerevent.h"
 
 #include "layermanager.h"
+
+#include "layervector.h"
+#include "layerbitmap.h"
+
+#include "backupmanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "viewmanager.h"
@@ -173,7 +178,8 @@ void PencilTool::pointerMoveEvent(PointerEvent* event)
 
 void PencilTool::pointerReleaseEvent(PointerEvent*)
 {
-    mEditor->backup(typeName());
+    Layer* layer = mEditor->layers()->currentLayer();
+
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)
     {
@@ -183,12 +189,18 @@ void PencilTool::pointerReleaseEvent(PointerEvent*)
     {
         drawStroke();
     }
-    
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP)
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
-        paintVectorStroke(layer);
+
+   mEditor->backups()->saveStates();
+   if ( layer->type() == Layer::BITMAP )
+   {
+       paintBitmapStroke();
+       mEditor->backups()->bitmap(tr("Bitmap: Pencil"));
+   }
+   else if (layer->type() == Layer::VECTOR )
+   {
+       paintVectorStroke(layer);
+       mEditor->backups()->vector(tr("Vector: Pencil"));
+   }
     endStroke();
 }
 
@@ -327,11 +339,6 @@ void PencilTool::paintVectorStroke(Layer* layer)
     {
         mEditor->deselectAll();
     }
-
-    // select last/newest curve
-    vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
-
-    // TODO: selection doesn't apply on enter
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();

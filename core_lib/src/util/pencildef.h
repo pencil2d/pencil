@@ -53,6 +53,11 @@ enum ToolType : int
     TOOL_TYPE_COUNT
 };
 
+enum SelectionType {
+    SELECTION,
+    DESELECT
+};
+
 enum ToolPropertyType
 {
     WIDTH,

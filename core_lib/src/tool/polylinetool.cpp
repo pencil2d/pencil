@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "backupmanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
 #include "pointerevent.h"
@@ -142,9 +143,7 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
 
-    mEditor->backup(typeName());
-
-    endPolyline(mPoints);
+    endPolyline( mPoints );
     clearToolData();
 }
 
@@ -235,7 +234,8 @@ void PolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if (layer->type() == Layer::VECTOR)
+    mEditor->backups()->saveStates();
+    if ( layer->type() == Layer::VECTOR )
     {
         BezierCurve curve = BezierCurve(points);
         if (mScribbleArea->makeInvisible() == true)
@@ -250,13 +250,15 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         curve.setVariableWidth(false);
         curve.setInvisibility(mScribbleArea->makeInvisible());
 
-        ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->addCurve(curve, mEditor->view()->scaling());
+        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, mEditor->view()->scaling() );
+        mEditor->backups()->vector(tr("Vector: Polyline"));
     }
     if (layer->type() == Layer::BITMAP)
     {
-        drawPolyline(points, points.last());
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-        bitmapImage->paste(mScribbleArea->mBufferImg);
+        drawPolyline( points, points.last() );
+        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+        bitmapImage->paste( mScribbleArea->mBufferImg );
+        mEditor->backups()->bitmap(tr("Bitmap: Polyline"));
     }
     mScribbleArea->mBufferImg->clear();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());

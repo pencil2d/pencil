@@ -94,11 +94,14 @@ public:
     KeyFrame *getKeyFrameWhichCovers(int frameNumber) const;
     bool getVisibility() { return mVisible; }
 
+    std::map<int, KeyFrame*, std::greater<int>> getKeysInLayer() { return mKeyFrames; }
     void foreachKeyFrame(std::function<void(KeyFrame*)>);
 
     void setModified(int position, bool isModified);
 
     // Handle selection
+    int getFirstFrameInSelection();
+    int getLastFrameInSelection();
     bool isFrameSelected(int position) const;
     void setFrameSelected(int position, bool isSelected);
     void toggleFrameSelected(int position, bool allowMultiple = false);
@@ -121,6 +124,18 @@ public:
     virtual void editProperties();
 
     bool isPaintable() const;
+
+    QString description() const {
+        switch(meType)
+        {
+            case LAYER_TYPE::BITMAP: { return tr("Bitmap"); }
+            case LAYER_TYPE::VECTOR: { return tr("Vector"); }
+            case LAYER_TYPE::SOUND: { return tr("Sound"); }
+            case LAYER_TYPE::CAMERA: { return tr("Camera"); }
+        default:
+            return "";
+        }
+    }
 
 protected:
     void setId(int LayerId) { mId = LayerId; }

@@ -56,6 +56,15 @@ void SelectionManager::resetSelectionTransformProperties()
     mSelectionTransform.reset();
 }
 
+/**
+ * @brief SelectionManager::sync
+ * Sync the selection properties
+ */
+void SelectionManager::sync()
+{
+    setSelection(myTransformedSelectionRect());
+}
+
 void SelectionManager::updatePolygons()
 {
     mCurrentSelectionPolygonF = mTempTransformedSelection;
@@ -257,9 +266,14 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     }
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
+int SelectionManager::constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
+}
+
+bool SelectionManager::selectionMoved() const
+{
+    return !mSelectionTransform.isIdentity();
 }
 
 void SelectionManager::setSelection(QRectF rect)
@@ -269,6 +283,8 @@ void SelectionManager::setSelection(QRectF rect)
     mTransformedSelection = rect;
     mTempTransformedSelection = rect;
     mSomethingSelected = (mSelection.isNull() ? false : true);
+    mScaleX = 1.0;
+    mScaleY = 1.0;
 
     emit selectionChanged();
 }
@@ -282,12 +298,21 @@ void SelectionManager::calculateSelectionTransformation()
     mSelectionTransform.translate(centerPoints[0].x(), centerPoints[0].y());
     mSelectionTransform.rotate(mRotatedAngle);
 
-    if (mSelection.width() > 0 && mSelection.height() > 0) // can't divide by 0
+    if (mSelection.isValid())
     {
         qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
         qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
+
+        if (mScaleX < 0) {
+            scaleX = -scaleX;
+        }
+        if (mScaleY < 0) {
+            scaleY = -scaleY;
+        }
         mSelectionTransform.scale(scaleX, scaleY);
     }
+    mSelectionTransform.fromScale(mScaleX,mScaleY);
+
     mSelectionTransform.translate(-centerPoints[1].x(), -centerPoints[1].y());
 }
 
@@ -341,24 +366,23 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
-    qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
-    qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
     QVector<QPointF> centerPoints = calcSelectionCenterPoints();
 
     QTransform translate = QTransform::fromTranslate(centerPoints[0].x(), centerPoints[0].y());
     QTransform _translate = QTransform::fromTranslate(-centerPoints[1].x(), -centerPoints[1].y());
-    QTransform scale = QTransform::fromScale(-scaleX, scaleY);
+
+    QTransform scale = QTransform::fromScale(-mScaleX, mScaleY);
 
     if (flipVertical)
     {
-        scale = QTransform::fromScale(scaleX, -scaleY);
+        scale = QTransform::fromScale(mScaleX, -mScaleY);
     }
 
     // reset transformation for vector selections
     mSelectionTransform.reset();
     mSelectionTransform *= _translate * scale * translate;
-
-    emit needPaintAndApply();
+    mScaleX = scale.m11();
+    mScaleY = scale.m22();
 }
 
 void SelectionManager::translate(QPointF point)
@@ -378,6 +402,17 @@ void SelectionManager::resetSelectionProperties()
     mLastSelectionPolygonF = QPolygonF();
 
     mSomethingSelected = false;
-    vectorSelection.clear();
+    mVectorSelection.clear();
+}
+
+void SelectionManager::addCurvesAndVerticesToVectorSelection(const QList<int> curves, const QList<VertexRef> vertices)
+{
+    mVectorSelection.add(curves);
+    mVectorSelection.add(vertices);
+}
+
+void SelectionManager::addCurvesToVectorSelection(const QList<int> curves)
+{
+    mVectorSelection.add(curves);
 }
 

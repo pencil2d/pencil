@@ -41,7 +41,7 @@ Camera::~Camera()
 {
 }
 
-Camera* Camera::clone()
+Camera* Camera::clone() const
 {
     return new Camera(*this);
 }
@@ -51,6 +51,7 @@ void Camera::assign(const Camera& rhs)
     mTranslate = rhs.mTranslate;
     mRotate = rhs.mRotate;
     mScale = rhs.mScale;
+    mNeedUpdateView = true;
     updateViewTransform();
     modification();
 }

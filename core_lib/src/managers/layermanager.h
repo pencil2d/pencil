@@ -43,26 +43,51 @@ public:
     Layer* currentLayer(int offset);
     Layer* getLayer(int index);
     Layer* findLayerByName(QString sName, Layer::LAYER_TYPE type = Layer::UNDEFINED);
+    Layer* findLayerById(int layerId);
     Layer* getLastCameraLayer();
     int    currentLayerIndex();
     void   setCurrentLayer(int nIndex);
     void   setCurrentLayer(Layer* layer);
+    void   setCurrentLayerFromId(const int layerId);
     int    count();
 
     Status deleteLayer(int index);
+    Status deleteLayerWithId(int layerId, Layer::LAYER_TYPE layerType);
     Status renameLayer(Layer*, const QString& newName);
     void notifyLayerChanged(Layer*);
 
     void gotoNextLayer();
     void gotoPreviouslayer();
+    int getLayerIndex(Layer* layer) const { return getIndex(layer); }
 
     LayerBitmap* createBitmapLayer(const QString& strLayerName);
     LayerVector* createVectorLayer(const QString& strLayerName);
     LayerCamera* createCameraLayer(const QString& strLayerName);
     LayerSound*  createSoundLayer(const QString& strLayerName);
 
+    LayerBitmap* createBitmapLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName);
+    void createBitmapLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                              const int layerId,
+                                              const int layerIndex,
+                                              const QString& strLayerName);
+
+    void createVectorLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                              const int layerId,
+                                              const int layerIndex,
+                                              const QString& strLayerName);
+
+    void createCameraLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
+                                              const int layerId,
+                                              const int layerIndex,
+                                              const QString& strLayerName);
+
+    LayerVector* createVectorLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName);
+    LayerSound* createSoundLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName);
+    LayerCamera* createCameraLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName);
+
+
     // KeyFrame Management
-    int LastFrameAtFrame(int frameIndex);
+    Status::StatusInt LastFrameAtLayer(int frameIndex);
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 

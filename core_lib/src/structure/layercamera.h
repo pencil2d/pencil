@@ -51,13 +51,14 @@ class LayerCamera : public Layer
 
 public:
     LayerCamera(Object* object);
+    LayerCamera(const int layerId, Object *object);
     ~LayerCamera();
 
     void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
     
-    void editProperties() override;
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
+    void putCameraIntoFrame(KeyFrame* keyframe, int frameIndex);
 
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
@@ -66,6 +67,7 @@ public:
     QRect getViewRect();
     QSize getViewSize();
 
+    void setViewRect(QRect newRect) {viewRect = newRect; }
 signals:
     void resolutionChanged();
 
@@ -79,7 +81,6 @@ private:
     int mFieldW = 800;
     int mFieldH = 600;
     QRect viewRect;
-    CameraPropertiesDialog* dialog = nullptr;
 };
 
 #endif

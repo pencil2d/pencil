@@ -22,6 +22,7 @@ INCLUDEPATH += src \
     src/graphics/bitmap \
     src/graphics/vector \
     src/interface \
+    src/managers \
     src/structure \
     src/tool \
     src/util \
@@ -48,7 +49,10 @@ HEADERS +=  \
     src/interface/timelinecells.h \
     src/interface/basedockwidget.h \
     src/interface/backgroundwidget.h \
+    src/interface/historyviewerwidget.h \
     src/managers/basemanager.h \
+    src/managers/canvasmanager.h \
+    src/managers/keyframemanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -57,6 +61,7 @@ HEADERS +=  \
     src/managers/viewmanager.h \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
+    src/managers/backupmanager.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -91,6 +96,7 @@ HEADERS +=  \
     src/util/pencilsettings.h \
     src/util/util.h \
     src/util/log.h \
+    src/util/direction.h \
     src/util/movemode.h \
     src/canvaspainter.h \
     src/soundplayer.h \
@@ -120,7 +126,11 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/timelinecells.cpp \
     src/interface/basedockwidget.cpp \
     src/interface/backgroundwidget.cpp \
+    src/interface/backupelement.cpp \
+    src/interface/historyviewerwidget.cpp \
     src/managers/basemanager.cpp \
+    src/managers/canvasmanager.cpp \
+    src/managers/keyframemanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \
@@ -128,6 +138,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/preferencemanager.cpp \
     src/managers/playbackmanager.cpp \
     src/managers/viewmanager.cpp \
+    src/managers/backupmanager.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \

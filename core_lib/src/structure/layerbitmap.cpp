@@ -30,6 +30,20 @@ LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
     setName(tr("Bitmap Layer"));
 }
 
+/**
+ * @brief LayerBitmap::LayerBitmap
+ * @param layer
+ * @param object
+ *
+ * Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerBitmap::LayerBitmap(int id, Object* object) : Layer(object, Layer::BITMAP)
+{
+    setName(tr("Bitmap Layer"));
+    setId(id);
+}
+
 LayerBitmap::~LayerBitmap()
 {
 }
@@ -46,12 +60,25 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
+void LayerBitmap::replaceLastBitmapAtFrame(const BitmapImage* replaceWithImage)
+{
+    *static_cast<BitmapImage*>(getLastKeyFrameAtPosition(replaceWithImage->pos())) = *replaceWithImage;
+}
+
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
 {
     BitmapImage* pKeyFrame = new BitmapImage(topLeft, path);
     pKeyFrame->enableAutoCrop(true);
     pKeyFrame->setPos(frameNumber);
     loadKey(pKeyFrame);
+}
+
+void LayerBitmap::putBitmapIntoFrame(KeyFrame* keyframe, const int& frameIndex)
+{
+    BitmapImage* currentBitmap = getBitmapImageAtFrame(frameIndex);
+
+    BitmapImage newBitmap = *static_cast<BitmapImage*>(keyframe);
+    static_cast<BitmapImage*>(currentBitmap)->paste(&newBitmap);
 }
 
 Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)

@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
+#include "backupmanager.h"
 #include "toolmanager.h"
 
 
@@ -468,6 +469,7 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
 
 void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
+    if ( primaryButton != Qt::NoButton ) return;
     int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
     mFromLayer = mToLayer = layerNumber;
@@ -602,6 +604,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         }
         break;
     }
+    mEditor->backups()->saveStates();
 }
 
 void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
@@ -636,6 +639,8 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                     // Did we move to another frame ?
                     if (frameNumber != mLastFrameNumber)
                     {
+
+                        mEditor->backups()->saveStates();
                         // Check if the frame we clicked was selected
                         if (mCanMoveFrame) {
 
@@ -643,6 +648,8 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             mMovingFrames = true;
 
                             int offset = frameNumber - mLastFrameNumber;
+
+                            mNumOfFramesOffset += offset;
                             currentLayer->moveSelectedFrames(offset);
                             mEditor->layers()->notifyAnimationLengthChanged();
                             mEditor->updateCurrentFrame();
@@ -687,24 +694,22 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
         }
+
+        if (frameNumber != mStartFrameNumber && mCanMoveFrame)
+        {
+            mEditor->backups()->frameDragged(mNumOfFramesOffset);
+            mNumOfFramesOffset = 0;
+        }
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {
         mToLayer = getInbetweenLayerNumber(event->pos().y());
         if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
         {
-            // Bubble the from layer up or down to the to layer
-            if (mToLayer < mFromLayer) // bubble up
-            {
-                for (int i = mFromLayer - 1; i >= mToLayer; i--)
-                    mEditor->swapLayers(i, i + 1);
-            }
-            else // bubble down
-            {
-                for (int i = mFromLayer + 1; i <= mToLayer; i++)
-                    mEditor->swapLayers(i, i - 1);
-            }
+            mEditor->moveLayers(mFromLayer, mToLayer);
         }
+        mEditor->layers()->setCurrentLayer(mToLayer);
+        mEditor->backups()->layerMoved(mToLayer);
     }
     emit mouseMovedY(0);
     mTimeLine->updateContent();
@@ -733,10 +738,11 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         {
             if (layer->type() == Layer::CAMERA)
             {
-                layer->editProperties();
+                emit modifiedCamera();
             }
             else
             {
+                mEditor->backups()->saveStates();
                 QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
                 bool ok;
@@ -745,8 +751,10 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
                                                      layer->name(), &ok);
                 if (ok && !text.isEmpty())
                 {
+
                     text.replace(regex, "");
                     mEditor->layers()->renameLayer(layer, text);
+                    mEditor->backups()->layerRenamed();
                 }
             }
         }

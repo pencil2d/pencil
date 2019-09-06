@@ -22,11 +22,15 @@ GNU General Public License for more details.
 #include <QVector2D>
 #include <pointerevent.h>
 
+#include "viewmanager.h"
+#include "layermanager.h"
+#include "backupmanager.h"
+#include "strokemanager.h"
+
 #include "layer.h"
 #include "layercamera.h"
+
 #include "editor.h"
-#include "strokemanager.h"
-#include "viewmanager.h"
 #include "scribblearea.h"
 #include "mathutils.h"
 
@@ -55,6 +59,7 @@ void HandTool::pointerPressEvent(PointerEvent*)
     mIsHeld = true;
 
     mScribbleArea->updateToolCursor();
+    mEditor->backups()->saveStates();
 }
 
 void HandTool::pointerMoveEvent(PointerEvent* event)
@@ -78,6 +83,13 @@ void HandTool::pointerReleaseEvent(PointerEvent* event)
     }
     mIsHeld = false;
     mScribbleArea->updateToolCursor();
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA)
+    {
+        BackupManager* backup = mEditor->backups();
+        backup->cameraMotion();
+    }
 }
 
 void HandTool::pointerDoubleClickEvent(PointerEvent* event)

@@ -23,10 +23,13 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+
 #include "layermanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
+
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
@@ -106,7 +109,6 @@ void BucketTool::setTolerance(const int tolerance)
 
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
-    startStroke();
     if (event->button() == Qt::LeftButton)
     {
         mScribbleArea->setAllDirty();
@@ -133,14 +135,15 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
-        mEditor->backup(typeName());
-
-        switch (layer->type())
+        mEditor->backups()->saveStates();
+        if ( layer->type() == Layer::BITMAP )
         {
-        case Layer::BITMAP: paintBitmap(layer); break;
-        case Layer::VECTOR: paintVector(layer); break;
-        default:
-            break;
+            paintBitmap(layer);
+            mEditor->backups()->bitmap(tr("Bitmap: Bucket"));
+        }
+        else if (layer->type() == Layer::VECTOR )
+        {
+            paintVector(layer);
         }
     }
     endStroke();
@@ -184,6 +187,10 @@ void BucketTool::paintVector(Layer* layer)
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();
+
+    if (vectorImage->isSelected()) {
+        mEditor->backups()->vector(tr("Vector: Bucket"));
+    }
 }
 
 void BucketTool::applyChanges()

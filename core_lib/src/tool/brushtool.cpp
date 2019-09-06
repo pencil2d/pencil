@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include "brushtool.h"
 
-#include <cmath>
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
@@ -29,6 +28,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
 #include "scribblearea.h"
@@ -185,7 +185,6 @@ void BrushTool::pointerMoveEvent(PointerEvent* event)
 void BrushTool::pointerReleaseEvent(PointerEvent*)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    mEditor->backup(typeName());
 
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)
@@ -197,10 +196,16 @@ void BrushTool::pointerReleaseEvent(PointerEvent*)
         drawStroke();
     }
 
+	mEditor->backups()->saveStates();
     if (layer->type() == Layer::BITMAP)
+    {
         paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
+        mEditor->backups()->bitmap(tr("Bitmap: Brush"));
+    }
+    else if (layer->type() == Layer::VECTOR) {
         paintVectorStroke();
+        mEditor->backups()->vector(tr("Vector: Brush"));
+    }
 
     endStroke();
 }
@@ -361,8 +366,6 @@ void BrushTool::paintVectorStroke()
         {
             mEditor->deselectAll();
         }
-
-        vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
         mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         mScribbleArea->setAllDirty();

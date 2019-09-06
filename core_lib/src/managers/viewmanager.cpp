@@ -235,41 +235,6 @@ void ViewManager::scaleDown()
     scale(scaling() * 0.8333f);
 }
 
-void ViewManager::scale100()
-{
-    scale(1.0f);
-}
-
-void ViewManager::scale400()
-{
-    scale(4.0f);
-}
-
-void ViewManager::scale300()
-{
-    scale(3.0f);
-}
-
-void ViewManager::scale200()
-{
-    scale(2.0f);
-}
-
-void ViewManager::scale50()
-{
-    scale(0.5f);
-}
-
-void ViewManager::scale33()
-{
-    scale(0.33f);
-}
-
-void ViewManager::scale25()
-{
-    scale(0.25f);
-}
-
 void ViewManager::scale(float scaleValue)
 {
     if (scaleValue < mMinScale)

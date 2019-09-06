@@ -78,6 +78,8 @@ void CameraPropertiesDialog::setHeight(int height)
 LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
     setName(tr("Camera Layer"));
+
+    // TODO: remove duplicate code
     QSettings settings (PENCIL2D, PENCIL2D);
     mFieldW = settings.value("FieldW").toInt();
     mFieldH = settings.value("FieldH").toInt();
@@ -87,7 +89,21 @@ LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
         mFieldH = 600;
     }
     viewRect = QRect(QPoint(-mFieldW/2, -mFieldH/2), QSize(mFieldW, mFieldH));
-    dialog = nullptr;
+}
+
+LayerCamera::LayerCamera(const int layerId, Object* object ) : Layer( object, Layer::CAMERA )
+{
+    setName(tr("Camera Layer"));
+    setId(layerId);
+    QSettings settings (PENCIL2D, PENCIL2D);
+    mFieldW = settings.value("FieldW").toInt();
+    mFieldH = settings.value("FieldH").toInt();
+    if (mFieldW < 2 || mFieldH < 2)
+    {
+        mFieldW = 800;
+        mFieldH = 600;
+    }
+    viewRect = QRect(QPoint(-mFieldW/2, -mFieldH/2), QSize(mFieldW, mFieldH));
 }
 
 LayerCamera::~LayerCamera()
@@ -97,6 +113,12 @@ LayerCamera::~LayerCamera()
 Camera* LayerCamera::getCameraAtFrame(int frameNumber)
 {
     return static_cast< Camera* >( getKeyFrameAt( frameNumber ) );
+}
+
+void LayerCamera::putCameraIntoFrame(KeyFrame *keyframe, int frameIndex)
+{
+    Camera* oldCamera = static_cast<Camera*>(keyframe);
+    getCameraAtFrame(frameIndex)->assign(*oldCamera);
 }
 
 Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
@@ -114,7 +136,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
     Camera* camera1 = static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber ) );
 
     int nextFrame = getNextKeyFramePosition( frameNumber );
-	Camera* camera2 = static_cast< Camera* >( getLastKeyFrameAtPosition( nextFrame ) );
+    Camera* camera2 = static_cast< Camera* >( getLastKeyFrameAtPosition( nextFrame ) );
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -129,10 +151,10 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
         return camera1->view;
     }
 
-	if ( camera1 == camera2 )
-	{
-		return camera1->view;
-	}
+    if ( camera1 == camera2 )
+    {
+        return camera1->view;
+    }
 
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
@@ -237,28 +259,6 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
     c->setPos(position);
     linearInterpolateTransform(c);
     return c;
-}
-
-void LayerCamera::editProperties()
-{
-    if ( dialog == nullptr )
-    {
-        dialog = new CameraPropertiesDialog( name(), viewRect.width(), viewRect.height() );
-    }
-    dialog->setName( name() );
-    dialog->setWidth(viewRect.width());
-    dialog->setHeight(viewRect.height());
-    int result = dialog->exec();
-    if (result == QDialog::Accepted)
-    {
-        setName( dialog->getName() );
-        QSettings settings (PENCIL2D, PENCIL2D);
-        settings.setValue(SETTING_FIELD_W, dialog->getWidth());
-        settings.setValue(SETTING_FIELD_H, dialog->getHeight());
-        viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
-
-        emit resolutionChanged();
-    }
 }
 
 QDomElement LayerCamera::createDomElement( QDomDocument& doc )

@@ -30,6 +30,7 @@ public:
 
     void updatePolygons();
     void updateTransformedSelection() { mTransformedSelection = mTempTransformedSelection; }
+    void sync();
 
     QRectF mappedSelection();
 
@@ -62,6 +63,11 @@ public:
     const QList<int> closestCurves() { return mClosestCurves; }
     const QList<VertexRef> closestVertices() { return mClosestVertices; }
 
+    const VectorSelection vectorSelection() { return mVectorSelection; }
+    void setVectorSelection(const VectorSelection& vectorSelection) { mVectorSelection = vectorSelection; }
+    void addCurvesAndVerticesToVectorSelection(const QList<int> curves, const QList<VertexRef> vertices);
+    void addCurvesToVectorSelection(const QList<int> curves);
+
     QTransform selectionTransform() { return mSelectionTransform; }
     void setSelectionTransform(QTransform transform) { mSelectionTransform = transform; }
     void resetSelectionTransform();
@@ -88,17 +94,20 @@ public:
 
     void setSomethingSelected(bool selected) { mSomethingSelected = selected; }
 
-    VectorSelection vectorSelection;
-
     const QRectF& mySelectionRect() { return mSelection; }
     const QRectF& myTempTransformedSelectionRect() { return mTempTransformedSelection; }
     const QRectF& myTransformedSelectionRect() { return mTransformedSelection; }
-    const qreal& myRotation() { return mRotatedAngle; }
+    qreal myRotation() const { return mRotatedAngle; }
+    qreal myScaleX() const { return mScaleX; }
+    qreal myScaleY() const { return mScaleY; }
 
     void setSelectionRect(const QRectF& rect) { mSelection = rect; }
     void setTempTransformedSelectionRect(const QRectF& rect) { mTempTransformedSelection = rect; }
     void setTransformedSelectionRect(const QRectF& rect) { mTransformedSelection = rect; }
-    void setRotation(const qreal& rotation) { mRotatedAngle = rotation; }
+    void setRotation(const qreal rotation) { mRotatedAngle = rotation; }
+    void setScale(const qreal scaleX, const qreal scaleY) { mScaleX = scaleX; mScaleY = scaleY; }
+
+    bool selectionMoved() const;
 
 
 signals:
@@ -108,12 +117,15 @@ signals:
 
 private:
 
-    int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
+    int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
 
+    VectorSelection mVectorSelection;
     QRectF mSelection;
     QRectF mTempTransformedSelection;
     QRectF mTransformedSelection;
     qreal mRotatedAngle;
+    qreal mScaleX;
+    qreal mScaleY;
 
     bool mSomethingSelected;
     QPolygonF mLastSelectionPolygonF;

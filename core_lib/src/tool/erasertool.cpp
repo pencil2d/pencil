@@ -25,7 +25,11 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
+#include "colormanager.h"
+#include "selectionmanager.h"
+
 #include "layervector.h"
 #include "vectorimage.h"
 #include "pointerevent.h"
@@ -136,9 +140,8 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
 
 void EraserTool::pointerReleaseEvent(PointerEvent*)
 {
-    mEditor->backup(typeName());
-
-    qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
+    Layer* layer = mEditor->layers()->currentLayer();
+    qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
     if (distance < 1)
     {
         paintAt(mMouseDownPoint);
@@ -147,6 +150,8 @@ void EraserTool::pointerReleaseEvent(PointerEvent*)
     {
         drawStroke();
     }
+
+    mEditor->backups()->saveStates();
     removeVectorPaint();
     endStroke();
 }
@@ -279,6 +284,7 @@ void EraserTool::removeVectorPaint()
         mScribbleArea->paintBitmapBuffer();
         mScribbleArea->setAllDirty();
         mScribbleArea->clearBitmapBuffer();
+        mEditor->backups()->bitmap(tr("Bitmap: Eraser"));
     }
     else if (layer->type() == Layer::VECTOR)
     {
@@ -291,6 +297,7 @@ void EraserTool::removeVectorPaint()
 
         mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         mScribbleArea->setAllDirty();
+        mEditor->backups()->vector(tr("Vector: Eraser"));
     }
 }
 

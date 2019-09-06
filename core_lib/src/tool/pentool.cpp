@@ -23,8 +23,10 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
@@ -136,8 +138,6 @@ void PenTool::pointerMoveEvent(PointerEvent* event)
 
 void PenTool::pointerReleaseEvent(PointerEvent*)
 {
-    mEditor->backup(typeName());
-
     Layer* layer = mEditor->layers()->currentLayer();
 
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
@@ -150,10 +150,15 @@ void PenTool::pointerReleaseEvent(PointerEvent*)
         drawStroke();
     }
 
-    if (layer->type() == Layer::BITMAP)
+    mEditor->backups()->saveStates();
+    if (layer->type() == Layer::BITMAP) {
         paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
+        mEditor->backups()->bitmap(tr("Bitmap: Pen"));
+    }
+    else if (layer->type() == Layer::VECTOR) {
         paintVectorStroke(layer);
+        mEditor->backups()->vector(tr("Vector: Pen"));
+    }
     endStroke();
 }
 
@@ -287,8 +292,6 @@ void PenTool::paintVectorStroke(Layer* layer)
     {
         mEditor->deselectAll();
     }
-
-    vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->setAllDirty();

@@ -22,16 +22,20 @@ GNU General Public License for more details.
 
 #include "pointerevent.h"
 #include "editor.h"
+
 #include "toolmanager.h"
 #include "viewmanager.h"
 #include "strokemanager.h"
 #include "selectionmanager.h"
+#include "backupmanager.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 #include "layervector.h"
-#include "layermanager.h"
-#include "mathutils.h"
 #include "vectorimage.h"
+#include "mathutils.h"
 
+#include "bitmapimage.h"
+#include "layerbitmap.h"
 
 MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
@@ -121,14 +125,26 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     updateTransformation();
 
     Layer* layer = mEditor->layers()->currentLayer();
+
+    if (selectMan->selectionMoved()) {
+        mEditor->backups()->transform(tr("Transformed image"));
+    } else {
+        if (selectMan->somethingSelected()) {
+            mEditor->backups()->selection();
+        }
+    }
+
     if (layer->type() == Layer::VECTOR) {
         applyTransformation();
+        selectMan->sync();
     }
 
     selectMan->updatePolygons();
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
+
+    mScribbleArea->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
 }
 
 void MoveTool::updateTransformation()
@@ -186,15 +202,18 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     QRectF selectionRect = selectMan->myTransformedSelectionRect();
     if (!selectionRect.isNull())
     {
-        mEditor->backup(typeName());
+    	mEditor->backups()->saveStates();
     }
 
-    if (keyMod != Qt::ShiftModifier)
-    {
-        if (selectMan->isOutsideSelectionArea(getCurrentPoint()))
+    if (selectMan->somethingSelected()) {
+        if (keyMod != Qt::ShiftModifier)
         {
-            applyTransformation();
-            mEditor->deselectAll();
+            if (selectMan->isOutsideSelectionArea(getCurrentPoint()))
+            {
+                applyTransformation();
+                mEditor->deselectAll();
+                mEditor->backups()->deselect();
+            }
         }
     }
 
@@ -229,7 +248,8 @@ void MoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
     LayerVector* vecLayer = static_cast<LayerVector*>(layer);
     VectorImage* vectorImage = vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
-    if (!mEditor->select()->closestCurves().empty()) // the user clicks near a curve
+    auto selectMan = mEditor->select();
+    if (!selectMan->closestCurves().empty()) // the user clicks near a curve
     {
         setCurveSelected(vectorImage, keyMod);
     }
@@ -243,14 +263,16 @@ void MoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
 void MoveTool::setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod)
 {
     auto selectMan = mEditor->select();
-    if (!vectorImage->isSelected(selectMan->closestCurves()))
+    QList<int> selectedCurves = selectMan->closestCurves();
+    if (!vectorImage->isSelected(selectedCurves))
     {
-        if (keyMod != Qt::ShiftModifier)
-        {
-            applyTransformation();
+        if (keyMod != Qt::ShiftModifier) {
+            vectorImage->deselectAll();
         }
-        vectorImage->setSelected(selectMan->closestCurves(), true);
+
+        vectorImage->setSelected(selectedCurves, true);
         selectMan->setSelection(vectorImage->getSelectionRect());
+        selectMan->addCurvesToVectorSelection(selectedCurves);
     }
 }
 
@@ -287,10 +309,12 @@ void MoveTool::setAnchorToLastPoint()
 
 void MoveTool::cancelChanges()
 {
+    mEditor->backups()->saveStates();
     auto selectMan = mEditor->select();
     mScribbleArea->cancelTransformedSelection();
     selectMan->resetSelectionProperties();
     mEditor->deselectAll();
+    mEditor->backups()->deselect();
 }
 
 void MoveTool::applySelectionChanges()
@@ -322,6 +346,11 @@ bool MoveTool::leavingThisTool()
         default: break;
         }
     }
+
+    if (mEditor->select()->transformHasBeenModified()) {
+        mEditor->backups()->saveStates();
+        mEditor->backups()->transform(tr("Transform applied"));
+    }
     return true;
 }
 
@@ -340,10 +369,9 @@ bool MoveTool::switchingLayer()
     {
         if (mCurrentLayer->type() == Layer::BITMAP)
         {
-            applySelectionChanges();
-        }
-        else if (mCurrentLayer->type() == Layer::VECTOR)
-        {
+            applyTransformation();
+
+        } else if (mCurrentLayer->type() == Layer::VECTOR) {
             applyTransformation();
         }
 

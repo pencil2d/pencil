@@ -21,10 +21,13 @@ GNU General Public License for more details.
 #include <QGridLayout>
 
 #include "preferencemanager.h"
+#include "backupmanager.h"
 #include "viewmanager.h"
 #include "scribblearea.h"
+
 #include "editor.h"
 #include "util.h"
+#include "direction.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
@@ -108,34 +111,57 @@ void DisplayOptionWidget::updateUI()
 
 void DisplayOptionWidget::onionPrevButtonClicked(bool isOn)
 {
+//    BackupManager* backup = editor()->backups();
+
     PreferenceManager* prefs = editor()->preference();
     prefs->set(SETTING::PREV_ONION, isOn);
+
+//    backup->toggleSetting(isOn, SETTING::PREV_ONION);
+
 }
 
 void DisplayOptionWidget::onionNextButtonClicked(bool isOn)
 {
+//    BackupManager* backup = editor()->backups();
+
     PreferenceManager* prefs = editor()->preference();
     prefs->set(SETTING::NEXT_ONION, isOn);
+
+//    backup->toggleSetting(isOn, SETTING::NEXT_ONION);
 }
 
 void DisplayOptionWidget::onionBlueButtonClicked(bool isOn)
 {
+//    BackupManager* backup = editor()->backups();
+
     PreferenceManager* prefs = editor()->preference();
     prefs->set(SETTING::ONION_BLUE, isOn);
+
+//    backup->toggleSetting(isOn, SETTING::ONION_BLUE);
 }
 
 void DisplayOptionWidget::onionRedButtonClicked(bool isOn)
 {
+//    BackupManager* backup = editor()->backups();
+
     PreferenceManager* prefs = editor()->preference();
     prefs->set(SETTING::ONION_RED, isOn);
+
+//    backup->toggleSetting(isOn, SETTING::ONION_RED);
 }
 
 void DisplayOptionWidget::toggleMirror(bool isOn)
 {
+//    BackupManager* backup = editor()->backups();
     editor()->view()->flipHorizontal(isOn);
+
+//    backup->flipView(isOn, DIRECTION::HORIZONTAL);
 }
 
 void DisplayOptionWidget::toggleMirrorV(bool isOn)
 {
+//    BackupManager* backup = editor()->backups();
     editor()->view()->flipVertical(isOn);
+
+//    backup->flipView(isOn, DIRECTION::VERTICAL);
 }
