@@ -1017,6 +1017,11 @@ bool Editor::importMovieAudio(QString filePath, QProgressDialog &progress)
             qDebug() << "ERROR: FFmpeg crashed";
             return false;
         }
+        if(ffmpeg.exitCode() != 0)
+        {
+            qDebug() << "ERROR: FFmpeg exited with non-zero status";
+            return false;
+        }
     }
     else
     {

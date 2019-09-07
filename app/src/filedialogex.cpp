@@ -166,7 +166,7 @@ QString FileDialog::openFileFilters( FileType fileType )
         case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_SEQ_FILTER;
         case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
         case FileType::MOVIE: { return PENCIL_MOVIE_EXT; }
-        case FileType::SOUND: return QString("%1 (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)").arg("Sounds");
+        case FileType::SOUND: return QString("%1 (*.wav *.mp3 *.wma *.ogg *.flac *.opus *.aiff *.aac *.caf);;WAV (*.wav);;MP3 (*.mp3);;WMA (*.wma);;OGG (*.ogg);;FLAC (*.flac);;Opus (*.opus);;AIFF (*.aiff);;AAC (*.aac);;CAF (*.caf)").arg("Sounds");
         case FileType::PALETTE:
             return QString("%1 (*.xml *.gpl);;%2 (*.xml);;%3 (*.gpl)")
                 .arg(tr("Palette"))

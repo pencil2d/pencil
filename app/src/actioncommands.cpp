@@ -128,7 +128,17 @@ Status ActionCommands::importSound()
         return Status::SAFE;
     }
 
-    Status st = mEditor->sound()->loadSound(key, strSoundFile);
+    Status st = Status::FAIL;
+
+    if (strSoundFile.endsWith(".wav"))
+    {
+        st = mEditor->sound()->loadSound(key, strSoundFile);
+    }
+    else
+    {
+        QProgressDialog dummyDialog;
+        st = mEditor->importMovieAudio(strSoundFile, dummyDialog) ? Status::OK : Status::FAIL;
+    }
 
     if (!st.ok())
     {
