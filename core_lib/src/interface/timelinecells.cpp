@@ -540,7 +540,13 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                 {
                     mEditor->playback()->stop();
                 }
-                mTimeLine->scrubbing = true;
+
+                if (!mEditor->layers()->currentLayer()->isFrameSelected(frameNumber)) {
+                    mTimeLine->scrubbing = true;
+                    mCanMoveFrame = false;
+                } else {
+                    mCanMoveFrame = true;
+                }
             }
             else
             {
