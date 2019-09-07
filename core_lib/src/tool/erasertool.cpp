@@ -120,6 +120,7 @@ QCursor EraserTool::cursor()
 
 void EraserTool::pointerPressEvent(PointerEvent*)
 {
+    mEditor->backups()->saveStates();
     mScribbleArea->setAllDirty();
 
     startStroke();
@@ -140,8 +141,8 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
 
 void EraserTool::pointerReleaseEvent(PointerEvent*)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
     qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+
     if (distance < 1)
     {
         paintAt(mMouseDownPoint);
@@ -150,8 +151,6 @@ void EraserTool::pointerReleaseEvent(PointerEvent*)
     {
         drawStroke();
     }
-
-    mEditor->backups()->saveStates();
     removeVectorPaint();
     endStroke();
 }
