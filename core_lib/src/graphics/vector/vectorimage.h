@@ -78,7 +78,7 @@ public:
     void setSelectionRect(QRectF rectange);
     void calculateSelectionRect();
     void deleteSelection();
-    void deleteSelectedPoints();
+    bool deleteSelectedPoints();
     void removeVertex(int curve, int vertex);
 
     void paste(VectorImage&);

@@ -998,8 +998,9 @@ void VectorImage::removeVertex(int curve, int vertex)
 /**
  * @brief VectorImage::deleteSelectedPoints
  */
-void VectorImage::deleteSelectedPoints()
+bool VectorImage::deleteSelectedPoints()
 {
+    bool deleted = false;
     for (int i = 0; i < mCurves.size(); i++)
     {
         for (int m = -1; m < getCurveSize(i); m++)
@@ -1007,10 +1008,12 @@ void VectorImage::deleteSelectedPoints()
             if (mCurves.at(i).isSelected(m))   // point m of curve i is selected
             {
                 removeVertex(i, m);
+                deleted = true;
             }
         }
     }
     modification();
+    return deleted;
 }
 
 /**
