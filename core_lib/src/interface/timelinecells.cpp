@@ -556,8 +556,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
                     if (previousLayerNumber != layerNumber) {
                         Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
-                        previousLayer->deselectAll();
-                        backupMan->frameDeselected(QList<int>(), frameNumber);
+
+                        if (!previousLayer->getSelectedFrameIndexes().isEmpty()) {
+                            previousLayer->deselectAll();
+                            backupMan->frameDeselected(QList<int>(), frameNumber);
+                        }
                         mEditor->layers()->setCurrentLayer(layerNumber);
                     }
 
