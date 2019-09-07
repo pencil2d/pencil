@@ -1113,15 +1113,21 @@ MoveFramesElement::MoveFramesElement(const int backupLayerId,
     if (backupStartFrameIndex == backupEndFrameIndex)
     {
         framesSelected = false;
-        setText(QObject::tr("Move Frame"));
+        if (backupOffset < 0)
+        {
+            setText(QObject::tr("Move frame backward"));
+        } else {
+            setText(QObject::tr("Move frame forward"));
+        }
     }
     else
     {
         framesSelected = true;
-        if (backupStartFrameIndex == backupEndFrameIndex) {
-            setText(QObject::tr("Move Frame"));
+
+        if (backupOffset < 0) {
+            setText(QObject::tr("Move frame/s backward"));
         } else {
-            setText(QObject::tr("Move Frames"));
+            setText(QObject::tr("Move frame/s forward"));
         }
     }
 }
@@ -1154,7 +1160,7 @@ void MoveFramesElement::redo()
         qDebug() << "old index: " << scrubberIndex;
         qDebug() << "new index: " << scrubberIndex+offset;
         applyToSingle(layer, scrubberIndex+offset, scrubberIndex);
-        editor()->scrubTo(layerId, scrubberIndex);
+        editor()->scrubTo(layerId, scrubberIndex+offset);
     } else {
         applyToMulti(layer, offset);
         editor()->layers()->setCurrentLayer(layer);

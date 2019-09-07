@@ -691,14 +691,9 @@ void ActionCommands::moveFrameForward()
         }
 
         backupMan->saveStates();
-        if (layer->isFrameSelected(frameIndex)) {
-            layer->offsetSelectedFrames(1);
+        if (layer->moveKeyFrameForward(frameIndex))
+        {
             backupMan->frameMoved(1);
-        } else {
-            if (layer->moveKeyFrameForward(frameIndex))
-            {
-                backupMan->frameMoved(1);
-            }
         }
 
         mEditor->scrubTo(frameIndex+1);
@@ -721,14 +716,9 @@ void ActionCommands::moveFrameBackward()
         }
 
         backupMan->saveStates();
-        if (layer->isFrameSelected(frameIndex)) {
-            layer->offsetSelectedFrames(-1);
+        if (layer->moveKeyFrameBackward(frameIndex))
+        {
             backupMan->frameMoved(-1);
-        } else {
-            if (layer->moveKeyFrameBackward(frameIndex))
-            {
-                backupMan->frameMoved(-1);
-            }
         }
 
         mEditor->scrubTo(frameIndex-1);
