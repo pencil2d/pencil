@@ -85,8 +85,9 @@ public:
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);
-    bool moveKeyFrameForward(int position);
-    bool moveKeyFrameBackward(int position);
+    bool swapKeyFrames(const QList<int> oldFrameIndexes, const QList<int> newFrameIndexes);
+    bool moveKeyFrameForward(const int frameIndex);
+    bool moveKeyFrameBackward(const int frameIndex);
     bool loadKey(KeyFrame*);
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
@@ -103,13 +104,23 @@ public:
     int getFirstFrameInSelection();
     int getLastFrameInSelection();
     bool isFrameSelected(int position) const;
-    void setFrameSelected(int position, bool isSelected);
-    void toggleFrameSelected(int position, bool allowMultiple = false);
+    bool setFrameSelected(int position, bool isSelected);
+    void setFramesSelected(QList<int> frameIndexes);
+    void setFramesSelected(QList<int> frameIndexes, const bool selected);
+    Status::StatusBool toggleFrameSelected(int position, bool allowMultiple = false);
+
+    QList<int> selectionExtendedTo(const int position);
+    QList<int> selectionOfAllFramesAfter(const int position);
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
+
     void deselectAll();
 
-    bool moveSelectedFrames(int offset);
+    void moveFrame(const int oldPosition, const int newPosition);
+    void moveFrames(const QList<int> oldIndexes, const QList<int> newIndexes);
+
+    bool offsetSelectedFrames(int offset);
+    QList<int> getSelectedFrameIndexes() { return mSelectedFrames_byPosition; }
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
@@ -142,6 +153,9 @@ protected:
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
+
+    void updateSelectedFrames(const int offset);
+
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;
     int        mId = 0;

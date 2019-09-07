@@ -90,6 +90,9 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
+
+    bool eventIsControlClick(const Qt::KeyboardModifiers keyMod);
+
     TimeLine* mTimeLine;
     Editor* mEditor; // the editor for which this timeLine operates
     PreferenceManager* mPrefs;
@@ -99,6 +102,7 @@ private:
     QPixmap* mCache = nullptr;
     bool mDrawFrameNumber = true;
     bool mbShortScrub = false;
+    bool mDidExtendSelection = false;
     int mFrameLength = 1;
     int mFrameSize = 0;
     int mFontSize = 10;

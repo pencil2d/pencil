@@ -679,13 +679,29 @@ void ActionCommands::duplicateKey()
 
 void ActionCommands::moveFrameForward()
 {
+    int frameIndex = mEditor->currentFrame();
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        if (layer->moveKeyFrameForward(mEditor->currentFrame()))
+        auto backupMan = mEditor->backups();
+        if (!layer->getSelectedFrameIndexes().isEmpty())
         {
-            mEditor->scrubForward();
+            layer->deselectAll();
+            backupMan->frameDeselected(QList<int>({frameIndex}), frameIndex);
         }
+
+        backupMan->saveStates();
+        if (layer->isFrameSelected(frameIndex)) {
+            layer->offsetSelectedFrames(1);
+            backupMan->frameMoved(1);
+        } else {
+            if (layer->moveKeyFrameForward(frameIndex))
+            {
+                backupMan->frameMoved(1);
+            }
+        }
+
+        mEditor->scrubTo(frameIndex+1);
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
@@ -693,13 +709,29 @@ void ActionCommands::moveFrameForward()
 
 void ActionCommands::moveFrameBackward()
 {
+    int frameIndex = mEditor->currentFrame();
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        if (layer->moveKeyFrameBackward(mEditor->currentFrame()))
+        auto backupMan = mEditor->backups();
+        if (!layer->getSelectedFrameIndexes().isEmpty())
         {
-            mEditor->scrubBackward();
+            layer->deselectAll();
+            backupMan->frameDeselected(QList<int>({frameIndex}), frameIndex);
         }
+
+        backupMan->saveStates();
+        if (layer->isFrameSelected(frameIndex)) {
+            layer->offsetSelectedFrames(-1);
+            backupMan->frameMoved(-1);
+        } else {
+            if (layer->moveKeyFrameBackward(frameIndex))
+            {
+                backupMan->frameMoved(-1);
+            }
+        }
+
+        mEditor->scrubTo(frameIndex-1);
     }
 }
 

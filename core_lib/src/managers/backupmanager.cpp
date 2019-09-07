@@ -431,12 +431,61 @@ void BackupManager::cameraProperties(const QRect& backupViewRect)
     emit updateBackup();
 }
 
-void BackupManager::frameDragged(const int& backupFrameOffset)
+void BackupManager::frameDeselected(const int frameIndex)
 {
-    DragFrameElement* element = new DragFrameElement(mLayerId,
-                                                     backupFrameOffset,
-                                                     editor());
+    frameDeselected(QList<int>({frameIndex}), frameIndex);
+}
 
+void BackupManager::frameDeselected(const QList<int> newDeselectedIndexes, const int frameIndex)
+{
+
+    SelectFramesElement* element = new SelectFramesElement(SelectionType::DESELECT,
+                                                           mLayerId,
+                                                           frameIndex,
+                                                           mFrameIndexes,
+                                                           newDeselectedIndexes,
+                                                           false,
+                                                           editor());
+
+    mUndoStack->push(element);
+    emit updateBackup();
+}
+
+void BackupManager::frameSelected(const QList<int> newSelectedIndexes, const int frameIndex, const bool isSelected)
+{
+
+    SelectFramesElement* element = new SelectFramesElement(SelectionType::SELECTION,
+                                                           mLayerId,
+                                                           frameIndex,
+                                                           mFrameIndexes,
+                                                           newSelectedIndexes,
+                                                           isSelected,
+                                                           editor());
+
+    mUndoStack->push(element);
+    emit updateBackup();
+}
+
+void BackupManager::frameMoved(const int offset)
+{
+    MoveFramesElement* element = new MoveFramesElement(mLayerId,
+                                                       mFrameIndex,
+                                                       0,0,
+                                                       offset,
+                                                       editor());
+    mUndoStack->push(element);
+    emit updateBackup();
+}
+
+void BackupManager::framesMoved(const int offset,
+                                const int scrubberFrameIndex)
+{
+    MoveFramesElement* element = new MoveFramesElement(mLayerId,
+                                                       scrubberFrameIndex,
+                                                       mFrameIndexes.first(),
+                                                       mFrameIndexes.last(),
+                                                       offset,
+                                                       editor());
     mUndoStack->push(element);
     emit updateBackup();
 }
@@ -502,6 +551,8 @@ void BackupManager::saveStates()
     mSelectionScaleY = selectMan->myScaleY();
     mMoveMode = selectMan->getMoveMode();
     mVectorSelection = selectMan->vectorSelection();
+
+    mFrameIndexes = mLayer->getSelectedFrameIndexes();
 
     mLayerName = mLayer->name();
     mLayerIndex = editor()->currentLayerIndex();

@@ -50,7 +50,13 @@ public:
     void deselect();
     void transform(const QString& description);
     void cameraProperties(const QRect& backupViewRect);
-    void frameDragged(const int& backupFrameOffset);
+    void frameMoved(const int offset);
+    void framesMoved(const int offset,
+                     const int scrubberFrameIndex);
+
+    void frameSelected(const QList<int> newSelectedIndexes, const int frameIndex, const bool isSelected);
+    void frameDeselected(const QList<int> newDeselectedIndexes, const int frameIndex);
+    void frameDeselected(const int frameIndex);
     void flipView(const bool& backupIsFlipped, const DIRECTION& backupFlipDirection);
     void toggleSetting(bool backupToggleState, const SETTING& backupType);
     void saveStates();
@@ -87,6 +93,8 @@ private:
     SoundClip* mClip = nullptr;
     Camera* mCamera = nullptr;
     KeyFrame* mKeyframe = nullptr;
+
+    QList<int> mFrameIndexes;
 
     bool mIsSelected = false;
 

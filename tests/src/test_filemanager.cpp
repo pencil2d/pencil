@@ -298,7 +298,7 @@ TEST_CASE("FileManager File-saving")
         for (int i = 100; i < 150; ++i)
             layer->setFrameSelected(i, true);
 
-        layer->moveSelectedFrames(-55);
+        layer->offsetSelectedFrames(-55);
         fm.save(o2, animationPath);
         delete o2;
 

@@ -76,6 +76,11 @@ public:
         ErrorCode errorcode = Status::OK;
     };
 
+    struct StatusBool {
+        bool value = false;
+        ErrorCode errorcode = Status::OK;
+    };
+
     Status(ErrorCode code);
     Status(ErrorCode code, const DebugDetails& detailsList, QString title = "", QString description = "");
 

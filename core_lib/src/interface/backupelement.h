@@ -480,21 +480,56 @@ public:
     void redo() override;
 };
 
-class DragFrameElement : public BackupElement
+class MoveFramesElement : public BackupElement
 {
 public:
-    DragFrameElement(const int& backupLayerIndex,
-                     const int& backupFrameOffset,
-                     Editor* editor,
-                     QUndoCommand* parent = nullptr);
+    MoveFramesElement(const int backupLayerId,
+                      const int backupScrubberFrameIndex,
+                      const int backupStartFrameIndex,
+                      const int backupEndFrameIndex,
+                      const int backupOffset,
+                      Editor* editor,
+                      QUndoCommand* parent = nullptr);
 
     int layerId = 0;
 
-    int frameOffset = 0;
-    int endFrame = 0;
-    int startFrame = 0;
+    const int offset;
+
+    int scrubberIndex = 0;
 
     bool isFirstRedo = true;
+    bool framesSelected = false;
+
+    void undo() override;
+    void redo() override;
+    void applyToSingle(Layer* layer, const int oldFrameIndex, const int newFrameIndex);
+    void applyToMulti(Layer* layer, const int offset);
+};
+
+class SelectFramesElement : public BackupElement
+{
+public:
+    SelectFramesElement(const SelectionType selectionType,
+                        const int backupLayerId,
+                        const int backupFrameIndex,
+                        const QList<int> backupFrameIndexes,
+                        const QList<int> backupNewlySelectedIndexes,
+                        const bool backupIsFrameSelected,
+                        Editor* editor,
+                        QUndoCommand* parent = nullptr);
+
+    const int layerId;
+    const int frameIndex;
+    const bool oldIsSelected;
+    bool isFirstRedo = true;
+
+    QList<int> oldFrameIndexes;
+    QList<int> newFrameIndexes;
+
+    QList<int> oldNewlyFrameIndexes;
+    const SelectionType selectionType;
+
+    bool moreFramesSelected = false;
 
     void undo() override;
     void redo() override;

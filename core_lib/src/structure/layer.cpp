@@ -211,9 +211,31 @@ bool Layer::moveKeyFrameBackward(int position)
 {
     if (position != 1)
     {
-        return swapKeyFrames(position, position - 1);
+        int newPos = position - 1;
+        return swapKeyFrames(position, newPos);
     }
-    return true;
+    return false;
+}
+
+void Layer::moveFrame(const int oldPosition, const int newPosition)
+{
+    KeyFrame* keyframe = mKeyFrames.at(oldPosition);
+    keyframe->setPos(newPosition);
+    mKeyFrames.insert(std::make_pair(newPosition, keyframe));
+    mKeyFrames.erase(oldPosition);
+}
+
+bool Layer::swapKeyFrames(const QList<int> oldFrameIndexes, const QList<int> newFrameIndexes)
+{
+    bool swapped = false;
+    for (int i = 0; i < oldFrameIndexes.count(); i++) {
+
+        Q_ASSERT(oldFrameIndexes != newFrameIndexes);
+        int oldFrame = oldFrameIndexes[i];
+        int newFrame = newFrameIndexes[i];
+        swapped = swapKeyFrames(oldFrame, newFrame);
+    }
+    return swapped;
 }
 
 bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, need to refresh the swapped cels
@@ -223,6 +245,7 @@ bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, nee
     KeyFrame* pFirstFrame = nullptr;
     KeyFrame* pSecondFrame = nullptr;
 
+    bool exists = false;
     if (keyExists(position1))
     {
         auto firstFrame = mKeyFrames.find(position1);
@@ -231,6 +254,7 @@ bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, nee
         mKeyFrames.erase(position1);
 
         keyPosition1 = true;
+        exists = true;
     }
 
     if (keyExists(position2))
@@ -241,6 +265,11 @@ bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, nee
         mKeyFrames.erase(position2);
 
         keyPosition2 = true;
+        exists = true;
+    }
+
+    if (!exists) {
+        return false;
     }
 
     if (keyPosition2)
@@ -472,7 +501,20 @@ int Layer::getLastFrameInSelection()
     return mSelectedFrames_byPosition.first();
 }
 
-void Layer::setFrameSelected(int position, bool isSelected)
+void Layer::setFramesSelected(QList<int> frameIndexes, const bool selected)
+{
+    for (int frame : frameIndexes)
+    {
+        setFrameSelected(frame, selected);
+    }
+}
+
+void Layer::setFramesSelected(QList<int> frameIndexes)
+{
+    setFramesSelected(frameIndexes, true);
+}
+
+bool Layer::setFrameSelected(int position, bool isSelected)
 {
     KeyFrame* keyFrame = getKeyFrameWhichCovers(position);
     if (keyFrame != nullptr)
@@ -499,23 +541,37 @@ void Layer::setFrameSelected(int position, bool isSelected)
             mSelectedFrames_byPosition.removeAt(iPos);
         }
         keyFrame->setSelected(isSelected);
+        return true;
     }
+    return false;
 }
 
-void Layer::toggleFrameSelected(int position, bool allowMultiple)
+Status::StatusBool Layer::toggleFrameSelected(int position, bool allowMultiple)
 {
     bool wasSelected = isFrameSelected(position);
-
+    Status::StatusBool status;
     if (!allowMultiple)
     {
         deselectAll();
     }
 
-    setFrameSelected(position, !wasSelected);
+    bool success = setFrameSelected(position, !wasSelected);
+
+    status.value = !wasSelected;
+
+    qDebug() << "isSelected: " << status.value;
+
+    if (success) {
+        status.errorcode = Status::OK;
+    } else {
+        status.errorcode = Status::FAIL;
+    }
+    return status;
 }
 
-void Layer::extendSelectionTo(int position)
+QList<int> Layer::selectionExtendedTo(int position)
 {
+    QList<int> selection;
     if (mSelectedFrames_byLast.count() > 0)
     {
         int lastSelected = mSelectedFrames_byLast[0];
@@ -536,28 +592,47 @@ void Layer::extendSelectionTo(int position)
         int i = startPos;
         while (i <= endPos)
         {
-            setFrameSelected(i, true);
+            bool success = setFrameSelected(i, true);
+
+            if (success) {
+                selection.append(i);
+            }
+
             i++;
         }
     }
+    return selection;
 }
 
-void Layer::selectAllFramesAfter(int position)
+void Layer::extendSelectionTo(int position)
+{
+    Q_UNUSED(selectionExtendedTo(position));
+}
+
+QList<int> Layer::selectionOfAllFramesAfter(const int position)
 {
     int startPosition = position;
     int endPosition = getMaxKeyFramePosition();
 
+    QList<int> selection;
     if (!keyExists(startPosition))
     {
         startPosition = getNextKeyFramePosition(startPosition);
     }
 
+    selection.append(startPosition);
     if (startPosition > 0 && startPosition <= endPosition)
     {
         deselectAll();
         setFrameSelected(startPosition, true);
-        extendSelectionTo(endPosition);
+        selection.append(selectionExtendedTo(endPosition));
     }
+    return selection;
+}
+
+void Layer::selectAllFramesAfter(int position)
+{
+    Q_UNUSED(selectionOfAllFramesAfter(position));
 }
 
 void Layer::deselectAll()
@@ -571,7 +646,7 @@ void Layer::deselectAll()
     }
 }
 
-bool Layer::moveSelectedFrames(int offset)
+bool Layer::offsetSelectedFrames(int offset)
 {
     if (offset != 0 && mSelectedFrames_byPosition.count() > 0)
     {
@@ -639,19 +714,23 @@ bool Layer::moveSelectedFrames(int offset)
             }
             indexInSelection = indexInSelection + step;
         }
-
-        // Update selection lists
-        for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
-        {
-            mSelectedFrames_byPosition[i] = mSelectedFrames_byPosition[i] + offset;
-        }
-        for (int i = 0; i < mSelectedFrames_byLast.count(); i++)
-        {
-            mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
-        }
+        updateSelectedFrames(offset);
         return true;
     }
     return false;
+}
+
+void Layer::updateSelectedFrames(const int offset)
+{
+    // Update selection lists
+    for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
+    {
+        mSelectedFrames_byPosition[i] = mSelectedFrames_byPosition[i] + offset;
+    }
+    for (int i = 0; i < mSelectedFrames_byLast.count(); i++)
+    {
+        mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
+    }
 }
 
 bool Layer::isPaintable() const
