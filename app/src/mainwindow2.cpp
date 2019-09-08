@@ -64,6 +64,7 @@ GNU General Public License for more details.
 #include "timeline2.h"
 #include "errordialog.h"
 #include "importimageseqdialog.h"
+#include "importlayersdialog.h"
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
@@ -975,7 +976,9 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
 
 void MainWindow2::importLayers()
 {
-
+    ImportLayersDialog *importLayers = new ImportLayersDialog(this);
+    importLayers->setCore(mEditor);
+    importLayers->exec();
 }
 
 void MainWindow2::importGIF()

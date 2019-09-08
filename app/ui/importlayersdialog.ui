@@ -53,7 +53,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QListView" name="lvLayers"/>
+    <widget class="QListWidget" name="lwLayers"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
