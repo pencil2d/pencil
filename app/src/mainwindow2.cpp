@@ -243,6 +243,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importImageSequenceNumbered);
+    connect(ui->actionImportLayers_from_pclx, &QAction::triggered, this, &MainWindow2::importLayers);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
@@ -970,6 +971,11 @@ void MainWindow2::addLayerByFilename(QString strFilePath)
     }
     ui->scribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
+}
+
+void MainWindow2::importLayers()
+{
+
 }
 
 void MainWindow2::importGIF()
