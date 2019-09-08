@@ -9,10 +9,8 @@
 #include "filedialogex.h"
 #include "layermanager.h"
 #include "layer.h"
-#include "layerbitmap.h"
-#include "layervector.h"
-#include "layercamera.h"
 #include "layersound.h"
+#include "soundclip.h"
 
 #include <QDebug>
 
@@ -24,7 +22,7 @@ ImportLayersDialog::ImportLayersDialog(QWidget *parent) :
     connect(ui->btnSelectFile, &QPushButton::clicked, this, &ImportLayersDialog::getFileName);
     connect(ui->btnImportLayers, &QPushButton::clicked, this, &ImportLayersDialog::importLayers);
     connect(ui->lwLayers, &QListWidget::itemSelectionChanged, this, &ImportLayersDialog::listWidgetChanged);
-    connect(ui->btnCancel, &QPushButton::clicked, this, &ImportLayersDialog::cancel);
+    connect(ui->btnClose, &QPushButton::clicked, this, &ImportLayersDialog::cancel);
     ui->lwLayers->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->btnImportLayers->setEnabled(false);
 }
@@ -37,16 +35,19 @@ ImportLayersDialog::~ImportLayersDialog()
 void ImportLayersDialog::setCore(Editor *editor)
 {
     mEditor = editor;
+    mObject = mEditor->object();
 }
 
 void ImportLayersDialog::getFileName()
 {
+    ui->lwLayers->clear();
     FileDialog fd(this);
     mFileName = QFileDialog::getOpenFileName(this, tr("Choose file"),
-                                             fd.getLastOpenPath(FileType::ANIMATION) , tr("Project files (*.pclx))"));
+                                             fd.getLastOpenPath(FileType::ANIMATION),
+                                             tr("Project files (*.pclx))"));
     getLayers();
-    for (int i = 0; i < mObject->getLayerCount(); i++)
-        ui->lwLayers->addItem(mObject->getLayer(i)->name());
+    for (int i = 0; i < mImportObject->getLayerCount(); i++)
+        ui->lwLayers->addItem(mImportObject->getLayer(i)->name());
 }
 
 void ImportLayersDialog::listWidgetChanged()
@@ -59,41 +60,37 @@ void ImportLayersDialog::listWidgetChanged()
 
 void ImportLayersDialog::importLayers()
 {
-//    if (mLayerList.isEmpty()) { return; }
-
-    for (int i = 0; i < mObject->getLayerCount(); i++ )
+    int currentFrame = mEditor->currentFrame();
+    for (int i = 0; i < mImportObject->getLayerCount(); i++ )
     {
         if (ui->lwLayers->item(i)->isSelected())
         {
-            Layer *tmpLayer = mObject->findLayerByName(ui->lwLayers->item(i)->text());
-            Layer *newLayer = nullptr;
-            switch (tmpLayer->type()) {
-            case Layer::BITMAP:
-                newLayer = static_cast<LayerBitmap*>(mEditor->layers()->createBitmapLayer(tmpLayer->name()));
-                break;
-            case Layer::VECTOR:
-                newLayer = static_cast<LayerVector*>(mEditor->layers()->createVectorLayer(tmpLayer->name()));
-                break;
-            case Layer::CAMERA:
-                newLayer = static_cast<LayerCamera*>(mEditor->layers()->createCameraLayer(tmpLayer->name()));
-                break;
-            case Layer::SOUND:
-                newLayer = static_cast<LayerSound*>(mEditor->layers()->createSoundLayer(tmpLayer->name()));
-                break;
-            default:
-                newLayer = nullptr;
-            }
-            qDebug() << "Layer: " << tmpLayer->name();
-            for (int j = 1; j <= tmpLayer->getMaxKeyFramePosition(); j++)
+            Layer *tmpLayer = mImportObject->findLayerByName(ui->lwLayers->item(i)->text());
+            if (tmpLayer->type() == Layer::SOUND)
             {
-                if (tmpLayer->keyExists(j))
+                LayerSound* layerSound = static_cast<LayerSound*>(tmpLayer);
+                int count = 0;
+                while (count < layerSound->getNextKeyFramePosition(count))
                 {
-                    qDebug() << "Key at: " << j;
+                    int newKeyPos = layerSound->getNextKeyFramePosition(count);
+                    SoundClip* clip = new SoundClip;
+                    clip = layerSound->getSoundClipWhichCovers(newKeyPos);
+                    qDebug() << "Soundclipname: " << clip->soundClipName() << ".\nFilename: " << clip->fileName();
+                    Status st = layerSound->loadSoundClipAtFrame(clip->soundClipName(),
+                                                                 clip->fileName(),
+                                                                 newKeyPos);
+                    qDebug() << "Status: " << st.msg();
+                    count = newKeyPos;
                 }
+                mObject->addLayer(layerSound);
+            }
+            else
+            {
+                mObject->addLayer(tmpLayer);
             }
         }
     }
-    close();
+    mEditor->scrubTo(currentFrame);
 }
 
 void ImportLayersDialog::cancel()
@@ -123,5 +120,5 @@ void ImportLayersDialog::getLayers()
     {
         progress.setRange(0, max + 3);
     });
-    mObject = fm.load(mFileName);
+    mImportObject = fm.load(mFileName);
 }

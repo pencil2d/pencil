@@ -31,6 +31,7 @@ private:
     void getLayers();
 
     Object *mObject = nullptr;
+    Object *mImportObject = nullptr;
     Editor *mEditor = nullptr;
     QString mFileName = "";
 };
