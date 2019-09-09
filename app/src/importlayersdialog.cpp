@@ -8,11 +8,11 @@
 #include "filemanager.h"
 #include "filedialogex.h"
 #include "layermanager.h"
+#include "soundmanager.h"
 #include "layer.h"
 #include "layersound.h"
 #include "soundclip.h"
 
-#include <QDebug>
 
 ImportLayersDialog::ImportLayersDialog(QWidget *parent) :
     QDialog(parent),
@@ -44,7 +44,7 @@ void ImportLayersDialog::getFileName()
     FileDialog fd(this);
     mFileName = QFileDialog::getOpenFileName(this, tr("Choose file"),
                                              fd.getLastOpenPath(FileType::ANIMATION),
-                                             tr("Project files (*.pclx))"));
+                                             tr("Pencil Animation file (*.pclx))"));
     getLayers();
     for (int i = 0; i < mImportObject->getLayerCount(); i++)
         ui->lwLayers->addItem(mImportObject->getLayer(i)->name());
@@ -75,11 +75,7 @@ void ImportLayersDialog::importLayers()
                     int newKeyPos = layerSound->getNextKeyFramePosition(count);
                     SoundClip* clip = new SoundClip;
                     clip = layerSound->getSoundClipWhichCovers(newKeyPos);
-                    qDebug() << "Soundclipname: " << clip->soundClipName() << ".\nFilename: " << clip->fileName();
-                    Status st = layerSound->loadSoundClipAtFrame(clip->soundClipName(),
-                                                                 clip->fileName(),
-                                                                 newKeyPos);
-                    qDebug() << "Status: " << st.msg();
+                    Status st = mEditor->sound()->loadSound(clip, clip->fileName());
                     count = newKeyPos;
                 }
                 mObject->addLayer(layerSound);

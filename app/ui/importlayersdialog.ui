@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="labSelectFile">
        <property name="text">
-        <string>Select *.pclx file:</string>
+        <string>1. Select *.pclx file:</string>
        </property>
       </widget>
      </item>
@@ -48,7 +48,7 @@
    <item>
     <widget class="QLabel" name="labSelectLayers">
      <property name="text">
-      <string>Select layers from file:</string>
+      <string>2. Select layers from file:</string>
      </property>
     </widget>
    </item>
