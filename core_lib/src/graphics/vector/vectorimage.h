@@ -57,7 +57,7 @@ public:
     void setSelected(int curveNumber, int vertexNumber, bool YesOrNo);
     void setSelected(VertexRef vertexRef, bool YesOrNo);
     void setSelected(QList<int> curveList, bool YesOrNo);
-    void setSelected(QList<VertexRef> vertexList, bool YesOrNo);
+    void setSelected(const QList<int> curveList, const QList<VertexRef> vertexList, const bool YesOrNo);
     bool isSelected();
     bool isSelected(int curveNumber);
     bool isSelected(int curveNumber, int vertexNumber);
@@ -65,6 +65,8 @@ public:
     bool isSelected(QList<int> curveList);
     bool isSelected(QList<VertexRef> vertexList);
     bool isAnyCurveSelected();
+    bool isAnyVertexSelected();
+    bool transformModified(const QTransform newTransform);
     void setAreaSelected(int areaNumber, bool YesOrNo);
     bool isAreaSelected(int areaNumber);
     bool isPathFilled();

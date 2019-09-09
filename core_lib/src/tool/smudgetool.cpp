@@ -152,12 +152,12 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
         else if (layer->type() == Layer::VECTOR)
         {
             const int currentFrame = mEditor->currentFrame();
-            const float distanceFrom = selectMan->selectionTolerance();
+            const qreal distanceFrom = selectMan->selectionTolerance();
             VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame, 0);
+
             selectMan->setCurves(vectorImage->getCurvesCloseTo(getCurrentPoint(), distanceFrom));
             selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), distanceFrom));
-;
-            if (selectMan->closestCurves().size() > 0 || selectMan->closestCurves().size() > 0)      // the user clicks near a vertex or a curve
+            if (selectMan->closestCurves().size() > 0 || selectMan->closestVertices().size() > 0)      // the user clicks near a vertex or a curve
             {
                 // Since startStroke() isn't called, handle empty frame behaviour here.
                 // Commented out for now - leads to segfault on mouse-release event.
@@ -166,22 +166,39 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
 //                    mScribbleArea->handleDrawingOnEmptyFrame();
 //                }
 
+
                 //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
-                if (event->modifiers() != Qt::ShiftModifier && !vectorImage->isSelected(selectMan->closestVertices()))
+                mNumberOfCurvesSelected = selectMan->vectorSelection().curves.count();
+                if (event->modifiers() != Qt::ShiftModifier)
                 {
                     mScribbleArea->paintTransformedSelection();
                     mEditor->deselectAll();
+                    mNumberOfCurvesSelected = 0;
                 }
 
-                vectorImage->setSelected(selectMan->closestVertices(), true);
                 selectMan->addCurvesAndVerticesToVectorSelection(selectMan->closestCurves(),
                                                                  selectMan->closestVertices());
 
+                vectorImage->setSelected(selectMan->closestCurves(), selectMan->closestVertices(), true);
+
+                if (!mDeselection || mNumberOfCurvesSelected != mPreviousNumberOfCurvesSelected) {
+                    mEditor->backups()->selection();
+                    mDeselection = true;
+                }
+
+                mPreviousNumberOfCurvesSelected = mNumberOfCurvesSelected;
                 mScribbleArea->update();
             }
             else
             {
-                mEditor->deselectAll();
+                if (vectorImage->isSelected()) {
+                    mNumberOfCurvesSelected = 0;
+                    mPreviousNumberOfCurvesSelected = 0;
+
+                    mEditor->deselectAll();
+                    mEditor->backups()->deselect();
+                    mDeselection = false;
+                }
             }
         }
     }
@@ -211,8 +228,11 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
                 VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
                 // transforms the selection
 
-                selectMan->setSelectionTransform(QTransform().translate(offsetFromPressPos().x(), offsetFromPressPos().y()));
-                vectorImage->setSelectionTransformation(selectMan->selectionTransform());
+                if (vectorImage->isSelected(selectMan->vectorSelection().vertices)) {
+                    selectMan->setSelectionTransform(QTransform().translate(offsetFromPressPos().x(), offsetFromPressPos().y()));
+                    vectorImage->setSelectionTransformation(selectMan->selectionTransform());
+                    mTransformModified = true;
+                }
             }
         }
     }
@@ -256,7 +276,11 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
                 vectorImage->curve(curveNumber).smoothCurve();
             }
             mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-            mEditor->backups()->vector(tr("Vector: Smudge"));
+
+            if (mTransformModified) {
+                mEditor->backups()->vector(tr("Vector: Smudge"));
+                mTransformModified = false;
+            }
         }
     }
 }
@@ -345,6 +369,22 @@ void SmudgeTool::drawStroke()
             mScribbleArea->refreshBitmap(rect, rad);
         }
     }
+}
+
+bool SmudgeTool::leavingThisTool()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
+    {
+        if (!mEditor->select()->vectorSelection().isEmpty()) {
+            mNumberOfCurvesSelected = 0;
+            mPreviousNumberOfCurvesSelected = 0;
+
+            mEditor->deselectAll();
+            mEditor->backups()->deselect();
+            mDeselection = false;
+        }
+    }
+    return true;
 }
 
 QPointF SmudgeTool::offsetFromPressPos()

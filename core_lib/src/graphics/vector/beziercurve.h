@@ -50,9 +50,10 @@ public:
     QPointF getC1(int i) const { return c1.at(i); }
     QPointF getC2(int i) const { return c2.at(i); }
     qreal getPressure(int i) const { return pressure.at(i); }
-    bool isSelected(int vertex) const { return selected.at(vertex+1); }
-    bool isSelected() const { bool result=true; for(int i=0; i<selected.size(); i++) result = result && selected[i]; return result; }
-    bool isPartlySelected() const { bool result=false; for(int i=0; i<selected.size(); i++) result = result || selected[i]; return result; }
+    bool isSelected(int vertex) const { return mVertSelected.at(vertex+1); }
+    bool isSelected() const;
+    bool isCurveSelected() const { return mIsSelected; }
+    bool isPartlySelected() const { bool result=false; for(int i=0; i<mVertSelected.size(); i++) result = result || mVertSelected[i]; return result; }
     bool isInvisible() const { return invisible; }
     bool intersects(QPointF point, qreal distance);
     bool intersects(QRectF rectangle);
@@ -69,8 +70,9 @@ public:
     void setVariableWidth(bool YesOrNo);
     void setInvisibility(bool YesOrNo);
     void setColourNumber(int colourNumber) { this->colourNumber = colourNumber; }
-    void setSelected(bool YesOrNo) { for(int i=0; i<selected.size(); i++) { selected[i] = YesOrNo; } }
-    void setSelected(int i, bool YesOrNo);
+    void setVertexSelected(bool YesOrNo) { for(int i=0; i<mVertSelected.size(); i++) { mVertSelected[i] = YesOrNo; } }
+    void setVertexSelected(int i, bool YesOrNo);
+    void setSelected(const bool YesOrNo);
     void setFilled(bool yesOrNo);
 
     BezierCurve transformed(QTransform transformation);
@@ -113,7 +115,8 @@ private:
     bool variableWidth = 0.f;
     bool invisible = false;
     bool mFilled = false;
-    QList<bool> selected; // this list has one more element than the other list (the first element is for the origin)
+    bool mIsSelected = false; // whether the curve itself is selected
+    QList<bool> mVertSelected; // this list has one more element than the other list (the first element is for the origin)
 };
 
 #endif

@@ -445,9 +445,9 @@ SelectionElement::SelectionElement(const int backupLayerId,
     selectionType = backupSelectionType;
 
     if (selectionType == SelectionType::SELECTION) {
-        setText(QObject::tr("New Selection"));
+        setText(QObject::tr("Select"));
     } else {
-        setText(QObject::tr("Deselected"));
+        setText(QObject::tr("Deselect"));
     }
 
 }
@@ -473,7 +473,7 @@ void SelectionElement::undoSelection()
     Layer* layer = editor()->layers()->findLayerById(layerId);
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
-        vectorImage->setSelected(oldVectorSelection.curves, true);
+        vectorImage->setSelected(oldVectorSelection.curves, oldVectorSelection.vertices, true);
         selectMan->setVectorSelection(oldVectorSelection);
     }
 
@@ -497,7 +497,7 @@ void SelectionElement::undoDeselection()
     Layer* layer = editor()->layers()->findLayerById(layerId);
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
-        vectorImage->setSelected(oldVectorSelection.curves, true);
+        vectorImage->setSelected(oldVectorSelection.curves, oldVectorSelection.vertices, true);
         selectMan->setVectorSelection(oldVectorSelection);
     }
 }
@@ -527,7 +527,7 @@ void SelectionElement::redoSelection()
     Layer* layer = editor()->layers()->findLayerById(layerId);
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
-        vectorImage->setSelected(newVectorSelection.curves, true);
+        vectorImage->setSelected(newVectorSelection.curves, newVectorSelection.vertices, true);
         selectMan->setVectorSelection(newVectorSelection);
     }
 }
@@ -545,7 +545,7 @@ void SelectionElement::redoDeselection()
 
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
-        vectorImage->setSelected(newVectorSelection.curves, true);
+        vectorImage->setSelected(newVectorSelection.curves, newVectorSelection.vertices, true);
         selectMan->setVectorSelection(newVectorSelection);
     }
 

@@ -44,6 +44,8 @@ public:
     void setFeather( const qreal feather ) override;
     void setPressure( const bool pressure ) override;
 
+    bool leavingThisTool() override;
+
 protected:
     bool emptyFrameActionEnabled() override;
 
@@ -52,6 +54,11 @@ private:
     QPointF offsetFromPressPos();
 
     QPointF mLastBrushPoint;
+    bool mTransformModified = false;
+    bool mDeselection = false;
+
+    int mNumberOfCurvesSelected = 0;
+    int mPreviousNumberOfCurvesSelected = 0;
 };
 
 #endif // SMUDGETOOL_H

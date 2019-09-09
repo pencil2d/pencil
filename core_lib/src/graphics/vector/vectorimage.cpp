@@ -594,8 +594,9 @@ void VectorImage::setSelected(int curveNumber, bool YesOrNo)
 {
     if (mCurves.isEmpty()) return;
 
+    mCurves[curveNumber].setVertexSelected(YesOrNo);
     mCurves[curveNumber].setSelected(YesOrNo);
-    
+
     if (YesOrNo) 
         mSelectionRect |= mCurves[curveNumber].getBoundingRect();
     modification();
@@ -610,7 +611,8 @@ void VectorImage::setSelected(int curveNumber, bool YesOrNo)
 void VectorImage::setSelected(int curveNumber, int vertexNumber, bool YesOrNo)
 {
     if (mCurves.isEmpty()) return;
-    mCurves[curveNumber].setSelected(vertexNumber, YesOrNo);
+    mCurves[curveNumber].setVertexSelected(vertexNumber, YesOrNo);
+    mCurves[curveNumber].setSelected(YesOrNo);
     QPointF vertex = getVertex(curveNumber, vertexNumber);
     if (YesOrNo) mSelectionRect |= QRectF(vertex.x(), vertex.y(), 0.0, 0.0);
 
@@ -636,7 +638,7 @@ void VectorImage::setSelected(QList<int> curveList, bool YesOrNo)
 {
     for (int i = 0; i < curveList.size(); i++)
     {
-        setSelected(curveList.at(i), YesOrNo);
+        setSelected(curveList.at(i),  YesOrNo);
     }
 }
 
@@ -645,11 +647,19 @@ void VectorImage::setSelected(QList<int> curveList, bool YesOrNo)
  * @param QList<VertexRef> vertexList
  * @param YesOrNo: bool
  */
-void VectorImage::setSelected(QList<VertexRef> vertexList, bool YesOrNo)
+void VectorImage::setSelected(const QList<int> curveList, const QList<VertexRef> vertexList, const bool YesOrNo)
 {
-    for (int i = 0; i < vertexList.size(); i++)
-    {
-        setSelected(vertexList.at(i), YesOrNo);
+    for (int curveI = 0; curveI < curveList.size(); curveI++) {
+        int curveNumber = curveList.at(curveI);
+
+        if (!vertexList.isEmpty()) {
+            for (int i = 0; i < vertexList.size(); i++)
+            {
+                setSelected(curveNumber, vertexList.at(i).vertexNumber, YesOrNo);
+            }
+        } else {
+            mCurves[curveNumber].setSelected(YesOrNo);
+        }
     }
 }
 
@@ -709,7 +719,10 @@ bool VectorImage::isSelected()
 {
     bool anySelected = false;
     for (BezierCurve curve : mCurves) {
-        anySelected = curve.isSelected();
+        anySelected = curve.isCurveSelected();
+        if (anySelected) {
+            break;
+        }
     }
     return anySelected;
 }
@@ -752,15 +765,18 @@ bool VectorImage::isSelected(QList<int> curveList)
 
 /**
  * @brief VectorImage::isSelected
+ * Is any point selected from the input list
  * @param vertexList: list of vertices you wish to check
  * @return  bool
  */
 bool VectorImage::isSelected(QList<VertexRef> vertexList)
 {
-    bool result = true;
+    bool result = false;
     for (int i = 0; i < vertexList.size(); i++)
     {
-        result &= isSelected(vertexList.at(i));
+        if (isSelected(vertexList.at(i))) {
+            return true;
+        }
     }
     return result;
 }
@@ -800,7 +816,11 @@ void VectorImage::selectAll()
 {
     for (int i = 0; i < mCurves.size(); i++)
     {
-        setSelected(i, true);
+        BezierCurve bCurve = mCurves[i];
+        for (int vertex = 0; vertex < bCurve.getVertexSize(); vertex++) {
+
+            setSelected(i, vertex, true);
+        }
     }
     mSelectionTransformation.reset();
 }
@@ -819,6 +839,15 @@ bool VectorImage::isAnyCurveSelected()
     return false;
 }
 
+
+bool VectorImage::transformModified(const QTransform newTransform)
+{
+    if (mSelectionTransformation != newTransform) {
+        return true;
+    }
+    return false;
+}
+
 /**
  * @brief VectorImage::deselectAll
  */
@@ -828,6 +857,7 @@ void VectorImage::deselectAll()
     for (int i = 0; i < mCurves.size(); i++)
     {
         mCurves[i].setSelected(false);
+        mCurves[i].setVertexSelected(false);
     }
     for (int i = 0; i < mArea.size(); i++)
     {

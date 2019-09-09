@@ -152,7 +152,7 @@ void BezierCurve::loadDomElement(QDomElement element)
     colourNumber = element.attribute("colourNumber").toInt();
     origin = QPointF( element.attribute("originX").toFloat(), element.attribute("originY").toFloat() );
     pressure.append( element.attribute("originPressure").toFloat() );
-    selected.append(false);
+    mVertSelected.append(false);
 
     QDomNode segmentTag = element.firstChild();
     while (!segmentTag.isNull())
@@ -183,7 +183,7 @@ void BezierCurve::setOrigin(const QPointF& point, const qreal& pressureValue, co
 {
     origin = point;
     pressure[0] = pressureValue;
-    selected[0] = trueOrFalse;
+    mVertSelected[0] = trueOrFalse;
 }
 
 void BezierCurve::setC1(int i, const QPointF& point)
@@ -259,9 +259,19 @@ void BezierCurve::setInvisibility(bool YesOrNo)
     invisible = YesOrNo;
 }
 
-void BezierCurve::setSelected(int i, bool YesOrNo)
+void BezierCurve::setVertexSelected(int i, bool YesOrNo)
 {
-    selected[i+1] = YesOrNo;
+    mVertSelected[i+1] = YesOrNo;
+}
+
+/**
+ * @brief BezierCurve::setSelected
+ * Set selection state of the curve
+ * @param YesOrNo
+ */
+void BezierCurve::setSelected(const bool YesOrNo)
+{
+    mIsSelected = YesOrNo;
 }
 
 /**
@@ -296,14 +306,14 @@ BezierCurve BezierCurve::transformed(QTransform transformation)
     	QPointF newC1 = c1.at(i);
     	QPointF newC2 = c2.at(i);
     	QPointF newVertex = vertex.at(i);
-    	if (isSelected(i-1)) { newC1 = transformation.map(newC1); }
-    	if (isSelected(i)) { newC2 = transformation.map(newC2);  newVertex = transformation.map(newVertex); }
+        if (isSelected(i-1)) { newC1 = transformation.map(newC1); }
+        if (isSelected(i)) { newC2 = transformation.map(newC2);  newVertex = transformation.map(newVertex); }
     	transformedCurve.appendCubic( newC1, newC2, newVertex, pressure.at(i) );
-    	if (isSelected(i)) { transformedCurve.setSelected(i, true); }
+        if (isSelected(i)) { transformedCurve.setSelected(i, true); }
     }
     transformedCurve.setWidth( width);
     transformedCurve.setVariableWidth( variableWidth );
-    //transformedCurve.setSelected(true); // or select only the selected elements of the orginal curve?
+    //transformedCurve.setSelected(true); // or select only the mVertSelected elements of the orginal curve?
     */
     return transformedCurve;
 }
@@ -329,7 +339,7 @@ void BezierCurve::appendCubic(const QPointF& c1Point, const QPointF& c2Point, co
     c2.append(c2Point);
     vertex.append(vertexPoint);
     pressure.append(pressureValue);
-    selected.append(false);
+    mVertSelected.append(false);
 }
 
 void BezierCurve::addPoint(int position, const QPointF point)
@@ -348,7 +358,7 @@ void BezierCurve::addPoint(int position, const QPointF point)
         c2.insert(position, point - 0.2*(v2-v1));
         vertex.insert(position, point);
         pressure.insert(position, getPressure(position));
-        selected.insert(position, isSelected(position) && isSelected(position-1));
+        mVertSelected.insert(position, isSelected(position) && isSelected(position-1));
 
         //smoothCurve();
     }
@@ -383,7 +393,7 @@ void BezierCurve::addPoint(int position, const qreal fraction) // fraction is wh
         c2.insert(position, cA2);
         vertex.insert(position, vM);
         pressure.insert(position, getPressure(position));
-        selected.insert(position, isSelected(position) && isSelected(position-1));
+        mVertSelected.insert(position, isSelected(position) && isSelected(position-1));
 
         //smoothCurve();
     }
@@ -405,14 +415,14 @@ void BezierCurve::removeVertex(int i)
             c1.removeAt(0);
             c2.removeAt(0);
             pressure.removeAt(0);
-            selected.removeAt(0);
+            mVertSelected.removeAt(0);
         }
         else
         {
             vertex.removeAt(i);
             c2.removeAt(i);
             pressure.removeAt(i+1);
-            selected.removeAt(i+1);
+            mVertSelected.removeAt(i+1);
             if ( i != n-1 )
             {
                 c1.removeAt(i+1);
@@ -480,13 +490,13 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
 
     if (!simplified)
     {
-        // highlight the selected elements
+        // highlight the mVertSelected elements
         colour = QColor(100,150,255);  // highlight colour
         painter.setBrush(Qt::NoBrush);
         qreal lineWidth = 1.5/painter.matrix().m11();
         lineWidth = fabs(lineWidth); // make sure line width is positive, otherwise nothing is drawn
         painter.setPen(QPen(QBrush(colour), lineWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-        if (isSelected()) painter.drawPath(myCurve.getSimplePath());
+        if (mIsSelected) painter.drawPath(myCurve.getSimplePath());
 
 
         for(int i=-1; i< vertex.size(); i++)
@@ -629,11 +639,11 @@ void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal
     while (c1.size()>0) c1.removeAt(0);
     while (c2.size()>0) c2.removeAt(0);
     while (vertex.size()>0) vertex.removeAt(0);
-    while (selected.size()>0) selected.removeAt(0);
+    while (mVertSelected.size()>0) mVertSelected.removeAt(0);
     while (pressure.size()>0) pressure.removeAt(0);
 
     setOrigin( pointList.at(0) );
-    selected.append(false);
+    mVertSelected.append(false);
     pressure.append(pressureList.at(0));
 
     for(p=1; p<n; p++)
@@ -642,7 +652,7 @@ void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal
         c2.append(pointList.at(p));
         vertex.append(pointList.at(p));
         pressure.append(pressureList.at(p));
-        selected.append(false);
+        mVertSelected.append(false);
 
     }
     smoothCurve();
@@ -901,4 +911,14 @@ bool BezierCurve::findIntersection(BezierCurve curve1, int i1, BezierCurve curve
     }
     //qDebug() << "------";
     return result;
+}
+
+bool BezierCurve::isSelected() const
+{
+    for (bool state : mVertSelected) {
+        if (state == true) {
+            return true;
+        }
+    }
+    return false;
 }
