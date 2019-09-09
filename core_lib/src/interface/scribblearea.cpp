@@ -949,7 +949,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
                 KeyFrame* dupKey = previousKeyFrame->clone();
                 layer->addKeyFrame(frameNumber, dupKey);
                 mEditor->scrubTo(frameNumber);  // Refresh timeline.
-                mEditor->backups()->keyAdded();
+                mEditor->backups()->keyAdded(layer->description() + tr(": Duplicate key"));
                 break;
             }
             // if the previous keyframe doesn't exist,
