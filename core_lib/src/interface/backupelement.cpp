@@ -631,13 +631,13 @@ TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
     {
         case Layer::BITMAP:
         {
-            oldBitmap = static_cast<BitmapImage*>(oldKeyFrame);
-            newBitmap = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(newFrameIndex);
+            oldBitmap = static_cast<BitmapImage*>(oldKeyFrame)->clone();
+            newBitmap = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(newFrameIndex)->clone();
             break;
         }
         case Layer::VECTOR:
         {
-            oldVector = static_cast<VectorImage*>(oldKeyFrame);
+            oldVector = static_cast<VectorImage*>(oldKeyFrame)->clone();
             newVector = static_cast<LayerVector*>(layer)->
                     getVectorImageAtFrame(newFrameIndex)->clone();
             break;
