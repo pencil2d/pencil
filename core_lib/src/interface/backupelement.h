@@ -60,6 +60,8 @@ private:
     Editor* mEditor = nullptr;
 };
 
+class TransformElement;
+
 class AddBitmapElement : public BackupElement
 {
 public:
@@ -92,8 +94,8 @@ public:
     void undo() override;
     void redo() override;
 
-    void redoTransform();
-    void undoTransform();
+    void redoTransform(const TransformElement* childElem);
+    void undoTransform(const TransformElement* childElem);
 };
 
 class AddVectorElement : public BackupElement

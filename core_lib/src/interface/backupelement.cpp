@@ -88,9 +88,10 @@ void AddBitmapElement::undo()
 {
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
 
-    if (editor()->select()->somethingSelected())
+    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
+    if (childElem)
     {
-        undoTransform();
+        undoTransform(childElem);
     }
     else
     {
@@ -103,9 +104,11 @@ void AddBitmapElement::undo()
 void AddBitmapElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
-    if (editor()->select()->somethingSelected())
+
+    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
+    if (childElem)
     {
-        redoTransform();
+        redoTransform(childElem);
     }
     else
     {
@@ -116,9 +119,8 @@ void AddBitmapElement::redo()
     editor()->scrubTo(newLayerId, newFrameIndex);
 }
 
-void AddBitmapElement::undoTransform()
+void AddBitmapElement::undoTransform(const TransformElement* childElem)
 {
-    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
 
     BitmapImage* oldBitmapClone = oldBitmap->clone();
 
@@ -139,9 +141,8 @@ void AddBitmapElement::undoTransform()
     editor()->canvas()->paintTransformedSelection(layer, oldBitmapClone, childElem->oldTransform, childElem->oldSelectionRect);
 }
 
-void AddBitmapElement::redoTransform()
+void AddBitmapElement::redoTransform(const TransformElement* childElem)
 {
-    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
 
     BitmapImage* newBitmapClone = newBitmap->clone();

@@ -182,9 +182,20 @@ void Editor::settingUpdated(SETTING setting)
 
 void Editor::cut()
 {
+    backups()->saveStates();
     copy();
-    mScribbleArea->deleteSelection();
-    deselectAll();
+
+    Layer* layer = layers()->currentLayer();
+    if (layer->type() == Layer::VECTOR) {
+        keyframes()->currentVectorImage(layer)->deleteSelection();
+        deselectAll();
+        backups()->vector("Vector: Cut");
+    }
+    if (layer->type() == Layer::BITMAP) {
+        keyframes()->currentBitmapImage(layer)->clear(select()->mySelectionRect());
+        deselectAll();
+        backups()->bitmap("Bitmap: Cut");
+    }
 }
 
 void Editor::copy()
