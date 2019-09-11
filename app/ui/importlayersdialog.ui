@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="labSelectFile">
        <property name="text">
-        <string>1. Select *.pclx file:</string>
+        <string>1. Select PCLX file:</string>
        </property>
       </widget>
      </item>
