@@ -769,6 +769,36 @@ KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex)
     return addKeyFrameToLayerId(layerId,frameIndex, false);
 }
 
+KeyFrame* Editor::addKeyFrameToLayer(Layer* layer, const int layerIndex, int frameIndex, const bool ignoreKeyExists)
+{
+    if (layer == NULL)
+    {
+        Q_ASSERT(false);
+        return nullptr;
+    }
+
+    if (!ignoreKeyExists)
+    {
+        while (layer->keyExists(frameIndex) && frameIndex > 1)
+        {
+            frameIndex += 1;
+        }
+    }
+
+    bool ok = layer->addNewKeyFrameAt(frameIndex);
+    if (ok)
+    {
+        scrubTo(frameIndex); // currentFrameChanged() emit inside.
+    }
+
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
+
+    return layer->getKeyFrameAt(frameIndex);
+}
+
 KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists)
 {
     Layer* layer = layers()->findLayerById(layerId);

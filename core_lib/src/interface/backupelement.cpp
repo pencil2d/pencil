@@ -758,39 +758,45 @@ ImportBitmapElement::ImportBitmapElement(const std::map<int, KeyFrame*, std::gre
 
 void ImportBitmapElement::undo()
 {
+    Editor* _editor = editor();
     for (auto key : importedKeyFrames)
     {
-        editor()->removeKeyAtLayerId(oldLayerId,key.second->pos());
+        _editor->removeKeyAtLayerId(oldLayerId,key.second->pos());
     }
 
-    Layer* layer = editor()->layers()->currentLayer();
+    Layer* layer = _editor->layers()->findLayerById(oldLayerId);
+    int layerIndex = _editor->layers()->getLayerIndex(layer);
 
     // we've removed all keyframes + those that were overwritten
     // now re-add the old ones
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
     for (auto key : oldKeyFrames)
     {
-        editor()->addKeyFrameToLayerId(oldLayerId, key.first, true);
-        static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(key.second, key.second->pos());
+        _editor->addKeyFrameToLayer(layer, layerIndex, key.first, true);
+        layerBitmap->putBitmapIntoFrame(key.second, key.second->pos());
     }
-    editor()->updateCurrentFrame();
+    _editor->updateCurrentFrame();
 }
 
 void ImportBitmapElement::redo()
 {
+    Editor* _editor = editor();
     if (isFirstRedo)
     {
         isFirstRedo = false;
         return;
     }
 
-    Layer* layer = editor()->layers()->currentLayer();
+    Layer* layer = _editor->layers()->findLayerById(newLayerId);
+    int layerIndex = _editor->layers()->getLayerIndex(layer);
 
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
     for (auto key : importedKeyFrames)
     {
-        editor()->addKeyFrameToLayerId(newLayerId, key.first, true);
-        static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(key.second, key.second->pos());
+        _editor->addKeyFrameToLayer(layer, layerIndex, key.first, true);
+        layerBitmap->putBitmapIntoFrame(key.second, key.second->pos());
     }
-    editor()->updateCurrentFrame();
+    _editor->updateCurrentFrame();
 }
 
 bool ImportBitmapElement::mergeWith(const QUndoCommand *other)

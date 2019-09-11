@@ -159,6 +159,7 @@ public: //slots
     KeyFrame* addKeyFrame(int layerIndex, int frameIndex, bool ignoreKeyExists);
     KeyFrame* addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists);
     KeyFrame* addKeyFrameToLayerId(int layerId, int frameIndex);
+    KeyFrame* addKeyFrameToLayer(Layer* layer, const int layerIndex, int frameIndex, const bool ignoreKeyExists);
     void addKeyContaining(int layerId, int frameIndex, KeyFrame* key);
 
 
