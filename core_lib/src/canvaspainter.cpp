@@ -91,7 +91,6 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     Q_UNUSED(rect);
 
     paintBackground();
-    paintOnionSkin(painter);
 
     //painter.setClipRect(aligned); // this aligned rect is valid only for bitmap images.
     paintCurrentFrame(painter);
@@ -130,7 +129,13 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
         qreal opacity = maxOpacity;
 
-        int onionFrameNumber = layer->getPreviousFrameNumber(mFrameNumber, mOptions.bIsOnionAbsolute);
+        int onionFrameNumber = mFrameNumber;
+        if (mOptions.bIsOnionAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber+1, true);
+        }
+        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
+
         int onionPosition = 0;
 
         while (onionPosition < mOptions.nPrevOnionSkinCount && onionFrameNumber > 0)
@@ -357,12 +362,12 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
 {
     painter.setOpacity(1.0);
 
-    QList<float> opacities;
+    QList<qreal> opacities;
     bool disableRelativeTransparency = false;
 
     // Disable relative transparency calculations when threshold 1, otherwise
     // drawings are going to be invisible.
-    if (mOpacityThreshold == 1) {
+    if (mOpacityThreshold >= 1) {
         disableRelativeTransparency = true;
     } else {
         opacities = createRelativeOpacityList();
@@ -377,6 +382,7 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
 
         if (mOptions.elayerVisibility == CanvasPainterOptions::RELATIVE && !disableRelativeTransparency) {
             if (!opacities.isEmpty()) {
+                paintOnionSkin(painter);
                 painter.setOpacity(opacities[index]);
             }
         }
@@ -393,12 +399,12 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
     }
 }
 
-QList<float> CanvasPainter::createRelativeOpacityList()
+QList<qreal> CanvasPainter::createRelativeOpacityList()
 {
-    QList<float> opacities;
+    QList<qreal> opacities;
     Layer* layer = mObject->getLayer(mCurrentLayerIndex);
     bool isCamera = false;
-    float opacity = 1;
+    qreal opacity = 1.0;
 
     if (layer->type() == Layer::CAMERA) {
         isCamera = true;
@@ -411,7 +417,7 @@ QList<float> CanvasPainter::createRelativeOpacityList()
             if (index == mCurrentLayerIndex) {
                 opacity = 1.0;
             } else if (index > mCurrentLayerIndex) {
-                opacity = opacity - (1 - mOpacityThreshold);
+                opacity = opacity - (1.0 - mOpacityThreshold);
             } else {
                 continue;
             }
@@ -428,7 +434,7 @@ QList<float> CanvasPainter::createRelativeOpacityList()
             if (index == mCurrentLayerIndex) {
                 opacity = 1.0;
             } else if (index < mCurrentLayerIndex) {
-                opacity = (opacity - (1 - mOpacityThreshold));
+                opacity = (opacity - (1.0 - mOpacityThreshold));
             } else {
                 continue;
             }

@@ -360,7 +360,12 @@ void TimeLineCells::paintOnionSkin(QPainter& painter)
 
     if (mEditor->preference()->isOn(SETTING::PREV_ONION) && prevOnionSkinCount > 0)
     {
-        int onionFrameNumber = layer->getPreviousFrameNumber(frameNumber, isAbsolute);
+        int onionFrameNumber = frameNumber;
+        if (isAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber+1, true);
+        }
+        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isAbsolute);
         int onionPosition = 0;
 
         while (onionPosition < prevOnionSkinCount && onionFrameNumber > 0)
@@ -420,8 +425,15 @@ void TimeLineCells::paintEvent(QPaintEvent*)
 
     if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-        if (!isPlaying) {
+        if (!isPlaying)
+        {
             paintOnionSkin(painter);
+        }
+
+        if (mPrevFrame != mEditor->currentFrame()  || mEditor->playback()->isPlaying())
+        {
+            mPrevFrame = mEditor->currentFrame();
+            trackScrubber();
         }
 
         // --- draw the position of the current frame
@@ -763,5 +775,26 @@ void TimeLineCells::setMouseMoveY(int x)
     if (x == 0)
     {
         update();
+    }
+}
+
+void TimeLineCells::trackScrubber()
+{
+    if (mEditor->currentFrame() <= mFrameOffset)
+    {
+        // Move the timeline back if the scrubber is offscreen to the left
+        mFrameOffset = mEditor->currentFrame() - 1;
+        emit offsetChanged(mFrameOffset);
+        mTimeLine->updateContent();
+    }
+    else if (width() < (mEditor->currentFrame() - mFrameOffset + 1) * mFrameSize)
+    {
+        // Move timeline forward if the scrubber is offscreen to the right
+        if (mEditor->playback()->isPlaying())
+            mFrameOffset = mFrameOffset + ((mEditor->currentFrame() - mFrameOffset) / 2);
+        else
+            mFrameOffset = mEditor->currentFrame() - width() / mFrameSize;
+        emit offsetChanged(mFrameOffset);
+        mTimeLine->updateContent();
     }
 }

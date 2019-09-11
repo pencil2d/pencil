@@ -172,8 +172,8 @@ public: //slots
 
     void settingUpdated(SETTING);
 
-    void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
-    bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
+    void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
+    bool autoSaveNeverAskAgain() { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
 
 protected:
@@ -209,7 +209,7 @@ private:
     bool mIsAutosave = true;
     int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
-    bool mAutosaveNerverAskAgain = false;
+    bool mAutosaveNeverAskAgain = false;
 
     void makeConnections();
     KeyFrame* addKeyFrame(int layerNumber, int frameNumber);

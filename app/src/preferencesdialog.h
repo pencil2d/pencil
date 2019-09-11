@@ -165,6 +165,7 @@ public slots:
     void onionMinOpacityChange(int);
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
+    void onionSkinModeChange(int);
     void quickSizingChange(int);
     void setRotationIncrement(int);
     void rotationIncrementChange(int);

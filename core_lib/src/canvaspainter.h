@@ -94,7 +94,7 @@ private:
     void prescale(BitmapImage* bitmapImage);
 
     /** @brief Creates a list of opacity values that is relative to the current index. */
-    QList<float> createRelativeOpacityList();
+    QList<qreal> createRelativeOpacityList();
 private:
     CanvasPainterOptions mOptions;
 
@@ -108,7 +108,7 @@ private:
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
 
-    float mOpacityThreshold = 0;
+    qreal mOpacityThreshold = 0;
 
     QImage mScaledBitmap;
 

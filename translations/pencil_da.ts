@@ -141,7 +141,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="664"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation>Er du sikker på at du vil slette laget:</translation>
+        <translation>Er du sikker på at du vil slette laget: </translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="673"/>
@@ -1670,7 +1670,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Næste keyframe</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="807"/>
@@ -1776,7 +1776,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate Anticlockwise</source>
-        <translation type="unfinished"/>
+        <translation>Roter mod uret</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
@@ -2000,7 +2000,7 @@ Du har slettet listen</translation>
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
         <source>You are about to switch away, do you want to apply the transformation?</source>
-        <translation type="unfinished"/>
+        <translation>Du er ved at skifte væk herfra. Ønsker du at anvende transformationen?</translation>
     </message>
 </context>
 <context>
@@ -3743,7 +3743,7 @@ Du har slettet listen</translation>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation type="unfinished"/>
+        <translation>Du prøver at ændre et skjult lag. Vælg venligst et andet lag, eller gør det nuværende lag synligt.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
@@ -3819,7 +3819,7 @@ Du har slettet listen</translation>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Slet</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
@@ -4084,7 +4084,7 @@ Du har slettet listen</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Eraser, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Gælder for Blyant, Viskelæder, Pen, Polyline, Fyld-og Pensel redskaber)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="160"/>
@@ -4371,7 +4371,7 @@ Du har slettet listen</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="114"/>
         <source>The extent to which the color variation will be treated as being equal</source>
-        <translation type="unfinished"/>
+        <translation>Det omfang som en farvevariation vil blive behandlet som værende ens</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>

@@ -33,15 +33,15 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>299</width>
-        <height>560</height>
+        <width>313</width>
+        <height>566</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QGroupBox" name="onionSkinBox">
          <property name="title">
-          <string>Onion skin</string>
+          <string>Onion Skin</string>
          </property>
          <layout class="QVBoxLayout" name="lay">
           <item>
@@ -151,6 +151,13 @@
             </property>
             <property name="maximum">
              <number>60</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="onionSkinMode">
+            <property name="text">
+             <string>Skip empty frames</string>
             </property>
            </widget>
           </item>
