@@ -1309,13 +1309,39 @@ void MainWindow2::savePalette()
 
 void MainWindow2::openPalette()
 {
-    FileDialog fileDialog(this);
-    QString filePath = fileDialog.openFile(FileType::PALETTE);
-    if (!filePath.isEmpty())
+    int count = 0;
+    int maxNumber = mEditor->object()->getColourCount();
+    bool openPalet = true;
+    while (count < maxNumber)
     {
-        mEditor->object()->openPalette(filePath);
-        mColorPalette->refreshColorList();
-        mEditor->color()->setColorNumber(0);
+        if (mEditor->object()->isColourInUse(count))
+        {
+            QMessageBox msgBox;
+            msgBox.setText(tr("Opening palette, will replace the old palette.\n"
+                              "Color(s) in strokes will be altered by this action!\n"));
+            msgBox.addButton(tr("Open Palette"), QMessageBox::AcceptRole);
+            msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
+
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::RejectRole)
+            {
+                openPalet = false;
+            }
+            count = maxNumber;
+        }
+        count++;
+    }
+
+    if (openPalet)
+    {
+        FileDialog fileDialog(this);
+        QString filePath = fileDialog.openFile(FileType::PALETTE);
+        if (!filePath.isEmpty())
+        {
+            mEditor->object()->openPalette(filePath);
+            mColorPalette->refreshColorList();
+            mEditor->color()->setColorNumber(0);
+        }
     }
 }
 
