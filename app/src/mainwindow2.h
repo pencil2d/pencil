@@ -120,6 +120,7 @@ private:
 
     void openPalette();
     void importPalette();
+    void savePalette();
     void exportPalette();
 
     void readSettings();

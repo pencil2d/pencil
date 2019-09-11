@@ -28,7 +28,8 @@ enum class FileType
     GIF,
     MOVIE,
     SOUND,
-    PALETTE
+    PALETTE,
+    PALETTE_XML
 };
 
 class FileDialog : public QObject

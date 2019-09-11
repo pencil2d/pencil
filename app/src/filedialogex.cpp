@@ -135,7 +135,8 @@ QString FileDialog::openDialogTitle( FileType fileType )
         case FileType::GIF: return tr( "Import Animated GIF" );
         case FileType::MOVIE: return tr( "Import movie" );
         case FileType::SOUND: return tr( "Import sound" );
-        case FileType::PALETTE: return tr( "Import palette" );
+        case FileType::PALETTE: return tr( "Open palette" );
+        case FileType::PALETTE_XML: return tr( "Open palette" );
         default: Q_ASSERT( false );
     }
     return "";
@@ -152,6 +153,7 @@ QString FileDialog::saveDialogTitle( FileType fileType )
         case FileType::MOVIE: return tr( "Export movie" );
         case FileType::SOUND: return tr( "Export sound" );
         case FileType::PALETTE: return tr( "Export palette" );
+        case FileType::PALETTE_XML: return tr( "Save palette" );
         default: Q_ASSERT( false );
     }
     return "";
@@ -172,7 +174,10 @@ QString FileDialog::openFileFilters( FileType fileType )
                 .arg(tr("Palette"))
                 .arg(tr("Pencil2D Palette"))
                 .arg(tr("GIMP Palette"));
-        default: Q_ASSERT( false );
+        case FileType::PALETTE_XML:
+            return QString("%1 (*.xml)")
+                .arg(tr("Pencil2D Palette"));
+    default: Q_ASSERT( false );
     }
     return "";
 }
@@ -192,6 +197,9 @@ QString FileDialog::saveFileFilters( FileType fileType )
                 .arg(tr("Palette"))
                 .arg(tr("Pencil2D Palette"))
                 .arg(tr("GIMP Palette"));
+    case FileType::PALETTE_XML:
+        return QString("%1 (*.xml)")
+            .arg(tr("Pencil2D Palette"));
         default: Q_ASSERT( false );
     }
     return "";
@@ -238,6 +246,7 @@ QString FileDialog::defaultFileName( FileType fileType )
         case FileType::MOVIE: return "untitled.mp4";
         case FileType::SOUND: return "untitled.wav";
         case FileType::PALETTE: return "untitled.xml";
+        case FileType::PALETTE_XML: return "untitled.xml";
         default: Q_ASSERT( false );
     }
     return "";
@@ -254,6 +263,7 @@ QString FileDialog::toSettingKey( FileType fileType )
         case FileType::MOVIE: return "Movie";
         case FileType::SOUND: return "Sound";
         case FileType::PALETTE: return "Palette";
+        case FileType::PALETTE_XML: return "Palette";
         default: Q_ASSERT( false );
     }
     return "";

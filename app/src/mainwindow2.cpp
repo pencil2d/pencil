@@ -236,7 +236,8 @@ void MainWindow2::createMenus()
     connect(ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie);
     connect(ui->actionExport_Animated_GIF, &QAction::triggered, mCommands, &ActionCommands::exportGif);
 
-    connect(ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette);
+    connect(ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::savePalette);
+    connect(ui->actionExport_Other_Palette_formats, &QAction::triggered, this, &MainWindow2::exportPalette);
 
     //--- Import Menu ---
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
@@ -1296,6 +1297,16 @@ void MainWindow2::importPalette()
     }
 }
 
+void MainWindow2::savePalette()
+{
+    FileDialog FileDialog(this);
+    QString filePath = FileDialog.saveFile(FileType::PALETTE_XML);
+    if (!filePath.isEmpty())
+    {
+        mEditor->object()->exportPalette(filePath);
+    }
+}
+
 void MainWindow2::openPalette()
 {
     FileDialog fileDialog(this);
@@ -1436,31 +1447,7 @@ void MainWindow2::changePlayState(bool isPlaying)
     }
     update();
 }
-/*
-void MainWindow2::alignPegs()
-{
-    QStringList bitmaplayers;
-    bitmaplayers = mPegreg->getLayerList();
-    if (bitmaplayers.isEmpty())
-    {
-        QMessageBox::information(this, nullptr,
-                                 tr("No layers selected!"),
-                                 QMessageBox::Ok);
-    }
-    else
-    {
-        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
-        if (statusint.errorcode == Status::FAIL)
-        {
-            QMessageBox::information(this, nullptr,
-                                     tr("Peg bar alignment failed!"),
-                                     QMessageBox::Ok);
-            return;
-        }
-        closePegReg();
-    }
-}
-*/
+
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)
 {
     QMessageBox::information(this, tr(qPrintable(title)), tr(qPrintable(body)), QMessageBox::Ok);
