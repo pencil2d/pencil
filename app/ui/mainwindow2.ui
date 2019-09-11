@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -68,7 +68,8 @@
      <addaction name="actionImport_Gif"/>
      <addaction name="actionImport_Sound"/>
      <addaction name="separator"/>
-     <addaction name="actionImport_Palette"/>
+     <addaction name="actionOpen_Replace_Palette"/>
+     <addaction name="actionImport_Append_Palette"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -335,11 +336,6 @@
   <action name="actionImport_Sound">
    <property name="text">
     <string>Sound...</string>
-   </property>
-  </action>
-  <action name="actionImport_Palette">
-   <property name="text">
-    <string>Palette...</string>
    </property>
   </action>
   <action name="actionImport_ImageSeqNum">
@@ -979,6 +975,16 @@
   <action name="actionPegbarAlignment">
    <property name="text">
     <string>Peg bar Alignment</string>
+   </property>
+  </action>
+  <action name="actionImport_Append_Palette">
+   <property name="text">
+    <string>Import (Append) Palette...</string>
+   </property>
+  </action>
+  <action name="actionOpen_Replace_Palette">
+   <property name="text">
+    <string>Open (Replace) Palette...</string>
    </property>
   </action>
  </widget>

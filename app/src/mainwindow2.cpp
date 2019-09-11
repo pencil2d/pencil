@@ -247,7 +247,8 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
-    connect(ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
+    connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
+    connect(ui->actionOpen_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
@@ -1131,7 +1132,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
     ui->actionImport_Movie->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE));
-    ui->actionImport_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
+    ui->actionImport_Append_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
     ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
 
     ui->actionExport_Image->setShortcut(cmdKeySeq(CMD_EXPORT_IMAGE));
@@ -1290,6 +1291,18 @@ void MainWindow2::importPalette()
     if (!filePath.isEmpty())
     {
         mEditor->object()->importPalette(filePath);
+        mColorPalette->refreshColorList();
+        mEditor->color()->setColorNumber(0);
+    }
+}
+
+void MainWindow2::openPalette()
+{
+    FileDialog fileDialog(this);
+    QString filePath = fileDialog.openFile(FileType::PALETTE);
+    if (!filePath.isEmpty())
+    {
+        mEditor->object()->openPalette(filePath);
         mColorPalette->refreshColorList();
         mEditor->color()->setColorNumber(0);
     }
