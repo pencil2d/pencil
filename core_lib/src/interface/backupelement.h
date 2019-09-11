@@ -344,6 +344,7 @@ public:
 
     void undo() override;
     void redo() override;
+    bool mergeWith(const QUndoCommand *other) override;
     int id() const override { return Id; }
 };
 

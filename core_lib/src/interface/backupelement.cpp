@@ -793,6 +793,21 @@ void ImportBitmapElement::redo()
     editor()->updateCurrentFrame();
 }
 
+bool ImportBitmapElement::mergeWith(const QUndoCommand *other)
+{
+    if (other->id() != id()) {
+        return false;
+    }
+
+    auto element = static_cast<const ImportBitmapElement*>(other);
+    newLayerId = element->newLayerId;
+
+    auto importedKeys = element->importedKeyFrames;
+    importedKeyFrames.insert(importedKeys.begin(), importedKeys.end());
+
+    return true;
+}
+
 CameraMotionElement::CameraMotionElement(const int backupFrameIndex,
                                          const int backupLayerId,
                                          const QPointF& backupTranslation,

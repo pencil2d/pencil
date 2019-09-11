@@ -468,7 +468,6 @@ QString Editor::workingDir() const
     return mObject->workingDir();
 }
 
-
 bool Editor::importBitmapImage(QString filePath, int space)
 {
     QImageReader reader(filePath);
