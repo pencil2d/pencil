@@ -325,7 +325,7 @@ int LayerManager::animationLength(bool includeSounds)
 
 void LayerManager::notifyAnimationLengthChanged()
 {
-    emit animationLengthChanged(animationLength(false));
+    emit animationLengthChanged(animationLength(true));
 }
 
 int LayerManager::getIndex(Layer* layer) const

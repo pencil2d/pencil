@@ -849,7 +849,6 @@ void MainWindow2::importImageSequence()
                              QMessageBox::Ok);
     }
 
-    mEditor->layers()->notifyAnimationLengthChanged();
     progress.close();
 
     mIsImportingImageSequence = false;
@@ -994,8 +993,6 @@ void MainWindow2::importGIF()
                              QMessageBox::Ok,
                              QMessageBox::Ok);
     }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.setValue(100);
     progress.close();
