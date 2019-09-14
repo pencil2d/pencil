@@ -890,7 +890,7 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
     }
 
     // Get frame estimate
-    int frames = 1;
+    int frames = 1, otherFrames = 1;
     QString ffprobePath = ffprobeLocation();
     if (QFileInfo::exists(ffprobePath))
     {
@@ -909,7 +909,48 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
     }
     else
     {
-        qDebug() << "Please place ffprobe.exe in plugins directory";
+        // Fallback to ffmpeg
+        QString probeCmd = QString("\"%1\"").arg(ffmpegPath);
+        probeCmd += QString(" -i \"%1\"").arg(filePath);
+        QProcess ffmpeg;
+        // FFmpeg writes to stderr only for some reason, so we just read both channels together
+        ffmpeg.setProcessChannelMode(QProcess::MergedChannels);
+        ffmpeg.start(probeCmd);
+        bool isDurationNext = false;
+        if (ffmpeg.waitForStarted() == true)
+        {
+            while(ffmpeg.state() == QProcess::Running)
+            {
+                if(!ffmpeg.waitForReadyRead()) break;
+
+                QString output(ffmpeg.readAll());
+                QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+                for (const QString& s : sList)
+                {
+                    if (isDurationNext)
+                    {
+                        isDurationNext = false;
+
+                        QString format("hh:mm:ss.zzz");
+                        QString durationString = s.trimmed().left(format.length());
+                        otherFrames = qCeil(QTime(0, 0).msecsTo(QTime::fromString(durationString, format)) / 1000.0 * fps);
+
+                        // We've got what we need, stop running
+                        ffmpeg.terminate();
+                        ffmpeg.waitForFinished(3000);
+                        if (ffmpeg.state() == QProcess::Running) ffmpeg.kill();
+                        ffmpeg.waitForFinished();
+                        break;
+                    }
+
+                    // Sure hope this isn't localized...
+                    if(s.contains("DURATION"))
+                    {
+                        isDurationNext = true;
+                    }
+                }
+            }
+        }
     }
 
     if (progress.wasCanceled()) return true;

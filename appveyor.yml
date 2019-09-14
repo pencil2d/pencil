@@ -70,10 +70,9 @@ after_build:
     echo "Copying ffmpeg plugin" &
     call curl.exe -o bin\plugins\ffmpeg-4.1.1-win32-static.zip "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-4.1.1-win32-static.zip" &
     call 7z.exe x bin\plugins\ffmpeg-4.1.1-win32-static.zip -o"bin\plugins" &
-    echo "move ffmpeg.exe and ffprobe.exe and delete leftovers" &
+    echo "move ffmpeg.exe and delete leftovers" &
     del bin\plugins\ffmpeg-4.1.1-win32-static.zip &
     move /y bin\plugins\ffmpeg-4.1.1-win32-static\bin\ffmpeg.exe bin\plugins &
-    move /y bin\plugins\ffmpeg-4.1.1-win32-static\bin\ffprobe.exe bin\plugins &
     rmdir /q /s bin\plugins\ffmpeg-4.1.1-win32-static &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
@@ -100,7 +99,6 @@ after_build:
     echo "move ffmpeg.exe and delete ffmpeg leftovers" &
     del bin\plugins\ffmpeg-4.1.1-win64-static.zip &
     move /y bin\plugins\ffmpeg-4.1.1-win64-static\bin\ffmpeg.exe bin\plugins &
-    move /y bin\plugins\ffmpeg-4.1.1-win64-static\bin\ffprobe.exe bin\plugins &
     rmdir /q /s bin\plugins\ffmpeg-4.1.1-win64-static &
     echo "copying qt libraries" &
     windeployqt bin\pencil2d.exe &
