@@ -42,7 +42,8 @@ bool LayerManager::init()
 Status LayerManager::load(Object* o)
 {
     mLastCameraLayerIdx = 0;
-    emit layerCountChanged(o->getLayerCount());
+    // Do not emit layerCountChanged here because the editor has not updated to this object yet
+    // Leave that to the caller of this function
     return Status::OK;
 }
 
