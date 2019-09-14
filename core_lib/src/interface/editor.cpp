@@ -608,6 +608,11 @@ void Editor::selectAll()
     Layer* layer = layers()->currentLayer();
 
     QRectF rect;
+
+    canvas()->applyTransformedSelection(layer,
+                                        keyframes()->currentKeyFrame(layer),
+                                        select()->selectionTransform(),
+                                        select()->mySelectionRect());
     if (layer->type() == Layer::BITMAP)
     {
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way

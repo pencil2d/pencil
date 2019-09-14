@@ -659,6 +659,8 @@ void VectorImage::setSelected(const QList<int> curveList, const QList<VertexRef>
             }
         } else {
             mCurves[curveNumber].setSelected(YesOrNo);
+            mSelectionRect |= mCurves[curveNumber].getBoundingRect();
+            modification();
         }
     }
 }
@@ -821,6 +823,7 @@ void VectorImage::selectAll()
 
             setSelected(i, vertex, true);
         }
+        mSelectionRect |= mCurves[i].getBoundingRect();
     }
     mSelectionTransformation.reset();
 }

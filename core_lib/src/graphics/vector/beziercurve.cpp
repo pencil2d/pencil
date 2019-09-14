@@ -272,6 +272,7 @@ void BezierCurve::setVertexSelected(int i, bool YesOrNo)
 void BezierCurve::setSelected(const bool YesOrNo)
 {
     mIsSelected = YesOrNo;
+    setVertexSelected(YesOrNo);
 }
 
 /**

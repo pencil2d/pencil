@@ -269,6 +269,7 @@ void MoveTool::setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers 
         if (keyMod != Qt::ShiftModifier) {
             vectorImage->deselectAll();
         }
+        applyTransformation();
 
         vectorImage->setSelected(selectedCurves, true);
         selectMan->setSelection(vectorImage->getSelectionRect());
@@ -337,19 +338,22 @@ void MoveTool::paintTransformedSelection()
 
 bool MoveTool::leavingThisTool()
 {
-    if (mCurrentLayer)
-    {
-        switch (mCurrentLayer->type())
+    mEditor->backups()->saveStates();
+    if (mEditor->select()->transformHasBeenModified()) {
+        if (mCurrentLayer)
         {
-        case Layer::BITMAP: applySelectionChanges(); break;
-        case Layer::VECTOR: applyTransformation(); break;
-        default: break;
+            switch (mCurrentLayer->type())
+            {
+                case Layer::BITMAP: applySelectionChanges(); break;
+                case Layer::VECTOR: applyTransformation(); break;
+                default: break;
+            }
         }
     }
 
-    if (mEditor->select()->transformHasBeenModified()) {
-        mEditor->backups()->saveStates();
-        mEditor->backups()->transform(tr("Transform applied"));
+    if (mEditor->select()->somethingSelected()) {
+        mEditor->deselectAll();
+        mEditor->backups()->deselect();
     }
     return true;
 }

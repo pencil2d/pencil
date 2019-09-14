@@ -472,13 +472,14 @@ void SelectionElement::undoSelection()
     selectMan->setSomethingSelected(oldIsSelected);
 
     Layer* layer = editor()->layers()->findLayerById(layerId);
+
+    editor()->deselectAll();
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
         vectorImage->setSelected(oldVectorSelection.curves, oldVectorSelection.vertices, true);
+        selectMan->setSelection(vectorImage->getSelectionRect());
         selectMan->setVectorSelection(oldVectorSelection);
     }
-
-    editor()->deselectAll();
 
     KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
     editor()->canvas()->applyTransformedSelection(layer,
@@ -529,6 +530,7 @@ void SelectionElement::redoSelection()
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
         vectorImage->setSelected(newVectorSelection.curves, newVectorSelection.vertices, true);
+        selectMan->setSelection(vectorImage->getSelectionRect());
         selectMan->setVectorSelection(newVectorSelection);
     }
 }
@@ -652,10 +654,10 @@ TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
 
 void TransformElement::undo()
 {
-    apply(oldSelectionRectTemp,
-          oldBitmap,
+    apply(oldBitmap,
           oldVector,
           oldSelectionRect,
+          oldSelectionRectTemp,
           oldTransformedSelectionRect,
           oldRotationAngle,
           oldScaleX,
@@ -671,10 +673,10 @@ void TransformElement::redo()
         isFirstRedo = false; return;
     }
 
-    apply(newSelectionRectTemp,
-          newBitmap,
+    apply(newBitmap,
           newVector,
           newSelectionRect,
+          newSelectionRectTemp,
           newTransformedSelectionRect,
           newRotationAngle,
           newScaleX,
@@ -684,10 +686,10 @@ void TransformElement::redo()
           newLayerId);
 }
 
-void TransformElement::apply(const QRectF& tempRect,
-                             const BitmapImage* bitmapImage,
+void TransformElement::apply(const BitmapImage* bitmapImage,
                              const VectorImage* vectorImage,
                              const QRectF& selectionRect,
+                             const QRectF& tempRect,
                              const QRectF& transformedRect,
                              const qreal rotationAngle,
                              const qreal scaleX,
@@ -720,24 +722,26 @@ void TransformElement::apply(const QRectF& tempRect,
         {
             if (bitmapImage->isMinimallyBounded()) {
                 static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(bitmapImage);
+                KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
+                editor()->canvas()->paintTransformedSelection(layer,
+                                                              cKeyFrame,
+                                                              transform,
+                                                              selectionRect);
             }
             break;
         }
         case Layer::VECTOR:
         {
             static_cast<LayerVector*>(layer)->replaceLastVectorAtFrame(vectorImage);
+            VectorImage* vecImage = editor()->keyframes()->currentVectorImage(layer);
+            vecImage->setSelectionTransformation(transform);
+            editor()->updateCurrentFrame();
             break;
         }
         default:
             break;
 
     }
-
-    KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
-    editor()->canvas()->paintTransformedSelection(layer,
-                                                  cKeyFrame,
-                                                  transform,
-                                                  selectionRect);
 }
 
 ImportBitmapElement::ImportBitmapElement(const std::map<int, KeyFrame*, std::greater<int>>& backupCanvasKeyFrames,

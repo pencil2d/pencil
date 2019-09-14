@@ -266,10 +266,10 @@ public:
 
     void undo() override;
     void redo() override;
-    void apply(const QRectF& tempRect,
-               const BitmapImage* bitmapImage,
+    void apply(const BitmapImage* bitmapImage,
                const VectorImage* vectorImage,
                const QRectF& selectionRect,
+               const QRectF& tempRect,
                const QRectF& transformedRect,
                const qreal rotationAngle,
                const qreal scaleX,
