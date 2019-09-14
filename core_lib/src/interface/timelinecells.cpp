@@ -742,7 +742,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
         // mouse was moved away from the start pos, this not intended to select.
         const int numOfSelectedFrames = currentLayer->getSelectedFrameIndexes().count();
-        if (numOfSelectedFrames == 1 && mStartFrameNumber != frameNumber) {
+        if ((numOfSelectedFrames == 1 && mStartFrameNumber != frameNumber) && mNumOfFramesOffset == 0) {
             currentLayer->deselectAll();
         }
 
