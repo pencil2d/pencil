@@ -23,13 +23,15 @@ GNU General Public License for more details.
 #endif
 
 #define PENCIL_MOVIE_EXT \
-    QObject::tr( "AVI(*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;MKV(*.mkv);;OGV(*.ogv);;SWF(*.swf);;FLV(*.flv);;WEBM(*.webm);;WMV(*.wmv)" )
+    QString( "%1 (*.avi *.mpg *.mpeg *.mov *.mp4 *.mkv *.ogv *.swf *.flv *.webm *.wmv);;" \
+             "AVI(*.avi);;MPEG(*.mpg *.mpeg);;MOV(*.mov);;MP4(*.mp4);;MKV(*.mkv);;OGV(*.ogv)" \
+             ";;SWF(*.swf);;FLV(*.flv);;WEBM(*.webm);;WMV(*.wmv)" ).arg(QObject::tr("Movies"))
 
 #define PENCIL_IMAGE_FILTER \
-   QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
+   QString( "%1 (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;TIFF(*.tif *.tiff)" ).arg(QObject::tr("Images"))
 
 #define PENCIL_IMAGE_SEQ_FILTER \
-    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
+    QString( "%1 (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;TIFF(*.tif *.tiff)" ).arg(QObject::tr("Images"))
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
