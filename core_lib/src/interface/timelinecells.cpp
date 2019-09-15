@@ -712,8 +712,6 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 {
     if (event->button() != primaryButton) return;
 
-    mEditor->backups()->saveStates();
-
     primaryButton = Qt::NoButton;
     mEndY = mStartY;
     mTimeLine->scrubbing = false;
@@ -748,7 +746,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
         if ((mClickSelecting || mBoxSelecting) && !mMovingFrames && !mDidExtendSelection) {
 
-            if (currentLayer->getKeyFrameAt(frameNumber) != nullptr ||
+            if (currentLayer->getKeyFrameWhichCovers(frameNumber) != nullptr ||
                 numOfSelectedFrames > 1) {
                 mEditor->backups()->frameSelected(currentLayer->getSelectedFrameIndexes(),frameNumber, true);
             }

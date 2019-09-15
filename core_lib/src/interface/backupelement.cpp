@@ -1124,8 +1124,8 @@ void CameraPropertiesElement::redo()
 
 MoveFramesElement::MoveFramesElement(const int backupLayerId,
                                       const int backupScrubberFrameIndex,
-                                      const int backupStartFrameIndex,
-                                      const int backupEndFrameIndex,
+                                      const int backupStartSelectedFrameIndex,
+                                      const int backupEndSelectedFrameIndex,
                                       const int backupOffset,
                                      Editor* editor,
                                      QUndoCommand* parent) : BackupElement(editor, parent),
@@ -1136,7 +1136,7 @@ MoveFramesElement::MoveFramesElement(const int backupLayerId,
     layerId = backupLayerId;
 
     // assume a frame was moved but not selected
-    if (backupStartFrameIndex == backupEndFrameIndex)
+    if (backupStartSelectedFrameIndex == 0 && backupEndSelectedFrameIndex == 0)
     {
         framesSelected = false;
         if (backupOffset < 0)
@@ -1149,7 +1149,6 @@ MoveFramesElement::MoveFramesElement(const int backupLayerId,
     else
     {
         framesSelected = true;
-
         if (backupOffset < 0) {
             setText(QObject::tr("Move frame/s backward"));
         } else {
