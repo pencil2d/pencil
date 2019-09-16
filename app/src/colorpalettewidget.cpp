@@ -131,6 +131,7 @@ void ColorPaletteWidget::replaceItem()
 
     if (index >= 0)
     {
+        editor()->object()->setColour(index, newColour);
         updateItemColor(index, newColour);
         emit colorChanged(newColour);
         ui->colorListWidget->setCurrentRow(index);
