@@ -73,9 +73,7 @@ private slots:
     void palettePreferences();
     void setListMode();
     void setGridMode();
-    void setSwatchSizeSmall();
-    void setSwatchSizeMedium();
-    void setSwatchSizeLarge();
+    void setSwatchSize(int value);
     void addItem();
     void replaceItem();
     void removeItem();
