@@ -57,7 +57,7 @@ void ColorPaletteWidget::initUI()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
     int colorGridSize = settings.value("PreferredColorGridSize", 34).toInt();
-    ui->swatchSlider->setValue((colorGridSize - 2) / 4);
+    ui->swatchSlider->setValue(colorGridSize / 2);
 
     mIconSize = QSize(colorGridSize, colorGridSize);
 
@@ -340,11 +340,11 @@ void ColorPaletteWidget::resizeEvent(QResizeEvent* event)
 
 void ColorPaletteWidget::setSwatchSize(int value)
 {    
-    mIconSize = QSize((value * 4) + 2, (value * 4) + 2);
+    mIconSize = QSize(value * 2, value * 2);
     updateUI();
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("PreferredColorGridSize", (value * 4) + 2);
+    settings.setValue("PreferredColorGridSize", value * 2);
 }
 
 void ColorPaletteWidget::updateGridUI()
