@@ -246,7 +246,6 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 }
 
-
 void CanvasPainter::prescale(BitmapImage* bitmapImage)
 {
     QImage origImage = bitmapImage->image()->copy();
@@ -263,9 +262,9 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
     else
     {
         // map to correct matrix
-        QRectF mappedOrigImage = mViewTransform.mapRect(QRectF(origImage.rect()));
-        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size().toSize(),
-                                             Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QRect mappedOrigImage = mViewTransform.mapRect(bitmapImage->bounds());
+        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size(),
+                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     }
 }
 
