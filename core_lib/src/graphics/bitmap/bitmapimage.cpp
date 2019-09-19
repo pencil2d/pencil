@@ -736,7 +736,7 @@ void BitmapImage::clear()
     modification();
 }
 
-QRgb BitmapImage::constScanLine(int x, int y)
+QRgb BitmapImage::constScanLine(int x, int y) const
 {
     QRgb result = qRgba(0, 0, 0, 0);
     if (mBounds.contains(QPoint(x, y)))
