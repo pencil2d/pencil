@@ -852,7 +852,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
 
     // Extend to size of Camera
     targetImage->extend(cameraRect);
-    replaceImage = new BitmapImage(cameraRect, Qt::transparent);
+    replaceImage = new BitmapImage(targetImage->mBounds, Qt::transparent);
 
     queue.append(point);
     // Preparations END
