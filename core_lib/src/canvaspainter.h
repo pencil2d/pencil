@@ -70,14 +70,23 @@ public:
     void ignoreTransformedSelection();
     QRect getCameraRect();
 
-    void paint(const Object* object, int layer, int frame, QRect rect, BitmapImage* buffer);
-    void renderGrid(QPainter& painter);
+    QPainter *initializePainter(QPixmap *pixmap);
 
+    void renderPreLayers(QPixmap *pixmap);
+    void renderPreLayers(QPainter *painter);
+    void renderCurLayer(QPixmap *pixmap);
+    void renderCurLayer(QPainter *painter);
+    void renderPostLayers(QPixmap *pixmap);
+    void renderPostLayers(QPainter *pixmap);
+
+    void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
+    void paint();
+    void renderGrid(QPainter& painter);
 private:
     void paintBackground();
     void paintOnionSkin(QPainter& painter);
 
-    void paintCurrentFrame(QPainter& painter);
+    void paintCurrentFrame(QPainter& painter, int startLayer, int endLayer);
 
     void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
     void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);

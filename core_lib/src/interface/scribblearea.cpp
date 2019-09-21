@@ -227,6 +227,13 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     }
 }
 
+void ScribbleArea::setAllDirty()
+{
+    mNeedUpdateAll = true;
+    mPreLayersCache.reset();
+    mPostLayersCache.reset();
+}
+
 /************************************************************************/
 /* key event handlers                                                   */
 /************************************************************************/
@@ -939,7 +946,42 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     }
     else
     {
-        drawCanvas(mEditor->currentFrame(), event->rect());
+        QPixmap tempPixmap(mCanvas.size());
+        tempPixmap.fill(Qt::transparent);
+        mCanvas.fill(Qt::transparent);
+        QScopedPointer<QPainter> tempPainter(mCanvasPainter.initializePainter(&tempPixmap));
+        QScopedPointer<QPainter> canvasPainter(mCanvasPainter.initializePainter(&mCanvas));
+
+        prepCanvas(mEditor->currentFrame(), event->rect());
+
+        if (!mPreLayersCache)
+        {
+            mCanvasPainter.renderPreLayers(canvasPainter.get());
+            mPreLayersCache.reset(new QPixmap(mCanvas));
+        }
+        else
+        {
+            canvasPainter->setWorldMatrixEnabled(false);
+            canvasPainter->drawPixmap(0, 0, *(mPreLayersCache.get()));
+            canvasPainter->setWorldMatrixEnabled(true);
+        }
+
+        mCanvasPainter.renderCurLayer(canvasPainter.get());
+
+        if (!mPostLayersCache)
+        {
+            mCanvasPainter.renderPostLayers(tempPainter.get());
+            mPostLayersCache.reset(new QPixmap(tempPixmap));
+            canvasPainter->setWorldMatrixEnabled(false);
+            canvasPainter->drawPixmap(0, 0, tempPixmap);
+            canvasPainter->setWorldMatrixEnabled(true);
+        }
+        else
+        {
+            canvasPainter->setWorldMatrixEnabled(false);
+            canvasPainter->drawPixmap(0, 0, *(mPostLayersCache.get()));
+            canvasPainter->setWorldMatrixEnabled(true);
+        }
     }
 
     if (currentTool()->type() == MOVE)
@@ -1086,7 +1128,7 @@ VectorImage* ScribbleArea::currentVectorImage(Layer* layer) const
     return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 }
 
-void ScribbleArea::drawCanvas(int frame, QRect rect)
+void ScribbleArea::prepCanvas(int frame, QRect rect)
 {
     Object* object = mEditor->object();
 
@@ -1119,7 +1161,14 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     ViewManager* vm = mEditor->view();
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 
-    mCanvasPainter.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect, mBufferImg);
+    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, mBufferImg);
+}
+
+void ScribbleArea::drawCanvas(int frame, QRect rect)
+{
+    mCanvas.fill(Qt::transparent);
+    prepCanvas(frame, rect);
+    mCanvasPainter.paint();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)

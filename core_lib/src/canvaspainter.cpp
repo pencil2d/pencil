@@ -69,36 +69,90 @@ void CanvasPainter::ignoreTransformedSelection()
     mRenderTransform = false;
 }
 
-void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect, BitmapImage *buffer)
+QPainter* CanvasPainter::initializePainter(QPixmap *pixmap)
 {
-    Q_ASSERT(object);
-    mObject = object;
+    QPainter *painter = new QPainter(pixmap);
 
-    mCurrentLayerIndex = layer;
-    mFrameNumber = frame;
-    mBuffer = buffer;
+    painter->setWorldMatrixEnabled(true);
+    painter->setWorldTransform(mViewTransform);
 
     //QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
     //QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
     //QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
-    QPainter painter(mCanvas);
-
-    painter.setWorldMatrixEnabled(true);
-    painter.setWorldTransform(mViewTransform);
-
-    Q_UNUSED(rect);
-
-    paintBackground();
 
     //painter.setClipRect(aligned); // this aligned rect is valid only for bitmap images.
-    paintCurrentFrame(painter);
-    paintCameraBorder(painter);
+
+    return painter;
+}
+
+void CanvasPainter::renderPreLayers(QPixmap *pixmap)
+{
+    QScopedPointer<QPainter> painter(initializePainter(pixmap));
+    renderPreLayers(painter.get());
+}
+
+void CanvasPainter::renderPreLayers(QPainter *painter)
+{
+    if (mOptions.nShowAllLayers > 0)
+    {
+        paintCurrentFrame(*painter, 0, mCurrentLayerIndex-1);
+    }
+
+    paintOnionSkin(*painter);
+    painter->setOpacity(1.0);
+}
+
+void CanvasPainter::renderCurLayer(QPixmap *pixmap)
+{
+    QScopedPointer<QPainter> painter(initializePainter(pixmap));
+    renderCurLayer(painter.get());
+}
+
+void CanvasPainter::renderCurLayer(QPainter *painter)
+{
+    paintCurrentFrame(*painter, mCurrentLayerIndex, mCurrentLayerIndex);
+}
+
+void CanvasPainter::renderPostLayers(QPixmap *pixmap)
+{
+    QScopedPointer<QPainter> painter(initializePainter(pixmap));
+    renderPostLayers(painter.get());
+}
+
+void CanvasPainter::renderPostLayers(QPainter *painter)
+{
+    if (mOptions.nShowAllLayers > 0)
+    {
+        paintCurrentFrame(*painter, mCurrentLayerIndex+1, mObject->getLayerCount()-1);
+    }
+
+    paintCameraBorder(*painter);
 
     // post effects
     if (mOptions.bAxis)
     {
-        paintAxis(painter);
+        paintAxis(*painter);
     }
+}
+
+void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage *buffer)
+{
+    Q_UNUSED(rect);
+    Q_ASSERT(object);
+    mObject = object;
+
+    mCurrentLayerIndex = currentLayer;
+    mFrameNumber = frame;
+    mBuffer = buffer;
+}
+
+void CanvasPainter::paint()
+{
+    QScopedPointer<QPainter> painter(initializePainter(mCanvas));
+
+    renderPreLayers(painter.get());
+    renderCurLayer(painter.get());
+    renderPostLayers(painter.get());
 }
 
 void CanvasPainter::paintBackground()
@@ -209,9 +263,15 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
         paintedImage = bitmapLayer->getBitmapImageAtFrame(nFrame);
     }
 
-    if (paintedImage == nullptr || paintedImage->bounds().isEmpty())
+    if ((paintedImage == nullptr || paintedImage->bounds().isEmpty())
+        && !(isCurrentFrame && mBuffer != nullptr && !mBuffer->bounds().isEmpty()))
     {
         return;
+    }
+
+    if (paintedImage == nullptr)
+    {
+        paintedImage = new BitmapImage();
     }
 
     paintedImage->loadFile(); // Critical! force the BitmapImage to load the image
@@ -378,32 +438,29 @@ void CanvasPainter::paintBuffer(BitmapImage *targetImage, BitmapImage *buffer, L
     targetImage.setCompositionMode(prevCompositionMode);*/
 }
 
-void CanvasPainter::paintCurrentFrame(QPainter& painter)
+/** Paints layers within the specified range for the current frame.
+ *
+ *  @param painter The painter to paint to
+ *  @param startLayer The first layer to paint (inclusive)
+ *  @param endLayer The last layer to paint (inclusive)
+ */
+void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int endLayer)
 {
     //bool isCamera = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
     painter.setOpacity(1.0);
 
-    for (int i = 0; i < mObject->getLayerCount(); ++i)
+    for (int i = startLayer; i <= endLayer; ++i)
     {
         Layer* layer = mObject->getLayer(i);
 
         if (layer->visible() == false)
             continue;
 
-        if (i == mCurrentLayerIndex)
+        switch (layer->type())
         {
-            paintOnionSkin(painter);
-            painter.setOpacity(1.0);
-        }
-
-        if (i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0)
-        {
-            switch (layer->type())
-            {
-            case Layer::BITMAP: { paintBitmapFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break; }
-            case Layer::VECTOR: { paintVectorFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break; }
-            default: break;
-            }
+        case Layer::BITMAP: { paintBitmapFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break; }
+        case Layer::VECTOR: { paintVectorFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break; }
+        default: break;
         }
     }
 }
