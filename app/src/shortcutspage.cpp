@@ -25,6 +25,8 @@ GNU General Public License for more details.
 #include <QKeySequence>
 #include <QMessageBox>
 #include "pencilsettings.h"
+#include <QFile>
+#include <QFileDialog>
 
 
 static const int ACT_NAME_COLUMN = 0;
@@ -46,6 +48,8 @@ ShortcutsPage::ShortcutsPage( QWidget* parent )
     connect( ui->treeView, &QTreeView::clicked, this, &ShortcutsPage::tableItemClicked );
     connect( ui->keySequenceEdit, &QKeySequenceEdit::editingFinished, this, &ShortcutsPage::keyCapLineEditTextChanged );
     connect( ui->restoreShortcutsButton, &QPushButton::clicked, this, &ShortcutsPage::restoreShortcutsButtonClicked );
+    connect(ui->btnSaveShortcuts, &QPushButton::clicked, this, &ShortcutsPage::saveShortcutsButtonClicked);
+    connect(ui->btnLoadShortcuts, &QPushButton::clicked, this, &ShortcutsPage::loadShortcutsButtonClicked);
     connect( ui->clearButton, &QPushButton::clicked, this, &ShortcutsPage::clearButtonClicked );
 
     ui->treeView->selectionModel()->select(QItemSelection(m_treeModel->index(0, 0), m_treeModel->index(0, m_treeModel->columnCount() - 1)), QItemSelectionModel::Select);
@@ -115,6 +119,56 @@ void ShortcutsPage::keyCapLineEditTextChanged()
     treeModelLoadShortcutsSetting();
 
     qDebug() << "Shortcut " << strCmdName << " = " << strKeySeq;
+}
+
+void ShortcutsPage::saveShortcutsButtonClicked()
+{
+    QSettings settings( PENCIL2D, PENCIL2D );
+    QString fDir = settings.value("LastSavePath/Animation").toString();
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Save Pencil2D Shortcut file"),
+                                                    fDir + "/untitled.p2shortcut",
+                                                    tr("Pencil2D Shortcut File(*.p2shortcut)"));
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+
+    QTextStream out(&file);
+    out << "[shortcuts]\n";
+
+    foreach (QString shortCut, settings.allKeys())
+    {
+        if (shortCut.contains("shortcuts"))
+            out << shortCut.remove(0, 10) + "=" + QVariant(settings.value(shortCut)).toString() + "\n";
+    }
+    file.close();
+}
+
+void ShortcutsPage::loadShortcutsButtonClicked()
+{
+    QSettings settings( PENCIL2D, PENCIL2D );
+    QString fDir = settings.value("LastSavePath/Animation").toString();
+
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open Pencil2D Shortcut file"),
+                                                    fDir,
+                                                    tr("Pencil2D Shortcut File(*.p2shortcut)"));
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+
+    QSettings defaultKey(fileName, QSettings::IniFormat);
+
+    QSettings curSetting( PENCIL2D, PENCIL2D );
+    curSetting.remove("shortcuts");
+
+    foreach (QString pShortcutsKey, defaultKey.allKeys())
+    {
+        curSetting.setValue(pShortcutsKey, defaultKey.value(pShortcutsKey));
+    }
+
+    treeModelLoadShortcutsSetting();
 }
 
 void ShortcutsPage::restoreShortcutsButtonClicked()
