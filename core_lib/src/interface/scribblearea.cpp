@@ -937,6 +937,10 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             //qDebug() << "Repaint canvas!";
         }
     }
+    else
+    {
+        drawCanvas(mEditor->currentFrame(), event->rect());
+    }
 
     if (currentTool()->type() == MOVE)
     {
@@ -1024,28 +1028,10 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             {
                 break;
             }
-            } // end siwtch
+            } // end switch
         }
 
-        // paints the  buffer image
-        if (mEditor->layers()->currentLayer() != nullptr)
-        {
-            painter.setOpacity(1.0);
-            if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-            {
-                painter.setWorldMatrixEnabled(true);
-                painter.setTransform(mEditor->view()->getView());
-            }
-            else if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
-            {
-                painter.setWorldMatrixEnabled(false);
-            }
-
-            // TODO: move to above if vector statement
-            mBufferImg->paintImage(painter);
-
-            paintCanvasCursor(painter);
-        }
+        paintCanvasCursor(painter);
 
         mCanvasPainter.renderGrid(painter);
 
@@ -1125,6 +1111,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     o.scaling = mEditor->view()->scaling();
     o.onionWhilePlayback = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
     o.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    o.cmBufferBlendMode = mEditor->tools()->currentTool()->type() == ToolType::ERASER ? QPainter::CompositionMode_DestinationOut : QPainter::CompositionMode_SourceOver;
     mCanvasPainter.setOptions(o);
 
     mCanvasPainter.setCanvas(&mCanvas);
@@ -1132,7 +1119,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     ViewManager* vm = mEditor->view();
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 
-    mCanvasPainter.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect);
+    mCanvasPainter.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect, mBufferImg);
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)

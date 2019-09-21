@@ -23,9 +23,9 @@ GNU General Public License for more details.
 #include <QPainter>
 #include "log.h"
 
+#include "layer.h"
 
 class Object;
-class Layer;
 class BitmapImage;
 class ViewManager;
 
@@ -51,6 +51,7 @@ struct CanvasPainterOptions
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
+    QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
 
 
@@ -59,7 +60,7 @@ class CanvasPainter : public QObject
     Q_OBJECT
 
 public:
-    explicit CanvasPainter(QObject* parent = 0);
+    explicit CanvasPainter(QObject* parent = nullptr);
     virtual ~CanvasPainter();
 
     void setCanvas(QPixmap* canvas);
@@ -69,7 +70,7 @@ public:
     void ignoreTransformedSelection();
     QRect getCameraRect();
 
-    void paint(const Object* object, int layer, int frame, QRect rect);
+    void paint(const Object* object, int layer, int frame, QRect rect, BitmapImage* buffer);
     void renderGrid(QPainter& painter);
 
 private:
@@ -78,10 +79,11 @@ private:
 
     void paintCurrentFrame(QPainter& painter);
 
-    void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame);
-    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame);
+    void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
+    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
 
     void paintTransformedSelection(QPainter& painter);
+    void paintBuffer(BitmapImage *targetImage, BitmapImage *buffer, Layer::LAYER_TYPE layerType);
     void paintGrid(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
@@ -99,6 +101,7 @@ private:
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
+    BitmapImage* mBuffer = nullptr;
 
     QImage mScaledBitmap;
 
