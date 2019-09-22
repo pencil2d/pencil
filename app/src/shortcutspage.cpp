@@ -124,8 +124,13 @@ void ShortcutsPage::keyCapLineEditTextChanged()
 void ShortcutsPage::saveShortcutsButtonClicked()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
-    QString fDir = settings.value("LastSavePath/Animation").toString();
+    settings.beginGroup( "LastSavePath" );
 
+    QString fDir = settings.value("LastSavePath/Animation").toString();
+    if (fDir.isEmpty())
+        fDir = QDir::homePath();
+
+    settings.endGroup();
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save Pencil2D Shortcut file"),
                                                     fDir + "/untitled.p2shortcut",
@@ -136,12 +141,13 @@ void ShortcutsPage::saveShortcutsButtonClicked()
 
     QTextStream out(&file);
     out << "[shortcuts]\n";
+    settings.beginGroup( "shortcuts" );
 
     foreach (QString shortCut, settings.allKeys())
     {
-        if (shortCut.contains("shortcuts"))
-            out << shortCut.remove(0, 10) + "=" + QVariant(settings.value(shortCut)).toString() + "\n";
+        out << shortCut + "=" + settings.value(shortCut).toString() + "\n";
     }
+    settings.endGroup();
     file.close();
 }
 
