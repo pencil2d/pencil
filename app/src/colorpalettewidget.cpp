@@ -222,7 +222,7 @@ void ColorPaletteWidget::refreshColorList()
 
         colourItem->setIcon(swatchIcon);
         swatchPainter.end();
-        colourItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+        colourItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
 
         ui->colorListWidget->addItem(colourItem);
     }
@@ -320,7 +320,7 @@ void ColorPaletteWidget::palettePreferences()
 void ColorPaletteWidget::setListMode()
 {
     ui->colorListWidget->setViewMode(QListView::ListMode);
-    ui->colorListWidget->setMovement(QListView::Static);
+    ui->colorListWidget->setDragDropMode(QAbstractItemView::InternalMove);
     ui->colorListWidget->setGridSize(QSize(-1, -1));
     updateUI();
 
