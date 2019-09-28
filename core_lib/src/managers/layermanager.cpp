@@ -146,10 +146,38 @@ void LayerManager::gotoPreviouslayer()
     }
 }
 
+QString LayerManager::nameSuggestLayer(const QString& name)
+{
+    // if no layers: return name
+    if (count() == 0)
+    {
+        return name;
+    }
+    QVector<QString> sLayers;
+    // fill Vector with layer names
+    for (int i = 0; i < count(); i++)
+    {
+        sLayers.append(getLayer(i)->name());
+    }
+    // if name is not in list, return name
+    if (!sLayers.contains(name))
+    {
+        return name;
+    }
+    int newIndex = 2;
+    QString newName = name;
+    do {
+        newName = name + " " + QString::number(newIndex++);
+    } while (sLayers.contains(newName));
+    return newName;
+}
+
 LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 {
     LayerBitmap* layer = object()->addNewBitmapLayer();
-    layer->setName(strLayerName);
+
+    const QString& name = nameSuggestLayer(strLayerName);
+    layer->setName(name);
 
     Q_EMIT layerCountChanged(count());
 
@@ -159,7 +187,8 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 {
     LayerVector* layer = object()->addNewVectorLayer();
-    layer->setName(strLayerName);
+    const QString& name = nameSuggestLayer(strLayerName);
+    layer->setName(name);
 
     Q_EMIT layerCountChanged(count());
 
@@ -169,7 +198,8 @@ LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
 {
     LayerCamera* layer = object()->addNewCameraLayer();
-    layer->setName(strLayerName);
+    const QString& name = nameSuggestLayer(strLayerName);
+    layer->setName(name);
 
     Q_EMIT layerCountChanged(count());
 
@@ -179,7 +209,8 @@ LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
 LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
 {
     LayerSound* layer = object()->addNewSoundLayer();
-    layer->setName(strLayerName);
+    const QString& name = nameSuggestLayer(strLayerName);
+    layer->setName(name);
 
     Q_EMIT layerCountChanged(count());
 

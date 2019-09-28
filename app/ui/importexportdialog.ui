@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>455</width>
-    <height>146</height>
+    <height>218</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,6 +23,34 @@
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="instructionsLabel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="text">
+      <string>Instructions</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QGroupBox" name="fileGroupBox">
      <property name="enabled">
@@ -35,6 +63,21 @@
       <bool>false</bool>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLineEdit" name="fileEdit">
         <property name="readOnly">
@@ -56,6 +99,13 @@
     <widget class="QGroupBox" name="optionsGroupBox">
      <property name="title">
       <string>Options</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="previewGroupBox">
+     <property name="title">
+      <string>Imports</string>
      </property>
     </widget>
    </item>
