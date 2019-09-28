@@ -47,6 +47,7 @@ addons:
       - graphviz
       - python3
       - python3-pip
+      - astyle
 
 before_install:
   - |
@@ -57,7 +58,7 @@ before_install:
         if [ "$ver" -le "27" ]; then
             brew upgrade python;
         fi
-        brew install p7zip qt gpg;
+        brew install p7zip qt gpg astyle;
         brew link qt --force;
     fi
 
@@ -70,10 +71,14 @@ install:
   - pip3 -V
 
 before_script:
-  - echo "are changes related to source code?"
+  - 'echo "Checking style guidelines";
+    astyle -rn --project "./*.cpp" "./*.h";
+    git diff;
+    git checkout -- .;'
+  - echo "Are changes related to source code?"
   - 'if [ "$TRAVIS_BRANCH" != "release" ]; then
-    bash $TRAVIS_BUILD_DIR/util/checkchanges.sh;
-  fi'
+      bash $TRAVIS_BUILD_DIR/util/checkchanges.sh;
+    fi'
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     . /opt/qt59/bin/qt59-env.sh;
     export DISPLAY=:99.0;
