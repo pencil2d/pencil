@@ -480,6 +480,7 @@ void MainWindow2::newDocument(bool force)
         mEditor->setObject(object);
         mEditor->scrubTo(0);
         mEditor->view()->resetView();
+        mEditor->select()->resetSelectionProperties();
 
         // Refresh the palette
         mColorPalette->refreshColorList();
@@ -637,6 +638,8 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
     setWindowModified(false);
 
     progress.setValue(progress.value() + 1);
+
+    mEditor->select()->resetSelectionProperties();
 
     // Refresh the Palette
     mColorPalette->refreshColorList();
