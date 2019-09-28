@@ -69,75 +69,115 @@ void CanvasPainter::ignoreTransformedSelection()
     mRenderTransform = false;
 }
 
-QPainter* CanvasPainter::initializePainter(QPixmap *pixmap)
+void CanvasPainter::paintCached()
 {
-    QPainter *painter = new QPainter(pixmap);
+    QPixmap tempPixmap(mCanvas->size());
+    tempPixmap.fill(Qt::transparent);
+    mCanvas->fill(Qt::transparent);
+    QPainter tempPainter;
+    QPainter painter;
+    initializePainter(tempPainter, tempPixmap);
+    initializePainter(painter, *mCanvas);
 
-    painter->setWorldMatrixEnabled(true);
-    painter->setWorldTransform(mViewTransform);
+    if (!mPreLayersCache)
+    {
+        renderPreLayers(painter);
+        mPreLayersCache.reset(new QPixmap(*mCanvas));
+    }
+    else
+    {
+        painter.setWorldMatrixEnabled(false);
+        painter.drawPixmap(0, 0, *(mPreLayersCache.get()));
+        painter.setWorldMatrixEnabled(true);
+    }
 
-    //QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
-    //QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
-    //QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
+    renderCurLayer(painter);
 
-    //painter.setClipRect(aligned); // this aligned rect is valid only for bitmap images.
+    if (!mPostLayersCache)
+    {
+        renderPostLayers(tempPainter);
+        mPostLayersCache.reset(new QPixmap(tempPixmap));
+        painter.setWorldMatrixEnabled(false);
+        painter.drawPixmap(0, 0, tempPixmap);
+        painter.setWorldMatrixEnabled(true);
+    }
+    else
+    {
+        painter.setWorldMatrixEnabled(false);
+        painter.drawPixmap(0, 0, *(mPostLayersCache.get()));
+        painter.setWorldMatrixEnabled(true);
+    }
+}
 
-    return painter;
+void CanvasPainter::resetLayerCache()
+{
+    mPreLayersCache.reset();
+    mPostLayersCache.reset();
+}
+
+void CanvasPainter::initializePainter(QPainter& painter, QPixmap& pixmap)
+{
+    painter.begin(&pixmap);
+    painter.setWorldMatrixEnabled(true);
+    painter.setWorldTransform(mViewTransform);
 }
 
 void CanvasPainter::renderPreLayers(QPixmap *pixmap)
 {
-    QScopedPointer<QPainter> painter(initializePainter(pixmap));
-    renderPreLayers(painter.get());
+    QPainter painter;
+    initializePainter(painter, *pixmap);
+    renderPreLayers(painter);
 }
 
-void CanvasPainter::renderPreLayers(QPainter *painter)
+void CanvasPainter::renderPreLayers(QPainter& painter)
 {
     if (mOptions.nShowAllLayers > 0)
     {
-        paintCurrentFrame(*painter, 0, mCurrentLayerIndex-1);
+        paintCurrentFrame(painter, 0, mCurrentLayerIndex-1);
     }
 
-    paintOnionSkin(*painter);
-    painter->setOpacity(1.0);
+    paintOnionSkin(painter);
+    painter.setOpacity(1.0);
 }
 
 void CanvasPainter::renderCurLayer(QPixmap *pixmap)
 {
-    QScopedPointer<QPainter> painter(initializePainter(pixmap));
-    renderCurLayer(painter.get());
+    QPainter painter;
+    initializePainter(painter, *pixmap);
+    renderCurLayer(painter);
 }
 
-void CanvasPainter::renderCurLayer(QPainter *painter)
+void CanvasPainter::renderCurLayer(QPainter& painter)
 {
-    paintCurrentFrame(*painter, mCurrentLayerIndex, mCurrentLayerIndex);
+    paintCurrentFrame(painter, mCurrentLayerIndex, mCurrentLayerIndex);
 }
 
 void CanvasPainter::renderPostLayers(QPixmap *pixmap)
 {
-    QScopedPointer<QPainter> painter(initializePainter(pixmap));
-    renderPostLayers(painter.get());
+    QPainter painter;
+    initializePainter(painter, *pixmap);
+    renderPostLayers(painter);
 }
 
-void CanvasPainter::renderPostLayers(QPainter *painter)
+void CanvasPainter::renderPostLayers(QPainter& painter)
 {
     if (mOptions.nShowAllLayers > 0)
     {
-        paintCurrentFrame(*painter, mCurrentLayerIndex+1, mObject->getLayerCount()-1);
+        paintCurrentFrame(painter, mCurrentLayerIndex+1, mObject->getLayerCount()-1);
     }
 
-    paintCameraBorder(*painter);
+    paintCameraBorder(painter);
 
     // post effects
     if (mOptions.bAxis)
     {
-        paintAxis(*painter);
+        paintAxis(painter);
     }
 }
 
 void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage *buffer)
 {
-    Q_UNUSED(rect);
+    Q_UNUSED(rect)
     Q_ASSERT(object);
     mObject = object;
 
@@ -148,11 +188,12 @@ void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int
 
 void CanvasPainter::paint()
 {
-    QScopedPointer<QPainter> painter(initializePainter(mCanvas));
+    QPainter painter;
+    initializePainter(painter, *mCanvas);
 
-    renderPreLayers(painter.get());
-    renderCurLayer(painter.get());
-    renderPostLayers(painter.get());
+    renderPreLayers(painter);
+    renderCurLayer(painter);
+    renderPostLayers(painter);
 }
 
 void CanvasPainter::paintBackground()
@@ -426,16 +467,6 @@ void CanvasPainter::paintTransformedSelection(QPainter& painter)
         painter.setWorldMatrixEnabled(true);
         transformedImage.paintImage(painter);
     }
-}
-
-void CanvasPainter::paintBuffer(BitmapImage *targetImage, BitmapImage *buffer, Layer::LAYER_TYPE layerType)
-{
-    /*QPainter::CompositionMode prevCompositionMode = targetImage.compositionMode();
-    //qDebug() << (prevCompositionMode == QPainter::CompositionMode_SourceOver);
-    targetImage.setCompositionMode(mOptions.cmBufferBlendMode);
-
-    buffer->paintImage(targetImage);
-    targetImage.setCompositionMode(prevCompositionMode);*/
 }
 
 /** Paints layers within the specified range for the current frame.

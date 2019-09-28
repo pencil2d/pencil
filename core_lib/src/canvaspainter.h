@@ -70,21 +70,32 @@ public:
     void ignoreTransformedSelection();
     QRect getCameraRect();
 
-    QPainter *initializePainter(QPixmap *pixmap);
-
-    void renderPreLayers(QPixmap *pixmap);
-    void renderPreLayers(QPainter *painter);
-    void renderCurLayer(QPixmap *pixmap);
-    void renderCurLayer(QPainter *painter);
-    void renderPostLayers(QPixmap *pixmap);
-    void renderPostLayers(QPainter *pixmap);
-
     void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
     void paint();
+    void paintCached();
     void renderGrid(QPainter& painter);
+    void resetLayerCache();
+
 private:
+
+    /**
+     * @brief CanvasPainter::initializePainter
+     * Enriches the painter with a context and sets it's initial matrix.
+     * @param The in/out painter
+     * @param The paint device ie. a pixmap
+     */
+    void initializePainter(QPainter& painter, QPixmap& pixmap);
+
+    void renderPreLayers(QPainter& painter);
+    void renderCurLayer(QPainter& painter);
+    void renderPostLayers(QPainter& painter);
+
     void paintBackground();
     void paintOnionSkin(QPainter& painter);
+
+    void renderPostLayers(QPixmap *pixmap);
+    void renderCurLayer(QPixmap *pixmap);
+    void renderPreLayers(QPixmap *pixmap);
 
     void paintCurrentFrame(QPainter& painter, int startLayer, int endLayer);
 
@@ -92,7 +103,6 @@ private:
     void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
 
     void paintTransformedSelection(QPainter& painter);
-    void paintBuffer(BitmapImage *targetImage, BitmapImage *buffer, Layer::LAYER_TYPE layerType);
     void paintGrid(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
@@ -122,6 +132,9 @@ private:
     QTransform mSelectionTransform;
 
     QLoggingCategory mLog;
+
+    // Caches specificially for when drawing on the canvas
+    std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
 };
 
 #endif // CANVASRENDERER_H

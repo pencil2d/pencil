@@ -230,8 +230,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
 void ScribbleArea::setAllDirty()
 {
     mNeedUpdateAll = true;
-    mPreLayersCache.reset();
-    mPostLayersCache.reset();
+    mCanvasPainter.resetLayerCache();
 }
 
 /************************************************************************/
@@ -946,42 +945,8 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     }
     else
     {
-        QPixmap tempPixmap(mCanvas.size());
-        tempPixmap.fill(Qt::transparent);
-        mCanvas.fill(Qt::transparent);
-        QScopedPointer<QPainter> tempPainter(mCanvasPainter.initializePainter(&tempPixmap));
-        QScopedPointer<QPainter> canvasPainter(mCanvasPainter.initializePainter(&mCanvas));
-
         prepCanvas(mEditor->currentFrame(), event->rect());
-
-        if (!mPreLayersCache)
-        {
-            mCanvasPainter.renderPreLayers(canvasPainter.get());
-            mPreLayersCache.reset(new QPixmap(mCanvas));
-        }
-        else
-        {
-            canvasPainter->setWorldMatrixEnabled(false);
-            canvasPainter->drawPixmap(0, 0, *(mPreLayersCache.get()));
-            canvasPainter->setWorldMatrixEnabled(true);
-        }
-
-        mCanvasPainter.renderCurLayer(canvasPainter.get());
-
-        if (!mPostLayersCache)
-        {
-            mCanvasPainter.renderPostLayers(tempPainter.get());
-            mPostLayersCache.reset(new QPixmap(tempPixmap));
-            canvasPainter->setWorldMatrixEnabled(false);
-            canvasPainter->drawPixmap(0, 0, tempPixmap);
-            canvasPainter->setWorldMatrixEnabled(true);
-        }
-        else
-        {
-            canvasPainter->setWorldMatrixEnabled(false);
-            canvasPainter->drawPixmap(0, 0, *(mPostLayersCache.get()));
-            canvasPainter->setWorldMatrixEnabled(true);
-        }
+        mCanvasPainter.paintCached();
     }
 
     if (currentTool()->type() == MOVE)

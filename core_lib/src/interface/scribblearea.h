@@ -242,8 +242,6 @@ private:
 
     // Pixmap Cache keys
     std::vector<QPixmapCache::Key> mPixmapCacheKeys;
-    // Caches specificially for when drawing on the canvas
-    std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
 
     // debug
     QRectF mDebugRect;
