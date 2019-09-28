@@ -64,6 +64,7 @@ GNU General Public License for more details.
 #include "timeline2.h"
 #include "errordialog.h"
 #include "importimageseqdialog.h"
+#include "importlayersdialog.h"
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
@@ -243,6 +244,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage);
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importPredefinedImageSet);
+    connect(ui->actionImportLayers_from_pclx, &QAction::triggered, this, &MainWindow2::importLayers);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
@@ -837,6 +839,13 @@ void MainWindow2::importPredefinedImageSet()
     mIsImportingImageSequence = false;
 }
 
+void MainWindow2::importLayers()
+{
+    ImportLayersDialog *importLayers = new ImportLayersDialog(this);
+    importLayers->setCore(mEditor);
+    importLayers->exec();
+}
+
 void MainWindow2::importGIF()
 {
     auto gifDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::GIF);
@@ -1208,7 +1217,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer);
     connect(pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer);
 
-    connect(pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType);
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);

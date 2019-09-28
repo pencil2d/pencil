@@ -82,6 +82,8 @@ public:
     void importImage();
     void importImageSequence();
     void importPredefinedImageSet();
+    void importImageSequenceNumbered();
+    void importLayers();
     void importMovie();
     void importGIF();
 

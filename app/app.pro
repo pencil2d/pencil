@@ -34,6 +34,7 @@ INCLUDEPATH += \
     ../core_lib/src/external
 
 HEADERS += \
+    src/importlayersdialog.h \
     src/mainwindow2.h \
     src/predefinedsetmodel.h \
     src/pegbaralignmentdialog.h \
@@ -65,6 +66,7 @@ HEADERS += \
     src/checkupdatesdialog.h
 
 SOURCES += \
+    src/importlayersdialog.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
     src/predefinedsetmodel.cpp \
@@ -97,6 +99,7 @@ SOURCES += \
 
 FORMS += \
     ui/importimageseqpreview.ui \
+    ui/importlayersdialog.ui \
     ui/mainwindow2.ui \
     ui/pegbaralignmentdialog.ui \
     ui/timeline2.ui \

@@ -850,7 +850,7 @@
         <location filename="../app/src/filedialogex.cpp" line="167"/>
         <location filename="../app/src/filedialogex.cpp" line="183"/>
         <source>Animated GIF (*.gif)</source>
-        <translation>GIF animado (* .gif)</translation>
+        <translation>GIF animado (*.gif)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="169"/>
@@ -861,12 +861,12 @@
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
-        <translation type="unfinished"/>
+        <translation>Paleta (*.xml *.gpl);;Paleta Pencil2D (*.xml);;Paleta GIMP (*.gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
         <source>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</source>
-        <translation>MP4 (* .mp4) ;; AVI (* .avi) ;; WebM (* .webm) ;; APNG (* .apng)</translation>
+        <translation>MP4 (*.mp4) ;; AVI (*.avi) ;; WebM (*.webm) ;; APNG (*.apng)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="226"/>
@@ -1028,7 +1028,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="322"/>
         <source>Cached Frame Number:</source>
-        <translation type="unfinished"/>
+        <translation>Número de Fotogramas Almacenados</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="97"/>
@@ -1063,12 +1063,12 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="96"/>
         <source>Catalan </source>
-        <translation type="unfinished"/>
+        <translation>Catalán</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="100"/>
         <source>Greek</source>
-        <translation type="unfinished"/>
+        <translation>Griego</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="104"/>
@@ -1103,7 +1103,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Kabyle</source>
-        <translation type="unfinished"/>
+        <translation>Cabilio</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
@@ -1173,7 +1173,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
         <source>Grid Height</source>
-        <translation type="unfinished"/>
+        <translation>Altura de la cuadrícula</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="252"/>
@@ -1548,12 +1548,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="562"/>
         <source>Next Frame</source>
-        <translation>Fotograma posterior</translation>
+        <translation>Fotograma Posterior</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="571"/>
         <source>Previous Frame</source>
-        <translation>Fotograma anterior</translation>
+        <translation>Fotograma Anterior</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="576"/>
@@ -1670,7 +1670,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Fotograma-Clave Siguiente</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="807"/>
@@ -1761,12 +1761,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="969"/>
         <source>Flip In-Between</source>
-        <translation type="unfinished"/>
+        <translation>Foliado Intercalado</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="974"/>
         <source>Flip Rolling</source>
-        <translation type="unfinished"/>
+        <translation>Foliar Rodando</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="280"/>
@@ -1776,7 +1776,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate Anticlockwise</source>
-        <translation type="unfinished"/>
+        <translation>Rotar Contrarreloj</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
@@ -1872,7 +1872,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo que ha seleccionado no existe, no se puede abrir. Por favor asegúrese de que haya ingresado la ruta correcta y que el archivo esta disponible e vuelva a intentarlo.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="534"/>
@@ -1998,7 +1998,7 @@
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
         <source>You are about to switch away, do you want to apply the transformation?</source>
-        <translation type="unfinished"/>
+        <translation>Está a punto de salir ¿quiere grabar los cambios?</translation>
     </message>
 </context>
 <context>
@@ -3558,7 +3558,7 @@
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="98"/>
         <source>Checking environment...</source>
-        <translation type="unfinished"/>
+        <translation>Verificando entorno...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="149"/>
@@ -3568,12 +3568,12 @@
     <message>
         <location filename="../app/src/main.cpp" line="75"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D es un programa de animación/dibujo para Mac OS X, Windows y Linux. Te permite crear animaciones (cartoons) de manera tradicional y cuenta con mapa de bits y gráficos vectoriales.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="78"/>
         <source>Path to the input pencil file.</source>
-        <translation type="unfinished"/>
+        <translation>Ruta del archivo de entrada pencil</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="81"/>
@@ -3667,7 +3667,7 @@
     <message>
         <location filename="../app/src/main.cpp" line="203"/>
         <source>Error: No input file specified.</source>
-        <translation type="unfinished"/>
+        <translation>Error: No se especificó archivo de entrada.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="210"/>
@@ -3679,7 +3679,7 @@
         <location filename="../app/src/main.cpp" line="215"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>Error: la ruta de entrada &apos;%1&apos; no es un archivo</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="244"/>
@@ -3702,14 +3702,14 @@
         <location filename="../app/src/main.cpp" line="301"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Exportando película...</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="303"/>
         <location filename="../app/src/main.cpp" line="308"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished"/>
+        <translation>Hecho.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="306"/>
@@ -3817,7 +3817,7 @@
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Limpiar</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
@@ -3965,12 +3965,12 @@
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="135"/>
         <source>Zoom:</source>
-        <translation type="unfinished"/>
+        <translation>Acercamiento:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="142"/>
         <source>Adjust frame width</source>
-        <translation type="unfinished"/>
+        <translation>Ajustar ancho del fotograma</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="145"/>
@@ -4097,22 +4097,22 @@
     <message>
         <location filename="../app/ui/timelinepage.ui" line="180"/>
         <source>Flip and Roll</source>
-        <translation type="unfinished"/>
+        <translation>Foliar y Rodar</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="188"/>
         <source>Maximum numbers of drawings in roll</source>
-        <translation type="unfinished"/>
+        <translation>Máximo número de dibujos no Roll</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="240"/>
         <source>Msecs per drawing in flip inbetween</source>
-        <translation type="unfinished"/>
+        <translation>Milisegundos por dibujo en el foliado intermedio</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="289"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation type="unfinished"/>
+        <translation>Milissegundos por dibujo en el foliado intermedio</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>
@@ -4369,7 +4369,7 @@
     <message>
         <location filename="../app/ui/tooloptions.ui" line="114"/>
         <source>The extent to which the color variation will be treated as being equal</source>
-        <translation type="unfinished"/>
+        <translation>Rango por el cual los cambios de color serán vistos como semejantes</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
