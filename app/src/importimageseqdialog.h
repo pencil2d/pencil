@@ -19,20 +19,48 @@ GNU General Public License for more details.
 #define IMPORTIMAGESEQDIALOG_H
 
 #include "importexportdialog.h"
+#include "pencilerror.h"
+#include "predefinedsetmodel.h"
+
+class Editor;
 
 namespace Ui {
 class ImportImageSeqOptions;
+class ImportImageSeqPreviewGroupBox;
 }
+
+struct PredefinedKeySetParams {
+    int dot;
+    int digits;
+    QStringList filenames;
+    QStringList absolutePaths;
+    QString folderPath;
+    QString prefix;
+
+    Status pathsValid() const;
+};
+
+enum ImportCriteria { Arbitrary, PredefinedSet };
 
 class ImportImageSeqDialog : public ImportExportDialog
 {
     Q_OBJECT
 
 public:
-    explicit ImportImageSeqDialog(QWidget *parent = nullptr, Mode mode = ImportExportDialog::Import, FileType fileType = FileType::IMAGE_SEQUENCE);
-    ~ImportImageSeqDialog();
+    explicit ImportImageSeqDialog(QWidget *parent = nullptr,
+                                  Mode mode = ImportExportDialog::Import,
+                                  FileType fileType = FileType::IMAGE_SEQUENCE,
+                                  ImportCriteria importCriteria = ImportCriteria::Arbitrary);
+    ~ImportImageSeqDialog() override;
 
+    void importArbitrarySequence();
+    void importPredefinedSet();
     int getSpace();
+
+    void setCore(Editor* editor) { mEditor = editor; }
+
+signals:
+    void notifyAnimationLengthChanged();
 
 protected:
     Mode getMode();
@@ -40,9 +68,30 @@ protected:
 
 private slots:
     void setSpace(int number);
+    void updatePreviewList(const QStringList& list);
+
+    const PredefinedKeySetParams predefinedKeySetParams() const;
 
 private:
-    Ui::ImportImageSeqOptions *ui;
+    int keyFramePosFromFilePath(const QString& path);
+
+private:
+
+    const PredefinedKeySet generatePredefinedKeySet() const;
+    void setPreviewModel(const PredefinedKeySet& predefinedKeySet);
+    void setupLayout();
+    void setupPredefinedLayout();
+    Status validateKeySet(const PredefinedKeySet& keySet, const QStringList& filepaths);
+
+    Ui::ImportImageSeqOptions *uiOptionsBox;
+    Ui::ImportImageSeqPreviewGroupBox *uiGroupBoxPreview;
+
+    QStringList getFilePaths();
+
+    Editor* mEditor = nullptr;
+    QWidget* mParent = nullptr;
+    ImportCriteria mImportCriteria = ImportCriteria::Arbitrary;
+    FileType mFileType = FileType::IMAGE_SEQUENCE;
 };
 
 #endif // IMPORTIMAGESEQDIALOG_H

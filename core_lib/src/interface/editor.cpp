@@ -616,6 +616,11 @@ void Editor::setLayerVisibility(int visibility) {
     emit updateTimeLine();
 }
 
+void Editor::notifyAnimationLengthChanged()
+{
+    layers()->notifyAnimationLengthChanged();
+}
+
 int Editor::allLayers()
 {
     return mScribbleArea->getLayerVisibilityIndex();
@@ -856,6 +861,30 @@ bool Editor::importVectorImage(QString filePath)
     }
 
     return ok;
+}
+
+void Editor::createNewBitmapLayer(const QString& name)
+{
+    Layer* layer = layers()->createBitmapLayer(name);
+    layers()->setCurrentLayer(layer);
+}
+
+void Editor::createNewVectorLayer(const QString& name)
+{
+    Layer* layer = layers()->createVectorLayer(name);
+    layers()->setCurrentLayer(layer);
+}
+
+void Editor::createNewSoundLayer(const QString& name)
+{
+    Layer* layer = layers()->createVectorLayer(name);
+    layers()->setCurrentLayer(layer);
+}
+
+void Editor::createNewCameraLayer(const QString& name)
+{
+    Layer* layer = layers()->createCameraLayer(name);
+    layers()->setCurrentLayer(layer);
 }
 
 bool Editor::importImage(QString filePath)
