@@ -1160,7 +1160,7 @@ void MoveFramesElement::undo()
         editor()->layers()->setCurrentLayer(layer);
     }
 
-    editor()->updateCurrentFrame();
+    editor()->updateView();
 }
 
 void MoveFramesElement::redo()
@@ -1179,7 +1179,7 @@ void MoveFramesElement::redo()
         editor()->layers()->setCurrentLayer(layer);
     }
 
-    editor()->updateCurrentFrame();
+    editor()->updateView();
 }
 
 

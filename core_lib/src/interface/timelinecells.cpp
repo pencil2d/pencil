@@ -736,6 +736,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
         else if (mMovingFrames && mNumOfFramesOffset != 0)
         {
             mEditor->backups()->framesMoved(mNumOfFramesOffset, frameNumber);
+            mEditor->updateView();
         }
         mNumOfFramesOffset = 0;
     }
