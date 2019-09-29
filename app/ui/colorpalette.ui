@@ -88,6 +88,19 @@
        </widget>
       </item>
       <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QPushButton" name="colorDialogButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -148,28 +161,6 @@
        </spacer>
       </item>
       <item>
-       <widget class="QSlider" name="swatchSlider">
-        <property name="minimum">
-         <number>7</number>
-        </property>
-        <property name="maximum">
-         <number>17</number>
-        </property>
-        <property name="singleStep">
-         <number>2</number>
-        </property>
-        <property name="pageStep">
-         <number>2</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="tickPosition">
-         <enum>QSlider::TicksAbove</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QToolButton" name="palettePref">
         <property name="minimumSize">
          <size>
@@ -221,6 +212,18 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
@@ -314,6 +317,20 @@
     </property>
     <property name="statusTip">
      <string>Sets swatch size to: 36x36px</string>
+    </property>
+   </action>
+   <action name="fitSwatchAction">
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>Fit Swatch (12-36 px)</string>
+    </property>
+    <property name="toolTip">
+     <string>Fit swatch to window (12-36 px)</string>
+    </property>
+    <property name="statusTip">
+     <string>Swatch fits window</string>
     </property>
    </action>
   </actiongroup>

@@ -73,7 +73,10 @@ private slots:
     void palettePreferences();
     void setListMode();
     void setGridMode();
-    void setSwatchSize(int value);
+    void setSwatchSizeSmall();
+    void setSwatchSizeMedium();
+    void setSwatchSizeLarge();
+    void fitSwatchSize();
     void addItem();
     void replaceItem();
     void removeItem();
@@ -103,6 +106,7 @@ private:
 
     bool mIsColorDialog = false;
     bool mMultipleSelected = false;
+    bool mFitSwatches = false;
 
 };
 
