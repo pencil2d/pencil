@@ -59,6 +59,7 @@ void ColorPaletteWidget::initUI()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
     int colorGridSize = settings.value("PreferredColorGridSize", 34).toInt();
+    mFitSwatches = settings.value("FitSwatchSize", false).toBool();
 
     mIconSize = QSize(colorGridSize, colorGridSize);
 
@@ -358,6 +359,7 @@ void ColorPaletteWidget::setSwatchSizeSmall()
         mFitSwatches = false;
         QSettings settings(PENCIL2D, PENCIL2D);
         settings.setValue("PreferredColorGridSize", 14);
+        settings.setValue("FitSwatchSize", false);
     }
 }
 
@@ -371,6 +373,7 @@ void ColorPaletteWidget::setSwatchSizeMedium()
         mFitSwatches = false;
         QSettings settings(PENCIL2D, PENCIL2D);
         settings.setValue("PreferredColorGridSize", 26);
+        settings.setValue("FitSwatchSize", false);
     }
 }
 
@@ -384,6 +387,7 @@ void ColorPaletteWidget::setSwatchSizeLarge()
         mFitSwatches = false;
         QSettings settings(PENCIL2D, PENCIL2D);
         settings.setValue("PreferredColorGridSize", 34);
+        settings.setValue("FitSwatchSize", false);
     }
 }
 
@@ -396,13 +400,13 @@ void ColorPaletteWidget::fitSwatchSize()
     if (size < 12) size = 12;
     if (size > 36) size = 36;
     mIconSize = QSize(size, size);
-    qDebug() << "Size: " << size;
 
     updateUI();
 
     mFitSwatches = true;
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("PreferredColorGridSize", size);
+    settings.setValue("FitSwatchSize", true);
 }
 
 void ColorPaletteWidget::resizeEvent(QResizeEvent* event)
