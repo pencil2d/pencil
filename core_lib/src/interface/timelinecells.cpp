@@ -506,13 +506,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             {
                 mEditor->switchVisibilityOfLayer(layerNumber);
             }
-            else
+            else // Clicked on another layer
             {
-
                 Layer* currentLayer = mEditor->layers()->currentLayer();
                 if (!currentLayer->getSelectedFrameIndexes().isEmpty()) {
                     currentLayer->deselectAll();
-                    mEditor->backups()->frameDeselected(QList<int>({frameNumber}), frameNumber);
                 }
                 mEditor->layers()->setCurrentLayer(layerNumber);
             }
@@ -571,10 +569,8 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                     {
                         // If it is the case, we select everything that is after the selected frame
                         mClickSelecting = true;
-                        mCanMoveFrame = true;
 
-                        auto newFrames = currentLayer->selectionOfAllFramesAfter(frameNumber);
-                        backupMan->frameSelected(newFrames,frameNumber,true);
+                        currentLayer->selectAllFramesAfter(frameNumber);
                         mDidExtendSelection = true;
                     }
                     // Check if we are clicking on a non selected frame
@@ -587,29 +583,18 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         if (event->modifiers() == Qt::ControlModifier)
                         {
                             // Add/remove from already selected
-                            auto status = currentLayer->toggleFrameSelected(frameNumber, true);
-
-                            auto newlySelected = QList<int>({frameNumber});
-                            backupMan->frameSelected(newlySelected, frameNumber, status.value);
+                            Q_UNUSED(currentLayer->toggleFrameSelected(frameNumber, true))
                             mDidExtendSelection = true;
                         }
                         else if (event->modifiers() == Qt::ShiftModifier)
                         {
-                            // Select a range from the last selected
-                            auto newFrames = currentLayer->selectionExtendedTo(frameNumber);
-                            if (newFrames.isEmpty()) {
-                                auto status = currentLayer->toggleFrameSelected(frameNumber);
-                                backupMan->frameSelected(newFrames, frameNumber, status.value);
-                            } else {
-                                backupMan->frameSelected(newFrames, frameNumber, true);
-                            }
+                            Q_UNUSED(currentLayer->toggleFrameSelected(frameNumber))
                             mDidExtendSelection = true;
                         }
                         else
                         {
                             if (!currentLayer->getSelectedFrameIndexes().isEmpty()) {
                                 currentLayer->deselectAll();
-                                backupMan->frameDeselected(QList<int>(),frameNumber);
                             }
                             currentLayer->toggleFrameSelected(frameNumber, false);
                         }
@@ -715,9 +700,9 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     primaryButton = Qt::NoButton;
     mEndY = mStartY;
     mTimeLine->scrubbing = false;
-    int frameNumber = getFrameNumber(event->pos().x());
-    if (frameNumber < 1) frameNumber = -1;
-    int layerNumber = getLayerNumber(event->pos().y());
+
+    int frameNumber = mStartFrameNumber;
+    int layerNumber = mStartLayerNumber;
     if (mType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton && layerNumber != -1 && layerNumber < mEditor->object()->getLayerCount())
     {
         Layer *currentLayer = mEditor->object()->getLayer(layerNumber);
@@ -728,14 +713,14 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             // De-selecting if we didn't move, scrub nor select anything
             bool multipleSelection = (event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier));
 
-            // Add/remove from already selected
-            auto status = currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
-
-            if (status.value == false) {
-                mEditor->backups()->frameDeselected(QList<int>({frameNumber}), frameNumber);
-            } else {
-                mEditor->backups()->frameSelected(QList<int>({frameNumber}), frameNumber, status.value);
+            if (!currentLayer->getSelectedFrameIndexes().isEmpty()) {
+                if (event->modifiers() == Qt::NoModifier) {
+                    currentLayer->deselectAll();
+                }
             }
+
+            // Add/remove from already selected
+            Q_UNUSED(currentLayer->toggleFrameSelected(frameNumber, multipleSelection))
         }
 
         // mouse was moved away from the start pos, this not intended to select.
@@ -744,16 +729,11 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             currentLayer->deselectAll();
         }
 
-        if ((mClickSelecting || mBoxSelecting) && !mMovingFrames && !mDidExtendSelection) {
-
-            if (currentLayer->getKeyFrameWhichCovers(frameNumber) != nullptr ||
-                numOfSelectedFrames > 1) {
-                mEditor->backups()->frameSelected(currentLayer->getSelectedFrameIndexes(),frameNumber, true);
-            }
+        const QList<int> selectedFrameIndexes = currentLayer->getSelectedFrameIndexes();
+        if ((mClickSelecting || mBoxSelecting || mDidExtendSelection) && !mMovingFrames) {
             mDidExtendSelection = false;
         }
-
-        if (mMovingFrames && mNumOfFramesOffset != 0)
+        else if (mMovingFrames && mNumOfFramesOffset != 0)
         {
             mEditor->backups()->framesMoved(mNumOfFramesOffset, frameNumber);
         }

@@ -1123,10 +1123,10 @@ void CameraPropertiesElement::redo()
 }
 
 MoveFramesElement::MoveFramesElement(const int backupLayerId,
-                                      const int backupScrubberFrameIndex,
-                                      const int backupStartSelectedFrameIndex,
-                                      const int backupEndSelectedFrameIndex,
-                                      const int backupOffset,
+                                     const int backupScrubberFrameIndex,
+                                     const int backupOffset,
+                                     const bool wasSelected,
+                                     const QList<int> selectedFrameIndexes,
                                      Editor* editor,
                                      QUndoCommand* parent) : BackupElement(editor, parent),
     offset(backupOffset)
@@ -1134,26 +1134,14 @@ MoveFramesElement::MoveFramesElement(const int backupLayerId,
     scrubberIndex = backupScrubberFrameIndex;
 
     layerId = backupLayerId;
+    oldSelectedFrameIndexes = selectedFrameIndexes;
+    newSelectedFrameIndexes = editor->layers()->findLayerById(layerId)->getSelectedFrameIndexes();
 
-    // assume a frame was moved but not selected
-    if (backupStartSelectedFrameIndex == 0 && backupEndSelectedFrameIndex == 0)
-    {
-        framesSelected = false;
-        if (backupOffset < 0)
-        {
-            setText(QObject::tr("Move frame backward"));
-        } else {
-            setText(QObject::tr("Move frame forward"));
-        }
-    }
-    else
-    {
-        framesSelected = true;
-        if (backupOffset < 0) {
-            setText(QObject::tr("Move frame/s backward"));
-        } else {
-            setText(QObject::tr("Move frame/s forward"));
-        }
+    framesSelected = wasSelected;
+    if (backupOffset < 0) {
+        setText(QObject::tr("Move frame/s backward"));
+    } else {
+        setText(QObject::tr("Move frame/s forward"));
     }
 }
 
@@ -1168,7 +1156,7 @@ void MoveFramesElement::undo()
         applyToSingle(layer, scrubberIndex, scrubberIndex+offset);
         editor()->scrubTo(layerId, scrubberIndex);
     } else {
-        applyToMulti(layer, -offset);
+        applyToMulti(layer, -offset, newSelectedFrameIndexes);
         editor()->layers()->setCurrentLayer(layer);
     }
 
@@ -1187,7 +1175,7 @@ void MoveFramesElement::redo()
         applyToSingle(layer, scrubberIndex+offset, scrubberIndex);
         editor()->scrubTo(layerId, scrubberIndex+offset);
     } else {
-        applyToMulti(layer, offset);
+        applyToMulti(layer, offset, oldSelectedFrameIndexes);
         editor()->layers()->setCurrentLayer(layer);
     }
 
@@ -1200,88 +1188,182 @@ void MoveFramesElement::applyToSingle(Layer* layer, const int oldFrameIndex, con
     layer->swapKeyFrames(oldFrameIndex, newFrameIndex);
 }
 
-void MoveFramesElement::applyToMulti(Layer* layer, const int offset)
+void MoveFramesElement::applyToMulti(Layer* layer, const int offset, const QList<int> selectedFrameIndexes)
 {
+    layer->setFramesSelected(selectedFrameIndexes);
     layer->offsetSelectedFrames(offset);
+    layer->deselectAll();
 }
 
-SelectFramesElement::SelectFramesElement(const SelectionType selectionType,
-                                         const int backupLayerId,
-                                         const int backupFrameIndex,
-                                         const QList<int> backupFrameIndexes,
-                                         const QList<int> backupNewlySelectedIndexes,
-                                         const bool backupIsFrameSelected,
-                                         Editor* editor,
-                                         QUndoCommand* parent) : BackupElement (editor, parent),
-    layerId(backupLayerId),
-    frameIndex(backupFrameIndex),
-    oldIsSelected(backupIsFrameSelected),
-    oldFrameIndexes(backupFrameIndexes),
-    selectionType(selectionType)
-{
-    oldNewlyFrameIndexes = backupNewlySelectedIndexes;
+//SelectFramesElement::SelectFramesElement(const SelectionType selectionType,
+//                                         const int backupOldLayerId,
+//                                         const int backupFrameIndex,
+//                                         const QList<int> backupFrameIndexes,
+//                                         const QList<int> backupChangedSelectedIndexes,
+//                                         const bool backupIsFrameSelected,
+//                                         Editor* editor,
+//                                         QUndoCommand* parent) : BackupElement (editor, parent),
+//    oldLayerId(backupOldLayerId),
+//    frameIndex(backupFrameIndex),
+//    oldIsSelected(backupIsFrameSelected),
+//    oldFrameIndexes(backupFrameIndexes),
+//    selectionType(selectionType)
+//{
+//    oldChangedIndexes = backupChangedSelectedIndexes;
 
-    Layer* layer = editor->layers()->findLayerById(backupLayerId);
+//    Layer* layer = editor->layers()->currentLayer();
+////    newSelectedFrameIndexes = layer->getSelectedFrameIndexes();
 
-    newFrameIndexes = layer->getSelectedFrameIndexes();
+//    newFrameIndexes = layer->getSelectedFrameIndexes();
+//    newChangedIndexes = newFrameIndexes;
+//    newLayerId = layer->id();
     
-    QList<int> filteredFrames;
-    for (int i : oldNewlyFrameIndexes) {
-        if (!backupFrameIndexes.contains(i)) {
-            filteredFrames.append(i);
-        }
-    }
 
-    if (!filteredFrames.isEmpty()) {
-        moreFramesSelected = true;
-    }
-    oldNewlyFrameIndexes = filteredFrames;
+//    oldChangedIndexes = getUniqueFrames(oldChangedIndexes, backupFrameIndexes);
+////    qDebug() << "old filtered:" << oldChangedIndexes;
 
-    if (selectionType == SelectionType::SELECTION) {
-        setText(QObject::tr("Select frame/s"));
-    } else {
-        setText(QObject::tr("Deselect frame/s"));
-    }
-}
+//    if (selectionType == SelectionType::SELECTION) {
+//        setText(QObject::tr("Select frame/s"));
+//    } else {
+//        setText(QObject::tr("Deselect frame/s"));
+//    }
+//}
 
-void SelectFramesElement::undo()
-{
-    Layer* layer = editor()->layers()->findLayerById(layerId);
+//QList<int> SelectFramesElement::getUniqueFrames(const QList<int> frameIndexes, const QList<int> compareIndxes)
+//{
+//    QList<int> filteredFrames;
+//    for (int i : frameIndexes) {
+//        if (!compareIndxes.contains(i)) {
+//            filteredFrames.append(i);
+//        }
+//    }
 
-    if (selectionType == SelectionType::SELECTION) {
+//    if (filteredFrames.count() > 1) {
+//        moreFramesSelected = true;
+//    } else {
+//        moreFramesSelected = false;
+//    }
+//    return filteredFrames;
+//}
 
-        if (moreFramesSelected && oldNewlyFrameIndexes != oldFrameIndexes) {
-            layer->setFramesSelected(oldNewlyFrameIndexes, false);
-            layer->setFramesSelected(oldFrameIndexes, true);
-        } else {
-            layer->setFramesSelected(newFrameIndexes, false);
-        }
-    } else {
-        layer->setFramesSelected(oldFrameIndexes, true);
-    }
-    editor()->updateTimeLine();
-    editor()->layers()->setCurrentLayerFromId(layerId);
-}
+////void SelectFramesElement::apply(const bool moreFramesSelected,
+////                                const int layerId,
+////                                const QList<int> changedFrameIndexes,
+////                                const QList<int> undoFrameIndexes,
+////                                const QList<int> redoFrameIndexes,
+////                                const SelectionType& selectionType)
+////{
+////    Layer* layer = editor()->layers()->findLayerById(layerId);
 
-void SelectFramesElement::redo()
-{
-    if (isFirstRedo) { isFirstRedo = false; return; }
+////    if (selectionType == SelectionType::SELECTION) {
 
-    Layer* layer = editor()->layers()->findLayerById(layerId);
+////        if (moreFramesSelected && changedFrameIndexes != undoFrameIndexes) {
+////            layer->setFramesSelected(changedFrameIndexes, false);
+////            layer->setFramesSelected(redoFrameIndexes, true);
+////        } else {
+////            layer->setFramesSelected(redoFrameIndexes, false);
+////        }
+////    } else {
+////        layer->setFramesSelected(undoFrameIndexes, true);
+////    }
+////    editor()->updateTimeLine();
+////    editor()->layers()->setCurrentLayer(layer);
+////}
 
-    if (selectionType == SelectionType::SELECTION) {
-        if (moreFramesSelected && oldNewlyFrameIndexes != newFrameIndexes) {
-            layer->setFramesSelected(oldNewlyFrameIndexes, true);
-        } else {
-            layer->setFramesSelected(newFrameIndexes, true);
-        }
-    } else {
-        layer->setFramesSelected(oldFrameIndexes, false);
-        layer->setFramesSelected(newFrameIndexes, true);
-    }
-    editor()->updateTimeLine();
-    editor()->layers()->setCurrentLayerFromId(layerId);
-}
+//void SelectFramesElement::undo()
+//{
+
+////    apply(moreFramesSelected,
+////          newLayerId,
+////          frameIndex,
+////          oldNewlyFrameIndexes,
+////          oldFrameIndexes,
+////          newFrameIndexes,
+////          selectionType);
+//    Layer* layer = editor()->layers()->findLayerById(newLayerId);
+
+//    if (selectionType == SelectionType::SELECTION) {
+
+
+//        // FIXME: sometimes (using modifiers presumably) move and selections are not always undo/redo able...
+//        if (moreFramesSelected && oldChangedIndexes != oldFrameIndexes) {
+//            layer->deselectAll();
+//            layer->setFramesSelected(oldFrameIndexes, true);
+//        } else {
+//            qDebug() << " \n newFrameIdx: " << newFrameIndexes;
+//            qDebug() << "old indexes: " << oldFrameIndexes;
+//            qDebug() << "oldChangedIndexes: " << oldChangedIndexes;
+//            qDebug() << "newChanged Indexes" << newChangedIndexes;
+////            layer->setFramesSelected(newFrameIndexes, false);
+//            layer->deselectAll();
+//            layer->setFramesSelected(oldFrameIndexes);
+//        }
+//    } else {
+//        layer->setFramesSelected(oldFrameIndexes, true);
+//    }
+
+//    qDebug() << layer->getSelectedFrameIndexes();
+//    editor()->updateTimeLine();
+//    editor()->layers()->setCurrentLayer(layer);
+//}
+
+//void SelectFramesElement::redo()
+//{
+//    if (isFirstRedo) { isFirstRedo = false; return; }
+
+////    apply(moreFramesSelected,
+////          newLayerId,
+////          newSelectedFrameIndexes,
+////          newFrameIndexes,
+////          oldFrameIndexes,
+////          selectionType);
+
+//    Layer* layer = editor()->layers()->findLayerById(newLayerId);
+
+//    if (selectionType == SelectionType::SELECTION) {
+//        if (moreFramesSelected && newChangedIndexes != newFrameIndexes) {
+////            layer->setFramesSelected(newChangedIndexes, false);
+//            layer->deselectAll();
+//            layer->setFramesSelected(newFrameIndexes, true);
+//        } else {
+//            layer->deselectAll();
+//            layer->setFramesSelected(newFrameIndexes, true);
+//        }
+//    } else {
+//        layer->setFramesSelected(newFrameIndexes, true);
+//    }
+//    editor()->updateTimeLine();
+//    editor()->layers()->setCurrentLayer(layer);
+//}
+
+//bool SelectFramesElement::mergeWith(const QUndoCommand *other)
+//{
+//    const SelectFramesElement* otherElem = static_cast<const SelectFramesElement*>(other);
+
+//    if (otherElem->id() != id()) {
+//        return false;
+//    }
+
+////    setText(otherElem->text());
+////    oldFrameIndexes = otherElem->oldFrameIndexes;
+//    newFrameIndexes = otherElem->newFrameIndexes;
+//    frameIndex = otherElem->frameIndex;
+////    oldLayerId = otherElem->oldLayerId;
+//    newLayerId = otherElem->newLayerId;
+////    oldNewlyFrameIndexes = otherElem->oldNewlyFrameIndexes;
+//    newChangedIndexes = otherElem->newChangedIndexes;
+//    newChangedIndexes = getUniqueFrames(newChangedIndexes, newFrameIndexes);
+
+//    if (newChangedIndexes.isEmpty() && newFrameIndexes.isEmpty()) {
+//        setObsolete(true);
+//////        return false;
+//    }
+////    selectionType = otherElem->selectionType;
+
+//    // TODO: figure out to merge select deselect...
+////    oldIsSelected = otherElem->oldIsSelected;
+//    return true;
+//}
 
 FlipViewElement::FlipViewElement(const bool& backupFlipState,
                                  const DIRECTION& backupFlipDirection,

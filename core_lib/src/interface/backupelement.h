@@ -486,17 +486,21 @@ public:
 class MoveFramesElement : public BackupElement
 {
 public:
+
     MoveFramesElement(const int backupLayerId,
                       const int backupScrubberFrameIndex,
-                      const int backupStartFrameIndex,
-                      const int backupEndFrameIndex,
                       const int backupOffset,
+                      const bool wasSelected,
+                      const QList<int> selectedFrameIndexes,
                       Editor* editor,
                       QUndoCommand* parent = nullptr);
 
     int layerId = 0;
 
     const int offset;
+
+    QList<int> oldSelectedFrameIndexes;
+    QList<int> newSelectedFrameIndexes;
 
     int scrubberIndex = 0;
 
@@ -506,37 +510,52 @@ public:
     void undo() override;
     void redo() override;
     void applyToSingle(Layer* layer, const int oldFrameIndex, const int newFrameIndex);
-    void applyToMulti(Layer* layer, const int offset);
+    void applyToMulti(Layer* layer, const int offset, const QList<int> selectedFrameIndexes);
 };
 
-class SelectFramesElement : public BackupElement
-{
-public:
-    SelectFramesElement(const SelectionType selectionType,
-                        const int backupLayerId,
-                        const int backupFrameIndex,
-                        const QList<int> backupFrameIndexes,
-                        const QList<int> backupNewlySelectedIndexes,
-                        const bool backupIsFrameSelected,
-                        Editor* editor,
-                        QUndoCommand* parent = nullptr);
+//class SelectFramesElement : public BackupElement
+//{
+//public:
+//    enum { Id = 8 };
+//    SelectFramesElement(const SelectionType selectionType,
+//                        const int backupLayerId,
+//                        const int backupFrameIndex,
+//                        const QList<int> backupFrameIndexes,
+//                        const QList<int> backupChangedSelectedIndexes,
+//                        const bool backupIsFrameSelected,
+//                        Editor* editor,
+//                        QUndoCommand* parent = nullptr);
 
-    const int layerId;
-    const int frameIndex;
-    const bool oldIsSelected;
-    bool isFirstRedo = true;
+//    int oldLayerId;
+//    int newLayerId;
 
-    QList<int> oldFrameIndexes;
-    QList<int> newFrameIndexes;
+//    int frameIndex;
+//    bool oldIsSelected;
+//    bool isFirstRedo = true;
 
-    QList<int> oldNewlyFrameIndexes;
-    const SelectionType selectionType;
+//    QList<int> oldFrameIndexes;
+//    QList<int> newFrameIndexes;
 
-    bool moreFramesSelected = false;
+//    QList<int> oldChangedIndexes;
+//    QList<int> newChangedIndexes;
+//    SelectionType selectionType;
 
-    void undo() override;
-    void redo() override;
-};
+//    bool moreFramesSelected = false;
+
+//    void undo() override;
+//    void redo() override;
+//    bool mergeWith(const QUndoCommand *other) override;
+//    int id() const override { return Id; };
+
+//private:
+//    QList<int> getUniqueFrames(const QList<int> frameIndexes, const QList<int> compareIndxes);
+//    void apply(const bool moreFramesSelected,
+//          const int layerId,
+//          const QList<int> additionalFramesIndexes,
+//          const QList<int> oldFrameIndexes,
+//          const QList<int> newFrameIndexes,
+//          const SelectionType& selectionType);
+//};
 
 class FlipViewElement : public BackupElement
 {

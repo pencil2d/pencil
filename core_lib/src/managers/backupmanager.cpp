@@ -439,39 +439,40 @@ void BackupManager::frameDeselected(const int frameIndex)
 void BackupManager::frameDeselected(const QList<int> newDeselectedIndexes, const int frameIndex)
 {
 
-    SelectFramesElement* element = new SelectFramesElement(SelectionType::DESELECT,
-                                                           mLayerId,
-                                                           frameIndex,
-                                                           mFrameIndexes,
-                                                           newDeselectedIndexes,
-                                                           false,
-                                                           editor());
+//    SelectFramesElement* element = new SelectFramesElement(SelectionType::DESELECT,
+//                                                           mLayerId,
+//                                                           frameIndex,
+//                                                           mFrameIndexes,
+//                                                           newDeselectedIndexes,
+//                                                           false,
+//                                                           editor());
 
-    mUndoStack->push(element);
-    emit updateBackup();
+//    mUndoStack->push(element);
+//    emit updateBackup();
 }
 
 void BackupManager::frameSelected(const QList<int> newSelectedIndexes, const int frameIndex, const bool isSelected)
 {
 
-    SelectFramesElement* element = new SelectFramesElement(SelectionType::SELECTION,
-                                                           mLayerId,
-                                                           frameIndex,
-                                                           mFrameIndexes,
-                                                           newSelectedIndexes,
-                                                           isSelected,
-                                                           editor());
+//    SelectFramesElement* element = new SelectFramesElement(SelectionType::SELECTION,
+//                                                           mLayerId,
+//                                                           frameIndex,
+//                                                           mFrameIndexes,
+//                                                           newSelectedIndexes,
+//                                                           isSelected,
+//                                                           editor());
 
-    mUndoStack->push(element);
-    emit updateBackup();
+//    mUndoStack->push(element);
+//    emit updateBackup();
 }
 
 void BackupManager::frameMoved(const int offset)
 {
     MoveFramesElement* element = new MoveFramesElement(mLayerId,
                                                        mFrameIndex,
-                                                       0,0,
                                                        offset,
+                                                       false,
+                                                       QList<int>(),
                                                        editor());
     mUndoStack->push(element);
     emit updateBackup();
@@ -482,9 +483,9 @@ void BackupManager::framesMoved(const int offset,
 {
     MoveFramesElement* element = new MoveFramesElement(mLayerId,
                                                        scrubberFrameIndex,
-                                                       mFrameIndexes.first(),
-                                                       mFrameIndexes.last(),
                                                        offset,
+                                                       true,
+                                                       mFrameIndexes,
                                                        editor());
     mUndoStack->push(element);
     emit updateBackup();
