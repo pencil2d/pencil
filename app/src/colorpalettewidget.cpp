@@ -351,21 +351,21 @@ void ColorPaletteWidget::setGridMode()
 
 void ColorPaletteWidget::setSwatchSizeSmall()
 {
-    if (mIconSize.width() > 18)
+    if (mIconSize.width() > 20)
     {
-        mIconSize = QSize(14, 14);
+        mIconSize = QSize(19, 19);
         updateUI();
 
         mFitSwatches = false;
         QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue("PreferredColorGridSize", 14);
+        settings.setValue("PreferredColorGridSize", 19);
         settings.setValue("FitSwatchSize", false);
     }
 }
 
 void ColorPaletteWidget::setSwatchSizeMedium()
 {
-    if (mIconSize.width() < 20 || mIconSize.width() > 30)
+    if (mIconSize.width() < 21 || mIconSize.width() > 30)
     {
         mIconSize = QSize(26, 26);
         updateUI();
@@ -397,7 +397,7 @@ void ColorPaletteWidget::fitSwatchSize()
     int scrollBar = ui->colorListWidget->horizontalScrollBar()->geometry().height();
     int colorCount = editor()->object()->getColourCount();
     int size = qFloor((height - scrollBar - (4 * colorCount)) / colorCount);
-    if (size < 12) size = 12;
+    if (size < 19) size = 19;
     if (size > 36) size = 36;
     mIconSize = QSize(size, size);
 
@@ -412,7 +412,10 @@ void ColorPaletteWidget::fitSwatchSize()
 void ColorPaletteWidget::resizeEvent(QResizeEvent* event)
 {
     updateUI();
-    if (mFitSwatches) fitSwatchSize();
+    if (mFitSwatches)
+    {
+        fitSwatchSize();
+    }
     QWidget::resizeEvent(event);
 }
 
