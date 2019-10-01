@@ -40,3 +40,7 @@ pad-header
 add-braces
 # Leave one-line blocks as-is. This should only be used with single statements.
 keep-one-line-blocks
+
+# Exclude third-party libraries
+exclude=miniz.cpp
+exclude=miniz.h
