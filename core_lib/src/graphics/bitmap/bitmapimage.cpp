@@ -1043,10 +1043,10 @@ void BitmapImage::blendLines(BitmapImage *bitmapimage, bool black, bool red, boo
                 if (!rgblist.contains(img->pixel(x+1, y+1))) points.append(QPoint(x+1, y+1));
                 for (int i = 0; i < points.size(); i++)
                 {
-                    r += qPow(qRed(img->pixel(points.at(i))), 2);
-                    g += qPow(qGreen(img->pixel(points.at(i))), 2);
-                    b += qPow(qBlue(img->pixel(points.at(i))), 2);
-                    a += qPow(qAlpha(img->pixel(points.at(i))), 2);
+                    r += static_cast<int>(qPow(qRed(img->pixel(points.at(i))), 2));
+                    g += static_cast<int>(qPow(qGreen(img->pixel(points.at(i))), 2));
+                    b += static_cast<int>(qPow(qBlue(img->pixel(points.at(i))), 2));
+                    a += static_cast<int>(qPow(qAlpha(img->pixel(points.at(i))), 2));
                 }
                 r = static_cast<int>(sqrt(r/points.size()));
                 g = static_cast<int>(sqrt(g/points.size()));
@@ -1074,7 +1074,7 @@ int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, Bitma
     QRect rect = img->bounds();
     while (!fillList.isEmpty())
     {
-        QPoint tmp = fillList.at(0);
+        QPoint tmp = fillList.takeFirst();
         if (rect.contains(QPoint(tmp.x() + 1, tmp.y())) && img->pixel(QPoint(tmp.x() + 1, tmp.y())) == orgColor)
         {
             img->setPixel(QPoint(tmp.x() + 1, tmp.y()), newColor);
@@ -1099,7 +1099,6 @@ int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, Bitma
             fillList.append(QPoint(tmp.x(), tmp.y() - 1));
             pixels++;
         }
-        fillList.removeFirst();
     }
     img->modification();
     return pixels;

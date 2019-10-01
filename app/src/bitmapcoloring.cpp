@@ -49,12 +49,12 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->cb2TraceBlue, &QCheckBox::stateChanged, this, &BitmapColoring::checkBlueBoxes);
     connect(ui->cb3TraceAllKeyframes, &QCheckBox::stateChanged, this, &BitmapColoring::checkAllKeyframesBoxes);
     connect(ui->btnResetTrace, &QPushButton::clicked, this, &BitmapColoring::resetColoringDock);
+    connect(ui->cbMethodSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BitmapColoring::enableTabs);
 
     // Prepare
     connect(ui->tabWidget, &QTabWidget::tabBarClicked, this, &BitmapColoring::tabWidgetClicked);
-    connect(ui->cb1Threshold, &QCheckBox::stateChanged, this, &BitmapColoring::updateBtnSelect);
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &BitmapColoring::updateBtnSelect);
     connect(ui->sb1Threshold, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setThreshold);
-    connect(ui->btnSelectAreas, &QPushButton::clicked, this, &BitmapColoring::activateSelectTool);
     connect(ui->btnApplyTrace, &QPushButton::clicked, this, &BitmapColoring::traceLines);
     // Thin
     connect(ui->sbSpotAreas, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setSpotArea);
@@ -81,7 +81,8 @@ void BitmapColoring::updateUI()
         mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     if (mLayerBitmap == nullptr) { return; }
 
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
+            ui->cbMethodSelector->currentIndex() > 0)
     {
         if (mLayerBitmap->getHasColorLayer())
         {
@@ -103,7 +104,7 @@ void BitmapColoring::updateUI()
         }
     }
     else
-    {   // If it is not a Bitmap Layer - disable
+    {   // If it is not a Bitmap Layer OR method not chosen - disable
         ui->tab1->setEnabled(false);
         ui->tab2->setEnabled(false);
         ui->tab3->setEnabled(false);
@@ -181,6 +182,12 @@ void BitmapColoring::resetColoringDock()
     ui->cb3TraceAllKeyframes->setChecked(false);
 }
 
+void BitmapColoring::enableTabs(int index)
+{
+    Q_UNUSED(index)
+    updateUI();
+}
+
 // public Trace funtions
 void BitmapColoring::updateTraceBoxes()
 {
@@ -188,7 +195,7 @@ void BitmapColoring::updateTraceBoxes()
     {
         ui->tab1->setEnabled(false);
     }
-    else
+    else if (ui->cbMethodSelector->currentIndex() > 0)
     {
         ui->tab1->setEnabled(true);
         ui->gb2Trace->setEnabled(true);
@@ -197,28 +204,13 @@ void BitmapColoring::updateTraceBoxes()
 
 void BitmapColoring::updateBtnSelect()
 {
-    if (ui->cb1Threshold->isChecked())
-    {
-        ui->btnSelectAreas->setEnabled(true);
-    }
-    else
-    {
-        mSelectAreas = false;
-        ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
-        ui->btnSelectAreas->setEnabled(false);
-    }
-}
-
-void BitmapColoring::activateSelectTool()
-{
-    if (!mSelectAreas)
+    if (mEditor->select()->somethingSelected())
     {
         mSelectAreas = true;
         ui->btnSelectAreas->setIcon(QIcon(":/icons/select_ok.png"));
-        ToolManager* tool = mEditor->tools();
-        tool->setCurrentTool(SELECT);
     }
-    else {
+    else
+    {
         mSelectAreas = false;
         ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
     }
@@ -232,12 +224,6 @@ void BitmapColoring::setThreshold(int threshold)
 void BitmapColoring::traceLines()
 {
     if (mLayerBitmap == nullptr) { return; }
-
-    if (mSelectAreas && !mEditor->select()->somethingSelected())
-    {
-        QMessageBox::information(this, tr("No selection!"), tr("Please select area with select tool..."));
-        return;
-    }
 
     if (ui->cb3TraceAllKeyframes->isChecked())
     {
@@ -281,7 +267,7 @@ void BitmapColoring::updateThinBoxes()
     {
         ui->tab2->setEnabled(false);
     }
-    else
+    else if (ui->cbMethodSelector->currentIndex() > 0)
     {
         ui->tab2->setEnabled(true);
         ui->gb2Thin->setEnabled(true);
@@ -336,7 +322,7 @@ void BitmapColoring::updateBlendBoxes()
     {
         ui->tab3->setEnabled(false);
     }
-    else
+    else if (ui->cbMethodSelector->currentIndex() > 0)
     {
         ui->tab3->setEnabled(true);
     }
@@ -387,12 +373,12 @@ void BitmapColoring::prepareLines()
 {
     LayerBitmap* colorLayer = nullptr;
     bool black;
-    ui->cbMethodSelector->currentIndex() == 0 ? black = false: black = true;
-    if (ui->cbMethodSelector->currentIndex() == 0)
+    ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
+    if (ui->cbMethodSelector->currentIndex() == 1)
     {           // if coloring is on same layer...
         colorLayer = mLayerBitmap;
     }
-    else
+    else if (ui->cbMethodSelector->currentIndex() == 2)
     {           // if coloring is on separate layer...
         if (!mLayerBitmap->getHasColorLayer())
         {
@@ -406,7 +392,7 @@ void BitmapColoring::prepareLines()
         }
     }
 
-    if (ui->cbMethodSelector->currentIndex() == 1)
+    if (ui->cbMethodSelector->currentIndex() == 2)
     {
         colorLayer->setVisible(false);
         mLayerBitmap->copyFrame(mLayerBitmap, colorLayer, mEditor->currentFrame());
@@ -440,7 +426,7 @@ void BitmapColoring::trace()
 void BitmapColoring::thin()
 {
     bool black;
-    ui->cbMethodSelector->currentIndex() == 0 ? black = false: black = true;
+    ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
     if (ui->cbSpotAreas->isChecked())
     {
@@ -458,14 +444,14 @@ void BitmapColoring::thin()
 void BitmapColoring::blend(LayerBitmap *artLayer)
 {
     bool black;
-    ui->cbMethodSelector->currentIndex() == 0 ? black = false: black = true;
+    ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
     mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame())->blendLines(mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame()),
                                                        black,
                                                        ui->cb2BlendRed->isChecked(),
                                                        ui->cb2BlendGreen->isChecked(),
                                                        ui->cb2BlendBlue->isChecked());
     mEditor->backup("Blend lines");
-    if (ui->cbMethodSelector->currentIndex() == 1 && artLayer != nullptr)
+    if (ui->cbMethodSelector->currentIndex() == 2 && artLayer != nullptr)
     {
         artLayer->getBitmapImageAtFrame(mEditor->currentFrame())->traceLine(artLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
                                                                             false,

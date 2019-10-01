@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>234</width>
+    <width>229</width>
     <height>374</height>
    </rect>
   </property>
@@ -43,6 +43,11 @@
        <property name="toolTip">
         <string>Colorize on Same or Separate layer?</string>
        </property>
+       <item>
+        <property name="text">
+         <string>Choose method...</string>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>On the Same Layer</string>
@@ -85,7 +90,7 @@
        <item>
         <widget class="QGroupBox" name="gb1Trace">
          <property name="title">
-          <string>Scanned Drawings?</string>
+          <string>Prepare Drawings?</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <property name="spacing">
@@ -138,8 +143,19 @@
               </property>
              </widget>
             </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <spacer name="horizontalSpacer_19">
+             <widget class="QLabel" name="lab1UsingSelectTool">
+              <property name="text">
+               <string>Using Selecttool?</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -154,16 +170,16 @@
             <item>
              <widget class="QPushButton" name="btnSelectAreas">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="maximumSize">
                <size>
-                <width>24</width>
+                <width>20</width>
                 <height>16777215</height>
                </size>
               </property>
               <property name="toolTip">
-               <string>Activate Select tool</string>
+               <string>Something is selected</string>
               </property>
               <property name="text">
                <string/>
@@ -171,6 +187,9 @@
               <property name="icon">
                <iconset resource="../data/app.qrc">
                 <normaloff>:/icons/select.png</normaloff>:/icons/select.png</iconset>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

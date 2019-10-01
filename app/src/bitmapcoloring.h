@@ -36,10 +36,10 @@ public slots:
     void checkAllKeyframesBoxes();
     void tabWidgetClicked(int index);
     void resetColoringDock();
+    void enableTabs(int index);
     // 1: Trace
     void updateTraceBoxes();
     void updateBtnSelect();
-    void activateSelectTool();
     void setThreshold(int threshold);
     void traceLines();
     // 2: Thin
