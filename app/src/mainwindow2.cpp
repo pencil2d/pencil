@@ -973,7 +973,6 @@ void MainWindow2::readSettings()
     restoreState(winState.toByteArray());
 
     QString myPath = settings.value(LAST_PCLX_PATH, QVariant(QDir::homePath())).toString();
-    mRecentFileMenu->addRecentFile(myPath);
 
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
 
