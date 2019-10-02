@@ -49,7 +49,7 @@ void ToolOptionWidget::initUI()
     ui->sizeSlider->setValue(settings.value("brushWidth", "3").toDouble());
     ui->brushSpinBox->setValue(settings.value("brushWidth", "3").toDouble());
 
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, 1, 100);
+    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, 1, 99);
     ui->featherSlider->setValue(settings.value("brushFeather", "5").toDouble());
     ui->featherSpinBox->setValue(settings.value("brushFeather", "5").toDouble());
 
