@@ -81,7 +81,6 @@ void ColorPaletteWidget::initUI()
     palettePreferences();
 
     connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
-    connect(ui->colorListWidget, &QListWidget::itemSelectionChanged, this, &ColorPaletteWidget::onItemSelectionChanged);
     connect(ui->colorListWidget->model(), &QAbstractItemModel::rowsMoved, this, &ColorPaletteWidget::onRowsMoved);
 
     connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
@@ -265,32 +264,16 @@ void ColorPaletteWidget::onItemChanged(QListWidgetItem* item)
     editor()->object()->renameColour(index, newColorName);
 }
 
-void ColorPaletteWidget::onItemSelectionChanged()
-{
-    if (ui->colorListWidget->viewMode() == QListWidget::IconMode) { return; }
-    // you can only drag one swatch at a time...
-    if (ui->colorListWidget->selectedItems().size() == 1)
-        ui->colorListWidget->setDragDropMode(QAbstractItemView::InternalMove);
-    else
-        ui->colorListWidget->setDragDropMode(QAbstractItemView::NoDragDrop);
-}
-
 void ColorPaletteWidget::onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
 {
     Q_UNUSED(parent)
     Q_UNUSED(destination)
     Q_UNUSED(end)
 
-    /*
-     * An error in the signal rowsMoved gives a row-value that is
-     * 1 higher than it should be, when dragged downwards. Dragging
-     * upwards yields no erronous values.
-    */
-
     int startIndex, endIndex;
     if (start < row)
     {
-        row -= 1;  // TODO: follow this bug, and remove if fixed later...
+        row -= 1; // TODO: Is this a bug?
         if (start == row) { return; }
 
         startIndex = start;
@@ -305,7 +288,6 @@ void ColorPaletteWidget::onRowsMoved(const QModelIndex &parent, int start, int e
             editor()->object()->moveVectorColor(i + 1, i);
         }
         editor()->object()->moveVectorColor(editor()->object()->getColourCount() - 1, endIndex);
-        editor()->object()->removeColour(editor()->object()->getColourCount() - 1);
     }
     else
     {
@@ -323,8 +305,9 @@ void ColorPaletteWidget::onRowsMoved(const QModelIndex &parent, int start, int e
             editor()->object()->moveVectorColor(i - 1, i);
         }
         editor()->object()->moveVectorColor(editor()->object()->getColourCount() - 1, endIndex);
-        editor()->object()->removeColour(editor()->object()->getColourCount() - 1);
     }
+
+    editor()->object()->removeColour(editor()->object()->getColourCount() - 1);
 
     refreshColorList();
 }

@@ -66,7 +66,6 @@ private slots:
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
     void onItemChanged(QListWidgetItem* item);
-    void onItemSelectionChanged();
     void onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row);
     void clickAddColorButton();
     void clickColorDialogButton();
