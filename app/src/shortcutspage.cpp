@@ -133,8 +133,8 @@ void ShortcutsPage::saveShortcutsButtonClicked()
     settings.endGroup();
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save Pencil2D Shortcut file"),
-                                                    fDir + "/untitled.p2shortcut",
-                                                    tr("Pencil2D Shortcut File(*.p2shortcut)"));
+                                                    fDir + "/untitled.pclshortcut",
+                                                    tr("Pencil2D Shortcut File(*.pclshortcut)"));
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
@@ -154,12 +154,14 @@ void ShortcutsPage::saveShortcutsButtonClicked()
 void ShortcutsPage::loadShortcutsButtonClicked()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
-    QString fDir = settings.value("LastSavePath/Animation").toString();
+    QString fDir = settings.value("Animation").toString();
+    if (fDir.isEmpty())
+        fDir = QDir::homePath();
 
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Pencil2D Shortcut file"),
                                                     fDir,
-                                                    tr("Pencil2D Shortcut File(*.p2shortcut)"));
+                                                    tr("Pencil2D Shortcut File(*.pclshortcut)"));
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
         return;
