@@ -49,24 +49,20 @@ void BrushTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
-    mPropertyEnabled[USEFEATHER] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[INVISIBILITY] = true;
     mPropertyEnabled[STABILIZATION] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
     properties.width = settings.value("brushWidth", 24.0).toDouble();
     properties.feather = settings.value("brushFeather", 48.0).toDouble();
-    properties.useFeather = settings.value("brushUseFeather", true).toBool();
     properties.pressure = settings.value("brushPressure", true).toBool();
     properties.invisibility = settings.value("brushInvisibility", false).toBool();
     properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt();
-    properties.useAA = settings.value("brushAA", 1).toInt();
+    properties.useAA = DISABLED;
 
-    if (properties.useFeather == true) { properties.useAA = -1; }
     if (properties.width <= 0) { setWidth(15); }
     if (std::isnan(properties.feather)) { setFeather(15); }
 }
@@ -76,7 +72,6 @@ void BrushTool::resetToDefault()
     setWidth(24.0);
     setFeather(48.0);
     setStabilizerLevel(StabilizationLevel::STRONG);
-    setUseFeather(true);
 }
 
 void BrushTool::setWidth(const qreal width)
@@ -87,17 +82,6 @@ void BrushTool::setWidth(const qreal width)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("brushWidth", width);
-    settings.sync();
-}
-
-void BrushTool::setUseFeather(const bool usingFeather)
-{
-    // Set current property
-    properties.useFeather = usingFeather;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushUseFeather", usingFeather);
     settings.sync();
 }
 
@@ -139,17 +123,6 @@ void BrushTool::setStabilizerLevel(const int level)
 
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("brushLineStabilization", level);
-    settings.sync();
-}
-
-void BrushTool::setAA(const int AA)
-{
-    // Set current property
-    properties.useAA = AA;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushAA", AA);
     settings.sync();
 }
 
@@ -223,8 +196,7 @@ void BrushTool::paintAt(QPointF point)
                                  properties.feather,
                                  mEditor->color()->frontColor(),
                                  opacity,
-                                 properties.useFeather,
-                                 properties.useAA);
+                                 properties.useFeather);
 
         int rad = qRound(brushWidth) / 2 + 2;
         mScribbleArea->refreshBitmap(rect, rad);
@@ -271,8 +243,7 @@ void BrushTool::drawStroke()
                                      properties.feather,
                                      mEditor->color()->frontColor(),
                                      opacity,
-                                     properties.useFeather,
-                                     properties.useAA);
+                                     properties.useFeather);
             if (i == (steps - 1))
             {
                 mLastBrushPoint = getCurrentPoint();
