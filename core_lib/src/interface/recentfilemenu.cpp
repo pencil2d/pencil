@@ -73,7 +73,7 @@ bool RecentFileMenu::loadFromDisk()
     QVariant recent = settings.value("RecentFiles");
     if (recent.isNull())
     {
-	clear();
+        clear();
         return false;
     }
     QStringList recentFileList = recent.toStringList();
@@ -110,7 +110,7 @@ void RecentFileMenu::addRecentFile(QString filename)
     mRecentActions.emplace(filename, action);
     if (mRecentFiles.size() == 1)
     {
-	removeAction(mEmptyAction);
+        removeAction(mEmptyAction);
         addAction(action);
         addAction(mClearSeparator);
         addAction(mClearAction);
