@@ -53,7 +53,6 @@ void BrushTool::loadSettings()
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[INVISIBILITY] = true;
     mPropertyEnabled[STABILIZATION] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -64,9 +63,8 @@ void BrushTool::loadSettings()
     properties.invisibility = settings.value("brushInvisibility", false).toBool();
     properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt();
-    properties.useAA = settings.value("brushAA", 1).toInt();
+    properties.useAA = DISABLED;
 
-    if (properties.useFeather == true) { properties.useAA = -1; }
     if (properties.width <= 0) { setWidth(15); }
     if (std::isnan(properties.feather)) { setFeather(15); }
 }
@@ -223,8 +221,7 @@ void BrushTool::paintAt(QPointF point)
                                  properties.feather,
                                  mEditor->color()->frontColor(),
                                  opacity,
-                                 properties.useFeather,
-                                 properties.useAA);
+                                 properties.useFeather);
 
         int rad = qRound(brushWidth) / 2 + 2;
         mScribbleArea->refreshBitmap(rect, rad);
@@ -271,8 +268,7 @@ void BrushTool::drawStroke()
                                      properties.feather,
                                      mEditor->color()->frontColor(),
                                      opacity,
-                                     properties.useFeather,
-                                     properties.useAA);
+                                     properties.useFeather);
             if (i == (steps - 1))
             {
                 mLastBrushPoint = getCurrentPoint();
