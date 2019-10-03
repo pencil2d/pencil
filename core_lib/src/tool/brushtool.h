@@ -45,7 +45,6 @@ public:
     void setFeather(const qreal feather) override;
     void setPressure(const bool pressure) override;
     void setInvisibility(const bool invisibility) override;
-    void setAA(const int useAA) override;
     void setStabilizerLevel(const int level) override;
 
 protected:

@@ -126,17 +126,6 @@ void BrushTool::setStabilizerLevel(const int level)
     settings.sync();
 }
 
-void BrushTool::setAA(const int AA)
-{
-    // Set current property
-    properties.useAA = AA;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushAA", AA);
-    settings.sync();
-}
-
 QCursor BrushTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
