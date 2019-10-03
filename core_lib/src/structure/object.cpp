@@ -315,8 +315,6 @@ void Object::movePaletteColor(int start, int end)
 
 void Object::moveVectorColor(int start, int end)
 {
-    // movePaletteColor _must_ be made before calling this function!
-
     for (int i = 0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
