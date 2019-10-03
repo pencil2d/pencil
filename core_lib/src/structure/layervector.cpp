@@ -56,7 +56,8 @@ void LayerVector::moveColor(int start, int end)
     {
         auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
         pVecImage->moveColor(start, end );
-    } );}
+    });
+}
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
