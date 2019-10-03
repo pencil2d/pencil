@@ -54,7 +54,7 @@ void LayerVector::moveColor(int start, int end)
 {
     foreachKeyFrame( [=] (KeyFrame* pKeyFrame)
     {
-        auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
+        auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
         pVecImage->moveColor(start, end );
     });
 }
