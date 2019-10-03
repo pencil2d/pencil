@@ -60,6 +60,10 @@ void ColorPaletteWidget::initUI()
     QSettings settings(PENCIL2D, PENCIL2D);
     int colorGridSize = settings.value("PreferredColorGridSize", 34).toInt();
     mFitSwatches = settings.value("FitSwatchSize", false).toBool();
+    if (mFitSwatches)
+    {
+        fitSwatchSize();
+    }
 
     mIconSize = QSize(colorGridSize, colorGridSize);
 
@@ -123,7 +127,10 @@ void ColorPaletteWidget::addItem()
 
     editor()->object()->addColourAtIndex(colorIndex, ref);
     refreshColorList();
-    if (mFitSwatches) fitSwatchSize();
+    if (mFitSwatches)
+    {
+        fitSwatchSize();
+    }
 }
 
 void ColorPaletteWidget::replaceItem()
@@ -330,6 +337,10 @@ void ColorPaletteWidget::setListMode()
     ui->colorListWidget->setViewMode(QListView::ListMode);
     ui->colorListWidget->setMovement(QListView::Static);
     ui->colorListWidget->setGridSize(QSize(-1, -1));
+    if (mFitSwatches)
+    {
+        fitSwatchSize();
+    }
     updateUI();
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -342,7 +353,10 @@ void ColorPaletteWidget::setGridMode()
     ui->colorListWidget->setMovement(QListView::Static); // TODO: update swatch index on move
     ui->colorListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->colorListWidget->setGridSize(QSize(mIconSize.width() + 1, mIconSize.height() + 1));
-
+    if (mFitSwatches)
+    {
+        fitSwatchSize();
+    }
     updateUI();
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -394,11 +408,41 @@ void ColorPaletteWidget::setSwatchSizeLarge()
 void ColorPaletteWidget::fitSwatchSize()
 {
     int height = ui->colorListWidget->height();
-    int scrollBar = ui->colorListWidget->horizontalScrollBar()->geometry().height();
+    int width = ui->colorListWidget->width();
+    int hScrollBar = ui->colorListWidget->horizontalScrollBar()->geometry().height() + 6;
+    int vScrollBar = ui->colorListWidget->verticalScrollBar()->geometry().width() * 2;
     int colorCount = editor()->object()->getColourCount();
-    int size = qFloor((height - scrollBar - (4 * colorCount)) / colorCount);
-    if (size < 19) size = 19;
-    if (size > 36) size = 36;
+    int size;
+
+    if (ui->colorListWidget->viewMode() == QListView::ListMode)
+    {
+        size = qFloor((height - hScrollBar - (4 * colorCount)) / colorCount);
+        if (size < 19) size = 19;
+        if (size > 36) size = 36;
+    }
+    else
+    {
+        bool cont = true;
+        size = 19;
+        while (cont)
+        {
+            int columns = (width - vScrollBar) / size;
+            int rows = static_cast<int>(qCeil(colorCount / columns));
+//            qDebug() << "columns, rows, size: " << columns << " " << rows << " " << size;
+            if (height - hScrollBar > rows * (size + 6))
+            {
+                size++;
+                if (size == 36)
+                {
+                    cont = false;
+                }
+            }
+            else
+            {
+                cont = false;
+            }
+        }
+    }
     mIconSize = QSize(size, size);
 
     updateUI();
@@ -475,7 +519,10 @@ void ColorPaletteWidget::clickAddColorButton()
 
     editor()->color()->setColorNumber(colorIndex);
     editor()->color()->setColor(ref.colour);
-    if (mFitSwatches) fitSwatchSize();
+    if (mFitSwatches)
+    {
+        fitSwatchSize();
+    }
 }
 
 void ColorPaletteWidget::clickRemoveColorButton()
@@ -511,7 +558,10 @@ void ColorPaletteWidget::clickRemoveColorButton()
         editor()->updateCurrentFrame();
     }
     mMultipleSelected = false;
-    if (mFitSwatches) fitSwatchSize();
+    if (mFitSwatches)
+    {
+        fitSwatchSize();
+    }
 }
 
 bool ColorPaletteWidget::showPaletteWarning()
