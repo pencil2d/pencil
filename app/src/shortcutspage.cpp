@@ -126,7 +126,7 @@ void ShortcutsPage::saveShortcutsButtonClicked()
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.beginGroup( "LastSavePath" );
 
-    QString fDir = settings.value("LastSavePath/Animation").toString();
+    QString fDir = settings.value("Animation").toString();
     if (fDir.isEmpty())
         fDir = QDir::homePath();
 
@@ -154,6 +154,7 @@ void ShortcutsPage::saveShortcutsButtonClicked()
 void ShortcutsPage::loadShortcutsButtonClicked()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
+    settings.beginGroup( "LastSavePath" );
     QString fDir = settings.value("Animation").toString();
     if (fDir.isEmpty())
         fDir = QDir::homePath();
