@@ -149,8 +149,8 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->sizeSlider->setVisible(tool->isPropertyEnabled(WIDTH));
     ui->brushSpinBox->setVisible(tool->isPropertyEnabled(WIDTH));
     ui->featherSlider->setVisible(tool->isPropertyEnabled(FEATHER));
-    ui->useFeatherBox->setVisible(tool->isPropertyEnabled(FEATHER));
     ui->featherSpinBox->setVisible(tool->isPropertyEnabled(FEATHER));
+    ui->useFeatherBox->setVisible(tool->isPropertyEnabled(USEFEATHER));
     ui->useBezierBox->setVisible(tool->isPropertyEnabled(BEZIER));
     ui->usePressureBox->setVisible(tool->isPropertyEnabled(PRESSURE));
     ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
