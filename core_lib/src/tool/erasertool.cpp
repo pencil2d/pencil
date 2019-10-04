@@ -43,6 +43,7 @@ ToolType EraserTool::type()
 void EraserTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[USEFEATHER] = true;
     mPropertyEnabled[FEATHER] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[STABILIZATION] = true;
