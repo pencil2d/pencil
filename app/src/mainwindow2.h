@@ -33,6 +33,7 @@ class ColorPaletteWidget;
 class DisplayOptionWidget;
 class ToolOptionWidget;
 class TimeLine;
+class OperationsWidget;
 class ToolBoxWidget;
 class PreferencesDialog;
 class PreviewWidget;
@@ -135,6 +136,7 @@ private:
     void makeConnections(Editor*, TimeLine*);
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
+    void makeConnections(Editor*, OperationsWidget*);
 
     void bindActionWithSetting(QAction*, SETTING);
 
@@ -144,6 +146,7 @@ private:
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
     ToolBoxWidget*        mToolBox = nullptr;
+    OperationsWidget*     mOperationWidget = nullptr;
     Timeline2*            mTimeline2 = nullptr;
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;

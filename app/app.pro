@@ -59,6 +59,7 @@ HEADERS += \
     src/app_util.h \
     src/errordialog.h \
     src/aboutdialog.h \
+    src/operationswidget.h \
     src/toolbox.h \
     src/tooloptionwidget.h \
     src/importexportdialog.h \
@@ -91,6 +92,7 @@ SOURCES += \
     src/exportmoviedialog.cpp \
     src/errordialog.cpp \
     src/aboutdialog.cpp \
+    src/operationswidget.cpp \
     src/toolbox.cpp \
     src/tooloptionwidget.cpp \
     src/importexportdialog.cpp \
@@ -105,6 +107,7 @@ FORMS += \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/mainwindow2.ui \
+    ui/operationswidget.ui \
     ui/pegbaralignmentdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \

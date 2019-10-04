@@ -59,6 +59,7 @@ GNU General Public License for more details.
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
+#include "operationswidget.h"
 
 //#include "preview.h"
 #include "timeline2.h"
@@ -119,6 +120,9 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     readSettings();
 
+    // Hide the operation widget by default
+    mOperationWidget->hide();
+    
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
@@ -160,6 +164,8 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
+    mOperationWidget = new OperationsWidget(this);
+    mOperationWidget->setObjectName("OperationWidget");
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -173,7 +179,8 @@ void MainWindow2::createDockWidgets()
         << mColorPalette
         << mDisplayOptionWidget
         << mToolOptions
-        << mToolBox;
+        << mToolBox
+        << mOperationWidget;
 
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
@@ -193,6 +200,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorBox);
     addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
+    addDockWidget(Qt::TopDockWidgetArea, mOperationWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
@@ -213,6 +221,7 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mColorInspector);
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
+    makeConnections(mEditor, mOperationWidget);
 
     for (BaseDockWidget* w : mDockWidgets)
     {
@@ -342,6 +351,7 @@ void MainWindow2::createMenus()
     winMenu->clear();
     const std::vector<QAction*> actions
     {
+        mOperationWidget->toggleViewAction(),
         mToolBox->toggleViewAction(),
         mToolOptions->toggleViewAction(),
         mColorBox->toggleViewAction(),
@@ -925,6 +935,7 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mDisplayOptionWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
     mToolBox->setFeatures(feat);
+    mOperationWidget->setFeatures(feat);
     mTimeLine->setFeatures(feat);
 }
 
@@ -955,10 +966,13 @@ void MainWindow2::preferences()
 
 void MainWindow2::resetAndDockAllSubWidgets()
 {
+    // The operation widget is hidden by default
+    mOperationWidget->hide();
     for (BaseDockWidget* dock : mDockWidgets)
     {
         dock->setFloating(false);
-        dock->show();
+
+        if (dock != mOperationWidget) dock->show();
     }
 }
 
@@ -1093,6 +1107,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionNew_Sound_Layer->setShortcut(cmdKeySeq(CMD_NEW_SOUND_LAYER));
     ui->actionDelete_Current_Layer->setShortcut(cmdKeySeq(CMD_DELETE_CUR_LAYER));
 
+    // Todo: add functionality to toggle operation widget
     mToolBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOLBOX));
     mToolOptions->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOL_OPTIONS));
     mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
@@ -1255,6 +1270,19 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
 
     connect(pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor);
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
+}
+
+void MainWindow2::makeConnections(Editor*, OperationsWidget* pOperationsWidget)
+{
+    connect(pOperationsWidget, &OperationsWidget::newClicked, this, [this](){ this->newDocument(); }); // Required lambda usage for use of default parameters with connect
+    connect(pOperationsWidget, &OperationsWidget::openClicked, this, &MainWindow2::openDocument);
+    connect(pOperationsWidget, &OperationsWidget::saveClicked, this, &MainWindow2::saveDocument);
+    connect(pOperationsWidget, &OperationsWidget::saveAsClicked, this, &MainWindow2::saveAsNewDocument);
+    connect(pOperationsWidget, &OperationsWidget::undoClicked, mEditor, &Editor::undo);
+    connect(pOperationsWidget, &OperationsWidget::redoClicked, mEditor, &Editor::redo);
+    connect(pOperationsWidget, &OperationsWidget::cutClicked, mEditor, &Editor::cut);
+    connect(pOperationsWidget, &OperationsWidget::copyClicked, mEditor, &Editor::copy);
+    connect(pOperationsWidget, &OperationsWidget::pasteClicked, mEditor, &Editor::paste);
 }
 
 void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
