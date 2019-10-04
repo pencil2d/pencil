@@ -42,6 +42,8 @@ public:
     QTransform getViewInverse();
     void resetView();
 
+    QPointF getCameraView();
+
     QPointF mapCanvasToScreen(QPointF p);
     QPointF mapScreenToCanvas(QPointF p);
 

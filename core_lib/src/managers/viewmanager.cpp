@@ -360,3 +360,12 @@ void ViewManager::resetView()
         Q_EMIT viewFlipped();
     }
 }
+
+QPointF ViewManager::getCameraView()
+{
+    if (mCurrentCamera)
+    {
+        return mCurrentCamera->translation();
+    }
+    return QPointF(0.0 , 0.0);
+}

@@ -90,7 +90,7 @@ int ImportImageSeqDialog::getSpace()
 
 void ImportImageSeqDialog::updatePreviewList(const QStringList& list)
 {
-    Q_UNUSED(list);
+    Q_UNUSED(list)
     if (mImportCriteria == ImportCriteria::PredefinedSet)
     {
         const PredefinedKeySet& keySet = generatePredefinedKeySet();
@@ -297,14 +297,14 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
 
 void ImportImageSeqDialog::importPredefinedSet(int index)
 {
-    qDebug() << "map canvas to screen: " << mEditor->view()->mapCanvasToScreen(mEditor->view()->translation());
+    QPointF currentView = mEditor->view()->translation();
     if (index == 1)
     {
         mEditor->view()->resetView();
     }
     else if (index == 2)
     {
-        mEditor->view()->translate(mEditor->view()->translation());
+        mEditor->view()->translate(mEditor->view()->getCameraView());
     }
     PredefinedKeySet keySet = generatePredefinedKeySet();
 
@@ -338,6 +338,8 @@ void ImportImageSeqDialog::importPredefinedSet(int index)
 
         if (!ok) { return;}
     }
+
+    mEditor->view()->translate(currentView);
 
     emit notifyAnimationLengthChanged();
 }
