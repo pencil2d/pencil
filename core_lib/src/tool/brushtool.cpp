@@ -196,7 +196,7 @@ void BrushTool::paintAt(QPointF point)
                                  properties.feather,
                                  mEditor->color()->frontColor(),
                                  opacity,
-                                 properties.useFeather);
+                                 true);
 
         int rad = qRound(brushWidth) / 2 + 2;
         mScribbleArea->refreshBitmap(rect, rad);
@@ -243,7 +243,7 @@ void BrushTool::drawStroke()
                                      properties.feather,
                                      mEditor->color()->frontColor(),
                                      opacity,
-                                     properties.useFeather);
+                                     true);
             if (i == (steps - 1))
             {
                 mLastBrushPoint = getCurrentPoint();
