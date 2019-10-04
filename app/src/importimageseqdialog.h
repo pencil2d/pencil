@@ -54,7 +54,7 @@ public:
     ~ImportImageSeqDialog() override;
 
     void importArbitrarySequence();
-    void importPredefinedSet();
+    void importPredefinedSet(int index);
     int getSpace();
 
     void setCore(Editor* editor) { mEditor = editor; }

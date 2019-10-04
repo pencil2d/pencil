@@ -28,8 +28,13 @@ ImportExportDialog::ImportExportDialog(QWidget* parent, Mode eMode, FileType eFi
     ui = new Ui::ImportExportDialog;
     ui->setupUi(this);
     m_fileDialog = new FileDialog(this);
+    ui->cbImportPosition->addItem("Current view and position");
+    ui->cbImportPosition->addItem("Canvas center");
+    ui->cbImportPosition->addItem("Active camera");
 
     connect(ui->browseButton, &QPushButton::clicked, this, &ImportExportDialog::browse);
+    connect(ui->cbImportPosition, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &ImportExportDialog::setPosIndex);
 
     Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint;
     setWindowFlags(eFlags);

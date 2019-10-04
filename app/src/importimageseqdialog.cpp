@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "predefinedsetmodel.h"
+#include "viewmanager.h"
 
 #include <QProgressDialog>
 #include <QMessageBox>
@@ -294,8 +295,17 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
     return setParams;
 }
 
-void ImportImageSeqDialog::importPredefinedSet()
+void ImportImageSeqDialog::importPredefinedSet(int index)
 {
+    qDebug() << "map canvas to screen: " << mEditor->view()->mapCanvasToScreen(mEditor->view()->translation());
+    if (index == 1)
+    {
+        mEditor->view()->resetView();
+    }
+    else if (index == 2)
+    {
+        mEditor->view()->translate(mEditor->view()->translation());
+    }
     PredefinedKeySet keySet = generatePredefinedKeySet();
 
     // Show a progress dialog, as this can take a while if you have lots of images.

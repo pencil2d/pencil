@@ -826,7 +826,7 @@ void MainWindow2::importImageSequence()
 void MainWindow2::importPredefinedImageSet()
 {
     ImportImageSeqDialog* imageSeqDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::IMAGE, ImportCriteria::PredefinedSet);
-    OnScopeExit(delete imageSeqDialog);
+    OnScopeExit(delete imageSeqDialog)
     imageSeqDialog->setCore(mEditor);
 
     connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
@@ -838,7 +838,8 @@ void MainWindow2::importPredefinedImageSet()
         return;
     }
 
-    imageSeqDialog->importPredefinedSet();
+    int index = imageSeqDialog->getPosIndex();
+    imageSeqDialog->importPredefinedSet(index);
     mIsImportingImageSequence = false;
 }
 

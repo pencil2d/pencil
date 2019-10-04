@@ -42,6 +42,7 @@ public:
     QString getFilePath() const;
     QString getAbsolutePath();
     QStringList getFilePaths();
+    int getPosIndex() { return mPosIndex; }
 
 signals:
     void filePathsChanged(QStringList filePaths);
@@ -60,6 +61,7 @@ protected:
 
 private slots:
     void browse();
+    void setPosIndex(int index) { mPosIndex = index; }
 
 private:
     Ui::ImportExportDialog* ui = nullptr;
@@ -69,6 +71,7 @@ private:
 
     FileType mFileType = FileType::ANIMATION;
     Mode mMode = Import;
+    int mPosIndex = 0;
 };
 
 #endif // IMPORTEXPORTDIALOG_H
