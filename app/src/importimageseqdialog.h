@@ -53,7 +53,7 @@ public:
                                   ImportCriteria importCriteria = ImportCriteria::Arbitrary);
     ~ImportImageSeqDialog() override;
 
-    void importArbitrarySequence();
+    void importArbitrarySequence(int index);
     void importPredefinedSet(int index);
     int getSpace();
 

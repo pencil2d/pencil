@@ -808,7 +808,7 @@ void MainWindow2::importImageSequence()
     mIsImportingImageSequence = true;
 
     ImportImageSeqDialog* imageSeqDialog = new ImportImageSeqDialog(this);
-    OnScopeExit(delete imageSeqDialog);
+    OnScopeExit(delete imageSeqDialog)
     imageSeqDialog->setCore(mEditor);
 
     connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
@@ -818,7 +818,8 @@ void MainWindow2::importImageSequence()
     {
         return;
     }
-    imageSeqDialog->importArbitrarySequence();
+    int index = imageSeqDialog->getPosIndex();
+    imageSeqDialog->importArbitrarySequence(index);
 
     mIsImportingImageSequence = false;
 }

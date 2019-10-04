@@ -158,8 +158,18 @@ void ImportImageSeqDialog::setSpace(int number)
     uiOptionsBox->spaceSpinBox->setValue(number);
 }
 
-void ImportImageSeqDialog::importArbitrarySequence()
+void ImportImageSeqDialog::importArbitrarySequence(int index)
 {
+    QPointF currentView = mEditor->view()->translation();
+    if (index == 1)
+    {
+        mEditor->view()->resetView();
+    }
+    else if (index == 2)
+    {
+        mEditor->view()->translate(mEditor->view()->getCameraView());
+    }
+
     QStringList files = getFilePaths();
     int number = getSpace();
 
@@ -219,6 +229,8 @@ void ImportImageSeqDialog::importArbitrarySequence()
                              QMessageBox::Ok,
                              QMessageBox::Ok);
     }
+
+    mEditor->view()->translate(currentView);
 
     emit notifyAnimationLengthChanged();
     progress.close();
