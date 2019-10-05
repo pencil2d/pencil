@@ -65,6 +65,7 @@ GNU General Public License for more details.
 #include "errordialog.h"
 #include "importimageseqdialog.h"
 #include "importlayersdialog.h"
+#include "importpositiondialog.h"
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
@@ -780,6 +781,18 @@ bool MainWindow2::autoSave()
     return false;
 }
 
+int MainWindow2::getImportPosition()
+{
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    positionDialog->exec();
+    if (positionDialog->result() == QDialog::Rejected)
+    {
+        return -1;
+    }
+
+    return positionDialog->getPosIndex();
+}
+
 void MainWindow2::importImage()
 {
     FileDialog fileDialog(this);
@@ -787,6 +800,18 @@ void MainWindow2::importImage()
 
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
+
+    int index = getImportPosition();
+    if (index < 0) { return; }
+    QPointF currentView = mEditor->view()->translation();
+    if (index == 1)
+    {
+        mEditor->view()->resetView();
+    }
+    else if (index == 2)
+    {
+        mEditor->view()->translate(mEditor->view()->getCameraView());
+    }
 
     bool ok = mEditor->importImage(strFilePath);
     if (!ok)
@@ -798,6 +823,8 @@ void MainWindow2::importImage()
                              QMessageBox::Ok);
         return;
     }
+
+    mEditor->view()->translate(currentView);
 
     ui->scribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
@@ -818,7 +845,15 @@ void MainWindow2::importImageSequence()
     {
         return;
     }
-    int index = imageSeqDialog->getPosIndex();
+
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    positionDialog->exec();
+    if (positionDialog->result() == QDialog::Rejected)
+    {
+        return;
+    }
+
+    int index = positionDialog->getPosIndex();
     imageSeqDialog->importArbitrarySequence(index);
 
     mIsImportingImageSequence = false;
@@ -839,7 +874,14 @@ void MainWindow2::importPredefinedImageSet()
         return;
     }
 
-    int index = imageSeqDialog->getPosIndex();
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    positionDialog->exec();
+    if (positionDialog->result() != QDialog::Accepted)
+    {
+        return;
+    }
+
+    int index = positionDialog->getPosIndex();
     imageSeqDialog->importPredefinedSet(index);
     mIsImportingImageSequence = false;
 }

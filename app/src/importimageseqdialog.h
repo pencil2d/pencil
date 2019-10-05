@@ -76,7 +76,6 @@ private:
     int keyFramePosFromFilePath(const QString& path);
 
 private:
-
     const PredefinedKeySet generatePredefinedKeySet() const;
     void setPreviewModel(const PredefinedKeySet& predefinedKeySet);
     void setupLayout();

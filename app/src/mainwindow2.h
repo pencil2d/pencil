@@ -79,6 +79,7 @@ public:
     bool autoSave();
 
     // import
+    int getImportPosition();
     void importImage();
     void importImageSequence();
     void importPredefinedImageSet();
