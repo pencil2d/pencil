@@ -133,8 +133,8 @@ void ShortcutsPage::saveShortcutsButtonClicked()
     settings.endGroup();
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save Pencil2D Shortcut file"),
-                                                    fDir + "/untitled.pclshortcut",
-                                                    tr("Pencil2D Shortcut File(*.pclshortcut)"));
+                                                    fDir + "/untitled.pcls",
+                                                    tr("Pencil2D Shortcut File(*.pcls)"));
 
     QSettings out(fileName, QSettings::IniFormat);
     settings.beginGroup( "shortcuts" );
@@ -149,16 +149,14 @@ void ShortcutsPage::saveShortcutsButtonClicked()
 void ShortcutsPage::loadShortcutsButtonClicked()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
-    settings.beginGroup( "LastSavePath" );
     QString fDir = settings.value("Animation").toString();
-    settings.endGroup();
     if (fDir.isEmpty())
         fDir = QDir::homePath();
 
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Pencil2D Shortcut file"),
                                                     fDir,
-                                                    tr("Pencil2D Shortcut File(*.pclshortcut)"));
+                                                    tr("Pencil2D Shortcut File(*.pcls)"));
 
     if (!QFileInfo(fileName).isReadable())
     {
