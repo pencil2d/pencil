@@ -135,20 +135,15 @@ void ShortcutsPage::saveShortcutsButtonClicked()
                                                     tr("Save Pencil2D Shortcut file"),
                                                     fDir + "/untitled.pclshortcut",
                                                     tr("Pencil2D Shortcut File(*.pclshortcut)"));
-    QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
 
-    QTextStream out(&file);
-    out << "[shortcuts]\n";
+    QSettings out(fileName, QSettings::IniFormat);
     settings.beginGroup( "shortcuts" );
+    out.beginGroup("shortcuts");
 
-    foreach (QString shortCut, settings.allKeys())
+    foreach (QString key, settings.allKeys())
     {
-        out << shortCut + "=" + settings.value(shortCut).toString() + "\n";
+        out.setValue(key, settings.value(key));
     }
-    settings.endGroup();
-    file.close();
 }
 
 void ShortcutsPage::loadShortcutsButtonClicked()
@@ -156,6 +151,7 @@ void ShortcutsPage::loadShortcutsButtonClicked()
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.beginGroup( "LastSavePath" );
     QString fDir = settings.value("Animation").toString();
+    settings.endGroup();
     if (fDir.isEmpty())
         fDir = QDir::homePath();
 
@@ -163,18 +159,25 @@ void ShortcutsPage::loadShortcutsButtonClicked()
                                                     tr("Open Pencil2D Shortcut file"),
                                                     fDir,
                                                     tr("Pencil2D Shortcut File(*.pclshortcut)"));
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly))
-        return;
 
-    QSettings defaultKey(fileName, QSettings::IniFormat);
-
-    QSettings curSetting( PENCIL2D, PENCIL2D );
-    curSetting.remove("shortcuts");
-
-    foreach (QString pShortcutsKey, defaultKey.allKeys())
+    if (!QFileInfo(fileName).isReadable())
     {
-        curSetting.setValue(pShortcutsKey, defaultKey.value(pShortcutsKey));
+        qDebug() << "Shortcut file not readable";
+        return;
+    }
+
+    QSettings input(fileName, QSettings::IniFormat);
+    if (input.status() != QSettings::NoError || !input.childGroups().contains("shortcuts"))
+    {
+        qDebug() << "Error accessing or parsing shortcut file" << input.status();
+        return;
+    }
+
+    input.beginGroup("shortcuts");
+    settings.beginGroup("shortcuts");
+    foreach (QString pShortcutsKey, input.allKeys())
+    {
+        settings.setValue(pShortcutsKey, input.value(pShortcutsKey));
     }
 
     treeModelLoadShortcutsSetting();
