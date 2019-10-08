@@ -7,16 +7,31 @@ namespace Ui {
 class ImportPositionDialog;
 }
 
-enum class ImportPositionType {
-    CenterOfCamera,
-    CenterOfCanvas
-};
-
 class Editor;
 
 class ImportPositionDialog : public QDialog
 {
     Q_OBJECT
+
+    struct ImportPosition {
+
+        enum Type {
+            CenterOfCamera,
+            CenterOfCanvas,
+            None
+        };
+
+        static Type getTypeFromIndex(int index) {
+            switch (index) {
+                case 0:
+                    return CenterOfCanvas;
+                case 1:
+                    return CenterOfCamera;
+                default:
+                    return None;
+            }
+        }
+    };
 
 public:
     explicit ImportPositionDialog(QWidget *parent = nullptr);
@@ -31,7 +46,7 @@ private slots:
 private:
     Ui::ImportPositionDialog *ui;
 
-    ImportPositionType mImportOption = ImportPositionType::CenterOfCamera;
+    ImportPosition::Type mImportOption;
     Editor* mEditor = nullptr;
 };
 

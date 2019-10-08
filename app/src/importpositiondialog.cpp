@@ -32,29 +32,18 @@ ImportPositionDialog::~ImportPositionDialog()
 
 void ImportPositionDialog::didChangeComboBoxIndex(const int index)
 {
-    switch (index) {
-    case 0: {
-        mImportOption = ImportPositionType::CenterOfCanvas;
-        break;
-    }
-    case 1: {
-        mImportOption = ImportPositionType::CenterOfCamera;
-        break;
-    }
-    default:
-        break;
-    }
+    mImportOption = ImportPosition::getTypeFromIndex(index);
 }
 
 void ImportPositionDialog::changeImportView()
 {
     QTransform transform;
-    if (mImportOption == ImportPositionType::CenterOfCanvas)
+    if (mImportOption == ImportPosition::Type::CenterOfCanvas)
     {
         QPointF centralPoint = mEditor->getScribbleArea()->getCentralPoint();
         transform = transform.fromTranslate(centralPoint.x(), centralPoint.y());
     }
-    else if (mImportOption == ImportPositionType::CenterOfCamera)
+    else if (mImportOption == ImportPosition::Type::CenterOfCamera)
     {
         QRectF cameraRect = mEditor->getScribbleArea()->getCameraRect();
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
