@@ -53,8 +53,8 @@ public:
                                   ImportCriteria importCriteria = ImportCriteria::Arbitrary);
     ~ImportImageSeqDialog() override;
 
-    void importArbitrarySequence(int index);
-    void importPredefinedSet(int index);
+    void importArbitrarySequence();
+    void importPredefinedSet();
     int getSpace();
 
     void setCore(Editor* editor) { mEditor = editor; }

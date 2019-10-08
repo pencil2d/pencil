@@ -158,18 +158,8 @@ void ImportImageSeqDialog::setSpace(int number)
     uiOptionsBox->spaceSpinBox->setValue(number);
 }
 
-void ImportImageSeqDialog::importArbitrarySequence(int index)
+void ImportImageSeqDialog::importArbitrarySequence()
 {
-    QPointF currentView = mEditor->view()->translation();
-    if (index == 1)
-    {
-        mEditor->view()->resetView();
-    }
-    else if (index == 2)
-    {
-        mEditor->view()->translate(mEditor->view()->getCameraView());
-    }
-
     QStringList files = getFilePaths();
     int number = getSpace();
 
@@ -230,7 +220,6 @@ void ImportImageSeqDialog::importArbitrarySequence(int index)
                              QMessageBox::Ok);
     }
 
-    mEditor->view()->translate(currentView);
 
     emit notifyAnimationLengthChanged();
     progress.close();
@@ -307,17 +296,8 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
     return setParams;
 }
 
-void ImportImageSeqDialog::importPredefinedSet(int index)
+void ImportImageSeqDialog::importPredefinedSet()
 {
-    QPointF currentView = mEditor->view()->translation();
-    if (index == 1)
-    {
-        mEditor->view()->resetView();
-    }
-    else if (index == 2)
-    {
-        mEditor->view()->translate(mEditor->view()->getCameraView());
-    }
     PredefinedKeySet keySet = generatePredefinedKeySet();
 
     // Show a progress dialog, as this can take a while if you have lots of images.
@@ -350,8 +330,6 @@ void ImportImageSeqDialog::importPredefinedSet(int index)
 
         if (!ok) { return;}
     }
-
-    mEditor->view()->translate(currentView);
 
     emit notifyAnimationLengthChanged();
 }
