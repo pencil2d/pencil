@@ -781,18 +781,6 @@ bool MainWindow2::autoSave()
     return false;
 }
 
-int MainWindow2::getImportPosition()
-{
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
-    positionDialog->exec();
-    if (positionDialog->result() == QDialog::Rejected)
-    {
-        return -1;
-    }
-
-    return positionDialog->getPosIndex();
-}
-
 void MainWindow2::importImage()
 {
     FileDialog fileDialog(this);
@@ -801,16 +789,15 @@ void MainWindow2::importImage()
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
 
-    int index = getImportPosition();
-    if (index < 0) { return; }
-    QPointF currentView = mEditor->view()->translation();
-    if (index == 1)
+    ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    OnScopeExit(delete positionDialog)
+
+    positionDialog->setCore(mEditor);
+    positionDialog->exec();
+
+    if (positionDialog->result() != QDialog::Accepted)
     {
-        mEditor->view()->resetView();
-    }
-    else if (index == 2)
-    {
-        mEditor->view()->translate(mEditor->view()->getCameraView());
+        return;
     }
 
     bool ok = mEditor->importImage(strFilePath);
@@ -824,7 +811,6 @@ void MainWindow2::importImage()
         return;
     }
 
-    mEditor->view()->translate(currentView);
 
     ui->scribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
@@ -846,15 +832,15 @@ void MainWindow2::importImageSequence()
         return;
     }
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() == QDialog::Rejected)
     {
         return;
     }
 
-    int index = positionDialog->getPosIndex();
-    imageSeqDialog->importArbitrarySequence(index);
+    imageSeqDialog->importArbitrarySequence();
 
     mIsImportingImageSequence = false;
 }
@@ -881,8 +867,7 @@ void MainWindow2::importPredefinedImageSet()
         return;
     }
 
-    int index = positionDialog->getPosIndex();
-    imageSeqDialog->importPredefinedSet(index);
+    imageSeqDialog->importPredefinedSet();
     mIsImportingImageSequence = false;
 }
 

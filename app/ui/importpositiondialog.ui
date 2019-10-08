@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>304</width>
-    <height>101</height>
+    <height>102</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="labImagePosition">
        <property name="text">
-        <string>Import image(-s) relative to:</string>
+        <string>Import image/s relative to:</string>
        </property>
       </widget>
      </item>
