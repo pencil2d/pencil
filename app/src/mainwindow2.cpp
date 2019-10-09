@@ -833,9 +833,11 @@ void MainWindow2::importImageSequence()
     }
 
     ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    OnScopeExit(delete positionDialog)
+
     positionDialog->setCore(mEditor);
     positionDialog->exec();
-    if (positionDialog->result() == QDialog::Rejected)
+    if (positionDialog->result() != QDialog::Accepted)
     {
         return;
     }
@@ -861,6 +863,9 @@ void MainWindow2::importPredefinedImageSet()
     }
 
     ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    OnScopeExit(delete positionDialog)
+
+    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -889,6 +894,16 @@ void MainWindow2::importGIF()
 
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
     mIsImportingImageSequence = true;
+
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    OnScopeExit(delete positionDialog)
+
+    positionDialog->setCore(mEditor);
+    positionDialog->exec();
+    if (positionDialog->result() != QDialog::Accepted)
+    {
+        return;
+    }
 
     int space = gifDialog->getSpace();
 
