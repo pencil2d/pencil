@@ -470,7 +470,7 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
 
         QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
-        rg2 = camTransform.map(rg2);
+        rg2 = camTransform.inverted().map(rg2);
     }
 
     painter.setOpacity(1.0);
