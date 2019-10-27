@@ -64,6 +64,9 @@ public:
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     Status addNewKey();
+    Status insertNewKey();
+    void addNewEmpty();
+    void removeEmpty();
     void removeKey();
     void duplicateKey();
     void moveFrameForward();

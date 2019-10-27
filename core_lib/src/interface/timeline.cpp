@@ -127,6 +127,21 @@ void TimeLine::initUI()
     removeKeyButton->setToolTip(tr("Remove Frame"));
     removeKeyButton->setFixedSize(24, 24);
 
+    QToolButton* addEmptyButton = new QToolButton(this);
+    addEmptyButton->setIcon(QIcon(":icons/add2.png"));
+    addEmptyButton->setToolTip(tr("Add empty frame"));
+    addEmptyButton->setFixedSize(24, 24);
+
+    QToolButton* removeEmptyButton = new QToolButton(this);
+    removeEmptyButton->setIcon(QIcon(":icons/remove2.png"));
+    removeEmptyButton->setToolTip(tr("Remove empty frame"));
+    removeEmptyButton->setFixedSize(24, 24);
+
+    QToolButton* insertKeyButton = new QToolButton(this);
+    insertKeyButton->setIcon(QIcon(":icons/add2.png"));
+    insertKeyButton->setToolTip(tr("Insert Frame"));
+    insertKeyButton->setFixedSize(24, 24);
+
     QToolButton* duplicateKeyButton = new QToolButton(this);
     duplicateKeyButton->setIcon(QIcon(":icons/controls/duplicate.png"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
@@ -150,6 +165,9 @@ void TimeLine::initUI()
     timelineButtons->addWidget(zoomLabel);
     timelineButtons->addWidget(zoomSlider);
     timelineButtons->addSeparator();
+    timelineButtons->addWidget(addEmptyButton);
+    timelineButtons->addWidget(removeEmptyButton);
+    timelineButtons->addWidget(insertKeyButton);
     timelineButtons->addSeparator();
     timelineButtons->setFixedHeight(30);
 
@@ -204,6 +222,9 @@ void TimeLine::initUI()
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
+    connect(addEmptyButton, &QToolButton::clicked, this, &TimeLine::addEmptyClick);
+    connect(removeEmptyButton, &QToolButton::clicked, this, &TimeLine::removeEmptyClick);
+    connect(insertKeyButton, &QToolButton::clicked, this, &TimeLine::insertKeyClick);
 
     connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);

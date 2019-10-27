@@ -530,6 +530,56 @@ Status ActionCommands::addNewKey()
     return Status::OK;
 }
 
+void ActionCommands::addNewEmpty(){
+    Layer* layer = mEditor->layers()->currentLayer();
+    int currentFrame = mEditor->currentFrame();
+
+    if(currentFrame < layer->getMaxKeyFramePosition())
+    {
+        layer->selectAllFramesAfter( currentFrame + 1);
+        layer->moveSelectedFrames(1);
+        layer->deselectAll();
+        mEditor->updateTimeLine();
+    }
+}
+
+void ActionCommands::removeEmpty(){
+    Layer* layer = mEditor->layers()->currentLayer();
+    int currentFrame = mEditor->currentFrame();
+
+    if(currentFrame < layer->getMaxKeyFramePosition())
+    {
+        if(!layer->keyExists(currentFrame))
+        {
+            layer->selectAllFramesAfter(currentFrame);
+            layer->moveSelectedFrames(-1);
+            layer->deselectAll();
+            mEditor->updateTimeLine();
+            mEditor->updateCurrentFrame();
+        }
+        else if (layer->keyExists(currentFrame) && !layer->keyExists(currentFrame + 1))
+        {
+            layer->selectAllFramesAfter(currentFrame + 1);
+            layer->moveSelectedFrames(-1);
+            layer->deselectAll();
+            mEditor->updateTimeLine();
+            mEditor->updateCurrentFrame();
+        }
+    }
+}
+
+Status ActionCommands::insertNewKey(){
+    Layer* layer = mEditor->layers()->currentLayer();
+
+    if(mEditor->currentFrame() < layer->getMaxKeyFramePosition())
+    {
+        layer->selectAllFramesAfter( mEditor->currentFrame() + 1);
+        layer->moveSelectedFrames(1);
+        layer->deselectAll();
+    }
+    return this->addNewKey();
+}
+
 void ActionCommands::removeKey()
 {
     mEditor->removeKey();

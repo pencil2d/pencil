@@ -318,6 +318,9 @@ void MainWindow2::createMenus()
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::addNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
+    connect(ui->actionAdd_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::addNewEmpty);
+    connect(ui->actionRemove_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::removeEmpty);
+    connect(ui->actionInsert_Frame, &QAction::triggered, mCommands, &ActionCommands::insertNewKey);
     connect(ui->actionNext_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoNextFrame);
     connect(ui->actionPrevious_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevFrame);
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame);
@@ -1101,6 +1104,9 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionAdd_Frame->setShortcut(cmdKeySeq(CMD_ADD_FRAME));
     ui->actionDuplicate_Frame->setShortcut(cmdKeySeq(CMD_DUPLICATE_FRAME));
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
+    ui->actionAdd_EmptyFrame->setShortcut(cmdKeySeq(CMD_ADD_EMPTY));
+    ui->actionRemove_EmptyFrame->setShortcut(cmdKeySeq(CMD_REMOVE_EMPTY));
+    ui->actionInsert_Frame->setShortcut(cmdKeySeq(CMD_INSERT_FRAME));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
     ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
@@ -1258,6 +1264,10 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
+    connect(pTimeline, &TimeLine::addEmptyClick, mCommands, &ActionCommands::addNewEmpty);
+    connect(pTimeline, &TimeLine::removeEmptyClick, mCommands, &ActionCommands::removeEmpty);
+    connect(pTimeline, &TimeLine::insertKeyClick, mCommands, &ActionCommands::insertNewKey);
+
 
     connect(pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer);
     connect(pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer);
