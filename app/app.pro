@@ -20,6 +20,10 @@ RESOURCES += \
     data/app.qrc \
     ../translations/translations.qrc
 
+MOC_DIR = .moc
+OBJECTS_DIR = .obj
+UI_DIR = .ui
+
 INCLUDEPATH += \
     src \
     ../core_lib/src/graphics \
