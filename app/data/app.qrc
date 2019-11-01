@@ -2,7 +2,9 @@
     <qresource prefix="/">
         <file>icons/clear.png</file>
         <file>icons/remove.png</file>
+        <file>icons/remove2.png</file>
         <file>icons/add.png</file>
+        <file>icons/add2.png</file>
         <file>icons/magnify.png</file>
         <file>icons/layer-vector.png</file>
         <file>icons/layer-bitmap.png</file>
