@@ -86,6 +86,9 @@ public:
     void setScribbleArea(ScribbleArea* pScirbbleArea) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
+    void setClipboardBitmapKeyframes(std::map<int, KeyFrame*> keyFrames) { mClipboardBitmapKeyFrames = keyFrames; }
+    std::map<int, KeyFrame*> getClipboardBitmapKeyFrames() { return mClipboardBitmapKeyFrames; }
+
     int currentFrame();
     int fps();
 
@@ -224,6 +227,7 @@ private:
     bool clipboardBitmapOk = true;
     bool clipboardVectorOk = true;
     bool clipboardSoundClipOk = true;
+    std::map<int, KeyFrame*> mClipboardBitmapKeyFrames;
 };
 
 #endif

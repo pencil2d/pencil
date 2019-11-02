@@ -65,6 +65,8 @@ public:
     bool visible() const { return mVisible; }
     void setVisible(bool b) { mVisible = b; }
 
+    QList<int> selectedKeyFramesPosition() { return mSelectedFrames_byPosition; }
+
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) = 0;

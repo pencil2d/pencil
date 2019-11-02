@@ -65,7 +65,7 @@ Status ActionCommands::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     Q_ASSERT(layer);
-    NULLReturn(layer, Status::FAIL);
+    NULLReturn(layer, Status::FAIL)
 
     if (layer->type() != Layer::SOUND)
     {
@@ -144,7 +144,7 @@ Status ActionCommands::exportMovie(bool isGif)
     } else {
         dialog = new ExportMovieDialog(mParent);
     }
-    OnScopeExit(dialog->deleteLater());
+    OnScopeExit(dialog->deleteLater())
 
     dialog->init();
     
@@ -260,7 +260,7 @@ Status ActionCommands::exportMovie(bool isGif)
 Status ActionCommands::exportImageSequence()
 {
     auto dialog = new ExportImageDialog(mParent, FileType::IMAGE_SEQUENCE);
-    OnScopeExit(dialog->deleteLater());
+    OnScopeExit(dialog->deleteLater())
     
     dialog->init();
 
@@ -336,7 +336,7 @@ Status ActionCommands::exportImage()
 {
     // Options
     auto dialog = new ExportImageDialog(mParent, FileType::IMAGE);
-    OnScopeExit(dialog->deleteLater());
+    OnScopeExit(dialog->deleteLater())
 
     dialog->init();
 
@@ -580,17 +580,68 @@ Status ActionCommands::insertNewKey(){
     return this->addNewKey();
 }
 
-void ActionCommands::test1(){
-    qDebug
+void ActionCommands::test1()
+{
+    qDebug() << "copy frames";
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer->type() != Layer::BITMAP) return;
+    int currentPosition = mEditor->currentFrame();
+    std::map<int, KeyFrame*> clipboard;
+    auto kfsPosition = mEditor->layers()->currentLayer()->selectedKeyFramesPosition();
+
+    // if at least 1 frame is selected copy all those frames
+    if (kfsPosition.count() > 0) {
+        for (auto i = kfsPosition.begin(); i != kfsPosition.end(); ++i)
+        {
+            int relativePosition = *i - *kfsPosition.begin();
+            KeyFrame* k = currentLayer->getKeyFrameAt(*i)->clone();
+            clipboard[relativePosition] = k;
+        }
+    } 
+    // copy the frame at current position
+    else if (kfsPosition.count() == 0 && currentLayer->keyExists(currentPosition))
+    {
+        clipboard[0] = currentLayer->getKeyFrameAt(currentPosition)->clone();
+    } 
+    else return;
+    
+    mEditor->setClipboardBitmapKeyframes(clipboard);
 };
 
+void ActionCommands::test2()
+{
+    qDebug() << "paste frames";
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer->type() != Layer::BITMAP) return;
+    int currentPosition = mEditor->currentFrame();
+    auto kfs = mEditor->getClipboardBitmapKeyFrames();
 
-void ActionCommands::test2(){};
+    // move current frames
+    if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition())
+    {
+        currentLayer->selectAllFramesAfter( currentPosition );
+        currentLayer->moveSelectedFrames(kfs.end()->first);
+        currentLayer->deselectAll();
+    }
+    mEditor->updateTimeLine();
+ 
+    // insert copied frames
+    auto i = kfs.begin();
+    while (i != kfs.end())
+	{
+        currentLayer->addKeyFrame(currentPosition + i->first, i->second->clone());
+        mEditor->updateTimeLine();
+		i++;
+	}
+
+    mEditor->updateTimeLine();
+    mEditor->updateCurrentFrame();
+};
+
 void ActionCommands::test3(){};
 void ActionCommands::test4(){};
 void ActionCommands::test5(){};
 void ActionCommands::test6(){};
-
 
 void ActionCommands::removeKey()
 {
