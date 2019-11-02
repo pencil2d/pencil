@@ -63,6 +63,13 @@ Q_SIGNALS:
     void removeEmptyClick();
     void insertKeyClick();
 
+    void test1Click();
+    void test2Click();
+    void test3Click();
+    void test4Click();
+    void test5Click();
+    void test6Click();
+
     void newBitmapLayer();
     void newVectorLayer();
     void newSoundLayer();

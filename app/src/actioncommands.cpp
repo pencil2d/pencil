@@ -580,6 +580,18 @@ Status ActionCommands::insertNewKey(){
     return this->addNewKey();
 }
 
+void ActionCommands::test1(){
+    qDebug
+};
+
+
+void ActionCommands::test2(){};
+void ActionCommands::test3(){};
+void ActionCommands::test4(){};
+void ActionCommands::test5(){};
+void ActionCommands::test6(){};
+
+
 void ActionCommands::removeKey()
 {
     mEditor->removeKey();

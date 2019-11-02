@@ -37,7 +37,7 @@ void PreviewCanvas::paintEvent( QPaintEvent* )
 PreviewWidget::PreviewWidget( QWidget* parent ) : QDockWidget( parent )
 {
 	mCanvas = new PreviewCanvas( this );
-	setWidget( mCanvas );
+    setWidget( mCanvas );
 }
 
 void PreviewWidget::updateImage()

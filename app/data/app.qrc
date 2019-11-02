@@ -60,6 +60,12 @@
         <file>icons/new/arrow-vertical.png</file>
         <file>icons/add2.png</file>
         <file>icons/remove2.png</file>
+        <file>icons/test1.png</file>
+        <file>icons/test2.png</file>
+        <file>icons/test3.png</file>
+        <file>icons/test4.png</file>
+        <file>icons/test5.png</file>
+        <file>icons/test6.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

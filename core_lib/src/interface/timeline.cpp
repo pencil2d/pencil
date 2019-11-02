@@ -147,6 +147,36 @@ void TimeLine::initUI()
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
 
+    QToolButton* test1Button = new QToolButton(this);
+    test1Button->setIcon(QIcon(":icons/test1.png"));
+    test1Button->setToolTip(tr("Duplicate Frame"));
+    test1Button->setFixedSize(24, 24);
+
+    QToolButton* test2Button = new QToolButton(this);
+    test2Button->setIcon(QIcon(":icons/test2.png"));
+    test2Button->setToolTip(tr("Duplicate Frame"));
+    test2Button->setFixedSize(24, 24);
+
+    QToolButton* test3Button = new QToolButton(this);
+    test3Button->setIcon(QIcon(":icons/test3.png"));
+    test3Button->setToolTip(tr("Duplicate Frame"));
+    test3Button->setFixedSize(24, 24);
+
+    QToolButton* test4Button = new QToolButton(this);
+    test4Button->setIcon(QIcon(":icons/test4.png"));
+    test4Button->setToolTip(tr("Duplicate Frame"));
+    test4Button->setFixedSize(24, 24);
+
+    QToolButton* test5Button = new QToolButton(this);
+    test5Button->setIcon(QIcon(":icons/test5.png"));
+    test5Button->setToolTip(tr("Duplicate Frame"));
+    test5Button->setFixedSize(24, 24);
+
+    QToolButton* test6Button = new QToolButton(this);
+    test6Button->setIcon(QIcon(":icons/test6.png"));
+    test6Button->setToolTip(tr("Duplicate Frame"));
+    test6Button->setFixedSize(24, 24);
+
     QLabel* zoomLabel = new QLabel(tr("Zoom:"));
     zoomLabel->setIndent(5);
 
@@ -169,6 +199,15 @@ void TimeLine::initUI()
     timelineButtons->addWidget(removeEmptyButton);
     timelineButtons->addWidget(insertKeyButton);
     timelineButtons->addSeparator();
+    timelineButtons->addWidget(test1Button);
+    timelineButtons->addWidget(test2Button);
+    timelineButtons->addSeparator();
+    timelineButtons->addWidget(test3Button);
+    timelineButtons->addWidget(test4Button);
+    timelineButtons->addSeparator();
+    timelineButtons->addWidget(test5Button);
+    timelineButtons->addWidget(test6Button);
+
     timelineButtons->setFixedHeight(30);
 
     // --------- Time controls ---------
@@ -225,6 +264,13 @@ void TimeLine::initUI()
     connect(addEmptyButton, &QToolButton::clicked, this, &TimeLine::addEmptyClick);
     connect(removeEmptyButton, &QToolButton::clicked, this, &TimeLine::removeEmptyClick);
     connect(insertKeyButton, &QToolButton::clicked, this, &TimeLine::insertKeyClick);
+
+    connect(test1Button, &QToolButton::clicked, this, &TimeLine::test1Click);
+    connect(test2Button, &QToolButton::clicked, this, &TimeLine::test2Click);
+    connect(test3Button, &QToolButton::clicked, this, &TimeLine::test3Click);
+    connect(test4Button, &QToolButton::clicked, this, &TimeLine::test4Click);
+    connect(test5Button, &QToolButton::clicked, this, &TimeLine::test5Click);
+    connect(test6Button, &QToolButton::clicked, this, &TimeLine::test6Click);
 
     connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);

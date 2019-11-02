@@ -329,6 +329,7 @@ void MainWindow2::createMenus()
     connect(ui->actionMove_Frame_Forward, &QAction::triggered, mCommands, &ActionCommands::moveFrameForward);
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
 
+
     //--- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
     connect(ui->actionSelect, &QAction::triggered, mToolBox, &ToolBoxWidget::selectOn);
@@ -1268,6 +1269,12 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::removeEmptyClick, mCommands, &ActionCommands::removeEmpty);
     connect(pTimeline, &TimeLine::insertKeyClick, mCommands, &ActionCommands::insertNewKey);
 
+    connect(pTimeline, &TimeLine::test1Click, mCommands, &ActionCommands::test1);
+    connect(pTimeline, &TimeLine::test2Click, mCommands, &ActionCommands::test2);
+    connect(pTimeline, &TimeLine::test3Click, mCommands, &ActionCommands::test3);
+    connect(pTimeline, &TimeLine::test4Click, mCommands, &ActionCommands::test4);
+    connect(pTimeline, &TimeLine::test5Click, mCommands, &ActionCommands::test5);
+    connect(pTimeline, &TimeLine::test6Click, mCommands, &ActionCommands::test6);
 
     connect(pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer);
     connect(pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer);
