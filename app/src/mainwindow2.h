@@ -31,6 +31,7 @@ class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
 class DisplayOptionWidget;
+class FrameCommentWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
@@ -142,6 +143,7 @@ private:
     ColorBox*           mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
+    FrameCommentWidget*   mFrameComments = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
     ToolBoxWidget*        mToolBox = nullptr;
     Timeline2*            mTimeline2 = nullptr;

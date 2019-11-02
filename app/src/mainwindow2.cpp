@@ -55,6 +55,7 @@ GNU General Public License for more details.
 #include "colorinspector.h"
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
+#include "framecommentwidget.h"
 #include "tooloptionwidget.h"
 #include "preferencesdialog.h"
 #include "timeline.h"
@@ -154,6 +155,9 @@ void MainWindow2::createDockWidgets()
     mDisplayOptionWidget = new DisplayOptionWidget(this);
     mDisplayOptionWidget->setObjectName("DisplayOption");
 
+    mFrameComments = new FrameCommentWidget(this);
+    mFrameComments->setObjectName("FrameComments");
+
     mToolOptions = new ToolOptionWidget(this);
     mToolOptions->setObjectName("ToolOption");
 
@@ -172,6 +176,7 @@ void MainWindow2::createDockWidgets()
         << mColorInspector
         << mColorPalette
         << mDisplayOptionWidget
+        << mFrameComments
         << mToolOptions
         << mToolBox;
 
@@ -193,6 +198,8 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorBox);
     addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
+    addDockWidget(Qt::RightDockWidgetArea, mFrameComments);
+    mFrameComments->hide();
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
@@ -348,7 +355,8 @@ void MainWindow2::createMenus()
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction(),
-        mColorInspector->toggleViewAction()
+        mColorInspector->toggleViewAction(),
+        mFrameComments->toggleViewAction()
     };
 
     for (QAction* action : actions)

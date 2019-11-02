@@ -46,6 +46,13 @@ public:
     void setSelected(bool b) { mIsSelected = b; }
     bool isSelected() const { return mIsSelected; }
 
+    void setDialogueComment(QString comment) { mDialogueComment = comment; }
+    QString getDialogueComment() { return mDialogueComment; }
+    void setActionComment(QString comment) { mActionComment = comment; }
+    QString getActionComment() { return mActionComment; }
+    void setNotesComment(QString comment) { mNotesComment = comment; }
+    QString getNotesComment() { return mNotesComment; }
+
     QString fileName() const { return mAttachedFileName; }
     void    setFileName(QString strFileName) { mAttachedFileName = strFileName; }
 
@@ -63,6 +70,11 @@ private:
     bool mIsModified = true;
     bool mIsSelected = false;
     QString mAttachedFileName;
+
+    // comments
+    QString mDialogueComment = "";
+    QString mActionComment = "";
+    QString mNotesComment = "";
 
     std::vector<KeyFrameEventListener*> mEventListeners;
 };
