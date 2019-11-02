@@ -532,48 +532,48 @@ Status ActionCommands::addNewKey()
 
 void ActionCommands::addNewEmpty(){
     Layer* layer = mEditor->layers()->currentLayer();
-    int currentFrame = mEditor->currentFrame();
+    int currentPosition = mEditor->currentFrame();
 
-    if(currentFrame < layer->getMaxKeyFramePosition())
+    if(currentPosition < layer->getMaxKeyFramePosition())
     {
-        layer->selectAllFramesAfter( currentFrame + 1);
+        layer->selectAllFramesAfter( currentPosition + 1);
         layer->moveSelectedFrames(1);
         layer->deselectAll();
         mEditor->updateTimeLine();
+        mEditor->updateCurrentFrame();
     }
 }
 
 void ActionCommands::removeEmpty(){
     Layer* layer = mEditor->layers()->currentLayer();
-    int currentFrame = mEditor->currentFrame();
+    int currentPosition = mEditor->currentFrame();
 
-    if(currentFrame < layer->getMaxKeyFramePosition())
+    if(currentPosition < layer->getMaxKeyFramePosition())
     {
-        if(!layer->keyExists(currentFrame))
+        if(!layer->keyExists(currentPosition))
         {
-            layer->selectAllFramesAfter(currentFrame);
+            layer->selectAllFramesAfter(currentPosition);
             layer->moveSelectedFrames(-1);
             layer->deselectAll();
-            mEditor->updateTimeLine();
-            mEditor->updateCurrentFrame();
         }
-        else if (layer->keyExists(currentFrame) && !layer->keyExists(currentFrame + 1))
+        else if (layer->keyExists(currentPosition) && !layer->keyExists(currentPosition + 1))
         {
-            layer->selectAllFramesAfter(currentFrame + 1);
+            layer->selectAllFramesAfter(currentPosition + 1);
             layer->moveSelectedFrames(-1);
             layer->deselectAll();
-            mEditor->updateTimeLine();
-            mEditor->updateCurrentFrame();
         }
+        mEditor->updateTimeLine();
+        mEditor->updateCurrentFrame();
     }
 }
 
 Status ActionCommands::insertNewKey(){
     Layer* layer = mEditor->layers()->currentLayer();
+    int currentPosition = mEditor->currentFrame();
 
     if(mEditor->currentFrame() < layer->getMaxKeyFramePosition())
     {
-        layer->selectAllFramesAfter( mEditor->currentFrame() + 1);
+        layer->selectAllFramesAfter( currentPosition + 1);
         layer->moveSelectedFrames(1);
         layer->deselectAll();
     }
