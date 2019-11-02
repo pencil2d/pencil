@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "basedockwidget.h"
+#include "editor.h"
 
 namespace Ui {
     class FrameComment;
@@ -23,9 +24,14 @@ public slots:
     void dialogueTextChanged(QString text);
     void actionTextChanged(QString text);
     void notesTextChanged(QString text);
+    void currentFrameChanged(int frame);
+    void clearFrameCommentsFields();
+    void updateFrameComments();
 
 private:
     Ui::FrameComment *ui;
+
+    void fillFrameComments();
 };
 
 #endif // FRAMECOMMENTWIDGET_H
