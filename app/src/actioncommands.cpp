@@ -621,7 +621,6 @@ void ActionCommands::test2()
     {
         currentLayer->selectAllFramesAfter( currentPosition );
         currentLayer->moveSelectedFrames(kfs.end()->first);
-        currentLayer->deselectAll();
     }
     mEditor->updateTimeLine();
  
@@ -630,15 +629,47 @@ void ActionCommands::test2()
     while (i != kfs.end())
 	{
         currentLayer->addKeyFrame(currentPosition + i->first, i->second->clone());
+
         mEditor->updateTimeLine();
 		i++;
 	}
 
+    currentLayer->deselectAll();
     mEditor->updateTimeLine();
     mEditor->updateCurrentFrame();
 };
 
-void ActionCommands::test3(){};
+void ActionCommands::test3(){
+    qDebug() << "reverse paste frames";
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer->type() != Layer::BITMAP) return;
+    int currentPosition = mEditor->currentFrame();
+    auto kfs = mEditor->getClipboardBitmapKeyFrames();
+
+    // move current frames
+    if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition())
+    {
+        currentLayer->selectAllFramesAfter( currentPosition );
+        currentLayer->moveSelectedFrames(kfs.end()->first);
+    }
+    mEditor->updateTimeLine();
+
+    // insert copied frames
+    std::map<int, KeyFrame*>::reverse_iterator i = kfs.rbegin();
+    int lastPosition = i->first;
+    while (i != kfs.rend())
+	{
+        currentLayer->addKeyFrame(currentPosition + lastPosition - i->first, i->second->clone());
+
+        mEditor->updateTimeLine();
+		i++;
+	}
+
+    currentLayer->deselectAll();
+    mEditor->updateTimeLine();
+    mEditor->updateCurrentFrame();
+};
+
 void ActionCommands::test4(){};
 void ActionCommands::test5(){};
 void ActionCommands::test6(){};
