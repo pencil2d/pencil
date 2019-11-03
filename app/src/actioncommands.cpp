@@ -672,7 +672,21 @@ void ActionCommands::test3(){
     mEditor->updateCurrentFrame();
 };
 
-void ActionCommands::test4(){};
+void ActionCommands::test4()
+{
+    qDebug() << "delete selected frames";
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    auto kfsPosition = mEditor->layers()->currentLayer()->selectedKeyFramesPosition();
+
+    for (auto i = kfsPosition.begin(); i != kfsPosition.end(); ++i)
+    {
+        currentLayer->removeKeyFrame(*i);
+    }
+
+    mEditor->updateTimeLine();
+    mEditor->updateCurrentFrame();
+};
+
 void ActionCommands::test5(){};
 void ActionCommands::test6(){};
 
