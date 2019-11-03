@@ -587,19 +587,18 @@ void ActionCommands::test1()
     if (currentLayer->type() != Layer::BITMAP) return;
     int currentPosition = mEditor->currentFrame();
     std::map<int, KeyFrame*> clipboard;
-    auto kfsPosition = mEditor->layers()->currentLayer()->selectedKeyFramesPosition();
+    int firstPosition = *currentLayer->selectedKeyFramesPosition().begin();
+    int selectedCount = currentLayer->selectedKeyFrameCount();
 
     // if at least 1 frame is selected copy all those frames
-    if (kfsPosition.count() > 0) {
-        for (auto i = kfsPosition.begin(); i != kfsPosition.end(); ++i)
-        {
-            int relativePosition = *i - *kfsPosition.begin();
-            KeyFrame* k = currentLayer->getKeyFrameAt(*i)->clone();
-            clipboard[relativePosition] = k;
-        }
+    if (selectedCount > 0) {
+        currentLayer->foreachSelectedKeyFrame([&firstPosition, &clipboard](KeyFrame* k){
+            int relativePosition = k->pos() - firstPosition;
+            clipboard[relativePosition] = k->clone();
+        });
     } 
     // copy the frame at current position
-    else if (kfsPosition.count() == 0 && currentLayer->keyExists(currentPosition))
+    else if (selectedCount == 0 && currentLayer->keyExists(currentPosition))
     {
         clipboard[0] = currentLayer->getKeyFrameAt(currentPosition)->clone();
     } 
@@ -626,7 +625,6 @@ void ActionCommands::test2()
         currentLayer->moveSelectedFrames(lastPosition + 1);
     }
     currentLayer->deselectAll();
-
 
     // insert copied frames
     while (i != kfs.rend())
@@ -676,12 +674,10 @@ void ActionCommands::test4()
 {
     qDebug() << "delete selected frames";
     Layer* currentLayer = mEditor->layers()->currentLayer();
-    auto kfsPosition = mEditor->layers()->currentLayer()->selectedKeyFramesPosition();
 
-    for (auto i = kfsPosition.begin(); i != kfsPosition.end(); ++i)
-    {
-        currentLayer->removeKeyFrame(*i);
-    }
+    currentLayer->foreachSelectedKeyFrame([currentLayer](KeyFrame* k){
+        currentLayer->removeKeyFrame(k->pos());
+    });
 
     mEditor->updateTimeLine();
     mEditor->updateCurrentFrame();

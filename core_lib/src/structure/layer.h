@@ -82,6 +82,7 @@ public:
     int  getNextFrameNumber(int position, bool isAbsolute) const;
 
     int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
+    int selectedKeyFrameCount() const { return mSelectedFrames_byPosition.count(); }
 
     bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);
@@ -97,6 +98,7 @@ public:
     bool getVisibility() { return mVisible; }
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>);
+    void foreachSelectedKeyFrame(std::function<void(KeyFrame*)>);
 
     void setModified(int position, bool isModified);
 
