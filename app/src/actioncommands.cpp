@@ -616,25 +616,27 @@ void ActionCommands::test2()
     int currentPosition = mEditor->currentFrame();
     auto kfs = mEditor->getClipboardBitmapKeyFrames();
 
+    std::map<int, KeyFrame*>::reverse_iterator i = kfs.rbegin();
+    int lastPosition = i->first;
+
     // move current frames
     if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition())
     {
         currentLayer->selectAllFramesAfter( currentPosition );
-        currentLayer->moveSelectedFrames(kfs.end()->first);
+        currentLayer->moveSelectedFrames(lastPosition + 1);
     }
-    mEditor->updateTimeLine();
- 
-    // insert copied frames
-    auto i = kfs.begin();
-    while (i != kfs.end())
-	{
-        currentLayer->addKeyFrame(currentPosition + i->first, i->second->clone());
+    currentLayer->deselectAll();
 
-        mEditor->updateTimeLine();
+
+    // insert copied frames
+    while (i != kfs.rend())
+	{
+        KeyFrame* k =  i->second->clone();
+        k->setSelected(true); // select pasted frames 
+        currentLayer->addKeyFrame(currentPosition + i->first, k);
 		i++;
 	}
 
-    currentLayer->deselectAll();
     mEditor->updateTimeLine();
     mEditor->updateCurrentFrame();
 };
@@ -646,26 +648,26 @@ void ActionCommands::test3(){
     int currentPosition = mEditor->currentFrame();
     auto kfs = mEditor->getClipboardBitmapKeyFrames();
 
+    std::map<int, KeyFrame*>::reverse_iterator i = kfs.rbegin();
+    int lastPosition = i->first;
+
     // move current frames
     if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition())
     {
         currentLayer->selectAllFramesAfter( currentPosition );
-        currentLayer->moveSelectedFrames(kfs.end()->first);
+        currentLayer->moveSelectedFrames(lastPosition + 1);
     }
-    mEditor->updateTimeLine();
+    currentLayer->deselectAll();
 
     // insert copied frames
-    std::map<int, KeyFrame*>::reverse_iterator i = kfs.rbegin();
-    int lastPosition = i->first;
     while (i != kfs.rend())
 	{
-        currentLayer->addKeyFrame(currentPosition + lastPosition - i->first, i->second->clone());
-
-        mEditor->updateTimeLine();
+        KeyFrame* k =  i->second->clone();
+        k->setSelected(true); // select pasted frames
+        currentLayer->addKeyFrame(currentPosition + lastPosition - i->first, k);
 		i++;
 	}
 
-    currentLayer->deselectAll();
     mEditor->updateTimeLine();
     mEditor->updateCurrentFrame();
 };
