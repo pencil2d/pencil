@@ -683,7 +683,36 @@ void ActionCommands::test4()
     mEditor->updateCurrentFrame();
 };
 
-void ActionCommands::test5(){};
+void ActionCommands::test5()
+{
+    qDebug() << "cut frames";
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer->type() != Layer::BITMAP) return;
+    int currentPosition = mEditor->currentFrame();
+    std::map<int, KeyFrame*> clipboard;
+    int firstPosition = *currentLayer->selectedKeyFramesPosition().begin();
+    int selectedCount = currentLayer->selectedKeyFrameCount();
+
+    // if at least 1 frame is selected copy all those frames
+    if (selectedCount > 0) {
+        currentLayer->foreachSelectedKeyFrame([currentLayer, &firstPosition, &clipboard](KeyFrame* k){
+            int relativePosition = k->pos() - firstPosition;
+            clipboard[relativePosition] = k->clone();
+            currentLayer->removeKeyFrame(k->pos());
+        });
+    } 
+    // copy the frame at current position
+    else if (selectedCount == 0 && currentLayer->keyExists(currentPosition))
+    {
+        clipboard[0] = currentLayer->getKeyFrameAt(currentPosition)->clone();
+        currentLayer->removeKeyFrame(currentPosition);
+    } 
+    else return;
+    
+    mEditor->setClipboardBitmapKeyframes(clipboard);
+    mEditor->updateTimeLine();
+    mEditor->updateCurrentFrame();
+};
 void ActionCommands::test6(){};
 
 void ActionCommands::removeKey()
