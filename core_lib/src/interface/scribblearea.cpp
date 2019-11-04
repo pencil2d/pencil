@@ -926,6 +926,17 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
             // Refresh canvas
             drawCanvas(frameNumber, mCanvas.rect());
             break;
+
+        case CREATE_NEW_KEY_EXCEPT_ERASER:
+        {
+
+            if (currentTool()->type() != ERASER){
+                mEditor->addNewKey();
+                drawCanvas(frameNumber, mCanvas.rect());
+            }
+            break;
+        }
+
         default:
             break;
         }

@@ -672,12 +672,14 @@ void ActionCommands::test3(){
 
 void ActionCommands::test4()
 {
-    qDebug() << "delete selected frames";
+    qDebug() << "remove selected frames";
     Layer* currentLayer = mEditor->layers()->currentLayer();
 
     currentLayer->foreachSelectedKeyFrame([currentLayer](KeyFrame* k){
         currentLayer->removeKeyFrame(k->pos());
     });
+
+    if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
 
     mEditor->updateTimeLine();
     mEditor->updateCurrentFrame();

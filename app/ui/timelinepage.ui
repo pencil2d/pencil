@@ -27,7 +27,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>315</width>
+        <width>312</width>
         <height>622</height>
        </rect>
       </property>
@@ -121,6 +121,13 @@
            <widget class="QRadioButton" name="radioButtonDrawOnPrev">
             <property name="text">
              <string>Keep drawing on the previous key-frame</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButtonExceptEraser">
+            <property name="text">
+             <string>Create new blank keyframe except with eraser.</string>
             </property>
            </widget>
           </item>
