@@ -720,20 +720,23 @@ void ActionCommands::test5()
 
 void ActionCommands::test6()
 {
-    //TODO allow swapping 2 frames
     qDebug() << "swap selected frames";
     Layer* currentLayer = mEditor->layers()->currentLayer();
-    if(currentLayer->selectedKeyFrameCount() == 0) return;
+    int keyFrameCount = currentLayer->selectedKeyFrameCount();
+    if (keyFrameCount < 2) return;
     int firstPosition = currentLayer->selectedKeyFramesPosition().first();
     int lastPosition = currentLayer->selectedKeyFramesPosition().last();
     int centerPosition = (lastPosition - firstPosition + 1) / 2;
 
-    for (int i = firstPosition; i < lastPosition; i++)
+    if ( keyFrameCount != 2 )  // allow swapping 2 frames
     {
-       if(currentLayer->keyExists(i) && !currentLayer->getKeyFrameAt(i)->isSelected())
-       {
-            return;
-       }
+        for (int i = firstPosition; i < lastPosition; i++) // find unselected keyframesframes
+        {
+            if (currentLayer->keyExists(i) && !currentLayer->getKeyFrameAt(i)->isSelected())
+            {
+                return;
+            }
+        }
     }
 
     for (int i = firstPosition; i < firstPosition + centerPosition; i++)
