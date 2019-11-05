@@ -715,7 +715,36 @@ void ActionCommands::test5()
     mEditor->updateTimeLine();
     mEditor->updateCurrentFrame();
 };
-void ActionCommands::test6(){};
+
+void ActionCommands::test6()
+{
+    qDebug() << "swap selected frames";
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if(currentLayer->selectedKeyFrameCount() == 0) return;
+    int firstPosition = currentLayer->selectedKeyFramesPosition().first();
+    int lastPosition = currentLayer->selectedKeyFramesPosition().last();
+    int centerPosition = (lastPosition - firstPosition + 1) / 2;
+
+    for (int i = firstPosition; i < lastPosition; i++)
+    {
+       if(currentLayer->keyExists(i) && !currentLayer->getKeyFrameAt(i)->isSelected())
+       {
+            qDebug() << "there are keys between selected";
+            return;
+       }
+    }
+
+    for (int i = firstPosition; i < firstPosition + centerPosition; i++)
+    {
+        int relativeFirstPosition = i - firstPosition;
+        int newPosition = lastPosition - relativeFirstPosition;
+
+        currentLayer->swapKeyFrames(i, newPosition);
+    }
+
+    mEditor->updateTimeLine();
+    mEditor->updateCurrentFrame();
+};
 
 void ActionCommands::removeKey()
 {
