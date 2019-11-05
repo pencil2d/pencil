@@ -630,8 +630,9 @@ void ActionCommands::test2()
     while (i != kfs.rend())
 	{
         KeyFrame* k =  i->second->clone();
-        k->setSelected(true); // select pasted frames 
-        currentLayer->addKeyFrame(currentPosition + i->first, k);
+        int newPosition = currentPosition + i->first;
+        currentLayer->addKeyFrame(newPosition, k);
+        currentLayer->setFrameSelected(newPosition, true);
 		i++;
 	}
 
@@ -661,8 +662,9 @@ void ActionCommands::test3(){
     while (i != kfs.rend())
 	{
         KeyFrame* k =  i->second->clone();
-        k->setSelected(true); // select pasted frames
-        currentLayer->addKeyFrame(currentPosition + lastPosition - i->first, k);
+        int newPosition = currentPosition + lastPosition - i->first;
+        currentLayer->addKeyFrame(newPosition, k);
+        currentLayer->setFrameSelected(newPosition, true);
 		i++;
 	}
 
@@ -718,6 +720,7 @@ void ActionCommands::test5()
 
 void ActionCommands::test6()
 {
+    //TODO allow swapping 2 frames
     qDebug() << "swap selected frames";
     Layer* currentLayer = mEditor->layers()->currentLayer();
     if(currentLayer->selectedKeyFrameCount() == 0) return;
@@ -729,7 +732,6 @@ void ActionCommands::test6()
     {
        if(currentLayer->keyExists(i) && !currentLayer->getKeyFrameAt(i)->isSelected())
        {
-            qDebug() << "there are keys between selected";
             return;
        }
     }
