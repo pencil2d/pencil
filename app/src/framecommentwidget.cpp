@@ -26,6 +26,9 @@ FrameCommentWidget::~FrameCommentWidget()
 void FrameCommentWidget::initUI()
 {
     connect(this, &FrameCommentWidget::visibilityChanged, this, &FrameCommentWidget::updateConnections);
+    dialogueTextChanged("");
+    actionTextChanged("");
+    notesTextChanged("");
     updateConnections();
 }
 
@@ -103,6 +106,10 @@ void FrameCommentWidget::applyFrameComments()
 void FrameCommentWidget::playStateChanged(bool isPlaying)
 {
     mIsPlaying = isPlaying;
+    if (!mIsPlaying)
+    {
+        currentFrameChanged(mEditor->currentFrame());
+    }
 }
 
 void FrameCommentWidget::updateConnections()
