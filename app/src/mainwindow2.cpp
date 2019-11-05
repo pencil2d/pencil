@@ -157,6 +157,7 @@ void MainWindow2::createDockWidgets()
 
     mFrameComments = new FrameCommentWidget(this);
     mFrameComments->setObjectName("FrameComments");
+    mFrameComments->setCore(mEditor);
 
     mToolOptions = new ToolOptionWidget(this);
     mToolOptions->setObjectName("ToolOption");

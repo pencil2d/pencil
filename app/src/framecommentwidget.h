@@ -19,19 +19,29 @@ public:
 
     void initUI() override;
     void updateUI() override;
+    void setCore(Editor* editor);
 
 public slots:
     void dialogueTextChanged(QString text);
     void actionTextChanged(QString text);
     void notesTextChanged(QString text);
     void currentFrameChanged(int frame);
+    void currentLayerChanged(int index);
     void clearFrameCommentsFields();
-    void updateFrameComments();
+    void applyFrameComments();
+    void playStateChanged(bool isPlaying);
+    void updateConnections();
 
 private:
     Ui::FrameComment *ui;
 
     void fillFrameComments();
+    void connectAll();
+    void disconnectAll();
+
+    bool mIsPlaying = false;
+
+    Editor* mEditor = nullptr;
 };
 
 #endif // FRAMECOMMENTWIDGET_H

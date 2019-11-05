@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include "qminiz.h"
 #include "fileformat.h"
 #include "object.h"
+#include "layer.h"
+#include "keyframe.h"
 #include "layercamera.h"
 
 namespace
@@ -186,6 +188,10 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
         {
             ObjectData* projectData = loadProjectData(element);
             object->setData(projectData);
+        }
+        else if (element.tagName() == "framecomments")
+        {
+            loadFrameComments(object, element);
         }
         else
         {
@@ -354,6 +360,10 @@ Status FileManager::save(Object* object, QString sFileName)
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
 
+    // save comment information
+    QDomElement frameComments = saveFrameComments(object, xmlDoc);
+    root.appendChild(frameComments);
+
     dd << "Writing main xml file...";
 
     const int indentSize = 2;
@@ -484,6 +494,73 @@ QDomElement FileManager::saveProjectData(ObjectData* data, QDomDocument& xmlDoc)
     QDomElement tagMarkOutFrame = xmlDoc.createElement("markOutFrame");
     tagMarkOutFrame.setAttribute("value", data->getMarkOutFrameNumber());
     rootTag.appendChild(tagMarkOutFrame);
+
+    return rootTag;
+}
+
+void FileManager::loadFrameComments(Object *obj, QDomElement &element)
+{
+    Layer* layer = nullptr;
+    KeyFrame* key = nullptr;
+    int index, newindex = -1;
+
+    for(QDomNode tag = element.firstChild(); !tag.isNull(); tag = tag.nextSibling())
+    {
+        QDomElement comments = tag.toElement();
+        if (comments.isNull())
+        {
+            continue;
+        }
+        // get layer index
+        index = comments.tagName().remove(0, 5).toInt();
+
+        // get layer
+        if (index != newindex)
+        {
+            layer = obj->getLayer(index);
+        }
+
+        // get keyFrame
+        int frame = comments.attribute("frame").toInt();
+        key = layer->getKeyFrameAt(frame);
+
+        // set keyFrame comments
+        key->setDialogueComment(comments.attribute("dialogue"));
+        key->setActionComment(comments.attribute("action"));
+        key->setNotesComment(comments.attribute("notes"));
+        newindex = index;
+    }
+}
+
+QDomElement FileManager::saveFrameComments(Object* obj, QDomDocument &xmlDoc)
+{
+    int layers = obj->getLayerCount();
+    QDomElement rootTag = xmlDoc.createElement("framecomments");
+
+    KeyFrame* key = nullptr;
+    for (int i = 0; i < layers; i++)
+    {
+        Layer* layer = obj->getLayer(i);
+        QString tag = "index" + QString::number(i);
+        int frame = layer->firstKeyFramePosition();
+        do
+        {
+            key = layer->getKeyFrameAt(frame);
+            if (key->frameHasComments())
+            {
+                QDomElement tagComments = xmlDoc.createElement(tag);
+                tagComments.setAttribute("frame", frame);
+                tagComments.setAttribute("dialogue", key->getDialogueComment());
+                tagComments.setAttribute("action", key->getActionComment());
+                tagComments.setAttribute("notes", key->getNotesComment());
+                rootTag.appendChild(tagComments);
+            }
+            if (frame == layer->getMaxKeyFramePosition())
+                frame++;
+            else
+                frame = layer->getNextKeyFramePosition(frame);
+        } while (frame <= layer->getMaxKeyFramePosition());
+    }
 
     return rootTag;
 }

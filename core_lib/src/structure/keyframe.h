@@ -52,6 +52,7 @@ public:
     QString getActionComment() { return mActionComment; }
     void setNotesComment(QString comment) { mNotesComment = comment; }
     QString getNotesComment() { return mNotesComment; }
+    bool frameHasComments();
 
     QString fileName() const { return mAttachedFileName; }
     void    setFileName(QString strFileName) { mAttachedFileName = strFileName; }

@@ -39,6 +39,13 @@ KeyFrame::~KeyFrame()
     }
 }
 
+bool KeyFrame::frameHasComments()
+{
+    if (mDialogueComment.isEmpty() && mActionComment.isEmpty() && mNotesComment.isEmpty())
+        return false;
+    return true;
+}
+
 void KeyFrame::addEventListener(KeyFrameEventListener* listener)
 {
     auto it = std::find(mEventListeners.begin(), mEventListeners.end(), listener);
