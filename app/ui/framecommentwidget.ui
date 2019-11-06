@@ -32,7 +32,7 @@
    <item>
     <widget class="QLabel" name="labMax100chars">
      <property name="text">
-      <string>Max 100 chars each!</string>
+      <string>Max 250 chars each!</string>
      </property>
     </widget>
    </item>
@@ -77,7 +77,7 @@
    <item>
     <widget class="QLineEdit" name="leDialogue">
      <property name="maxLength">
-      <number>100</number>
+      <number>250</number>
      </property>
     </widget>
    </item>
@@ -115,7 +115,7 @@
    <item>
     <widget class="QLineEdit" name="leAction">
      <property name="maxLength">
-      <number>100</number>
+      <number>250</number>
      </property>
     </widget>
    </item>
@@ -124,7 +124,7 @@
      <item>
       <widget class="QLabel" name="labNotes">
        <property name="text">
-        <string>Notes:</string>
+        <string>Slug (Timing, Camera, ...)</string>
        </property>
       </widget>
      </item>
@@ -153,7 +153,7 @@
    <item>
     <widget class="QLineEdit" name="leNotes">
      <property name="maxLength">
-      <number>100</number>
+      <number>250</number>
      </property>
     </widget>
    </item>

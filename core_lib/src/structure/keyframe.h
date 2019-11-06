@@ -50,8 +50,8 @@ public:
     QString getDialogueComment() { return mDialogueComment; }
     void setActionComment(QString comment) { mActionComment = comment; }
     QString getActionComment() { return mActionComment; }
-    void setNotesComment(QString comment) { mNotesComment = comment; }
-    QString getNotesComment() { return mNotesComment; }
+    void setSlugComment(QString comment) { mSlugComment = comment; }
+    QString getSlugComment() { return mSlugComment; }
     bool frameHasComments();
 
     QString fileName() const { return mAttachedFileName; }
@@ -75,7 +75,7 @@ private:
     // comments
     QString mDialogueComment = "";
     QString mActionComment = "";
-    QString mNotesComment = "";
+    QString mSlugComment = "";
 
     std::vector<KeyFrameEventListener*> mEventListeners;
 };

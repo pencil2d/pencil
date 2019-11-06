@@ -41,7 +41,7 @@ KeyFrame::~KeyFrame()
 
 bool KeyFrame::frameHasComments()
 {
-    if (mDialogueComment.isEmpty() && mActionComment.isEmpty() && mNotesComment.isEmpty())
+    if (mDialogueComment.isEmpty() && mActionComment.isEmpty() && mSlugComment.isEmpty())
         return false;
     return true;
 }

@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "basedockwidget.h"
 #include "editor.h"
+#include "keyframe.h"
+#include "layer.h"
 
 namespace Ui {
     class FrameComment;
@@ -42,6 +44,9 @@ private:
     bool mIsPlaying = false;
 
     Editor* mEditor = nullptr;
+    Layer* mLayer = nullptr;
+    KeyFrame* mKeyframe = nullptr;
+
 };
 
 #endif // FRAMECOMMENTWIDGET_H

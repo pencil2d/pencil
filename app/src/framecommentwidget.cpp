@@ -4,7 +4,6 @@
 #include "editor.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
-#include "keyframe.h"
 #include <QDebug>
 
 FrameCommentWidget::FrameCommentWidget(QWidget *parent) :
@@ -40,6 +39,8 @@ void FrameCommentWidget::updateUI()
 void FrameCommentWidget::setCore(Editor *editor)
 {
     mEditor = editor;
+    mLayer = editor->layers()->currentLayer();
+    mKeyframe = mLayer->getKeyFrameAt(mEditor->currentFrame());
     currentFrameChanged(mEditor->currentFrame());
 }
 
@@ -65,7 +66,7 @@ void FrameCommentWidget::currentFrameChanged(int frame)
 {
     if (!mIsPlaying)
     {
-        if (mEditor->layers()->currentLayer()->keyExists(frame))
+        if (mLayer->firstKeyFramePosition() <= frame)
         {
             fillFrameComments();
             ui->btnApplyComments->setEnabled(true);
@@ -81,6 +82,7 @@ void FrameCommentWidget::currentFrameChanged(int frame)
 void FrameCommentWidget::currentLayerChanged(int index)
 {
     Q_UNUSED(index)
+    mLayer = mEditor->layers()->currentLayer();
     currentFrameChanged(mEditor->currentFrame());
 }
 
@@ -89,18 +91,21 @@ void FrameCommentWidget::clearFrameCommentsFields()
     ui->leDialogue->clear();
     ui->leAction->clear();
     ui->leNotes->clear();
-    if (!mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+    if (!mLayer->keyExists(mEditor->currentFrame()))
         ui->labLayerFrame->setText("");
 }
 
 void FrameCommentWidget::applyFrameComments()
 {
-    KeyFrame* key = mEditor->layers()->currentLayer()->getKeyFrameAt(mEditor->currentFrame());
-    if (key == nullptr) { return; }
-    key->setDialogueComment(ui->leDialogue->text());
-    key->setActionComment(ui->leAction->text());
-    key->setNotesComment(ui->leNotes->text());
-    mEditor->layers()->currentLayer()->setModified(key->pos(), true);
+    mKeyframe = mLayer->getKeyFrameAt(mEditor->currentFrame());
+    if (mKeyframe == nullptr)
+        mKeyframe = mLayer->getKeyFrameAt(mLayer->getPreviousFrameNumber(mEditor->currentFrame(), true));
+    if (mKeyframe == nullptr) { return; }
+    mKeyframe->setDialogueComment(ui->leDialogue->text());
+    mKeyframe->setActionComment(ui->leAction->text());
+    mKeyframe->setSlugComment(ui->leNotes->text());
+    ui->labLayerFrame->setText(tr("%1 #%2 :").arg(mLayer->name()).arg(QString::number(mKeyframe->pos())));
+    mLayer->setModified(mKeyframe->pos(), true);
 }
 
 void FrameCommentWidget::playStateChanged(bool isPlaying)
@@ -108,6 +113,7 @@ void FrameCommentWidget::playStateChanged(bool isPlaying)
     mIsPlaying = isPlaying;
     if (!mIsPlaying)
     {
+        mLayer = mEditor->layers()->currentLayer();
         currentFrameChanged(mEditor->currentFrame());
     }
 }
@@ -126,12 +132,14 @@ void FrameCommentWidget::updateConnections()
 
 void FrameCommentWidget::fillFrameComments()
 {
-    KeyFrame* key = mEditor->layers()->currentLayer()->getKeyFrameAt(mEditor->currentFrame());
-    if (key == nullptr) { return; }
-    ui->leDialogue->setText(key->getDialogueComment());
-    ui->leAction->setText(key->getActionComment());
-    ui->leNotes->setText(key->getNotesComment());
-    ui->labLayerFrame->setText(tr("%1 #%2 :").arg(mEditor->layers()->currentLayer()->name()).arg(QString::number(mEditor->currentFrame())));
+    mKeyframe = mLayer->getKeyFrameAt(mEditor->currentFrame());
+    if (mKeyframe == nullptr)
+        mKeyframe = mLayer->getKeyFrameAt(mLayer->getPreviousFrameNumber(mEditor->currentFrame(), true));
+    if (mKeyframe == nullptr) { return; }
+    ui->leDialogue->setText(mKeyframe->getDialogueComment());
+    ui->leAction->setText(mKeyframe->getActionComment());
+    ui->leNotes->setText(mKeyframe->getSlugComment());
+    ui->labLayerFrame->setText(tr("%1 #%2 :").arg(mEditor->layers()->currentLayer()->name()).arg(QString::number(mKeyframe->pos())));
 }
 
 void FrameCommentWidget::connectAll()

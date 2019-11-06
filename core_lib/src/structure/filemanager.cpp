@@ -527,7 +527,7 @@ void FileManager::loadFrameComments(Object *obj, QDomElement &element)
         // set keyFrame comments
         key->setDialogueComment(comments.attribute("dialogue"));
         key->setActionComment(comments.attribute("action"));
-        key->setNotesComment(comments.attribute("notes"));
+        key->setSlugComment(comments.attribute("slug"));
         newindex = index;
     }
 }
@@ -552,7 +552,7 @@ QDomElement FileManager::saveFrameComments(Object* obj, QDomDocument &xmlDoc)
                 tagComments.setAttribute("frame", frame);
                 tagComments.setAttribute("dialogue", key->getDialogueComment());
                 tagComments.setAttribute("action", key->getActionComment());
-                tagComments.setAttribute("notes", key->getNotesComment());
+                tagComments.setAttribute("slug", key->getSlugComment());
                 rootTag.appendChild(tagComments);
             }
             if (frame == layer->getMaxKeyFramePosition())
