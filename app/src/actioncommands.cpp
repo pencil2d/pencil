@@ -694,7 +694,7 @@ void ActionCommands::test5()
     if (currentLayer->type() != Layer::BITMAP) return;
     int currentPosition = mEditor->currentFrame();
     std::map<int, KeyFrame*> clipboard;
-    int firstPosition = *currentLayer->selectedKeyFramesPosition().begin();
+    int firstPosition = currentLayer->selectedKeyFramesPosition().first();
     int selectedCount = currentLayer->selectedKeyFrameCount();
 
     // if at least 1 frame is selected copy all those frames
@@ -749,6 +749,11 @@ void ActionCommands::test6()
 
     mEditor->updateTimeLine();
     mEditor->updateCurrentFrame();
+};
+
+void ActionCommands::test7()
+{
+
 };
 
 void ActionCommands::removeKey()
