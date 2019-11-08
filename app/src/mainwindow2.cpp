@@ -1269,12 +1269,11 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::removeEmptyClick, mCommands, &ActionCommands::removeEmpty);
     connect(pTimeline, &TimeLine::insertKeyClick, mCommands, &ActionCommands::insertNewKey);
 
-    connect(pTimeline, &TimeLine::test1Click, mCommands, &ActionCommands::test1);
-    connect(pTimeline, &TimeLine::test2Click, mCommands, &ActionCommands::test2);
-    connect(pTimeline, &TimeLine::test3Click, mCommands, &ActionCommands::test3);
-    connect(pTimeline, &TimeLine::test4Click, mCommands, &ActionCommands::test4);
-    connect(pTimeline, &TimeLine::test5Click, mCommands, &ActionCommands::test5);
-    connect(pTimeline, &TimeLine::test6Click, mCommands, &ActionCommands::test6);
+    connect(pTimeline, &TimeLine::copySelectedClick, mCommands, &ActionCommands::copySelected);
+    connect(pTimeline, &TimeLine::pasteSelectedClick, mCommands, &ActionCommands::pasteSelected);
+    connect(pTimeline, &TimeLine::removeSelectedClick, mCommands, &ActionCommands::removeSelected);
+    connect(pTimeline, &TimeLine::cutSelectedClick, mCommands, &ActionCommands::cutSelected);
+    connect(pTimeline, &TimeLine::reverseSelectedClick, mCommands, &ActionCommands::reverseSelected);
 
     connect(pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer);
     connect(pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer);

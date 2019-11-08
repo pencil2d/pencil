@@ -71,13 +71,11 @@ public:
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
-
-    void test1();
-    void test2();
-    void test3();
-    void test4();
-    void test5();
-    void test6();
+    void copySelected();
+    void pasteSelected();
+    void removeSelected();
+    void cutSelected();
+    void reverseSelected();
 
     // Layer
     Status addNewBitmapLayer();
