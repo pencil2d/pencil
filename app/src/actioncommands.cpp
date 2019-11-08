@@ -613,6 +613,8 @@ void ActionCommands::pasteSelected()
     if (currentLayer->type() == Layer::BITMAP)
     {
         auto kfs = mEditor->getClipboardBitmapKeyFrames();
+        if (kfs.size() == 0) return;
+
         std::map<int, KeyFrame*>::reverse_iterator i = kfs.rbegin();
         int currentPosition = mEditor->currentFrame();
         int lastPosition = i->first;
