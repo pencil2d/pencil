@@ -3,9 +3,10 @@
 
 #include <QWidget>
 #include "basedockwidget.h"
-#include "editor.h"
-#include "keyframe.h"
-#include "layer.h"
+
+class Editor;
+class KeyFrame;
+class Layer;
 
 namespace Ui {
     class FrameComment;
@@ -23,30 +24,33 @@ public:
     void updateUI() override;
     void setCore(Editor* editor);
 
-public slots:
-    void dialogueTextChanged(QString text);
-    void actionTextChanged(QString text);
-    void notesTextChanged(QString text);
-    void currentFrameChanged(int frame);
-    void currentLayerChanged(int index);
-    void clearFrameCommentsFields();
-    void applyFrameComments();
-    void playStateChanged(bool isPlaying);
-    void updateConnections();
+    void applyComments();
+    void fillComments();
 
 private:
     Ui::FrameComment *ui;
 
-    void fillFrameComments();
-    void connectAll();
-    void disconnectAll();
+    void dialogueTextChanged();
+    void actionTextChanged();
+    void slugTextChanged();
+
+    void currentFrameChanged(int frame);
+    void currentLayerChanged(int index);
+
+    void clearFrameCommentsFields();
+
+    void updateConnections();
+
+    void playStateChanged(bool isPlaying);
+
+    KeyFrame* getKeyFrame();
+
+    void makeConnections();
+    void disconnectNotifiers();
 
     bool mIsPlaying = false;
 
     Editor* mEditor = nullptr;
-    Layer* mLayer = nullptr;
-    KeyFrame* mKeyframe = nullptr;
-
 };
 
 #endif // FRAMECOMMENTWIDGET_H

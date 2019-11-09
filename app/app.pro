@@ -39,6 +39,7 @@ INCLUDEPATH += \
 
 HEADERS += \
     src/importlayersdialog.h \
+    src/keyframetextedit.h \
     src/mainwindow2.h \
     src/predefinedsetmodel.h \
     src/pegbaralignmentdialog.h \
@@ -72,6 +73,7 @@ HEADERS += \
 
 SOURCES += \
     src/importlayersdialog.cpp \
+    src/keyframetextedit.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
     src/predefinedsetmodel.cpp \
