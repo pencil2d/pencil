@@ -502,7 +502,9 @@ void FileManager::loadFrameComments(Object *obj, QDomElement &element)
 {
     Layer* layer = nullptr;
     KeyFrame* key = nullptr;
-    int index, newindex = -1;
+
+    int newLayerIndex = -1;
+    int oldLayerIndex = -1;
 
     for(QDomNode tag = element.firstChild(); !tag.isNull(); tag = tag.nextSibling())
     {
@@ -511,13 +513,14 @@ void FileManager::loadFrameComments(Object *obj, QDomElement &element)
         {
             continue;
         }
-        // get layer index
-        index = comments.tagName().remove(0, 5).toInt();
 
-        // get layer
-        if (index != newindex)
-        {
-            layer = obj->getLayer(index);
+        oldLayerIndex = comments.attribute("layer").toInt();
+        if (newLayerIndex != oldLayerIndex) {
+            layer = obj->getLayer(oldLayerIndex);
+        }
+
+        if (layer == nullptr) {
+            continue;
         }
 
         // get keyFrame
@@ -528,7 +531,8 @@ void FileManager::loadFrameComments(Object *obj, QDomElement &element)
         key->setDialogueComment(comments.attribute("dialogue"));
         key->setActionComment(comments.attribute("action"));
         key->setSlugComment(comments.attribute("slug"));
-        newindex = index;
+
+        newLayerIndex = oldLayerIndex;
     }
 }
 
@@ -541,7 +545,7 @@ QDomElement FileManager::saveFrameComments(Object* obj, QDomDocument &xmlDoc)
     for (int i = 0; i < layers; i++)
     {
         Layer* layer = obj->getLayer(i);
-        QString tag = "index" + QString::number(i);
+        QString tag = "content";
         int frame = layer->firstKeyFramePosition();
         do
         {
@@ -549,6 +553,7 @@ QDomElement FileManager::saveFrameComments(Object* obj, QDomDocument &xmlDoc)
             if (key->frameHasComments())
             {
                 QDomElement tagComments = xmlDoc.createElement(tag);
+                tagComments.setAttribute("layer", i);
                 tagComments.setAttribute("frame", frame);
                 tagComments.setAttribute("dialogue", key->getDialogueComment());
                 tagComments.setAttribute("action", key->getActionComment());
