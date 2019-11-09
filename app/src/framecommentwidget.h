@@ -27,6 +27,9 @@ public:
     void applyComments();
     void fillComments();
 
+public slots:
+    void applyCommentsToKeyframe(const int frame);
+
 private:
     Ui::FrameComment *ui;
 
@@ -43,7 +46,7 @@ private:
 
     void playStateChanged(bool isPlaying);
 
-    KeyFrame* getKeyFrame();
+    KeyFrame* getKeyFrame(int frame);
 
     void makeConnections();
     void disconnectNotifiers();

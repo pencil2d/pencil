@@ -107,9 +107,20 @@ void FrameCommentWidget::updateConnections()
     }
 }
 
+void FrameCommentWidget::applyCommentsToKeyframe(const int frame)
+{
+    KeyFrame* keyframe = getKeyFrame(frame);
+    if (keyframe == nullptr) { return; }
+
+    keyframe->setDialogueComment(ui->textEditDialogue->toPlainText());
+    keyframe->setActionComment(ui->textEditAction->toPlainText());
+    keyframe->setSlugComment(ui->textEditSlug->toPlainText());
+    mEditor->layers()->currentLayer()->setModified(keyframe->pos(), true);
+}
+
 void FrameCommentWidget::fillComments()
 {
-    KeyFrame* keyframe = getKeyFrame();
+    KeyFrame* keyframe = getKeyFrame(mEditor->currentFrame());
     if (keyframe == nullptr) { return; }
 
     ui->textEditDialogue->setPlainText(keyframe->getDialogueComment());
@@ -119,7 +130,7 @@ void FrameCommentWidget::fillComments()
 
 void FrameCommentWidget::applyComments()
 {
-    KeyFrame* keyframe = getKeyFrame();
+    KeyFrame* keyframe = getKeyFrame(mEditor->currentFrame());
     if (keyframe == nullptr) { return; }
 
     keyframe->setDialogueComment(ui->textEditDialogue->toPlainText());
@@ -128,13 +139,12 @@ void FrameCommentWidget::applyComments()
     mEditor->layers()->currentLayer()->setModified(keyframe->pos(), true);
 }
 
-KeyFrame* FrameCommentWidget::getKeyFrame()
+KeyFrame* FrameCommentWidget::getKeyFrame(int frame)
 {
-    int currentFrame = mEditor->currentFrame();
     Layer* layer = mEditor->layers()->currentLayer();
-    KeyFrame* keyframe = layer->getKeyFrameAt(currentFrame);
+    KeyFrame* keyframe = layer->getKeyFrameAt(frame);
     if (keyframe == nullptr)
-        keyframe = layer->getKeyFrameAt(layer->getPreviousFrameNumber(currentFrame, true));
+        keyframe = layer->getKeyFrameAt(layer->getPreviousFrameNumber(frame, true));
     if (keyframe == nullptr) { return nullptr; }
 
     return keyframe;
@@ -155,6 +165,7 @@ void FrameCommentWidget::makeConnections()
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &FrameCommentWidget::currentLayerChanged);
     connect(mEditor, &Editor::objectLoaded, this, &FrameCommentWidget::fillComments);
     connect(mEditor->playback(), &PlaybackManager::playStateChanged, this, &FrameCommentWidget::playStateChanged);
+    connect(mEditor, &Editor::aboutToChangeFrame, this, &FrameCommentWidget::applyCommentsToKeyframe);
 }
 
 void FrameCommentWidget::disconnectNotifiers()

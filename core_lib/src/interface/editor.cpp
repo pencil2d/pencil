@@ -959,6 +959,7 @@ void Editor::updateCurrentFrame()
 
 void Editor::setCurrentLayerIndex(int i)
 {
+    emit aboutToChangeFrame(mFrame);
     mCurrentLayerIndex = i;
 
     Layer* layer = mObject->getLayer(i);
@@ -970,6 +971,8 @@ void Editor::setCurrentLayerIndex(int i)
 
 void Editor::scrubTo(int frame)
 {
+
+    emit aboutToChangeFrame(mFrame);
     if (frame < 1) { frame = 1; }
     int oldFrame = mFrame;
     mFrame = frame;
