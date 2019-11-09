@@ -24,29 +24,33 @@ public:
     void updateUI() override;
     void setCore(Editor* editor);
 
-public slots:
-    void dialogueTextChanged();
-    void actionTextChanged();
-    void notesTextChanged();
-    void currentFrameChanged(int frame);
-    void currentLayerChanged(int index);
-    void clearFrameCommentsFields();
-    void applyFrameComments();
-    void playStateChanged(bool isPlaying);
-    void updateConnections();
+    void applyComments();
+    void fillComments();
 
 private:
     Ui::FrameComment *ui;
 
-    void fillFrameComments();
+    void dialogueTextChanged();
+    void actionTextChanged();
+    void slugTextChanged();
+
+    void currentFrameChanged(int frame);
+    void currentLayerChanged(int index);
+
+    void clearFrameCommentsFields();
+
+    void updateConnections();
+
+    void playStateChanged(bool isPlaying);
+
+    KeyFrame* getKeyFrame();
+
     void makeConnections();
     void disconnectNotifiers();
 
     bool mIsPlaying = false;
 
     Editor* mEditor = nullptr;
-    Layer* mLayer = nullptr;
-    KeyFrame* mKeyframe = nullptr;
 
 };
 
