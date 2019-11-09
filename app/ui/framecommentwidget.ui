@@ -30,23 +30,9 @@
     <number>4</number>
    </property>
    <item>
-    <widget class="QLabel" name="labMax100chars">
-     <property name="text">
-      <string>Max 250 chars each!</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="labDialogue">
+      <widget class="QLabel" name="labelDialogue">
        <property name="text">
         <string>Dialogue:</string>
        </property>
@@ -66,7 +52,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="labDialogueCount">
+      <widget class="QLabel" name="labelDialogueCounter">
        <property name="text">
         <string>0</string>
        </property>
@@ -75,16 +61,12 @@
     </layout>
    </item>
    <item>
-    <widget class="QLineEdit" name="leDialogue">
-     <property name="maxLength">
-      <number>250</number>
-     </property>
-    </widget>
+    <widget class="KeyFrameTextEdit" name="textEditDialogue"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="labAction">
+      <widget class="QLabel" name="labelAction">
        <property name="text">
         <string>Action:</string>
        </property>
@@ -104,7 +86,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="labActionCount">
+      <widget class="QLabel" name="labelActionCounter">
        <property name="text">
         <string>0</string>
        </property>
@@ -113,16 +95,12 @@
     </layout>
    </item>
    <item>
-    <widget class="QLineEdit" name="leAction">
-     <property name="maxLength">
-      <number>250</number>
-     </property>
-    </widget>
+    <widget class="KeyFrameTextEdit" name="textEditAction"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="labNotes">
+      <widget class="QLabel" name="labelSlug">
        <property name="text">
         <string>Slug (Timing, Camera, ...)</string>
        </property>
@@ -142,7 +120,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="labNotesCount">
+      <widget class="QLabel" name="labelSlugCounter">
        <property name="text">
         <string>0</string>
        </property>
@@ -151,11 +129,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLineEdit" name="leNotes">
-     <property name="maxLength">
-      <number>250</number>
-     </property>
-    </widget>
+    <widget class="KeyFrameTextEdit" name="textEditSlug"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -181,76 +155,15 @@
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <item>
-      <widget class="QLabel" name="labLayerFrame">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnApplyComments">
-       <property name="text">
-        <string>Apply comments</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>117</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KeyFrameTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>keyframetextedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
