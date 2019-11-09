@@ -522,10 +522,7 @@ void Editor::cut()
 void Editor::copy()
 {
     Layer* layer = mObject->getLayer(layers()->currentLayerIndex());
-    if (layer == nullptr)
-    {
-        return;
-    }
+    if (layer == nullptr) return;
 
     if (layer->type() == Layer::BITMAP)
     {
@@ -541,6 +538,15 @@ void Editor::copy()
         clipboardBitmapOk = true;
         if (g_clipboardBitmapImage.image() != nullptr)
             QApplication::clipboard()->setImage(*g_clipboardBitmapImage.image());
+
+
+
+
+        // si qqchose de sélectionné => copier last
+        // si rien de sélectionné && pas de keyframe at currentPosition => copier last
+        // si frames sélectionnées => copier les frames
+        // si je copie une image, frame_clipboard est deleted
+        // si je copie des frames, image_clipboard est delete
     }
     if (layer->type() == Layer::VECTOR)
     {
@@ -1072,10 +1078,11 @@ void Editor::removeKey()
 
 void Editor::scrubNextKeyFrame()
 {
-    Layer* layer = layers()->currentLayer();
-    Q_ASSERT(layer);
+    Layer* currentLayer = layers()->currentLayer();
+    Q_ASSERT(currentLayer);
 
-    int nextPosition = layer->getNextKeyFramePosition(currentFrame());
+    int nextPosition = currentLayer->getNextKeyFramePosition(currentFrame());
+    if (currentFrame() >= currentLayer->getMaxKeyFramePosition()) nextPosition = currentFrame() + 1;
     scrubTo(nextPosition);
 }
 

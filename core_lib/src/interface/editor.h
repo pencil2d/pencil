@@ -131,8 +131,6 @@ Q_SIGNALS:
 public: //slots
     void clearCurrentFrame();
 
-    void cut();
-
     bool importImage(QString filePath);
     bool importGIF(QString filePath, int numOfImages = 0);
     void updateFrame(int frameNumber);
@@ -159,9 +157,11 @@ public: //slots
     void backup(int layerNumber, int frameNumber, QString undoText);
     void undo();
     void redo();
-    void copy();
 
+    void copy();
     void paste();
+    void cut();
+
     void clipboardChanged();
     void toggleShowAllLayers();
     void flipSelection(bool flipVertical);
