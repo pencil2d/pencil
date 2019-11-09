@@ -82,6 +82,9 @@ public:
     void setCanvasSize(QSize size);
     void setCameraLayer(Layer* layer);
 
+    QTransform getImportView() { return mImportView; }
+    void setImportView(const QTransform& newView) { mImportView = newView; }
+
     void updateViewTransforms();
 
     Q_SIGNAL void viewChanged();
@@ -96,6 +99,7 @@ private:
     QTransform mViewCanvas;
     QTransform mViewCanvasInverse;
     QTransform mCentre;
+    QTransform mImportView;
 
     Camera* mDefaultEditorCamera = nullptr;
     Camera* mCurrentCamera = nullptr;
