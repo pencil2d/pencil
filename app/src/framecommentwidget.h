@@ -51,7 +51,6 @@ private:
     bool mIsPlaying = false;
 
     Editor* mEditor = nullptr;
-
 };
 
 #endif // FRAMECOMMENTWIDGET_H

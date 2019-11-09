@@ -110,6 +110,7 @@ void FrameCommentWidget::updateConnections()
 void FrameCommentWidget::fillComments()
 {
     KeyFrame* keyframe = getKeyFrame();
+    if (keyframe == nullptr) { return; }
 
     ui->textEditDialogue->setPlainText(keyframe->getDialogueComment());
     ui->textEditAction->setPlainText(keyframe->getActionComment());
@@ -119,6 +120,7 @@ void FrameCommentWidget::fillComments()
 void FrameCommentWidget::applyComments()
 {
     KeyFrame* keyframe = getKeyFrame();
+    if (keyframe == nullptr) { return; }
 
     keyframe->setDialogueComment(ui->textEditDialogue->toPlainText());
     keyframe->setActionComment(ui->textEditAction->toPlainText());
