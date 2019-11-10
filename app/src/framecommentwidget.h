@@ -43,7 +43,7 @@ private:
 
     void playStateChanged(bool isPlaying);
 
-    KeyFrame* getKeyFrame(int frame);
+    KeyFrame* getKeyFrame();
 
     void makeConnections();
     void disconnectNotifiers();

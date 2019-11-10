@@ -109,7 +109,7 @@ void FrameCommentWidget::updateConnections()
 
 void FrameCommentWidget::fillComments()
 {
-    KeyFrame* keyframe = getKeyFrame(mEditor->currentFrame());
+    KeyFrame* keyframe = getKeyFrame();
     if (keyframe == nullptr) { return; }
 
     ui->textEditDialogue->setPlainText(keyframe->getDialogueComment());
@@ -119,7 +119,7 @@ void FrameCommentWidget::fillComments()
 
 void FrameCommentWidget::applyComments()
 {
-    KeyFrame* keyframe = getKeyFrame(mEditor->currentFrame());
+    KeyFrame* keyframe = getKeyFrame();
     if (keyframe == nullptr) { return; }
 
     keyframe->setDialogueComment(ui->textEditDialogue->toPlainText());
@@ -128,9 +128,10 @@ void FrameCommentWidget::applyComments()
     mEditor->layers()->currentLayer()->setModified(keyframe->pos(), true);
 }
 
-KeyFrame* FrameCommentWidget::getKeyFrame(int frame)
+KeyFrame* FrameCommentWidget::getKeyFrame()
 {
-    Layer* layer = mEditor->layers()->currentLayer();
+    const int frame = mEditor->currentFrame();
+    const Layer* layer = mEditor->layers()->currentLayer();
     KeyFrame* keyframe = layer->getKeyFrameAt(frame);
     if (keyframe == nullptr)
         keyframe = layer->getKeyFrameAt(layer->getPreviousFrameNumber(frame, true));
