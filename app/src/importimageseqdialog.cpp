@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "predefinedsetmodel.h"
+#include "viewmanager.h"
 
 #include <QProgressDialog>
 #include <QMessageBox>
@@ -89,7 +90,7 @@ int ImportImageSeqDialog::getSpace()
 
 void ImportImageSeqDialog::updatePreviewList(const QStringList& list)
 {
-    Q_UNUSED(list);
+    Q_UNUSED(list)
     if (mImportCriteria == ImportCriteria::PredefinedSet)
     {
         const PredefinedKeySet& keySet = generatePredefinedKeySet();
@@ -218,6 +219,7 @@ void ImportImageSeqDialog::importArbitrarySequence()
                              QMessageBox::Ok,
                              QMessageBox::Ok);
     }
+
 
     emit notifyAnimationLengthChanged();
     progress.close();

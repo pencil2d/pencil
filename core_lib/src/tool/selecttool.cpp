@@ -94,7 +94,7 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     beginSelection();
 }
 
-void SelectTool::pointerMoveEvent(PointerEvent* event)
+void SelectTool::pointerMoveEvent(PointerEvent*)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) { return; }

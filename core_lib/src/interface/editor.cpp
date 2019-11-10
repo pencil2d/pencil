@@ -793,6 +793,8 @@ bool Editor::importBitmapImage(QString filePath, int space)
         return false;
     }
 
+    const QPoint pos = QPoint(static_cast<int>(view()->getImportView().dx()),
+                              static_cast<int>(view()->getImportView().dy())) - QPoint(img.width() / 2, img.height() / 2);
     while (reader.read(&img))
     {
         if (!layer->keyExists(currentFrame()))
@@ -800,8 +802,7 @@ bool Editor::importBitmapImage(QString filePath, int space)
             addNewKey();
         }
         BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(currentFrame());
-
-        BitmapImage importedBitmapImage(mScribbleArea->getCentralPoint().toPoint() - QPoint(img.width() / 2, img.height() / 2), img);
+        BitmapImage importedBitmapImage(pos, img);
         bitmapImage->paste(&importedBitmapImage);
 
         if (space > 1) {
