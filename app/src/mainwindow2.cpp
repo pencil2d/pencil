@@ -220,7 +220,6 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mColorInspector);
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
-    makeConnections(mEditor, mFrameComments);
 
     for (BaseDockWidget* w : mDockWidgets)
     {
