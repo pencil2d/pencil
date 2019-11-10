@@ -27,9 +27,6 @@ public:
     void applyComments();
     void fillComments();
 
-public slots:
-    void applyCommentsToKeyframe(const int frame);
-
 private:
     Ui::FrameComment *ui;
 

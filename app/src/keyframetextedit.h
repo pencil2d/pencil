@@ -10,10 +10,11 @@ public:
     KeyFrameTextEdit(QWidget* parent = nullptr);
 
 Q_SIGNALS:
-    void lostFocus();
+    void outsideWidget();
 
 protected:
     void focusOutEvent(QFocusEvent *e) override;
+    bool event(QEvent* event) override;
 
 };
 
