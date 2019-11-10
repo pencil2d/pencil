@@ -56,6 +56,20 @@ void FrameCommentWidget::slugTextChanged()
     ui->labelSlugCounter->setText(tr("%1 chars").arg(QString::number(len)));
 }
 
+void FrameCommentWidget::enableCommentFields()
+{
+    ui->textEditDialogue->setEnabled(true);
+    ui->textEditAction->setEnabled(true);
+    ui->textEditSlug->setEnabled(true);
+}
+
+void FrameCommentWidget::disableCommentFields()
+{
+    ui->textEditDialogue->setEnabled(false);
+    ui->textEditAction->setEnabled(false);
+    ui->textEditSlug->setEnabled(false);
+}
+
 void FrameCommentWidget::currentFrameChanged(int frame)
 {
     if (!mIsPlaying)
@@ -89,7 +103,12 @@ void FrameCommentWidget::playStateChanged(bool isPlaying)
     mIsPlaying = isPlaying;
     if (!mIsPlaying)
     {
+        enableCommentFields();
         currentFrameChanged(mEditor->currentFrame());
+    }
+    else
+    {
+        disableCommentFields();
     }
 }
 

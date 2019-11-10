@@ -34,6 +34,9 @@ private:
     void actionTextChanged();
     void slugTextChanged();
 
+    void enableCommentFields();
+    void disableCommentFields();
+
     void currentFrameChanged(int frame);
     void currentLayerChanged(int index);
 
