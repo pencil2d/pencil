@@ -71,10 +71,7 @@ public:
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
-    void copySelected();
-    void pasteSelected();
     void removeSelected();
-    void cutSelected();
     void reverseSelected();
 
     // Layer

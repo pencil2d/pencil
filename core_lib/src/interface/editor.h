@@ -22,6 +22,8 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QList>
 #include "pencilerror.h"
+#include "vectorimage.h"
+#include "bitmapimage.h"
 
 
 class QDragEnterEvent;
@@ -66,6 +68,11 @@ public:
 
     bool init();
 
+    enum ClipboardState {
+        BITMAP,
+        KEYFRAMES,
+    };
+
     /************************************************************************/
     /* Managers                                                             */
     /************************************************************************/
@@ -85,9 +92,6 @@ public:
 
     void setScribbleArea(ScribbleArea* pScirbbleArea) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
-
-    void setClipboardBitmapKeyframes(std::map<int, KeyFrame*> keyFrames) { mClipboardBitmapKeyFrames = keyFrames; }
-    std::map<int, KeyFrame*> getClipboardBitmapKeyFrames() { return mClipboardBitmapKeyFrames; }
 
     int currentFrame();
     int fps();
@@ -227,7 +231,12 @@ private:
     bool clipboardBitmapOk = true;
     bool clipboardVectorOk = true;
     bool clipboardSoundClipOk = true;
-    std::map<int, KeyFrame*> mClipboardBitmapKeyFrames;
+
+    int clipboardBitmapState = ClipboardState::BITMAP;
+
+    BitmapImage g_clipboardBitmapImage;
+    VectorImage g_clipboardVectorImage;
+    std::map<int, KeyFrame*> g_clipboardBitmapFrames;
 };
 
 #endif

@@ -147,25 +147,10 @@ void TimeLine::initUI()
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
 
-    QToolButton* copySelectedButton = new QToolButton(this);
-    copySelectedButton->setIcon(QIcon(":icons/test1.png"));
-    copySelectedButton->setToolTip(tr("Copy frames"));
-    copySelectedButton->setFixedSize(24, 24);
-
-    QToolButton* pasteSelectedButton = new QToolButton(this);
-    pasteSelectedButton->setIcon(QIcon(":icons/test2.png"));
-    pasteSelectedButton->setToolTip(tr("Paste frames"));
-    pasteSelectedButton->setFixedSize(24, 24);
-
     QToolButton* removeSelectedButton = new QToolButton(this);
     removeSelectedButton->setIcon(QIcon(":icons/test3.png"));
     removeSelectedButton->setToolTip(tr("Remove frames"));
     removeSelectedButton->setFixedSize(24, 24);
-
-    QToolButton* cutSelectedButton = new QToolButton(this);
-    cutSelectedButton->setIcon(QIcon(":icons/test5.png"));
-    cutSelectedButton->setToolTip(tr("Cut frames"));
-    cutSelectedButton->setFixedSize(24, 24);
 
     QToolButton* reverseSelectedButton = new QToolButton(this);
     reverseSelectedButton->setIcon(QIcon(":icons/test6.png"));
@@ -193,10 +178,6 @@ void TimeLine::initUI()
     timelineButtons->addWidget(addEmptyButton);
     timelineButtons->addWidget(removeEmptyButton);
     timelineButtons->addWidget(insertKeyButton);
-    timelineButtons->addSeparator();
-    timelineButtons->addWidget(copySelectedButton);
-    timelineButtons->addWidget(pasteSelectedButton);
-    timelineButtons->addWidget(cutSelectedButton);
     timelineButtons->addSeparator();
     timelineButtons->addWidget(reverseSelectedButton);
     timelineButtons->addWidget(removeSelectedButton);
@@ -258,10 +239,7 @@ void TimeLine::initUI()
     connect(removeEmptyButton, &QToolButton::clicked, this, &TimeLine::removeEmptyClick);
     connect(insertKeyButton, &QToolButton::clicked, this, &TimeLine::insertKeyClick);
 
-    connect(copySelectedButton, &QToolButton::clicked, this, &TimeLine::copySelectedClick);
-    connect(pasteSelectedButton, &QToolButton::clicked, this, &TimeLine::pasteSelectedClick);
     connect(removeSelectedButton, &QToolButton::clicked, this, &TimeLine::removeSelectedClick);
-    connect(cutSelectedButton, &QToolButton::clicked, this, &TimeLine::cutSelectedClick);
     connect(reverseSelectedButton, &QToolButton::clicked, this, &TimeLine::reverseSelectedClick);
 
     connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);

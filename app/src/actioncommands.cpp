@@ -580,65 +580,6 @@ Status ActionCommands::insertNewKey(){
     return addNewKey();
 }
 
-void ActionCommands::copySelected()
-{
-    Layer* currentLayer = mEditor->layers()->currentLayer();
-    if (currentLayer->type() == Layer::BITMAP)
-    {
-        std::map<int, KeyFrame*> clipboard;
-        int currentPosition = mEditor->currentFrame();
-        int firstPosition = currentLayer->selectedKeyFramesPosition().first();
-        int selectedCount = currentLayer->selectedKeyFrameCount();
-
-        if (selectedCount == 0 && currentLayer->keyExists(currentPosition)) // copy current frame
-        {
-            clipboard[0] = currentLayer->getKeyFrameAt(currentPosition)->clone();
-        }
-        else if (selectedCount > 0) // copy selected frames
-        { 
-            currentLayer->foreachSelectedKeyFrame([&firstPosition, &clipboard](KeyFrame* k){
-                int relativePosition = k->pos() - firstPosition;
-                clipboard[relativePosition] = k->clone();
-            });
-        } 
-        else return;
-        
-        mEditor->setClipboardBitmapKeyframes(clipboard);
-    }
-};
-
-void ActionCommands::pasteSelected()
-{
-    Layer* currentLayer = mEditor->layers()->currentLayer();
-    if (currentLayer->type() == Layer::BITMAP)
-    {
-        auto kfs = mEditor->getClipboardBitmapKeyFrames();
-        if (kfs.size() == 0) return;
-
-        std::map<int, KeyFrame*>::reverse_iterator i = kfs.rbegin();
-        int currentPosition = mEditor->currentFrame();
-        int lastPosition = i->first;
-
-        if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition()) // move current frames
-        {
-            currentLayer->selectAllFramesAfter( currentPosition );
-            currentLayer->moveSelectedFrames(lastPosition + 1);
-        }
-        currentLayer->deselectAll();
-
-        while (i != kfs.rend()) // insert frames & select them
-        {
-            int newPosition = currentPosition + i->first;
-            KeyFrame* k =  i->second->clone();
-            currentLayer->addKeyFrame(newPosition, k);
-            currentLayer->setFrameSelected(newPosition, true);
-            i++;
-        }
-
-        Q_EMIT  mEditor->layers()->currentLayerChanged( mEditor->layers()->currentLayerIndex());
-    }
-};
-
 void ActionCommands::removeSelected()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
@@ -661,16 +602,6 @@ void ActionCommands::removeSelected()
     if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
 };
 
-void ActionCommands::cutSelected()
-{
-    Layer* currentLayer = mEditor->layers()->currentLayer();
-    if (currentLayer->type() == Layer::BITMAP)
-    {
-        copySelected();
-        removeSelected();
-    }
-};
-
 void ActionCommands::reverseSelected()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
@@ -679,8 +610,8 @@ void ActionCommands::reverseSelected()
         int selectedCount = currentLayer->selectedKeyFrameCount();
         if (selectedCount > 1)
         {
-            int firstPosition = currentLayer->selectedKeyFramesPosition().first();
-            int lastPosition = currentLayer->selectedKeyFramesPosition().last();
+            int firstPosition = currentLayer->selectedKeyFramesPositions().first();
+            int lastPosition = currentLayer->selectedKeyFramesPositions().last();
             int centerPosition = (lastPosition - firstPosition + 1) / 2;
 
             if ( selectedCount == 2 )  // swap 2 frames
