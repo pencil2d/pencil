@@ -108,6 +108,10 @@ private:
     bool mMultipleSelected = false;
     bool mFitSwatches = false;
 
+    const int MIN_ICON_SIZE = 19;
+    const int MEDIUM_ICON_SIZE = 26;
+    const int MAX_ICON_SIZE = 36;
+
 };
 
 #endif

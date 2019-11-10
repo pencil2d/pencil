@@ -365,42 +365,42 @@ void ColorPaletteWidget::setGridMode()
 
 void ColorPaletteWidget::setSwatchSizeSmall()
 {
-    if (mIconSize.width() > 20)
+    if (mIconSize.width() > MIN_ICON_SIZE)
     {
-        mIconSize = QSize(19, 19);
+        mIconSize = QSize(MIN_ICON_SIZE, MIN_ICON_SIZE);
         updateUI();
 
         mFitSwatches = false;
         QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue("PreferredColorGridSize", 19);
+        settings.setValue("PreferredColorGridSize", MIN_ICON_SIZE);
         settings.setValue("FitSwatchSize", false);
     }
 }
 
 void ColorPaletteWidget::setSwatchSizeMedium()
 {
-    if (mIconSize.width() < 21 || mIconSize.width() > 30)
+    if (mIconSize.width() != MEDIUM_ICON_SIZE)
     {
-        mIconSize = QSize(26, 26);
+        mIconSize = QSize(MEDIUM_ICON_SIZE, MEDIUM_ICON_SIZE);
         updateUI();
 
         mFitSwatches = false;
         QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue("PreferredColorGridSize", 26);
+        settings.setValue("PreferredColorGridSize", MEDIUM_ICON_SIZE);
         settings.setValue("FitSwatchSize", false);
     }
 }
 
 void ColorPaletteWidget::setSwatchSizeLarge()
 {
-    if (mIconSize.width() < 30)
+    if (mIconSize.width() < MAX_ICON_SIZE)
     {
-        mIconSize = QSize(34, 34);
+        mIconSize = QSize(MAX_ICON_SIZE, MAX_ICON_SIZE);
         updateUI();
 
         mFitSwatches = false;
         QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue("PreferredColorGridSize", 34);
+        settings.setValue("PreferredColorGridSize", MAX_ICON_SIZE);
         settings.setValue("FitSwatchSize", false);
     }
 }
@@ -417,29 +417,28 @@ void ColorPaletteWidget::fitSwatchSize()
     if (ui->colorListWidget->viewMode() == QListView::ListMode)
     {
         size = qFloor((height - hScrollBar - (4 * colorCount)) / colorCount);
-        if (size < 19) size = 19;
-        if (size > 36) size = 36;
+        if (size < MIN_ICON_SIZE) size = MIN_ICON_SIZE;
+        if (size > MAX_ICON_SIZE) size = MAX_ICON_SIZE;
     }
     else
     {
-        bool cont = true;
-        size = 19;
-        while (cont)
+        bool proceed = true;
+        size = MIN_ICON_SIZE;
+        while (proceed)
         {
             int columns = (width - vScrollBar) / size;
             int rows = static_cast<int>(qCeil(colorCount / columns));
-//            qDebug() << "columns, rows, size: " << columns << " " << rows << " " << size;
             if (height - hScrollBar > rows * (size + 6))
             {
                 size++;
-                if (size == 36)
+                if (size == MAX_ICON_SIZE)
                 {
-                    cont = false;
+                    proceed = false;
                 }
             }
             else
             {
-                cont = false;
+                proceed = false;
             }
         }
     }

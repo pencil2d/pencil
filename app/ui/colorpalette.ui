@@ -324,7 +324,7 @@
      <bool>true</bool>
     </property>
     <property name="text">
-     <string>Fit Swatch (19-36 px)</string>
+     <string>Fit Swatch</string>
     </property>
     <property name="toolTip">
      <string>Fit swatch to window (19-36 px)</string>
