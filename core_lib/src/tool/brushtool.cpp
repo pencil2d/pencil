@@ -65,7 +65,7 @@ void BrushTool::loadSettings()
     properties.stabilizerLevel = settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt();
     properties.useAA = settings.value("brushAA", 1).toInt();
 
-    if (properties.useFeather == true) { properties.useAA = -1; }
+    if (properties.useFeather) { properties.useAA = -1; }
     if (properties.width <= 0) { setWidth(15); }
     if (std::isnan(properties.feather)) { setFeather(15); }
 }

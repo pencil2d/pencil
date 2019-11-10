@@ -99,22 +99,14 @@ Status ActionCommands::importSound()
 
 
     int currentFrame = mEditor->currentFrame();
-    SoundClip* key = nullptr;
 
-    if (layer->keyExists(currentFrame))
+    SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
+
+    if (key == nullptr)
     {
-        key = static_cast<SoundClip*>(layer->getKeyFrameAt(currentFrame));
-        if (!key->fileName().isEmpty())
-        {
-            QMessageBox::warning(nullptr, "",
-                                 tr("A sound clip already exists on this frame! Please select another frame or layer."));
-            return Status::SAFE;
-        }
-    }
-    else
-    {
-        key = new SoundClip;
-        layer->addKeyFrame(currentFrame, key);
+        // Probably tried to modify a hidden layer or something like that
+        // Let Editor handle the warnings
+        return Status::SAFE;
     }
 
     FileDialog fileDialog(mParent);
@@ -521,8 +513,6 @@ Status ActionCommands::addNewKey()
     {
         mEditor->view()->updateViewTransforms();
     }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
 
     return Status::OK;
 }

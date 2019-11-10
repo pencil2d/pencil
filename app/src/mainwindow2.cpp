@@ -119,6 +119,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     readSettings();
 
+    updateZoomLabel();
+
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
@@ -847,7 +849,6 @@ void MainWindow2::importImageSequence()
                              QMessageBox::Ok);
     }
 
-    mEditor->layers()->notifyAnimationLengthChanged();
     progress.close();
 
     mIsImportingImageSequence = false;
@@ -992,8 +993,6 @@ void MainWindow2::importGIF()
                              QMessageBox::Ok,
                              QMessageBox::Ok);
     }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.setValue(100);
     progress.close();
