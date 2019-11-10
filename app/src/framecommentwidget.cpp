@@ -6,7 +6,6 @@
 
 #include "layermanager.h"
 #include "playbackmanager.h"
-#include "keyframetextedit.h"
 
 FrameCommentWidget::FrameCommentWidget(QWidget *parent) :
     BaseDockWidget(parent)
@@ -32,7 +31,6 @@ void FrameCommentWidget::initUI()
 
 void FrameCommentWidget::updateUI()
 {
-
 }
 
 void FrameCommentWidget::setCore(Editor *editor)
@@ -62,7 +60,7 @@ void FrameCommentWidget::currentFrameChanged(int frame)
 {
     if (!mIsPlaying)
     {
-        if (mEditor->layers()->currentLayer()->firstKeyFramePosition() <= frame)
+        if (frame >= mEditor->layers()->currentLayer()->firstKeyFramePosition())
         {
             fillComments();
         }
@@ -112,6 +110,10 @@ void FrameCommentWidget::fillComments()
     KeyFrame* keyframe = getKeyFrame();
     if (keyframe == nullptr) { return; }
 
+    QSignalBlocker b(ui->textEditDialogue);
+    QSignalBlocker b2(ui->textEditAction);
+    QSignalBlocker b3(ui->textEditSlug);
+
     ui->textEditDialogue->setPlainText(keyframe->getDialogueComment());
     ui->textEditAction->setPlainText(keyframe->getActionComment());
     ui->textEditSlug->setPlainText(keyframe->getSlugComment());
@@ -130,11 +132,11 @@ void FrameCommentWidget::applyComments()
 
 KeyFrame* FrameCommentWidget::getKeyFrame()
 {
-    int currentFrame = mEditor->currentFrame();
-    Layer* layer = mEditor->layers()->currentLayer();
-    KeyFrame* keyframe = layer->getKeyFrameAt(currentFrame);
+    const int frame = mEditor->currentFrame();
+    const Layer* layer = mEditor->layers()->currentLayer();
+    KeyFrame* keyframe = layer->getKeyFrameAt(frame);
     if (keyframe == nullptr)
-        keyframe = layer->getKeyFrameAt(layer->getPreviousFrameNumber(currentFrame, true));
+        keyframe = layer->getKeyFrameAt(layer->getPreviousFrameNumber(frame, true));
     if (keyframe == nullptr) { return nullptr; }
 
     return keyframe;
@@ -142,14 +144,14 @@ KeyFrame* FrameCommentWidget::getKeyFrame()
 
 void FrameCommentWidget::makeConnections()
 {
-    connect(ui->textEditDialogue, &KeyFrameTextEdit::textChanged, this, &FrameCommentWidget::dialogueTextChanged);
-    connect(ui->textEditAction, &KeyFrameTextEdit::textChanged, this, &FrameCommentWidget::actionTextChanged);
-    connect(ui->textEditSlug, &KeyFrameTextEdit::textChanged, this, &FrameCommentWidget::slugTextChanged);
+    connect(ui->textEditDialogue, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::dialogueTextChanged);
+    connect(ui->textEditAction, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::actionTextChanged);
+    connect(ui->textEditSlug, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::slugTextChanged);
     connect(ui->btnClearFields, &QPushButton::clicked, this, &FrameCommentWidget::clearFrameCommentsFields);
 
-    connect(ui->textEditSlug, &KeyFrameTextEdit::lostFocus, this, &FrameCommentWidget::applyComments);
-    connect(ui->textEditAction, &KeyFrameTextEdit::lostFocus, this, &FrameCommentWidget::applyComments);
-    connect(ui->textEditDialogue, &KeyFrameTextEdit::lostFocus, this, &FrameCommentWidget::applyComments);
+    connect(ui->textEditSlug, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
+    connect(ui->textEditAction, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
+    connect(ui->textEditDialogue, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
 
     connect(mEditor, &Editor::currentFrameChanged, this, &FrameCommentWidget::currentFrameChanged);
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &FrameCommentWidget::currentLayerChanged);
@@ -159,14 +161,14 @@ void FrameCommentWidget::makeConnections()
 
 void FrameCommentWidget::disconnectNotifiers()
 {
-    disconnect(ui->textEditDialogue, &KeyFrameTextEdit::textChanged, this, &FrameCommentWidget::dialogueTextChanged);
-    disconnect(ui->textEditAction, &KeyFrameTextEdit::textChanged, this, &FrameCommentWidget::actionTextChanged);
-    disconnect(ui->textEditSlug, &KeyFrameTextEdit::textChanged, this, &FrameCommentWidget::slugTextChanged);
+    disconnect(ui->textEditDialogue, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::dialogueTextChanged);
+    disconnect(ui->textEditAction, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::actionTextChanged);
+    disconnect(ui->textEditSlug, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::slugTextChanged);
     disconnect(ui->btnClearFields, &QPushButton::clicked, this, &FrameCommentWidget::clearFrameCommentsFields);
 
-    disconnect(ui->textEditSlug, &KeyFrameTextEdit::lostFocus, this, &FrameCommentWidget::applyComments);
-    disconnect(ui->textEditAction, &KeyFrameTextEdit::lostFocus, this, &FrameCommentWidget::applyComments);
-    disconnect(ui->textEditDialogue, &KeyFrameTextEdit::lostFocus, this, &FrameCommentWidget::applyComments);
+    disconnect(ui->textEditSlug, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
+    disconnect(ui->textEditAction, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
+    disconnect(ui->textEditDialogue, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
 
     disconnect(mEditor, &Editor::currentFrameChanged, this, &FrameCommentWidget::currentFrameChanged);
     disconnect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &FrameCommentWidget::currentLayerChanged);

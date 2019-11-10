@@ -39,7 +39,6 @@ INCLUDEPATH += \
 
 HEADERS += \
     src/importlayersdialog.h \
-    src/keyframetextedit.h \
     src/importpositiondialog.h \
     src/mainwindow2.h \
     src/predefinedsetmodel.h \
@@ -74,7 +73,6 @@ HEADERS += \
 
 SOURCES += \
     src/importlayersdialog.cpp \
-    src/keyframetextedit.cpp \
     src/importpositiondialog.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
