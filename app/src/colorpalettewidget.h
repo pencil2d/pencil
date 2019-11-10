@@ -46,6 +46,7 @@ public:
 
     void initUI() override;
     void updateUI() override;
+    void setCore(Editor* editor);
 
     int currentColourNumber();
 
@@ -105,6 +106,9 @@ private:
 
     bool mIsColorDialog = false;
     bool mMultipleSelected = false;
+
+    Editor* mEditor = nullptr;
+    Object* mObject = nullptr;
 
 };
 
