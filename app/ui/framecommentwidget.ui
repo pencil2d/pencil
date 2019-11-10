@@ -61,7 +61,7 @@
     </layout>
    </item>
    <item>
-    <widget class="KeyFrameTextEdit" name="textEditDialogue"/>
+    <widget class="QPlainTextEdit" name="textEditDialogue"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -95,7 +95,7 @@
     </layout>
    </item>
    <item>
-    <widget class="KeyFrameTextEdit" name="textEditAction"/>
+    <widget class="QPlainTextEdit" name="textEditAction"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -129,7 +129,7 @@
     </layout>
    </item>
    <item>
-    <widget class="KeyFrameTextEdit" name="textEditSlug"/>
+    <widget class="QPlainTextEdit" name="textEditSlug"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -157,13 +157,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KeyFrameTextEdit</class>
-   <extends>QPlainTextEdit</extends>
-   <header>keyframetextedit.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
