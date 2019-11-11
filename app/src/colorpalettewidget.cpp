@@ -106,13 +106,6 @@ void ColorPaletteWidget::showContextMenu(const QPoint &pos)
     menu->addAction(tr("Add"), this, &ColorPaletteWidget::addItem, 0);
     menu->addAction(tr("Replace"),  this, &ColorPaletteWidget::replaceItem, 0);
     menu->addAction(tr("Remove"), this, &ColorPaletteWidget::removeItem, 0);
-    if (editor()->layers()->currentLayer()->type() == Layer::BITMAP)
-    {
-        menu->addSeparator();
-        QMenu* replaceLineColor = menu->addMenu(tr("Replace Line Color"));
-        replaceLineColor->addAction(tr("Current keyframe"), this, &ColorPaletteWidget::replaceLineColor, 0);
-        replaceLineColor->addAction(tr("All keyframes on current layer"), this, &ColorPaletteWidget::replaceLineColorForAllKeyFrames, 0);
-    }
 
     menu->exec(globalPos);
 }
@@ -150,45 +143,6 @@ void ColorPaletteWidget::removeItem()
 {
     QSignalBlocker b(ui->colorListWidget);
     clickRemoveColorButton();
-}
-
-void ColorPaletteWidget::replaceLineColor()
-{
-    mReplaceLineColorAll = false;
-    replaceLineColorForAllKeyFrames();
-}
-
-void ColorPaletteWidget::replaceLineColorForAllKeyFrames()
-{
-    if (mMultipleSelected) { return; }
-
-    const ColourRef colourRef = editor()->object()->getColour(ui->colorListWidget->currentRow());
-    QRgb newlinecolor = colourRef.colour.rgb();
-
-    LayerBitmap *layerbitmap = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
-
-    if (!mReplaceLineColorAll)
-    {
-        if (layerbitmap->keyExists(editor()->currentFrame()))
-        {
-            layerbitmap->getBitmapImageAtFrame(editor()->currentFrame())->fillNonAlphaPixels(newlinecolor);
-            editor()->updateFrame(editor()->currentFrame());
-        }
-    }
-    else
-    {
-        int currentFrame = editor()->currentFrame();
-        for (int i = 1; i <= layerbitmap->getMaxKeyFramePosition(); i++)
-        {
-            if (layerbitmap->keyExists(i))
-            {
-                editor()->scrubTo(i);
-                layerbitmap->getBitmapImageAtFrame(i)->fillNonAlphaPixels(newlinecolor);
-            }
-        }
-        editor()->scrubTo(currentFrame);
-    }
-    mReplaceLineColorAll = true;
 }
 
 void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)

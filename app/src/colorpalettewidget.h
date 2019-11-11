@@ -79,8 +79,6 @@ private slots:
     void addItem();
     void replaceItem();
     void removeItem();
-    void replaceLineColor();
-    void replaceLineColorForAllKeyFrames();
     void showPaletteReminder();
 
     bool showPaletteWarning();
@@ -107,7 +105,6 @@ private:
 
     bool mIsColorDialog = false;
     bool mMultipleSelected = false;
-    bool mReplaceLineColorAll = true;
 
 };
 
