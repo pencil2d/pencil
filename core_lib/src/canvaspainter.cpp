@@ -172,10 +172,6 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
         }
     }
 
-    qDebug() << "================";
-    qDebug() << "previous : " << onionPrevPositions;
-    qDebug() << "next :     " << onionNextPositions;
-
     if (mOptions.bPrevOnionSkin)
     {
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
