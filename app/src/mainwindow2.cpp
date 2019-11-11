@@ -657,6 +657,7 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 bool MainWindow2::saveObject(QString strSavedFileName)
 {
     QProgressDialog progress(tr("Saving document..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 

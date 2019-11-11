@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include "ui_importimageseqoptions.h"
 #include "ui_importimageseqpreview.h"
 #include "util.h"
+#include "app_util.h"
 
 #include "editor.h"
 #include "predefinedsetmodel.h"
@@ -165,6 +166,7 @@ void ImportImageSeqDialog::importArbitrarySequence()
 
     // Show a progress dialog, as this can take a while if you have lots of images.
     QProgressDialog progress(tr("Importing image sequence..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progress);
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
@@ -302,6 +304,7 @@ void ImportImageSeqDialog::importPredefinedSet()
 
     // Show a progress dialog, as this can take a while if you have lots of images.
     QProgressDialog progress(tr("Importing images..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progress);
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
