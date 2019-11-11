@@ -240,8 +240,7 @@ void MainWindow2::createMenus()
     connect(ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie);
     connect(ui->actionExport_Animated_GIF, &QAction::triggered, mCommands, &ActionCommands::exportGif);
 
-    connect(ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::savePalette);
-    connect(ui->actionExport_Other_Palette_formats, &QAction::triggered, this, &MainWindow2::exportPalette);
+    connect(ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette);
 
     //--- Import Menu ---
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
@@ -1232,7 +1231,7 @@ void MainWindow2::openPalette()
 {
     int count = 0;
     int maxNumber = mEditor->object()->getColourCount();
-    bool openPalet = true;
+    bool openPalette = true;
     while (count < maxNumber)
     {
         if (mEditor->object()->isColourInUse(count))
@@ -1246,14 +1245,14 @@ void MainWindow2::openPalette()
             int ret = msgBox.exec();
             if (ret == QMessageBox::RejectRole)
             {
-                openPalet = false;
+                openPalette = false;
             }
             count = maxNumber;
         }
         count++;
     }
 
-    if (openPalet)
+    if (openPalette)
     {
         FileDialog fileDialog(this);
         QString filePath = fileDialog.openFile(FileType::PALETTE);

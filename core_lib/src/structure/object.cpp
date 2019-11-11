@@ -524,7 +524,6 @@ void Object::importPalettePencil(QFile& file)
     QDomDocument doc;
     doc.setContent(&file);
 
-//    mPalette.clear();
     QDomElement docElem = doc.documentElement();
     QDomNode tag = docElem.firstChild();
     while (!tag.isNull())
