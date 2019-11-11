@@ -45,25 +45,32 @@ void EraserTool::loadSettings()
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[USEFEATHER] = true;
     mPropertyEnabled[FEATHER] = true;
+    mPropertyEnabled[USEFEATHER] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[STABILIZATION] = true;
+    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
     properties.width = settings.value("eraserWidth", 24.0).toDouble();
     properties.feather = settings.value("eraserFeather", 48.0).toDouble();
+    properties.useFeather = settings.value("eraserUseFeather", true).toBool();
     properties.pressure = settings.value("eraserPressure", true).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("stabilizerLevel", StabilizationLevel::NONE).toInt();
+    properties.useAA = settings.value("eraserAA", 1).toInt();
+
+    if (properties.useFeather) { properties.useAA = -1; }
 }
 
 void EraserTool::resetToDefault()
 {
     setWidth(24.0);
     setFeather(48.0);
-    setUseFeather(false);
+    setUseFeather(true);
     setPressure(true);
+    setAA(true);
     setStabilizerLevel(StabilizationLevel::NONE);
 }
 
@@ -75,6 +82,17 @@ void EraserTool::setWidth(const qreal width)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("eraserWidth", width);
+    settings.sync();
+}
+
+void EraserTool::setUseFeather(const bool usingFeather)
+{
+    // Set current property
+    properties.useFeather = usingFeather;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("eraserUseFeather", usingFeather);
     settings.sync();
 }
 
@@ -97,6 +115,17 @@ void EraserTool::setPressure(const bool pressure)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("eraserPressure", pressure);
+    settings.sync();
+}
+
+void EraserTool::setAA(const int AA)
+{
+    // Set current property
+    properties.useAA = AA;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("eraserAA", AA);
     settings.sync();
 }
 

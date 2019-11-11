@@ -110,7 +110,8 @@ public:
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
-    bool isPointerInUse() const { return mMouseInUse || mStrokeManager->isTabletInUse(); }
+    bool isTabletInUse() const { return mTabletInUse; }
+    bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
     bool isTemporaryTool() const { return mInstantTool; }
 
     void keyEvent(QKeyEvent* event);
@@ -216,7 +217,7 @@ private:
     bool mKeyboardInUse = false;
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
-    bool mPenHeldDown = false;
+    bool mTabletInUse = false;
 
     // Double click handling for tablet input
     void handleDoubleClick();
