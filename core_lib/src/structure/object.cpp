@@ -281,6 +281,14 @@ void Object::deleteLayer(Layer* layer)
     }
 }
 
+void Object::addLayer(Layer *layer)
+{
+    if (layer != nullptr)
+    {
+        mLayers.append(layer);
+    }
+}
+
 ColourRef Object::getColour(int index) const
 {
     ColourRef result(Qt::white, "error");

@@ -67,13 +67,13 @@ public:
     void setPixel(QPoint p, QRgb colour);
     void fillNonAlphaPixels(const QRgb color);
 
-    QRgb constScanLine(int x, int y);
-    void scanLine(int x, int y, QRgb colour);
+    inline QRgb constScanLine(int x, int y) const;
+    inline void scanLine(int x, int y, QRgb colour);
     void clear();
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
-    static bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
+    static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
     static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb newColor, int tolerance);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);

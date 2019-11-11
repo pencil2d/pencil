@@ -66,6 +66,7 @@
      <addaction name="actionImport_Movie"/>
      <addaction name="actionImport_ImageSeqNum"/>
      <addaction name="actionImport_Gif"/>
+     <addaction name="actionImportLayers_from_pclx"/>
      <addaction name="actionImport_Sound"/>
      <addaction name="separator"/>
      <addaction name="actionOpen_Replace_Palette"/>
@@ -341,7 +342,7 @@
   </action>
   <action name="actionImport_ImageSeqNum">
    <property name="text">
-    <string>Image Sequence Numbered...</string>
+    <string>Image Predefined set...</string>
    </property>
   </action>
   <action name="actionUndo">
@@ -991,6 +992,11 @@
   <action name="actionExport_Other_Palette_formats">
    <property name="text">
     <string>Other Palette format...</string>
+   </property>
+  </action>
+  <action name="actionImportLayers_from_pclx">
+   <property name="text">
+    <string>Layers from PCLX...</string>
    </property>
   </action>
  </widget>
