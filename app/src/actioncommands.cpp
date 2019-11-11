@@ -592,11 +592,17 @@ void ActionCommands::removeSelected()
     }
     else
     {
-        currentLayer->foreachSelectedKeyFrame([currentLayer](KeyFrame* k){
-            currentLayer->removeKeyFrame(k->pos());
+        QList<int> keyPositions;
+        currentLayer->foreachSelectedKeyFrame([&keyPositions](KeyFrame* k){
+            keyPositions.append(k->pos());
         });
+
+        for (int i = 0; i <keyPositions.count(); i++) {
+            currentLayer->removeKeyFrame(keyPositions[i]);
+        }
     }
-    
+
+    currentLayer->deselectAll();
     Q_EMIT  mEditor->layers()->currentLayerChanged( mEditor->layers()->currentLayerIndex());
 
     if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
