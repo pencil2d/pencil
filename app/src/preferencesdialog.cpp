@@ -468,6 +468,7 @@ ToolsPage::ToolsPage()
     connect(ui->onionMinOpacityBox, spinBoxChanged, this, &ToolsPage::onionMinOpacityChange);
     connect(ui->onionPrevFramesNumBox, spinBoxChanged, this, &ToolsPage::onionPrevFramesNumChange);
     connect(ui->onionNextFramesNumBox, spinBoxChanged, this, &ToolsPage::onionNextFramesNumChange);
+//    connect(ui->onionSkinMode, &QCheckBox::stateChanged, this, &ToolsPage::onionSkinModeChange);
     connect(ui->useQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange);
     connect(ui->rotationIncrementSlider, &QSlider::valueChanged, this, &ToolsPage::rotationIncrementChange);
 }
@@ -483,6 +484,7 @@ void ToolsPage::updateValues()
     ui->onionMinOpacityBox->setValue(mManager->getInt(SETTING::ONION_MIN_OPACITY));
     ui->onionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
     ui->onionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
+    ui->onionSkinMode->setChecked(mManager->getString(SETTING::ONION_TYPE) == "absolute");
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
     setRotationIncrement(mManager->getInt(SETTING::ROTATION_INCREMENT));
 }
@@ -490,6 +492,18 @@ void ToolsPage::updateValues()
 void ToolsPage::onionMaxOpacityChange(int value)
 {
     mManager->set(SETTING::ONION_MAX_OPACITY, value);
+}
+
+void ToolsPage::onionSkinModeChange(int value)
+{
+    if (value == Qt::Checked)
+    {
+        mManager->set(SETTING::ONION_TYPE, QString("absolute"));
+    }
+    else
+    {
+        mManager->set(SETTING::ONION_TYPE, QString("relative"));
+    }
 }
 
 void ToolsPage::quickSizingChange(int b)

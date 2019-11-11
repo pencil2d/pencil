@@ -88,7 +88,6 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     Q_UNUSED(rect);
 
     paintBackground();
-    paintOnionSkin(painter);
 
     //painter.setClipRect(aligned); // this aligned rect is valid only for bitmap images.
     paintCurrentFrame(painter);
@@ -127,7 +126,13 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
         qreal opacity = maxOpacity;
 
-        int onionFrameNumber = layer->getPreviousFrameNumber(mFrameNumber, mOptions.bIsOnionAbsolute);
+        int onionFrameNumber = mFrameNumber;
+        if (mOptions.bIsOnionAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber+1, true);
+        }
+        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
+
         int onionPosition = 0;
 
         while (onionPosition < mOptions.nPrevOnionSkinCount && onionFrameNumber > 0)
@@ -246,7 +251,6 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 }
 
-
 void CanvasPainter::prescale(BitmapImage* bitmapImage)
 {
     QImage origImage = bitmapImage->image()->copy();
@@ -263,9 +267,9 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
     else
     {
         // map to correct matrix
-        QRectF mappedOrigImage = mViewTransform.mapRect(QRectF(origImage.rect()));
-        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size().toSize(),
-                                             Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QRect mappedOrigImage = mViewTransform.mapRect(bitmapImage->bounds());
+        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size(),
+                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     }
 }
 
@@ -362,6 +366,11 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
         if (layer->visible() == false)
             continue;
 
+        if (i == mCurrentLayerIndex) {
+            paintOnionSkin(painter);
+            painter.setOpacity(1.0);
+        }
+
         if (i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0)
         {
             switch (layer->type())
@@ -454,12 +463,14 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
     QRect boundingRect;
     mCameraRect = cameraLayer->getViewRect();
 
+    QRegion rg2(mCameraRect);
     if (isCameraMode)
     {
         painter.setWorldMatrixEnabled(false);
         QTransform center = QTransform::fromTranslate(viewRect.width() / 2.0, viewRect.height() / 2.0);
         boundingRect = viewRect.toAlignedRect();
         mCameraRect = center.mapRect(mCameraRect);
+        rg2 = center.map(rg2);
     }
     else
     {
@@ -469,7 +480,7 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
 
         QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
-
+        rg2 = camTransform.inverted().map(rg2);
     }
 
     painter.setOpacity(1.0);
@@ -477,7 +488,6 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
     painter.setBrush(QColor(0, 0, 0, 80));
 
     QRegion rg1(boundingRect);
-    QRegion rg2(mCameraRect);
     QRegion rg3 = rg1.subtracted(rg2);
 
     painter.setClipRegion(rg3);

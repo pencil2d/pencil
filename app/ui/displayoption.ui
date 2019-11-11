@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>152</width>
+    <width>156</width>
     <height>140</height>
    </rect>
   </property>
@@ -294,6 +294,16 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>mirrorButton</tabstop>
+  <tabstop>thinLinesButton</tabstop>
+  <tabstop>onionPrevButton</tabstop>
+  <tabstop>onionRedButton</tabstop>
+  <tabstop>mirrorVButton</tabstop>
+  <tabstop>outLinesButton</tabstop>
+  <tabstop>onionNextButton</tabstop>
+  <tabstop>onionBlueButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../data/app.qrc"/>
  </resources>

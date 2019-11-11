@@ -75,7 +75,6 @@ public:
     Status addNewCameraLayer();
     Status addNewSoundLayer();
     Status deleteCurrentLayer();
-    QString nameSuggest(QString s);
     void changeKeyframeLineColor();
     void changeallKeyframeLineColor();
 

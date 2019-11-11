@@ -15,7 +15,7 @@ RESOURCES += data/core_lib.qrc
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
-
+UI_DIR = .ui
 
 INCLUDEPATH += src \
     src/graphics \
@@ -25,7 +25,6 @@ INCLUDEPATH += src \
     src/structure \
     src/tool \
     src/util \
-    ui \
     src/managers \
     src/external
 
