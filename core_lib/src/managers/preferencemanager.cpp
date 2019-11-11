@@ -99,6 +99,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::MULTILAYER_ONION,         settings.value(SETTING_MULTILAYER_ONION,       false).toBool());
     set(SETTING::ONION_BLUE,               settings.value(SETTING_ONION_BLUE,             false).toBool());
     set(SETTING::ONION_RED,                settings.value(SETTING_ONION_RED,              false).toBool());
+    set(SETTING::LOOP_ACTIVE,              settings.value(SETTING_LOOP_ACTIVE,            false).toBool());
 
     set(SETTING::ONION_MAX_OPACITY,        settings.value(SETTING_ONION_MAX_OPACITY,      50).toInt());
     set(SETTING::ONION_MIN_OPACITY,        settings.value(SETTING_ONION_MIN_OPACITY,      20).toInt());
@@ -307,6 +308,9 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::ONION_RED:
         settings.setValue(SETTING_ONION_RED, value);
+        break;
+    case SETTING::LOOP_ACTIVE:
+        settings.setValue(SETTING_LOOP_ACTIVE, value);
         break;
     case SETTING::TOOL_CURSOR:
         settings.setValue(SETTING_TOOL_CURSOR, value);

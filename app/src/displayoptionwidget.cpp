@@ -60,6 +60,7 @@ void DisplayOptionWidget::makeConnections()
     connect(ui->onionNextButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionNextButtonClicked);
     connect(ui->onionBlueButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionBlueButtonClicked);
     connect(ui->onionRedButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionRedButtonClicked);
+    connect(ui->loopActiveButton, &QToolButton::clicked, this, &DisplayOptionWidget::loopActiveClicked);
     connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
     connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
 
@@ -96,6 +97,9 @@ void DisplayOptionWidget::updateUI()
     SignalBlocker b6(ui->onionRedButton);
     ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));
 
+    SignalBlocker b9(ui->loopActiveButton);
+    ui->loopActiveButton->setChecked(prefs->isOn(SETTING::LOOP_ACTIVE));
+
     ViewManager* view = editor()->view();
 
     SignalBlocker b7(ui->mirrorButton);
@@ -128,6 +132,12 @@ void DisplayOptionWidget::onionRedButtonClicked(bool isOn)
 {
     PreferenceManager* prefs = editor()->preference();
     prefs->set(SETTING::ONION_RED, isOn);
+}
+
+void DisplayOptionWidget::loopActiveClicked(bool isOn)
+{
+    PreferenceManager* prefs = editor()->preference();
+    prefs->set(SETTING::LOOP_ACTIVE, isOn);
 }
 
 void DisplayOptionWidget::toggleMirror(bool isOn)

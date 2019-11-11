@@ -42,6 +42,7 @@ private slots:
     void onionNextButtonClicked(bool);
     void onionBlueButtonClicked(bool);
     void onionRedButtonClicked(bool);
+    void loopActiveClicked(bool);
     void toggleMirror(bool);
     void toggleMirrorV(bool);
 

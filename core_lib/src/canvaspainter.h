@@ -51,6 +51,7 @@ struct CanvasPainterOptions
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
+    bool isLoopActive = false;
 };
 
 
@@ -61,6 +62,12 @@ class CanvasPainter : public QObject
 public:
     explicit CanvasPainter(QObject* parent = 0);
     virtual ~CanvasPainter();
+
+    enum FramePosition{
+        CURRENT,
+        PREVIOUS,
+        NEXT
+    };
 
     void setCanvas(QPixmap* canvas);
     void setViewTransform(const QTransform view, const QTransform viewInverse);
@@ -78,7 +85,7 @@ private:
 
     void paintCurrentFrame(QPainter& painter);
 
-    void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame);
+    void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, int framePosition);
     void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame);
 
     void paintTransformedSelection(QPainter& painter);

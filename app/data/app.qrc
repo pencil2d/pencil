@@ -56,6 +56,7 @@
         <file>icons/new/arrow-horizontal.png</file>
         <file>icons/new/arrow-selectmove.png</file>
         <file>icons/new/arrow-vertical.png</file>
+        <file>icons/loop.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>
@@ -66,6 +67,7 @@
         <file>icons/outlines5.png</file>
         <file>icons/mirror.png</file>
         <file>icons/mirrorV.png</file>
+        <file>icons/loop.png</file>
         <file>icons/dialog-error.svg</file>
         <file>pencil2d_quick_guide.pdf</file>
         <file>icons/new/svg/color-dialog.svg</file>

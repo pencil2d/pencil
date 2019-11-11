@@ -32,6 +32,125 @@
     </property>
     <item>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="3">
+       <widget class="QToolButton" name="onionRedButton">
+        <property name="toolTip">
+         <string>Onion skin color: red</string>
+        </property>
+        <property name="statusTip">
+         <string>Onion skin color: red</string>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/app/icons/onion-red.png</normaloff>:/app/icons/onion-red.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QToolButton" name="onionBlueButton">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Onion skin color: blue</string>
+        </property>
+        <property name="statusTip">
+         <string>Onion skin color: blue</string>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/app/icons/onion-blue.png</normaloff>:/app/icons/onion-blue.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QToolButton" name="mirrorVButton">
+        <property name="toolTip">
+         <string>Vertical flip</string>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QToolButton" name="outLinesButton">
+        <property name="toolTip">
+         <string>Show outlines only</string>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/app/icons/outlines5.png</normaloff>:/app/icons/outlines5.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="2">
        <widget class="QToolButton" name="onionNextButton">
         <property name="toolTip">
@@ -87,32 +206,6 @@
         </property>
         <property name="toolButtonStyle">
          <enum>Qt::ToolButtonIconOnly</enum>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QToolButton" name="mirrorVButton">
-        <property name="toolTip">
-         <string>Vertical flip</string>
-        </property>
-        <property name="text">
-         <string>...</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
         </property>
         <property name="autoRaise">
          <bool>true</bool>
@@ -183,84 +276,17 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QToolButton" name="outLinesButton">
+      <item row="2" column="0">
+       <widget class="QToolButton" name="loopActiveButton">
         <property name="toolTip">
-         <string>Show outlines only</string>
+         <string/>
         </property>
         <property name="text">
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/outlines5.png</normaloff>:/app/icons/outlines5.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QToolButton" name="onionRedButton">
-        <property name="toolTip">
-         <string>Onion skin color: red</string>
-        </property>
-        <property name="statusTip">
-         <string>Onion skin color: red</string>
-        </property>
-        <property name="text">
-         <string>...</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/onion-red.png</normaloff>:/app/icons/onion-red.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QToolButton" name="onionBlueButton">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Onion skin color: blue</string>
-        </property>
-        <property name="statusTip">
-         <string>Onion skin color: blue</string>
-        </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>...</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/onion-blue.png</normaloff>:/app/icons/onion-blue.png</iconset>
+         <iconset>
+          <normaloff>:/app/icons/loop.png</normaloff>:/app/icons/loop.png</iconset>
         </property>
         <property name="iconSize">
          <size>
