@@ -36,6 +36,10 @@ GNU General Public License for more details.
 #define PFF_TMP_DECOMPRESS_EXT 	"Y2xD"
 #define PFF_PALETTE_FILE        "palette.xml"
 
+// Palette formats
+#define PENCIL2D_PALETTE_EXT    ".xml"
+#define GIMP_PALETTE_EXT        ".gpl"
+
 
 bool removePFFTmpDirectory (const QString& dirName);
 QString uniqueString(int len);

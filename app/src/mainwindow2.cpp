@@ -1201,7 +1201,11 @@ void MainWindow2::exportPalette()
     QString filePath = FileDialog.saveFile(FileType::PALETTE);
     if (!filePath.isEmpty())
     {
-        mEditor->object()->exportPalette(filePath);
+        if (!filePath.endsWith(PENCIL2D_PALETTE_EXT) && !filePath.endsWith(GIMP_PALETTE_EXT))
+        {
+            filePath = filePath + PENCIL2D_PALETTE_EXT;
+        }
+            mEditor->object()->exportPalette(filePath);
     }
 }
 
@@ -1214,16 +1218,6 @@ void MainWindow2::importPalette()
         mEditor->object()->importPalette(filePath);
         mColorPalette->refreshColorList();
         mEditor->color()->setColorNumber(0);
-    }
-}
-
-void MainWindow2::savePalette()
-{
-    FileDialog FileDialog(this);
-    QString filePath = FileDialog.saveFile(FileType::PALETTE_XML);
-    if (!filePath.isEmpty())
-    {
-        mEditor->object()->exportPalette(filePath);
     }
 }
 
