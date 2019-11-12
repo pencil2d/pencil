@@ -76,6 +76,7 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
+    void paletteImported();
     void fitSwatchSize();
     void addItem();
     void replaceItem();

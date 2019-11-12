@@ -152,6 +152,7 @@ public:
 
 signals:
     void layerViewChanged();
+    void paletteImported();
 
 private:
     int getMaxLayerID();

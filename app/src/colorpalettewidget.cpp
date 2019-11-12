@@ -315,8 +315,8 @@ void ColorPaletteWidget::palettePreferences()
     ui->palettePref->addAction(ui->fitSwatchAction);
 
     if (mFitSwatches) ui->fitSwatchAction->setChecked(true);
-    else if (mIconSize.width() > 30) ui->largeSwatchAction->setChecked(true);
-    else if (mIconSize.width() > 20) ui->mediumSwatchAction->setChecked(true);
+    else if (mIconSize.width() > MEDIUM_ICON_SIZE) ui->largeSwatchAction->setChecked(true);
+    else if (mIconSize.width() > MIN_ICON_SIZE) ui->mediumSwatchAction->setChecked(true);
     else ui->smallSwatchAction->setChecked(true);
 
     if (ui->colorListWidget->viewMode() == QListView::ListMode)
@@ -327,6 +327,7 @@ void ColorPaletteWidget::palettePreferences()
     connect(ui->listModeAction, &QAction::triggered, this, &ColorPaletteWidget::setListMode);
     connect(ui->gridModeAction, &QAction::triggered, this, &ColorPaletteWidget::setGridMode);
     connect(ui->fitSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::fitSwatchSize);
+    connect(editor()->object(), &Object::paletteImported, this, &ColorPaletteWidget::paletteImported);
     connect(ui->smallSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeSmall);
     connect(ui->mediumSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeMedium);
     connect(ui->largeSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeLarge);
@@ -403,6 +404,12 @@ void ColorPaletteWidget::setSwatchSizeLarge()
         settings.setValue("PreferredColorGridSize", MAX_ICON_SIZE);
         settings.setValue("FitSwatchSize", false);
     }
+}
+
+void ColorPaletteWidget::paletteImported()
+{
+    if (mFitSwatches)
+        fitSwatchSize();
 }
 
 void ColorPaletteWidget::fitSwatchSize()
