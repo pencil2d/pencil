@@ -49,6 +49,7 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "util.h"
 #include "movieexporter.h"
+#include "qsettings.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -876,6 +877,15 @@ void Editor::createNewCameraLayer(const QString& name)
 bool Editor::importImage(QString filePath)
 {
     Layer* layer = layers()->currentLayer();
+    QSettings settings(PENCIL2D, PENCIL2D);
+    int index = settings.value("ImportRepositionType").toInt();
+
+    if (index == 3)
+    {
+        LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
+        QTransform transform = camera->getViewAtFrame(currentFrame());
+        view()->setImportView(transform);
+    }
 
     switch (layer->type())
     {
