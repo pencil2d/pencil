@@ -39,6 +39,7 @@ void ImportPositionDialog::didChangeComboBoxIndex(const int index)
 
 void ImportPositionDialog::changeImportView()
 {
+    mEditor->view()->setImportFollowsCamera(false);
     QTransform transform;
     if (mImportOption == ImportPosition::Type::CenterOfView)
     {
@@ -67,6 +68,7 @@ void ImportPositionDialog::changeImportView()
         return;
     }
 
+    mEditor->view()->setImportFollowsCamera(true);
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
 }

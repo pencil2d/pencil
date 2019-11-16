@@ -79,6 +79,9 @@ public:
     bool isFlipHorizontal() { return mIsFlipHorizontal; }
     bool isFlipVertical() { return mIsFlipVertical; }
 
+    void setImportFollowsCamera(bool b) { mImportFollowsCamera = b; }
+    bool getImportFollowsCamera() { return mImportFollowsCamera; }
+
     void setCanvasSize(QSize size);
     void setCameraLayer(Layer* layer);
 
@@ -108,6 +111,7 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+    bool mImportFollowsCamera = false;
 
     LayerCamera* mCameraLayer = nullptr;
 };
