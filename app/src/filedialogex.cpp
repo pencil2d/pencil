@@ -79,17 +79,38 @@ QString FileDialog::saveFile( FileType fileType )
     QString strFilter = saveFileFilters( fileType );
     QString strSelectedFilter = getFilterForFile(strFilter, strInitialFilePath);
 
-    QString filePath = QFileDialog::getSaveFileName( mRoot,
-                                                     strTitle,
-                                                     strInitialFilePath,
-                                                     strFilter,
-                                                     strSelectedFilter.isNull() ? Q_NULLPTR : &strSelectedFilter );
+    QString filePath = QFileDialog::getSaveFileName(mRoot,
+                           strTitle,
+                           strInitialFilePath,
+                           strFilter,
+                           strSelectedFilter.isNull() ? Q_NULLPTR : &strSelectedFilter);
+
     if ( !filePath.isEmpty() )
     {
         setLastSavePath( fileType, filePath );
     }
 
+    QFileInfo info(filePath);
+    if (info.suffix().isEmpty() || strSelectedFilter.isEmpty()) {
+
+        filePath += addDefaultExtensionSuffix(fileType);
+    }
+
     return filePath;
+}
+
+QString FileDialog::addDefaultExtensionSuffix(const FileType fileType)
+{
+    switch(fileType)
+    {
+    case FileType::ANIMATION: return PFF_DEFAULT_PROJECT_EXT;
+    case FileType::IMAGE: return PFF_DEFAULT_IMAGE_EXT;
+    case FileType::IMAGE_SEQUENCE: return PFF_DEFAULT_IMAGE_SEQ_EXT;
+    case FileType::GIF: return PFF_DEFAULT_ANIMATED_EXT;
+    case FileType::PALETTE: return PFF_DEFAULT_PALETTE_EXT;
+    default:
+        return "";
+    }
 }
 
 QString FileDialog::getLastOpenPath( FileType fileType )
