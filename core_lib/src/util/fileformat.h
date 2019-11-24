@@ -29,17 +29,14 @@ GNU General Public License for more details.
 #define PFF_OPEN_ALL_FILE_FILTER	QObject::tr( "All Pencil Files PCLX & PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)" )
 #define PFF_SAVE_ALL_FILE_FILTER	QObject::tr( "Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)" )
 
+#define PFF_PALETTE_EXT_FILTER \
+    QObject::tr("All Palette formats (*.xml *.gpl);;Pencil Palette (*.xml);;GIMP Palette (*.gpl)")
 
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"
 #define PFF_XML_FILE_NAME 		"main.xml"
 #define PFF_TMP_DECOMPRESS_EXT 	"Y2xD"
 #define PFF_PALETTE_FILE        "palette.xml"
-
-// Palette formats
-#define PENCIL2D_PALETTE_EXT    ".xml"
-#define GIMP_PALETTE_EXT        ".gpl"
-
 
 bool removePFFTmpDirectory (const QString& dirName);
 QString uniqueString(int len);

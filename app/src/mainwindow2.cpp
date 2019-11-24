@@ -253,7 +253,7 @@ void MainWindow2::createMenus()
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
     connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
-    connect(ui->actionOpen_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
+    connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
@@ -1201,11 +1201,7 @@ void MainWindow2::exportPalette()
     QString filePath = FileDialog.saveFile(FileType::PALETTE);
     if (!filePath.isEmpty())
     {
-        if (!filePath.endsWith(PENCIL2D_PALETTE_EXT) && !filePath.endsWith(GIMP_PALETTE_EXT))
-        {
-            filePath = filePath + PENCIL2D_PALETTE_EXT;
-        }
-            mEditor->object()->exportPalette(filePath);
+        mEditor->object()->exportPalette(filePath);
     }
 }
 

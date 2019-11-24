@@ -136,8 +136,6 @@ QString FileDialog::openDialogTitle( FileType fileType )
         case FileType::MOVIE: return tr( "Import movie" );
         case FileType::SOUND: return tr( "Import sound" );
         case FileType::PALETTE: return tr( "Open palette" );
-        case FileType::PALETTE_XML: return tr( "Open palette" );
-        default: Q_ASSERT( false );
     }
     return "";
 }
@@ -153,8 +151,6 @@ QString FileDialog::saveDialogTitle( FileType fileType )
         case FileType::MOVIE: return tr( "Export movie" );
         case FileType::SOUND: return tr( "Export sound" );
         case FileType::PALETTE: return tr( "Export palette" );
-        case FileType::PALETTE_XML: return tr( "Save palette" );
-        default: Q_ASSERT( false );
     }
     return "";
 }
@@ -169,15 +165,7 @@ QString FileDialog::openFileFilters( FileType fileType )
         case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
         case FileType::MOVIE: { Q_ASSERT(false); return PENCIL_MOVIE_EXT; } // currently not supported
         case FileType::SOUND: return QString("%1 (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)").arg("Sounds");
-        case FileType::PALETTE:
-            return QString("%1 (*.xml *.gpl);;%2 (*.xml);;%3 (*.gpl)")
-                .arg(tr("Palette"))
-                .arg(tr("Pencil2D Palette"))
-                .arg(tr("GIMP Palette"));
-        case FileType::PALETTE_XML:
-            return QString("%1 (*.xml)")
-                .arg(tr("Pencil2D Palette"));
-    default: Q_ASSERT( false );
+        case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
     }
     return "";
 }
@@ -192,15 +180,7 @@ QString FileDialog::saveFileFilters( FileType fileType )
         case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
         case FileType::MOVIE: return "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)";
         case FileType::SOUND: return "";
-        case FileType::PALETTE:
-            return QString("%1 (*.xml *.gpl);;%2 (*.xml);;%3 (*.gpl)")
-                .arg(tr("Palette"))
-                .arg(tr("Pencil2D Palette"))
-                .arg(tr("GIMP Palette"));
-    case FileType::PALETTE_XML:
-        return QString("%1 (*.xml)")
-            .arg(tr("Pencil2D Palette"));
-        default: Q_ASSERT( false );
+        case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
     }
     return "";
 }
@@ -246,8 +226,6 @@ QString FileDialog::defaultFileName( FileType fileType )
         case FileType::MOVIE: return "untitled.mp4";
         case FileType::SOUND: return "untitled.wav";
         case FileType::PALETTE: return "untitled.xml";
-        case FileType::PALETTE_XML: return "untitled.xml";
-        default: Q_ASSERT( false );
     }
     return "";
 }
@@ -263,8 +241,6 @@ QString FileDialog::toSettingKey( FileType fileType )
         case FileType::MOVIE: return "Movie";
         case FileType::SOUND: return "Sound";
         case FileType::PALETTE: return "Palette";
-        case FileType::PALETTE_XML: return "Palette";
-        default: Q_ASSERT( false );
     }
     return "";
 }
