@@ -522,11 +522,6 @@ bool MainWindow2::saveAsNewDocument()
     {
         return false;
     }
-
-    if (!fileName.endsWith(PFF_OLD_EXTENSION) && !fileName.endsWith(PFF_EXTENSION))
-    {
-        fileName = fileName + PFF_EXTENSION;
-    }
     return saveObject(fileName);
 }
 

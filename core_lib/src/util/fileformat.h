@@ -48,6 +48,22 @@ GNU General Public License for more details.
     QObject::tr("Supported Sound formats") + " (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)"
 
 
+#define PFF_DEFAULT_PROJECT_EXT \
+    QString(".pclx")
+
+#define PFF_DEFAULT_IMAGE_EXT \
+   QString(".png")
+
+#define PFF_DEFAULT_IMAGE_SEQ_EXT \
+    QString(".png")
+
+#define PFF_DEFAULT_ANIMATED_EXT \
+    QString(".gif")
+
+#define PFF_DEFAULT_PALETTE_EXT \
+    QString(".xml")
+
+
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"
 #define PFF_XML_FILE_NAME 		"main.xml"
