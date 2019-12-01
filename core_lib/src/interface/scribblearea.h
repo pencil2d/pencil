@@ -97,7 +97,7 @@ public:
 
     void setModified(int layerNumber, int frameNumber);
     bool shouldUpdateAll() const { return mNeedUpdateAll; }
-    void setAllDirty() { mNeedUpdateAll = true; }
+    void setAllDirty();
 
     void flipSelection(bool flipVertical);
 
@@ -183,6 +183,7 @@ public:
     QPixmap mTransCursImg;
 
 private:
+    void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals();
