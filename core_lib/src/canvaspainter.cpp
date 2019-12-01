@@ -359,7 +359,6 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 }
 
-
 void CanvasPainter::prescale(BitmapImage* bitmapImage)
 {
     QImage origImage = bitmapImage->image()->copy();
@@ -376,9 +375,9 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
     else
     {
         // map to correct matrix
-        QRectF mappedOrigImage = mViewTransform.mapRect(QRectF(origImage.rect()));
-        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size().toSize(),
-                                             Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QRect mappedOrigImage = mViewTransform.mapRect(bitmapImage->bounds());
+        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size(),
+                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     }
 }
 
@@ -576,12 +575,14 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
     QRect boundingRect;
     mCameraRect = cameraLayer->getViewRect();
 
+    QRegion rg2(mCameraRect);
     if (isCameraMode)
     {
         painter.setWorldMatrixEnabled(false);
         QTransform center = QTransform::fromTranslate(viewRect.width() / 2.0, viewRect.height() / 2.0);
         boundingRect = viewRect.toAlignedRect();
         mCameraRect = center.mapRect(mCameraRect);
+        rg2 = center.map(rg2);
     }
     else
     {
@@ -591,7 +592,7 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
 
         QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
-
+        rg2 = camTransform.inverted().map(rg2);
     }
 
     painter.setOpacity(1.0);
@@ -599,7 +600,6 @@ void CanvasPainter::paintCameraBorder(QPainter &painter)
     painter.setBrush(QColor(0, 0, 0, 80));
 
     QRegion rg1(boundingRect);
-    QRegion rg2(mCameraRect);
     QRegion rg3 = rg1.subtracted(rg2);
 
     painter.setClipRegion(rg3);
