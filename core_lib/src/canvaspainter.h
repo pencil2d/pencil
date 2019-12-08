@@ -114,8 +114,8 @@ private:
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
 
-    /** @brief Creates a list of opacity values that is relative to the current index. */
-    QList<qreal> createRelativeOpacityList();
+    /** @brief Calculate layer opacity based on current layer offset */
+    qreal calculateRelativeOpacityForLayer(int layerIndex) const;
 private:
     CanvasPainterOptions mOptions;
 

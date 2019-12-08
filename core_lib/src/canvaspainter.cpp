@@ -122,7 +122,7 @@ void CanvasPainter::initializePainter(QPainter& painter, QPixmap& pixmap)
     painter.setWorldTransform(mViewTransform);
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    mOpacityThreshold = settings.value(SETTING_LAYER_VISIBILITY_THRESHOLD).toFloat();
+    mOpacityThreshold = settings.value(SETTING_LAYER_VISIBILITY_THRESHOLD).toReal();
 }
 
 void CanvasPainter::renderPreLayers(QPixmap *pixmap)
@@ -481,12 +481,22 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
 {
     painter.setOpacity(1.0);
 
+
+    bool isCameraLayer = false;
+    if (mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA) {
+        isCameraLayer = true;
+    }
+
     for (int i = startLayer; i <= endLayer; ++i)
     {
-        Layer* layer = mObject->getLayer(startLayer);
+        Layer* layer = mObject->getLayer(i);
 
         if (layer->visible() == false)
             continue;
+
+        if (mOptions.elayerVisibility == CanvasPainterOptions::RELATIVE && !isCameraLayer) {
+            painter.setOpacity(calculateRelativeOpacityForLayer(i));
+        }
 
         switch (layer->type())
         {
@@ -497,54 +507,15 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
     }
 }
 
-QList<qreal> CanvasPainter::createRelativeOpacityList()
+qreal CanvasPainter::calculateRelativeOpacityForLayer(int layerIndex) const
 {
-    QList<qreal> opacities;
-    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
-    bool isCamera = false;
-    qreal opacity = 1.0;
-
-    if (layer->type() == Layer::CAMERA) {
-        isCamera = true;
+    int layerOffset = mCurrentLayerIndex - layerIndex;
+    int absoluteOffset = qAbs(layerOffset);
+    qreal newOpacity = 1.0;
+    if (absoluteOffset != 0) {
+        newOpacity = mOpacityThreshold/absoluteOffset;
     }
-
-    // Iterate indexes and add opacity until below current layer
-    for (int index = 0; index < mObject->getLayerCount(); index++)
-    {
-        if (!isCamera) {
-            if (index == mCurrentLayerIndex) {
-                opacity = 1.0;
-            } else if (index > mCurrentLayerIndex) {
-                opacity = opacity - (1.0 - mOpacityThreshold);
-            } else {
-                continue;
-            }
-
-            opacities.append(opacity);
-        }
-    }
-
-    // Iterate indexes and add opacity until above current layer
-    for (int index = mObject->getLayerCount()-1; index >= 0; --index)
-    {
-        if (!isCamera) {
-
-            if (index == mCurrentLayerIndex) {
-                opacity = 1.0;
-            } else if (index < mCurrentLayerIndex) {
-                opacity = (opacity - (1.0 - mOpacityThreshold));
-            } else {
-                continue;
-            }
-
-            // Ignore duplicates...
-            if (opacities.first() == opacity) {
-                continue;
-            }
-            opacities.prepend(opacity);
-        }
-    }
-    return opacities;
+    return newOpacity;
 }
 
 void CanvasPainter::paintAxis(QPainter& painter)
