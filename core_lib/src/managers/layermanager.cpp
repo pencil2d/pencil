@@ -42,7 +42,8 @@ bool LayerManager::init()
 Status LayerManager::load(Object* o)
 {
     mLastCameraLayerIdx = 0;
-    emit layerCountChanged(o->getLayerCount());
+    // Do not emit layerCountChanged here because the editor has not updated to this object yet
+    // Leave that to the caller of this function
     return Status::OK;
 }
 
@@ -358,7 +359,7 @@ int LayerManager::animationLength(bool includeSounds)
 
 void LayerManager::notifyAnimationLengthChanged()
 {
-    emit animationLengthChanged(animationLength(false));
+    emit animationLengthChanged(animationLength(true));
 }
 
 int LayerManager::getIndex(Layer* layer) const

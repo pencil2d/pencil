@@ -23,9 +23,9 @@ GNU General Public License for more details.
 #include <QPainter>
 #include "log.h"
 
+#include "layer.h"
 
 class Object;
-class Layer;
 class BitmapImage;
 class ViewManager;
 
@@ -57,6 +57,7 @@ struct CanvasPainterOptions
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
+    QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
 
 
@@ -65,7 +66,7 @@ class CanvasPainter : public QObject
     Q_OBJECT
 
 public:
-    explicit CanvasPainter(QObject* parent = 0);
+    explicit CanvasPainter(QObject* parent = nullptr);
     virtual ~CanvasPainter();
 
     void setCanvas(QPixmap* canvas);
@@ -75,17 +76,37 @@ public:
     void ignoreTransformedSelection();
     QRect getCameraRect();
 
-    void paint(const Object* object, int layer, int frame, QRect rect);
+    void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
+    void paint();
+    void paintCached();
     void renderGrid(QPainter& painter);
+    void resetLayerCache();
 
 private:
+
+    /**
+     * @brief CanvasPainter::initializePainter
+     * Enriches the painter with a context and sets it's initial matrix.
+     * @param The in/out painter
+     * @param The paint device ie. a pixmap
+     */
+    void initializePainter(QPainter& painter, QPixmap& pixmap);
+
+    void renderPreLayers(QPainter& painter);
+    void renderCurLayer(QPainter& painter);
+    void renderPostLayers(QPainter& painter);
+
     void paintBackground();
     void paintOnionSkin(QPainter& painter);
 
-    void paintCurrentFrame(QPainter& painter);
+    void renderPostLayers(QPixmap *pixmap);
+    void renderCurLayer(QPixmap *pixmap);
+    void renderPreLayers(QPixmap *pixmap);
 
-    void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame);
-    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame);
+    void paintCurrentFrame(QPainter& painter, int startLayer, int endLayer);
+
+    void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
+    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
 
     void paintTransformedSelection(QPainter& painter);
     void paintGrid(QPainter& painter);
@@ -107,6 +128,7 @@ private:
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
+    BitmapImage* mBuffer = nullptr;
 
     qreal mOpacityThreshold = 0;
 
@@ -120,6 +142,9 @@ private:
     QTransform mSelectionTransform;
 
     QLoggingCategory mLog;
+
+    // Caches specificially for when drawing on the canvas
+    std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
 };
 
 #endif // CANVASRENDERER_H

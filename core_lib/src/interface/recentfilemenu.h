@@ -60,6 +60,7 @@ private:
     std::map<QString, QAction*> mRecentActions;
     QAction* mClearAction = nullptr;
     QAction* mClearSeparator = nullptr;
+    QAction* mEmptyAction = nullptr;
 };
 
 #endif // RECENTFILEMENU_H
