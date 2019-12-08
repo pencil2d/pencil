@@ -1571,7 +1571,7 @@ void ScribbleArea::setPrevTool()
 
 void ScribbleArea::paletteColorChanged(QColor color)
 {
-    Q_UNUSED(color);
+    Q_UNUSED(color)
     updateAllVectorLayersAtCurrentFrame();
 }
 
