@@ -39,7 +39,9 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "colorbox.h"
 #include "scribblearea.h"
+#include "layerbitmap.h"
 #include "colormanager.h"
+#include "layermanager.h"
 
 
 ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) :
