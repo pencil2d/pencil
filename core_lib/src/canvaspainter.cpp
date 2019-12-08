@@ -134,7 +134,7 @@ void CanvasPainter::renderPreLayers(QPixmap *pixmap)
 
 void CanvasPainter::renderPreLayers(QPainter& painter)
 {
-    if (mOptions.nShowAllLayers > 0)
+    if (mOptions.elayerVisibility != CanvasPainterOptions::HIDDEN)
     {
         paintCurrentFrame(painter, 0, mCurrentLayerIndex-1);
     }
@@ -164,7 +164,7 @@ void CanvasPainter::renderPostLayers(QPixmap *pixmap)
 
 void CanvasPainter::renderPostLayers(QPainter& painter)
 {
-    if (mOptions.nShowAllLayers > 0)
+    if (mOptions.elayerVisibility != CanvasPainterOptions::HIDDEN)
     {
         paintCurrentFrame(painter, mCurrentLayerIndex+1, mObject->getLayerCount()-1);
     }
@@ -483,7 +483,7 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
 
     for (int i = startLayer; i <= endLayer; ++i)
     {
-        Layer* layer = mObject->getLayer(index);
+        Layer* layer = mObject->getLayer(startLayer);
 
         if (layer->visible() == false)
             continue;
