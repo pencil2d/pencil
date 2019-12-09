@@ -68,6 +68,7 @@ public:
     void clearRecentFilesList();
     void openPegAlignDialog();
     void closePegAlignDialog();
+    void currentLayerChanged();
 
 public:
     void setOpacity(int opacity);

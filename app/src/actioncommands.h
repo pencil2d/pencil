@@ -75,6 +75,8 @@ public:
     Status addNewCameraLayer();
     Status addNewSoundLayer();
     Status deleteCurrentLayer();
+    void changeKeyframeLineColor();
+    void changeallKeyframeLineColor();
 
     void setLayerVisibilityIndex(int index);
 
