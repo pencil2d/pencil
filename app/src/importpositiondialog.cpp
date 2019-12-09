@@ -12,8 +12,10 @@ ImportPositionDialog::ImportPositionDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->cbImagePosition->addItem(tr("Center of canvas"));
-    ui->cbImagePosition->addItem(tr("Center of active camera"));
+    ui->cbImagePosition->addItem(tr("Center of current view"));
+    ui->cbImagePosition->addItem(tr("Center of canvas (0,0)"));
+    ui->cbImagePosition->addItem(tr("Center of camera, current frame"));
+    ui->cbImagePosition->addItem(tr("Center of camera, follow camera"));
 
     connect(ui->cbImagePosition, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ImportPositionDialog::didChangeComboBoxIndex);
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ImportPositionDialog::changeImportView);
@@ -37,19 +39,36 @@ void ImportPositionDialog::didChangeComboBoxIndex(const int index)
 
 void ImportPositionDialog::changeImportView()
 {
+    mEditor->view()->setImportFollowsCamera(false);
     QTransform transform;
-    if (mImportOption == ImportPosition::Type::CenterOfCanvas)
+    if (mImportOption == ImportPosition::Type::CenterOfView)
     {
         QPointF centralPoint = mEditor->getScribbleArea()->getCentralPoint();
         transform = transform.fromTranslate(centralPoint.x(), centralPoint.y());
+        mEditor->view()->setImportView(transform);
+        QSettings settings(PENCIL2D, PENCIL2D);
+        settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
+        return;
+    }
+    else if (mImportOption == ImportPosition::Type::CenterOfCanvas)
+    {
+        transform = transform.fromTranslate(0, 0);
+        mEditor->view()->setImportView(transform);
+        QSettings settings(PENCIL2D, PENCIL2D);
+        settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
+        return;
     }
     else if (mImportOption == ImportPosition::Type::CenterOfCamera)
     {
         QRectF cameraRect = mEditor->getScribbleArea()->getCameraRect();
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
+        mEditor->view()->setImportView(transform);
+        QSettings settings(PENCIL2D, PENCIL2D);
+        settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
+        return;
     }
-    mEditor->view()->setImportView(transform);
 
+    mEditor->view()->setImportFollowsCamera(true);
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
 }
