@@ -62,6 +62,10 @@ void DisplayOptionWidget::makeConnections()
     connect(ui->onionRedButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionRedButtonClicked);
     connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
     connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
+    connect(ui->overlayCenterButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayCenter);
+    connect(ui->overlayThirdsButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayThirds);
+    connect(ui->overlayGoldenRatioButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayGoldenRatio);
+    connect(ui->overlaySafeAreaButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlaySafeAreas);
 
     PreferenceManager* prefs = editor()->preference();
     ScribbleArea* pScriArea = editor()->getScribbleArea();
@@ -95,6 +99,18 @@ void DisplayOptionWidget::updateUI()
 
     SignalBlocker b6(ui->onionRedButton);
     ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));
+
+    SignalBlocker b9(ui->overlayCenterButton);
+    ui->overlayCenterButton->setChecked(prefs->isOn(SETTING::OVERLAY_CENTER));
+
+    SignalBlocker b10(ui->overlayThirdsButton);
+    ui->overlayThirdsButton->setChecked(prefs->isOn(SETTING::OVERLAY_THIRDS));
+
+    SignalBlocker b11(ui->overlayGoldenRatioButton);
+    ui->overlayGoldenRatioButton->setChecked(prefs->isOn(SETTING::OVERLAY_GOLDEN));
+
+    SignalBlocker b12(ui->overlaySafeAreaButton);
+    ui->overlaySafeAreaButton->setChecked(prefs->isOn(SETTING::OVERLAY_SAFE));
 
     ViewManager* view = editor()->view();
 
@@ -138,4 +154,29 @@ void DisplayOptionWidget::toggleMirror(bool isOn)
 void DisplayOptionWidget::toggleMirrorV(bool isOn)
 {
     editor()->view()->flipVertical(isOn);
+}
+
+void DisplayOptionWidget::toggleOverlayCenter(bool isOn)
+{
+    editor()->view()->setOverlayCenter(isOn);
+    editor()->preference()->set(SETTING::OVERLAY_CENTER, isOn);
+//    editor()->getScribbleArea()->settingUpdated(SETTING::OVERLAY_CENTER);
+}
+
+void DisplayOptionWidget::toggleOverlayThirds(bool isOn)
+{
+    editor()->view()->setOverlayThirds(isOn);
+    editor()->preference()->set(SETTING::OVERLAY_THIRDS, isOn);
+}
+
+void DisplayOptionWidget::toggleOverlayGoldenRatio(bool isOn)
+{
+    editor()->view()->setOverlayGoldenRatio(isOn);
+    editor()->preference()->set(SETTING::OVERLAY_GOLDEN, isOn);
+}
+
+void DisplayOptionWidget::toggleOverlaySafeAreas(bool isOn)
+{
+    editor()->view()->setOverlaySafeAreas(isOn);
+    editor()->preference()->set(SETTING::OVERLAY_SAFE, isOn);
 }

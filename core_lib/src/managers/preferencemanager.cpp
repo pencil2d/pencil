@@ -52,6 +52,10 @@ void PreferenceManager::loadPrefs()
     set(SETTING::GRID,                     settings.value(SETTING_SHOW_GRID,              false).toBool());
     set(SETTING::INVISIBLE_LINES,          settings.value(SETTING_INVISIBLE_LINES,        false).toBool());
     set(SETTING::OUTLINES,                 settings.value(SETTING_OUTLINES,               false).toBool());
+    set(SETTING::OVERLAY_CENTER,           settings.value(SETTING_OVERLAY_CENTER,         false).toBool());
+    set(SETTING::OVERLAY_THIRDS,           settings.value(SETTING_OVERLAY_THIRDS,         false).toBool());
+    set(SETTING::OVERLAY_GOLDEN,           settings.value(SETTING_OVERLAY_GOLDEN,         false).toBool());
+    set(SETTING::OVERLAY_SAFE,             settings.value(SETTING_OVERLAY_SAFE,           false).toBool());
 
     // Grid
     set(SETTING::GRID_SIZE_W,              settings.value(SETTING_GRID_SIZE_W,            100).toInt());
@@ -237,6 +241,18 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::GRID_SIZE_H:
         settings.setValue(SETTING_GRID_SIZE_H, value);
         break;
+    case SETTING::OVERLAY_CENTER:
+        settings.setValue(SETTING_OVERLAY_CENTER, value);
+        break;
+    case SETTING::OVERLAY_THIRDS:
+        settings.setValue(SETTING_OVERLAY_THIRDS, value);
+        break;
+    case SETTING::OVERLAY_GOLDEN:
+        settings.setValue(SETTING_OVERLAY_GOLDEN, value);
+        break;
+    case SETTING::OVERLAY_SAFE:
+        settings.setValue(SETTING_OVERLAY_SAFE, value);
+        break;
     case SETTING::FRAME_POOL_SIZE:
         settings.setValue(SETTING_FRAME_POOL_SIZE, value);
         break;
@@ -283,6 +299,18 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::GRID:
         settings.setValue(SETTING_SHOW_GRID, value);
+        break;
+    case SETTING::OVERLAY_CENTER:
+        settings.setValue(SETTING_OVERLAY_CENTER, value);
+        break;
+    case SETTING::OVERLAY_THIRDS:
+        settings.setValue(SETTING_OVERLAY_THIRDS, value);
+        break;
+    case SETTING::OVERLAY_GOLDEN:
+        settings.setValue(SETTING_OVERLAY_GOLDEN, value);
+        break;
+    case SETTING::OVERLAY_SAFE:
+        settings.setValue(SETTING_OVERLAY_SAFE, value);
         break;
     case SETTING::SHADOW:
         settings.setValue(SETTING_SHADOW, value);

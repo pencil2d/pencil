@@ -43,6 +43,10 @@ struct CanvasPainterOptions
     bool  bGrid = false;
     int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
     int   nGridSizeH = 50; /* This is the grid Height IN PIXELS. The grid will scale with the image, though */
+    bool  bCenter = false;
+    bool  bThirds = false;
+    bool  bGoldenRatio = false;
+    bool  bSafeArea = false;
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
@@ -74,6 +78,7 @@ public:
     void paint();
     void paintCached();
     void renderGrid(QPainter& painter);
+    void renderOverlays(QPainter& painter); // renders BOTH Thirds and GoldenRatio
     void resetLayerCache();
 
 private:
@@ -104,6 +109,7 @@ private:
 
     void paintTransformedSelection(QPainter& painter);
     void paintGrid(QPainter& painter);
+    void paintOverlays(QPainter& painter, int i);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);

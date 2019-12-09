@@ -214,6 +214,10 @@ enum StabilizationLevel
 #define SETTING_FRAME_POOL_SIZE "FramePoolSize"
 #define SETTING_GRID_SIZE_W      "GridSizeW"
 #define SETTING_GRID_SIZE_H      "GridSizeH"
+#define SETTING_OVERLAY_CENTER   "OverlayCenter"
+#define SETTING_OVERLAY_THIRDS   "OverlayThirds"
+#define SETTING_OVERLAY_GOLDEN   "OverlayGolden"
+#define SETTING_OVERLAY_SAFE     "OverlaySafe"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
