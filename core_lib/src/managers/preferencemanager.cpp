@@ -244,10 +244,10 @@ void PreferenceManager::set(SETTING option, int value)
         settings.setValue(SETTING_GRID_SIZE_H, value);
         break;
     case SETTING::ACTION_SAFE:
-        settings.setValue(SETTING_OVERLAY_SAFE, value);
+        settings.setValue(SETTING_ACTION_SAFE, value);
         break;
     case SETTING::TEXT_SAFE:
-        settings.setValue(SETTING_OVERLAY_SAFE, value);
+        settings.setValue(SETTING_TEXT_SAFE, value);
         break;
     case SETTING::FRAME_POOL_SIZE:
         settings.setValue(SETTING_FRAME_POOL_SIZE, value);

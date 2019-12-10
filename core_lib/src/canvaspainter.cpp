@@ -555,42 +555,36 @@ void CanvasPainter::paintOverlays(QPainter &painter, int i)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    QRect safeAct;
-    QRect safeTxt;
-
     switch (i) {
     case 0:
         painter.drawLine(rect.x() + rect.width()/4, 0, rect.x() + rect.width()*3/4, 0);
         painter.drawLine(0, rect.y() + rect.height()/4, 0, rect.y() + rect.height()*3/4);
-        painter.setRenderHints(previous_renderhints);
         break;
     case 1:
         painter.drawLine(rect.x(), rect.y() + (rect.height()/3), rect.right(), rect.y() + (rect.height()/3));
         painter.drawLine(rect.x(), rect.y() + (rect.height() * 2/3), rect.x() + rect.width(), rect.y() + (rect.height() * 2/3));
         painter.drawLine(rect.x() + rect.width()/3, rect.y(), rect.x() + rect.width()/3, rect.y() + rect.height());
         painter.drawLine(rect.x() + rect.width() *2/3, rect.y(), rect.x() + rect.width() *2/3, rect.y() + rect.height());
-        painter.setRenderHints(previous_renderhints);
         break;
     case 2:
         painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.38)), rect.right(), static_cast<int>(rect.y() + (rect.height() * 0.38)));
         painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.62)), rect.x() + rect.width(), static_cast<int>(rect.y() + (rect.height() * 0.62)));
         painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.38), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.38), rect.bottom());
         painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.62), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.62), rect.bottom());
-        painter.setRenderHints(previous_renderhints);
         break;
     case 3:
         int act = mOptions.nActionSafe;
-        safeAct = QRect(rect.x() + rect.width()*act/200, rect.y() + rect.height()*act/200, rect.width()*(100-act)/100, rect.height()*(100-act)/100);
+        QRect safeAct = QRect(rect.x() + rect.width()*act/200, rect.y() + rect.height()*act/200, rect.width()*(100-act)/100, rect.height()*(100-act)/100);
         painter.drawRect(safeAct);
         painter.drawText(safeAct.x(), safeAct.y(), tr("Safe Action area %1 %").arg(act));
         int txt = mOptions.nTextSafe;
-        safeTxt = QRect(rect.x() + rect.width()*txt/200, rect.y() + rect.height()*txt/200, rect.width()*(100-txt)/100, rect.height()*(100-txt)/100);
+        QRect safeTxt = QRect(rect.x() + rect.width()*txt/200, rect.y() + rect.height()*txt/200, rect.width()*(100-txt)/100, rect.height()*(100-txt)/100);
         painter.drawRect(safeTxt);
         painter.drawText(safeTxt.x(), safeTxt.y(), tr("Safe Title area %1 %").arg(txt));
-        painter.setRenderHints(previous_renderhints);
         break;
     }
 
+    painter.setRenderHints(previous_renderhints);
 }
 
 void CanvasPainter::renderGrid(QPainter& painter)

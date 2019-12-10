@@ -60,7 +60,6 @@ struct CanvasPainterOptions
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
 
-
 class CanvasPainter : public QObject
 {
     Q_OBJECT
