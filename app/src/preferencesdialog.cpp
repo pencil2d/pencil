@@ -155,6 +155,8 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
     connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridWidthChanged);
     connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridHeightChanged);
+    connect(ui->actionSafeInput, spinValueChanged, this, &GeneralPage::actionSafeAreaChanged);
+    connect(ui->textSafeInput, spinValueChanged, this, &GeneralPage::textSafeAreaChanged);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
 }
@@ -192,6 +194,10 @@ void GeneralPage::updateValues()
     ui->gridSizeInputH->setValue(mManager->getInt(SETTING::GRID_SIZE_H));
     SignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
+    SignalBlocker b14(ui->actionSafeInput);
+    ui->actionSafeInput->setValue(mManager->getInt(SETTING::ACTION_SAFE));
+    SignalBlocker b15(ui->textSafeInput);
+    ui->textSafeInput->setValue(mManager->getInt(SETTING::TEXT_SAFE));
 
     SignalBlocker b9(ui->highResBox);
     ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
@@ -277,6 +283,16 @@ void GeneralPage::gridWidthChanged(int value)
 void GeneralPage::gridHeightChanged(int value)
 {
     mManager->set(SETTING::GRID_SIZE_H, value);
+}
+
+void GeneralPage::actionSafeAreaChanged(int value)
+{
+    mManager->set(SETTING::ACTION_SAFE, value);
+}
+
+void GeneralPage::textSafeAreaChanged(int value)
+{
+    mManager->set(SETTING::TEXT_SAFE, value);
 }
 
 void GeneralPage::gridCheckBoxStateChanged(int b)

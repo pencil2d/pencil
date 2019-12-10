@@ -560,8 +560,8 @@ void CanvasPainter::paintOverlays(QPainter &painter, int i)
 
     switch (i) {
     case 0:
-        painter.drawLine(-100, 0, 100, 0);
-        painter.drawLine(0, 100, 0, -100);
+        painter.drawLine(rect.x() + rect.width()/4, 0, rect.x() + rect.width()*3/4, 0);
+        painter.drawLine(0, rect.y() + rect.height()/4, 0, rect.y() + rect.height()*3/4);
         painter.setRenderHints(previous_renderhints);
         break;
     case 1:
@@ -579,11 +579,11 @@ void CanvasPainter::paintOverlays(QPainter &painter, int i)
         painter.setRenderHints(previous_renderhints);
         break;
     case 3:
-        int act = 5;
+        int act = mOptions.nActionSafe;
         safeAct = QRect(rect.x() + rect.width()*act/200, rect.y() + rect.height()*act/200, rect.width()*(100-act)/100, rect.height()*(100-act)/100);
         painter.drawRect(safeAct);
         painter.drawText(safeAct.x(), safeAct.y(), tr("Safe Action area %1 %").arg(act));
-        int txt = 10;
+        int txt = mOptions.nTextSafe;
         safeTxt = QRect(rect.x() + rect.width()*txt/200, rect.y() + rect.height()*txt/200, rect.width()*(100-txt)/100, rect.height()*(100-txt)/100);
         painter.drawRect(safeTxt);
         painter.drawText(safeTxt.x(), safeTxt.y(), tr("Safe Title area %1 %").arg(txt));

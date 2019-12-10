@@ -129,6 +129,8 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::OVERLAY_THIRDS:
     case SETTING::OVERLAY_GOLDEN:
     case SETTING::OVERLAY_SAFE:
+    case SETTING::ACTION_SAFE:
+    case SETTING::TEXT_SAFE:
     case SETTING::PREV_ONION:
     case SETTING::NEXT_ONION:
     case SETTING::ONION_BLUE:
@@ -1132,6 +1134,8 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
     o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
     o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
+    o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
+    o.nTextSafe = mPrefs->getInt(SETTING::TEXT_SAFE);
     o.bAxis = false;
     o.bThinLines = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);

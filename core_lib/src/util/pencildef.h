@@ -218,6 +218,8 @@ enum StabilizationLevel
 #define SETTING_OVERLAY_THIRDS   "OverlayThirds"
 #define SETTING_OVERLAY_GOLDEN   "OverlayGolden"
 #define SETTING_OVERLAY_SAFE     "OverlaySafe"
+#define SETTING_TEXT_SAFE        "TextSafe"
+#define SETTING_ACTION_SAFE      "ActionSafe"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"

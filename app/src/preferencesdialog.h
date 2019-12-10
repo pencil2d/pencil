@@ -76,6 +76,8 @@ public slots:
     void updateValues();
     void gridWidthChanged(int value);
     void gridHeightChanged(int value);
+    void actionSafeAreaChanged(int value);
+    void textSafeAreaChanged(int value);
 
 signals:
     void windowOpacityChange(int value);
