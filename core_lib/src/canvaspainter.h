@@ -64,6 +64,13 @@ class CanvasPainter : public QObject
 {
     Q_OBJECT
 
+    enum OVERLAY {
+        CENTER,
+        THIRDS,
+        GOLDEN,
+        SAFE
+    };
+
 public:
     explicit CanvasPainter(QObject* parent = nullptr);
     virtual ~CanvasPainter();
@@ -110,7 +117,7 @@ private:
 
     void paintTransformedSelection(QPainter& painter);
     void paintGrid(QPainter& painter);
-    void paintOverlays(QPainter& painter, int i);
+    void paintOverlays(QPainter& painter, OVERLAY ol);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);

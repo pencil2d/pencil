@@ -543,7 +543,7 @@ void CanvasPainter::paintGrid(QPainter& painter)
     painter.setRenderHints(previous_renderhints);
 }
 
-void CanvasPainter::paintOverlays(QPainter &painter, int i)
+void CanvasPainter::paintOverlays(QPainter &painter, OVERLAY ol)
 {
     QRect rect = getCameraRect();
 
@@ -555,24 +555,24 @@ void CanvasPainter::paintOverlays(QPainter &painter, int i)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    switch (i) {
-    case 0:
+    switch (ol) {
+    case CENTER:
         painter.drawLine(rect.x() + rect.width()/4, 0, rect.x() + rect.width()*3/4, 0);
         painter.drawLine(0, rect.y() + rect.height()/4, 0, rect.y() + rect.height()*3/4);
         break;
-    case 1:
+    case THIRDS:
         painter.drawLine(rect.x(), rect.y() + (rect.height()/3), rect.right(), rect.y() + (rect.height()/3));
         painter.drawLine(rect.x(), rect.y() + (rect.height() * 2/3), rect.x() + rect.width(), rect.y() + (rect.height() * 2/3));
         painter.drawLine(rect.x() + rect.width()/3, rect.y(), rect.x() + rect.width()/3, rect.y() + rect.height());
         painter.drawLine(rect.x() + rect.width() *2/3, rect.y(), rect.x() + rect.width() *2/3, rect.y() + rect.height());
         break;
-    case 2:
+    case GOLDEN:
         painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.38)), rect.right(), static_cast<int>(rect.y() + (rect.height() * 0.38)));
         painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.62)), rect.x() + rect.width(), static_cast<int>(rect.y() + (rect.height() * 0.62)));
         painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.38), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.38), rect.bottom());
         painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.62), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.62), rect.bottom());
         break;
-    case 3:
+    case SAFE:
         int act = mOptions.nActionSafe;
         QRect safeAct = QRect(rect.x() + rect.width()*act/200, rect.y() + rect.height()*act/200, rect.width()*(100-act)/100, rect.height()*(100-act)/100);
         painter.drawRect(safeAct);
@@ -601,22 +601,22 @@ void CanvasPainter::renderOverlays(QPainter &painter)
     if (mOptions.bCenter)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlays(painter, 0);
+        paintOverlays(painter, CENTER);
     }
     if (mOptions.bThirds)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlays(painter, 1);
+        paintOverlays(painter, THIRDS);
     }
     if (mOptions.bGoldenRatio)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlays(painter, 2);
+        paintOverlays(painter, GOLDEN);
     }
     if (mOptions.bSafeArea)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlays(painter, 3);
+        paintOverlays(painter, SAFE);
     }
 }
 
