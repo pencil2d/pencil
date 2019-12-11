@@ -547,18 +547,31 @@ void CanvasPainter::paintOverlays(QPainter &painter, OVERLAY ol)
 {
     QRect rect = getCameraRect();
 
+    bool isCameraMode = false;
+
+    // Find the first visiable camera layers
+    for (int i = 0; i < mObject->getLayerCount(); ++i)
+    {
+        Layer* layer = mObject->getLayer(i);
+        if (layer->type() == Layer::CAMERA && layer->visible())
+        {
+            isCameraMode = (i == mCurrentLayerIndex);
+            break;
+        }
+    }
+
     QPen pen(Qt::black);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
+    painter.setWorldMatrixEnabled(!isCameraMode);
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     switch (ol) {
     case CENTER:
-        painter.drawLine(rect.x() + rect.width()/4, 0, rect.x() + rect.width()*3/4, 0);
-        painter.drawLine(0, rect.y() + rect.height()/4, 0, rect.y() + rect.height()*3/4);
+        painter.drawLine(rect.x() + rect.width()/4, rect.y() + rect.height()/2, rect.x() + rect.width()*3/4, rect.y() + rect.height()/2);
+        painter.drawLine(rect.x() + rect.width()/2, rect.y() + rect.height()/4, rect.x() + rect.width()/2, rect.y() + rect.height()*3/4);
         break;
     case THIRDS:
         painter.drawLine(rect.x(), rect.y() + (rect.height()/3), rect.right(), rect.y() + (rect.height()/3));
