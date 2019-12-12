@@ -41,6 +41,7 @@ public:
 
     bool usesColour(int index);
     void removeColour(int index);
+    void moveColor(int start, int end);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;

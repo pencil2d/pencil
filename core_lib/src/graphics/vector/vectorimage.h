@@ -86,6 +86,7 @@ public:
     int  getColourNumber(QPointF point);
     bool usesColour(int index);
     void removeColour(int index);
+    void moveColor(int start, int end);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
     void outputImage(QImage* image, QTransform myView, bool simplified, bool showThinCurves, bool antialiasing); // uses paintImage

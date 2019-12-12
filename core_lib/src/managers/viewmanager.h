@@ -94,6 +94,9 @@ public:
     QTransform getImportView() { return mImportView; }
     void setImportView(const QTransform& newView) { mImportView = newView; }
 
+    void setImportFollowsCamera(bool b) { mImportFollowsCamera = b; }
+    bool getImportFollowsCamera() { return mImportFollowsCamera; }
+
     void updateViewTransforms();
 
     Q_SIGNAL void viewChanged();
@@ -121,6 +124,8 @@ private:
     bool mOverlayThirds = false;
     bool mOverlayGoldenRatio = false;
     bool mOverlaySafeAreas = false;
+
+    bool mImportFollowsCamera = false;
 
     LayerCamera* mCameraLayer = nullptr;
 };

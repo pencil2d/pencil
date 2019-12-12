@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "soundmanager.h"
 #include "playbackmanager.h"
+#include "colormanager.h"
 #include "preferencemanager.h"
 #include "selectionmanager.h"
 #include "util.h"
@@ -677,6 +678,33 @@ Status ActionCommands::deleteCurrentLayer()
         }
     }
     return Status::OK;
+}
+
+void ActionCommands::changeKeyframeLineColor()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
+            mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+    {
+        QRgb color = mEditor->color()->frontColor().rgb();
+        LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+        layer->getBitmapImageAtFrame(mEditor->currentFrame())->fillNonAlphaPixels(color);
+        mEditor->updateFrame(mEditor->currentFrame());
+    }
+}
+
+void ActionCommands::changeallKeyframeLineColor()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        QRgb color = mEditor->color()->frontColor().rgb();
+        LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+        for (int i = layer->firstKeyFramePosition(); i <= layer->getMaxKeyFramePosition(); i++)
+        {
+            if (layer->keyExists(i))
+                layer->getBitmapImageAtFrame(i)->fillNonAlphaPixels(color);
+        }
+        mEditor->updateFrame(mEditor->currentFrame());
+    }
 }
 
 void ActionCommands::help()
