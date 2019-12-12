@@ -46,9 +46,11 @@ struct CanvasPainterOptions
     bool  bCenter = false;
     bool  bThirds = false;
     bool  bGoldenRatio = false;
-    bool  bSafeArea = false;
+    bool  bActionSafe = true;
     int   nActionSafe = 5;
-    int   nTextSafe = 10;
+    bool  bSafeArea = false;
+    bool  bTitleSafe = true;
+    int   nTitleSafe = 10;
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
