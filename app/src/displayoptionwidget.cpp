@@ -160,7 +160,6 @@ void DisplayOptionWidget::toggleOverlayCenter(bool isOn)
 {
     editor()->view()->setOverlayCenter(isOn);
     editor()->preference()->set(SETTING::OVERLAY_CENTER, isOn);
-//    editor()->getScribbleArea()->settingUpdated(SETTING::OVERLAY_CENTER);
 }
 
 void DisplayOptionWidget::toggleOverlayThirds(bool isOn)

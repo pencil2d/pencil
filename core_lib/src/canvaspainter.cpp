@@ -545,20 +545,12 @@ void CanvasPainter::paintGrid(QPainter& painter)
 
 void CanvasPainter::paintOverlays(QPainter &painter, OVERLAY ol)
 {
+    painter.setWorldTransform(mViewTransform);
+
     QRect rect = getCameraRect();
 
-    bool isCameraMode = false;
-
-    // Find the first visiable camera layers
-    for (int i = 0; i < mObject->getLayerCount(); ++i)
-    {
-        Layer* layer = mObject->getLayer(i);
-        if (layer->type() == Layer::CAMERA && layer->visible())
-        {
-            isCameraMode = (i == mCurrentLayerIndex);
-            break;
-        }
-    }
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    bool isCameraMode = (layer->type() == Layer::CAMERA);
 
     QPen pen(Qt::black);
     pen.setCosmetic(true);
@@ -619,22 +611,18 @@ void CanvasPainter::renderOverlays(QPainter &painter)
 {
     if (mOptions.bCenter)
     {
-        painter.setWorldTransform(mViewTransform);
         paintOverlays(painter, CENTER);
     }
     if (mOptions.bThirds)
     {
-        painter.setWorldTransform(mViewTransform);
         paintOverlays(painter, THIRDS);
     }
     if (mOptions.bGoldenRatio)
     {
-        painter.setWorldTransform(mViewTransform);
         paintOverlays(painter, GOLDEN);
     }
     if (mOptions.bSafeArea)
     {
-        painter.setWorldTransform(mViewTransform);
         paintOverlays(painter, SAFE);
     }
 }
