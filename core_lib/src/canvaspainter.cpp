@@ -543,10 +543,8 @@ void CanvasPainter::paintGrid(QPainter& painter)
     painter.setRenderHints(previous_renderhints);
 }
 
-void CanvasPainter::paintOverlays(QPainter &painter, OVERLAY ol)
+void CanvasPainter::paintOverlayCenter(QPainter &painter)
 {
-    painter.setWorldTransform(mViewTransform);
-
     QRect rect = getCameraRect();
 
     Layer* layer = mObject->getLayer(mCurrentLayerIndex);
@@ -560,39 +558,86 @@ void CanvasPainter::paintOverlays(QPainter &painter, OVERLAY ol)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    switch (ol) {
-    case CENTER:
-        painter.drawLine(rect.x() + rect.width()/4, rect.y() + rect.height()/2, rect.x() + rect.width()*3/4, rect.y() + rect.height()/2);
-        painter.drawLine(rect.x() + rect.width()/2, rect.y() + rect.height()/4, rect.x() + rect.width()/2, rect.y() + rect.height()*3/4);
-        break;
-    case THIRDS:
-        painter.drawLine(rect.x(), rect.y() + (rect.height()/3), rect.right(), rect.y() + (rect.height()/3));
-        painter.drawLine(rect.x(), rect.y() + (rect.height() * 2/3), rect.x() + rect.width(), rect.y() + (rect.height() * 2/3));
-        painter.drawLine(rect.x() + rect.width()/3, rect.y(), rect.x() + rect.width()/3, rect.y() + rect.height());
-        painter.drawLine(rect.x() + rect.width() *2/3, rect.y(), rect.x() + rect.width() *2/3, rect.y() + rect.height());
-        break;
-    case GOLDEN:
-        painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.38)), rect.right(), static_cast<int>(rect.y() + (rect.height() * 0.38)));
-        painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.62)), rect.x() + rect.width(), static_cast<int>(rect.y() + (rect.height() * 0.62)));
-        painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.38), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.38), rect.bottom());
-        painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.62), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.62), rect.bottom());
-        break;
-    case SAFE:
-        if (mOptions.bActionSafe)
-        {
-            int action = mOptions.nActionSafe;
-            QRect safeAction = QRect(rect.x() + rect.width()*action/200, rect.y() + rect.height()*action/200, rect.width()*(100-action)/100, rect.height()*(100-action)/100);
-            painter.drawRect(safeAction);
-            painter.drawText(safeAction.x(), safeAction.y(), tr("Safe Action area %1 %").arg(action));
-        }
-        if (mOptions.bTitleSafe)
-        {
-            int title = mOptions.nTitleSafe;
-            QRect safeTitle = QRect(rect.x() + rect.width()*title/200, rect.y() + rect.height()*title/200, rect.width()*(100-title)/100, rect.height()*(100-title)/100);
-            painter.drawRect(safeTitle);
-            painter.drawText(safeTitle.x(), safeTitle.y(), tr("Safe Title area %1 %").arg(title));
-        }
-        break;
+    painter.drawLine(rect.x() + rect.width()/4, rect.y() + rect.height()/2, rect.x() + rect.width()*3/4, rect.y() + rect.height()/2);
+    painter.drawLine(rect.x() + rect.width()/2, rect.y() + rect.height()/4, rect.x() + rect.width()/2, rect.y() + rect.height()*3/4);
+
+    painter.setRenderHints(previous_renderhints);
+}
+
+void CanvasPainter::paintOverlayThirds(QPainter &painter)
+{
+    QRect rect = getCameraRect();
+
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    bool isCameraMode = (layer->type() == Layer::CAMERA);
+
+    QPen pen(Qt::black);
+    pen.setCosmetic(true);
+    painter.setPen(pen);
+    painter.setWorldMatrixEnabled(!isCameraMode);
+    painter.setBrush(Qt::NoBrush);
+    QPainter::RenderHints previous_renderhints = painter.renderHints();
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
+    painter.drawLine(rect.x(), rect.y() + (rect.height()/3), rect.right(), rect.y() + (rect.height()/3));
+    painter.drawLine(rect.x(), rect.y() + (rect.height() * 2/3), rect.x() + rect.width(), rect.y() + (rect.height() * 2/3));
+    painter.drawLine(rect.x() + rect.width()/3, rect.y(), rect.x() + rect.width()/3, rect.y() + rect.height());
+    painter.drawLine(rect.x() + rect.width() *2/3, rect.y(), rect.x() + rect.width() *2/3, rect.y() + rect.height());
+
+    painter.setRenderHints(previous_renderhints);
+}
+
+void CanvasPainter::paintOverlayGolden(QPainter &painter)
+{
+    QRect rect = getCameraRect();
+
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    bool isCameraMode = (layer->type() == Layer::CAMERA);
+
+    QPen pen(Qt::black);
+    pen.setCosmetic(true);
+    painter.setPen(pen);
+    painter.setWorldMatrixEnabled(!isCameraMode);
+    painter.setBrush(Qt::NoBrush);
+    QPainter::RenderHints previous_renderhints = painter.renderHints();
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
+    painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.38)), rect.right(), static_cast<int>(rect.y() + (rect.height() * 0.38)));
+    painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.62)), rect.x() + rect.width(), static_cast<int>(rect.y() + (rect.height() * 0.62)));
+    painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.38), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.38), rect.bottom());
+    painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.62), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.62), rect.bottom());
+
+    painter.setRenderHints(previous_renderhints);
+}
+
+void CanvasPainter::paintOverlaySafeAreas(QPainter &painter)
+{
+    QRect rect = getCameraRect();
+
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    bool isCameraMode = (layer->type() == Layer::CAMERA);
+
+    QPen pen(Qt::black);
+    pen.setCosmetic(true);
+    painter.setPen(pen);
+    painter.setWorldMatrixEnabled(!isCameraMode);
+    painter.setBrush(Qt::NoBrush);
+    QPainter::RenderHints previous_renderhints = painter.renderHints();
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
+    if (mOptions.bActionSafe)
+    {
+        int action = mOptions.nActionSafe;
+        QRect safeAction = QRect(rect.x() + rect.width()*action/200, rect.y() + rect.height()*action/200, rect.width()*(100-action)/100, rect.height()*(100-action)/100);
+        painter.drawRect(safeAction);
+        painter.drawText(safeAction.x(), safeAction.y(), tr("Safe Action area %1 %").arg(action));
+    }
+    if (mOptions.bTitleSafe)
+    {
+        int title = mOptions.nTitleSafe;
+        QRect safeTitle = QRect(rect.x() + rect.width()*title/200, rect.y() + rect.height()*title/200, rect.width()*(100-title)/100, rect.height()*(100-title)/100);
+        painter.drawRect(safeTitle);
+        painter.drawText(safeTitle.x(), safeTitle.y(), tr("Safe Title area %1 %").arg(title));
     }
 
     painter.setRenderHints(previous_renderhints);
@@ -611,19 +656,23 @@ void CanvasPainter::renderOverlays(QPainter &painter)
 {
     if (mOptions.bCenter)
     {
-        paintOverlays(painter, CENTER);
+        painter.setWorldTransform(mViewTransform);
+        paintOverlayCenter(painter);
     }
     if (mOptions.bThirds)
     {
-        paintOverlays(painter, THIRDS);
+        painter.setWorldTransform(mViewTransform);
+        paintOverlayThirds(painter);
     }
     if (mOptions.bGoldenRatio)
     {
-        paintOverlays(painter, GOLDEN);
+        painter.setWorldTransform(mViewTransform);
+        paintOverlayGolden(painter);
     }
     if (mOptions.bSafeArea)
     {
-        paintOverlays(painter, SAFE);
+        painter.setWorldTransform(mViewTransform);
+        paintOverlaySafeAreas(painter);
     }
 }
 

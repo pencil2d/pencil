@@ -66,13 +66,6 @@ class CanvasPainter : public QObject
 {
     Q_OBJECT
 
-    enum OVERLAY {
-        CENTER,
-        THIRDS,
-        GOLDEN,
-        SAFE
-    };
-
 public:
     explicit CanvasPainter(QObject* parent = nullptr);
     virtual ~CanvasPainter();
@@ -88,7 +81,7 @@ public:
     void paint();
     void paintCached();
     void renderGrid(QPainter& painter);
-    void renderOverlays(QPainter& painter); // renders BOTH Thirds and GoldenRatio
+    void renderOverlays(QPainter& painter);
     void resetLayerCache();
 
 private:
@@ -119,7 +112,10 @@ private:
 
     void paintTransformedSelection(QPainter& painter);
     void paintGrid(QPainter& painter);
-    void paintOverlays(QPainter& painter, OVERLAY ol);
+    void paintOverlayCenter(QPainter& painter);
+    void paintOverlayThirds(QPainter& painter);
+    void paintOverlayGolden(QPainter& painter);
+    void paintOverlaySafeAreas(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
