@@ -227,6 +227,12 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     }
 }
 
+void ScribbleArea::setAllDirty()
+{
+    mNeedUpdateAll = true;
+    mCanvasPainter.resetLayerCache();
+}
+
 /************************************************************************/
 /* key event handlers                                                   */
 /************************************************************************/
@@ -238,7 +244,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
 
     mKeyboardInUse = true;
 
-    if (mMouseInUse) { return; } // prevents shortcuts calls while drawing
+    if (isPointerInUse()) { return; } // prevents shortcuts calls while drawing
     if (mInstantTool) { return; } // prevents shortcuts calls while using instant tool
 
     if (currentTool()->keyPressEvent(event))
@@ -346,7 +352,7 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 
     mKeyboardInUse = false;
 
-    if (mMouseInUse) { return; }
+    if (isPointerInUse()) { return; }
 
     if (mInstantTool) // temporary tool
     {
@@ -366,7 +372,7 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 void ScribbleArea::wheelEvent(QWheelEvent* event)
 {
     // Don't change view if tool is in use
-    if (mMouseInUse) return;
+    if (isPointerInUse()) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::CAMERA && !layer->visible())
@@ -406,7 +412,6 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
 {
     PointerEvent event(e);
 
-
     if (event.pointerType() == QTabletEvent::Eraser)
     {
         editor()->tools()->tabletSwitchToEraser();
@@ -416,44 +421,51 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         editor()->tools()->tabletRestorePrevTool();
     }
 
-    if (isLayerPaintable())
+    if (event.type() == QTabletEvent::TabletPress)
     {
-        if (event.type() == QTabletEvent::TabletPress)
+        event.accept();
+        mStrokeManager->pointerPressEvent(&event);
+        mStrokeManager->setTabletinUse(true);
+        if (mIsFirstClick)
         {
-            mStrokeManager->setTabletinUse(true);
-            mStrokeManager->pointerPressEvent(&event);
-            if (mIsFirstClick)
-            {
-                mIsFirstClick = false;
-                mDoubleClickTimer->start();
-                pointerPressEvent(&event);
+            mIsFirstClick = false;
+            mDoubleClickTimer->start();
+            pointerPressEvent(&event);
+        }
+        else
+        {
+            qreal distance = QLineF(currentTool()->getCurrentPressPoint(), currentTool()->getLastPressPoint()).length();
+
+            if (mDoubleClickMillis <= DOUBLE_CLICK_THRESHOLD && distance < 5.0) {
+                currentTool()->pointerDoubleClickEvent(&event);
             }
             else
             {
-                qreal distance = QLineF(currentTool()->getCurrentPressPoint(), currentTool()->getLastPressPoint()).length();
-
-                if (mDoubleClickMillis <= DOUBLE_CLICK_THRESHOLD && distance < 5.0) {
-                    currentTool()->pointerDoubleClickEvent(&event);
-                }
-                else
-                {
-                    // in case we handled the event as double click but really should have handled it as single click.
-                    pointerPressEvent(&event);
-                }
+                // in case we handled the event as double click but really should have handled it as single click.
+                pointerPressEvent(&event);
             }
         }
-        else if (event.type() == QTabletEvent::TabletMove)
+        mTabletInUse = event.isAccepted();
+    }
+    else if (event.type() == QTabletEvent::TabletMove)
+    {
+        if (!(event.buttons() & (Qt::LeftButton | Qt::RightButton)) || mTabletInUse)
         {
             mStrokeManager->pointerMoveEvent(&event);
             pointerMoveEvent(&event);
         }
-        else if (event.type() == QTabletEvent::TabletRelease)
+    }
+    else if (event.type() == QTabletEvent::TabletRelease)
+    {
+        if (mTabletInUse)
         {
             mStrokeManager->pointerReleaseEvent(&event);
             pointerReleaseEvent(&event);
             mStrokeManager->setTabletinUse(false);
+            mTabletInUse = false;
         }
     }
+    // Always accept so that mouse events are not generated (theoretically)
     event.accept();
 }
 
@@ -473,7 +485,10 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
         Layer* layer = mEditor->layers()->currentLayer();
         if (!layer->visible())
         {
-            showLayerNotVisibleWarning(); // FIXME: crash when using tablets
+            event->ignore();
+            // This needs to be async so that mTabletInUse is set to false before
+            // further events are created (modal dialogs do not currently block tablet events)
+            QTimer::singleShot(0, this, &ScribbleArea::showLayerNotVisibleWarning);
             return;
         }
     }
@@ -582,14 +597,18 @@ bool ScribbleArea::allowSmudging()
 
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
-    if (mStrokeManager->isTabletInUse()) { e->ignore(); return; }
+    if (mTabletInUse)
+    {
+        e->ignore();
+        return;
+    }
 
     PointerEvent event(e);
-    mMouseInUse = true;
 
     mStrokeManager->pointerPressEvent(&event);
 
     pointerPressEvent(&event);
+    mMouseInUse = event.isAccepted();
 }
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
@@ -921,7 +940,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
-    if (!mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND || mMouseRightButtonInUse)
+    if (!isPointerInUse() || currentTool()->type() == MOVE || currentTool()->type() == HAND || mMouseRightButtonInUse)
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
@@ -936,6 +955,11 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
             //qDebug() << "Repaint canvas!";
         }
+    }
+    else
+    {
+        prepCanvas(mEditor->currentFrame(), event->rect());
+        mCanvasPainter.paintCached();
     }
 
     if (currentTool()->type() == MOVE)
@@ -1024,28 +1048,10 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             {
                 break;
             }
-            } // end siwtch
+            } // end switch
         }
 
-        // paints the  buffer image
-        if (mEditor->layers()->currentLayer() != nullptr)
-        {
-            painter.setOpacity(1.0);
-            if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-            {
-                painter.setWorldMatrixEnabled(true);
-                painter.setTransform(mEditor->view()->getView());
-            }
-            else if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
-            {
-                painter.setWorldMatrixEnabled(false);
-            }
-
-            // TODO: move to above if vector statement
-            mBufferImg->paintImage(painter);
-
-            paintCanvasCursor(painter);
-        }
+        paintCanvasCursor(painter);
 
         mCanvasPainter.renderGrid(painter);
 
@@ -1100,7 +1106,7 @@ VectorImage* ScribbleArea::currentVectorImage(Layer* layer) const
     return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 }
 
-void ScribbleArea::drawCanvas(int frame, QRect rect)
+void ScribbleArea::prepCanvas(int frame, QRect rect)
 {
     Object* object = mEditor->object();
 
@@ -1125,6 +1131,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     o.scaling = mEditor->view()->scaling();
     o.onionWhilePlayback = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
     o.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    o.cmBufferBlendMode = mEditor->tools()->currentTool()->type() == ToolType::ERASER ? QPainter::CompositionMode_DestinationOut : QPainter::CompositionMode_SourceOver;
     mCanvasPainter.setOptions(o);
 
     mCanvasPainter.setCanvas(&mCanvas);
@@ -1132,7 +1139,14 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     ViewManager* vm = mEditor->view();
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 
-    mCanvasPainter.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect);
+    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, mBufferImg);
+}
+
+void ScribbleArea::drawCanvas(int frame, QRect rect)
+{
+    mCanvas.fill(Qt::transparent);
+    prepCanvas(frame, rect);
+    mCanvasPainter.paint();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
@@ -1168,7 +1182,7 @@ void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBru
     drawBrush(thePoint, brushWidth, fixedBrushFeather, fillColour, opacity, true);
 }
 
-void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity, bool usingFeather, int useAA)
+void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity, bool usingFeather, bool useAA)
 {
     QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
@@ -1201,12 +1215,12 @@ void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF
     QRectF srcRect(srcPoint_.x() - 0.5 * brushWidth_, srcPoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_);
     QRectF trgRect(thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_);
 
-    BitmapImage bmiSrcClip = bmiSource_->copy(srcRect.toRect());
+    BitmapImage bmiSrcClip = bmiSource_->copy(srcRect.toAlignedRect());
     BitmapImage bmiTmpClip = bmiSrcClip; // TODO: find a shorter way
 
     bmiTmpClip.drawRect(srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, mPrefs->isOn(SETTING::ANTIALIAS));
     bmiSrcClip.bounds().moveTo(trgRect.topLeft().toPoint());
-    bmiTmpClip.paste(&bmiSrcClip, QPainter::CompositionMode_SourceAtop);
+    bmiTmpClip.paste(&bmiSrcClip, QPainter::CompositionMode_SourceIn);
     mBufferImg->paste(&bmiTmpClip);
 }
 
@@ -1255,7 +1269,7 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
             }
             else
             {
-                bmiTmpClip.setPixel(xb, yb, qRgba(255, 255, 255, 255));
+                bmiTmpClip.setPixel(xb, yb, qRgba(255, 255, 255, 0));
             }
         }
     }
@@ -1557,7 +1571,7 @@ void ScribbleArea::setPrevTool()
 
 void ScribbleArea::paletteColorChanged(QColor color)
 {
-    Q_UNUSED(color);
+    Q_UNUSED(color)
     updateAllVectorLayersAtCurrentFrame();
 }
 

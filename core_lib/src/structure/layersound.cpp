@@ -156,9 +156,10 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
             DebugDetails dd;
             dd << __FUNCTION__;
             dd << QString("  KeyFrame.pos() = %1").arg(key->pos());
+            dd << QString("  Key->fileName() = %1").arg(key->fileName());
             dd << QString("  FilePath = %1").arg(sDestFileLocation);
             dd << QString("Couldn't save the sound clip");
-            return Status::FAIL;
+            return Status(Status::FAIL, dd);
         }
         key->setFileName(sDestFileLocation);
     }

@@ -20,6 +20,10 @@ RESOURCES += \
     data/app.qrc \
     ../translations/translations.qrc
 
+MOC_DIR = .moc
+OBJECTS_DIR = .obj
+UI_DIR = .ui
+
 INCLUDEPATH += \
     src \
     ../core_lib/src/graphics \
@@ -34,7 +38,10 @@ INCLUDEPATH += \
     ../core_lib/src/external
 
 HEADERS += \
+    src/importlayersdialog.h \
+    src/importpositiondialog.h \
     src/mainwindow2.h \
+    src/predefinedsetmodel.h \
     src/pegbaralignmentdialog.h \
     src/shortcutfilter.h \
     src/timeline2.h \
@@ -65,8 +72,11 @@ HEADERS += \
     src/presetdialog.h
 
 SOURCES += \
+    src/importlayersdialog.cpp \
+    src/importpositiondialog.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
+    src/predefinedsetmodel.cpp \
     src/pegbaralignmentdialog.cpp \
     src/shortcutfilter.cpp \
     src/timeline2.cpp \
@@ -96,6 +106,9 @@ SOURCES += \
     src/presetdialog.cpp
 
 FORMS += \
+    ui/importimageseqpreview.ui \
+    ui/importlayersdialog.ui \
+    ui/importpositiondialog.ui \
     ui/mainwindow2.ui \
     ui/pegbaralignmentdialog.ui \
     ui/timeline2.ui \

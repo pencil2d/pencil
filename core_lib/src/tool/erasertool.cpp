@@ -43,26 +43,34 @@ ToolType EraserTool::type()
 void EraserTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[USEFEATHER] = true;
     mPropertyEnabled[FEATHER] = true;
+    mPropertyEnabled[USEFEATHER] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[STABILIZATION] = true;
+    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
     properties.width = settings.value("eraserWidth", 24.0).toDouble();
     properties.feather = settings.value("eraserFeather", 48.0).toDouble();
+    properties.useFeather = settings.value("eraserUseFeather", true).toBool();
     properties.pressure = settings.value("eraserPressure", true).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("stabilizerLevel", StabilizationLevel::NONE).toInt();
+    properties.useAA = settings.value("eraserAA", 1).toInt();
+
+    if (properties.useFeather) { properties.useAA = -1; }
 }
 
 void EraserTool::resetToDefault()
 {
     setWidth(24.0);
     setFeather(48.0);
-    setUseFeather(false);
+    setUseFeather(true);
     setPressure(true);
+    setAA(true);
     setStabilizerLevel(StabilizationLevel::NONE);
 }
 
@@ -74,6 +82,17 @@ void EraserTool::setWidth(const qreal width)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("eraserWidth", width);
+    settings.sync();
+}
+
+void EraserTool::setUseFeather(const bool usingFeather)
+{
+    // Set current property
+    properties.useFeather = usingFeather;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("eraserUseFeather", usingFeather);
     settings.sync();
 }
 
@@ -96,6 +115,17 @@ void EraserTool::setPressure(const bool pressure)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("eraserPressure", pressure);
+    settings.sync();
+}
+
+void EraserTool::setAA(const int AA)
+{
+    // Set current property
+    properties.useAA = AA;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("eraserAA", AA);
     settings.sync();
 }
 
@@ -176,7 +206,7 @@ void EraserTool::paintAt(QPointF point)
                                  QColor(255, 255, 255, 255),
                                  opacity,
                                  properties.useFeather,
-                                 properties.useAA);
+                                 properties.useAA == ON);
 
         int rad = qRound(brushWidth) / 2 + 2;
 
@@ -196,21 +226,17 @@ void EraserTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        for (auto & i : p)
+        for (int i = 0; i < p.size(); i++)
         {
-            i = mEditor->view()->mapScreenToCanvas(i);
+            p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
         }
 
-        qreal opacity = 1.0;
-        mCurrentWidth = properties.width;
-        if (properties.pressure)
-        {
-            opacity = strokeManager()->getPressure();
-            mCurrentWidth = (mCurrentWidth + (strokeManager()->getPressure() * mCurrentWidth)) * 0.5;
-        }
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
-        qreal brushWidth = mCurrentWidth;
-        qreal brushStep = (0.5 * brushWidth) - ((properties.feather / 100.0) * brushWidth * 0.5);
+        qreal brushStep = (0.5 * brushWidth);
         brushStep = qMax(1.0, brushStep);
 
         BlitRect rect;
@@ -219,31 +245,29 @@ void EraserTool::drawStroke()
         QPointF b = getCurrentPoint();
 
         qreal distance = 4 * QLineF(b, a).length();
-        int steps = qRound(distance) / brushStep;
+        int steps = qRound(distance / brushStep);
 
         for (int i = 0; i < steps; i++)
         {
-            QPointF point = mLastBrushPoint + (i + 1) * (brushStep)* (b - mLastBrushPoint) / distance;
+            QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
+
             rect.extend(point.toPoint());
             mScribbleArea->drawBrush(point,
                                      brushWidth,
                                      properties.feather,
-                                     QColor(255, 255, 255, 255),
+                                     Qt::white,
                                      opacity,
                                      properties.useFeather,
-                                     properties.useAA);
-
+                                     properties.useAA == ON);
             if (i == (steps - 1))
             {
-                mLastBrushPoint = point;
+                mLastBrushPoint = getCurrentPoint();
             }
         }
 
-        int rad = qRound(brushWidth) / 2 + 2;
+        int rad = qRound(brushWidth / 2 + 2);
 
-        // continuously update buffer to update stroke behind grid.
         mScribbleArea->paintBitmapBufferRect(rect);
-
         mScribbleArea->refreshBitmap(rect, rad);
     }
     else if (layer->type() == Layer::VECTOR)

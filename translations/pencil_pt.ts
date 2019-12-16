@@ -472,7 +472,7 @@
     <message>
         <location filename="../app/ui/displayoption.ui" line="67"/>
         <source>Horizontal flip</source>
-        <translation>Virar horizontalmente</translation>
+        <translation>Inverter horizontalmente</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="44"/>
@@ -528,7 +528,7 @@
     <message>
         <location filename="../app/ui/displayoption.ui" line="99"/>
         <source>Vertical flip</source>
-        <translation>Virar verticalmente</translation>
+        <translation>Inverter verticalmente</translation>
     </message>
 </context>
 <context>
@@ -741,7 +741,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="204"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Último quadro é colocado como quadro-chave editável (útil quando queira exportar somente até o último quadro animado) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;O último quadro é colocado como quadro-chave editável (útil quando queira exportar somente até o último quadro animado) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="210"/>
@@ -861,7 +861,7 @@
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
-        <translation type="unfinished"/>
+        <translation>Paleta (*.xml *.gpl);;Pencil2D Paleta (*.xml);;GIMP Paleta (*.gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
@@ -1063,12 +1063,12 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="96"/>
         <source>Catalan </source>
-        <translation type="unfinished"/>
+        <translation>Catalão</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="100"/>
         <source>Greek</source>
-        <translation type="unfinished"/>
+        <translation>Grego</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="104"/>
@@ -1103,7 +1103,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Kabyle</source>
-        <translation type="unfinished"/>
+        <translation>Cabila</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
@@ -1173,7 +1173,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
         <source>Grid Height</source>
-        <translation type="unfinished"/>
+        <translation>Altura da Grelha</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="252"/>
@@ -1497,12 +1497,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="477"/>
         <source>Horizontal Flip</source>
-        <translation>Virar horizontalmente</translation>
+        <translation>Inverter horizontalmente</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="486"/>
         <source>Vertical Flip</source>
-        <translation>Virar verticalmente</translation>
+        <translation>Inverter verticalmente</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="494"/>
@@ -1670,7 +1670,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Quadro-chave seguinte</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="807"/>
@@ -1761,12 +1761,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="969"/>
         <source>Flip In-Between</source>
-        <translation type="unfinished"/>
+        <translation>Inverter Intermediário</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="974"/>
         <source>Flip Rolling</source>
-        <translation type="unfinished"/>
+        <translation>Milissegundos por segundo no flip-rolling</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="280"/>
@@ -1776,7 +1776,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate Anticlockwise</source>
-        <translation type="unfinished"/>
+        <translation>Girar no sentido anti-horário</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
@@ -1812,12 +1812,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="871"/>
         <source>Flip X</source>
-        <translation>Virar X</translation>
+        <translation>Inverter X</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="876"/>
         <source>Flip Y</source>
-        <translation>Virar Y</translation>
+        <translation>Inverter Y</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="881"/>
@@ -1998,7 +1998,7 @@ Deseja gravar as alterações?</translation>
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
         <source>You are about to switch away, do you want to apply the transformation?</source>
-        <translation type="unfinished"/>
+        <translation>Está prestes a sair, quer aplicar as alterações?</translation>
     </message>
 </context>
 <context>
@@ -3627,7 +3627,7 @@ Deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/src/main.cpp" line="115"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation>O último quadro que quer incluir no filme exportado. Pode ser também o último ou o último som para usar automaticamente o último quadro que contém a animação ou som, respetivamente..</translation>
+        <translation>Último quadro a ser incluído no filme exportado. Pode ser também o último-quadro ou último-quadro-som a utilizar automaticamente o último quadro que contém a animação ou som, respetivamente</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="122"/>
@@ -3741,7 +3741,8 @@ Deseja gravar as alterações?</translation>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation type="unfinished"/>
+        <translation>Está tentando modificar uma camada oculta!
+Por favor tente noutra camada (ou torne está camada visível)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
@@ -3817,7 +3818,7 @@ Deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Limpar Quadro</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
@@ -4082,7 +4083,7 @@ Deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Eraser, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Se aplica às ferramentas Lápis, Borracha, Caneta, Polilinha, Balde e Pincel)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="160"/>
@@ -4097,22 +4098,22 @@ Deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="180"/>
         <source>Flip and Roll</source>
-        <translation type="unfinished"/>
+        <translation>Inverter e Roll</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="188"/>
         <source>Maximum numbers of drawings in roll</source>
-        <translation type="unfinished"/>
+        <translation>Máximo número de desenhos seguidos</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="240"/>
         <source>Msecs per drawing in flip inbetween</source>
-        <translation type="unfinished"/>
+        <translation>Milissegundos por desenho no flip-Intermediário</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="289"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation type="unfinished"/>
+        <translation>Milissegundos por desenho no flip-roll</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>
@@ -4369,7 +4370,7 @@ Deseja gravar as alterações?</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="114"/>
         <source>The extent to which the color variation will be treated as being equal</source>
-        <translation type="unfinished"/>
+        <translation>A extensão através da qual a variação de cor será vista como sendo semelhante</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>

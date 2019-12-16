@@ -861,7 +861,7 @@
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
-        <translation type="unfinished"/>
+        <translation>Paleta (*.xml *.gpl);;Paleta Pencil2D (*.xml);;Paleta GIMP (*.gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
@@ -1063,12 +1063,12 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="96"/>
         <source>Catalan </source>
-        <translation type="unfinished"/>
+        <translation>Katalánština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="100"/>
         <source>Greek</source>
-        <translation type="unfinished"/>
+        <translation>Řečtina</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="104"/>
@@ -1103,7 +1103,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Kabyle</source>
-        <translation type="unfinished"/>
+        <translation>Kabylština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
@@ -1173,7 +1173,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
         <source>Grid Height</source>
-        <translation type="unfinished"/>
+        <translation>Výška mřížky</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="252"/>
@@ -1670,7 +1670,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Další klíčový snímek</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="807"/>
@@ -1776,7 +1776,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate Anticlockwise</source>
-        <translation type="unfinished"/>
+        <translation>Otočit proti směru hodinových ručiček</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
@@ -2000,7 +2000,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
         <source>You are about to switch away, do you want to apply the transformation?</source>
-        <translation type="unfinished"/>
+        <translation>Chystáte se přepnout pryč. Chcete použít proměnu?</translation>
     </message>
 </context>
 <context>
@@ -3743,7 +3743,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation type="unfinished"/>
+        <translation>Pokoušíte se změnit skrytou vrstvu! Vyberte, prosím, jinou vrstvu (nebo nynější vrstvu udělejte viditelnou).</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
@@ -3819,7 +3819,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Vyprázdnit</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
@@ -4084,7 +4084,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Eraser, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Použije se na nástroje tužka, guma, pero, lomená čára a štětec)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="160"/>
@@ -4104,7 +4104,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="188"/>
         <source>Maximum numbers of drawings in roll</source>
-        <translation type="unfinished"/>
+        <translation>Největši počet kreseb v roli</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="240"/>
@@ -4371,7 +4371,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="114"/>
         <source>The extent to which the color variation will be treated as being equal</source>
-        <translation type="unfinished"/>
+        <translation>Rozsah, po který se bude s barevným kolísáním zacházet jako se stejným</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
