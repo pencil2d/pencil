@@ -6,7 +6,7 @@
 #include <QDir>
 #include <QSettings>
 
-PresetDialog::PresetDialog(PreferenceManager *preferences, QWidget *parent) :
+PresetDialog::PresetDialog(PreferenceManager* preferences, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::PresetDialog),
     mPrefs(preferences)
@@ -65,28 +65,29 @@ int PresetDialog::exec()
 
 void PresetDialog::initPresets()
 {
-    // Make sure the standard data directory for this app exists and navigate to it
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QDir().mkpath(dataPath);
-    QDir dataDir = QDir(dataPath);
-    if (!dataDir.exists()) accept();
-
     // Make sure the presets directory in the data directory exists and navigate to it
-    if (!dataDir.exists("presets")) dataDir.mkdir("presets");
-    dataDir.cd("presets");
-    if (!dataDir.exists()) accept();
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir dataDir(dataPath);
+    dataDir.mkdir("presets");
+    if (dataDir.cd("presets") == false)
+    {
+        accept(); // the presets folder doesn't exist and cannot be created
+    }
 
     // Find all presets in the preferences and add them to the combo box
     int defaultIndex = mPrefs->getInt(SETTING::DEFAULT_PRESET);
     ui->presetComboBox->addItem("Default", 0);
     ui->presetComboBox->setCurrentIndex(0);
+
     if (!dataDir.exists("presets.ini")) accept();
     QSettings presets(dataDir.filePath("presets.ini"), QSettings::IniFormat, this);
+    
     bool ok = true;
-    foreach(const QString key, presets.allKeys())
+    for(const QString key : presets.allKeys())
     {
         int index = key.toInt(&ok);
         if (!ok || index == 0 || !dataDir.exists(QString("%1.pclx").arg(index))) continue;
+
         QString name = presets.value(key, QString()).toString();
         if (name.isEmpty()) continue;
         ui->presetComboBox->addItem(name, index);
