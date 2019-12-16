@@ -1042,7 +1042,8 @@ bool MainWindow2::loadNewObject()
             if (!fm.error().ok()) object = nullptr;
         }
     }
-    else {
+    else
+    {
         int preset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
         if (preset > 0)
         {
@@ -1062,6 +1063,7 @@ bool MainWindow2::loadNewObject()
     }
     object->setFilePath(QString());
     mEditor->setObject(object);
+    return true;
 }
 
 void MainWindow2::readSettings()
