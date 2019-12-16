@@ -27,25 +27,25 @@ GNU General Public License for more details.
 #define PFF_BIG_LETTER_EXTENSION	    "PCLX"
 
 #define PFF_PROJECT_EXT_FILTER \
-    QObject::tr("Supported Pencil formats") + " (*.pclx *.pcl);;" + QObject::tr("Pencil Project") + " (*.pclx);;" + QObject::tr("Legacy Pencil Project") + " (*.pcl)"
+    QObject::tr("Pencil formats") + " (*.pclx *.pcl);;" + QObject::tr("Pencil Project") + " (*.pclx);;" + QObject::tr("Legacy Pencil Project") + " (*.pcl)"
 
 #define PFF_MOVIE_EXT \
-    QObject::tr("Supported Movie formats") + " AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)"
+    QObject::tr("Movie formats") + " AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)"
 
 #define PFF_IMAGE_FILTER \
-   QObject::tr( "Supported Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)"
+   QObject::tr( "Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)"
 
 #define PFF_IMAGE_SEQ_FILTER \
-    QObject::tr( "Supported Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)"
+    QObject::tr( "Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)"
 
 #define PFF_PALETTE_EXT_FILTER \
-    QObject::tr("Supported Palette formats") + " (*.xml *.gpl);;" + QObject::tr("Pencil Palette") + " (*.xml);;" + QObject::tr("GIMP Palette") + " (*.gpl)"
+    QObject::tr("Palette formats") + " (*.xml *.gpl);;" + QObject::tr("Pencil Palette") + " (*.xml);;" + QObject::tr("GIMP Palette") + " (*.gpl)"
 
 #define PFF_GIF_EXT_FILTER \
     QObject::tr("Animated GIF") + " (*.gif)"
 
 #define PFF_SOUND_EXT_FILTER \
-    QObject::tr("Supported Sound formats") + " (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)"
+    QObject::tr("Sound formats") + " (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)"
 
 
 #define PFF_DEFAULT_PROJECT_EXT \
