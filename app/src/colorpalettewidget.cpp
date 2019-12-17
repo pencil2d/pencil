@@ -96,17 +96,18 @@ void ColorPaletteWidget::initUI()
 
 void ColorPaletteWidget::updateUI()
 {
+    mObject = mEditor->object();
     refreshColorList();
     updateGridUI();
 }
 
-void ColorPaletteWidget::setCore(Editor *editor)
+void ColorPaletteWidget::setCore(Editor* editor)
 {
     mEditor = editor;
     mObject = mEditor->object();
 }
 
-void ColorPaletteWidget::showContextMenu(const QPoint &pos)
+void ColorPaletteWidget::showContextMenu(const QPoint& pos)
 {
     QPoint globalPos = ui->colorListWidget->mapToGlobal(pos);
 
