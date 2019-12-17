@@ -110,7 +110,7 @@ private slots:
     void resetAndDockAllSubWidgets();
 
 private:
-    bool loadNewObject();
+    bool newObject();
     bool openObject(QString strFilename, bool checkForChanges);
     bool saveObject(QString strFileName);
 

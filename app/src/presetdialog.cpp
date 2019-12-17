@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QSettings>
 
+
 PresetDialog::PresetDialog(PreferenceManager* preferences, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::PresetDialog),
@@ -83,7 +84,7 @@ void PresetDialog::initPresets()
     QSettings presets(dataDir.filePath("presets.ini"), QSettings::IniFormat, this);
     
     bool ok = true;
-    for(const QString key : presets.allKeys())
+    for (const QString key : presets.allKeys())
     {
         int index = key.toInt(&ok);
         if (!ok || index == 0 || !dataDir.exists(QString("%1.pclx").arg(index))) continue;

@@ -101,7 +101,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
     mEditor->setScribbleArea(ui->scribbleArea);
     mEditor->init();
 
-    loadNewObject();
+    newObject();
 
     ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
@@ -490,7 +490,7 @@ void MainWindow2::newDocument(bool force)
 {
     if (force || maybeSave())
     {
-        loadNewObject();
+        newObject();
         mEditor->scrubTo(0);
         mEditor->view()->resetView();
         mEditor->select()->resetSelectionProperties();
@@ -1023,9 +1023,9 @@ void MainWindow2::resetAndDockAllSubWidgets()
     }
 }
 
-bool MainWindow2::loadNewObject()
+bool MainWindow2::newObject()
 {
-    Object* object = nullptr;
+    QString presetFilePath;
     if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
     {
         PresetDialog presetDialog(mEditor->preference(), this);
@@ -1036,10 +1036,7 @@ bool MainWindow2::loadNewObject()
                 mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
                 mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetDialog.getPresetIndex());
             }
-
-            FileManager fm(this);
-            object = fm.load(presetDialog.getPreset());
-            if (!fm.error().ok()) object = nullptr;
+            presetFilePath = presetDialog.getPreset();
         }
     }
     else
@@ -1047,15 +1044,18 @@ bool MainWindow2::loadNewObject()
         int preset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
         if (preset > 0)
         {
-            FileManager fm(this);
-            QString filePath = PresetDialog::getPresetPath(preset);
-            if (!filePath.isEmpty())
-            {
-                object = fm.load(filePath);
-                if (!fm.error().ok()) object = nullptr;
-            }
+            presetFilePath = PresetDialog::getPresetPath(preset);
         }
     }
+
+    Object* object = nullptr;
+    FileManager fm(this);
+    if (!presetFilePath.isEmpty())
+    {
+        object = fm.load(presetFilePath);
+        if (!fm.error().ok()) object = nullptr;
+    }
+
     if (object == nullptr)
     {
         object = new Object();
