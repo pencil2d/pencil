@@ -61,7 +61,7 @@ public:
 
     Editor* mEditor = nullptr;
 
-    public slots:
+public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
@@ -71,7 +71,6 @@ public:
     void currentLayerChanged();
 
 public:
-    void setOpacity(int opacity);
     void newDocument(bool force = false);
     void openDocument();
     bool saveDocument();
@@ -83,15 +82,15 @@ public:
     void importImage();
     void importImageSequence();
     void importPredefinedImageSet();
-    void importImageSequenceNumbered();
     void importLayers();
     void importMovie();
     void importGIF();
 
     void lockWidgets(bool shouldLock);
 
+    void setOpacity(int opacity);
     void preferences();
-    
+ 
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
@@ -111,6 +110,7 @@ private slots:
 
 private:
     bool newObject();
+    bool newObjectFromPresets(int presetIndex);
     bool openObject(QString strFilename);
     bool saveObject(QString strFileName);
 
@@ -120,6 +120,7 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
+    void showPresetDialog();
 
     void importPalette();
     void exportPalette();
@@ -160,7 +161,7 @@ private:
 
 private:
     ActionCommands* mCommands = nullptr;
-    QList< BaseDockWidget* > mDockWidgets;
+    QList<BaseDockWidget*> mDockWidgets;
 
     QIcon mStartIcon;
     QIcon mStopIcon;

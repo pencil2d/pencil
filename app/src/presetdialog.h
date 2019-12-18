@@ -23,9 +23,6 @@ public:
     int getPresetIndex();
     bool shouldAlwaysUse();
 
-public slots:
-    int exec() override;
-
 private:
     void initPresets();
 

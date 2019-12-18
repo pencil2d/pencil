@@ -89,7 +89,7 @@ GNU General Public License for more details.
 
 
 
-MainWindow2::MainWindow2(QWidget *parent) :
+MainWindow2::MainWindow2(QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow2)
 {
@@ -129,6 +129,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
     mEditor->updateObject();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
+
+    showPresetDialog();
 }
 
 MainWindow2::~MainWindow2()
@@ -488,7 +490,7 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
 
 void MainWindow2::newDocument(bool force)
 {
-    if (force || maybeSave())
+    if (force)
     {
         newObject();
         mEditor->scrubTo(0);
@@ -501,6 +503,28 @@ void MainWindow2::newDocument(bool force)
 
         setWindowTitle(PENCIL_WINDOW_TITLE);
         updateSaveState();
+    }
+    else if (maybeSave())
+    {
+        if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+        {
+            showPresetDialog();
+        }
+        else
+        {
+            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+            newObjectFromPresets(defaultPreset);
+            mEditor->scrubTo(0);
+            mEditor->view()->resetView();
+            mEditor->select()->resetSelectionProperties();
+
+            // Refresh the palette
+            mColorPalette->refreshColorList();
+            mEditor->color()->setColorNumber(0);
+
+            setWindowTitle(PENCIL_WINDOW_TITLE);
+            updateSaveState();
+        }
     }
 }
 
@@ -710,11 +734,9 @@ bool MainWindow2::saveObject(QString strSavedFileName)
         errorDialog.exec();
         return false;
     }
-    else
-    {
-        mEditor->object()->setFilePath(strSavedFileName);
-        mEditor->object()->setModified(false);
-    }
+
+    mEditor->object()->setFilePath(strSavedFileName);
+    mEditor->object()->setModified(false);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, strSavedFileName);
@@ -1019,45 +1041,49 @@ void MainWindow2::resetAndDockAllSubWidgets()
 
 bool MainWindow2::newObject()
 {
-    QString presetFilePath;
-    if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
-    {
-        PresetDialog presetDialog(mEditor->preference(), this);
-        if (presetDialog.exec() == QDialog::Accepted)
-        {
-            if (presetDialog.shouldAlwaysUse())
-            {
-                mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
-                mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetDialog.getPresetIndex());
-            }
-            presetFilePath = presetDialog.getPreset();
-        }
-    }
-    else
-    {
-        int preset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
-        if (preset > 0)
-        {
-            presetFilePath = PresetDialog::getPresetPath(preset);
-        }
-    }
-
     Object* object = nullptr;
-    FileManager fm(this);
+    object = new Object();
+    object->init();
+    mEditor->setObject(object);
+    return true;
+}
+
+bool MainWindow2::newObjectFromPresets(int presetIndex)
+{
+    Object* object = nullptr;   
+    QString presetFilePath = (presetIndex > 0) ? PresetDialog::getPresetPath(presetIndex) : "";
     if (!presetFilePath.isEmpty())
     {
+        FileManager fm(this);
         object = fm.load(presetFilePath);
-        if (!fm.error().ok()) object = nullptr;
+        if (fm.error().ok() == false) object = nullptr;
     }
-
     if (object == nullptr)
     {
         object = new Object();
         object->init();
     }
-    object->setFilePath(QString());
     mEditor->setObject(object);
     return true;
+}
+
+void  MainWindow2::showPresetDialog()
+{
+    if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+    {
+        PresetDialog* presetDialog = new PresetDialog(mEditor->preference(), this);
+        presetDialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(presetDialog, &PresetDialog::finished, [=](int result)
+        {
+            if (result == QDialog::Accepted)
+            {
+                int presetIndex = presetDialog->getPresetIndex();
+                newObjectFromPresets(presetIndex);
+                qDebug() << "Accepted!";
+            }
+        });
+        presetDialog->open();
+    }
 }
 
 void MainWindow2::readSettings()

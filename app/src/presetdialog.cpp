@@ -54,15 +54,6 @@ QString PresetDialog::getPresetPath(int index)
     return QString();
 }
 
-int PresetDialog::exec()
-{
-    if (ui->presetComboBox->count() == 1)
-    {
-        return QDialog::Accepted;
-    }
-    return QDialog::exec();
-}
-
 void PresetDialog::initPresets()
 {
     // Make sure the presets directory in the data directory exists and navigate to it
@@ -71,7 +62,8 @@ void PresetDialog::initPresets()
     dataDir.mkdir("presets");
     if (dataDir.cd("presets") == false)
     {
-        accept(); // the presets folder doesn't exist and cannot be created
+        reject(); // the presets folder doesn't exist and cannot be created
+        return;
     }
 
     // Find all presets in the preferences and add them to the combo box
@@ -79,7 +71,11 @@ void PresetDialog::initPresets()
     ui->presetComboBox->addItem("Default", 0);
     ui->presetComboBox->setCurrentIndex(0);
 
-    if (!dataDir.exists("presets.ini")) accept();
+    if (!dataDir.exists("presets.ini"))
+    {
+        reject();
+        return;
+    }
     QSettings presets(dataDir.filePath("presets.ini"), QSettings::IniFormat, this);
     
     bool ok = true;
