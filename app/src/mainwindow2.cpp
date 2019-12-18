@@ -520,7 +520,7 @@ void MainWindow2::openDocument()
             return;
         }
 
-        openObject(fileName, false);
+        openObject(fileName);
     }
 }
 
@@ -542,13 +542,14 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile(QString filename)
 {
-    openObject(filename, true);
+    if (maybeSave())
+    {
+        openObject(filename);
+    }
 }
 
-bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
+bool MainWindow2::openObject(QString strFilePath)
 {
-    if(checkForChanges && !maybeSave()) return false; // Open cancelled by user
-
     // Check for potential issues with the file
     QFileInfo fileInfo(strFilePath);
     if (fileInfo.isDir())

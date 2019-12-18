@@ -111,7 +111,7 @@ private slots:
 
 private:
     bool newObject();
-    bool openObject(QString strFilename, bool checkForChanges);
+    bool openObject(QString strFilename);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();
