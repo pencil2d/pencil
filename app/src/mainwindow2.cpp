@@ -510,17 +510,10 @@ void MainWindow2::openDocument()
     {
         FileDialog fileDialog(this);
         QString fileName = fileDialog.openFile(FileType::ANIMATION);
-        if (fileName.isEmpty())
+        if (!fileName.isEmpty())
         {
-            return;
+            openObject(fileName);
         }
-        QFileInfo fileInfo(fileName);
-        if (fileInfo.isDir())
-        {
-            return;
-        }
-
-        openObject(fileName);
     }
 }
 
