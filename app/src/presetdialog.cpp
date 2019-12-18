@@ -1,5 +1,6 @@
 #include "presetdialog.h"
 #include "ui_presetdialog.h"
+#include "app_util.h"
 
 #include <QFile>
 #include <QStandardPaths>
@@ -18,6 +19,8 @@ PresetDialog::PresetDialog(PreferenceManager* preferences, QWidget* parent) :
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+    hideQuestionMark(*this);
 }
 
 PresetDialog::~PresetDialog()
