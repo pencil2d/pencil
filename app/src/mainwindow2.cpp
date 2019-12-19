@@ -43,7 +43,6 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
-#include "selectionmanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -126,7 +125,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
-    mEditor->updateObject();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
 
