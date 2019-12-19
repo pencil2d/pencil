@@ -16,10 +16,6 @@ PresetDialog::PresetDialog(PreferenceManager* preferences, QWidget* parent) :
     ui->setupUi(this);
 
     initPresets();
-
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
     hideQuestionMark(*this);
 }
 
