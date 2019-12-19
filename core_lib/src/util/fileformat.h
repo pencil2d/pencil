@@ -26,8 +26,42 @@ GNU General Public License for more details.
 #define PFF_EXTENSION				    ".pclx"
 #define PFF_BIG_LETTER_EXTENSION	    "PCLX"
 
-#define PFF_OPEN_ALL_FILE_FILTER	QObject::tr( "All Pencil Files PCLX & PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)" )
-#define PFF_SAVE_ALL_FILE_FILTER	QObject::tr( "Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)" )
+#define PFF_PROJECT_EXT_FILTER \
+    QObject::tr("Pencil formats") + " (*.pclx *.pcl);;" + QObject::tr("Pencil Project") + " (*.pclx);;" + QObject::tr("Legacy Pencil Project") + " (*.pcl)"
+
+#define PFF_MOVIE_EXT \
+    QObject::tr("Movie formats") + " AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)"
+
+#define PFF_IMAGE_FILTER \
+   QObject::tr( "Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)"
+
+#define PFF_IMAGE_SEQ_FILTER \
+    QObject::tr( "Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)"
+
+#define PFF_PALETTE_EXT_FILTER \
+    QObject::tr("Palette formats") + " (*.xml *.gpl);;" + QObject::tr("Pencil Palette") + " (*.xml);;" + QObject::tr("GIMP Palette") + " (*.gpl)"
+
+#define PFF_GIF_EXT_FILTER \
+    QObject::tr("Animated GIF") + " (*.gif)"
+
+#define PFF_SOUND_EXT_FILTER \
+    QObject::tr("Sound formats") + " (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)"
+
+
+#define PFF_DEFAULT_PROJECT_EXT \
+    QString(".pclx")
+
+#define PFF_DEFAULT_IMAGE_EXT \
+   QString(".png")
+
+#define PFF_DEFAULT_IMAGE_SEQ_EXT \
+    QString(".png")
+
+#define PFF_DEFAULT_ANIMATED_EXT \
+    QString(".gif")
+
+#define PFF_DEFAULT_PALETTE_EXT \
+    QString(".xml")
 
 
 #define PFF_OLD_DATA_DIR 		"data"
@@ -35,7 +69,6 @@ GNU General Public License for more details.
 #define PFF_XML_FILE_NAME 		"main.xml"
 #define PFF_TMP_DECOMPRESS_EXT 	"Y2xD"
 #define PFF_PALETTE_FILE        "palette.xml"
-
 
 bool removePFFTmpDirectory (const QString& dirName);
 QString uniqueString(int len);

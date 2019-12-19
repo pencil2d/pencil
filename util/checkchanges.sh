@@ -7,7 +7,7 @@ git fetch
 
 commit=$TRAVIS_COMMIT
 branch=$TRAVIS_BRANCH
-CHANGED_FILES=`git diff --name-only origin/master...${commit}`
+CHANGED_FILES=`git diff --name-only origin/$branch...${commit}`
 
 if [[ $branch == "master" ]]; then
   CHANGED_FILES=`git diff --name-only HEAD^ HEAD`
@@ -21,7 +21,7 @@ SH=".sh"
 PY=".py"
 PS1=".ps1"
 
-printf "git diff --name-only origin/master...%s\n" "${TRAVIS_COMMIT}"
+printf "git diff --name-only origin/$branch...%s\n" "${TRAVIS_COMMIT}"
 printf "%s\n" "${CHANGED_FILES}"
 printf "=============\n"
 

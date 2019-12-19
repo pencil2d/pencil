@@ -68,6 +68,7 @@ public:
     void clearRecentFilesList();
     void openPegAlignDialog();
     void closePegAlignDialog();
+    void currentLayerChanged();
 
 public:
     void setOpacity(int opacity);
@@ -81,8 +82,9 @@ public:
     // import
     void importImage();
     void importImageSequence();
+    void importPredefinedImageSet();
     void importImageSequenceNumbered();
-    void addLayerByFilename(QString strFilePath);
+    void importLayers();
     void importMovie();
     void importGIF();
 

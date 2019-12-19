@@ -607,6 +607,11 @@ void Editor::clipboardChanged()
     }
 }
 
+void Editor::notifyAnimationLengthChanged()
+{
+    layers()->notifyAnimationLengthChanged();
+}
+
 int Editor::allLayers()
 {
     return mScribbleArea->showAllLayers();
@@ -675,7 +680,7 @@ void Editor::updateObject()
     setCurrentLayerIndex(mObject->data()->getCurrentLayer());
 
     mAutosaveCounter = 0;
-    mAutosaveNerverAskAgain = false;
+    mAutosaveNeverAskAgain = false;
 
     if (mScribbleArea)
     {
@@ -788,6 +793,8 @@ bool Editor::importBitmapImage(QString filePath, int space)
         return false;
     }
 
+    const QPoint pos = QPoint(static_cast<int>(view()->getImportView().dx()),
+                              static_cast<int>(view()->getImportView().dy())) - QPoint(img.width() / 2, img.height() / 2);
     while (reader.read(&img))
     {
         if (!layer->keyExists(currentFrame()))
@@ -795,8 +802,7 @@ bool Editor::importBitmapImage(QString filePath, int space)
             addNewKey();
         }
         BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(currentFrame());
-
-        BitmapImage importedBitmapImage(mScribbleArea->getCentralPoint().toPoint() - QPoint(img.width() / 2, img.height() / 2), img);
+        BitmapImage importedBitmapImage(pos, img);
         bitmapImage->paste(&importedBitmapImage);
 
         if (space > 1) {
@@ -843,10 +849,40 @@ bool Editor::importVectorImage(QString filePath)
     return ok;
 }
 
+void Editor::createNewBitmapLayer(const QString& name)
+{
+    Layer* layer = layers()->createBitmapLayer(name);
+    layers()->setCurrentLayer(layer);
+}
+
+void Editor::createNewVectorLayer(const QString& name)
+{
+    Layer* layer = layers()->createVectorLayer(name);
+    layers()->setCurrentLayer(layer);
+}
+
+void Editor::createNewSoundLayer(const QString& name)
+{
+    Layer* layer = layers()->createVectorLayer(name);
+    layers()->setCurrentLayer(layer);
+}
+
+void Editor::createNewCameraLayer(const QString& name)
+{
+    Layer* layer = layers()->createCameraLayer(name);
+    layers()->setCurrentLayer(layer);
+}
+
 bool Editor::importImage(QString filePath)
 {
     Layer* layer = layers()->currentLayer();
 
+    if (view()->getImportFollowsCamera())
+    {
+        LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
+        QTransform transform = camera->getViewAtFrame(currentFrame());
+        view()->setImportView(transform);
+    }
     switch (layer->type())
     {
     case Layer::BITMAP:
@@ -991,15 +1027,25 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         return nullptr;
     }
 
+    // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
     while (layer->keyExists(frameIndex))
     {
-        frameIndex += 1;
+        if (layer->type() == Layer::SOUND && static_cast<SoundClip*>(layer->getKeyFrameAt(frameIndex))->fileName().isEmpty()
+                && layer->removeKeyFrame(frameIndex))
+        {
+            break;
+        }
+        else
+        {
+            frameIndex += 1;
+        }
     }
 
     bool ok = layer->addNewKeyFrameAt(frameIndex);
     if (ok)
     {
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
+        layers()->notifyAnimationLengthChanged();
     }
     return layer->getKeyFrameAt(frameIndex);
 }
@@ -1026,6 +1072,7 @@ void Editor::removeKey()
     layer->removeKeyFrame(currentFrame());
 
     scrubBackward();
+    layers()->notifyAnimationLengthChanged();
     Q_EMIT layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
 }
 

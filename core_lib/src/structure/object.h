@@ -87,6 +87,8 @@ public:
     void setColour(int index, QColor newColour);
     void setColourRef(int index, ColourRef newColourRef);
     void addColour(QColor);
+    void movePaletteColor(int start, int end);
+    void moveVectorColor(int start, int end);
 
     void addColour(ColourRef newColour) { mPalette.append(newColour); }
     void addColourAtIndex(int index, ColourRef newColour);
@@ -117,6 +119,7 @@ public:
     bool swapLayers(int i, int j);
     void deleteLayer(int i);
     void deleteLayer(Layer*);
+    void addLayer(Layer* layer);
 
     template<typename T>
     std::vector<T*> getLayersByType() const

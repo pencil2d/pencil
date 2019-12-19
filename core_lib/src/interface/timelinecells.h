@@ -81,6 +81,7 @@ public slots:
     void setMouseMoveY(int x);
 
 protected:
+    void trackScrubber();
     void drawContent();
     void paintOnionSkin(QPainter& painter);
     void paintEvent(QPaintEvent* event);
@@ -118,6 +119,7 @@ private:
     int mLastFrameNumber = -1;
     int mMouseMoveY = 0;
     int mMouseMoveX = 0;
+    int mPrevFrame = 0;
     int mFrameOffset = 0;
     int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;

@@ -59,7 +59,6 @@ Q_SIGNALS:
     void addKeyClick();
     void removeKeyClick();
     void duplicateKeyClick();
-    void toogleAbsoluteOnionClick();
 
     void newBitmapLayer();
     void newVectorLayer();
