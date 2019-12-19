@@ -436,31 +436,7 @@ FilesPage::FilesPage()
 {
     ui->setupUi(this);
 
-    mPresetDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-    if (!mPresetDir.exists("presets")) mPresetDir.mkpath("presets");
-    mPresetDir.cd("presets");
-    mPresets = new QSettings(mPresetDir.filePath("presets.ini"), QSettings::IniFormat, this);
-    bool ok = true;
-    foreach (const QString key, mPresets->allKeys())
-    {
-        int index = key.toInt(&ok);
-        if (!ok || index == 0 || !mPresetDir.exists(QString("%1.pclx").arg(index))) continue;
-        mMaxPresetIndex = qMax(mMaxPresetIndex, index);
-        QString name = mPresets->value(key, QString()).toString();
-        if (name.isEmpty()) continue;
-        QListWidgetItem *item = new QListWidgetItem(name);
-        item->setFlags(item->flags() | Qt::ItemIsEditable);
-        item->setData(Qt::UserRole, index);
-        ui->presetListWidget->addItem(item);
-    }
-    QListWidgetItem *defaultItem = new QListWidgetItem("Default");
-    ui->presetListWidget->addItem(defaultItem);
-    defaultItem->setData(Qt::UserRole, QVariant(0));
-    defaultItem->setBackground(this->palette().background());
-    QFont boldFont = defaultItem->font();
-    boldFont.setBold(true);
-    defaultItem->setFont(boldFont);
-    mStartPreset = mDefaultPreset = defaultItem;
+    initPreset();
 
     connect(ui->addPreset, &QPushButton::clicked, this, &FilesPage::addPreset);
     connect(ui->removePreset, &QPushButton::clicked, this, &FilesPage::removePreset);
@@ -476,6 +452,35 @@ FilesPage::FilesPage()
 FilesPage::~FilesPage()
 {
     delete ui;
+}
+
+void FilesPage::initPreset()
+{
+    mPresetDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    if (!mPresetDir.exists("presets")) mPresetDir.mkpath("presets");
+    mPresetDir.cd("presets");
+    mPresets = new QSettings(mPresetDir.filePath("presets.ini"), QSettings::IniFormat, this);
+    bool ok = true;
+    for(const QString key : mPresets->allKeys())
+    {
+        int index = key.toInt(&ok);
+        if (!ok || index == 0 || !mPresetDir.exists(QString("%1.pclx").arg(index))) continue;
+        mMaxPresetIndex = qMax(mMaxPresetIndex, index);
+        QString name = mPresets->value(key, QString()).toString();
+        if (name.isEmpty()) continue;
+        QListWidgetItem* item = new QListWidgetItem(name);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        item->setData(Qt::UserRole, index);
+        ui->presetListWidget->addItem(item);
+    }
+    QListWidgetItem* defaultItem = new QListWidgetItem("Default");
+    ui->presetListWidget->addItem(defaultItem);
+    defaultItem->setData(Qt::UserRole, QVariant(0));
+    defaultItem->setBackground(this->palette().background());
+    QFont boldFont = defaultItem->font();
+    boldFont.setBold(true);
+    defaultItem->setFont(boldFont);
+    mStartPreset = mDefaultPreset = defaultItem;
 }
 
 void FilesPage::addPreset()

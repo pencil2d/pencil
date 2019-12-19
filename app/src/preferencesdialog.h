@@ -137,6 +137,7 @@ public:
     void setManager(PreferenceManager* p) { mManager = p; }
 
 public slots:
+    void initPreset();
     void addPreset();
     void removePreset();
     void setDefaultPreset();
