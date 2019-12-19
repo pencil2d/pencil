@@ -92,6 +92,8 @@ void ColorPaletteWidget::initUI()
     connect(ui->colorDialogButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickColorDialogButton);
     connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
     connect(ui->colorListWidget, &QListWidget::customContextMenuRequested, this, &ColorPaletteWidget::showContextMenu);
+
+    connect(editor(), &Editor::objectLoaded, this, &ColorPaletteWidget::updateUI);
 }
 
 void ColorPaletteWidget::updateUI()

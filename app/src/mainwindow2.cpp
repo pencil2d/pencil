@@ -495,8 +495,6 @@ void MainWindow2::newDocument(bool force)
         newObject();
         mEditor->select()->resetSelectionProperties();
 
-        // Refresh the palette
-        mColorPalette->refreshColorList();
         mEditor->color()->setColorNumber(0);
 
         setWindowTitle(PENCIL_WINDOW_TITLE);
@@ -514,8 +512,6 @@ void MainWindow2::newDocument(bool force)
             newObjectFromPresets(defaultPreset);
             mEditor->select()->resetSelectionProperties();
 
-            // Refresh the palette
-            mColorPalette->refreshColorList();
             mEditor->color()->setColorNumber(0);
 
             setWindowTitle(PENCIL_WINDOW_TITLE);
@@ -668,8 +664,6 @@ bool MainWindow2::openObject(QString strFilePath)
 
     mEditor->select()->resetSelectionProperties();
 
-    // Refresh the Palette
-    mColorPalette->refreshColorList();
     mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.setValue(progress.maximum());
