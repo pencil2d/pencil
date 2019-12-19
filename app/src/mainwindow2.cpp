@@ -493,7 +493,6 @@ void MainWindow2::newDocument(bool force)
     if (force)
     {
         newObject();
-        mEditor->select()->resetSelectionProperties();
 
         setWindowTitle(PENCIL_WINDOW_TITLE);
         updateSaveState();
@@ -508,7 +507,6 @@ void MainWindow2::newDocument(bool force)
         {
             int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
             newObjectFromPresets(defaultPreset);
-            mEditor->select()->resetSelectionProperties();
 
             setWindowTitle(PENCIL_WINDOW_TITLE);
             updateSaveState();
@@ -657,8 +655,6 @@ bool MainWindow2::openObject(QString strFilePath)
     setWindowModified(false);
 
     progress.setValue(progress.value() + 1);
-
-    mEditor->select()->resetSelectionProperties();
 
     mEditor->layers()->notifyAnimationLengthChanged();
 

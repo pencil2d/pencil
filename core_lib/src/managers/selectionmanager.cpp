@@ -28,6 +28,7 @@ bool SelectionManager::init()
 
 Status SelectionManager::load(Object*)
 {
+    resetSelectionProperties();
     return Status::OK;
 }
 
