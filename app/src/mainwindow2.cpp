@@ -493,7 +493,6 @@ void MainWindow2::newDocument(bool force)
     if (force)
     {
         newObject();
-        mEditor->scrubTo(0);
         mEditor->select()->resetSelectionProperties();
 
         // Refresh the palette
@@ -513,7 +512,6 @@ void MainWindow2::newDocument(bool force)
         {
             int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
             newObjectFromPresets(defaultPreset);
-            mEditor->scrubTo(0);
             mEditor->select()->resetSelectionProperties();
 
             // Refresh the palette
