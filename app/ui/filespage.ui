@@ -43,7 +43,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QListWidget" name="startupPresets">
+       <widget class="QListWidget" name="presetListWidget">
         <property name="sortingEnabled">
          <bool>true</bool>
         </property>

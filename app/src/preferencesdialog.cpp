@@ -451,10 +451,10 @@ FilesPage::FilesPage()
         QListWidgetItem *item = new QListWidgetItem(name);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         item->setData(Qt::UserRole, index);
-        ui->startupPresets->addItem(item);
+        ui->presetListWidget->addItem(item);
     }
     QListWidgetItem *defaultItem = new QListWidgetItem("Default");
-    ui->startupPresets->addItem(defaultItem);
+    ui->presetListWidget->addItem(defaultItem);
     defaultItem->setData(Qt::UserRole, QVariant(0));
     defaultItem->setBackground(this->palette().background());
     QFont boldFont = defaultItem->font();
@@ -466,7 +466,7 @@ FilesPage::FilesPage()
     connect(ui->removePreset, &QPushButton::clicked, this, &FilesPage::removePreset);
     connect(ui->setDefaultPreset, &QPushButton::clicked, this, &FilesPage::setDefaultPreset);
     connect(ui->askPresetCheckBox, &QCheckBox::stateChanged, this, &FilesPage::askForPresetChange);
-    connect(ui->startupPresets, &QListWidget::itemChanged, this, &FilesPage::presetChanged);
+    connect(ui->presetListWidget, &QListWidget::itemChanged, this, &FilesPage::presetChanged);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->autosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange);
@@ -496,21 +496,21 @@ void FilesPage::addPreset()
     QListWidgetItem *newItem = new QListWidgetItem("Untitled Preset");
     newItem->setFlags(newItem->flags() | Qt::ItemIsEditable);
     newItem->setData(Qt::UserRole, QVariant(mMaxPresetIndex));
-    ui->startupPresets->addItem(newItem);
+    ui->presetListWidget->addItem(newItem);
     mPresets->setValue(QString::number(mMaxPresetIndex), newItem->text());
 }
 
 void FilesPage::removePreset()
 {
-    if (ui->startupPresets->count() > 1 && !ui->startupPresets->selectedItems().empty())
+    if (ui->presetListWidget->count() > 1 && !ui->presetListWidget->selectedItems().empty())
     {
         bool ok = true;
-        foreach (const QListWidgetItem *item, ui->startupPresets->selectedItems())
+        foreach (const QListWidgetItem *item, ui->presetListWidget->selectedItems())
         {
             int index = item->data(Qt::UserRole).toInt(&ok);
             Q_ASSERT(ok);
             if (index == 0) continue;
-            ui->startupPresets->takeItem(ui->startupPresets->row(item));
+            ui->presetListWidget->takeItem(ui->presetListWidget->row(item));
             mPresets->remove(QString::number(index));
             QFile presetFile(PresetDialog::getPresetPath(index));
             if (presetFile.exists()) presetFile.remove();
@@ -526,7 +526,7 @@ void FilesPage::removePreset()
 
 void FilesPage::setDefaultPreset()
 {
-    QListWidgetItem *item = ui->startupPresets->selectedItems().last();
+    QListWidgetItem *item = ui->presetListWidget->selectedItems().last();
     mStartPreset->setBackground(palette().light());
     QFont font = mStartPreset->font();
     item->setFont(font);
@@ -557,15 +557,15 @@ void FilesPage::updateValues()
     int defaultPreset = mManager->getInt(SETTING::DEFAULT_PRESET);
     if (defaultPreset != mStartPreset->data(Qt::UserRole).toInt())
     {
-        for (int i=0; i < ui->startupPresets->count(); i++)
+        for (int i=0; i < ui->presetListWidget->count(); i++)
         {
-            if(ui->startupPresets->item(i)->data(Qt::UserRole).toInt(&ok) == defaultPreset)
+            if(ui->presetListWidget->item(i)->data(Qt::UserRole).toInt(&ok) == defaultPreset)
             {
                 QFont font = mStartPreset->font();
                 font.setBold(false);
                 mStartPreset->setFont(font);
                 mStartPreset->setBackground(this->palette().light());
-                mStartPreset = ui->startupPresets->item(i);
+                mStartPreset = ui->presetListWidget->item(i);
                 font.setBold(true);
                 mStartPreset->setFont(font);
                 mStartPreset->setBackground(this->palette().background());
