@@ -495,8 +495,6 @@ void MainWindow2::newDocument(bool force)
         newObject();
         mEditor->select()->resetSelectionProperties();
 
-        mEditor->color()->setColorNumber(0);
-
         setWindowTitle(PENCIL_WINDOW_TITLE);
         updateSaveState();
     }
@@ -511,8 +509,6 @@ void MainWindow2::newDocument(bool force)
             int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
             newObjectFromPresets(defaultPreset);
             mEditor->select()->resetSelectionProperties();
-
-            mEditor->color()->setColorNumber(0);
 
             setWindowTitle(PENCIL_WINDOW_TITLE);
             updateSaveState();
