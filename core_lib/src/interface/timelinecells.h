@@ -66,7 +66,8 @@ public:
     void showContextMenu(QPoint pos);
     void deleteLayer();
     void duplicateLayer();
-    void mergeLayers();
+    void mergeLayerDown();
+    void mergeVisibleLayers();
 
 Q_SIGNALS:
     void mouseMovedY(int);
