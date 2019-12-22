@@ -1,0 +1,46 @@
+## Formatting options for
+## Astyle - Source code indenter, formatter, and beautifier for C, C++, and Java Source Code
+## http://astyle.sourceforge.net/
+
+# Indent as C/C++
+mode=c
+# Use LF line end style
+lineend=linux
+
+# Allman style formatting/indenting uses broken brackets
+style=allman
+
+# Grant an exception to the Allman style bracketing for `extern "c"` statements.
+attach-extern-c
+# Attach while statement to closing bracket of a do {} while statment
+attach-closing-while
+
+# Indent using 4 spaces per indent
+indent=spaces=4
+convert-tabs
+# Indent labels so they match the current indentation rather than being flush to the left
+indent-labels
+# Make sure all comments are indented with the code
+indent-col1-comments
+# No min indents for a header is built of multiple lines. This assures they are always aligned.
+min-conditional-indent=0
+# Don't restrict the max contiunation indent as much as possible. Still, it shouldn't be close to 120 ever.
+max-continuation-indent=120
+
+# Insert space padding around operators and after commas
+pad-oper
+# Remove unnecessary padding around parentheses
+unpad-paren
+# Attach pointers and references to the variable name
+align-pointer=name
+# Insert space padding after paren headers only (e.g. 'if', 'for', 'while'...)
+pad-header
+
+# Add braces to one-line conditional statements
+add-braces
+# Leave one-line blocks as-is. This should only be used with single statements.
+keep-one-line-blocks
+
+# Exclude third-party libraries
+exclude=miniz.cpp
+exclude=miniz.h
