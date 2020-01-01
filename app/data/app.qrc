@@ -60,6 +60,10 @@
         <file>icons/overlayGoldenRatio.png</file>
         <file>icons/overlaySafe.png</file>
         <file>icons/overlayThirds.png</file>
+        <file>icons/overlayPerspective1.png</file>
+        <file>icons/overlayPerspective2.png</file>
+        <file>icons/overlayPerspective3.png</file>
+        <file>icons/overlayAngle.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

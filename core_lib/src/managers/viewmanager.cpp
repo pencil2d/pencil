@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "camera.h"
 #include "layercamera.h"
+#include <QDebug>
 
 const static float mMinScale = 0.01f;
 const static float mMaxScale = 100.0f;
@@ -352,6 +353,27 @@ void ViewManager::setOverlaySafeAreas(bool b)
         updateViewTransforms();
         Q_EMIT viewChanged();
     }
+}
+
+void ViewManager::setOverlayPerspective1(bool b)
+{
+    qDebug() << b;
+    if (b != mOverlayPerspective1)
+    {
+        mOverlayPerspective1 = b;
+        updateViewTransforms();
+        Q_EMIT viewChanged();
+    }
+}
+
+void ViewManager::setOverlayPerspective2(bool b)
+{
+
+}
+
+void ViewManager::setOverlayPerspective3(bool b)
+{
+
 }
 
 void ViewManager::setCanvasSize(QSize size)

@@ -48,10 +48,26 @@ private slots:
     void toggleOverlayThirds(bool isOn);
     void toggleOverlayGoldenRatio(bool isOn);
     void toggleOverlaySafeAreas(bool isOn);
+    void toggleOverlayPerspective1(bool isOn);
+    void toggleOverlayPerspective2(bool isOn);
+    void toggleOverlayPerspective3(bool isOn);
+    void anglePreferences();
+    void angle5degrees(bool);
+    void angle10degrees(bool);
+    void angle15degrees(bool);
+    void angle20degrees(bool);
+    void angle30degrees(bool);
+    void angle45degrees(bool);
 
 private:
     void makeConnections();
+    void clearPreviousAngle(int angle);
+    void changeAngle(int angle);
     Ui::DisplayOption* ui = nullptr;
+
+    QString buttonStylesheet;
+    int mOverlayAngle = 15;
+
 };
 
 #endif // DISPLAYOPTIONDOCKWIDGET_H

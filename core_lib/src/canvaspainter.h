@@ -51,6 +51,10 @@ struct CanvasPainterOptions
     bool  bSafeArea = false;
     bool  bTitleSafe = true;
     int   nTitleSafe = 10;
+    bool  bPerspective1 = false;
+    bool  bPerspective2 = false;
+    bool  bPerspective3 = false;
+    int   nOverlayAngle = 15; // for perspective overlays
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
@@ -116,6 +120,9 @@ private:
     void paintOverlayThirds(QPainter& painter);
     void paintOverlayGolden(QPainter& painter);
     void paintOverlaySafeAreas(QPainter& painter);
+    void paintOverlayPerspective1(QPainter& painter, int angle);
+    void paintOverlayPerspective2(QPainter& painter, int angle);
+    void paintOverlayPerspective3(QPainter& painter, int angle);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);

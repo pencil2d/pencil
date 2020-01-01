@@ -16,6 +16,9 @@ GNU General Public License for more details.
 
 #include "canvaspainter.h"
 
+#include <QtMath>
+#include <QSettings>
+
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -23,7 +26,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "vectorimage.h"
 #include "util.h"
-
+#include <QDebug>
 
 
 CanvasPainter::CanvasPainter(QObject* parent) : QObject(parent)
@@ -643,6 +646,61 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter &painter)
     painter.setRenderHints(previous_renderhints);
 }
 
+void CanvasPainter::paintOverlayPerspective1(QPainter &painter, int angle)
+{
+    QRect rect = painter.viewport();
+    QPen pen(QColor(180, 220, 255));
+    pen.setCosmetic(true);
+    painter.setPen(pen);
+    painter.setWorldMatrixEnabled(true);
+    painter.setBrush(Qt::NoBrush);
+    QPainter::RenderHints previous_renderhints = painter.renderHints();
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
+    int repeats = 360 / angle;
+    qreal degrees = static_cast<qreal>(angle);
+    QPoint center = QPoint(0,0);
+    for (int i = 0; i < repeats; i++)
+    {
+        QPointF endPoint = QPointF(cos(qDegreesToRadians(i * degrees)) * rect.width(), sin(qDegreesToRadians(i * degrees)) * rect.width());
+        painter.drawLine(center, endPoint);
+    }
+
+    painter.setRenderHints(previous_renderhints);
+}
+
+void CanvasPainter::paintOverlayPerspective2(QPainter &painter, int angle)
+{
+    QRect rect = painter.viewport();
+    QPen pen(QColor(180, 220, 255));
+    pen.setCosmetic(true);
+    painter.setPen(pen);
+    painter.setWorldMatrixEnabled(true);
+    painter.setBrush(Qt::NoBrush);
+    QPainter::RenderHints previous_renderhints = painter.renderHints();
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
+    int repeats = 180 / angle;
+    qreal degrees = static_cast<qreal>(angle);
+    QPoint left = QPoint(-1000, 0);
+//    QPoint left = QPoint(-rect.width()/2, 0);
+    QPoint right = QPoint(rect.width()/2, 0);
+    for (int i = 0; i <= repeats; i++)
+    {
+        QPointF endPoint = QPointF(cos(qDegreesToRadians(i * degrees - 90)) * rect.width(), sin(qDegreesToRadians(i * degrees - 90)) * rect.width());
+        painter.drawLine(left, endPoint);
+        endPoint = endPoint * -1;
+        painter.drawLine(right, endPoint);
+    }
+
+    painter.setRenderHints(previous_renderhints);
+}
+
+void CanvasPainter::paintOverlayPerspective3(QPainter &painter, int angle)
+{
+
+}
+
 void CanvasPainter::renderGrid(QPainter& painter)
 {
     if (mOptions.bGrid)
@@ -673,6 +731,25 @@ void CanvasPainter::renderOverlays(QPainter &painter)
     {
         painter.setWorldTransform(mViewTransform);
         paintOverlaySafeAreas(painter);
+    }
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mOptions.nOverlayAngle = settings.value("OverlayAngle").toInt();
+
+    if (mOptions.bPerspective1)
+    {
+        painter.setWorldTransform(mViewTransform);
+        paintOverlayPerspective1(painter, mOptions.nOverlayAngle);
+    }
+    if (mOptions.bPerspective2)
+    {
+        painter.setWorldTransform(mViewTransform);
+        paintOverlayPerspective2(painter, mOptions.nOverlayAngle);
+    }
+    if (mOptions.bPerspective3)
+    {
+        painter.setWorldTransform(mViewTransform);
+        paintOverlayPerspective3(painter, mOptions.nOverlayAngle);
     }
 }
 
