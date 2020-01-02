@@ -16,19 +16,25 @@ class ImportPositionDialog : public QDialog
     struct ImportPosition {
 
         enum Type {
-            CenterOfCamera,
+            CenterOfView,
             CenterOfCanvas,
+            CenterOfCamera,
+            CenterOfCameraFollowed,
             None
         };
 
         static Type getTypeFromIndex(int index) {
             switch (index) {
-                case 0:
-                    return CenterOfCanvas;
-                case 1:
-                    return CenterOfCamera;
-                default:
-                    return None;
+            case 0:
+                return CenterOfView;
+            case 1:
+                return CenterOfCanvas;
+            case 2:
+                return CenterOfCamera;
+            case 3:
+                return CenterOfCameraFollowed;
+            default:
+                return None;
             }
         }
     };

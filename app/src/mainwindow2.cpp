@@ -152,6 +152,7 @@ void MainWindow2::createDockWidgets()
     mColorInspector->setObjectName("Color Inspector");
 
     mColorPalette = new ColorPaletteWidget(this);
+    mColorPalette->setCore(mEditor);
     mColorPalette->setObjectName("ColorPalette");
 
     mDisplayOptionWidget = new DisplayOptionWidget(this);
@@ -275,6 +276,8 @@ void MainWindow2::createMenus()
     connect(ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewSoundLayer);
     connect(ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer);
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
+    connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
+    connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
 
     //--- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
@@ -448,6 +451,18 @@ void MainWindow2::closePegAlignDialog()
     mPegAlign = nullptr;
 }
 
+void MainWindow2::currentLayerChanged()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        ui->menuChange_line_color->setEnabled(true);
+    }
+    else
+    {
+        ui->menuChange_line_color->setEnabled(false);
+    }
+}
+
 void MainWindow2::closeEvent(QCloseEvent* event)
 {
     if (m2ndCloseEvent)
@@ -522,11 +537,6 @@ bool MainWindow2::saveAsNewDocument()
     if (fileName.isEmpty())
     {
         return false;
-    }
-
-    if (!fileName.endsWith(PFF_OLD_EXTENSION) && !fileName.endsWith(PFF_EXTENSION))
-    {
-        fileName = fileName + PFF_EXTENSION;
     }
     return saveObject(fileName);
 }
@@ -1260,6 +1270,7 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)

@@ -1111,6 +1111,18 @@ void VectorImage::removeColour(int index)
     }
 }
 
+void VectorImage::moveColor(int start, int end)
+{
+    for(int i=0; i< mArea.size(); i++)
+     {
+         if (mArea[i].getColourNumber() == start) mArea[i].setColourNumber(end);
+     }
+     for(int i=0; i< mCurves.size(); i++)
+     {
+         if (mCurves[i].getColourNumber() == start) mCurves[i].setColourNumber(end);
+     }
+}
+
 /**
  * @brief VectorImage::paintImage
  * @param painter: QPainter&
