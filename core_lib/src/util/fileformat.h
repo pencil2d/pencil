@@ -63,9 +63,6 @@ GNU General Public License for more details.
 #define PFF_DEFAULT_PALETTE_EXT \
     QString(".xml")
 
-#define PFF_PALETTE_EXT_FILTER \
-    QObject::tr("All Palette formats (*.xml *.gpl);;Pencil Palette (*.xml);;GIMP Palette (*.gpl)")
-
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"
 #define PFF_XML_FILE_NAME 		"main.xml"
