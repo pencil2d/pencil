@@ -442,7 +442,7 @@ FilesPage::FilesPage()
     connect(ui->removePreset, &QPushButton::clicked, this, &FilesPage::removePreset);
     connect(ui->setDefaultPreset, &QPushButton::clicked, this, &FilesPage::setDefaultPreset);
     connect(ui->askPresetCheckBox, &QCheckBox::stateChanged, this, &FilesPage::askForPresetChange);
-    connect(ui->presetListWidget, &QListWidget::itemChanged, this, &FilesPage::presetChanged);
+    connect(ui->presetListWidget, &QListWidget::itemChanged, this, &FilesPage::presetNameChanged);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->autosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange);
@@ -572,7 +572,7 @@ void FilesPage::setDefaultPreset()
     updateValues();
 }
 
-void FilesPage::presetChanged(QListWidgetItem* item)
+void FilesPage::presetNameChanged(QListWidgetItem* item)
 {
     // Remove characters that may be problematic for ini files
     item->setText(item->text().remove(QChar('@')).remove(QChar('/')).remove(QChar('\\')));

@@ -141,7 +141,7 @@ public slots:
     void addPreset();
     void removePreset();
     void setDefaultPreset();
-    void presetChanged(QListWidgetItem* item);
+    void presetNameChanged(QListWidgetItem* item);
 
     void updateValues();
     void askForPresetChange(int b);
