@@ -566,11 +566,14 @@ void FilesPage::setDefaultPreset()
     bool ok = true;
 
     QListWidgetItem* newDefaultPresetItem = ui->presetListWidget->currentItem();
-    int newDefaultIndex = newDefaultPresetItem->data(Qt::UserRole).toInt(&ok);
-    Q_ASSERT(ok);
+    if (newDefaultPresetItem)
+    {
+        int newDefaultIndex = newDefaultPresetItem->data(Qt::UserRole).toInt(&ok);
+        Q_ASSERT(ok);
 
-    mManager->set(SETTING::DEFAULT_PRESET, newDefaultIndex);
-    updateValues();
+        mManager->set(SETTING::DEFAULT_PRESET, newDefaultIndex);
+        updateValues();
+    }
 }
 
 void FilesPage::presetNameChanged(QListWidgetItem* item)
