@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>316</width>
-    <height>278</height>
+    <height>285</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -45,7 +45,7 @@
       <item>
        <widget class="QListWidget" name="presetListWidget">
         <property name="sortingEnabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>

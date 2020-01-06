@@ -462,6 +462,10 @@ void FilesPage::initPreset()
 
     mPresetSettings = new QSettings(mPresetDir.filePath("presets.ini"), QSettings::IniFormat, this);
 
+    QListWidgetItem* defaultItem = new QListWidgetItem("Blank");
+    defaultItem->setData(Qt::UserRole, 0);
+    ui->presetListWidget->addItem(defaultItem);
+
     bool ok = true;
     for (const QString key : mPresetSettings->allKeys())
     {
@@ -479,9 +483,6 @@ void FilesPage::initPreset()
         item->setData(Qt::UserRole, index);
         ui->presetListWidget->addItem(item);
     }
-    QListWidgetItem* defaultItem = new QListWidgetItem("Blank");
-    defaultItem->setData(Qt::UserRole, 0);
-    ui->presetListWidget->addItem(defaultItem);
 }
 
 void FilesPage::addPreset()
