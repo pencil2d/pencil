@@ -513,6 +513,9 @@ void FilesPage::addPreset()
     newItem->setFlags(newItem->flags() | Qt::ItemIsEditable);
     newItem->setData(Qt::UserRole, newPresetIndex);
     ui->presetListWidget->addItem(newItem);
+
+    ui->presetListWidget->scrollToBottom();
+    ui->presetListWidget->editItem(newItem);
 }
 
 void FilesPage::removePreset()
