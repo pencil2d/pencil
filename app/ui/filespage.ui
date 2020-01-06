@@ -21,6 +21,12 @@
        <layout class="QHBoxLayout" name="presetControls">
         <item>
          <widget class="QPushButton" name="addPreset">
+          <property name="toolTip">
+           <string>Saving the current project as a preset</string>
+          </property>
+          <property name="whatsThis">
+           <string>Saving the current project as a preset</string>
+          </property>
           <property name="text">
            <string>+</string>
           </property>
