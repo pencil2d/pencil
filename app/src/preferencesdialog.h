@@ -141,7 +141,7 @@ public slots:
     void addPreset();
     void removePreset();
     void setDefaultPreset();
-    void presetChanged(QListWidgetItem *item);
+    void presetChanged(QListWidgetItem* item);
 
     void updateValues();
     void askForPresetChange(int b);
@@ -154,10 +154,9 @@ Q_SIGNALS:
 private:
     Ui::FilesPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
-    QSettings *mPresets = nullptr;
+    QSettings* mPresetSettings = nullptr;
     QDir mPresetDir;
     int mMaxPresetIndex = 0;
-    QListWidgetItem* mStartPreset = nullptr, *mDefaultPreset = nullptr;
 };
 
 

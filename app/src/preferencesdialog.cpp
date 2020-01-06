@@ -457,94 +457,122 @@ FilesPage::~FilesPage()
 void FilesPage::initPreset()
 {
     mPresetDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-    if (!mPresetDir.exists("presets")) mPresetDir.mkpath("presets");
+    mPresetDir.mkpath("presets");
     mPresetDir.cd("presets");
-    mPresets = new QSettings(mPresetDir.filePath("presets.ini"), QSettings::IniFormat, this);
+
+    mPresetSettings = new QSettings(mPresetDir.filePath("presets.ini"), QSettings::IniFormat, this);
+
     bool ok = true;
-    for(const QString key : mPresets->allKeys())
+    for (const QString key : mPresetSettings->allKeys())
     {
         int index = key.toInt(&ok);
         if (!ok || index == 0 || !mPresetDir.exists(QString("%1.pclx").arg(index))) continue;
-        mMaxPresetIndex = qMax(mMaxPresetIndex, index);
-        QString name = mPresets->value(key, QString()).toString();
-        if (name.isEmpty()) continue;
+
+        mMaxPresetIndex = qMax(index, mMaxPresetIndex);
+
+        QString name = mPresetSettings->value(key).toString();
+        if (name.isEmpty())
+            continue;
+        
         QListWidgetItem* item = new QListWidgetItem(name);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         item->setData(Qt::UserRole, index);
         ui->presetListWidget->addItem(item);
     }
-    QListWidgetItem* defaultItem = new QListWidgetItem("Default");
+    QListWidgetItem* defaultItem = new QListWidgetItem("Blank");
+    defaultItem->setData(Qt::UserRole, 0);
     ui->presetListWidget->addItem(defaultItem);
-    defaultItem->setData(Qt::UserRole, QVariant(0));
-    defaultItem->setBackground(this->palette().background());
-    QFont boldFont = defaultItem->font();
-    boldFont.setBold(true);
-    defaultItem->setFont(boldFont);
-    mStartPreset = mDefaultPreset = defaultItem;
 }
 
 void FilesPage::addPreset()
 {
-    mMaxPresetIndex++;
+    int newPresetIndex = mMaxPresetIndex + 1;
+
+    // 1. save the current object to the preset folder
     FileManager fm(this);
-    Status st = fm.save(mManager->object(), PresetDialog::getPresetPath(mMaxPresetIndex));
+    Status st = fm.save(mManager->object(), PresetDialog::getPresetPath(newPresetIndex));
     if (!st.ok())
     {
         ErrorDialog errorDialog(st.title(),
-                                st.description().append(tr("<br><br>An error has occurred and your file may not have saved successfully."
+                                st.description().append(tr("<br><br>Error: your file may not have saved successfully."
                                                            "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
                                                            "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
-                                                           "Please be sure to include the following details in your issue:")), st.details().html());
+                                                           "Please include the following details in your issue:")), st.details().html());
         errorDialog.exec();
         return;
     }
-    QListWidgetItem *newItem = new QListWidgetItem("Untitled Preset");
+
+    // 2. update the preset ini
+    QString presetName = QString("Preset %1").arg(newPresetIndex);
+    mPresetSettings->setValue(QString::number(newPresetIndex), presetName);
+    mMaxPresetIndex = newPresetIndex;
+
+    // 3. update the list widget
+    QListWidgetItem* newItem = new QListWidgetItem(presetName);
     newItem->setFlags(newItem->flags() | Qt::ItemIsEditable);
-    newItem->setData(Qt::UserRole, QVariant(mMaxPresetIndex));
+    newItem->setData(Qt::UserRole, newPresetIndex);
     ui->presetListWidget->addItem(newItem);
-    mPresets->setValue(QString::number(mMaxPresetIndex), newItem->text());
 }
 
 void FilesPage::removePreset()
 {
-    if (ui->presetListWidget->count() > 1 && !ui->presetListWidget->selectedItems().empty())
+    if (ui->presetListWidget->count() <= 1) { return; }
+    if (ui->presetListWidget->selectedItems().empty()) { return; }
+
+    // 1. Remove the items from list widget
+    QList<QListWidgetItem*> itemsToRemove = ui->presetListWidget->selectedItems();
+    for (QListWidgetItem* item : itemsToRemove)
     {
-        bool ok = true;
-        foreach (const QListWidgetItem *item, ui->presetListWidget->selectedItems())
+        ui->presetListWidget->removeItemWidget(item);
+    }
+
+    // 2. Delete preset pclx files
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        int index = item->data(Qt::UserRole).toInt();
+        QFile presetFile(PresetDialog::getPresetPath(index));
+        presetFile.remove();
+    }
+
+    // 3. Delete items from the ini settings
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        int index = item->data(Qt::UserRole).toInt();
+        mPresetSettings->remove(QString::number(index));
+    }
+
+    // 4. check if the default preset has been deleted
+    int prevDefaultIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        int index = item->data(Qt::UserRole).toInt();
+        if (index == prevDefaultIndex)
         {
-            int index = item->data(Qt::UserRole).toInt(&ok);
-            Q_ASSERT(ok);
-            if (index == 0) continue;
-            ui->presetListWidget->takeItem(ui->presetListWidget->row(item));
-            mPresets->remove(QString::number(index));
-            QFile presetFile(PresetDialog::getPresetPath(index));
-            if (presetFile.exists()) presetFile.remove();
-            if (item == mStartPreset)
-            {
-                mStartPreset = mDefaultPreset;
-                mStartPreset->setBackground(this->palette().background());
-                mManager->set(SETTING::DEFAULT_PRESET, 0);
-            }
+            mManager->set(SETTING::DEFAULT_PRESET, 0);
         }
     }
+
+    // 5. delete items
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        delete item;
+    }
+    updateValues();
 }
 
 void FilesPage::setDefaultPreset()
 {
-    QListWidgetItem *item = ui->presetListWidget->selectedItems().last();
-    mStartPreset->setBackground(palette().light());
-    QFont font = mStartPreset->font();
-    item->setFont(font);
-    item->setBackground(palette().background());
-    font.setBold(false);
-    mStartPreset->setFont(font);
-    mStartPreset = item;
     bool ok = true;
-    mManager->set(SETTING::DEFAULT_PRESET, item->data(Qt::UserRole).toInt(&ok));
+
+    QListWidgetItem* newDefaultPresetItem = ui->presetListWidget->currentItem();
+    int newDefaultIndex = newDefaultPresetItem->data(Qt::UserRole).toInt(&ok);
     Q_ASSERT(ok);
+
+    mManager->set(SETTING::DEFAULT_PRESET, newDefaultIndex);
+    updateValues();
 }
 
-void FilesPage::presetChanged(QListWidgetItem *item)
+void FilesPage::presetChanged(QListWidgetItem* item)
 {
     // Remove characters that may be problematic for ini files
     item->setText(item->text().remove(QChar('@')).remove(QChar('/')).remove(QChar('\\')));
@@ -552,31 +580,29 @@ void FilesPage::presetChanged(QListWidgetItem *item)
     bool ok = true;
     int index = item->data(Qt::UserRole).toInt(&ok);
     Q_ASSERT(ok);
-    mPresets->setValue(QString::number(index), item->text());
+    mPresetSettings->setValue(QString::number(index), item->text());
 }
 
 void FilesPage::updateValues()
 {
     ui->askPresetCheckBox->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
+
     bool ok = true;
-    int defaultPreset = mManager->getInt(SETTING::DEFAULT_PRESET);
-    if (defaultPreset != mStartPreset->data(Qt::UserRole).toInt())
+    int defaultPresetIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
+    
+    for (int i = 0; i < ui->presetListWidget->count(); i++)
     {
-        for (int i=0; i < ui->presetListWidget->count(); i++)
-        {
-            if(ui->presetListWidget->item(i)->data(Qt::UserRole).toInt(&ok) == defaultPreset)
-            {
-                QFont font = mStartPreset->font();
-                font.setBold(false);
-                mStartPreset->setFont(font);
-                mStartPreset->setBackground(this->palette().light());
-                mStartPreset = ui->presetListWidget->item(i);
-                font.setBold(true);
-                mStartPreset->setFont(font);
-                mStartPreset->setBackground(this->palette().background());
-            }
-            Q_ASSERT(ok);
-        }
+        QListWidgetItem* item = ui->presetListWidget->item(i);
+        int presetIndex = item->data(Qt::UserRole).toInt(&ok);
+
+        bool isDefault = presetIndex == defaultPresetIndex;
+        
+        QFont font = item->font();
+        font.setBold(isDefault); // Bold text for the default item
+        item->setFont(font);
+
+        QBrush backgroundBrush = (isDefault) ? palette().light() : palette().background();
+        item->setBackground(backgroundBrush);
     }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
@@ -597,8 +623,7 @@ void FilesPage::autosaveNumberChange(int number)
     mManager->set(SETTING::AUTO_SAVE_NUMBER, number);
 }
 
-ToolsPage::ToolsPage()
-    : ui(new Ui::ToolsPage)
+ToolsPage::ToolsPage() : ui(new Ui::ToolsPage)
 {
     ui->setupUi(this);
 
