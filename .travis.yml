@@ -10,7 +10,7 @@ language: cpp
 compiler: g++
 sudo: required
 dist: trusty
-osx_sdk: macosx10.12
+
 os:
   - linux
   - osx
@@ -21,8 +21,6 @@ env:
     - GH_REPO_REF: github.com/pencil2d/pencil-docs.git
     - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
 
-python:
-  - "3.4"
 
 addons:
   apt:
@@ -52,11 +50,7 @@ before_install:
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
         brew update;
-        ver=$(python -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/');
-        python -V
-        if [ "$ver" -le "27" ]; then
-            brew upgrade python;
-        fi
+        brew install python3
         brew install p7zip qt gpg;
         brew link qt --force;
     fi
@@ -66,8 +60,7 @@ install:
   - pip3 install -r requirements.txt
   - sudo pip3 install --upgrade oauth2client
   - sudo pip3 install --upgrade google-api-python-client
-  - python3 -V
-  - pip3 -V
+  - python3 --version
 
 before_script:
   - echo "are changes related to source code?"
