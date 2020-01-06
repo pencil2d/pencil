@@ -541,7 +541,6 @@ void Object::importPalettePencil(QFile& file)
     QDomDocument doc;
     doc.setContent(&file);
 
-    mPalette.clear();
     QDomElement docElem = doc.documentElement();
     QDomNode tag = docElem.firstChild();
     while (!tag.isNull())
@@ -560,6 +559,20 @@ void Object::importPalettePencil(QFile& file)
     }
 }
 
+void Object::openPalette(QString filePath)
+{
+    if (!QFile::exists(filePath))
+    {
+        return;
+    }
+
+    mPalette.clear();
+    importPalette(filePath);
+}
+
+/*
+ * Imports palette, e.g. appends to palette
+*/
 bool Object::importPalette(QString filePath)
 {
     QFile file(filePath);

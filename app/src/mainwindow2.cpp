@@ -253,7 +253,8 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
-    connect(ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
+    connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
+    connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
@@ -1062,7 +1063,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
     ui->actionImport_Movie->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE));
-    ui->actionImport_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
+    ui->actionImport_Append_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
     ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
 
     ui->actionExport_Image->setShortcut(cmdKeySeq(CMD_EXPORT_IMAGE));
@@ -1226,6 +1227,44 @@ void MainWindow2::importPalette()
     }
 }
 
+void MainWindow2::openPalette()
+{
+    int count = 0;
+    int maxNumber = mEditor->object()->getColourCount();
+    bool openPalette = true;
+    while (count < maxNumber)
+    {
+        if (mEditor->object()->isColourInUse(count))
+        {
+            QMessageBox msgBox;
+            msgBox.setText(tr("Opening palette, will replace the old palette.\n"
+                              "Color(s) in strokes will be altered by this action!\n"));
+            msgBox.addButton(tr("Open Palette"), QMessageBox::AcceptRole);
+            msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
+
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::RejectRole)
+            {
+                openPalette = false;
+            }
+            count = maxNumber;
+        }
+        count++;
+    }
+
+    if (openPalette)
+    {
+        FileDialog fileDialog(this);
+        QString filePath = fileDialog.openFile(FileType::PALETTE);
+        if (!filePath.isEmpty())
+        {
+            mEditor->object()->openPalette(filePath);
+            mColorPalette->refreshColorList();
+            mEditor->color()->setColorNumber(0);
+        }
+    }
+}
+
 void MainWindow2::makeConnections(Editor* editor)
 {
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
@@ -1355,31 +1394,7 @@ void MainWindow2::changePlayState(bool isPlaying)
     }
     update();
 }
-/*
-void MainWindow2::alignPegs()
-{
-    QStringList bitmaplayers;
-    bitmaplayers = mPegreg->getLayerList();
-    if (bitmaplayers.isEmpty())
-    {
-        QMessageBox::information(this, nullptr,
-                                 tr("No layers selected!"),
-                                 QMessageBox::Ok);
-    }
-    else
-    {
-        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
-        if (statusint.errorcode == Status::FAIL)
-        {
-            QMessageBox::information(this, nullptr,
-                                     tr("Peg bar alignment failed!"),
-                                     QMessageBox::Ok);
-            return;
-        }
-        closePegReg();
-    }
-}
-*/
+
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)
 {
     QMessageBox::information(this, tr(qPrintable(title)), tr(qPrintable(body)), QMessageBox::Ok);

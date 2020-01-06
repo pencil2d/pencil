@@ -120,6 +120,7 @@ private:
     void clearKeyboardShortcuts();
     void updateZoomLabel();
 
+    void openPalette();
     void importPalette();
     void exportPalette();
 
