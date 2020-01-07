@@ -2,12 +2,13 @@
 
 set -e
 
-git remote set-branches --add origin master
-git fetch
-
 commit=$TRAVIS_COMMIT
 branch=$TRAVIS_BRANCH
 CHANGED_FILES=`git diff --name-only origin/$branch...${commit}`
+
+if [[ $branch == "release" ]]; then
+  exit 0
+fi
 
 if [[ $branch == "master" ]]; then
   CHANGED_FILES=`git diff --name-only HEAD^ HEAD`
