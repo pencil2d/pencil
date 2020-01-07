@@ -48,6 +48,8 @@ addons:
       - python3-pip
 
 before_install:
+  - echo "are changes related to source code?"
+  - bash $TRAVIS_BUILD_DIR/util/checkchanges.sh || travis_terminate 0;
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
         brew update;
@@ -64,9 +66,6 @@ install:
   - python3 --version
 
 before_script:
-  - echo "are changes related to source code?"
-  - bash $TRAVIS_BUILD_DIR/util/checkchanges.sh || travis_terminate 0;
-
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     . /opt/qt59/bin/qt59-env.sh;
     export DISPLAY=:99.0;
