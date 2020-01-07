@@ -61,8 +61,6 @@ void Object::init()
 
     // default palette
     loadDefaultPalette();
-
-    createDefaultLayers();
 }
 
 QDomElement Object::saveXML(QDomDocument& doc)

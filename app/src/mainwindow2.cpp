@@ -1020,6 +1020,7 @@ bool MainWindow2::newObject()
     Object* object = nullptr;
     object = new Object();
     object->init();
+    object->createDefaultLayers();
     mEditor->setObject(object);
     return true;
 }
@@ -1038,6 +1039,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     {
         object = new Object();
         object->init();
+        object->createDefaultLayers();
     }
     mEditor->setObject(object);
     return true;
