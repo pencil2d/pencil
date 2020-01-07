@@ -43,7 +43,6 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
-#include "selectionmanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -69,6 +68,7 @@ GNU General Public License for more details.
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
+#include "presetdialog.h"
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -88,22 +88,19 @@ GNU General Public License for more details.
 
 
 
-MainWindow2::MainWindow2(QWidget *parent) :
+MainWindow2::MainWindow2(QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow2)
 {
     ui->setupUi(this);
 
     // Initialize order
-    // 1. object 2. editor 3. scribble area 4. other widgets
-    Object* object = new Object();
-    object->init();
-    object->createDefaultLayers();
-
+    // 1. editor 2. object 3. scribble area 4. other widgets
     mEditor = new Editor(this);
     mEditor->setScribbleArea(ui->scribbleArea);
     mEditor->init();
-    mEditor->setObject(object);
+
+    newObject();
 
     ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
@@ -128,9 +125,10 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
-    mEditor->updateObject();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
+
+    showPresetDialog();
 }
 
 MainWindow2::~MainWindow2()
@@ -491,22 +489,27 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
 
 void MainWindow2::newDocument(bool force)
 {
-    if (force || maybeSave())
+    if (force)
     {
-        Object* object = new Object();
-        object->init();
-        object->createDefaultLayers();
-        mEditor->setObject(object);
-        mEditor->scrubTo(0);
-        mEditor->view()->resetView();
-        mEditor->select()->resetSelectionProperties();
-
-        // Refresh the palette
-        mColorPalette->refreshColorList();
-        mEditor->color()->setColorNumber(0);
+        newObject();
 
         setWindowTitle(PENCIL_WINDOW_TITLE);
         updateSaveState();
+    }
+    else if (maybeSave())
+    {
+        if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+        {
+            showPresetDialog();
+        }
+        else
+        {
+            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+            newObjectFromPresets(defaultPreset);
+
+            setWindowTitle(PENCIL_WINDOW_TITLE);
+            updateSaveState();
+        }
     }
 }
 
@@ -516,17 +519,10 @@ void MainWindow2::openDocument()
     {
         FileDialog fileDialog(this);
         QString fileName = fileDialog.openFile(FileType::ANIMATION);
-        if (fileName.isEmpty())
+        if (!fileName.isEmpty())
         {
-            return;
+            openObject(fileName);
         }
-        QFileInfo fileInfo(fileName);
-        if (fileInfo.isDir())
-        {
-            return;
-        }
-
-        openObject(fileName, false);
     }
 }
 
@@ -543,13 +539,14 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile(QString filename)
 {
-    openObject(filename, true);
+    if (maybeSave())
+    {
+        openObject(filename);
+    }
 }
 
-bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
+bool MainWindow2::openObject(QString strFilePath)
 {
-    if(checkForChanges && !maybeSave()) return false; // Open cancelled by user
-
     // Check for potential issues with the file
     QFileInfo fileInfo(strFilePath);
     if (fileInfo.isDir())
@@ -653,10 +650,6 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 
     progress.setValue(progress.value() + 1);
 
-    mEditor->select()->resetSelectionProperties();
-
-    // Refresh the Palette
-    mColorPalette->refreshColorList();
     mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.setValue(progress.maximum());
@@ -688,6 +681,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 
     Status st = fm.save(mEditor->object(), strSavedFileName);
 
+
     if (!st.ok())
     {
 #if QT_VERSION >= 0x050400
@@ -716,6 +710,9 @@ bool MainWindow2::saveObject(QString strSavedFileName)
         errorDialog.exec();
         return false;
     }
+
+    mEditor->object()->setFilePath(strSavedFileName);
+    mEditor->object()->setModified(false);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, strSavedFileName);
@@ -1015,6 +1012,53 @@ void MainWindow2::resetAndDockAllSubWidgets()
     {
         dock->setFloating(false);
         dock->show();
+    }
+}
+
+bool MainWindow2::newObject()
+{
+    Object* object = nullptr;
+    object = new Object();
+    object->init();
+    mEditor->setObject(object);
+    return true;
+}
+
+bool MainWindow2::newObjectFromPresets(int presetIndex)
+{
+    Object* object = nullptr;   
+    QString presetFilePath = (presetIndex > 0) ? PresetDialog::getPresetPath(presetIndex) : "";
+    if (!presetFilePath.isEmpty())
+    {
+        FileManager fm(this);
+        object = fm.load(presetFilePath);
+        if (fm.error().ok() == false) object = nullptr;
+    }
+    if (object == nullptr)
+    {
+        object = new Object();
+        object->init();
+    }
+    mEditor->setObject(object);
+    return true;
+}
+
+void  MainWindow2::showPresetDialog()
+{
+    if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+    {
+        PresetDialog* presetDialog = new PresetDialog(mEditor->preference(), this);
+        presetDialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(presetDialog, &PresetDialog::finished, [=](int result)
+        {
+            if (result == QDialog::Accepted)
+            {
+                int presetIndex = presetDialog->getPresetIndex();
+                newObjectFromPresets(presetIndex);
+                qDebug() << "Accepted!";
+            }
+        });
+        presetDialog->open();
     }
 }
 

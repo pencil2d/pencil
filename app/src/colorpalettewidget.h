@@ -109,7 +109,6 @@ private:
 
     Editor* mEditor = nullptr;
     Object* mObject = nullptr;
-
 };
 
 #endif
