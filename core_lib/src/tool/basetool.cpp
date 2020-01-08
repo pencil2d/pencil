@@ -444,3 +444,13 @@ void BaseTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;
 }
+
+void BaseTool::setKeepAspectRatio(const bool keepAspectRatio)
+{
+    properties.keepAspectRatio = keepAspectRatio;
+}
+
+void BaseTool::setShowOffset(const bool showOffset)
+{
+    properties.showOffset = showOffset;
+}

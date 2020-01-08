@@ -45,12 +45,16 @@ void PencilTool::loadSettings()
     mPropertyEnabled[VECTORMERGE] = false;
     mPropertyEnabled[STABILIZATION] = true;
     mPropertyEnabled[FILLCONTOUR] = true;
+    mPropertyEnabled[KEEP_ASPECT_RATIO] = false;
+    mPropertyEnabled[SHOW_OFFSET] = false;
 
     QSettings settings(PENCIL2D, PENCIL2D);
     properties.width = settings.value("pencilWidth", 4).toDouble();
     properties.feather = 50;
     properties.pressure = settings.value("pencilPressure", true).toBool();
     properties.stabilizerLevel = settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt();
+    properties.keepAspectRatio = settings.value("keepAspectRatio", false).toBool();
+    properties.showOffset = settings.value("showOffset", false).toBool();
     properties.useAA = DISABLED;
     properties.useFeather = true;
     properties.useFillContour = false;
@@ -113,7 +117,7 @@ void PencilTool::setPressure(const bool pressure)
 void PencilTool::setPreserveAlpha(const bool preserveAlpha)
 {
     // force value
-    Q_UNUSED( preserveAlpha );
+    Q_UNUSED( preserveAlpha )
     properties.preserveAlpha = 0;
 }
 

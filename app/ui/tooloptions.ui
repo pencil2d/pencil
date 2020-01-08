@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>164</width>
-    <height>361</height>
+    <height>434</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -213,6 +213,20 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="aspectRatioBox">
+     <property name="text">
+      <string>Keep Aspect Ratio</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showOffsetBox">
+     <property name="text">
+      <string>Show Offset</string>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">

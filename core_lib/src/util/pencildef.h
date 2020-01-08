@@ -57,7 +57,9 @@ enum ToolPropertyType
     ANTI_ALIASING,
     STABILIZATION,
     TOLERANCE,
-    FILLCONTOUR
+    FILLCONTOUR,
+    KEEP_ASPECT_RATIO,
+    SHOW_OFFSET
 };
 
 enum BackgroundStyle

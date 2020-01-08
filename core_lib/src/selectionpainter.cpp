@@ -67,6 +67,14 @@ void SelectionPainter::paint(QPainter& painter,
                                                width, width);
         painter.drawRect(bottomLeftCorner);
 
+        int diffX = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().x() - tParams.lastSelectionPolygonF.boundingRect().x());
+        int diffY = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().y() - tParams.lastSelectionPolygonF.boundingRect().y());
+        painter.drawText(tParams.currentSelectionPolygonF[0].x(),
+                tParams.currentSelectionPolygonF[0].y() - width,
+                QString("Size: %1, %2. Diff: %3, %4.").arg(QString::number(tParams.currentSelectionPolygonF.boundingRect().width()),
+                                                           QString::number(tParams.currentSelectionPolygonF.boundingRect().height()),
+                                                           QString::number(diffX),
+                                                           QString::number(diffY)));
         painter.setBrush(QColor(0, 255, 0, 50));
         painter.setPen(Qt::green);
     }
