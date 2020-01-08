@@ -22,14 +22,13 @@ env:
     - GH_REPO_REF: github.com/pencil2d/pencil-docs.git
     - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
 
-
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
       - ubuntu-sdk-team
       - trusty-media
-      - sourceline: 'ppa:beineri/opt-qt591-trusty'
+      - sourceline: 'ppa:beineri/opt-qt597-trusty'
     packages:
       - build-essential
       - qt59tools
@@ -78,9 +77,9 @@ before_script:
 script:
   - mkdir "build" && cd build
   - 'if [ "$TRAVIS_BRANCH" == "release" ]; then
-    qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE;
+    qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_RELEASE;
   else
-    qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=NIGHTLY;
+    qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_NIGHTLY;
   fi'
   - make;
   - "$TRAVIS_BUILD_DIR/build/tests/tests"
