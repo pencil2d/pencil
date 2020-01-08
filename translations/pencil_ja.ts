@@ -5,7 +5,7 @@
         <location filename="../app/ui/aboutdialog.ui" line="26"/>
         <source>About</source>
         <comment>About Dialog Window Title</comment>
-        <translation type="unfinished"/>
+        <translation>Pencil2D について</translation>
     </message>
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
@@ -16,13 +16,13 @@
         <location filename="../app/src/aboutdialog.cpp" line="43"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>バージョン：%1</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="55"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>クリップボードにコピー</translation>
     </message>
 </context>
 <context>
@@ -46,13 +46,13 @@
         <location filename="../app/src/actioncommands.cpp" line="82"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>レイヤーのプロパティ</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="84"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>音声レイヤー</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="204"/>
@@ -341,7 +341,7 @@
         <location filename="../app/ui/colorpalette.ui" line="14"/>
         <source>Color Palette</source>
         <comment>Window title of color palette.</comment>
-        <translation type="unfinished"/>
+        <translation>カラーパレット</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="47"/>
@@ -361,52 +361,52 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="258"/>
         <source>List Mode</source>
-        <translation type="unfinished"/>
+        <translation>リストモード</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="261"/>
         <source>Show palette as a list</source>
-        <translation type="unfinished"/>
+        <translation>パレットをリスト形式で表示</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="269"/>
         <source>Grid Mode</source>
-        <translation type="unfinished"/>
+        <translation>グリッドモード</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="272"/>
         <source>Show palette as icons</source>
-        <translation type="unfinished"/>
+        <translation>パレットをアイコン形式で表示</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="282"/>
         <source>Small swatch</source>
-        <translation type="unfinished"/>
+        <translation>スウォッチ 小</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="285"/>
         <source>Sets swatch size to: 16x16px</source>
-        <translation type="unfinished"/>
+        <translation>スウォッチサイズを 16x16px に設定</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="293"/>
         <source>Medium Swatch</source>
-        <translation type="unfinished"/>
+        <translation>スウォッチ 中</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="296"/>
         <source>Sets swatch size to: 26x26px</source>
-        <translation type="unfinished"/>
+        <translation>スウォッチサイズを 26x26px に設定</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="307"/>
         <source>Large Swatch</source>
-        <translation type="unfinished"/>
+        <translation>スウォッチ 大</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="310"/>
         <source>Sets swatch size to: 36x36px</source>
-        <translation type="unfinished"/>
+        <translation>スウォッチサイズを 36x36px に設定</translation>
     </message>
 </context>
 <context>
@@ -414,12 +414,12 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="104"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>追加</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Replace</source>
-        <translation type="unfinished"/>
+        <translation>置換</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
@@ -440,12 +440,12 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="483"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="484"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="500"/>
@@ -464,7 +464,7 @@
         <location filename="../app/src/colorwheel.cpp" line="32"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
-        <translation type="unfinished"/>
+        <translation>カラーホイール</translation>
     </message>
 </context>
 <context>
@@ -489,7 +489,7 @@
         <location filename="../app/ui/displayoption.ui" line="14"/>
         <source>Display</source>
         <comment>Window title of display options like .</comment>
-        <translation type="unfinished"/>
+        <translation>表示</translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="125"/>
@@ -1330,7 +1330,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="136"/>
         <source>Zoom</source>
-        <translation type="unfinished"/>
+        <translation>ズーム</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="166"/>
@@ -1670,7 +1670,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>次のキーフレーム</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="807"/>
@@ -1706,7 +1706,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="909"/>
         <location filename="../app/ui/mainwindow2.ui" line="914"/>
         <source>Animated GIF...</source>
-        <translation type="unfinished"/>
+        <translation>GIF アニメ...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="919"/>
@@ -1716,47 +1716,47 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="924"/>
         <source>Pencil2D Forum</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D フォーラム</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="929"/>
         <source>Pencil2D Discord</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D Discord</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="934"/>
         <source>200%</source>
-        <translation type="unfinished"/>
+        <translation>200%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="939"/>
         <source>300%</source>
-        <translation type="unfinished"/>
+        <translation>300%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="944"/>
         <source>400%</source>
-        <translation type="unfinished"/>
+        <translation>400%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="949"/>
         <source>50%</source>
-        <translation type="unfinished"/>
+        <translation>50%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="954"/>
         <source>33%</source>
-        <translation type="unfinished"/>
+        <translation>33%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="959"/>
         <source>25%</source>
-        <translation type="unfinished"/>
+        <translation>25%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="964"/>
         <source>100%</source>
-        <translation type="unfinished"/>
+        <translation>100%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="969"/>
@@ -1771,12 +1771,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="280"/>
         <source>Save As...</source>
-        <translation type="unfinished"/>
+        <translation>名前を付けて保存...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate Anticlockwise</source>
-        <translation type="unfinished"/>
+        <translation>反時計回りに回転</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
@@ -1842,7 +1842,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="359"/>
         <source>Lock Windows</source>
-        <translation type="unfinished"/>
+        <translation>ウィンドウを固定</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="379"/>
@@ -3964,12 +3964,12 @@
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="135"/>
         <source>Zoom:</source>
-        <translation type="unfinished"/>
+        <translation>ズーム：</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="142"/>
         <source>Adjust frame width</source>
-        <translation type="unfinished"/>
+        <translation>フレーム幅を調整</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="145"/>
@@ -4003,12 +4003,12 @@
     <message>
         <location filename="../core_lib/src/interface/timelinecells.cpp" line="731"/>
         <source>Layer Properties</source>
-        <translation type="unfinished"/>
+        <translation>レイヤーのプロパティ</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timelinecells.cpp" line="732"/>
         <source>Layer name:</source>
-        <translation type="unfinished"/>
+        <translation>レイヤー名：</translation>
     </message>
 </context>
 <context>
@@ -4125,7 +4125,7 @@
         <location filename="../app/ui/toolboxwidget.ui" line="20"/>
         <source>Tools</source>
         <comment>Window title of tool box</comment>
-        <translation type="unfinished"/>
+        <translation>ツール</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="77"/>
@@ -4269,7 +4269,7 @@
         <location filename="../app/src/tooloptionwidget.cpp" line="32"/>
         <source>Options</source>
         <comment>Window title of tool option panel like pen width, feather etc..</comment>
-        <translation type="unfinished"/>
+        <translation>オプション</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="183"/>
@@ -4346,19 +4346,19 @@
         <location filename="../app/ui/tooloptions.ui" line="200"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>なし</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="205"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>弱</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="210"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>強</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="154"/>
@@ -4393,7 +4393,7 @@
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>
         <source>Stabilizer</source>
-        <translation type="unfinished"/>
+        <translation>手ぶれ補正</translation>
     </message>
 </context>
 <context>
