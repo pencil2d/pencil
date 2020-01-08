@@ -99,6 +99,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
+    ui->languageCombo->addItem(tr("Arabic ") + " (Arabic)", "ar");
     ui->languageCombo->addItem(tr("Catalan ") + " (Catalan)", "ca");
     ui->languageCombo->addItem(tr("Czech") + " (Czech)", "cs");
     ui->languageCombo->addItem(tr("Danish") + " (Danish)", "da");
