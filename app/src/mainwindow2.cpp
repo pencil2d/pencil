@@ -80,8 +80,8 @@ GNU General Public License for more details.
 #define BUILD_DATE __DATE__
 #endif
 
-#ifdef NIGHTLY_BUILD
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( BUILD_DATE )
+#ifdef PENCIL2D_NIGHTLY_BUILD
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg(BUILD_DATE)
 #else
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
 #endif
