@@ -20,7 +20,10 @@ void SelectionPainter::paint(QPainter& painter,
     Layer* layer = object->getLayer(layerIndex);
 
     if (layer == nullptr) { return; }
-
+// TODO ?
+    if (tParams.lastSelectionPolygonF.isEmpty())
+        mOriginalSelectionPolygonF = tParams.currentSelectionPolygonF;
+//
     if (layer->type() == Layer::BITMAP)
     {
         painter.setBrush(Qt::NoBrush);

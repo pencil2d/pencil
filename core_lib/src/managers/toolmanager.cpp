@@ -215,6 +215,11 @@ void ToolManager::setUseFillContour(bool useFillContour)
     Q_EMIT toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
+void ToolManager::setShowInfo(int index)
+{
+    currentTool()->setShowInfo(index);
+}
+
 
 // Switches on/off two actions
 // eg. if x = true, then y = false

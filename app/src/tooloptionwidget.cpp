@@ -80,6 +80,7 @@ void ToolOptionWidget::updateUI()
     setStabilizerLevel(p.stabilizerLevel);
     setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
+    setShowInfo(p.showInfoIndex);
 }
 
 void ToolOptionWidget::createUI()
@@ -115,6 +116,8 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     clearFocusOnFinished(ui->toleranceSpinBox);
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
+
+    connect(ui->showInfoBox, QOverload<int>::of(&QComboBox::currentIndexChanged), toolManager, &ToolManager::setShowInfo);
 
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
@@ -161,6 +164,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->toleranceSlider->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->toleranceSpinBox->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
+    ui->showInfoBox->setVisible(tool->isPropertyEnabled(SHOWINFO));
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
     auto propertyType = editor()->tools()->currentTool()->type();
@@ -327,6 +331,12 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
+void ToolOptionWidget::setShowInfo(int index)
+{
+    SignalBlocker b(ui->showInfoBox);
+    ui->showInfoBox->setCurrentIndex(index);
+}
+
 void ToolOptionWidget::disableAllOptions()
 {
     ui->sizeSlider->hide();
@@ -344,4 +354,5 @@ void ToolOptionWidget::disableAllOptions()
     ui->toleranceSlider->hide();
     ui->toleranceSpinBox->hide();
     ui->fillContourBox->hide();
+    ui->showInfoBox->hide();
 }

@@ -20,6 +20,11 @@ public:
     SelectionPainter();
 
     void paint(QPainter& painter, const Object* object, int layerIndex, BaseTool* tool, TransformParameters& transformParameters);
+    void setShowInfo(int index) { mShowInfo = index; };
+
+private:
+    int mShowInfo = 0;
+    QPolygonF mOriginalSelectionPolygonF = QPolygonF();
 };
 
 #endif // SelectionPainter_H

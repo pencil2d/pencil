@@ -116,6 +116,7 @@ private:
     qreal mRotatedAngle;
 
     bool mSomethingSelected;
+    QPolygonF mOriginalSelectionPolygonF;
     QPolygonF mLastSelectionPolygonF;
     QPolygonF mCurrentSelectionPolygonF;
     QPointF mOffset;

@@ -69,6 +69,7 @@ public slots:
     void setStabilizerLevel(int);
     void setTolerance(int);
     void setUseFillContour(bool);
+    void setShowInfo(int index);
 
 private:
     BaseTool* mCurrentTool = nullptr;

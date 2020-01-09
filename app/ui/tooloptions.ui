@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>164</width>
+    <width>198</width>
     <height>434</height>
    </rect>
   </property>
@@ -215,17 +215,25 @@
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="aspectRatioBox">
-     <property name="text">
-      <string>Keep Aspect Ratio</string>
+    <widget class="QComboBox" name="showInfoBox">
+     <property name="toolTip">
+      <string>Info on size and move relative to start/last position</string>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="showOffsetBox">
-     <property name="text">
-      <string>Show Offset</string>
-     </property>
+     <item>
+      <property name="text">
+       <string extracomment="Don't show size and move info">Don't show info</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string extracomment="Position relative to start position">Show (start position)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string extracomment="Position relative to last position">Show (last position)</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>

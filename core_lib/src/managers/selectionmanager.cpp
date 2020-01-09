@@ -19,6 +19,7 @@ SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor),
     mTransformedSelection(QRectF()),
     mRotatedAngle(0),
     mSomethingSelected(false),
+    mOriginalSelectionPolygonF(QPolygonF()),
     mLastSelectionPolygonF(QPolygonF()),
     mCurrentSelectionPolygonF(QPolygonF()),
     mOffset(QPointF()),
@@ -58,6 +59,8 @@ void SelectionManager::resetSelectionTransformProperties()
 
 void SelectionManager::updatePolygons()
 {
+    if (mLastSelectionPolygonF.isEmpty())
+        mOriginalSelectionPolygonF = mTempTransformedSelection;
     mCurrentSelectionPolygonF = mTempTransformedSelection;
     mLastSelectionPolygonF = mTransformedSelection;
 }

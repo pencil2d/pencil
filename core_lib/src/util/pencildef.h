@@ -58,8 +58,7 @@ enum ToolPropertyType
     STABILIZATION,
     TOLERANCE,
     FILLCONTOUR,
-    KEEP_ASPECT_RATIO,
-    SHOW_OFFSET
+    SHOWINFO
 };
 
 enum BackgroundStyle

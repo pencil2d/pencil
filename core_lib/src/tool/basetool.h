@@ -50,8 +50,7 @@ public:
     int   stabilizerLevel = 0;
     qreal tolerance = 0;
     bool  useFillContour = false;
-    bool  keepAspectRatio = false;
-    bool  showOffset = false;
+    int   showInfoIndex = 0;
 };
 
 const int ON = 1;
@@ -109,8 +108,7 @@ public:
     virtual void setStabilizerLevel(const int level);
     virtual void setTolerance(const int tolerance);
     virtual void setUseFillContour(const bool useFillContour);
-    virtual void setKeepAspectRatio(const bool keepAspectRatio);
-    virtual void setShowOffset(const bool showOffset);
+    virtual void setShowInfo(const int index);
 
     virtual bool leavingThisTool() { return true; }
     virtual bool switchingLayer() { return true; } // default state should be true
