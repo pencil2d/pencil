@@ -59,8 +59,6 @@ void SelectionManager::resetSelectionTransformProperties()
 
 void SelectionManager::updatePolygons()
 {
-    if (mLastSelectionPolygonF.isEmpty())
-        mOriginalSelectionPolygonF = mTempTransformedSelection;
     mCurrentSelectionPolygonF = mTempTransformedSelection;
     mLastSelectionPolygonF = mTransformedSelection;
 }
@@ -104,6 +102,15 @@ void SelectionManager::clearVertices()
 qreal SelectionManager::selectionTolerance() const
 {
     return qAbs(mSelectionTolerance * editor()->viewScaleInversed());
+}
+
+void SelectionManager::setOriginalSelectionPolygonF(QPolygonF polygon)
+{
+    if (!mOriginalPolygonFIsSet)
+    {
+        mOriginalSelectionPolygonF = polygon;
+        mOriginalPolygonFIsSet = true;
+    }
 }
 
 MoveMode SelectionManager::validateMoveMode(QPointF pos)

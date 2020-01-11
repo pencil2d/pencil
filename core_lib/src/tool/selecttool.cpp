@@ -35,6 +35,7 @@ void SelectTool::loadSettings()
     properties.feather = -1;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
+    mPropertyEnabled[SHOWSELECTIONINFO] = true;
 }
 
 QCursor SelectTool::cursor()
@@ -146,6 +147,7 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     }
 
     selectMan->updatePolygons();
+    selectMan->setOriginalSelectionPolygonF(selectMan->currentSelectionPolygonF());
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();

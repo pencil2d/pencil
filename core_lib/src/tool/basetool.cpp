@@ -317,7 +317,7 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers keyMod)
     newValue = qPow(newValue, 2) / 100;
     if (mAdjustmentStep > 0)
     {
-        int tempValue = (int)(newValue / mAdjustmentStep); // + 0.5 ?
+        int tempValue = static_cast<int>(newValue / mAdjustmentStep); // + 0.5 ?
         newValue = tempValue * mAdjustmentStep;
     }
     if (newValue < min) // can be optimized for size: min(200,max(0.2,newValueX))
@@ -334,15 +334,15 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers keyMod)
     case FEATHER:
         if ((type() == BRUSH) || (type() == ERASER) || (this->type() == SMUDGE))
         {
-            mEditor->tools()->setFeather(newValue);
+            mEditor->tools()->setFeather(static_cast<float>(newValue));
         }
         break;
     case WIDTH:
-        mEditor->tools()->setWidth(newValue);
+        mEditor->tools()->setWidth(static_cast<float>(newValue));
         break;
     default:
         break;
-    };
+    }
 }
 
 QPointF BaseTool::getCurrentPressPixel()
@@ -445,7 +445,7 @@ void BaseTool::setUseFillContour(const bool useFillContour)
     properties.useFillContour = useFillContour;
 }
 
-void BaseTool::setShowInfo(const int index)
+void BaseTool::setShowSelectionInfo(const int index)
 {
     properties.showInfoIndex = index;
 }

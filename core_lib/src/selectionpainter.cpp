@@ -4,6 +4,7 @@
 #include "qpainter.h"
 #include "layermanager.h"
 #include "basetool.h"
+#include <QDebug>
 
 
 SelectionPainter::SelectionPainter()
@@ -20,10 +21,7 @@ void SelectionPainter::paint(QPainter& painter,
     Layer* layer = object->getLayer(layerIndex);
 
     if (layer == nullptr) { return; }
-// TODO ?
-    if (tParams.lastSelectionPolygonF.isEmpty())
-        mOriginalSelectionPolygonF = tParams.currentSelectionPolygonF;
-//
+
     if (layer->type() == Layer::BITMAP)
     {
         painter.setBrush(Qt::NoBrush);
@@ -70,14 +68,27 @@ void SelectionPainter::paint(QPainter& painter,
                                                width, width);
         painter.drawRect(bottomLeftCorner);
 
-        int diffX = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().x() - tParams.lastSelectionPolygonF.boundingRect().x());
-        int diffY = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().y() - tParams.lastSelectionPolygonF.boundingRect().y());
-        painter.drawText(tParams.currentSelectionPolygonF[0].x(),
-                tParams.currentSelectionPolygonF[0].y() - width,
-                QString("Size: %1, %2. Diff: %3, %4.").arg(QString::number(tParams.currentSelectionPolygonF.boundingRect().width()),
-                                                           QString::number(tParams.currentSelectionPolygonF.boundingRect().height()),
-                                                           QString::number(diffX),
-                                                           QString::number(diffY)));
+        if (tool->properties.showInfoIndex != 0)
+        {
+            int diffX, diffY;
+            if (tool->properties.showInfoIndex == 1)
+            {
+                diffX = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().x() - mOriginalSelectionPolygonF.boundingRect().x());
+                diffY = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().y() - mOriginalSelectionPolygonF.boundingRect().y());
+            }
+            else
+            {
+                diffX = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().x() - tParams.lastSelectionPolygonF.boundingRect().x());
+                diffY = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().y() - tParams.lastSelectionPolygonF.boundingRect().y());
+            }
+            painter.drawText(static_cast<int>(tParams.currentSelectionPolygonF[0].x()),
+                    static_cast<int>(tParams.currentSelectionPolygonF[0].y() - width),
+                    QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(tParams.currentSelectionPolygonF.boundingRect().width()),
+                                                               QString::number(tParams.currentSelectionPolygonF.boundingRect().height()),
+                                                               QString::number(diffX),
+                                                               QString::number(diffY)));
+        }
+
         painter.setBrush(QColor(0, 255, 0, 50));
         painter.setPen(Qt::green);
     }

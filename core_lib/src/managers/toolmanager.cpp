@@ -215,9 +215,9 @@ void ToolManager::setUseFillContour(bool useFillContour)
     Q_EMIT toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
-void ToolManager::setShowInfo(int index)
+void ToolManager::setShowSelectionInfo(int index)
 {
-    currentTool()->setShowInfo(index);
+    currentTool()->setShowSelectionInfo(index);
 }
 
 

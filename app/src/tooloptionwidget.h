@@ -65,7 +65,7 @@ private:
     void setTolerance(int);
     void setFillContour(int);
     void setBezier(bool);
-    void setShowInfo(int index);
+    void setShowSelectionInfo(int index);
 
     void disableAllOptions();
     void createUI();
