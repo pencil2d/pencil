@@ -167,7 +167,7 @@ void Editor::settingUpdated(SETTING setting)
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
         break;
     case SETTING::LAYER_VISIBILITY:
-        mScribbleArea->setLayerVisibility(mPreferenceManager->getInt(SETTING::LAYER_VISIBILITY));
+        mScribbleArea->setLayerVisibility(static_cast<LayerVisibility>(mPreferenceManager->getInt(SETTING::LAYER_VISIBILITY)));
         emit updateTimeLine();
         break;
     default:
@@ -611,7 +611,7 @@ void Editor::clipboardChanged()
     }
 }
 
-void Editor::setLayerVisibility(int visibility) {
+void Editor::setLayerVisibility(LayerVisibility visibility) {
     mScribbleArea->setLayerVisibility(visibility);
     emit updateTimeLine();
 }
@@ -621,9 +621,9 @@ void Editor::notifyAnimationLengthChanged()
     layers()->notifyAnimationLengthChanged();
 }
 
-int Editor::allLayers()
+LayerVisibility Editor::layerVisibility()
 {
-    return mScribbleArea->getLayerVisibilityIndex();
+    return mScribbleArea->getLayerVisibility();
 }
 
 void Editor::increaseLayerVisibilityIndex()

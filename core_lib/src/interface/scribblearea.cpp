@@ -81,13 +81,7 @@ bool ScribbleArea::init()
     mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
 
     const int visibilityValue = mPrefs->getInt(SETTING::LAYER_VISIBILITY);
-
-    // Visibility setting default -1
-    if (visibilityValue == -1) {
-        // Show all layers
-        mLayerVisibility = 2;
-    }
-    mLayerVisibility = visibilityValue;
+    mLayerVisibility = static_cast<LayerVisibility>(visibilityValue);
 
     mBufferImg = new BitmapImage;
 
@@ -150,6 +144,8 @@ void ScribbleArea::settingUpdated(SETTING setting)
         updateAllFrames();
         break;
     case SETTING::LAYER_VISIBILITY_THRESHOLD:
+    case SETTING::LAYER_VISIBILITY:
+        setLayerVisibility(static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY)));
         updateAllFrames();
         break;
     default:
@@ -1138,7 +1134,8 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.bAxis                = false;
     o.bThinLines           = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines            = mPrefs->isOn(SETTING::OUTLINES);
-    o.elayerVisibility     = static_cast<CanvasPainterOptions::VISIBILITY>(mLayerVisibility);
+    o.eLayerVisibility     = mLayerVisibility;
+    o.fLayerVisibilityThreshold = mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD);
     o.bIsOnionAbsolute     = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     o.scaling              = mEditor->view()->scaling();
     o.onionWhilePlayback   = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
@@ -1466,7 +1463,7 @@ void ScribbleArea::toggleOutlines()
     setEffect(SETTING::OUTLINES, mIsSimplified);
 }
 
-void ScribbleArea::setLayerVisibility(int visibility)
+void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
 {
     mLayerVisibility = visibility;
     updateAllFrames();
@@ -1474,20 +1471,20 @@ void ScribbleArea::setLayerVisibility(int visibility)
 
 void ScribbleArea::increaseLayerVisibilityIndex()
 {
-    mLayerVisibility++;
-    if (mLayerVisibility == 3)
+    mLayerVisibility = static_cast<LayerVisibility>(static_cast<int>(mLayerVisibility) + 1);
+    if (mLayerVisibility > LayerVisibility::FULL)
     {
-        mLayerVisibility = 0;
+        mLayerVisibility = LayerVisibility::HIDDEN;
     }
     updateAllFrames();
 }
 
 void ScribbleArea::decreaseLayerVisibilityIndex()
 {
-    mLayerVisibility--;
-    if (mLayerVisibility == -1)
+    mLayerVisibility = static_cast<LayerVisibility>(static_cast<int>(mLayerVisibility) - 1);
+    if (mLayerVisibility < LayerVisibility::HIDDEN)
     {
-        mLayerVisibility = 2;
+        mLayerVisibility = LayerVisibility::FULL;
     }
     updateAllFrames();
 }

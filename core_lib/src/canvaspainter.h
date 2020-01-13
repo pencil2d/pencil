@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QTransform>
 #include <QPainter>
 #include "log.h"
+#include "pencildef.h"
 
 #include "layer.h"
 
@@ -31,12 +32,6 @@ class ViewManager;
 
 struct CanvasPainterOptions
 {
-    enum VISIBILITY {
-        HIDDEN = 0,
-        RELATIVE = 1,
-        FULL = 2
-    };
-
     bool  bPrevOnionSkin = false;
     bool  bNextOnionSkin = false;
     int   nPrevOnionSkinCount = 3;
@@ -53,7 +48,8 @@ struct CanvasPainterOptions
     bool  bThinLines = false;
     bool  bOutlines = false;
     bool  bIsOnionAbsolute = false;
-    VISIBILITY elayerVisibility = RELATIVE;
+    LayerVisibility eLayerVisibility = RELATIVE;
+    float fLayerVisibilityThreshold;
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
@@ -85,7 +81,7 @@ public:
 private:
 
     /**
-     * @brief CanvasPainter::initializePainter
+     * CanvasPainter::initializePainter
      * Enriches the painter with a context and sets it's initial matrix.
      * @param The in/out painter
      * @param The paint device ie. a pixmap
@@ -129,8 +125,6 @@ private:
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
     BitmapImage* mBuffer = nullptr;
-
-    qreal mOpacityThreshold = 0;
 
     QImage mScaledBitmap;
 

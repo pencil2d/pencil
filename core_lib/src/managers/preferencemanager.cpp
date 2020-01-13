@@ -107,7 +107,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::ONION_NEXT_FRAMES_NUM,    settings.value(SETTING_ONION_NEXT_FRAMES_NUM,  5).toInt());
     set(SETTING::ONION_WHILE_PLAYBACK,     settings.value(SETTING_ONION_WHILE_PLAYBACK,   0).toInt());
     set(SETTING::ONION_TYPE,               settings.value(SETTING_ONION_TYPE,             "relative").toString());
-    set(SETTING::LAYER_VISIBILITY,         settings.value(SETTING_LAYER_VISIBILITY,       -1).toInt());
+    set(SETTING::LAYER_VISIBILITY,         settings.value(SETTING_LAYER_VISIBILITY,       2).toInt());
     set(SETTING::LAYER_VISIBILITY_THRESHOLD, settings.value(SETTING_LAYER_VISIBILITY_THRESHOLD, 0.5f).toFloat());
 
     set(SETTING::FLIP_ROLL_MSEC,           settings.value(SETTING_FLIP_ROLL_MSEC,         100).toInt());
@@ -141,7 +141,7 @@ int PreferenceManager::getInt(SETTING option)
 
 float PreferenceManager::getFloat(SETTING option)
 {
-    float optionId = static_cast<int>(option);
+    int optionId = static_cast<int>(option);
     return mFloatingPointSet.value(optionId, -1);
 }
 
@@ -207,7 +207,8 @@ void PreferenceManager::set(SETTING option, float value)
 
 
     int optionId = static_cast<int>(option);
-    if (mFloatingPointSet[optionId] != value)
+
+    if (qFuzzyCompare(mFloatingPointSet[optionId], value) == false)
     {
         mFloatingPointSet[optionId] = value;
         emit optionChanged(option);

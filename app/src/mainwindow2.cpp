@@ -277,10 +277,10 @@ void MainWindow2::createMenus()
     connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
 
-    QList<QAction*> visibilityActions = ui->menuOverall_Layer_Visibility->actions();
+    QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
     for (int i = 0; i < visibilityActions.size(); i++) {
         QAction* action = visibilityActions[i];
-        connect(action, &QAction::triggered, [=] { mCommands->setLayerVisibilityIndex(i % visibilityActions.size()); });
+        connect(action, &QAction::triggered, [=] { mCommands->setLayerVisibilityIndex(i); });
     }
 
     // --- View Menu ---

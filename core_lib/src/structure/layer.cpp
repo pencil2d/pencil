@@ -384,7 +384,7 @@ void Layer::paintFrames(QPainter& painter, TimeLineCells* cells, int y, int heig
 
 void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
-                       bool selected, int allLayers)
+                       bool selected, LayerVisibility layerVisibility)
 {
     Q_UNUSED(cells);
     painter.setBrush(Qt::lightGray);
@@ -393,9 +393,9 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
 
     if (mVisible)
     {
-        if (allLayers == 0) painter.setBrush(Qt::NoBrush);
-        if (allLayers == 1) painter.setBrush(Qt::darkGray);
-        if ((allLayers == 2) || selected) painter.setBrush(Qt::black);
+        if (layerVisibility == LayerVisibility::HIDDEN) painter.setBrush(Qt::NoBrush);
+        if (layerVisibility == LayerVisibility::RELATIVE) painter.setBrush(Qt::darkGray);
+        if ((layerVisibility == LayerVisibility::FULL) || selected) painter.setBrush(Qt::black);
     }
     else
     {
@@ -684,6 +684,6 @@ void Layer::loadBaseDomElement(QDomElement& elem)
         int id = elem.attribute("id").toInt();
         setId(id);
     }
-    setName(elem.attribute("name"));
-    setVisible(elem.attribute("visibility").toInt());
+    setName(elem.attribute("name", "untitled"));
+    setVisible(elem.attribute("visibility", "true").toInt());
 }

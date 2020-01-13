@@ -147,6 +147,14 @@
      <addaction name="actionZoom33"/>
      <addaction name="actionZoom25"/>
     </widget>
+    <widget class="QMenu" name="menuLayer_Visibility">
+     <property name="title">
+      <string>Layer Visibility</string>
+     </property>
+     <addaction name="actionCurrent_layer_only"/>
+     <addaction name="actionRelative"/>
+     <addaction name="actionAll_layers"/>
+    </widget>
     <addaction name="actionReset_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
@@ -159,11 +167,15 @@
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
     <addaction name="separator"/>
-    <addaction name="actionPreview"/>
+    <addaction name="menuOnion_Skin"/>
+    <addaction name="menuLayer_Visibility"/>
+    <addaction name="separator"/>
     <addaction name="separator"/>
     <addaction name="actionGrid"/>
     <addaction name="separator"/>
-    <addaction name="menuOnion_Skin"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreview"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -210,14 +222,6 @@
     <property name="title">
      <string>Layer</string>
     </property>
-    <widget class="QMenu" name="menuOverall_Layer_Visibility">
-     <property name="title">
-      <string>Overall Layer Visibility</string>
-     </property>
-     <addaction name="actionLayerHidden"/>
-     <addaction name="actionLayerRelative"/>
-     <addaction name="actionLayerFull"/>
-    </widget>
     <widget class="QMenu" name="menuChange_line_color">
      <property name="title">
       <string>Change line color</string>
@@ -234,7 +238,6 @@
     <addaction name="separator"/>
     <addaction name="menuChange_line_color"/>
     <addaction name="separator"/>
-    <addaction name="menuOverall_Layer_Visibility"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1025,8 +1028,8 @@
   <action name="actionExport_Other_Palette_formats">
    <property name="text">
     <string>Other Palette format...</string>
-    </property>
-   </action>
+   </property>
+  </action>
   <action name="actionChangeLineColorCurrent_keyframe">
    <property name="text">
     <string>Current keyframe</string>
@@ -1040,6 +1043,21 @@
   <action name="actionImportLayers_from_pclx">
    <property name="text">
     <string>Layers from PCLX...</string>
+   </property>
+  </action>
+  <action name="actionCurrent_layer_only">
+   <property name="text">
+    <string>Current layer only</string>
+   </property>
+  </action>
+  <action name="actionRelative">
+   <property name="text">
+    <string>Relative</string>
+   </property>
+  </action>
+  <action name="actionAll_layers">
+   <property name="text">
+    <string>All layers</string>
    </property>
   </action>
  </widget>

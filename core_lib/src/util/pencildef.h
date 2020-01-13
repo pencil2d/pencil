@@ -72,6 +72,12 @@ enum StabilizationLevel
     STRONG
 };
 
+enum LayerVisibility {
+    HIDDEN = 0,
+    RELATIVE = 1,
+    FULL = 2,
+};
+
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"

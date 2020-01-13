@@ -120,9 +120,6 @@ void CanvasPainter::initializePainter(QPainter& painter, QPixmap& pixmap)
     painter.begin(&pixmap);
     painter.setWorldMatrixEnabled(true);
     painter.setWorldTransform(mViewTransform);
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    mOpacityThreshold = settings.value(SETTING_LAYER_VISIBILITY_THRESHOLD).toReal();
 }
 
 void CanvasPainter::renderPreLayers(QPixmap *pixmap)
@@ -134,7 +131,7 @@ void CanvasPainter::renderPreLayers(QPixmap *pixmap)
 
 void CanvasPainter::renderPreLayers(QPainter& painter)
 {
-    if (mOptions.elayerVisibility != CanvasPainterOptions::HIDDEN)
+    if (mOptions.eLayerVisibility != LayerVisibility::HIDDEN || mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA)
     {
         paintCurrentFrame(painter, 0, mCurrentLayerIndex-1);
     }
@@ -164,7 +161,7 @@ void CanvasPainter::renderPostLayers(QPixmap *pixmap)
 
 void CanvasPainter::renderPostLayers(QPainter& painter)
 {
-    if (mOptions.elayerVisibility != CanvasPainterOptions::HIDDEN)
+    if (mOptions.eLayerVisibility != LayerVisibility::HIDDEN || mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA)
     {
         paintCurrentFrame(painter, mCurrentLayerIndex+1, mObject->getLayerCount()-1);
     }
@@ -482,10 +479,7 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
     painter.setOpacity(1.0);
 
 
-    bool isCameraLayer = false;
-    if (mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA) {
-        isCameraLayer = true;
-    }
+    bool isCameraLayer = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
 
     for (int i = startLayer; i <= endLayer; ++i)
     {
@@ -494,7 +488,7 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
         if (layer->visible() == false)
             continue;
 
-        if (mOptions.elayerVisibility == CanvasPainterOptions::RELATIVE && !isCameraLayer) {
+        if (mOptions.eLayerVisibility == LayerVisibility::RELATIVE && !isCameraLayer) {
             painter.setOpacity(calculateRelativeOpacityForLayer(i));
         }
 
@@ -513,8 +507,10 @@ qreal CanvasPainter::calculateRelativeOpacityForLayer(int layerIndex) const
     int absoluteOffset = qAbs(layerOffset);
     qreal newOpacity = 1.0;
     if (absoluteOffset != 0) {
-        newOpacity = mOpacityThreshold/absoluteOffset;
+        newOpacity = static_cast<qreal>(mOptions.fLayerVisibilityThreshold)/absoluteOffset;
     }
+
+    qDebug() << "opacity at index: " << layerIndex << " " << newOpacity;
     return newOpacity;
 }
 

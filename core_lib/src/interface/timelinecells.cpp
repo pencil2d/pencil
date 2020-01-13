@@ -216,7 +216,7 @@ void TimeLineCells::drawContent()
             case TIMELINE_CELL_TYPE::Layers:
                 layeri->paintLabel(painter, this, 0,
                                    getLayerY(i), width() - 1,
-                                   getLayerHeight(), false, mEditor->allLayers());
+                                   getLayerHeight(), false, mEditor->layerVisibility());
                 break;
             }
         }
@@ -234,7 +234,7 @@ void TimeLineCells::drawContent()
         {
             layer->paintLabel(painter, this,
                               0, getLayerY(mEditor->layers()->currentLayerIndex()) + getMouseMoveY(),
-                              width() - 1, getLayerHeight(), true, mEditor->allLayers());
+                              width() - 1, getLayerHeight(), true, mEditor->layerVisibility());
 
             paintLayerGutter(painter);
         }
@@ -261,7 +261,7 @@ void TimeLineCells::drawContent()
                               width() - 1,
                               getLayerHeight(),
                               true,
-                              mEditor->allLayers());
+                              mEditor->layerVisibility());
         }
     }
 
@@ -280,9 +280,9 @@ void TimeLineCells::drawContent()
     {
         // --- draw circle
         painter.setPen(Qt::black);
-        if (mEditor->allLayers() == 0) { painter.setBrush(Qt::NoBrush); }
-        if (mEditor->allLayers() == 1) { painter.setBrush(Qt::darkGray); }
-        if (mEditor->allLayers() == 2) { painter.setBrush(Qt::black); }
+        if (mEditor->layerVisibility() == LayerVisibility::HIDDEN) { painter.setBrush(Qt::NoBrush); }
+        if (mEditor->layerVisibility() == LayerVisibility::RELATIVE) { painter.setBrush(Qt::darkGray); }
+        if (mEditor->layerVisibility() == LayerVisibility::FULL) { painter.setBrush(Qt::black); }
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.drawEllipse(6, 4, 9, 9);
         painter.setRenderHint(QPainter::Antialiasing, false);

@@ -682,7 +682,7 @@ Status ActionCommands::deleteCurrentLayer()
 
 void ActionCommands::setLayerVisibilityIndex(int index)
 {
-    mEditor->setLayerVisibility(index);
+    mEditor->setLayerVisibility(static_cast<LayerVisibility>(index));
 }
 
 void ActionCommands::changeKeyframeLineColor()
