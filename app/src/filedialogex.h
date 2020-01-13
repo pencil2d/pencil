@@ -55,6 +55,8 @@ private:
     QString getFilterForFile( QString fileType, QString filePath );
     QString defaultFileName( FileType fileType );
 
+    QString addDefaultExtensionSuffix(const FileType fileType);
+
     QString toSettingKey( FileType fileType);
 
     QWidget* mRoot = nullptr;

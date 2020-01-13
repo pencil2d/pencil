@@ -68,7 +68,8 @@ HEADERS += \
     src/spinslider.h \
     src/doubleprogressdialog.h \
     src/colorslider.h \
-    src/checkupdatesdialog.h
+    src/checkupdatesdialog.h \
+    src/presetdialog.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -101,7 +102,8 @@ SOURCES += \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
-    src/checkupdatesdialog.cpp
+    src/checkupdatesdialog.cpp \
+    src/presetdialog.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
@@ -127,7 +129,8 @@ FORMS += \
     ui/timelinepage.ui \
     ui/filespage.ui \
     ui/toolspage.ui \
-    ui/toolboxwidget.ui
+    ui/toolboxwidget.ui \
+    ui/presetdialog.ui
 
 
 

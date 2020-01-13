@@ -85,6 +85,9 @@ public:
     QTransform getImportView() { return mImportView; }
     void setImportView(const QTransform& newView) { mImportView = newView; }
 
+    void setImportFollowsCamera(bool b) { mImportFollowsCamera = b; }
+    bool getImportFollowsCamera() { return mImportFollowsCamera; }
+
     void updateViewTransforms();
 
     Q_SIGNAL void viewChanged();
@@ -108,6 +111,7 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+    bool mImportFollowsCamera = false;
 
     LayerCamera* mCameraLayer = nullptr;
 };

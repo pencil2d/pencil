@@ -71,6 +71,8 @@ enum class SETTING
     DRAW_ON_EMPTY_FRAME_ACTION,
     FRAME_POOL_SIZE,
     ROTATION_INCREMENT,
+    ASK_FOR_PRESET,
+    DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };
 
