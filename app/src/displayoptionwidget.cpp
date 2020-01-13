@@ -55,11 +55,7 @@ void DisplayOptionWidget::initUI()
 }
 
 void DisplayOptionWidget::makeConnections()
-{
-    connect(ui->onionPrevButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionPrevButtonClicked);
-    connect(ui->onionNextButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionNextButtonClicked);
-    connect(ui->onionBlueButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionBlueButtonClicked);
-    connect(ui->onionRedButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionRedButtonClicked);
+{    
     connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
     connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
 
@@ -78,56 +74,19 @@ void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
 
-    SignalBlocker b(ui->thinLinesButton);
+    SignalBlocker b1(ui->thinLinesButton);
     ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));
 
     SignalBlocker b2(ui->outLinesButton);
     ui->outLinesButton->setChecked(prefs->isOn(SETTING::OUTLINES));
 
-    SignalBlocker b3(ui->onionPrevButton);
-    ui->onionPrevButton->setChecked(prefs->isOn(SETTING::PREV_ONION));
-
-    SignalBlocker b4(ui->onionNextButton);
-    ui->onionNextButton->setChecked(prefs->isOn(SETTING::NEXT_ONION));
-
-    SignalBlocker b5(ui->onionBlueButton);
-    ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
-
-    SignalBlocker b6(ui->onionRedButton);
-    ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));
-
     ViewManager* view = editor()->view();
 
-    SignalBlocker b7(ui->mirrorButton);
+    SignalBlocker b3(ui->mirrorButton);
     ui->mirrorButton->setChecked(view->isFlipHorizontal());
 
-    SignalBlocker b8(ui->mirrorVButton);
+    SignalBlocker b4(ui->mirrorVButton);
     ui->mirrorVButton->setChecked(view->isFlipVertical());
-}
-
-
-void DisplayOptionWidget::onionPrevButtonClicked(bool isOn)
-{
-    PreferenceManager* prefs = editor()->preference();
-    prefs->set(SETTING::PREV_ONION, isOn);
-}
-
-void DisplayOptionWidget::onionNextButtonClicked(bool isOn)
-{
-    PreferenceManager* prefs = editor()->preference();
-    prefs->set(SETTING::NEXT_ONION, isOn);
-}
-
-void DisplayOptionWidget::onionBlueButtonClicked(bool isOn)
-{
-    PreferenceManager* prefs = editor()->preference();
-    prefs->set(SETTING::ONION_BLUE, isOn);
-}
-
-void DisplayOptionWidget::onionRedButtonClicked(bool isOn)
-{
-    PreferenceManager* prefs = editor()->preference();
-    prefs->set(SETTING::ONION_RED, isOn);
 }
 
 void DisplayOptionWidget::toggleMirror(bool isOn)

@@ -112,8 +112,7 @@ public slots:
 
     void timelineLengthChanged(int);
     void fontSizeChanged(int);
-    void scrubChanged(int);
-    void playbackStateChanged(int);
+    void scrubChanged(int);    
     void drawEmptyKeyRadioButtonToggled(bool);
     void flipRollMsecSliderChanged(int value);
     void flipRollMsecSpinboxChanged(int value);
@@ -170,11 +169,6 @@ public:
 
 public slots:
     void updateValues();
-    void onionMaxOpacityChange(int);
-    void onionMinOpacityChange(int);
-    void onionPrevFramesNumChange(int);
-    void onionNextFramesNumChange(int);
-    void onionSkinModeChange(int);
     void quickSizingChange(int);
     void setRotationIncrement(int);
     void rotationIncrementChange(int);
