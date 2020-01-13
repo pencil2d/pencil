@@ -755,6 +755,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
             }
         }
     }
+    QWidget::mouseDoubleClickEvent(event);
 }
 
 void TimeLineCells::hScrollChange(int x)
