@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>315</width>
-        <height>713</height>
+        <y>-133</y>
+        <width>337</width>
+        <height>779</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -367,6 +367,24 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>timelineLength</tabstop>
+  <tabstop>scrubBox</tabstop>
+  <tabstop>radioButtonAddNewKey</tabstop>
+  <tabstop>radioButtonDuplicate</tabstop>
+  <tabstop>radioButtonDrawOnPrev</tabstop>
+  <tabstop>onionWhilePlayback</tabstop>
+  <tabstop>flipRollNumDrawingsSlider</tabstop>
+  <tabstop>flipRollNumDrawingsSpinBox</tabstop>
+  <tabstop>flipRollMsecsSlider</tabstop>
+  <tabstop>flipRollMsecsSpinBox</tabstop>
+  <tabstop>flipInBtwnMsecSlider</tabstop>
+  <tabstop>flipInBtwnMsecSpinBox</tabstop>
+  <tabstop>layerVisibilityComboBox</tabstop>
+  <tabstop>visibilitySlider</tabstop>
+  <tabstop>visibilitySpinbox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <slots>
