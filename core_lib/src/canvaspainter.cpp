@@ -507,10 +507,8 @@ qreal CanvasPainter::calculateRelativeOpacityForLayer(int layerIndex) const
     int absoluteOffset = qAbs(layerOffset);
     qreal newOpacity = 1.0;
     if (absoluteOffset != 0) {
-        newOpacity = static_cast<qreal>(mOptions.fLayerVisibilityThreshold)/absoluteOffset;
+        newOpacity = qPow(static_cast<qreal>(mOptions.fLayerVisibilityThreshold), absoluteOffset);
     }
-
-    qDebug() << "opacity at index: " << layerIndex << " " << newOpacity;
     return newOpacity;
 }
 
