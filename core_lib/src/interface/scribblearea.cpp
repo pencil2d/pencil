@@ -146,7 +146,6 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::LAYER_VISIBILITY_THRESHOLD:
     case SETTING::LAYER_VISIBILITY:
         setLayerVisibility(static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY)));
-        updateAllFrames();
         break;
     default:
         break;

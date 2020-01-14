@@ -296,11 +296,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="LayerVisibilityBox">
+        <widget class="QGroupBox" name="layerVisibilityBox">
          <property name="title">
           <string>Layer Visibility</string>
          </property>
-         <layout class="QVBoxLayout" name="LayerVisibilityLayout">
+         <layout class="QVBoxLayout" name="layerVisibilityLayout">
           <item>
            <widget class="QLabel" name="labelVisibilityText">
             <property name="text">
