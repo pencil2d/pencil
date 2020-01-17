@@ -280,9 +280,9 @@ void TimeLineCells::drawContent()
     {
         // --- draw circle
         painter.setPen(Qt::black);
-        if (mEditor->layerVisibility() == LayerVisibility::HIDDEN) { painter.setBrush(Qt::NoBrush); }
+        if (mEditor->layerVisibility() == LayerVisibility::CURRENTONLY) { painter.setBrush(Qt::NoBrush); }
         if (mEditor->layerVisibility() == LayerVisibility::RELATIVE) { painter.setBrush(Qt::darkGray); }
-        if (mEditor->layerVisibility() == LayerVisibility::FULL) { painter.setBrush(Qt::black); }
+        if (mEditor->layerVisibility() == LayerVisibility::ALL) { painter.setBrush(Qt::black); }
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.drawEllipse(6, 4, 9, 9);
         painter.setRenderHint(QPainter::Antialiasing, false);

@@ -151,9 +151,9 @@
      <property name="title">
       <string>Layer Visibility</string>
      </property>
-     <addaction name="actionCurrent_layer_only"/>
-     <addaction name="actionRelative"/>
-     <addaction name="actionAll_layers"/>
+     <addaction name="actionVisibilityCurrentLayerOnly"/>
+     <addaction name="actionVisibilityRelative"/>
+     <addaction name="actionVisibilityAll"/>
     </widget>
     <addaction name="actionReset_View"/>
     <addaction name="separator"/>
@@ -1045,17 +1045,17 @@
     <string>Layers from PCLX...</string>
    </property>
   </action>
-  <action name="actionCurrent_layer_only">
+  <action name="actionVisibilityCurrentLayerOnly">
    <property name="text">
     <string>Current layer only</string>
    </property>
   </action>
-  <action name="actionRelative">
+  <action name="actionVisibilityRelative">
    <property name="text">
     <string>Relative</string>
    </property>
   </action>
-  <action name="actionAll_layers">
+  <action name="actionVisibilityAll">
    <property name="text">
     <string>All layers</string>
    </property>

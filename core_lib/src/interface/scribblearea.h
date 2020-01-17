@@ -206,7 +206,7 @@ private:
     bool mIsSimplified = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
-    LayerVisibility mLayerVisibility = LayerVisibility::FULL;
+    LayerVisibility mLayerVisibility = LayerVisibility::ALL;
     bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors = true;

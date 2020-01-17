@@ -48,7 +48,7 @@ struct CanvasPainterOptions
     bool  bThinLines = false;
     bool  bOutlines = false;
     bool  bIsOnionAbsolute = false;
-    LayerVisibility eLayerVisibility = RELATIVE;
+    LayerVisibility eLayerVisibility = LayerVisibility::RELATIVE;
     float fLayerVisibilityThreshold;
     float scaling = 1.0f;
     bool isPlaying = false;

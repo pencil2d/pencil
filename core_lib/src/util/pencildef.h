@@ -72,11 +72,23 @@ enum StabilizationLevel
     STRONG
 };
 
-enum LayerVisibility {
-    HIDDEN = 0,
+
+enum class LayerVisibility
+{
+    CURRENTONLY = 0,
     RELATIVE = 1,
-    FULL = 2,
+    ALL = 2,
 };
+
+inline LayerVisibility& operator++(LayerVisibility& vis)
+{
+    return vis = (vis == LayerVisibility::ALL) ? LayerVisibility::CURRENTONLY : static_cast<LayerVisibility>(static_cast<int>(vis)+1);
+}
+
+inline LayerVisibility& operator--(LayerVisibility& vis)
+{
+    return vis = (vis == LayerVisibility::CURRENTONLY) ? LayerVisibility::ALL : static_cast<LayerVisibility>(static_cast<int>(vis)-1);
+}
 
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
@@ -150,9 +162,9 @@ enum LayerVisibility {
 #define CMD_NEW_SOUND_LAYER "CmdNewSoundLayer"
 #define CMD_NEW_CAMERA_LAYER "CmdNewCameraLayer"
 #define CMD_DELETE_CUR_LAYER "CmdDeleteCurrentLayer"
-#define CMD_HIDDEN_LAYER_VISIBILITY "CmdLayerVisibilityHidden"
+#define CMD_CURRENT_LAYER_VISIBILITY "CmdLayerVisibilityCurrentOnly"
 #define CMD_RELATIVE_LAYER_VISIBILITY "CmdLayerVisibilityRelative"
-#define CMD_FULL_LAYER_VISIBILITY "CmdLayerVisibilityFull"
+#define CMD_ALL_LAYER_VISIBILITY "CmdLayerVisibilityAll"
 #define CMD_HELP "CmdHelp"
 #define CMD_TOGGLE_TOOLBOX "CmdToggleToolBox"
 #define CMD_TOGGLE_TOOL_OPTIONS "CmdToggleToolOptions"

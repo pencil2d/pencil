@@ -80,8 +80,7 @@ bool ScribbleArea::init()
     mIsSimplified = mPrefs->isOn(SETTING::OUTLINES);
     mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
 
-    const int visibilityValue = mPrefs->getInt(SETTING::LAYER_VISIBILITY);
-    mLayerVisibility = static_cast<LayerVisibility>(visibilityValue);
+    mLayerVisibility = static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY));
 
     mBufferImg = new BitmapImage;
 
@@ -1470,21 +1469,13 @@ void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
 
 void ScribbleArea::increaseLayerVisibilityIndex()
 {
-    mLayerVisibility = static_cast<LayerVisibility>(static_cast<int>(mLayerVisibility) + 1);
-    if (mLayerVisibility > LayerVisibility::FULL)
-    {
-        mLayerVisibility = LayerVisibility::HIDDEN;
-    }
+    ++mLayerVisibility;
     updateAllFrames();
 }
 
 void ScribbleArea::decreaseLayerVisibilityIndex()
 {
-    mLayerVisibility = static_cast<LayerVisibility>(static_cast<int>(mLayerVisibility) - 1);
-    if (mLayerVisibility < LayerVisibility::HIDDEN)
-    {
-        mLayerVisibility = LayerVisibility::FULL;
-    }
+    --mLayerVisibility;
     updateAllFrames();
 }
 
