@@ -29,7 +29,7 @@ RecentFileMenu::RecentFileMenu(QString title, QWidget *parent) :
     mClearSeparator->setSeparator(true);
 
     mClearAction = new QAction(tr("Clear"), this); // share the same translation
-    mEmptyAction = new QAction(tr("Empty"));
+    mEmptyAction = new QAction(tr("Empty"), this);
     mEmptyAction->setEnabled(false);
 }
 

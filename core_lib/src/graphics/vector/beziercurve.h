@@ -33,8 +33,8 @@ class BezierCurve
 {
 public:
     explicit BezierCurve();
-    explicit BezierCurve(const QList<QPointF>& pointList);
-    explicit BezierCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, double tol);
+    explicit BezierCurve(const QList<QPointF>& pointList, bool smooth=true);
+    explicit BezierCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, double tol, bool smooth=true);
 
     Status createDomElement(QXmlStreamWriter &xmlStream);
     void loadDomElement(QDomElement element);
@@ -89,7 +89,7 @@ public:
     QRectF getBoundingRect();
 
     void drawPath(QPainter& painter, Object* object, QTransform transformation, bool simplified, bool showThinLines );
-    void createCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList );
+    void createCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList , bool smooth);
     void smoothCurve();
 
     static void simplify(double tol, const QList<QPointF>& inputList, int j, int k, QList<bool>& markList);

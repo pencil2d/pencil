@@ -69,7 +69,8 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/framecommentwidget.h
+    src/framecommentwidget.h \
+    src/presetdialog.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -103,7 +104,8 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
-    src/framecommentwidget.cpp
+    src/framecommentwidget.cpp \
+    src/presetdialog.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
@@ -130,7 +132,8 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
-    ui/framecommentwidget.ui
+    ui/framecommentwidget.ui \
+    ui/presetdialog.ui
 
 
 

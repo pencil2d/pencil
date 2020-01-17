@@ -43,7 +43,6 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
-#include "selectionmanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -70,6 +69,7 @@ GNU General Public License for more details.
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
+#include "presetdialog.h"
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -81,30 +81,27 @@ GNU General Public License for more details.
 #define BUILD_DATE __DATE__
 #endif
 
-#ifdef NIGHTLY_BUILD
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( BUILD_DATE )
+#ifdef PENCIL2D_NIGHTLY_BUILD
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg(BUILD_DATE)
 #else
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
 #endif
 
 
 
-MainWindow2::MainWindow2(QWidget *parent) :
+MainWindow2::MainWindow2(QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow2)
 {
     ui->setupUi(this);
 
     // Initialize order
-    // 1. object 2. editor 3. scribble area 4. other widgets
-    Object* object = new Object();
-    object->init();
-    object->createDefaultLayers();
-
+    // 1. editor 2. object 3. scribble area 4. other widgets
     mEditor = new Editor(this);
     mEditor->setScribbleArea(ui->scribbleArea);
     mEditor->init();
-    mEditor->setObject(object);
+
+    newObject();
 
     ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
@@ -121,15 +118,18 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     readSettings();
 
+    updateZoomLabel();
+
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
-    mEditor->updateObject();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
+
+    showPresetDialog();
 }
 
 MainWindow2::~MainWindow2()
@@ -151,6 +151,7 @@ void MainWindow2::createDockWidgets()
     mColorInspector->setObjectName("Color Inspector");
 
     mColorPalette = new ColorPaletteWidget(this);
+    mColorPalette->setCore(mEditor);
     mColorPalette->setObjectName("ColorPalette");
 
     mDisplayOptionWidget = new DisplayOptionWidget(this);
@@ -257,7 +258,8 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
-    connect(ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
+    connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
+    connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
@@ -279,6 +281,8 @@ void MainWindow2::createMenus()
     connect(ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewSoundLayer);
     connect(ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer);
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
+    connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
+    connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
 
     //--- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
@@ -453,6 +457,18 @@ void MainWindow2::closePegAlignDialog()
     mPegAlign = nullptr;
 }
 
+void MainWindow2::currentLayerChanged()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        ui->menuChange_line_color->setEnabled(true);
+    }
+    else
+    {
+        ui->menuChange_line_color->setEnabled(false);
+    }
+}
+
 void MainWindow2::closeEvent(QCloseEvent* event)
 {
     if (m2ndCloseEvent)
@@ -481,22 +497,27 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
 
 void MainWindow2::newDocument(bool force)
 {
-    if (force || maybeSave())
+    if (force)
     {
-        Object* object = new Object();
-        object->init();
-        object->createDefaultLayers();
-        mEditor->setObject(object);
-        mEditor->scrubTo(0);
-        mEditor->view()->resetView();
-        mEditor->select()->resetSelectionProperties();
-
-        // Refresh the palette
-        mColorPalette->refreshColorList();
-        mEditor->color()->setColorNumber(0);
+        newObject();
 
         setWindowTitle(PENCIL_WINDOW_TITLE);
         updateSaveState();
+    }
+    else if (maybeSave())
+    {
+        if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+        {
+            showPresetDialog();
+        }
+        else
+        {
+            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+            newObjectFromPresets(defaultPreset);
+
+            setWindowTitle(PENCIL_WINDOW_TITLE);
+            updateSaveState();
+        }
     }
 }
 
@@ -506,17 +527,10 @@ void MainWindow2::openDocument()
     {
         FileDialog fileDialog(this);
         QString fileName = fileDialog.openFile(FileType::ANIMATION);
-        if (fileName.isEmpty())
+        if (!fileName.isEmpty())
         {
-            return;
+            openObject(fileName);
         }
-        QFileInfo fileInfo(fileName);
-        if (fileInfo.isDir())
-        {
-            return;
-        }
-
-        openObject(fileName, false);
     }
 }
 
@@ -528,23 +542,19 @@ bool MainWindow2::saveAsNewDocument()
     {
         return false;
     }
-
-    if (!fileName.endsWith(PFF_OLD_EXTENSION) && !fileName.endsWith(PFF_EXTENSION))
-    {
-        fileName = fileName + PFF_EXTENSION;
-    }
     return saveObject(fileName);
 }
 
 void MainWindow2::openFile(QString filename)
 {
-    openObject(filename, true);
+    if (maybeSave())
+    {
+        openObject(filename);
+    }
 }
 
-bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
+bool MainWindow2::openObject(QString strFilePath)
 {
-    if(checkForChanges && !maybeSave()) return false; // Open cancelled by user
-
     // Check for potential issues with the file
     QFileInfo fileInfo(strFilePath);
     if (fileInfo.isDir())
@@ -648,10 +658,6 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 
     progress.setValue(progress.value() + 1);
 
-    mEditor->select()->resetSelectionProperties();
-
-    // Refresh the Palette
-    mColorPalette->refreshColorList();
     mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.setValue(progress.maximum());
@@ -663,6 +669,7 @@ bool MainWindow2::openObject(QString strFilePath, bool checkForChanges)
 bool MainWindow2::saveObject(QString strSavedFileName)
 {
     QProgressDialog progress(tr("Saving document..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
@@ -681,6 +688,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     });
 
     Status st = fm.save(mEditor->object(), strSavedFileName);
+
 
     if (!st.ok())
     {
@@ -710,6 +718,9 @@ bool MainWindow2::saveObject(QString strSavedFileName)
         errorDialog.exec();
         return false;
     }
+
+    mEditor->object()->setFilePath(strSavedFileName);
+    mEditor->object()->setModified(false);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, strSavedFileName);
@@ -948,8 +959,6 @@ void MainWindow2::importGIF()
                              QMessageBox::Ok);
     }
 
-    mEditor->layers()->notifyAnimationLengthChanged();
-
     progress.setValue(100);
     progress.close();
 
@@ -1014,6 +1023,55 @@ void MainWindow2::resetAndDockAllSubWidgets()
     }
 }
 
+bool MainWindow2::newObject()
+{
+    Object* object = nullptr;
+    object = new Object();
+    object->init();
+    object->createDefaultLayers();
+    mEditor->setObject(object);
+    return true;
+}
+
+bool MainWindow2::newObjectFromPresets(int presetIndex)
+{
+    Object* object = nullptr;   
+    QString presetFilePath = (presetIndex > 0) ? PresetDialog::getPresetPath(presetIndex) : "";
+    if (!presetFilePath.isEmpty())
+    {
+        FileManager fm(this);
+        object = fm.load(presetFilePath);
+        if (fm.error().ok() == false) object = nullptr;
+    }
+    if (object == nullptr)
+    {
+        object = new Object();
+        object->init();
+        object->createDefaultLayers();
+    }
+    mEditor->setObject(object);
+    return true;
+}
+
+void  MainWindow2::showPresetDialog()
+{
+    if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+    {
+        PresetDialog* presetDialog = new PresetDialog(mEditor->preference(), this);
+        presetDialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(presetDialog, &PresetDialog::finished, [=](int result)
+        {
+            if (result == QDialog::Accepted)
+            {
+                int presetIndex = presetDialog->getPresetIndex();
+                newObjectFromPresets(presetIndex);
+                qDebug() << "Accepted!";
+            }
+        });
+        presetDialog->open();
+    }
+}
+
 void MainWindow2::readSettings()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -1059,7 +1117,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
     ui->actionImport_Movie->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE));
-    ui->actionImport_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
+    ui->actionImport_Append_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
     ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
 
     ui->actionExport_Image->setShortcut(cmdKeySeq(CMD_EXPORT_IMAGE));
@@ -1223,11 +1281,50 @@ void MainWindow2::importPalette()
     }
 }
 
+void MainWindow2::openPalette()
+{
+    int count = 0;
+    int maxNumber = mEditor->object()->getColourCount();
+    bool openPalette = true;
+    while (count < maxNumber)
+    {
+        if (mEditor->object()->isColourInUse(count))
+        {
+            QMessageBox msgBox;
+            msgBox.setText(tr("Opening palette, will replace the old palette.\n"
+                              "Color(s) in strokes will be altered by this action!\n"));
+            msgBox.addButton(tr("Open Palette"), QMessageBox::AcceptRole);
+            msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
+
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::RejectRole)
+            {
+                openPalette = false;
+            }
+            count = maxNumber;
+        }
+        count++;
+    }
+
+    if (openPalette)
+    {
+        FileDialog fileDialog(this);
+        QString filePath = fileDialog.openFile(FileType::PALETTE);
+        if (!filePath.isEmpty())
+        {
+            mEditor->object()->openPalette(filePath);
+            mColorPalette->refreshColorList();
+            mEditor->color()->setColorNumber(0);
+        }
+    }
+}
+
 void MainWindow2::makeConnections(Editor* editor)
 {
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1351,31 +1448,7 @@ void MainWindow2::changePlayState(bool isPlaying)
     }
     update();
 }
-/*
-void MainWindow2::alignPegs()
-{
-    QStringList bitmaplayers;
-    bitmaplayers = mPegreg->getLayerList();
-    if (bitmaplayers.isEmpty())
-    {
-        QMessageBox::information(this, nullptr,
-                                 tr("No layers selected!"),
-                                 QMessageBox::Ok);
-    }
-    else
-    {
-        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
-        if (statusint.errorcode == Status::FAIL)
-        {
-            QMessageBox::information(this, nullptr,
-                                     tr("Peg bar alignment failed!"),
-                                     QMessageBox::Ok);
-            return;
-        }
-        closePegReg();
-    }
-}
-*/
+
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)
 {
     QMessageBox::information(this, tr(qPrintable(title)), tr(qPrintable(body)), QMessageBox::Ok);

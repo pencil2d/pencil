@@ -877,6 +877,12 @@ bool Editor::importImage(QString filePath)
 {
     Layer* layer = layers()->currentLayer();
 
+    if (view()->getImportFollowsCamera())
+    {
+        LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
+        QTransform transform = camera->getViewAtFrame(currentFrame());
+        view()->setImportView(transform);
+    }
     switch (layer->type())
     {
     case Layer::BITMAP:
@@ -1021,15 +1027,25 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         return nullptr;
     }
 
+    // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
     while (layer->keyExists(frameIndex))
     {
-        frameIndex += 1;
+        if (layer->type() == Layer::SOUND && static_cast<SoundClip*>(layer->getKeyFrameAt(frameIndex))->fileName().isEmpty()
+                && layer->removeKeyFrame(frameIndex))
+        {
+            break;
+        }
+        else
+        {
+            frameIndex += 1;
+        }
     }
 
     bool ok = layer->addNewKeyFrameAt(frameIndex);
     if (ok)
     {
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
+        layers()->notifyAnimationLengthChanged();
     }
     return layer->getKeyFrameAt(frameIndex);
 }
@@ -1056,6 +1072,7 @@ void Editor::removeKey()
     layer->removeKeyFrame(currentFrame());
 
     scrubBackward();
+    layers()->notifyAnimationLengthChanged();
     Q_EMIT layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
 }
 

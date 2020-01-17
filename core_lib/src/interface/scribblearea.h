@@ -97,7 +97,7 @@ public:
 
     void setModified(int layerNumber, int frameNumber);
     bool shouldUpdateAll() const { return mNeedUpdateAll; }
-    void setAllDirty() { mNeedUpdateAll = true; }
+    void setAllDirty();
 
     void flipSelection(bool flipVertical);
 
@@ -110,7 +110,8 @@ public:
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
-    bool isPointerInUse() const { return mMouseInUse || mStrokeManager->isTabletInUse(); }
+    bool isTabletInUse() const { return mTabletInUse; }
+    bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
     bool isTemporaryTool() const { return mInstantTool; }
 
     void keyEvent(QKeyEvent* event);
@@ -182,6 +183,7 @@ public:
     QPixmap mTransCursImg;
 
 private:
+    void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals();
@@ -216,7 +218,7 @@ private:
     bool mKeyboardInUse = false;
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
-    bool mPenHeldDown = false;
+    bool mTabletInUse = false;
 
     // Double click handling for tablet input
     void handleDoubleClick();

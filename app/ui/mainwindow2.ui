@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -69,7 +69,8 @@
      <addaction name="actionImportLayers_from_pclx"/>
      <addaction name="actionImport_Sound"/>
      <addaction name="separator"/>
-     <addaction name="actionImport_Palette"/>
+     <addaction name="actionImport_Replace_Palette"/>
+     <addaction name="actionImport_Append_Palette"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -209,12 +210,21 @@
     <property name="title">
      <string>Layer</string>
     </property>
+    <widget class="QMenu" name="menuChange_line_color">
+     <property name="title">
+      <string>Change line color</string>
+     </property>
+     <addaction name="actionChangeLineColorCurrent_keyframe"/>
+     <addaction name="actionChangeLineColorAll_keyframes_on_layer"/>
+    </widget>
     <addaction name="actionNew_Bitmap_Layer"/>
     <addaction name="actionNew_Vector_Layer"/>
     <addaction name="actionNew_Sound_Layer"/>
     <addaction name="actionNew_Camera_Layer"/>
     <addaction name="separator"/>
     <addaction name="actionDelete_Current_Layer"/>
+    <addaction name="separator"/>
+    <addaction name="menuChange_line_color"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -312,7 +322,7 @@
   </action>
   <action name="actionExport_Palette">
    <property name="text">
-    <string>Palette...</string>
+    <string>Palette</string>
    </property>
   </action>
   <action name="actionImport_Image">
@@ -336,11 +346,6 @@
   <action name="actionImport_Sound">
    <property name="text">
     <string>Sound...</string>
-   </property>
-  </action>
-  <action name="actionImport_Palette">
-   <property name="text">
-    <string>Palette...</string>
    </property>
   </action>
   <action name="actionImport_ImageSeqNum">
@@ -980,6 +985,31 @@
   <action name="actionPegbarAlignment">
    <property name="text">
     <string>Peg bar Alignment</string>
+   </property>
+  </action>
+  <action name="actionImport_Append_Palette">
+   <property name="text">
+    <string>Append to Palette...</string>
+   </property>
+  </action>
+  <action name="actionImport_Replace_Palette">
+   <property name="text">
+    <string>Replace Palette...</string>
+   </property>
+  </action>
+  <action name="actionExport_Other_Palette_formats">
+   <property name="text">
+    <string>Other Palette format...</string>
+    </property>
+   </action>
+  <action name="actionChangeLineColorCurrent_keyframe">
+   <property name="text">
+    <string>Current keyframe</string>
+   </property>
+  </action>
+  <action name="actionChangeLineColorAll_keyframes_on_layer">
+   <property name="text">
+    <string>All keyframes on layer</string>
    </property>
   </action>
   <action name="actionImportLayers_from_pclx">
