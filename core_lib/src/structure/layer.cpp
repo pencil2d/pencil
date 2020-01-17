@@ -386,7 +386,7 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
                        bool selected, LayerVisibility layerVisibility)
 {
-    Q_UNUSED(cells);
+    Q_UNUSED(cells)
     painter.setBrush(Qt::lightGray);
     painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
@@ -435,8 +435,8 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
 
 void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
 {
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
+    Q_UNUSED(event)
+    Q_UNUSED(frameNumber)
 }
 
 void Layer::editProperties()
@@ -685,5 +685,5 @@ void Layer::loadBaseDomElement(QDomElement& elem)
         setId(id);
     }
     setName(elem.attribute("name", "untitled"));
-    setVisible(elem.attribute("visibility", "true").toInt());
+    setVisible(elem.attribute("visibility", "1").toInt());
 }
