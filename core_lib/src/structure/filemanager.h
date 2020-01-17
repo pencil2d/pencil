@@ -36,7 +36,7 @@ class FileManager : public QObject
     Q_OBJECT
 
 public:
-    FileManager(QObject* parent = 0);
+    FileManager(QObject* parent = nullptr);
 
     Object* load(QString sFilenNme);
     Status  save(Object*, QString sFileName);
@@ -59,6 +59,9 @@ private:
 
     ObjectData* loadProjectData(const QDomElement& element);
     QDomElement saveProjectData(ObjectData*, QDomDocument& xmlDoc);
+
+    void loadFrameComments(Object* obj, QDomElement &element);
+    QDomElement saveFrameComments(Object* obj, QDomDocument& xmlDoc);
 
     void extractProjectData(const QDomElement& element, ObjectData* data);
     Object* cleanUpWithErrorCode(Status);
