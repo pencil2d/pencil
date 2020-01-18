@@ -110,7 +110,7 @@ private:
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
 
-    /** @brief Calculate layer opacity based on current layer offset */
+    /** Calculate layer opacity based on current layer offset */
     qreal calculateRelativeOpacityForLayer(int layerIndex) const;
 private:
     CanvasPainterOptions mOptions;
