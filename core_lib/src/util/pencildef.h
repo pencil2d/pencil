@@ -22,15 +22,6 @@ GNU General Public License for more details.
 #define M_PI 3.14159265358979323846
 #endif
 
-#define PENCIL_MOVIE_EXT \
-    QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
-
-#define PENCIL_IMAGE_FILTER \
-   QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
-
-#define PENCIL_IMAGE_SEQ_FILTER \
-    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
-
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 #define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
@@ -168,6 +159,9 @@ enum StabilizationLevel
 // Save / Export
 #define LAST_PCLX_PATH          "LastFilePath"
 
+// Import
+#define IMPORT_REPOSITION_TYPE      "ImportRepositionType"
+
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
 #define SHORTCUTS_GROUP             "Shortcuts"
@@ -193,6 +187,8 @@ enum StabilizationLevel
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
+#define SETTING_ASK_FOR_PRESET      "AskForPreset"
+#define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"

@@ -541,6 +541,13 @@ void BitmapImage::setPixel(QPoint p, QRgb colour)
     modification();
 }
 
+void BitmapImage::fillNonAlphaPixels(const QRgb color)
+{
+    if (mBounds.isEmpty()) { return; }
+
+    BitmapImage fill(bounds(), color);
+    paste(&fill, QPainter::CompositionMode_SourceIn);
+}
 
 void BitmapImage::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing)
 {
@@ -1181,7 +1188,7 @@ void BitmapImage::clear()
     modification();
 }
 
-QRgb BitmapImage::constScanLine(int x, int y)
+QRgb BitmapImage::constScanLine(int x, int y) const
 {
     QRgb result = qRgba(0, 0, 0, 0);
     if (mBounds.contains(QPoint(x, y)))
@@ -1297,7 +1304,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
 
     // Extend to size of Camera
     targetImage->extend(cameraRect);
-    replaceImage = new BitmapImage(cameraRect, Qt::transparent);
+    replaceImage = new BitmapImage(targetImage->mBounds, Qt::transparent);
 
     queue.append(point);
     // Preparations END

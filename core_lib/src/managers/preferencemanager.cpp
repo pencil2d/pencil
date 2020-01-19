@@ -80,8 +80,9 @@ void PreferenceManager::loadPrefs()
     set(SETTING::FIELD_H,                  settings.value(SETTING_FIELD_H,                600).toInt());
 
     // Files
-    set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              true ).toBool());
-    set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       25).toInt());
+    set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       256).toInt());
+    set(SETTING::ASK_FOR_PRESET,           settings.value(SETTING_ASK_FOR_PRESET,         false).toBool());
+    set(SETTING::DEFAULT_PRESET,           settings.value(SETTING_DEFAULT_PRESET,         0).toInt());
 
     // Timeline
     set(SETTING::SHORT_SCRUB,              settings.value(SETTING_SHORT_SCRUB,            false ).toBool());
@@ -258,6 +259,9 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::FIELD_H:
         settings.setValue(SETTING_FIELD_H, value);
         break;
+    case SETTING::DEFAULT_PRESET:
+        settings.setValue(SETTING_DEFAULT_PRESET, value);
+        break;
     default:
         Q_ASSERT(false);
         break;
@@ -331,6 +335,9 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::LAYOUT_LOCK:
         settings.setValue(SETTING_LAYOUT_LOCK, value);
+        break;
+    case SETTING::ASK_FOR_PRESET:
+        settings.setValue(SETTING_ASK_FOR_PRESET, value);
         break;
     default:
         Q_ASSERT(false);

@@ -72,6 +72,8 @@ public:
     int animationLength(bool includeSounds = true);
     void notifyAnimationLengthChanged();
 
+    QString nameSuggestLayer(const QString& name);
+
 Q_SIGNALS:
     void currentLayerChanged(int index);
     void layerCountChanged(int count);

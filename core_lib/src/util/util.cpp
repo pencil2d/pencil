@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 #include "util.h"
-
+#include <QAbstractSpinBox>
 
 QTransform RectMapTransform( QRectF source, QRectF target )
 {
@@ -54,4 +54,9 @@ SignalBlocker::~SignalBlocker()
 {
     if ( mObject )
         mObject->blockSignals( mBlocked );
+}
+
+void clearFocusOnFinished(QAbstractSpinBox *spinBox)
+{
+    QObject::connect(spinBox, &QAbstractSpinBox::editingFinished, spinBox, &QAbstractSpinBox::clearFocus);
 }

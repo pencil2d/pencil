@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define _PREFERENCES_H_
 
 #include <QDialog>
+#include <QDir>
 
 #include "pencildef.h"
 #include "scribblearea.h"
@@ -136,7 +137,14 @@ public:
     void setManager(PreferenceManager* p) { mManager = p; }
 
 public slots:
+    void initPreset();
+    void addPreset();
+    void removePreset();
+    void setDefaultPreset();
+    void presetNameChanged(QListWidgetItem* item);
+
     void updateValues();
+    void askForPresetChange(int b);
     void autosaveChange(int b);
     void autosaveNumberChange(int number);
 
@@ -146,6 +154,9 @@ Q_SIGNALS:
 private:
     Ui::FilesPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
+    QSettings* mPresetSettings = nullptr;
+    QDir mPresetDir;
+    int mMaxPresetIndex = 0;
 };
 
 
@@ -163,6 +174,7 @@ public slots:
     void onionMinOpacityChange(int);
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
+    void onionSkinModeChange(int);
     void quickSizingChange(int);
     void setRotationIncrement(int);
     void rotationIncrementChange(int);

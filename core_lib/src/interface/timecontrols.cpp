@@ -88,8 +88,8 @@ void TimeControls::initUI()
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));
     mSoundButton->setToolTip(tr("Sound on/off"));
-    mJumpToEndButton->setToolTip(tr("End"));
-    mJumpToStartButton->setToolTip(tr("Start"));
+    mJumpToEndButton->setToolTip(tr("Jump to the End", "Tooltip of the jump to end button"));
+    mJumpToStartButton->setToolTip(tr("Jump to the Start", "Tooltip of the jump to start button"));
 
     mLoopButton->setCheckable(true);
     mSoundButton->setCheckable(true);
@@ -162,19 +162,18 @@ void TimeControls::makeConnections()
 
     auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartValueChanged);
+    clearFocusOnFinished(mLoopStartSpinBox);
     connect(mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndValueChanged);
+    clearFocusOnFinished(mLoopEndSpinBox);
 
     connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopStartSpinBox, &QSpinBox::setEnabled);
     connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled);
 
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::soundToggled);
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon);
-    auto connection = connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsChanged);
-    if(!connection)
-    {
-        // Use "editingFinished" if the "spinBoxValueChanged" signal doesn't work...
-        connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
-    }
+
+    connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsChanged);
+    connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
 }
 
 void TimeControls::playButtonClicked()
@@ -192,7 +191,7 @@ void TimeControls::updatePlayState()
     else
     {
         mPlayButton->setIcon(mStartIcon);
-        mPlayButton->setToolTip(tr("Start"));
+        mPlayButton->setToolTip(tr("Play"));
     }
 }
 
@@ -264,6 +263,7 @@ void TimeControls::updateSoundIcon(bool soundEnabled)
 
 void TimeControls::onFpsEditingFinished()
 {
+    mFpsBox->clearFocus();
     emit fpsChanged(mFpsBox->value());
 }
 
