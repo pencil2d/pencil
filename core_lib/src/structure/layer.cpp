@@ -99,6 +99,13 @@ int Layer::getPreviousKeyFramePosition(int position) const
 
 int Layer::getNextKeyFramePosition(int position) const
 {
+    // workaround: bug with lower_bound?
+    // when position is before the first frame it == mKeyFrames.end() for some reason
+    if (position < firstKeyFramePosition())
+    {
+       return firstKeyFramePosition();
+    }
+
     auto it = mKeyFrames.lower_bound(position);
     if (it == mKeyFrames.end())
     {
@@ -121,7 +128,7 @@ int Layer::getPreviousFrameNumber(int position, bool isAbsolute) const
     else
         prevNumber = position - 1;
 
-    if (prevNumber == position)
+    if (prevNumber >= position)
     {
         return -1; // There is no previous keyframe
     }
@@ -137,7 +144,7 @@ int Layer::getNextFrameNumber(int position, bool isAbsolute) const
     else
         nextNumber = position + 1;
 
-    if (nextNumber == position)
+    if (nextNumber <= position)
         return -1; // There is no next keyframe
 
     return nextNumber;

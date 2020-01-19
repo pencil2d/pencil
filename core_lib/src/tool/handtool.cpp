@@ -17,11 +17,10 @@ GNU General Public License for more details.
 
 #include "handtool.h"
 
-#include <cmath>
 #include <QtMath>
 #include <QPixmap>
 #include <QVector2D>
-#include <QMouseEvent>
+#include <pointerevent.h>
 
 #include "layer.h"
 #include "layercamera.h"
@@ -29,10 +28,10 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "viewmanager.h"
 #include "scribblearea.h"
+#include "mathutils.h"
 
 
-HandTool::HandTool(QObject *parent) :
-    BaseTool(parent)
+HandTool::HandTool(QObject* parent) : BaseTool(parent)
 {
 }
 
@@ -50,62 +49,40 @@ QCursor HandTool::cursor()
     return mIsHeld ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
 }
 
-void HandTool::tabletPressEvent(QTabletEvent *)
+void HandTool::pointerPressEvent(PointerEvent*)
 {
-    mLastPixel = getLastPressPixel();
-    mScribbleArea->updateToolCursor();
+    mLastPixel = getCurrentPixel();
     mIsHeld = true;
+
+    mScribbleArea->updateToolCursor();
 }
 
-void HandTool::tabletMoveEvent(QTabletEvent * event)
+void HandTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (m_pStrokeManager->isPenPressed()) {
-        transformView(event->modifiers(), event->buttons());
-        mLastPixel = getCurrentPixel();
+    if (event->buttons() == Qt::NoButton)
+    {
+        return;
     }
+
+    transformView(event->modifiers(), event->buttons());
+    mLastPixel = getCurrentPixel();
 }
 
-void HandTool::tabletReleaseEvent(QTabletEvent *)
-{
-    mScribbleArea->updateToolCursor();
-    mIsHeld = false;
-}
-
-void HandTool::mousePressEvent( QMouseEvent* )
-{
-    mLastPixel = getLastPressPixel();
-    mIsHeld = true;
-
-    mScribbleArea->updateToolCursor();
-}
-
-void HandTool::mouseReleaseEvent( QMouseEvent* event )
+void HandTool::pointerReleaseEvent(PointerEvent* event)
 {
     //---- stop the hand tool if this was mid button
-    if ( event->button() == Qt::MidButton )
+    if (event->button() == Qt::MidButton)
     {
-        qDebug( "[HandTool] Stop Hand Tool" );
+        qDebug("[HandTool] Stop Hand Tool");
         mScribbleArea->setPrevTool();
     }
     mIsHeld = false;
     mScribbleArea->updateToolCursor();
 }
 
-void HandTool::mouseMoveEvent( QMouseEvent* event )
+void HandTool::pointerDoubleClickEvent(PointerEvent* event)
 {
-    if ( event->buttons() == Qt::NoButton )
-    {
-        return;
-    }
-
-    transformView(event->modifiers(), event->buttons());
-
-    mLastPixel = getCurrentPixel();
-}
-
-void HandTool::mouseDoubleClickEvent( QMouseEvent *event )
-{
-    if ( event->button() == Qt::RightButton )
+    if (event->button() == Qt::RightButton)
     {
         mEditor->view()->resetView();
     }
@@ -115,29 +92,30 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
 {
     bool isTranslate = keyMod == Qt::NoModifier;
     bool isRotate = keyMod & Qt::AltModifier;
-    bool isScale = (keyMod & Qt::ControlModifier) || ( buttons & Qt::RightButton );
+    bool isScale = (keyMod & Qt::ControlModifier) || (buttons & Qt::RightButton);
 
     ViewManager* viewMgr = mEditor->view();
 
-    if ( isTranslate )
+    if (isTranslate)
     {
         QPointF d = getCurrentPoint() - getLastPoint();
         QPointF offset = viewMgr->translation() + d;
-        viewMgr->translate( offset );
+        viewMgr->translate(offset);
     }
-    else if ( isRotate )
+    else if (isRotate)
     {
-        QPoint centralPixel( mScribbleArea->width() / 2, mScribbleArea->height() / 2 );
-        QVector2D startV( getLastPixel() - centralPixel );
-        QVector2D curV( getCurrentPixel() - centralPixel );
+        QPoint centralPixel(mScribbleArea->width() / 2, mScribbleArea->height() / 2);
+        QVector2D startV(getLastPixel() - centralPixel);
+        QVector2D curV(getCurrentPixel() - centralPixel);
 
-        float angleOffset = ( atan2( curV.y(), curV.x() ) - atan2( startV.y(), startV.x() ) ) * 180.0 / M_PI;
-        float newAngle = viewMgr->rotation() + angleOffset;
+        qreal angleOffset = static_cast<qreal>(atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x()));
+        angleOffset = MathUtils::radToDeg(angleOffset);
+        float newAngle = viewMgr->rotation() + static_cast<float>(angleOffset);
         viewMgr->rotate(newAngle);
     }
-    else if ( isScale )
+    else if (isScale)
     {
-        float delta = ( getCurrentPixel().y() - mLastPixel.y() ) / 100.f;
+        float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
         float scaleValue = viewMgr->scaling() * (1.f + delta);
         viewMgr->scale(scaleValue);
     }

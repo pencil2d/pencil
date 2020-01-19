@@ -63,8 +63,8 @@ private:
     QPixmap mWheelPixmap;
    
     int mWheelThickness = 20;
-    QRegion mWheelRegion;
-    QRegion mSquareRegion;
+    QRect mWheelRect;
+    QRect mSquareRect;
     QColor mCurrentColor = Qt::red;
     bool mIsInWheel = false;
     bool mIsInSquare = false;

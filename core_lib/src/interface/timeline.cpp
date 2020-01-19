@@ -146,13 +146,6 @@ void TimeLine::initUI()
     zoomSlider->setToolTip(tr("Adjust frame width"));
     zoomSlider->setOrientation(Qt::Horizontal);
 
-    QLabel* onionLabel = new QLabel(tr("Onion skin:"));
-
-    QToolButton* onionTypeButton = new QToolButton(this);
-    onionTypeButton->setIcon(QIcon(":icons/onion_type.png"));
-    onionTypeButton->setToolTip(tr("Toggle match keyframes"));
-    onionTypeButton->setFixedSize(24, 24);
-
     timelineButtons->addWidget(keyLabel);
     timelineButtons->addWidget(addKeyButton);
     timelineButtons->addWidget(removeKeyButton);
@@ -162,8 +155,6 @@ void TimeLine::initUI()
     timelineButtons->addWidget(zoomLabel);
     timelineButtons->addWidget(zoomSlider);
     timelineButtons->addSeparator();
-    timelineButtons->addWidget(onionLabel);
-    timelineButtons->addWidget(onionTypeButton);
     timelineButtons->addSeparator();
     timelineButtons->setFixedHeight(30);
 
@@ -219,11 +210,10 @@ void TimeLine::initUI()
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(manipulateFramesButton, &QToolButton::clicked, this, &TimeLine::manipulateFramesClick);
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
-    connect(onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick);
 
-    connect(mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick);
-    connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick);
-    connect(mTimeControls, &TimeControls::fpsClick, this, &TimeLine::updateLength);
+    connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);
+    connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);
+    connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::updateLength);
     connect(mTimeControls, &TimeControls::playButtonTriggered, this, &TimeLine::playButtonTriggered);
 
     connect(newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer);
@@ -270,7 +260,7 @@ void TimeLine::extendLength(int frame)
     int currentLength = mTracks->getFrameLength();
     if(frame > (currentLength * 0.75))
     {
-        int newLength = std::max(frame, currentLength) * 1.5;
+        int newLength = static_cast<int>(std::max(frame, currentLength) * 1.5);
 
         if (newLength > 9999)
             newLength = 9999;
@@ -349,7 +339,6 @@ void TimeLine::updateLength()
     int frameLength = getLength();
     mHScrollbar->setMaximum(qMax(0, frameLength - mTracks->width() / mTracks->getFrameSize()));
     mTimeControls->updateLength(frameLength);
-    update();
     updateContent();
 }
 
@@ -362,7 +351,7 @@ void TimeLine::updateContent()
 
 void TimeLine::setLoop(bool loop)
 {
-    mTimeControls->toggleLoop(loop);
+    mTimeControls->setLoop(loop);
 }
 
 void TimeLine::setPlaying(bool isPlaying)
@@ -373,7 +362,7 @@ void TimeLine::setPlaying(bool isPlaying)
 
 void TimeLine::setRangeState(bool range)
 {
-    mTimeControls->toggleLoopControl(range);
+    mTimeControls->setRangeState(range);
 }
 
 int TimeLine::getRangeLower()

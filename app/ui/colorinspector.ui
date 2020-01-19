@@ -131,6 +131,12 @@
      </property>
      <item row="2" column="2">
       <widget class="QSpinBox" name="BluespinBox">
+       <property name="minimumSize">
+        <size>
+         <width>55</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>60</width>
@@ -144,6 +150,12 @@
      </item>
      <item row="3" column="2">
       <widget class="QSpinBox" name="AlphaspinBox">
+       <property name="minimumSize">
+        <size>
+         <width>55</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>60</width>
@@ -194,6 +206,12 @@
      </item>
      <item row="0" column="2">
       <widget class="QSpinBox" name="RedspinBox">
+       <property name="minimumSize">
+        <size>
+         <width>55</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>60</width>
@@ -297,6 +315,12 @@
      </item>
      <item row="1" column="2">
       <widget class="QSpinBox" name="GreenspinBox">
+       <property name="minimumSize">
+        <size>
+         <width>55</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>60</width>

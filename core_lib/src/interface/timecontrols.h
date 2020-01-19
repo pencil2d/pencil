@@ -33,26 +33,26 @@ class TimeControls : public QToolBar
     Q_OBJECT
 
 public:
-    TimeControls(TimeLine* parent = 0);
+    TimeControls(TimeLine* parent = nullptr);
     void initUI();
     void updateUI();
-
-    void setFps(int value);
     void setEditor(Editor* editor);
+    void setFps(int value);
+    void setLoop(bool);
+    void setRangeState(bool);
+
     void updateLength(int frameLength);
     void updatePlayState();
+
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
 Q_SIGNALS:
-    void soundClick(bool);
-    void fpsClick(int);
+    void soundToggled(bool);
+    void fpsChanged(int);
     void playButtonTriggered();
 
 public slots:
-    void toggleLoop(bool);
-    void toggleLoopControl(bool);
-
     /// Work-around in case the FPS spin-box "valueChanged" signal doesn't work.
     void onFpsEditingFinished();
 

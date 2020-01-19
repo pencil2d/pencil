@@ -50,6 +50,15 @@ void LayerVector::removeColour(int colorIndex)
     });
 }
 
+void LayerVector::moveColor(int start, int end)
+{
+    foreachKeyFrame( [=] (KeyFrame* pKeyFrame)
+    {
+        auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
+        pVecImage->moveColor(start, end);
+    });
+}
+
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
     if (keyExists(frameNumber))
@@ -179,12 +188,12 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath, Progr
     }
 }
 
-VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber)
+VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber) const
 {
     return static_cast<VectorImage*>(getKeyFrameAt(frameNumber));
 }
 
-VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increment)
+VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increment) const
 {
     return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }

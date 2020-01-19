@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include <QPushButton>
 #include <QSettings>
 #include <QMenu>
+#include <QAbstractItemModel>
 
 // Project
 #include "colourref.h"
@@ -38,7 +39,9 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "colorbox.h"
 #include "scribblearea.h"
+#include "layerbitmap.h"
 #include "colormanager.h"
+#include "layermanager.h"
 
 
 ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) :
@@ -80,6 +83,7 @@ void ColorPaletteWidget::initUI()
     palettePreferences();
 
     connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
+    connect(ui->colorListWidget->model(), &QAbstractItemModel::rowsMoved, this, &ColorPaletteWidget::onRowsMoved);
 
     connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
     connect(ui->colorListWidget, &QListWidget::itemChanged, this, &ColorPaletteWidget::onItemChanged);
@@ -88,15 +92,24 @@ void ColorPaletteWidget::initUI()
     connect(ui->colorDialogButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickColorDialogButton);
     connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
     connect(ui->colorListWidget, &QListWidget::customContextMenuRequested, this, &ColorPaletteWidget::showContextMenu);
+
+    connect(editor(), &Editor::objectLoaded, this, &ColorPaletteWidget::updateUI);
 }
 
 void ColorPaletteWidget::updateUI()
 {
+    mObject = mEditor->object();
     refreshColorList();
     updateGridUI();
 }
 
-void ColorPaletteWidget::showContextMenu(const QPoint &pos)
+void ColorPaletteWidget::setCore(Editor* editor)
+{
+    mEditor = editor;
+    mObject = mEditor->object();
+}
+
+void ColorPaletteWidget::showContextMenu(const QPoint& pos)
 {
     QPoint globalPos = ui->colorListWidget->mapToGlobal(pos);
 
@@ -111,14 +124,14 @@ void ColorPaletteWidget::showContextMenu(const QPoint &pos)
 void ColorPaletteWidget::addItem()
 {
     QSignalBlocker b(ui->colorListWidget);
-    QColor newColour = editor()->color()->frontColor();
+    QColor newColour = mEditor->color()->frontColor();
 
     // add in front of selected color
     int colorIndex = ui->colorListWidget->currentRow()+1;
 
     ColourRef ref(newColour);
 
-    editor()->object()->addColourAtIndex(colorIndex, ref);
+    mObject->addColourAtIndex(colorIndex, ref);
     refreshColorList();
 }
 
@@ -127,7 +140,7 @@ void ColorPaletteWidget::replaceItem()
     QSignalBlocker b(ui->colorListWidget);
     int index = ui->colorListWidget->currentRow();
 
-    QColor newColour = editor()->color()->frontColor();
+    QColor newColour = mEditor->color()->frontColor();
 
     if (index >= 0)
     {
@@ -148,7 +161,7 @@ void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
     QSignalBlocker b(ui->colorListWidget);
     ui->colorListWidget->setCurrentRow(colorIndex);
 
-    if (colorIndex > 0)
+    if (colorIndex >= 0)
     {
         emit colorChanged(newColor);
     }
@@ -189,11 +202,11 @@ void ColorPaletteWidget::refreshColorList()
     borderHighlight.setColor(QColor(255, 255, 255, 200));
     borderHighlight.setDashOffset(4);
 
-    int colourCount = editor()->object()->getColourCount();
+    int colourCount = mObject->getColourCount();
 
     for (int i = 0; i < colourCount; i++)
     {
-        const ColourRef colourRef = editor()->object()->getColour(i);
+        const ColourRef colourRef = mObject->getColour(i);
         QListWidgetItem* colourItem = new QListWidgetItem(ui->colorListWidget);
 
         if (ui->colorListWidget->viewMode() != QListView::IconMode)
@@ -222,7 +235,7 @@ void ColorPaletteWidget::refreshColorList()
 
         colourItem->setIcon(swatchIcon);
         swatchPainter.end();
-        colourItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+        colourItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
 
         ui->colorListWidget->addItem(colourItem);
     }
@@ -244,11 +257,11 @@ void ColorPaletteWidget::changeColourName(QListWidgetItem* item)
                                                  tr("Colour name"),
                                                  tr("Colour name"),
                                                  QLineEdit::Normal,
-                                                 editor()->object()->getColour(colorNumber).name,
+                                                 mObject->getColour(colorNumber).name,
                                                  &ok);
             if (ok && !text.isEmpty())
             {
-                editor()->object()->renameColour(colorNumber, text);
+                mObject->renameColour(colorNumber, text);
                 refreshColorList();
             }
         }
@@ -259,7 +272,55 @@ void ColorPaletteWidget::onItemChanged(QListWidgetItem* item)
 {
     int index = ui->colorListWidget->row(item);
     QString newColorName = item->text();
-    editor()->object()->renameColour(index, newColorName);
+    mObject->renameColour(index, newColorName);
+}
+
+void ColorPaletteWidget::onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
+{
+    Q_UNUSED(parent)
+    Q_UNUSED(destination)
+    Q_UNUSED(end)
+
+    int startIndex, endIndex;
+    if (start < row)
+    {
+        row -= 1; // TODO: Is this a bug?
+        if (start == row) { return; }
+
+        startIndex = start;
+        endIndex = row;
+
+        mObject->movePaletteColor(startIndex, endIndex);
+
+        mObject->addColour(mObject->getColour(startIndex));
+        mObject->moveVectorColor(startIndex, mObject->getColourCount() - 1);
+        for (int i = startIndex; i < endIndex; i++)
+        {
+            mObject->moveVectorColor(i + 1, i);
+        }
+        mObject->moveVectorColor(mObject->getColourCount() - 1, endIndex);
+    }
+    else
+    {
+        if (start == row) { return; }
+
+        startIndex = start;
+        endIndex = row;
+
+        mObject->movePaletteColor(startIndex, endIndex);
+
+        mObject->addColour(mObject->getColour(startIndex));
+        mObject->moveVectorColor(startIndex, mObject->getColourCount() - 1);
+        for (int i = startIndex; i > endIndex; i--)
+        {
+            mObject->moveVectorColor(i - 1, i);
+        }
+        mObject->moveVectorColor(mObject->getColourCount() - 1, endIndex);
+    }
+
+    mObject->removeColour(mObject->getColourCount() - 1);
+
+    refreshColorList();
 }
 
 void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
@@ -320,7 +381,7 @@ void ColorPaletteWidget::palettePreferences()
 void ColorPaletteWidget::setListMode()
 {
     ui->colorListWidget->setViewMode(QListView::ListMode);
-    ui->colorListWidget->setMovement(QListView::Static);
+    ui->colorListWidget->setDragDropMode(QAbstractItemView::InternalMove);
     ui->colorListWidget->setGridSize(QSize(-1, -1));
     updateUI();
 
@@ -424,21 +485,21 @@ void ColorPaletteWidget::clickAddColorButton()
     if (mIsColorDialog)
         newColour = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
     else 
-        newColour = editor()->color()->frontColor();
+        newColour = mEditor->color()->frontColor();
 
     if (!newColour.isValid())
     {
         return; // User canceled operation
     }
 
-    int colorIndex = editor()->object()->getColourCount();
+    int colorIndex = mObject->getColourCount();
     ColourRef ref(newColour);
 
-    editor()->object()->addColour(ref);
+    mObject->addColour(ref);
     refreshColorList();
 
-    editor()->color()->setColorNumber(colorIndex);
-    editor()->color()->setColor(ref.colour);
+    mEditor->color()->setColorNumber(colorIndex);
+    mEditor->color()->setColor(ref.colour);
 }
 
 void ColorPaletteWidget::clickRemoveColorButton()
@@ -450,28 +511,28 @@ void ColorPaletteWidget::clickRemoveColorButton()
         // items are not deleted by qt, it has to be done manually
         // delete should happen before removing the color from from palette
         // as the palette will be one ahead and crash otherwise
-        if (editor()->object()->isColourInUse(index))
+        if (mObject->isColourInUse(index))
         {
             bool accepted = false;
             if (!mMultipleSelected)
                 accepted = showPaletteWarning();
 
-            if ((accepted || mMultipleSelected) && editor()->object()->getColourCount() > 1)
+            if ((accepted || mMultipleSelected) && mObject->getColourCount() > 1)
             {
                 delete item;
-                editor()->object()->removeColour(index);
+                mObject->removeColour(index);
             }
         }
-        else if (editor()->object()->getColourCount() > 1)
+        else if (mObject->getColourCount() > 1)
         {
             delete item;
-            editor()->object()->removeColour(index);
+            mObject->removeColour(index);
         }
-        else if (editor()->object()->getColourCount() == 1)
+        else if (mObject->getColourCount() == 1)
         {
             showPaletteReminder();
         }
-        editor()->updateCurrentFrame();
+        mEditor->updateCurrentFrame();
     }
     mMultipleSelected = false;
 }

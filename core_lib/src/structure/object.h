@@ -87,6 +87,8 @@ public:
     void setColour(int index, QColor newColour);
     void setColourRef(int index, ColourRef newColourRef);
     void addColour(QColor);
+    void movePaletteColor(int start, int end);
+    void moveVectorColor(int start, int end);
 
     void addColour(ColourRef newColour) { mPalette.append(newColour); }
     void addColourAtIndex(int index, ColourRef newColour);
@@ -97,6 +99,7 @@ public:
     bool importPalette(QString filePath);
     void importPaletteGPL(QFile& file);
     void importPalettePencil(QFile& file);
+    void openPalette(QString filePath);
 
     bool exportPalette(QString filePath);
     void exportPaletteGPL(QFile& file);
@@ -114,9 +117,10 @@ public:
     Layer* getLayer(int i) const;
     Layer* findLayerByName(QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
 
-    bool moveLayer(int i, int j);
+    bool swapLayers(int i, int j);
     void deleteLayer(int i);
     void deleteLayer(Layer*);
+    void addLayer(Layer* layer);
 
     template<typename T>
     std::vector<T*> getLayersByType() const

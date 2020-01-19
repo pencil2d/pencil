@@ -48,6 +48,9 @@ public:
     QRectF mapCanvasToScreen(const QRectF& rect);
     QRectF mapScreenToCanvas(const QRectF& rect);
 
+    QPolygonF mapPolygonToScreen(const QPolygonF& polygon);
+    QPolygonF mapPolygonToCanvas(const QPolygonF& polygon);
+
     QPainterPath mapCanvasToScreen(const QPainterPath& path);
     QPainterPath mapScreenToCanvas(const QPainterPath& path);
 
@@ -79,6 +82,12 @@ public:
     void setCanvasSize(QSize size);
     void setCameraLayer(Layer* layer);
 
+    QTransform getImportView() { return mImportView; }
+    void setImportView(const QTransform& newView) { mImportView = newView; }
+
+    void setImportFollowsCamera(bool b) { mImportFollowsCamera = b; }
+    bool getImportFollowsCamera() { return mImportFollowsCamera; }
+
     void updateViewTransforms();
 
     Q_SIGNAL void viewChanged();
@@ -93,6 +102,7 @@ private:
     QTransform mViewCanvas;
     QTransform mViewCanvasInverse;
     QTransform mCentre;
+    QTransform mImportView;
 
     Camera* mDefaultEditorCamera = nullptr;
     Camera* mCurrentCamera = nullptr;
@@ -101,6 +111,7 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+    bool mImportFollowsCamera = false;
 
     LayerCamera* mCameraLayer = nullptr;
 };

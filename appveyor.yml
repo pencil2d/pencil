@@ -1,3 +1,4 @@
+image: Visual Studio 2019
 configuration:
   - Release
 
@@ -6,26 +7,21 @@ environment:
   matrix:
 
     # MSVC x86
-    - arch:       win32
-      bitsize:    x86
-      platform:   x86
-      qt:         5.9\msvc2015
-      PYTHON: "C:\\Python35"
+    - platform:   x86
+      qt:         5.12.5\msvc2017
+      PYTHON:     "C:\\Python35"
       PLATFORM_: "x86"
 
     # MSVC x64
-    - arch:       win32
-      bitsize:    x64
-      platform:   amd64
-      qt:         5.9\msvc2015_64
-      PYTHON: "C:\\Python35"
+    - platform:   amd64
+      qt:         5.12.5\msvc2017_64
+      PYTHON:     "C:\\Python35"
       PLATFORM_: "amd64"
 
 skip_commits:
   files:
     - '*.md'
     - docs/*
-    - util/*
 
 install:
   - set PYTHON3="%PYTHON%\python.exe"
@@ -38,78 +34,25 @@ install:
   - "%PYTHON3% -m pip install --upgrade google-api-python-client"
   - "%PYTHON3%  -V"
   - set QTDIR=C:\Qt\%qt%
-  - set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;C:\MinGW\bin
+  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin
 
 before_build:
+  - echo %PLATFORM_%
+  - echo %APPVEYOR_BUILD_FOLDER%
   - qmake --version
   - md build
   - cd build
-  - call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM_%
-  - if NOT %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" CONFIG+=GIT CONFIG+=NIGHTLY
-  - if %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE
-  - echo %PLATFORM_%
+  - if %PLATFORM_%==x86   call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - if %PLATFORM_%==amd64 call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - if NOT %APPVEYOR_REPO_BRANCH%==release call qmake "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" CONFIG+=GIT CONFIG+=Release CONFIG+=PENCIL2D_NIGHTLY 
+  - if %APPVEYOR_REPO_BRANCH%==release     call qmake "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" CONFIG+=GIT CONFIG+=Release CONFIG+=PENCIL2D_RELEASE
 
 build_script:
-  - set BUILDTYPE=/t:Build
-  - set SOLUTIONFILE32="%APPVEYOR_BUILD_FOLDER%\build\pencil2d.sln"
-  - set SOLUTIONFILE64="%APPVEYOR_BUILD_FOLDER%\build\pencil2d.sln"
-  - set BUILDTARGET32="/p:Configuration=Release,Platform=Win32"
-  - set BUILDTARGET64="/p:Configuration=Release,Platform=x64"
-  - if %PLATFORM_%==x86   call msbuild %SOLUTIONFILE32% %BUILDTYPE% %BUILDTARGET32%
-  - if %PLATFORM_%==amd64 call msbuild %SOLUTIONFILE64% %BUILDTYPE% %BUILDTARGET64%
+  - nmake
 
 after_build:
   - set upload=no
   - if %APPVEYOR_REPO_BRANCH%==master set upload=yes
   - if %APPVEYOR_REPO_BRANCH%==release set upload=yes
   - if "%FORCE_NIGHTLY_UPLOAD%"=="yes" set upload=yes
-  - if %PLATFORM_%==x86 (
-    echo "-----Deploying 32 Bit Version-----" &
-    dir /s &
-    md bin\plugins\ &
-    echo "Copying ffmpeg plugin" &
-    call curl.exe -o bin\plugins\ffmpeg-3.4.1-win32-static.zip "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-3.4.1-win32-static.zip" &
-    call 7z.exe x bin\plugins\ffmpeg-3.4.1-win32-static.zip -o"bin\plugins" &
-    echo "move ffmpeg.exe and delete ffmpeg leftovers" &
-    del bin\plugins\ffmpeg-3.4.1-win32-static.zip &
-    move /y bin\plugins\ffmpeg-3.4.1-win32-static\bin\ffmpeg.exe bin\plugins &
-    rmdir /q /s bin\plugins\ffmpeg-3.4.1-win32-static &
-    echo "copying qt libraries" &
-    windeployqt bin\pencil2d.exe &
-    echo "zipping" &
-    Rename bin Pencil2D &
-    call 7z.exe a "pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" Pencil2D\ &
-    echo "zipping done" &
-    echo "what's inside?" &
-    call 7z.exe l "pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
-    if %upload%==yes (
-    echo "deploying to google drive" &
-    cd %APPVEYOR_BUILD_FOLDER%\util &
-    call %PYTHON%\\python.exe nightly-build-upload.py "%WIN32_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
-    echo "32 Bit deployed" ) )
-
-  - if %PLATFORM_%==amd64 (
-    echo "----- Deploying 64 Bit Version -----" &
-    echo "rename and zip folder" &
-    dir /s &
-    md bin\plugins\ &
-    echo "Copying ffmpeg plugin" &
-    call curl.exe -o bin\plugins\ffmpeg-3.4.1-win64-static.zip "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.4.1-win64-static.zip" &
-    call 7z.exe x bin\plugins\ffmpeg-3.4.1-win64-static.zip -o"bin\plugins" &
-    echo "move ffmpeg.exe and delete ffmpeg leftovers" &
-    del bin\plugins\ffmpeg-3.4.1-win64-static.zip &
-    move /y bin\plugins\ffmpeg-3.4.1-win64-static\bin\ffmpeg.exe bin\plugins &
-    rmdir /q /s bin\plugins\ffmpeg-3.4.1-win64-static &
-    echo "copying qt libraries" &
-    windeployqt bin\pencil2d.exe &
-    echo "zipping" &
-    Rename bin Pencil2D &
-    call 7z.exe a "pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" Pencil2D\ &
-    echo "zipping done" &
-    echo "what's inside?" &
-    call 7z.exe l "pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
-    if %upload%==yes (
-    echo "deploying to google drive" &
-    cd %APPVEYOR_BUILD_FOLDER%\util &
-    call %PYTHON%\\python.exe nightly-build-upload.py "%WIN64_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
-    echo "64 Bit Deployed" ) )
+  - powershell ..\util\after-build.ps1 -upload %upload% -platform %PLATFORM_% -branch %APPVEYOR_REPO_BRANCH%

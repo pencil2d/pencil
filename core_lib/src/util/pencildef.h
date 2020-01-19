@@ -22,15 +22,6 @@ GNU General Public License for more details.
 #define M_PI 3.14159265358979323846
 #endif
 
-#define PENCIL_MOVIE_EXT \
-    QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
-
-#define PENCIL_IMAGE_FILTER \
-   QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
-
-#define PENCIL_IMAGE_SEQ_FILTER \
-    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
-
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 #define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
@@ -109,7 +100,7 @@ enum StabilizationLevel
 #define CMD_ZOOM_IN "CmdZoomIn"
 #define CMD_ZOOM_OUT "CmdZoomOut"
 #define CMD_ROTATE_CLOCK "CmdRotateClockwise"
-#define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClosewise"
+#define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClockwise"
 #define CMD_RESET_ZOOM_ROTATE "CmdResetZoomRotate"
 #define CMD_ZOOM_400 "CmdZoom400"
 #define CMD_ZOOM_300 "CmdZoom300"
@@ -126,6 +117,8 @@ enum StabilizationLevel
 #define CMD_ONIONSKIN_NEXT "CmdOnionSkinNext"
 #define CMD_PLAY "CmdPlay"
 #define CMD_LOOP "CmdLoop"
+#define CMD_FLIP_INBETWEEN "CmdFlipInBetween"
+#define CMD_FLIP_ROLLING "CmdFlipRolling"
 #define CMD_GOTO_NEXT_FRAME "CmdGotoNextFrame"
 #define CMD_GOTO_PREV_FRAME "CmdGotoPreviousFrame"
 #define CMD_GOTO_NEXT_KEY_FRAME "CmdGotoNextKeyFrame"
@@ -167,6 +160,9 @@ enum StabilizationLevel
 // Save / Export
 #define LAST_PCLX_PATH          "LastFilePath"
 
+// Import
+#define IMPORT_REPOSITION_TYPE      "ImportRepositionType"
+
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
 #define SHORTCUTS_GROUP             "Shortcuts"
@@ -191,6 +187,9 @@ enum StabilizationLevel
 #define SETTING_DRAW_LABEL          "DrawLabel"
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
+#define SETTING_ROTATION_INCREMENT  "RotationIncrement"
+#define SETTING_ASK_FOR_PRESET      "AskForPreset"
+#define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"
@@ -216,6 +215,10 @@ enum StabilizationLevel
 #define SETTING_ONION_NEXT_FRAMES_NUM   "OnionNextFramesNum"
 #define SETTING_ONION_WHILE_PLAYBACK    "OnionWhilePlayback"
 #define SETTING_ONION_TYPE              "OnionType"
+#define SETTING_FLIP_ROLL_MSEC          "FlipRoll"
+#define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
+#define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
+
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"
 

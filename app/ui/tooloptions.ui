@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>164</width>
-    <height>341</height>
+    <height>361</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,7 +77,7 @@
         <double>0.100000000000000</double>
        </property>
        <property name="maximum">
-        <double>80.000000000000000</double>
+        <double>99.000000000000000</double>
        </property>
        <property name="value">
         <double>5.000000000000000</double>
@@ -111,7 +111,7 @@
      <item>
       <widget class="SpinSlider" name="toleranceSlider" native="true">
        <property name="toolTip">
-        <string>The extend to which the color variation will be treated as being equal</string>
+        <string>The extent to which the color variation will be treated as being equal</string>
        </property>
       </widget>
      </item>

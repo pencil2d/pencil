@@ -32,7 +32,7 @@ class SoundManager : public BaseManager
 public:
 
     explicit SoundManager(Editor* editor);
-    ~SoundManager();
+    ~SoundManager() override;
 
     bool init() override;
     Status load(Object*) override;

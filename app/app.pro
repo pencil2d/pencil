@@ -20,6 +20,10 @@ RESOURCES += \
     data/app.qrc \
     ../translations/translations.qrc
 
+MOC_DIR = .moc
+OBJECTS_DIR = .obj
+UI_DIR = .ui
+
 INCLUDEPATH += \
     src \
     ../core_lib/src/graphics \
@@ -34,7 +38,11 @@ INCLUDEPATH += \
     ../core_lib/src/external
 
 HEADERS += \
+    src/importlayersdialog.h \
+    src/importpositiondialog.h \
     src/mainwindow2.h \
+    src/predefinedsetmodel.h \
+    src/pegbaralignmentdialog.h \
     src/shortcutfilter.h \
     src/timeline2.h \
     src/actioncommands.h \
@@ -61,11 +69,16 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/copymultiplekeyframesdialog.h \
-    src/checkupdatesdialog.h
+    src/checkupdatesdialog.h \
+    src/presetdialog.h
 
 SOURCES += \
+    src/importlayersdialog.cpp \
+    src/importpositiondialog.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
+    src/predefinedsetmodel.cpp \
+    src/pegbaralignmentdialog.cpp \
     src/shortcutfilter.cpp \
     src/timeline2.cpp \
     src/actioncommands.cpp \
@@ -91,10 +104,15 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/copymultiplekeyframesdialog.cpp \
-    src/checkupdatesdialog.cpp
+    src/checkupdatesdialog.cpp \
+    src/presetdialog.cpp
 
 FORMS += \
+    ui/importimageseqpreview.ui \
+    ui/importlayersdialog.ui \
+    ui/importpositiondialog.ui \
     ui/mainwindow2.ui \
+    ui/pegbaralignmentdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
@@ -114,7 +132,8 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
-    ui/copymultiplekeyframesdialog.ui
+    ui/copymultiplekeyframesdialog.ui \
+    ui/presetdialog.ui
 
 
 
@@ -134,6 +153,8 @@ macx {
     FILE_ICONS.files = data/icons/mac_pcl_icon.icns data/icons/mac_pclx_icon.icns
     FILE_ICONS.path = Contents/Resources
     QMAKE_BUNDLE_DATA += FILE_ICONS
+
+    QMAKE_TARGET_BUNDLE_PREFIX += org.pencil2d
 
     LIBS += -framework AppKit
 }

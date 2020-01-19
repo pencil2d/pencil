@@ -1,3 +1,104 @@
+## Pencil2D 0.6.4 - 31 May 2019
+
+### Enhancements
+
+- c9e1ba6: Fix canvas flip icons in main menu
+- 4b6e55a: Tweak frame flipping timing & behavior.
+- 4f31fe6: Set minimum value for the bucket fill tolerance to 0.
+- 1a1238d: Reset the autosave counter if the user manually saves.
+- 8cc1f8b, e1db3a7: Add more warnings when attempting to modify a hidden layer.
+- 676092a: Improving tabbing order of the camera layer properties dialog.
+- ca3b651: Automatically select the first action when first viewing the shortcut preferences.
+
+### Fixes
+
+- 0e041d9: Fix crash when trying to manually scrub while flipping.
+- #940 Fix saving issue with certain locales.
+- 96dca6d: Fix some move export issues on Windows.
+- 97f5891, 7a41226, 168bb1f: Fix various English typos throughout the program.
+- d3a41d3, fddf846, ef235f0: Fix some subtle display issues.
+- b43b024: Fix potential program crash when deleting a keyframe while a selection is active (by [Oliver Stevns](https://github.com/CandyFace) | alternate solution by [ryyharris](https://github.com/ryyharris)).
+- 9942932: Fix transformations temporarily applying to all frames during playback.
+- 5aa4d9c: Fix the first item in the color palette not changing the bitmap brush color.
+- b293c28: Fix a partial file wipe issue when using Save As to convert pclx files to pcl files.
+- 624b470: Fix the cursor getting stuck with the wrong icon sometimes when deselecting.
+- 673ec0c: Fix selection changing size during moving sometimes.
+- 1dc46e6: Fix bucket tool occasionally filling the wrong pixel.
+- c0af82a: Fix semi-permanent display bug when right clicking in the middle of a stroke.
+- e33fabb: Fix autocropping for frames loaded from a file.
+- a61ec8b: Fix general UI & Tooltip typos. (by[mapreri](https://github.com/mapreri))
+- #1015 Fix inverted active layer focus shortcuts (by [ryyharris](https://github.com/ryyharris)).
+- #1170 Fix incorrect redo text (by [ryyharris](https://github.com/ryyharris)).
+- #1192 Fix crash for Flipping & Rolling feature when clicking on timeline + General improvements (by [davidlamhauge](https://github.com/davidlamhauge))
+- #1195 Fix update checker on Windows.
+- #1211, c24487d: Fix crash on vector layers when drawing on empty frame without existing previous keyframe.
+
+## Pencil2D 0.6.3 - 17 March 2019
+
+### New Features
+
+* #978  Implement Flipping / Rolling Feature -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1068 Add support for tif/tiff import and export -- [Andrey Nevdokimof](https://github.com/nevdokimof)
+* #1074 Migrate timeline "frame size" slider widget from preferences to timeline -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1109 Function to import images by filename -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1115 / `bfd3d74` Add support for transparency: WebM and APNG
+* #1126 Check for updates & forum/discord links in Help menu
+* #1136 Export only keyframes possible in `exportImageSequence` -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1145 Zoom shortcuts for 25% up to 400% -- [David Lamhauge](https://github.com/davidlamhauge)
+
+### Enhancements
+
+* #1065 Fixed error message dialog typo --[Mattia Rizzolo](https://github.com/mapreri)
+* #1066 Implement individual division lines for the grid system -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1086 Prevent layers to have the same name
+* #1091 Filename suggestion (numbers) for new layers in Pencil2D
+* #1100 AVI format movie exports with considerable lower quality than other formats
+* #1102 add a frame pool cache option (preferences). -- [Lucas Mongrain](https://github.com/0x72D0)
+* #1108 Improved *.gpl import algorithm
+* #1143 Fps and field size in settings
+* #1147 Layers swap place more logically -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1176 Make default file filter for palettes match all supported formats
+
+### Fixes
+
+* #926 Scrubber should move to start of range
+* #1059 Use tablet events for tablet input
+* #1089 Copy and Paste Doesn't Function
+* #1090 Minor image export bugs -- [Philippe Rzetelski](https://github.com/przet)
+* #1092 Loading a file removes the application icon on windows until next restart
+* #1093 Loading a file and exiting will change "open recent" file order -- [Matthew McGonagle](https://github.com/MatthewMcGonagle)
+* #1094 *.gpl file palette importer miss-handling whitespace and names -- [Andrey Nevdokimof](https://github.com/nevdokimof)
+* #1095 Pencil2D crashes after selecting the camera layer when move tool is selected
+* #1096 Pencil2D crashes when drawing on vector layer under specific conditions
+* #1101 Range input boxes come activated even when the checkbox is not ticked during application initialization -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1107 FFix most warnings in core_lib/structure from g++
+* #1111 Fix rename optimization during save
+* #1132 Master resolve warnings (NULL and C-style Casts) -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1134 Remove Show Tab Bar from the View menu on mac
+* #1135 Error counting digits fixed
+* #1137 Improve darkmode QDockWidget titlebar
+* #1139 Fix audio volume in movie export
+* #1141 Resolved warnings for NULL and old-casts -- [David Lamhauge](https://github.com/davidlamhauge)
+* #1142 Force light theme on mac os
+* #1144 Renable dark mode on macOS
+* #1154 The Drawing tools left round marks on most strokes
+* #1155 Fix pressure artifacts at end of brush stroke
+* #1157 Sound export audio samples synchronization issues
+* #1166 Fix XML fields corrupting because of locale decimal types.
+* #1168 Fix tablet events and cleanup events handling
+* #1175 Grayscale color wheel
+* #1181 Fix canvas bugs
+* #1188 Miscellaneous fixes: Fixes regression for #677. Fixes duplicate selection box.
+* #1120 Windows Nightly Builds not working
+
+* `b1064ab` Fix auto-crop being disabled in duplicate frames.
+* `aafd048` Fix: mistakingly empty the filename of source keyframe when duplicating a frame
+* `4f7b4bb` Fix sound key length
+
+Translations
+* Added translations: Catalan, Greek and Kabyle.
+* `8f42d46` Updated most recent translations from Transifex
+
 ## Pencil2D 0.6.2 - 26 September 2018
 
 * #378 Disable onion skins while playing animation.
@@ -80,7 +181,7 @@ Fixes:
 * #412, #814 Duplicate key wasn't working in some cases.
 * #831 App crashed when duplicating a sound key.
 * #830 Can't save .pcl multiple times after importing sound layers.
-* #845 The framerate wasn't accurate when playing animation. 
+* #845 The framerate wasn't accurate when playing animation.
 * #828 The app stalled when using dotted cursor and zooming-in very much.
 * #739, #889 Vector outlines are not drawn when Horizontal Flip and Show Outlines Only are activated. -- [Martin van Zijl](https://github.com/martinvanzijl)
 * #735, #913 Some shortcuts are broken, file extensions are case-sensitive in image sequence import -- [Nick](https://github.com/Spark01)

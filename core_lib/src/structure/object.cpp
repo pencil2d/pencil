@@ -241,7 +241,7 @@ Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
     return nullptr;
 }
 
-bool Object::moveLayer(int i, int j)
+bool Object::swapLayers(int i, int j)
 {
     if (i < 0 || i >= mLayers.size())
     {
@@ -281,6 +281,14 @@ void Object::deleteLayer(Layer* layer)
     }
 }
 
+void Object::addLayer(Layer *layer)
+{
+    if (layer != nullptr)
+    {
+        mLayers.append(layer);
+    }
+}
+
 ColourRef Object::getColour(int index) const
 {
     ColourRef result(Qt::white, "error");
@@ -306,6 +314,23 @@ void Object::setColourRef(int index, ColourRef newColourRef)
 void Object::addColour(QColor colour)
 {
     addColour(ColourRef(colour, "Colour " + QString::number(mPalette.size())));
+}
+
+void Object::movePaletteColor(int start, int end)
+{
+    mPalette.move(start, end);
+}
+
+void Object::moveVectorColor(int start, int end)
+{
+    for (int i = 0; i < getLayerCount(); i++)
+    {
+        Layer* layer = getLayer(i);
+        if (layer->type() == Layer::VECTOR)
+        {
+            static_cast<LayerVector*>(layer)->moveColor(start, end);
+        }
+    }
 }
 
 void Object::addColourAtIndex(int index, ColourRef newColour)
@@ -429,7 +454,7 @@ bool Object::exportPalette(QString filePath)
  * This should load colors the same as GIMP, with the following intentional exceptions:
  * - Whitespace before and after a name does not appear in the name
  * - The last line is processed, even if there is not a trailing newline
- * - Colours without a name will use are automatic naming system rather than "Untitled"
+ * - Colours without a name will use our automatic naming system rather than "Untitled"
  */
 void Object::importPaletteGPL(QFile& file)
 {
@@ -516,7 +541,6 @@ void Object::importPalettePencil(QFile& file)
     QDomDocument doc;
     doc.setContent(&file);
 
-    mPalette.clear();
     QDomElement docElem = doc.documentElement();
     QDomNode tag = docElem.firstChild();
     while (!tag.isNull())
@@ -535,6 +559,20 @@ void Object::importPalettePencil(QFile& file)
     }
 }
 
+void Object::openPalette(QString filePath)
+{
+    if (!QFile::exists(filePath))
+    {
+        return;
+    }
+
+    mPalette.clear();
+    importPalette(filePath);
+}
+
+/*
+ * Imports palette, e.g. appends to palette
+*/
 bool Object::importPalette(QString filePath)
 {
     QFile file(filePath);

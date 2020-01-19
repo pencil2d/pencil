@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define _PREFERENCES_H_
 
 #include <QDialog>
+#include <QDir>
 
 #include "pencildef.h"
 #include "scribblearea.h"
@@ -114,6 +115,12 @@ public slots:
     void scrubChanged(int);
     void playbackStateChanged(int);
     void drawEmptyKeyRadioButtonToggled(bool);
+    void flipRollMsecSliderChanged(int value);
+    void flipRollMsecSpinboxChanged(int value);
+    void flipRollNumDrawingdSliderChanged(int value);
+    void flipRollNumDrawingdSpinboxChanged(int value);
+    void flipInbetweenMsecSliderChanged(int value);
+    void flipInbetweenMsecSpinboxChanged(int value);
 
 private:
     Ui::TimelinePage* ui = nullptr;
@@ -130,7 +137,14 @@ public:
     void setManager(PreferenceManager* p) { mManager = p; }
 
 public slots:
+    void initPreset();
+    void addPreset();
+    void removePreset();
+    void setDefaultPreset();
+    void presetNameChanged(QListWidgetItem* item);
+
     void updateValues();
+    void askForPresetChange(int b);
     void autosaveChange(int b);
     void autosaveNumberChange(int number);
 
@@ -140,6 +154,9 @@ Q_SIGNALS:
 private:
     Ui::FilesPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
+    QSettings* mPresetSettings = nullptr;
+    QDir mPresetDir;
+    int mMaxPresetIndex = 0;
 };
 
 
@@ -157,7 +174,10 @@ public slots:
     void onionMinOpacityChange(int);
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
+    void onionSkinModeChange(int);
     void quickSizingChange(int);
+    void setRotationIncrement(int);
+    void rotationIncrementChange(int);
 private:
     Ui::ToolsPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;

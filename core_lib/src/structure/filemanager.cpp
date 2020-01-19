@@ -40,7 +40,7 @@ namespace
                            "</ul>";
 }
 
-FileManager::FileManager(QObject *parent) : QObject(parent),
+FileManager::FileManager(QObject* parent) : QObject(parent),
 mLog("FileManager")
 {
     ENABLE_DEBUG_LOG(mLog, false);
@@ -388,9 +388,6 @@ Status FileManager::save(Object* object, QString sFileName)
         if (s.ok() && saveLayersOK)
             deleteBackupFile(sBackupFile);
     }
-
-    object->setFilePath(sFileName);
-    object->setModified(false);
 
     progressForward();
 

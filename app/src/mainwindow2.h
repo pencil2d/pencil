@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include <QMainWindow>
 #include "preferencemanager.h"
+#include "pegbaralignmentdialog.h"
 
 
 template<typename T> class QList;
@@ -60,14 +61,16 @@ public:
 
     Editor* mEditor = nullptr;
 
-    public slots:
+public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
+    void openPegAlignDialog();
+    void closePegAlignDialog();
+    void currentLayerChanged();
 
 public:
-    void setOpacity(int opacity);
     void newDocument(bool force = false);
     void openDocument();
     bool saveDocument();
@@ -78,18 +81,22 @@ public:
     // import
     void importImage();
     void importImageSequence();
-    void importImageSequenceNumbered();
-    void addLayerByFilename(QString strFilePath);
+    void importPredefinedImageSet();
+    void importLayers();
     void importMovie();
     void importGIF();
 
     void lockWidgets(bool shouldLock);
 
+    void setOpacity(int opacity);
     void preferences();
-    
+ 
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
+
+    void displayMessageBox(const QString& title, const QString& body);
+    void displayMessageBoxNoTitle(const QString& body);
 
 Q_SIGNALS:
     void updateRecentFilesList(bool b);
@@ -102,7 +109,9 @@ private slots:
     void resetAndDockAllSubWidgets();
 
 private:
-    bool openObject(QString strFilename, bool checkForChanges);
+    bool newObject();
+    bool newObjectFromPresets(int presetIndex);
+    bool openObject(QString strFilename);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();
@@ -111,7 +120,9 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
+    void showPresetDialog();
 
+    void openPalette();
     void importPalette();
     void exportPalette();
 
@@ -147,9 +158,11 @@ private:
     // backup
     BackupElement* mBackupAtSave = nullptr;
 
+    PegBarAlignmentDialog* mPegAlign = nullptr;
+
 private:
     ActionCommands* mCommands = nullptr;
-    QList< BaseDockWidget* > mDockWidgets;
+    QList<BaseDockWidget*> mDockWidgets;
 
     QIcon mStartIcon;
     QIcon mStopIcon;

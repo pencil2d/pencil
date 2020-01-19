@@ -45,6 +45,7 @@ public:
     ~TimeLineCells();
 
     int getLayerNumber(int y);
+    int getInbetweenLayerNumber(int y);
     int getLayerY(int layerNumber);
     int getFrameNumber(int x);
     int getFrameX(int frameNumber);
@@ -59,6 +60,8 @@ public:
 
     int getFrameSize() { return mFrameSize; }
     void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
+    void paintLayerGutter(QPainter& painter);
+    bool didDetatchLayer();
 
 Q_SIGNALS:
     void mouseMovedY(int);
@@ -73,6 +76,7 @@ public slots:
     void setMouseMoveY(int x);
 
 protected:
+    void trackScrubber();
     void drawContent();
     void paintOnionSkin(QPainter& painter);
     void paintEvent(QPaintEvent* event);
@@ -103,11 +107,14 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
+    int mFromLayer = 0;
+    int mToLayer   = 1;
     int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
     int mMouseMoveY = 0;
     int mMouseMoveX = 0;
+    int mPrevFrame = 0;
     int mFrameOffset = 0;
     int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;
@@ -122,6 +129,7 @@ private:
 
     const static int mOffsetX = 0;
     const static int mOffsetY = 20;
+    const static int mLayerDetatchThreshold = 5;
 };
 
 #endif // TIMELINECELLS_H

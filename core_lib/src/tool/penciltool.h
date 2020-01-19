@@ -31,34 +31,29 @@ public:
     ToolType type() override { return PENCIL; }
     void loadSettings() override;
     QCursor cursor() override;
+    void resetToDefault() override;
 
-    void mousePressEvent( QMouseEvent* ) override;
-    void mouseMoveEvent( QMouseEvent* ) override;
-    void mouseReleaseEvent( QMouseEvent* ) override;
-
-    void tabletPressEvent( QTabletEvent* ) override;
-    void tabletMoveEvent( QTabletEvent* ) override;
-    void tabletReleaseEvent( QTabletEvent* ) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
 
     void drawStroke();
-    void paintAt( QPointF point );
+    void paintAt(QPointF point);
     void paintVectorStroke(Layer* layer);
     void paintBitmapStroke();
 
-    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
-
-    void setWidth( const qreal width ) override;
-    void setFeather( const qreal feather ) override;
-    void setUseFeather( const bool useFeather ) override;
-    void setInvisibility( const bool invisibility ) override;
-    void setPressure( const bool pressure ) override;
-    void setPreserveAlpha( const bool preserveAlpha ) override;
+    void setWidth(const qreal width) override;
+    void setFeather(const qreal feather) override;
+    void setUseFeather(const bool useFeather) override;
+    void setInvisibility(const bool invisibility) override;
+    void setPressure(const bool pressure) override;
+    void setPreserveAlpha(const bool preserveAlpha) override;
     void setStabilizerLevel(const int level) override;
     void setUseFillContour(const bool useFillContour) override;
 
 private:
-    QColor mCurrentPressuredColor { 0, 0, 0, 255 };
-    QPointF mLastBrushPoint { 0, 0 };
+    QColor mCurrentPressuredColor{ 0, 0, 0, 255 };
+    QPointF mLastBrushPoint{ 0, 0 };
     qreal mOpacity = 1.0f;
     QPointF mMouseDownPoint;
 };
