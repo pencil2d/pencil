@@ -20,6 +20,8 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QMessageBox>
+#include <QMenu>
 
 #include "object.h"
 #include "editor.h"
@@ -164,9 +166,93 @@ void TimeLineCells::updateContent()
     update();
 }
 
-
 bool TimeLineCells::didDetatchLayer() {
     return abs(getMouseMoveY()) > mLayerDetatchThreshold;
+}
+
+void TimeLineCells::showContextMenu(QPoint pos)
+{
+    pos = this->mapToGlobal(pos);
+    int index = mEditor->layers()->currentLayerIndex();
+    bool mergeInMenu = false;
+    QMenu* menu = new QMenu();
+    if (mEditor->layers()->currentLayerIndex() > 0 &&
+            mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
+            mEditor->layers()->getLayer(index)->type() == mEditor->layers()->getLayer(index-1)->type())
+    {
+        menu->addAction(tr("Merge onto Layer: %1").arg(mEditor->layers()->getLayer(index-1)->name()), this, &TimeLineCells::mergeLayerDown);
+        mergeInMenu = true;
+    }
+
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        menu->addAction(tr("Merge visible bitmap layers"), this, &TimeLineCells::mergeVisibleLayers);
+        mergeInMenu = true;
+    }
+
+    if (mergeInMenu)
+    {
+        menu->addSeparator();
+    }
+
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        menu->addAction(tr("Duplicate Layer: %1").arg(mEditor->layers()->currentLayer()->name()), this, &TimeLineCells::duplicateLayer);
+    }
+    menu->addAction(tr("Delete Layer: %1").arg(mEditor->layers()->currentLayer()->name()), this, &TimeLineCells::deleteLayer);
+
+    menu->exec(pos);
+}
+
+void TimeLineCells::deleteLayer()
+{
+    mEditor->layers()->deleteLayer(mEditor->layers()->currentLayerIndex());
+}
+
+void TimeLineCells::duplicateLayer()
+{
+    QString newLayerName = mEditor->layers()->currentLayer()->name() + "_copy";
+    mEditor->layers()->createBitmapLayer(newLayerName);
+    mEditor->layers()->duplicateLayer(mEditor->layers()->currentLayer(), mEditor->layers()->findLayerByName(newLayerName));
+}
+
+void TimeLineCells::mergeLayerDown()
+{
+    int index = mEditor->layers()->currentLayerIndex();
+    if (mEditor->layers()->getLayer(index)->type() == mEditor->layers()->getLayer(index-1)->type())
+    {
+        mEditor->layers()->mergeLayers(mEditor->layers()->currentLayer(), mEditor->layers()->getLayer(index-1));
+    }
+    mEditor->layers()->deleteLayer(index);
+}
+
+void TimeLineCells::mergeVisibleLayers()
+{
+    QList<int> indexes;
+    for (int i = 0; i < mEditor->layers()->count(); i++)
+    {
+        if (mEditor->layers()->getLayer(i)->type() == Layer::BITMAP &&
+                mEditor->layers()->getLayer(i)->visible())
+            indexes.append(i);
+    }
+
+    if (indexes.size() < 2) { return; }
+
+    int count = indexes.size();
+    while (count > 1)
+    {
+        mEditor->layers()->mergeLayers(mEditor->layers()->getLayer(indexes.at(count - 1)),
+                                       mEditor->layers()->getLayer(indexes.at(count - 2)));
+        count--;
+    }
+
+    indexes.removeFirst();
+
+    while (!indexes.empty())
+    {
+        mEditor->layers()->deleteLayer(indexes.last());
+        indexes.removeLast();
+    }
 }
 
 void TimeLineCells::drawContent()
@@ -504,6 +590,10 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             else
             {
                 mEditor->layers()->setCurrentLayer(layerNumber);
+                if (event->button() == Qt::RightButton)
+                {
+                    showContextMenu(event->pos());
+                }
             }
         }
         if (layerNumber == -1)

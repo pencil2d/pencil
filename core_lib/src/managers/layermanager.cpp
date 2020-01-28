@@ -305,6 +305,44 @@ Status LayerManager::deleteLayer(int index)
     return Status::OK;
 }
 
+void LayerManager::duplicateLayer(Layer *fromLayer, Layer *toLayer)
+{
+    if (fromLayer == nullptr || toLayer == nullptr) { return; }
+
+    for (int i = fromLayer->firstKeyFramePosition(); i <= fromLayer->getMaxKeyFramePosition(); i++)
+    {
+        editor()->scrubTo(i);
+        if (fromLayer->keyExists(i))
+        {
+            editor()->layers()->setCurrentLayer(fromLayer);
+            editor()->copy();
+            editor()->layers()->setCurrentLayer(toLayer);
+            if (!toLayer->keyExists(i))
+                toLayer->addNewKeyFrameAt(i);
+            editor()->paste();
+        }
+    }
+}
+
+void LayerManager::mergeLayers(Layer *fromLayer, Layer *toLayer)
+{
+    if (fromLayer == nullptr || toLayer == nullptr) { return; }
+
+    for (int i = fromLayer->firstKeyFramePosition(); i <= fromLayer->getMaxKeyFramePosition(); i++)
+    {
+        editor()->scrubTo(i);
+        if (fromLayer->keyExists(i))
+        {
+            editor()->layers()->setCurrentLayer(fromLayer);
+            editor()->copy();
+            editor()->layers()->setCurrentLayer(toLayer);
+            if (!toLayer->keyExists(i))
+                toLayer->addNewKeyFrameAt(i);
+            editor()->paste();
+        }
+    }
+}
+
 Status LayerManager::renameLayer(Layer* layer, const QString& newName)
 {
     if (newName.isEmpty()) return Status::FAIL;

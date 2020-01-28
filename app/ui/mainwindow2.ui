@@ -982,6 +982,11 @@
     <string>Flip Rolling</string>
    </property>
   </action>
+  <action name="actionMerge_Layer">
+   <property name="text">
+    <string>Merge Layers</string>
+   </property>
+  </action>
   <action name="actionPegbarAlignment">
    <property name="text">
     <string>Peg bar Alignment</string>
