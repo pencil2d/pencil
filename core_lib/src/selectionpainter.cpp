@@ -4,6 +4,7 @@
 #include "qpainter.h"
 #include "layermanager.h"
 #include "basetool.h"
+
 #include <QDebug>
 
 
@@ -16,7 +17,8 @@ void SelectionPainter::paint(QPainter& painter,
                              const Object* object,
                              int layerIndex,
                              BaseTool* tool,
-                             TransformParameters& tParams)
+                             TransformParameters& tParams,
+                             float scaling)
 {
     Layer* layer = object->getLayer(layerIndex);
 
@@ -83,8 +85,8 @@ void SelectionPainter::paint(QPainter& painter,
             }
             painter.drawText(static_cast<int>(tParams.currentSelectionPolygonF[0].x()),
                     static_cast<int>(tParams.currentSelectionPolygonF[0].y() - width),
-                    QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(tParams.currentSelectionPolygonF.boundingRect().width()),
-                                                               QString::number(tParams.currentSelectionPolygonF.boundingRect().height()),
+                    QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(tParams.currentSelectionPolygonF.boundingRect().width() / scaling),
+                                                               QString::number(tParams.currentSelectionPolygonF.boundingRect().height() / scaling),
                                                                QString::number(diffX),
                                                                QString::number(diffY)));
         }

@@ -19,7 +19,7 @@ class SelectionPainter
 public:
     SelectionPainter();
 
-    void paint(QPainter& painter, const Object* object, int layerIndex, BaseTool* tool, TransformParameters& transformParameters);
+    void paint(QPainter& painter, const Object* object, int layerIndex, BaseTool* tool, TransformParameters& transformParameters, float scaling);
 
     void setOriginalPolygonF(QPolygonF polyF) { mOriginalSelectionPolygonF = polyF; }
     void setOriginalPolygonFIsSet(bool b) { mOriginalPolygonFIsSet = b; }

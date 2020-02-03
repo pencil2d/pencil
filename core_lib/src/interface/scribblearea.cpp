@@ -1094,7 +1094,7 @@ void ScribbleArea::paintSelectionVisuals()
     }
 
     TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
-    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
+    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params, mEditor->view()->scaling());
 }
 
 BitmapImage* ScribbleArea::currentBitmapImage(Layer* layer) const
