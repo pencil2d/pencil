@@ -80,7 +80,7 @@ void ToolOptionWidget::updateUI()
     setStabilizerLevel(p.stabilizerLevel);
     setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
-    setShowSelectionInfo(p.showInfoIndex);
+    setShowSelectionInfo(p.showInfo);
 }
 
 void ToolOptionWidget::createUI()
@@ -117,7 +117,7 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
 
-    connect(ui->showInfoBox, QOverload<int>::of(&QComboBox::currentIndexChanged), toolManager, &ToolManager::setShowSelectionInfo);
+    connect(ui->showInfoBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowSelectionInfo);
 
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
@@ -140,7 +140,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case TOLERANCE: setTolerance(static_cast<int>(p.tolerance)); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
-    case SHOWSELECTIONINFO: setShowSelectionInfo(p.showInfoIndex); break;
+    case SHOWSELECTIONINFO: setShowSelectionInfo(p.showInfo); break;
     case BEZIER: setBezier(p.bezier_state); break;
     default:
         Q_ASSERT(false);
@@ -341,10 +341,10 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
-void ToolOptionWidget::setShowSelectionInfo(int index)
+void ToolOptionWidget::setShowSelectionInfo(bool showInfo)
 {
     SignalBlocker b(ui->showInfoBox);
-    ui->showInfoBox->setCurrentIndex(index);
+    ui->showInfoBox->setChecked(showInfo);
 }
 
 void ToolOptionWidget::disableAllOptions()

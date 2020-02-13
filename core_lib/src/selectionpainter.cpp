@@ -70,25 +70,17 @@ void SelectionPainter::paint(QPainter& painter,
                                                width, width);
         painter.drawRect(bottomLeftCorner);
 
-        if (tool->properties.showInfoIndex != 0)
+        if (tool->properties.showInfo)
         {
             int diffX, diffY;
-            if (tool->properties.showInfoIndex == 1)
-            {
-                diffX = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().x() - mOriginalSelectionPolygonF.boundingRect().x());
-                diffY = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().y() - mOriginalSelectionPolygonF.boundingRect().y());
-            }
-            else
-            {
-                diffX = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().x() - tParams.lastSelectionPolygonF.boundingRect().x());
-                diffY = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().y() - tParams.lastSelectionPolygonF.boundingRect().y());
-            }
+            diffX = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().x() - mOriginalSelectionPolygonF.boundingRect().x());
+            diffY = static_cast<int>(tParams.currentSelectionPolygonF.boundingRect().y() - mOriginalSelectionPolygonF.boundingRect().y());
             painter.drawText(static_cast<int>(tParams.currentSelectionPolygonF[0].x()),
                     static_cast<int>(tParams.currentSelectionPolygonF[0].y() - width),
                     QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(tParams.currentSelectionPolygonF.boundingRect().width() / scaling),
-                                                               QString::number(tParams.currentSelectionPolygonF.boundingRect().height() / scaling),
-                                                               QString::number(diffX),
-                                                               QString::number(diffY)));
+                                                              QString::number(tParams.currentSelectionPolygonF.boundingRect().height() / scaling),
+                                                              QString::number(diffX),
+                                                              QString::number(diffY)));
         }
 
         painter.setBrush(QColor(0, 255, 0, 50));

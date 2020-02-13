@@ -215,25 +215,10 @@
     </layout>
    </item>
    <item>
-    <widget class="QComboBox" name="showInfoBox">
-     <property name="toolTip">
-      <string>Info on size and move relative to start/last position</string>
+    <widget class="QCheckBox" name="showInfoBox">
+     <property name="text">
+      <string>Show Size and Diff.</string>
      </property>
-     <item>
-      <property name="text">
-       <string extracomment="Don't show size and move info">Don't show info</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="Position relative to start position">Show (start position)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="Position relative to last position">Show (last position)</string>
-      </property>
-     </item>
     </widget>
    </item>
    <item>

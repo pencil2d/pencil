@@ -50,7 +50,7 @@ public:
     int   stabilizerLevel = 0;
     qreal tolerance = 0;
     bool  useFillContour = false;
-    int   showInfoIndex = 0;
+    bool  showInfo = false;
 };
 
 const int ON = 1;
@@ -108,7 +108,7 @@ public:
     virtual void setStabilizerLevel(const int level);
     virtual void setTolerance(const int tolerance);
     virtual void setUseFillContour(const bool useFillContour);
-    virtual void setShowSelectionInfo(const int index);
+    virtual void setShowSelectionInfo(const bool b);
 
     virtual bool leavingThisTool() { return true; }
     virtual bool switchingLayer() { return true; } // default state should be true

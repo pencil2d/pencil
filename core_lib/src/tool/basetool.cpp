@@ -445,8 +445,8 @@ void BaseTool::setUseFillContour(const bool useFillContour)
     properties.useFillContour = useFillContour;
 }
 
-void BaseTool::setShowSelectionInfo(const int index)
+void BaseTool::setShowSelectionInfo(const bool b)
 {
-    properties.showInfoIndex = index;
+    properties.showInfo = b;
 }
 
