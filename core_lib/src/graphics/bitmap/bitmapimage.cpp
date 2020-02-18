@@ -781,9 +781,9 @@ void BitmapImage::fillSpotAreas(BitmapImage *bitmapimage)
     QVector<QPoint> points;
     points.clear();
     QRgb active, previous = blackline;
-    for (int x = img->left(); x < img->right(); x++)
+    for (int x = img->left() + 1; x < img->right(); x++)
     {
-        for (int y = img->top(); y < img->bottom(); y++)
+        for (int y = img->top() + 1; y < img->bottom(); y++)
         {
             active = img->constScanLine(x, y);
             if (qAlpha(active) == 0)

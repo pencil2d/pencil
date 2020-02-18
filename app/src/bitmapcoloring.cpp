@@ -295,7 +295,6 @@ void BitmapColoring::thinLines()
         mProgress->setMaximum(mLayerBitmap->keyFrameCount());
         mProgress->setValue(0);
         int keysThinned = 0;
-
         for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
         {
             if (mLayerBitmap->keyExists(i))
