@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QMenu>
 
 #include "object.h"
 #include "editor.h"
@@ -167,6 +168,15 @@ void TimeLineCells::updateContent()
 
 bool TimeLineCells::didDetatchLayer() {
     return abs(getMouseMoveY()) > mLayerDetatchThreshold;
+}
+
+void TimeLineCells::showContextMenu(QPoint pos)
+{
+    pos = this->mapToGlobal(pos);
+    QMenu* menu = new QMenu();
+    menu->addAction(tr("Layer highlight color"), this, &TimeLineCells::selectLayerHighlightColor);
+
+    menu->exec(pos);
 }
 
 void TimeLineCells::drawContent()
@@ -772,6 +782,11 @@ void TimeLineCells::setMouseMoveY(int x)
     {
         update();
     }
+}
+
+void TimeLineCells::selectLayerHighlightColor()
+{
+
 }
 
 void TimeLineCells::trackScrubber()

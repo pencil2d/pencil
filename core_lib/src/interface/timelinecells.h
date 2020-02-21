@@ -62,6 +62,7 @@ public:
     void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
     void paintLayerGutter(QPainter& painter);
     bool didDetatchLayer();
+    void showContextMenu(QPoint pos);
 
 Q_SIGNALS:
     void mouseMovedY(int);
@@ -74,6 +75,7 @@ public slots:
     void hScrollChange(int);
     void vScrollChange(int);
     void setMouseMoveY(int x);
+    void selectLayerHighlightColor();
 
 protected:
     void trackScrubber();
