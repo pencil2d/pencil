@@ -75,7 +75,7 @@ public slots:
     void hScrollChange(int);
     void vScrollChange(int);
     void setMouseMoveY(int x);
-    void selectLayerHighlightColor();
+    void selectLayerHighlightColor(int color);
 
 protected:
     void trackScrubber();
@@ -90,6 +90,10 @@ protected:
 
 private slots:
     void loadSetting(SETTING setting);
+    void highlightWhite();
+    void highlightRed();
+    void highlightGreen();
+    void highlightBlue();
 
 private:
     TimeLine* mTimeLine;

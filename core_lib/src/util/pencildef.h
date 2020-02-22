@@ -182,6 +182,7 @@ enum StabilizationLevel
 #define SETTING_FIELD_H             "FieldH"
 #define SETTING_FRAME_SIZE          "FrameSize"
 #define SETTING_TIMELINE_SIZE       "TimelineSize"
+#define SETTING_TIMELINE_HIGHLIGHT  "TimelineHighlight"
 #define SETTING_LABEL_FONT_SIZE     "LabelFontSize"
 #define SETTING_DRAW_LABEL          "DrawLabel"
 #define SETTING_QUICK_SIZING        "QuickSizing"

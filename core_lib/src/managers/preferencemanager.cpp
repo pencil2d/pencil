@@ -88,6 +88,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::SHORT_SCRUB,              settings.value(SETTING_SHORT_SCRUB,            false ).toBool());
     set(SETTING::FRAME_SIZE,               settings.value(SETTING_FRAME_SIZE,             12).toInt());
     set(SETTING::TIMELINE_SIZE,            settings.value(SETTING_TIMELINE_SIZE,          240).toInt());
+    set(SETTING::TIMELINE_HIGHLIGHT,       settings.value(SETTING_TIMELINE_HIGHLIGHT,     0).toInt());
     set(SETTING::DRAW_LABEL,               settings.value(SETTING_DRAW_LABEL,             false ).toBool());
     set(SETTING::LABEL_FONT_SIZE,          settings.value(SETTING_LABEL_FONT_SIZE,        12).toInt());
 
@@ -206,6 +207,10 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::TIMELINE_SIZE:
         if (value < 2) { value = 2; }
         settings.setValue(SETTING_TIMELINE_SIZE, value);
+        break;
+    case SETTING::TIMELINE_HIGHLIGHT:
+        if (value < 0 || value > 3) { value = 0; }
+        settings.setValue(SETTING_TIMELINE_HIGHLIGHT, value);
         break;
     case SETTING::LABEL_FONT_SIZE:
         if (value < 12) { value = 12; }

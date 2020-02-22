@@ -386,7 +386,7 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
                        bool selected, int allLayers)
 {
-    Q_UNUSED(cells);
+    Q_UNUSED(cells)
     painter.setBrush(Qt::lightGray);
     painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
@@ -424,10 +424,29 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
 {
     QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
     QSettings settings(PENCIL2D, PENCIL2D);
+    int highlight = settings.value("TimelineHighlight").toInt();
+    int r, g, b;
+    switch (highlight) {
+    case 0:
+        r = g = b = 255;
+        break;
+    case 1:
+        r = 255; g = b = 0;
+        break;
+    case 2:
+        g = 255; r = b = 0;
+        break;
+    case 3:
+        b = 255; r = g = 0;
+        break;
+    default:
+        r = g = b = 255;
+        break;
+    }
     QString style = settings.value("style").toString();
-    linearGrad.setColorAt(0, QColor(255, 255, 255, 128));
-    linearGrad.setColorAt(0.50, QColor(255, 255, 255, 64));
-    linearGrad.setColorAt(1, QColor(255, 255, 255, 0));
+    linearGrad.setColorAt(0, QColor(r, g, b, 128));
+    linearGrad.setColorAt(0.40, QColor(r, g, b, 64));
+    linearGrad.setColorAt(1, QColor(r, g, b, 0));
     painter.setBrush(linearGrad);
     painter.setPen(Qt::NoPen);
     painter.drawRect(x, y, width, height - 1);
@@ -435,8 +454,8 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
 
 void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
 {
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
+    Q_UNUSED(event)
+    Q_UNUSED(frameNumber)
 }
 
 void Layer::editProperties()
