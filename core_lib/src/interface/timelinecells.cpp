@@ -172,11 +172,11 @@ bool TimeLineCells::didDetatchLayer() {
 
 void TimeLineCells::showContextMenu(QPoint pos)
 {
-    pos = this->mapToGlobal(pos);
+    QPoint globalPos = this->mapToGlobal(pos);
     QMenu* menu = new QMenu();
-    menu->addAction(tr("Layer highlight color"), this, &TimeLineCells::selectLayerHighlightColor);
+    menu->addAction(tr("Layer highlight color"), this, &TimeLineCells::selectLayerHighlightColor, 0);
 
-    menu->exec(pos);
+    menu->exec(globalPos);
 }
 
 void TimeLineCells::drawContent()
