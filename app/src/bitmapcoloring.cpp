@@ -227,6 +227,8 @@ void BitmapColoring::traceLines()
 
     if (ui->cb3TraceAllKeyframes->isChecked())
     {
+        mEditor->setIsDoingRepeatColoring(true);
+        int count = mEditor->getAutoSaveCounter();
         QProgressDialog* mProgress = new QProgressDialog(tr("Tracing lines in bitmaps..."), tr("Abort"), 0, 100, this);
         mProgress->setWindowModality(Qt::WindowModal);
         mProgress->show();
@@ -243,6 +245,7 @@ void BitmapColoring::traceLines()
                 mProgress->setValue(keysTraced++);
                 mEditor->scrubTo(i);
                 trace();
+                count++;
                 if (mProgress->wasCanceled())
                 {
                     break;
@@ -250,6 +253,8 @@ void BitmapColoring::traceLines()
             }
         }
         mProgress->close();
+        mEditor->setIsDoingRepeatColoring(false);
+        mEditor->setAutoSaveCounter(count);
     }
     else if (mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
@@ -289,6 +294,8 @@ void BitmapColoring::thinLines()
     }
     else
     {
+        mEditor->setIsDoingRepeatColoring(true);
+        int count = mEditor->getAutoSaveCounter();
         QProgressDialog* mProgress = new QProgressDialog(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
         mProgress->setWindowModality(Qt::WindowModal);
         mProgress->show();
@@ -303,6 +310,7 @@ void BitmapColoring::thinLines()
                 mProgress->setValue(keysThinned++);
                 mEditor->scrubTo(i);
                 thin();
+                count++;
             }
             if (mProgress->wasCanceled())
             {
@@ -310,6 +318,8 @@ void BitmapColoring::thinLines()
             }
         }
         mProgress->close();
+        mEditor->setIsDoingRepeatColoring(false);
+        mEditor->setAutoSaveCounter(count);
     }
     ui->cbSpotAreas->setChecked(false);
 }
@@ -342,6 +352,8 @@ void BitmapColoring::blendLines()
     }
     else
     {
+        mEditor->setIsDoingRepeatColoring(true);
+        int count = mEditor->getAutoSaveCounter();
         QProgressDialog progress(tr("Blending lines in bitmaps..."), tr("Abort"), 0, 100, this);
         hideQuestionMark(progress);
         progress.setWindowModality(Qt::WindowModal);
@@ -357,6 +369,7 @@ void BitmapColoring::blendLines()
             {
                 mEditor->scrubTo(i);
                 blend(artLayer);
+                count++;
                 progress.setValue(keysBlended++);
                 if (progress.wasCanceled())
                 {
@@ -364,6 +377,8 @@ void BitmapColoring::blendLines()
                 }
             }
         }
+        mEditor->setIsDoingRepeatColoring(false);
+        mEditor->setAutoSaveCounter(count);
     }
 }
 

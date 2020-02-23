@@ -496,7 +496,7 @@ void Editor::clearUndoStack()
 
 void Editor::updateAutoSaveCounter()
 {
-    if (mIsAutosave == false)
+    if (mIsAutosave == false || mIsDoingRepeatInColoring)
         return;
 
     mAutosaveCounter++;
