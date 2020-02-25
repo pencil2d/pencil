@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1000,8 +1000,8 @@
   <action name="actionExport_Other_Palette_formats">
    <property name="text">
     <string>Other Palette format...</string>
-    </property>
-   </action>
+   </property>
+  </action>
   <action name="actionChangeLineColorCurrent_keyframe">
    <property name="text">
     <string>Current keyframe</string>
@@ -1015,6 +1015,17 @@
   <action name="actionImportLayers_from_pclx">
    <property name="text">
     <string>Layers from PCLX...</string>
+   </property>
+  </action>
+  <action name="actionOnionSkins">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Onion Skins</string>
+   </property>
+   <property name="toolTip">
+    <string>Onion Skins</string>
    </property>
   </action>
  </widget>

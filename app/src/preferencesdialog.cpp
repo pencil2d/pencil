@@ -307,7 +307,6 @@ TimelinePage::TimelinePage()
     connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
-    connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &TimelinePage::playbackStateChanged);
     connect(ui->flipRollMsecsSlider, sliderChanged, this, &TimelinePage::flipRollMsecSliderChanged);
     connect(ui->flipRollMsecsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollMsecSpinboxChanged);
     connect(ui->flipRollNumDrawingsSlider, sliderChanged, this, &TimelinePage::flipRollNumDrawingdSliderChanged);
@@ -350,8 +349,6 @@ void TimelinePage::updateValues()
         break;
     }
 
-    SignalBlocker b7(ui->onionWhilePlayback);
-    ui->onionWhilePlayback->setChecked(mManager->getInt(SETTING::ONION_WHILE_PLAYBACK));
     ui->flipRollMsecsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSlider->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
@@ -373,11 +370,6 @@ void TimelinePage::fontSizeChanged(int value)
 void TimelinePage::scrubChanged(int value)
 {
     mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
-}
-
-void TimelinePage::playbackStateChanged(int value)
-{
-    mManager->set(SETTING::ONION_WHILE_PLAYBACK, value);
 }
 
 void TimelinePage::drawEmptyKeyRadioButtonToggled(bool)
@@ -635,12 +627,6 @@ ToolsPage::ToolsPage() : ui(new Ui::ToolsPage)
 {
     ui->setupUi(this);
 
-    auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    connect(ui->onionMaxOpacityBox, spinBoxChanged, this, &ToolsPage::onionMaxOpacityChange);
-    connect(ui->onionMinOpacityBox, spinBoxChanged, this, &ToolsPage::onionMinOpacityChange);
-    connect(ui->onionPrevFramesNumBox, spinBoxChanged, this, &ToolsPage::onionPrevFramesNumChange);
-    connect(ui->onionNextFramesNumBox, spinBoxChanged, this, &ToolsPage::onionNextFramesNumChange);
-//    connect(ui->onionSkinMode, &QCheckBox::stateChanged, this, &ToolsPage::onionSkinModeChange);
     connect(ui->useQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange);
     connect(ui->rotationIncrementSlider, &QSlider::valueChanged, this, &ToolsPage::rotationIncrementChange);
 }
@@ -651,51 +637,14 @@ ToolsPage::~ToolsPage()
 }
 
 void ToolsPage::updateValues()
-{
-    ui->onionMaxOpacityBox->setValue(mManager->getInt(SETTING::ONION_MAX_OPACITY));
-    ui->onionMinOpacityBox->setValue(mManager->getInt(SETTING::ONION_MIN_OPACITY));
-    ui->onionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
-    ui->onionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
-    ui->onionSkinMode->setChecked(mManager->getString(SETTING::ONION_TYPE) == "absolute");
+{    
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
     setRotationIncrement(mManager->getInt(SETTING::ROTATION_INCREMENT));
-}
-
-void ToolsPage::onionMaxOpacityChange(int value)
-{
-    mManager->set(SETTING::ONION_MAX_OPACITY, value);
-}
-
-void ToolsPage::onionSkinModeChange(int value)
-{
-    if (value == Qt::Checked)
-    {
-        mManager->set(SETTING::ONION_TYPE, QString("absolute"));
-    }
-    else
-    {
-        mManager->set(SETTING::ONION_TYPE, QString("relative"));
-    }
 }
 
 void ToolsPage::quickSizingChange(int b)
 {
     mManager->set(SETTING::QUICK_SIZING, b != Qt::Unchecked);
-}
-
-void ToolsPage::onionMinOpacityChange(int value)
-{
-    mManager->set(SETTING::ONION_MIN_OPACITY, value);
-}
-
-void ToolsPage::onionPrevFramesNumChange(int value)
-{
-    mManager->set(SETTING::ONION_PREV_FRAMES_NUM, value);
-}
-
-void ToolsPage::onionNextFramesNumChange(int value)
-{
-    mManager->set(SETTING::ONION_NEXT_FRAMES_NUM, value);
 }
 
 void ToolsPage::setRotationIncrement(int angle)
