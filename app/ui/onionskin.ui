@@ -322,14 +322,14 @@
     <item>
      <widget class="QCheckBox" name="onionSkinMode">
       <property name="text">
-       <string>Skip Exposure Frames</string>
+       <string>Show Keyframes Only</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QCheckBox" name="onionWhilePlayback">
       <property name="text">
-       <string>Show Skins on Playback</string>
+       <string>Show During Playback</string>
       </property>
      </widget>
     </item>
