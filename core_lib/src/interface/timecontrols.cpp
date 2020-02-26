@@ -88,8 +88,8 @@ void TimeControls::initUI()
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));
     mSoundButton->setToolTip(tr("Sound on/off"));
-    mJumpToEndButton->setToolTip(tr("End"));
-    mJumpToStartButton->setToolTip(tr("Start"));
+    mJumpToEndButton->setToolTip(tr("Jump to the End", "Tooltip of the jump to end button"));
+    mJumpToStartButton->setToolTip(tr("Jump to the Start", "Tooltip of the jump to start button"));
 
     mLoopButton->setCheckable(true);
     mSoundButton->setCheckable(true);
@@ -191,7 +191,7 @@ void TimeControls::updatePlayState()
     else
     {
         mPlayButton->setIcon(mStartIcon);
-        mPlayButton->setToolTip(tr("Start"));
+        mPlayButton->setToolTip(tr("Play"));
     }
 }
 
