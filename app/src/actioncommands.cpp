@@ -52,8 +52,8 @@ GNU General Public License for more details.
 #include "exportimagedialog.h"
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
+#include "copymultiplekeyframesdialog.h"
 #include "checkupdatesdialog.h"
-
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
 {
@@ -576,6 +576,74 @@ void ActionCommands::duplicateKey()
         dupKey->modification();
     }
 
+    mEditor->layers()->notifyAnimationLengthChanged();
+}
+
+void ActionCommands::manipulateFrames()
+{
+    int startLoop = 1, stopLoop = 2;          // default values
+    if (mEditor->playback()->isRangedPlaybackOn())
+    {                                   // defined range values if available
+        startLoop = mEditor->playback()->getRangedStartFrame();
+        stopLoop = mEditor->playback()->getRangedEndFrame();
+    }
+    LayerManager* layerMgr = mEditor->layers();
+    Layer::LAYER_TYPE layerType = layerMgr->currentLayer()->type();
+    if (layerType != Layer::BITMAP && layerType != Layer::VECTOR)
+    {
+        Q_UNUSED(QMessageBox::information(nullptr, tr("Action not available"),
+                                          tr("Can only be used on Bitmap and Vector layers."),
+                                          QMessageBox::Ok));
+        return;
+    }
+    CopyMultiplekeyframesDialog* cd = new CopyMultiplekeyframesDialog(layerMgr, startLoop, stopLoop, nullptr);
+    cd->exec();
+
+    if (cd->result() != QDialog::Accepted) { return; }
+
+    if (!cd->getValidity())
+    {
+        Q_UNUSED(QMessageBox::critical(nullptr, tr("Action not valid!"),
+                                       tr("Failed validation check:\n- Exceeds 9999 Frames OR\n- Range not valid"),
+                                       QMessageBox::Ok));
+        return;
+    }
+
+    // If Validation is OK
+    startLoop = cd->getFirstFrame();
+    stopLoop = cd->getLastFrame();
+    Layer *fromLayer = layerMgr->findLayerByName(cd->getFromLayer());
+    Q_ASSERT(fromLayer != nullptr);
+    Layer *toLayer = nullptr;
+    int scrubOrg = mEditor->currentFrame();
+    int numLoops, startFrame;
+    switch (cd->getCurrentTab()) {
+    case 0: // Copy
+        startFrame = cd->getCopyStartFrame();
+        toLayer = layerMgr->findLayerByName(cd->getCopyToLayer());
+        Q_ASSERT(toLayer != nullptr);
+        numLoops = cd->getNumLoops();
+        fromLayer->copyFrames(startLoop, stopLoop, numLoops, startFrame, fromLayer, toLayer);
+        break;
+    case 1: // Move
+        startFrame = cd->getMoveStartFrame();
+        toLayer = layerMgr->findLayerByName(cd->getMoveToLayer());
+        Q_ASSERT(toLayer != nullptr);
+        fromLayer->moveFrames(startLoop, stopLoop,startFrame, fromLayer, toLayer);
+        break;
+    case 2: // Reverse
+        startFrame = cd->getReverseStartFrame();
+        fromLayer->reverseFrames(startLoop, stopLoop, startFrame, fromLayer);
+        break;
+    case 3: // Delete
+        fromLayer->deleteFrames(startLoop, stopLoop, fromLayer);
+        break;
+    default:
+        Q_ASSERT(false);
+        break;
+    }
+    mEditor->scrubTo(scrubOrg);
+    mEditor->layers()->notifyLayerChanged(toLayer);
     mEditor->layers()->notifyAnimationLengthChanged();
 }
 

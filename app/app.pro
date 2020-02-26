@@ -69,6 +69,7 @@ HEADERS += \
     src/spinslider.h \
     src/doubleprogressdialog.h \
     src/colorslider.h \
+    src/copymultiplekeyframesdialog.h \
     src/checkupdatesdialog.h \
     src/presetdialog.h    
 
@@ -104,6 +105,7 @@ SOURCES += \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
+    src/copymultiplekeyframesdialog.cpp \
     src/checkupdatesdialog.cpp \
     src/presetdialog.cpp
 
@@ -133,6 +135,7 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
+    ui/copymultiplekeyframesdialog.ui \
     ui/presetdialog.ui
 
 

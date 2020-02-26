@@ -442,10 +442,20 @@ void PlaybackManager::setRangedStartFrame(int frame)
     updateStartFrame();
 }
 
+int PlaybackManager::getRangedStartFrame()
+{
+    return mMarkInFrame;
+}
+
 void PlaybackManager::setRangedEndFrame(int frame)
 {
     mMarkOutFrame = frame;
     updateEndFrame();
+}
+
+int PlaybackManager::getRangedEndFrame()
+{
+    return mMarkOutFrame;
 }
 
 void PlaybackManager::updateStartFrame()

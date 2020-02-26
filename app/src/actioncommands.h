@@ -19,10 +19,12 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include "pencilerror.h"
+class Layer;
 
 class Editor;
 class QWidget;
 class ExportMovieDialog;
+
 
 
 class ActionCommands : public QObject
@@ -30,6 +32,7 @@ class ActionCommands : public QObject
     Q_OBJECT
 
 public:
+
     explicit ActionCommands(QWidget* parent = nullptr);
     virtual ~ActionCommands();
 
@@ -66,6 +69,7 @@ public:
     Status addNewKey();
     void removeKey();
     void duplicateKey();
+    void manipulateFrames();
     void moveFrameForward();
     void moveFrameBackward();
 

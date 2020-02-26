@@ -452,6 +452,105 @@ void Layer::setModified(int position, bool modified)
     }
 }
 
+void Layer::copyFrames(int startLoop, int stopLoop, int loops, int startAt, Layer *fromLayer, Layer *toLayer)
+{
+    for (int i = 0; i < loops; i++)
+    {
+        for (int j = startLoop; j <= stopLoop; j++, startAt++)
+        {
+            if (fromLayer->keyExists(j))
+            {
+                mObject->updateActiveFrames(j);
+                KeyFrame* keyframe = fromLayer->getKeyFrameAt(j);
+                KeyFrame* dupKey = keyframe->clone();
+                if (toLayer->keyExists(startAt))
+                    toLayer->removeKeyFrame(startAt);
+                toLayer->addKeyFrame(startAt, dupKey);
+                toLayer->setModified(startAt, true);
+            }
+        }
+    }
+}
+
+void Layer::moveFrames(int startLoop, int stopLoop, int startAt, Layer *fromLayer, Layer *toLayer)
+{
+    if (startAt > startLoop) // Move last frame first
+    {
+        startAt = startAt + stopLoop - startLoop;
+        for (int j = stopLoop; j >= startLoop; j--, startAt--)
+        {
+            if (fromLayer->keyExists(j))
+            {
+                mObject->updateActiveFrames(j);
+                KeyFrame* keyframe = fromLayer->getKeyFrameAt(j);
+                KeyFrame* dupKey = keyframe->clone();
+                if (toLayer->keyExists(startAt))
+                    toLayer->removeKeyFrame(startAt);
+                toLayer->addKeyFrame(startAt, dupKey);
+                fromLayer->removeKeyFrame(j);
+                toLayer->setModified(startAt, true);
+            }
+        }
+    }
+    else // Move first frame first
+    {
+        for (int j = startLoop; j <= stopLoop; j++, startAt++)
+        {
+            if (fromLayer->keyExists(j))
+            {
+                mObject->updateActiveFrames(j);
+                KeyFrame* keyframe = fromLayer->getKeyFrameAt(j);
+                KeyFrame* dupKey = keyframe->clone();
+                if (toLayer->keyExists(startAt))
+                    toLayer->removeKeyFrame(startAt);
+                toLayer->addKeyFrame(startAt, dupKey);
+                fromLayer->removeKeyFrame(j);
+                toLayer->setModified(startAt, true);
+            }
+        }
+    }
+    if (fromLayer->firstKeyFramePosition() == 0)
+    {
+        fromLayer->addNewKeyFrameAt(1);
+        fromLayer->setModified(1, true);
+    }
+}
+
+void Layer::reverseFrames(int startLoop, int stopLoop, int startAt, Layer *toLayer)
+{
+    for (int j = stopLoop; j >= startLoop; j--, startAt++)
+    {
+        if (toLayer->keyExists(j))
+        {
+            mObject->updateActiveFrames(j);
+            KeyFrame* keyframe = toLayer->getKeyFrameAt(j);
+            KeyFrame* dupKey = keyframe->clone();
+            // replace if keyframe exists!
+            if (toLayer->keyExists(startAt))
+                toLayer->removeKeyFrame(startAt);
+            toLayer->addKeyFrame(startAt, dupKey);
+            toLayer->setModified(startAt, true);
+        }
+    }
+}
+
+void Layer::deleteFrames(int startLoop, int stopLoop, Layer *toLayer)
+{
+    for (int j = startLoop; j <= stopLoop; j++)
+    {
+        if (toLayer->keyExists(j))
+        {
+            toLayer->removeKeyFrame(j);
+            toLayer->setModified(j, true);
+        }
+    }
+    if (toLayer->firstKeyFramePosition() == 0)
+    {
+        toLayer->addNewKeyFrameAt(1);
+        toLayer->setModified(1, true);
+    }
+}
+
 bool Layer::isFrameSelected(int position) const
 {
     KeyFrame* keyFrame = getKeyFrameWhichCovers(position);

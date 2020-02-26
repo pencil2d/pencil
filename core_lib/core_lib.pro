@@ -102,7 +102,6 @@ HEADERS +=  \
     src/util/pointerevent.h \
     src/selectionpainter.h
 
-
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
