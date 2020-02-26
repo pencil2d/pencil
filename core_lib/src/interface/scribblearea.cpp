@@ -1087,14 +1087,17 @@ void ScribbleArea::paintSelectionVisuals()
 
     QPolygonF lastSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->lastSelectionPolygonF());
     QPolygonF currentSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->currentSelectionPolygonF());
+
+    mSelectionPainter.setCurrentSelectionNotMapped(selectMan->currentSelectionPolygonF());
+
     if (!mSelectionPainter.originalPolygonFIsSet())
     {
-        mSelectionPainter.setOriginalPolygonF(currentSelectionPolygon);
+        mSelectionPainter.setOriginalPolygonF(selectMan->currentSelectionPolygonF());
         mSelectionPainter.setOriginalPolygonFIsSet(true);
     }
 
     TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
-    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params, mEditor->view()->scaling());
+    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
 }
 
 BitmapImage* ScribbleArea::currentBitmapImage(Layer* layer) const

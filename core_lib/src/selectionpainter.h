@@ -19,14 +19,16 @@ class SelectionPainter
 public:
     SelectionPainter();
 
-    void paint(QPainter& painter, const Object* object, int layerIndex, BaseTool* tool, TransformParameters& transformParameters, float scaling);
+    void paint(QPainter& painter, const Object* object, int layerIndex, BaseTool* tool, TransformParameters& transformParameters);
 
     void setOriginalPolygonF(QPolygonF polyF) { mOriginalSelectionPolygonF = polyF; }
     void setOriginalPolygonFIsSet(bool b) { mOriginalPolygonFIsSet = b; }
     bool originalPolygonFIsSet() { return mOriginalPolygonFIsSet; }
+    void setCurrentSelectionNotMapped(QPolygonF polyF) { mCurrentSelectionNotMapped = polyF; }
 
 private:
     QPolygonF mOriginalSelectionPolygonF = QPolygonF();
+    QPolygonF mCurrentSelectionNotMapped = QPolygonF();
     bool mOriginalPolygonFIsSet = false;
 };
 
