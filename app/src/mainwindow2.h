@@ -31,6 +31,7 @@ class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
 class DisplayOptionWidget;
+class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
@@ -139,11 +140,12 @@ private:
     void makeConnections(Editor*, TimeLine*);
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
+    void makeConnections(Editor*, OnionSkinWidget*);
 
     void bindActionWithSetting(QAction*, SETTING);
 
     // UI: Dock widgets
-    ColorBox*           mColorBox = nullptr;
+    ColorBox*             mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
@@ -154,6 +156,7 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr; // be public temporary
     ColorInspector*       mColorInspector = nullptr;
+    OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
     BackupElement* mBackupAtSave = nullptr;

@@ -58,6 +58,7 @@ GNU General Public License for more details.
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
+#include "onionskinwidget.h"
 
 //#include "preview.h"
 #include "timeline2.h"
@@ -156,6 +157,9 @@ void MainWindow2::createDockWidgets()
     mDisplayOptionWidget = new DisplayOptionWidget(this);
     mDisplayOptionWidget->setObjectName("DisplayOption");
 
+    mOnionSkinWidget = new OnionSkinWidget(this);
+    mOnionSkinWidget->setObjectName("Onion Skin");
+
     mToolOptions = new ToolOptionWidget(this);
     mToolOptions->setObjectName("ToolOption");
 
@@ -174,6 +178,7 @@ void MainWindow2::createDockWidgets()
         << mColorInspector
         << mColorPalette
         << mDisplayOptionWidget
+        << mOnionSkinWidget
         << mToolOptions
         << mToolBox;
 
@@ -198,6 +203,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
+    addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     setDockNestingEnabled(true);
 
@@ -358,8 +364,9 @@ void MainWindow2::createMenus()
         mColorBox->toggleViewAction(),
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
-        mDisplayOptionWidget->toggleViewAction(),
-        mColorInspector->toggleViewAction()
+        mDisplayOptionWidget->toggleViewAction(),        
+        mColorInspector->toggleViewAction(),
+        mOnionSkinWidget->toggleViewAction()
     };
 
     for (QAction* action : actions)
@@ -982,9 +989,10 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mColorInspector->setFeatures(feat);
     mColorPalette->setFeatures(feat);
     mDisplayOptionWidget->setFeatures(feat);
+    mOnionSkinWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
     mToolBox->setFeatures(feat);
-    mTimeLine->setFeatures(feat);
+    mTimeLine->setFeatures(feat);    
 }
 
 void MainWindow2::preferences()
@@ -1210,8 +1218,9 @@ void MainWindow2::setupKeyboardShortcuts()
     mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
-    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
+    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));    
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
+    mOnionSkinWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_ONION_SKIN));
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
@@ -1384,6 +1393,10 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 }
 
 void MainWindow2::makeConnections(Editor*, DisplayOptionWidget*)
+{
+}
+
+void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
 {
 }
 

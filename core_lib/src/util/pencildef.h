@@ -172,6 +172,7 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define CMD_TOGGLE_COLOR_INSPECTOR "CmdToggleColorInspector"
 #define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
 #define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
+#define CMD_TOGGLE_ONION_SKIN "CmdToggleOnionSkin"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
 #define CMD_INCREASE_SIZE "CmdIncreaseSize"
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"

@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1058,6 +1058,15 @@
   <action name="actionVisibilityAll">
    <property name="text">
     <string>All layers</string>
+  <action name="actionOnionSkins">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Onion Skins</string>
+   </property>
+   <property name="toolTip">
+    <string>Onion Skins</string>
    </property>
   </action>
  </widget>
