@@ -1058,6 +1058,8 @@
   <action name="actionVisibilityAll">
    <property name="text">
     <string>All layers</string>
+   </property>
+  </action>
   <action name="actionOnionSkins">
    <property name="checkable">
     <bool>true</bool>
