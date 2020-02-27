@@ -554,6 +554,10 @@ void CanvasPainter::paintOverlayCenter(QPainter &painter)
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
 
     QPen pen(Qt::DashLine);
+    qreal space = 10;
+    QVector<qreal> dashes;
+    dashes << 10 << space << 10 << space << 10 << space;
+    pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
     painter.setWorldMatrixEnabled(!isCameraMode);
@@ -578,6 +582,10 @@ void CanvasPainter::paintOverlayThirds(QPainter &painter)
     bool isCameraMode = (layer->type() == Layer::CAMERA);
 
     QPen pen(Qt::DashLine);
+    qreal space = 10;
+    QVector<qreal> dashes;
+    dashes << 10 << space << 10 << space << 10 << space;
+    pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
     painter.setWorldMatrixEnabled(!isCameraMode);
@@ -604,6 +612,10 @@ void CanvasPainter::paintOverlayGolden(QPainter &painter)
     bool isCameraMode = (layer->type() == Layer::CAMERA);
 
     QPen pen(Qt::DashLine);
+    qreal space = 10;
+    QVector<qreal> dashes;
+    dashes << 10 << space << 10 << space << 10 << space;
+    pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
     painter.setWorldMatrixEnabled(!isCameraMode);
@@ -630,6 +642,10 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter &painter)
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
     QPen pen(Qt::DashLine);
+    qreal space = 10;
+    QVector<qreal> dashes;
+    dashes << 10 << space << 10 << space << 10 << space;
+    pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
     painter.setWorldMatrixEnabled(!isCameraMode);
