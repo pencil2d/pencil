@@ -54,6 +54,8 @@ public:
     void setColor(QColor, int);
     void refreshColorList();
 
+    void adjustSwatches();
+
     void showContextMenu(const QPoint&);
 
 signals:
@@ -77,6 +79,7 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
+    void fitSwatchSize();
     void addItem();
     void replaceItem();
     void removeItem();
@@ -106,6 +109,11 @@ private:
 
     bool mIsColorDialog = false;
     bool mMultipleSelected = false;
+    bool mFitSwatches = false;
+
+    const int MIN_ICON_SIZE = 19;
+    const int MEDIUM_ICON_SIZE = 26;
+    const int MAX_ICON_SIZE = 36;
 
     Editor* mEditor = nullptr;
     Object* mObject = nullptr;
