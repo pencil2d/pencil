@@ -515,7 +515,7 @@ void FilesPage::initPreset()
     ui->presetListWidget->addItem(defaultItem);
 
     bool ok = true;
-    for (const QString key : mPresetSettings->allKeys())
+    for (const QString& key : mPresetSettings->allKeys())
     {
         int index = key.toInt(&ok);
         if (!ok || index == 0 || !mPresetDir.exists(QString("%1.pclx").arg(index))) continue;
