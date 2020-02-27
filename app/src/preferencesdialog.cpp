@@ -325,8 +325,10 @@ void GeneralPage::updateSafeHelperTextEnabledState()
 {
     if (ui->actionSafeCheckBox->isChecked() == false && ui->titleSafeCheckBox->isChecked() == false) {
         ui->safeHelperTextCheckbox->setEnabled(false);
+        ui->labSafeHelperText->setEnabled(false);
     } else {
         ui->safeHelperTextCheckbox->setEnabled(true);
+        ui->labSafeHelperText->setEnabled(true);
     }
 }
 
