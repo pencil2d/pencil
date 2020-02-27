@@ -62,11 +62,14 @@ void DebugDetails::appendSystemInfo()
 
 #if QT_VERSION >= 0x050400
     mDetails << "System Info";
-#if !defined(PENCIL2D_RELEASE)
-    mDetails << "Pencil version: " APP_VERSION " (dev)";
-#else
+#if defined(PENCIL2D_RELEASE_BUILD)
     mDetails << "Pencil version: " APP_VERSION " (stable)";
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+    mDetails << "Pencil version: " APP_VERSION " (nightly)";
+#else
+    mDetails << "Pencil version: " APP_VERSION " (dev)";
 #endif
+
 #if defined(GIT_EXISTS)
     mDetails << "Commit: " S__GIT_COMMIT_HASH;
 #endif

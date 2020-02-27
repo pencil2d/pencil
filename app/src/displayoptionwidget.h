@@ -38,10 +38,6 @@ public:
     void updateUI() override;
 
 private slots:
-    void onionPrevButtonClicked(bool);
-    void onionNextButtonClicked(bool);
-    void onionBlueButtonClicked(bool);
-    void onionRedButtonClicked(bool);
     void toggleMirror(bool);
     void toggleMirrorV(bool);
 

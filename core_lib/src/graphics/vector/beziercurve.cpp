@@ -27,17 +27,17 @@ BezierCurve::BezierCurve()
 {
 }
 
-BezierCurve::BezierCurve(const QList<QPointF>& pointList)
+BezierCurve::BezierCurve(const QList<QPointF>& pointList, bool smooth)
 {
     QList<qreal> pressureList;
 	for (int i = 0; i < pointList.size(); i++)
     {
         pressureList << 0.5; // default pressure
     }
-    createCurve(pointList, pressureList);
+    createCurve(pointList, pressureList, smooth);
 }
 
-BezierCurve::BezierCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, double tol)
+BezierCurve::BezierCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, double tol, bool smooth)
 {
     // FIXME: crashes if n == 0
     int n = pointList.size();
@@ -76,7 +76,7 @@ BezierCurve::BezierCurve(const QList<QPointF>& pointList, const QList<qreal>& pr
     }
 
     // Create curve from the simplified path
-    createCurve(simplifiedPointList, simplifiedPressureList);
+    createCurve(simplifiedPointList, simplifiedPressureList, smooth);
 }
 
 
@@ -620,7 +620,7 @@ QRectF BezierCurve::getBoundingRect()
     return getSimplePath().boundingRect();
 }
 
-void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList )
+void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, bool smooth)
 {
     int p = 0;
     int n = pointList.size();
@@ -636,7 +636,7 @@ void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal
     selected.append(false);
     pressure.append(pressureList.at(0));
 
-    for(p=1; p<n; p++)
+    for (p=1; p<n; p++)
     {
         c1.append(pointList.at(p));
         c2.append(pointList.at(p));
@@ -645,7 +645,10 @@ void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal
         selected.append(false);
 
     }
-    smoothCurve();
+    if (smooth)
+    {
+        smoothCurve();
+    }
     //colourNumber = 0;
     feather = 0;
 }

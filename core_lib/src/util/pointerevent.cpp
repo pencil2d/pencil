@@ -195,6 +195,20 @@ void PointerEvent::ignore()
     }
 }
 
+bool PointerEvent::isAccepted()
+{
+    if (mMouseEvent)
+    {
+        return mMouseEvent->isAccepted();
+    }
+    else if (mTabletEvent)
+    {
+        return mTabletEvent->isAccepted();
+    }
+    Q_ASSERT(false);
+    return false;
+}
+
 QEvent::Type PointerEvent::type() const
 {
     if (mMouseEvent)

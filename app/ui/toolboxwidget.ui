@@ -37,38 +37,6 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QToolButton" name="moveButton">
-      <property name="minimumSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="icon">
-       <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/arrow.svg</normaloff>:/icons/new/svg/arrow.svg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="autoRaise">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QToolButton" name="clearButton">
       <property name="minimumSize">
        <size>
@@ -98,7 +66,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QToolButton" name="brushButton">
+     <widget class="QToolButton" name="pencilButton">
       <property name="minimumSize">
        <size>
         <width>32</width>
@@ -113,7 +81,42 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/brush_detailed.svg</normaloff>:/icons/new/svg/brush_detailed.svg</iconset>
+        <normaloff>:/icons/new/svg/pencil_detailed.svg</normaloff>:/icons/new/svg/pencil_detailed.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <property name="autoRaise">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QToolButton" name="eraserButton">
+      <property name="minimumSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/app.qrc">
+        <normaloff>:/icons/new/svg/eraser_detailed.svg</normaloff>:/icons/new/svg/eraser_detailed.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -162,7 +165,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QToolButton" name="smudgeButton">
+     <widget class="QToolButton" name="moveButton">
       <property name="minimumSize">
        <size>
         <width>32</width>
@@ -177,71 +180,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/smudge_detailed.svg</normaloff>:/icons/new/svg/smudge_detailed.svg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="autoRaise">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QToolButton" name="polylineButton">
-      <property name="minimumSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="icon">
-       <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/line.svg</normaloff>:/icons/new/svg/line.svg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="autoRaise">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QToolButton" name="handButton">
-      <property name="minimumSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="icon">
-       <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/hand_detailed.svg</normaloff>:/icons/new/svg/hand_detailed.svg</iconset>
+        <normaloff>:/icons/new/svg/arrow.svg</normaloff>:/icons/new/svg/arrow.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -290,7 +229,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QToolButton" name="pencilButton">
+     <widget class="QToolButton" name="handButton">
       <property name="minimumSize">
        <size>
         <width>32</width>
@@ -305,7 +244,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/pencil_detailed.svg</normaloff>:/icons/new/svg/pencil_detailed.svg</iconset>
+        <normaloff>:/icons/new/svg/hand_detailed.svg</normaloff>:/icons/new/svg/hand_detailed.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -316,7 +255,36 @@
       <property name="checkable">
        <bool>true</bool>
       </property>
-      <property name="checked">
+      <property name="autoRaise">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QToolButton" name="polylineButton">
+      <property name="minimumSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/app.qrc">
+        <normaloff>:/icons/new/svg/line.svg</normaloff>:/icons/new/svg/line.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
        <bool>true</bool>
       </property>
       <property name="autoRaise">
@@ -389,7 +357,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QToolButton" name="eraserButton">
+     <widget class="QToolButton" name="brushButton">
       <property name="minimumSize">
        <size>
         <width>32</width>
@@ -404,7 +372,39 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/eraser_detailed.svg</normaloff>:/icons/new/svg/eraser_detailed.svg</iconset>
+        <normaloff>:/icons/new/svg/brush_detailed.svg</normaloff>:/icons/new/svg/brush_detailed.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="autoRaise">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QToolButton" name="smudgeButton">
+      <property name="minimumSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/app.qrc">
+        <normaloff>:/icons/new/svg/smudge_detailed.svg</normaloff>:/icons/new/svg/smudge_detailed.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -423,6 +423,20 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>clearButton</tabstop>
+  <tabstop>pencilButton</tabstop>
+  <tabstop>eraserButton</tabstop>
+  <tabstop>selectButton</tabstop>
+  <tabstop>moveButton</tabstop>
+  <tabstop>penButton</tabstop>
+  <tabstop>handButton</tabstop>
+  <tabstop>polylineButton</tabstop>
+  <tabstop>bucketButton</tabstop>
+  <tabstop>eyedropperButton</tabstop>
+  <tabstop>brushButton</tabstop>
+  <tabstop>smudgeButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../data/app.qrc"/>
  </resources>

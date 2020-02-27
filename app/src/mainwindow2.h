@@ -31,6 +31,7 @@ class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
 class DisplayOptionWidget;
+class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
@@ -61,16 +62,16 @@ public:
 
     Editor* mEditor = nullptr;
 
-    public slots:
+public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
     void openPegAlignDialog();
     void closePegAlignDialog();
+    void currentLayerChanged();
 
 public:
-    void setOpacity(int opacity);
     void newDocument(bool force = false);
     void openDocument();
     bool saveDocument();
@@ -81,15 +82,16 @@ public:
     // import
     void importImage();
     void importImageSequence();
-    void importImageSequenceNumbered();
-    void addLayerByFilename(QString strFilePath);
+    void importPredefinedImageSet();
+    void importLayers();
     void importMovie();
     void importGIF();
 
     void lockWidgets(bool shouldLock);
 
+    void setOpacity(int opacity);
     void preferences();
-    
+ 
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
@@ -108,7 +110,9 @@ private slots:
     void resetAndDockAllSubWidgets();
 
 private:
-    bool openObject(QString strFilename, bool checkForChanges);
+    bool newObject();
+    bool newObjectFromPresets(int presetIndex);
+    bool openObject(QString strFilename);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();
@@ -117,7 +121,9 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
+    void showPresetDialog();
 
+    void openPalette();
     void importPalette();
     void exportPalette();
 
@@ -134,11 +140,12 @@ private:
     void makeConnections(Editor*, TimeLine*);
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
+    void makeConnections(Editor*, OnionSkinWidget*);
 
     void bindActionWithSetting(QAction*, SETTING);
 
     // UI: Dock widgets
-    ColorBox*           mColorBox = nullptr;
+    ColorBox*             mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
@@ -149,6 +156,7 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr; // be public temporary
     ColorInspector*       mColorInspector = nullptr;
+    OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
     BackupElement* mBackupAtSave = nullptr;
@@ -157,7 +165,7 @@ private:
 
 private:
     ActionCommands* mCommands = nullptr;
-    QList< BaseDockWidget* > mDockWidgets;
+    QList<BaseDockWidget*> mDockWidgets;
 
     QIcon mStartIcon;
     QIcon mStopIcon;

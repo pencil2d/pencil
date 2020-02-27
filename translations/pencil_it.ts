@@ -5,24 +5,24 @@
         <location filename="../app/ui/aboutdialog.ui" line="26"/>
         <source>About</source>
         <comment>About Dialog Window Title</comment>
-        <translation type="unfinished"/>
+        <translation>Informazioni</translation>
     </message>
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
         <source>Official site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Thanks to Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sito Ufficiale: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Sviluppato da:&lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Ringraziamenti a Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distribuito sotto la &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Puvlic License, versione 2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="43"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Versione: %1</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="55"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Copia negli appunti</translation>
     </message>
 </context>
 <context>
@@ -46,24 +46,24 @@
         <location filename="../app/src/actioncommands.cpp" line="82"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>Proprietà del livello</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="84"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
-        <translation type="unfinished"/>
+        <translation>Livello Audio</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="204"/>
         <source>Exporting movie</source>
-        <translation type="unfinished"/>
+        <translation>Esporta filmato</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="256"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
-        <translation type="unfinished"/>
+        <translation>Terminato. Aprire il video ora?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="607"/>
@@ -4346,7 +4346,7 @@ Vuoi salavare i cambiamenti?</translation>
         <location filename="../app/ui/tooloptions.ui" line="200"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
-        <translation type="unfinished"/>
+        <translation>Nessuna </translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="205"/>
@@ -4363,7 +4363,7 @@ Vuoi salavare i cambiamenti?</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="154"/>
         <source>Make invisible</source>
-        <translation type="unfinished"/>
+        <translation>Rendi invisibile </translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="114"/>
@@ -4373,7 +4373,7 @@ Vuoi salavare i cambiamenti?</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="157"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Invisibile</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
@@ -4383,7 +4383,7 @@ Vuoi salavare i cambiamenti?</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="167"/>
         <source>Alpha</source>
-        <translation type="unfinished"/>
+        <translation>Alpha </translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
