@@ -58,6 +58,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::OVERLAY_SAFE,             settings.value(SETTING_OVERLAY_SAFE,           false).toBool());
     set(SETTING::ACTION_SAFE,              settings.value(SETTING_ACTION_SAFE,            5).toInt());
     set(SETTING::ACTION_SAFE_ON,           settings.value(SETTING_ACTION_SAFE_ON,         true).toBool());
+    set(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON, settings.value(SETTING_OVERLAY_SAFE_HELPER_TEXT_ON, true).toBool());
     set(SETTING::TITLE_SAFE,               settings.value(SETTING_TITLE_SAFE,             10).toInt());
     set(SETTING::TITLE_SAFE_ON,            settings.value(SETTING_TITLE_SAFE_ON,          true).toBool());
 
@@ -319,6 +320,9 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::TITLE_SAFE_ON:
         settings.setValue(SETTING_TITLE_SAFE_ON, value);
+        break;
+    case SETTING::OVERLAY_SAFE_HELPER_TEXT_ON:
+        settings.setValue(SETTING_OVERLAY_SAFE_HELPER_TEXT_ON, value);
         break;
     case SETTING::SHADOW:
         settings.setValue(SETTING_SHADOW, value);

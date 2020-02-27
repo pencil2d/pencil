@@ -658,14 +658,20 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter &painter)
         int action = mOptions.nActionSafe;
         QRect safeAction = QRect(rect.x() + rect.width()*action/200, rect.y() + rect.height()*action/200, rect.width()*(100-action)/100, rect.height()*(100-action)/100);
         painter.drawRect(safeAction);
-        painter.drawText(safeAction.x(), safeAction.y()-1, tr("Safe Action area %1 %").arg(action));
+
+        if (mOptions.bShowSafeAreaHelperText) {
+            painter.drawText(safeAction.x(), safeAction.y()-1, tr("Safe Action area %1 %").arg(action));
+        }
     }
     if (mOptions.bTitleSafe)
     {
         int title = mOptions.nTitleSafe;
         QRect safeTitle = QRect(rect.x() + rect.width()*title/200, rect.y() + rect.height()*title/200, rect.width()*(100-title)/100, rect.height()*(100-title)/100);
         painter.drawRect(safeTitle);
-        painter.drawText(safeTitle.x(), safeTitle.y()-1, tr("Safe Title area %1 %").arg(title));
+
+        if (mOptions.bShowSafeAreaHelperText) {
+            painter.drawText(safeTitle.x(), safeTitle.y()-1, tr("Safe Title area %1 %").arg(title));
+        }
     }
 
     painter.setRenderHints(previous_renderhints);

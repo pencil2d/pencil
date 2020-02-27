@@ -165,6 +165,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->actionSafeInput, spinValueChanged, this, &GeneralPage::actionSafeAreaChanged);
     connect(ui->titleSafeCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::titleSafeCheckBoxStateChanged);
     connect(ui->titleSafeInput, spinValueChanged, this, &GeneralPage::titleSafeAreaChanged);
+    connect(ui->safeHelperTextCheckbox, &QCheckBox::stateChanged, this, &GeneralPage::SafeAreaHelperTextCheckBoxStateChanged);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
 }
@@ -203,13 +204,19 @@ void GeneralPage::updateValues()
     SignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
     SignalBlocker b16(ui->actionSafeCheckBox);
-    ui->actionSafeCheckBox->setChecked(mManager->isOn(SETTING::ACTION_SAFE_ON));
+
+    bool actionSafeOn = mManager->isOn(SETTING::ACTION_SAFE_ON);
+    ui->actionSafeCheckBox->setChecked(actionSafeOn);
     SignalBlocker b14(ui->actionSafeInput);
     ui->actionSafeInput->setValue(mManager->getInt(SETTING::ACTION_SAFE));
     SignalBlocker b17(ui->titleSafeCheckBox);
-    ui->titleSafeCheckBox->setChecked(mManager->isOn(SETTING::TITLE_SAFE_ON));
+    bool titleSafeOn = mManager->isOn(SETTING::TITLE_SAFE_ON);
+    ui->titleSafeCheckBox->setChecked(titleSafeOn);
     SignalBlocker b15(ui->titleSafeInput);
     ui->titleSafeInput->setValue(mManager->getInt(SETTING::TITLE_SAFE));
+
+    SignalBlocker b18(ui->safeHelperTextCheckbox);
+    ui->safeHelperTextCheckbox->setChecked(mManager->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON));
 
     SignalBlocker b9(ui->highResBox);
     ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
@@ -300,6 +307,7 @@ void GeneralPage::gridHeightChanged(int value)
 void GeneralPage::actionSafeCheckBoxStateChanged(int b)
 {
     mManager->set(SETTING::ACTION_SAFE_ON, b != Qt::Unchecked);
+    updateSafeHelperTextEnabledState();
 }
 
 void GeneralPage::actionSafeAreaChanged(int value)
@@ -310,6 +318,21 @@ void GeneralPage::actionSafeAreaChanged(int value)
 void GeneralPage::titleSafeCheckBoxStateChanged(int b)
 {
     mManager->set(SETTING::TITLE_SAFE_ON, b != Qt::Unchecked);
+    updateSafeHelperTextEnabledState();
+}
+
+void GeneralPage::updateSafeHelperTextEnabledState()
+{
+    if (ui->actionSafeCheckBox->isChecked() == false && ui->titleSafeCheckBox->isChecked() == false) {
+        ui->safeHelperTextCheckbox->setEnabled(false);
+    } else {
+        ui->safeHelperTextCheckbox->setEnabled(true);
+    }
+}
+
+void GeneralPage::SafeAreaHelperTextCheckBoxStateChanged(int b)
+{
+    mManager->set(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON, b != Qt::Unchecked);
 }
 
 void GeneralPage::titleSafeAreaChanged(int value)

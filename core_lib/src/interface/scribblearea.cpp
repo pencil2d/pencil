@@ -133,6 +133,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ACTION_SAFE:
     case SETTING::TITLE_SAFE_ON:
     case SETTING::TITLE_SAFE:
+    case SETTING::OVERLAY_SAFE_HELPER_TEXT_ON:
     case SETTING::PREV_ONION:
     case SETTING::NEXT_ONION:
     case SETTING::ONION_BLUE:
@@ -1138,6 +1139,7 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
     o.bActionSafe = mPrefs->isOn(SETTING::ACTION_SAFE_ON);
     o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
+    o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
     o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
     o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
     o.bAxis = false;
