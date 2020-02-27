@@ -388,7 +388,6 @@ void ColorPaletteWidget::palettePreferences()
     connect(ui->listModeAction, &QAction::triggered, this, &ColorPaletteWidget::setListMode);
     connect(ui->gridModeAction, &QAction::triggered, this, &ColorPaletteWidget::setGridMode);
     connect(ui->fitSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::fitSwatchSize);
-    connect(editor()->object(), &Object::paletteImported, this, &ColorPaletteWidget::paletteImported);
     connect(ui->smallSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeSmall);
     connect(ui->mediumSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeMedium);
     connect(ui->largeSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeLarge);
@@ -467,7 +466,7 @@ void ColorPaletteWidget::setSwatchSizeLarge()
     }
 }
 
-void ColorPaletteWidget::paletteImported()
+void ColorPaletteWidget::adjustSwatches()
 {
     if (mFitSwatches)
         fitSwatchSize();

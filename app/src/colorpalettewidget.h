@@ -54,6 +54,8 @@ public:
     void setColor(QColor, int);
     void refreshColorList();
 
+    void adjustSwatches();
+
     void showContextMenu(const QPoint&);
 
 signals:
@@ -77,7 +79,6 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
-    void paletteImported();
     void fitSwatchSize();
     void addItem();
     void replaceItem();

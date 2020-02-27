@@ -589,7 +589,6 @@ bool Object::importPalette(QString filePath)
         importPalettePencil(file);
     }
     file.close();
-    emit paletteImported();
     return true;
 }
 
