@@ -96,6 +96,13 @@ void DisplayOptionWidget::updateUI()
     SignalBlocker b12(ui->overlaySafeAreaButton);
     ui->overlaySafeAreaButton->setChecked(prefs->isOn(SETTING::OVERLAY_SAFE));
 
+    if (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON))
+    {
+        ui->overlaySafeAreaButton->setEnabled(true);
+    } else {
+        ui->overlaySafeAreaButton->setEnabled(false);
+    }
+
     ViewManager* view = editor()->view();
 
     SignalBlocker b3(ui->mirrorButton);
