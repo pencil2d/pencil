@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>166</width>
+    <width>204</width>
     <height>204</height>
    </rect>
   </property>
@@ -17,7 +17,39 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
+      <item row="0" column="0">
+       <widget class="QToolButton" name="mirrorButton">
+        <property name="toolTip">
+         <string>Horizontal flip</string>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="popupMode">
+         <enum>QToolButton::DelayedPopup</enum>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonIconOnly</enum>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
        <widget class="QToolButton" name="outLinesButton">
         <property name="toolTip">
          <string>Show outlines only</string>
@@ -43,7 +75,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="2">
        <widget class="QToolButton" name="thinLinesButton">
         <property name="mouseTracking">
          <bool>false</bool>
@@ -75,7 +107,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="0" column="1">
        <widget class="QToolButton" name="mirrorVButton">
         <property name="toolTip">
          <string>Vertical flip</string>
@@ -153,39 +185,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QToolButton" name="mirrorButton">
-        <property name="toolTip">
-         <string>Horizontal flip</string>
-        </property>
-        <property name="text">
-         <string notr="true"/>
-        </property>
-        <property name="icon">
-         <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="popupMode">
-         <enum>QToolButton::DelayedPopup</enum>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonIconOnly</enum>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
+      <item row="2" column="2">
        <widget class="QToolButton" name="overlayGoldenRatioButton">
         <property name="toolTip">
          <string>Overlay shows field in Golden Ratio</string>
@@ -211,7 +211,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="2" column="3">
        <widget class="QToolButton" name="overlaySafeAreaButton">
         <property name="toolTip">
          <string>Overlay shows field safe areas</string>
@@ -258,8 +258,6 @@
  <tabstops>
   <tabstop>mirrorButton</tabstop>
   <tabstop>thinLinesButton</tabstop>
-  <tabstop>mirrorVButton</tabstop>
-  <tabstop>outLinesButton</tabstop>
  </tabstops>
  <resources>
   <include location="../data/app.qrc"/>
