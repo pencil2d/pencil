@@ -60,6 +60,10 @@
         <file>icons/overlayGoldenRatio.png</file>
         <file>icons/overlaySafe.png</file>
         <file>icons/overlayThirds.png</file>
+        <file>icons/overlay_center.png</file>
+        <file>icons/overlay_godenratio.png</file>
+        <file>icons/overlay_safe.png</file>
+        <file>icons/overlay_third.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

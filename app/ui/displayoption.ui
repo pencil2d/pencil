@@ -111,7 +111,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/overlayCenter.png</normaloff>:/icons/overlayCenter.png</iconset>
+          <normaloff>:/icons/overlay_center.png</normaloff>:/icons/overlay_center.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -137,7 +137,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/overlayThirds.png</normaloff>:/icons/overlayThirds.png</iconset>
+          <normaloff>:/icons/overlay_third.png</normaloff>:/icons/overlay_third.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -195,7 +195,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/overlayGoldenRatio.png</normaloff>:/icons/overlayGoldenRatio.png</iconset>
+          <normaloff>:/icons/overlay_godenratio.png</normaloff>:/icons/overlay_godenratio.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -221,7 +221,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/overlaySafe.png</normaloff>:/icons/overlaySafe.png</iconset>
+          <normaloff>:/icons/overlay_safe.png</normaloff>:/icons/overlay_safe.png</iconset>
         </property>
         <property name="iconSize">
          <size>
