@@ -562,13 +562,12 @@ void CanvasPainter::paintOverlayCenter(QPainter &painter)
     painter.setPen(pen);
     painter.setWorldMatrixEnabled(!isCameraMode);
     painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    painter.drawLine(rect.x() + rect.width()/4, rect.y() + rect.height()/2, rect.x() + rect.width()*3/4, rect.y() + rect.height()/2);
-    painter.drawLine(rect.x() + rect.width()/2, rect.y() + rect.height()/4, rect.x() + rect.width()/2, rect.y() + rect.height()*3/4);
+    int offset = OVERLAY_SAFE_CENTER_CROSS_SIZE;
+    painter.drawLine(rect.center().x()-offset, rect.center().y(), rect.center().x()+offset, rect.center().y());
+    painter.drawLine(rect.center().x(), rect.center().y()-offset, rect.center().x(), rect.center().y()+offset);
 
-    painter.setRenderHints(previous_renderhints);
     painter.restore();
 }
 

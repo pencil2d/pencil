@@ -320,7 +320,7 @@
           <item row="0" column="1">
            <widget class="QLabel" name="labActionSafe">
             <property name="text">
-             <string>Action Safe area (%)</string>
+             <string>Enable Action Safe area (%)</string>
             </property>
            </widget>
           </item>
@@ -363,7 +363,7 @@
           <item row="1" column="1">
            <widget class="QLabel" name="labTitleSafe">
             <property name="text">
-             <string>Title Safe area (%)</string>
+             <string>Enable Title Safe area (%)</string>
             </property>
            </widget>
           </item>

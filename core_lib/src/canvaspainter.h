@@ -148,6 +148,8 @@ private:
 
     // Caches specificially for when drawing on the canvas
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
+
+    constexpr static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };
 
 #endif // CANVASRENDERER_H
