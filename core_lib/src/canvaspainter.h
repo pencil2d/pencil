@@ -43,6 +43,15 @@ struct CanvasPainterOptions
     bool  bGrid = false;
     int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
     int   nGridSizeH = 50; /* This is the grid Height IN PIXELS. The grid will scale with the image, though */
+    bool  bCenter = false;
+    bool  bThirds = false;
+    bool  bGoldenRatio = false;
+    bool  bActionSafe = true;
+    int   nActionSafe = 5;
+    bool  bSafeArea = false;
+    bool  bTitleSafe = true;
+    int   nTitleSafe = 10;
+    bool bShowSafeAreaHelperText = true;
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
@@ -53,7 +62,6 @@ struct CanvasPainterOptions
     bool onionWhilePlayback = false;
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
-
 
 class CanvasPainter : public QObject
 {
@@ -74,6 +82,7 @@ public:
     void paint();
     void paintCached();
     void renderGrid(QPainter& painter);
+    void renderOverlays(QPainter& painter);
     void resetLayerCache();
 
 private:
@@ -104,6 +113,10 @@ private:
 
     void paintTransformedSelection(QPainter& painter);
     void paintGrid(QPainter& painter);
+    void paintOverlayCenter(QPainter& painter);
+    void paintOverlayThirds(QPainter& painter);
+    void paintOverlayGolden(QPainter& painter);
+    void paintOverlaySafeAreas(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
@@ -135,6 +148,8 @@ private:
 
     // Caches specificially for when drawing on the canvas
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
+
+    constexpr static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };
 
 #endif // CANVASRENDERER_H

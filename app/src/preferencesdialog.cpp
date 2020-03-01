@@ -161,6 +161,11 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
     connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridWidthChanged);
     connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridHeightChanged);
+    connect(ui->actionSafeCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::actionSafeCheckBoxStateChanged);
+    connect(ui->actionSafeInput, spinValueChanged, this, &GeneralPage::actionSafeAreaChanged);
+    connect(ui->titleSafeCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::titleSafeCheckBoxStateChanged);
+    connect(ui->titleSafeInput, spinValueChanged, this, &GeneralPage::titleSafeAreaChanged);
+    connect(ui->safeHelperTextCheckbox, &QCheckBox::stateChanged, this, &GeneralPage::SafeAreaHelperTextCheckBoxStateChanged);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
 }
@@ -198,6 +203,20 @@ void GeneralPage::updateValues()
     ui->gridSizeInputH->setValue(mManager->getInt(SETTING::GRID_SIZE_H));
     SignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
+    SignalBlocker b16(ui->actionSafeCheckBox);
+
+    bool actionSafeOn = mManager->isOn(SETTING::ACTION_SAFE_ON);
+    ui->actionSafeCheckBox->setChecked(actionSafeOn);
+    SignalBlocker b14(ui->actionSafeInput);
+    ui->actionSafeInput->setValue(mManager->getInt(SETTING::ACTION_SAFE));
+    SignalBlocker b17(ui->titleSafeCheckBox);
+    bool titleSafeOn = mManager->isOn(SETTING::TITLE_SAFE_ON);
+    ui->titleSafeCheckBox->setChecked(titleSafeOn);
+    SignalBlocker b15(ui->titleSafeInput);
+    ui->titleSafeInput->setValue(mManager->getInt(SETTING::TITLE_SAFE));
+
+    SignalBlocker b18(ui->safeHelperTextCheckbox);
+    ui->safeHelperTextCheckbox->setChecked(mManager->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON));
 
     SignalBlocker b9(ui->highResBox);
     ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
@@ -283,6 +302,44 @@ void GeneralPage::gridWidthChanged(int value)
 void GeneralPage::gridHeightChanged(int value)
 {
     mManager->set(SETTING::GRID_SIZE_H, value);
+}
+
+void GeneralPage::actionSafeCheckBoxStateChanged(int b)
+{
+    mManager->set(SETTING::ACTION_SAFE_ON, b != Qt::Unchecked);
+    updateSafeHelperTextEnabledState();
+}
+
+void GeneralPage::actionSafeAreaChanged(int value)
+{
+    mManager->set(SETTING::ACTION_SAFE, value);
+}
+
+void GeneralPage::titleSafeCheckBoxStateChanged(int b)
+{
+    mManager->set(SETTING::TITLE_SAFE_ON, b != Qt::Unchecked);
+    updateSafeHelperTextEnabledState();
+}
+
+void GeneralPage::updateSafeHelperTextEnabledState()
+{
+    if (ui->actionSafeCheckBox->isChecked() == false && ui->titleSafeCheckBox->isChecked() == false) {
+        ui->safeHelperTextCheckbox->setEnabled(false);
+        ui->labSafeHelperText->setEnabled(false);
+    } else {
+        ui->safeHelperTextCheckbox->setEnabled(true);
+        ui->labSafeHelperText->setEnabled(true);
+    }
+}
+
+void GeneralPage::SafeAreaHelperTextCheckBoxStateChanged(int b)
+{
+    mManager->set(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON, b != Qt::Unchecked);
+}
+
+void GeneralPage::titleSafeAreaChanged(int value)
+{
+    mManager->set(SETTING::TITLE_SAFE, value);
 }
 
 void GeneralPage::gridCheckBoxStateChanged(int b)
@@ -460,7 +517,7 @@ void FilesPage::initPreset()
     ui->presetListWidget->addItem(defaultItem);
 
     bool ok = true;
-    for (const QString key : mPresetSettings->allKeys())
+    for (const QString& key : mPresetSettings->allKeys())
     {
         int index = key.toInt(&ok);
         if (!ok || index == 0 || !mPresetDir.exists(QString("%1.pclx").arg(index))) continue;

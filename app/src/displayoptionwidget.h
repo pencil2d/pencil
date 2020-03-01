@@ -40,6 +40,10 @@ public:
 private slots:
     void toggleMirror(bool);
     void toggleMirrorV(bool);
+    void toggleOverlayCenter(bool isOn);
+    void toggleOverlayThirds(bool isOn);
+    void toggleOverlayGoldenRatio(bool isOn);
+    void toggleOverlaySafeAreas(bool isOn);
 
 private:
     void makeConnections();

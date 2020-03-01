@@ -77,6 +77,11 @@ public slots:
     void updateValues();
     void gridWidthChanged(int value);
     void gridHeightChanged(int value);
+    void actionSafeCheckBoxStateChanged(int b);
+    void actionSafeAreaChanged(int value);
+    void titleSafeCheckBoxStateChanged(int b);
+    void titleSafeAreaChanged(int value);
+    void SafeAreaHelperTextCheckBoxStateChanged(int b);
 
 signals:
     void windowOpacityChange(int value);
@@ -94,6 +99,9 @@ private slots:
     void frameCacheNumberChanged(int value);
 
 private:
+
+    void updateSafeHelperTextEnabledState();
+
     Ui::GeneralPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
 };
