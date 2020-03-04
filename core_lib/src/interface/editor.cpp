@@ -1007,6 +1007,14 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
         }
     }
 
+    if (currentFrame() + frames > 9999) {
+        qDebug() << "Too many frames"; // TODO actually show this to the user
+        return false;
+    }
+    else if(frames > 200) {
+        // TODO warn user if lots of frames
+    }
+
     if (progress.wasCanceled()) return true;
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
