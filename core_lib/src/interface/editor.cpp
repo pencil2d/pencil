@@ -975,24 +975,25 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
         // FFmpeg writes to stderr only for some reason, so we just read both channels together
         ffmpeg.setProcessChannelMode(QProcess::MergedChannels);
         ffmpeg.start(probeCmd);
-        bool isDurationNext = false;
         if (ffmpeg.waitForStarted() == true)
         {
-            while(ffmpeg.state() == QProcess::Running)
+            int index = -1;
+            while (ffmpeg.state() == QProcess::Running)
             {
-                if(!ffmpeg.waitForReadyRead()) break;
+                if (!ffmpeg.waitForReadyRead()) break;
 
                 QString output(ffmpeg.readAll());
                 QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
                 for (const QString& s : sList)
                 {
-                    if (isDurationNext)
+                    //qDebug() << "[stdout/stderr]" << s;
+                    index = s.indexOf("Duration: ");
+                    if (index >= 0)
                     {
-                        isDurationNext = false;
-
                         QString format("hh:mm:ss.zzz");
-                        QString durationString = s.trimmed().left(format.length());
-                        otherFrames = qCeil(QTime(0, 0).msecsTo(QTime::fromString(durationString, format)) / 1000.0 * fps);
+                        QString durationString = s.mid(index + 10, format.length()-1) + "0";
+                        int curFrames = qCeil(QTime(0, 0).msecsTo(QTime::fromString(durationString, format)) / 1000.0 * fps);
+                        frames = qMax(frames, curFrames);
 
                         // We've got what we need, stop running
                         ffmpeg.terminate();
@@ -1000,12 +1001,6 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
                         if (ffmpeg.state() == QProcess::Running) ffmpeg.kill();
                         ffmpeg.waitForFinished();
                         break;
-                    }
-
-                    // Sure hope this isn't localized...
-                    if(s.contains("DURATION"))
-                    {
-                        isDurationNext = true;
                     }
                 }
             }
