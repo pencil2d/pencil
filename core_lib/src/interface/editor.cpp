@@ -70,6 +70,7 @@ Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
     clearUndoStack();
+    clearTemporary();
 }
 
 bool Editor::init()
