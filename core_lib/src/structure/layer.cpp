@@ -393,9 +393,9 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
 
     if (mVisible)
     {
-        if (layerVisibility == LayerVisibility::CURRENTONLY) painter.setBrush(Qt::NoBrush);
-        if (layerVisibility == LayerVisibility::RELATIVE) painter.setBrush(Qt::darkGray);
         if ((layerVisibility == LayerVisibility::ALL) || selected) painter.setBrush(Qt::black);
+        else if (layerVisibility == LayerVisibility::CURRENTONLY) painter.setBrush(Qt::NoBrush);
+        else if (layerVisibility == LayerVisibility::RELATIVE) painter.setBrush(Qt::darkGray);
     }
     else
     {

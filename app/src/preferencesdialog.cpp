@@ -361,7 +361,7 @@ void TimelinePage::updateValues()
     ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
 
-    int convertedVisibilityThreshold = qFloor(static_cast<int>(mManager->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD)*100));
+    int convertedVisibilityThreshold = static_cast<int>(mManager->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD)*100);
 
     ui->visibilitySlider->setValue(convertedVisibilityThreshold);
     ui->visibilitySpinbox->setValue(convertedVisibilityThreshold);
