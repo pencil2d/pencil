@@ -131,7 +131,7 @@ void CanvasPainter::renderPreLayers(QPixmap *pixmap)
 
 void CanvasPainter::renderPreLayers(QPainter& painter)
 {
-    if (mOptions.nShowAllLayers > 0)
+    if (mOptions.eLayerVisibility != LayerVisibility::CURRENTONLY || mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA)
     {
         paintCurrentFrame(painter, 0, mCurrentLayerIndex-1);
     }
@@ -161,7 +161,7 @@ void CanvasPainter::renderPostLayers(QPixmap *pixmap)
 
 void CanvasPainter::renderPostLayers(QPainter& painter)
 {
-    if (mOptions.nShowAllLayers > 0)
+    if (mOptions.eLayerVisibility != LayerVisibility::CURRENTONLY || mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA)
     {
         paintCurrentFrame(painter, mCurrentLayerIndex+1, mObject->getLayerCount()-1);
     }
@@ -476,8 +476,10 @@ void CanvasPainter::paintTransformedSelection(QPainter& painter)
  */
 void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int endLayer)
 {
-    //bool isCamera = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
     painter.setOpacity(1.0);
+
+
+    bool isCameraLayer = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
 
     for (int i = startLayer; i <= endLayer; ++i)
     {
@@ -486,6 +488,10 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
         if (layer->visible() == false)
             continue;
 
+        if (mOptions.eLayerVisibility == LayerVisibility::RELATIVE && !isCameraLayer) {
+            painter.setOpacity(calculateRelativeOpacityForLayer(i));
+        }
+
         switch (layer->type())
         {
         case Layer::BITMAP: { paintBitmapFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break; }
@@ -493,6 +499,17 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
         default: break;
         }
     }
+}
+
+qreal CanvasPainter::calculateRelativeOpacityForLayer(int layerIndex) const
+{
+    int layerOffset = mCurrentLayerIndex - layerIndex;
+    int absoluteOffset = qAbs(layerOffset);
+    qreal newOpacity = 1.0;
+    if (absoluteOffset != 0) {
+        newOpacity = qPow(static_cast<qreal>(mOptions.fLayerVisibilityThreshold), absoluteOffset);
+    }
+    return newOpacity;
 }
 
 void CanvasPainter::paintAxis(QPainter& painter)

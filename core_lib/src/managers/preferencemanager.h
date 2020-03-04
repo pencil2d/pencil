@@ -60,6 +60,8 @@ enum class SETTING
     FLIP_ROLL_MSEC,
     FLIP_ROLL_DRAWINGS,
     FLIP_INBETWEEN_MSEC,
+    LAYER_VISIBILITY,
+    LAYER_VISIBILITY_THRESHOLD,
     GRID_SIZE_W,
     GRID_SIZE_H,
     OVERLAY_CENTER,
@@ -107,6 +109,7 @@ public:
     void set(SETTING option, QString value);
     void set(SETTING option, int value);
     void set(SETTING option, bool value);
+    void set(SETTING option, float value);
 
     void turnOn(SETTING option);
     void turnOff(SETTING option);
@@ -114,6 +117,7 @@ public:
 
     QString getString(SETTING option);
     int     getInt(SETTING option);
+    float getFloat(SETTING option);
 
 Q_SIGNALS:
     void optionChanged(SETTING e);
@@ -122,6 +126,7 @@ private:
     QHash<int, QString> mStringSet;
     QHash<int, int> mIntegerSet;
     QHash<int, bool> mBooleanSet;
+    QHash<int, float> mFloatingPointSet;
 };
 
 #endif // PREFERENCEMANAGER_H

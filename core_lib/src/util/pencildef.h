@@ -72,6 +72,25 @@ enum StabilizationLevel
     STRONG
 };
 
+
+enum class LayerVisibility
+{
+    CURRENTONLY = 0,
+    RELATIVE = 1,
+    ALL = 2,
+    // If you are adding new enum values here, be sure to update the ++/-- operators below
+};
+
+inline LayerVisibility& operator++(LayerVisibility& vis)
+{
+    return vis = (vis == LayerVisibility::ALL) ? LayerVisibility::CURRENTONLY : static_cast<LayerVisibility>(static_cast<int>(vis)+1);
+}
+
+inline LayerVisibility& operator--(LayerVisibility& vis)
+{
+    return vis = (vis == LayerVisibility::CURRENTONLY) ? LayerVisibility::ALL : static_cast<LayerVisibility>(static_cast<int>(vis)-1);
+}
+
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"
@@ -144,6 +163,9 @@ enum StabilizationLevel
 #define CMD_NEW_SOUND_LAYER "CmdNewSoundLayer"
 #define CMD_NEW_CAMERA_LAYER "CmdNewCameraLayer"
 #define CMD_DELETE_CUR_LAYER "CmdDeleteCurrentLayer"
+#define CMD_CURRENT_LAYER_VISIBILITY "CmdLayerVisibilityCurrentOnly"
+#define CMD_RELATIVE_LAYER_VISIBILITY "CmdLayerVisibilityRelative"
+#define CMD_ALL_LAYER_VISIBILITY "CmdLayerVisibilityAll"
 #define CMD_HELP "CmdHelp"
 #define CMD_TOGGLE_TOOLBOX "CmdToggleToolBox"
 #define CMD_TOGGLE_TOOL_OPTIONS "CmdToggleToolOptions"
@@ -228,6 +250,8 @@ enum StabilizationLevel
 #define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
 
+#define SETTING_LAYER_VISIBILITY "LayerVisibility"
+#define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"
 

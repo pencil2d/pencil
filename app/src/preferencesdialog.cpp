@@ -359,6 +359,7 @@ TimelinePage::TimelinePage()
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     auto sliderChanged = static_cast<void(QSlider::*)(int)>(&QSlider::valueChanged);
+    auto comboChanged = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
     connect(ui->timelineLength, spinBoxValueChange, this, &TimelinePage::timelineLengthChanged);
     connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChanged);
     connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
@@ -370,6 +371,10 @@ TimelinePage::TimelinePage()
     connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
     connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
     connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
+    connect(ui->layerVisibilityComboBox, comboChanged, this, &TimelinePage::layerVisibilityChanged);
+    connect(ui->visibilitySlider, &QSlider::valueChanged, this, &TimelinePage::layerVisibilityThresholdChanged);
+    connect(ui->visibilitySpinbox, spinBoxValueChange, this, &TimelinePage::layerVisibilityThresholdChanged);
+    ui->visibilitySpinbox->setSuffix("%");
 }
 
 TimelinePage::~TimelinePage()
@@ -412,6 +417,14 @@ void TimelinePage::updateValues()
     ui->flipRollMsecsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
+
+    int convertedVisibilityThreshold = static_cast<int>(mManager->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD)*100);
+
+    ui->visibilitySlider->setValue(convertedVisibilityThreshold);
+    ui->visibilitySpinbox->setValue(convertedVisibilityThreshold);
+
+    int visibilityType = mManager->getInt(SETTING::LAYER_VISIBILITY);
+    ui->layerVisibilityComboBox->setCurrentIndex(visibilityType);
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -427,6 +440,23 @@ void TimelinePage::fontSizeChanged(int value)
 void TimelinePage::scrubChanged(int value)
 {
     mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
+}
+
+void TimelinePage::layerVisibilityChanged(int value)
+{
+    mManager->set(SETTING::LAYER_VISIBILITY, value);
+}
+
+void TimelinePage::layerVisibilityThresholdChanged(int value)
+{
+    float percentage = static_cast<float>(value/100.0f);
+    mManager->set(SETTING::LAYER_VISIBILITY_THRESHOLD, percentage);
+
+    SignalBlocker b8(ui->visibilitySlider);
+    ui->visibilitySlider->setValue(value);
+
+    SignalBlocker b9(ui->visibilitySpinbox);
+    ui->visibilitySpinbox->setValue(value);
 }
 
 void TimelinePage::drawEmptyKeyRadioButtonToggled(bool)

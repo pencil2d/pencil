@@ -67,14 +67,9 @@ void LayerSound::updateFrameLengths(int fps)
 
 QDomElement LayerSound::createDomElement(QDomDocument& doc)
 {
-    QDomElement layerTag = doc.createElement("layer");
+    QDomElement layerElem = this->createBaseDomElement(doc);
 
-    layerTag.setAttribute("id", id());
-    layerTag.setAttribute("name", name());
-    layerTag.setAttribute("visibility", visible());
-    layerTag.setAttribute("type", type());
-
-    foreachKeyFrame([&doc, &layerTag](KeyFrame* pKeyFrame)
+    foreachKeyFrame([&doc, &layerElem](KeyFrame* pKeyFrame)
     {
         SoundClip* clip = static_cast<SoundClip*>(pKeyFrame);
 
@@ -85,21 +80,15 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
         QFileInfo info(clip->fileName());
         //qDebug() << "Save=" << info.fileName();
         imageTag.setAttribute("src", info.fileName());
-        layerTag.appendChild(imageTag);
+        layerElem.appendChild(imageTag);
     });
 
-    return layerTag;
+    return layerElem;
 }
 
 void LayerSound::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
 {
-    if (!element.attribute("id").isNull())
-    {
-        int myId = element.attribute("id").toInt();
-        setId(myId);
-    }
-    setName(element.attribute("name"));
-    setVisible(element.attribute("visibility").toInt() == 1);
+    this->loadBaseDomElement(element);
 
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())

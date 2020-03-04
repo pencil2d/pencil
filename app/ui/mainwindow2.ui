@@ -147,6 +147,14 @@
      <addaction name="actionZoom33"/>
      <addaction name="actionZoom25"/>
     </widget>
+    <widget class="QMenu" name="menuLayer_Visibility">
+     <property name="title">
+      <string>Layer Visibility</string>
+     </property>
+     <addaction name="actionVisibilityCurrentLayerOnly"/>
+     <addaction name="actionVisibilityRelative"/>
+     <addaction name="actionVisibilityAll"/>
+    </widget>
     <addaction name="actionReset_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
@@ -159,11 +167,15 @@
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
     <addaction name="separator"/>
-    <addaction name="actionPreview"/>
+    <addaction name="menuOnion_Skin"/>
+    <addaction name="menuLayer_Visibility"/>
+    <addaction name="separator"/>
     <addaction name="separator"/>
     <addaction name="actionGrid"/>
     <addaction name="separator"/>
-    <addaction name="menuOnion_Skin"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreview"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -225,6 +237,7 @@
     <addaction name="actionDelete_Current_Layer"/>
     <addaction name="separator"/>
     <addaction name="menuChange_line_color"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -982,6 +995,21 @@
     <string>Flip Rolling</string>
    </property>
   </action>
+  <action name="actionLayerHidden">
+   <property name="text">
+    <string>Current layer only</string>
+   </property>
+  </action>
+  <action name="actionLayerRelative">
+   <property name="text">
+    <string>Relative</string>
+   </property>
+  </action>
+  <action name="actionLayerFull">
+   <property name="text">
+    <string>All Layers</string>
+   </property>
+  </action>
   <action name="actionPegbarAlignment">
    <property name="text">
     <string>Peg bar Alignment</string>
@@ -1015,6 +1043,21 @@
   <action name="actionImportLayers_from_pclx">
    <property name="text">
     <string>Layers from PCLX...</string>
+   </property>
+  </action>
+  <action name="actionVisibilityCurrentLayerOnly">
+   <property name="text">
+    <string>Current layer only</string>
+   </property>
+  </action>
+  <action name="actionVisibilityRelative">
+   <property name="text">
+    <string>Relative</string>
+   </property>
+  </action>
+  <action name="actionVisibilityAll">
+   <property name="text">
+    <string>All layers</string>
    </property>
   </action>
   <action name="actionOnionSkins">
