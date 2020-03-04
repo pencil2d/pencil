@@ -729,6 +729,8 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     mEditor->object()->setFilePath(strSavedFileName);
     mEditor->object()->setModified(false);
 
+    mEditor->clearTemporary();
+
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, strSavedFileName);
 

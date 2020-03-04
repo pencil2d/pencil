@@ -655,6 +655,13 @@ void Editor::toogleOnionSkinType()
     mPreferenceManager->set(SETTING::ONION_TYPE, newState);
 }
 
+void Editor::clearTemporary()
+{
+    while(!mTemporaryDirs.isEmpty()) {
+        mTemporaryDirs.takeFirst()->remove();
+    }
+}
+
 Status Editor::setObject(Object* newObject)
 {
     if (newObject == nullptr)
@@ -926,12 +933,13 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
     qDebug() << "-------IMPORT MOVIE VIDEO------" << filePath;
 
     // --------- Import all the temporary frames ----------
-    QTemporaryDir tempDir;
-    if (!tempDir.isValid())
+    QTemporaryDir* tempDir = new QTemporaryDir();
+    if (!tempDir->isValid())
     {
         qDebug() << "Could not create a temporary folder";
         return false;
     }
+    mTemporaryDirs.append(tempDir);
 
     QString ffmpegPath = ffmpegLocation();
     if (!QFile::exists(ffmpegPath))
@@ -1009,7 +1017,7 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
     strCmd += QString(" -i \"%1\"").arg(filePath);
     strCmd += QString(" -r %1").arg(fps);
-    strCmd += QString(" \"%1\"").arg(tempDir.filePath("%05d.png"));
+    strCmd += QString(" \"%1\"").arg(tempDir->filePath("%05d.png"));
 
     Status st = MovieExporter::executeFFMpeg(strCmd, frames, [&progress](float f) {
         progress.setValue(qFloor(qMin(f, 1.0f) * 50));
@@ -1024,19 +1032,33 @@ bool Editor::importMovieVideo(QString filePath, int fps, QProgressDialog &progre
     if(progress.wasCanceled()) return true;
     progress.setValue(50);
     int i = 1;
-    frames = QDir(tempDir.path()).count();
-    QString currentFile(tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0'))));
+    frames = QDir(tempDir->path()).count();
+    QString currentFile(tempDir->filePath(QString("%1.png").arg(i, 5, 10, QChar('0'))));
+    QPoint imgTopLeft;
     while (QFileInfo::exists(currentFile))
     {
-        importBitmapImage(currentFile);
+        if(layer->keyExists(currentFrame())) {
+            importBitmapImage(currentFile);
+        }
+        else {
+            BitmapImage* bitmapImage = new BitmapImage(imgTopLeft, currentFile);
+            if(imgTopLeft.isNull()) {
+                imgTopLeft.setX(static_cast<int>(view()->getImportView().dx()) - bitmapImage->image()->width() / 2);
+                imgTopLeft.setY(static_cast<int>(view()->getImportView().dy()) - bitmapImage->image()->height() / 2);
+                bitmapImage->moveTopLeft(imgTopLeft);
+            }
+            layer->addKeyFrame(currentFrame(), bitmapImage);
+            layers()->notifyAnimationLengthChanged();
+            scrubTo(currentFrame() + 1);
+        }
         if (progress.wasCanceled()) return true;
         progress.setValue(qFloor(50 + i / static_cast<qreal>(frames) * 50));
         QApplication::processEvents();
         i++;
-        currentFile = tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0')));
+        currentFile = tempDir->filePath(QString("%1.png").arg(i, 5, 10, QChar('0')));
     }
 
-    return QFileInfo::exists(tempDir.filePath("00001.png"));
+    return QFileInfo::exists(tempDir->filePath("00001.png"));
 }
 
 bool Editor::importMovieAudio(QString filePath, QProgressDialog &progress)

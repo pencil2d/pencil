@@ -28,6 +28,7 @@ GNU General Public License for more details.
 class QDragEnterEvent;
 class QDropEvent;
 class QProgressDialog;
+class QTemporaryDir;
 class Object;
 class KeyFrame;
 class LayerCamera;
@@ -173,6 +174,8 @@ public: //slots
 
     void toogleOnionSkinType();
 
+    void clearTemporary();
+
     void settingUpdated(SETTING);
 
     void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
@@ -221,6 +224,8 @@ private:
 
     void makeConnections();
     KeyFrame* addKeyFrame(int layerNumber, int frameNumber);
+
+    QList<QTemporaryDir*> mTemporaryDirs;
 
     // backup
     void clearUndoStack();
