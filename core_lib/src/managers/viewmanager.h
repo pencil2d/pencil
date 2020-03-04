@@ -75,12 +75,27 @@ public:
 
     void flipHorizontal(bool b);
     void flipVertical(bool b);
+    void setOverlayCenter(bool b);
+    void setOverlayThirds(bool b);
+    void setOverlayGoldenRatio(bool b);
+    void setOverlaySafeAreas(bool b);
 
     bool isFlipHorizontal() { return mIsFlipHorizontal; }
     bool isFlipVertical() { return mIsFlipVertical; }
+    bool getOverlayCenter() { return mOverlayCenter; }
+    bool getOverlayThirds() { return mOverlayThirds; }
+    bool getOverlayGoldenRatio() { return mOverlayGoldenRatio; }
+    bool getOverlaySafeAreas() { return mOverlaySafeAreas; }
+
 
     void setCanvasSize(QSize size);
     void setCameraLayer(Layer* layer);
+
+    QTransform getImportView() { return mImportView; }
+    void setImportView(const QTransform& newView) { mImportView = newView; }
+
+    void setImportFollowsCamera(bool b) { mImportFollowsCamera = b; }
+    bool getImportFollowsCamera() { return mImportFollowsCamera; }
 
     void updateViewTransforms();
 
@@ -96,6 +111,7 @@ private:
     QTransform mViewCanvas;
     QTransform mViewCanvasInverse;
     QTransform mCentre;
+    QTransform mImportView;
 
     Camera* mDefaultEditorCamera = nullptr;
     Camera* mCurrentCamera = nullptr;
@@ -104,6 +120,12 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+    bool mOverlayCenter = false;
+    bool mOverlayThirds = false;
+    bool mOverlayGoldenRatio = false;
+    bool mOverlaySafeAreas = false;
+
+    bool mImportFollowsCamera = false;
 
     LayerCamera* mCameraLayer = nullptr;
 };

@@ -22,17 +22,6 @@ GNU General Public License for more details.
 #define M_PI 3.14159265358979323846
 #endif
 
-#define PENCIL_MOVIE_EXT \
-    QString( "%1 (*.avi *.mpg *.mpeg *.mov *.mp4 *.mkv *.ogv *.swf *.flv *.webm *.wmv);;" \
-             "AVI(*.avi);;MPEG(*.mpg *.mpeg);;MOV(*.mov);;MP4(*.mp4);;MKV(*.mkv);;OGV(*.ogv)" \
-             ";;SWF(*.swf);;FLV(*.flv);;WEBM(*.webm);;WMV(*.wmv)" ).arg(QObject::tr("Movies"))
-
-#define PENCIL_IMAGE_FILTER \
-   QString( "%1 (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;TIFF(*.tif *.tiff)" ).arg(QObject::tr("Images"))
-
-#define PENCIL_IMAGE_SEQ_FILTER \
-    QString( "%1 (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;TIFF(*.tif *.tiff)" ).arg(QObject::tr("Images"))
-
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 #define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
@@ -82,6 +71,25 @@ enum StabilizationLevel
     SIMPLE,
     STRONG
 };
+
+
+enum class LayerVisibility
+{
+    CURRENTONLY = 0,
+    RELATIVE = 1,
+    ALL = 2,
+    // If you are adding new enum values here, be sure to update the ++/-- operators below
+};
+
+inline LayerVisibility& operator++(LayerVisibility& vis)
+{
+    return vis = (vis == LayerVisibility::ALL) ? LayerVisibility::CURRENTONLY : static_cast<LayerVisibility>(static_cast<int>(vis)+1);
+}
+
+inline LayerVisibility& operator--(LayerVisibility& vis)
+{
+    return vis = (vis == LayerVisibility::CURRENTONLY) ? LayerVisibility::ALL : static_cast<LayerVisibility>(static_cast<int>(vis)-1);
+}
 
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
@@ -156,6 +164,9 @@ enum StabilizationLevel
 #define CMD_NEW_SOUND_LAYER "CmdNewSoundLayer"
 #define CMD_NEW_CAMERA_LAYER "CmdNewCameraLayer"
 #define CMD_DELETE_CUR_LAYER "CmdDeleteCurrentLayer"
+#define CMD_CURRENT_LAYER_VISIBILITY "CmdLayerVisibilityCurrentOnly"
+#define CMD_RELATIVE_LAYER_VISIBILITY "CmdLayerVisibilityRelative"
+#define CMD_ALL_LAYER_VISIBILITY "CmdLayerVisibilityAll"
 #define CMD_HELP "CmdHelp"
 #define CMD_TOGGLE_TOOLBOX "CmdToggleToolBox"
 #define CMD_TOGGLE_TOOL_OPTIONS "CmdToggleToolOptions"
@@ -163,6 +174,7 @@ enum StabilizationLevel
 #define CMD_TOGGLE_COLOR_INSPECTOR "CmdToggleColorInspector"
 #define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
 #define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
+#define CMD_TOGGLE_ONION_SKIN "CmdToggleOnionSkin"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
 #define CMD_INCREASE_SIZE "CmdIncreaseSize"
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"
@@ -170,6 +182,9 @@ enum StabilizationLevel
 
 // Save / Export
 #define LAST_PCLX_PATH          "LastFilePath"
+
+// Import
+#define IMPORT_REPOSITION_TYPE      "ImportRepositionType"
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
@@ -196,6 +211,8 @@ enum StabilizationLevel
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
+#define SETTING_ASK_FOR_PRESET      "AskForPreset"
+#define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"
@@ -214,6 +231,15 @@ enum StabilizationLevel
 #define SETTING_FRAME_POOL_SIZE "FramePoolSize"
 #define SETTING_GRID_SIZE_W      "GridSizeW"
 #define SETTING_GRID_SIZE_H      "GridSizeH"
+#define SETTING_OVERLAY_CENTER   "OverlayCenter"
+#define SETTING_OVERLAY_THIRDS   "OverlayThirds"
+#define SETTING_OVERLAY_GOLDEN   "OverlayGolden"
+#define SETTING_OVERLAY_SAFE     "OverlaySafe"
+#define SETTING_TITLE_SAFE_ON    "TitleSafeOn"
+#define SETTING_TITLE_SAFE       "TitleSafe"
+#define SETTING_ACTION_SAFE_ON   "ActionSafeOn"
+#define SETTING_ACTION_SAFE      "ActionSafe"
+#define SETTING_OVERLAY_SAFE_HELPER_TEXT_ON "OverlaySafeHelperTextOn"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
@@ -225,6 +251,8 @@ enum StabilizationLevel
 #define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
 
+#define SETTING_LAYER_VISIBILITY "LayerVisibility"
+#define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"
 

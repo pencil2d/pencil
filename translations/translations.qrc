@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/qm">
+        <file>pencil_ar.qm</file>
         <file>pencil_cs.qm</file>
         <file>pencil_da.qm</file>
         <file>pencil_de.qm</file>

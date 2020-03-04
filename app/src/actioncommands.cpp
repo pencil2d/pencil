@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "soundmanager.h"
 #include "playbackmanager.h"
+#include "colormanager.h"
 #include "preferencemanager.h"
 #include "selectionmanager.h"
 #include "util.h"
@@ -102,22 +103,14 @@ Status ActionCommands::importSound()
 
 
     int currentFrame = mEditor->currentFrame();
-    SoundClip* key = nullptr;
 
-    if (layer->keyExists(currentFrame))
+    SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
+
+    if (key == nullptr)
     {
-        key = static_cast<SoundClip*>(layer->getKeyFrameAt(currentFrame));
-        if (!key->fileName().isEmpty())
-        {
-            QMessageBox::warning(nullptr, "",
-                                 tr("A sound clip already exists on this frame! Please select another frame or layer."));
-            return Status::SAFE;
-        }
-    }
-    else
-    {
-        key = new SoundClip;
-        layer->addKeyFrame(currentFrame, key);
+        // Probably tried to modify a hidden layer or something like that
+        // Let Editor handle the warnings
+        return Status::SAFE;
     }
 
     FileDialog fileDialog(mParent);
@@ -545,8 +538,6 @@ Status ActionCommands::addNewKey()
         mEditor->view()->updateViewTransforms();
     }
 
-    mEditor->layers()->notifyAnimationLengthChanged();
-
     return Status::OK;
 }
 
@@ -629,7 +620,7 @@ Status ActionCommands::addNewBitmapLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         nameSuggest(tr("Bitmap Layer")), &ok);
+                                         mEditor->layers()->nameSuggestLayer(tr("Bitmap Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createBitmapLayer(text);
@@ -642,7 +633,7 @@ Status ActionCommands::addNewVectorLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         nameSuggest(tr("Vector Layer")), &ok);
+                                         mEditor->layers()->nameSuggestLayer(tr("Vector Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
@@ -655,7 +646,7 @@ Status ActionCommands::addNewCameraLayer()
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                          tr("Layer name:"), QLineEdit::Normal,
-                                         nameSuggest(tr("Camera Layer")), &ok);
+                                         mEditor->layers()->nameSuggestLayer(tr("Camera Layer")), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createCameraLayer(text);
@@ -668,7 +659,7 @@ Status ActionCommands::addNewSoundLayer()
     bool ok = false;
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
                                                  tr("Layer name:"), QLineEdit::Normal,
-                                                 nameSuggest(tr("Sound Layer")), &ok);
+                                                 mEditor->layers()->nameSuggestLayer(tr("Sound Layer")), &ok);
     if (ok && !strLayerName.isEmpty())
     {
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -699,33 +690,37 @@ Status ActionCommands::deleteCurrentLayer()
     return Status::OK;
 }
 
-QString ActionCommands::nameSuggest(QString s)
+void ActionCommands::setLayerVisibilityIndex(int index)
 {
-    LayerManager* layerMgr = mEditor->layers();
-    // if no layers: return 's'
-    if (layerMgr->count() == 0)
-    {
-        return s;
-    }
-    QVector<QString> sLayers;
-    // fill Vector with layer names
-    for (int i = 0; i < layerMgr->count(); i++)
-    {
-        sLayers.append(layerMgr->getLayer(i)->name());
-    }
-    // if 's' is not in list, then return 's'
-    if (!sLayers.contains(s))
-    {
-        return s;
-    }
-    int j = 2;
-    QString tmp = s;
-    do {
-        tmp = s + " " + QString::number(j++);
-    } while (sLayers.contains(tmp));
-    return tmp;
+    mEditor->setLayerVisibility(static_cast<LayerVisibility>(index));
 }
 
+void ActionCommands::changeKeyframeLineColor()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
+            mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+    {
+        QRgb color = mEditor->color()->frontColor().rgb();
+        LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+        layer->getBitmapImageAtFrame(mEditor->currentFrame())->fillNonAlphaPixels(color);
+        mEditor->updateFrame(mEditor->currentFrame());
+    }
+}
+
+void ActionCommands::changeallKeyframeLineColor()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        QRgb color = mEditor->color()->frontColor().rgb();
+        LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+        for (int i = layer->firstKeyFramePosition(); i <= layer->getMaxKeyFramePosition(); i++)
+        {
+            if (layer->keyExists(i))
+                layer->getBitmapImageAtFrame(i)->fillNonAlphaPixels(color);
+        }
+        mEditor->updateFrame(mEditor->currentFrame());
+    }
+}
 
 void ActionCommands::help()
 {

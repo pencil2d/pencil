@@ -35,7 +35,6 @@ namespace Ui
     class ColorPalette;
 }
 
-
 class ColorPaletteWidget : public BaseDockWidget
 {
     Q_OBJECT
@@ -47,12 +46,15 @@ public:
 
     void initUI() override;
     void updateUI() override;
+    void setCore(Editor* editor);
 
     int currentColourNumber();
 
     void selectColorNumber(int);
     void setColor(QColor, int);
     void refreshColorList();
+
+    void adjustSwatches();
 
     void showContextMenu(const QPoint&);
 
@@ -67,6 +69,7 @@ private slots:
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
     void onItemChanged(QListWidgetItem* item);
+    void onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row);
     void clickAddColorButton();
     void clickColorDialogButton();
     void clickRemoveColorButton();
@@ -76,6 +79,7 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
+    void fitSwatchSize();
     void addItem();
     void replaceItem();
     void removeItem();
@@ -105,7 +109,14 @@ private:
 
     bool mIsColorDialog = false;
     bool mMultipleSelected = false;
+    bool mFitSwatches = false;
 
+    const int MIN_ICON_SIZE = 19;
+    const int MEDIUM_ICON_SIZE = 26;
+    const int MAX_ICON_SIZE = 36;
+
+    Editor* mEditor = nullptr;
+    Object* mObject = nullptr;
 };
 
 #endif

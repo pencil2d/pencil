@@ -56,6 +56,14 @@
         <file>icons/new/arrow-horizontal.png</file>
         <file>icons/new/arrow-selectmove.png</file>
         <file>icons/new/arrow-vertical.png</file>
+        <file>icons/overlayCenter.png</file>
+        <file>icons/overlayGoldenRatio.png</file>
+        <file>icons/overlaySafe.png</file>
+        <file>icons/overlayThirds.png</file>
+        <file>icons/overlay_center.png</file>
+        <file>icons/overlay_godenratio.png</file>
+        <file>icons/overlay_safe.png</file>
+        <file>icons/overlay_third.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

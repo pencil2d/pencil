@@ -29,12 +29,15 @@ RecentFileMenu::RecentFileMenu(QString title, QWidget *parent) :
     mClearSeparator->setSeparator(true);
 
     mClearAction = new QAction(tr("Clear"), this); // share the same translation
+    mEmptyAction = new QAction(tr("Empty"), this);
+    mEmptyAction->setEnabled(false);
 }
 
 RecentFileMenu::~RecentFileMenu()
 {
     delete mClearSeparator;
     delete mClearAction;
+    delete mEmptyAction;
 }
 
 void RecentFileMenu::clear()
@@ -47,6 +50,8 @@ void RecentFileMenu::clear()
     removeAction(mClearAction);
     mRecentFiles.clear();
     mRecentActions.clear();
+    addAction(mEmptyAction);
+    saveToDisk();
 }
 
 void RecentFileMenu::setRecentFiles(const QStringList& filenames)
@@ -68,6 +73,7 @@ bool RecentFileMenu::loadFromDisk()
     QVariant recent = settings.value("RecentFiles");
     if (recent.isNull())
     {
+        clear();
         return false;
     }
     QStringList recentFileList = recent.toStringList();
@@ -104,6 +110,7 @@ void RecentFileMenu::addRecentFile(QString filename)
     mRecentActions.emplace(filename, action);
     if (mRecentFiles.size() == 1)
     {
+        removeAction(mEmptyAction);
         addAction(action);
         addAction(mClearSeparator);
         addAction(mClearAction);

@@ -79,17 +79,38 @@ QString FileDialog::saveFile( FileType fileType )
     QString strFilter = saveFileFilters( fileType );
     QString strSelectedFilter = getFilterForFile(strFilter, strInitialFilePath);
 
-    QString filePath = QFileDialog::getSaveFileName( mRoot,
-                                                     strTitle,
-                                                     strInitialFilePath,
-                                                     strFilter,
-                                                     strSelectedFilter.isNull() ? Q_NULLPTR : &strSelectedFilter );
+    QString filePath = QFileDialog::getSaveFileName(mRoot,
+                           strTitle,
+                           strInitialFilePath,
+                           strFilter,
+                           strSelectedFilter.isNull() ? Q_NULLPTR : &strSelectedFilter);
+
     if ( !filePath.isEmpty() )
     {
         setLastSavePath( fileType, filePath );
     }
 
+    QFileInfo info(filePath);
+    if (info.suffix().isEmpty() || strSelectedFilter.isEmpty()) {
+
+        filePath += addDefaultExtensionSuffix(fileType);
+    }
+
     return filePath;
+}
+
+QString FileDialog::addDefaultExtensionSuffix(const FileType fileType)
+{
+    switch(fileType)
+    {
+    case FileType::ANIMATION: return PFF_DEFAULT_PROJECT_EXT;
+    case FileType::IMAGE: return PFF_DEFAULT_IMAGE_EXT;
+    case FileType::IMAGE_SEQUENCE: return PFF_DEFAULT_IMAGE_SEQ_EXT;
+    case FileType::GIF: return PFF_DEFAULT_ANIMATED_EXT;
+    case FileType::PALETTE: return PFF_DEFAULT_PALETTE_EXT;
+    default:
+        return "";
+    }
 }
 
 QString FileDialog::getLastOpenPath( FileType fileType )
@@ -135,8 +156,7 @@ QString FileDialog::openDialogTitle( FileType fileType )
         case FileType::GIF: return tr( "Import Animated GIF" );
         case FileType::MOVIE: return tr( "Import movie" );
         case FileType::SOUND: return tr( "Import sound" );
-        case FileType::PALETTE: return tr( "Import palette" );
-        default: Q_ASSERT( false );
+        case FileType::PALETTE: return tr( "Open palette" );
     }
     return "";
 }
@@ -152,7 +172,6 @@ QString FileDialog::saveDialogTitle( FileType fileType )
         case FileType::MOVIE: return tr( "Export movie" );
         case FileType::SOUND: return tr( "Export sound" );
         case FileType::PALETTE: return tr( "Export palette" );
-        default: Q_ASSERT( false );
     }
     return "";
 }
@@ -161,18 +180,13 @@ QString FileDialog::openFileFilters( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::ANIMATION: return PFF_OPEN_ALL_FILE_FILTER;
-        case FileType::IMAGE: return PENCIL_IMAGE_FILTER;
-        case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_SEQ_FILTER;
-        case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
-        case FileType::MOVIE: { return PENCIL_MOVIE_EXT; }
-        case FileType::SOUND: return QString("%1 (*.wav *.mp3 *.wma *.ogg *.flac *.opus *.aiff *.aac *.caf);;WAV (*.wav);;MP3 (*.mp3);;WMA (*.wma);;OGG (*.ogg);;FLAC (*.flac);;Opus (*.opus);;AIFF (*.aiff);;AAC (*.aac);;CAF (*.caf)").arg("Sounds");
-        case FileType::PALETTE:
-            return QString("%1 (*.xml *.gpl);;%2 (*.xml);;%3 (*.gpl)")
-                .arg(tr("Palette"))
-                .arg(tr("Pencil2D Palette"))
-                .arg(tr("GIMP Palette"));
-        default: Q_ASSERT( false );
+        case FileType::ANIMATION: return PFF_PROJECT_EXT_FILTER;
+        case FileType::IMAGE: return PFF_IMAGE_FILTER;
+        case FileType::IMAGE_SEQUENCE: return PFF_IMAGE_SEQ_FILTER;
+        case FileType::GIF: return PFF_GIF_EXT_FILTER;
+        case FileType::MOVIE: return PFF_MOVIE_EXT;
+        case FileType::SOUND: return PFF_SOUND_EXT_FILTER;
+        case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
     }
     return "";
 }
@@ -181,18 +195,13 @@ QString FileDialog::saveFileFilters( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::ANIMATION: return PFF_SAVE_ALL_FILE_FILTER;
+        case FileType::ANIMATION: return PFF_PROJECT_EXT_FILTER;
         case FileType::IMAGE: return "";
         case FileType::IMAGE_SEQUENCE: return "";
         case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
         case FileType::MOVIE: return "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)";
         case FileType::SOUND: return "";
-        case FileType::PALETTE:
-            return QString("%1 (*.xml *.gpl);;%2 (*.xml);;%3 (*.gpl)")
-                .arg(tr("Palette"))
-                .arg(tr("Pencil2D Palette"))
-                .arg(tr("GIMP Palette"));
-        default: Q_ASSERT( false );
+        case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
     }
     return "";
 }
@@ -238,7 +247,6 @@ QString FileDialog::defaultFileName( FileType fileType )
         case FileType::MOVIE: return "untitled.mp4";
         case FileType::SOUND: return "untitled.wav";
         case FileType::PALETTE: return "untitled.xml";
-        default: Q_ASSERT( false );
     }
     return "";
 }
@@ -254,7 +262,6 @@ QString FileDialog::toSettingKey( FileType fileType )
         case FileType::MOVIE: return "Movie";
         case FileType::SOUND: return "Sound";
         case FileType::PALETTE: return "Palette";
-        default: Q_ASSERT( false );
     }
     return "";
 }
