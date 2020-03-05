@@ -328,6 +328,7 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
         if (type() == SOUND) col = QColor(255, 141, 112);
         if (type() == CAMERA) col = QColor(253, 202, 92);
 
+        painter.save();
         painter.setBrush(col);
         painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.drawRect(x, y - 1, width, height);
@@ -337,6 +338,16 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
         {
             paintSelection(painter, x, y, width, height);
         }
+        else
+        {
+            QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
+            linearGrad.setColorAt(0, QColor(255,255,255,150));
+            linearGrad.setColorAt(1, QColor(0,0,0,0));
+            painter.setCompositionMode(QPainter::CompositionMode_Overlay);
+            painter.setBrush(linearGrad);
+            painter.drawRect(x, y - 1, width, height);
+        }
+        painter.restore();
 
         paintFrames(painter, cells, y, height, selected, frameSize);
     }
@@ -386,7 +397,7 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
                        bool selected, int allLayers)
 {
-    Q_UNUSED(cells);
+    Q_UNUSED(cells)
     painter.setBrush(Qt::lightGray);
     painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
@@ -395,6 +406,15 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
     if (selected)
     {
         paintSelection(painter, x, y, width, height);
+    } else {
+        painter.save();
+        QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
+        linearGrad.setColorAt(0, QColor(255,255,255,150));
+        linearGrad.setColorAt(1, QColor(0,0,0,0));
+        painter.setCompositionMode(QPainter::CompositionMode_Overlay);
+        painter.setBrush(linearGrad);
+        painter.drawRect(x, y - 1, width, height);
+        painter.restore();
     }
 
     if (mVisible)
