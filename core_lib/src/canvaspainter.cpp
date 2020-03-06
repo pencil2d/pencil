@@ -488,7 +488,7 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
         if (layer->visible() == false)
             continue;
 
-        if (mOptions.eLayerVisibility == LayerVisibility::RELATIVE && !isCameraLayer) {
+        if (mOptions.eLayerVisibility == LayerVisibility::RELATED && !isCameraLayer) {
             painter.setOpacity(calculateRelativeOpacityForLayer(i));
         }
 
