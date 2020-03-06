@@ -76,7 +76,7 @@ enum StabilizationLevel
 enum class LayerVisibility
 {
     CURRENTONLY = 0,
-    RELATIVE = 1,
+    RELATED = 1,
     ALL = 2,
     // If you are adding new enum values here, be sure to update the ++/-- operators below
 };

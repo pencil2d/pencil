@@ -281,7 +281,7 @@ void TimeLineCells::drawContent()
         // --- draw circle
         painter.setPen(Qt::black);
         if (mEditor->layerVisibility() == LayerVisibility::CURRENTONLY) { painter.setBrush(Qt::NoBrush); }
-        else if (mEditor->layerVisibility() == LayerVisibility::RELATIVE) { painter.setBrush(Qt::darkGray); }
+        else if (mEditor->layerVisibility() == LayerVisibility::RELATED) { painter.setBrush(Qt::darkGray); }
         else if (mEditor->layerVisibility() == LayerVisibility::ALL) { painter.setBrush(Qt::black); }
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.drawEllipse(6, 4, 9, 9);
