@@ -89,6 +89,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::FIELD_H,                  settings.value(SETTING_FIELD_H,                600).toInt());
 
     // Files
+    set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              false).toBool());
     set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       256).toInt());
     set(SETTING::ASK_FOR_PRESET,           settings.value(SETTING_ASK_FOR_PRESET,         false).toBool());
     set(SETTING::DEFAULT_PRESET,           settings.value(SETTING_DEFAULT_PRESET,         0).toInt());
