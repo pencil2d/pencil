@@ -346,10 +346,11 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
             painter.setCompositionMode(QPainter::CompositionMode_Overlay);
             painter.setBrush(linearGrad);
             painter.drawRect(x, y - 1, width, height);
+            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         }
-        painter.restore();
 
         paintFrames(painter, cells, y, height, selected, frameSize);
+        painter.restore();
     }
     else
     {
