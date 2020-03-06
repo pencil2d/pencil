@@ -1056,6 +1056,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
         object->createDefaultLayers();
     }
     mEditor->setObject(object);
+    object->setFilePath(QString());
     return true;
 }
 
