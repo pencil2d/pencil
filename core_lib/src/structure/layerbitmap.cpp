@@ -161,11 +161,7 @@ bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& savePath)
 
 QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
 {
-    QDomElement layerTag = doc.createElement("layer");
-    layerTag.setAttribute("id", id());
-    layerTag.setAttribute("name", name());
-    layerTag.setAttribute("visibility", visible());
-    layerTag.setAttribute("type", type());
+    QDomElement layerElem = this->createBaseDomElement(doc);
 
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
@@ -176,23 +172,17 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
         imageTag.setAttribute("src", fileName(pKeyFrame));
         imageTag.setAttribute("topLeftX", pImg->topLeft().x());
         imageTag.setAttribute("topLeftY", pImg->topLeft().y());
-        layerTag.appendChild(imageTag);
+        layerElem.appendChild(imageTag);
 
         Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
     });
 
-    return layerTag;
+    return layerElem;
 }
 
 void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
 {
-    if (!element.attribute("id").isNull())
-    {
-        int id = element.attribute("id").toInt();
-        setId(id);
-    }
-    setName(element.attribute("name"));
-    setVisible(element.attribute("visibility").toInt() == 1);
+    this->loadBaseDomElement(element);
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

@@ -166,6 +166,10 @@ void Editor::settingUpdated(SETTING setting)
     case SETTING::FRAME_POOL_SIZE:
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
         break;
+    case SETTING::LAYER_VISIBILITY:
+        mScribbleArea->setLayerVisibility(static_cast<LayerVisibility>(mPreferenceManager->getInt(SETTING::LAYER_VISIBILITY)));
+        emit updateTimeLine();
+        break;
     default:
         break;
     }
@@ -607,19 +611,30 @@ void Editor::clipboardChanged()
     }
 }
 
+void Editor::setLayerVisibility(LayerVisibility visibility) {
+    mScribbleArea->setLayerVisibility(visibility);
+    emit updateTimeLine();
+}
+
 void Editor::notifyAnimationLengthChanged()
 {
     layers()->notifyAnimationLengthChanged();
 }
 
-int Editor::allLayers()
+LayerVisibility Editor::layerVisibility()
 {
-    return mScribbleArea->showAllLayers();
+    return mScribbleArea->getLayerVisibility();
 }
 
-void Editor::toggleShowAllLayers()
+void Editor::increaseLayerVisibilityIndex()
 {
-    mScribbleArea->toggleShowAllLayers();
+    mScribbleArea->increaseLayerVisibilityIndex();
+    emit updateTimeLine();
+}
+
+void Editor::decreaseLayerVisibilityIndex()
+{
+    mScribbleArea->decreaseLayerVisibilityIndex();
     emit updateTimeLine();
 }
 
@@ -877,6 +892,12 @@ bool Editor::importImage(QString filePath)
 {
     Layer* layer = layers()->currentLayer();
 
+    if (view()->getImportFollowsCamera())
+    {
+        LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
+        QTransform transform = camera->getViewAtFrame(currentFrame());
+        view()->setImportView(transform);
+    }
     switch (layer->type())
     {
     case Layer::BITMAP:

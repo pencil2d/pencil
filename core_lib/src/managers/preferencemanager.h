@@ -60,8 +60,19 @@ enum class SETTING
     FLIP_ROLL_MSEC,
     FLIP_ROLL_DRAWINGS,
     FLIP_INBETWEEN_MSEC,
+    LAYER_VISIBILITY,
+    LAYER_VISIBILITY_THRESHOLD,
     GRID_SIZE_W,
     GRID_SIZE_H,
+    OVERLAY_CENTER,
+    OVERLAY_THIRDS,
+    OVERLAY_GOLDEN,
+    OVERLAY_SAFE,
+    OVERLAY_SAFE_HELPER_TEXT_ON,
+    ACTION_SAFE_ON,
+    ACTION_SAFE,
+    TITLE_SAFE_ON,
+    TITLE_SAFE,
     QUICK_SIZING,
     MULTILAYER_ONION,
     LANGUAGE,
@@ -69,6 +80,8 @@ enum class SETTING
     DRAW_ON_EMPTY_FRAME_ACTION,
     FRAME_POOL_SIZE,
     ROTATION_INCREMENT,
+    ASK_FOR_PRESET,
+    DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };
 
@@ -96,6 +109,7 @@ public:
     void set(SETTING option, QString value);
     void set(SETTING option, int value);
     void set(SETTING option, bool value);
+    void set(SETTING option, float value);
 
     void turnOn(SETTING option);
     void turnOff(SETTING option);
@@ -103,6 +117,7 @@ public:
 
     QString getString(SETTING option);
     int     getInt(SETTING option);
+    float getFloat(SETTING option);
 
 Q_SIGNALS:
     void optionChanged(SETTING e);
@@ -111,6 +126,7 @@ private:
     QHash<int, QString> mStringSet;
     QHash<int, int> mIntegerSet;
     QHash<int, bool> mBooleanSet;
+    QHash<int, float> mFloatingPointSet;
 };
 
 #endif // PREFERENCEMANAGER_H

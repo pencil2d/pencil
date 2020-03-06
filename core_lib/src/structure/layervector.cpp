@@ -129,35 +129,24 @@ bool LayerVector::needSaveFrame(KeyFrame* key, const QString& strSavePath)
 
 QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
-    QDomElement layerTag = doc.createElement("layer");
-
-    layerTag.setAttribute("id", id());
-    layerTag.setAttribute("name", name());
-    layerTag.setAttribute("visibility", visible());
-    layerTag.setAttribute("type", type());
+    QDomElement layerElem = this->createBaseDomElement(doc);
 
     foreachKeyFrame([&](KeyFrame* keyframe)
     {
         QDomElement imageTag = doc.createElement("image");
         imageTag.setAttribute("frame", keyframe->pos());
         imageTag.setAttribute("src", fileName(keyframe));
-        layerTag.appendChild(imageTag);
+        layerElem.appendChild(imageTag);
 
         Q_ASSERT(QFileInfo(keyframe->fileName()).fileName() == fileName(keyframe));
     });
 
-    return layerTag;
+    return layerElem;
 }
 
 void LayerVector::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
 {
-    if (!element.attribute("id").isNull())
-    {
-        int id = element.attribute("id").toInt();
-        setId(id);
-    }
-    setName(element.attribute("name"));
-    setVisible(element.attribute("visibility") == "1");
+    this->loadBaseDomElement(element);
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

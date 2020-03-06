@@ -30,7 +30,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="70"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
-        <translation>No existe capa de sonido como destino para el archivo importado. ¿Crear nueva capa de sonido?</translation>
+        <translation>No existe una capa de sonido como destino para el archivo importado. ¿Crear nueva capa de sonido?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="71"/>
@@ -63,7 +63,7 @@
         <location filename="../app/src/actioncommands.cpp" line="256"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
-        <translation>Terminado. ¿Ver ahora?</translation>
+        <translation>Terminado. ¿Ver película ahora?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="607"/>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="635"/>
         <source>Camera Layer</source>
-        <translation>Capa de cámara</translation>
+        <translation>Capa de Cámara</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="648"/>
@@ -147,7 +147,7 @@
         <location filename="../app/src/actioncommands.cpp" line="673"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
-        <translation>Favor de mantener al menos una capa de cámara en el proyecto</translation>
+        <translation>Por favor, mantenga al menos una capa de cámara en el proyecto</translation>
     </message>
 </context>
 <context>
@@ -645,7 +645,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="149"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation>El último fotograma que se desea incluir al exportar la película</translation>
+        <translation>Último fotograma que se desea incluir al exportar la película</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="152"/>
@@ -655,7 +655,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="215"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation>El primer fotograma que se desea incluir al exportar la película</translation>
+        <translation>Primer fotograma que se desea incluir al exportar la película</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="218"/>
@@ -721,7 +721,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="154"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation>El último fotograma que se desea incluir al exportar la película</translation>
+        <translation>Último fotograma que se desea incluir al exportar la película</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="157"/>
@@ -731,7 +731,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="176"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation>El primer fotograma que desea incluir en la película exportada</translation>
+        <translation>Primer fotograma que se desea incluir al exportar la película</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="179"/>
@@ -1643,7 +1643,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="738"/>
         <source>New Sound Layer</source>
-        <translation>Nueva Capa Sonido</translation>
+        <translation>Nueva Capa de Sonido </translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="747"/>
@@ -1766,7 +1766,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="974"/>
         <source>Flip Rolling</source>
-        <translation>Foliar Rodando</translation>
+        <translation>Foliar Continuo </translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="280"/>
@@ -3616,7 +3616,7 @@
     <message>
         <location filename="../app/src/main.cpp" line="110"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation>Primer fotograma que desea incluir en el video exportado</translation>
+        <translation>Primer fotograma que se desea incluir al exportar la película</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="111"/>
@@ -3627,42 +3627,42 @@
     <message>
         <location filename="../app/src/main.cpp" line="115"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="unfinished"/>
+        <translation>Último fotograma que se desea incluir al exportar la película. Podrá ser el último fotograma de animación o sonido que venga a utilizar automáticamente el último fotograma</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="122"/>
         <source>Render transparency when possible</source>
-        <translation type="unfinished"/>
+        <translation>Renderizar transparencia siempre que sea posible</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="141"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation>Alerta: valor de la anchura %1 no es un número entero, ignorando.</translation>
+        <translation>Advertencia: valor de la anchura %1 no es un número entero, ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="151"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation>Alerta: valor de la altura %1 no es un número entero, ignorando.</translation>
+        <translation>Advertencia: valor de la altura %1 no es un número entero, ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="161"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation>Alerta: valor de inicio %1 no es un número entero, ignorando.</translation>
+        <translation>Advertencia: valor de inicio %1 no es un número entero, ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="166"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation>Alerta: valor de inicio debe ser al menos 1, ignorando</translation>
+        <translation>Advertencia: valor de inicio debe ser al menos 1, ignorando</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="186"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Advertencia: valor final %1 no es un número entero, ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="192"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation>Alerta: valor final %1 es más pequeño que valor de inicio %2, ignorando.</translation>
+        <translation>Advertencia: valor final %1 es más pequeño que valor de inicio %2, ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="203"/>
@@ -3673,30 +3673,30 @@
         <location filename="../app/src/main.cpp" line="210"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>Error: archivo de entrada en &apos;%1&apos; no existe</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="215"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation>Error: la ruta de entrada &apos;%1&apos; no es un archivo</translation>
+        <translation>Error: la ruta de acceso &apos;%1&apos; no es un archivo</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="244"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Advertencia: no se encontró la capa de cámara %1, ignorando.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="277"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished"/>
+        <translation>Advertencia: formato de salida no es indicado o soportado. Utilizar PNG.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="299"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished"/>
+        <translation>Advertencia: Transparencia no soportada en archivos de película </translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="301"/>
@@ -3741,7 +3741,7 @@
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation type="unfinished"/>
+        <translation>Está intentando alterar una capa escondida! Por favor escoja otra capa (o haga la capa actual visible)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
@@ -3784,7 +3784,7 @@
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="2011"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
-        <translation>%1&lt;br&gt;&lt;br&gt;Falla: %2</translation>
+        <translation>%1&lt;br&gt;&lt;br&gt;Error: %2</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="2011"/>
@@ -3929,7 +3929,7 @@
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
         <source>New Sound Layer</source>
-        <translation>Nueva Capa Sonido</translation>
+        <translation>Nueva Capa de Sonido</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="97"/>
@@ -4082,7 +4082,7 @@
     <message>
         <location filename="../app/ui/timelinepage.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Eraser, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Se aplica a las herramientas Lápiz, Borrador, Pluma, Polilínea, Bote de pintura y Pincel)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="160"/>
@@ -4107,12 +4107,12 @@
     <message>
         <location filename="../app/ui/timelinepage.ui" line="240"/>
         <source>Msecs per drawing in flip inbetween</source>
-        <translation>Milisegundos por dibujo en el foliado intermedio</translation>
+        <translation>Milisegundos por dibujo en el foliado intercalado</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="289"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation>Milissegundos por dibujo en el foliado intermedio</translation>
+        <translation>Milisegundos por dibujo en el foliado continuo</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>

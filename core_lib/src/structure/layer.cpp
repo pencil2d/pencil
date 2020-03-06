@@ -395,7 +395,7 @@ void Layer::paintFrames(QPainter& painter, TimeLineCells* cells, int y, int heig
 
 void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
-                       bool selected, int allLayers)
+                       bool selected, LayerVisibility layerVisibility)
 {
     Q_UNUSED(cells)
     painter.setBrush(Qt::lightGray);
@@ -419,9 +419,9 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
 
     if (mVisible)
     {
-        if (allLayers == 0) painter.setBrush(Qt::NoBrush);
-        if (allLayers == 1) painter.setBrush(Qt::darkGray);
-        if ((allLayers == 2) || selected) painter.setBrush(Qt::black);
+        if ((layerVisibility == LayerVisibility::ALL) || selected) painter.setBrush(Qt::black);
+        else if (layerVisibility == LayerVisibility::CURRENTONLY) painter.setBrush(Qt::NoBrush);
+        else if (layerVisibility == LayerVisibility::RELATIVE) painter.setBrush(Qt::darkGray);
     }
     else
     {
@@ -688,4 +688,25 @@ KeyFrame* Layer::getKeyFrameWhichCovers(int frameNumber) const
         }
     }
     return nullptr;
+}
+
+QDomElement Layer::createBaseDomElement(QDomDocument& doc)
+{
+    QDomElement layerTag = doc.createElement("layer");
+    layerTag.setAttribute("id", id());
+    layerTag.setAttribute("name", name());
+    layerTag.setAttribute("visibility", visible());
+    layerTag.setAttribute("type", type());
+    return layerTag;
+}
+
+void Layer::loadBaseDomElement(QDomElement& elem)
+{
+    if (!elem.attribute("id").isNull())
+    {
+        int id = elem.attribute("id").toInt();
+        setId(id);
+    }
+    setName(elem.attribute("name", "untitled"));
+    setVisible(elem.attribute("visibility", "1").toInt());
 }
