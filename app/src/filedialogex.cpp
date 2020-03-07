@@ -88,6 +88,8 @@ QString FileDialog::saveFile( FileType fileType )
     if ( !filePath.isEmpty() )
     {
         setLastSavePath( fileType, filePath );
+    } else {
+        return QString();
     }
 
     QFileInfo info(filePath);
