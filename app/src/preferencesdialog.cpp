@@ -19,6 +19,8 @@ GNU General Public License for more details.
 #include <QComboBox>
 #include <QMessageBox>
 #include <QSlider>
+#include <QDir>
+#include <QStandardPaths>
 #include <QtMath>
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
@@ -26,6 +28,9 @@ GNU General Public License for more details.
 #include "ui_filespage.h"
 #include "ui_toolspage.h"
 #include "util.h"
+#include "filemanager.h"
+#include "presetdialog.h"
+#include "errordialog.h"
 
 
 PreferencesDialog::PreferencesDialog(QWidget* parent) :
@@ -94,6 +99,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
+    ui->languageCombo->addItem(tr("Arabic ") + " (Arabic)", "ar");
     ui->languageCombo->addItem(tr("Catalan ") + " (Catalan)", "ca");
     ui->languageCombo->addItem(tr("Czech") + " (Czech)", "cs");
     ui->languageCombo->addItem(tr("Danish") + " (Danish)", "da");
@@ -159,6 +165,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->actionSafeInput, spinValueChanged, this, &GeneralPage::actionSafeAreaChanged);
     connect(ui->titleSafeCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::titleSafeCheckBoxStateChanged);
     connect(ui->titleSafeInput, spinValueChanged, this, &GeneralPage::titleSafeAreaChanged);
+    connect(ui->safeHelperTextCheckbox, &QCheckBox::stateChanged, this, &GeneralPage::SafeAreaHelperTextCheckBoxStateChanged);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
 }
@@ -197,13 +204,19 @@ void GeneralPage::updateValues()
     SignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
     SignalBlocker b16(ui->actionSafeCheckBox);
-    ui->actionSafeCheckBox->setChecked(mManager->isOn(SETTING::ACTION_SAFE_ON));
+
+    bool actionSafeOn = mManager->isOn(SETTING::ACTION_SAFE_ON);
+    ui->actionSafeCheckBox->setChecked(actionSafeOn);
     SignalBlocker b14(ui->actionSafeInput);
     ui->actionSafeInput->setValue(mManager->getInt(SETTING::ACTION_SAFE));
     SignalBlocker b17(ui->titleSafeCheckBox);
-    ui->titleSafeCheckBox->setChecked(mManager->isOn(SETTING::TITLE_SAFE_ON));
+    bool titleSafeOn = mManager->isOn(SETTING::TITLE_SAFE_ON);
+    ui->titleSafeCheckBox->setChecked(titleSafeOn);
     SignalBlocker b15(ui->titleSafeInput);
     ui->titleSafeInput->setValue(mManager->getInt(SETTING::TITLE_SAFE));
+
+    SignalBlocker b18(ui->safeHelperTextCheckbox);
+    ui->safeHelperTextCheckbox->setChecked(mManager->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON));
 
     SignalBlocker b9(ui->highResBox);
     ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
@@ -294,6 +307,7 @@ void GeneralPage::gridHeightChanged(int value)
 void GeneralPage::actionSafeCheckBoxStateChanged(int b)
 {
     mManager->set(SETTING::ACTION_SAFE_ON, b != Qt::Unchecked);
+    updateSafeHelperTextEnabledState();
 }
 
 void GeneralPage::actionSafeAreaChanged(int value)
@@ -304,6 +318,23 @@ void GeneralPage::actionSafeAreaChanged(int value)
 void GeneralPage::titleSafeCheckBoxStateChanged(int b)
 {
     mManager->set(SETTING::TITLE_SAFE_ON, b != Qt::Unchecked);
+    updateSafeHelperTextEnabledState();
+}
+
+void GeneralPage::updateSafeHelperTextEnabledState()
+{
+    if (ui->actionSafeCheckBox->isChecked() == false && ui->titleSafeCheckBox->isChecked() == false) {
+        ui->safeHelperTextCheckbox->setEnabled(false);
+        ui->labSafeHelperText->setEnabled(false);
+    } else {
+        ui->safeHelperTextCheckbox->setEnabled(true);
+        ui->labSafeHelperText->setEnabled(true);
+    }
+}
+
+void GeneralPage::SafeAreaHelperTextCheckBoxStateChanged(int b)
+{
+    mManager->set(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON, b != Qt::Unchecked);
 }
 
 void GeneralPage::titleSafeAreaChanged(int value)
@@ -328,18 +359,22 @@ TimelinePage::TimelinePage()
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     auto sliderChanged = static_cast<void(QSlider::*)(int)>(&QSlider::valueChanged);
+    auto comboChanged = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
     connect(ui->timelineLength, spinBoxValueChange, this, &TimelinePage::timelineLengthChanged);
     connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChanged);
     connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
-    connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &TimelinePage::playbackStateChanged);
     connect(ui->flipRollMsecsSlider, sliderChanged, this, &TimelinePage::flipRollMsecSliderChanged);
     connect(ui->flipRollMsecsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollMsecSpinboxChanged);
     connect(ui->flipRollNumDrawingsSlider, sliderChanged, this, &TimelinePage::flipRollNumDrawingdSliderChanged);
     connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
     connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
     connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
+    connect(ui->layerVisibilityComboBox, comboChanged, this, &TimelinePage::layerVisibilityChanged);
+    connect(ui->visibilitySlider, &QSlider::valueChanged, this, &TimelinePage::layerVisibilityThresholdChanged);
+    connect(ui->visibilitySpinbox, spinBoxValueChange, this, &TimelinePage::layerVisibilityThresholdChanged);
+    ui->visibilitySpinbox->setSuffix("%");
 }
 
 TimelinePage::~TimelinePage()
@@ -376,14 +411,20 @@ void TimelinePage::updateValues()
         break;
     }
 
-    SignalBlocker b7(ui->onionWhilePlayback);
-    ui->onionWhilePlayback->setChecked(mManager->getInt(SETTING::ONION_WHILE_PLAYBACK));
     ui->flipRollMsecsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSlider->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
     ui->flipRollMsecsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
+
+    int convertedVisibilityThreshold = static_cast<int>(mManager->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD)*100);
+
+    ui->visibilitySlider->setValue(convertedVisibilityThreshold);
+    ui->visibilitySpinbox->setValue(convertedVisibilityThreshold);
+
+    int visibilityType = mManager->getInt(SETTING::LAYER_VISIBILITY);
+    ui->layerVisibilityComboBox->setCurrentIndex(visibilityType);
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -401,9 +442,21 @@ void TimelinePage::scrubChanged(int value)
     mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
 }
 
-void TimelinePage::playbackStateChanged(int value)
+void TimelinePage::layerVisibilityChanged(int value)
 {
-    mManager->set(SETTING::ONION_WHILE_PLAYBACK, value);
+    mManager->set(SETTING::LAYER_VISIBILITY, value);
+}
+
+void TimelinePage::layerVisibilityThresholdChanged(int value)
+{
+    float percentage = static_cast<float>(value/100.0f);
+    mManager->set(SETTING::LAYER_VISIBILITY_THRESHOLD, percentage);
+
+    SignalBlocker b8(ui->visibilitySlider);
+    ui->visibilitySlider->setValue(value);
+
+    SignalBlocker b9(ui->visibilitySpinbox);
+    ui->visibilitySpinbox->setValue(value);
 }
 
 void TimelinePage::drawEmptyKeyRadioButtonToggled(bool)
@@ -458,11 +511,18 @@ void TimelinePage::flipInbetweenMsecSpinboxChanged(int value)
     mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
 }
 
-
 FilesPage::FilesPage()
     : ui(new Ui::FilesPage)
 {
     ui->setupUi(this);
+
+    initPreset();
+
+    connect(ui->addPreset, &QPushButton::clicked, this, &FilesPage::addPreset);
+    connect(ui->removePreset, &QPushButton::clicked, this, &FilesPage::removePreset);
+    connect(ui->setDefaultPreset, &QPushButton::clicked, this, &FilesPage::setDefaultPreset);
+    connect(ui->askPresetCheckBox, &QCheckBox::stateChanged, this, &FilesPage::askForPresetChange);
+    connect(ui->presetListWidget, &QListWidget::itemChanged, this, &FilesPage::presetNameChanged);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->autosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange);
@@ -474,10 +534,170 @@ FilesPage::~FilesPage()
     delete ui;
 }
 
+void FilesPage::initPreset()
+{
+    mPresetDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    mPresetDir.mkpath("presets");
+    mPresetDir.cd("presets");
+
+    mPresetSettings = new QSettings(mPresetDir.filePath("presets.ini"), QSettings::IniFormat, this);
+
+    QListWidgetItem* defaultItem = new QListWidgetItem("Blank");
+    defaultItem->setData(Qt::UserRole, 0);
+    ui->presetListWidget->addItem(defaultItem);
+
+    bool ok = true;
+    for (const QString& key : mPresetSettings->allKeys())
+    {
+        int index = key.toInt(&ok);
+        if (!ok || index == 0 || !mPresetDir.exists(QString("%1.pclx").arg(index))) continue;
+
+        mMaxPresetIndex = qMax(index, mMaxPresetIndex);
+
+        QString name = mPresetSettings->value(key).toString();
+        if (name.isEmpty())
+            continue;
+        
+        QListWidgetItem* item = new QListWidgetItem(name);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        item->setData(Qt::UserRole, index);
+        ui->presetListWidget->addItem(item);
+    }
+}
+
+void FilesPage::addPreset()
+{
+    int newPresetIndex = mMaxPresetIndex + 1;
+
+    // 1. save the current object to the preset folder
+    FileManager fm(this);
+    Status st = fm.save(mManager->object(), PresetDialog::getPresetPath(newPresetIndex));
+    if (!st.ok())
+    {
+        ErrorDialog errorDialog(st.title(),
+                                st.description().append(tr("<br><br>Error: your file may not have saved successfully."
+                                                           "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
+                                                           "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
+                                                           "Please include the following details in your issue:")), st.details().html());
+        errorDialog.exec();
+        return;
+    }
+
+    // 2. update the preset ini
+    QString presetName = QString("Preset %1").arg(newPresetIndex);
+    mPresetSettings->setValue(QString::number(newPresetIndex), presetName);
+    mMaxPresetIndex = newPresetIndex;
+
+    // 3. update the list widget
+    QListWidgetItem* newItem = new QListWidgetItem(presetName);
+    newItem->setFlags(newItem->flags() | Qt::ItemIsEditable);
+    newItem->setData(Qt::UserRole, newPresetIndex);
+    ui->presetListWidget->addItem(newItem);
+
+    ui->presetListWidget->scrollToBottom();
+    ui->presetListWidget->editItem(newItem);
+}
+
+void FilesPage::removePreset()
+{
+    if (ui->presetListWidget->count() <= 1) { return; }
+    if (ui->presetListWidget->selectedItems().empty()) { return; }
+
+    // 1. Remove the items from list widget
+    QList<QListWidgetItem*> itemsToRemove = ui->presetListWidget->selectedItems();
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        ui->presetListWidget->removeItemWidget(item);
+    }
+
+    // 2. Delete preset pclx files
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        int index = item->data(Qt::UserRole).toInt();
+        QFile presetFile(PresetDialog::getPresetPath(index));
+        presetFile.remove();
+    }
+
+    // 3. Delete items from the ini settings
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        int index = item->data(Qt::UserRole).toInt();
+        mPresetSettings->remove(QString::number(index));
+    }
+
+    // 4. check if the default preset has been deleted
+    int prevDefaultIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        int index = item->data(Qt::UserRole).toInt();
+        if (index == prevDefaultIndex)
+        {
+            mManager->set(SETTING::DEFAULT_PRESET, 0);
+        }
+    }
+
+    // 5. delete items
+    for (QListWidgetItem* item : itemsToRemove)
+    {
+        delete item;
+    }
+    updateValues();
+}
+
+void FilesPage::setDefaultPreset()
+{
+    bool ok = true;
+
+    QListWidgetItem* newDefaultPresetItem = ui->presetListWidget->currentItem();
+    if (newDefaultPresetItem)
+    {
+        int newDefaultIndex = newDefaultPresetItem->data(Qt::UserRole).toInt(&ok);
+        Q_ASSERT(ok);
+
+        mManager->set(SETTING::DEFAULT_PRESET, newDefaultIndex);
+        updateValues();
+    }
+}
+
+void FilesPage::presetNameChanged(QListWidgetItem* item)
+{
+    // Remove characters that may be problematic for ini files
+    item->setText(item->text().remove(QChar('@')).remove(QChar('/')).remove(QChar('\\')));
+
+    bool ok = true;
+    int index = item->data(Qt::UserRole).toInt(&ok);
+    Q_ASSERT(ok);
+    mPresetSettings->setValue(QString::number(index), item->text());
+}
+
 void FilesPage::updateValues()
 {
+    ui->askPresetCheckBox->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
+
+    bool ok = true;
+    int defaultPresetIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
+    
+    for (int i = 0; i < ui->presetListWidget->count(); i++)
+    {
+        QListWidgetItem* item = ui->presetListWidget->item(i);
+        int presetIndex = item->data(Qt::UserRole).toInt(&ok);
+
+        bool isDefault = presetIndex == defaultPresetIndex;
+        
+        QFont font = item->font();
+        font.setBold(isDefault); // Bold text for the default item
+        item->setFont(font);
+
+        QBrush backgroundBrush = (isDefault) ? palette().light() : palette().background();
+        item->setBackground(backgroundBrush);
+    }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+}
+
+void FilesPage::askForPresetChange(int b)
+{
+    mManager->set(SETTING::ASK_FOR_PRESET, b != Qt::Unchecked);
 }
 
 void FilesPage::autosaveChange(int b)
@@ -490,17 +710,10 @@ void FilesPage::autosaveNumberChange(int number)
     mManager->set(SETTING::AUTO_SAVE_NUMBER, number);
 }
 
-ToolsPage::ToolsPage()
-    : ui(new Ui::ToolsPage)
+ToolsPage::ToolsPage() : ui(new Ui::ToolsPage)
 {
     ui->setupUi(this);
 
-    auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    connect(ui->onionMaxOpacityBox, spinBoxChanged, this, &ToolsPage::onionMaxOpacityChange);
-    connect(ui->onionMinOpacityBox, spinBoxChanged, this, &ToolsPage::onionMinOpacityChange);
-    connect(ui->onionPrevFramesNumBox, spinBoxChanged, this, &ToolsPage::onionPrevFramesNumChange);
-    connect(ui->onionNextFramesNumBox, spinBoxChanged, this, &ToolsPage::onionNextFramesNumChange);
-//    connect(ui->onionSkinMode, &QCheckBox::stateChanged, this, &ToolsPage::onionSkinModeChange);
     connect(ui->useQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange);
     connect(ui->rotationIncrementSlider, &QSlider::valueChanged, this, &ToolsPage::rotationIncrementChange);
 }
@@ -511,51 +724,14 @@ ToolsPage::~ToolsPage()
 }
 
 void ToolsPage::updateValues()
-{
-    ui->onionMaxOpacityBox->setValue(mManager->getInt(SETTING::ONION_MAX_OPACITY));
-    ui->onionMinOpacityBox->setValue(mManager->getInt(SETTING::ONION_MIN_OPACITY));
-    ui->onionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
-    ui->onionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
-    ui->onionSkinMode->setChecked(mManager->getString(SETTING::ONION_TYPE) == "absolute");
+{    
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
     setRotationIncrement(mManager->getInt(SETTING::ROTATION_INCREMENT));
-}
-
-void ToolsPage::onionMaxOpacityChange(int value)
-{
-    mManager->set(SETTING::ONION_MAX_OPACITY, value);
-}
-
-void ToolsPage::onionSkinModeChange(int value)
-{
-    if (value == Qt::Checked)
-    {
-        mManager->set(SETTING::ONION_TYPE, QString("absolute"));
-    }
-    else
-    {
-        mManager->set(SETTING::ONION_TYPE, QString("relative"));
-    }
 }
 
 void ToolsPage::quickSizingChange(int b)
 {
     mManager->set(SETTING::QUICK_SIZING, b != Qt::Unchecked);
-}
-
-void ToolsPage::onionMinOpacityChange(int value)
-{
-    mManager->set(SETTING::ONION_MIN_OPACITY, value);
-}
-
-void ToolsPage::onionPrevFramesNumChange(int value)
-{
-    mManager->set(SETTING::ONION_PREV_FRAMES_NUM, value);
-}
-
-void ToolsPage::onionNextFramesNumChange(int value)
-{
-    mManager->set(SETTING::ONION_NEXT_FRAMES_NUM, value);
 }
 
 void ToolsPage::setRotationIncrement(int angle)

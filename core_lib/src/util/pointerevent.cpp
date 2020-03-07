@@ -205,10 +205,8 @@ bool PointerEvent::isAccepted()
     {
         return mTabletEvent->isAccepted();
     }
-    else
-    {
-        Q_ASSERT(false);
-    }
+    Q_ASSERT(false);
+    return false;
 }
 
 QEvent::Type PointerEvent::type() const

@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QTransform>
 #include <QPainter>
 #include "log.h"
+#include "pencildef.h"
 
 #include "layer.h"
 
@@ -55,11 +56,13 @@ struct CanvasPainterOptions
     bool  bPerspective2 = false;
     bool  bPerspective3 = false;
     int   nOverlayAngle = 15; // for perspective overlays
+    bool  bShowSafeAreaHelperText = true;
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
-    int   nShowAllLayers = 3;
     bool  bIsOnionAbsolute = false;
+    LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
+    float fLayerVisibilityThreshold;
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
@@ -91,7 +94,7 @@ public:
 private:
 
     /**
-     * @brief CanvasPainter::initializePainter
+     * CanvasPainter::initializePainter
      * Enriches the painter with a context and sets it's initial matrix.
      * @param The in/out painter
      * @param The paint device ie. a pixmap
@@ -127,6 +130,8 @@ private:
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
 
+    /** Calculate layer opacity based on current layer offset */
+    qreal calculateRelativeOpacityForLayer(int layerIndex) const;
 private:
     CanvasPainterOptions mOptions;
 
@@ -154,6 +159,8 @@ private:
 
     // Caches specificially for when drawing on the canvas
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
+
+    constexpr static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };
 
 #endif // CANVASRENDERER_H

@@ -1,3 +1,4 @@
+image: Visual Studio 2019
 configuration:
   - Release
 
@@ -6,19 +7,15 @@ environment:
   matrix:
 
     # MSVC x86
-    - arch:       win32
-      bitsize:    x86
-      platform:   x86
-      qt:         5.9\msvc2015
-      PYTHON: "C:\\Python35"
+    - platform:   x86
+      qt:         5.12.5\msvc2017
+      PYTHON:     "C:\\Python35"
       PLATFORM_: "x86"
 
     # MSVC x64
-    - arch:       win32
-      bitsize:    x64
-      platform:   amd64
-      qt:         5.9\msvc2015_64
-      PYTHON: "C:\\Python35"
+    - platform:   amd64
+      qt:         5.12.5\msvc2017_64
+      PYTHON:     "C:\\Python35"
       PLATFORM_: "amd64"
 
 skip_commits:
@@ -37,26 +34,21 @@ install:
   - "%PYTHON3% -m pip install --upgrade google-api-python-client"
   - "%PYTHON3%  -V"
   - set QTDIR=C:\Qt\%qt%
-  - set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;C:\MinGW\bin
+  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin
 
 before_build:
   - echo %PLATFORM_%
+  - echo %APPVEYOR_BUILD_FOLDER%
   - qmake --version
   - md build
   - cd build
-  - call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM_%
-  - if NOT %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" CONFIG+=GIT CONFIG+=NIGHTLY
-  - if %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE
-
+  - if %PLATFORM_%==x86   call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - if %PLATFORM_%==amd64 call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - if NOT %APPVEYOR_REPO_BRANCH%==release call qmake "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" CONFIG+=GIT CONFIG+=Release CONFIG+=PENCIL2D_NIGHTLY 
+  - if %APPVEYOR_REPO_BRANCH%==release     call qmake "%APPVEYOR_BUILD_FOLDER%\pencil2d.pro" CONFIG+=GIT CONFIG+=Release CONFIG+=PENCIL2D_RELEASE
 
 build_script:
-  - set BUILDTYPE=/t:Build
-  - set SOLUTIONFILE32="%APPVEYOR_BUILD_FOLDER%\build\pencil2d.sln"
-  - set SOLUTIONFILE64="%APPVEYOR_BUILD_FOLDER%\build\pencil2d.sln"
-  - set BUILDTARGET32="/p:Configuration=Release,Platform=Win32"
-  - set BUILDTARGET64="/p:Configuration=Release,Platform=x64"
-  - if %PLATFORM_%==x86   call msbuild %SOLUTIONFILE32% %BUILDTYPE% %BUILDTARGET32%
-  - if %PLATFORM_%==amd64 call msbuild %SOLUTIONFILE64% %BUILDTYPE% %BUILDTARGET64%
+  - nmake
 
 after_build:
   - set upload=no

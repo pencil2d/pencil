@@ -64,6 +64,10 @@
         <file>icons/overlayPerspective2.png</file>
         <file>icons/overlayPerspective3.png</file>
         <file>icons/overlayAngle.png</file>
+        <file>icons/overlay_center.png</file>
+        <file>icons/overlay_godenratio.png</file>
+        <file>icons/overlay_safe.png</file>
+        <file>icons/overlay_third.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

@@ -10,7 +10,7 @@
     <message>
         <location filename="../app/ui/aboutdialog.ui" line="52"/>
         <source>Official site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Thanks to Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</source>
-        <translation>Offizielle Seite: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Entwickelt von: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Dank an Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Verbreitet unter der &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, Version 2&lt;/a&gt;</translation>
+        <translation>Offizielle Seite: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Entwickelt von: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Danke an Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Verbreitet unter der &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, Version 2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/aboutdialog.cpp" line="43"/>
@@ -90,7 +90,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="246"/>
         <source>Finished. Open file location?</source>
-        <translation type="unfinished"/>
+        <translation>Fertig. Speicherort öffnen?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="318"/>
@@ -232,22 +232,22 @@
         <location filename="../app/src/checkupdatesdialog.cpp" line="27"/>
         <source>Checking for Updates...</source>
         <comment>status description in the check-for-update dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Updates werden gesucht...</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="39"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Herunterladen</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="40"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Schließen</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="93"/>
         <source>&lt;b&gt;You are using a Pencil2D nightly build&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt; Sie benutzen gerade eine Pencil2D nightly build &lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="94"/>
@@ -264,12 +264,12 @@
         <location filename="../app/src/checkupdatesdialog.cpp" line="105"/>
         <source>Please check your internet connection and try again later.</source>
         <comment>error msg of check-for-update</comment>
-        <translation type="unfinished"/>
+        <translation>Bitte überprüfen sie Ihre Internetverbindung und versuche es noch einmal später.</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
         <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt; Eine neue version von Pencil2D ist verfügbar! &lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
@@ -414,17 +414,17 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="104"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
         <source>Replace</source>
-        <translation type="unfinished"/>
+        <translation>Ersetzen</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="244"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="482"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation type="unfinished"/>
+        <translation>Die Farbe(n), die Sie zu löschen versuchen, werden derzeit von einem oder mehreren Strichen verwendet.</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="483"/>
@@ -445,12 +445,12 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="484"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="500"/>
         <source>Palette Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Palettenbeschränkung</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="501"/>
@@ -885,12 +885,12 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Dei Datei existiert nicht, weswegen wir sie nicht öffnen können. Bitte versicheren sie sich, dass der Dateipfad korrekt ist, und dass die Datei erreichbar ist, und versuchen sie es dann nochmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Dieses Programm ist nicht berechtigt, die von Ihnen ausgewählte Datei zu lesen. Bitte versichern Sie sich, dass Sie Leseberechtigungen für diese Datei haben und versuchen Sie es noch einmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
@@ -1670,7 +1670,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Nächstes Schlüsselbild</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="807"/>

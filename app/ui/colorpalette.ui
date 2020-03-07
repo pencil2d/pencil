@@ -92,12 +92,9 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>10</width>
+          <width>40</width>
           <height>20</height>
          </size>
         </property>
@@ -216,6 +213,18 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
@@ -308,6 +317,20 @@
     </property>
     <property name="statusTip">
      <string>Sets swatch size to: 36x36px</string>
+    </property>
+   </action>
+   <action name="fitSwatchAction">
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>Fit Swatch</string>
+    </property>
+    <property name="toolTip">
+     <string>Fit swatch to window (19-36 px)</string>
+    </property>
+    <property name="statusTip">
+     <string>Swatch fits window</string>
     </property>
    </action>
   </actiongroup>
