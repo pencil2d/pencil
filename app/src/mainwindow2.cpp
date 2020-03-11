@@ -59,6 +59,7 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "toolbox.h"
 #include "bitmapcoloring.h"
+#include "onionskinwidget.h"
 
 //#include "preview.h"
 #include "timeline2.h"
@@ -157,6 +158,9 @@ void MainWindow2::createDockWidgets()
     mDisplayOptionWidget = new DisplayOptionWidget(this);
     mDisplayOptionWidget->setObjectName("DisplayOption");
 
+    mOnionSkinWidget = new OnionSkinWidget(this);
+    mOnionSkinWidget->setObjectName("Onion Skin");
+
     mToolOptions = new ToolOptionWidget(this);
     mToolOptions->setObjectName("ToolOption");
 
@@ -178,6 +182,7 @@ void MainWindow2::createDockWidgets()
         << mColorInspector
         << mColorPalette
         << mDisplayOptionWidget
+        << mOnionSkinWidget
         << mToolOptions
         << mToolBox
         << mBitmapColoring;
@@ -205,6 +210,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
+    addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     setDockNestingEnabled(true);
 
@@ -284,7 +290,13 @@ void MainWindow2::createMenus()
     connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
 
-    //--- View Menu ---
+    QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
+    for (int i = 0; i < visibilityActions.size(); i++) {
+        QAction* action = visibilityActions[i];
+        connect(action, &QAction::triggered, [=] { mCommands->setLayerVisibilityIndex(i); });
+    }
+
+    // --- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
@@ -361,7 +373,8 @@ void MainWindow2::createMenus()
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction(),
         mColorInspector->toggleViewAction(),
-        mBitmapColoring->toggleViewAction()
+        mBitmapColoring->toggleViewAction(),
+        mOnionSkinWidget->toggleViewAction()
     };
 
     for (QAction* action : actions)
@@ -1001,9 +1014,10 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mColorInspector->setFeatures(feat);
     mColorPalette->setFeatures(feat);
     mDisplayOptionWidget->setFeatures(feat);
+    mOnionSkinWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
     mToolBox->setFeatures(feat);
-    mTimeLine->setFeatures(feat);
+    mTimeLine->setFeatures(feat);    
 }
 
 void MainWindow2::preferences()
@@ -1067,6 +1081,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
         object->createDefaultLayers();
     }
     mEditor->setObject(object);
+    object->setFilePath(QString());
     return true;
 }
 
@@ -1220,13 +1235,18 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionNew_Sound_Layer->setShortcut(cmdKeySeq(CMD_NEW_SOUND_LAYER));
     ui->actionDelete_Current_Layer->setShortcut(cmdKeySeq(CMD_DELETE_CUR_LAYER));
 
+    ui->actionVisibilityCurrentLayerOnly->setShortcut(cmdKeySeq(CMD_CURRENT_LAYER_VISIBILITY));
+    ui->actionVisibilityRelative->setShortcut(cmdKeySeq(CMD_RELATIVE_LAYER_VISIBILITY));
+    ui->actionVisibilityAll->setShortcut(cmdKeySeq(CMD_ALL_LAYER_VISIBILITY));
+
     mToolBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOLBOX));
     mToolOptions->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TOOL_OPTIONS));
     mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
-    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
+    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));    
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
+    mOnionSkinWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_ONION_SKIN));
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
@@ -1294,6 +1314,7 @@ void MainWindow2::importPalette()
     {
         mEditor->object()->importPalette(filePath);
         mColorPalette->refreshColorList();
+        mColorPalette->adjustSwatches();
         mEditor->color()->setColorNumber(0);
     }
 }
@@ -1401,6 +1422,10 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 }
 
 void MainWindow2::makeConnections(Editor*, DisplayOptionWidget*)
+{
+}
+
+void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
 {
 }
 

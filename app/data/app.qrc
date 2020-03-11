@@ -62,6 +62,14 @@
         <file>icons/red.png</file>
         <file>icons/black.png</file>
         <file>icons/select_ok.png</file>
+        <file>icons/overlayCenter.png</file>
+        <file>icons/overlayGoldenRatio.png</file>
+        <file>icons/overlaySafe.png</file>
+        <file>icons/overlayThirds.png</file>
+        <file>icons/overlay_center.png</file>
+        <file>icons/overlay_godenratio.png</file>
+        <file>icons/overlay_safe.png</file>
+        <file>icons/overlay_third.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>349</width>
-    <height>642</height>
+    <height>666</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-57</y>
         <width>315</width>
-        <height>622</height>
+        <height>713</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -140,38 +140,6 @@
            </widget>
           </item>
          </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="playbackBox">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Playback</string>
-         </property>
-         <widget class="QCheckBox" name="onionWhilePlayback">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>30</y>
-            <width>301</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Show onion skin while playing</string>
-          </property>
-         </widget>
         </widget>
        </item>
        <item>
@@ -295,12 +263,95 @@
          </layout>
         </widget>
        </item>
+       <item>
+        <widget class="QGroupBox" name="layerVisibilityBox">
+         <property name="title">
+          <string>Layer Visibility</string>
+         </property>
+         <layout class="QVBoxLayout" name="layerVisibilityLayout">
+          <item>
+           <widget class="QLabel" name="labelVisibilityText">
+            <property name="text">
+             <string>Startup option</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="layerVisibilityComboBox">
+            <item>
+             <property name="text">
+              <string>Current layer only</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Relative</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>All Layers</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelVisibility">
+            <property name="text">
+             <string>When layer visibility is relative (gray dot)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QSlider" name="visibilitySlider">
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="visibilitySpinbox">
+              <property name="maximum">
+               <number>100</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>timelineLength</tabstop>
+  <tabstop>scrubBox</tabstop>
+  <tabstop>radioButtonAddNewKey</tabstop>
+  <tabstop>radioButtonDuplicate</tabstop>
+  <tabstop>radioButtonDrawOnPrev</tabstop>
+  <tabstop>onionWhilePlayback</tabstop>
+  <tabstop>flipRollNumDrawingsSlider</tabstop>
+  <tabstop>flipRollNumDrawingsSpinBox</tabstop>
+  <tabstop>flipRollMsecsSlider</tabstop>
+  <tabstop>flipRollMsecsSpinBox</tabstop>
+  <tabstop>flipInBtwnMsecSlider</tabstop>
+  <tabstop>flipInBtwnMsecSpinBox</tabstop>
+  <tabstop>layerVisibilityComboBox</tabstop>
+  <tabstop>visibilitySlider</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <slots>

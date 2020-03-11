@@ -14,40 +14,46 @@ GNU General Public License for more details.
 
 */
 
-#ifndef DISPLAYOPTIONDOCKWIDGET_H
-#define DISPLAYOPTIONDOCKWIDGET_H
+#ifndef ONIONSKINWIDGET_H
+#define ONIONSKINWIDGET_H
 
 #include "basedockwidget.h"
 
 namespace Ui
 {
-    class DisplayOption;
+    class OnionSkin;
 }
+
 class Editor;
 class QToolButton;
 class ViewManager;
 
-class DisplayOptionWidget : public BaseDockWidget
+class OnionSkinWidget : public BaseDockWidget
 {
     Q_OBJECT
+
 public:
-    explicit DisplayOptionWidget(QWidget* parent);
-    virtual ~DisplayOptionWidget() override;
+    explicit OnionSkinWidget(QWidget* parent);
+    virtual ~OnionSkinWidget() override;
 
     void initUI() override;
     void updateUI() override;
 
 private slots:
-    void toggleMirror(bool);
-    void toggleMirrorV(bool);
-    void toggleOverlayCenter(bool isOn);
-    void toggleOverlayThirds(bool isOn);
-    void toggleOverlayGoldenRatio(bool isOn);
-    void toggleOverlaySafeAreas(bool isOn);
+    void playbackStateChanged(int);
+    void onionPrevButtonClicked(bool);
+    void onionNextButtonClicked(bool);
+    void onionBlueButtonClicked(bool);
+    void onionRedButtonClicked(bool);
+    void onionMaxOpacityChange(int);
+    void onionMinOpacityChange(int);
+    void onionPrevFramesNumChange(int);
+    void onionNextFramesNumChange(int);
+    void onionSkinModeChange(int);
 
 private:
     void makeConnections();
-    Ui::DisplayOption* ui = nullptr;
+    Ui::OnionSkin* ui = nullptr;
 };
 
-#endif // DISPLAYOPTIONDOCKWIDGET_H
+#endif // ONIONSKINWIDGET_H

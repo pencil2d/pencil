@@ -161,6 +161,11 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
     connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridWidthChanged);
     connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridHeightChanged);
+    connect(ui->actionSafeCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::actionSafeCheckBoxStateChanged);
+    connect(ui->actionSafeInput, spinValueChanged, this, &GeneralPage::actionSafeAreaChanged);
+    connect(ui->titleSafeCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::titleSafeCheckBoxStateChanged);
+    connect(ui->titleSafeInput, spinValueChanged, this, &GeneralPage::titleSafeAreaChanged);
+    connect(ui->safeHelperTextCheckbox, &QCheckBox::stateChanged, this, &GeneralPage::SafeAreaHelperTextCheckBoxStateChanged);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
 }
@@ -198,6 +203,20 @@ void GeneralPage::updateValues()
     ui->gridSizeInputH->setValue(mManager->getInt(SETTING::GRID_SIZE_H));
     SignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
+    SignalBlocker b16(ui->actionSafeCheckBox);
+
+    bool actionSafeOn = mManager->isOn(SETTING::ACTION_SAFE_ON);
+    ui->actionSafeCheckBox->setChecked(actionSafeOn);
+    SignalBlocker b14(ui->actionSafeInput);
+    ui->actionSafeInput->setValue(mManager->getInt(SETTING::ACTION_SAFE));
+    SignalBlocker b17(ui->titleSafeCheckBox);
+    bool titleSafeOn = mManager->isOn(SETTING::TITLE_SAFE_ON);
+    ui->titleSafeCheckBox->setChecked(titleSafeOn);
+    SignalBlocker b15(ui->titleSafeInput);
+    ui->titleSafeInput->setValue(mManager->getInt(SETTING::TITLE_SAFE));
+
+    SignalBlocker b18(ui->safeHelperTextCheckbox);
+    ui->safeHelperTextCheckbox->setChecked(mManager->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON));
 
     SignalBlocker b9(ui->highResBox);
     ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
@@ -285,6 +304,44 @@ void GeneralPage::gridHeightChanged(int value)
     mManager->set(SETTING::GRID_SIZE_H, value);
 }
 
+void GeneralPage::actionSafeCheckBoxStateChanged(int b)
+{
+    mManager->set(SETTING::ACTION_SAFE_ON, b != Qt::Unchecked);
+    updateSafeHelperTextEnabledState();
+}
+
+void GeneralPage::actionSafeAreaChanged(int value)
+{
+    mManager->set(SETTING::ACTION_SAFE, value);
+}
+
+void GeneralPage::titleSafeCheckBoxStateChanged(int b)
+{
+    mManager->set(SETTING::TITLE_SAFE_ON, b != Qt::Unchecked);
+    updateSafeHelperTextEnabledState();
+}
+
+void GeneralPage::updateSafeHelperTextEnabledState()
+{
+    if (ui->actionSafeCheckBox->isChecked() == false && ui->titleSafeCheckBox->isChecked() == false) {
+        ui->safeHelperTextCheckbox->setEnabled(false);
+        ui->labSafeHelperText->setEnabled(false);
+    } else {
+        ui->safeHelperTextCheckbox->setEnabled(true);
+        ui->labSafeHelperText->setEnabled(true);
+    }
+}
+
+void GeneralPage::SafeAreaHelperTextCheckBoxStateChanged(int b)
+{
+    mManager->set(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON, b != Qt::Unchecked);
+}
+
+void GeneralPage::titleSafeAreaChanged(int value)
+{
+    mManager->set(SETTING::TITLE_SAFE, value);
+}
+
 void GeneralPage::gridCheckBoxStateChanged(int b)
 {
     mManager->set(SETTING::GRID, b != Qt::Unchecked);
@@ -302,18 +359,22 @@ TimelinePage::TimelinePage()
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     auto sliderChanged = static_cast<void(QSlider::*)(int)>(&QSlider::valueChanged);
+    auto comboChanged = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
     connect(ui->timelineLength, spinBoxValueChange, this, &TimelinePage::timelineLengthChanged);
     connect(ui->scrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChanged);
     connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
-    connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &TimelinePage::playbackStateChanged);
     connect(ui->flipRollMsecsSlider, sliderChanged, this, &TimelinePage::flipRollMsecSliderChanged);
     connect(ui->flipRollMsecsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollMsecSpinboxChanged);
     connect(ui->flipRollNumDrawingsSlider, sliderChanged, this, &TimelinePage::flipRollNumDrawingdSliderChanged);
     connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
     connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
     connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
+    connect(ui->layerVisibilityComboBox, comboChanged, this, &TimelinePage::layerVisibilityChanged);
+    connect(ui->visibilitySlider, &QSlider::valueChanged, this, &TimelinePage::layerVisibilityThresholdChanged);
+    connect(ui->visibilitySpinbox, spinBoxValueChange, this, &TimelinePage::layerVisibilityThresholdChanged);
+    ui->visibilitySpinbox->setSuffix("%");
 }
 
 TimelinePage::~TimelinePage()
@@ -350,14 +411,20 @@ void TimelinePage::updateValues()
         break;
     }
 
-    SignalBlocker b7(ui->onionWhilePlayback);
-    ui->onionWhilePlayback->setChecked(mManager->getInt(SETTING::ONION_WHILE_PLAYBACK));
     ui->flipRollMsecsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSlider->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
     ui->flipRollMsecsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
+
+    int convertedVisibilityThreshold = static_cast<int>(mManager->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD)*100);
+
+    ui->visibilitySlider->setValue(convertedVisibilityThreshold);
+    ui->visibilitySpinbox->setValue(convertedVisibilityThreshold);
+
+    int visibilityType = mManager->getInt(SETTING::LAYER_VISIBILITY);
+    ui->layerVisibilityComboBox->setCurrentIndex(visibilityType);
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -375,9 +442,21 @@ void TimelinePage::scrubChanged(int value)
     mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
 }
 
-void TimelinePage::playbackStateChanged(int value)
+void TimelinePage::layerVisibilityChanged(int value)
 {
-    mManager->set(SETTING::ONION_WHILE_PLAYBACK, value);
+    mManager->set(SETTING::LAYER_VISIBILITY, value);
+}
+
+void TimelinePage::layerVisibilityThresholdChanged(int value)
+{
+    float percentage = static_cast<float>(value/100.0f);
+    mManager->set(SETTING::LAYER_VISIBILITY_THRESHOLD, percentage);
+
+    SignalBlocker b8(ui->visibilitySlider);
+    ui->visibilitySlider->setValue(value);
+
+    SignalBlocker b9(ui->visibilitySpinbox);
+    ui->visibilitySpinbox->setValue(value);
 }
 
 void TimelinePage::drawEmptyKeyRadioButtonToggled(bool)
@@ -468,7 +547,7 @@ void FilesPage::initPreset()
     ui->presetListWidget->addItem(defaultItem);
 
     bool ok = true;
-    for (const QString key : mPresetSettings->allKeys())
+    for (const QString& key : mPresetSettings->allKeys())
     {
         int index = key.toInt(&ok);
         if (!ok || index == 0 || !mPresetDir.exists(QString("%1.pclx").arg(index))) continue;
@@ -635,12 +714,6 @@ ToolsPage::ToolsPage() : ui(new Ui::ToolsPage)
 {
     ui->setupUi(this);
 
-    auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    connect(ui->onionMaxOpacityBox, spinBoxChanged, this, &ToolsPage::onionMaxOpacityChange);
-    connect(ui->onionMinOpacityBox, spinBoxChanged, this, &ToolsPage::onionMinOpacityChange);
-    connect(ui->onionPrevFramesNumBox, spinBoxChanged, this, &ToolsPage::onionPrevFramesNumChange);
-    connect(ui->onionNextFramesNumBox, spinBoxChanged, this, &ToolsPage::onionNextFramesNumChange);
-//    connect(ui->onionSkinMode, &QCheckBox::stateChanged, this, &ToolsPage::onionSkinModeChange);
     connect(ui->useQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange);
     connect(ui->rotationIncrementSlider, &QSlider::valueChanged, this, &ToolsPage::rotationIncrementChange);
 }
@@ -651,51 +724,14 @@ ToolsPage::~ToolsPage()
 }
 
 void ToolsPage::updateValues()
-{
-    ui->onionMaxOpacityBox->setValue(mManager->getInt(SETTING::ONION_MAX_OPACITY));
-    ui->onionMinOpacityBox->setValue(mManager->getInt(SETTING::ONION_MIN_OPACITY));
-    ui->onionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
-    ui->onionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
-    ui->onionSkinMode->setChecked(mManager->getString(SETTING::ONION_TYPE) == "absolute");
+{    
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
     setRotationIncrement(mManager->getInt(SETTING::ROTATION_INCREMENT));
-}
-
-void ToolsPage::onionMaxOpacityChange(int value)
-{
-    mManager->set(SETTING::ONION_MAX_OPACITY, value);
-}
-
-void ToolsPage::onionSkinModeChange(int value)
-{
-    if (value == Qt::Checked)
-    {
-        mManager->set(SETTING::ONION_TYPE, QString("absolute"));
-    }
-    else
-    {
-        mManager->set(SETTING::ONION_TYPE, QString("relative"));
-    }
 }
 
 void ToolsPage::quickSizingChange(int b)
 {
     mManager->set(SETTING::QUICK_SIZING, b != Qt::Unchecked);
-}
-
-void ToolsPage::onionMinOpacityChange(int value)
-{
-    mManager->set(SETTING::ONION_MIN_OPACITY, value);
-}
-
-void ToolsPage::onionPrevFramesNumChange(int value)
-{
-    mManager->set(SETTING::ONION_PREV_FRAMES_NUM, value);
-}
-
-void ToolsPage::onionNextFramesNumChange(int value)
-{
-    mManager->set(SETTING::ONION_NEXT_FRAMES_NUM, value);
 }
 
 void ToolsPage::setRotationIncrement(int angle)

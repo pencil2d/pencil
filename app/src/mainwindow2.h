@@ -32,6 +32,7 @@ class BaseDockWidget;
 class ColorPaletteWidget;
 class BitmapColoring;
 class DisplayOptionWidget;
+class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
@@ -140,11 +141,12 @@ private:
     void makeConnections(Editor*, TimeLine*);
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
+    void makeConnections(Editor*, OnionSkinWidget*);
 
     void bindActionWithSetting(QAction*, SETTING);
 
     // UI: Dock widgets
-    ColorBox*           mColorBox = nullptr;
+    ColorBox*             mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
@@ -156,6 +158,7 @@ private:
     TimeLine*             mTimeLine = nullptr; // be public temporary
     ColorInspector*       mColorInspector = nullptr;
     BitmapColoring*       mBitmapColoring = nullptr;
+    OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
     BackupElement* mBackupAtSave = nullptr;
