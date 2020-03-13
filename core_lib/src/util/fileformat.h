@@ -63,7 +63,6 @@ GNU General Public License for more details.
 #define PFF_DEFAULT_PALETTE_EXT \
     QString(".xml")
 
-
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"
 #define PFF_XML_FILE_NAME 		"main.xml"

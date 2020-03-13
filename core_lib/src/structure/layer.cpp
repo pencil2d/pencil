@@ -323,22 +323,34 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
     if (mVisible)
     {
         QColor col;
-        if (type() == BITMAP) col = QColor(151, 176, 244);
-        if (type() == VECTOR) col = QColor(150, 242, 150);
-        if (type() == SOUND) col = QColor(237, 147, 147, 100);
-        if (type() == CAMERA) col = QColor(239, 232, 148);
+        if (type() == BITMAP) col = QColor(51, 155, 252);
+        if (type() == VECTOR) col = QColor(70, 205, 123);
+        if (type() == SOUND) col = QColor(255, 141, 112);
+        if (type() == CAMERA) col = QColor(253, 202, 92);
 
+        painter.save();
         painter.setBrush(col);
         painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.drawRect(x, y - 1, width, height);
-
-        paintFrames(painter, cells, y, height, selected, frameSize);
 
         // changes the apparence if selected
         if (selected)
         {
             paintSelection(painter, x, y, width, height);
         }
+        else
+        {
+            QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
+            linearGrad.setColorAt(0, QColor(255,255,255,150));
+            linearGrad.setColorAt(1, QColor(0,0,0,0));
+            painter.setCompositionMode(QPainter::CompositionMode_Overlay);
+            painter.setBrush(linearGrad);
+            painter.drawRect(x, y - 1, width, height);
+            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        }
+
+        paintFrames(painter, cells, y, height, selected, frameSize);
+        painter.restore();
     }
     else
     {
@@ -384,18 +396,33 @@ void Layer::paintFrames(QPainter& painter, TimeLineCells* cells, int y, int heig
 
 void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
-                       bool selected, int allLayers)
+                       bool selected, LayerVisibility layerVisibility)
 {
-    Q_UNUSED(cells);
+    Q_UNUSED(cells)
     painter.setBrush(Qt::lightGray);
     painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
 
+
+    if (selected)
+    {
+        paintSelection(painter, x, y, width, height);
+    } else {
+        painter.save();
+        QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
+        linearGrad.setColorAt(0, QColor(255,255,255,150));
+        linearGrad.setColorAt(1, QColor(0,0,0,0));
+        painter.setCompositionMode(QPainter::CompositionMode_Overlay);
+        painter.setBrush(linearGrad);
+        painter.drawRect(x, y - 1, width, height);
+        painter.restore();
+    }
+
     if (mVisible)
     {
-        if (allLayers == 0) painter.setBrush(Qt::NoBrush);
-        if (allLayers == 1) painter.setBrush(Qt::darkGray);
-        if ((allLayers == 2) || selected) painter.setBrush(Qt::black);
+        if ((layerVisibility == LayerVisibility::ALL) || selected) painter.setBrush(Qt::black);
+        else if (layerVisibility == LayerVisibility::CURRENTONLY) painter.setBrush(Qt::NoBrush);
+        else if (layerVisibility == LayerVisibility::RELATED) painter.setBrush(Qt::darkGray);
     }
     else
     {
@@ -405,11 +432,6 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.drawEllipse(x + 6, y + 4, 9, 9);
     painter.setRenderHint(QPainter::Antialiasing, false);
-
-    if (selected)
-    {
-        paintSelection(painter, x, y, width, height);
-    }
 
     if (type() == BITMAP) painter.drawPixmap(QPoint(20, y + 2), QPixmap(":/icons/layer-bitmap.png"));
     if (type() == VECTOR) painter.drawPixmap(QPoint(20, y + 2), QPixmap(":/icons/layer-vector.png"));
@@ -425,18 +447,20 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
     QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
     QSettings settings(PENCIL2D, PENCIL2D);
     QString style = settings.value("style").toString();
-    linearGrad.setColorAt(0, QColor(255, 255, 255, 128));
-    linearGrad.setColorAt(0.50, QColor(255, 255, 255, 64));
+    linearGrad.setColorAt(0, QColor(0, 0, 0, 255));
     linearGrad.setColorAt(1, QColor(255, 255, 255, 0));
+    painter.save();
+    painter.setCompositionMode(QPainter::CompositionMode_Overlay);
     painter.setBrush(linearGrad);
     painter.setPen(Qt::NoPen);
     painter.drawRect(x, y, width, height - 1);
+    painter.restore();
 }
 
 void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
 {
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
+    Q_UNUSED(event)
+    Q_UNUSED(frameNumber)
 }
 
 void Layer::editProperties()
@@ -665,4 +689,25 @@ KeyFrame* Layer::getKeyFrameWhichCovers(int frameNumber) const
         }
     }
     return nullptr;
+}
+
+QDomElement Layer::createBaseDomElement(QDomDocument& doc)
+{
+    QDomElement layerTag = doc.createElement("layer");
+    layerTag.setAttribute("id", id());
+    layerTag.setAttribute("name", name());
+    layerTag.setAttribute("visibility", visible());
+    layerTag.setAttribute("type", type());
+    return layerTag;
+}
+
+void Layer::loadBaseDomElement(QDomElement& elem)
+{
+    if (!elem.attribute("id").isNull())
+    {
+        int id = elem.attribute("id").toInt();
+        setId(id);
+    }
+    setName(elem.attribute("name", "untitled"));
+    setVisible(elem.attribute("visibility", "1").toInt());
 }

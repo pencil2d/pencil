@@ -237,7 +237,7 @@
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="39"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Sider</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="40"/>

@@ -680,6 +680,11 @@ Status ActionCommands::deleteCurrentLayer()
     return Status::OK;
 }
 
+void ActionCommands::setLayerVisibilityIndex(int index)
+{
+    mEditor->setLayerVisibility(static_cast<LayerVisibility>(index));
+}
+
 void ActionCommands::changeKeyframeLineColor()
 {
     if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&

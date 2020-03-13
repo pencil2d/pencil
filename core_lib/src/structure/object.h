@@ -99,6 +99,7 @@ public:
     bool importPalette(QString filePath);
     void importPaletteGPL(QFile& file);
     void importPalettePencil(QFile& file);
+    void openPalette(QString filePath);
 
     bool exportPalette(QString filePath);
     void exportPaletteGPL(QFile& file);
@@ -155,6 +156,7 @@ public:
 
 signals:
     void layerViewChanged();
+    void paletteImported();
 
 private:
     int getMaxLayerID();

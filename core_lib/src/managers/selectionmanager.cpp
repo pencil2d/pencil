@@ -13,17 +13,7 @@
 //#endif
 
 
-SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor),
-    mSelection(QRectF()),
-    mTempTransformedSelection(QRectF()),
-    mTransformedSelection(QRectF()),
-    mRotatedAngle(0),
-    mSomethingSelected(false),
-    mOriginalSelectionPolygonF(QPolygonF()),
-    mLastSelectionPolygonF(QPolygonF()),
-    mCurrentSelectionPolygonF(QPolygonF()),
-    mOffset(QPointF()),
-    mMoveMode(MoveMode::NONE)
+SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor)
 {
 }
 
@@ -38,6 +28,7 @@ bool SelectionManager::init()
 
 Status SelectionManager::load(Object*)
 {
+    resetSelectionProperties();
     return Status::OK;
 }
 
