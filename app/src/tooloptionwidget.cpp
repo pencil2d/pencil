@@ -81,6 +81,7 @@ void ToolOptionWidget::updateUI()
     setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
     setShowSelectionInfo(p.showInfo);
+    setLockSelection(p.lockSelection);
 }
 
 void ToolOptionWidget::createUI()
@@ -118,6 +119,7 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
 
     connect(ui->showInfoBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowSelectionInfo);
+    connect(ui->lockSelectionBox, &QCheckBox::clicked, toolManager, &ToolManager::setLockSelection);
 
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
@@ -345,6 +347,12 @@ void ToolOptionWidget::setShowSelectionInfo(bool showInfo)
 {
     SignalBlocker b(ui->showInfoBox);
     ui->showInfoBox->setChecked(showInfo);
+}
+
+void ToolOptionWidget::setLockSelection(bool lockSelection)
+{
+    SignalBlocker b(ui->lockSelectionBox);
+    ui->showInfoBox->setChecked(lockSelection);
 }
 
 void ToolOptionWidget::disableAllOptions()

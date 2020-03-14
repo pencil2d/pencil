@@ -220,6 +220,11 @@ void ToolManager::setShowSelectionInfo(bool b)
     currentTool()->setShowSelectionInfo(b);
 }
 
+void ToolManager::setLockSelection(bool b)
+{
+    currentTool()->setLockSelection(b);
+}
+
 
 // Switches on/off two actions
 // eg. if x = true, then y = false

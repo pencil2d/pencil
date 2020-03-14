@@ -450,3 +450,8 @@ void BaseTool::setShowSelectionInfo(const bool b)
     properties.showInfo = b;
 }
 
+void BaseTool::setLockSelection(const bool b)
+{
+    properties.lockSelection = b;
+}
+
