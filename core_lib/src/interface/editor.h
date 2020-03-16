@@ -107,6 +107,7 @@ public:
     qreal viewScaleInversed();
     void deselectAll();
     void selectAll();
+    QRect selectAllSelected(QList<int> frames);
 
     QString workingDir() const;
 

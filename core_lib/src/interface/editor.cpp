@@ -951,6 +951,14 @@ void Editor::selectAll()
     emit updateCurrentFrame();
 }
 
+QRect Editor::selectAllSelected(QList<int> frames)
+{
+    Layer* layer = layers()->currentLayer();
+
+    QRect finalRect;
+    return finalRect;
+}
+
 void Editor::deselectAll()
 {
     Layer* layer = layers()->currentLayer();

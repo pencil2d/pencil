@@ -37,6 +37,9 @@ public:
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
+    void repositionSelectedFrames(QRect transform, QList<int> selectedFrames);
+    QRect getFrameBounds(int frame);
+
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
     KeyFrame* createKeyFrame(int position, Object*) override;

@@ -272,6 +272,7 @@ void MainWindow2::createMenus()
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
+    connect(ui->actionReposition_Selected_Frames, &QAction::triggered, mEditor->layers(), &LayerManager::prepareRepositionSelectedFrames);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     //--- Layer Menu ---

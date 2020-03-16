@@ -110,6 +110,7 @@ public:
     void deselectAll();
 
     bool moveSelectedFrames(int offset);
+    QList<int> getSelectedFramesList() { return mSelectedFrames_byPosition; }
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }

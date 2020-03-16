@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "layermanager.h"
+#include "selectionmanager.h"
 
 #include "object.h"
 #include "editor.h"
@@ -25,6 +26,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 
+#include <QDebug>
 
 LayerManager::LayerManager(Editor* editor) : BaseManager(editor)
 {
@@ -171,6 +173,50 @@ QString LayerManager::nameSuggestLayer(const QString& name)
         newName = name + " " + QString::number(newIndex++);
     } while (sLayers.contains(newName));
     return newName;
+}
+
+void LayerManager::prepareRepositionSelectedFrames()
+{
+    if (editor()->select()->somethingSelected()) { return; }
+
+    QList<int> frameList = currentLayer()->getSelectedFramesList();
+    // rect1 will be the rect, that contains the common bounds for all selected frames
+    QRect rectTmp;
+
+    if (currentLayer()->type() == Layer::BITMAP)
+    {
+        LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(currentLayer());
+
+        for (int i = 0; i < frameList.count(); i++)
+        {
+            editor()->scrubTo(frameList.at(i));
+            if (mReposRect.width() > 0)
+            {
+                rectTmp = bitmapLayer->getFrameBounds(frameList.at(i));
+                qDebug() << "rectTmp: " << rectTmp;
+                qreal topLx    = mReposRect.topLeft().x()      < rectTmp.topLeft().x()     ? mReposRect.topLeft().x()     : rectTmp.topLeft().x();
+                qreal topLy    = mReposRect.topLeft().y()      < rectTmp.topLeft().y()     ? mReposRect.topLeft().y()     : rectTmp.topLeft().y();
+                qreal bottomRx = mReposRect.bottomRight().x()  > rectTmp.bottomRight().x() ? mReposRect.bottomRight().x() : rectTmp.bottomRight().x();
+                qreal bottomRy = mReposRect.bottomRight().y()  > rectTmp.bottomRight().y() ? mReposRect.bottomRight().y() : rectTmp.bottomRight().y();
+                mReposRect = QRectF(QPointF(topLx, topLy),QSizeF(bottomRx-topLx, bottomRy-topLy));
+            }
+            else
+            {
+                mReposRect = bitmapLayer->getFrameBounds(frameList.at(i));
+            }
+        }
+
+        editor()->scrubTo(frameList.at(0));
+        editor()->select()->setSelection(mReposRect);
+    }
+}
+
+void LayerManager::repositionSelectedFrames(int horizontal, int vertical)
+{
+    if (currentLayer()->type() == Layer::BITMAP)
+    {
+
+    }
 }
 
 LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)

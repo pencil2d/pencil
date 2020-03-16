@@ -25,6 +25,7 @@ class LayerBitmap;
 class LayerVector;
 class LayerCamera;
 class LayerSound;
+class SelectionManager;
 
 
 class LayerManager : public BaseManager
@@ -71,6 +72,10 @@ public:
 
     QString nameSuggestLayer(const QString& name);
 
+public slots:
+    void prepareRepositionSelectedFrames();
+    void repositionSelectedFrames(int horizontal, int vertical);
+
 Q_SIGNALS:
     void currentLayerChanged(int index);
     void layerCountChanged(int count);
@@ -81,6 +86,7 @@ private:
     int getIndex(Layer*) const;
 
     int mLastCameraLayerIdx = 0;
+    QRectF mReposRect;
 };
 
 #endif

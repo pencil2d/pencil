@@ -1107,10 +1107,7 @@ void ScribbleArea::paintSelectionVisuals()
 
     mSelectionPainter.setCurrentSelectionNotMapped(selectMan->currentSelectionPolygonF());
 
-//    if (currentTool()->typeName() == "Select")
-    if ((selectMan->currentSelectionPolygonF() != selectMan->getOriginalSelectionPolygonF() &&
-            currentTool()->typeName() == "Select")
-            || !mSelectionPainter.originalPolygonFIsSet())
+    if (!mSelectionPainter.originalPolygonFIsSet())
     {
         mSelectionPainter.setOriginalPolygonF(selectMan->currentSelectionPolygonF());
         mSelectionPainter.setOriginalPolygonFIsSet(true);

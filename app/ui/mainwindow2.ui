@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>19</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -199,6 +199,8 @@
     <addaction name="separator"/>
     <addaction name="actionFlip_inbetween"/>
     <addaction name="actionFlip_rolling"/>
+    <addaction name="separator"/>
+    <addaction name="actionReposition_Selected_Frames"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -1069,6 +1071,16 @@
    </property>
    <property name="toolTip">
     <string>Onion Skins</string>
+   </property>
+  </action>
+  <action name="actionReposition_Selection">
+   <property name="text">
+    <string>Reposition Selected frames</string>
+   </property>
+  </action>
+  <action name="actionReposition_Selected_Frames">
+   <property name="text">
+    <string>Reposition Selected Frames</string>
    </property>
   </action>
  </widget>

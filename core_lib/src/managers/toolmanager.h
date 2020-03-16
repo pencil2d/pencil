@@ -70,7 +70,6 @@ public slots:
     void setTolerance(int);
     void setUseFillContour(bool);
     void setShowSelectionInfo(bool b);
-    void setLockSelection(bool b);
 
 private:
     BaseTool* mCurrentTool = nullptr;
