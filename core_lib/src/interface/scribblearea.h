@@ -121,6 +121,7 @@ signals:
     void modification(int);
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
+    void selectionUpdated();
 
 public slots:
     void clearImage();

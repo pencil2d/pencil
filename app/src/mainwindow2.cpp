@@ -59,6 +59,8 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "toolbox.h"
 #include "onionskinwidget.h"
+#include "pegbaralignmentdialog.h"
+#include "repositionframesdialog.h"
 
 //#include "preview.h"
 #include "timeline2.h"
@@ -272,7 +274,8 @@ void MainWindow2::createMenus()
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
-    connect(ui->actionReposition_Selected_Frames, &QAction::triggered, mEditor->layers(), &LayerManager::prepareRepositionSelectedFrames);
+//    connect(ui->actionReposition_Selected_Frames, &QAction::triggered, mEditor->layers(), &LayerManager::prepareRepositionSelectedFrames);
+    connect(ui->actionReposition_Selected_Frames, &QAction::triggered, this, &MainWindow2::openRepositionDialog);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     //--- Layer Menu ---
@@ -461,6 +464,33 @@ void MainWindow2::closePegAlignDialog()
 {
     disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
     mPegAlign = nullptr;
+}
+
+void MainWindow2::openRepositionDialog()
+{
+    if (mEditor->layers()->currentLayer()->getSelectedFramesList().count() < 2) { return; }
+
+    if (mReposDialog != nullptr)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Dialog is already open!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    mReposDialog = new RepositionFramesDialog();
+    connect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
+    mReposDialog->setCore(mEditor);
+    mReposDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mEditor->tools()->setCurrentTool(ToolType::MOVE);
+    mToolBox->moveOn();
+    mReposDialog->show();
+}
+
+void MainWindow2::closeRepositionDialog()
+{
+    mReposDialog = nullptr;
+    disconnect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
 }
 
 void MainWindow2::currentLayerChanged()

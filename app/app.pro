@@ -70,7 +70,8 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/presetdialog.h    
+    src/presetdialog.h     \
+    src/repositionframesdialog.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -105,7 +106,8 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
-    src/presetdialog.cpp
+    src/presetdialog.cpp \
+    src/repositionframesdialog.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
@@ -114,6 +116,7 @@ FORMS += \
     ui/mainwindow2.ui \
     ui/onionskin.ui \
     ui/pegbaralignmentdialog.ui \
+    ui/repositionframesdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \

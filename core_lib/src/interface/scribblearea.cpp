@@ -1091,7 +1091,6 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
 void ScribbleArea::paintSelectionVisuals()
 {
-//    qDebug() << "TypeName: " << currentTool()->typeName();
     QPainter painter(this);
 
     Object* object = mEditor->object();
@@ -1115,6 +1114,7 @@ void ScribbleArea::paintSelectionVisuals()
 
     TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
     mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
+    emit selectionUpdated();
 }
 
 BitmapImage* ScribbleArea::currentBitmapImage(Layer* layer) const
