@@ -468,7 +468,13 @@ void MainWindow2::closePegAlignDialog()
 
 void MainWindow2::openRepositionDialog()
 {
-    if (mEditor->layers()->currentLayer()->getSelectedFramesList().count() < 2) { return; }
+    if (mEditor->layers()->currentLayer()->getSelectedFramesList().count() < 2)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Please select at least 2 frames!"),
+                                 QMessageBox::Ok);
+        return;
+    }
 
     if (mReposDialog != nullptr)
     {
@@ -489,6 +495,7 @@ void MainWindow2::openRepositionDialog()
 
 void MainWindow2::closeRepositionDialog()
 {
+
     mReposDialog = nullptr;
     disconnect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
 }

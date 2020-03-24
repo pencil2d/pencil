@@ -46,15 +46,10 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-void LayerBitmap::repositionSelectedFrames(QList<QRect> transforms, QList<int> selectedFrames)
+void LayerBitmap::repositionFrame(QRect rect, int frame)
 {
-    BitmapImage* image = nullptr;
-    for (int i = 0; i < selectedFrames.count(); i++)
-    {
-        image = getBitmapImageAtFrame(selectedFrames.at(i));
-        image->transform(transforms.at(i), false);
-        image->modification();
-    }
+    BitmapImage* image = getBitmapImageAtFrame(frame);
+    image->transform(rect, false);
 }
 
 QRect LayerBitmap::getFrameBounds(int frame)

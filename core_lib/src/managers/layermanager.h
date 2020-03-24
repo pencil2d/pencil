@@ -74,7 +74,7 @@ public:
 
 public slots:
     void prepareRepositionSelectedFrames();
-    void repositionSelectedFrames(int horizontal, int vertical);
+    void repositionSelectedFrames(QPoint transform);
 
 Q_SIGNALS:
     void currentLayerChanged(int index);

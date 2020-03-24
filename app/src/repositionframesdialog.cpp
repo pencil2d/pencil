@@ -2,6 +2,7 @@
 #include "ui_repositionframesdialog.h"
 
 #include <QList>
+#include <QMessageBox>
 
 #include "selectionmanager.h"
 #include "viewmanager.h"
@@ -33,6 +34,9 @@ void RepositionFramesDialog::setCore(Editor *editor)
     connect(ui->btnCancel, &QPushButton::clicked, this, &RepositionFramesDialog::closeClicked);
     connect(this, &QDialog::finished, this, &RepositionFramesDialog::closeClicked);
     connect(mEditor->getScribbleArea(), &ScribbleArea::selectionUpdated, this, &RepositionFramesDialog::updateDialogText);
+    QMessageBox::information(this, nullptr,
+                             tr("Please move selection to desired destination"),
+                             QMessageBox::Ok);
 }
 
 void RepositionFramesDialog::updateDialogText()
@@ -58,13 +62,16 @@ void RepositionFramesDialog::updateDialogSelectedFrames()
 void RepositionFramesDialog::repositionFrames()
 {
     QPoint point = getRepositionPoint();
-    mEditor->layers()->repositionSelectedFrames(point.x(), point.y());
-    close();
+    if (point != QPoint(0,0))
+    {
+        mEditor->layers()->repositionSelectedFrames(point);
+    }
+    mEditor->select()->resetSelectionProperties();
+    closeClicked();
 }
 
 void RepositionFramesDialog::closeClicked()
 {
-
     emit closeDialog();
     close();
 }

@@ -6,6 +6,8 @@
 
 #include "editor.h"
 
+class ToolManager;
+
 namespace Ui {
 class RepositionFramesDialog;
 }
