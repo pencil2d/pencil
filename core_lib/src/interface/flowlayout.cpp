@@ -174,11 +174,13 @@ int FlowLayout::doLayout(const QRect &rect, bool testOnly) const
     int x = effectiveRect.x();
     int y = effectiveRect.y();
     int lineHeight = 0;
+    int rowCount = 0;
 //! [9]
 
 //! [10]
     QLayoutItem *item;
-    foreach (item, itemList) {
+    for(int i = 0; i < itemList.length(); i++) {
+        item = itemList.at(i);
         QWidget *wid = item->widget();
         int spaceX = horizontalSpacing();
         if (spaceX == -1)
@@ -192,11 +194,20 @@ int FlowLayout::doLayout(const QRect &rect, bool testOnly) const
 //! [11]
         int nextX = x + item->sizeHint().width() + spaceX;
         if (nextX - spaceX > effectiveRect.right() && lineHeight > 0) {
+            int offset = qFloor((effectiveRect.width() - x) / 2);
+            qDebug() << "Adding offset of" << offset;
+            for(int j = i-1; j > i-1-rowCount; j--) {
+                auto rowItem = itemList.at(j);
+                rowItem->setGeometry(rowItem->geometry().adjusted(offset, 0, offset, 0));
+            }
+
             x = effectiveRect.x();
             y = y + lineHeight + spaceY;
             nextX = x + item->sizeHint().width() + spaceX;
             lineHeight = 0;
+            rowCount = 0;
         }
+        rowCount++;
 
         if (!testOnly)
             item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
@@ -204,6 +215,14 @@ int FlowLayout::doLayout(const QRect &rect, bool testOnly) const
         x = nextX;
         lineHeight = qMax(lineHeight, item->sizeHint().height());
     }
+
+    int offset = qFloor((effectiveRect.width() - x) / 2);
+    qDebug() << "Adding offset of" << offset;
+    for(int j = itemList.length()-1; j > itemList.length()-1-rowCount; j--) {
+        auto rowItem = itemList.at(j);
+        rowItem->setGeometry(rowItem->geometry().adjusted(offset, 0, offset, 0));
+    }
+
     return y + lineHeight - rect.y() + bottom;
 }
 //! [11]

@@ -34,6 +34,8 @@ public:
     explicit DisplayOptionWidget(QWidget* parent);
     virtual ~DisplayOptionWidget() override;
 
+    void resizeEvent(QResizeEvent *event) override;
+
     void initUI() override;
     void updateUI() override;
 

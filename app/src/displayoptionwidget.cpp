@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
+#include "flowlayout.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
@@ -39,10 +40,31 @@ DisplayOptionWidget::~DisplayOptionWidget()
     delete ui;
 }
 
+void DisplayOptionWidget::resizeEvent(QResizeEvent *event)
+{
+    BaseDockWidget::resizeEvent(event);
+    int minHeight = ui->innerWidget->layout()->heightForWidth(event->size().width()) + layout()->margin()*2;
+    setMinimumSize(QSize(layout()->minimumSize().width(), minHeight));
+}
+
 void DisplayOptionWidget::initUI()
 {
     updateUI();
     makeConnections();
+
+    delete ui->innerWidget->layout();
+
+    FlowLayout *layout = new FlowLayout;
+    layout->addWidget(ui->mirrorButton);
+    layout->addWidget(ui->mirrorVButton);
+    layout->addWidget(ui->outLinesButton);
+    layout->addWidget(ui->thinLinesButton);
+    layout->addWidget(ui->overlayCenterButton);
+    layout->addWidget(ui->overlayGoldenRatioButton);
+    layout->addWidget(ui->overlaySafeAreaButton);
+    layout->addWidget(ui->overlayThirdsButton);
+
+    ui->innerWidget->setLayout(layout);
 
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
