@@ -40,6 +40,8 @@ public:
     ToolBoxWidget(QWidget* parent);
     ~ToolBoxWidget() override;
 
+    void resizeEvent(QResizeEvent *event) override;
+
     void initUI() override;
     void updateUI() override;
 

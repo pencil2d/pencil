@@ -52,6 +52,13 @@ ToolBoxWidget::~ToolBoxWidget()
     delete ui;
 }
 
+void ToolBoxWidget::resizeEvent(QResizeEvent *event)
+{
+    BaseDockWidget::resizeEvent(event);
+    int minHeight = ui->toolGroup->layout()->heightForWidth(event->size().width()) + layout()->margin()*2;
+    setMinimumSize(QSize(layout()->minimumSize().width(), minHeight));
+}
+
 void ToolBoxWidget::initUI()
 {
 #ifdef __APPLE__
