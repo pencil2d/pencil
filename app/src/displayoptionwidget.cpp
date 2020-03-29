@@ -58,12 +58,12 @@ void DisplayOptionWidget::initUI()
     layout->setAlignment(Qt::AlignHCenter);
     layout->addWidget(ui->mirrorButton);
     layout->addWidget(ui->mirrorVButton);
-    layout->addWidget(ui->outLinesButton);
     layout->addWidget(ui->thinLinesButton);
+    layout->addWidget(ui->outLinesButton);
     layout->addWidget(ui->overlayCenterButton);
+    layout->addWidget(ui->overlayThirdsButton);
     layout->addWidget(ui->overlayGoldenRatioButton);
     layout->addWidget(ui->overlaySafeAreaButton);
-    layout->addWidget(ui->overlayThirdsButton);
 
     ui->innerWidget->setLayout(layout);
 
