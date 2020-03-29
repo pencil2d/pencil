@@ -495,7 +495,6 @@ void MainWindow2::openRepositionDialog()
 
 void MainWindow2::closeRepositionDialog()
 {
-
     mReposDialog = nullptr;
     disconnect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
 }

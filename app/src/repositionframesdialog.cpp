@@ -9,6 +9,7 @@
 #include "toolmanager.h"
 #include "layer.h"
 #include "layermanager.h"
+#include "layerbitmap.h"
 #include "scribblearea.h"
 #include <QDebug>
 
@@ -28,15 +29,22 @@ void RepositionFramesDialog::setCore(Editor *editor)
 {
     mEditor = editor;
     mEditor->layers()->prepareRepositionSelectedFrames();
-    updateDialogSelectedFrames();
-    updateDialogText();
     connect(ui->btnReposition, &QPushButton::clicked, this, &RepositionFramesDialog::repositionFrames);
     connect(ui->btnCancel, &QPushButton::clicked, this, &RepositionFramesDialog::closeClicked);
     connect(this, &QDialog::finished, this, &RepositionFramesDialog::closeClicked);
     connect(mEditor->getScribbleArea(), &ScribbleArea::selectionUpdated, this, &RepositionFramesDialog::updateDialogText);
+    connect(mEditor->select(), &SelectionManager::selectionReset, this, &RepositionFramesDialog::closeClicked);
+    if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+        mRepositionFrame = mEditor->currentFrame();
+    else
+        mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesList().at(0);
     QMessageBox::information(this, nullptr,
                              tr("Please move selection to desired destination"),
                              QMessageBox::Ok);
+    mEndPoint = mStartPoint;
+    mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
+    updateDialogSelectedFrames();
+    updateDialogText();
 }
 
 void RepositionFramesDialog::updateDialogText()
@@ -61,17 +69,18 @@ void RepositionFramesDialog::updateDialogSelectedFrames()
 
 void RepositionFramesDialog::repositionFrames()
 {
-    QPoint point = getRepositionPoint();
-    if (point != QPoint(0,0))
+    if (mStartPoint != mEndPoint)
     {
-        mEditor->layers()->repositionSelectedFrames(point);
+        mEditor->layers()->repositionSelectedFrames(mEndPoint);
     }
+    mEditor->getScribbleArea()->applySelectionChanges();
     mEditor->select()->resetSelectionProperties();
     closeClicked();
 }
 
 void RepositionFramesDialog::closeClicked()
 {
+    mEndPoint = mStartPoint;
     emit closeDialog();
     close();
 }
@@ -81,6 +90,7 @@ QPoint RepositionFramesDialog::getRepositionPoint()
     int x, y;
     x = static_cast<int>(mCurrentPolygonF.boundingRect().x() - mOriginalPolygonF.boundingRect().x());
     y = static_cast<int>(mCurrentPolygonF.boundingRect().y() - mOriginalPolygonF.boundingRect().y());
-    return QPoint(x, y);
+    mEndPoint = QPoint(x, y);
+    return mEndPoint;
 }
 

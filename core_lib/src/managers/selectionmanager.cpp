@@ -371,6 +371,7 @@ void SelectionManager::translate(QPointF point)
 
 void SelectionManager::resetSelectionProperties()
 {
+    emit selectionReset();
     resetSelectionTransformProperties();
     mSelection = QRectF();
     mTransformedSelection = QRectF();

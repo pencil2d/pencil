@@ -37,9 +37,12 @@ private:
 
     void closeClicked();
     QPoint getRepositionPoint();
+    int mRepositionFrame;
 
     QPolygonF mCurrentPolygonF  = QPolygonF();
     QPolygonF mOriginalPolygonF = QPolygonF();
+    const QPoint mStartPoint = QPoint(0,0);
+    QPoint mEndPoint = QPoint(0,0);
     Editor* mEditor = nullptr;
 };
 

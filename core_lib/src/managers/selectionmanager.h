@@ -105,6 +105,7 @@ public:
 
 signals:
     void selectionChanged();
+    void selectionReset();
     void needPaintAndApply();
     void needDeleteSelection();
 

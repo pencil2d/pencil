@@ -179,20 +179,23 @@ void LayerManager::prepareRepositionSelectedFrames()
 {
     if (editor()->select()->somethingSelected()) { return; }
 
-    QList<int> frameList = currentLayer()->getSelectedFramesList();
-    // rect1 will be the rect, that contains the common bounds for all selected frames
-
     if (currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(currentLayer());
-        int frame;
         if (bitmapLayer->keyExists(editor()->currentFrame()))
-            frame = editor()->currentFrame();
+            mReposFrame = editor()->currentFrame();
         else
-            frame = frameList.at(0);
-        mReposRect = bitmapLayer->getFrameBounds(frame);
+            mReposFrame =  currentLayer()->getSelectedFramesList().at(0);
+        mReposRect = QRect();
+        QList<int> frames = currentLayer()->getSelectedFramesList();
+        for (int i = 0; i < frames.size(); i++)
+        {
+            editor()->scrubTo(frames.at(i));
+            QRect rect = bitmapLayer->getFrameBounds(frames.at(i));
+            mReposRect = mReposRect.united(rect);
+        }
 
-        editor()->scrubTo(frame);
+        editor()->scrubTo(mReposFrame);
         editor()->select()->setSelection(mReposRect);
     }
 }
@@ -203,25 +206,29 @@ void LayerManager::repositionSelectedFrames(QPoint transform)
     {
         QRect rect;
         LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
-        QList<QRect> transforms;
         QList<int> frames = currentLayer()->getSelectedFramesList();
         for (int i = 0; i < frames.count(); i++)
         {
             editor()->scrubTo(frames.at(i));
             rect = layer->getFrameBounds(frames.at(i));
             rect.translate(transform);
-            transforms.append(rect);
+            layer->repositionFrame(rect, frames.at(i));
+            editor()->backup(layer->id(), frames.at(i), tr("Reposition frame"));
         }
-        if (transforms.size() == frames.size())
-        {
-            for (int i = 0; i < frames.count(); i++)
-            {
-                editor()->scrubTo(frames.at(i));
-                layer->repositionFrame(transforms.at(i), frames.at(i));
-                editor()->backup(layer->id(), frames.at(i), tr("Reposition frame"));
+    }
+}
 
-            }
-        }
+void LayerManager::repositionFrame(QPoint transform, int frame)
+{
+    if (currentLayer()->type() == Layer::BITMAP)
+    {
+        QRect rect;
+        LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
+        editor()->scrubTo(frame);
+        rect = layer->getFrameBounds(frame);
+        rect.translate(transform);
+        layer->repositionFrame(rect, frame);
+        editor()->backup(layer->id(), frame, tr("Reposition frame"));
     }
 }
 

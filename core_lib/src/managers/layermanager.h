@@ -75,6 +75,7 @@ public:
 public slots:
     void prepareRepositionSelectedFrames();
     void repositionSelectedFrames(QPoint transform);
+    void repositionFrame(QPoint transform, int frame);
 
 Q_SIGNALS:
     void currentLayerChanged(int index);
@@ -87,6 +88,7 @@ private:
 
     int mLastCameraLayerIdx = 0;
     QRectF mReposRect;
+    int mReposFrame;
 };
 
 #endif

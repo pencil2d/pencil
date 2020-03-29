@@ -49,7 +49,8 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 void LayerBitmap::repositionFrame(QRect rect, int frame)
 {
     BitmapImage* image = getBitmapImageAtFrame(frame);
-    image->transform(rect, false);
+    image->transform(rect, true);
+//    image->writeFile(QString("C:\\Users\\User\\Desktop\\%1.png").arg(frame));
 }
 
 QRect LayerBitmap::getFrameBounds(int frame)
