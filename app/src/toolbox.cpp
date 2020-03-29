@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QToolButton>
 #include <QGridLayout>
 #include <QKeySequence>
+#include <QResizeEvent>
 
 #include "flowlayout.h"
 #include "spinslider.h"
@@ -55,7 +56,14 @@ ToolBoxWidget::~ToolBoxWidget()
 void ToolBoxWidget::resizeEvent(QResizeEvent *event)
 {
     BaseDockWidget::resizeEvent(event);
-    int minHeight = ui->toolGroup->layout()->heightForWidth(event->size().width()) + layout()->margin()*2;
+    int margins = layout()->margin()*2;
+#ifdef __APPLE__
+    // For some reason the behavior of minimumSize and the margin changes on mac when floating, so we need to do this
+    if (isFloating()) {
+        margins = 0;
+    }
+#endif
+    int minHeight = ui->toolGroup->layout()->heightForWidth(event->size().width()) + margins;
     setMinimumSize(QSize(layout()->minimumSize().width(), minHeight));
 }
 

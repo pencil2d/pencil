@@ -43,7 +43,14 @@ DisplayOptionWidget::~DisplayOptionWidget()
 void DisplayOptionWidget::resizeEvent(QResizeEvent *event)
 {
     BaseDockWidget::resizeEvent(event);
-    int minHeight = ui->innerWidget->layout()->heightForWidth(event->size().width()) + layout()->margin()*2;
+    int margins = layout()->margin()*2;
+#ifdef __APPLE__
+    // For some reason the behavior of minimumSize and the margin changes on mac when floating, so we need to do this
+    if (isFloating()) {
+        margins = 0;
+    }
+#endif
+    int minHeight = ui->innerWidget->layout()->heightForWidth(event->size().width()) + margins;
     setMinimumSize(QSize(layout()->minimumSize().width(), minHeight));
 }
 
