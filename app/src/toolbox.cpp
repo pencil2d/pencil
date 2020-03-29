@@ -63,7 +63,8 @@ void ToolBoxWidget::resizeEvent(QResizeEvent *event)
         margins = 0;
     }
 #endif
-    int minHeight = ui->toolGroup->layout()->heightForWidth(event->size().width()) + margins;
+    // Not sure where the -2 comes from, but the event width is always 2 more than what is passed to FlowLayout::setGeometry
+    int minHeight = ui->toolGroup->layout()->heightForWidth(event->size().width() - 2) + margins;
     setMinimumSize(QSize(layout()->minimumSize().width(), minHeight));
 }
 
