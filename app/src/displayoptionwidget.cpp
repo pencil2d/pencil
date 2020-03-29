@@ -80,7 +80,15 @@ void DisplayOptionWidget::initUI()
         "QToolButton { border: 0px; } "
         "QToolButton:pressed{ border: 1px solid #FFADAD; border-radius: 2px; background-color: #D5D5D5; }"
         "QToolButton:checked{ border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
-    setStyleSheet(this->styleSheet().append(stylesheet));
+
+    ui->mirrorButton->setStyleSheet(stylesheet);
+    ui->mirrorVButton->setStyleSheet(stylesheet);
+    ui->thinLinesButton->setStyleSheet(stylesheet);
+    ui->outLinesButton->setStyleSheet(stylesheet);
+    ui->overlayCenterButton->setStyleSheet(stylesheet);
+    ui->overlayThirdsButton->setStyleSheet(stylesheet);
+    ui->overlayGoldenRatioButton->setStyleSheet(stylesheet);
+    ui->overlaySafeAreaButton->setStyleSheet(stylesheet);
 #endif
 }
 
