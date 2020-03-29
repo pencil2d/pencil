@@ -179,10 +179,11 @@ int FlowLayout::doLayout(const QRect &rect, bool testOnly) const
 
 //! [10]
     QLayoutItem *item;
-    for(int i = 0; i < itemList.length(); i++) {
+    int spaceX = 0;
+    for (int i = 0; i < itemList.length(); i++) {
         item = itemList.at(i);
         QWidget *wid = item->widget();
-        int spaceX = horizontalSpacing();
+        spaceX = horizontalSpacing();
         if (spaceX == -1)
             spaceX = wid->style()->layoutSpacing(
                 QSizePolicy::PushButton, QSizePolicy::PushButton, Qt::Horizontal);
@@ -194,11 +195,12 @@ int FlowLayout::doLayout(const QRect &rect, bool testOnly) const
 //! [11]
         int nextX = x + item->sizeHint().width() + spaceX;
         if (nextX - spaceX > effectiveRect.right() && lineHeight > 0) {
-            int offset = qFloor((effectiveRect.width() - x) / 2);
-            qDebug() << "Adding offset of" << offset;
-            for(int j = i-1; j > i-1-rowCount; j--) {
-                auto rowItem = itemList.at(j);
-                rowItem->setGeometry(rowItem->geometry().adjusted(offset, 0, offset, 0));
+            if(!testOnly && alignment() & Qt::AlignHCenter) {
+                int offset = qFloor((effectiveRect.right() + spaceX - x) / 2);
+                for(int j = i-1; j > i-1-rowCount; j--) {
+                    auto rowItem = itemList.at(j);
+                    rowItem->setGeometry(rowItem->geometry().adjusted(offset, 0, offset, 0));
+                }
             }
 
             x = effectiveRect.x();
@@ -209,18 +211,20 @@ int FlowLayout::doLayout(const QRect &rect, bool testOnly) const
         }
         rowCount++;
 
-        if (!testOnly)
+        if (!testOnly) {
             item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
+        }
 
         x = nextX;
         lineHeight = qMax(lineHeight, item->sizeHint().height());
     }
 
-    int offset = qFloor((effectiveRect.width() - x) / 2);
-    qDebug() << "Adding offset of" << offset;
-    for(int j = itemList.length()-1; j > itemList.length()-1-rowCount; j--) {
-        auto rowItem = itemList.at(j);
-        rowItem->setGeometry(rowItem->geometry().adjusted(offset, 0, offset, 0));
+    if (!testOnly && alignment() & Qt::AlignHCenter) {
+        int offset = qFloor((effectiveRect.right() + spaceX - x) / 2);
+        for (int j = itemList.length()-1; j > itemList.length()-1-rowCount; j--) {
+            auto rowItem = itemList.at(j);
+            rowItem->setGeometry(rowItem->geometry().adjusted(offset, 0, offset, 0));
+        }
     }
 
     return y + lineHeight - rect.y() + bottom;

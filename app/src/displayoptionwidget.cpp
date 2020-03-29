@@ -55,6 +55,7 @@ void DisplayOptionWidget::initUI()
     delete ui->innerWidget->layout();
 
     FlowLayout *layout = new FlowLayout;
+    layout->setAlignment(Qt::AlignHCenter);
     layout->addWidget(ui->mirrorButton);
     layout->addWidget(ui->mirrorVButton);
     layout->addWidget(ui->outLinesButton);
