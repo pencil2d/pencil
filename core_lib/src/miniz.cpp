@@ -2989,6 +2989,13 @@ void tinfl_decompressor_free(tinfl_decompressor *pDecomp)
 #if defined(_MSC_VER) || defined(__MINGW64__)
 #include <codecvt>
 #include <string>
+#endif
+
+#ifdef __MINGW64__
+#include <locale>
+#endif
+
+#if defined(_MSC_VER) || defined(__MINGW64__)
 static FILE *mz_fopen(const char *pFilename, const char *pMode)
 {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
