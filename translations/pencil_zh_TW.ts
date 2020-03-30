@@ -274,7 +274,7 @@
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
         <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
-        <translation type="unfinished"/>
+        <translation>發現新版本的 Pencil2D %1  -- 您目前的版本是 %2 ，要下載新版本嗎?</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
@@ -356,7 +356,7 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="133"/>
         <source>Native color dialog window</source>
-        <translation type="unfinished"/>
+        <translation>系統色彩挑選視窗</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="258"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="482"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation type="unfinished"/>
+        <translation>您想刪除的顏色正在使用中</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="483"/>
@@ -665,7 +665,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="238"/>
         <source>Export keyframes only</source>
-        <translation type="unfinished"/>
+        <translation>只輸出關鍵畫格</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="177"/>
@@ -761,17 +761,17 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="249"/>
         <source>Exporter Settings</source>
-        <translation type="unfinished"/>
+        <translation>匯出設定</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="267"/>
         <source>WebM and APNG only</source>
-        <translation type="unfinished"/>
+        <translation>WebM 和 APNG</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="270"/>
         <source>Transparency</source>
-        <translation type="unfinished"/>
+        <translation>透明背景</translation>
     </message>
 </context>
 <context>
@@ -861,12 +861,12 @@
         <location filename="../app/src/filedialogex.cpp" line="170"/>
         <location filename="../app/src/filedialogex.cpp" line="186"/>
         <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
-        <translation type="unfinished"/>
+        <translation>調色盤 (*.xml *.gpl);;Pencil2D 調色盤 (*.xml);;GIMP 調色盤 (*.gpl)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="184"/>
         <source>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</source>
-        <translation type="unfinished"/>
+        <translation>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="226"/>
@@ -890,7 +890,7 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>沒有讀取該檔案的權限</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
@@ -1173,7 +1173,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
         <source>Grid Height</source>
-        <translation type="unfinished"/>
+        <translation>格子高度</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="252"/>
@@ -1670,7 +1670,7 @@
         <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>Next Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>下一個關鍵畫格</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="807"/>
@@ -1776,13 +1776,13 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate Anticlockwise</source>
-        <translation type="unfinished"/>
+        <translation>逆時針旋轉</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
         <location filename="../app/ui/mainwindow2.ui" line="796"/>
         <source>Previous KeyFrame</source>
-        <translation>前一個關鍵影格</translation>
+        <translation>前一個關鍵畫格</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="834"/>
@@ -1909,7 +1909,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="593"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
-        <translation type="unfinished"/>
+        <translation>未知錯誤: 無法讀取檔案</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="625"/>
@@ -1958,7 +1958,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="922"/>
         <source>Illegal numbering</source>
-        <translation type="unfinished"/>
+        <translation>數字不合規範</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="964"/>
@@ -2221,7 +2221,7 @@
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="286"/>
         <source>Deep Pink</source>
-        <translation type="unfinished"/>
+        <translation>深粉紅</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="287"/>
@@ -2271,12 +2271,12 @@
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="296"/>
         <source>Deep Red</source>
-        <translation type="unfinished"/>
+        <translation>深紅</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="297"/>
         <source>Very Deep Red</source>
-        <translation type="unfinished"/>
+        <translation>極深紅</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="298"/>
@@ -2291,7 +2291,7 @@
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="300"/>
         <source>Very Dark Red</source>
-        <translation type="unfinished"/>
+        <translation>暗紅</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="301"/>
@@ -3571,13 +3571,13 @@
     <message>
         <location filename="../app/src/main.cpp" line="78"/>
         <source>Path to the input pencil file.</source>
-        <translation type="unfinished"/>
+        <translation>輸入檔案路徑</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="81"/>
         <location filename="../app/src/main.cpp" line="87"/>
         <source>Render the file to &lt;output_path&gt;</source>
-        <translation type="unfinished"/>
+        <translation>輸出檔案: &lt;output_path&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="82"/>
@@ -3713,7 +3713,7 @@
         <location filename="../app/src/main.cpp" line="306"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>匯出圖片序列</translation>
     </message>
 </context>
 <context>
@@ -3739,7 +3739,7 @@
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation type="unfinished"/>
+        <translation>正在修改隱藏的圖層! 請選擇別的圖層</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
@@ -4050,7 +4050,7 @@
     <message>
         <location filename="../app/ui/timelinepage.ui" line="93"/>
         <source>When drawing on an empty frame:</source>
-        <translation type="unfinished"/>
+        <translation>畫在非關鍵畫格時:</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="100"/>

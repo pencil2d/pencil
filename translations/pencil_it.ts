@@ -90,17 +90,17 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="246"/>
         <source>Finished. Open file location?</source>
-        <translation type="unfinished"/>
+        <translation> Terminato. Aprire il percorso file? </translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="318"/>
         <source>Exporting image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>Esportazione sequenza immagini...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="318"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>Annulla</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="400"/>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="401"/>
         <source>Unable to export image.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile esportare l&apos;immagine.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="609"/>
@@ -136,18 +136,18 @@
         <location filename="../app/src/actioncommands.cpp" line="663"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Elimina livello</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="664"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation type="unfinished"/>
+        <translation>Conferma eliminazione del livello: </translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="673"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
-        <translation type="unfinished"/>
+        <translation>Si prega di tenere almeno uno strato di videocamera nel progetto.</translation>
     </message>
 </context>
 <context>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
         <source>Camera Properties</source>
-        <translation type="unfinished"/>
+        <translation>Proprietà delle videocamera</translation>
     </message>
     <message>
         <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="22"/>
@@ -232,17 +232,17 @@
         <location filename="../app/src/checkupdatesdialog.cpp" line="27"/>
         <source>Checking for Updates...</source>
         <comment>status description in the check-for-update dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Controllo per aggiornamenti...</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="39"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Scaricamento</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="40"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Chiudi</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="93"/>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Versione</translation>
     </message>
 </context>
 <context>
@@ -361,7 +361,7 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="258"/>
         <source>List Mode</source>
-        <translation type="unfinished"/>
+        <translation>Modalità elenco</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="261"/>
@@ -371,12 +371,12 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="269"/>
         <source>Grid Mode</source>
-        <translation type="unfinished"/>
+        <translation>Modalità griglia</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="272"/>
         <source>Show palette as icons</source>
-        <translation type="unfinished"/>
+        <translation>Mostra palette come icone</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="282"/>
