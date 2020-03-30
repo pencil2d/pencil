@@ -73,8 +73,7 @@ public:
     QString nameSuggestLayer(const QString& name);
 
 public slots:
-    void prepareRepositionSelectedFrames();
-    void repositionSelectedFrames(QPoint transform);
+    void prepareRepositionSelectedFrames(int frame);
     void repositionFrame(QPoint transform, int frame);
 
 Q_SIGNALS:

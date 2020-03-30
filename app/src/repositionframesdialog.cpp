@@ -28,16 +28,16 @@ RepositionFramesDialog::~RepositionFramesDialog()
 void RepositionFramesDialog::setCore(Editor *editor)
 {
     mEditor = editor;
-    mEditor->layers()->prepareRepositionSelectedFrames();
+    if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+        mRepositionFrame = mEditor->currentFrame();
+    else
+        mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesList().at(0);
+    mEditor->layers()->prepareRepositionSelectedFrames(mRepositionFrame);
     connect(ui->btnReposition, &QPushButton::clicked, this, &RepositionFramesDialog::repositionFrames);
     connect(ui->btnCancel, &QPushButton::clicked, this, &RepositionFramesDialog::closeClicked);
     connect(this, &QDialog::finished, this, &RepositionFramesDialog::closeClicked);
     connect(mEditor->getScribbleArea(), &ScribbleArea::selectionUpdated, this, &RepositionFramesDialog::updateDialogText);
     connect(mEditor->select(), &SelectionManager::selectionReset, this, &RepositionFramesDialog::closeClicked);
-    if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
-        mRepositionFrame = mEditor->currentFrame();
-    else
-        mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesList().at(0);
     QMessageBox::information(this, nullptr,
                              tr("Please move selection to desired destination"),
                              QMessageBox::Ok);
@@ -69,12 +69,17 @@ void RepositionFramesDialog::updateDialogSelectedFrames()
 
 void RepositionFramesDialog::repositionFrames()
 {
-    if (mStartPoint != mEndPoint)
+    if (mStartPoint == mEndPoint) { return; }
+
+    QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesList();
+    qDebug() << "REPOSpoint: " << mEndPoint;
+    for (int i = 0; i < frames.size(); i++)
     {
-        mEditor->layers()->repositionSelectedFrames(mEndPoint);
+        mEditor->layers()->repositionFrame(mEndPoint, frames.at(i));
     }
     mEditor->getScribbleArea()->applySelectionChanges();
     mEditor->select()->resetSelectionProperties();
+    mEditor->scrubTo(mRepositionFrame);
     closeClicked();
 }
 

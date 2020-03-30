@@ -175,46 +175,16 @@ QString LayerManager::nameSuggestLayer(const QString& name)
     return newName;
 }
 
-void LayerManager::prepareRepositionSelectedFrames()
+void LayerManager::prepareRepositionSelectedFrames(int frame)
 {
     if (editor()->select()->somethingSelected()) { return; }
 
     if (currentLayer()->type() == Layer::BITMAP)
     {
+        editor()->scrubTo(frame);
         LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(currentLayer());
-        if (bitmapLayer->keyExists(editor()->currentFrame()))
-            mReposFrame = editor()->currentFrame();
-        else
-            mReposFrame =  currentLayer()->getSelectedFramesList().at(0);
-        mReposRect = QRect();
-        QList<int> frames = currentLayer()->getSelectedFramesList();
-        for (int i = 0; i < frames.size(); i++)
-        {
-            editor()->scrubTo(frames.at(i));
-            QRect rect = bitmapLayer->getFrameBounds(frames.at(i));
-            mReposRect = mReposRect.united(rect);
-        }
-
-        editor()->scrubTo(mReposFrame);
-        editor()->select()->setSelection(mReposRect);
-    }
-}
-
-void LayerManager::repositionSelectedFrames(QPoint transform)
-{
-    if (currentLayer()->type() == Layer::BITMAP)
-    {
-        QRect rect;
-        LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
-        QList<int> frames = currentLayer()->getSelectedFramesList();
-        for (int i = 0; i < frames.count(); i++)
-        {
-            editor()->scrubTo(frames.at(i));
-            rect = layer->getFrameBounds(frames.at(i));
-            rect.translate(transform);
-            layer->repositionFrame(rect, frames.at(i));
-            editor()->backup(layer->id(), frames.at(i), tr("Reposition frame"));
-        }
+        QRect reposRect = bitmapLayer->getFrameBounds(frame);
+        editor()->select()->setSelection(reposRect);
     }
 }
 
@@ -226,6 +196,7 @@ void LayerManager::repositionFrame(QPoint transform, int frame)
         LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
         editor()->scrubTo(frame);
         rect = layer->getFrameBounds(frame);
+        qDebug() << "Repos rect" << frame << " before: " << rect;
         rect.translate(transform);
         layer->repositionFrame(rect, frame);
         editor()->backup(layer->id(), frame, tr("Reposition frame"));
