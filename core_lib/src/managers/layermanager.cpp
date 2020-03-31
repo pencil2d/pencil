@@ -196,7 +196,6 @@ void LayerManager::repositionFrame(QPoint transform, int frame)
         LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
         editor()->scrubTo(frame);
         rect = layer->getFrameBounds(frame);
-        qDebug() << "Repos rect" << frame << " before: " << rect;
         rect.translate(transform);
         layer->repositionFrame(rect, frame);
         editor()->backup(layer->id(), frame, tr("Reposition frame"));

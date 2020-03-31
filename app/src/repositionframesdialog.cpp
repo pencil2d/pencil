@@ -5,6 +5,7 @@
 #include <QMessageBox>
 
 #include "selectionmanager.h"
+#include "selectionpainter.h"
 #include "viewmanager.h"
 #include "toolmanager.h"
 #include "layer.h"
@@ -72,11 +73,15 @@ void RepositionFramesDialog::repositionFrames()
     if (mStartPoint == mEndPoint) { return; }
 
     QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesList();
-    qDebug() << "REPOSpoint: " << mEndPoint;
     for (int i = 0; i < frames.size(); i++)
     {
         mEditor->layers()->repositionFrame(mEndPoint, frames.at(i));
     }
+    // The next four lines show the worst hack I've EVER done!
+    if (mRepositionFrame != frames.first())
+        mEditor->scrubTo(frames.first());
+    else
+        mEditor->scrubTo(frames.last());
     mEditor->getScribbleArea()->applySelectionChanges();
     mEditor->select()->resetSelectionProperties();
     mEditor->scrubTo(mRepositionFrame);
