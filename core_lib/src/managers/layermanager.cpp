@@ -192,12 +192,11 @@ void LayerManager::repositionFrame(QPoint transform, int frame)
 {
     if (currentLayer()->type() == Layer::BITMAP)
     {
-        QRect rect;
         LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
         editor()->scrubTo(frame);
-        rect = layer->getFrameBounds(frame);
-        rect.translate(transform);
-        layer->repositionFrame(rect, frame);
+        QPoint point = layer->getFrameBounds(frame).topLeft();
+        point += transform;
+        layer->repositionFrame(point, frame);
         editor()->backup(layer->id(), frame, tr("Reposition frame"));
     }
 }
