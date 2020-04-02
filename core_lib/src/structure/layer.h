@@ -116,7 +116,7 @@ public:
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
-    void paintFrames(QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
+    void paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
     void mouseDoubleClick(QMouseEvent*, int frameNumber);
