@@ -28,6 +28,9 @@ public slots:
     void updateDialogText();
     void updateDialogSelectedFrames();
     void repositionFrames();
+    void updateRadioButtons();
+    void checkboxStateChanged(int i);
+    void updateLayersBox();
 
 signals:
     void closeDialog();
@@ -36,8 +39,11 @@ private:
     Ui::RepositionFramesDialog *ui;
 
     void closeClicked();
+    void updateLayersToSelect();
     QPoint getRepositionPoint();
+
     int mRepositionFrame;
+    QList<int> mLayerIndexes;
 
     QPolygonF mCurrentPolygonF  = QPolygonF();
     QPolygonF mOriginalPolygonF = QPolygonF();

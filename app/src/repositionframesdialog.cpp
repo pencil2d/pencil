@@ -2,6 +2,7 @@
 #include "ui_repositionframesdialog.h"
 
 #include <QList>
+#include <QListWidgetItem>
 #include <QMessageBox>
 
 #include "selectionmanager.h"
@@ -34,6 +35,11 @@ void RepositionFramesDialog::setCore(Editor *editor)
     else
         mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesList().at(0);
     mEditor->layers()->prepareRepositionSelectedFrames(mRepositionFrame);
+    updateRadioButtons();
+    ui->rbAllKeyframes->setChecked(true);
+    connect(ui->cbOtherLayers, &QCheckBox::stateChanged, this, &RepositionFramesDialog::checkboxStateChanged);
+    connect(ui->rbAllKeyframes, &QRadioButton::clicked, this, &RepositionFramesDialog::updateLayersBox);
+    connect(ui->rbSameKeyframes, &QRadioButton::clicked, this, &RepositionFramesDialog::updateLayersBox);
     connect(ui->btnReposition, &QPushButton::clicked, this, &RepositionFramesDialog::repositionFrames);
     connect(ui->btnCancel, &QPushButton::clicked, this, &RepositionFramesDialog::closeClicked);
     connect(this, &QDialog::finished, this, &RepositionFramesDialog::closeClicked);
@@ -70,22 +76,98 @@ void RepositionFramesDialog::updateDialogSelectedFrames()
 
 void RepositionFramesDialog::repositionFrames()
 {
-    if (mStartPoint == mEndPoint) { return; }
+    if (mStartPoint == mEndPoint)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Please move selection to desired destination\n"
+                                    "or cancel"),
+                                 QMessageBox::Ok);
+        return;
+    }
 
     QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesList();
     for (int i = 0; i < frames.size(); i++)
     {
         mEditor->layers()->repositionFrame(mEndPoint, frames.at(i));
     }
-    // The next four lines show the worst hack I've EVER done!
-    if (mRepositionFrame != frames.first())
-        mEditor->scrubTo(frames.first());
-    else
-        mEditor->scrubTo(frames.last());
+
+    if (!mLayerIndexes.isEmpty())
+    {
+        auto lMgr = mEditor->layers();
+        if (ui->rbSameKeyframes->isChecked()) // if only selcted keyframe-numbers are affected
+        {
+            int currLayer = mEditor->currentLayerIndex();
+            for (int j = 0; j < mLayerIndexes.size(); j++)
+            {
+                QListWidgetItem* item = ui->listSelectedLayers->item(j);
+                if (item->isSelected())
+                {
+                    lMgr->setCurrentLayer(mLayerIndexes.at(j));
+                    for (int i = 0; i < frames.size(); i++)
+                    {       // only move frame if it exists
+                        if (lMgr->currentLayer()->keyExists(frames.at(i)))
+                            lMgr->repositionFrame(mEndPoint, frames.at(i));
+                    }
+                }
+            }
+            lMgr->setCurrentLayer(currLayer);
+        }
+        else // if all keyframes on layer should be repositioned
+        {
+            int currLayer = mEditor->currentLayerIndex();
+            for (int j = 0; j < mLayerIndexes.size(); j++)
+            {
+                lMgr->setCurrentLayer(mLayerIndexes.at(j));
+                int keyframe = lMgr->currentLayer()->firstKeyFramePosition();
+                do {
+                    mEditor->scrubTo(keyframe);
+                    lMgr->repositionFrame(mEndPoint, mEditor->currentFrame());
+                    keyframe = lMgr->currentLayer()->getNextKeyFramePosition(keyframe);
+                } while (mEditor->currentFrame() != lMgr->currentLayer()->getMaxKeyFramePosition());
+            }
+            lMgr->setCurrentLayer(currLayer);
+        }
+    }
     mEditor->getScribbleArea()->applySelectionChanges();
     mEditor->select()->resetSelectionProperties();
     mEditor->scrubTo(mRepositionFrame);
     closeClicked();
+}
+
+void RepositionFramesDialog::updateRadioButtons()
+{
+    if (ui->cbOtherLayers->isChecked())
+    {
+        ui->rbAllKeyframes->setEnabled(true);
+        ui->rbSameKeyframes->setEnabled(true);
+        ui->listSelectedLayers->setEnabled(true);
+    }
+    else
+    {
+        ui->rbAllKeyframes->setEnabled(false);
+        ui->rbSameKeyframes->setEnabled(false);
+        ui->listSelectedLayers->setEnabled(false);
+    }
+}
+
+void RepositionFramesDialog::checkboxStateChanged(int i)
+{
+    switch (i)
+    {
+    case Qt::Checked:
+        updateRadioButtons();
+        updateLayersToSelect();
+        break;
+    default:
+        updateRadioButtons();
+        ui->listSelectedLayers->clear();
+        break;
+    }
+}
+
+void RepositionFramesDialog::updateLayersBox()
+{
+    updateLayersToSelect();
 }
 
 void RepositionFramesDialog::closeClicked()
@@ -93,6 +175,51 @@ void RepositionFramesDialog::closeClicked()
     mEndPoint = mStartPoint;
     emit closeDialog();
     close();
+}
+
+void RepositionFramesDialog::updateLayersToSelect()
+{
+    ui->listSelectedLayers->clear();
+
+    mLayerIndexes.clear();
+    auto layermanager = mEditor->layers();
+    if (ui->rbAllKeyframes->isChecked())
+    {
+        for (int i = layermanager->count() - 1; i >= 0; i--)
+        {
+            if (layermanager->getLayer(i)->type() == Layer::BITMAP &&
+                    i != layermanager->currentLayerIndex())
+            {
+                ui->listSelectedLayers->addItem(layermanager->getLayer(i)->name());
+                mLayerIndexes.append(i);
+            }
+        }
+    }
+    else
+    {
+        QList<int> frames = layermanager->currentLayer()->getSelectedFramesList();
+        bool ok = false;
+        for (int i = layermanager->count() - 1; i >= 0; i--)
+        {
+            if (layermanager->getLayer(i)->type() == Layer::BITMAP &&
+                    i != layermanager->currentLayerIndex())
+            {
+                Layer* layer = layermanager->getLayer(i);
+                for (int j = 0; j < frames.size(); j++)
+                {
+                    if (layer->keyExists(frames.at(j)))
+                        ok = true;
+                }
+                if (ok)
+                {
+                    ui->listSelectedLayers->addItem(layer->name());
+                    mLayerIndexes.append(i);
+                }
+                ok = false;
+            }
+
+        }
+    }
 }
 
 QPoint RepositionFramesDialog::getRepositionPoint()
