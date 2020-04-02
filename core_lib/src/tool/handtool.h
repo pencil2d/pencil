@@ -35,6 +35,8 @@ public:
     void pointerMoveEvent(PointerEvent *) override;
     void pointerDoubleClickEvent(PointerEvent *) override;
 
+    virtual bool isActive() override { return false; }
+
 private:
     void transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons);
 

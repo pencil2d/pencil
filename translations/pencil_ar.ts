@@ -1043,7 +1043,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="101"/>
         <source>English</source>
-        <translation>أنجليزي English</translation>
+        <translation>أنجليزي</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="99"/>
@@ -1467,7 +1467,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="427"/>
         <source>Preferences</source>
-        <translation>خيارات</translation>
+        <translation>تفضيلات</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="435"/>

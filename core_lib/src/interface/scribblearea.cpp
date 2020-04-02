@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -486,14 +486,6 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
 
 void ScribbleArea::pointerPressEvent(PointerEvent* event)
 {
-
-    if (event->button() == Qt::RightButton)
-    {
-        mMouseRightButtonInUse = true;
-        getTool(HAND)->pointerPressEvent(event);
-        return;
-    }
-
     bool isCameraLayer = mEditor->layers()->currentLayer()->type() == Layer::CAMERA;
     if ((currentTool()->type() != HAND || isCameraLayer) && (event->button() != Qt::RightButton) && (event->button() != Qt::MidButton || isCameraLayer))
     {
@@ -508,7 +500,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
         }
     }
 
-    if (event->buttons() & Qt::MidButton)
+    if (event->buttons() & (Qt::MidButton | Qt::RightButton))
     {
         setTemporaryTool(HAND);
     }
@@ -955,7 +947,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
-    if (!isPointerInUse() || currentTool()->type() == MOVE || currentTool()->type() == HAND || mMouseRightButtonInUse)
+    if (!currentTool()->isActive())
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
@@ -1510,7 +1502,7 @@ void ScribbleArea::decreaseLayerVisibilityIndex()
 /************************************************************************************/
 // tool handling
 
-BaseTool* ScribbleArea::currentTool()
+BaseTool* ScribbleArea::currentTool() const
 {
     return editor()->tools()->currentTool();
 }
