@@ -13,7 +13,7 @@
 #include "layermanager.h"
 #include "layerbitmap.h"
 #include "scribblearea.h"
-#include <QDebug>
+
 
 RepositionFramesDialog::RepositionFramesDialog(QWidget *parent) :
     QDialog(parent),
@@ -85,16 +85,22 @@ void RepositionFramesDialog::repositionFrames()
         return;
     }
 
+    LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+    QRect tmpRect = QRect();
     QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesList();
     for (int i = 0; i < frames.size(); i++)
     {
+        tmpRect = layer->getFrameBounds(frames.at(i));
+        mEditor->select()->setSelection(tmpRect);
         mEditor->layers()->repositionFrame(mEndPoint, frames.at(i));
     }
 
     if (!mLayerIndexes.isEmpty())
     {
         auto lMgr = mEditor->layers();
-        if (ui->rbSameKeyframes->isChecked()) // if only selcted keyframe-numbers are affected
+
+        // if only selcted keyframe-numbers should be repositioned
+        if (ui->rbSameKeyframes->isChecked())
         {
             int currLayer = mEditor->currentLayerIndex();
             for (int j = 0; j < mLayerIndexes.size(); j++)
@@ -106,24 +112,35 @@ void RepositionFramesDialog::repositionFrames()
                     for (int i = 0; i < frames.size(); i++)
                     {       // only move frame if it exists
                         if (lMgr->currentLayer()->keyExists(frames.at(i)))
+                        {
+                            tmpRect = layer->getFrameBounds(frames.at(i));
+                            mEditor->select()->setSelection(tmpRect);
                             lMgr->repositionFrame(mEndPoint, frames.at(i));
+                        }
                     }
                 }
             }
             lMgr->setCurrentLayer(currLayer);
         }
-        else // if all keyframes on layer should be repositioned
+        // if all keyframes on layer should be repositioned
+        else
         {
             int currLayer = mEditor->currentLayerIndex();
-            for (int j = 0; j < mLayerIndexes.size(); j++)
+            for (int i= 0; i < mLayerIndexes.size(); i++)
             {
-                lMgr->setCurrentLayer(mLayerIndexes.at(j));
-                int keyframe = lMgr->currentLayer()->firstKeyFramePosition();
-                do {
-                    mEditor->scrubTo(keyframe);
-                    lMgr->repositionFrame(mEndPoint, mEditor->currentFrame());
-                    keyframe = lMgr->currentLayer()->getNextKeyFramePosition(keyframe);
-                } while (mEditor->currentFrame() != lMgr->currentLayer()->getMaxKeyFramePosition());
+                QListWidgetItem* item = ui->listSelectedLayers->item(i);
+                if (item->isSelected())
+                {
+                    lMgr->setCurrentLayer(mLayerIndexes.at(i));
+                    int keyframe = lMgr->currentLayer()->firstKeyFramePosition();
+                    do {
+                        mEditor->scrubTo(keyframe);
+                        tmpRect = layer->getFrameBounds(keyframe);
+                        mEditor->select()->setSelection(tmpRect);
+                        lMgr->repositionFrame(mEndPoint, keyframe);
+                        keyframe = lMgr->currentLayer()->getNextKeyFramePosition(keyframe);
+                    } while (mEditor->currentFrame() != lMgr->currentLayer()->getMaxKeyFramePosition());
+                }
             }
             lMgr->setCurrentLayer(currLayer);
         }
