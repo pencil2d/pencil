@@ -43,6 +43,7 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -495,6 +496,7 @@ void MainWindow2::openRepositionDialog()
 
 void MainWindow2::closeRepositionDialog()
 {
+    selectionChanged();
     mReposDialog = nullptr;
     disconnect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
 }
@@ -508,6 +510,18 @@ void MainWindow2::currentLayerChanged()
     else
     {
         ui->menuChange_line_color->setEnabled(false);
+    }
+}
+
+void MainWindow2::selectionChanged()
+{
+    if (mEditor->select()->somethingSelected())
+    {
+        ui->actionReposition_Selected_Frames->setEnabled(false);
+    }
+    else
+    {
+        ui->actionReposition_Selected_Frames->setEnabled(true);
     }
 }
 
@@ -1375,6 +1389,7 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
+    connect(editor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)

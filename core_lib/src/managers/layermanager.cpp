@@ -182,8 +182,8 @@ void LayerManager::prepareRepositionSelectedFrames(int frame)
     if (currentLayer()->type() == Layer::BITMAP)
     {
         editor()->scrubTo(frame);
-        LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(currentLayer());
-        QRect reposRect = bitmapLayer->getFrameBounds(frame);
+        LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
+        QRect reposRect = layer->getFrameBounds(frame);
         editor()->select()->setSelection(reposRect);
     }
 }
@@ -192,9 +192,11 @@ void LayerManager::repositionFrame(QPoint transform, int frame)
 {
     if (currentLayer()->type() == Layer::BITMAP)
     {
-        LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
         editor()->scrubTo(frame);
-        QPoint point = layer->getFrameBounds(frame).topLeft();
+        LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
+        QRect reposRect = layer->getFrameBounds(frame);
+        editor()->select()->setSelection(reposRect);
+        QPoint point = reposRect.topLeft();
         point += transform;
         layer->repositionFrame(point, frame);
         editor()->backup(layer->id(), frame, tr("Reposition frame"));

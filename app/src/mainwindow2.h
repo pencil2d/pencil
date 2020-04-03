@@ -73,6 +73,7 @@ public slots:
     void openRepositionDialog();
     void closeRepositionDialog();
     void currentLayerChanged();
+    void selectionChanged();
 
 public:
     void newDocument(bool force = false);

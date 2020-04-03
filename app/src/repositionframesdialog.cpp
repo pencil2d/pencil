@@ -85,17 +85,13 @@ void RepositionFramesDialog::repositionFrames()
         return;
     }
 
-    LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
-    QRect tmpRect = QRect();
     QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesList();
     for (int i = 0; i < frames.size(); i++)
     {
-        tmpRect = layer->getFrameBounds(frames.at(i));
-        mEditor->select()->setSelection(tmpRect);
         mEditor->layers()->repositionFrame(mEndPoint, frames.at(i));
     }
 
-    if (!mLayerIndexes.isEmpty())
+    if (!ui->listSelectedLayers->selectedItems().isEmpty())
     {
         auto lMgr = mEditor->layers();
 
@@ -113,8 +109,6 @@ void RepositionFramesDialog::repositionFrames()
                     {       // only move frame if it exists
                         if (lMgr->currentLayer()->keyExists(frames.at(i)))
                         {
-                            tmpRect = layer->getFrameBounds(frames.at(i));
-                            mEditor->select()->setSelection(tmpRect);
                             lMgr->repositionFrame(mEndPoint, frames.at(i));
                         }
                     }
@@ -134,9 +128,6 @@ void RepositionFramesDialog::repositionFrames()
                     lMgr->setCurrentLayer(mLayerIndexes.at(i));
                     int keyframe = lMgr->currentLayer()->firstKeyFramePosition();
                     do {
-                        mEditor->scrubTo(keyframe);
-                        tmpRect = layer->getFrameBounds(keyframe);
-                        mEditor->select()->setSelection(tmpRect);
                         lMgr->repositionFrame(mEndPoint, keyframe);
                         keyframe = lMgr->currentLayer()->getNextKeyFramePosition(keyframe);
                     } while (mEditor->currentFrame() != lMgr->currentLayer()->getMaxKeyFramePosition());
