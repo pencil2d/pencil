@@ -85,6 +85,7 @@ void RepositionFramesDialog::repositionFrames()
         return;
     }
 
+    mEditor->getScribbleArea()->updateOriginalPolygonF();
     QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesList();
     for (int i = 0; i < frames.size(); i++)
     {

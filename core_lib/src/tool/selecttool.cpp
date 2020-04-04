@@ -90,6 +90,9 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
 
     mMoveMode = selectMan->validateMoveMode(getCurrentPoint());
 
+    if (!mEditor->select()->somethingSelected())
+        mScribbleArea->updateOriginalPolygonF();
+
     selectMan->updatePolygons();
 
     beginSelection();
@@ -147,7 +150,8 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     }
 
     selectMan->updatePolygons();
-    selectMan->setOriginalSelectionPolygonF(selectMan->currentSelectionPolygonF());
+
+    mScribbleArea->updateOriginalPolygonF();
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();

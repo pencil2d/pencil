@@ -138,6 +138,9 @@ public slots:
     bool isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod);
 
     void showLayerNotVisibleWarning();
+    void updateOriginalPolygonF();
+    void setOriginalPolygonF(QPolygonF polygon) { mOriginalPolygonF = polygon; }
+    QPolygonF getOriginalPolygonF() { return mOriginalPolygonF; }
 
 
 protected:
@@ -243,6 +246,8 @@ private:
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
     SelectionPainter mSelectionPainter;
+
+    QPolygonF mOriginalPolygonF = QPolygonF();
 
     // Pixmap Cache keys
     std::vector<QPixmapCache::Key> mPixmapCacheKeys;

@@ -17,7 +17,8 @@ void SelectionPainter::paint(QPainter& painter,
                              const Object* object,
                              int layerIndex,
                              BaseTool* tool,
-                             TransformParameters& tParams)
+                             TransformParameters& tParams,
+                             QPolygonF original)
 {
     Layer* layer = object->getLayer(layerIndex);
 
@@ -72,8 +73,8 @@ void SelectionPainter::paint(QPainter& painter,
         if (tool->properties.showInfo)
         {
             int diffX, diffY;
-            diffX = static_cast<int>(mCurrentSelectionNotMapped.boundingRect().x() - mOriginalSelectionPolygonF.boundingRect().x());
-            diffY = static_cast<int>(mCurrentSelectionNotMapped.boundingRect().y() - mOriginalSelectionPolygonF.boundingRect().y());
+            diffX = static_cast<int>(mCurrentSelectionNotMapped.boundingRect().x() - original.boundingRect().x());
+            diffY = static_cast<int>(mCurrentSelectionNotMapped.boundingRect().y() - original.boundingRect().y());
             painter.drawText(static_cast<int>(tParams.currentSelectionPolygonF[0].x()),
                     static_cast<int>(tParams.currentSelectionPolygonF[0].y() - width),
                     QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(mCurrentSelectionNotMapped.boundingRect().width()),

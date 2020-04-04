@@ -96,12 +96,9 @@ public:
     const qreal& myRotation() { return mRotatedAngle; }
 
     void setSelectionRect(const QRectF& rect) { mSelection = rect; }
-    void setOriginalSelectionPolygonF(QPolygonF polygon);
-    QPolygonF getOriginalSelectionPolygonF() { return mOriginalSelectionPolygonF; }
     void setTempTransformedSelectionRect(const QRectF& rect) { mTempTransformedSelection = rect; }
     void setTransformedSelectionRect(const QRectF& rect) { mTransformedSelection = rect; }
     void setRotation(const qreal& rotation) { mRotatedAngle = rotation; }
-
 
 signals:
     void selectionChanged();
@@ -117,8 +114,6 @@ private:
     QRectF mTransformedSelection;
     qreal mRotatedAngle = 0.0;
 
-    QPolygonF mOriginalSelectionPolygonF;
-    bool mOriginalPolygonFIsSet = false;
     bool mSomethingSelected = false;
     QPolygonF mLastSelectionPolygonF;
     QPolygonF mCurrentSelectionPolygonF;

@@ -710,6 +710,14 @@ void ScribbleArea::showLayerNotVisibleWarning()
                          QMessageBox::Ok);
 }
 
+void ScribbleArea::updateOriginalPolygonF()
+{
+    if (mEditor->select()->somethingSelected() && mOriginalPolygonF.isEmpty())
+        mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
+    else
+        mOriginalPolygonF = QPolygonF();
+}
+
 void ScribbleArea::paintBitmapBuffer()
 {
     LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
@@ -1098,14 +1106,13 @@ void ScribbleArea::paintSelectionVisuals()
 
     mSelectionPainter.setCurrentSelectionNotMapped(selectMan->currentSelectionPolygonF());
 
-    if (!mSelectionPainter.originalPolygonFIsSet())
+    if (mOriginalPolygonF.isEmpty())
     {
-        mSelectionPainter.setOriginalPolygonF(selectMan->currentSelectionPolygonF());
-        mSelectionPainter.setOriginalPolygonFIsSet(true);
+        mOriginalPolygonF = selectMan->currentSelectionPolygonF();
     }
 
     TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
-    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
+    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params, mOriginalPolygonF);
     emit selectionUpdated();
 }
 
@@ -1435,6 +1442,7 @@ void ScribbleArea::cancelTransformedSelection()
         mEditor->select()->setSelection(selectMan->mySelectionRect());
 
         selectMan->resetSelectionProperties();
+        mOriginalPolygonF = QPolygonF();
 
         updateCurrentFrame();
     }

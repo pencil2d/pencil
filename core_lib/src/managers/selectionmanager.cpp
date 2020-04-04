@@ -95,15 +95,6 @@ qreal SelectionManager::selectionTolerance() const
     return qAbs(mSelectionTolerance * editor()->viewScaleInversed());
 }
 
-void SelectionManager::setOriginalSelectionPolygonF(QPolygonF polygon)
-{
-    if (!mOriginalPolygonFIsSet)
-    {
-        mOriginalSelectionPolygonF = polygon;
-        mOriginalPolygonFIsSet = true;
-    }
-}
-
 MoveMode SelectionManager::validateMoveMode(QPointF pos)
 {
     return moveModeForAnchorInRange(pos);
