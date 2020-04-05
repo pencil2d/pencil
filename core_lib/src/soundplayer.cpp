@@ -16,6 +16,8 @@ GNU General Public License for more details.
 
 #include "soundplayer.h"
 #include <QMediaPlayer>
+#include <QBuffer>
+#include <QFile>
 #include "soundclip.h"
 
 SoundPlayer::SoundPlayer( )
@@ -33,7 +35,14 @@ void SoundPlayer::init( SoundClip* clip )
     mSoundClip = clip;
 
     mMediaPlayer = new QMediaPlayer( this );
-    mMediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ) );
+
+    QFile file(clip->fileName());
+    file.open(QIODevice::ReadOnly);
+    QBuffer *buffer = new QBuffer();
+    buffer->setData(file.readAll());
+    buffer->open(QBuffer::ReadOnly);
+
+    mMediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ), buffer );
     makeConnections();
 
     clip->attachPlayer( this );
