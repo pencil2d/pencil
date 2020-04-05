@@ -79,6 +79,7 @@ Q_SIGNALS:
 
 private:
     int getIndex(Layer*) const;
+    void setNewLayerAsSelected();
 
     int mLastCameraLayerIdx = 0;
 };
