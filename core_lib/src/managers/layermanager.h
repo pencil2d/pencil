@@ -70,6 +70,7 @@ public:
     void notifyAnimationLengthChanged();
 
     QString nameSuggestLayer(const QString& name);
+    int getLastLayerIndex() { return count() - 1; }
 
 Q_SIGNALS:
     void currentLayerChanged(int index);
@@ -79,7 +80,6 @@ Q_SIGNALS:
 
 private:
     int getIndex(Layer*) const;
-    void setNewLayerAsSelected();
 
     int mLastCameraLayerIdx = 0;
 };
