@@ -181,7 +181,6 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
     const QString& name = nameSuggestLayer(strLayerName);
     layer->setName(name);
 
-    Q_EMIT layerCountChanged(count());
     setNewLayerAsSelected();
 
     return layer;
@@ -193,7 +192,6 @@ LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
     const QString& name = nameSuggestLayer(strLayerName);
     layer->setName(name);
 
-    Q_EMIT layerCountChanged(count());
     setNewLayerAsSelected();
 
     return layer;
@@ -205,7 +203,6 @@ LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
     const QString& name = nameSuggestLayer(strLayerName);
     layer->setName(name);
 
-    Q_EMIT layerCountChanged(count());
     setNewLayerAsSelected();
 
     return layer;
@@ -217,7 +214,6 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
     const QString& name = nameSuggestLayer(strLayerName);
     layer->setName(name);
 
-    Q_EMIT layerCountChanged(count());
     setNewLayerAsSelected();
 
     return layer;
@@ -380,5 +376,6 @@ int LayerManager::getIndex(Layer* layer) const
 
 void LayerManager::setNewLayerAsSelected()
 {
+    Q_EMIT layerCountChanged(count());
     setCurrentLayer(count() - 1);
 }
