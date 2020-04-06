@@ -1478,34 +1478,17 @@ void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
     updateAllFrames();
 }
 
-void ScribbleArea::updateLayerVisibility()
-{
-    switch (mLayerVisibility) {
-    case LayerVisibility::ALL:
-        mEditor->preference()->set(SETTING::LAYER_VISIBILITY, 0);
-        break;
-    case LayerVisibility::RELATED:
-        mEditor->preference()->set(SETTING::LAYER_VISIBILITY, 1);
-        break;
-    case LayerVisibility::CURRENTONLY:
-        mEditor->preference()->set(SETTING::LAYER_VISIBILITY, 2);
-        break;
-    default:
-        break;
-    }
-}
-
 void ScribbleArea::increaseLayerVisibilityIndex()
 {
     ++mLayerVisibility;
-    updateLayerVisibility();
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
     updateAllFrames();
 }
 
 void ScribbleArea::decreaseLayerVisibilityIndex()
 {
     --mLayerVisibility;
-    updateLayerVisibility();
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
     updateAllFrames();
 }
 
