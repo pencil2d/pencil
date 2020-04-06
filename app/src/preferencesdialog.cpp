@@ -427,6 +427,7 @@ void TimelinePage::updateValues()
 
     int visibilityType = mManager->getInt(SETTING::LAYER_VISIBILITY);
     ui->layerVisibilityComboBox->setCurrentIndex(visibilityType);
+    layerVisibilityChanged(visibilityType);
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -447,6 +448,8 @@ void TimelinePage::scrubChanged(int value)
 void TimelinePage::layerVisibilityChanged(int value)
 {
     mManager->set(SETTING::LAYER_VISIBILITY, value);
+    ui->visibilitySlider->setEnabled(value == 1);
+    ui->visibilitySpinbox->setEnabled(value == 1);
 }
 
 void TimelinePage::layerVisibilityThresholdChanged(int value)

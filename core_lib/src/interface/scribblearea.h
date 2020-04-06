@@ -130,6 +130,7 @@ public slots:
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void setLayerVisibility(LayerVisibility visibility);
+    void updateLayerVisibility();
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
