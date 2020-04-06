@@ -1481,12 +1481,14 @@ void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
 void ScribbleArea::increaseLayerVisibilityIndex()
 {
     ++mLayerVisibility;
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
     updateAllFrames();
 }
 
 void ScribbleArea::decreaseLayerVisibilityIndex()
 {
     --mLayerVisibility;
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
     updateAllFrames();
 }
 
