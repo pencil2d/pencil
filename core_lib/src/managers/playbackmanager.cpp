@@ -206,6 +206,14 @@ void PlaybackManager::playFlipInBetween()
     emit playStateChanged(true);
 }
 
+void PlaybackManager::playScrub(int frame)
+{
+    editor()->scrubTo(frame);
+    playSounds(frame);
+    mTimer->setSingleShot(true);
+    mTimer->singleShot(250, this, SLOT(stopPlayScrub()));
+}
+
 void PlaybackManager::setFps(int fps)
 {
     if (mFps != fps)
@@ -357,6 +365,11 @@ void PlaybackManager::stopSounds()
             clip->stop();
         });
     }
+}
+
+void PlaybackManager::stopPlayScrub()
+{
+    stop();
 }
 
 void PlaybackManager::timerTick()

@@ -44,6 +44,7 @@ public:
     void stop();
     void playFlipRoll();
     void playFlipInBetween();
+    void playScrub(int frame);
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
@@ -61,6 +62,9 @@ public:
     void enableSound(bool b);
 
     void stopSounds();
+
+private slots:
+    void stopPlayScrub();
 
 Q_SIGNALS:
     void fpsChanged(int fps);
