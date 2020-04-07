@@ -33,6 +33,9 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
+    void resetToDefault() override;
+    void setShowSelectionInfo(const bool b) override;
+
 private:
 
     void pointerPressEvent(PointerEvent*) override;

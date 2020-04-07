@@ -2,10 +2,7 @@
 
 #include "object.h"
 #include "qpainter.h"
-#include "layermanager.h"
 #include "basetool.h"
-
-#include <QDebug>
 
 
 SelectionPainter::SelectionPainter()
@@ -18,7 +15,8 @@ void SelectionPainter::paint(QPainter& painter,
                              int layerIndex,
                              BaseTool* tool,
                              TransformParameters& tParams,
-                             QPolygonF original)
+                             QPolygonF original,
+                             QPolygonF currentNotMapped)
 {
     Layer* layer = object->getLayer(layerIndex);
 
@@ -72,13 +70,12 @@ void SelectionPainter::paint(QPainter& painter,
 
         if (tool->properties.showInfo)
         {
-            int diffX, diffY;
-            diffX = static_cast<int>(mCurrentSelectionNotMapped.boundingRect().x() - original.boundingRect().x());
-            diffY = static_cast<int>(mCurrentSelectionNotMapped.boundingRect().y() - original.boundingRect().y());
+            int diffX = static_cast<int>(currentNotMapped.boundingRect().x() - original.boundingRect().x());
+            int diffY = static_cast<int>(currentNotMapped.boundingRect().y() - original.boundingRect().y());
             painter.drawText(static_cast<int>(tParams.currentSelectionPolygonF[0].x()),
                     static_cast<int>(tParams.currentSelectionPolygonF[0].y() - width),
-                    QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(mCurrentSelectionNotMapped.boundingRect().width()),
-                                                              QString::number(mCurrentSelectionNotMapped.boundingRect().height()),
+                    QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(currentNotMapped.boundingRect().width()),
+                                                              QString::number(currentNotMapped.boundingRect().height()),
                                                               QString::number(diffX),
                                                               QString::number(diffY)));
         }

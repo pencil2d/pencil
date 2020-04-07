@@ -16,7 +16,6 @@ GNU General Public License for more details.
 */
 
 #include "layermanager.h"
-#include "selectionmanager.h"
 
 #include "object.h"
 #include "editor.h"
@@ -43,6 +42,7 @@ bool LayerManager::init()
 
 Status LayerManager::load(Object* o)
 {
+    Q_UNUSED(o)
     mLastCameraLayerIdx = 0;
     // Do not emit layerCountChanged here because the editor has not updated to this object yet
     // Leave that to the caller of this function
@@ -173,34 +173,6 @@ QString LayerManager::nameSuggestLayer(const QString& name)
         newName = name + " " + QString::number(newIndex++);
     } while (sLayers.contains(newName));
     return newName;
-}
-
-void LayerManager::prepareRepositionSelectedFrames(int frame)
-{
-    if (editor()->select()->somethingSelected()) { return; }
-
-    if (currentLayer()->type() == Layer::BITMAP)
-    {
-        editor()->scrubTo(frame);
-        LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
-        QRect reposRect = layer->getFrameBounds(frame);
-        editor()->select()->setSelection(reposRect);
-    }
-}
-
-void LayerManager::repositionFrame(QPoint transform, int frame)
-{
-    if (currentLayer()->type() == Layer::BITMAP)
-    {
-        editor()->scrubTo(frame);
-        LayerBitmap* layer = static_cast<LayerBitmap*>(currentLayer());
-        QRect reposRect = layer->getFrameBounds(frame);
-        editor()->select()->setSelection(reposRect);
-        QPoint point = reposRect.topLeft();
-        point += transform;
-        layer->repositionFrame(point, frame);
-        editor()->backup(layer->id(), frame, tr("Reposition frame"));
-    }
 }
 
 LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)

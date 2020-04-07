@@ -19,12 +19,9 @@ class SelectionPainter
 public:
     SelectionPainter();
 
-    void paint(QPainter& painter, const Object* object, int layerIndex, BaseTool* tool, TransformParameters& transformParameters, QPolygonF original);
+    void paint(QPainter& painter, const Object* object, int layerIndex, BaseTool* tool,
+               TransformParameters& transformParameters, QPolygonF original, QPolygonF currentNotMapped);
 
-    void setCurrentSelectionNotMapped(QPolygonF polyF) { mCurrentSelectionNotMapped = polyF; }
-
-private:
-    QPolygonF mCurrentSelectionNotMapped = QPolygonF();
 };
 
 #endif // SelectionPainter_H

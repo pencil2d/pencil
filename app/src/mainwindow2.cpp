@@ -275,7 +275,6 @@ void MainWindow2::createMenus()
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
-//    connect(ui->actionReposition_Selected_Frames, &QAction::triggered, mEditor->layers(), &LayerManager::prepareRepositionSelectedFrames);
     connect(ui->actionReposition_Selected_Frames, &QAction::triggered, this, &MainWindow2::openRepositionDialog);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
@@ -488,6 +487,7 @@ void MainWindow2::openRepositionDialog()
     mReposDialog = new RepositionFramesDialog();
     connect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
     mReposDialog->setCore(mEditor);
+    mReposDialog->initUI();
     mReposDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
     mEditor->tools()->setCurrentTool(ToolType::MOVE);
     mToolBox->moveOn();

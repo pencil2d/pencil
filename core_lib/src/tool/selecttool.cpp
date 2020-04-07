@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 #include "selecttool.h"
+#include <QSettings>
 #include "pointerevent.h"
 #include "vectorimage.h"
 #include "editor.h"
@@ -24,6 +25,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 #include "selectionmanager.h"
+#include "preferencemanager.h"
 
 SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
 {
@@ -35,6 +37,8 @@ void SelectTool::loadSettings()
     properties.feather = -1;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
+    QSettings settings(PENCIL2D, PENCIL2D);
+    properties.showInfo = settings.value("ShowSelectionInfo").toBool();
     mPropertyEnabled[SHOWSELECTIONINFO] = true;
 }
 
@@ -42,6 +46,19 @@ QCursor SelectTool::cursor()
 {
     MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
     return this->selectMoveCursor(mode, type());
+}
+
+void SelectTool::resetToDefault()
+{
+    setShowSelectionInfo(false);
+}
+
+void SelectTool::setShowSelectionInfo(const bool b)
+{
+    properties.showInfo = b;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("ShowSelectionInfo", b);
 }
 
 void SelectTool::beginSelection()
@@ -151,7 +168,9 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
     selectMan->updatePolygons();
 
-    mScribbleArea->updateOriginalPolygonF();
+    if (mScribbleArea->getOriginalPolygonF().boundingRect().size() !=
+            selectMan->currentSelectionPolygonF().boundingRect().size())
+        mScribbleArea->updateOriginalPolygonF();
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();

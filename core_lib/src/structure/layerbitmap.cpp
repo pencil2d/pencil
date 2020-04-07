@@ -44,10 +44,10 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-void LayerBitmap::repositionFrame(QPoint transform, int frame)
+void LayerBitmap::repositionFrame(QPoint point, int frame)
 {
     BitmapImage* image = getBitmapImageAtFrame(frame);
-    image->moveTopLeft(transform);
+    image->moveTopLeft(point);
 }
 
 QRect LayerBitmap::getFrameBounds(int frame)

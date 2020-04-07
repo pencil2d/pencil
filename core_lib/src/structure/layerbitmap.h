@@ -37,7 +37,7 @@ public:
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
-    void repositionFrame(QPoint transform, int frame);
+    void repositionFrame(QPoint point, int frame);
     QRect getFrameBounds(int frame);
 
 protected:

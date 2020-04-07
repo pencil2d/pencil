@@ -25,7 +25,6 @@ class LayerBitmap;
 class LayerVector;
 class LayerCamera;
 class LayerSound;
-class SelectionManager;
 
 
 class LayerManager : public BaseManager
@@ -71,10 +70,6 @@ public:
     void notifyAnimationLengthChanged();
 
     QString nameSuggestLayer(const QString& name);
-
-public slots:
-    void prepareRepositionSelectedFrames(int frame);
-    void repositionFrame(QPoint transform, int frame);
 
 Q_SIGNALS:
     void currentLayerChanged(int index);

@@ -21,6 +21,7 @@ public:
     ~RepositionFramesDialog();
 
     void setCore(Editor* editor);
+    void initUI();
 
     void setCurrentPolygonF(QPolygonF polygon) { mCurrentPolygonF = polygon; }
 

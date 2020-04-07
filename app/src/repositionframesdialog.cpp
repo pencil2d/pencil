@@ -30,11 +30,15 @@ RepositionFramesDialog::~RepositionFramesDialog()
 void RepositionFramesDialog::setCore(Editor *editor)
 {
     mEditor = editor;
+}
+
+void RepositionFramesDialog::initUI()
+{
     if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
         mRepositionFrame = mEditor->currentFrame();
     else
         mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesList().at(0);
-    mEditor->layers()->prepareRepositionSelectedFrames(mRepositionFrame);
+    mEditor->prepareRepositionSelectedImages(mRepositionFrame);
     updateRadioButtons();
     ui->rbAllKeyframes->setChecked(true);
     connect(ui->cbOtherLayers, &QCheckBox::stateChanged, this, &RepositionFramesDialog::checkboxStateChanged);
@@ -89,12 +93,12 @@ void RepositionFramesDialog::repositionFrames()
     QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesList();
     for (int i = 0; i < frames.size(); i++)
     {
-        mEditor->layers()->repositionFrame(mEndPoint, frames.at(i));
+        mEditor->repositionImage(mEndPoint, frames.at(i));
     }
 
     if (!ui->listSelectedLayers->selectedItems().isEmpty())
     {
-        auto lMgr = mEditor->layers();
+        auto layerManager = mEditor->layers();
 
         // if only selcted keyframe-numbers should be repositioned
         if (ui->rbSameKeyframes->isChecked())
@@ -105,17 +109,17 @@ void RepositionFramesDialog::repositionFrames()
                 QListWidgetItem* item = ui->listSelectedLayers->item(j);
                 if (item->isSelected())
                 {
-                    lMgr->setCurrentLayer(mLayerIndexes.at(j));
+                    layerManager->setCurrentLayer(mLayerIndexes.at(j));
                     for (int i = 0; i < frames.size(); i++)
                     {       // only move frame if it exists
-                        if (lMgr->currentLayer()->keyExists(frames.at(i)))
+                        if (layerManager->currentLayer()->keyExists(frames.at(i)))
                         {
-                            lMgr->repositionFrame(mEndPoint, frames.at(i));
+                            mEditor->repositionImage(mEndPoint, frames.at(i));
                         }
                     }
                 }
             }
-            lMgr->setCurrentLayer(currLayer);
+            layerManager->setCurrentLayer(currLayer);
         }
         // if all keyframes on layer should be repositioned
         else
@@ -126,15 +130,15 @@ void RepositionFramesDialog::repositionFrames()
                 QListWidgetItem* item = ui->listSelectedLayers->item(i);
                 if (item->isSelected())
                 {
-                    lMgr->setCurrentLayer(mLayerIndexes.at(i));
-                    int keyframe = lMgr->currentLayer()->firstKeyFramePosition();
+                    layerManager->setCurrentLayer(mLayerIndexes.at(i));
+                    int keyframe = layerManager->currentLayer()->firstKeyFramePosition();
                     do {
-                        lMgr->repositionFrame(mEndPoint, keyframe);
-                        keyframe = lMgr->currentLayer()->getNextKeyFramePosition(keyframe);
-                    } while (mEditor->currentFrame() != lMgr->currentLayer()->getMaxKeyFramePosition());
+                        mEditor->repositionImage(mEndPoint, keyframe);
+                        keyframe = layerManager->currentLayer()->getNextKeyFramePosition(keyframe);
+                    } while (mEditor->currentFrame() != layerManager->currentLayer()->getMaxKeyFramePosition());
                 }
             }
-            lMgr->setCurrentLayer(currLayer);
+            layerManager->setCurrentLayer(currLayer);
         }
     }
     mEditor->getScribbleArea()->applySelectionChanges();
@@ -164,14 +168,13 @@ void RepositionFramesDialog::checkboxStateChanged(int i)
     switch (i)
     {
     case Qt::Checked:
-        updateRadioButtons();
         updateLayersToSelect();
         break;
     default:
-        updateRadioButtons();
         ui->listSelectedLayers->clear();
         break;
     }
+    updateRadioButtons();
 }
 
 void RepositionFramesDialog::updateLayersBox()
@@ -191,29 +194,29 @@ void RepositionFramesDialog::updateLayersToSelect()
     ui->listSelectedLayers->clear();
 
     mLayerIndexes.clear();
-    auto layermanager = mEditor->layers();
+    auto layerManager = mEditor->layers();
     if (ui->rbAllKeyframes->isChecked())
     {
-        for (int i = layermanager->count() - 1; i >= 0; i--)
+        for (int i = layerManager->count() - 1; i >= 0; i--)
         {
-            if (layermanager->getLayer(i)->type() == Layer::BITMAP &&
-                    i != layermanager->currentLayerIndex())
+            if (layerManager->getLayer(i)->type() == Layer::BITMAP &&
+                    i != layerManager->currentLayerIndex())
             {
-                ui->listSelectedLayers->addItem(layermanager->getLayer(i)->name());
+                ui->listSelectedLayers->addItem(layerManager->getLayer(i)->name());
                 mLayerIndexes.append(i);
             }
         }
     }
     else
     {
-        QList<int> frames = layermanager->currentLayer()->getSelectedFramesList();
+        QList<int> frames = layerManager->currentLayer()->getSelectedFramesList();
         bool ok = false;
-        for (int i = layermanager->count() - 1; i >= 0; i--)
+        for (int i = layerManager->count() - 1; i >= 0; i--)
         {
-            if (layermanager->getLayer(i)->type() == Layer::BITMAP &&
-                    i != layermanager->currentLayerIndex())
+            if (layerManager->getLayer(i)->type() == Layer::BITMAP &&
+                    i != layerManager->currentLayerIndex())
             {
-                Layer* layer = layermanager->getLayer(i);
+                Layer* layer = layerManager->getLayer(i);
                 for (int j = 0; j < frames.size(); j++)
                 {
                     if (layer->keyExists(frames.at(j)))
@@ -233,9 +236,8 @@ void RepositionFramesDialog::updateLayersToSelect()
 
 QPoint RepositionFramesDialog::getRepositionPoint()
 {
-    int x, y;
-    x = static_cast<int>(mCurrentPolygonF.boundingRect().x() - mOriginalPolygonF.boundingRect().x());
-    y = static_cast<int>(mCurrentPolygonF.boundingRect().y() - mOriginalPolygonF.boundingRect().y());
+    int x = static_cast<int>(mCurrentPolygonF.boundingRect().x() - mOriginalPolygonF.boundingRect().x());
+    int y = static_cast<int>(mCurrentPolygonF.boundingRect().y() - mOriginalPolygonF.boundingRect().y());
     mEndPoint = QPoint(x, y);
     return mEndPoint;
 }
