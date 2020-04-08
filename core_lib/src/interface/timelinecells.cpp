@@ -606,12 +606,6 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                     }
                 }
             }
-            /*
-            if (mTimeLine->scrubbing && mEditor->layers()->currentLayer()->type() == Layer::SOUND)
-            {
-                mEditor->playback()->playScrub(frameNumber);
-            }
-            */
         }
         break;
     }
