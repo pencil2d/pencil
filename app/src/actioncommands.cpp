@@ -491,10 +491,9 @@ void ActionCommands::GotoNextFrame()
 void ActionCommands::GotoPrevFrame()
 {
     if (mEditor->currentFrame() > 1 && mEditor->layers()->currentLayer()->type() == Layer::SOUND)
-        if (mEditor->layers()->currentLayer()->type() == Layer::SOUND)
-        {
-            mEditor->playback()->playScrub(mEditor->currentFrame());
-        }
+    {
+        mEditor->playback()->playScrub(mEditor->currentFrame());
+    }
     mEditor->scrubBackward();
 }
 
