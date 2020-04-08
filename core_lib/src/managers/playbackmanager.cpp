@@ -210,25 +210,21 @@ void PlaybackManager::playScrub(int frame)
 {
     // get keyframe from layer
     KeyFrame* key = nullptr;
-    if (!mListOfActiveSoundFrames.isEmpty())
+    for (int i = 0; i < object()->getLayerCount(); ++i)
     {
-        for (int i = 0; i < object()->getLayerCount(); ++i)
+        Layer* layer = object()->getLayer(i);
+        if (layer->type() == Layer::SOUND)
         {
-            Layer* layer = object()->getLayer(i);
-            if (layer->type() == Layer::SOUND)
-            {
-                key = layer->getKeyFrameWhichCovers(frame);
-            }
+            key = layer->getKeyFrameWhichCovers(frame);
+            clip = static_cast<SoundClip*>(key);
+            break;
         }
     }
 
-    mListOfActiveSoundFrames.clear();
+    if (clip == nullptr) { return; }
 
-    playSounds(frame);
-    qDebug() << "play " << frame;
-//    mTimer->setSingleShot(true);
+    clip->playFromPosition(frame - key->pos(), mFps);
     mTimer->singleShot(200, this, SLOT(stopPlayScrub()));
-//    mTimer->start();
 }
 
 void PlaybackManager::setFps(int fps)
@@ -386,7 +382,7 @@ void PlaybackManager::stopSounds()
 
 void PlaybackManager::stopPlayScrub()
 {
-    stop();
+    clip->stop();
 }
 
 void PlaybackManager::timerTick()

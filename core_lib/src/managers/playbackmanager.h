@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 class QTimer;
 class QElapsedTimer;
+class SoundClip;
 
 
 class PlaybackManager : public BaseManager
@@ -98,6 +99,7 @@ private:
     int mFlipInbetweenInterval = 100;
     int mFlipRollMax = 5;
 
+    SoundClip* clip = nullptr;
     QTimer* mTimer = nullptr;
     QTimer* mFlipTimer = nullptr;
     QElapsedTimer* mElapsedTimer = nullptr;

@@ -483,25 +483,19 @@ void ActionCommands::GotoNextFrame()
 {
     if (mEditor->layers()->currentLayer()->type() == Layer::SOUND)
     {
-        qDebug() << "CurFr 1: " << mEditor->currentFrame();
-        int i = mEditor->currentFrame();
-        mEditor->playback()->playScrub(i);
-        qDebug() << "CurFr 2: " << mEditor->currentFrame();
-        mEditor->scrubTo(i);
-        qDebug() << "CurFr 3: " << mEditor->currentFrame();
+        mEditor->playback()->playScrub(mEditor->currentFrame());
     }
     mEditor->scrubForward();
-    qDebug() << "CurFr 4: " << mEditor->currentFrame();
+    qDebug() << "CurFr: " << mEditor->currentFrame();
 }
 
 void ActionCommands::GotoPrevFrame()
 {
     if (mEditor->currentFrame() > 0 && mEditor->layers()->currentLayer()->type() == Layer::SOUND)
-    {
-        int i = mEditor->currentFrame();
-        mEditor->playback()->playScrub(i);
-        mEditor->scrubTo(i);
-    }
+        if (mEditor->layers()->currentLayer()->type() == Layer::SOUND)
+        {
+            mEditor->playback()->playScrub(mEditor->currentFrame());
+        }
     mEditor->scrubBackward();
 }
 
