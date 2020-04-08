@@ -208,10 +208,27 @@ void PlaybackManager::playFlipInBetween()
 
 void PlaybackManager::playScrub(int frame)
 {
-    editor()->scrubTo(frame);
+    // get keyframe from layer
+    KeyFrame* key = nullptr;
+    if (!mListOfActiveSoundFrames.isEmpty())
+    {
+        for (int i = 0; i < object()->getLayerCount(); ++i)
+        {
+            Layer* layer = object()->getLayer(i);
+            if (layer->type() == Layer::SOUND)
+            {
+                key = layer->getKeyFrameWhichCovers(frame);
+            }
+        }
+    }
+
+    mListOfActiveSoundFrames.clear();
+
     playSounds(frame);
-    mTimer->setSingleShot(true);
-    mTimer->singleShot(250, this, SLOT(stopPlayScrub()));
+    qDebug() << "play " << frame;
+//    mTimer->setSingleShot(true);
+    mTimer->singleShot(200, this, SLOT(stopPlayScrub()));
+//    mTimer->start();
 }
 
 void PlaybackManager::setFps(int fps)
