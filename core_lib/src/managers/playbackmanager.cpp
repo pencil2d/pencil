@@ -223,7 +223,7 @@ void PlaybackManager::playScrub(int frame)
     }
 
     clip->playFromPosition(frame - key->pos(), mFps);
-    mTimer->singleShot(150, this, SLOT(stopPlayScrub()));
+    mTimer->singleShot(200, this, SLOT(stopPlayScrub()));
 }
 
 void PlaybackManager::setFps(int fps)
