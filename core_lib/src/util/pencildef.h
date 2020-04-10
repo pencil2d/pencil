@@ -249,6 +249,7 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define SETTING_FLIP_ROLL_MSEC          "FlipRoll"
 #define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
+#define SETTING_SOUND_SCRUB_MSEC        "SoundScrub"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

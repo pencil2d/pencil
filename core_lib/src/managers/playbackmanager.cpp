@@ -48,6 +48,7 @@ bool PlaybackManager::init()
 
     QSettings settings (PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
+    mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
@@ -209,12 +210,15 @@ void PlaybackManager::playFlipInBetween()
 // only call this function if on a sound layer!
 void PlaybackManager::playScrub(int frame)
 {
+    QSettings settings (PENCIL2D, PENCIL2D);
+    mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
+
     Layer* layer = editor()->layers()->currentLayer();
     KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
     if (key == nullptr) return;
     clip = static_cast<SoundClip*>(key);
     clip->playFromPosition(frame - key->pos(), mFps);
-    mTimer->singleShot(200, this, SLOT(stopPlayScrub()));
+    mTimer->singleShot(mMsecSoundScrub, this, SLOT(stopPlayScrub()));
 }
 
 void PlaybackManager::setFps(int fps)

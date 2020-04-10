@@ -128,6 +128,8 @@ public slots:
     void flipRollNumDrawingdSpinboxChanged(int value);
     void flipInbetweenMsecSliderChanged(int value);
     void flipInbetweenMsecSpinboxChanged(int value);
+    void soundScrubMsecSliderChanged(int value);
+    void soundScrubMsecSpinboxChanged(int value);
     void layerVisibilityChanged(int);
     void layerVisibilityThresholdChanged(int);
 

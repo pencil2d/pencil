@@ -373,6 +373,8 @@ TimelinePage::TimelinePage()
     connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
     connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
     connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
+    connect(ui->soundScrubSlider, sliderChanged, this, &TimelinePage::soundScrubMsecSliderChanged);
+    connect(ui->soundScrubSpinBox, spinBoxValueChange, this, &TimelinePage::soundScrubMsecSpinboxChanged);
     connect(ui->layerVisibilityComboBox, comboChanged, this, &TimelinePage::layerVisibilityChanged);
     connect(ui->visibilitySlider, &QSlider::valueChanged, this, &TimelinePage::layerVisibilityThresholdChanged);
     connect(ui->visibilitySpinbox, spinBoxValueChange, this, &TimelinePage::layerVisibilityThresholdChanged);
@@ -419,6 +421,8 @@ void TimelinePage::updateValues()
     ui->flipRollMsecsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
+    ui->soundScrubSpinBox->setValue(mManager->getInt(SETTING::SOUND_SCRUB_MSEC));
+    ui->soundScrubSlider->setValue(mManager->getInt(SETTING::SOUND_SCRUB_MSEC));
 
     int convertedVisibilityThreshold = static_cast<int>(mManager->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD)*100);
 
@@ -514,6 +518,18 @@ void TimelinePage::flipInbetweenMsecSpinboxChanged(int value)
 {
     ui->flipInBtwnMsecSlider->setValue(value);
     mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+
+void TimelinePage::soundScrubMsecSliderChanged(int value)
+{
+    ui->soundScrubSpinBox->setValue(value);
+    mManager->set(SETTING::SOUND_SCRUB_MSEC, value);
+}
+
+void TimelinePage::soundScrubMsecSpinboxChanged(int value)
+{
+    ui->soundScrubSlider->setValue(value);
+    mManager->set(SETTING::SOUND_SCRUB_MSEC, value);
 }
 
 FilesPage::FilesPage()
