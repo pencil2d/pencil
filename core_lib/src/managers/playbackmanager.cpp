@@ -206,22 +206,13 @@ void PlaybackManager::playFlipInBetween()
     emit playStateChanged(true);
 }
 
+// only call this function if on a sound layer!
 void PlaybackManager::playScrub(int frame)
 {
-    // get keyframe from layer
-    KeyFrame* key = nullptr;
-    for (int i = 0; i < object()->getLayerCount(); ++i)
-    {
-        Layer* layer = object()->getLayer(i);
-        if (layer->type() == Layer::SOUND)
-        {
-            key = layer->getKeyFrameWhichCovers(frame);
-            if (key == nullptr) return;
-            clip = static_cast<SoundClip*>(key);
-            break;
-        }
-    }
-
+    Layer* layer = editor()->layers()->currentLayer();
+    KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
+    if (key == nullptr) return;
+    clip = static_cast<SoundClip*>(key);
     clip->playFromPosition(frame - key->pos(), mFps);
     mTimer->singleShot(200, this, SLOT(stopPlayScrub()));
 }
