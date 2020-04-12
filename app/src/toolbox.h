@@ -40,8 +40,6 @@ public:
     ToolBoxWidget(QWidget* parent);
     ~ToolBoxWidget() override;
 
-    void resizeEvent(QResizeEvent *event) override;
-
     void initUI() override;
     void updateUI() override;
 
@@ -57,6 +55,9 @@ public slots:
     void eyedropperOn();
     void brushOn();
     void smudgeOn();
+
+protected:
+    int getMinHeightForWidth(int width) override;
 
 signals:
     void clearButtonClicked();

@@ -34,10 +34,11 @@ public:
     explicit DisplayOptionWidget(QWidget* parent);
     virtual ~DisplayOptionWidget() override;
 
-    void resizeEvent(QResizeEvent *event) override;
-
     void initUI() override;
     void updateUI() override;
+
+protected:
+    int getMinHeightForWidth(int width) override;
 
 private slots:
     void toggleMirror(bool);

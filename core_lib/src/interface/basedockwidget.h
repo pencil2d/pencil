@@ -30,12 +30,17 @@ protected:
     explicit BaseDockWidget(QWidget* pParent);
     virtual  ~BaseDockWidget();
 
+    void resizeEvent(QResizeEvent *event) override;
+
 public:
     virtual void initUI() = 0;
     virtual void updateUI() = 0;
 
     Editor* editor() const { return mEditor; }
     void setEditor( Editor* e ) { mEditor = e; }
+
+protected:
+    virtual int getMinHeightForWidth(int width);
 
 private:
     Editor* mEditor = nullptr;

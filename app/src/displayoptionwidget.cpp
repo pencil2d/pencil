@@ -40,21 +40,6 @@ DisplayOptionWidget::~DisplayOptionWidget()
     delete ui;
 }
 
-void DisplayOptionWidget::resizeEvent(QResizeEvent *event)
-{
-    BaseDockWidget::resizeEvent(event);
-    int margins = layout()->margin()*2;
-#ifdef __APPLE__
-    // For some reason the behavior of minimumSize and the margin changes on mac when floating, so we need to do this
-    if (isFloating()) {
-        margins = 0;
-    }
-#endif
-    // Not sure where the -2 comes from, but the event width is always 2 more than what is passed to FlowLayout::setGeometry
-    int minHeight = ui->innerWidget->layout()->heightForWidth(event->size().width() - 2) + margins;
-    setMinimumSize(QSize(layout()->minimumSize().width(), minHeight));
-}
-
 void DisplayOptionWidget::initUI()
 {
     updateUI();
@@ -149,6 +134,11 @@ void DisplayOptionWidget::updateUI()
 
     SignalBlocker b4(ui->mirrorVButton);
     ui->mirrorVButton->setChecked(view->isFlipVertical());
+}
+
+int DisplayOptionWidget::getMinHeightForWidth(int width)
+{
+    return ui->innerWidget->layout()->heightForWidth(width);
 }
 
 void DisplayOptionWidget::toggleMirror(bool isOn)
