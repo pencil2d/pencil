@@ -50,7 +50,7 @@ public:
     int   stabilizerLevel = 0;
     qreal tolerance = 0;
     bool  useFillContour = false;
-    bool  showInfo = true;
+    bool  showSelectionInfo = true;
 };
 
 const int ON = 1;

@@ -52,7 +52,7 @@ void MoveTool::loadSettings()
     properties.useAA = -1;
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.showInfo = settings.value("ShowSelectionInfo").toBool();
+    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
     mPropertyEnabled[SHOWSELECTIONINFO] = true;
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
@@ -373,7 +373,7 @@ void MoveTool::resetToDefault()
 
 void MoveTool::setShowSelectionInfo(const bool b)
 {
-    properties.showInfo = b;
+    properties.showSelectionInfo = b;
 
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("ShowSelectionInfo", b);

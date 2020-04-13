@@ -38,7 +38,7 @@ void SelectTool::loadSettings()
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.showInfo = settings.value("ShowSelectionInfo").toBool();
+    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
     mPropertyEnabled[SHOWSELECTIONINFO] = true;
 }
 
@@ -55,7 +55,7 @@ void SelectTool::resetToDefault()
 
 void SelectTool::setShowSelectionInfo(const bool b)
 {
-    properties.showInfo = b;
+    properties.showSelectionInfo = b;
 
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("ShowSelectionInfo", b);

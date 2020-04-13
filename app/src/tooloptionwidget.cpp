@@ -80,7 +80,7 @@ void ToolOptionWidget::updateUI()
     setStabilizerLevel(p.stabilizerLevel);
     setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
-    setShowSelectionInfo(p.showInfo);
+    setShowSelectionInfo(p.showSelectionInfo);
 }
 
 void ToolOptionWidget::createUI()
@@ -140,7 +140,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case TOLERANCE: setTolerance(static_cast<int>(p.tolerance)); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
-    case SHOWSELECTIONINFO: setShowSelectionInfo(p.showInfo); break;
+    case SHOWSELECTIONINFO: setShowSelectionInfo(p.showSelectionInfo); break;
     case BEZIER: setBezier(p.bezier_state); break;
     default:
         Q_ASSERT(false);
@@ -341,10 +341,10 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
-void ToolOptionWidget::setShowSelectionInfo(bool showInfo)
+void ToolOptionWidget::setShowSelectionInfo(bool showSelectionInfo)
 {
     SignalBlocker b(ui->showInfoBox);
-    ui->showInfoBox->setChecked(showInfo);
+    ui->showInfoBox->setChecked(showSelectionInfo);
 }
 
 void ToolOptionWidget::disableAllOptions()

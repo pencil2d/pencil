@@ -452,7 +452,7 @@ void BaseTool::setUseFillContour(const bool useFillContour)
 
 void BaseTool::setShowSelectionInfo(const bool b)
 {
-    properties.showInfo = b;
+    properties.showSelectionInfo = b;
 }
 
 

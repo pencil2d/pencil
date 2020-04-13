@@ -68,7 +68,7 @@ void SelectionPainter::paint(QPainter& painter,
                                                width, width);
         painter.drawRect(bottomLeftCorner);
 
-        if (tool->properties.showInfo)
+        if (tool->properties.showSelectionInfo)
         {
             int diffX = static_cast<int>(currentNotMapped.boundingRect().x() - original.boundingRect().x());
             int diffY = static_cast<int>(currentNotMapped.boundingRect().y() - original.boundingRect().y());
