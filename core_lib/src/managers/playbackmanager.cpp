@@ -207,7 +207,6 @@ void PlaybackManager::playFlipInBetween()
     emit playStateChanged(true);
 }
 
-// only call this function if on a sound layer!
 void PlaybackManager::playScrub(int frame)
 {
     QSettings settings (PENCIL2D, PENCIL2D);
@@ -216,14 +215,14 @@ void PlaybackManager::playScrub(int frame)
     for (int i = 0; i < editor()->layers()->count(); i++)
     {
         Layer* layer = editor()->layers()->getLayer(i);
-        if (layer->type() == Layer::SOUND)
+        if (layer->type() == Layer::SOUND && layer->visible())
         {
             KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
-            if (key == nullptr) return;
-            clip = static_cast<SoundClip*>(key);
-            clip->playFromPosition(frame, mFps);
-            mTimer->singleShot(mMsecSoundScrub, this, SLOT(stopPlayScrub()));
-            break;
+            if (key != nullptr)
+            {
+                SoundClip* clip = static_cast<SoundClip*>(key);
+                clip->playSoundScrub(clip, frame, mFps, mMsecSoundScrub);
+            }
         }
     }
 }

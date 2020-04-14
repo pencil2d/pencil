@@ -23,7 +23,6 @@ GNU General Public License for more details.
 
 class SoundPlayer;
 
-
 class SoundClip : public KeyFrame
 {
 public:
@@ -45,6 +44,7 @@ public:
 
     void play();
     void playFromPosition(int frameNumber, int fps);
+    void playSoundScrub(SoundClip* clip, int frame, int fps, int msec);
     void stop();
 
     int64_t duration() const;
