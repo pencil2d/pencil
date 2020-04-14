@@ -94,7 +94,7 @@ void SoundClip::playFromPosition(int frameNumber, int fps)
     }
     qreal msPerFrame = 1000.0 / fps;
     qint64 msIntoSound = qRound(framesIntoSound * msPerFrame);
-
+qDebug() << msIntoSound << " ms";
     if (mPlayer)
     {
         mPlayer->setMediaPlayerPosition(msIntoSound);

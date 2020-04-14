@@ -213,12 +213,19 @@ void PlaybackManager::playScrub(int frame)
     QSettings settings (PENCIL2D, PENCIL2D);
     mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
 
-    Layer* layer = editor()->layers()->currentLayer();
-    KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
-    if (key == nullptr) return;
-    clip = static_cast<SoundClip*>(key);
-    clip->playFromPosition(frame - key->pos(), mFps);
-    mTimer->singleShot(mMsecSoundScrub, this, SLOT(stopPlayScrub()));
+    for (int i = 0; i < editor()->layers()->count(); i++)
+    {
+        Layer* layer = editor()->layers()->getLayer(i);
+        if (layer->type() == Layer::SOUND)
+        {
+            KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
+            if (key == nullptr) return;
+            clip = static_cast<SoundClip*>(key);
+            clip->playFromPosition(frame, mFps);
+            mTimer->singleShot(mMsecSoundScrub, this, SLOT(stopPlayScrub()));
+            break;
+        }
+    }
 }
 
 void PlaybackManager::setFps(int fps)
