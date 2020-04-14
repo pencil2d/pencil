@@ -94,7 +94,7 @@ QString FileDialog::saveFile( FileType fileType )
 
     QFileInfo info(filePath);
 
-    if (info.suffix().isEmpty() || (info.suffix().isEmpty() && strSelectedFilter.isEmpty())) {
+    if (info.suffix().isEmpty() && strSelectedFilter.isEmpty()) {
         filePath += addDefaultExtensionSuffix(fileType);
     }
 
