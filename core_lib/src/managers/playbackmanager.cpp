@@ -53,6 +53,7 @@ bool PlaybackManager::init()
     QSettings settings (PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
     mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
+    mSoundScrub = settings.value(SETTING_SOUND_SCRUB_ACTIVE).toBool();
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
