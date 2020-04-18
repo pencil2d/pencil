@@ -102,19 +102,6 @@ void SoundClip::playFromPosition(int frameNumber, int fps)
     }
 }
 
-void SoundClip::playSoundScrub(SoundClip *clip, int frame, int fps, int msec)
-{
-    QTimer timer;
-    clip->playFromPosition(frame, fps);
-    timer.start(msec + 200);
-    while (timer.remainingTime() > 200)
-    {
-
-    }
-    clip->stop();
-    timer.stop();
-}
-
 void SoundClip::stop()
 {
     if (mPlayer)

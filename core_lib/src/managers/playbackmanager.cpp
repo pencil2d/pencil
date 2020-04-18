@@ -46,6 +46,10 @@ bool PlaybackManager::init()
     mFlipTimer = new QTimer(this);
     mFlipTimer->setTimerType(Qt::PreciseTimer);
 
+    mScrubTimer = new QTimer(this);
+    mScrubTimer->setTimerType(Qt::PreciseTimer);
+    mSoundclipsToPLay.clear();
+
     QSettings settings (PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
     mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
@@ -209,8 +213,7 @@ void PlaybackManager::playFlipInBetween()
 
 void PlaybackManager::playScrub(int frame)
 {
-    QSettings settings (PENCIL2D, PENCIL2D);
-    mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
+    if (!mSoundclipsToPLay.isEmpty()) {return; }
 
     for (int i = 0; i < editor()->layers()->count(); i++)
     {
@@ -221,9 +224,17 @@ void PlaybackManager::playScrub(int frame)
             if (key != nullptr)
             {
                 SoundClip* clip = static_cast<SoundClip*>(key);
-                clip->playSoundScrub(clip, frame, mFps, mMsecSoundScrub);
+                mSoundclipsToPLay.append(clip);
             }
         }
+    }
+
+    if (mSoundclipsToPLay.isEmpty()) { return; }
+
+    mScrubTimer->singleShot(mMsecSoundScrub, this, SLOT(stopPlayScrub()));
+    for (int i = 0; i < mSoundclipsToPLay.count(); i++)
+    {
+        mSoundclipsToPLay.at(i)->playFromPosition(frame, mFps);
     }
 }
 
@@ -382,7 +393,11 @@ void PlaybackManager::stopSounds()
 
 void PlaybackManager::stopPlayScrub()
 {
-    clip->stop();
+    for (int i = 0; i < mSoundclipsToPLay.count(); i++)
+    {
+        mSoundclipsToPLay.at(i)->stop();
+    }
+    mSoundclipsToPLay.clear();
 }
 
 void PlaybackManager::timerTick()

@@ -51,6 +51,7 @@ public slots:
 
 Q_SIGNALS:
     void windowOpacityChange(int);
+    void soundScrubMsecChanged(int mSec);
     void curveOpacityChange(int);
     void clearRecentList();
     void updateRecentFileListBtn();
@@ -132,6 +133,9 @@ public slots:
     void soundScrubMsecSpinboxChanged(int value);
     void layerVisibilityChanged(int);
     void layerVisibilityThresholdChanged(int);
+
+signals:
+    void soundScrubMsecChanged(int mSec);
 
 private:
     Ui::TimelinePage* ui = nullptr;

@@ -123,7 +123,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::FLIP_ROLL_MSEC,           settings.value(SETTING_FLIP_ROLL_MSEC,         100).toInt());
     set(SETTING::FLIP_ROLL_DRAWINGS,       settings.value(SETTING_FLIP_ROLL_DRAWINGS,     5).toInt());
     set(SETTING::FLIP_INBETWEEN_MSEC,      settings.value(SETTING_FLIP_INBETWEEN_MSEC,    100).toInt());
-    set(SETTING::SOUND_SCRUB_MSEC,          settings.value(SETTING_SOUND_SCRUB_MSEC,        200).toInt());
+    set(SETTING::SOUND_SCRUB_MSEC,         settings.value(SETTING_SOUND_SCRUB_MSEC,       180).toInt());
 
     set(SETTING::LANGUAGE,                 settings.value(SETTING_LANGUAGE).toString());
 }

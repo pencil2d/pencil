@@ -46,6 +46,7 @@ public:
     void playFlipRoll();
     void playFlipInBetween();
     void playScrub(int frame);
+    void setSoundScrubMsec(int mSec) { mMsecSoundScrub = mSec; }
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
@@ -98,16 +99,18 @@ private:
     int mFlipRollInterval = 100;
     int mFlipInbetweenInterval = 100;
     int mFlipRollMax = 5;
-    int mMsecSoundScrub = 175;
+    int mMsecSoundScrub = 180;
 
     SoundClip* clip = nullptr;
     QTimer* mTimer = nullptr;
     QTimer* mFlipTimer = nullptr;
+    QTimer* mScrubTimer = nullptr;
     QElapsedTimer* mElapsedTimer = nullptr;
     int mPlayingFrameCounter = 0; // how many frames has passed after pressing play
 
     bool mCheckForSoundsHalfway = false;
     QVector<int> mListOfActiveSoundFrames;
+    QVector<SoundClip*> mSoundclipsToPLay;
     QVector<int> mFlipList;
 };
 

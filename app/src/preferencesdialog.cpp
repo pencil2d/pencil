@@ -65,6 +65,7 @@ void PreferencesDialog::init(PreferenceManager* m)
     ui->shortcuts->setManager(mPrefManager);
 
     connect(ui->general, &GeneralPage::windowOpacityChange, this, &PreferencesDialog::windowOpacityChange);
+    connect(ui->timeline, &TimelinePage::soundScrubMsecChanged, this, &PreferencesDialog::soundScrubMsecChanged);
     connect(ui->filesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::close);
 
@@ -524,12 +525,14 @@ void TimelinePage::soundScrubMsecSliderChanged(int value)
 {
     ui->soundScrubSpinBox->setValue(value);
     mManager->set(SETTING::SOUND_SCRUB_MSEC, value);
+    emit soundScrubMsecChanged(value);
 }
 
 void TimelinePage::soundScrubMsecSpinboxChanged(int value)
 {
     ui->soundScrubSlider->setValue(value);
     mManager->set(SETTING::SOUND_SCRUB_MSEC, value);
+    emit soundScrubMsecChanged(value);
 }
 
 FilesPage::FilesPage()

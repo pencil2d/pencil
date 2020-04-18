@@ -992,7 +992,12 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mOnionSkinWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
     mToolBox->setFeatures(feat);
-    mTimeLine->setFeatures(feat);    
+    mTimeLine->setFeatures(feat);
+}
+
+void MainWindow2::setSoundScrubMsec(int msec)
+{
+    mEditor->playback()->setSoundScrubMsec(msec);
 }
 
 void MainWindow2::preferences()
@@ -1009,6 +1014,7 @@ void MainWindow2::preferences()
     mPrefDialog->init(mEditor->preference());
 
     connect(mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubMsecChanged, this, &MainWindow2::setSoundScrubMsec);
     connect(mPrefDialog, &PreferencesDialog::finished, [&]
     {
         clearKeyboardShortcuts();
