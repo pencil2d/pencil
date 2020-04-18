@@ -65,6 +65,7 @@ void PreferencesDialog::init(PreferenceManager* m)
     ui->shortcuts->setManager(mPrefManager);
 
     connect(ui->general, &GeneralPage::windowOpacityChange, this, &PreferencesDialog::windowOpacityChange);
+    connect(ui->timeline, &TimelinePage::soundScrubChanged, this, &PreferencesDialog::soundScrubChanged);
     connect(ui->timeline, &TimelinePage::soundScrubMsecChanged, this, &PreferencesDialog::soundScrubMsecChanged);
     connect(ui->filesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::close);
@@ -374,6 +375,7 @@ TimelinePage::TimelinePage()
     connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
     connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
     connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
+    connect(ui->soundScrubCheckBox ,&QCheckBox::stateChanged, this, &TimelinePage::soundScrubActiveChanged);
     connect(ui->soundScrubSlider, sliderChanged, this, &TimelinePage::soundScrubMsecSliderChanged);
     connect(ui->soundScrubSpinBox, spinBoxValueChange, this, &TimelinePage::soundScrubMsecSpinboxChanged);
     connect(ui->layerVisibilityComboBox, comboChanged, this, &TimelinePage::layerVisibilityChanged);
@@ -391,6 +393,9 @@ void TimelinePage::updateValues()
 {
     SignalBlocker b1(ui->scrubBox);
     ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
+
+    SignalBlocker b2(ui->soundScrubCheckBox);
+    ui->soundScrubCheckBox->setChecked(mManager->isOn(SETTING::SOUND_SCRUB_ACTIVE));
 
     SignalBlocker b3(ui->timelineLength);
     ui->timelineLength->setValue(mManager->getInt(SETTING::TIMELINE_SIZE));
@@ -519,6 +524,15 @@ void TimelinePage::flipInbetweenMsecSpinboxChanged(int value)
 {
     ui->flipInBtwnMsecSlider->setValue(value);
     mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+
+void TimelinePage::soundScrubActiveChanged(int i)
+{
+    bool b = true;
+    if (i == 0)
+        b = false;
+    mManager->set(SETTING::SOUND_SCRUB_ACTIVE, b);
+    emit soundScrubChanged(b);
 }
 
 void TimelinePage::soundScrubMsecSliderChanged(int value)

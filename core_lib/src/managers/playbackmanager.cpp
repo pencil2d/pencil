@@ -213,7 +213,7 @@ void PlaybackManager::playFlipInBetween()
 
 void PlaybackManager::playScrub(int frame)
 {
-    if (!mSoundclipsToPLay.isEmpty()) {return; }
+    if (!mSoundScrub || !mSoundclipsToPLay.isEmpty()) {return; }
 
     for (int i = 0; i < editor()->layers()->count(); i++)
     {

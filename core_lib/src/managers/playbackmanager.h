@@ -47,6 +47,7 @@ public:
     void playFlipInBetween();
     void playScrub(int frame);
     void setSoundScrubMsec(int mSec) { mMsecSoundScrub = mSec; }
+    void setSoundScrubActive(bool b) { mSoundScrub = b; }
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
@@ -100,6 +101,7 @@ private:
     int mFlipInbetweenInterval = 100;
     int mFlipRollMax = 5;
     int mMsecSoundScrub = 180;
+    bool mSoundScrub = false;
 
     SoundClip* clip = nullptr;
     QTimer* mTimer = nullptr;
