@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QFile>
 #include <QMediaPlayer>
 #include <QtMath>
-#include <QTimer>
 #include "soundplayer.h"
 
 SoundClip::SoundClip()
