@@ -375,7 +375,6 @@ TimelinePage::TimelinePage()
     connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
     connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
     connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
-    connect(ui->soundScrubCheckBox ,&QCheckBox::stateChanged, this, &TimelinePage::soundScrubActiveChanged);
     connect(ui->soundScrubSlider, sliderChanged, this, &TimelinePage::soundScrubMsecSliderChanged);
     connect(ui->soundScrubSpinBox, spinBoxValueChange, this, &TimelinePage::soundScrubMsecSpinboxChanged);
     connect(ui->layerVisibilityComboBox, comboChanged, this, &TimelinePage::layerVisibilityChanged);
@@ -393,9 +392,6 @@ void TimelinePage::updateValues()
 {
     SignalBlocker b1(ui->scrubBox);
     ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
-
-    SignalBlocker b2(ui->soundScrubCheckBox);
-    ui->soundScrubCheckBox->setChecked(mManager->isOn(SETTING::SOUND_SCRUB_ACTIVE));
 
     SignalBlocker b3(ui->timelineLength);
     ui->timelineLength->setValue(mManager->getInt(SETTING::TIMELINE_SIZE));

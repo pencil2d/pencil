@@ -49,6 +49,7 @@ public:
 
 Q_SIGNALS:
     void soundToggled(bool);
+    void soundScrubToggled(bool);
     void fpsChanged(int);
     void playButtonTriggered();
 
@@ -67,6 +68,7 @@ private:
     void loopStartValueChanged(int);
     void loopEndValueChanged(int);
     void updateSoundIcon(bool soundEnabled);
+    void updateSoundScrubIcon(bool soundScrubEnabled);
 
 private:
     QPushButton* mPlayButton = nullptr;
@@ -74,6 +76,7 @@ private:
     QPushButton* mJumpToStartButton = nullptr;
     QPushButton* mLoopButton = nullptr;
     QPushButton* mSoundButton = nullptr;
+    QPushButton* mSoundScrubButton = nullptr;
     QSpinBox*    mFpsBox = nullptr;
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
@@ -83,6 +86,7 @@ private:
     QIcon mStopIcon;
     QIcon mLoopIcon;
     QIcon mSoundIcon;
+    QIcon mSoundScrubIcon;
     QIcon mJumpToEndIcon;
     QIcon mJumpToStartIcon;
 

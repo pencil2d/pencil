@@ -70,11 +70,16 @@ void TimeControls::initUI()
     mPlayButton = new QPushButton(this);
     mLoopButton = new QPushButton(this);
     mSoundButton = new QPushButton(this);
+    mSoundScrubButton = new QPushButton(this);
     mJumpToEndButton = new QPushButton(this);
     mJumpToStartButton = new QPushButton(this);
 
     mLoopIcon = QIcon(":icons/controls/loop.png");
     mSoundIcon = QIcon(":icons/controls/sound.png");
+    if (mEditor->preference()->isOn(SETTING::SOUND_SCRUB_ACTIVE))
+        mSoundScrubIcon = QIcon(":icons/controls/soundscrub.png");
+    else
+        mSoundScrubIcon = QIcon(":icons/controls/soundscrub-disabled.png");
     mJumpToEndIcon = QIcon(":icons/controls/endplay.png");
     mJumpToStartIcon = QIcon(":icons/controls/startplay.png");
     mStartIcon = QIcon(":icons/controls/play.png");
@@ -82,18 +87,23 @@ void TimeControls::initUI()
     mPlayButton->setIcon(mStartIcon);
     mLoopButton->setIcon(mLoopIcon);
     mSoundButton->setIcon(mSoundIcon);
+    mSoundScrubButton->setIcon(mSoundScrubIcon);
     mJumpToEndButton->setIcon(mJumpToEndIcon);
     mJumpToStartButton->setIcon(mJumpToStartIcon);
 
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));
     mSoundButton->setToolTip(tr("Sound on/off"));
+    mSoundScrubButton->setToolTip(tr("Sound scrub on/off"));
     mJumpToEndButton->setToolTip(tr("Jump to the End", "Tooltip of the jump to end button"));
     mJumpToStartButton->setToolTip(tr("Jump to the Start", "Tooltip of the jump to start button"));
 
     mLoopButton->setCheckable(true);
     mSoundButton->setCheckable(true);
     mSoundButton->setChecked(true);
+    mSoundScrubButton->setCheckable(true);
+    mSoundScrubButton->setChecked(mEditor->preference()->isOn(SETTING::SOUND_SCRUB_ACTIVE));
+
 
     addWidget(mJumpToStartButton);
     addWidget(mPlayButton);
@@ -103,6 +113,7 @@ void TimeControls::initUI()
     addWidget(mLoopStartSpinBox);
     addWidget(mLoopEndSpinBox);
     addWidget(mSoundButton);
+    addWidget(mSoundScrubButton);
     addWidget(mFpsBox);
 
     makeConnections();
@@ -171,6 +182,9 @@ void TimeControls::makeConnections()
 
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::soundToggled);
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon);
+
+    connect(mSoundScrubButton, &QPushButton::clicked, this, &TimeControls::soundScrubToggled);
+    connect(mSoundScrubButton, &QPushButton::clicked, this, &TimeControls::updateSoundScrubIcon);
 
     connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsChanged);
     connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
@@ -258,6 +272,22 @@ void TimeControls::updateSoundIcon(bool soundEnabled)
     else
     {
         mSoundButton->setIcon(QIcon(":icons/controls/sound-disabled.png"));
+    }
+}
+
+void TimeControls::updateSoundScrubIcon(bool soundScrubEnabled)
+{
+    if (soundScrubEnabled)
+    {
+        mSoundScrubButton->setIcon(QIcon(":icons/controls/soundscrub.png"));
+        mEditor->playback()->setSoundScrubActive(true);
+        mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, true);
+    }
+    else
+    {
+        mSoundScrubButton->setIcon(QIcon(":icons/controls/soundscrub-disabled.png"));
+        mEditor->playback()->setSoundScrubActive(false);
+        mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, false);
     }
 }
 
