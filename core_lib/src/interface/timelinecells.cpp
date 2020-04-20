@@ -29,7 +29,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "toolmanager.h"
 
-
+#include <QDebug>
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
     mTimeLine = parent;
@@ -534,10 +534,6 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                 {
                     mEditor->playback()->stop();
                 }
-                if (mEditor->playback()->getSoundScrubActive())
-                {
-                    mEditor->playback()->playScrub(frameNumber);
-                }
                 mTimeLine->scrubbing = true;
             }
             else
@@ -601,6 +597,10 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         if (mEditor->playback()->isPlaying())
                         {
                             mEditor->playback()->stop();
+                        }
+                        if (mEditor->playback()->getSoundScrubActive())
+                        {
+                            mEditor->playback()->playScrub(frameNumber);
                         }
 
                         mEditor->scrubTo(frameNumber);
