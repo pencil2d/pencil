@@ -47,7 +47,9 @@ public:
     void playFlipInBetween();
     void playScrub(int frame);
     void setSoundScrubMsec(int mSec) { mMsecSoundScrub = mSec; }
+    int  getSoundScrubMsec() { return mMsecSoundScrub; }
     void setSoundScrubActive(bool b) { mSoundScrub = b; }
+    bool getSoundScrubActive() { return mSoundScrub; }
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
