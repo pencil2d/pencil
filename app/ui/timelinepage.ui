@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-213</y>
-        <width>305</width>
-        <height>756</height>
+        <y>-217</y>
+        <width>315</width>
+        <height>737</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -281,16 +281,22 @@
             <item>
              <widget class="QSlider" name="soundScrubSlider">
               <property name="minimum">
-               <number>100</number>
+               <number>40</number>
               </property>
               <property name="maximum">
-               <number>250</number>
+               <number>200</number>
               </property>
               <property name="singleStep">
-               <number>10</number>
+               <number>5</number>
+              </property>
+              <property name="pageStep">
+               <number>5</number>
               </property>
               <property name="value">
-               <number>180</number>
+               <number>100</number>
+              </property>
+              <property name="sliderPosition">
+               <number>100</number>
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -299,17 +305,20 @@
             </item>
             <item>
              <widget class="QSpinBox" name="soundScrubSpinBox">
+              <property name="suffix">
+               <string> ms</string>
+              </property>
               <property name="minimum">
-               <number>100</number>
+               <number>40</number>
               </property>
               <property name="maximum">
-               <number>250</number>
+               <number>200</number>
               </property>
               <property name="singleStep">
-               <number>10</number>
+               <number>5</number>
               </property>
               <property name="value">
-               <number>180</number>
+               <number>100</number>
               </property>
              </widget>
             </item>

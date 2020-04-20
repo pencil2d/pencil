@@ -100,7 +100,7 @@ private:
     int mFlipRollInterval = 100;
     int mFlipInbetweenInterval = 100;
     int mFlipRollMax = 5;
-    int mMsecSoundScrub = 180;
+    int mMsecSoundScrub = 100;
     bool mSoundScrub = false;
 
     SoundClip* clip = nullptr;
