@@ -357,7 +357,6 @@ void ViewManager::setOverlaySafeAreas(bool b)
 
 void ViewManager::setOverlayPerspective1(bool b)
 {
-    qDebug() << b;
     if (b != mOverlayPerspective1)
     {
         mOverlayPerspective1 = b;
@@ -368,12 +367,22 @@ void ViewManager::setOverlayPerspective1(bool b)
 
 void ViewManager::setOverlayPerspective2(bool b)
 {
-
+    if (b != mOverlayPerspective2)
+    {
+        mOverlayPerspective2 = b;
+        updateViewTransforms();
+        Q_EMIT viewChanged();
+    }
 }
 
 void ViewManager::setOverlayPerspective3(bool b)
 {
-
+    if (b != mOverlayPerspective3)
+    {
+        mOverlayPerspective3 = b;
+        updateViewTransforms();
+        Q_EMIT viewChanged();
+    }
 }
 
 void ViewManager::setCanvasSize(QSize size)
