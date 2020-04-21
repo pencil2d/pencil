@@ -417,6 +417,14 @@ void TimelinePage::updateValues()
         break;
     }
 
+    // to secure that you have a relevant minimum setting for sound scrub
+    int fps = mManager->getInt(SETTING::FPS);
+    int minMsec = 1000 / fps;
+    if (minMsec > 100) { minMsec = 100; }
+    qDebug() << "Fps: " << fps << ". minimum: " << minMsec;
+    ui->soundScrubSpinBox->setMinimum(minMsec);
+    ui->soundScrubSlider->setMinimum(minMsec);
+
     ui->flipRollMsecsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSlider->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
