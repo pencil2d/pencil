@@ -89,6 +89,7 @@ public:
 
     int currentFrame();
     int fps();
+    void setFps(int fps);
 
     int  currentLayerIndex() { return mCurrentLayerIndex; }
     void setCurrentLayerIndex(int i);
