@@ -421,7 +421,6 @@ void TimelinePage::updateValues()
     int fps = mManager->getInt(SETTING::FPS);
     int minMsec = 1000 / fps;
     if (minMsec > 100) { minMsec = 100; }
-    qDebug() << "Fps: " << fps << ". minimum: " << minMsec;
     ui->soundScrubSpinBox->setMinimum(minMsec);
     ui->soundScrubSlider->setMinimum(minMsec);
 
