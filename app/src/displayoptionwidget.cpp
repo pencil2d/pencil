@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
+#include "flowlayout.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
@@ -44,13 +45,36 @@ void DisplayOptionWidget::initUI()
     updateUI();
     makeConnections();
 
+    delete ui->innerWidget->layout();
+
+    FlowLayout *layout = new FlowLayout;
+    layout->setAlignment(Qt::AlignHCenter);
+    layout->addWidget(ui->mirrorButton);
+    layout->addWidget(ui->mirrorVButton);
+    layout->addWidget(ui->thinLinesButton);
+    layout->addWidget(ui->outLinesButton);
+    layout->addWidget(ui->overlayCenterButton);
+    layout->addWidget(ui->overlayThirdsButton);
+    layout->addWidget(ui->overlayGoldenRatioButton);
+    layout->addWidget(ui->overlaySafeAreaButton);
+
+    ui->innerWidget->setLayout(layout);
+
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
     QString stylesheet =
         "QToolButton { border: 0px; } "
         "QToolButton:pressed{ border: 1px solid #FFADAD; border-radius: 2px; background-color: #D5D5D5; }"
         "QToolButton:checked{ border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
-    setStyleSheet(this->styleSheet().append(stylesheet));
+
+    ui->mirrorButton->setStyleSheet(stylesheet);
+    ui->mirrorVButton->setStyleSheet(stylesheet);
+    ui->thinLinesButton->setStyleSheet(stylesheet);
+    ui->outLinesButton->setStyleSheet(stylesheet);
+    ui->overlayCenterButton->setStyleSheet(stylesheet);
+    ui->overlayThirdsButton->setStyleSheet(stylesheet);
+    ui->overlayGoldenRatioButton->setStyleSheet(stylesheet);
+    ui->overlaySafeAreaButton->setStyleSheet(stylesheet);
 #endif
 }
 
@@ -110,6 +134,11 @@ void DisplayOptionWidget::updateUI()
 
     SignalBlocker b4(ui->mirrorVButton);
     ui->mirrorVButton->setChecked(view->isFlipVertical());
+}
+
+int DisplayOptionWidget::getMinHeightForWidth(int width)
+{
+    return ui->innerWidget->layout()->heightForWidth(width);
 }
 
 void DisplayOptionWidget::toggleMirror(bool isOn)
