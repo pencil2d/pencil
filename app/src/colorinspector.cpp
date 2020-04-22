@@ -38,12 +38,6 @@ ColorInspector::ColorInspector(QWidget *parent) :
     ui = new Ui::ColorInspector;
     ui->setupUi(innerWidget);
     setWidget(innerWidget);
-
-    QButtonGroup* colorModeChangeGroup = new QButtonGroup;
-
-    colorModeChangeGroup->addButton(ui->hsvButton);
-    colorModeChangeGroup->addButton(ui->rgbButton);
-    colorModeChangeGroup->setExclusive(true);
 }
 
 ColorInspector::~ColorInspector()
@@ -144,7 +138,7 @@ void ColorInspector::setColor(QColor newColor)
 
     if(isRgbColors)
     {
-        QSignalBlocker b1(ui->red_slider); 
+        QSignalBlocker b1(ui->red_slider);
         QSignalBlocker b2(ui->green_slider);
         QSignalBlocker b3(ui->blue_slider);
         QSignalBlocker b4(ui->alpha_slider);
@@ -303,7 +297,7 @@ void ColorInspector::onModeChanged()
         mCurrentColor = mCurrentColor.toHsv();
 
         const qreal bound = 100.0 / 255.0; // from 255 to 100
-        
+
         ui->RedspinBox->setValue(mCurrentColor.hsvHue());
         ui->GreenspinBox->setValue(qRound(mCurrentColor.hsvSaturation()*bound));
         ui->BluespinBox->setValue(qRound(mCurrentColor.value()*bound));

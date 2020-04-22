@@ -39,6 +39,10 @@ ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
     mCurrentCamera = mDefaultEditorCamera;
 }
 
+ViewManager::~ViewManager() {
+    delete mDefaultEditorCamera;
+}
+
 bool ViewManager::init()
 {
     connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
