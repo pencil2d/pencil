@@ -215,11 +215,12 @@ void PlaybackManager::playFlipInBetween()
 
 void PlaybackManager::playScrub(int frame)
 {
-    if (!mSoundScrub || !mSoundclipsToPLay.isEmpty()) {return; }
+    if (!mSoundScrub) { return; }
 
-    for (int i = 0; i < editor()->layers()->count(); i++)
+    auto layerMan = editor()->layers();
+    for (int i = 0; i < layerMan->count(); i++)
     {
-        Layer* layer = editor()->layers()->getLayer(i);
+        Layer* layer = layerMan->getLayer(i);
         if (layer->type() == Layer::SOUND && layer->visible())
         {
             KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
@@ -233,7 +234,7 @@ void PlaybackManager::playScrub(int frame)
 
     if (mSoundclipsToPLay.isEmpty()) { return; }
 
-    mScrubTimer->singleShot(mMsecSoundScrub, this, SLOT(stopPlayScrub()));
+    mScrubTimer->singleShot(mMsecSoundScrub, this, &PlaybackManager::stopScrubPlayback);
     for (int i = 0; i < mSoundclipsToPLay.count(); i++)
     {
         mSoundclipsToPLay.at(i)->playFromPosition(frame, mFps);
@@ -393,7 +394,12 @@ void PlaybackManager::stopSounds()
     }
 }
 
-void PlaybackManager::stopPlayScrub()
+bool PlaybackManager::isSoundScrubbing() const
+{
+    return mSoundclipsToPLay.isEmpty() ? false : true;
+}
+
+void PlaybackManager::stopScrubPlayback()
 {
     for (int i = 0; i < mSoundclipsToPLay.count(); i++)
     {

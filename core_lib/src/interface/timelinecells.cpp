@@ -639,6 +639,9 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
             {
                 if (mEditor->playback()->getSoundScrubActive() && mLastScrubFrame != frameNumber)
                 {
+                    if (mEditor->playback()->isSoundScrubbing()) {
+                        mEditor->playback()->stopScrubPlayback();
+                    }
                     mEditor->playback()->playScrub(frameNumber);
                     mLastScrubFrame = frameNumber;
                 }
