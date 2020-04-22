@@ -812,7 +812,7 @@ bool Object::exportX(int frameStart, int frameEnd, QTransform view, QSize export
             xPainter.setWorldTransform(thumbView);
             xPainter.setClipRegion(thumbView.inverted().map(QRegion(target)));
             paintImage(xPainter, i, false, antialiasing);
-            xPainter.resetMatrix();
+            xPainter.resetTransform();
             xPainter.setClipping(false);
             xPainter.setPen(Qt::black);
             xPainter.drawRect(target);

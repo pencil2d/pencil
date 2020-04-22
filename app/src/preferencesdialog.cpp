@@ -562,7 +562,7 @@ void FilesPage::initPreset()
         QString name = mPresetSettings->value(key).toString();
         if (name.isEmpty())
             continue;
-        
+
         QListWidgetItem* item = new QListWidgetItem(name);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         item->setData(Qt::UserRole, index);
@@ -681,19 +681,19 @@ void FilesPage::updateValues()
 
     bool ok = true;
     int defaultPresetIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
-    
+
     for (int i = 0; i < ui->presetListWidget->count(); i++)
     {
         QListWidgetItem* item = ui->presetListWidget->item(i);
         int presetIndex = item->data(Qt::UserRole).toInt(&ok);
 
         bool isDefault = presetIndex == defaultPresetIndex;
-        
+
         QFont font = item->font();
         font.setBold(isDefault); // Bold text for the default item
         item->setFont(font);
 
-        QBrush backgroundBrush = (isDefault) ? palette().light() : palette().background();
+        QBrush backgroundBrush = (isDefault) ? palette().light() : palette().window();
         item->setBackground(backgroundBrush);
     }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
@@ -729,7 +729,7 @@ ToolsPage::~ToolsPage()
 }
 
 void ToolsPage::updateValues()
-{    
+{
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
     setRotationIncrement(mManager->getInt(SETTING::ROTATION_INCREMENT));
 }
