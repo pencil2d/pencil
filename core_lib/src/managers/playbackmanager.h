@@ -38,7 +38,6 @@ public:
     Status save(Object*) override;
 
     bool isPlaying();
-    bool isSoundScrubbing() const;
     bool isLooping() { return mIsLooping; }
     void setCheckForSoundsHalfway(bool newCheck) { mCheckForSoundsHalfway = newCheck; }
 
@@ -68,7 +67,8 @@ public:
     void enableSound(bool b);
 
     void stopSounds();
-public slots:
+
+private slots:
     void stopScrubPlayback();
 
 Q_SIGNALS:

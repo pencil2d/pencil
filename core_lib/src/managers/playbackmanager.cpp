@@ -215,7 +215,7 @@ void PlaybackManager::playFlipInBetween()
 
 void PlaybackManager::playScrub(int frame)
 {
-    if (!mSoundScrub) { return; }
+    if (!mSoundScrub || !mSoundclipsToPLay.isEmpty()) {return; }
 
     auto layerMan = editor()->layers();
     for (int i = 0; i < layerMan->count(); i++)
@@ -392,11 +392,6 @@ void PlaybackManager::stopSounds()
             clip->stop();
         });
     }
-}
-
-bool PlaybackManager::isSoundScrubbing() const
-{
-    return mSoundclipsToPLay.isEmpty() ? false : true;
 }
 
 void PlaybackManager::stopScrubPlayback()
