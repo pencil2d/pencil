@@ -1016,6 +1016,8 @@ void Editor::scrubTo(int frame)
 
 void Editor::scrubForward()
 {
+    int nextFrame = mFrame + 1;
+    playback()->playScrub(nextFrame);
     scrubTo(currentFrame() + 1);
 }
 
@@ -1023,7 +1025,9 @@ void Editor::scrubBackward()
 {
     if (currentFrame() > 1)
     {
-        scrubTo(currentFrame() - 1);
+        int previousFrame = mFrame - 1;
+        playback()->playScrub(previousFrame);
+        scrubTo(previousFrame);
     }
 }
 

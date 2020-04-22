@@ -481,13 +481,11 @@ void ActionCommands::PlayStop()
 
 void ActionCommands::GotoNextFrame()
 {
-    mEditor->playback()->playScrub(mEditor->currentFrame());
     mEditor->scrubForward();
 }
 
 void ActionCommands::GotoPrevFrame()
 {
-    mEditor->playback()->playScrub(mEditor->currentFrame());
     mEditor->scrubBackward();
 }
 
