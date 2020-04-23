@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layermanager.h"
 #include "soundclip.h"
+#include "soundplayer.h"
 #include "toolmanager.h"
 
 
@@ -398,7 +399,7 @@ void PlaybackManager::stopScrubPlayback()
 {
     for (int i = 0; i < mSoundclipsToPLay.count(); i++)
     {
-        mSoundclipsToPLay.at(i)->stop();
+        mSoundclipsToPLay.at(i)->player()->pause();
     }
     mSoundclipsToPLay.clear();
 }
