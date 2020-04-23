@@ -101,6 +101,14 @@ void SoundClip::playFromPosition(int frameNumber, int fps)
     }
 }
 
+void SoundClip::pause()
+{
+    if (mPlayer)
+    {
+        mPlayer->pause();
+    }
+}
+
 void SoundClip::stop()
 {
     if (mPlayer)
