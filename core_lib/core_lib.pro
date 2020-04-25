@@ -84,6 +84,7 @@ HEADERS +=  \
     src/util/blitrect.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
+    src/util/insertbehaviour.h \
     src/util/mathutils.h \
     src/util/pencildef.h \
     src/util/pencilerror.h \

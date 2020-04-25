@@ -26,6 +26,8 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 #include "pencildef.h"
 
+#include "insertbehaviour.h"
+
 class QMouseEvent;
 class KeyFrame;
 class Object;
@@ -33,7 +35,6 @@ class TimeLineCells;
 class Status;
 
 #define ProgressCallback std::function<void()>
-
 
 class Layer : public QObject
 {
@@ -84,6 +85,7 @@ public:
 
     int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
 
+    bool addKeyFrameAfter(int position, KeyFrame* pKeyFrame);
     bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
@@ -111,6 +113,15 @@ public:
 
     bool moveSelectedFrames(int offset);
 
+    /** Predetermins whether the frames can be moves to a new position depending on the offset
+     * offset should be start press position - current position
+     *
+     * @param offset
+     * @return true if selected frames can be moved otherwise false
+     */
+    bool canMoveSelectedFramesToOffset(int offset) const;
+    bool moveFrame(int oldPos, int newPos, InsertBehaviour behaviour);
+
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
 
@@ -130,6 +141,10 @@ protected:
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
+
+    void updateSelectionLists(int oldPos, int newPos);
+
+
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;
     int        mId = 0;

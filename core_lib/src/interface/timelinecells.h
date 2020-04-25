@@ -36,6 +36,19 @@ enum class TIMELINE_CELL_TYPE
     Tracks
 };
 
+enum class MOUSE_DRAG_DIRECTION
+{
+    Left,
+    Right,
+    None,
+};
+
+struct MoveFrameContainer {
+    int oldPos = 0;
+    int offset = 0;
+};
+
+
 class TimeLineCells : public QWidget
 {
     Q_OBJECT
@@ -61,8 +74,19 @@ public:
     int getFrameSize() { return mFrameSize; }
     void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
     void paintLayerGutter(QPainter& painter);
+    void paintFrameGutter(QPainter& painter);
     bool didDetatchLayer();
     int getCurrentFrame() { return mCurrentFrame; }
+
+    bool movingFrames() { return mMovingFrames; }
+    int getMouseXPos() { return mMouseX; }
+    int getLastMouseX() { return mMouseLastX; }
+    int mousePressPosX() { return mMousePressX; }
+
+    void addFramesToBeMoved(int oldPos, int newPos);
+    void clearMovedFrames();
+
+    bool mouseButtonDown();
 
 Q_SIGNALS:
     void mouseMovedY(int);
@@ -130,6 +154,16 @@ private:
     bool mBoxSelecting   = false;
 
     bool mClickSelecting = false;
+
+    int mMouseDeltaX = 0;
+    int mPrevousDeltaX = 0;
+    int mMouseX = 0;
+    int mMousePressX = 0;
+    int mMouseLastX = -1;
+
+    MOUSE_DRAG_DIRECTION mDragDirection = MOUSE_DRAG_DIRECTION::None;
+
+    QList<MoveFrameContainer> mFramesToMove;
 
     const static int mOffsetX = 0;
     const static int mOffsetY = 20;

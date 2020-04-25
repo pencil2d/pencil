@@ -29,6 +29,8 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "toolmanager.h"
 
+#include <QDebug>
+
 
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
@@ -131,6 +133,19 @@ int TimeLineCells::getLayerNumber(int y)
         layerNumber = -1;
     }
     return layerNumber;
+}
+
+void TimeLineCells::clearMovedFrames()
+{
+    mFramesToMove.clear();
+}
+
+void TimeLineCells::addFramesToBeMoved(int oldPos, int offset)
+{
+    MoveFrameContainer movingContainer;
+    movingContainer.oldPos = oldPos;
+    movingContainer.offset = offset;
+    mFramesToMove << movingContainer;
 }
 
 int TimeLineCells::getInbetweenLayerNumber(int y) {
@@ -349,6 +364,21 @@ void TimeLineCells::paintLayerGutter(QPainter& painter)
     }
 }
 
+void TimeLineCells::paintFrameGutter(QPainter& painter)
+{
+
+    // TODO: write gutter painting for moving frames...
+//    painter.setPen(Qt::black);
+//    if (getMouseMoveY() > mLayerDetatchThreshold)
+//    {
+//        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+mLayerHeight, width(), 2);
+//    }
+//    else
+//    {
+//        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY)), width(), 2);
+//    }
+}
+
 void TimeLineCells::paintOnionSkin(QPainter& painter)
 {
     Layer* layer = mEditor->layers()->currentLayer();
@@ -469,10 +499,16 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
     emit lengthChanged(getFrameLength());
 }
 
+bool TimeLineCells::mouseButtonDown()
+{
+    return primaryButton != Qt::NoButton;
+}
+
 void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
     int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
+    mMousePressX = event->pos().x();
     mFromLayer = mToLayer = layerNumber;
 
     mStartY = event->pos().y();
@@ -620,6 +656,22 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
+
+        mMouseLastX = mMouseX;
+        if (mMouseLastX != -1 || mMouseDeltaX != mPrevousDeltaX) {
+            mMouseX = event->pos().x();
+            mPrevousDeltaX = mMouseDeltaX;
+            mMouseDeltaX = mMouseLastX - mMouseX;
+
+            qDebug() << "delta X: " << mMouseDeltaX;
+
+            if (mMouseDeltaX > 0) {
+                mDragDirection = MOUSE_DRAG_DIRECTION::Left;
+            } else if (mMouseDeltaX < 0) {
+                mDragDirection = MOUSE_DRAG_DIRECTION::Right;
+            }
+        }
+
         int frameNumber = getFrameNumber(event->pos().x());
         if (primaryButton == Qt::MidButton)
         {
@@ -648,11 +700,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 
                             // If it is the case, we move the selected frames in the layer
                             mMovingFrames = true;
-
-                            int offset = frameNumber - mLastFrameNumber;
-                            currentLayer->moveSelectedFrames(offset);
-                            mEditor->layers()->notifyAnimationLengthChanged();
-                            mEditor->updateCurrentFrame();
                         }
                         else if (mCanBoxSelect)
                         {
@@ -679,12 +726,44 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     primaryButton = Qt::NoButton;
     mEndY = mStartY;
     mTimeLine->scrubbing = false;
+
     int frameNumber = getFrameNumber(event->pos().x());
     if (frameNumber < 1) frameNumber = -1;
     int layerNumber = getLayerNumber(event->pos().y());
     if (mType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton && layerNumber != -1 && layerNumber < mEditor->object()->getLayerCount())
     {
         Layer *currentLayer = mEditor->object()->getLayer(layerNumber);
+
+        if (mMovingFrames) {
+
+//            if (mDragDirection == MOUSE_DRAG_DIRECTION::Right) {
+//                for (int i = 0; i < mFramesToMove.count(); i++) {
+
+//                    MoveFrameContainer con = mFramesToMove[i];
+//                    int newPos = con.oldPos + con.offset;
+
+//                    currentLayer->moveFrame(con.oldPos, newPos, InsertBehaviour::INBETWEEN);
+
+//                    mEditor->layers()->notifyAnimationLengthChanged();
+//                    mEditor->updateCurrentFrame();
+//                }
+//            } else if (mDragDirection == MOUSE_DRAG_DIRECTION::Left) {
+//                for (int i = mFramesToMove.count()-1; i >= 0; i--) {
+//                    MoveFrameContainer con = mFramesToMove[i];
+//                    int newPos = con.oldPos + con.offset;
+
+//                    currentLayer->moveFrame(con.oldPos, newPos, InsertBehaviour::INBETWEEN);
+
+//                    mEditor->layers()->notifyAnimationLengthChanged();
+//                    mEditor->updateCurrentFrame();
+//                }
+//            }
+            int posUnderCursor = getFrameNumber(mousePressPosX());
+            int offset = frameNumber - posUnderCursor;
+
+            qDebug() << "new offset: " << offset;
+            currentLayer->moveSelectedFrames(offset);
+        }
 
         if (!mTimeLine->scrubbing && !mMovingFrames && !mClickSelecting && !mBoxSelecting)
         {
@@ -715,6 +794,8 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     }
     emit mouseMovedY(0);
     mTimeLine->updateContent();
+
+    mMovingFrames = false;
 }
 
 void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
