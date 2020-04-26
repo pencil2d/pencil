@@ -405,10 +405,10 @@ void BitmapColoring::prepareLines()
     {           // if coloring is on separate layer...
         if (!mLayerBitmap->getHasColorLayer())
         {
-            int currLayer = mAnimLayer = mEditor->currentLayerIndex();
+            mAnimLayer = mEditor->currentLayerIndex(); // necessary since new layer becomes currentlayer
             colorLayer = mEditor->layers()->createBitmapLayer(mLayerBitmap->name() + "_C");
             mColLayer = mEditor->object()->getLayerCount() - 1;
-            mEditor->layers()->setCurrentLayer(currLayer);
+            mEditor->layers()->setCurrentLayer(mAnimLayer);
             mLayerBitmap->setHasColorLayer(true);
             colorLayer->setIsColorLayer(true);
         }
