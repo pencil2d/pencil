@@ -253,6 +253,15 @@ void BitmapColoring::traceLines()
             }
         }
         mProgress->close();
+
+        // move colorLayer beneath Animation layer
+        while (mColLayer > mAnimLayer)
+        {
+            mEditor->object()->swapLayers(mColLayer, mColLayer - 1);
+            mColLayer--;
+        }
+        mAnimLayer++;
+
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
     }
@@ -396,7 +405,10 @@ void BitmapColoring::prepareLines()
     {           // if coloring is on separate layer...
         if (!mLayerBitmap->getHasColorLayer())
         {
+            int currLayer = mAnimLayer = mEditor->currentLayerIndex();
             colorLayer = mEditor->layers()->createBitmapLayer(mLayerBitmap->name() + "_C");
+            mColLayer = mEditor->object()->getLayerCount() - 1;
+            mEditor->layers()->setCurrentLayer(currLayer);
             mLayerBitmap->setHasColorLayer(true);
             colorLayer->setIsColorLayer(true);
         }
@@ -408,7 +420,6 @@ void BitmapColoring::prepareLines()
 
     if (ui->cbMethodSelector->currentIndex() == 2)
     {
-        colorLayer->setVisible(false);
         mLayerBitmap->copyFrame(mLayerBitmap, colorLayer, mEditor->currentFrame());
     }
     colorLayer->getBitmapImageAtFrame(mEditor->currentFrame())->traceLine(colorLayer->getBitmapImageAtFrame(mEditor->currentFrame()),

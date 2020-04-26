@@ -63,6 +63,8 @@ private:
     LayerBitmap* mLayerBitmap = nullptr;
     BitmapImage* mBitmapImage = nullptr;
     bool mSelectAreas = false;
+    int mAnimLayer = 0; // Animation layer index
+    int mColLayer = 0;  // Coloring layer index
 
 };
 
