@@ -436,7 +436,7 @@ void BitmapImage::autoCrop()
     int relRight = mBounds.width()-1;
 
     // Check left row
-    isEmpty = (relBottom >= relTop); // Check left only when 
+    isEmpty = (relBottom >= relTop); // Check left only when
     while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relLeft
@@ -628,7 +628,7 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
         painter.setPen(pen);
         painter.setBrush(brush);
         painter.setTransform(QTransform().translate(-mBounds.left(), -mBounds.top()));
-        painter.setMatrixEnabled(true);
+        painter.setWorldMatrixEnabled(true);
         if (path.length() > 0)
         {
             /*
@@ -1166,7 +1166,7 @@ Status BitmapImage::writeFile(const QString& filename)
         bool b = mImage->save(filename);
         return (b) ? Status::OK : Status::FAIL;
     }
-    
+
     if (bounds().isEmpty())
     {
         QFile f(filename);

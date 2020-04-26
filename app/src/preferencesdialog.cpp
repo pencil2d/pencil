@@ -120,6 +120,8 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt_BR");
     ui->languageCombo->addItem(tr("Russian") + " (Russian)", "ru");
     ui->languageCombo->addItem(tr("Slovenian") + " (Slovenian)", "sl");
+    ui->languageCombo->addItem(tr("Swedish") + " (Swedish)", "sv");
+    ui->languageCombo->addItem(tr("Turkish") + " (Turkish)", "tr");
     ui->languageCombo->addItem(tr("Vietnamese") + " (Vietnamese)", "vi");
     ui->languageCombo->addItem(tr("Chinese - China") + " (Chinese - China)", "zh_CN");
     ui->languageCombo->addItem(tr("Chinese - Taiwan") + " (Chinese - Taiwan)", "zh_TW");
@@ -425,6 +427,7 @@ void TimelinePage::updateValues()
 
     int visibilityType = mManager->getInt(SETTING::LAYER_VISIBILITY);
     ui->layerVisibilityComboBox->setCurrentIndex(visibilityType);
+    layerVisibilityChanged(visibilityType);
 }
 
 void TimelinePage::timelineLengthChanged(int value)
@@ -445,6 +448,8 @@ void TimelinePage::scrubChanged(int value)
 void TimelinePage::layerVisibilityChanged(int value)
 {
     mManager->set(SETTING::LAYER_VISIBILITY, value);
+    ui->visibilitySlider->setEnabled(value == 1);
+    ui->visibilitySpinbox->setEnabled(value == 1);
 }
 
 void TimelinePage::layerVisibilityThresholdChanged(int value)
@@ -557,7 +562,7 @@ void FilesPage::initPreset()
         QString name = mPresetSettings->value(key).toString();
         if (name.isEmpty())
             continue;
-        
+
         QListWidgetItem* item = new QListWidgetItem(name);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         item->setData(Qt::UserRole, index);
@@ -676,19 +681,19 @@ void FilesPage::updateValues()
 
     bool ok = true;
     int defaultPresetIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
-    
+
     for (int i = 0; i < ui->presetListWidget->count(); i++)
     {
         QListWidgetItem* item = ui->presetListWidget->item(i);
         int presetIndex = item->data(Qt::UserRole).toInt(&ok);
 
         bool isDefault = presetIndex == defaultPresetIndex;
-        
+
         QFont font = item->font();
         font.setBold(isDefault); // Bold text for the default item
         item->setFont(font);
 
-        QBrush backgroundBrush = (isDefault) ? palette().light() : palette().background();
+        QBrush backgroundBrush = (isDefault) ? palette().light() : palette().window();
         item->setBackground(backgroundBrush);
     }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
@@ -724,7 +729,7 @@ ToolsPage::~ToolsPage()
 }
 
 void ToolsPage::updateValues()
-{    
+{
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
     setRotationIncrement(mManager->getInt(SETTING::ROTATION_INCREMENT));
 }

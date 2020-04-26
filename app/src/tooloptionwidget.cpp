@@ -30,7 +30,7 @@ GNU General Public License for more details.
 ToolOptionWidget::ToolOptionWidget(QWidget* parent) : BaseDockWidget(parent)
 {
     setWindowTitle(tr("Options", "Window title of tool option panel like pen width, feather etc.."));
-    
+
     QWidget* innerWidget = new QWidget;
     setWidget(innerWidget);
     ui = new Ui::ToolOptions;
@@ -39,6 +39,7 @@ ToolOptionWidget::ToolOptionWidget(QWidget* parent) : BaseDockWidget(parent)
 
 ToolOptionWidget::~ToolOptionWidget()
 {
+    delete ui;
 }
 
 void ToolOptionWidget::initUI()
@@ -64,7 +65,7 @@ void ToolOptionWidget::updateUI()
     Q_ASSERT(currentTool);
 
     disableAllOptions();
-    
+
     setVisibility(currentTool);
 
     const Properties& p = currentTool->properties;
@@ -83,7 +84,7 @@ void ToolOptionWidget::updateUI()
 }
 
 void ToolOptionWidget::createUI()
-{} 
+{}
 
 void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 {

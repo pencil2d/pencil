@@ -119,6 +119,11 @@ int Editor::fps()
     return mPlaybackManager->fps();
 }
 
+void Editor::setFps(int fps)
+{
+    mPreferenceManager->set(SETTING::FPS, fps);
+}
+
 void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);

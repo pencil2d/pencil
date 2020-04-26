@@ -95,6 +95,15 @@ public:
     static QCursor selectMoveCursor(MoveMode mode, ToolType type);
     static bool isAdjusting() { return msIsAdjusting; }
 
+    /** Check if the tool is active.
+     *
+     *  An active tool is definied as one which is actively modifying the buffer.
+     *  This is used to check if an full frame cache can be used instead of redrawing with CanvasPainter.
+     *
+     * @return Returns true if the tool is currently active, else returns false.
+     */
+    virtual bool isActive();
+
     virtual void setWidth(const qreal width);
     virtual void setFeather(const qreal feather);
     virtual void setInvisibility(const bool invisibility);

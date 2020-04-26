@@ -101,7 +101,7 @@ public:
 
     void flipSelection(bool flipVertical);
 
-    BaseTool* currentTool();
+    BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
     void setTemporaryTool(ToolType eToolMode);

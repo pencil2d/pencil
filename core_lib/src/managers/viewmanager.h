@@ -32,6 +32,7 @@ class ViewManager : public BaseManager
 
 public:
     explicit ViewManager(Editor* editor);
+    ~ViewManager() override;
 
     bool init() override;
     Status load(Object*) override;

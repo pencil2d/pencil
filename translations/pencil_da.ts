@@ -165,7 +165,7 @@
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Select</source>
-        <translation>Marker</translation>
+        <translation>Udvælg</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>

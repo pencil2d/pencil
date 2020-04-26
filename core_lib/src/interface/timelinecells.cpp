@@ -182,6 +182,8 @@ void TimeLineCells::drawContent()
         }
     }
 
+    mCurrentFrame = mEditor->currentFrame();
+
     QPainter painter(mCache);
 
     Object* object = mEditor->object();
@@ -204,6 +206,7 @@ void TimeLineCells::drawContent()
             continue;
         }
         Layer* layeri = object->getLayer(i);
+
         if (layeri != nullptr)
         {
             switch (mType)
