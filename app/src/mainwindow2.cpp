@@ -1071,6 +1071,10 @@ void  MainWindow2::showPresetDialog()
             if (result == QDialog::Accepted)
             {
                 int presetIndex = presetDialog->getPresetIndex();
+                if (presetDialog->shouldAlwaysUse()) {
+                    mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
+                    mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetIndex);
+                }
                 newObjectFromPresets(presetIndex);
                 qDebug() << "Accepted!";
             }
