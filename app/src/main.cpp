@@ -32,6 +32,29 @@ GNU General Public License for more details.
 #include "platformhandler.h"
 
 
+#ifdef Q_OS_LINUX
+/**
+ * If running as an AppImage, sets GStreamer environment variables to ensure
+ * the plugins contained in the AppImage are found
+ */
+static void setupAppImageGStreamer()
+{
+    QString appDir = QString::fromLocal8Bit(qgetenv("APPDIR"));
+    if (!appDir.isEmpty()) {
+        bool success = qputenv("GST_PLUGIN_SYSTEM_PATH_1_0",
+                               QString("%1/usr/lib/gstreamer-1.0:%2")
+                                   .arg(appDir, QString::fromLocal8Bit(qgetenv("GST_PLUGIN_SYSTEM_PATH_1_0")))
+                                   .toLocal8Bit());
+        success = qputenv("GST_PLUGIN_SCANNER_1_0",
+                          QString("%1/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner")
+                             .arg(appDir).toLocal8Bit()) && success;
+        if (!success) {
+            qWarning() << "Unable to set up GStreamer environment";
+        }
+    }
+}
+#endif
+
 void installTranslator(PencilApplication& app)
 {
     QSettings setting(PENCIL2D, PENCIL2D);
@@ -320,6 +343,9 @@ int main(int argc, char* argv[])
     // uses comma as separator.
     std::setlocale(LC_NUMERIC, "en_US.UTF-8");
     Q_INIT_RESOURCE(core_lib);
+#ifdef Q_OS_LINUX
+    setupAppImageGStreamer();
+#endif
 
     QSettings settings(PENCIL2D, PENCIL2D);
 #ifdef Q_OS_MACOS
