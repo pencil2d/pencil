@@ -53,6 +53,7 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
+#include "layeropacitydialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -709,6 +710,27 @@ void ActionCommands::changeallKeyframeLineColor()
                 layer->getBitmapImageAtFrame(i)->fillNonAlphaPixels(color);
         }
         mEditor->updateFrame(mEditor->currentFrame());
+    }
+}
+
+void ActionCommands::changeLayerOpacityBitmap()
+{
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
+            mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+    {
+        LayerOpacityDialog* layeropacity = new LayerOpacityDialog();
+        layeropacity->setCore(mEditor);
+        layeropacity->init();
+        layeropacity->exec();
+    }
+    else
+    {
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(tr("Select keyframe..."));
+        msgBox.setText(tr("Be sure to be on a Bitmap layer,\n"
+                          "and on an existing keyframe."));
+        msgBox.exec();
     }
 }
 

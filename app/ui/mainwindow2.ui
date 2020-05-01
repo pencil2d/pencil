@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>19</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -238,6 +238,7 @@
     <addaction name="separator"/>
     <addaction name="menuChange_line_color"/>
     <addaction name="separator"/>
+    <addaction name="actionChangeLayerOpacity_Bitmap"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1069,6 +1070,11 @@
    </property>
    <property name="toolTip">
     <string>Onion Skins</string>
+   </property>
+  </action>
+  <action name="actionChangeLayerOpacity_Bitmap">
+   <property name="text">
+    <string>Layer opacity (Bitmap)</string>
    </property>
   </action>
  </widget>
