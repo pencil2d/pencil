@@ -115,7 +115,15 @@ deploy_docs() {
     curl -fsSLO "https://doc.qt.io/qt-5/qt${i}.tags"
   done
 
-  ./documentation-deploy.sh
+  cd "${TRAVIS_BUILD_DIR}"
+
+  cp Doxyfile Doxyfile-Travis;
+  echo "PROJECT_NUMBER = ${TRAVIS_COMMIT}" >> Doxyfile-Travis;
+  echo "HTML_HEADER = util/docs/header.html" >> Doxyfile-Travis;
+  echo "HTML_EXTRA_STYLESHEET = util/docs/extra.css" >> Doxyfile-Travis;
+  doxygen Doxyfile-Travis 2>&1 | tee doxygen.log
+
+  util/docs/documentation-deploy.sh
   msg "Documentation updated"
 }
 
