@@ -43,7 +43,7 @@ void TimeControls::initUI()
     mFpsBox->setValue(settings.value("fps").toInt());
     mFpsBox->setMinimum(1);
     mFpsBox->setMaximum(90);
-    mFpsBox->setSuffix(" fps");
+    mFpsBox->setSuffix(tr(" fps"));
     mFpsBox->setToolTip(tr("Frames per second"));
     mFpsBox->setFocusPolicy(Qt::WheelFocus);
 

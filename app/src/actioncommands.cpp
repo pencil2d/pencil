@@ -148,7 +148,7 @@ Status ActionCommands::exportMovie(bool isGif)
     OnScopeExit(dialog->deleteLater());
 
     dialog->init();
-    
+
     std::vector< std::pair<QString, QSize> > camerasInfo;
     auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
     for (LayerCamera* i : cameraLayers)
@@ -178,7 +178,7 @@ Status ActionCommands::exportMovie(bool isGif)
 
     dialog->setDefaultRange(1, length, lengthWithSounds);
     dialog->exec();
-    
+
     if (dialog->result() == QDialog::Rejected)
     {
         return Status::SAFE;
@@ -262,7 +262,7 @@ Status ActionCommands::exportImageSequence()
 {
     auto dialog = new ExportImageDialog(mParent, FileType::IMAGE_SEQUENCE);
     OnScopeExit(dialog->deleteLater());
-    
+
     dialog->init();
 
     std::vector< std::pair<QString, QSize> > camerasInfo;
@@ -665,7 +665,7 @@ Status ActionCommands::deleteCurrentLayer()
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: ") + strLayerName + " ?",
+                                   tr("Are you sure you want to delete layer: %1?").arg(strLayerName),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)

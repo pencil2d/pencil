@@ -29,7 +29,7 @@ CheckUpdatesDialog::CheckUpdatesDialog()
     mDetailLabel = new QLabel;
     mDetailLabel->setWordWrap(true);
 
-    //If minimum and maximum both are set to 0, the bar shows a busy indicator instead of a percentage of steps. 
+    //If minimum and maximum both are set to 0, the bar shows a busy indicator instead of a percentage of steps.
     mProgressBar = new QProgressBar;
     mProgressBar->setMaximum(0);
     mProgressBar->setMinimum(0);
@@ -42,7 +42,7 @@ CheckUpdatesDialog::CheckUpdatesDialog()
     QHBoxLayout* hButtonLayout = new QHBoxLayout;
     hButtonLayout->addWidget(mDownloadButton);
     hButtonLayout->addWidget(mCloseButton);
-    
+
     QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->addWidget(mTitleLabel);
     vLayout->addWidget(mDetailLabel);
@@ -67,7 +67,7 @@ CheckUpdatesDialog::~CheckUpdatesDialog()
 }
 
 void CheckUpdatesDialog::startChecking()
-{   
+{
 #ifdef NIGHTLY
     nightlyBuildCheck();
 #else
@@ -139,7 +139,7 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
     else
     {
         mTitleLabel->setText(tr("<b>Pencil2D is up to date</b>"));
-        mDetailLabel->setText(tr("Version") + " " APP_VERSION);
+        mDetailLabel->setText(tr("Version %1").arg(APP_VERSION));
         mProgressBar->setRange(0, 1);
         mProgressBar->setValue(1);
         mDownloadButton->setEnabled(false);
@@ -154,7 +154,7 @@ bool CheckUpdatesDialog::compareVersion(QString currentVersion, QString latestVe
 QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
 {
     // XML source: http://github.com/pencil2d/pencil/releases.atom
-    
+
     QXmlStreamReader xmlReader(xml);
 
     while (!xmlReader.atEnd() && !xmlReader.hasError())
