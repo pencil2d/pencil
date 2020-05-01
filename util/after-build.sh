@@ -111,7 +111,7 @@ deploy_docs() {
   cd "${TRAVIS_BUILD_DIR}/util/docs"
 
   msg "Updating online documentation..."
-  for i in core svg xmlpatterns; do
+  for i in core gui network svg testlib widgets xml xmlpatterns; do
     curl -fsSLO "https://doc.qt.io/qt-5/qt${i}.tags"
   done
 

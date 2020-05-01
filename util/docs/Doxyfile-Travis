@@ -2119,13 +2119,28 @@ SKIP_FUNCTION_MACROS   = YES
 # run, you must also specify the path to the tagfile here.
 
 TAGFILES               = $(TRAVIS_BUILD_DIR)/util/docs/qtcore.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/docs/qtgui.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/docs/qtnetwork.tags=https://doc.qt.io/qt-5/ \
                          $(TRAVIS_BUILD_DIR)/util/docs/qtsvg.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/docs/qttestlib.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/docs/qtwidgets.tags=https://doc.qt.io/qt-5/ \
+                         $(TRAVIS_BUILD_DIR)/util/docs/qtxml.tags=https://doc.qt.io/qt-5/ \
                          $(TRAVIS_BUILD_DIR)/util/docs/qtxmlpatterns.tags=https://doc.qt.io/qt-5/ \
                          /usr/share/qt5/doc/qtcore/qtcore.tags=/usr/share/qt5/doc/qtcore/ \
+                         /usr/share/qt5/doc/qtgui/qtgui.tags=/usr/share/qt5/doc/qtgui/ \
+                         /usr/share/qt5/doc/qtnetwork/qtnetwork.tags=/usr/share/qt5/doc/qtnetwork/ \
                          /usr/share/qt5/doc/qtsvg/qtsvg.tags=/usr/share/qt5/doc/qtsvg/ \
+                         /usr/share/qt5/doc/qttestlib/qttestlib.tags=/usr/share/qt5/doc/qttestlib/ \
+                         /usr/share/qt5/doc/qtwidgets/qtwidgets.tags=/usr/share/qt5/doc/qtwidgets/ \
+                         /usr/share/qt5/doc/qtxml/qtxml.tags=/usr/share/qt5/doc/qtxml/ \
                          /usr/share/qt5/doc/qtxmlpatterns/qtxmlpatterns.tags=/usr/share/qt5/doc/qtxmlpatterns/ \
                          /usr/share/doc/qt/qtcore/qtcore.tags=/usr/share/doc/qt/qtcore/ \
+                         /usr/share/doc/qt/qtgui/qtgui.tags=/usr/share/doc/qt/qtgui/ \
+                         /usr/share/doc/qt/qtnetwork/qtnetwork.tags=/usr/share/doc/qt/qtnetwork/ \
                          /usr/share/doc/qt/qtsvg/qtsvg.tags=/usr/share/doc/qt/qtsvg/ \
+                         /usr/share/doc/qt/qttestlib/qttestlib.tags=/usr/share/doc/qt/qttestlib/ \
+                         /usr/share/doc/qt/qtwidgets/qtwidgets.tags=/usr/share/doc/qt/qtwidgets/ \
+                         /usr/share/doc/qt/qtxml/qtxml.tags=/usr/share/doc/qt/qtxml/ \
                          /usr/share/doc/qt/qtxmlpatterns/qtxmlpatterns.tags=/usr/share/doc/qt/qtxmlpatterns/
                          # Currently Qt Multimedia isn't configured to generate a tagfile, see
                          # https://github.com/qt/qtmultimedia/blob/5.9/src/multimedia/doc/qtmultimedia.qdocconf
