@@ -35,6 +35,7 @@ public:
     BitmapImage& operator=(const BitmapImage& a);
 
     BitmapImage* clone() override;
+    BitmapImage* clone(QRect rect);
     void loadFile() override;
     void unloadFile() override;
     bool isLoaded() override;

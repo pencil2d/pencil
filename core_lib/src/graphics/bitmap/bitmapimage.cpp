@@ -88,6 +88,15 @@ BitmapImage* BitmapImage::clone()
     return new BitmapImage(*this);
 }
 
+BitmapImage* BitmapImage::clone(QRect rect)
+{
+    if (rect.isEmpty() || mBounds.isEmpty()) return new BitmapImage(*this);
+
+    QRect intersection2 = rect.translated(-mBounds.topLeft());
+    BitmapImage result = BitmapImage(rect.topLeft(), image()->copy(intersection2));
+    return new BitmapImage(result);
+}
+
 void BitmapImage::loadFile()
 {
     if (mImage == nullptr)

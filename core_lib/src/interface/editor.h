@@ -70,8 +70,8 @@ public:
     bool init();
 
     enum ClipboardState {
-        BITMAP,
-        KEYFRAMES,
+        CANVAS,
+        TIMELINE,
     };
 
     /************************************************************************/
@@ -199,6 +199,12 @@ private:
     bool importBitmapImage(QString, int space = 0);
     bool importVectorImage(QString);
 
+    void copyFromTimeline();
+    void copyFromCanvas();
+
+    void pasteToCanvas();
+    void pasteToTimeline();
+
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
 
@@ -234,16 +240,12 @@ private:
     int mLastModifiedFrame = -1;
     int mLastModifiedLayer = -1;
 
-    // clipboard
-    bool clipboardBitmapOk = true;
-    bool clipboardVectorOk = true;
-    bool clipboardSoundClipOk = true;
+    // Clipboard
+    int clipboardState = ClipboardState::CANVAS;
 
-    int clipboardBitmapState = ClipboardState::BITMAP;
-
-    BitmapImage g_clipboardBitmapImage;
-    VectorImage g_clipboardVectorImage;
-    std::map<int, KeyFrame*> g_clipboardBitmapFrames;
+    BitmapImage* clipboardBitmapImage;
+    VectorImage* clipboardVectorImage;
+    std::map<int, KeyFrame*> clipboardFrames;
 };
 
 #endif

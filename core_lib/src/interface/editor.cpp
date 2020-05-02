@@ -56,9 +56,6 @@ GNU General Public License for more details.
 Editor::Editor(QObject* parent) : QObject(parent)
 {
     mBackupIndex = -1;
-    clipboardBitmapOk = false;
-    clipboardVectorOk = false;
-    clipboardSoundClipOk = false;
 }
 
 Editor::~Editor()
@@ -101,6 +98,9 @@ bool Editor::init()
 
     mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
     mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+
+    clipboardBitmapImage = new BitmapImage();
+    clipboardVectorImage = new VectorImage();
 
     return true;
 }
@@ -520,7 +520,7 @@ void Editor::cut()
     Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
     if (currentLayer == nullptr) return;
 
-    if (currentLayer->type() == Layer::BITMAP) {
+    if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
 
         for (int pos : currentLayer->selectedKeyFramesPositions()) {
             currentLayer->removeKeyFrame(pos);
@@ -531,43 +531,147 @@ void Editor::cut()
     deselectAll();
 }
 
+void Editor::copyFromCanvas()
+{
+    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+
+    QMimeData clipboardData;
+    clipboardData.setText("CANVAS_DATA");
+    switch (currentLayer->type()) {
+    case Layer::BITMAP:
+    {
+        LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(currentLayer);
+
+        clipboardState = ClipboardState::CANVAS;
+
+        BitmapImage* lastBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+        if (select()->somethingSelected()) {
+            clipboardBitmapImage = lastBitmapImage->clone(select()->mySelectionRect().toRect());
+        } else {
+            clipboardBitmapImage = lastBitmapImage->clone();  // copy the whole image
+        }
+
+        if (clipboardBitmapImage->image() != nullptr) {
+            QApplication::clipboard()->setImage(*clipboardBitmapImage->image());
+            QApplication::clipboard()->setMimeData(&clipboardData);
+        }
+        break;
+    }
+    case Layer::VECTOR: {
+        QApplication::clipboard()->setMimeData(&clipboardData);
+        clipboardVectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(currentFrame(), 0);  // copy the image
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void Editor::copyFromTimeline()
+{
+    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+    int selectedCount = currentLayer->selectedKeyFrameCount();
+
+    Q_ASSERT(selectedCount > 0);
+
+    QMimeData clipboardData;
+    clipboardData.setText("TIMELINE_DATA");
+
+    clipboardState = ClipboardState::TIMELINE;
+    if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR)
+    {
+        clipboardFrames.clear();
+
+        int firstPos = currentLayer->selectedKeyFramesPositions().first();
+        for (int pos : currentLayer->selectedKeyFramesPositions()) {
+            KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
+
+            if (!keyframe->isLoaded()) {
+                keyframe->loadFile();
+            }
+
+            if (keyframe != nullptr) {
+                this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
+            }
+        }
+        QApplication::clipboard()->setMimeData(&clipboardData);
+    }
+}
+
 void Editor::copy()
 {
     Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
     if (currentLayer == nullptr) return;
 
-    if (currentLayer->type() == Layer::BITMAP)
+    int selectedCount = currentLayer->selectedKeyFrameCount();
+    if (selectedCount == 0 || select()->somethingSelected()) // copy bitmap image
     {
-        LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(currentLayer);
-        int selectedCount = currentLayer->selectedKeyFrameCount();
-
-        if (selectedCount == 0 || select()->somethingSelected()) // copy bitmap image
-        {
-            clipboardBitmapState = ClipboardState::BITMAP;
-
-            select()->somethingSelected() ?
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(select()->mySelectionRect().toRect()) :  // copy part of the image
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
-    
-            clipboardBitmapOk = true;
-            if (g_clipboardBitmapImage.image() != nullptr) QApplication::clipboard()->setImage(*g_clipboardBitmapImage.image());
-        }
-        else // copy keyframes
-        {
-            clipboardBitmapState = ClipboardState::KEYFRAMES;
-
-            g_clipboardBitmapFrames.clear();
-            for (int pos : currentLayer->selectedKeyFramesPositions()) {
-                KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos)->clone();
-                this->g_clipboardBitmapFrames[pos] = keyframe;
-            }
-        }
+        copyFromCanvas();
+    } else if (selectedCount > 0) {
+        copyFromTimeline();
     }
+}
 
-    if (currentLayer->type() == Layer::VECTOR)
+void Editor::pasteToCanvas()
+{
+    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+
+    if (currentLayer->type() == Layer::BITMAP && clipboardBitmapImage != nullptr) {
+        backup(tr("Paste"));
+        BitmapImage tobePasted = clipboardBitmapImage->copy();
+        if (select()->somethingSelected())
+        {
+           QRectF selection = select()->mySelectionRect();
+           if (clipboardBitmapImage->width() <= selection.width() && clipboardBitmapImage->height() <= selection.height())
+           {
+               tobePasted.moveTopLeft(selection.topLeft());
+           }
+           else
+           {
+               tobePasted.transform(selection, true);
+           }
+        }
+        if (!currentLayer->keyExists(currentFrame())){ // add keyframe if pasting in empty frame
+           currentLayer->addNewKeyFrameAt(currentFrame());
+        }
+
+        auto pLayerBitmap = static_cast<LayerBitmap*>(currentLayer);
+        pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->paste(&tobePasted); // paste the clipboard
+    } else if (currentLayer->type() == Layer::VECTOR && clipboardVectorImage != nullptr) {
+        backup(tr("Paste"));
+        deselectAll();
+        VectorImage* vectorImage = (static_cast<LayerVector*>(currentLayer))->getLastVectorImageAtFrame(currentFrame(), 0);
+        vectorImage->paste(*clipboardVectorImage);  // paste the clipboard
+        select()->setSelection(vectorImage->getSelectionRect());
+    }
+}
+
+void Editor::pasteToTimeline()
+{
+
+    // TODO: support backup...
+    Q_ASSERT(!clipboardFrames.empty());
+    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+    auto it = clipboardFrames.rbegin();
+    int lastPosition = it->first;
+
+    // Move frames in front if any
+    if(currentFrame() < currentLayer->getMaxKeyFramePosition())
     {
-        clipboardVectorOk = true;
-        g_clipboardVectorImage = *((static_cast<LayerVector*>(currentLayer))->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+        currentLayer->selectAllFramesAfter( currentFrame() );
+        currentLayer->moveSelectedFrames(lastPosition + 1);
+    }
+    currentLayer->deselectAll();
+
+    int count = 0;
+    while (it != clipboardFrames.rend()) // insert frames & select them
+    {
+        int newPosition = currentFrame() + it->first;
+        KeyFrame* k =  it->second->clone();
+        currentLayer->addKeyFrame(newPosition, k);
+        currentLayer->setFrameSelected(newPosition, true);
+        count++;
+        it++;
     }
 }
 
@@ -576,62 +680,13 @@ void Editor::paste()
     Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
     if (currentLayer == nullptr) return;
     
-    if (currentLayer->type() == Layer::BITMAP)
+    if (clipboardState == ClipboardState::CANVAS)
     {
-        if ( clipboardBitmapState == ClipboardState::BITMAP && g_clipboardBitmapImage.image() != nullptr)
-        {
-            backup(tr("Paste"));
-
-            BitmapImage tobePasted = g_clipboardBitmapImage.copy();
-            if (select()->somethingSelected())
-            {
-                QRectF selection = select()->mySelectionRect();
-                if (g_clipboardBitmapImage.width() <= selection.width() && g_clipboardBitmapImage.height() <= selection.height())
-                {
-                    tobePasted.moveTopLeft(selection.topLeft());
-                }
-                else
-                {
-                    tobePasted.transform(selection, true);
-                }
-            }
-            if (!currentLayer->keyExists(currentFrame())){ // add keyframe if pasting in empty frame
-                currentLayer->addNewKeyFrameAt(currentFrame());
-            }
-
-            auto pLayerBitmap = static_cast<LayerBitmap*>(currentLayer);
-            pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->paste(&tobePasted); // paste the clipboard
-        }
-        else if ( clipboardBitmapState == ClipboardState::KEYFRAMES)
-        {
-            auto i = g_clipboardBitmapFrames.rbegin();
-            int lastPosition = i->first;
-
-            if(currentFrame() < currentLayer->getMaxKeyFramePosition()) // move keyframes
-            {
-                currentLayer->selectAllFramesAfter( currentFrame() );
-                currentLayer->moveSelectedFrames(lastPosition + 1);
-            }
-            currentLayer->deselectAll();
-
-            while (i != g_clipboardBitmapFrames.rend()) // insert frames & select them
-            {
-                int newPosition = currentFrame() + i->first;
-                KeyFrame* k =  i->second->clone();
-                currentLayer->addKeyFrame(newPosition, k);
-                currentLayer->setFrameSelected(newPosition, true);
-                i++;
-            }
-        }
+        pasteToCanvas();
     }
-
-    if (currentLayer->type() == Layer::VECTOR && clipboardVectorOk)
+    else if (clipboardState == ClipboardState::TIMELINE)
     {
-        backup(tr("Paste"));
-        deselectAll();
-        VectorImage* vectorImage = (static_cast<LayerVector*>(currentLayer))->getLastVectorImageAtFrame(currentFrame(), 0);
-        vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
-        select()->setSelection(vectorImage->getSelectionRect());
+        pasteToTimeline();
     }
     
     Q_EMIT  layers()->currentLayerChanged(layers()->currentLayerIndex());
@@ -641,22 +696,30 @@ void Editor::paste()
 void Editor::flipSelection(bool flipVertical)
 {
     mScribbleArea->flipSelection(flipVertical);
+
 }
 
 void Editor::clipboardChanged()
 {
-    if (clipboardBitmapOk == false)
-    {
-        clipboardBitmapState = ClipboardState::BITMAP;
-        g_clipboardBitmapImage.setImage(new QImage(QApplication::clipboard()->image()));
-        g_clipboardBitmapImage.bounds() = QRect(g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.image()->size());
-        //qDebug() << "New clipboard image" << g_clipboardBitmapImage.image()->size();
+
+    const QMimeData* clipboardData = QApplication::clipboard()->mimeData();
+    if (!clipboardData->text().contains("CANVAS_DATA") && !clipboardData->text().contains("TIMELINE_DATA")) {
+        clipboardBitmapImage->clear();
+        clipboardVectorImage->clear();
+        clipboardFrames.clear();
+
+        qDebug() << "Found no valid clipboard data, clearing";
     }
-    else
-    {
-        clipboardBitmapOk = false;
-        // qDebug() << "The image has been saved in the clipboard";
-    }
+////    clipboardState = ClipboardState::CANVAS;
+
+//    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+//    if (clipboardState == CANVAS) {
+//        if (currentLayer->type() == Layer::BITMAP) {
+//            g_clipboardBitmapImage.setImage(new QImage(QApplication::clipboard()->image()));
+//            g_clipboardBitmapImage.bounds() = QRect(g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.image()->size());
+//        }
+//    }
+//    //qDebug() << "New clipboard image" << g_clipboardBitmapImage.image()->size();
 }
 
 void Editor::setLayerVisibility(LayerVisibility visibility) {
@@ -723,7 +786,7 @@ Status Editor::setObject(Object* newObject)
         m->load(mObject.get());
     }
 
-    g_clipboardVectorImage.setObject(newObject);
+    clipboardVectorImage->setObject(newObject);
 
     updateObject();
 
