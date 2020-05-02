@@ -617,29 +617,20 @@ void ActionCommands::reverseSelected()
         int selectedCount = currentLayer->selectedKeyFrameCount();
         if (selectedCount > 1)
         {
-            int firstPosition = currentLayer->selectedKeyFramesPositions().first();
-            int lastPosition = currentLayer->selectedKeyFramesPositions().last();
-            int centerPosition = (lastPosition - firstPosition + 1) / 2;
+            QList<int> selectedIndexes = currentLayer->selectedKeyFramesPositions();
+            int count = selectedIndexes.count()-1;
 
-            if ( selectedCount == 2 )  // swap 2 frames
-            {
-                currentLayer->swapKeyFrames(firstPosition, lastPosition);
-            }
-            else // revert all frames
-            {
-                // forbidden if unselected frames in between
-                for (int i = firstPosition; i < lastPosition; i++) 
-                {
-                    if (currentLayer->keyExists(i) && !currentLayer->getKeyFrameAt(i)->isSelected()) return;
-                }
-                for (int i = firstPosition; i < firstPosition + centerPosition; i++)
-                {
-                    int relativeFirstPosition = i - firstPosition;
-                    int newPosition = lastPosition - relativeFirstPosition;
-                    currentLayer->swapKeyFrames(i, newPosition);
-                }
-            }
+            QList<int> swappedValues;
+            for (int pos : selectedIndexes) {
+                int oldPos = pos;
+                int newPos = selectedIndexes[count];
 
+                if (!swappedValues.contains(oldPos) && !swappedValues.contains(newPos)) {
+                    currentLayer->swapKeyFrames(oldPos, newPos);
+                    swappedValues << newPos;
+                }
+                count--;
+            }
             Q_EMIT  mEditor->layers()->currentLayerChanged( mEditor->layers()->currentLayerIndex());
         }
     }
