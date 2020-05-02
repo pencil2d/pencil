@@ -549,6 +549,24 @@ void BitmapImage::fillNonAlphaPixels(const QRgb color)
     paste(&fill, QPainter::CompositionMode_SourceIn);
 }
 
+void BitmapImage::fillAlphaOnImage(int alpha)
+{
+    if (mBounds.isEmpty()) { return; }
+
+    QImage* newImage = new QImage(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
+    newImage->fill(Qt::transparent);
+    QPainter painter(newImage);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.translate(-mBounds.topLeft());
+    painter.setOpacity(static_cast<float>(alpha) / 255.0);
+    qDebug() << "opacity: " << painter.opacity() << " POINT: " << mBounds.topLeft() << " Image size: " << image()->size();
+    painter.drawImage(mBounds, *mImage);
+    painter.end();
+    mImage.reset(newImage);
+
+    modification();
+}
+
 void BitmapImage::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing)
 {
     int width = 2 + pen.width();

@@ -42,7 +42,7 @@ protected:
     KeyFrame* createKeyFrame(int position, Object*) override;
 
 private:
-    void loadImageAtFrame(QString strFilePath, QPoint topLeft, int frameNumber);
+    void loadImageAtFrame(QString strFilePath, QPoint topLeft, int frameNumber, qreal opacity);
     QString filePath(KeyFrame* key, const QDir& dataFolder) const;
     QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);

@@ -4,6 +4,8 @@
 #include <QDialog>
 #include "editor.h"
 
+class QTimer;
+
 namespace Ui {
 class LayerOpacityDialog;
 }
@@ -22,10 +24,17 @@ public:
 private slots:
     void opacitySliderChanged(int value);
     void opacitySpinboxChanged(int value);
+    void fadeInPressed();
+    void fadeOutPressed();
 
 private:
+
+    void setBitmapOpacity();
+
     Ui::LayerOpacityDialog *ui;
 
+    QTimer* mTimer = nullptr;
+    int mTimeOut = 250;
     Editor* mEditor = nullptr;
 };
 

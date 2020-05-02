@@ -66,6 +66,7 @@ public:
     void setPixel(int x, int y, QRgb colour);
     void setPixel(QPoint p, QRgb colour);
     void fillNonAlphaPixels(const QRgb color);
+    void fillAlphaOnImage(int alpha);
 
     inline QRgb constScanLine(int x, int y) const;
     inline void scanLine(int x, int y, QRgb colour);
@@ -112,6 +113,8 @@ public:
      */
     bool isMinimallyBounded() const { return mMinBound; }
     void enableAutoCrop(bool b) { mEnableAutoCrop = b; }
+    void setOpacity(qreal opacity) { mOpacity = opacity; }
+    qreal getOpacity() { return mOpacity; }
 
     Status writeFile(const QString& filename);
 
@@ -130,6 +133,7 @@ private:
     /** @see isMinimallyBounded() */
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
+    qreal mOpacity = 1.0;
 };
 
 #endif
