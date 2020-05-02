@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -198,9 +198,6 @@
     <addaction name="actionAdd_EmptyFrame"/>
     <addaction name="actionRemove_EmptyFrame"/>
     <addaction name="separator"/>
-    <addaction name="actionCut_Selected_Frames"/>
-    <addaction name="actionCopy_Frames"/>
-    <addaction name="actionPaste_selected_frames"/>
     <addaction name="actionReverse_selected_frames"/>
     <addaction name="actionRemove_selected_frames"/>
     <addaction name="separator"/>
@@ -636,12 +633,15 @@
   </action>
   <action name="actionAdd_EmptyFrame">
    <property name="text">
-    <string>Push Frames</string>
+    <string>Add Empty Frame</string>
+   </property>
+   <property name="toolTip">
+    <string>Adds empty frame next to current frame, will push all frames in front of current frame</string>
    </property>
   </action>
   <action name="actionRemove_EmptyFrame">
    <property name="text">
-    <string>Pull Frames</string>
+    <string>Remove Empty Frame</string>
    </property>
   </action>
   <action name="actionInsert_Frame">
@@ -1102,7 +1102,7 @@
   </action>
   <action name="actionReverse_selected_frames">
    <property name="text">
-    <string>Reverse selected frames</string>
+    <string>Reverse selected Frames</string>
    </property>
   </action>
   <action name="actionCopy_Frames">
@@ -1117,12 +1117,12 @@
   </action>
   <action name="actionRemove_selected_frames">
    <property name="text">
-    <string>Remove selected frames</string>
+    <string>Remove selected Frames</string>
    </property>
   </action>
   <action name="actionPaste_selected_frames">
    <property name="text">
-    <string>Paste selected frames</string>
+    <string>Paste selected Frames</string>
    </property>
   </action>
  </widget>

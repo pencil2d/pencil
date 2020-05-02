@@ -343,6 +343,10 @@ void MainWindow2::createMenus()
     connect(ui->actionMove_Frame_Forward, &QAction::triggered, mCommands, &ActionCommands::moveFrameForward);
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
 
+    connect(ui->actionReverse_selected_frames, &QAction::triggered, mCommands, &ActionCommands::reverseSelected);
+    connect(ui->actionRemove_selected_frames, &QAction::triggered, mCommands, &ActionCommands::removeSelected);
+    connect(ui->actionAdd_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::addNewEmpty);
+    connect(ui->actionRemove_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::removeEmpty);
 
     //--- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
