@@ -85,7 +85,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="110"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
-        <translation>Já existe um clipe de som neste quadro! Por favor seleccione outro quadro ou camada</translation>
+        <translation>Já existe um clipe de som neste quadro! Por favor selecione outro quadro ou camada</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="246"/>
@@ -165,7 +165,7 @@
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Select</source>
-        <translation>Seleccionar</translation>
+        <translation>Selecionar</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
@@ -332,7 +332,7 @@
         <location filename="../app/src/colorinspector.cpp" line="35"/>
         <source>Color Inspector</source>
         <comment>Window title of color inspector</comment>
-        <translation>Selector de cor</translation>
+        <translation>Seletor de cor</translation>
     </message>
 </context>
 <context>
@@ -890,7 +890,7 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
-        <translation>Não tem permissões para ler o ficheiro seleccionado. Por favor certifique-se que tem permissões de leitura para este ficheiro e tente novamente.</translation>
+        <translation>Não tem permissões para ler o ficheiro selecionado. Por favor certifique-se que tem permissões de leitura para este ficheiro e tente novamente.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
@@ -959,7 +959,7 @@
         <location filename="../app/ui/filespage.ui" line="23"/>
         <source>Enable autosave</source>
         <comment>Preference</comment>
-        <translation>Activar gravação automática</translation>
+        <translation>Ativar gravação automática</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="30"/>
@@ -1028,7 +1028,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="322"/>
         <source>Cached Frame Number:</source>
-        <translation>Número de quadro em cache:</translation>
+        <translation>Número de Quadros Armazenados:</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="97"/>
@@ -1183,7 +1183,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="297"/>
         <source>Enable Grid</source>
-        <translation>Activar Grelha</translation>
+        <translation>Ativar Grelha</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="209"/>
@@ -1315,7 +1315,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="102"/>
         <source>Selection</source>
-        <translation>Selecção</translation>
+        <translation>Seleção</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="124"/>
@@ -1446,12 +1446,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="403"/>
         <source>Crop To Selection</source>
-        <translation>Ajustar à selecção</translation>
+        <translation>Ajustar à seleção</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="408"/>
         <source>Select All</source>
-        <translation>Seleccionar Tudo</translation>
+        <translation>Selecionar Tudo</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="413"/>
@@ -1583,7 +1583,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="630"/>
         <source>Select</source>
-        <translation>Seleccionar</translation>
+        <translation>Selecionar</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="639"/>
@@ -1648,12 +1648,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="747"/>
         <source>New Camera Layer</source>
-        <translation>Nova camada da câmara</translation>
+        <translation>Nova Camada da Câmara</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="752"/>
         <source>Delete Current Layer</source>
-        <translation>Excluir Camada Actual</translation>
+        <translation>Excluir Camada Atual</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="762"/>
@@ -1766,7 +1766,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="974"/>
         <source>Flip Rolling</source>
-        <translation>Milissegundos por segundo no flip-rolling</translation>
+        <translation>Inverter Manuseamento</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="280"/>
@@ -1837,7 +1837,7 @@
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="148"/>
         <source>Color inspector</source>
-        <translation>Selector de cor</translation>
+        <translation>Seletor de cor</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="359"/>
@@ -1892,7 +1892,7 @@ Acabou de limpar a lista com sucesso</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="544"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
-        <translation>Não tem permissões para gravar no ficheiro seleccionado. Por favor verifique se tem permissões de escrita para este ficheiro antes de o tentar gravar. Como alternativa pode utilizar a opção do menu Gravar Como... para gravar numa localização onde se pode gravar.</translation>
+        <translation>Não tem permissões para gravar no ficheiro selecionado. Por favor verifique se tem permissões de escrita para este ficheiro antes de o tentar gravar. Como alternativa pode utilizar a opção do menu Gravar Como... para gravar numa localização onde se pode gravar.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="550"/>
@@ -3742,13 +3742,13 @@ Deseja gravar as alterações?</translation>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Está tentando modificar uma camada oculta!
-Por favor tente noutra camada (ou torne está camada visível)</translation>
+Por favor selecione outra camada (ou torne está camada visível)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
-        <translation>Excluir selecção</translation>
+        <translation>Excluir seleção</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1969"/>
@@ -3818,7 +3818,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>Clear</source>
-        <translation>Limpar Quadro</translation>
+        <translation>Limpar</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
@@ -3935,7 +3935,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="97"/>
         <source>New Camera Layer</source>
-        <translation>Nova camada de câmara</translation>
+        <translation>Nova Camada da Câmara</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="99"/>
@@ -3946,7 +3946,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="117"/>
         <source>Keys:</source>
-        <translation>Chaves:</translation>
+        <translation>Quadros:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="122"/>
@@ -4098,7 +4098,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="180"/>
         <source>Flip and Roll</source>
-        <translation>Inverter e Roll</translation>
+        <translation>Inverter e Manusear</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="188"/>
@@ -4108,12 +4108,12 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="240"/>
         <source>Msecs per drawing in flip inbetween</source>
-        <translation>Milissegundos por desenho no flip-Intermediário</translation>
+        <translation>Milissegundos por desenho no inverter-intermediário</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="289"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation>Milissegundos por desenho no flip-roll</translation>
+        <translation>Milissegundos por desenho no inverter-manusear</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>
@@ -4137,7 +4137,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="79"/>
         <source>Select Tool (%1): Select an object</source>
-        <translation>Ferramenta Selecção (%1): Selecciona objecto</translation>
+        <translation>Ferramenta Seleção (%1): Seleciona objecto</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="81"/>
@@ -4147,7 +4147,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="83"/>
         <source>Hand Tool (%1): Move the canvas</source>
-        <translation>Ferramenta Mão (%1): Move tela</translation>
+        <translation>Ferramenta Mão (%1): Move a tela</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="85"/>
@@ -4167,7 +4167,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="91"/>
         <source>Paint Bucket Tool (%1): Fill selected area with a color</source>
-        <translation>Ferramenta Balde (%1): Preenche área seleccionada com cor</translation>
+        <translation>Ferramenta Balde (%1): Preenche área selecionada com cor</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="93"/>
@@ -4182,7 +4182,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="98"/>
         <source>Clear Frame (%1): Erases content of selected frame</source>
-        <translation>Limpar Quadro (%1): Apaga conteúdo do quadro seleccionado</translation>
+        <translation>Limpar Quadro (%1): Apaga conteúdo do quadro selecionado</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="100"/>
@@ -4197,7 +4197,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="106"/>
         <source>Select Tool (%1)</source>
-        <translation>Ferramenta Seleccionar (%1)</translation>
+        <translation>Ferramenta Selecionar (%1)</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="108"/>
@@ -4304,7 +4304,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="92"/>
         <source>Enable or disable feathering</source>
-        <translation>Activar ou desactivar suavização</translation>
+        <translation>Ativar ou desativar suavização</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="95"/>
@@ -4390,7 +4390,7 @@ Por favor tente noutra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
         <source>Merge vector lines when they are close together</source>
-        <translation>Juntar linhas vectoriais quando estiverem próximas</translation>
+        <translation>Unir linhas vectoriais quando estiverem próximas</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>

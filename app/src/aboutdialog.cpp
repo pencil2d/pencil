@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 #include "pencildef.h"
 
+
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AboutDialog)
@@ -39,15 +40,24 @@ AboutDialog::~AboutDialog()
 
 void AboutDialog::init()
 {
-	QStringList devText;
-	devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
-#if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
-    devText << "commit: " S__GIT_COMMIT_HASH
-            << "date: " S__GIT_TIMESTAMP;
-#endif
-#if !defined(PENCIL2D_RELEASE)
+    QStringList devText;
+
+#if defined(PENCIL2D_RELEASE_BUILD)
+    devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+    devText << "Nightly build";
+#else
     devText << "Development build";
 #endif
+
+    devText << ""; // An empty line
+
+#if defined(GIT_EXISTS)
+    devText << "commit: " S__GIT_COMMIT_HASH
+            << "date: " S__GIT_TIMESTAMP
+            << "";
+#endif
+
     devText << QString("Operating System: %1").arg(QSysInfo::prettyProductName())
             << QString("CPU Architecture: %1").arg(QSysInfo::buildCpuArchitecture());
     if(QString(qVersion()) == QT_VERSION_STR)

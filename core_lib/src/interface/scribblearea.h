@@ -81,7 +81,7 @@ public:
 
     void setEffect(SETTING e, bool isOn);
 
-    int showAllLayers() const { return mShowAllLayers; }
+    LayerVisibility getLayerVisibility() const { return mLayerVisibility; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
@@ -97,11 +97,11 @@ public:
 
     void setModified(int layerNumber, int frameNumber);
     bool shouldUpdateAll() const { return mNeedUpdateAll; }
-    void setAllDirty() { mNeedUpdateAll = true; }
+    void setAllDirty();
 
     void flipSelection(bool flipVertical);
 
-    BaseTool* currentTool();
+    BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
     void setTemporaryTool(ToolType eToolMode);
@@ -127,7 +127,9 @@ public slots:
     void setCurveSmoothing(int);
     void toggleThinLines();
     void toggleOutlines();
-    void toggleShowAllLayers();
+    void increaseLayerVisibilityIndex();
+    void decreaseLayerVisibilityIndex();
+    void setLayerVisibility(LayerVisibility visibility);
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
@@ -183,6 +185,7 @@ public:
     QPixmap mTransCursImg;
 
 private:
+    void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals();
@@ -203,8 +206,8 @@ private:
     bool mIsSimplified = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
-    int  mShowAllLayers = 1;
-    bool mUsePressure = true;
+    LayerVisibility mLayerVisibility = LayerVisibility::ALL;
+    bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;

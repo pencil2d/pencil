@@ -1761,12 +1761,12 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="969"/>
         <source>Flip In-Between</source>
-        <translation type="unfinished"/>
+        <translation>Obrátit v mezeře</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="974"/>
         <source>Flip Rolling</source>
-        <translation type="unfinished"/>
+        <translation>Obrátit běh</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="280"/>
@@ -4099,7 +4099,7 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="180"/>
         <source>Flip and Roll</source>
-        <translation type="unfinished"/>
+        <translation>Obrátit a běžet</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="188"/>
@@ -4109,12 +4109,12 @@ Chcete ji uložit nyní?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="240"/>
         <source>Msecs per drawing in flip inbetween</source>
-        <translation type="unfinished"/>
+        <translation>Milisekund na kresbu v Obrátit v mezeře</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="289"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation type="unfinished"/>
+        <translation>Milisekund na kresbu v Obrátit a běžet</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>

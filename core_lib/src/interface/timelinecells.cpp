@@ -181,6 +181,8 @@ void TimeLineCells::drawContent()
         }
     }
 
+    mCurrentFrame = mEditor->currentFrame();
+
     QPainter painter(mCache);
 
     Object* object = mEditor->object();
@@ -203,6 +205,7 @@ void TimeLineCells::drawContent()
             continue;
         }
         Layer* layeri = object->getLayer(i);
+
         if (layeri != nullptr)
         {
             switch (mType)
@@ -216,7 +219,7 @@ void TimeLineCells::drawContent()
             case TIMELINE_CELL_TYPE::Layers:
                 layeri->paintLabel(painter, this, 0,
                                    getLayerY(i), width() - 1,
-                                   getLayerHeight(), false, mEditor->allLayers());
+                                   getLayerHeight(), false, mEditor->layerVisibility());
                 break;
             }
         }
@@ -234,7 +237,7 @@ void TimeLineCells::drawContent()
         {
             layer->paintLabel(painter, this,
                               0, getLayerY(mEditor->layers()->currentLayerIndex()) + getMouseMoveY(),
-                              width() - 1, getLayerHeight(), true, mEditor->allLayers());
+                              width() - 1, getLayerHeight(), true, mEditor->layerVisibility());
 
             paintLayerGutter(painter);
         }
@@ -261,7 +264,7 @@ void TimeLineCells::drawContent()
                               width() - 1,
                               getLayerHeight(),
                               true,
-                              mEditor->allLayers());
+                              mEditor->layerVisibility());
         }
     }
 
@@ -280,9 +283,9 @@ void TimeLineCells::drawContent()
     {
         // --- draw circle
         painter.setPen(Qt::black);
-        if (mEditor->allLayers() == 0) { painter.setBrush(Qt::NoBrush); }
-        if (mEditor->allLayers() == 1) { painter.setBrush(Qt::darkGray); }
-        if (mEditor->allLayers() == 2) { painter.setBrush(Qt::black); }
+        if (mEditor->layerVisibility() == LayerVisibility::CURRENTONLY) { painter.setBrush(Qt::NoBrush); }
+        else if (mEditor->layerVisibility() == LayerVisibility::RELATED) { painter.setBrush(Qt::darkGray); }
+        else if (mEditor->layerVisibility() == LayerVisibility::ALL) { painter.setBrush(Qt::black); }
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.drawEllipse(6, 4, 9, 9);
         painter.setRenderHint(QPainter::Antialiasing, false);
@@ -510,7 +513,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         {
             if (event->pos().x() < 15)
             {
-                mEditor->toggleShowAllLayers();
+                if (event->button() == Qt::LeftButton) {
+                    mEditor->increaseLayerVisibilityIndex();
+                } else if (event->button() == Qt::RightButton) {
+                    mEditor->decreaseLayerVisibilityIndex();
+                }
             }
         }
         break;
@@ -716,7 +723,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     int layerNumber = getLayerNumber(event->pos().y());
 
     // -- short scrub --
-    if (event->pos().y() < 20)
+    if (event->pos().y() < 20 && event->pos().x() > 20)
     {
         mPrefs->set(SETTING::SHORT_SCRUB, !mbShortScrub);
     }
@@ -751,6 +758,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
             }
         }
     }
+    QWidget::mouseDoubleClickEvent(event);
 }
 
 void TimeLineCells::hScrollChange(int x)

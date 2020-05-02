@@ -226,21 +226,17 @@ void EraserTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        for (auto & i : p)
+        for (int i = 0; i < p.size(); i++)
         {
-            i = mEditor->view()->mapScreenToCanvas(i);
+            p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
         }
 
-        qreal opacity = 1.0;
-        mCurrentWidth = properties.width;
-        if (properties.pressure)
-        {
-            opacity = strokeManager()->getPressure();
-            mCurrentWidth = (mCurrentWidth + (strokeManager()->getPressure() * mCurrentWidth)) * 0.5;
-        }
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
-        qreal brushWidth = mCurrentWidth;
-        qreal brushStep = (0.5 * brushWidth) - ((properties.feather / 100.0) * brushWidth * 0.5);
+        qreal brushStep = (0.5 * brushWidth);
         brushStep = qMax(1.0, brushStep);
 
         BlitRect rect;
@@ -249,31 +245,29 @@ void EraserTool::drawStroke()
         QPointF b = getCurrentPoint();
 
         qreal distance = 4 * QLineF(b, a).length();
-        int steps = qRound(distance) / brushStep;
+        int steps = qRound(distance / brushStep);
 
         for (int i = 0; i < steps; i++)
         {
-            QPointF point = mLastBrushPoint + (i + 1) * (brushStep)* (b - mLastBrushPoint) / distance;
+            QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
+
             rect.extend(point.toPoint());
             mScribbleArea->drawBrush(point,
                                      brushWidth,
                                      properties.feather,
-                                     QColor(255, 255, 255, 255),
+                                     Qt::white,
                                      opacity,
                                      properties.useFeather,
                                      properties.useAA == ON);
-
             if (i == (steps - 1))
             {
-                mLastBrushPoint = point;
+                mLastBrushPoint = getCurrentPoint();
             }
         }
 
-        int rad = qRound(brushWidth) / 2 + 2;
+        int rad = qRound(brushWidth / 2 + 2);
 
-        // continuously update buffer to update stroke behind grid.
         mScribbleArea->paintBitmapBufferRect(rect);
-
         mScribbleArea->refreshBitmap(rect, rad);
     }
     else if (layer->type() == Layer::VECTOR)

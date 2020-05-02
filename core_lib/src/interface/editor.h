@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
+#include "pencildef.h"
 
 
 class QDragEnterEvent;
@@ -101,7 +102,12 @@ public:
 
     void scrubTo(int frameNumber);
 
-    int  allLayers();
+
+    /**
+     * @brief The visiblity value should match any of the VISIBILITY enum values
+     */
+    void setLayerVisibility(LayerVisibility visibility);
+    LayerVisibility layerVisibility();
     bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
     bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
 
@@ -167,7 +173,8 @@ public: //slots
     void cut();
 
     void clipboardChanged();
-    void toggleShowAllLayers();
+    void increaseLayerVisibilityIndex();
+    void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
 
     void toogleOnionSkinType();

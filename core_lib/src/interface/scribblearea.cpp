@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -80,6 +80,8 @@ bool ScribbleArea::init()
     mIsSimplified = mPrefs->isOn(SETTING::OUTLINES);
     mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
 
+    mLayerVisibility = static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY));
+
     mBufferImg = new BitmapImage;
 
     updateCanvasCursor();
@@ -125,6 +127,15 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::GRID:
     case SETTING::GRID_SIZE_W:
     case SETTING::GRID_SIZE_H:
+    case SETTING::OVERLAY_CENTER:
+    case SETTING::OVERLAY_THIRDS:
+    case SETTING::OVERLAY_GOLDEN:
+    case SETTING::OVERLAY_SAFE:
+    case SETTING::ACTION_SAFE_ON:
+    case SETTING::ACTION_SAFE:
+    case SETTING::TITLE_SAFE_ON:
+    case SETTING::TITLE_SAFE:
+    case SETTING::OVERLAY_SAFE_HELPER_TEXT_ON:
     case SETTING::PREV_ONION:
     case SETTING::NEXT_ONION:
     case SETTING::ONION_BLUE:
@@ -139,6 +150,10 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::MULTILAYER_ONION:
         mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
         updateAllFrames();
+        break;
+    case SETTING::LAYER_VISIBILITY_THRESHOLD:
+    case SETTING::LAYER_VISIBILITY:
+        setLayerVisibility(static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY)));
         break;
     default:
         break;
@@ -225,6 +240,12 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
         emit modification(layerNumber);
         updateAllFrames();
     }
+}
+
+void ScribbleArea::setAllDirty()
+{
+    mNeedUpdateAll = true;
+    mCanvasPainter.resetLayerCache();
 }
 
 /************************************************************************/
@@ -465,14 +486,6 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
 
 void ScribbleArea::pointerPressEvent(PointerEvent* event)
 {
-
-    if (event->button() == Qt::RightButton)
-    {
-        mMouseRightButtonInUse = true;
-        getTool(HAND)->pointerPressEvent(event);
-        return;
-    }
-
     bool isCameraLayer = mEditor->layers()->currentLayer()->type() == Layer::CAMERA;
     if ((currentTool()->type() != HAND || isCameraLayer) && (event->button() != Qt::RightButton) && (event->button() != Qt::MidButton || isCameraLayer))
     {
@@ -487,7 +500,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
         }
     }
 
-    if (event->buttons() & Qt::MidButton)
+    if (event->buttons() & (Qt::MidButton | Qt::RightButton))
     {
         setTemporaryTool(HAND);
     }
@@ -939,7 +952,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
-    if (!isPointerInUse() || currentTool()->type() == MOVE || currentTool()->type() == HAND || mMouseRightButtonInUse)
+    if (!currentTool()->isActive())
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
@@ -954,6 +967,11 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
             //qDebug() << "Repaint canvas!";
         }
+    }
+    else
+    {
+        prepCanvas(mEditor->currentFrame(), event->rect());
+        mCanvasPainter.paintCached();
     }
 
     if (currentTool()->type() == MOVE)
@@ -1042,30 +1060,13 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             {
                 break;
             }
-            } // end siwtch
+            } // end switch
         }
 
-        // paints the  buffer image
-        if (mEditor->layers()->currentLayer() != nullptr)
-        {
-            painter.setOpacity(1.0);
-            if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-            {
-                painter.setWorldMatrixEnabled(true);
-                painter.setTransform(mEditor->view()->getView());
-            }
-            else if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
-            {
-                painter.setWorldMatrixEnabled(false);
-            }
-
-            // TODO: move to above if vector statement
-            mBufferImg->paintImage(painter);
-
-            paintCanvasCursor(painter);
-        }
+        paintCanvasCursor(painter);
 
         mCanvasPainter.renderGrid(painter);
+        mCanvasPainter.renderOverlays(painter);
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
@@ -1118,7 +1119,7 @@ VectorImage* ScribbleArea::currentVectorImage(Layer* layer) const
     return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 }
 
-void ScribbleArea::drawCanvas(int frame, QRect rect)
+void ScribbleArea::prepCanvas(int frame, QRect rect)
 {
     Object* object = mEditor->object();
 
@@ -1135,14 +1136,25 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     o.bGrid = mPrefs->isOn(SETTING::GRID);
     o.nGridSizeW = mPrefs->getInt(SETTING::GRID_SIZE_W);
     o.nGridSizeH = mPrefs->getInt(SETTING::GRID_SIZE_H);
+    o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
+    o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
+    o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
+    o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
+    o.bActionSafe = mPrefs->isOn(SETTING::ACTION_SAFE_ON);
+    o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
+    o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
+    o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
+    o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
     o.bAxis = false;
     o.bThinLines = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
-    o.nShowAllLayers = mShowAllLayers;
+    o.eLayerVisibility = mLayerVisibility;
+    o.fLayerVisibilityThreshold = mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD);
     o.bIsOnionAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     o.scaling = mEditor->view()->scaling();
     o.onionWhilePlayback = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
     o.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    o.cmBufferBlendMode = mEditor->tools()->currentTool()->type() == ToolType::ERASER ? QPainter::CompositionMode_DestinationOut : QPainter::CompositionMode_SourceOver;
     mCanvasPainter.setOptions(o);
 
     mCanvasPainter.setCanvas(&mCanvas);
@@ -1150,7 +1162,14 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     ViewManager* vm = mEditor->view();
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 
-    mCanvasPainter.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect);
+    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, mBufferImg);
+}
+
+void ScribbleArea::drawCanvas(int frame, QRect rect)
+{
+    mCanvas.fill(Qt::transparent);
+    prepCanvas(frame, rect);
+    mCanvasPainter.paint();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
@@ -1458,20 +1477,30 @@ void ScribbleArea::toggleOutlines()
     setEffect(SETTING::OUTLINES, mIsSimplified);
 }
 
-void ScribbleArea::toggleShowAllLayers()
+void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
 {
-    mShowAllLayers++;
-    if (mShowAllLayers == 3)
-    {
-        mShowAllLayers = 0;
-    }
+    mLayerVisibility = visibility;
+    updateAllFrames();
+}
+
+void ScribbleArea::increaseLayerVisibilityIndex()
+{
+    ++mLayerVisibility;
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
+    updateAllFrames();
+}
+
+void ScribbleArea::decreaseLayerVisibilityIndex()
+{
+    --mLayerVisibility;
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
     updateAllFrames();
 }
 
 /************************************************************************************/
 // tool handling
 
-BaseTool* ScribbleArea::currentTool()
+BaseTool* ScribbleArea::currentTool() const
 {
     return editor()->tools()->currentTool();
 }
@@ -1575,7 +1604,7 @@ void ScribbleArea::setPrevTool()
 
 void ScribbleArea::paletteColorChanged(QColor color)
 {
-    Q_UNUSED(color);
+    Q_UNUSED(color)
     updateAllVectorLayersAtCurrentFrame();
 }
 

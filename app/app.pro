@@ -41,6 +41,7 @@ HEADERS += \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/mainwindow2.h \
+    src/onionskinwidget.h \
     src/predefinedsetmodel.h \
     src/pegbaralignmentdialog.h \
     src/shortcutfilter.h \
@@ -68,13 +69,15 @@ HEADERS += \
     src/spinslider.h \
     src/doubleprogressdialog.h \
     src/colorslider.h \
-    src/checkupdatesdialog.h
+    src/checkupdatesdialog.h \
+    src/presetdialog.h    
 
 SOURCES += \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
+    src/onionskinwidget.cpp \
     src/predefinedsetmodel.cpp \
     src/pegbaralignmentdialog.cpp \
     src/shortcutfilter.cpp \
@@ -101,13 +104,15 @@ SOURCES += \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
-    src/checkupdatesdialog.cpp
+    src/checkupdatesdialog.cpp \
+    src/presetdialog.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \
     ui/mainwindow2.ui \
+    ui/onionskin.ui \
     ui/pegbaralignmentdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
@@ -127,7 +132,8 @@ FORMS += \
     ui/timelinepage.ui \
     ui/filespage.ui \
     ui/toolspage.ui \
-    ui/toolboxwidget.ui
+    ui/toolboxwidget.ui \
+    ui/presetdialog.ui
 
 
 

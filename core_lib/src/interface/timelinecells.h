@@ -62,6 +62,7 @@ public:
     void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
     void paintLayerGutter(QPainter& painter);
     bool didDetatchLayer();
+    int getCurrentFrame() { return mCurrentFrame; }
 
 Q_SIGNALS:
     void mouseMovedY(int);
@@ -90,6 +91,7 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
+
     TimeLine* mTimeLine;
     Editor* mEditor; // the editor for which this timeLine operates
     PreferenceManager* mPrefs;
@@ -106,6 +108,8 @@ private:
     int mLayerHeight = 20;
     int mStartY = 0;
     int mEndY   = 0;
+
+    int mCurrentFrame = 0;
 
     int mFromLayer = 0;
     int mToLayer   = 1;
