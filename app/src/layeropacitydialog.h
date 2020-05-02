@@ -22,14 +22,17 @@ public:
     void init();
 
 private slots:
+    void previousKeyframePressed();
+    void nextKeyframePressed();
     void opacitySliderChanged(int value);
     void opacitySpinboxChanged(int value);
+    void allLayerOpacity();
     void fadeInPressed();
     void fadeOutPressed();
 
 private:
 
-    void setBitmapOpacity();
+    void setOpacityCurrentKeyframe();
 
     Ui::LayerOpacityDialog *ui;
 

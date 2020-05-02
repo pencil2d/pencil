@@ -355,7 +355,6 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
 
     painter.setWorldMatrixEnabled(true);
     painter.setOpacity(paintedImage->getOpacity());
-    qDebug() << "p opa: " << painter.opacity();
     prescale(&paintToImage);
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 }

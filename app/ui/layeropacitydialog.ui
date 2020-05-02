@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>383</width>
-    <height>172</height>
+    <height>244</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,6 +35,34 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolBtnPreviousKeyframe">
+       <property name="toolTip">
+        <string>Previous keyframe</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../data/app.qrc">
+         <normaloff>:/icons/prev.png</normaloff>:/icons/prev.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolBtnNextKeyframe">
+       <property name="toolTip">
+        <string>Next keyframe</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../data/app.qrc">
+         <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -142,6 +170,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../data/app.qrc"/>
+ </resources>
  <connections/>
 </ui>

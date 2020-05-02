@@ -124,6 +124,7 @@ public:
     virtual void editProperties();
 
     bool isPaintable() const;
+    QList<int> getSelectedFrameList() { return mSelectedFrames_byPosition; }
 
 protected:
     void setId(int LayerId) { mId = LayerId; }
