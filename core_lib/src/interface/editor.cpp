@@ -516,6 +516,18 @@ void Editor::cut()
 {
     copy();
     mScribbleArea->deleteSelection();
+
+    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+    if (currentLayer == nullptr) return;
+
+    if (currentLayer->type() == Layer::BITMAP) {
+
+        for (int pos : currentLayer->selectedKeyFramesPositions()) {
+            currentLayer->removeKeyFrame(pos);
+        }
+    }
+    emit updateTimeLine();
+
     deselectAll();
 }
 
@@ -543,13 +555,12 @@ void Editor::copy()
         else // copy keyframes
         {
             clipboardBitmapState = ClipboardState::KEYFRAMES;
-            int firstPosition = currentLayer->selectedKeyFramesPositions().first();
 
             g_clipboardBitmapFrames.clear();
-            currentLayer->foreachSelectedKeyFrame([firstPosition, this](KeyFrame* k){
-                int relativePosition = k->pos() - firstPosition;
-                this->g_clipboardBitmapFrames[relativePosition] = k->clone();
-            });
+            for (int pos : currentLayer->selectedKeyFramesPositions()) {
+                KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos)->clone();
+                this->g_clipboardBitmapFrames[pos] = keyframe;
+            }
         }
     }
 
