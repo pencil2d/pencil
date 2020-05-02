@@ -301,7 +301,6 @@ TimelinePage::TimelinePage()
     connect(ui->radioButtonAddNewKey, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDuplicate, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->radioButtonDrawOnPrev, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
-    connect(ui->radioButtonExceptEraser, &QRadioButton::toggled, this, &TimelinePage::drawEmptyKeyRadioButtonToggled);
     connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &TimelinePage::playbackStateChanged);
     connect(ui->flipRollMsecsSlider, sliderChanged, this, &TimelinePage::flipRollMsecSliderChanged);
     connect(ui->flipRollMsecsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollMsecSpinboxChanged);
@@ -329,7 +328,6 @@ void TimelinePage::updateValues()
     SignalBlocker b4(ui->radioButtonAddNewKey);
     SignalBlocker b5(ui->radioButtonDuplicate);
     SignalBlocker b6(ui->radioButtonDrawOnPrev);
-    SignalBlocker b8(ui->radioButtonExceptEraser);
     int action = mManager->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
     switch (action)
     {
@@ -341,9 +339,6 @@ void TimelinePage::updateValues()
         break;
     case KEEP_DRAWING_ON_PREVIOUS_KEY:
         ui->radioButtonDrawOnPrev->setChecked(true);
-        break;
-    case CREATE_NEW_KEY_EXCEPT_ERASER:
-        ui->radioButtonExceptEraser->setChecked(true);
         break;
     default:
         break;
@@ -392,10 +387,6 @@ void TimelinePage::drawEmptyKeyRadioButtonToggled(bool)
     else if (ui->radioButtonDrawOnPrev->isChecked())
     {
         mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, KEEP_DRAWING_ON_PREVIOUS_KEY);
-    }
-    else if (ui->radioButtonExceptEraser->isChecked())
-    {
-        mManager->set(SETTING::DRAW_ON_EMPTY_FRAME_ACTION, CREATE_NEW_KEY_EXCEPT_ERASER);
     }
 }
 

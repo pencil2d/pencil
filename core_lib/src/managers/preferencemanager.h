@@ -77,8 +77,7 @@ enum DrawOnEmptyFrameAction
 {
     CREATE_NEW_KEY,
     DUPLICATE_PREVIOUS_KEY,
-    KEEP_DRAWING_ON_PREVIOUS_KEY,
-    CREATE_NEW_KEY_EXCEPT_ERASER
+    KEEP_DRAWING_ON_PREVIOUS_KEY
 };
 
 class PreferenceManager : public BaseManager

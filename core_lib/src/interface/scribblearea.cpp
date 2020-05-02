@@ -891,6 +891,10 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
         return;
     }
 
+    if (currentTool()->type() == ERASER) {
+        return;
+    }
+
     int frameNumber = mEditor->currentFrame();
     auto previousKeyFrame = layer->getLastKeyFrameAtPosition(frameNumber);
 
@@ -920,23 +924,13 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
             // if the previous keyframe doesn't exist,
             // fallthrough and create empty keyframe
         }
-        case CREATE_NEW_KEY:
+        case CREATE_NEW_KEY: {
             mEditor->addNewKey();
 
             // Refresh canvas
             drawCanvas(frameNumber, mCanvas.rect());
             break;
-
-        case CREATE_NEW_KEY_EXCEPT_ERASER:
-        {
-
-            if (currentTool()->type() != ERASER){
-                mEditor->addNewKey();
-                drawCanvas(frameNumber, mCanvas.rect());
-            }
-            break;
         }
-
         default:
             break;
         }
