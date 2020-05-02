@@ -612,27 +612,24 @@ void ActionCommands::removeSelected()
 void ActionCommands::reverseSelected()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
-    if (currentLayer->type() == Layer::BITMAP)
+    int selectedCount = currentLayer->selectedKeyFrameCount();
+    if (selectedCount > 1)
     {
-        int selectedCount = currentLayer->selectedKeyFrameCount();
-        if (selectedCount > 1)
-        {
-            QList<int> selectedIndexes = currentLayer->selectedKeyFramesPositions();
-            int count = selectedIndexes.count()-1;
+        QList<int> selectedIndexes = currentLayer->selectedKeyFramesPositions();
+        int count = selectedIndexes.count()-1;
 
-            QList<int> swappedValues;
-            for (int pos : selectedIndexes) {
-                int oldPos = pos;
-                int newPos = selectedIndexes[count];
+        QList<int> swappedValues;
+        for (int pos : selectedIndexes) {
+            int oldPos = pos;
+            int newPos = selectedIndexes[count];
 
-                if (!swappedValues.contains(oldPos) && !swappedValues.contains(newPos)) {
-                    currentLayer->swapKeyFrames(oldPos, newPos);
-                    swappedValues << newPos;
-                }
-                count--;
+            if (!swappedValues.contains(oldPos) && !swappedValues.contains(newPos)) {
+                currentLayer->swapKeyFrames(oldPos, newPos);
+                swappedValues << newPos;
             }
-            Q_EMIT  mEditor->layers()->currentLayerChanged( mEditor->layers()->currentLayerIndex());
+            count--;
         }
+        Q_EMIT  mEditor->layers()->currentLayerChanged( mEditor->layers()->currentLayerIndex());
     }
 };
 
