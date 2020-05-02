@@ -59,11 +59,6 @@ Q_SIGNALS:
     void addKeyClick();
     void removeKeyClick();
     void duplicateKeyClick();
-    void addEmptyClick();
-    void removeEmptyClick();
-    void insertKeyClick();
-    void removeSelectedClick();
-    void reverseSelectedClick();
 
     void newBitmapLayer();
     void newVectorLayer();

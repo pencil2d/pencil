@@ -1265,12 +1265,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
-    connect(pTimeline, &TimeLine::addEmptyClick, mCommands, &ActionCommands::addNewEmpty);
-    connect(pTimeline, &TimeLine::removeEmptyClick, mCommands, &ActionCommands::removeEmpty);
-    connect(pTimeline, &TimeLine::insertKeyClick, mCommands, &ActionCommands::insertNewKey);
-
-    connect(pTimeline, &TimeLine::removeSelectedClick, mCommands, &ActionCommands::removeSelected);
-    connect(pTimeline, &TimeLine::reverseSelectedClick, mCommands, &ActionCommands::reverseSelected);
 
     connect(pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer);
     connect(pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer);

@@ -127,35 +127,10 @@ void TimeLine::initUI()
     removeKeyButton->setToolTip(tr("Remove Frame"));
     removeKeyButton->setFixedSize(24, 24);
 
-    QToolButton* addEmptyButton = new QToolButton(this);
-    addEmptyButton->setIcon(QIcon(":icons/add2.png"));
-    addEmptyButton->setToolTip(tr("Add empty frame"));
-    addEmptyButton->setFixedSize(24, 24);
-
-    QToolButton* removeEmptyButton = new QToolButton(this);
-    removeEmptyButton->setIcon(QIcon(":icons/remove2.png"));
-    removeEmptyButton->setToolTip(tr("Remove empty frame"));
-    removeEmptyButton->setFixedSize(24, 24);
-
-    QToolButton* insertKeyButton = new QToolButton(this);
-    insertKeyButton->setIcon(QIcon(":icons/add2.png"));
-    insertKeyButton->setToolTip(tr("Insert Frame"));
-    insertKeyButton->setFixedSize(24, 24);
-
     QToolButton* duplicateKeyButton = new QToolButton(this);
     duplicateKeyButton->setIcon(QIcon(":icons/controls/duplicate.png"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
-
-    QToolButton* removeSelectedButton = new QToolButton(this);
-    removeSelectedButton->setIcon(QIcon(":icons/test3.png"));
-    removeSelectedButton->setToolTip(tr("Remove frames"));
-    removeSelectedButton->setFixedSize(24, 24);
-
-    QToolButton* reverseSelectedButton = new QToolButton(this);
-    reverseSelectedButton->setIcon(QIcon(":icons/test6.png"));
-    reverseSelectedButton->setToolTip(tr("Reverse frames"));
-    reverseSelectedButton->setFixedSize(24, 24);
 
     QLabel* zoomLabel = new QLabel(tr("Zoom:"));
     zoomLabel->setIndent(5);
@@ -174,13 +149,6 @@ void TimeLine::initUI()
     timelineButtons->addSeparator();
     timelineButtons->addWidget(zoomLabel);
     timelineButtons->addWidget(zoomSlider);
-    timelineButtons->addSeparator();
-    timelineButtons->addWidget(addEmptyButton);
-    timelineButtons->addWidget(removeEmptyButton);
-    timelineButtons->addWidget(insertKeyButton);
-    timelineButtons->addSeparator();
-    timelineButtons->addWidget(reverseSelectedButton);
-    timelineButtons->addWidget(removeSelectedButton);
 
     timelineButtons->setFixedHeight(30);
 
@@ -235,12 +203,6 @@ void TimeLine::initUI()
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
-    connect(addEmptyButton, &QToolButton::clicked, this, &TimeLine::addEmptyClick);
-    connect(removeEmptyButton, &QToolButton::clicked, this, &TimeLine::removeEmptyClick);
-    connect(insertKeyButton, &QToolButton::clicked, this, &TimeLine::insertKeyClick);
-
-    connect(removeSelectedButton, &QToolButton::clicked, this, &TimeLine::removeSelectedClick);
-    connect(reverseSelectedButton, &QToolButton::clicked, this, &TimeLine::reverseSelectedClick);
 
     connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);

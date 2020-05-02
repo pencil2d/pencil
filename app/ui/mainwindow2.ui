@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -178,11 +178,18 @@
     <addaction name="actionPrev_KeyFrame"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_Frame"/>
+    <addaction name="actionInsert_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
+    <addaction name="separator"/>
     <addaction name="actionAdd_EmptyFrame"/>
     <addaction name="actionRemove_EmptyFrame"/>
-    <addaction name="actionInsert_Frame"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut_Selected_Frames"/>
+    <addaction name="actionCopy_Frames"/>
+    <addaction name="actionPaste_selected_frames"/>
+    <addaction name="actionReverse_selected_frames"/>
+    <addaction name="actionRemove_selected_frames"/>
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
@@ -610,28 +617,22 @@
    </property>
   </action>
   <action name="actionAdd_EmptyFrame">
+   <property name="text">
+    <string>Push Frames</string>
+   </property>
+  </action>
+  <action name="actionRemove_EmptyFrame">
+   <property name="text">
+    <string>Pull Frames</string>
+   </property>
+  </action>
+  <action name="actionInsert_Frame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
    </property>
    <property name="text">
-    <string>Add Empty Frame</string>
-   </property>
-  </action>  <action name="actionRemove_EmptyFrame">
-   <property name="icon">
-    <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
-   </property>
-   <property name="text">
-    <string>Remove Empty Frame</string>
-   </property>
-  </action>  <action name="actionInsert_Frame">
-   <property name="icon">
-    <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
-   </property>
-   <property name="text">
-    <string>Insert Frame here</string>
+    <string>Insert Frame</string>
    </property>
   </action>
   <action name="actionMove">
@@ -1013,6 +1014,31 @@
   <action name="actionImportLayers_from_pclx">
    <property name="text">
     <string>Layers from PCLX...</string>
+   </property>
+  </action>
+  <action name="actionReverse_selected_frames">
+   <property name="text">
+    <string>Reverse selected frames</string>
+   </property>
+  </action>
+  <action name="actionCopy_Frames">
+   <property name="text">
+    <string>Copy selected Frames</string>
+   </property>
+  </action>
+  <action name="actionCut_Selected_Frames">
+   <property name="text">
+    <string>Cut selected Frames</string>
+   </property>
+  </action>
+  <action name="actionRemove_selected_frames">
+   <property name="text">
+    <string>Remove selected frames</string>
+   </property>
+  </action>
+  <action name="actionPaste_selected_frames">
+   <property name="text">
+    <string>Paste selected frames</string>
    </property>
   </action>
  </widget>

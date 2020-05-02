@@ -2,9 +2,7 @@
     <qresource prefix="/">
         <file>icons/clear.png</file>
         <file>icons/remove.png</file>
-        <file>icons/remove2.png</file>
         <file>icons/add.png</file>
-        <file>icons/add2.png</file>
         <file>icons/magnify.png</file>
         <file>icons/layer-vector.png</file>
         <file>icons/layer-bitmap.png</file>
@@ -58,14 +56,6 @@
         <file>icons/new/arrow-horizontal.png</file>
         <file>icons/new/arrow-selectmove.png</file>
         <file>icons/new/arrow-vertical.png</file>
-        <file>icons/add2.png</file>
-        <file>icons/remove2.png</file>
-        <file>icons/test1.png</file>
-        <file>icons/test2.png</file>
-        <file>icons/test3.png</file>
-        <file>icons/test4.png</file>
-        <file>icons/test5.png</file>
-        <file>icons/test6.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>
