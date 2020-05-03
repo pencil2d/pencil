@@ -70,6 +70,8 @@ versionAtLeast(QT_VERSION, 5.14) {
     }
 }
 
+macx: LIBS += -framework AppKit
+
 # --- mac os and linux
 unix {
   LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib

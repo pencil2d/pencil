@@ -188,7 +188,6 @@ linux {
 # --- core_lib ---
 
 INCLUDEPATH += $$PWD/../core_lib/src
-DEPENDPATH += $$PWD/../core_lib/src
 
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release
