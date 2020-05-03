@@ -64,6 +64,8 @@
         <file>icons/overlay_godenratio.png</file>
         <file>icons/overlay_safe.png</file>
         <file>icons/overlay_third.png</file>
+        <file>icons/controls/soundscrub.png</file>
+        <file>icons/controls/soundscrub-disabled.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

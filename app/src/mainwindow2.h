@@ -89,6 +89,8 @@ public:
 
     void lockWidgets(bool shouldLock);
 
+    void setSoundScrubActive(bool b);
+    void setSoundScrubMsec(int msec);
     void setOpacity(int opacity);
     void preferences();
  

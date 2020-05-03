@@ -30,13 +30,14 @@ class SoundPlayer : public QObject, public KeyFrameEventListener
     Q_OBJECT
 public:
     SoundPlayer();
-    ~SoundPlayer();
+    ~SoundPlayer() override;
 
     void init( SoundClip* );
     void onKeyFrameDestroy( KeyFrame* ) override;
     bool isValid();
 
     void play();
+    void pause();
     void stop();
     
     int64_t duration();

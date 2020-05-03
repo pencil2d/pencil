@@ -995,6 +995,16 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mTimeLine->setFeatures(feat);
 }
 
+void MainWindow2::setSoundScrubActive(bool b)
+{
+    mEditor->playback()->setSoundScrubActive(b);
+}
+
+void MainWindow2::setSoundScrubMsec(int msec)
+{
+    mEditor->playback()->setSoundScrubMsec(msec);
+}
+
 void MainWindow2::preferences()
 {
     if (mPrefDialog)
@@ -1009,6 +1019,8 @@ void MainWindow2::preferences()
     mPrefDialog->init(mEditor->preference());
 
     connect(mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubChanged, this, &MainWindow2::setSoundScrubActive);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubMsecChanged, this, &MainWindow2::setSoundScrubMsec);
     connect(mPrefDialog, &PreferencesDialog::finished, [&]
     {
         clearKeyboardShortcuts();
