@@ -66,7 +66,6 @@ public:
     void setPixel(int x, int y, QRgb colour);
     void setPixel(QPoint p, QRgb colour);
     void fillNonAlphaPixels(const QRgb color);
-    void fillAlphaOnImage(int alpha);
 
     inline QRgb constScanLine(int x, int y) const;
     inline void scanLine(int x, int y, QRgb colour);

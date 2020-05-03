@@ -123,6 +123,7 @@ void LayerOpacityDialog::selectedKeyframesOpacity()
         BitmapImage* bitmap = layer->getBitmapImageAtFrame(selectedKeys.at(i));
         bitmap->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value() / 255.0));
     }
+    ui->chooseOpacitySlider->setValue(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 255);
     mEditor->updateCurrentFrame();
 }
 
