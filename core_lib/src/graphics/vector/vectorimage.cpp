@@ -1138,7 +1138,6 @@ void VectorImage::paintImage(QPainter& painter,
     painter.setRenderHint(QPainter::Antialiasing, antialiasing);
 
     painter.setClipping(false);
-    painter.setOpacity(1.0);
     QTransform painterMatrix = painter.transform();
 
     QRect mappedViewRect = QRect(0, 0, painter.device()->width(), painter.device()->height());

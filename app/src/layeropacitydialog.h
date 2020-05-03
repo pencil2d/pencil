@@ -20,6 +20,8 @@ public:
 
     void setCore(Editor* editor);
     void init();
+    void initBitmap();
+    void initVector();
 
 private slots:
     void previousKeyframePressed();

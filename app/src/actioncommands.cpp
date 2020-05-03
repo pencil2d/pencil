@@ -713,10 +713,11 @@ void ActionCommands::changeallKeyframeLineColor()
     }
 }
 
-void ActionCommands::changeLayerOpacityBitmap()
+void ActionCommands::changeLayerOpacity()
 {
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
-            mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+    if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()) &&
+            (mEditor->layers()->currentLayer()->type() == Layer::BITMAP ||
+             mEditor->layers()->currentLayer()->type() == Layer::VECTOR))
     {
         LayerOpacityDialog* layeropacity = new LayerOpacityDialog();
         layeropacity->setCore(mEditor);
@@ -728,8 +729,7 @@ void ActionCommands::changeLayerOpacityBitmap()
 
         QMessageBox msgBox;
         msgBox.setWindowTitle(tr("Select keyframe..."));
-        msgBox.setText(tr("Be sure to be on a Bitmap layer,\n"
-                          "and on an existing keyframe."));
+        msgBox.setText(tr("Be sure to be on an existing keyframe."));
         msgBox.exec();
     }
 }

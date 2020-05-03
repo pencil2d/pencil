@@ -658,6 +658,7 @@ void Object::paintImage(QPainter& painter,int frameNumber,
                 if (bitmap)
                 {
                     painter.setOpacity(bitmap->getOpacity());
+                    qDebug() << "Bitmap opacity: " << bitmap->getOpacity();
                     bitmap->paintImage(painter);
                 }
 
@@ -668,7 +669,11 @@ void Object::paintImage(QPainter& painter,int frameNumber,
                 LayerVector* layerVector = static_cast<LayerVector*>(layer);
                 VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
                 if (vec)
+                {
+                    painter.setOpacity(vec->getOpacity());
+                    qDebug() << "Vector opacity: " << vec->getOpacity();
                     vec->paintImage(painter, false, false, antialiasing);
+                }
             }
         }
     }

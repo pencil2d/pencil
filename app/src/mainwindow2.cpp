@@ -282,7 +282,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
     connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
-    connect(ui->actionChangeLayerOpacity_Bitmap, &QAction::triggered, mCommands, &ActionCommands::changeLayerOpacityBitmap);
+    connect(ui->actionChangeLayerOpacity_Bitmap, &QAction::triggered, mCommands, &ActionCommands::changeLayerOpacity);
 
     QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
     for (int i = 0; i < visibilityActions.size(); i++) {

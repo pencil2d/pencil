@@ -77,7 +77,7 @@ public:
     Status deleteCurrentLayer();
     void changeKeyframeLineColor();
     void changeallKeyframeLineColor();
-    void changeLayerOpacityBitmap();
+    void changeLayerOpacity();
 
     void setLayerVisibilityIndex(int index);
 

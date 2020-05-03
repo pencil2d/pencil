@@ -445,6 +445,7 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
     }
 
     painter.setWorldMatrixEnabled(false); // Don't transform the image here as we used the viewTransform in the image output
+    painter.setOpacity(vectorImage->getOpacity());
     tempBitmapImage.paintImage(painter);
 }
 
