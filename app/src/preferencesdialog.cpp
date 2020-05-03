@@ -65,6 +65,8 @@ void PreferencesDialog::init(PreferenceManager* m)
     ui->shortcuts->setManager(mPrefManager);
 
     connect(ui->general, &GeneralPage::windowOpacityChange, this, &PreferencesDialog::windowOpacityChange);
+    connect(ui->timeline, &TimelinePage::soundScrubChanged, this, &PreferencesDialog::soundScrubChanged);
+    connect(ui->timeline, &TimelinePage::soundScrubMsecChanged, this, &PreferencesDialog::soundScrubMsecChanged);
     connect(ui->filesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::close);
 
@@ -373,6 +375,8 @@ TimelinePage::TimelinePage()
     connect(ui->flipRollNumDrawingsSpinBox, spinBoxValueChange, this, &TimelinePage::flipRollNumDrawingdSpinboxChanged);
     connect(ui->flipInBtwnMsecSlider, sliderChanged, this, &TimelinePage::flipInbetweenMsecSliderChanged);
     connect(ui->flipInBtwnMsecSpinBox, spinBoxValueChange, this, &TimelinePage::flipInbetweenMsecSpinboxChanged);
+    connect(ui->soundScrubSlider, sliderChanged, this, &TimelinePage::soundScrubMsecSliderChanged);
+    connect(ui->soundScrubSpinBox, spinBoxValueChange, this, &TimelinePage::soundScrubMsecSpinboxChanged);
     connect(ui->layerVisibilityComboBox, comboChanged, this, &TimelinePage::layerVisibilityChanged);
     connect(ui->visibilitySlider, &QSlider::valueChanged, this, &TimelinePage::layerVisibilityThresholdChanged);
     connect(ui->visibilitySpinbox, spinBoxValueChange, this, &TimelinePage::layerVisibilityThresholdChanged);
@@ -413,12 +417,21 @@ void TimelinePage::updateValues()
         break;
     }
 
+    // to secure that you have a relevant minimum setting for sound scrub
+    int fps = mManager->getInt(SETTING::FPS);
+    int minMsec = 1000 / fps;
+    if (minMsec > 100) { minMsec = 100; }
+    ui->soundScrubSpinBox->setMinimum(minMsec);
+    ui->soundScrubSlider->setMinimum(minMsec);
+
     ui->flipRollMsecsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSlider->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSlider->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
     ui->flipRollMsecsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_MSEC));
     ui->flipRollNumDrawingsSpinBox->setValue(mManager->getInt(SETTING::FLIP_ROLL_DRAWINGS));
     ui->flipInBtwnMsecSpinBox->setValue(mManager->getInt(SETTING::FLIP_INBETWEEN_MSEC));
+    ui->soundScrubSpinBox->setValue(mManager->getInt(SETTING::SOUND_SCRUB_MSEC));
+    ui->soundScrubSlider->setValue(mManager->getInt(SETTING::SOUND_SCRUB_MSEC));
 
     int convertedVisibilityThreshold = static_cast<int>(mManager->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD)*100);
 
@@ -514,6 +527,29 @@ void TimelinePage::flipInbetweenMsecSpinboxChanged(int value)
 {
     ui->flipInBtwnMsecSlider->setValue(value);
     mManager->set(SETTING::FLIP_INBETWEEN_MSEC, value);
+}
+
+void TimelinePage::soundScrubActiveChanged(int i)
+{
+    bool b = true;
+    if (i == 0)
+        b = false;
+    mManager->set(SETTING::SOUND_SCRUB_ACTIVE, b);
+    emit soundScrubChanged(b);
+}
+
+void TimelinePage::soundScrubMsecSliderChanged(int value)
+{
+    ui->soundScrubSpinBox->setValue(value);
+    mManager->set(SETTING::SOUND_SCRUB_MSEC, value);
+    emit soundScrubMsecChanged(value);
+}
+
+void TimelinePage::soundScrubMsecSpinboxChanged(int value)
+{
+    ui->soundScrubSlider->setValue(value);
+    mManager->set(SETTING::SOUND_SCRUB_MSEC, value);
+    emit soundScrubMsecChanged(value);
 }
 
 FilesPage::FilesPage()

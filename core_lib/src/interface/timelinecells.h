@@ -110,6 +110,7 @@ private:
     int mEndY   = 0;
 
     int mCurrentFrame = 0;
+    int mLastScrubFrame = 0;
 
     int mFromLayer = 0;
     int mToLayer   = 1;
