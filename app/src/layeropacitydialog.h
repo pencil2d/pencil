@@ -27,6 +27,7 @@ private slots:
     void opacitySliderChanged(int value);
     void opacitySpinboxChanged(int value);
     void allLayerOpacity();
+    void selectedKeyframesOpacity();
     void fadeInPressed();
     void fadeOutPressed();
 
