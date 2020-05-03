@@ -656,7 +656,10 @@ void Object::paintImage(QPainter& painter,int frameNumber,
 
                 BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
                 if (bitmap)
+                {
+                    painter.setOpacity(bitmap->getOpacity());
                     bitmap->paintImage(painter);
+                }
 
             }
             // paints the vector images
