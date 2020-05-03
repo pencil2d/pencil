@@ -71,6 +71,12 @@ public slots:
     void closePegAlignDialog();
     void currentLayerChanged();
 
+    void enableCopyCut();
+    void disableCopyCut();
+
+    void enablePaste();
+    void disablePaste();
+
 public:
     void newDocument(bool force = false);
     void openDocument();

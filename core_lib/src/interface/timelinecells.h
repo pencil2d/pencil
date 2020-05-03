@@ -68,6 +68,7 @@ Q_SIGNALS:
     void mouseMovedY(int);
     void lengthChanged(int);
     void offsetChanged(int);
+    void selectionChanged();
 
 public slots:
     void updateContent();

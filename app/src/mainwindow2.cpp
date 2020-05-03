@@ -389,6 +389,10 @@ void MainWindow2::createMenus()
     winMenu->addAction(lockWidgets);
     winMenu->addAction(ui->actionReset_Windows);
 
+    ui->actionCopy->setEnabled(false);
+    ui->actionCut->setEnabled(false);
+    ui->actionPaste->setEnabled(false);
+
     connect(lockWidgets, &QAction::toggled, this, &MainWindow2::lockWidgets);
     bindActionWithSetting(lockWidgets, SETTING::LAYOUT_LOCK);
     connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
@@ -412,6 +416,28 @@ void MainWindow2::createMenus()
 
     connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
     connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
+}
+
+void MainWindow2::enableCopyCut()
+{
+    ui->actionCopy->setEnabled(true);
+    ui->actionCut->setEnabled(true);
+}
+
+void MainWindow2::disableCopyCut()
+{
+    ui->actionCopy->setEnabled(false);
+    ui->actionCut->setEnabled(false);
+}
+
+void MainWindow2::enablePaste()
+{
+    ui->actionPaste->setEnabled(true);
+}
+
+void MainWindow2::disablePaste()
+{
+    ui->actionPaste->setEnabled(false);
 }
 
 void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
@@ -1349,6 +1375,11 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
+    connect(editor, &Editor::enableCopyCut, this, &MainWindow2::enableCopyCut);
+    connect(editor, &Editor::enablePaste, this, &MainWindow2::enablePaste);
+    connect(editor, &Editor::disableCopyCut, this, &MainWindow2::disableCopyCut);
+    connect(editor, &Editor::disablePaste, this, &MainWindow2::disablePaste);
+
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1398,6 +1429,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::animationLengthChanged, pTimeline, &TimeLine::extendLength);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
+    connect(mTimeLine, &TimeLine::selectionChanged, pEditor, &Editor::notifyCopyPasteActionChanged);
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);

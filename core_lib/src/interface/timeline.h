@@ -54,6 +54,7 @@ public:
     void onObjectLoaded();
 
 Q_SIGNALS:
+    void selectionChanged();
     void modification();
 
     void addKeyClick();

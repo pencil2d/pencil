@@ -119,6 +119,7 @@ void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged);
+    connect(mSelectionManager, &SelectionManager::selectionChanged, this, &Editor::notifyCopyPasteActionChanged);
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
@@ -515,20 +516,33 @@ void Editor::resetAutoSaveCounter()
 void Editor::cut()
 {
     copy();
-    mScribbleArea->deleteSelection();
 
     Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
     if (currentLayer == nullptr) return;
 
-    if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
+    switch (clipboardState)
+    {
+    case ClipboardState::TIMELINE: {
 
-        for (int pos : currentLayer->selectedKeyFramesPositions()) {
-            currentLayer->removeKeyFrame(pos);
+        if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
+            for (int pos : currentLayer->selectedKeyFramesPositions()) {
+                currentLayer->removeKeyFrame(pos);
+            }
         }
+        break;
+    }
+    case ClipboardState::CANVAS:
+    {
+        if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
+            mScribbleArea->deleteSelection();
+            deselectAll();
+        }
+        break;
+    }
+    default:
+        break;
     }
     emit updateTimeLine();
-
-    deselectAll();
 }
 
 void Editor::copyFromCanvas()
@@ -536,7 +550,7 @@ void Editor::copyFromCanvas()
     Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
 
     QMimeData clipboardData;
-    clipboardData.setText("CANVAS_DATA");
+    clipboardData.setText(CANVAS_DATA);
     switch (currentLayer->type()) {
     case Layer::BITMAP:
     {
@@ -575,23 +589,26 @@ void Editor::copyFromTimeline()
     Q_ASSERT(selectedCount > 0);
 
     QMimeData clipboardData;
-    clipboardData.setText("TIMELINE_DATA");
+    clipboardData.setText(TIMELINE_DATA);
 
     clipboardState = ClipboardState::TIMELINE;
     if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR)
     {
         clipboardFrames.clear();
 
-        int firstPos = currentLayer->selectedKeyFramesPositions().first();
-        for (int pos : currentLayer->selectedKeyFramesPositions()) {
-            KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
+        if (currentLayer->hasAnySelectedFrames()) {
 
-            if (!keyframe->isLoaded()) {
-                keyframe->loadFile();
-            }
+            int firstPos = currentLayer->selectedKeyFramesPositions().first();
+            for (int pos : currentLayer->selectedKeyFramesPositions()) {
+                KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
 
-            if (keyframe != nullptr) {
-                this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
+                if (!keyframe->isLoaded()) {
+                    keyframe->loadFile();
+                }
+
+                if (keyframe != nullptr) {
+                    this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
+                }
             }
         }
         QApplication::clipboard()->setMimeData(&clipboardData);
@@ -609,6 +626,11 @@ void Editor::copy()
         copyFromCanvas();
     } else if (selectedCount > 0) {
         copyFromTimeline();
+    }
+
+    const QMimeData* clipboardData = QApplication::clipboard()->mimeData();
+    if (clipboardData->text().contains(CANVAS_DATA) || clipboardData->text().contains(TIMELINE_DATA)) {
+        emit enablePaste();
     }
 }
 
@@ -693,6 +715,76 @@ void Editor::paste()
     mScribbleArea->updateCurrentFrame();
 }
 
+bool Editor::canCopy()
+{
+    Layer* layer = layers()->currentLayer();
+
+    bool somethingSelected = mSelectionManager->somethingSelected();
+    bool framesSelected = layer->selectedKeyFrameCount() > 0;
+
+    bool canCopy = false;
+    switch (layer->type())
+    {
+    case Layer::BITMAP:
+    {
+        if (somethingSelected || framesSelected)
+        {
+            canCopy = true;
+        }
+        break;
+    }
+    case Layer::VECTOR:
+    {
+        if (clipboardVectorImage->isValid() || framesSelected)
+        {
+            canCopy = true;
+        }
+        break;
+    }
+    default:
+        canCopy = false;
+        break;
+    }
+    return canCopy;
+//    return (mSelectionManager->somethingSelected() || mLayerManager->currentLayer()->selectedKeyFrameCount() > 0) ? true : false;
+}
+
+bool Editor::canPaste()
+{
+    Layer* layer = layers()->currentLayer();
+
+    bool framesSelected = !clipboardFrames.empty();
+
+    bool canPaste = false;
+
+    if (clipboardState != ClipboardState::CANVAS && clipboardState != ClipboardState::TIMELINE) { return false; }
+
+    switch (layer->type())
+    {
+    case Layer::BITMAP:
+    {
+        if (clipboardBitmapImage->image()->size().isValid() || framesSelected)
+        {
+            canPaste = true;
+        }
+        break;
+    }
+    case Layer::VECTOR:
+    {
+        if (clipboardVectorImage->isValid() || framesSelected)
+        {
+            canPaste = true;
+        }
+        break;
+    }
+    default:
+        canPaste = false;
+        break;
+    }
+
+    return canPaste;
+}
+
 void Editor::flipSelection(bool flipVertical)
 {
     mScribbleArea->flipSelection(flipVertical);
@@ -701,25 +793,22 @@ void Editor::flipSelection(bool flipVertical)
 
 void Editor::clipboardChanged()
 {
-
     const QMimeData* clipboardData = QApplication::clipboard()->mimeData();
-    if (!clipboardData->text().contains("CANVAS_DATA") && !clipboardData->text().contains("TIMELINE_DATA")) {
-        clipboardBitmapImage->clear();
-        clipboardVectorImage->clear();
-        clipboardFrames.clear();
+    if (!clipboardData->text().contains(CANVAS_DATA) && !clipboardData->text().contains(TIMELINE_DATA)) {
 
+        Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+
+        // Assume the clipboard content came from outside the application
+        // Try to parse the image.
+        if (currentLayer->type() == Layer::BITMAP) {
+
+            QImage clipboardImage = QApplication::clipboard()->image();
+            if (!clipboardImage.isNull()) {
+                clipboardBitmapImage = new BitmapImage(clipboardBitmapImage->topLeft(), clipboardImage);
+            }
+        }
         qDebug() << "Found no valid clipboard data, clearing";
     }
-////    clipboardState = ClipboardState::CANVAS;
-
-//    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
-//    if (clipboardState == CANVAS) {
-//        if (currentLayer->type() == Layer::BITMAP) {
-//            g_clipboardBitmapImage.setImage(new QImage(QApplication::clipboard()->image()));
-//            g_clipboardBitmapImage.bounds() = QRect(g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.image()->size());
-//        }
-//    }
-//    //qDebug() << "New clipboard image" << g_clipboardBitmapImage.image()->size();
 }
 
 void Editor::setLayerVisibility(LayerVisibility visibility) {
@@ -763,6 +852,21 @@ void Editor::toogleOnionSkinType()
     }
 
     mPreferenceManager->set(SETTING::ONION_TYPE, newState);
+}
+
+void Editor::notifyCopyPasteActionChanged()
+{
+    if (canCopy()) {
+        emit enableCopyCut();
+    } else {
+        emit disableCopyCut();
+    }
+
+    if (canPaste()) {
+        emit enablePaste();
+    } else {
+        emit disablePaste();
+    }
 }
 
 Status Editor::setObject(Object* newObject)
@@ -1073,6 +1177,8 @@ void Editor::deselectAll()
     }
 
     select()->resetSelectionProperties();
+
+    emit notifyCopyPasteActionChanged();
 }
 
 void Editor::updateFrame(int frameNumber)
@@ -1099,6 +1205,8 @@ void Editor::setCurrentLayerIndex(int i)
     {
         mgr->workingLayerChanged(layer);
     }
+
+    emit notifyCopyPasteActionChanged();
 }
 
 void Editor::scrubTo(int frame)

@@ -588,6 +588,10 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         mCanMoveFrame = true;
                     }
 
+                    if (currentLayer->hasAnySelectedFrames()) {
+                        emit selectionChanged();
+                    }
+
                     mTimeLine->updateContent();
                 }
                 else

@@ -69,9 +69,10 @@ public:
 
     bool init();
 
-    enum ClipboardState {
+    enum class ClipboardState {
         CANVAS,
         TIMELINE,
+        NONE,
     };
 
     /************************************************************************/
@@ -138,6 +139,12 @@ Q_SIGNALS:
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
 
+    void enableCopyCut();
+    void disableCopyCut();
+
+    void enablePaste();
+    void disablePaste();
+
 public: //slots
     void clearCurrentFrame();
 
@@ -157,7 +164,9 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
+    void notifyCopyPasteActionChanged();
     void notifyAnimationLengthChanged();
+
     void switchVisibilityOfLayer(int layerNumber);
     void showLayerNotVisibleWarning();
     void swapLayers(int i, int j);
@@ -171,6 +180,9 @@ public: //slots
     void copy();
     void paste();
     void cut();
+
+    bool canCopy();
+    bool canPaste();
 
     void clipboardChanged();
     void increaseLayerVisibilityIndex();
@@ -241,7 +253,7 @@ private:
     int mLastModifiedLayer = -1;
 
     // Clipboard
-    int clipboardState = ClipboardState::CANVAS;
+    ClipboardState clipboardState = ClipboardState::NONE;
 
     BitmapImage* clipboardBitmapImage;
     VectorImage* clipboardVectorImage;
