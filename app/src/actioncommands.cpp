@@ -587,27 +587,31 @@ void ActionCommands::removeSelected()
     int selectedCount = currentLayer->selectedKeyFrameCount();
     int currentPosition = mEditor->currentFrame();
 
-    if (selectedCount == 0 && currentLayer->keyExists(currentPosition))
-    {
-        currentLayer->removeKeyFrame(currentPosition);
-    }
-    else
-    {
-        QList<int> keyPositions;
-        currentLayer->foreachSelectedKeyFrame([&keyPositions](KeyFrame* k){
-            keyPositions.append(k->pos());
-        });
+    int ret = QMessageBox::warning(mParent,
+                                   tr("Remove selected frames", "Windows title of remove selected frames pop-up."),
+                                   tr("Are you sure you want to remove selected frames? This action is irreversible currently!"),
+                                   QMessageBox::Ok | QMessageBox::Cancel,
+                                   QMessageBox::Ok);
 
-        for (int i = 0; i <keyPositions.count(); i++) {
-            currentLayer->removeKeyFrame(keyPositions[i]);
+    if (ret == QMessageBox::Ok)
+    {
+        if (selectedCount == 0 && currentLayer->keyExists(currentPosition))
+        {
+            currentLayer->removeKeyFrame(currentPosition);
         }
+        else
+        {
+            for (int pos : currentLayer->selectedKeyFramesPositions()) {
+                currentLayer->removeKeyFrame(pos);
+            }
+        }
+
+        currentLayer->deselectAll();
+        Q_EMIT mEditor->layers()->currentLayerChanged(mEditor->currentLayerIndex());
+
+        if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
     }
-
-    currentLayer->deselectAll();
-    Q_EMIT  mEditor->layers()->currentLayerChanged( mEditor->layers()->currentLayerIndex());
-
-    if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
-};
+}
 
 void ActionCommands::reverseSelected()
 {

@@ -527,6 +527,7 @@ void Editor::cut()
         if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
             for (int pos : currentLayer->selectedKeyFramesPositions()) {
                 currentLayer->removeKeyFrame(pos);
+                emit layers()->currentLayerChanged(currentLayerIndex());
             }
         }
         break;
@@ -621,7 +622,7 @@ void Editor::copy()
     if (currentLayer == nullptr) return;
 
     int selectedCount = currentLayer->selectedKeyFrameCount();
-    if (selectedCount == 0 || select()->somethingSelected()) // copy bitmap image
+    if (selectedCount == 0 && select()->somethingSelected()) // copy bitmap image
     {
         copyFromCanvas();
     } else if (selectedCount > 0) {
@@ -807,7 +808,6 @@ void Editor::clipboardChanged()
                 clipboardBitmapImage = new BitmapImage(clipboardBitmapImage->topLeft(), clipboardImage);
             }
         }
-        qDebug() << "Found no valid clipboard data, clearing";
     }
 }
 
@@ -1307,7 +1307,7 @@ void Editor::removeKey()
 
     scrubBackward();
     layers()->notifyAnimationLengthChanged();
-    Q_EMIT layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+    Q_EMIT layers()->currentLayerChanged(currentLayerIndex()); // trigger timeline repaint.
 }
 
 void Editor::scrubNextKeyFrame()

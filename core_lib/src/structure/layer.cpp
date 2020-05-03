@@ -204,6 +204,24 @@ bool Layer::removeKeyFrame(int position)
     auto frame = getKeyFrameWhichCovers(position);
     if (frame)
     {
+        if (frame->isSelected()) {
+
+            int count = 0;
+            for (int selectedPos : mSelectedFrames_byLast) {
+                if (selectedPos == frame->pos()) {
+                    mSelectedFrames_byLast.removeAt(count);
+                }
+                count++;
+            }
+
+            count = 0;
+            for (int selectedPos : mSelectedFrames_byPosition) {
+                if (selectedPos == frame->pos()) {
+                    mSelectedFrames_byPosition.removeAt(count);
+                }
+                count++;
+            }
+        }
         mKeyFrames.erase(frame->pos());
         delete frame;
     }
