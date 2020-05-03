@@ -30,9 +30,6 @@ void LayerOpacityDialog::setCore(Editor *editor)
 
 void LayerOpacityDialog::init()
 {
-    mTimer = new QTimer();
-    mTimer->setTimerType(Qt::PreciseTimer);
-    connect(mTimer, &QTimer::timeout, this, &LayerOpacityDialog::setOpacityCurrentKeyframe);
     connect(ui->chooseOpacitySlider, &QSlider::valueChanged, this, &LayerOpacityDialog::opacitySliderChanged);
     connect(ui->chooseOpacitySpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &LayerOpacityDialog::opacitySpinboxChanged);
     connect(ui->btnSetOpacityLayer, &QPushButton::pressed, this, &LayerOpacityDialog::allLayerOpacity);
@@ -89,16 +86,14 @@ void LayerOpacityDialog::nextKeyframePressed()
 
 void LayerOpacityDialog::opacitySliderChanged(int value)
 {
-    mTimer->stop();
     ui->chooseOpacitySpinBox->setValue(value);
-    mTimer->start(mTimeOut);
+    setOpacityCurrentKeyframe();
 }
 
 void LayerOpacityDialog::opacitySpinboxChanged(int value)
 {
-    mTimer->stop();
     ui->chooseOpacitySlider->setValue(value);
-    mTimer->start(mTimeOut);
+    setOpacityCurrentKeyframe();
 }
 
 void LayerOpacityDialog::allLayerOpacity()
@@ -178,7 +173,6 @@ void LayerOpacityDialog::fadeOutPressed()
 
 void LayerOpacityDialog::setOpacityCurrentKeyframe()
 {
-    mTimer->stop();
     LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     BitmapImage* bitmap = layer->getBitmapImageAtFrame(mEditor->currentFrame());
 

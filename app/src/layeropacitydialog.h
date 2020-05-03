@@ -37,8 +37,6 @@ private:
 
     Ui::LayerOpacityDialog *ui;
 
-    QTimer* mTimer = nullptr;
-    int mTimeOut = 250;
     Editor* mEditor = nullptr;
 };
 
