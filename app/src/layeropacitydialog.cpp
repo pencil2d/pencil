@@ -44,6 +44,7 @@ void LayerOpacityDialog::init()
     connect(ui->toolBtnNextKeyframe, &QToolButton::pressed, this, &LayerOpacityDialog::nextKeyframePressed);
     LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     BitmapImage* bitmap = layer->getBitmapImageAtFrame(mEditor->currentFrame());
+    ui->labLayerInfo->setText(tr("Layer: %1").arg(layer->name()));
     if (layer->getPreviousKeyFramePosition(mEditor->currentFrame()) == mEditor->currentFrame())
         ui->toolBtnPreviousKeyframe->setEnabled(false);
     if (layer->getNextKeyFramePosition(mEditor->currentFrame()) == mEditor->currentFrame())
@@ -55,7 +56,7 @@ void LayerOpacityDialog::init()
     }
     if (layer->getSelectedFrameList().isEmpty())
         ui->btnSetOpacitySelection->setEnabled(false);
-    ui->chooseOpacitySlider->setValue(bitmap->getOpacity() * 255);
+    ui->chooseOpacitySlider->setValue(static_cast<int>(bitmap->getOpacity() * 255));
 }
 
 void LayerOpacityDialog::previousKeyframePressed()
@@ -64,7 +65,7 @@ void LayerOpacityDialog::previousKeyframePressed()
     mEditor->scrubPreviousKeyFrame();
 
     BitmapImage* bitmap = layer->getBitmapImageAtFrame(mEditor->currentFrame());
-    ui->chooseOpacitySlider->setValue(bitmap->getOpacity() * 255);
+    ui->chooseOpacitySlider->setValue(static_cast<int>(bitmap->getOpacity() * 255));
 
     if (layer->getPreviousKeyFramePosition(mEditor->currentFrame()) == mEditor->currentFrame())
         ui->toolBtnPreviousKeyframe->setEnabled(false);
@@ -78,7 +79,7 @@ void LayerOpacityDialog::nextKeyframePressed()
     mEditor->scrubNextKeyFrame();
 
     BitmapImage* bitmap = layer->getBitmapImageAtFrame(mEditor->currentFrame());
-    ui->chooseOpacitySlider->setValue(bitmap->getOpacity() * 255);
+    ui->chooseOpacitySlider->setValue(static_cast<int>(bitmap->getOpacity() * 255));
 
     if (layer->getNextKeyFramePosition(mEditor->currentFrame()) == mEditor->currentFrame())
         ui->toolBtnNextKeyframe->setEnabled(false);
@@ -123,7 +124,8 @@ void LayerOpacityDialog::selectedKeyframesOpacity()
         BitmapImage* bitmap = layer->getBitmapImageAtFrame(selectedKeys.at(i));
         bitmap->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value() / 255.0));
     }
-    ui->chooseOpacitySlider->setValue(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 255);
+    int newOpacity = static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 255);
+    ui->chooseOpacitySlider->setValue(newOpacity);
     mEditor->updateCurrentFrame();
 }
 
@@ -145,7 +147,8 @@ void LayerOpacityDialog::fadeInPressed()
         image->setOpacity(newOpacity);
         image->modification();
     }
-    ui->chooseOpacitySlider->setValue(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 255);
+    int newOpacity = static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 255);
+    ui->chooseOpacitySlider->setValue(newOpacity);
     mEditor->updateCurrentFrame();
 }
 
@@ -167,7 +170,8 @@ void LayerOpacityDialog::fadeOutPressed()
         image->setOpacity(newOpacity);
         image->modification();
     }
-    ui->chooseOpacitySlider->setValue(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 255);
+    int newOpacity = static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 255);
+    ui->chooseOpacitySlider->setValue(newOpacity);
     mEditor->updateCurrentFrame();
 
 }

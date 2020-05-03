@@ -70,6 +70,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QSlider" name="chooseOpacitySlider">
+       <property name="toolTip">
+        <string>0 = transparent. 255 = opaque</string>
+       </property>
        <property name="maximum">
         <number>255</number>
        </property>
@@ -83,6 +86,9 @@
      </item>
      <item>
       <widget class="QSpinBox" name="chooseOpacitySpinBox">
+       <property name="toolTip">
+        <string>0 = transparent. 255 = opaque</string>
+       </property>
        <property name="maximum">
         <number>255</number>
        </property>
