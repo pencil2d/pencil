@@ -99,9 +99,6 @@ bool Editor::init()
     mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
     mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
 
-    clipboardBitmapImage = new BitmapImage();
-    clipboardVectorImage = new VectorImage();
-
     return true;
 }
 
@@ -736,13 +733,18 @@ void Editor::paste()
         pasteToTimeline();
     }
     
-    Q_EMIT  layers()->currentLayerChanged(layers()->currentLayerIndex());
+    Q_EMIT layers()->currentLayerChanged(layers()->currentLayerIndex());
     mScribbleArea->updateCurrentFrame();
 }
 
 bool Editor::canCopy()
 {
-    Layer* layer = layers()->currentLayer();
+    Layer* layer = mObject->getLayer(currentLayerIndex());
+
+    if (layer == nullptr) { return false; }
+
+    // Tests will complain otherwise...
+    if (mSelectionManager == nullptr) { return false; }
 
     bool somethingSelected = mSelectionManager->somethingSelected();
     bool framesSelected = layer->selectedKeyFrameCount() > 0;
@@ -783,7 +785,9 @@ bool Editor::canCopy()
 
 bool Editor::canPaste()
 {
-    Layer* layer = layers()->currentLayer();
+    Layer* layer = mObject->getLayer(currentLayerIndex());
+
+    if (layer == nullptr) { return false; }
 
     bool framesSelected = !clipboardFrames.empty();
 
@@ -923,6 +927,8 @@ Status Editor::setObject(Object* newObject)
 
     clearUndoStack();
     mObject.reset(newObject);
+    clipboardBitmapImage = new BitmapImage();
+    clipboardVectorImage = new VectorImage();
 
     for (BaseManager* m : mAllManagers)
     {
