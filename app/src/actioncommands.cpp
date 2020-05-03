@@ -607,7 +607,7 @@ void ActionCommands::removeSelected()
         }
 
         currentLayer->deselectAll();
-        Q_EMIT mEditor->layers()->currentLayerChanged(mEditor->currentLayerIndex());
+        mEditor->layers()->notifyLayerChanged(currentLayer);
 
         if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
     }
@@ -633,7 +633,11 @@ void ActionCommands::reverseSelected()
             }
             count--;
         }
-        Q_EMIT  mEditor->layers()->currentLayerChanged( mEditor->layers()->currentLayerIndex());
+        mEditor->layers()->notifyLayerChanged(currentLayer);
+
+        if (currentLayer->type() == Layer::CAMERA) {
+            mEditor->view()->updateViewTransforms();
+        }
     }
 };
 

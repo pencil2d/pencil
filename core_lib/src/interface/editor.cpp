@@ -611,33 +611,18 @@ void Editor::copyFromTimeline()
     clipboardData->setText(TIMELINE_DATA);
 
     clipboardState = ClipboardState::TIMELINE;
-    if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR)
-    {
-        clipboardFrames.clear();
+    clipboardFrames.clear();
 
-        int firstPos = currentLayer->selectedKeyFramesPositions().first();
-        for (int pos : currentLayer->selectedKeyFramesPositions()) {
-            KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
+    int firstPos = currentLayer->selectedKeyFramesPositions().first();
+    for (int pos : currentLayer->selectedKeyFramesPositions()) {
+        KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
 
-            if (!keyframe->isLoaded()) {
-                keyframe->loadFile();
-            }
-
-            if (keyframe != nullptr) {
-                this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
-            }
+        if (!keyframe->isLoaded()) {
+            keyframe->loadFile();
         }
-    }
-    else if (currentLayer->type() == Layer::SOUND)
-    {
-        clipboardFrames.clear();
-        int firstPos = currentLayer->selectedKeyFramesPositions().first();
-        for (int pos : currentLayer->selectedKeyFramesPositions()) {
-            KeyFrame* keyframe = currentLayer->getKeyFrameWhichCovers(pos);
 
-            if (keyframe != nullptr) {
-                this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
-            }
+        if (keyframe != nullptr) {
+            this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
         }
     }
     QApplication::clipboard()->setMimeData(clipboardData);
@@ -781,7 +766,7 @@ bool Editor::canCopy()
         }
         break;
     }
-    case Layer::SOUND:
+    case Layer::SOUND: case Layer::CAMERA:
     {
         if (framesSelected)
         {
@@ -794,7 +779,6 @@ bool Editor::canCopy()
         break;
     }
     return canCopy;
-//    return (mSelectionManager->somethingSelected() || mLayerManager->currentLayer()->selectedKeyFrameCount() > 0) ? true : false;
 }
 
 bool Editor::canPaste()
@@ -825,7 +809,7 @@ bool Editor::canPaste()
         }
         break;
     }
-    case Layer::SOUND:
+    case Layer::SOUND: case Layer::CAMERA:
     {
         canPaste = framesSelected;
         break;
