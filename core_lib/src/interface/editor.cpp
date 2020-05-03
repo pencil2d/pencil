@@ -517,33 +517,49 @@ void Editor::cut()
 {
     copy();
 
-    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
-    if (currentLayer == nullptr) return;
-
     switch (clipboardState)
     {
     case ClipboardState::TIMELINE: {
-
-        if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
-            for (int pos : currentLayer->selectedKeyFramesPositions()) {
-                currentLayer->removeKeyFrame(pos);
-                emit layers()->currentLayerChanged(currentLayerIndex());
-            }
-        }
+        cutFromTimeline();
         break;
     }
     case ClipboardState::CANVAS:
     {
-        if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
-            mScribbleArea->deleteSelection();
-            deselectAll();
-        }
+        cutFromCanvas();
         break;
     }
     default:
         break;
     }
     emit updateTimeLine();
+}
+
+void Editor::cutFromCanvas()
+{
+    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+    if (currentLayer == nullptr) return;
+
+    if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
+        mScribbleArea->deleteSelection();
+        deselectAll();
+    }
+}
+
+void Editor::cutFromTimeline()
+{
+    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+    if (currentLayer == nullptr) return;
+
+    QMimeData clipboardData;
+    clipboardData.setText(TIMELINE_DATA);
+    if (currentLayer->type() != Layer::CAMERA) {
+        for (int pos : currentLayer->selectedKeyFramesPositions()) {
+            currentLayer->removeKeyFrame(pos);
+            emit layers()->currentLayerChanged(currentLayerIndex());
+        }
+    }
+
+    QApplication::clipboard()->setMimeData(&clipboardData);
 }
 
 void Editor::copyFromCanvas()
@@ -587,6 +603,8 @@ void Editor::copyFromTimeline()
     Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
     int selectedCount = currentLayer->selectedKeyFrameCount();
 
+    if (!currentLayer->hasAnySelectedFrames()) { return; }
+
     Q_ASSERT(selectedCount > 0);
 
     QMimeData clipboardData;
@@ -597,23 +615,32 @@ void Editor::copyFromTimeline()
     {
         clipboardFrames.clear();
 
-        if (currentLayer->hasAnySelectedFrames()) {
+        int firstPos = currentLayer->selectedKeyFramesPositions().first();
+        for (int pos : currentLayer->selectedKeyFramesPositions()) {
+            KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
 
-            int firstPos = currentLayer->selectedKeyFramesPositions().first();
-            for (int pos : currentLayer->selectedKeyFramesPositions()) {
-                KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
+            if (!keyframe->isLoaded()) {
+                keyframe->loadFile();
+            }
 
-                if (!keyframe->isLoaded()) {
-                    keyframe->loadFile();
-                }
-
-                if (keyframe != nullptr) {
-                    this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
-                }
+            if (keyframe != nullptr) {
+                this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
             }
         }
-        QApplication::clipboard()->setMimeData(&clipboardData);
     }
+    else if (currentLayer->type() == Layer::SOUND)
+    {
+        clipboardFrames.clear();
+        int firstPos = currentLayer->selectedKeyFramesPositions().first();
+        for (int pos : currentLayer->selectedKeyFramesPositions()) {
+            KeyFrame* keyframe = currentLayer->getKeyFrameWhichCovers(pos);
+
+            if (keyframe != nullptr) {
+                this->clipboardFrames[keyframe->pos()-firstPos] = keyframe->clone();
+            }
+        }
+    }
+    QApplication::clipboard()->setMimeData(&clipboardData);
 }
 
 void Editor::copy()
@@ -630,8 +657,11 @@ void Editor::copy()
     }
 
     const QMimeData* clipboardData = QApplication::clipboard()->mimeData();
-    if (clipboardData->text().contains(CANVAS_DATA) || clipboardData->text().contains(TIMELINE_DATA)) {
-        emit enablePaste();
+
+    if (clipboardData != nullptr) {
+        if (clipboardData->text().contains(CANVAS_DATA) || clipboardData->text().contains(TIMELINE_DATA)) {
+            emit enablePaste();
+        }
     }
 }
 
@@ -679,6 +709,7 @@ void Editor::pasteToTimeline()
     int lastPosition = it->first;
 
     // Move frames in front if any
+
     if(currentFrame() < currentLayer->getMaxKeyFramePosition())
     {
         currentLayer->selectAllFramesAfter( currentFrame() );
@@ -690,8 +721,16 @@ void Editor::pasteToTimeline()
     while (it != clipboardFrames.rend()) // insert frames & select them
     {
         int newPosition = currentFrame() + it->first;
-        KeyFrame* k =  it->second->clone();
-        currentLayer->addKeyFrame(newPosition, k);
+
+        if (currentLayer->type() == Layer::SOUND)
+        {
+            SoundClip* key = static_cast<SoundClip*>(it->second)->clone();
+            currentLayer->addKeyFrame(newPosition, key);
+            sound()->loadSound(key, key->fileName());
+        } else {
+            KeyFrame* k =  it->second->clone();
+            currentLayer->addKeyFrame(newPosition, k);
+        }
         currentLayer->setFrameSelected(newPosition, true);
         count++;
         it++;
@@ -742,6 +781,14 @@ bool Editor::canCopy()
         }
         break;
     }
+    case Layer::SOUND:
+    {
+        if (framesSelected)
+        {
+            canCopy = true;
+        }
+        break;
+    }
     default:
         canCopy = false;
         break;
@@ -778,6 +825,11 @@ bool Editor::canPaste()
         }
         break;
     }
+    case Layer::SOUND:
+    {
+        canPaste = framesSelected;
+        break;
+    }
     default:
         canPaste = false;
         break;
@@ -795,6 +847,9 @@ void Editor::flipSelection(bool flipVertical)
 void Editor::clipboardChanged()
 {
     const QMimeData* clipboardData = QApplication::clipboard()->mimeData();
+
+    if (clipboardData == nullptr) { return; }
+
     if (!clipboardData->text().contains(CANVAS_DATA) && !clipboardData->text().contains(TIMELINE_DATA)) {
 
         Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());

@@ -213,6 +213,8 @@ private:
 
     void copyFromTimeline();
     void copyFromCanvas();
+    void cutFromTimeline();
+    void cutFromCanvas();
 
     void pasteToCanvas();
     void pasteToTimeline();
