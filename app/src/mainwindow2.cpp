@@ -370,7 +370,7 @@ void MainWindow2::createMenus()
         mColorBox->toggleViewAction(),
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
-        mDisplayOptionWidget->toggleViewAction(),        
+        mDisplayOptionWidget->toggleViewAction(),
         mColorInspector->toggleViewAction(),
         mOnionSkinWidget->toggleViewAction()
     };
@@ -818,7 +818,7 @@ bool MainWindow2::autoSave()
 
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Question);
-    msgBox.setWindowTitle("AutoSave Reminder");
+    msgBox.setWindowTitle(tr("AutoSave Reminder"));
     msgBox.setText(tr("The animation is not saved yet.\n Do you want to save now?"));
     msgBox.addButton(tr("Never ask again", "AutoSave reminder button"), QMessageBox::RejectRole);
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -991,7 +991,7 @@ void MainWindow2::importGIF()
     {
         QMessageBox::warning(this,
                              tr("Warning"),
-                             tr("was unable to import") + strImgFileLower,
+                             tr("was unable to import %1").arg(strImgFileLower),
                              QMessageBox::Ok,
                              QMessageBox::Ok);
     }
@@ -1024,7 +1024,17 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mOnionSkinWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
     mToolBox->setFeatures(feat);
-    mTimeLine->setFeatures(feat);    
+    mTimeLine->setFeatures(feat);
+}
+
+void MainWindow2::setSoundScrubActive(bool b)
+{
+    mEditor->playback()->setSoundScrubActive(b);
+}
+
+void MainWindow2::setSoundScrubMsec(int msec)
+{
+    mEditor->playback()->setSoundScrubMsec(msec);
 }
 
 void MainWindow2::preferences()
@@ -1041,6 +1051,8 @@ void MainWindow2::preferences()
     mPrefDialog->init(mEditor->preference());
 
     connect(mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubChanged, this, &MainWindow2::setSoundScrubActive);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubMsecChanged, this, &MainWindow2::setSoundScrubMsec);
     connect(mPrefDialog, &PreferencesDialog::finished, [&]
     {
         clearKeyboardShortcuts();
@@ -1073,7 +1085,7 @@ bool MainWindow2::newObject()
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
 {
-    Object* object = nullptr;   
+    Object* object = nullptr;
     QString presetFilePath = (presetIndex > 0) ? PresetDialog::getPresetPath(presetIndex) : "";
     if (!presetFilePath.isEmpty())
     {
@@ -1103,6 +1115,10 @@ void  MainWindow2::showPresetDialog()
             if (result == QDialog::Accepted)
             {
                 int presetIndex = presetDialog->getPresetIndex();
+                if (presetDialog->shouldAlwaysUse()) {
+                    mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
+                    mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetIndex);
+                }
                 newObjectFromPresets(presetIndex);
                 qDebug() << "Accepted!";
             }
@@ -1254,7 +1270,7 @@ void MainWindow2::setupKeyboardShortcuts()
     mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
-    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));    
+    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
     mOnionSkinWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_ONION_SKIN));
 
@@ -1412,6 +1428,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound);
     connect(pTimeline, &TimeLine::fpsChanged, pPlaybackManager, &PlaybackManager::setFps);
+    connect(pTimeline, &TimeLine::fpsChanged, pEditor, &Editor::setFps);
 
     connect(pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
@@ -1490,7 +1507,7 @@ void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
 void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
-    statusBar()->showMessage(QString("Zoom: %0%1").arg(static_cast<double>(zoom), 0, 'f', 1).arg("%"));
+    statusBar()->showMessage(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

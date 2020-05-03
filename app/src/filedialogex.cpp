@@ -93,8 +93,8 @@ QString FileDialog::saveFile( FileType fileType )
     }
 
     QFileInfo info(filePath);
-    if (info.suffix().isEmpty() || strSelectedFilter.isEmpty()) {
 
+    if (info.suffix().isEmpty() && strSelectedFilter.isEmpty()) {
         filePath += addDefaultExtensionSuffix(fileType);
     }
 
@@ -243,12 +243,12 @@ QString FileDialog::defaultFileName( FileType fileType )
     switch ( fileType )
     {
         case FileType::ANIMATION: return tr( "MyAnimation.pclx" );
-        case FileType::IMAGE: return "untitled.png";
-        case FileType::IMAGE_SEQUENCE: return "untitled.png";
-        case FileType::GIF: return "untitled.gif";
-        case FileType::MOVIE: return "untitled.mp4";
-        case FileType::SOUND: return "untitled.wav";
-        case FileType::PALETTE: return "untitled.xml";
+        case FileType::IMAGE: return tr( "untitled.png" );
+        case FileType::IMAGE_SEQUENCE: return tr( "untitled.png" );
+        case FileType::GIF: return tr( "untitled.gif" );
+        case FileType::MOVIE: return tr( "untitled.mp4" );
+        case FileType::SOUND: return tr( "untitled.wav" );
+        case FileType::PALETTE: return tr( "untitled.xml" );
     }
     return "";
 }

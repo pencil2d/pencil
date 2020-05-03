@@ -73,6 +73,14 @@ void SoundPlayer::play()
     }
 }
 
+void SoundPlayer::pause()
+{
+    if ( mMediaPlayer )
+    {
+        mMediaPlayer->pause();
+    }
+}
+
 void SoundPlayer::stop()
 {
     if ( mMediaPlayer )

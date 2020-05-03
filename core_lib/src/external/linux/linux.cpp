@@ -74,7 +74,7 @@ void Editor::importMovie (QString filePath, int fps)
     QDir::temp().mkdir("pencil");
     QString tempPath = QDir::temp().absolutePath()+"/pencil/";
 
-    QProgressDialog progress("Importing movie...", "Abort", 0, 100, NULL);
+    QProgressDialog progress(tr("Importing movie..."), tr("Abort"), 0, 100, NULL);
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
     progress.setValue(10);

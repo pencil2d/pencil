@@ -50,7 +50,7 @@ void Editor::importMovie( QString filePath, int fps )
 
     if ( QFile::exists( QDir::current().currentPath() + "/plugins/ffmpeg.exe" ) == true )
     {
-        QProgressDialog progress( "Importing movie...", "Abort", 0, 100, NULL );
+        QProgressDialog progress( tr("Importing movie..."), tr("Abort"), 0, 100, NULL );
         progress.setWindowModality( Qt::WindowModal );
         progress.show();
         progress.setValue( 10 );

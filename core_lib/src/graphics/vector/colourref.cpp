@@ -25,7 +25,7 @@ GNU General Public License for more details.
 ColourRef::ColourRef()
 {
     colour = Qt::green;
-    name = QString("Green");
+    name = QObject::tr("Green");
 }
 
 ColourRef::ColourRef(QColor theColour, QString theName)

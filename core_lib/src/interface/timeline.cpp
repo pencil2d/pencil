@@ -288,7 +288,7 @@ void TimeLine::deleteCurrentLayer()
 
     int ret = QMessageBox::warning(this,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: ") + strLayerName + " ?",
+                                   tr("Are you sure you want to delete layer: %1?").arg(strLayerName),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)
@@ -350,7 +350,7 @@ void TimeLine::setLoop(bool loop)
 
 void TimeLine::setPlaying(bool isPlaying)
 {
-    Q_UNUSED(isPlaying);
+    Q_UNUSED(isPlaying)
     mTimeControls->updatePlayState();
 }
 
