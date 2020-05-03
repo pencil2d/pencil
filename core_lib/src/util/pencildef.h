@@ -148,6 +148,7 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define CMD_ADD_EMPTY "CmdAddEmptyFrame"
 #define CMD_REMOVE_EMPTY "CmdRemoveEmptyFrame"
 #define CMD_INSERT_FRAME "CmdInsertFrame"
+#define CMD_REVERSE_FRAMES "CmdReverseFrames"
 #define CMD_MOVE_FRAME_BACKWARD "CmdMoveFrameBackward"
 #define CMD_MOVE_FRAME_FORWARD "CmdMoveFrameForward"
 #define CMD_TOOL_MOVE "CmdToolMove"

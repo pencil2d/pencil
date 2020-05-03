@@ -1224,6 +1224,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionAdd_EmptyFrame->setShortcut(cmdKeySeq(CMD_ADD_EMPTY));
     ui->actionRemove_EmptyFrame->setShortcut(cmdKeySeq(CMD_REMOVE_EMPTY));
     ui->actionInsert_Frame->setShortcut(cmdKeySeq(CMD_INSERT_FRAME));
+    ui->actionReverse_selected_frames->setShortcut(cmdKeySeq(CMD_REVERSE_FRAMES));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
     ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
