@@ -550,8 +550,8 @@ void Editor::cutFromTimeline()
     Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
     if (currentLayer == nullptr) return;
 
-    QMimeData clipboardData;
-    clipboardData.setText(TIMELINE_DATA);
+    QMimeData* clipboardData = new QMimeData();
+    clipboardData->setText(TIMELINE_DATA);
     if (currentLayer->type() != Layer::CAMERA) {
         for (int pos : currentLayer->selectedKeyFramesPositions()) {
             currentLayer->removeKeyFrame(pos);
@@ -559,7 +559,7 @@ void Editor::cutFromTimeline()
         }
     }
 
-    QApplication::clipboard()->setMimeData(&clipboardData);
+    QApplication::clipboard()->setMimeData(clipboardData);
 }
 
 void Editor::copyFromCanvas()
@@ -607,8 +607,8 @@ void Editor::copyFromTimeline()
 
     Q_ASSERT(selectedCount > 0);
 
-    QMimeData clipboardData;
-    clipboardData.setText(TIMELINE_DATA);
+    QMimeData* clipboardData = new QMimeData();
+    clipboardData->setText(TIMELINE_DATA);
 
     clipboardState = ClipboardState::TIMELINE;
     if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR)
@@ -640,7 +640,7 @@ void Editor::copyFromTimeline()
             }
         }
     }
-    QApplication::clipboard()->setMimeData(&clipboardData);
+    QApplication::clipboard()->setMimeData(clipboardData);
 }
 
 void Editor::copy()
