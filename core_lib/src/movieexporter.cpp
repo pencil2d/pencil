@@ -129,25 +129,25 @@ Status MovieExporter::run(const Object* obj,
     if (desc.strFileName.endsWith("gif", Qt::CaseInsensitive))
     {
         majorProgress(0.03f, 1.f);
-        progressMessage("Generating gif...");
+        progressMessage(QObject::tr("Generating GIF..."));
         minorProgress(0.f);
         STATUS_CHECK(generateGif(obj, ffmpegPath, desc.strFileName, minorProgress));
     }
     else
     {
         majorProgress(0.03f, 0.25f);
-        progressMessage("Assembling audio...");
+        progressMessage(QObject::tr("Assembling audio..."));
         minorProgress(0.f);
         STATUS_CHECK(assembleAudio(obj, ffmpegPath, minorProgress));
         minorProgress(1.f);
         majorProgress(0.25f, 1.f);
-        progressMessage("Generating movie...");
+        progressMessage(QObject::tr("Generating movie..."));
         STATUS_CHECK(generateMovie(obj, ffmpegPath, desc.strFileName, minorProgress));
     }
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
     progressMessage(QObject::tr("Done"));
-    
+
     clock_t t2 = clock() - t1;
     qDebug("MOVIE = %.1f sec", static_cast<double>(t2 / CLOCKS_PER_SEC));
 

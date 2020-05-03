@@ -105,7 +105,6 @@ private:
     int mMsecSoundScrub = 100;
     bool mSoundScrub = false;
 
-    SoundClip* clip = nullptr;
     QTimer* mTimer = nullptr;
     QTimer* mFlipTimer = nullptr;
     QTimer* mScrubTimer = nullptr;

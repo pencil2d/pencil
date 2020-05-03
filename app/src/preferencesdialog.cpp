@@ -101,32 +101,32 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    ui->languageCombo->addItem(tr("Arabic ") + " (Arabic)", "ar");
-    ui->languageCombo->addItem(tr("Catalan ") + " (Catalan)", "ca");
-    ui->languageCombo->addItem(tr("Czech") + " (Czech)", "cs");
-    ui->languageCombo->addItem(tr("Danish") + " (Danish)", "da");
-    ui->languageCombo->addItem(tr("German") + " (German)", "de");
-    ui->languageCombo->addItem(tr("Greek") + " (Greek)", "el");
-    ui->languageCombo->addItem(tr("English") + " (English)", "en");
-    ui->languageCombo->addItem(tr("Spanish") + " (Spanish)", "es");
-    ui->languageCombo->addItem(tr("Estonian") + " (Estonian)", "et");
-    ui->languageCombo->addItem(tr("French") + " (French)", "fr");
-    ui->languageCombo->addItem(tr("Hebrew") + " (Hebrew)", "he");
-    ui->languageCombo->addItem(tr("Hungarian") + " (Hungarian)", "hu_HU");
-    ui->languageCombo->addItem(tr("Indonesian") + " (Indonesian)", "id");
-    ui->languageCombo->addItem(tr("Italian") + " (Italian)", "it");
-    ui->languageCombo->addItem(tr("Japanese") + " (Japanese)", "ja");
-    ui->languageCombo->addItem(tr("Kabyle") + " (Kabyle)", "kab");
-    ui->languageCombo->addItem(tr("Polish") + " (Polish)", "pl");
-    ui->languageCombo->addItem(tr("Portuguese - Portugal") + "(Portuguese - Portugal)", "pt");
-    ui->languageCombo->addItem(tr("Portuguese - Brazil") + "(Portuguese - Brazil)", "pt_BR");
-    ui->languageCombo->addItem(tr("Russian") + " (Russian)", "ru");
-    ui->languageCombo->addItem(tr("Slovenian") + " (Slovenian)", "sl");
-    ui->languageCombo->addItem(tr("Swedish") + " (Swedish)", "sv");
-    ui->languageCombo->addItem(tr("Turkish") + " (Turkish)", "tr");
-    ui->languageCombo->addItem(tr("Vietnamese") + " (Vietnamese)", "vi");
-    ui->languageCombo->addItem(tr("Chinese - China") + " (Chinese - China)", "zh_CN");
-    ui->languageCombo->addItem(tr("Chinese - Taiwan") + " (Chinese - Taiwan)", "zh_TW");
+    ui->languageCombo->addItem(tr("Arabic (%1)").arg("Arabic"), "ar");
+    ui->languageCombo->addItem(tr("Catalan (%1)").arg("Catalan"), "ca");
+    ui->languageCombo->addItem(tr("Czech (%1)").arg("Czech"), "cs");
+    ui->languageCombo->addItem(tr("Danish (%1)").arg("Danish"), "da");
+    ui->languageCombo->addItem(tr("German (%1)").arg("German"), "de");
+    ui->languageCombo->addItem(tr("Greek (%1)").arg("Greek"), "el");
+    ui->languageCombo->addItem(tr("English (%1)").arg("English"), "en");
+    ui->languageCombo->addItem(tr("Spanish (%1)").arg("Spanish"), "es");
+    ui->languageCombo->addItem(tr("Estonian (%1)").arg("Estonian"), "et");
+    ui->languageCombo->addItem(tr("French (%1)").arg("French"), "fr");
+    ui->languageCombo->addItem(tr("Hebrew (%1)").arg("Hebrew"), "he");
+    ui->languageCombo->addItem(tr("Hungarian (%1)").arg("Hungarian"), "hu_HU");
+    ui->languageCombo->addItem(tr("Indonesian (%1)").arg("Indonesian"), "id");
+    ui->languageCombo->addItem(tr("Italian (%1)").arg("Italian"), "it");
+    ui->languageCombo->addItem(tr("Japanese (%1)").arg("Japanese"), "ja");
+    ui->languageCombo->addItem(tr("Kabyle (%1)").arg("Kabyle"), "kab");
+    ui->languageCombo->addItem(tr("Polish (%1)").arg("Polish"), "pl");
+    ui->languageCombo->addItem(tr("Portuguese \u2013 Portugal (%1)").arg("Portuguese \u2013 Portugal"), "pt");
+    ui->languageCombo->addItem(tr("Portuguese \u2013 Brazil (%1)").arg("Portuguese \u2013 Brazil"), "pt_BR");
+    ui->languageCombo->addItem(tr("Russian (%1)").arg("Russian"), "ru");
+    ui->languageCombo->addItem(tr("Slovene (%1)").arg("Slovene"), "sl");
+    ui->languageCombo->addItem(tr("Swedish (%1)").arg("Swedish"), "sv");
+    ui->languageCombo->addItem(tr("Turkish (%1)").arg("Turkish"), "tr");
+    ui->languageCombo->addItem(tr("Vietnamese (%1)").arg("Vietnamese"), "vi");
+    ui->languageCombo->addItem(tr("Chinese \u2013 China (%1)").arg("Chinese \u2013 China"), "zh_CN");
+    ui->languageCombo->addItem(tr("Chinese \u2013 Taiwan (%1)").arg("Chinese \u2013 Taiwan"), "zh_TW");
 
     int value = settings.value("windowOpacity").toInt();
     ui->windowOpacityLevel->setValue(100 - value);
@@ -598,7 +598,7 @@ void FilesPage::initPreset()
         QString name = mPresetSettings->value(key).toString();
         if (name.isEmpty())
             continue;
-        
+
         QListWidgetItem* item = new QListWidgetItem(name);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         item->setData(Qt::UserRole, index);
@@ -717,19 +717,19 @@ void FilesPage::updateValues()
 
     bool ok = true;
     int defaultPresetIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
-    
+
     for (int i = 0; i < ui->presetListWidget->count(); i++)
     {
         QListWidgetItem* item = ui->presetListWidget->item(i);
         int presetIndex = item->data(Qt::UserRole).toInt(&ok);
 
         bool isDefault = presetIndex == defaultPresetIndex;
-        
+
         QFont font = item->font();
         font.setBold(isDefault); // Bold text for the default item
         item->setFont(font);
 
-        QBrush backgroundBrush = (isDefault) ? palette().light() : palette().background();
+        QBrush backgroundBrush = (isDefault) ? palette().light() : palette().window();
         item->setBackground(backgroundBrush);
     }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
@@ -765,7 +765,7 @@ ToolsPage::~ToolsPage()
 }
 
 void ToolsPage::updateValues()
-{    
+{
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
     setRotationIncrement(mManager->getInt(SETTING::ROTATION_INCREMENT));
 }
@@ -789,7 +789,7 @@ void ToolsPage::rotationIncrementChange(int value)
     while (360 % angle != 0) {
         angle++;
     }
-    ui->rotationIncrementDisplay->setText(tr("%1 degree(s)", "", angle).arg(angle));
+    ui->rotationIncrementDisplay->setText(tr("%n degree(s)", "", angle));
     mManager->set(SETTING::ROTATION_INCREMENT, angle);
 }
 

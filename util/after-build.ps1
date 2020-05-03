@@ -68,7 +68,7 @@ if ($upload -ne "yes") {
   exit 0
 }
 
-echo ">>> Uplaod to Google drive"
+echo ">>> Upload to Google drive"
 cd $PSScriptRoot
 
 $python3 = if (Test-Path env:PYTHON) { "$env:PYTHON\python.exe" } else { "python.exe" }

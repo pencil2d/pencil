@@ -77,6 +77,9 @@ void OnionSkinWidget::makeConnections()
     connect(ui->onionSkinMode, &QCheckBox::stateChanged, this, &OnionSkinWidget::onionSkinModeChange);
     connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &OnionSkinWidget::playbackStateChanged);
 
+    PreferenceManager* prefs = editor()->preference();
+    connect(prefs, &PreferenceManager::optionChanged, this, &OnionSkinWidget::updateUI);
+
 }
 
 void OnionSkinWidget::updateUI()

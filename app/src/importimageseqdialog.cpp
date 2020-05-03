@@ -351,12 +351,10 @@ Status ImportImageSeqDialog::validateKeySet(const PredefinedKeySet& keySet, cons
 
     if (filepaths.isEmpty()) { status = Status::FAIL; }
 
-    for (int i = 0; i < filepaths.size(); i++)
+    if (keySet.isEmpty())
     {
-        if (keySet.isEmpty()) {
-            status = Status::FAIL;
-            failedPathsString += filepaths[i] +  ", ";
-        }
+        status = Status::FAIL;
+        failedPathsString = QLocale().createSeparatedList(filepaths);
     }
 
     if (status == Status::FAIL)

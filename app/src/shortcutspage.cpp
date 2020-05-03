@@ -39,7 +39,7 @@ ShortcutsPage::ShortcutsPage( QWidget* parent )
     ui->setupUi(this);
     m_treeModel = new QStandardItemModel(this);
     m_treeModel->setColumnCount(2);
-    m_treeModel->setHorizontalHeaderLabels({ "Action", "Shortcut" });
+    m_treeModel->setHorizontalHeaderLabels({ tr("Action"), tr("Shortcut") });
     treeModelLoadShortcutsSetting();
 
     ui->treeView->setModel(m_treeModel);
@@ -132,7 +132,7 @@ void ShortcutsPage::saveShortcutsButtonClicked()
 
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save Pencil2D Shortcut file"),
-                                                    fDir + "/untitled.pcls",
+                                                    fDir + "/" + tr("untitled.pcls"),
                                                     tr("Pencil2D Shortcut File(*.pcls)"));
     settings.setValue("Shortcuts", fileName);
     settings.endGroup();
