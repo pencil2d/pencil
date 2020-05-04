@@ -232,7 +232,7 @@
         <location filename="../app/src/checkupdatesdialog.cpp" line="27"/>
         <source>Checking for Updates...</source>
         <comment>status description in the check-for-update dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Anadi n ileqman...</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="39"/>
@@ -242,7 +242,7 @@
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="40"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Mel</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="93"/>
@@ -258,33 +258,33 @@
         <location filename="../app/src/checkupdatesdialog.cpp" line="104"/>
         <source>&lt;b&gt;An error occurred while checking for updates&lt;/b&gt;</source>
         <comment>error msg of check-for-update</comment>
-        <translation type="unfinished"/>
+        <translation>Teḍra-d tuccḍa deg unadi n ileqman</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="105"/>
         <source>Please check your internet connection and try again later.</source>
         <comment>error msg of check-for-update</comment>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k selken tuqqna n internet inek sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
         <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Yewjed lqem amaynut n Pencil2D!</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
         <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D %1 yewjed tura -- tesɛiḍ %2. Tebɣiḍ ad t-tsidreḍ?</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
         <source>&lt;b&gt;Pencil2D is up to date&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Pencil2D yettwaleqqem&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Lqem</translation>
     </message>
 </context>
 <context>
@@ -761,17 +761,17 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="249"/>
         <source>Exporter Settings</source>
-        <translation type="unfinished"/>
+        <translation>Sifeḍ iɣewwaren</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="267"/>
         <source>WebM and APNG only</source>
-        <translation type="unfinished"/>
+        <translation>WebM akked APNG kan</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="270"/>
         <source>Transparency</source>
-        <translation type="unfinished"/>
+        <translation>Tafrawant</translation>
     </message>
 </context>
 <context>
@@ -1023,7 +1023,7 @@
         <location filename="../app/ui/generalpage.ui" line="307"/>
         <source>Advanced</source>
         <comment>groupBox title in Preference</comment>
-        <translation type="unfinished"/>
+        <translation>Anaẓi</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="322"/>
@@ -1103,7 +1103,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Kabyle</source>
-        <translation type="unfinished"/>
+        <translation>Taqbaylit</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
@@ -1711,7 +1711,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="919"/>
         <source>Check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>Nadi ileqman</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="924"/>
@@ -1726,37 +1726,37 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="934"/>
         <source>200%</source>
-        <translation type="unfinished"/>
+        <translation>200%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="939"/>
         <source>300%</source>
-        <translation type="unfinished"/>
+        <translation>300%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="944"/>
         <source>400%</source>
-        <translation type="unfinished"/>
+        <translation>400%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="949"/>
         <source>50%</source>
-        <translation type="unfinished"/>
+        <translation>50%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="954"/>
         <source>33%</source>
-        <translation type="unfinished"/>
+        <translation>33%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="959"/>
         <source>25%</source>
-        <translation type="unfinished"/>
+        <translation>25%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="964"/>
         <source>100%</source>
-        <translation type="unfinished"/>
+        <translation>100%</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="969"/>
@@ -1776,7 +1776,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="463"/>
         <source>Rotate Anticlockwise</source>
-        <translation type="unfinished"/>
+        <translation>Tuzzya mgal tamrilt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="793"/>
@@ -3558,12 +3558,12 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="98"/>
         <source>Checking environment...</source>
-        <translation type="unfinished"/>
+        <translation>Aselken n twennaḍt...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="149"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Ifuk</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="75"/>
@@ -3702,14 +3702,14 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
         <location filename="../app/src/main.cpp" line="301"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <translation>Asifeḍ n tvidyut</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="303"/>
         <location filename="../app/src/main.cpp" line="308"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished"/>
+        <translation>Ifuk</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="306"/>
@@ -3817,7 +3817,7 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Sfeḍ</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>

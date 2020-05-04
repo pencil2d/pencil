@@ -42,6 +42,8 @@ TRANSLATIONS += translations/pencil.ts \
                 translations/pencil_pt_BR.ts \
                 translations/pencil_ru.ts \
                 translations/pencil_sl.ts \
+                translations/pencil_sv.ts \
+                translations/pencil_tr.ts \
                 translations/pencil_vi.ts \
                 translations/pencil_zh_CN.ts \
                 translations/pencil_zh_TW.ts

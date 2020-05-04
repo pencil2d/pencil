@@ -76,7 +76,7 @@ enum StabilizationLevel
 enum class LayerVisibility
 {
     CURRENTONLY = 0,
-    RELATIVE = 1,
+    RELATED = 1,
     ALL = 2,
     // If you are adding new enum values here, be sure to update the ++/-- operators below
 };
@@ -250,6 +250,8 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define SETTING_FLIP_ROLL_MSEC          "FlipRoll"
 #define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
+#define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
+#define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

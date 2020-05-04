@@ -40,6 +40,7 @@ void installTranslator(PencilApplication& app)
     {
         strUserLocale = QLocale::system().name();
     }
+    QLocale::setDefault(QLocale(strUserLocale));
 
     strUserLocale.replace("-", "_");
     QTranslator* qtTranslator = new QTranslator(&app);

@@ -91,6 +91,11 @@ void PolylineTool::setAA(const int AA)
     settings.sync();
 }
 
+bool PolylineTool::isActive()
+{
+    return !mPoints.isEmpty();
+}
+
 QCursor PolylineTool::cursor()
 {
     return Qt::CrossCursor;

@@ -45,6 +45,8 @@ public:
     void setFeather(const qreal feather) override;
     void setAA(const int AA) override;
 
+    virtual bool isActive() override;
+
 private:
     QList<QPointF> mPoints;
 

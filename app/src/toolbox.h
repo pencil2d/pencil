@@ -56,6 +56,9 @@ public slots:
     void brushOn();
     void smudgeOn();
 
+protected:
+    int getMinHeightForWidth(int width) override;
+
 signals:
     void clearButtonClicked();
 

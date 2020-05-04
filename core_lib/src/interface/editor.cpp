@@ -121,6 +121,11 @@ int Editor::fps()
     return mPlaybackManager->fps();
 }
 
+void Editor::setFps(int fps)
+{
+    mPreferenceManager->set(SETTING::FPS, fps);
+}
+
 void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
@@ -1281,14 +1286,22 @@ void Editor::scrubTo(int frame)
 
 void Editor::scrubForward()
 {
-    scrubTo(currentFrame() + 1);
+    int nextFrame = mFrame + 1;
+    if (!playback()->isPlaying()) {
+        playback()->playScrub(nextFrame);
+    }
+    scrubTo(nextFrame);
 }
 
 void Editor::scrubBackward()
 {
     if (currentFrame() > 1)
     {
-        scrubTo(currentFrame() - 1);
+        int previousFrame = mFrame - 1;
+        if (!playback()->isPlaying()) {
+            playback()->playScrub(previousFrame);
+        }
+        scrubTo(previousFrame);
     }
 }
 

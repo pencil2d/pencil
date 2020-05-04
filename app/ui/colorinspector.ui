@@ -73,6 +73,9 @@
        <property name="checkable">
         <bool>true</bool>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">colorModeChangeGroup</string>
+       </attribute>
       </widget>
      </item>
      <item>
@@ -104,6 +107,9 @@
        <property name="flat">
         <bool>false</bool>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">colorModeChangeGroup</string>
+       </attribute>
       </widget>
      </item>
      <item>
@@ -428,4 +434,7 @@
  </tabstops>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="colorModeChangeGroup"/>
+ </buttongroups>
 </ui>
