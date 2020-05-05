@@ -66,6 +66,7 @@ GNU General Public License for more details.
 #include "importimageseqdialog.h"
 #include "importlayersdialog.h"
 #include "importpositiondialog.h"
+#include "layeropacitydialog.h"
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
@@ -282,7 +283,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
     connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
-    connect(ui->actionChangeLayerOpacity_Bitmap, &QAction::triggered, mCommands, &ActionCommands::changeLayerOpacity);
+    connect(ui->actionChangeLayerOpacity_Bitmap, &QAction::triggered, this, &MainWindow2::openLayerOpacityDialog);
 
     QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
     for (int i = 0; i < visibilityActions.size(); i++) {
@@ -461,6 +462,29 @@ void MainWindow2::closePegAlignDialog()
 {
     disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
     mPegAlign = nullptr;
+}
+
+void MainWindow2::openLayerOpacityDialog()
+{
+    if (mLayerOpacityDialog != nullptr)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Dialog is already open!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+    mLayerOpacityDialog = new LayerOpacityDialog();
+    connect(mLayerOpacityDialog, &LayerOpacityDialog::closedialog, this, &MainWindow2::closeLayerOpacityDialog);
+    mLayerOpacityDialog->setCore(mEditor);
+    mLayerOpacityDialog->init();
+    mLayerOpacityDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mLayerOpacityDialog->show();
+}
+
+void MainWindow2::closeLayerOpacityDialog()
+{
+    disconnect(mLayerOpacityDialog, &LayerOpacityDialog::closedialog, this, &MainWindow2::closeLayerOpacityDialog);
+    mLayerOpacityDialog = nullptr;
 }
 
 void MainWindow2::currentLayerChanged()

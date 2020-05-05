@@ -713,27 +713,6 @@ void ActionCommands::changeallKeyframeLineColor()
     }
 }
 
-void ActionCommands::changeLayerOpacity()
-{
-    if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()) &&
-            (mEditor->layers()->currentLayer()->type() == Layer::BITMAP ||
-             mEditor->layers()->currentLayer()->type() == Layer::VECTOR))
-    {
-        LayerOpacityDialog* layeropacity = new LayerOpacityDialog();
-        layeropacity->setCore(mEditor);
-        layeropacity->init();
-        layeropacity->exec();
-    }
-    else
-    {
-
-        QMessageBox msgBox;
-        msgBox.setWindowTitle(tr("Select keyframe..."));
-        msgBox.setText(tr("Be sure to be on an existing keyframe."));
-        msgBox.exec();
-    }
-}
-
 void ActionCommands::help()
 {
     QString url = "http://www.pencil2d.org/doc/";

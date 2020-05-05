@@ -44,6 +44,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class LayerOpacityDialog;
 
 
 
@@ -69,6 +70,8 @@ public slots:
     void clearRecentFilesList();
     void openPegAlignDialog();
     void closePegAlignDialog();
+    void openLayerOpacityDialog();
+    void closeLayerOpacityDialog();
     void currentLayerChanged();
 
 public:
@@ -164,6 +167,7 @@ private:
     BackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
+    LayerOpacityDialog* mLayerOpacityDialog = nullptr;
 
 private:
     ActionCommands* mCommands = nullptr;

@@ -521,6 +521,7 @@ void Layer::setFrameSelected(int position, bool isSelected)
             mSelectedFrames_byPosition.removeAt(iPos);
         }
         keyFrame->setSelected(isSelected);
+        emit selectedFramesChanged();
     }
 }
 
@@ -586,6 +587,7 @@ void Layer::deselectAll()
 {
     mSelectedFrames_byLast.clear();
     mSelectedFrames_byPosition.clear();
+    emit selectedFramesChanged();
 
     for (auto pair : mKeyFrames)
     {

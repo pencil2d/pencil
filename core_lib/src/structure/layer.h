@@ -126,6 +126,9 @@ public:
     bool isPaintable() const;
     QList<int> getSelectedFrameList() { return mSelectedFrames_byPosition; }
 
+signals:
+    void selectedFramesChanged();
+
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;

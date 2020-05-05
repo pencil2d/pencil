@@ -5,6 +5,7 @@
 #include "editor.h"
 
 class QTimer;
+class LayerManager;
 
 namespace Ui {
 class LayerOpacityDialog;
@@ -24,22 +25,37 @@ public:
     void initVector();
 
 private slots:
-    void previousKeyframePressed();
-    void nextKeyframePressed();
     void opacitySliderChanged(int value);
-    void opacitySpinboxChanged(int value);
+    void opacitySpinboxChanged(double value);
     void allLayerOpacity();
     void selectedKeyframesOpacity();
     void fadeInPressed();
     void fadeOutPressed();
 
+    void currentLayerChanged(int index);
+    void currentFrameChanged(int frame);
+    void selectedFramesChanged();
+
+signals:
+    void closedialog();
+
 private:
 
+    void updateSlider();
+    void opacityValueChanged();
     void setOpacityCurrentKeyframe();
+    void setOpacitySelectedKeyframes();
+    void setOpacityLayer();
+    void enableDialog();
+    void disableDialog();
+    void closeClicked();
 
     Ui::LayerOpacityDialog *ui;
 
     Editor* mEditor = nullptr;
+    LayerManager* mLayerManager = nullptr;
+
+    bool mOpacityChanges = false;
 };
 
 #endif // LAYEROPACITYDIALOG_H

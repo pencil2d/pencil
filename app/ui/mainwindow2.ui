@@ -1074,7 +1074,7 @@
   </action>
   <action name="actionChangeLayerOpacity_Bitmap">
    <property name="text">
-    <string>Layer opacity</string>
+    <string>Layer / Keyframe opacity</string>
    </property>
   </action>
  </widget>
