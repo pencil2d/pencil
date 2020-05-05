@@ -32,6 +32,7 @@ private slots:
     void fadeInPressed();
     void fadeOutPressed();
 
+    void newFileLoaded();
     void currentLayerChanged(int index);
     void currentFrameChanged(int frame);
     void selectedFramesChanged();

@@ -40,6 +40,7 @@ void LayerOpacityDialog::init()
     connect(ui->btnFadeOut, &QPushButton::pressed, this, &LayerOpacityDialog::fadeOutPressed);
     connect(ui->btnClose, &QPushButton::pressed, this, &LayerOpacityDialog::closeClicked);
 
+    connect(mEditor, &Editor::objectLoaded, this, &LayerOpacityDialog::newFileLoaded);
     connect(mLayerManager, &LayerManager::currentLayerChanged, this, &LayerOpacityDialog::currentLayerChanged);
     connect(mEditor, &Editor::currentFrameChanged, this, &LayerOpacityDialog::currentFrameChanged);
     connect(mLayerManager->currentLayer(), &Layer::selectedFramesChanged, this, &LayerOpacityDialog::selectedFramesChanged);
@@ -120,6 +121,7 @@ void LayerOpacityDialog::allLayerOpacity()
 void LayerOpacityDialog::selectedKeyframesOpacity()
 {
     SignalBlocker b1(ui->chooseOpacitySlider);
+    SignalBlocker b2(ui->chooseOpacitySpinBox);
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
@@ -152,6 +154,7 @@ void LayerOpacityDialog::selectedKeyframesOpacity()
 void LayerOpacityDialog::fadeInPressed()
 {
     SignalBlocker b1(ui->chooseOpacitySlider);
+    SignalBlocker b2(ui->chooseOpacitySpinBox);
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
@@ -168,7 +171,6 @@ void LayerOpacityDialog::fadeInPressed()
             image = layer->getBitmapImageAtFrame(selectedKeys.at(i));
             qreal newOpacity = static_cast<qreal>((i + 1) / imageCount) * endOpacity;
             image->setOpacity(newOpacity);
-            image->modification();
         }
         int newOpacity = 500 - static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
@@ -190,7 +192,6 @@ void LayerOpacityDialog::fadeInPressed()
             image = layer->getVectorImageAtFrame(selectedKeys.at(i));
             qreal newOpacity = static_cast<qreal>((i + 1) / imageCount) * endOpacity;
             image->setOpacity(newOpacity);
-            image->modification();
         }
         int newOpacity = 500 - static_cast<int>(layer->getVectorImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
@@ -202,6 +203,7 @@ void LayerOpacityDialog::fadeInPressed()
 void LayerOpacityDialog::fadeOutPressed()
 {
     SignalBlocker b1(ui->chooseOpacitySlider);
+    SignalBlocker b2(ui->chooseOpacitySpinBox);
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
@@ -218,7 +220,6 @@ void LayerOpacityDialog::fadeOutPressed()
             image = layer->getBitmapImageAtFrame(selectedKeys.at(i));
             qreal newOpacity = static_cast<qreal>(startOpacity - (i / imageCount) * startOpacity);
             image->setOpacity(newOpacity);
-            image->modification();
         }
         int newOpacity = 500 - static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
@@ -240,7 +241,6 @@ void LayerOpacityDialog::fadeOutPressed()
             image = layer->getVectorImageAtFrame(selectedKeys.at(i));
             qreal newOpacity = static_cast<qreal>(startOpacity - (i / imageCount) * startOpacity);
             image->setOpacity(newOpacity);
-            image->modification();
         }
         int newOpacity = 500 - static_cast<int>(layer->getVectorImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
@@ -249,6 +249,11 @@ void LayerOpacityDialog::fadeOutPressed()
 
     mEditor->updateCurrentFrame();
 
+}
+
+void LayerOpacityDialog::newFileLoaded()
+{
+    init();
 }
 
 void LayerOpacityDialog::currentLayerChanged(int index)
@@ -288,12 +293,12 @@ void LayerOpacityDialog::selectedFramesChanged()
 {
     QList<int> frames = mLayerManager->currentLayer()->getSelectedFrameList();
     qDebug() << "Selection size: " << frames.size();
-    if (!frames.isEmpty())
+    if (!frames.isEmpty() && mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
         ui->rbSelectedKeyframes->setEnabled(true);
     else
         ui->rbSelectedKeyframes->setEnabled(false);
 
-    if (frames.count() > 2)
+    if (frames.count() > 2 && mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
         ui->groupBoxFade->setEnabled(true);
     else
         ui->groupBoxFade->setEnabled(false);
@@ -304,6 +309,7 @@ void LayerOpacityDialog::updateSlider()
     if (!mLayerManager->currentLayer()->keyExists(mEditor->currentFrame())) { return; }
 
     SignalBlocker b1(ui->chooseOpacitySlider);
+    SignalBlocker b2(ui->chooseOpacitySpinBox);
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
