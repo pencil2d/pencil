@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include <QApplication>
 #include <QString>
 #include <QStringList>
 #include <QDir>
@@ -47,6 +48,10 @@ namespace PlatformHandler
         return MacOSXNative::isDarkMode();
     }
 
+    void initilise()
+    {
+        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    }
 }
 
 extern "C" {

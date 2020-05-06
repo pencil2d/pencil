@@ -35,6 +35,8 @@ GNU General Public License for more details.
 namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
+
+    void initalise() {};
 }
 
 void Editor::importMovie( QString filePath, int fps )
