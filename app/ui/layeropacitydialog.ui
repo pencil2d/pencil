@@ -155,13 +155,6 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnSaveChanges">
-       <property name="text">
-        <string>Save changes</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="btnClose">
        <property name="text">
         <string>Close</string>

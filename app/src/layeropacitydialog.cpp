@@ -2,6 +2,7 @@
 #include "ui_layeropacitydialog.h"
 
 #include "layermanager.h"
+#include "playbackmanager.h"
 #include "layer.h"
 #include "layerbitmap.h"
 #include "bitmapimage.h"
@@ -30,6 +31,7 @@ void LayerOpacityDialog::setCore(Editor *editor)
 {
     mEditor = editor;
     mLayerManager = mEditor->layers();
+    mPlayBack = mEditor->playback();
 }
 
 void LayerOpacityDialog::init()
@@ -41,6 +43,7 @@ void LayerOpacityDialog::init()
     connect(ui->btnClose, &QPushButton::pressed, this, &LayerOpacityDialog::closeClicked);
 
     connect(mEditor, &Editor::objectLoaded, this, &LayerOpacityDialog::newFileLoaded);
+    connect(mPlayBack, &PlaybackManager::playStateChanged, this, &LayerOpacityDialog::playStateChanged);
     connect(mLayerManager, &LayerManager::currentLayerChanged, this, &LayerOpacityDialog::currentLayerChanged);
     connect(mEditor, &Editor::currentFrameChanged, this, &LayerOpacityDialog::currentFrameChanged);
     connect(mLayerManager->currentLayer(), &Layer::selectedFramesChanged, this, &LayerOpacityDialog::selectedFramesChanged);
@@ -274,6 +277,8 @@ void LayerOpacityDialog::currentLayerChanged(int index)
 
 void LayerOpacityDialog::currentFrameChanged(int frame)
 {
+    if (mPlayerIsPlaying) { return; }
+
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP ||
             mLayerManager->currentLayer()->type() == Layer::VECTOR)
     {
@@ -292,7 +297,6 @@ void LayerOpacityDialog::currentFrameChanged(int frame)
 void LayerOpacityDialog::selectedFramesChanged()
 {
     QList<int> frames = mLayerManager->currentLayer()->getSelectedFrameList();
-    qDebug() << "Selection size: " << frames.size();
     if (!frames.isEmpty() && mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
         ui->rbSelectedKeyframes->setEnabled(true);
     else
@@ -302,6 +306,20 @@ void LayerOpacityDialog::selectedFramesChanged()
         ui->groupBoxFade->setEnabled(true);
     else
         ui->groupBoxFade->setEnabled(false);
+}
+
+void LayerOpacityDialog::playStateChanged(bool isPlaying)
+{
+     mPlayerIsPlaying = isPlaying;
+    if (!mPlayerIsPlaying)
+    {
+        enableDialog();
+        currentFrameChanged(mEditor->currentFrame());
+    }
+    else
+    {
+        disableDialog();
+    }
 }
 
 void LayerOpacityDialog::updateSlider()
@@ -420,6 +438,7 @@ void LayerOpacityDialog::enableDialog()
     ui->groupBoxFade->setEnabled(true);
     ui->chooseOpacitySlider->setEnabled(true);
     ui->chooseOpacitySpinBox->setEnabled(true);
+    ui->btnClose->setEnabled(true);
 }
 
 void LayerOpacityDialog::disableDialog()
@@ -428,6 +447,7 @@ void LayerOpacityDialog::disableDialog()
     ui->groupBoxFade->setEnabled(false);
     ui->chooseOpacitySlider->setEnabled(false);
     ui->chooseOpacitySpinBox->setEnabled(false);
+    ui->btnClose->setEnabled(false);
 }
 
 void LayerOpacityDialog::closeClicked()

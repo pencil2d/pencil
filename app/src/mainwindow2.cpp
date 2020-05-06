@@ -485,6 +485,10 @@ void MainWindow2::closeLayerOpacityDialog()
 {
     disconnect(mLayerOpacityDialog, &LayerOpacityDialog::closedialog, this, &MainWindow2::closeLayerOpacityDialog);
     mLayerOpacityDialog = nullptr;
+    QMessageBox::warning(this, tr("Changes not saved!"),
+                         tr("Be aware that your opacity changes are NOT saved.\n"
+                            "Please save your file, to preserve any changes!"),
+                         QMessageBox::Close);
 }
 
 void MainWindow2::currentLayerChanged()

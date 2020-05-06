@@ -6,6 +6,7 @@
 
 class QTimer;
 class LayerManager;
+class PlaybackManager;
 
 namespace Ui {
 class LayerOpacityDialog;
@@ -36,6 +37,7 @@ private slots:
     void currentLayerChanged(int index);
     void currentFrameChanged(int frame);
     void selectedFramesChanged();
+    void playStateChanged(bool isPlaying);
 
 signals:
     void closedialog();
@@ -55,8 +57,10 @@ private:
 
     Editor* mEditor = nullptr;
     LayerManager* mLayerManager = nullptr;
+    PlaybackManager* mPlayBack = nullptr;
 
     bool mOpacityChanges = false;
+    bool mPlayerIsPlaying = false;
 };
 
 #endif // LAYEROPACITYDIALOG_H
