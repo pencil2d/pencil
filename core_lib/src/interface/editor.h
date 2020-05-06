@@ -138,8 +138,6 @@ public: //slots
     void cut();
 
     bool importImage(QString filePath);
-    bool importMovieVideo(QString filePath, int fps, QProgressDialog &progress);
-    bool importMovieAudio(QString filePath, QProgressDialog &progress);
     bool importGIF(QString filePath, int numOfImages = 0);
     void updateFrame(int frameNumber);
     void restoreKey();
@@ -176,6 +174,7 @@ public: //slots
     void toogleOnionSkinType();
 
     void clearTemporary();
+    void addTemporaryDir(QTemporaryDir* const dir);
 
     void settingUpdated(SETTING);
 

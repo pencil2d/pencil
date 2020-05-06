@@ -91,6 +91,9 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
     return vis = (vis == LayerVisibility::CURRENTONLY) ? LayerVisibility::ALL : static_cast<LayerVisibility>(static_cast<int>(vis)-1);
 }
 
+// Max frames that can be imported and loaded onto the timeline
+constexpr int MaxFramesBound = 9999;
+
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"

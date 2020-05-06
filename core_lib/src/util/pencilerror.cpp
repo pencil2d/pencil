@@ -118,3 +118,8 @@ bool Status::operator==(Status::ErrorCode code) const
 {
     return (mCode == code);
 }
+
+bool Status::operator!=(Status::ErrorCode code) const
+{
+    return (mCode != code);
+}

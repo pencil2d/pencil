@@ -46,6 +46,7 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "camera.h"
 
+#include "movieimporter.h"
 #include "movieexporter.h"
 #include "filedialogex.h"
 #include "exportmoviedialog.h"
@@ -61,6 +62,117 @@ ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
 }
 
 ActionCommands::~ActionCommands() {}
+
+Status ActionCommands::importMovieVideo()
+{
+    FileDialog fileDialog(mParent);
+    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    if (filePath.isEmpty())
+    {
+        return Status::FAIL;
+    }
+
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progressDialog(tr("Importing movieclip..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progressDialog);
+    progressDialog.setWindowModality(Qt::WindowModal);
+    progressDialog.setMinimumWidth(250);
+    progressDialog.show();
+
+    QMessageBox information(mParent);
+    information.setIcon(QMessageBox::Warning);
+    information.setText(tr("You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?"));
+    information.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    information.setDefaultButton(QMessageBox::Yes);
+
+    MovieImporter importer(this);
+    importer.setCore(mEditor);
+
+    connect(&progressDialog, &QProgressDialog::canceled, [&importer]
+    {
+        importer.cancel();
+    });
+
+    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::MOVIE, [&progressDialog](int prog) {
+        progressDialog.setValue(prog);
+        QApplication::processEvents();
+    }, [&progressDialog](QString progMessage) {
+        progressDialog.setLabelText(progMessage);
+    }, [&information]() {
+
+        int ret = information.exec();
+        if (ret == QMessageBox::Yes) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+
+    if (!st.ok() && st != Status::CANCELED)
+    {
+        QMessageBox::warning(mParent,
+                             st.title(),
+                             st.description(),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
+
+    progressDialog.setValue(100);
+    progressDialog.close();
+
+    return Status::OK;
+}
+
+Status ActionCommands::importMovieAudio()
+{
+    FileDialog fileDialog(mParent);
+    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    if (filePath.isEmpty())
+    {
+        return Status::FAIL;
+    }
+
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progressDialog(tr("Importing movie audio..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progressDialog);
+    progressDialog.setWindowModality(Qt::WindowModal);
+    progressDialog.show();
+
+    MovieImporter importer(this);
+    importer.setCore(mEditor);
+
+    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
+        progressDialog.setValue(prog);
+        QApplication::processEvents();
+    }, [](QString) {
+        // Not neeeded
+    }, []() {
+        return true;
+    });
+
+    connect(&progressDialog, &QProgressDialog::canceled, [&importer]
+    {
+        importer.cancel();
+    });
+
+    if (!st.ok())
+    {
+        QMessageBox::warning(mParent,
+                             st.title(),
+                             st.description(),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
+
+    progressDialog.setValue(100);
+    progressDialog.close();
+
+    return Status::OK;
+}
 
 Status ActionCommands::importSound()
 {
@@ -129,8 +241,7 @@ Status ActionCommands::importSound()
     }
     else
     {
-        QProgressDialog dummyDialog;
-        st = mEditor->importMovieAudio(strSoundFile, dummyDialog) ? Status::OK : Status::FAIL;
+        st = convertSoundToWav(strSoundFile);
     }
 
     if (!st.ok())
@@ -138,6 +249,41 @@ Status ActionCommands::importSound()
         layer->removeKeyFrame(currentFrame);
     }
 
+    return st;
+}
+
+Status ActionCommands::convertSoundToWav(const QString& filePath)
+{
+    QProgressDialog progressDialog(tr("Importing sound..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progressDialog);
+    progressDialog.setWindowModality(Qt::WindowModal);
+    progressDialog.show();
+
+    MovieImporter importer(this);
+    importer.setCore(mEditor);
+
+    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
+        progressDialog.setValue(prog);
+        QApplication::processEvents();
+    }, [](QString) {
+        // Not needed
+    }, []() {
+        return true;
+    });
+
+    connect(&progressDialog, &QProgressDialog::canceled, [&importer]
+    {
+        importer.cancel();
+    });
+
+    if (!st.ok())
+    {
+        QMessageBox::warning(mParent,
+                             st.title(),
+                             st.description(),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
     return st;
 }
 

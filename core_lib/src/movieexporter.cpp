@@ -220,7 +220,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     // Output path
     strCmd += " " + mTempWorkDir + "/tmpaudio.wav";
 
-    STATUS_CHECK(MovieExporter::executeFFMpeg(strCmd, mDesc.endFrame - mDesc.startFrame, [&progress, this] (float f) { progress(f); return !mCanceled; }));
+    STATUS_CHECK(MovieExporter::executeFFMpeg(strCmd, mDesc.endFrame - mDesc.startFrame, [&progress, this] (float f) { progress(f); return !mCanceled; }))
     qDebug() << "audio file: " + tempAudioPath;
 
     return Status::OK;
@@ -513,6 +513,8 @@ Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bo
     // FFmpeg writes to stderr only for some reason, so we just read both channels together
     ffmpeg.setProcessChannelMode(QProcess::MergedChannels);
     ffmpeg.start(strCmd);
+
+    Status status = Status::OK;
     if (ffmpeg.waitForStarted() == true)
     {
         while(ffmpeg.state() == QProcess::Running)
@@ -551,14 +553,33 @@ Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bo
 
         if(ffmpeg.exitStatus() != QProcess::NormalExit)
         {
-            qDebug() << "ERROR: FFmpeg crashed";
-            return Status::FAIL;
+            status = Status::FAIL;
+            status.setTitle(QObject::tr("Something went wrong"));
+            status.setDescription(QObject::tr("Looks like our video backend crashed... please try again."));
+            return status;
+        }
+        if(ffmpeg.exitCode() != 0)
+        {
+            qDebug() << "ERROR: FFmpeg exited with non-zero status";
+            status = Status::FAIL;
+            status.setTitle(QObject::tr("Something went wrong"));
+            status.setDescription(QObject::tr("We failed to import the audio, not sure why..."));
+            return status;
         }
     }
     else
     {
         qDebug() << "ERROR: Could not execute FFmpeg.";
-        return Status::FAIL;
+        status = Status::FAIL;
+        status.setTitle(QObject::tr("Something went wrong"));
+        status.setDescription(QObject::tr("Couldn't start the video backend, please try again..."));
+    }
+    if (ffmpeg.exitStatus() == QProcess::CrashExit)
+    {
+        qDebug() << "ffmpeg conversion failed";
+        status = Status::FAIL;
+        status.setTitle(QObject::tr("Something went wrong"));
+        status.setDescription(QObject::tr("We were unable to process the file, please try again..."));
     }
     return Status::OK;
 }

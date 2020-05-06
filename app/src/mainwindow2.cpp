@@ -974,76 +974,6 @@ void MainWindow2::importGIF()
     mIsImportingImageSequence = false;
 }
 
-void MainWindow2::importMovieVideo()
-{
-    FileDialog fileDialog(this);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
-    if (filePath.isEmpty())
-    {
-        return;
-    }
-
-    // Flag this so we don't prompt the user about auto-save in the middle of the import.
-    mIsImportingImageSequence = true;
-
-    // Show a progress dialog, as this can take a while if you have lots of images.
-    QProgressDialog progress(tr("Importing movie video..."), tr("Abort"), 0, 100, this);
-    hideQuestionMark(progress);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-
-    bool ok = mEditor->importMovieVideo(filePath, mEditor->playback()->fps(), progress);
-
-    if (!ok)
-    {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("was unable to import") + filePath,
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
-
-    progress.setValue(100);
-    progress.close();
-
-    mIsImportingImageSequence = false;
-}
-
-void MainWindow2::importMovieAudio()
-{
-    FileDialog fileDialog(this);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
-    if (filePath.isEmpty())
-    {
-        return;
-    }
-
-    // Show a progress dialog. The progress isn't actually tracked, but this will allow the operation to be cancelled
-    QProgressDialog progress(tr("Importing movie video..."), tr("Abort"), 0, 100, this);
-    hideQuestionMark(progress);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.setValue(0);
-    progress.show();
-
-    bool ok = mEditor->importMovieAudio(filePath, progress);
-
-    if (!ok)
-    {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("was unable to import") + filePath,
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
-
-    progress.setValue(100);
-    progress.close();
-}
-
 void MainWindow2::lockWidgets(bool shouldLock)
 {
     QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
@@ -1545,6 +1475,22 @@ void MainWindow2::changePlayState(bool isPlaying)
         ui->actionPlay->setIcon(mStartIcon);
     }
     update();
+}
+
+void MainWindow2::importMovieVideo()
+{
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = false;
+
+    mCommands->importMovieVideo();
+}
+
+void MainWindow2::importMovieAudio()
+{
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = false;
+
+    mCommands->importMovieAudio();
 }
 
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)
