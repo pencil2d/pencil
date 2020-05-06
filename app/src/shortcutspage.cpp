@@ -67,8 +67,8 @@ void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
     ui->actionNameLabel->setText(actionItem->text());
 
     // extract key sequence
-    QStandardItem* keyseqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
-    ui->keySequenceEdit->setKeySequence(keyseqItem->text());
+    QStandardItem* keySeqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
+    ui->keySequenceEdit->setKeySequence(keySeqItem->text());
 
     qDebug() << "Command Selected:" << actionItem->text();
 
@@ -79,7 +79,7 @@ void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
 
 void ShortcutsPage::keyCapLineEditTextChanged()
 {
-    QKeySequence keySeqence = ui->keySequenceEdit->keySequence();
+    QKeySequence keySequence = ui->keySequenceEdit->keySequence();
     if (!m_currentItemIndex.isValid())
     {
         return;
@@ -87,19 +87,19 @@ void ShortcutsPage::keyCapLineEditTextChanged()
 
     int row = m_currentItemIndex.row();
     QStandardItem* actionItem = m_treeModel->item(row, ACT_NAME_COLUMN);
-    QStandardItem* keyseqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
+    QStandardItem* keySeqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
 
     QString strCmdName = actionItem->data().toString();
-    QString strKeySeq  = keySeqence.toString( QKeySequence::PortableText );
+    QString strKeySeq  = keySequence.toString( QKeySequence::PortableText );
 
     QSettings setting( PENCIL2D, PENCIL2D );
     setting.beginGroup("shortcuts");
 
-    if (isKeySequenceExist(setting, strCmdName, keySeqence))
+    if (isKeySequenceExist(setting, strCmdName, keySequence))
     {
         QMessageBox msgBox(this);
         msgBox.setText( tr("Shortcut Conflict!"));
-        msgBox.setInformativeText( tr("%1 is already used, overwrite?").arg(keySeqence.toString(QKeySequence::NativeText)) );
+        msgBox.setInformativeText( tr("%1 is already used, overwrite?").arg(keySequence.toString(QKeySequence::NativeText)) );
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         msgBox.setIcon( QMessageBox::Warning );
@@ -108,10 +108,10 @@ void ShortcutsPage::keyCapLineEditTextChanged()
 
         if ( result != QMessageBox::Yes )
         {
-            ui->keySequenceEdit->setKeySequence( keyseqItem->text() );
+            ui->keySequenceEdit->setKeySequence( keySeqItem->text() );
             return;
         }
-        removeDuplicateKeySequence(&setting, keySeqence);
+        removeDuplicateKeySequence(&setting, keySequence);
     }
 
     setting.setValue(strCmdName, strKeySeq);
