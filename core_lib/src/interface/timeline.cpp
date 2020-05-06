@@ -224,6 +224,7 @@ void TimeLine::initUI()
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);
+    mNumLayers = layer->count();
 
     scrubbing = false;
 }
@@ -316,7 +317,7 @@ void TimeLine::updateLayerView()
     int pageDisplay = (mTracks->height() - mTracks->getOffsetY()) / mTracks->getLayerHeight();
 
     mVScrollbar->setMinimum(0);
-    mVScrollbar->setMaximum(qMax(0, qMax(0, mNumLayers - pageDisplay)));
+    mVScrollbar->setMaximum(qMax(0, mNumLayers - pageDisplay));
     update();
     updateContent();
 }
@@ -371,4 +372,5 @@ int TimeLine::getRangeUpper()
 void TimeLine::onObjectLoaded()
 {
     mTimeControls->updateUI();
+    updateLayerNumber(editor()->layers()->count());
 }
