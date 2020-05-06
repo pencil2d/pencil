@@ -53,7 +53,7 @@ public:
 
 private:
 
-    Status verifyFFMPEG();
+    Status verifyFFmpegExists();
     Status importMovieVideo(const QString& filePath, int fps,
                             std::function<void(int)> progress,
                             std::function<void(QString)> progressMessage);

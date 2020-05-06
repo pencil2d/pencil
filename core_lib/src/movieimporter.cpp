@@ -38,7 +38,7 @@ Status MovieImporter::testVideo(const QString& filePath, int fps)
     }
 
     // --------- Import all the temporary frames ----------
-    status = verifyFFMPEG();
+    status = verifyFFmpegExists();
     if (status == Status::ERROR_FFMPEG_NOT_FOUND) { return status; }
     QString ffmpegPath = ffmpegLocation();
 
@@ -131,7 +131,7 @@ Status MovieImporter::run(const QString& filePath, int fps, FileType type,
 
     Status status = Status::OK;
 
-    status = verifyFFMPEG();
+    status = verifyFFmpegExists();
     if (status == Status::ERROR_FFMPEG_NOT_FOUND) { return status; }
 
     mTempDir = new QTemporaryDir();
@@ -315,7 +315,7 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<vo
 }
 
 
-Status MovieImporter::verifyFFMPEG()
+Status MovieImporter::verifyFFmpegExists()
 {
     QString ffmpegPath = ffmpegLocation();
     if (!QFile::exists(ffmpegPath))
