@@ -48,7 +48,7 @@ namespace PlatformHandler
         return MacOSXNative::isDarkMode();
     }
 
-    void initilise()
+    void initialise()
     {
         QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     }

@@ -36,7 +36,7 @@ namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
 
-    void initalise() {};
+    void initialise() {};
 }
 
 void Editor::importMovie( QString filePath, int fps )
