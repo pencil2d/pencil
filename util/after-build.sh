@@ -20,7 +20,7 @@ package_linux() {
   local gst_executables="-executable=Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
   for plugin in adpcmdec alsa app audioconvert audioparsers audioresample \
       autodetect coreelements gsm id3demux jack mpg123 mulaw playback \
-      pulse typefindfunctions wavparse; do
+      pulse typefindfunctions wavparse apetag; do
     install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgst${plugin}.so" \
       "Pencil2D/usr/lib/gstreamer-1.0/libgst${plugin}.so"
     gst_executables="${gst_executables} -executable=Pencil2D/usr/lib/gstreamer-1.0/libgst${plugin}.so"

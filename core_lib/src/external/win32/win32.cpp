@@ -35,4 +35,6 @@ GNU General Public License for more details.
 namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
+
+    void initialise() {};
 }
