@@ -4,6 +4,7 @@
 #include "pencilerror.h"
 
 #include <QObject>
+#include <functional>
 #include "filetype.h"
 
 class Editor;
@@ -18,19 +19,19 @@ public:
 
     void setCore(Editor* editor) { mEditor = editor; }
 
-    /** Test the movie before importing, this is useful because you can
-     * use the information to know how many frames will be imported (estimated) and whether to inform the user or not about it.
+    /** Attempts to load a video and determine it's duration.
      *
-     * @param filePath
-     * @param fps
-     * @return A status, either OK, FAIL or AWAIT
+     * This will analyze the video to estimate how many frames will be imported
+     * and set frameEstimate to this value.
+     *
+     * @param[in] filePath Path to the video file.
+     * @param[in] fps Frames per second to import at.
+     * @param[out] frameEstimate An estimate of the number of frames if successful, unchanged otherwise.
+     * @return Will FAIL if an error occurs during loading the video or calculating the duration, or OK if everything succeded.
      */
-    Status testVideo(const QString& filePath, int fps);
+    Status estimateFrames(const QString& filePath, int fps, int* frameEstimate);
 
     /**
-     *
-     * @param filePath path to File
-     * @param fps frames per second
      * @param type FileType to import, should be either MOVIE or SOUND
      * @param progress a function that returns and notify the progress
      * @param progressMessage a function that returns and change the progress message
@@ -42,19 +43,12 @@ public:
                std::function<void(QString)> progressMessage,
                std::function<bool()> askPermission);
 
-
-    /** Only valid if test() has been used, otherwise will return 0.
-     *
-     * @return Estimated amount of frames to import
-     */
-    int estimatedFrames();
-
     void cancel() { mCanceled = true; }
 
 private:
 
     Status verifyFFmpegExists();
-    Status importMovieVideo(const QString& filePath, int fps,
+    Status importMovieVideo(const QString& filePath, int fps, int frameEstimate,
                             std::function<void(int)> progress,
                             std::function<void(QString)> progressMessage);
     Status importMovieAudio(const QString& filePath, std::function<void(int)> progress);
@@ -66,8 +60,6 @@ private:
     QTemporaryDir* mTempDir = nullptr;
 
     bool mCanceled = false;
-
-    int mEstimatedFrames = 0;
 };
 
 #endif // MOVIEIMPORTER_H

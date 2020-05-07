@@ -54,6 +54,7 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
+#include "errordialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -73,7 +74,7 @@ Status ActionCommands::importMovieVideo()
     }
 
     // Show a progress dialog, as this can take a while if you have lots of images.
-    QProgressDialog progressDialog(tr("Importing movieclip..."), tr("Abort"), 0, 100, mParent);
+    QProgressDialog progressDialog(tr("Importing movie..."), tr("Abort"), 0, 100, mParent);
     hideQuestionMark(progressDialog);
     progressDialog.setWindowModality(Qt::WindowModal);
     progressDialog.setMinimumWidth(250);
@@ -88,10 +89,7 @@ Status ActionCommands::importMovieVideo()
     MovieImporter importer(this);
     importer.setCore(mEditor);
 
-    connect(&progressDialog, &QProgressDialog::canceled, [&importer]
-    {
-        importer.cancel();
-    });
+    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
 
     Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::MOVIE, [&progressDialog](int prog) {
         progressDialog.setValue(prog);
@@ -101,20 +99,21 @@ Status ActionCommands::importMovieVideo()
     }, [&information]() {
 
         int ret = information.exec();
-        if (ret == QMessageBox::Yes) {
-            return true;
-        } else {
-            return false;
-        }
+        return ret == QMessageBox::Yes;
     });
 
-    if (!st.ok() && st != Status::CANCELED)
+    if(st == Status::CANCELED)
     {
         QMessageBox::warning(mParent,
                              st.title(),
                              st.description(),
                              QMessageBox::Ok,
                              QMessageBox::Ok);
+    }
+    else if (!st.ok())
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
@@ -143,27 +142,30 @@ Status ActionCommands::importMovieAudio()
     MovieImporter importer(this);
     importer.setCore(mEditor);
 
+    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
+
     Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
         progressDialog.setValue(prog);
         QApplication::processEvents();
-    }, [](QString) {
+    }, [](QString progressMessage) {
+        Q_UNUSED(progressMessage)
         // Not neeeded
     }, []() {
         return true;
     });
 
-    connect(&progressDialog, &QProgressDialog::canceled, [&importer]
-    {
-        importer.cancel();
-    });
-
-    if (!st.ok())
+    if(st == Status::CANCELED)
     {
         QMessageBox::warning(mParent,
                              st.title(),
                              st.description(),
                              QMessageBox::Ok,
                              QMessageBox::Ok);
+    }
+    else if (!st.ok())
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
@@ -265,24 +267,27 @@ Status ActionCommands::convertSoundToWav(const QString& filePath)
     Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
         progressDialog.setValue(prog);
         QApplication::processEvents();
-    }, [](QString) {
+    }, [](QString progressMessage) {
+        Q_UNUSED(progressMessage)
         // Not needed
     }, []() {
         return true;
     });
 
-    connect(&progressDialog, &QProgressDialog::canceled, [&importer]
-    {
-        importer.cancel();
-    });
+    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
 
-    if (!st.ok())
+    if(st == Status::CANCELED)
     {
         QMessageBox::warning(mParent,
                              st.title(),
                              st.description(),
                              QMessageBox::Ok,
                              QMessageBox::Ok);
+    }
+    else if (!st.ok())
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
     }
     return st;
 }

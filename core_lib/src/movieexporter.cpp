@@ -91,7 +91,7 @@ Status MovieExporter::run(const Object* obj,
         return Status::ERROR_FFMPEG_NOT_FOUND;
     }
 
-    STATUS_CHECK(checkInputParameters(desc));
+    STATUS_CHECK(checkInputParameters(desc))
     mDesc = desc;
 
     qDebug() << "OutFile: " << mDesc.strFileName;
@@ -111,18 +111,18 @@ Status MovieExporter::run(const Object* obj,
         majorProgress(0.03f, 1.f);
         progressMessage(QObject::tr("Generating GIF..."));
         minorProgress(0.f);
-        STATUS_CHECK(generateGif(obj, ffmpegPath, desc.strFileName, minorProgress));
+        STATUS_CHECK(generateGif(obj, ffmpegPath, desc.strFileName, minorProgress))
     }
     else
     {
         majorProgress(0.03f, 0.25f);
         progressMessage(QObject::tr("Assembling audio..."));
         minorProgress(0.f);
-        STATUS_CHECK(assembleAudio(obj, ffmpegPath, minorProgress));
+        STATUS_CHECK(assembleAudio(obj, ffmpegPath, minorProgress))
         minorProgress(1.f);
         majorProgress(0.25f, 1.f);
         progressMessage(QObject::tr("Generating movie..."));
-        STATUS_CHECK(generateMovie(obj, ffmpegPath, desc.strFileName, minorProgress));
+        STATUS_CHECK(generateMovie(obj, ffmpegPath, desc.strFileName, minorProgress))
     }
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
@@ -220,7 +220,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     // Output path
     strCmd += " " + mTempWorkDir + "/tmpaudio.wav";
 
-    STATUS_CHECK(MovieExporter::executeFFMpeg(strCmd, mDesc.endFrame - mDesc.startFrame, [&progress, this] (float f) { progress(f); return !mCanceled; }))
+    STATUS_CHECK(MovieExporter::executeFFmpeg(strCmd, [&progress, this] (int frame) { progress(frame / static_cast<float>(mDesc.endFrame - mDesc.startFrame)); return !mCanceled; }))
     qDebug() << "audio file: " + tempAudioPath;
 
     return Status::OK;
@@ -504,7 +504,7 @@ Status MovieExporter::generateGif(
  *  @return Returns Status::OK if everything went well, and Status::FAIL
  *  and error is detected (usually a non-zero exit code for ffmpeg).
  */
-Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bool(float)> progress)
+Status MovieExporter::executeFFmpeg(QString strCmd, std::function<bool(int)> progress)
 {
     qDebug() << strCmd;
 
@@ -515,6 +515,7 @@ Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bo
     ffmpeg.start(strCmd);
 
     Status status = Status::OK;
+    DebugDetails dd;
     if (ffmpeg.waitForStarted() == true)
     {
         while(ffmpeg.state() == QProcess::Running)
@@ -525,14 +526,15 @@ Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bo
             QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
             for (const QString& s : sList)
             {
-                qDebug() << "[stdout]" << s;
+                qDebug() << "[ffmpeg]" << s;
+                dd << s;
             }
 
             if(output.startsWith("frame="))
             {
                 QString frame = output.mid(6, output.indexOf(' '));
 
-                bool shouldContinue = progress(frame.toInt() / static_cast<float>(frames));
+                bool shouldContinue = progress(frame.toInt());
                 if (!shouldContinue)
                 {
                     ffmpeg.terminate();
@@ -549,21 +551,17 @@ Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bo
         for (const QString& s : sList)
         {
             qDebug() << "[ffmpeg]" << s;
+            dd << s;
         }
 
-        if(ffmpeg.exitStatus() != QProcess::NormalExit)
+        if(ffmpeg.exitStatus() != QProcess::NormalExit || ffmpeg.exitCode() != 0)
         {
             status = Status::FAIL;
             status.setTitle(QObject::tr("Something went wrong"));
-            status.setDescription(QObject::tr("Looks like our video backend crashed... please try again."));
-            return status;
-        }
-        if(ffmpeg.exitCode() != 0)
-        {
-            qDebug() << "ERROR: FFmpeg exited with non-zero status";
-            status = Status::FAIL;
-            status.setTitle(QObject::tr("Something went wrong"));
-            status.setDescription(QObject::tr("We failed to import the audio, not sure why..."));
+            status.setDescription(QObject::tr("Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists."));
+            dd << QString("Exit status: ").append(QProcess::NormalExit ? "NormalExit": "CrashExit")
+               << QString("Exit code: %1").arg(ffmpeg.exitCode());
+            status.setDetails(dd);
             return status;
         }
     }
@@ -572,16 +570,10 @@ Status MovieExporter::executeFFMpeg(QString strCmd, int frames, std::function<bo
         qDebug() << "ERROR: Could not execute FFmpeg.";
         status = Status::FAIL;
         status.setTitle(QObject::tr("Something went wrong"));
-        status.setDescription(QObject::tr("Couldn't start the video backend, please try again..."));
+        status.setDescription(QObject::tr("Couldn't start the video backend, please try again."));
+        status.setDetails(dd);
     }
-    if (ffmpeg.exitStatus() == QProcess::CrashExit)
-    {
-        qDebug() << "ffmpeg conversion failed";
-        status = Status::FAIL;
-        status.setTitle(QObject::tr("Something went wrong"));
-        status.setDescription(QObject::tr("We were unable to process the file, please try again..."));
-    }
-    return Status::OK;
+    return status;
 }
 
 /** Runs the specified command (should be ffmpeg), and lets

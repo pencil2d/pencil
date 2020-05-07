@@ -44,7 +44,6 @@ public:
         OK = 0,
         SAFE,
         FAIL,
-        AWAIT,
 		CANCELED,
         FILE_NOT_FOUND,
         NOT_SUPPORTED,
@@ -89,6 +88,7 @@ public:
 
     void setTitle(QString title) { mTitle = title; }
     void setDescription(QString description) { mDescription = description; }
+    void setDetails(DebugDetails dd) { mDetails = dd; }
 
     bool operator==(ErrorCode code) const;
     bool operator!=(ErrorCode code) const;

@@ -1480,16 +1480,15 @@ void MainWindow2::changePlayState(bool isPlaying)
 void MainWindow2::importMovieVideo()
 {
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
-    mIsImportingImageSequence = false;
+    mIsImportingImageSequence = true;
 
     mCommands->importMovieVideo();
+
+    mIsImportingImageSequence = false;
 }
 
 void MainWindow2::importMovieAudio()
 {
-    // Flag this so we don't prompt the user about auto-save in the middle of the import.
-    mIsImportingImageSequence = false;
-
     mCommands->importMovieAudio();
 }
 
