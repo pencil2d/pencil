@@ -57,7 +57,7 @@ DebugDetails& DebugDetails::operator<<(const QString& s)
 
 void DebugDetails::appendSystemInfo()
 {
-    if (!mDetails.empty() && mDetails.last() == "end")
+    if (mDetails.empty() || mDetails.last() == "end")
         return;
 
 #if QT_VERSION >= 0x050400

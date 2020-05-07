@@ -166,7 +166,7 @@ Status MovieImporter::run(const QString &filePath, int fps, FileType type,
         STATUS_CHECK(estimateFrames(filePath, fps, &frames));
 
         if (mEditor->currentFrame() + frames > MaxFramesBound) {
-            status = Status::CANCELED;
+            status = Status::FAIL;
             status.setTitle(QObject::tr("Imported movie too big!"));
             status.setDescription(QObject::tr("The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. "
                                               "Please make your video shorter and try again.")
@@ -180,7 +180,7 @@ Status MovieImporter::run(const QString &filePath, int fps, FileType type,
         {
             bool canProceed = askPermission();
 
-            if (!canProceed) { return Status::SAFE; }
+            if (!canProceed) { return Status::CANCELED; }
         }
 
         return importMovieVideo(filePath, fps, frames, [&progress, this](int prog) {

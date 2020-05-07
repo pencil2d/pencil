@@ -102,15 +102,7 @@ Status ActionCommands::importMovieVideo()
         return ret == QMessageBox::Yes;
     });
 
-    if(st == Status::CANCELED)
-    {
-        QMessageBox::warning(mParent,
-                             st.title(),
-                             st.description(),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
-    else if (!st.ok())
+    if (!st.ok() && st != Status::CANCELED)
     {
         ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
         errorDialog.exec();
@@ -154,15 +146,7 @@ Status ActionCommands::importMovieAudio()
         return true;
     });
 
-    if(st == Status::CANCELED)
-    {
-        QMessageBox::warning(mParent,
-                             st.title(),
-                             st.description(),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
-    else if (!st.ok())
+    if (!st.ok() && st != Status::CANCELED)
     {
         ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
         errorDialog.exec();
@@ -276,15 +260,7 @@ Status ActionCommands::convertSoundToWav(const QString& filePath)
 
     connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
 
-    if(st == Status::CANCELED)
-    {
-        QMessageBox::warning(mParent,
-                             st.title(),
-                             st.description(),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
-    else if (!st.ok())
+    if (!st.ok() && st != Status::CANCELED)
     {
         ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
         errorDialog.exec();
