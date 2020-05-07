@@ -314,15 +314,14 @@ int handleArguments(PencilApplication& app)
 
 int main(int argc, char* argv[])
 {
-
     // iss #940
     // Force dot separator on numbers because some localizations
     // uses comma as separator.
     std::setlocale(LC_NUMERIC, "en_US.UTF-8");
 
-    PlatformHandler::initialise();
-
     Q_INIT_RESOURCE(core_lib);
+
+    PlatformHandler::initialise();
 
     QSettings settings(PENCIL2D, PENCIL2D);
     if (settings.value("EnableHighDpiScaling", "true").toBool())
