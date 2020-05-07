@@ -27,7 +27,6 @@ GNU General Public License for more details.
 
 class QDragEnterEvent;
 class QDropEvent;
-class QProgressDialog;
 class QTemporaryDir;
 class Object;
 class KeyFrame;

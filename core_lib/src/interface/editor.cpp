@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include <QImageReader>
 #include <QDragEnterEvent>
 #include <QDropEvent>
-#include <QProgressDialog>
 
 #include "object.h"
 #include "objectdata.h"
