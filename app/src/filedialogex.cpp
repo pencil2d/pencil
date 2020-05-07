@@ -186,7 +186,7 @@ QString FileDialog::openFileFilters( FileType fileType )
         case FileType::IMAGE: return PFF_IMAGE_FILTER;
         case FileType::IMAGE_SEQUENCE: return PFF_IMAGE_SEQ_FILTER;
         case FileType::GIF: return PFF_GIF_EXT_FILTER;
-        case FileType::MOVIE: { Q_ASSERT(false); return PFF_MOVIE_EXT; } // currently not supported
+        case FileType::MOVIE: return PFF_MOVIE_EXT;
         case FileType::SOUND: return PFF_SOUND_EXT_FILTER;
         case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
     }

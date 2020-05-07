@@ -253,10 +253,12 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importPredefinedImageSet);
     connect(ui->actionImportLayers_from_pclx, &QAction::triggered, this, &MainWindow2::importLayers);
+    connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
-    connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
+    connect(ui->actionImport_MovieAudio, &QAction::triggered, this, &MainWindow2::importMovieAudio);
+
     connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
@@ -727,6 +729,8 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     mEditor->object()->setFilePath(strSavedFileName);
     mEditor->object()->setModified(false);
 
+    mEditor->clearTemporary();
+
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, strSavedFileName);
 
@@ -970,17 +974,6 @@ void MainWindow2::importGIF()
     mIsImportingImageSequence = false;
 }
 
-void MainWindow2::importMovie()
-{
-    FileDialog fileDialog(this);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
-    if (filePath.isEmpty())
-    {
-        return;
-    }
-    mEditor->importMovie(filePath, mEditor->playback()->fps());
-}
-
 void MainWindow2::lockWidgets(bool shouldLock)
 {
     QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
@@ -1139,7 +1132,8 @@ void MainWindow2::setupKeyboardShortcuts()
 
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
-    ui->actionImport_Movie->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE));
+    ui->actionImport_MovieVideo->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_VIDEO));
+    ui->actionImport_MovieAudio->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_AUDIO));
     ui->actionImport_Append_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
     ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
 
@@ -1481,6 +1475,21 @@ void MainWindow2::changePlayState(bool isPlaying)
         ui->actionPlay->setIcon(mStartIcon);
     }
     update();
+}
+
+void MainWindow2::importMovieVideo()
+{
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = true;
+
+    mCommands->importMovieVideo();
+
+    mIsImportingImageSequence = false;
+}
+
+void MainWindow2::importMovieAudio()
+{
+    mCommands->importMovieAudio();
 }
 
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)

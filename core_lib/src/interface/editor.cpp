@@ -69,6 +69,7 @@ Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
     clearUndoStack();
+    clearTemporary();
 }
 
 bool Editor::init()
@@ -657,6 +658,18 @@ void Editor::toogleOnionSkinType()
     }
 
     mPreferenceManager->set(SETTING::ONION_TYPE, newState);
+}
+
+void Editor::addTemporaryDir(QTemporaryDir* const dir)
+{
+    mTemporaryDirs.append(dir);
+}
+
+void Editor::clearTemporary()
+{
+    while(!mTemporaryDirs.isEmpty()) {
+        mTemporaryDirs.takeFirst()->remove();
+    }
 }
 
 Status Editor::setObject(Object* newObject)

@@ -20,16 +20,7 @@ GNU General Public License for more details.
 
 #include <QObject>
 
-enum class FileType
-{
-    ANIMATION,
-    IMAGE,
-    IMAGE_SEQUENCE,
-    GIF,
-    MOVIE,
-    SOUND,
-    PALETTE
-};
+#include "filetype.h"
 
 class FileDialog : public QObject
 {
