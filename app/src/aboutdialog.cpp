@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 #include "pencildef.h"
 
+
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AboutDialog)

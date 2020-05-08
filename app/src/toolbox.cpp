@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QToolButton>
 #include <QGridLayout>
 #include <QKeySequence>
+#include <QResizeEvent>
 
 #include "flowlayout.h"
 #include "spinslider.h"
@@ -270,6 +271,11 @@ void ToolBoxWidget::smudgeOn()
 
     deselectAllTools();
     ui->smudgeButton->setChecked(true);
+}
+
+int ToolBoxWidget::getMinHeightForWidth(int width)
+{
+    return ui->toolGroup->layout()->heightForWidth(width);
 }
 
 void ToolBoxWidget::deselectAllTools()

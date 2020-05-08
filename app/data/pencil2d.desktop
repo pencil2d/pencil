@@ -7,8 +7,8 @@ Comment=Create traditional hand-drawn animation using both bitmap and vector gra
 Icon=pencil2d
 Exec=pencil2d %f
 MimeType=application/x-pencil2d-pcl;application/x-pencil2d-pclx;application/x-pencil2d-palette;
-Categories=Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;AudioVideo;Video;
-Keywords=picture;drawing;vector;bitmap;cartoon;
+Categories=Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;
+Keywords=picture;drawing;vector;bitmap;cartoon;animation;
 
 
 # Translations

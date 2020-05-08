@@ -8,13 +8,13 @@ environment:
 
     # MSVC x86
     - platform:   x86
-      qt:         5.12.5\msvc2017
+      qt:         5.12\msvc2017
       PYTHON:     "C:\\Python35"
       PLATFORM_: "x86"
 
     # MSVC x64
     - platform:   amd64
-      qt:         5.12.5\msvc2017_64
+      qt:         5.12\msvc2017_64
       PYTHON:     "C:\\Python35"
       PLATFORM_: "amd64"
 

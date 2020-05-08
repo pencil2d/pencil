@@ -56,6 +56,7 @@ HEADERS +=  \
     src/managers/viewmanager.h \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
+    src/movieimporter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -84,6 +85,7 @@ HEADERS +=  \
     src/util/blitrect.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
+    src/util/filetype.h \
     src/util/mathutils.h \
     src/util/pencildef.h \
     src/util/pencilerror.h \
@@ -127,6 +129,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/preferencemanager.cpp \
     src/managers/playbackmanager.cpp \
     src/managers/viewmanager.cpp \
+    src/movieimporter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \

@@ -46,8 +46,15 @@ bool PlaybackManager::init()
     mFlipTimer = new QTimer(this);
     mFlipTimer->setTimerType(Qt::PreciseTimer);
 
+    mScrubTimer = new QTimer(this);
+    mScrubTimer->setTimerType(Qt::PreciseTimer);
+    mSoundclipsToPLay.clear();
+
     QSettings settings (PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
+    mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
+    if (mMsecSoundScrub == 0) { mMsecSoundScrub = 100; }
+    mSoundScrub = settings.value(SETTING_SOUND_SCRUB_ACTIVE).toBool();
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
@@ -101,6 +108,7 @@ void PlaybackManager::play()
     if (frame >= mEndFrame || frame < mStartFrame)
     {
         editor()->scrubTo(mStartFrame);
+        frame = editor()->currentFrame();
     }
 
     // get keyframe from layer
@@ -117,21 +125,10 @@ void PlaybackManager::play()
         }
     }
 
-    // check list content before playing
-    for (int pos = 0; pos < mListOfActiveSoundFrames.count(); pos++)
-    {
-        if (key != nullptr)
-        {
-            if (key->pos() + key->length() >= frame)
-            {
-                mListOfActiveSoundFrames.takeLast();
-            }
-        }
-        else if (frame < mListOfActiveSoundFrames.at(pos))
-        {
-            mListOfActiveSoundFrames.clear();
-        }
-    }
+    mListOfActiveSoundFrames.clear();
+    // Check for any sounds we should start playing part-way through.
+    mCheckForSoundsHalfway = true;
+    playSounds(frame);
 
     mTimer->setInterval(static_cast<int>(1000.f / mFps));
     mTimer->start();
@@ -139,9 +136,6 @@ void PlaybackManager::play()
     // for error correction, please ref skipFrame()
     mPlayingFrameCounter = 1;
     mElapsedTimer->start();
-
-    // Check for any sounds we should start playing part-way through.
-    mCheckForSoundsHalfway = true;
 
     emit playStateChanged(true);
 }
@@ -217,6 +211,34 @@ void PlaybackManager::playFlipInBetween()
     editor()->scrubTo(mFlipList[0]);
     mFlipTimer->start();
     emit playStateChanged(true);
+}
+
+void PlaybackManager::playScrub(int frame)
+{
+    if (!mSoundScrub || !mSoundclipsToPLay.isEmpty()) {return; }
+
+    auto layerMan = editor()->layers();
+    for (int i = 0; i < layerMan->count(); i++)
+    {
+        Layer* layer = layerMan->getLayer(i);
+        if (layer->type() == Layer::SOUND && layer->visible())
+        {
+            KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
+            if (key != nullptr)
+            {
+                SoundClip* clip = static_cast<SoundClip*>(key);
+                mSoundclipsToPLay.append(clip);
+            }
+        }
+    }
+
+    if (mSoundclipsToPLay.isEmpty()) { return; }
+
+    mScrubTimer->singleShot(mMsecSoundScrub, this, &PlaybackManager::stopScrubPlayback);
+    for (int i = 0; i < mSoundclipsToPLay.count(); i++)
+    {
+        mSoundclipsToPLay.at(i)->playFromPosition(frame, mFps);
+    }
 }
 
 void PlaybackManager::setFps(int fps)
@@ -372,10 +394,18 @@ void PlaybackManager::stopSounds()
     }
 }
 
+void PlaybackManager::stopScrubPlayback()
+{
+    for (int i = 0; i < mSoundclipsToPLay.count(); i++)
+    {
+        mSoundclipsToPLay.at(i)->pause();
+    }
+    mSoundclipsToPLay.clear();
+}
+
 void PlaybackManager::timerTick()
 {
     int currentFrame = editor()->currentFrame();
-    playSounds(currentFrame);
 
     // reach the end
     if (currentFrame >= mEndFrame)
@@ -397,6 +427,9 @@ void PlaybackManager::timerTick()
 
     // keep going 
     editor()->scrubForward();
+
+    int newFrame = editor()->currentFrame();
+    playSounds(newFrame);
 }
 
 void PlaybackManager::flipTimerTick()

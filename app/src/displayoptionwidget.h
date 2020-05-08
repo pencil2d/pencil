@@ -37,6 +37,9 @@ public:
     void initUI() override;
     void updateUI() override;
 
+protected:
+    int getMinHeightForWidth(int width) override;
+
 private slots:
     void toggleMirror(bool);
     void toggleMirrorV(bool);

@@ -43,9 +43,9 @@ struct PredefinedKeySet
         switch(index)
         {
             case 0:
-            return "Files";
+            return QObject::tr("Files");
             case 1:
-            return "KeyFrame Pos";
+            return QObject::tr("KeyFrame Pos");
             default:
             return "";
         }

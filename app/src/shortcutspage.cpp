@@ -39,7 +39,7 @@ ShortcutsPage::ShortcutsPage( QWidget* parent )
     ui->setupUi(this);
     m_treeModel = new QStandardItemModel(this);
     m_treeModel->setColumnCount(2);
-    m_treeModel->setHorizontalHeaderLabels({ "Action", "Shortcut" });
+    m_treeModel->setHorizontalHeaderLabels({ tr("Action"), tr("Shortcut") });
     treeModelLoadShortcutsSetting();
 
     ui->treeView->setModel(m_treeModel);
@@ -95,7 +95,7 @@ void ShortcutsPage::keyCapLineEditTextChanged()
 
     if (isKeySequenceExist(setting, strCmdName, keySeqence))
     {
-        QMessageBox msgBox;
+        QMessageBox msgBox(this);
         msgBox.setText( tr("Shortcut Conflict!"));
         msgBox.setInformativeText( tr("%1 is already used, overwrite?").arg(keySeqence.toString(QKeySequence::NativeText)) );
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -132,7 +132,7 @@ void ShortcutsPage::saveShortcutsButtonClicked()
 
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save Pencil2D Shortcut file"),
-                                                    fDir + "/untitled.pcls",
+                                                    fDir + "/" + tr("untitled.pcls"),
                                                     tr("Pencil2D Shortcut File(*.pcls)"));
     settings.setValue("Shortcuts", fileName);
     settings.endGroup();

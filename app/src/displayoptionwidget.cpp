@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
+#include "flowlayout.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
@@ -45,13 +46,36 @@ void DisplayOptionWidget::initUI()
     anglePreferences();
     makeConnections();
 
+    delete ui->innerWidget->layout();
+
+    FlowLayout *layout = new FlowLayout;
+    layout->setAlignment(Qt::AlignHCenter);
+    layout->addWidget(ui->mirrorButton);
+    layout->addWidget(ui->mirrorVButton);
+    layout->addWidget(ui->thinLinesButton);
+    layout->addWidget(ui->outLinesButton);
+    layout->addWidget(ui->overlayCenterButton);
+    layout->addWidget(ui->overlayThirdsButton);
+    layout->addWidget(ui->overlayGoldenRatioButton);
+    layout->addWidget(ui->overlaySafeAreaButton);
+
+    ui->innerWidget->setLayout(layout);
+
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
     QString stylesheet =
         "QToolButton { border: 0px; } "
         "QToolButton:pressed{ border: 1px solid #FFADAD; border-radius: 2px; background-color: #D5D5D5; }"
         "QToolButton:checked{ border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
-    setStyleSheet(this->styleSheet().append(stylesheet));
+
+    ui->mirrorButton->setStyleSheet(stylesheet);
+    ui->mirrorVButton->setStyleSheet(stylesheet);
+    ui->thinLinesButton->setStyleSheet(stylesheet);
+    ui->outLinesButton->setStyleSheet(stylesheet);
+    ui->overlayCenterButton->setStyleSheet(stylesheet);
+    ui->overlayThirdsButton->setStyleSheet(stylesheet);
+    ui->overlayGoldenRatioButton->setStyleSheet(stylesheet);
+    ui->overlaySafeAreaButton->setStyleSheet(stylesheet);
 #endif
 }
 
@@ -147,6 +171,11 @@ void DisplayOptionWidget::updateUI()
     ui->mirrorVButton->setChecked(view->isFlipVertical());
 }
 
+int DisplayOptionWidget::getMinHeightForWidth(int width)
+{
+    return ui->innerWidget->layout()->heightForWidth(width);
+}
+
 void DisplayOptionWidget::toggleMirror(bool isOn)
 {
     editor()->view()->flipHorizontal(isOn);
@@ -206,15 +235,15 @@ void DisplayOptionWidget::anglePreferences()
         "QToolButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
         "QToolButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
 
-    ui->anglePref->setArrowType(Qt::ArrowType::NoArrow);
-    ui->anglePref->setStyleSheet(buttonStylesheet);
+    ui->overlayChooseAngle->setArrowType(Qt::ArrowType::NoArrow);
+    ui->overlayChooseAngle->setStyleSheet(buttonStylesheet);
 
-    ui->anglePref->addAction(ui->action5_degrees);
-    ui->anglePref->addAction(ui->action10_degrees);
-    ui->anglePref->addAction(ui->action15_degrees);
-    ui->anglePref->addAction(ui->action20_degrees);
-    ui->anglePref->addAction(ui->action30_degrees);
-    ui->anglePref->addAction(ui->action45_degrees);
+    ui->overlayChooseAngle->addAction(ui->action5_degrees);
+    ui->overlayChooseAngle->addAction(ui->action10_degrees);
+    ui->overlayChooseAngle->addAction(ui->action15_degrees);
+    ui->overlayChooseAngle->addAction(ui->action20_degrees);
+    ui->overlayChooseAngle->addAction(ui->action30_degrees);
+    ui->overlayChooseAngle->addAction(ui->action45_degrees);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     mOverlayAngle = settings.value("OverlayAngle").toInt();
