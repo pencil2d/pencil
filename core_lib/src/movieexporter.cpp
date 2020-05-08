@@ -166,7 +166,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     QDir dir(mTempWorkDir);
     Q_ASSERT(dir.exists());
 
-    QString tempAudioPath = mTempWorkDir + "/tmpaudio0.wav";
+    QString tempAudioPath = QDir(mTempWorkDir).filePath("tmpaudio.wav");
     qDebug() << "TempAudio=" << tempAudioPath;
 
     std::vector< SoundClip* > allSoundClips;
@@ -179,6 +179,8 @@ Status MovieExporter::assembleAudio(const Object* obj,
             allSoundClips.push_back(static_cast<SoundClip*>(key));
         });
     }
+
+    if (allSoundClips.empty()) return Status::SAFE;
 
     int clipCount = 0;
 
@@ -218,7 +220,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     strCmd += QString(" -ss %1").arg((startFrame - 1) / static_cast<double>(fps));
     strCmd += QString(" -to %1").arg(endFrame / static_cast<double>(fps));
     // Output path
-    strCmd += " " + mTempWorkDir + "/tmpaudio.wav";
+    strCmd += " " + tempAudioPath;
 
     STATUS_CHECK(MovieExporter::executeFFmpeg(strCmd, [&progress, this] (int frame) { progress(frame / static_cast<float>(mDesc.endFrame - mDesc.startFrame)); return !mCanceled; }))
     qDebug() << "audio file: " + tempAudioPath;
@@ -299,7 +301,7 @@ Status MovieExporter::generateMovie(
     // Build FFmpeg command
 
     //int exportFps = mDesc.videoFps;
-    const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
+    const QString tempAudioPath = QDir(mTempWorkDir).filePath("tmpaudio.wav");
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
     strCmd += QString(" -f rawvideo -pixel_format bgra");

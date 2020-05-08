@@ -454,7 +454,7 @@ void MainWindow2::openPegAlignDialog()
     mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
     mPegAlign->setRefKey(mEditor->currentFrame());
     mPegAlign->setLabRefKey();
-    mPegAlign->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mPegAlign->setWindowFlags(mPegAlign->windowFlags() | Qt::WindowStaysOnTopHint);
     mPegAlign->show();
 }
 

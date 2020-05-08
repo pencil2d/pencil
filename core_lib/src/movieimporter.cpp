@@ -219,7 +219,7 @@ Status MovieImporter::importMovieVideo(const QString &filePath, int fps, int fra
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
     strCmd += QString(" -i \"%1\"").arg(filePath);
     strCmd += QString(" -r %1").arg(fps);
-    strCmd += QString(" \"%1\"").arg(mTempDir->filePath("%05d.png"));
+    strCmd += QString(" \"%1\"").arg(QDir(mTempDir->path()).filePath("%05d.png"));
 
     status = MovieExporter::executeFFmpeg(strCmd, [&progress, frameEstimate, this] (int frame) {
         progress(qFloor(qMin(frame / static_cast<double>(frameEstimate), 1.0) * 50)); return !mCanceled; }
@@ -243,8 +243,9 @@ Status MovieImporter::generateFrames(std::function<void (int)> progress)
     Layer* layer = mEditor->layers()->currentLayer();
     Status status = Status::OK;
     int i = 1;
-    auto amountOfFrames = QDir(mTempDir->path()).count();
-    QString currentFile(mTempDir->filePath(QString("%1.png").arg(i, 5, 10, QChar('0'))));
+    QDir tempDir(mTempDir->path());
+    auto amountOfFrames = tempDir.count();
+    QString currentFile(tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0'))));
     QPoint imgTopLeft;
 
     ViewManager* viewMan = mEditor->view();
@@ -269,10 +270,10 @@ Status MovieImporter::generateFrames(std::function<void (int)> progress)
         if (mCanceled) return Status::CANCELED;
         progress(qFloor(50 + i / static_cast<qreal>(amountOfFrames) * 50));
         i++;
-        currentFile = mTempDir->filePath(QString("%1.png").arg(i, 5, 10, QChar('0')));
+        currentFile = tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0')));
     }
 
-    if (!QFileInfo::exists(mTempDir->filePath("00001.png"))) {
+    if (!QFileInfo::exists(tempDir.filePath("00001.png"))) {
         status = Status::FAIL;
         status.setTitle(tr("Failed import"));
         status.setDescription(tr("Was unable to find internal files, import unsucessful."));
@@ -309,7 +310,7 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<vo
         }
     }
 
-    QString audioPath = mTempDir->filePath("audio.wav");
+    QString audioPath = QDir(mTempDir->path()).filePath("audio.wav");
 
     QString ffmpegPath = ffmpegLocation();
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
