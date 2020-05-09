@@ -58,6 +58,10 @@ void DisplayOptionWidget::initUI()
     layout->addWidget(ui->overlayThirdsButton);
     layout->addWidget(ui->overlayGoldenRatioButton);
     layout->addWidget(ui->overlaySafeAreaButton);
+    layout->addWidget(ui->overlayPerspective1Button);
+    layout->addWidget(ui->overlayPerspective2Button);
+    layout->addWidget(ui->overlayPerspective3Button);
+    layout->addWidget(ui->overlayChooseAngle);
 
     ui->innerWidget->setLayout(layout);
 
@@ -76,6 +80,10 @@ void DisplayOptionWidget::initUI()
     ui->overlayThirdsButton->setStyleSheet(stylesheet);
     ui->overlayGoldenRatioButton->setStyleSheet(stylesheet);
     ui->overlaySafeAreaButton->setStyleSheet(stylesheet);
+    ui->overlayPerspective1Button->setStyleSheet(stylesheet);
+    ui->overlayPerspective2Button->setStyleSheet(stylesheet);
+    ui->overlayPerspective3Button->setStyleSheet(stylesheet);
+    ui->overlayChooseAngle->setStyleSheet(stylesheet);
 #endif
 }
 
@@ -106,7 +114,9 @@ void DisplayOptionWidget::clearPreviousAngle(int angle)
 {
     switch (angle)
     {
+    case  3:  ui->action3_degrees->setChecked(false); break;
     case  5:  ui->action5_degrees->setChecked(false); break;
+    case  7:  ui->action7_5_degrees->setChecked(false); break;
     case 10: ui->action10_degrees->setChecked(false); break;
     case 15: ui->action15_degrees->setChecked(false); break;
     case 20: ui->action20_degrees->setChecked(false); break;
@@ -238,7 +248,9 @@ void DisplayOptionWidget::anglePreferences()
     ui->overlayChooseAngle->setArrowType(Qt::ArrowType::NoArrow);
     ui->overlayChooseAngle->setStyleSheet(buttonStylesheet);
 
+    ui->overlayChooseAngle->addAction(ui->action3_degrees);
     ui->overlayChooseAngle->addAction(ui->action5_degrees);
+    ui->overlayChooseAngle->addAction(ui->action7_5_degrees);
     ui->overlayChooseAngle->addAction(ui->action10_degrees);
     ui->overlayChooseAngle->addAction(ui->action15_degrees);
     ui->overlayChooseAngle->addAction(ui->action20_degrees);
@@ -250,7 +262,9 @@ void DisplayOptionWidget::anglePreferences()
 
     switch (mOverlayAngle)
     {
+    case  3:  ui->action3_degrees->setChecked(true); break;
     case  5:  ui->action5_degrees->setChecked(true); break;
+    case  7:  ui->action7_5_degrees->setChecked(true); break;
     case 10: ui->action10_degrees->setChecked(true); break;
     case 15: ui->action15_degrees->setChecked(true); break;
     case 20: ui->action20_degrees->setChecked(true); break;
@@ -259,7 +273,9 @@ void DisplayOptionWidget::anglePreferences()
     default: ui->action15_degrees->setChecked(true);
     }
 
+    connect( ui->action3_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle3degrees);
     connect( ui->action5_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle5degrees);
+    connect( ui->action7_5_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle7_5degrees);
     connect(ui->action10_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle10degrees);
     connect(ui->action15_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle15degrees);
     connect(ui->action20_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle20degrees);
@@ -267,9 +283,19 @@ void DisplayOptionWidget::anglePreferences()
     connect(ui->action45_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle45degrees);
 }
 
+void DisplayOptionWidget::angle3degrees(bool)
+{
+    changeAngle(3);
+}
+
 void DisplayOptionWidget::angle5degrees(bool)
 {
     changeAngle(5);
+}
+
+void DisplayOptionWidget::angle7_5degrees(bool)
+{
+    changeAngle(7);
 }
 
 void DisplayOptionWidget::angle10degrees(bool)

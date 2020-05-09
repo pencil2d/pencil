@@ -699,8 +699,6 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter &painter)
 
 void CanvasPainter::paintOverlayPerspective1(QPainter &painter, int angle)
 {
-    QRect rect = painter.viewport();
-
     painter.save();
     painter.setCompositionMode(QPainter::CompositionMode_Difference);
     QPen pen(QColor(180, 220, 255));
@@ -711,13 +709,18 @@ void CanvasPainter::paintOverlayPerspective1(QPainter &painter, int angle)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    int repeats = 360 / angle;
     qreal degrees = static_cast<qreal>(angle);
-    QPoint center = QPoint(0,0);
+    if (degrees == 7.0) { degrees = 7.5; }
+    int repeats = static_cast<int>(360 / degrees);
+    QRect camRect = getCameraRect();
+    QPoint center = QPoint(camRect.right() - camRect.width() / 2, camRect.bottom() - camRect.height() / 2);
+    QLineF angleLine;
+    angleLine.setP1(center);
     for (int i = 0; i < repeats; i++)
     {
-        QPointF endPoint = QPointF(cos(qDegreesToRadians(i * degrees)) * rect.width(), sin(qDegreesToRadians(i * degrees)) * rect.width());
-        painter.drawLine(center, endPoint);
+        angleLine.setAngle(i * degrees);
+        angleLine.setLength(camRect.width() * 2);
+        painter.drawLine(angleLine);
     }
 
     painter.setRenderHints(previous_renderhints);
@@ -726,7 +729,8 @@ void CanvasPainter::paintOverlayPerspective1(QPainter &painter, int angle)
 
 void CanvasPainter::paintOverlayPerspective2(QPainter &painter, int angle)
 {
-    QRect rect = painter.viewport();
+    painter.save();
+    painter.setCompositionMode(QPainter::CompositionMode_Difference);
     QPen pen(QColor(180, 220, 255));
     pen.setCosmetic(true);
     painter.setPen(pen);
@@ -735,21 +739,28 @@ void CanvasPainter::paintOverlayPerspective2(QPainter &painter, int angle)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    int repeats = 180 / angle;
     qreal degrees = static_cast<qreal>(angle);
+    if (degrees == 7.0) { degrees = 7.5; }
+    int repeats = static_cast<int>(180 / degrees);
     QRect camRect = getCameraRect();
     QPoint left = QPoint(-camRect.width()/2, 0);
-//    QPoint left = QPoint(-rect.width()/2, 0);
     QPoint right = QPoint(camRect.width()/2, 0);
-    for (int i = 0; i <= repeats; i++)
+    QLineF leftAngleLine;
+    leftAngleLine.setP1(left);
+    QLineF rightAngleLine;
+    rightAngleLine.setP1(right);
+    for (int i = 0; i <= repeats ; i++)
     {
-        QPointF endPoint = QPointF(cos(qDegreesToRadians(i * degrees - 90)) * rect.width(), sin(qDegreesToRadians(i * degrees - 90)) * rect.width());
-        painter.drawLine(left, endPoint);
-        endPoint = endPoint * -1;
-        painter.drawLine(right, endPoint);
+        leftAngleLine.setAngle(i * degrees - 90);
+        leftAngleLine.setLength(camRect.width() * 2);
+        painter.drawLine(leftAngleLine);
+        rightAngleLine.setAngle(i * degrees + 90);
+        rightAngleLine.setLength(camRect.width() * 2);
+        painter.drawLine(rightAngleLine);
     }
 
     painter.setRenderHints(previous_renderhints);
+    painter.restore();
 }
 
 void CanvasPainter::paintOverlayPerspective3(QPainter &painter, int angle)

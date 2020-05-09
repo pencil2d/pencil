@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>204</width>
-    <height>443</height>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -244,6 +244,18 @@
        <iconset resource="../data/app.qrc">
         <normaloff>:/icons/overlayPerspective1.png</normaloff>:/icons/overlayPerspective1.png</iconset>
       </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="autoRaise">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item>
@@ -254,6 +266,18 @@
       <property name="icon">
        <iconset resource="../data/app.qrc">
         <normaloff>:/icons/overlayPerspective2.png</normaloff>:/icons/overlayPerspective2.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="autoRaise">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -266,6 +290,18 @@
        <iconset resource="../data/app.qrc">
         <normaloff>:/icons/overlayPerspective3.png</normaloff>:/icons/overlayPerspective3.png</iconset>
       </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="autoRaise">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item>
@@ -276,6 +312,21 @@
       <property name="icon">
        <iconset resource="../data/app.qrc">
         <normaloff>:/icons/overlayAngle.png</normaloff>:/icons/overlayAngle.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="popupMode">
+       <enum>QToolButton::InstantPopup</enum>
+      </property>
+      <property name="autoRaise">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -345,6 +396,28 @@
    </property>
    <property name="toolTip">
     <string>Angles = 45 degrees</string>
+   </property>
+  </action>
+  <action name="action3_degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>3 degrees</string>
+   </property>
+   <property name="toolTip">
+    <string>Angles = 3 degrees</string>
+   </property>
+  </action>
+  <action name="action7_5_degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>7.5 degrees</string>
+   </property>
+   <property name="toolTip">
+    <string>Angles = 7.5 degrees</string>
    </property>
   </action>
  </widget>

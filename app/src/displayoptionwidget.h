@@ -51,7 +51,9 @@ private slots:
     void toggleOverlayPerspective2(bool isOn);
     void toggleOverlayPerspective3(bool isOn);
     void anglePreferences();
+    void angle3degrees(bool);
     void angle5degrees(bool);
+    void angle7_5degrees(bool);
     void angle10degrees(bool);
     void angle15degrees(bool);
     void angle20degrees(bool);
