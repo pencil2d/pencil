@@ -164,7 +164,7 @@ win32 {
     RC_FILE = data/pencil2d.rc
 }
 
-linux {
+unix {
     target.path = $${PREFIX}/bin
 
     bashcompletion.files = data/pencil2d
@@ -182,7 +182,8 @@ linux {
     icon.files = data/pencil2d.png
     icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps
 
-    INSTALLS += bashcompletion zshcompletion target mimepackage desktopentry icon
+    INSTALLS += bashcompletion zshcompletion target
+    !macx: INSTALLS += mimepackage desktopentry icon
 }
 
 # --- core_lib ---
