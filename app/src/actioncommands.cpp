@@ -372,27 +372,41 @@ Status ActionCommands::exportMovie(bool isGif)
         }
     );
 
-    if (st.ok() && QFile::exists(strMoviePath))
+    if (st.ok())
     {
-        if (isGif) {
-            auto btn = QMessageBox::question(mParent, "Pencil2D",
-                                             tr("Finished. Open file location?"));
+        if (QFile::exists(strMoviePath))
+        {
+            if (isGif) {
+                auto btn = QMessageBox::question(mParent, "Pencil2D",
+                                                 tr("Finished. Open file location?"));
 
+                if (btn == QMessageBox::Yes)
+                {
+                    QString path = dialog->getAbsolutePath();
+                    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+                }
+                return Status::OK;
+            }
+            auto btn = QMessageBox::question(mParent, "Pencil2D",
+                                             tr("Finished. Open movie now?", "When movie export done."));
             if (btn == QMessageBox::Yes)
             {
-                QString path = dialog->getAbsolutePath();
-                QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+                QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
             }
-            return Status::OK;
         }
-        auto btn = QMessageBox::question(mParent, "Pencil2D",
-                                         tr("Finished. Open movie now?", "When movie export done."));
-        if (btn == QMessageBox::Yes)
+        else
         {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
+            ErrorDialog errorDialog("Unknown export error", "The export did not produce any errors, however we can't find the output file. Your export may not have completed successfully.", QString(), mParent);
+            errorDialog.exec();
         }
     }
-    return Status::OK;
+    else if(st != Status::CANCELED)
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
+    }
+
+    return st;
 }
 
 Status ActionCommands::exportImageSequence()
