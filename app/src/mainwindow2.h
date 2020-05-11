@@ -88,10 +88,13 @@ public:
     // import
     void importImage();
     void importImageSequence();
+    void importImageSequenceNumbered();
+    void addLayerByFilename(QString strFilePath);
     void importPredefinedImageSet();
     void importLayers();
-    void importMovie();
+    void importMovieVideo();
     void importGIF();
+    void importMovieAudio();
 
     void lockWidgets(bool shouldLock);
 

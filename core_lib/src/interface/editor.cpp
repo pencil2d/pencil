@@ -62,6 +62,7 @@ Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
     clearUndoStack();
+    clearTemporary();
 }
 
 bool Editor::init()
@@ -914,6 +915,17 @@ void Editor::notifyCopyPasteActionChanged()
         emit enablePaste();
     } else {
         emit disablePaste();
+}
+
+void Editor::addTemporaryDir(QTemporaryDir* const dir)
+{
+    mTemporaryDirs.append(dir);
+}
+
+void Editor::clearTemporary()
+{
+    while(!mTemporaryDirs.isEmpty()) {
+        mTemporaryDirs.takeFirst()->remove();
     }
 }
 
@@ -956,8 +968,8 @@ Status Editor::setObject(Object* newObject)
 
 void Editor::updateObject()
 {
-    scrubTo(mObject->data()->getCurrentFrame());
     setCurrentLayerIndex(mObject->data()->getCurrentLayer());
+    scrubTo(mObject->data()->getCurrentFrame());
 
     mAutosaveCounter = 0;
     mAutosaveNeverAskAgain = false;

@@ -164,7 +164,7 @@ win32 {
     RC_FILE = data/pencil2d.rc
 }
 
-linux {
+unix:!macx {
     target.path = $${PREFIX}/bin
 
     bashcompletion.files = data/pencil2d
@@ -188,7 +188,6 @@ linux {
 # --- core_lib ---
 
 INCLUDEPATH += $$PWD/../core_lib/src
-DEPENDPATH += $$PWD/../core_lib/src
 
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release
