@@ -395,6 +395,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDiscord, &QAction::triggered, mCommands, &ActionCommands::discord);
     connect(ui->actionCheck_for_Updates, &QAction::triggered, mCommands, &ActionCommands::checkForUpdates);
     connect(ui->actionReport_Bug, &QAction::triggered, mCommands, &ActionCommands::reportbug);
+    connect(ui->actionOpen_Temporary_Directory, &QAction::triggered, mCommands, &ActionCommands::openTemporaryDirectory);
     connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
 
     //--- Menus ---

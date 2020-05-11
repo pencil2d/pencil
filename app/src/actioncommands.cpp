@@ -911,6 +911,16 @@ void ActionCommands::checkForUpdates()
     dialog.exec();
 }
 
+// This action is a temporary measure until we have an automated recover mechanism in place
+void ActionCommands::openTemporaryDirectory()
+{
+    int ret = QMessageBox::warning(mParent, tr("Warning"), tr("The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing."), QMessageBox::Cancel, QMessageBox::Ok);
+    if (ret == QMessageBox::Ok)
+    {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::temp().filePath("Pencil2D")));
+    }
+}
+
 void ActionCommands::about()
 {
     AboutDialog* aboutBox = new AboutDialog(mParent);
