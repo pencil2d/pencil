@@ -969,6 +969,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     else
     {
         prepCanvas(mEditor->currentFrame(), event->rect());
+        prepOverlays();
         mCanvasPainter.paintCached();
     }
 
@@ -1064,7 +1065,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         paintCanvasCursor(painter);
 
         mCanvasPainter.renderGrid(painter);
-        mCanvasPainter.renderOverlays(painter);
+        mOverlayPainter.renderOverlays(painter, getCameraRect().toRect());
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
@@ -1134,19 +1135,6 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.bGrid = mPrefs->isOn(SETTING::GRID);
     o.nGridSizeW = mPrefs->getInt(SETTING::GRID_SIZE_W);
     o.nGridSizeH = mPrefs->getInt(SETTING::GRID_SIZE_H);
-    o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
-    o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
-    o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
-    o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
-    o.bPerspective1 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE1);
-    o.bPerspective2 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE2);
-    o.bPerspective3 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE3);
-    o.nOverlayAngle = mPrefs->getInt(SETTING::OVERLAY_ANGLE);
-    o.bActionSafe = mPrefs->isOn(SETTING::ACTION_SAFE_ON);
-    o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
-    o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
-    o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
-    o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
     o.bAxis = false;
     o.bThinLines = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
@@ -1172,6 +1160,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     mCanvas.fill(Qt::transparent);
     prepCanvas(frame, rect);
     mCanvasPainter.paint();
+    prepOverlays();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
@@ -1230,6 +1219,34 @@ void ScribbleArea::flipSelection(bool flipVertical)
 {
     mEditor->select()->flipSelection(flipVertical);
     paintTransformedSelection();
+}
+
+void ScribbleArea::renderOverlays()
+{
+    updateCurrentFrame();
+}
+
+void ScribbleArea::prepOverlays()
+{
+    OverlayPainterOptions o;
+
+    o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
+    o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
+    o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
+    o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
+    o.bPerspective1 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE1);
+    o.bPerspective2 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE2);
+    o.bPerspective3 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE3);
+    o.nOverlayAngle = mPrefs->getInt(SETTING::OVERLAY_ANGLE);
+    o.bActionSafe = mPrefs->isOn(SETTING::ACTION_SAFE_ON);
+    o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
+    o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
+    o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
+    o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
+    mOverlayPainter.setOptions(o);
+
+    ViewManager* vm = mEditor->view();
+    mOverlayPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 }
 
 void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)

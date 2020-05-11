@@ -365,17 +365,6 @@
     <string>Angles = 15 degrees</string>
    </property>
   </action>
-  <action name="action20_degrees">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>20 degrees</string>
-   </property>
-   <property name="toolTip">
-    <string>Angles = 20 degrees</string>
-   </property>
-  </action>
   <action name="action30_degrees">
    <property name="checkable">
     <bool>true</bool>
@@ -385,17 +374,6 @@
    </property>
    <property name="toolTip">
     <string>Angles = 30 degrees</string>
-   </property>
-  </action>
-  <action name="action45_degrees">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>45 degrees</string>
-   </property>
-   <property name="toolTip">
-    <string>Angles = 45 degrees</string>
    </property>
   </action>
   <action name="action3_degrees">
@@ -418,6 +396,36 @@
    </property>
    <property name="toolTip">
     <string>Angles = 7.5 degrees</string>
+   </property>
+  </action>
+  <action name="actionadjust_points_horizontal">
+   <property name="text">
+    <string>adjust points horizontal</string>
+   </property>
+   <property name="toolTip">
+    <string>Adjust points horizontal</string>
+   </property>
+  </action>
+  <action name="action2_degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>2 degrees</string>
+   </property>
+   <property name="toolTip">
+    <string>Angles = 2 degrees</string>
+   </property>
+  </action>
+  <action name="action20_degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>20 degrees</string>
+   </property>
+   <property name="toolTip">
+    <string>Angles = 20 degrees</string>
    </property>
   </action>
  </widget>

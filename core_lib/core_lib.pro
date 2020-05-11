@@ -48,6 +48,7 @@ HEADERS +=  \
     src/interface/basedockwidget.h \
     src/interface/backgroundwidget.h \
     src/managers/basemanager.h \
+    src/managers/overlaymanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -57,6 +58,7 @@ HEADERS +=  \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
     src/movieimporter.h \
+    src/overlaypainter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -122,6 +124,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/basedockwidget.cpp \
     src/interface/backgroundwidget.cpp \
     src/managers/basemanager.cpp \
+    src/managers/overlaymanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \
@@ -130,6 +133,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/playbackmanager.cpp \
     src/managers/viewmanager.cpp \
     src/movieimporter.cpp \
+    src/overlaypainter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \

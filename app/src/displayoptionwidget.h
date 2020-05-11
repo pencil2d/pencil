@@ -51,6 +51,7 @@ private slots:
     void toggleOverlayPerspective2(bool isOn);
     void toggleOverlayPerspective3(bool isOn);
     void anglePreferences();
+    void angle2degrees(bool);
     void angle3degrees(bool);
     void angle5degrees(bool);
     void angle7_5degrees(bool);
@@ -58,7 +59,7 @@ private slots:
     void angle15degrees(bool);
     void angle20degrees(bool);
     void angle30degrees(bool);
-    void angle45degrees(bool);
+    void adjustPerspecPoints();
 
 private:
     void makeConnections();
@@ -67,7 +68,11 @@ private:
     Ui::DisplayOption* ui = nullptr;
 
     QString buttonStylesheet;
+
+    // vars for perspective overlays
     int mOverlayAngle = 15;
+    int mPerspectiveX = -1;
+    int mPerspectiveY = 1;
 
 };
 

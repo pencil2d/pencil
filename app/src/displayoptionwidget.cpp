@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
+
 #include "flowlayout.h"
 
 
@@ -121,7 +122,6 @@ void DisplayOptionWidget::clearPreviousAngle(int angle)
     case 15: ui->action15_degrees->setChecked(false); break;
     case 20: ui->action20_degrees->setChecked(false); break;
     case 30: ui->action30_degrees->setChecked(false); break;
-    case 45: ui->action45_degrees->setChecked(false); break;
     default: ui->action15_degrees->setChecked(false);
     }
 }
@@ -198,8 +198,8 @@ void DisplayOptionWidget::toggleMirrorV(bool isOn)
 
 void DisplayOptionWidget::toggleOverlayCenter(bool isOn)
 {
-    editor()->view()->setOverlayCenter(isOn);
     editor()->preference()->set(SETTING::OVERLAY_CENTER, isOn);
+    editor()->view()->setOverlayCenter(isOn);
 }
 
 void DisplayOptionWidget::toggleOverlayThirds(bool isOn)
@@ -255,13 +255,14 @@ void DisplayOptionWidget::anglePreferences()
     ui->overlayChooseAngle->addAction(ui->action15_degrees);
     ui->overlayChooseAngle->addAction(ui->action20_degrees);
     ui->overlayChooseAngle->addAction(ui->action30_degrees);
-    ui->overlayChooseAngle->addAction(ui->action45_degrees);
+    ui->overlayChooseAngle->addAction(ui->actionadjust_points_horizontal);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     mOverlayAngle = settings.value("OverlayAngle").toInt();
 
     switch (mOverlayAngle)
     {
+    case  2:  ui->action2_degrees->setChecked(true); break;
     case  3:  ui->action3_degrees->setChecked(true); break;
     case  5:  ui->action5_degrees->setChecked(true); break;
     case  7:  ui->action7_5_degrees->setChecked(true); break;
@@ -269,10 +270,10 @@ void DisplayOptionWidget::anglePreferences()
     case 15: ui->action15_degrees->setChecked(true); break;
     case 20: ui->action20_degrees->setChecked(true); break;
     case 30: ui->action30_degrees->setChecked(true); break;
-    case 45: ui->action45_degrees->setChecked(true); break;
     default: ui->action15_degrees->setChecked(true);
     }
 
+    connect( ui->action2_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle2degrees);
     connect( ui->action3_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle3degrees);
     connect( ui->action5_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle5degrees);
     connect( ui->action7_5_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle7_5degrees);
@@ -280,7 +281,12 @@ void DisplayOptionWidget::anglePreferences()
     connect(ui->action15_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle15degrees);
     connect(ui->action20_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle20degrees);
     connect(ui->action30_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle30degrees);
-    connect(ui->action45_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle45degrees);
+    connect(ui->actionadjust_points_horizontal, &QAction::triggered, this, &DisplayOptionWidget::adjustPerspecPoints);
+}
+
+void DisplayOptionWidget::angle2degrees(bool)
+{
+    changeAngle(2);
 }
 
 void DisplayOptionWidget::angle3degrees(bool)
@@ -318,7 +324,7 @@ void DisplayOptionWidget::angle30degrees(bool)
     changeAngle(30);
 }
 
-void DisplayOptionWidget::angle45degrees(bool)
+void DisplayOptionWidget::adjustPerspecPoints()
 {
-    changeAngle(45);
+    changeAngle(2);
 }

@@ -44,6 +44,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "soundmanager.h"
 #include "selectionmanager.h"
+#include "overlaymanager.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -83,6 +84,7 @@ bool Editor::init()
     mPreferenceManager = new PreferenceManager(this);
     mSoundManager = new SoundManager(this);
     mSelectionManager = new SelectionManager(this);
+    mOverlayManager = new OverlayManager(this);
 
     mAllManagers =
     {
@@ -93,7 +95,8 @@ bool Editor::init()
         mViewManager,
         mPreferenceManager,
         mSoundManager,
-        mSelectionManager
+        mSelectionManager,
+        mOverlayManager
     };
 
     for (BaseManager* pManager : mAllManagers)
