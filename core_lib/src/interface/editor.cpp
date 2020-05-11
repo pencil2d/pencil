@@ -915,6 +915,7 @@ void Editor::notifyCopyPasteActionChanged()
         emit enablePaste();
     } else {
         emit disablePaste();
+    }
 }
 
 void Editor::addTemporaryDir(QTemporaryDir* const dir)
