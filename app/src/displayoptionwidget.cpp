@@ -115,6 +115,7 @@ void DisplayOptionWidget::clearPreviousAngle(int angle)
 {
     switch (angle)
     {
+    case  2:  ui->action2_degrees->setChecked(false); break;
     case  3:  ui->action3_degrees->setChecked(false); break;
     case  5:  ui->action5_degrees->setChecked(false); break;
     case  7:  ui->action7_5_degrees->setChecked(false); break;
@@ -248,6 +249,7 @@ void DisplayOptionWidget::anglePreferences()
     ui->overlayChooseAngle->setArrowType(Qt::ArrowType::NoArrow);
     ui->overlayChooseAngle->setStyleSheet(buttonStylesheet);
 
+    ui->overlayChooseAngle->addAction(ui->action2_degrees);
     ui->overlayChooseAngle->addAction(ui->action3_degrees);
     ui->overlayChooseAngle->addAction(ui->action5_degrees);
     ui->overlayChooseAngle->addAction(ui->action7_5_degrees);

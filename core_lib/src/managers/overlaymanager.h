@@ -37,6 +37,7 @@ private:
     QPointF mRightPerspPoint;    // Left, right and middle are for
     QPointF mMiddlePerspPoint;   // two and three point perspective
 
+    bool mPerspIsOn = false;
 };
 
 #endif // OVERLAYMANAGER_H

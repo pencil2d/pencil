@@ -210,30 +210,38 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
 
         switch(mode)
         {
-            case MoveMode::MIDDLE:
-            {
-                if (type == SELECT) {
-                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-                } else {
-                    return Qt::ArrowCursor;
-                }
-                break;
+        case MoveMode::PERSP_LEFT:
+        case MoveMode::PERSP_RIGHT:
+        case MoveMode::PERSP_MIDDLE:
+        case MoveMode::PERSP_SINGLE:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            break;
+        }
+        case MoveMode::MIDDLE:
+        {
+            if (type == SELECT) {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            } else {
+                return Qt::ArrowCursor;
             }
-            case MoveMode::TOPLEFT:
-            case MoveMode::BOTTOMRIGHT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-                break;
-            }
-            case MoveMode::TOPRIGHT:
-            case MoveMode::BOTTOMLEFT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-                break;
-            }
-            default:
-                return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
-                break;
+            break;
+        }
+        case MoveMode::TOPLEFT:
+        case MoveMode::BOTTOMRIGHT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+            break;
+        }
+        case MoveMode::TOPRIGHT:
+        case MoveMode::BOTTOMLEFT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+            break;
+        }
+        default:
+            return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
+            break;
         }
         cursorPainter.end();
     }

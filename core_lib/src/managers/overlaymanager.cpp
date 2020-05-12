@@ -33,6 +33,7 @@ void OverlayManager::resetPerspectiveOverlays()
 
 }
 
+// use mathutils.h !
 double OverlayManager::getAngleLeftRight(QPointF left, QPointF right)
 {
     double deltaX = right.x() - left.x();

@@ -7,6 +7,8 @@
 
 struct OverlayPainterOptions
 {
+    bool  bIsCamera = false;
+    QRect mCameraRect = QRect();
     bool  bCenter = false;
     bool  bThirds = false;
     bool  bGoldenRatio = false;
@@ -19,9 +21,10 @@ struct OverlayPainterOptions
     bool  bPerspective2 = false;
     bool  bPerspective3 = false;
     int   nOverlayAngle = 15; // for perspective overlays
-    QPoint mLeftPerspPoint = QPoint(-20, 0);
-    QPoint mRightPerspPoint = QPoint(20, 0);
-    QPoint mBottomPerspPoint = QPoint(0, 20);
+    QPointF mCenterPerspPoint = QPointF(0.0, 0.0);
+    QPointF mLeftPerspPoint = QPointF(-20.0, 0.0);
+    QPointF mRightPerspPoint = QPointF(20.0, 0.0);
+    QPointF mBottomPerspPoint = QPointF(0.0, 20.0);
     bool  bShowSafeAreaHelperText = true;
 
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
@@ -38,19 +41,20 @@ public:
 
     void initPerspectivePainter(QPainter& painter);
 
-    void renderOverlays(QPainter& painter, QRect cameraRect);
+    void renderOverlays(QPainter& painter);
 
-    void paintOverlayCenter(QPainter& painter, QRect cameraRect);
-    void paintOverlayThirds(QPainter& painter, QRect cameraRect);
-    void paintOverlayGolden(QPainter& painter, QRect rect);
-    void paintOverlaySafeAreas(QPainter& painter, QRect rect);
-    void paintOverlayPerspective1(QPainter& painter, QRect rect, int angle);
-    void paintOverlayPerspective2(QPainter& painter, QRect rect, int angle);
-    void paintOverlayPerspective3(QPainter& painter, QRect rect, int angle);
+    void paintOverlayCenter(QPainter& painter);
+    void paintOverlayThirds(QPainter& painter);
+    void paintOverlayGolden(QPainter& painter);
+    void paintOverlaySafeAreas(QPainter& painter);
+    void paintOverlayPerspective1(QPainter& painter);
+    void paintOverlayPerspective2(QPainter& painter);
+    void paintOverlayPerspective3(QPainter& painter);
 
 signals:
 
 private:
+
     void resetPerspectives();
 
     OverlayPainterOptions mOptions;
@@ -58,7 +62,6 @@ private:
     QTransform mViewTransform;
     QTransform mViewInverse;
 
-    QList<bool> activeOverlays;
     constexpr static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };
 

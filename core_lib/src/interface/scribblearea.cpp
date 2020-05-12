@@ -1065,7 +1065,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         paintCanvasCursor(painter);
 
         mCanvasPainter.renderGrid(painter);
-        mOverlayPainter.renderOverlays(painter, getCameraRect().toRect());
+        mOverlayPainter.renderOverlays(painter);
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
@@ -1230,6 +1230,8 @@ void ScribbleArea::prepOverlays()
 {
     OverlayPainterOptions o;
 
+    o.bIsCamera = mEditor->layers()->currentLayer()->type() == Layer::CAMERA;
+    o.mCameraRect = getCameraRect().toRect();
     o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
     o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
     o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
