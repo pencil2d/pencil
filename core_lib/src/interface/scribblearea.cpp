@@ -38,6 +38,7 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+#include "overlaymanager.h"
 
 
 ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent),
@@ -1230,8 +1231,6 @@ void ScribbleArea::prepOverlays()
 {
     OverlayPainterOptions o;
 
-    o.bIsCamera = mEditor->layers()->currentLayer()->type() == Layer::CAMERA;
-    o.mCameraRect = getCameraRect().toRect();
     o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
     o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
     o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
@@ -1245,8 +1244,16 @@ void ScribbleArea::prepOverlays()
     o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
     o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
     o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
-    mOverlayPainter.setOptions(o);
 
+    OverlayManager* om = mEditor->overlays();
+    o.mRect = getCameraRect().toRect();   // camera rect!
+    o.mSinglePerspPoint = om->getSinglePerspPoint();
+    o.mLeftPerspPoint = om->getLeftPerspPoint();
+    o.mRightPerspPoint = om->getRightPerspPoint();
+    o.mMiddlePerspPoint = om->getMiddlePerspPoint();
+
+    mOverlayPainter.setOptions(o);
+qDebug() << "Camerarect: " << o.mRect;
     ViewManager* vm = mEditor->view();
     mOverlayPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 }

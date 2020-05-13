@@ -22,9 +22,11 @@ GNU General Public License for more details.
 
 #include "preferencemanager.h"
 #include "viewmanager.h"
+#include "overlaymanager.h"
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
+#include "movemode.h"
 
 #include "flowlayout.h"
 
@@ -111,6 +113,25 @@ void DisplayOptionWidget::makeConnections()
     connect(view, &ViewManager::viewFlipped, this, &DisplayOptionWidget::updateUI);
 }
 
+void DisplayOptionWidget::prepareOverlayManager()
+{
+    if (ui->overlayPerspective1Button->isChecked())
+    {
+        editor()->overlays()->setPerpsOverlayActive(1);
+        editor()->overlays()->updatePerspOverlay(1, editor()->view()->mapScreenToCanvas(editor()->overlays()->getSinglePerspPoint()));
+    }
+    if (ui->overlayPerspective2Button->isChecked())
+    {
+        editor()->overlays()->setPerpsOverlayActive(2);
+        editor()->overlays()->updatePerspOverlay(2, editor()->view()->mapScreenToCanvas(editor()->view()->translation()));
+    }
+    if (ui->overlayPerspective3Button->isChecked())
+    {
+        editor()->overlays()->setPerpsOverlayActive(3);
+        editor()->overlays()->updatePerspOverlay(3, editor()->view()->mapScreenToCanvas(editor()->view()->translation()));
+    }
+}
+
 void DisplayOptionWidget::clearPreviousAngle(int angle)
 {
     switch (angle)
@@ -173,6 +194,8 @@ void DisplayOptionWidget::updateUI()
         ui->overlaySafeAreaButton->setEnabled(false);
     }
 
+    prepareOverlayManager();
+
     ViewManager* view = editor()->view();
 
     SignalBlocker b3(ui->mirrorButton);
@@ -199,44 +222,63 @@ void DisplayOptionWidget::toggleMirrorV(bool isOn)
 
 void DisplayOptionWidget::toggleOverlayCenter(bool isOn)
 {
+    editor()->overlays()->setOverlayCenter(isOn);
     editor()->preference()->set(SETTING::OVERLAY_CENTER, isOn);
-    editor()->view()->setOverlayCenter(isOn);
+    emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayThirds(bool isOn)
 {
-    editor()->view()->setOverlayThirds(isOn);
+    editor()->overlays()->setOverlayThirds(isOn);
     editor()->preference()->set(SETTING::OVERLAY_THIRDS, isOn);
+    emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayGoldenRatio(bool isOn)
 {
-    editor()->view()->setOverlayGoldenRatio(isOn);
+    editor()->overlays()->setOverlayGoldenRatio(isOn);
     editor()->preference()->set(SETTING::OVERLAY_GOLDEN, isOn);
+    emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlaySafeAreas(bool isOn)
 {
-    editor()->view()->setOverlaySafeAreas(isOn);
+    editor()->overlays()->setOverlaySafeAreas(isOn);
     editor()->preference()->set(SETTING::OVERLAY_SAFE, isOn);
+    emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayPerspective1(bool isOn)
 {
-    editor()->view()->setOverlayPerspective1(isOn);
+    if (isOn)
+        editor()->overlays()->setPerpsOverlayActive(1);
+    else
+        editor()->overlays()->removePerspOverlayActive(1);
+    editor()->overlays()->setOverlayPerspective1(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE1, isOn);
+    emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayPerspective2(bool isOn)
 {
-    editor()->view()->setOverlayPerspective2(isOn);
+    if (isOn)
+        editor()->overlays()->setPerpsOverlayActive(2);
+    else
+        editor()->overlays()->removePerspOverlayActive(2);
+    editor()->overlays()->setOverlayPerspective2(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE2, isOn);
+    emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayPerspective3(bool isOn)
 {
-    editor()->view()->setOverlayPerspective3(isOn);
+    if (isOn)
+        editor()->overlays()->setPerpsOverlayActive(3);
+    else
+        editor()->overlays()->removePerspOverlayActive(3);
+    editor()->overlays()->setOverlayPerspective3(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE3, isOn);
+    emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::anglePreferences()

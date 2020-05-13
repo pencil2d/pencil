@@ -69,6 +69,7 @@ private:
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;
     int mRotationIncrement = 0;
+    MoveMode mPerspMode = MoveMode::NONE;
 };
 
 #endif

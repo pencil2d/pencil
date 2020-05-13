@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "strokemanager.h"
 #include "selectionmanager.h"
+#include "overlaymanager.h"
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
@@ -57,6 +58,13 @@ void MoveTool::loadSettings()
 QCursor MoveTool::cursor()
 {
     MoveMode mode = MoveMode::NONE;
+    qDebug()  << "I QList<int>: " << mEditor->overlays()->getActivePerspOverlays();
+    if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        mode = mEditor->overlays()->getMoveModeForOverlayAnchor(getCurrentPoint());
+        mPerspMode = mode;
+        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
     if (mEditor->select()->somethingSelected())
     {
         mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
@@ -85,10 +93,19 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
 
-    mEditor->select()->updatePolygons();
+    if (mEditor->select()->somethingSelected())
+    {
+        mEditor->select()->updatePolygons();
 
-    setAnchorToLastPoint();
-    beginInteraction(event->modifiers(), mCurrentLayer);
+        setAnchorToLastPoint();
+        beginInteraction(event->modifiers(), mCurrentLayer);
+    }
+    if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        QPointF point = mEditor->view()->mapScreenToCanvas(event->posF());
+        mEditor->overlays()->setActivePoint(point);
+        mEditor->overlays()->updatePerspOverlay(mPerspMode, point.toPoint());
+    }
 }
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
@@ -101,6 +118,11 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
+        if (mEditor->overlays()->isPerspOverlaysActive())
+        {
+            QPoint mapped = mEditor->view()->mapScreenToCanvas(event->pos()).toPoint();
+            mEditor->overlays()->updatePerspOverlay(mPerspMode, mapped);
+        }
     }
     else
     {

@@ -70,7 +70,7 @@ void OverlayPainter::renderOverlays(QPainter &painter)
 
 void OverlayPainter::paintOverlayCenter(QPainter &painter)
 {
-    QRect rect = mOptions.mCameraRect;
+    QRect rect = mOptions.mRect;
 
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -82,7 +82,7 @@ void OverlayPainter::paintOverlayCenter(QPainter &painter)
     pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.bIsCamera);
+    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -95,7 +95,7 @@ void OverlayPainter::paintOverlayCenter(QPainter &painter)
 
 void OverlayPainter::paintOverlayThirds(QPainter &painter)
 {
-    QRect rect = mOptions.mCameraRect;
+    QRect rect = mOptions.mRect;
 
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -107,7 +107,7 @@ void OverlayPainter::paintOverlayThirds(QPainter &painter)
     pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.bIsCamera);
+    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -123,7 +123,7 @@ void OverlayPainter::paintOverlayThirds(QPainter &painter)
 
 void OverlayPainter::paintOverlayGolden(QPainter &painter)
 {
-    QRect rect = mOptions.mCameraRect;
+    QRect rect = mOptions.mRect;
 
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -135,7 +135,7 @@ void OverlayPainter::paintOverlayGolden(QPainter &painter)
     pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.bIsCamera);
+    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -151,7 +151,7 @@ void OverlayPainter::paintOverlayGolden(QPainter &painter)
 
 void OverlayPainter::paintOverlaySafeAreas(QPainter &painter)
 {
-    QRect rect = mOptions.mCameraRect;
+    QRect rect = mOptions.mRect;
 
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -162,7 +162,7 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter)
     pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.bIsCamera);
+    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::TextAntialiasing, true);
@@ -194,14 +194,14 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter)
 
 void OverlayPainter::paintOverlayPerspective1(QPainter &painter)
 {
-    QRect rect = mOptions.mCameraRect;
+    QRect rect = mOptions.mRect;
 
     painter.save();
     painter.setCompositionMode(QPainter::CompositionMode_Difference);
     QPen pen(QColor(180, 220, 255));
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.bIsCamera);
+    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -209,9 +209,11 @@ void OverlayPainter::paintOverlayPerspective1(QPainter &painter)
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
     int repeats = static_cast<int>(360 / degrees);
-    QPoint center = QPoint(rect.right() - rect.width() / 2, rect.bottom() - rect.height() / 2);
+//    QPoint center = QPoint(rect.right() - rect.width() / 2, rect.bottom() - rect.height() / 2);
     QLineF angleLine;
-    angleLine.setP1(center);
+//    angleLine.setP1(center);
+    angleLine.setP1(mOptions.mSinglePerspPoint);
+    qDebug() << "In painter: " << mOptions.mSinglePerspPoint;
     for (int i = 0; i < repeats; i++)
     {
         angleLine.setAngle(i * degrees);
@@ -225,14 +227,14 @@ void OverlayPainter::paintOverlayPerspective1(QPainter &painter)
 
 void OverlayPainter::paintOverlayPerspective2(QPainter &painter)
 {
-    QRect rect = mOptions.mCameraRect;
+    QRect rect = mOptions.mRect;
 
     painter.save();
     painter.setCompositionMode(QPainter::CompositionMode_Difference);
     QPen pen(QColor(180, 220, 255));
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.bIsCamera);
+    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -263,14 +265,14 @@ void OverlayPainter::paintOverlayPerspective2(QPainter &painter)
 
 void OverlayPainter::paintOverlayPerspective3(QPainter &painter)
 {
-    QRect rect = mOptions.mCameraRect;
+    QRect rect = mOptions.mRect;
 
     painter.save();
     painter.setCompositionMode(QPainter::CompositionMode_Difference);
     QPen pen(QColor(180, 220, 255));
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.bIsCamera);
+    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -281,13 +283,13 @@ void OverlayPainter::paintOverlayPerspective3(QPainter &painter)
 
     mOptions.mLeftPerspPoint = QPoint(rect.left(), rect.top() + rect.height() / 2);
     mOptions.mRightPerspPoint = QPoint(rect.right(), rect.top() + rect.height() / 2);
-    mOptions.mBottomPerspPoint = QPoint(rect.right() - rect.width() / 2, 2 * rect.bottom());
+    mOptions.mMiddlePerspPoint = QPoint(rect.right() - rect.width() / 2, 2 * rect.bottom());
     QLineF leftAngleLine;
     leftAngleLine.setP1(mOptions.mLeftPerspPoint);
     QLineF rightAngleLine;
     rightAngleLine.setP1(mOptions.mRightPerspPoint);
     QLineF bottomAngleLine;
-    bottomAngleLine.setP1(mOptions.mBottomPerspPoint);
+    bottomAngleLine.setP1(mOptions.mMiddlePerspPoint);
     for (int i = 0; i <= repeats ; i++)
     {
         leftAngleLine.setAngle(i * degrees - 90);

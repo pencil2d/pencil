@@ -63,6 +63,7 @@ private slots:
 
 private:
     void makeConnections();
+    void prepareOverlayManager();
     void clearPreviousAngle(int angle);
     void changeAngle(int angle);
     Ui::DisplayOption* ui = nullptr;

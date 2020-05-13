@@ -76,23 +76,9 @@ public:
 
     void flipHorizontal(bool b);
     void flipVertical(bool b);
-    void setOverlayCenter(bool b);
-    void setOverlayThirds(bool b);
-    void setOverlayGoldenRatio(bool b);
-    void setOverlaySafeAreas(bool b);
-    void setOverlayPerspective1(bool b);
-    void setOverlayPerspective2(bool b);
-    void setOverlayPerspective3(bool b);
 
     bool isFlipHorizontal() { return mIsFlipHorizontal; }
     bool isFlipVertical() { return mIsFlipVertical; }
-    bool getOverlayCenter() { return mOverlayCenter; }
-    bool getOverlayThirds() { return mOverlayThirds; }
-    bool getOverlayGoldenRatio() { return mOverlayGoldenRatio; }
-    bool getOverlaySafeAreas() { return mOverlaySafeAreas; }
-    bool getOverlayPerspective1() { return mOverlayPerspective1; }
-    bool getOverlayPerspective2() { return mOverlayPerspective2; }
-    bool getOverlayPerspective3() { return mOverlayPerspective3; }
 
     void setCanvasSize(QSize size);
     void setCameraLayer(Layer* layer);
@@ -126,13 +112,6 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
-    bool mOverlayCenter = false;
-    bool mOverlayThirds = false;
-    bool mOverlayGoldenRatio = false;
-    bool mOverlaySafeAreas = false;
-    bool mOverlayPerspective1 = false;
-    bool mOverlayPerspective2 = false;
-    bool mOverlayPerspective3 = false;
 
     bool mImportFollowsCamera = false;
 
