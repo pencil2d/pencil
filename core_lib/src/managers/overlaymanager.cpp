@@ -39,26 +39,21 @@ MoveMode OverlayManager::getMoveModeForOverlayAnchor(QPointF pos)
 
     if (QLineF(pos, mSinglePerspPoint).length() < calculatedSelectionTol)
     {
-//        mMoveMode = MoveMode::PERSP_SINGLE;
         return mMoveMode = MoveMode::PERSP_SINGLE;
     }
     else if (QLineF(pos, mLeftPerspPoint).length() < calculatedSelectionTol)
     {
-//        mMoveMode = MoveMode::PERSP_LEFT;
         return mMoveMode = MoveMode::PERSP_LEFT;
     }
     else if (QLineF(pos, mRightPerspPoint).length() < calculatedSelectionTol)
     {
-//        mMoveMode = MoveMode::PERSP_RIGHT;
         return mMoveMode = MoveMode::PERSP_RIGHT;
     }
     else if (QLineF(pos, mMiddlePerspPoint).length() < calculatedSelectionTol)
     {
-//        mMoveMode = MoveMode::PERSP_MIDDLE;
         return mMoveMode = MoveMode::PERSP_MIDDLE;
     }
 
-//    mMoveMode = MoveMode::NONE;
     return mMoveMode = MoveMode::NONE;
 }
 
@@ -67,15 +62,33 @@ double OverlayManager::selectionTolerance()
     return qAbs(mSelectionTolerance * mEditor->viewScaleInversed());
 }
 
+void OverlayManager::initPerspOverlay(int i)
+{
+    if (i > 3 || i < 1) return;
+
+    if (i == 1)
+    {
+        setSinglePerspPoint(getSinglePerspPoint());
+        qDebug() << "singlepoint: " << mSinglePerspPoint.toPoint();
+        mEditor->getScribbleArea()->prepOverlays();
+        mEditor->getScribbleArea()->renderOverlays();
+        MoveMode mode = MoveMode::PERSP_SINGLE;
+        updatePerspOverlay(mode, mSinglePerspPoint.toPoint());
+    }
+}
+
 void OverlayManager::updatePerspOverlay(int i, QPointF point)
 {
+    if (i > 3 || i < 1) return;
+
     switch (i) {
     case 1:
         setSinglePerspPoint(point);
         mEditor->getScribbleArea()->prepOverlays();
         mEditor->getScribbleArea()->renderOverlays();
         break;
-
+    default:
+        break;
     }
 }
 
@@ -87,7 +100,8 @@ void OverlayManager::updatePerspOverlay(MoveMode mode, QPoint point)
         mEditor->getScribbleArea()->prepOverlays();
         mEditor->getScribbleArea()->renderOverlays();
         break;
-
+    default:
+        break;
     }
 }
 
@@ -123,17 +137,37 @@ void OverlayManager::setOverlaySafeAreas(bool b)
 void OverlayManager::setOverlayPerspective1(bool b)
 {
     if (b != mOverlayPerspective1)
+    {
         mOverlayPerspective1 = b;
+        updatePerspOverlayActiveList();
+    }
 }
 
 void OverlayManager::setOverlayPerspective2(bool b)
 {
     if (b != mOverlayPerspective2)
+    {
         mOverlayPerspective2 = b;
+        updatePerspOverlayActiveList();
+    }
 }
 
 void OverlayManager::setOverlayPerspective3(bool b)
 {
     if (b != mOverlayPerspective3)
+    {
         mOverlayPerspective3 = b;
+        updatePerspOverlayActiveList();
+    }
+}
+
+void OverlayManager::updatePerspOverlayActiveList()
+{
+    mActivePerspOverlays.clear();
+    if (mOverlayPerspective1)
+        mActivePerspOverlays.append(1);
+    if (mOverlayPerspective2)
+        mActivePerspOverlays.append(2);
+    if (mOverlayPerspective3)
+        mActivePerspOverlays.append(3);
 }

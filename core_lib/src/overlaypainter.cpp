@@ -213,7 +213,7 @@ void OverlayPainter::paintOverlayPerspective1(QPainter &painter)
     QLineF angleLine;
 //    angleLine.setP1(center);
     angleLine.setP1(mOptions.mSinglePerspPoint);
-    qDebug() << "In painter: " << mOptions.mSinglePerspPoint;
+//    qDebug() << "In painter: " << mOptions.mSinglePerspPoint;
     for (int i = 0; i < repeats; i++)
     {
         angleLine.setAngle(i * degrees);

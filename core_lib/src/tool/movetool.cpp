@@ -58,7 +58,6 @@ void MoveTool::loadSettings()
 QCursor MoveTool::cursor()
 {
     MoveMode mode = MoveMode::NONE;
-    qDebug()  << "I QList<int>: " << mEditor->overlays()->getActivePerspOverlays();
     if (mEditor->overlays()->isPerspOverlaysActive())
     {
         mode = mEditor->overlays()->getMoveModeForOverlayAnchor(getCurrentPoint());
@@ -102,9 +101,12 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     }
     if (mEditor->overlays()->isPerspOverlaysActive())
     {
-        QPointF point = mEditor->view()->mapScreenToCanvas(event->posF());
-        mEditor->overlays()->setActivePoint(point);
-        mEditor->overlays()->updatePerspOverlay(mPerspMode, point.toPoint());
+        if (mEditor->overlays()->getActivePerspOverlays().contains(1))
+        {
+            QPointF point = mEditor->view()->mapScreenToCanvas(event->posF());
+            mEditor->overlays()->setActivePoint(point);
+            mEditor->overlays()->updatePerspOverlay(mPerspMode, point.toPoint());
+        }
     }
 }
 

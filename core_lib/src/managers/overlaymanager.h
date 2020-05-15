@@ -31,6 +31,7 @@ public:
     MoveMode getMoveModeForOverlayAnchor(QPointF pos);
     double selectionTolerance();
 
+    void initPerspOverlay(int i);
     void updatePerspOverlay(int i, QPointF point);
     void updatePerspOverlay(MoveMode mode, QPoint point);
     void overlaysChanged();
@@ -85,6 +86,7 @@ private:
     bool mOverlayPerspective1 = false;
     bool mOverlayPerspective2 = false;
     bool mOverlayPerspective3 = false;
+    void updatePerspOverlayActiveList();
 
     MoveMode mMoveMode = MoveMode::NONE;
 

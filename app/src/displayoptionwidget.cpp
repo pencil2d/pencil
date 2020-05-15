@@ -115,19 +115,23 @@ void DisplayOptionWidget::makeConnections()
 
 void DisplayOptionWidget::prepareOverlayManager()
 {
+    editor()->getScribbleArea()->prepOverlays();
+
     if (ui->overlayPerspective1Button->isChecked())
     {
-        editor()->overlays()->setPerpsOverlayActive(1);
-        editor()->overlays()->updatePerspOverlay(1, editor()->view()->mapScreenToCanvas(editor()->overlays()->getSinglePerspPoint()));
+        editor()->overlays()->setOverlayPerspective1(true);
+        QPoint point = QPoint(0,0);
+        MoveMode mode = MoveMode::PERSP_SINGLE;
+        editor()->overlays()->updatePerspOverlay(mode, point);
     }
     if (ui->overlayPerspective2Button->isChecked())
     {
-        editor()->overlays()->setPerpsOverlayActive(2);
-        editor()->overlays()->updatePerspOverlay(2, editor()->view()->mapScreenToCanvas(editor()->view()->translation()));
+        editor()->overlays()->setOverlayPerspective2(true);
+        editor()->overlays()->updatePerspOverlay(2, editor()->view()->mapScreenToCanvas(editor()->overlays()->getLeftPerspPoint()));
     }
     if (ui->overlayPerspective3Button->isChecked())
     {
-        editor()->overlays()->setPerpsOverlayActive(3);
+        editor()->overlays()->setOverlayPerspective3(true);
         editor()->overlays()->updatePerspOverlay(3, editor()->view()->mapScreenToCanvas(editor()->view()->translation()));
     }
 }
@@ -250,10 +254,6 @@ void DisplayOptionWidget::toggleOverlaySafeAreas(bool isOn)
 
 void DisplayOptionWidget::toggleOverlayPerspective1(bool isOn)
 {
-    if (isOn)
-        editor()->overlays()->setPerpsOverlayActive(1);
-    else
-        editor()->overlays()->removePerspOverlayActive(1);
     editor()->overlays()->setOverlayPerspective1(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE1, isOn);
     emit editor()->view()->viewChanged();
@@ -261,10 +261,6 @@ void DisplayOptionWidget::toggleOverlayPerspective1(bool isOn)
 
 void DisplayOptionWidget::toggleOverlayPerspective2(bool isOn)
 {
-    if (isOn)
-        editor()->overlays()->setPerpsOverlayActive(2);
-    else
-        editor()->overlays()->removePerspOverlayActive(2);
     editor()->overlays()->setOverlayPerspective2(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE2, isOn);
     emit editor()->view()->viewChanged();
@@ -272,10 +268,6 @@ void DisplayOptionWidget::toggleOverlayPerspective2(bool isOn)
 
 void DisplayOptionWidget::toggleOverlayPerspective3(bool isOn)
 {
-    if (isOn)
-        editor()->overlays()->setPerpsOverlayActive(3);
-    else
-        editor()->overlays()->removePerspOverlayActive(3);
     editor()->overlays()->setOverlayPerspective3(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE3, isOn);
     emit editor()->view()->viewChanged();

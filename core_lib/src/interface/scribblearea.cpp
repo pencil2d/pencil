@@ -1253,7 +1253,7 @@ void ScribbleArea::prepOverlays()
     o.mMiddlePerspPoint = om->getMiddlePerspPoint();
 
     mOverlayPainter.setOptions(o);
-qDebug() << "Camerarect: " << o.mRect;
+
     ViewManager* vm = mEditor->view();
     mOverlayPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 }
