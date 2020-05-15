@@ -90,6 +90,7 @@ public:
     void discord();
     void reportbug();
     void checkForUpdates();
+    void openTemporaryDirectory();
     void about();
 
 private:
