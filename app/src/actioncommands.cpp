@@ -396,7 +396,7 @@ Status ActionCommands::exportMovie(bool isGif)
         }
         else
         {
-            ErrorDialog errorDialog("Unknown export error", "The export did not produce any errors, however we can't find the output file. Your export may not have completed successfully.", QString(), mParent);
+            ErrorDialog errorDialog(tr("Unknown export error"), tr("The export did not produce any errors, however we can't find the output file. Your export may not have completed successfully."), QString(), mParent);
             errorDialog.exec();
         }
     }
