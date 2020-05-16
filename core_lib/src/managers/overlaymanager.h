@@ -32,8 +32,8 @@ public:
     double selectionTolerance();
 
     void initPerspOverlay(int i);
-    void updatePerspOverlay(int i, QPointF point);
-    void updatePerspOverlay(MoveMode mode, QPoint point);
+    void updatePerspOverlay(int persp);
+    void updatePerspOverlay(QPointF point);
     void overlaysChanged();
     void resetPerspectiveOverlays();
 
@@ -53,16 +53,16 @@ public:
     bool getOverlayPerspective2() { return mOverlayPerspective2; }
     bool getOverlayPerspective3() { return mOverlayPerspective3; }
 
-    MoveMode getMoveMode() { return mMoveMode; }
-    void setActivePoint(QPointF point) { mActivePoint = point; }
-    void setSinglePerspPoint(QPointF point) { mSinglePerspPoint = point; }
-    QPointF getSinglePerspPoint() { return mSinglePerspPoint; }
-    void setLeftPerspPoint(QPointF point) { mLeftPerspPoint = point; }
-    QPointF getLeftPerspPoint() { return mLeftPerspPoint; }
-    void setRightPerspPoint(QPointF point) { mRightPerspPoint = point; }
-    QPointF getRightPerspPoint() { return mRightPerspPoint; }
-    void setMiddlePerspPoint(QPointF point) { mMiddlePerspPoint = point; }
-    QPointF getMiddlePerspPoint() { return mMiddlePerspPoint; }
+    MoveMode getMoveMode();
+    void setMoveMode(MoveMode mode);
+    void setSinglePerspPoint(QPointF point);
+    QPointF getSinglePerspPoint();
+    void setLeftPerspPoint(QPointF point);
+    QPointF getLeftPerspPoint();
+    void setRightPerspPoint(QPointF point);
+    QPointF getRightPerspPoint();
+    void setMiddlePerspPoint(QPointF point);
+    QPointF getMiddlePerspPoint();
 
     void setPerpsOverlayActive(int perspType) { mActivePerspOverlays.append(perspType); }
     void removePerspOverlayActive(int perspType) { mActivePerspOverlays.removeOne(perspType); }
@@ -73,7 +73,6 @@ private:
     Editor* mEditor = nullptr;
     OverlayPainter* op = nullptr;
 
-    QPointF mActivePoint;
     QPointF mSinglePerspPoint;   // for single point perspective.
     QPointF mLeftPerspPoint;
     QPointF mRightPerspPoint;    // Left, right and middle are for
@@ -87,8 +86,6 @@ private:
     bool mOverlayPerspective2 = false;
     bool mOverlayPerspective3 = false;
     void updatePerspOverlayActiveList();
-
-    MoveMode mMoveMode = MoveMode::NONE;
 
     QList<int> mActivePerspOverlays;
     const qreal mSelectionTolerance = 8.0;

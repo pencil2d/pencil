@@ -58,15 +58,15 @@ void MoveTool::loadSettings()
 QCursor MoveTool::cursor()
 {
     MoveMode mode = MoveMode::NONE;
+    if (mEditor->select()->somethingSelected())
+    {
+        mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
+        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
     if (mEditor->overlays()->isPerspOverlaysActive())
     {
         mode = mEditor->overlays()->getMoveModeForOverlayAnchor(getCurrentPoint());
         mPerspMode = mode;
-        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
-    }
-    if (mEditor->select()->somethingSelected())
-    {
-        mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
@@ -101,12 +101,9 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     }
     if (mEditor->overlays()->isPerspOverlaysActive())
     {
-        if (mEditor->overlays()->getActivePerspOverlays().contains(1))
-        {
-            QPointF point = mEditor->view()->mapScreenToCanvas(event->posF());
-            mEditor->overlays()->setActivePoint(point);
-            mEditor->overlays()->updatePerspOverlay(mPerspMode, point.toPoint());
-        }
+        QPointF point = mEditor->view()->mapScreenToCanvas(event->posF());
+        mEditor->overlays()->setMoveMode(mPerspMode);
+        mEditor->overlays()->updatePerspOverlay(point);
     }
 }
 
@@ -122,8 +119,8 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         transformSelection(event->modifiers(), mCurrentLayer);
         if (mEditor->overlays()->isPerspOverlaysActive())
         {
-            QPoint mapped = mEditor->view()->mapScreenToCanvas(event->pos()).toPoint();
-            mEditor->overlays()->updatePerspOverlay(mPerspMode, mapped);
+            QPointF mapped = mEditor->view()->mapScreenToCanvas(event->pos());
+            mEditor->overlays()->updatePerspOverlay(mapped);
         }
     }
     else
@@ -136,12 +133,19 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         {
             storeClosestVectorCurve(mCurrentLayer);
         }
+        mEditor->getScribbleArea()->prepOverlays();
     }
     mScribbleArea->updateCurrentFrame();
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
+    if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        mEditor->overlays()->setMoveMode(MoveMode::NONE);
+        mPerspMode = MoveMode::NONE;
+    }
+
     auto selectMan = mEditor->select();
     if (!selectMan->somethingSelected())
         return;

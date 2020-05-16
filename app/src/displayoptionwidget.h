@@ -26,6 +26,7 @@ namespace Ui
 class Editor;
 class QToolButton;
 class ViewManager;
+class QTimer;
 
 class DisplayOptionWidget : public BaseDockWidget
 {
@@ -74,7 +75,6 @@ private:
     int mOverlayAngle = 15;
     int mPerspectiveX = -1;
     int mPerspectiveY = 1;
-
 };
 
 #endif // DISPLAYOPTIONDOCKWIDGET_H

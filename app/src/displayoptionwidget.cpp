@@ -68,6 +68,8 @@ void DisplayOptionWidget::initUI()
 
     ui->innerWidget->setLayout(layout);
 
+    prepareOverlayManager();
+
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
     QString stylesheet =
@@ -115,24 +117,30 @@ void DisplayOptionWidget::makeConnections()
 
 void DisplayOptionWidget::prepareOverlayManager()
 {
+    editor()->overlays()->initPerspOverlay(1);
+    editor()->overlays()->initPerspOverlay(2);
+    editor()->overlays()->initPerspOverlay(3);
+    editor()->overlays()->initPerspOverlay(4);
+
     editor()->getScribbleArea()->prepOverlays();
 
     if (ui->overlayPerspective1Button->isChecked())
     {
         editor()->overlays()->setOverlayPerspective1(true);
-        QPoint point = QPoint(0,0);
-        MoveMode mode = MoveMode::PERSP_SINGLE;
-        editor()->overlays()->updatePerspOverlay(mode, point);
+        editor()->overlays()->updatePerspOverlay(1);
+        editor()->overlays()->setMoveMode(MoveMode::PERSP_SINGLE);
     }
     if (ui->overlayPerspective2Button->isChecked())
     {
-        editor()->overlays()->setOverlayPerspective2(true);
-        editor()->overlays()->updatePerspOverlay(2, editor()->view()->mapScreenToCanvas(editor()->overlays()->getLeftPerspPoint()));
+        editor()->overlays()->setOverlayPerspective1(true);
+        editor()->overlays()->updatePerspOverlay(2);
+        editor()->overlays()->setMoveMode(MoveMode::PERSP_LEFT);
     }
     if (ui->overlayPerspective3Button->isChecked())
     {
-        editor()->overlays()->setOverlayPerspective3(true);
-        editor()->overlays()->updatePerspOverlay(3, editor()->view()->mapScreenToCanvas(editor()->view()->translation()));
+        editor()->overlays()->setOverlayPerspective1(true);
+        editor()->overlays()->updatePerspOverlay(3);
+        editor()->overlays()->setMoveMode(MoveMode::PERSP_LEFT);
     }
 }
 
@@ -197,8 +205,6 @@ void DisplayOptionWidget::updateUI()
     } else {
         ui->overlaySafeAreaButton->setEnabled(false);
     }
-
-    prepareOverlayManager();
 
     ViewManager* view = editor()->view();
 

@@ -24,9 +24,9 @@ void OverlayPainter::initPerspectivePainter(QPainter &painter)
     painter.setBrush(Qt::NoBrush);
 }
 
-void OverlayPainter::renderOverlays(QPainter &painter)
+void OverlayPainter::renderOverlays(QPainter &painter, MoveMode mode)
 {
-
+    mMoveMode = mode;
     if (mOptions.bCenter)
     {
         painter.setWorldTransform(mViewTransform);
@@ -59,7 +59,7 @@ void OverlayPainter::renderOverlays(QPainter &painter)
     if (mOptions.bPerspective2)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlayPerspective2(painter);
+        paintOverlayPerspective2(painter, mMoveMode);
     }
     if (mOptions.bPerspective3)
     {
@@ -197,45 +197,35 @@ void OverlayPainter::paintOverlayPerspective1(QPainter &painter)
     QRect rect = mOptions.mRect;
 
     painter.save();
-    painter.setCompositionMode(QPainter::CompositionMode_Difference);
-    QPen pen(QColor(180, 220, 255));
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
-    painter.setBrush(Qt::NoBrush);
+    initPerspectivePainter(painter);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
     int repeats = static_cast<int>(360 / degrees);
-//    QPoint center = QPoint(rect.right() - rect.width() / 2, rect.bottom() - rect.height() / 2);
     QLineF angleLine;
-//    angleLine.setP1(center);
+    if (mOptions.mSinglePerspPoint == QPointF(0, 0))    // TODO: bug in QT prevents
+        mOptions.mSinglePerspPoint = QPointF(0.1, 0.1); // point to be (0,0)...
     angleLine.setP1(mOptions.mSinglePerspPoint);
-//    qDebug() << "In painter: " << mOptions.mSinglePerspPoint;
+    QVector<QLineF> lines;
     for (int i = 0; i < repeats; i++)
     {
         angleLine.setAngle(i * degrees);
         angleLine.setLength(rect.width() * 2);
-        painter.drawLine(angleLine);
+        lines.append(angleLine);
     }
+    painter.drawLines(lines);
 
     painter.setRenderHints(previous_renderhints);
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspective2(QPainter &painter)
+void OverlayPainter::paintOverlayPerspective2(QPainter &painter, MoveMode mode)
 {
     QRect rect = mOptions.mRect;
-
     painter.save();
-    painter.setCompositionMode(QPainter::CompositionMode_Difference);
-    QPen pen(QColor(180, 220, 255));
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
-    painter.setBrush(Qt::NoBrush);
+    initPerspectivePainter(painter);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -243,21 +233,48 @@ void OverlayPainter::paintOverlayPerspective2(QPainter &painter)
     if (degrees == 7.0) { degrees = 7.5; }
     int repeats = static_cast<int>(180 / degrees);
 
-    mOptions.mLeftPerspPoint = QPoint(rect.left(), rect.top() + rect.height() / 2);
-    mOptions.mRightPerspPoint = QPoint(rect.right(), rect.top() + rect.height() / 2);
-    QLineF leftAngleLine;
-    leftAngleLine.setP1(mOptions.mLeftPerspPoint);
-    QLineF rightAngleLine;
-    rightAngleLine.setP1(mOptions.mRightPerspPoint);
-    for (int i = 0; i <= repeats ; i++)
-    {
-        leftAngleLine.setAngle(i * degrees - 90);
-        leftAngleLine.setLength(rect.width() * 2);
-        painter.drawLine(leftAngleLine);
-        rightAngleLine.setAngle(i * degrees + 90);
-        rightAngleLine.setLength(rect.width() * 2);
-        painter.drawLine(rightAngleLine);
+    if (mOptions.mLeftPerspPoint == QPointF(0, 0))    // TODO: bug in QT prevents
+        mOptions.mLeftPerspPoint = QPointF(0.1, 0.1); // point to be (0,0)...
+    if (mOptions.mRightPerspPoint == QPointF(0, 0))    // TODO: bug in QT prevents
+        mOptions.mRightPerspPoint = QPointF(0.1, 0.1); // point to be (0,0)...
+
+    switch (mMoveMode) {
+    case MoveMode::NONE:
+        break;
+    case MoveMode::PERSP_LEFT:
+        if (mOptions.mLeftPerspPoint.x() >= mOptions.mRightPerspPoint.x() - MIN_DIFF)
+            mOptions.mLeftPerspPoint = QPointF(mOptions.mRightPerspPoint.x() - MIN_DIFF, mOptions.mRightPerspPoint.y());
+        setRightPoint(QPointF(mOptions.mRightPerspPoint.x(), mOptions.mLeftPerspPoint.y()).toPoint());
+        break;
+    case MoveMode::PERSP_RIGHT:
+        if (mOptions.mRightPerspPoint.x() <= mOptions.mLeftPerspPoint.x() + MIN_DIFF)
+            mOptions.mRightPerspPoint = QPointF(mOptions.mLeftPerspPoint.x() + MIN_DIFF, mOptions.mRightPerspPoint.y());
+        setLeftPoint(QPointF(mOptions.mLeftPerspPoint.x(), mOptions.mRightPerspPoint.y()).toPoint());
+        break;
+    default:
+        break;
     }
+
+    QLineF angleLine;
+    angleLine.setAngle(LEFTANGLEOFFSET);
+    angleLine.setP1(mOptions.mLeftPerspPoint);
+    QVector<QLineF> lines;
+    for (int i = 0; i <= repeats; i++)
+    {
+        angleLine.setAngle(LEFTANGLEOFFSET - i * degrees);
+        angleLine.setLength(rect.width() * 2);
+        lines.append(angleLine);
+    }
+
+    angleLine.setAngle(RIGHTANGLEOFFSET);
+    angleLine.setP1(mOptions.mRightPerspPoint);
+    for (int i = 0; i <= repeats; i++)
+    {
+        angleLine.setAngle(RIGHTANGLEOFFSET - i * degrees);
+        angleLine.setLength(rect.width() * 2);
+        lines.append(angleLine);
+    }
+    painter.drawLines(lines);
 
     painter.setRenderHints(previous_renderhints);
     painter.restore();
@@ -265,46 +282,7 @@ void OverlayPainter::paintOverlayPerspective2(QPainter &painter)
 
 void OverlayPainter::paintOverlayPerspective3(QPainter &painter)
 {
-    QRect rect = mOptions.mRect;
 
-    painter.save();
-    painter.setCompositionMode(QPainter::CompositionMode_Difference);
-    QPen pen(QColor(180, 220, 255));
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(!mOptions.mIsCamera);
-    painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::Antialiasing, false);
-
-    qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
-    if (degrees == 7.0) { degrees = 7.5; }
-    int repeats = static_cast<int>(180 / degrees);
-
-    mOptions.mLeftPerspPoint = QPoint(rect.left(), rect.top() + rect.height() / 2);
-    mOptions.mRightPerspPoint = QPoint(rect.right(), rect.top() + rect.height() / 2);
-    mOptions.mMiddlePerspPoint = QPoint(rect.right() - rect.width() / 2, 2 * rect.bottom());
-    QLineF leftAngleLine;
-    leftAngleLine.setP1(mOptions.mLeftPerspPoint);
-    QLineF rightAngleLine;
-    rightAngleLine.setP1(mOptions.mRightPerspPoint);
-    QLineF bottomAngleLine;
-    bottomAngleLine.setP1(mOptions.mMiddlePerspPoint);
-    for (int i = 0; i <= repeats ; i++)
-    {
-        leftAngleLine.setAngle(i * degrees - 90);
-        leftAngleLine.setLength(rect.width() * 2);
-        painter.drawLine(leftAngleLine);
-        rightAngleLine.setAngle(i * degrees + 90);
-        rightAngleLine.setLength(rect.width() * 2);
-        painter.drawLine(rightAngleLine);
-        bottomAngleLine.setAngle(i * degrees);
-        bottomAngleLine.setLength(rect.width() * 2);
-        painter.drawLine(bottomAngleLine);
-    }
-
-    painter.setRenderHints(previous_renderhints);
-    painter.restore();
 }
 
 void OverlayPainter::resetPerspectives()

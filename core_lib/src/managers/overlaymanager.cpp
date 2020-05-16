@@ -6,7 +6,7 @@
 OverlayManager::OverlayManager(Editor *editor): BaseManager(editor)
 {
     mEditor = editor;
-    op = new OverlayPainter();
+    op = new OverlayPainter(this);
 }
 
 OverlayManager::~OverlayManager()
@@ -36,25 +36,26 @@ void OverlayManager::workingLayerChanged(Layer *)
 MoveMode OverlayManager::getMoveModeForOverlayAnchor(QPointF pos)
 {
     const double calculatedSelectionTol = selectionTolerance();
+    MoveMode mode = MoveMode::NONE;
 
-    if (QLineF(pos, mSinglePerspPoint).length() < calculatedSelectionTol)
+    if (QLineF(pos, op->getSinglePoint()).length() < calculatedSelectionTol)
     {
-        return mMoveMode = MoveMode::PERSP_SINGLE;
+        mode = MoveMode::PERSP_SINGLE;
     }
-    else if (QLineF(pos, mLeftPerspPoint).length() < calculatedSelectionTol)
+    else if (QLineF(pos, op->getLeftPoint()).length() < calculatedSelectionTol)
     {
-        return mMoveMode = MoveMode::PERSP_LEFT;
+        mode = MoveMode::PERSP_LEFT;
     }
-    else if (QLineF(pos, mRightPerspPoint).length() < calculatedSelectionTol)
+    else if (QLineF(pos, op->getRightPoint()).length() < calculatedSelectionTol)
     {
-        return mMoveMode = MoveMode::PERSP_RIGHT;
+        mode = MoveMode::PERSP_RIGHT;
     }
-    else if (QLineF(pos, mMiddlePerspPoint).length() < calculatedSelectionTol)
+    else if (QLineF(pos, op->getMiddlePoint()).length() < calculatedSelectionTol)
     {
-        return mMoveMode = MoveMode::PERSP_MIDDLE;
+        mode = MoveMode::PERSP_MIDDLE;
     }
 
-    return mMoveMode = MoveMode::NONE;
+    return mode;
 }
 
 double OverlayManager::selectionTolerance()
@@ -62,47 +63,72 @@ double OverlayManager::selectionTolerance()
     return qAbs(mSelectionTolerance * mEditor->viewScaleInversed());
 }
 
+// Must only be called at startup!
 void OverlayManager::initPerspOverlay(int i)
 {
-    if (i > 3 || i < 1) return;
+    if (i > 4 || i < 1) return;
 
     if (i == 1)
     {
-        setSinglePerspPoint(getSinglePerspPoint());
-        qDebug() << "singlepoint: " << mSinglePerspPoint.toPoint();
-        mEditor->getScribbleArea()->prepOverlays();
-        mEditor->getScribbleArea()->renderOverlays();
-        MoveMode mode = MoveMode::PERSP_SINGLE;
-        updatePerspOverlay(mode, mSinglePerspPoint.toPoint());
+        setSinglePerspPoint(QPointF(0.1, 0.1));
+    }
+    if (i == 1)
+    {
+        setLeftPerspPoint(QPointF(-300, 0));
+    }
+    if (i == 1)
+    {
+        setRightPerspPoint(QPointF(300, 0));
+    }
+    if (i == 4)
+    {
+        setMiddlePerspPoint(QPointF(QPointF(0, 200)));
     }
 }
 
-void OverlayManager::updatePerspOverlay(int i, QPointF point)
+void OverlayManager::updatePerspOverlay(int persp)
 {
-    if (i > 3 || i < 1) return;
-
-    switch (i) {
+    switch (persp) {
     case 1:
-        setSinglePerspPoint(point);
-        mEditor->getScribbleArea()->prepOverlays();
-        mEditor->getScribbleArea()->renderOverlays();
+        setMoveMode(MoveMode::PERSP_SINGLE);
+        break;
+    case 2:
+        setMoveMode(MoveMode::PERSP_LEFT);
+        break;
+    case 3:
+        setMoveMode(MoveMode::PERSP_LEFT);
         break;
     default:
         break;
     }
+
+    mEditor->getScribbleArea()->prepOverlays();
+    mEditor->getScribbleArea()->renderOverlays();
 }
 
-void OverlayManager::updatePerspOverlay(MoveMode mode, QPoint point)
+void OverlayManager::updatePerspOverlay(QPointF point)
 {
+    MoveMode mode = op->getMoveMode();
+//    qDebug() << "mode in UPDATE: " << static_cast<int>(mode);
+
     switch (mode) {
     case MoveMode::PERSP_SINGLE:
         setSinglePerspPoint(point);
-        mEditor->getScribbleArea()->prepOverlays();
-        mEditor->getScribbleArea()->renderOverlays();
+        break;
+    case MoveMode::PERSP_LEFT:
+        setLeftPerspPoint(point);
+        break;
+    case MoveMode::PERSP_RIGHT:
+        setRightPerspPoint(point);
+        break;
+    case MoveMode::PERSP_MIDDLE:
+        setMiddlePerspPoint(point);
         break;
     default:
         break;
     }
+    mEditor->getScribbleArea()->prepOverlays();
+    mEditor->getScribbleArea()->renderOverlays();
 }
 
 void OverlayManager::resetPerspectiveOverlays()
@@ -159,6 +185,58 @@ void OverlayManager::setOverlayPerspective3(bool b)
         mOverlayPerspective3 = b;
         updatePerspOverlayActiveList();
     }
+}
+
+MoveMode OverlayManager::getMoveMode()
+{
+    return op->getMoveMode();
+}
+
+void OverlayManager::setMoveMode(MoveMode mode)
+{
+//    qDebug() << "setMoveMode: " << static_cast<int>(mode);
+    op->setMoveMode(mode);
+    //    qDebug() << "MoveMode is: " << static_cast<int>(op->getMoveMode());
+}
+
+void OverlayManager::setSinglePerspPoint(QPointF point)
+{
+    op->setSinglePoint(point.toPoint());
+}
+
+QPointF OverlayManager::getSinglePerspPoint()
+{
+    return op->getSinglePoint();
+}
+
+void OverlayManager::setLeftPerspPoint(QPointF point)
+{
+    op->setLeftPoint(point.toPoint());
+}
+
+QPointF OverlayManager::getLeftPerspPoint()
+{
+    return op->getLeftPoint();
+}
+
+void OverlayManager::setRightPerspPoint(QPointF point)
+{
+    op->setRightPoint(point.toPoint());
+}
+
+QPointF OverlayManager::getRightPerspPoint()
+{
+    return op->getRightPoint();
+}
+
+void OverlayManager::setMiddlePerspPoint(QPointF point)
+{
+    op->setMiddlePoint(point.toPoint());
+}
+
+QPointF OverlayManager::getMiddlePerspPoint()
+{
+    return op->getMiddlePoint();
 }
 
 void OverlayManager::updatePerspOverlayActiveList()
