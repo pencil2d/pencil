@@ -63,7 +63,7 @@ QCursor MoveTool::cursor()
         mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
-    if (mEditor->overlays()->getActivePerspOverlays().count() > 0)
+    if (mEditor->overlays()->isPerspOverlaysActive())
     {
         mode = mEditor->overlays()->getMoveModeForOverlayAnchor(getCurrentPoint());
         mPerspMode = mode;

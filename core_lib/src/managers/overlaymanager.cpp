@@ -244,5 +244,4 @@ void OverlayManager::updatePerspOverlayActiveList()
         mActivePerspOverlays.append(2);
     if (mOverlayPerspective3)
         mActivePerspOverlays.append(3);
-    qDebug() << "aktive overlays: " << mActivePerspOverlays.count();
 }

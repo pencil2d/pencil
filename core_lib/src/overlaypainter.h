@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QPainter>
-#include <QDebug>
 #include "movemode.h"
 
 struct OverlayPainterOptions
@@ -41,7 +40,6 @@ public:
     void setOptions(const OverlayPainterOptions& p) { mOptions = p; }
     OverlayPainterOptions getOptions() { return mOptions; }
 
-
     void renderOverlays(QPainter& painter, MoveMode mode);
 
     void paintOverlayCenter(QPainter& painter);
@@ -65,8 +63,6 @@ public:
     void setMoveMode(MoveMode mode) { mMoveMode = mode; }
     MoveMode getMoveMode() { return mMoveMode; }
 
-    QPointF getLastPoint() { return mLastPoint; }
-
 private:
     void initPerspectivePainter(QPainter& painter);
 
@@ -78,8 +74,6 @@ private:
     const int RIGHTANGLEOFFSET = -90;
     int MIDDLEANGLEOFFSET;
     MoveMode mMoveMode;
-
-    QPointF mLastPoint = QPointF();
 
     QTransform mViewTransform;
     QTransform mViewInverse;
