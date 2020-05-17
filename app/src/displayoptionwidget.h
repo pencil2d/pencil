@@ -38,6 +38,9 @@ public:
     void initUI() override;
     void updateUI() override;
 
+public slots:
+    void prepareOverlayManager();
+
 protected:
     int getMinHeightForWidth(int width) override;
 
@@ -64,7 +67,6 @@ private slots:
 
 private:
     void makeConnections();
-    void prepareOverlayManager();
     void clearPreviousAngle(int angle);
     void changeAngle(int angle);
     Ui::DisplayOption* ui = nullptr;

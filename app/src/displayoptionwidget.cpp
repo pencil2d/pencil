@@ -117,11 +117,7 @@ void DisplayOptionWidget::makeConnections()
 
 void DisplayOptionWidget::prepareOverlayManager()
 {
-    editor()->overlays()->initPerspOverlay(1);
-    editor()->overlays()->initPerspOverlay(2);
-    editor()->overlays()->initPerspOverlay(3);
-    editor()->overlays()->initPerspOverlay(4);
-
+    editor()->overlays()->initPerspOverlay();
     editor()->getScribbleArea()->prepOverlays();
 
     if (ui->overlayPerspective1Button->isChecked())
@@ -132,16 +128,17 @@ void DisplayOptionWidget::prepareOverlayManager()
     }
     if (ui->overlayPerspective2Button->isChecked())
     {
-        editor()->overlays()->setOverlayPerspective1(true);
+        editor()->overlays()->setOverlayPerspective2(true);
         editor()->overlays()->updatePerspOverlay(2);
         editor()->overlays()->setMoveMode(MoveMode::PERSP_LEFT);
     }
     if (ui->overlayPerspective3Button->isChecked())
     {
-        editor()->overlays()->setOverlayPerspective1(true);
+        editor()->overlays()->setOverlayPerspective3(true);
         editor()->overlays()->updatePerspOverlay(3);
         editor()->overlays()->setMoveMode(MoveMode::PERSP_LEFT);
     }
+    editor()->overlays()->updatePerspOverlayActiveList();
 }
 
 void DisplayOptionWidget::clearPreviousAngle(int angle)

@@ -1067,7 +1067,6 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
         mCanvasPainter.renderGrid(painter);
         mOverlayPainter.renderOverlays(painter, editor()->overlays()->getMoveMode());
-        prepOverlays();
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
@@ -1245,19 +1244,17 @@ void ScribbleArea::prepOverlays()
     o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
     o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
     o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
-/*
-    OverlayManager* om = mEditor->overlays();
+
     o.mRect = getCameraRect().toRect();   // camera rect!
-    o.mSinglePerspPoint = om->getSinglePerspPoint();
-    o.mLeftPerspPoint = om->getLeftPerspPoint();
-    o.mRightPerspPoint = om->getRightPerspPoint();
-    o.mMiddlePerspPoint = om->getMiddlePerspPoint();
-*/
+    o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspPoint();
+    o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspPoint();
+    o.mRightPerspPoint = mEditor->overlays()->getRightPerspPoint();
+    o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspPoint();
+
     mOverlayPainter.setOptions(o);
 
     ViewManager* vm = mEditor->view();
     mOverlayPainter.setViewTransform(vm->getView(), vm->getViewInverse());
-    qDebug() << "RIGHT: " << o.mRightPerspPoint;
 }
 
 void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)

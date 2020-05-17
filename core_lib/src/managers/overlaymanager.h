@@ -5,6 +5,7 @@
 #include "pencildef.h"
 #include "movemode.h"
 #include "basemanager.h"
+#include "overlaypainter.h"
 
 #include <QPointF>
 #include <QTransform>
@@ -12,7 +13,6 @@
 
 class Editor;
 class ViewManager;
-class OverlayPainter;
 
 class OverlayManager : public BaseManager
 {
@@ -31,11 +31,9 @@ public:
     MoveMode getMoveModeForOverlayAnchor(QPointF pos);
     double selectionTolerance();
 
-    void initPerspOverlay(int i);
+    void initPerspOverlay();
     void updatePerspOverlay(int persp);
     void updatePerspOverlay(QPointF point);
-    void overlaysChanged();
-    void resetPerspectiveOverlays();
 
     void setOverlayCenter(bool b);
     void setOverlayThirds(bool b);
@@ -68,15 +66,20 @@ public:
     void removePerspOverlayActive(int perspType) { mActivePerspOverlays.removeOne(perspType); }
     QList<int> getActivePerspOverlays() { return mActivePerspOverlays; }
     bool isPerspOverlaysActive() { return !mActivePerspOverlays.isEmpty(); }
+    void updatePerspOverlayActiveList();
 
 private:
     Editor* mEditor = nullptr;
-    OverlayPainter* op = nullptr;
+    OverlayPainter op;
 
     QPointF mSinglePerspPoint;   // for single point perspective.
     QPointF mLeftPerspPoint;
     QPointF mRightPerspPoint;    // Left, right and middle are for
     QPointF mMiddlePerspPoint;   // two and three point perspective
+
+    QPointF mLastLeftPoint;
+    QPointF mLastRightPoint;
+    QPointF mLastMiddlePoint;
 
     bool mOverlayCenter = false;
     bool mOverlayThirds = false;
@@ -85,7 +88,6 @@ private:
     bool mOverlayPerspective1 = false;
     bool mOverlayPerspective2 = false;
     bool mOverlayPerspective3 = false;
-    void updatePerspOverlayActiveList();
 
     QList<int> mActivePerspOverlays;
     const qreal mSelectionTolerance = 8.0;

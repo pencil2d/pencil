@@ -63,7 +63,7 @@ QCursor MoveTool::cursor()
         mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
-    if (mEditor->overlays()->isPerspOverlaysActive())
+    if (mEditor->overlays()->getActivePerspOverlays().count() > 0)
     {
         mode = mEditor->overlays()->getMoveModeForOverlayAnchor(getCurrentPoint());
         mPerspMode = mode;
@@ -132,6 +132,11 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
             storeClosestVectorCurve(mCurrentLayer);
+        }
+        if (mEditor->overlays()->isPerspOverlaysActive())
+        {
+//            QPointF mapped = mEditor->view()->mapScreenToCanvas(event->pos());
+//            mEditor->overlays()->updatePerspOverlay(mapped);
         }
         mEditor->getScribbleArea()->prepOverlays();
     }
