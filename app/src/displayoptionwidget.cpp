@@ -294,7 +294,6 @@ void DisplayOptionWidget::anglePreferences()
     ui->overlayChooseAngle->addAction(ui->action15_degrees);
     ui->overlayChooseAngle->addAction(ui->action20_degrees);
     ui->overlayChooseAngle->addAction(ui->action30_degrees);
-    ui->overlayChooseAngle->addAction(ui->actionadjust_points_horizontal);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     mOverlayAngle = settings.value("OverlayAngle").toInt();
@@ -320,7 +319,6 @@ void DisplayOptionWidget::anglePreferences()
     connect(ui->action15_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle15degrees);
     connect(ui->action20_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle20degrees);
     connect(ui->action30_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle30degrees);
-    connect(ui->actionadjust_points_horizontal, &QAction::triggered, this, &DisplayOptionWidget::adjustPerspecPoints);
 }
 
 void DisplayOptionWidget::angle2degrees(bool)
@@ -361,9 +359,4 @@ void DisplayOptionWidget::angle20degrees(bool)
 void DisplayOptionWidget::angle30degrees(bool)
 {
     changeAngle(30);
-}
-
-void DisplayOptionWidget::adjustPerspecPoints()
-{
-    changeAngle(2);
 }

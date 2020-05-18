@@ -398,14 +398,6 @@
     <string>Angles = 7.5 degrees</string>
    </property>
   </action>
-  <action name="actionadjust_points_horizontal">
-   <property name="text">
-    <string>adjust points horizontal</string>
-   </property>
-   <property name="toolTip">
-    <string>Adjust points horizontal</string>
-   </property>
-  </action>
   <action name="action2_degrees">
    <property name="checkable">
     <bool>true</bool>

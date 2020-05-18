@@ -63,7 +63,6 @@ private slots:
     void angle15degrees(bool);
     void angle20degrees(bool);
     void angle30degrees(bool);
-    void adjustPerspecPoints();
 
 private:
     void makeConnections();
