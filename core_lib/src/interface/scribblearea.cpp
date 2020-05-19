@@ -688,13 +688,6 @@ bool ScribbleArea::isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod)
         currentTool()->startAdjusting(FEATHER, 1);
         return true;
     }
-    if ((keyMod == (Qt::ControlModifier | Qt::AltModifier)) &&
-        (currentTool()->properties.feather > -1))
-    {
-        //adjust feather if not locked
-        currentTool()->startAdjusting(FEATHER, 0);
-        return true;
-    }
     return false;
 }
 
