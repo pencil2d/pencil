@@ -980,6 +980,7 @@ void Editor::deselectAll()
     }
 
     select()->resetSelectionProperties();
+    emit updateCurrentFrame();
 }
 
 void Editor::updateFrame(int frameNumber)
