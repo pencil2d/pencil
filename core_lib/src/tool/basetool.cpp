@@ -249,33 +249,39 @@ bool BaseTool::isActive()
  * @brief precision circular cursor: used for drawing stroke size while adjusting
  * @return QPixmap
  */
-QPixmap BaseTool::quickSizeCursor(float brushWidth, float brushFeather, float scalingFac)
+QPixmap BaseTool::quickSizeCursor(qreal scalingFac)
 {
-    float propWidth = qMax(static_cast<float>(0), brushWidth) * scalingFac;
-    float propFeather = qMax(static_cast<float>(0), brushFeather) * scalingFac;
-    float cursorWidth = propWidth + 0.5 * propFeather;
+    qreal propSize = qMax(0., properties.width) * scalingFac;
+    qreal propFeather = qMax(0., properties.feather) * scalingFac;
+    QRectF cursorRect(0, 0, propSize+2, propSize+2);
 
-    if (cursorWidth < 1) { cursorWidth = 1; }
-    float radius = cursorWidth / 2;
-    float xyA = 1 + propFeather / 2;
-    float xyB = 1 + propFeather / 8;
-    float whA = qMax<float>(0, propWidth - xyA - 1);
-    float whB = qMax<float>(0, cursorWidth - propFeather / 4 - 2);
-    QPixmap cursorPixmap = QPixmap(cursorWidth, cursorWidth);
+    QRectF sizeRect = cursorRect.adjusted(1, 1, -1, -1);
+    qreal featherRadius = (1 - propFeather / 100) * propSize / 2.;
+
+    QPixmap cursorPixmap = QPixmap(cursorRect.size().toSize());
     if (!cursorPixmap.isNull())
     {
         cursorPixmap.fill(QColor(255, 255, 255, 0));
         QPainter cursorPainter(&cursorPixmap);
-        cursorPainter.setPen(QColor(0, 0, 0, 255));
-        cursorPainter.drawLine(QPointF(radius - 2, radius), QPointF(radius + 2, radius));
-        cursorPainter.drawLine(QPointF(radius, radius - 2), QPointF(radius, radius + 2));
         cursorPainter.setRenderHints(QPainter::Antialiasing, true);
+
+        // Draw width (outside circle)
+        cursorPainter.setPen(QColor(255, 127, 127, 127));
+        cursorPainter.setBrush(QColor(0, 255, 127, 127));
+        cursorPainter.drawEllipse(sizeRect);
+
+        // Draw feather (inside circle)
+        cursorPainter.setCompositionMode(QPainter::CompositionMode_Darken);
         cursorPainter.setPen(QColor(0, 0, 0, 0));
-        cursorPainter.setBrush(QColor(0, 255, 127, 64));
-        cursorPainter.setCompositionMode(QPainter::CompositionMode_Exclusion);
-        cursorPainter.drawEllipse(QRectF(xyB, xyB, whB, whB)); // outside circle
-        cursorPainter.setBrush(QColor(255, 64, 0, 255));
-        cursorPainter.drawEllipse(QRectF(xyA, xyA, whA, whA)); // inside circle
+        cursorPainter.setBrush(QColor(0, 191, 95, 127));
+        cursorPainter.drawEllipse(cursorRect.center(), featherRadius, featherRadius);
+
+        // Draw cursor in center
+        cursorPainter.setRenderHints(QPainter::Antialiasing, false);
+        cursorPainter.setPen(QColor(0, 0, 0, 255));
+        cursorPainter.drawLine(cursorRect.center() - QPoint(2, 0), cursorRect.center() + QPoint(2, 0));
+        cursorPainter.drawLine(cursorRect.center() - QPoint(0, 2), cursorRect.center() + QPoint(0, 2));
+
         cursorPainter.end();
     }
     return cursorPixmap;

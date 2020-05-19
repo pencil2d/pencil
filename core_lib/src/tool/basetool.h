@@ -91,7 +91,7 @@ public:
     virtual void resetToDefault() {}
 
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
-    static QPixmap quickSizeCursor(float brushWidth, float brushFeather, float scalingFac);
+    QPixmap quickSizeCursor(qreal scalingFac);
     static QCursor selectMoveCursor(MoveMode mode, ToolType type);
     static bool isAdjusting() { return msIsAdjusting; }
 
