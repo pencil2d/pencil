@@ -317,3 +317,42 @@ TEST_CASE("FileManager File-saving")
         delete o3;
     }
 }
+
+TEST_CASE("Empty Sound Frames")
+{
+    SECTION("Invalid src value")
+    {
+
+        QTemporaryFile soundFrameDoc;
+        if (soundFrameDoc.open())
+        {
+            QFile newXML(soundFrameDoc.fileName());
+            newXML.open(QIODevice::WriteOnly);
+
+            QTextStream fout(&newXML);
+            fout << "<!DOCTYPE PencilDocument><document>";
+            fout << "  <object>";
+            fout << "       <layer type='4' id='5' name='GoodLayer' visibility='1'>";
+            fout << "           <sound frame='1' name='' src=''/>";
+            fout << "       </layer>";
+            fout << "  </object>";
+            fout << "</document>";
+            newXML.close();
+
+
+            FileManager fm;
+            Object* newObj = fm.load(soundFrameDoc.fileName());
+
+            REQUIRE(newObj != nullptr);
+            REQUIRE(fm.error().ok());
+            REQUIRE(newObj->getLayerCount() == 2);
+            REQUIRE(newObj->getLayer(0)->type() == 4);
+            REQUIRE(newObj->getLayer(0)->id() == 5);
+            REQUIRE(newObj->getLayer(0)->name() == "GoodLayer");
+            REQUIRE(newObj->getLayer(0)->getVisibility() == 1);
+            REQUIRE(newObj->getLayer(0)->getKeyFrameAt(1) == nullptr);
+
+            delete newObj;
+        }
+    }
+}
