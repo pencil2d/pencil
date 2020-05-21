@@ -46,6 +46,7 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "camera.h"
 
+#include "movieimporter.h"
 #include "movieexporter.h"
 #include "filedialogex.h"
 #include "exportmoviedialog.h"
@@ -54,6 +55,7 @@ GNU General Public License for more details.
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
 #include "layeropacitydialog.h"
+#include "errordialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -62,6 +64,102 @@ ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
 }
 
 ActionCommands::~ActionCommands() {}
+
+Status ActionCommands::importMovieVideo()
+{
+    FileDialog fileDialog(mParent);
+    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    if (filePath.isEmpty())
+    {
+        return Status::FAIL;
+    }
+
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progressDialog(tr("Importing movie..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progressDialog);
+    progressDialog.setWindowModality(Qt::WindowModal);
+    progressDialog.setMinimumWidth(250);
+    progressDialog.show();
+
+    QMessageBox information(mParent);
+    information.setIcon(QMessageBox::Warning);
+    information.setText(tr("You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?"));
+    information.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    information.setDefaultButton(QMessageBox::Yes);
+
+    MovieImporter importer(this);
+    importer.setCore(mEditor);
+
+    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
+
+    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::MOVIE, [&progressDialog](int prog) {
+        progressDialog.setValue(prog);
+        QApplication::processEvents();
+    }, [&progressDialog](QString progMessage) {
+        progressDialog.setLabelText(progMessage);
+    }, [&information]() {
+
+        int ret = information.exec();
+        return ret == QMessageBox::Yes;
+    });
+
+    if (!st.ok() && st != Status::CANCELED)
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
+    }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
+
+    progressDialog.setValue(100);
+    progressDialog.close();
+
+    return Status::OK;
+}
+
+Status ActionCommands::importMovieAudio()
+{
+    FileDialog fileDialog(mParent);
+    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    if (filePath.isEmpty())
+    {
+        return Status::FAIL;
+    }
+
+    // Show a progress dialog, as this can take a while if you have lots of images.
+    QProgressDialog progressDialog(tr("Importing movie audio..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progressDialog);
+    progressDialog.setWindowModality(Qt::WindowModal);
+    progressDialog.show();
+
+    MovieImporter importer(this);
+    importer.setCore(mEditor);
+
+    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
+
+    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
+        progressDialog.setValue(prog);
+        QApplication::processEvents();
+    }, [](QString progressMessage) {
+        Q_UNUSED(progressMessage)
+        // Not neeeded
+    }, []() {
+        return true;
+    });
+
+    if (!st.ok() && st != Status::CANCELED)
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
+    }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
+
+    progressDialog.setValue(100);
+    progressDialog.close();
+
+    return Status::OK;
+}
 
 Status ActionCommands::importSound()
 {
@@ -122,13 +220,52 @@ Status ActionCommands::importSound()
         return Status::SAFE;
     }
 
-    Status st = mEditor->sound()->loadSound(key, strSoundFile);
+    Status st = Status::FAIL;
+
+    if (strSoundFile.endsWith(".wav"))
+    {
+        st = mEditor->sound()->loadSound(key, strSoundFile);
+    }
+    else
+    {
+        st = convertSoundToWav(strSoundFile);
+    }
 
     if (!st.ok())
     {
         layer->removeKeyFrame(currentFrame);
     }
 
+    return st;
+}
+
+Status ActionCommands::convertSoundToWav(const QString& filePath)
+{
+    QProgressDialog progressDialog(tr("Importing sound..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progressDialog);
+    progressDialog.setWindowModality(Qt::WindowModal);
+    progressDialog.show();
+
+    MovieImporter importer(this);
+    importer.setCore(mEditor);
+
+    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
+        progressDialog.setValue(prog);
+        QApplication::processEvents();
+    }, [](QString progressMessage) {
+        Q_UNUSED(progressMessage)
+        // Not needed
+    }, []() {
+        return true;
+    });
+
+    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
+
+    if (!st.ok() && st != Status::CANCELED)
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
+    }
     return st;
 }
 
@@ -236,27 +373,41 @@ Status ActionCommands::exportMovie(bool isGif)
         }
     );
 
-    if (st.ok() && QFile::exists(strMoviePath))
+    if (st.ok())
     {
-        if (isGif) {
-            auto btn = QMessageBox::question(mParent, "Pencil2D",
-                                             tr("Finished. Open file location?"));
+        if (QFile::exists(strMoviePath))
+        {
+            if (isGif) {
+                auto btn = QMessageBox::question(mParent, "Pencil2D",
+                                                 tr("Finished. Open file location?"));
 
+                if (btn == QMessageBox::Yes)
+                {
+                    QString path = dialog->getAbsolutePath();
+                    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+                }
+                return Status::OK;
+            }
+            auto btn = QMessageBox::question(mParent, "Pencil2D",
+                                             tr("Finished. Open movie now?", "When movie export done."));
             if (btn == QMessageBox::Yes)
             {
-                QString path = dialog->getAbsolutePath();
-                QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+                QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
             }
-            return Status::OK;
         }
-        auto btn = QMessageBox::question(mParent, "Pencil2D",
-                                         tr("Finished. Open movie now?", "When movie export done."));
-        if (btn == QMessageBox::Yes)
+        else
         {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
+            ErrorDialog errorDialog(tr("Unknown export error"), tr("The export did not produce any errors, however we can't find the output file. Your export may not have completed successfully."), QString(), mParent);
+            errorDialog.exec();
         }
     }
-    return Status::OK;
+    else if(st != Status::CANCELED)
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
+    }
+
+    return st;
 }
 
 Status ActionCommands::exportImageSequence()
@@ -759,6 +910,16 @@ void ActionCommands::checkForUpdates()
     CheckUpdatesDialog dialog;
     dialog.startChecking();
     dialog.exec();
+}
+
+// This action is a temporary measure until we have an automated recover mechanism in place
+void ActionCommands::openTemporaryDirectory()
+{
+    int ret = QMessageBox::warning(mParent, tr("Warning"), tr("The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing."), QMessageBox::Cancel, QMessageBox::Ok);
+    if (ret == QMessageBox::Ok)
+    {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::temp().filePath("Pencil2D")));
+    }
 }
 
 void ActionCommands::about()

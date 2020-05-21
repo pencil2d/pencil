@@ -36,6 +36,8 @@ public:
     void setCore(Editor* e) { mEditor = e; }
 
     // file 
+    Status importMovieVideo();
+    Status importMovieAudio();
     Status importSound();
     Status exportMovie(bool isGif = false);
     Status exportImageSequence();
@@ -88,9 +90,13 @@ public:
     void discord();
     void reportbug();
     void checkForUpdates();
+    void openTemporaryDirectory();
     void about();
 
 private:
+
+    Status convertSoundToWav(const QString& filePath);
+
     Editor* mEditor = nullptr;
     QWidget* mParent = nullptr;
 };

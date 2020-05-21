@@ -361,6 +361,8 @@ TimelinePage::TimelinePage()
 {
     ui->setupUi(this);
 
+    ui->timelineLength->setMaximum(MaxFramesBound);
+
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     auto sliderChanged = static_cast<void(QSlider::*)(int)>(&QSlider::valueChanged);
     auto comboChanged = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);

@@ -1063,7 +1063,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="96"/>
         <source>Catalan </source>
-        <translation type="unfinished"/>
+        <translation>加泰隆語</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="100"/>
@@ -1103,7 +1103,7 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Kabyle</source>
-        <translation type="unfinished"/>
+        <translation>卡拜爾語</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
@@ -2166,7 +2166,7 @@
         <location filename="../core_lib/src/util/pencildef.h" line="29"/>
         <location filename="../core_lib/src/util/pencildef.h" line="32"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</source>
-        <translation type="unfinished"/>
+        <translation>圖片 (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
@@ -2201,12 +2201,12 @@
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="29"/>
         <source>All Pencil Files PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</source>
-        <translation type="unfinished"/>
+        <translation>所有的 Pencil2D 檔案格式 (*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</source>
-        <translation type="unfinished"/>
+        <translation>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="284"/>
@@ -3101,7 +3101,7 @@
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="462"/>
         <source>Deep Blue</source>
-        <translation type="unfinished"/>
+        <translation>深綠</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="463"/>
@@ -4070,7 +4070,7 @@
     <message>
         <location filename="../app/ui/timelinepage.ui" line="116"/>
         <source>Duplicate the previous key-frame</source>
-        <translation type="unfinished"/>
+        <translation>複製前一個畫格</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="123"/>
@@ -4316,7 +4316,7 @@
     <message>
         <location filename="../app/ui/tooloptions.ui" line="105"/>
         <source>Fill Contour</source>
-        <translation type="unfinished"/>
+        <translation>填滿外框</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
