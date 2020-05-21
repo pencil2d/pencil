@@ -172,7 +172,7 @@ void ColorWheel::mouseReleaseEvent(QMouseEvent *)
 void ColorWheel::resizeEvent(QResizeEvent* event)
 {
     mWheelPixmap = QPixmap(event->size());
-    mWheelPixmap.fill(palette().background().color());
+    mWheelPixmap.fill(palette().window().color());
     drawWheelImage(event->size());
     drawSquareImage(mCurrentColor.hue());
 

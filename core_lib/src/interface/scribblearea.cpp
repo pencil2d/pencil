@@ -104,8 +104,6 @@ bool ScribbleArea::init()
     int nLength = mEditor->layers()->animationLength();
     mPixmapCacheKeys.resize(static_cast<unsigned>(std::max(nLength, 240)));
 
-    mNeedUpdateAll = false;
-
     return true;
 }
 
@@ -210,7 +208,6 @@ void ScribbleArea::updateAllFrames()
     std::fill(mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key());
 
     update();
-    mNeedUpdateAll = false;
 }
 
 void ScribbleArea::updateAllVectorLayersAtCurrentFrame()
@@ -244,7 +241,6 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
 
 void ScribbleArea::setAllDirty()
 {
-    mNeedUpdateAll = true;
     mCanvasPainter.resetLayerCache();
 }
 
@@ -1497,12 +1493,14 @@ void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
 void ScribbleArea::increaseLayerVisibilityIndex()
 {
     ++mLayerVisibility;
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
     updateAllFrames();
 }
 
 void ScribbleArea::decreaseLayerVisibilityIndex()
 {
     --mLayerVisibility;
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
     updateAllFrames();
 }
 

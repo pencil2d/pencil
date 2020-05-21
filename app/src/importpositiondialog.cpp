@@ -17,7 +17,7 @@ ImportPositionDialog::ImportPositionDialog(QWidget *parent) :
     ui->cbImagePosition->addItem(tr("Center of camera, current frame"));
     ui->cbImagePosition->addItem(tr("Center of camera, follow camera"));
 
-    connect(ui->cbImagePosition, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ImportPositionDialog::didChangeComboBoxIndex);
+    connect(ui->cbImagePosition, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ImportPositionDialog::didChangeComboBoxIndex);
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ImportPositionDialog::changeImportView);
 
     QSettings settings(PENCIL2D, PENCIL2D);

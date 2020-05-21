@@ -69,6 +69,7 @@ Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
     clearUndoStack();
+    clearTemporary();
 }
 
 bool Editor::init()
@@ -117,6 +118,11 @@ int Editor::currentFrame()
 int Editor::fps()
 {
     return mPlaybackManager->fps();
+}
+
+void Editor::setFps(int fps)
+{
+    mPreferenceManager->set(SETTING::FPS, fps);
 }
 
 void Editor::makeConnections()
@@ -683,6 +689,18 @@ void Editor::toogleOnionSkinType()
     mPreferenceManager->set(SETTING::ONION_TYPE, newState);
 }
 
+void Editor::addTemporaryDir(QTemporaryDir* const dir)
+{
+    mTemporaryDirs.append(dir);
+}
+
+void Editor::clearTemporary()
+{
+    while(!mTemporaryDirs.isEmpty()) {
+        mTemporaryDirs.takeFirst()->remove();
+    }
+}
+
 Status Editor::setObject(Object* newObject)
 {
     if (newObject == nullptr)
@@ -720,8 +738,8 @@ Status Editor::setObject(Object* newObject)
 
 void Editor::updateObject()
 {
-    scrubTo(mObject->data()->getCurrentFrame());
     setCurrentLayerIndex(mObject->data()->getCurrentLayer());
+    scrubTo(mObject->data()->getCurrentFrame());
 
     mAutosaveCounter = 0;
     mAutosaveNeverAskAgain = false;
@@ -1040,14 +1058,22 @@ void Editor::scrubTo(int frame)
 
 void Editor::scrubForward()
 {
-    scrubTo(currentFrame() + 1);
+    int nextFrame = mFrame + 1;
+    if (!playback()->isPlaying()) {
+        playback()->playScrub(nextFrame);
+    }
+    scrubTo(nextFrame);
 }
 
 void Editor::scrubBackward()
 {
     if (currentFrame() > 1)
     {
-        scrubTo(currentFrame() - 1);
+        int previousFrame = mFrame - 1;
+        if (!playback()->isPlaying()) {
+            playback()->playScrub(previousFrame);
+        }
+        scrubTo(previousFrame);
     }
 }
 

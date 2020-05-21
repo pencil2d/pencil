@@ -96,7 +96,6 @@ public:
     void updateAllVectorLayersAt(int frameNumber);
 
     void setModified(int layerNumber, int frameNumber);
-    bool shouldUpdateAll() const { return mNeedUpdateAll; }
     void setAllDirty();
 
     void flipSelection(bool flipVertical);
@@ -217,8 +216,6 @@ private:
     qreal mCurveSmoothingLevel = 0.0;
     bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
-
-    bool mNeedUpdateAll = false;
 
 private:
     bool mKeyboardInUse = false;

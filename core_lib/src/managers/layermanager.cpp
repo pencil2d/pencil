@@ -170,7 +170,8 @@ QString LayerManager::nameSuggestLayer(const QString& name)
     int newIndex = 2;
     QString newName = name;
     do {
-        newName = name + " " + QString::number(newIndex++);
+        newName = tr("%1 %2", "Layer name template: base name (translated separately) + number")
+            .arg(name).arg(QString::number(newIndex++));
     } while (sLayers.contains(newName));
     return newName;
 }
@@ -183,6 +184,7 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
     layer->setName(name);
 
     Q_EMIT layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
@@ -194,6 +196,7 @@ LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
     layer->setName(name);
 
     Q_EMIT layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
@@ -205,6 +208,7 @@ LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
     layer->setName(name);
 
     Q_EMIT layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
@@ -216,6 +220,7 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
     layer->setName(name);
 
     Q_EMIT layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
