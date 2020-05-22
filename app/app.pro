@@ -173,6 +173,9 @@ unix:!macx {
     zshcompletion.files = data/_pencil2d
     zshcompletion.path = $${PREFIX}/share/zsh/site-functions
 
+    metainfo.files = data/org.pencil2d.Pencil2D.metainfo.xml
+    metainfo.path = $${PREFIX}/share/metainfo
+
     mimepackage.files = data/pencil2d.xml
     mimepackage.path = $${PREFIX}/share/mime/packages
 
@@ -182,7 +185,7 @@ unix:!macx {
     icon.files = data/pencil2d.png
     icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps
 
-    INSTALLS += bashcompletion zshcompletion target mimepackage desktopentry icon
+    INSTALLS += bashcompletion zshcompletion target metainfo mimepackage desktopentry icon
 }
 
 # --- core_lib ---
