@@ -87,7 +87,7 @@ void LayerOpacityDialog::opacitySliderChanged(int value)
 
 void LayerOpacityDialog::opacitySpinboxChanged(double value)
 {
-    ui->chooseOpacitySlider->setValue(value * 5);
+    ui->chooseOpacitySlider->setValue(static_cast<int>(value * 5.0));
     opacityValueChanged();
 }
 
@@ -332,14 +332,14 @@ void LayerOpacityDialog::updateSlider()
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
         BitmapImage* bitmap = layer->getBitmapImageAtFrame(mEditor->currentFrame());
-        ui->chooseOpacitySlider->setValue(500 - (bitmap->getOpacity() * 500));
+        ui->chooseOpacitySlider->setValue(static_cast<int>(500 - (bitmap->getOpacity() * 500)));
         ui->chooseOpacitySpinBox->setValue(ui->chooseOpacitySlider->value() * 0.2);
     }
     else if (mLayerManager->currentLayer()->type() == Layer::VECTOR)
     {
         LayerVector* layer = static_cast<LayerVector*>(mLayerManager->currentLayer());
         VectorImage* vector = layer->getVectorImageAtFrame(mEditor->currentFrame());
-        ui->chooseOpacitySlider->setValue(500 - (vector->getOpacity() * 500));
+        ui->chooseOpacitySlider->setValue(static_cast<int>(500 - (vector->getOpacity() * 500)));
         ui->chooseOpacitySpinBox->setValue(ui->chooseOpacitySlider->value() * 0.2);
     }
 }
