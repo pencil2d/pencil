@@ -62,9 +62,9 @@ void LayerOpacityDialog::initBitmap()
     BitmapImage* bitmap = layer->getBitmapImageAtFrame(mEditor->currentFrame());
     ui->labLayerInfo->setText(tr("Layer: %1").arg(layer->name()));
     if (layer->keyExists(mEditor->currentFrame()))
-        ui->chooseOpacitySlider->setValue(static_cast<int>(500 - (bitmap->getOpacity() * 500)));
+        ui->chooseOpacitySlider->setValue(static_cast<int>(bitmap->getOpacity() * 500));
     else
-        ui->chooseOpacitySlider->setValue(0.0);
+        ui->chooseOpacitySlider->setValue(500.0);
 }
 
 void LayerOpacityDialog::initVector()
@@ -73,9 +73,9 @@ void LayerOpacityDialog::initVector()
     VectorImage* vector = layer->getVectorImageAtFrame(mEditor->currentFrame());
     ui->labLayerInfo->setText(tr("Layer: %1").arg(layer->name()));
     if (layer->keyExists(mEditor->currentFrame()))
-        ui->chooseOpacitySlider->setValue(static_cast<int>(500 - (vector->getOpacity() * 500)));
+        ui->chooseOpacitySlider->setValue(static_cast<int>(vector->getOpacity() * 500));
     else
-        ui->chooseOpacitySlider->setValue(0.0);
+        ui->chooseOpacitySlider->setValue(500.0);
 }
 
 
@@ -101,7 +101,7 @@ void LayerOpacityDialog::allLayerOpacity()
             if (layer->keyExists(i))
             {
                 BitmapImage* bitmap = layer->getBitmapImageAtFrame(i);
-                bitmap->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+                bitmap->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
             }
         }
     }
@@ -113,7 +113,7 @@ void LayerOpacityDialog::allLayerOpacity()
             if (layer->keyExists(i))
             {
                 VectorImage* vector = layer->getVectorImageAtFrame(i);
-                vector->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+                vector->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
             }
         }
     }
@@ -132,9 +132,9 @@ void LayerOpacityDialog::selectedKeyframesOpacity()
         for (int i = 0; i < selectedKeys.count(); i++)
         {
             BitmapImage* bitmap = layer->getBitmapImageAtFrame(selectedKeys.at(i));
-            bitmap->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+            bitmap->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
         }
-        int newOpacity = 500 - static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
+        int newOpacity = static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
         ui->chooseOpacitySpinBox->setValue(newOpacity * 0.2);
     }
@@ -145,9 +145,9 @@ void LayerOpacityDialog::selectedKeyframesOpacity()
         for (int i = 0; i < selectedKeys.count(); i++)
         {
             VectorImage* vector = layer->getVectorImageAtFrame(selectedKeys.at(i));
-            vector->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+            vector->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
         }
-        int newOpacity = 500 - static_cast<int>(layer->getVectorImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
+        int newOpacity = static_cast<int>(layer->getVectorImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
         ui->chooseOpacitySpinBox->setValue(newOpacity * 0.2);
     }
@@ -175,7 +175,7 @@ void LayerOpacityDialog::fadeInPressed()
             qreal newOpacity = static_cast<qreal>((i + 1) / imageCount) * endOpacity;
             image->setOpacity(newOpacity);
         }
-        int newOpacity = 500 - static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
+        int newOpacity = static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
         ui->chooseOpacitySpinBox->setValue(newOpacity * 0.2);
     }
@@ -196,7 +196,7 @@ void LayerOpacityDialog::fadeInPressed()
             qreal newOpacity = static_cast<qreal>((i + 1) / imageCount) * endOpacity;
             image->setOpacity(newOpacity);
         }
-        int newOpacity = 500 - static_cast<int>(layer->getVectorImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
+        int newOpacity = static_cast<int>(layer->getVectorImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
         ui->chooseOpacitySpinBox->setValue(newOpacity * 0.2);
     }
@@ -224,7 +224,7 @@ void LayerOpacityDialog::fadeOutPressed()
             qreal newOpacity = static_cast<qreal>(startOpacity - (i / imageCount) * startOpacity);
             image->setOpacity(newOpacity);
         }
-        int newOpacity = 500 - static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
+        int newOpacity = static_cast<int>(layer->getBitmapImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
         ui->chooseOpacitySpinBox->setValue(newOpacity * 0.2);
     }
@@ -245,7 +245,7 @@ void LayerOpacityDialog::fadeOutPressed()
             qreal newOpacity = static_cast<qreal>(startOpacity - (i / imageCount) * startOpacity);
             image->setOpacity(newOpacity);
         }
-        int newOpacity = 500 - static_cast<int>(layer->getVectorImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
+        int newOpacity = static_cast<int>(layer->getVectorImageAtFrame(mEditor->currentFrame())->getOpacity() * 500);
         ui->chooseOpacitySlider->setValue(newOpacity);
         ui->chooseOpacitySpinBox->setValue(newOpacity * 0.2);
     }
@@ -332,14 +332,14 @@ void LayerOpacityDialog::updateSlider()
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
         BitmapImage* bitmap = layer->getBitmapImageAtFrame(mEditor->currentFrame());
-        ui->chooseOpacitySlider->setValue(static_cast<int>(500 - (bitmap->getOpacity() * 500)));
+        ui->chooseOpacitySlider->setValue(static_cast<int>(bitmap->getOpacity() * 500));
         ui->chooseOpacitySpinBox->setValue(ui->chooseOpacitySlider->value() * 0.2);
     }
     else if (mLayerManager->currentLayer()->type() == Layer::VECTOR)
     {
         LayerVector* layer = static_cast<LayerVector*>(mLayerManager->currentLayer());
         VectorImage* vector = layer->getVectorImageAtFrame(mEditor->currentFrame());
-        ui->chooseOpacitySlider->setValue(static_cast<int>(500 - (vector->getOpacity() * 500)));
+        ui->chooseOpacitySlider->setValue(static_cast<int>(vector->getOpacity() * 500));
         ui->chooseOpacitySpinBox->setValue(ui->chooseOpacitySlider->value() * 0.2);
     }
 }
@@ -360,14 +360,14 @@ void LayerOpacityDialog::setOpacityCurrentKeyframe()
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
         BitmapImage* bitmap = layer->getBitmapImageAtFrame(mEditor->currentFrame());
-        bitmap->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+        bitmap->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
         mOpacityChanges = true;
     }
     else if (mLayerManager->currentLayer()->type() == Layer::VECTOR)
     {
         LayerVector* layer = static_cast<LayerVector*>(mLayerManager->currentLayer());
         VectorImage* vector = layer->getVectorImageAtFrame(mEditor->currentFrame());
-        vector->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+        vector->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
         mOpacityChanges = true;
     }
     mEditor->updateCurrentFrame();
@@ -384,7 +384,7 @@ void LayerOpacityDialog::setOpacitySelectedKeyframes()
         for (int i = 0; i < frames.count(); i++)
         {
             BitmapImage* bitmap = layer->getBitmapImageAtFrame(frames.at(i));
-            bitmap->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+            bitmap->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
             mOpacityChanges = true;
         }
     }
@@ -394,7 +394,7 @@ void LayerOpacityDialog::setOpacitySelectedKeyframes()
         for (int i = 0; i < frames.count(); i++)
         {
             VectorImage* vector = layer->getVectorImageAtFrame(frames.at(i));
-            vector->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+            vector->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
             mOpacityChanges = true;
         }
     }
@@ -411,7 +411,7 @@ void LayerOpacityDialog::setOpacityLayer()
             if (layer->keyExists(i))
             {
                 BitmapImage* bitmap = layer->getBitmapImageAtFrame(i);
-                bitmap->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+                bitmap->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
                 mOpacityChanges = true;
             }
         }
@@ -424,7 +424,7 @@ void LayerOpacityDialog::setOpacityLayer()
             if (layer->keyExists(i))
             {
                 VectorImage* vector = layer->getVectorImageAtFrame(i);
-                vector->setOpacity(static_cast<qreal>((500 - ui->chooseOpacitySlider->value()) / 500.0));
+                vector->setOpacity(static_cast<qreal>(ui->chooseOpacitySlider->value()) / 500.0);
                 mOpacityChanges = true;
             }
         }
