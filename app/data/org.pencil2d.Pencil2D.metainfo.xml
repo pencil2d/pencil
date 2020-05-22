@@ -5,17 +5,17 @@
   <name>Pencil2D</name>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0</project_license>
-  <summary>2D animation</summary>
+  <summary>2D animation software supporting bitmap and vector graphics</summary>
   <description>
     <p>
       Pencil2D is a 2D animation program that lets you easily create
       hand-drawn graphics using both bitmap and vector graphics.
     </p>
   </description>
-  <url type="homepage">https://www.pencil2d.org</url>
+  <url type="homepage">https://www.pencil2d.org/</url>
   <screenshots>
     <screenshot type="default">
-      <image>https://user-images.githubusercontent.com/4912907/72227774-5a8baf80-356e-11ea-8635-eeca790dd7f3.png</image>
+      <image>https://www.pencil2d.org/images/pencil2d-linux.png</image>
     </screenshot>
   </screenshots>
   <content_rating type="oars-1.1"/>
