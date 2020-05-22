@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <QPixmap>
 #include <QPainter>
+#include <QtMath>
 #include "pointerevent.h"
 
 #include "layer.h"

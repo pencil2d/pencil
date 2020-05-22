@@ -19,6 +19,9 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QList>
+#include <QXmlStreamWriter>
+#include <QDomElement>
+#include <QDebug>
 #include "object.h"
 #include "pencilerror.h"
 
@@ -140,7 +143,7 @@ Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
     return Status::OK;
 }
 
-void BezierCurve::loadDomElement(QDomElement element)
+void BezierCurve::loadDomElement(const QDomElement& element)
 {
     width = element.attribute("width").toDouble();
     variableWidth = (element.attribute("variableWidth") == "1") || (element.attribute("variableWidth") == "true");

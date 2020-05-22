@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
+#include <QColor>
 
 #include "beziercurve.h"
 #include "vectorimage.h"
