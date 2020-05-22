@@ -12,7 +12,7 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt
+CONFIG += qt precompile_header
 
 DESTDIR = ../bin
 
@@ -37,7 +37,10 @@ INCLUDEPATH += \
     ../core_lib/src/managers \
     ../core_lib/src/external
 
+PRECOMPILED_HEADER = src/app-pch.h
+
 HEADERS += \
+    src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/mainwindow2.h \
