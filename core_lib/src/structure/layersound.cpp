@@ -86,7 +86,7 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
     return layerElem;
 }
 
-void LayerSound::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
+void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
     this->loadBaseDomElement(element);
 

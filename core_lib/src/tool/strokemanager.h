@@ -18,16 +18,14 @@ GNU General Public License for more details.
 #ifndef STROKEMANAGER_H
 #define STROKEMANAGER_H
 
+#include <ctime>
 #include <QQueue>
 #include <QPointF>
 #include <QList>
-#include <QPoint>
-#include <time.h>
-#include <QTabletEvent>
 #include <QTimer>
 #include <QElapsedTimer>
 #include "object.h"
-#include "assert.h"
+
 
 class PointerEvent;
 

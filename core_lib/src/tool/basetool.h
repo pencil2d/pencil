@@ -22,11 +22,11 @@ GNU General Public License for more details.
 #include <QString>
 #include <QCursor>
 #include <QPointF>
-#include <QPixmap>
 #include <QHash>
 #include "movemode.h"
 #include "pencildef.h"
 
+class QPixmap;
 class Editor;
 class ScribbleArea;
 class QKeyEvent;

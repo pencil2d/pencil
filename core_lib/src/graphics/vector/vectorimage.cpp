@@ -18,6 +18,10 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QImage>
+#include <QFile>
+#include <QFileInfo>
+#include <QDebug>
+#include <QXmlStreamWriter>
 #include "object.h"
 
 
