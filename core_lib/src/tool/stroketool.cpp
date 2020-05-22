@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "stroketool.h"
 
+#include <QKeyEvent>
 #include "scribblearea.h"
 #include "strokemanager.h"
 #include "viewmanager.h"
