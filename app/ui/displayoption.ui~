@@ -89,7 +89,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/app/icons/display/lines-invisible.svg</normaloff>:/app/icons/display/lines-invisible.svg</iconset>
+        <normaloff>:/app/icons/display/thin-lines.svg</normaloff>:/app/icons/display/thin-lines.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -115,7 +115,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/app/icons/display/lines-outline.svg</normaloff>:/app/icons/display/lines-outline.svg</iconset>
+        <normaloff>:/app/icons/display/out-lines.svg</normaloff>:/app/icons/display/out-lines.svg</iconset>
       </property>
       <property name="iconSize">
        <size>

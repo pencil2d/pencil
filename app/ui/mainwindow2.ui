@@ -600,7 +600,7 @@
   <action name="actionAdd_Frame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/controls/add.svg</normaloff>:/icons/controls/add.svg</iconset>
+     <normaloff>:/icons/controls/frame-add.svg</normaloff>:/icons/controls/frame-add.svg</iconset>
    </property>
    <property name="text">
     <string>Add Frame</string>
@@ -609,7 +609,7 @@
   <action name="actionDuplicate_Frame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/controls/duplicate.svg</normaloff>:/icons/controls/duplicate.svg</iconset>
+     <normaloff>:/icons/controls/frame-duplicate.svg</normaloff>:/icons/controls/frame-duplicate.svg</iconset>
    </property>
    <property name="text">
     <string>Duplicate Frame</string>
@@ -618,7 +618,7 @@
   <action name="actionRemove_Frame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/controls/remove.svg</normaloff>:/icons/controls/remove.svg</iconset>
+     <normaloff>:/icons/controls/frame-remove.svg</normaloff>:/icons/controls/frame-remove.svg</iconset>
    </property>
    <property name="text">
     <string>Remove Frame</string>

@@ -72,12 +72,12 @@ void TimeLine::initUI()
     layerLabel->setIndent(5);
 
     QToolButton* addLayerButton = new QToolButton(this);
-    addLayerButton->setIcon(QIcon(":icons/controls/layer-add.svg"));
+    addLayerButton->setIcon(QIcon(":icons/controls/add.svg"));
     addLayerButton->setToolTip(tr("Add Layer"));
     addLayerButton->setFixedSize(24, 24);
 
     QToolButton* removeLayerButton = new QToolButton(this);
-    removeLayerButton->setIcon(QIcon(":icons/controls/layer-remove.svg"));
+    removeLayerButton->setIcon(QIcon(":icons/controls/remove.svg"));
     removeLayerButton->setToolTip(tr("Remove Layer"));
     removeLayerButton->setFixedSize(24, 24);
 
@@ -118,17 +118,17 @@ void TimeLine::initUI()
     keyLabel->setIndent(5);
 
     QToolButton* addKeyButton = new QToolButton(this);
-    addKeyButton->setIcon(QIcon(":icons/controls/frame-add.svg"));
+    addKeyButton->setIcon(QIcon(":icons/controls/add.svg"));
     addKeyButton->setToolTip(tr("Add Frame"));
     addKeyButton->setFixedSize(24, 24);
 
     QToolButton* removeKeyButton = new QToolButton(this);
-    removeKeyButton->setIcon(QIcon(":icons/controls/frame-remove.svg"));
+    removeKeyButton->setIcon(QIcon(":icons/controls/remove.svg"));
     removeKeyButton->setToolTip(tr("Remove Frame"));
     removeKeyButton->setFixedSize(24, 24);
 
     QToolButton* duplicateKeyButton = new QToolButton(this);
-    duplicateKeyButton->setIcon(QIcon(":icons/controls/frame-duplicate.svg"));
+    duplicateKeyButton->setIcon(QIcon(":icons/controls/duplicate.svg"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
 
