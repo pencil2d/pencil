@@ -303,7 +303,7 @@
   <action name="actionSave_as">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/menubar/save-as.svg</normaloff>:/icons/menubar/save-as.svg</iconset>
+     <normaloff>:/icons/menubar/save-as.png</normaloff>:/icons/menubar/save-as.png</iconset>
    </property>
    <property name="text">
     <string>Save As...</string>
@@ -312,7 +312,7 @@
   <action name="actionExit">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/menubar/exit.svg</normaloff>:/icons/menubar/exit.svg</iconset>
+     <normaloff>:/icons/menubar/exit.png</normaloff>:/icons/menubar/exit.png</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -437,7 +437,7 @@
   <action name="actionClearFrame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/menubar/clear-frame.svg</normaloff>:/icons/menubar/clear-frame.svg</iconset>
+     <normaloff>:/icons/menubar/clear.png</normaloff>:/icons/menubar/clear.png</iconset>
    </property>
    <property name="text">
     <string>Clear Frame</string>
@@ -459,7 +459,7 @@
   <action name="actionZoom_In">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/menubar/magnify.svg</normaloff>:/icons/menubar/magnify.svg</iconset>
+     <normaloff>:/icons/menubar/magnify.png</normaloff>:/icons/menubar/magnify.png</iconset>
    </property>
    <property name="text">
     <string>Zoom In</string>
@@ -468,7 +468,7 @@
   <action name="actionZoom_Out">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/menubar/magnify.svg</normaloff>:/icons/menubar/magnify.svg</iconset>
+     <normaloff>:/icons/menubar/magnify.png</normaloff>:/icons/menubar/magnify.png</iconset>
    </property>
    <property name="text">
     <string>Zoom Out</string>

@@ -72,12 +72,12 @@ void TimeLine::initUI()
     layerLabel->setIndent(5);
 
     QToolButton* addLayerButton = new QToolButton(this);
-    addLayerButton->setIcon(QIcon(":icons/add.png"));
+    addLayerButton->setIcon(QIcon(":icons/controls/add.svg"));
     addLayerButton->setToolTip(tr("Add Layer"));
     addLayerButton->setFixedSize(24, 24);
 
     QToolButton* removeLayerButton = new QToolButton(this);
-    removeLayerButton->setIcon(QIcon(":icons/remove.png"));
+    removeLayerButton->setIcon(QIcon(":icons/controls/remove.svg"));
     removeLayerButton->setToolTip(tr("Remove Layer"));
     removeLayerButton->setFixedSize(24, 24);
 
@@ -91,10 +91,10 @@ void TimeLine::initUI()
     leftToolBarLayout->addWidget(layerButtons);
     leftToolBar->setLayout(leftToolBarLayout);
 
-    QAction* newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);
-    QAction* newVectorLayerAct = new QAction(QIcon(":icons/layer-vector.png"), tr("New Vector Layer"), this);
-    QAction* newSoundLayerAct = new QAction(QIcon(":icons/layer-sound.png"), tr("New Sound Layer"), this);
-    QAction* newCameraLayerAct = new QAction(QIcon(":icons/layer-camera.png"), tr("New Camera Layer"), this);
+    QAction* newBitmapLayerAct = new QAction(QIcon(":icons/timeline/layer-bitmap-2.svg"), tr("New Bitmap Layer"), this);
+    QAction* newVectorLayerAct = new QAction(QIcon(":icons/timeline/layer-vector-2.svg"), tr("New Vector Layer"), this);
+    QAction* newSoundLayerAct = new QAction(QIcon(":icons/timeline/layer-sound-2.svg"), tr("New Sound Layer"), this);
+    QAction* newCameraLayerAct = new QAction(QIcon(":icons/timeline/layer-camera-2.svg"), tr("New Camera Layer"), this);
 
     QMenu* layerMenu = new QMenu(tr("&Layer", "Timeline add-layer menu"), this);
     layerMenu->addAction(newBitmapLayerAct);
@@ -118,17 +118,17 @@ void TimeLine::initUI()
     keyLabel->setIndent(5);
 
     QToolButton* addKeyButton = new QToolButton(this);
-    addKeyButton->setIcon(QIcon(":icons/add.png"));
+    addKeyButton->setIcon(QIcon(":icons/controls/add.svg"));
     addKeyButton->setToolTip(tr("Add Frame"));
     addKeyButton->setFixedSize(24, 24);
 
     QToolButton* removeKeyButton = new QToolButton(this);
-    removeKeyButton->setIcon(QIcon(":icons/remove.png"));
+    removeKeyButton->setIcon(QIcon(":icons/controls/remove.svg"));
     removeKeyButton->setToolTip(tr("Remove Frame"));
     removeKeyButton->setFixedSize(24, 24);
 
     QToolButton* duplicateKeyButton = new QToolButton(this);
-    duplicateKeyButton->setIcon(QIcon(":icons/controls/duplicate.png"));
+    duplicateKeyButton->setIcon(QIcon(":icons/controls/duplicate.svg"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
 

@@ -69,7 +69,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefspencil.png</normaloff>:/icons/prefspencil.png</iconset>
+          <normaloff>:/icons/preferences/preferences-pencil.svg</normaloff>:/icons/preferences/preferences-pencil.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -84,7 +84,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefs-files.png</normaloff>:/icons/prefs-files.png</iconset>
+          <normaloff>:/icons/preferences/preferences-files.svg</normaloff>:/icons/preferences/preferences-files.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -99,7 +99,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefstimeline.png</normaloff>:/icons/prefstimeline.png</iconset>
+          <normaloff>:/icons/preferences/preferences-timelines.svg</normaloff>:/icons/preferences/preferences-timelines.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -114,7 +114,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefs-files.png</normaloff>:/icons/prefs-files.png</iconset>
+          <normaloff>:/icons/preferences/preferences-tools.svg</normaloff>:/icons/preferences/preferences-tools.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -129,7 +129,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefs-shortcuts.png</normaloff>:/icons/prefs-shortcuts.png</iconset>
+          <normaloff>:/icons/preferences/preferences-shortcuts.svg</normaloff>:/icons/preferences/preferences-shortcuts.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>

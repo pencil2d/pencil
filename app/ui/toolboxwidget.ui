@@ -52,7 +52,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/trash_detailed.svg</normaloff>:/icons/new/svg/trash_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/clear-frame.svg</normaloff>:/icons/tools/svg/clear-frame.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -81,7 +81,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/pencil_detailed.svg</normaloff>:/icons/new/svg/pencil_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/pencil.svg</normaloff>:/icons/tools/svg/pencil.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -116,7 +116,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/eraser_detailed.svg</normaloff>:/icons/new/svg/eraser_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/eraser.svg</normaloff>:/icons/tools/svg/eraser.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -148,7 +148,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/selection.svg</normaloff>:/icons/new/svg/selection.svg</iconset>
+        <normaloff>:/icons/tools/svg/selection.svg</normaloff>:/icons/tools/svg/selection.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -180,7 +180,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/arrow.svg</normaloff>:/icons/new/svg/arrow.svg</iconset>
+        <normaloff>:/icons/tools/svg/arrow.svg</normaloff>:/icons/tools/svg/arrow.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -212,7 +212,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/pen_detailed.svg</normaloff>:/icons/new/svg/pen_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/pen.svg</normaloff>:/icons/tools/svg/pen.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -244,7 +244,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/hand_detailed.svg</normaloff>:/icons/new/svg/hand_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/hand.svg</normaloff>:/icons/tools/svg/hand.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -276,7 +276,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/line.svg</normaloff>:/icons/new/svg/line.svg</iconset>
+        <normaloff>:/icons/tools/svg/line.svg</normaloff>:/icons/tools/svg/line.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -308,7 +308,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/bucket_detailed.svg</normaloff>:/icons/new/svg/bucket_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/bucket.svg</normaloff>:/icons/tools/svg/bucket.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -340,7 +340,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/eyedropper_detailed.svg</normaloff>:/icons/new/svg/eyedropper_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/eyedropper.svg</normaloff>:/icons/tools/svg/eyedropper.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -372,7 +372,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/brush_detailed.svg</normaloff>:/icons/new/svg/brush_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/brush.svg</normaloff>:/icons/tools/svg/brush.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -404,7 +404,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/new/svg/smudge_detailed.svg</normaloff>:/icons/new/svg/smudge_detailed.svg</iconset>
+        <normaloff>:/icons/tools/svg/smudge.svg</normaloff>:/icons/tools/svg/smudge.svg</iconset>
       </property>
       <property name="iconSize">
        <size>

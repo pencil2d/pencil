@@ -51,7 +51,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+          <normaloff>:/icons/controls/add.svg</normaloff>:/icons/controls/add.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -80,7 +80,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
+          <normaloff>:/icons/controls/remove.svg</normaloff>:/icons/controls/remove.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -134,7 +134,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/new/svg/color-dialog.svg</normaloff>:/app/icons/new/svg/color-dialog.svg</iconset>
+          <normaloff>:/app/icons/tools/svg/color-dialog.svg</normaloff>:/app/icons/tools/svg/color-dialog.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -179,7 +179,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/new/svg/more_options.svg</normaloff>:/app/icons/new/svg/more_options.svg</iconset>
+          <normaloff>:/app/icons/tools/svg/more-options.svg</normaloff>:/app/icons/tools/svg/more-options.svg</iconset>
         </property>
         <property name="iconSize">
          <size>

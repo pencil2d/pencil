@@ -25,7 +25,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
+        <normaloff>:/app/icons/display/mirror-horizontal.svg</normaloff>:/app/icons/display/mirror-horizontal.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -57,7 +57,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
+        <normaloff>:/app/icons/display/mirror-vertical.svg</normaloff>:/app/icons/display/mirror-vertical.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -89,7 +89,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/app/icons/thinlines5.png</normaloff>:/app/icons/thinlines5.png</iconset>
+        <normaloff>:/app/icons/display/thin-lines.svg</normaloff>:/app/icons/display/thin-lines.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -115,7 +115,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/app/icons/outlines5.png</normaloff>:/app/icons/outlines5.png</iconset>
+        <normaloff>:/app/icons/display/out-lines.svg</normaloff>:/app/icons/display/out-lines.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -141,7 +141,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/overlay_center.png</normaloff>:/icons/overlay_center.png</iconset>
+        <normaloff>:/icons/display/overlay-center.svg</normaloff>:/icons/display/overlay-center.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -167,7 +167,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/overlay_third.png</normaloff>:/icons/overlay_third.png</iconset>
+        <normaloff>:/icons/display/overlay-thirds.svg</normaloff>:/icons/display/overlay-thirds.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -193,7 +193,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/overlay_godenratio.png</normaloff>:/icons/overlay_godenratio.png</iconset>
+        <normaloff>:/icons/display/overlay-golden-ratio.svg</normaloff>:/icons/display/overlay-golden-ratio.svg</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -219,7 +219,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/overlay_safe.png</normaloff>:/icons/overlay_safe.png</iconset>
+        <normaloff>:/icons/display/overlay-safe.svg</normaloff>:/icons/display/overlay-safe.svg</iconset>
       </property>
       <property name="iconSize">
        <size>

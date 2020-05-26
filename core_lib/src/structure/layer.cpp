@@ -441,10 +441,10 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
     painter.drawEllipse(x + 6, y + 4, 9, 9);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    if (type() == BITMAP) painter.drawPixmap(QPoint(20, y + 2), QPixmap(":/icons/layer-bitmap.png"));
-    if (type() == VECTOR) painter.drawPixmap(QPoint(20, y + 2), QPixmap(":/icons/layer-vector.png"));
-    if (type() == SOUND) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-sound.png"));
-    if (type() == CAMERA) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-camera.png"));
+    if (type() == BITMAP) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":/icons/timeline/layer-bitmap-2.svg"));
+    if (type() == VECTOR) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":/icons/timeline/layer-vector-2.svg"));
+    if (type() == SOUND) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":/icons/timeline/layer-sound-2.svg"));
+    if (type() == CAMERA) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":/icons/timeline/layer-camera-2.svg"));
 
     painter.setPen(Qt::black);
     painter.drawText(QPoint(45, y + (2 * height) / 3), mName);
