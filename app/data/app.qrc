@@ -37,6 +37,11 @@
         <file>icons/controls/duplicate.svg</file>
         <file>icons/controls/soundscrub.svg</file>
         <file>icons/controls/soundscrub-disabled.svg</file>
+        <file>icons/controls/frame-remove.svg</file>
+        <file>icons/controls/frame-add.svg</file>
+        <file>icons/controls/frame-duplicate.svg</file>
+        <file>icons/controls/layer-add.svg</file>
+        <file>icons/controls/layer-remove.svg</file>
         
         <file>icons/preferences/preferences-pencil.svg</file>
         <file>icons/preferences/preferences-timelines.svg</file>
@@ -77,8 +82,8 @@
         <file>icons/onion/onion-red.svg</file>
         <file>icons/onion/onion-next.svg</file>
         <file>icons/onion/onion-prev.svg</file>
-        <file>icons/display/thin-lines.svg</file>
-        <file>icons/display/out-lines.svg</file>
+        <file>icons/display/lines-invisible.svg</file>
+        <file>icons/display/lines-outline.svg</file>
         <file>icons/display/mirror-horizontal.svg</file>
         <file>icons/display/mirror-vertical.svg</file>
         <file>icons/dialog-error.svg</file>
