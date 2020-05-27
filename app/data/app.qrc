@@ -19,6 +19,9 @@
         <file>icons/tools/arrow-horizontal.png</file>
         <file>icons/tools/arrow-selectmove.png</file>
         <file>icons/tools/arrow-vertical.png</file>
+        <file>icons/tools/camera.svg</file>
+        <file>icons/tools/shape.svg</file>
+        <file>icons/tools/text.png</file>
         
         <file>icons/timeline/layer-vector-2.svg</file>
         <file>icons/timeline/layer-bitmap-2.svg</file>
