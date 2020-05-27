@@ -134,7 +134,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/tools/svg/color-dialog.svg</normaloff>:/app/icons/tools/svg/color-dialog.svg</iconset>
+          <normaloff>:/app/icons/tools/color-dialog.svg</normaloff>:/app/icons/tools/color-dialog.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -179,7 +179,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/tools/svg/more-options.svg</normaloff>:/app/icons/tools/svg/more-options.svg</iconset>
+          <normaloff>:/app/icons/tools/more-options.svg</normaloff>:/app/icons/tools/more-options.svg</iconset>
         </property>
         <property name="iconSize">
          <size>

@@ -1,13 +1,13 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/brush.png</file>
-        <file>icons/bucketTool.png</file>
-        <file>icons/eyedropper.png</file>
-        <file>icons/liquify.png</file>
-        <file>icons/onion_type.png</file>
-        <file>icons/pen.png</file>
-        <file>icons/pencil2.png</file>
-        <file>icons/smudge.png</file>
+        <file>icons/brush.svg</file>
+        <file>icons/bucket-tool.svg</file>
+        <file>icons/eyedropper.svg</file>
+        <file>icons/liquify.svg</file>
+        <file>icons/onion-type.svg</file>
+        <file>icons/pen.svg</file>
+        <file>icons/pencil.svg</file>
+        <file>icons/smudge.svg</file>
         <file>resources/kb.ini</file>
     </qresource>
 </RCC>

@@ -213,7 +213,7 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
             case MoveMode::MIDDLE:
             {
                 if (type == SELECT) {
-                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/tools/arrow-select-move.svg"));
                 } else {
                     return Qt::ArrowCursor;
                 }
@@ -222,13 +222,13 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
             case MoveMode::TOPLEFT:
             case MoveMode::BOTTOMRIGHT:
             {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/tools/arrow-diagonal-left.svg"));
                 break;
             }
             case MoveMode::TOPRIGHT:
             case MoveMode::BOTTOMLEFT:
             {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/tools/arrow-diagonal-right.svg"));
                 break;
             }
             default:

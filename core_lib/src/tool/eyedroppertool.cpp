@@ -48,7 +48,7 @@ QCursor EyedropperTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/eyedropper.png"), 0, 15);
+        return QCursor(QPixmap(":icons/eyedropper.svg"), 0, 15);
     }
     else
     {
@@ -58,7 +58,7 @@ QCursor EyedropperTool::cursor()
 
 QCursor EyedropperTool::cursor(const QColor colour)
 {
-    QPixmap icon(":icons/eyedropper.png");
+    QPixmap icon(":icons/eyedropper.svg");
 
     QPixmap pixmap(32, 32);
     pixmap.fill(Qt::transparent);

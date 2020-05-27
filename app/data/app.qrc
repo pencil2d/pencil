@@ -1,27 +1,27 @@
 <RCC>
     <qresource prefix="/">
         
-        <file>icons/tools/svg/arrow.svg</file>
-        <file>icons/tools/svg/brush.svg</file>
-        <file>icons/tools/svg/bucket.svg</file>
-        <file>icons/tools/svg/eraser.svg</file>
-        <file>icons/tools/svg/eyedropper.svg</file>
-        <file>icons/tools/svg/hand.svg</file>
-        <file>icons/tools/svg/line.svg</file>
-        <file>icons/tools/svg/pen.svg</file>
-        <file>icons/tools/svg/pencil.svg</file>
-        <file>icons/tools/svg/selection.svg</file>
-        <file>icons/tools/svg/smudge.svg</file>
-        <file>icons/tools/svg/clear-frame.svg</file>
+        <file>icons/tools/arrow.svg</file>
+        <file>icons/tools/brush.svg</file>
+        <file>icons/tools/bucket.svg</file>
+        <file>icons/tools/eraser.svg</file>
+        <file>icons/tools/eyedropper.svg</file>
+        <file>icons/tools/hand.svg</file>
+        <file>icons/tools/line.svg</file>
+        <file>icons/tools/pen.svg</file>
+        <file>icons/tools/pencil.svg</file>
+        <file>icons/tools/selection.svg</file>
+        <file>icons/tools/smudge.svg</file>
+        <file>icons/tools/clear-frame.svg</file>
         <file>icons/tools/checkerboard_smaller</file>
-        <file>icons/tools/arrow-diagonalleft.png</file>
-        <file>icons/tools/arrow-diagonalright.png</file>
-        <file>icons/tools/arrow-horizontal.png</file>
-        <file>icons/tools/arrow-selectmove.png</file>
-        <file>icons/tools/arrow-vertical.png</file>
+        <file>icons/tools/arrow-diagonal-left.svg</file>
+        <file>icons/tools/arrow-diagonal-right.svg</file>
+        <file>icons/tools/arrow-horizontal.svg</file>
+        <file>icons/tools/arrow-select-move.svg</file>
+        <file>icons/tools/arrow-vertical.svg</file>
         <file>icons/tools/camera.svg</file>
         <file>icons/tools/shape.svg</file>
-        <file>icons/tools/text.png</file>
+        <file>icons/tools/text.svg</file>
         
         <file>icons/timeline/layer-vector-2.svg</file>
         <file>icons/timeline/layer-bitmap-2.svg</file>
@@ -91,7 +91,7 @@
         <file>icons/display/mirror-vertical.svg</file>
         <file>icons/dialog-error.svg</file>
         <file>pencil2d_quick_guide.pdf</file>
-        <file>icons/tools/svg/color-dialog.svg</file>
-        <file>icons/tools/svg/more-options.svg</file>
+        <file>icons/tools/color-dialog.svg</file>
+        <file>icons/tools/more-options.svg</file>
     </qresource>
 </RCC>

@@ -130,7 +130,7 @@ QCursor BrushTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/brush.png"), 0, 13);
+        return QCursor(QPixmap(":icons/brush.svg"), 0, 13);
     }
     return Qt::CrossCursor;
 }

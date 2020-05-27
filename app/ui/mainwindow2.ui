@@ -627,7 +627,7 @@
   <action name="actionMove">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/arrow.svg</normaloff>:/icons/tools/svg/arrow.svg</iconset>
+     <normaloff>:/icons/tools/arrow.svg</normaloff>:/icons/tools/arrow.svg</iconset>
    </property>
    <property name="text">
     <string>Move</string>
@@ -645,7 +645,7 @@
   <action name="actionSelect">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/selection.svg</normaloff>:/icons/tools/svg/selection.svg</iconset>
+     <normaloff>:/icons/tools/selection.svg</normaloff>:/icons/tools/selection.svg</iconset>
    </property>
    <property name="text">
     <string>Select</string>
@@ -654,7 +654,7 @@
   <action name="actionBrush">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/brush.svg</normaloff>:/icons/tools/svg/brush.svg</iconset>
+     <normaloff>:/icons/tools/brush.svg</normaloff>:/icons/tools/brush.svg</iconset>
    </property>
    <property name="text">
     <string>Brush</string>
@@ -663,7 +663,7 @@
   <action name="actionPolyline">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/line.svg</normaloff>:/icons/tools/svg/line.svg</iconset>
+     <normaloff>:/icons/tools/line.svg</normaloff>:/icons/tools/line.svg</iconset>
    </property>
    <property name="text">
     <string>Polyline</string>
@@ -672,7 +672,7 @@
   <action name="actionSmudge">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/smudge.svg</normaloff>:/icons/tools/svg/smudge.svg</iconset>
+     <normaloff>:/icons/tools/smudge.svg</normaloff>:/icons/tools/smudge.svg</iconset>
    </property>
    <property name="text">
     <string>Smudge</string>
@@ -681,7 +681,7 @@
   <action name="actionPen">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/pen.svg</normaloff>:/icons/tools/svg/pen.svg</iconset>
+     <normaloff>:/icons/tools/pen.svg</normaloff>:/icons/tools/pen.svg</iconset>
    </property>
    <property name="text">
     <string>Pen</string>
@@ -690,7 +690,7 @@
   <action name="actionHand">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/hand.svg</normaloff>:/icons/tools/svg/hand.svg</iconset>
+     <normaloff>:/icons/tools/hand.svg</normaloff>:/icons/tools/hand.svg</iconset>
    </property>
    <property name="text">
     <string>Hand</string>
@@ -699,7 +699,7 @@
   <action name="actionPencil">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/pencil.svg</normaloff>:/icons/tools/svg/pencil.svg</iconset>
+     <normaloff>:/icons/tools/pencil.svg</normaloff>:/icons/tools/pencil.svg</iconset>
    </property>
    <property name="text">
     <string>Pencil</string>
@@ -708,7 +708,7 @@
   <action name="actionBucket">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/bucket.svg</normaloff>:/icons/tools/svg/bucket.svg</iconset>
+     <normaloff>:/icons/tools/bucket.svg</normaloff>:/icons/tools/bucket.svg</iconset>
    </property>
    <property name="text">
     <string>Bucket</string>
@@ -717,7 +717,7 @@
   <action name="actionEyedropper">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/eyedropper.svg</normaloff>:/icons/tools/svg/eyedropper.svg</iconset>
+     <normaloff>:/icons/tools/eyedropper.svg</normaloff>:/icons/tools/eyedropper.svg</iconset>
    </property>
    <property name="text">
     <string>Eyedropper</string>
@@ -726,7 +726,7 @@
   <action name="actionEraser">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/tools/svg/eraser.svg</normaloff>:/icons/tools/svg/eraser.svg</iconset>
+     <normaloff>:/icons/tools/eraser.svg</normaloff>:/icons/tools/eraser.svg</iconset>
    </property>
    <property name="text">
     <string>Eraser</string>

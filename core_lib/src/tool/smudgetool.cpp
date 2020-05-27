@@ -102,10 +102,10 @@ QCursor SmudgeTool::cursor()
 {
     qDebug() << "smudge tool";
     if (toolMode == 0) { //normal mode
-        return QCursor(QPixmap(":icons/smudge.png"), 0, 16);
+        return QCursor(QPixmap(":icons/smudge.svg"), 0, 16);
     }
     else { // blured mode
-        return QCursor(QPixmap(":icons/liquify.png"), -4, 16);
+        return QCursor(QPixmap(":icons/liquify.svg"), -4, 16);
     }
 }
 

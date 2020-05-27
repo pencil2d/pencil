@@ -65,7 +65,7 @@ QCursor BucketTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        QPixmap pixmap(":icons/bucket-tool.svg");
+        QPixmap pixmap(":icons/bucketTool.png");
         QPainter painter(&pixmap);
         painter.end();
 
