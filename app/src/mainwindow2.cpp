@@ -29,6 +29,8 @@ GNU General Public License for more details.
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QTabletEvent>
+#include <QStandardPaths>
+#include <QDateTime>
 
 // core_lib headers
 #include "pencildef.h"
@@ -396,6 +398,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDiscord, &QAction::triggered, mCommands, &ActionCommands::discord);
     connect(ui->actionCheck_for_Updates, &QAction::triggered, mCommands, &ActionCommands::checkForUpdates);
     connect(ui->actionReport_Bug, &QAction::triggered, mCommands, &ActionCommands::reportbug);
+    connect(ui->actionOpen_Temporary_Directory, &QAction::triggered, mCommands, &ActionCommands::openTemporaryDirectory);
     connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
 
     //--- Menus ---

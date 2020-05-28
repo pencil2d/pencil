@@ -18,12 +18,14 @@ GNU General Public License for more details.
 #define BEZIERAREA_H
 
 
-#include <QtXml>
 #include <QPainterPath>
 
 #include "vertexref.h"
 
 class Status;
+class QXmlStreamWriter;
+class QDomElement;
+
 
 class BezierArea
 {
@@ -32,7 +34,7 @@ public:
     BezierArea(QList<VertexRef> vertexList, int colour);
 
     Status createDomElement(QXmlStreamWriter& xmlStream);
-    void loadDomElement(QDomElement element);
+    void loadDomElement(const QDomElement& element);
 
     VertexRef getVertexRef(int i);
     int getColourNumber() { return mColourNumber; }

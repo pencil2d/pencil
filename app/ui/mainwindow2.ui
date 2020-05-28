@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>831</width>
     <height>600</height>
    </rect>
   </property>
@@ -48,8 +48,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>19</height>
+     <width>831</width>
+     <height>41</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -254,6 +254,7 @@
     <addaction name="separator"/>
     <addaction name="actionCheck_for_Updates"/>
     <addaction name="actionReport_Bug"/>
+    <addaction name="actionOpen_Temporary_Directory"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -1022,7 +1023,7 @@
   <action name="actionImport_MovieAudio">
    <property name="text">
     <string>Movie Audio...</string>
-    </property>
+   </property>
   </action>
   <action name="actionImport_Append_Palette">
    <property name="text">
@@ -1078,6 +1079,11 @@
    </property>
    <property name="toolTip">
     <string>Onion Skins</string>
+   </property>
+  </action>
+  <action name="actionOpen_Temporary_Directory">
+   <property name="text">
+    <string>Open Temporary Directory</string>
    </property>
   </action>
  </widget>

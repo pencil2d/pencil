@@ -372,27 +372,41 @@ Status ActionCommands::exportMovie(bool isGif)
         }
     );
 
-    if (st.ok() && QFile::exists(strMoviePath))
+    if (st.ok())
     {
-        if (isGif) {
-            auto btn = QMessageBox::question(mParent, "Pencil2D",
-                                             tr("Finished. Open file location?"));
+        if (QFile::exists(strMoviePath))
+        {
+            if (isGif) {
+                auto btn = QMessageBox::question(mParent, "Pencil2D",
+                                                 tr("Finished. Open file location?"));
 
+                if (btn == QMessageBox::Yes)
+                {
+                    QString path = dialog->getAbsolutePath();
+                    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+                }
+                return Status::OK;
+            }
+            auto btn = QMessageBox::question(mParent, "Pencil2D",
+                                             tr("Finished. Open movie now?", "When movie export done."));
             if (btn == QMessageBox::Yes)
             {
-                QString path = dialog->getAbsolutePath();
-                QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+                QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
             }
-            return Status::OK;
         }
-        auto btn = QMessageBox::question(mParent, "Pencil2D",
-                                         tr("Finished. Open movie now?", "When movie export done."));
-        if (btn == QMessageBox::Yes)
+        else
         {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(strMoviePath));
+            ErrorDialog errorDialog(tr("Unknown export error"), tr("The export did not produce any errors, however we can't find the output file. Your export may not have completed successfully."), QString(), mParent);
+            errorDialog.exec();
         }
     }
-    return Status::OK;
+    else if(st != Status::CANCELED)
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
+        errorDialog.exec();
+    }
+
+    return st;
 }
 
 Status ActionCommands::exportImageSequence()
@@ -895,6 +909,16 @@ void ActionCommands::checkForUpdates()
     CheckUpdatesDialog dialog;
     dialog.startChecking();
     dialog.exec();
+}
+
+// This action is a temporary measure until we have an automated recover mechanism in place
+void ActionCommands::openTemporaryDirectory()
+{
+    int ret = QMessageBox::warning(mParent, tr("Warning"), tr("The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing."), QMessageBox::Cancel, QMessageBox::Ok);
+    if (ret == QMessageBox::Ok)
+    {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::temp().filePath("Pencil2D")));
+    }
 }
 
 void ActionCommands::about()

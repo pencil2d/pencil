@@ -17,15 +17,15 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 
-#include "pointerevent.h"
 #include <array>
 #include <QtMath>
+#include <QPixmap>
 #include "editor.h"
 #include "viewmanager.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"
-
+#include "pointerevent.h"
 
 // ---- shared static variables ---- ( only one instance for all the tools )
 qreal BaseTool::msOriginalPropertyValue;  // start value (width, feather ..)

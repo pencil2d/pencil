@@ -32,12 +32,12 @@ public:
     enum types { UNDEFINED, BITMAP_MODIF, VECTOR_MODIF, SOUND_MODIF };
 
     QString undoText;
-    bool somethingSelected;
-    qreal rotationAngle;
+    bool somethingSelected = false;
+    qreal rotationAngle = 0.0;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 
     virtual int type() { return UNDEFINED; }
-    virtual void restore(Editor*) { qDebug() << "Wrong"; }
+    virtual void restore(Editor*) { Q_ASSERT(false); }
 };
 
 class BackupBitmapElement : public BackupElement
@@ -46,7 +46,8 @@ class BackupBitmapElement : public BackupElement
 public:
     BackupBitmapElement(BitmapImage* bi) { bitmapImage = bi->copy(); }
 
-    int layer, frame;
+    int layer = 0;
+    int frame = 0;
     BitmapImage bitmapImage;
     int type() { return BackupElement::BITMAP_MODIF; }
     void restore(Editor*);
@@ -57,7 +58,8 @@ class BackupVectorElement : public BackupElement
     Q_OBJECT
 public:
     BackupVectorElement(VectorImage* vi) { vectorImage = *vi; }
-    int layer, frame;
+    int layer = 0;
+    int frame = 0;
     VectorImage vectorImage;
 
     int type() { return BackupElement::VECTOR_MODIF; }
@@ -69,7 +71,8 @@ class BackupSoundElement : public BackupElement
     Q_OBJECT
 public:
     BackupSoundElement(SoundClip* sound) { clip = *sound; }
-    int layer, frame;
+    int layer = 0;
+    int frame = 0;
     SoundClip clip;
     QString fileName;
 

@@ -57,7 +57,7 @@ private:
 
     QStandardItemModel* m_treeModel = nullptr;
     QModelIndex m_currentItemIndex;
-    
+
     Ui::ShortcutsPage* ui = nullptr;
 
     PreferenceManager* mManager = nullptr;

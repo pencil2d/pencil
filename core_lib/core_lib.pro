@@ -9,7 +9,7 @@
 QT += core widgets gui xml xmlpatterns multimedia svg
 
 TEMPLATE = lib
-CONFIG += qt staticlib
+CONFIG += qt staticlib precompile_header
 
 RESOURCES += data/core_lib.qrc
 
@@ -28,8 +28,10 @@ INCLUDEPATH += src \
     src/managers \
     src/external
 
-# Input
+PRECOMPILED_HEADER = src/corelib-pch.h
+
 HEADERS +=  \
+    src/corelib-pch.h \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \

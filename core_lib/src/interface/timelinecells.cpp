@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QPainter>
 
 #include "object.h"
 #include "editor.h"

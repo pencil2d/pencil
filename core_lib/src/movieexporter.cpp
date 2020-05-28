@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include <QStandardPaths>
 #include <QThread>
 #include <QtMath>
+#include <QPainter>
 
 #include "object.h"
 #include "layercamera.h"
@@ -220,7 +221,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     strCmd += QString(" -ss %1").arg((startFrame - 1) / static_cast<double>(fps));
     strCmd += QString(" -to %1").arg(endFrame / static_cast<double>(fps));
     // Output path
-    strCmd += " " + tempAudioPath;
+    strCmd += QString(" \"%1\"").arg(tempAudioPath);
 
     STATUS_CHECK(MovieExporter::executeFFmpeg(strCmd, [&progress, this] (int frame) { progress(frame / static_cast<float>(mDesc.endFrame - mDesc.startFrame)); return !mCanceled; }))
     qDebug() << "audio file: " + tempAudioPath;

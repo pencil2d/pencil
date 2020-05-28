@@ -181,7 +181,7 @@ QPointF StrokeManager::interpolateStart(QPointF firstPoint)
         pressureQueue.clear();
     
         const int sampleSize = 5;
-        assert(sampleSize > 0);
+        Q_ASSERT(sampleSize > 0);
 
         // fill strokeQueue with firstPoint x times
         for (int i = sampleSize; i > 0; i--)
@@ -358,7 +358,7 @@ void StrokeManager::interpolateEnd()
             // TODO: Qt slider.
             int sampleSize = 5;
 
-            assert(sampleSize > 0);
+            Q_ASSERT(sampleSize > 0);
             for (int i = sampleSize; i > 0; i--)
             {
                 interpolatePoll();

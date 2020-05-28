@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #define VECTORIMAGE_H
 
 #include <QTransform>
-#include <QStringList>
 
 #include "bezierarea.h"
 #include "beziercurve.h"
