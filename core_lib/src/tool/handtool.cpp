@@ -46,19 +46,9 @@ void HandTool::loadSettings()
 
 QCursor HandTool::cursor()
 {
-    if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
-    {
-        QPixmap pixmap(":icons/hand-open.svg");
-        QPainter painter(&pixmap);
-        painter.end();
-
-        return QCursor(pixmap, 0, 0);
-    }
-    else
-    {
-        return Qt::CrossCursor;
-    }
+    return mIsHeld ? QCursor(QPixmap(":/icons/hand-closed.svg")) : QCursor(QPixmap(":/icons/hand-open.svg"));
 }
+
 void HandTool::pointerPressEvent(PointerEvent*)
 {
     mLastPixel = getCurrentPixel();
