@@ -8,6 +8,8 @@
         <file>icons/pen.svg</file>
         <file>icons/pencil.svg</file>
         <file>icons/smudge.svg</file>
+        <file>icons/hand-open.svg</file>
+        <file>icons/hand-closed.svg</file>
         <file>resources/kb.ini</file>
     </qresource>
 </RCC>
