@@ -433,6 +433,7 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty())
     {
         mRecentFileMenu->clear();
+        mRecentFileMenu->saveToDisk();
         QMessageBox::information(this, nullptr,
                                  tr("\n\n You have successfully cleared the list"),
                                  QMessageBox::Ok);
@@ -659,8 +660,12 @@ bool MainWindow2::openObject(QString strFilePath)
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, object->filePath());
 
-    mRecentFileMenu->addRecentFile(object->filePath());
-    mRecentFileMenu->saveToDisk();
+    // Add to recent file list, but only if we are
+    if (!object->filePath().isEmpty())
+    {
+        mRecentFileMenu->addRecentFile(object->filePath());
+        mRecentFileMenu->saveToDisk();
+    }
 
     setWindowTitle(object->filePath().prepend("[*]"));
     setWindowModified(false);
