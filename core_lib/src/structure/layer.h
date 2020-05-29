@@ -21,12 +21,13 @@ GNU General Public License for more details.
 #include <functional>
 #include <QObject>
 #include <QString>
-#include <QPainter>
 #include <QDomElement>
 #include "pencilerror.h"
 #include "pencildef.h"
 
 class QMouseEvent;
+class QPainter;
+
 class KeyFrame;
 class Object;
 class TimeLineCells;
@@ -67,10 +68,10 @@ public:
     void setVisible(bool b) { mVisible = b; }
 
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
-    virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
+    virtual void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) = 0;
     QDomElement createBaseDomElement(QDomDocument& doc);
-    void loadBaseDomElement(QDomElement& elem);
+    void loadBaseDomElement(const QDomElement& elem);
 
     // KeyFrame interface
     int getMaxKeyFramePosition() const;

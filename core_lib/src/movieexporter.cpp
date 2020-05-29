@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include <QStandardPaths>
 #include <QThread>
 #include <QtMath>
+#include <QPainter>
 
 #include "object.h"
 #include "layercamera.h"

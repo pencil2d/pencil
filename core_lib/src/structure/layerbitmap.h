@@ -31,7 +31,7 @@ public:
     ~LayerBitmap() override;
 
     QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
+    void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
     Status presave(const QString& sDataFolder) override;
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);

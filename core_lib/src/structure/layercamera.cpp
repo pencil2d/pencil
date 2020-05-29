@@ -283,7 +283,7 @@ QDomElement LayerCamera::createDomElement( QDomDocument& doc )
     return layerElem;
 }
 
-void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
+void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
     Q_UNUSED(dataDirPath);
     Q_UNUSED(progressStep);

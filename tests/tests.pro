@@ -34,6 +34,7 @@ HEADERS += \
 
 SOURCES += \
     src/main.cpp \
+    src/test_colormanager.cpp \
     src/test_layer.cpp \
     src/test_layermanager.cpp \
     src/test_object.cpp \

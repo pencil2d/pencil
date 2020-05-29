@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 #include "canvaspainter.h"
 
+#include <QtMath>
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"

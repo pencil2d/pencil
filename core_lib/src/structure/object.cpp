@@ -21,6 +21,10 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include <QApplication>
 #include <QFile>
+#include <QFileInfo>
+#include <QDir>
+#include <QDebug>
+#include <QDateTime>
 
 #include "layer.h"
 #include "layerbitmap.h"

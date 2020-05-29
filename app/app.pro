@@ -12,7 +12,7 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt
+CONFIG += qt precompile_header
 
 DESTDIR = ../bin
 
@@ -37,7 +37,10 @@ INCLUDEPATH += \
     ../core_lib/src/managers \
     ../core_lib/src/external
 
+PRECOMPILED_HEADER = src/app-pch.h
+
 HEADERS += \
+    src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/mainwindow2.h \
@@ -173,16 +176,19 @@ unix:!macx {
     zshcompletion.files = data/_pencil2d
     zshcompletion.path = $${PREFIX}/share/zsh/site-functions
 
-    mimepackage.files = data/pencil2d.xml
+    metainfo.files = data/org.pencil2d.Pencil2D.metainfo.xml
+    metainfo.path = $${PREFIX}/share/metainfo
+
+    mimepackage.files = data/org.pencil2d.Pencil2D.xml
     mimepackage.path = $${PREFIX}/share/mime/packages
 
-    desktopentry.files = data/pencil2d.desktop
+    desktopentry.files = data/org.pencil2d.Pencil2D.desktop
     desktopentry.path = $${PREFIX}/share/applications
 
-    icon.files = data/pencil2d.png
+    icon.files = data/org.pencil2d.Pencil2D.png
     icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps
 
-    INSTALLS += bashcompletion zshcompletion target mimepackage desktopentry icon
+    INSTALLS += bashcompletion zshcompletion target metainfo mimepackage desktopentry icon
 }
 
 # --- core_lib ---

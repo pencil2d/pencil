@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>org.pencil2d.Pencil2D</id>
+  <launchable type="desktop-id">org.pencil2d.Pencil2D.desktop</launchable>
+  <name>Pencil2D</name>
+  <developer_name>The Pencil2D Team</developer_name>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0</project_license>
+  <summary>2D animation software supporting bitmap and vector graphics</summary>
+  <description>
+    <p>
+      Pencil2D is a 2D animation program that lets you easily create
+      hand-drawn graphics using both bitmap and vector graphics.
+    </p>
+  </description>
+  <url type="homepage">https://www.pencil2d.org/</url>
+  <url type="bugtracker">https://github.com/pencil2d/pencil/issues</url>
+  <url type="faq">https://www.pencil2d.org/doc/faq.html</url>
+  <url type="help">https://www.pencil2d.org/doc/</url>
+  <url type="translate">https://www.transifex.com/pencil2d/pencil2d/</url>
+  <url type="contact">https://www.pencil2d.org/community/</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://www.pencil2d.org/images/pencil2d-linux.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.6.4" date="2019-06-03">
+      <url type="details">https://www.pencil2d.org/2019/05/pencil2d-0.6.4-release.html</url>
+    </release>
+    <release version="0.6.3" date="2019-03-17">
+      <url type="details">https://www.pencil2d.org/2019/03/pencil2d-0.6.3-release.html</url>
+    </release>
+    <release version="0.6.2" date="2018-09-26">
+      <url type="details">https://www.pencil2d.org/2018/09/maintenance-release-0.6.2.html</url>
+    </release>
+    <release version="0.6.1.1" date="2018-04-16" urgency="high"/>
+    <release version="0.6.1" date="2018-04-15">
+      <url type="details">https://www.pencil2d.org/2018/04/maintenance-release-0.6.1.html</url>
+    </release>
+    <release version="0.6.0" date="2017-11-30">
+      <url type="details">https://www.pencil2d.org/2017/12/introducing-pencil2d-0.6.html</url>
+    </release>
+    <release version="0.5.4" date="2013-07-26"/>
+    <release version="0.5.3" date="2013-06-28"/>
+  </releases>
+  <provides>
+    <binary>pencil2d</binary>
+  </provides>
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>console</control>
+  </recommends>
+</component>

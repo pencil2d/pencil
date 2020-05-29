@@ -18,6 +18,8 @@ GNU General Public License for more details.
 
 #include <QDebug>
 #include <QSettings>
+#include <QPainter>
+#include <QDomElement>
 #include "keyframe.h"
 #include "object.h"
 #include "timelinecells.h"
@@ -709,7 +711,7 @@ QDomElement Layer::createBaseDomElement(QDomDocument& doc)
     return layerTag;
 }
 
-void Layer::loadBaseDomElement(QDomElement& elem)
+void Layer::loadBaseDomElement(const QDomElement& elem)
 {
     if (!elem.attribute("id").isNull())
     {

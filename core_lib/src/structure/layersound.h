@@ -30,7 +30,7 @@ public:
     LayerSound( Object* object );
     ~LayerSound();
     QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
+    void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     Status loadSoundClipAtFrame( const QString& sSoundClipName, const QString& filePathString, int frame );
     void updateFrameLengths(int fps);
