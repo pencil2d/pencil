@@ -316,7 +316,6 @@ void MainWindow2::createMenus()
 
     bindActionWithSetting(ui->actionOnionPrev, SETTING::PREV_ONION);
     bindActionWithSetting(ui->actionOnionNext, SETTING::NEXT_ONION);
-    bindActionWithSetting(ui->actionMultiLayerOnionSkin, SETTING::MULTILAYER_ONION);
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
