@@ -371,7 +371,7 @@ void BackupBitmapElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
     auto selectMan = editor->select();
-    selectMan->setSelection(mySelection);
+    selectMan->setSelection(mySelection, true);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
     selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
     selectMan->setRotation(rotationAngle);
@@ -401,7 +401,7 @@ void BackupVectorElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
     auto selectMan = editor->select();
-    selectMan->setSelection(mySelection);
+    selectMan->setSelection(mySelection, false);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
     selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
     selectMan->setRotation(rotationAngle);
@@ -477,7 +477,7 @@ void Editor::undo()
         if (layer->type() == Layer::VECTOR) {
             VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(mFrame);
             vectorImage->calculateSelectionRect();
-            select()->setSelection(vectorImage->getSelectionRect());
+            select()->setSelection(vectorImage->getSelectionRect(), false);
         }
         emit updateBackup();
     }
@@ -592,7 +592,7 @@ void Editor::paste()
             deselectAll();
             VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
-            select()->setSelection(vectorImage->getSelectionRect());
+            select()->setSelection(vectorImage->getSelectionRect(), false);
         }
     }
     mScribbleArea->updateCurrentFrame();
@@ -966,7 +966,7 @@ void Editor::selectAll()
         vectorImage->selectAll();
         rect = vectorImage->getSelectionRect();
     }
-    select()->setSelection(rect);
+    select()->setSelection(rect, false);
     emit updateCurrentFrame();
 }
 

@@ -67,7 +67,7 @@ void SelectTool::beginSelection()
     }
     else
     {
-        selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(), 1, 1));
+        selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     }
     mScribbleArea->update();
 }
@@ -160,17 +160,17 @@ void SelectTool::keepSelection()
     if (mCurrentLayer->type() == Layer::BITMAP) {
         if (!selectMan->myTempTransformedSelectionRect().isValid())
         {
-            selectMan->setSelection(selectMan->myTempTransformedSelectionRect().normalized());
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect().normalized(), true);
         }
         else
         {
-            selectMan->setSelection(selectMan->myTempTransformedSelectionRect());
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), true);
         }
     }
     else if (mCurrentLayer->type() == Layer::VECTOR)
     {
         VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-        selectMan->setSelection(vectorImage->getSelectionRect());
+        selectMan->setSelection(vectorImage->getSelectionRect(), false);
     }
 }
 

@@ -1082,7 +1082,12 @@ void ScribbleArea::paintSelectionVisuals()
     if (selectMan->currentSelectionPolygonF().count() < 4) { return; }
 
     QPolygonF lastSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->lastSelectionPolygonF());
-    QPolygonF currentSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->currentSelectionPolygonF());
+    QPolygonF currentSelectionPolygon = selectMan->currentSelectionPolygonF();
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        currentSelectionPolygon = currentSelectionPolygon.toPolygon();
+    }
+    currentSelectionPolygon = editor()->view()->mapPolygonToScreen(currentSelectionPolygon);
 
     TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
     mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
@@ -1348,7 +1353,7 @@ void ScribbleArea::applySelectionChanges()
         const QRectF& normalizedRect = selectMan->myTempTransformedSelectionRect().normalized();
         selectMan->setTempTransformedSelectionRect(normalizedRect);
     }
-    selectMan->setSelection(selectMan->myTempTransformedSelectionRect());
+    selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), false);
     paintTransformedSelection();
 
     // Calculate the new transformation based on the new selection
@@ -1411,7 +1416,7 @@ void ScribbleArea::cancelTransformedSelection()
             vectorImage->setSelectionTransformation(QTransform());
         }
 
-        mEditor->select()->setSelection(selectMan->mySelectionRect());
+        mEditor->select()->setSelection(selectMan->mySelectionRect(), false);
 
         selectMan->resetSelectionProperties();
 
