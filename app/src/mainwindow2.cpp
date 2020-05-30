@@ -133,7 +133,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
 
-    showPresetDialog();
+    tryLoadPreset();
 }
 
 MainWindow2::~MainWindow2()
@@ -525,18 +525,7 @@ void MainWindow2::newDocument(bool force)
     }
     else if (maybeSave())
     {
-        if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
-        {
-            showPresetDialog();
-        }
-        else
-        {
-            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
-            newObjectFromPresets(defaultPreset);
-
-            setWindowTitle(PENCIL_WINDOW_TITLE);
-            updateSaveState();
-        }
+        tryLoadPreset();
     }
 }
 
@@ -1078,10 +1067,14 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     }
     mEditor->setObject(object);
     object->setFilePath(QString());
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
+    updateSaveState();
+
     return true;
 }
 
-void  MainWindow2::showPresetDialog()
+void  MainWindow2::tryLoadPreset()
 {
     if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
     {
@@ -1101,6 +1094,11 @@ void  MainWindow2::showPresetDialog()
             }
         });
         presetDialog->open();
+    }
+    else
+    {
+        int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+        newObjectFromPresets(defaultPreset);
     }
 }
 

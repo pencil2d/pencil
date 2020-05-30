@@ -127,7 +127,7 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    void showPresetDialog();
+    void tryLoadPreset();
 
     void openPalette();
     void importPalette();
