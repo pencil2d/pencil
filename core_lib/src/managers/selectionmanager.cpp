@@ -377,5 +377,7 @@ void SelectionManager::resetSelectionProperties()
 
     mSomethingSelected = false;
     vectorSelection.clear();
+
+    emit selectionChanged();
 }
 

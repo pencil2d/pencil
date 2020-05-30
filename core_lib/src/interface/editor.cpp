@@ -967,7 +967,6 @@ void Editor::selectAll()
         rect = vectorImage->getSelectionRect();
     }
     select()->setSelection(rect, false);
-    emit updateCurrentFrame();
 }
 
 void Editor::deselectAll()
@@ -981,7 +980,6 @@ void Editor::deselectAll()
     }
 
     select()->resetSelectionProperties();
-    emit updateCurrentFrame();
 }
 
 void Editor::updateFrame(int frameNumber)

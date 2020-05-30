@@ -70,6 +70,7 @@ public slots:
     void openPegAlignDialog();
     void closePegAlignDialog();
     void currentLayerChanged();
+    void selectionChanged();
 
 public:
     void newDocument(bool force = false);

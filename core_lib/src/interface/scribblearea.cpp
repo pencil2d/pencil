@@ -1419,8 +1419,6 @@ void ScribbleArea::cancelTransformedSelection()
         mEditor->select()->setSelection(selectMan->mySelectionRect(), false);
 
         selectMan->resetSelectionProperties();
-
-        updateCurrentFrame();
     }
 }
 
