@@ -475,8 +475,21 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
             mTabletInUse = false;
         }
     }
+
+#if defined Q_OS_LINUX
+    // Generate mouse events on linux to work around bug where the
+    // widget will not receive mouseEnter/mouseLeave
+    // events and the cursor will not update correctly.
+    // See https://codereview.qt-project.org/c/qt/qtbase/+/255384
+    // Scribblearea should not do anything with the mouse event when mTabletInUse is true.
+    event.ignore();
+#else
     // Always accept so that mouse events are not generated (theoretically)
+    // Unfortunately Windows sometimes generates the events anyway
+    // As long as mTabletInUse is true, mouse events *should* be ignored even when
+    // the are generated
     event.accept();
+#endif
 }
 
 void ScribbleArea::pointerPressEvent(PointerEvent* event)
