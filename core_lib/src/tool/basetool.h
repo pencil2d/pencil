@@ -83,9 +83,9 @@ public:
     virtual bool keyReleaseEvent(QKeyEvent*) { return false; }
 
     // dynamic cursor adjustment
-    virtual void startAdjusting(ToolPropertyType argSettingType, qreal argStep);
+    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep);
     virtual void stopAdjusting();
-    virtual void adjustCursor(Qt::KeyboardModifiers keyMod);
+    virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
 
     virtual void clearToolData() {}
     virtual void resetToDefault() {}
@@ -142,6 +142,8 @@ protected:
 
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
+
+    QMap<Qt::KeyboardModifiers,ToolPropertyType> mQuickSizingProperties;
 
 private:
     StrokeManager* mStrokeManager = nullptr;

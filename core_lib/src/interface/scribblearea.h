@@ -131,8 +131,6 @@ public slots:
     void updateToolCursor();
     void paletteColorChanged(QColor);
 
-    bool isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod);
-
     void showLayerNotVisibleWarning();
 
 

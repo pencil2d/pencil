@@ -517,7 +517,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
     if (isPressed && mQuickSizing)
     {
         //qDebug() << "Start Adjusting" << event->buttons();
-        if (isDoingAssistedToolAdjustment(event->modifiers()))
+        if (currentTool()->startAdjusting(event->modifiers(), 1))
         {
             return;
         }
@@ -684,23 +684,6 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
 
     mEditor->view()->setCanvasSize(size());
     updateAllFrames();
-}
-
-bool ScribbleArea::isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod)
-{
-    if ((keyMod == Qt::ShiftModifier) && (currentTool()->properties.width > -1))
-    {
-        //adjust width if not locked
-        currentTool()->startAdjusting(WIDTH, 1);
-        return true;
-    }
-    if ((keyMod == Qt::ControlModifier) && (currentTool()->properties.feather > -1))
-    {
-        //adjust feather if not locked
-        currentTool()->startAdjusting(FEATHER, 1);
-        return true;
-    }
-    return false;
 }
 
 void ScribbleArea::showLayerNotVisibleWarning()

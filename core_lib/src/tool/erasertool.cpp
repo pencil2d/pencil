@@ -62,6 +62,9 @@ void EraserTool::loadSettings()
     properties.useAA = settings.value("eraserAA", 1).toInt();
 
     if (properties.useFeather) { properties.useAA = -1; }
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
 void EraserTool::resetToDefault()

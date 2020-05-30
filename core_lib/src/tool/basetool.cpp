@@ -287,19 +287,32 @@ QPixmap BaseTool::quickSizeCursor(qreal scalingFac)
     return cursorPixmap;
 }
 
-void BaseTool::startAdjusting(ToolPropertyType propertyType, qreal step)
+bool BaseTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal step)
 {
-    msIsAdjusting = true;
-    mAdjustmentStep = step;
-    if (propertyType == WIDTH)
+    if (mQuickSizingProperties.contains(modifiers))
     {
-        msOriginalPropertyValue = properties.width;
+        switch (mQuickSizingProperties.value(modifiers)) {
+        case WIDTH:
+            msOriginalPropertyValue = properties.width;
+            break;
+        case FEATHER:
+            msOriginalPropertyValue = properties.feather;
+            break;
+        case TOLERANCE:
+            msOriginalPropertyValue = properties.tolerance;
+            break;
+        default:
+            qDebug() << "Unhandled quick sizing property for tool" << typeName();
+            Q_ASSERT(false);
+            return false;
+        }
+
+        msIsAdjusting = true;
+        mAdjustmentStep = step;
+        mScribbleArea->updateCanvasCursor();
+        return true;
     }
-    else if (propertyType == FEATHER)
-    {
-        msOriginalPropertyValue = properties.feather;
-    }
-    mScribbleArea->updateCanvasCursor();
+    return false;
 }
 
 void BaseTool::stopAdjusting()
@@ -310,15 +323,11 @@ void BaseTool::stopAdjusting()
     mEditor->getScribbleArea()->updateCanvasCursor();
 }
 
-void BaseTool::adjustCursor(Qt::KeyboardModifiers keyMod)
+void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
 {
-    ToolPropertyType propertyType;
-    propertyType = (keyMod & Qt::ControlModifier) ? FEATHER : WIDTH;
-
+    if (mQuickSizingProperties.contains(modifiers));
     qreal inc = qPow(msOriginalPropertyValue * 100, 0.5);
     qreal newValue = inc + getCurrentPoint().x();
-    int max = (propertyType == FEATHER) ? 200 : 200;
-    int min = (propertyType == FEATHER) ? 2 : 1;
 
     if (newValue < 0)
     {
@@ -331,27 +340,21 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers keyMod)
         int tempValue = (int)(newValue / mAdjustmentStep); // + 0.5 ?
         newValue = tempValue * mAdjustmentStep;
     }
-    if (newValue < min) // can be optimized for size: min(200,max(0.2,newValueX))
-    {
-        newValue = min;
-    }
-    else if (newValue > max)
-    {
-        newValue = max;
-    }
 
-    switch (propertyType)
+    switch (mQuickSizingProperties.value(modifiers))
     {
-    case FEATHER:
-        if ((type() == BRUSH) || (type() == ERASER) || (this->type() == SMUDGE))
-        {
-            mEditor->tools()->setFeather(newValue);
-        }
-        break;
     case WIDTH:
-        mEditor->tools()->setWidth(newValue);
+        mEditor->tools()->setWidth(qBound(1., newValue, 200.));
+        break;
+    case FEATHER:
+        mEditor->tools()->setFeather(qBound(2., newValue, 200.));
+        break;
+    case TOLERANCE:
+        mEditor->tools()->setTolerance(qBound(0., newValue, 100.));
         break;
     default:
+        qDebug() << "Unhandled quick sizing property for tool" << typeName();
+        Q_ASSERT(false);
         break;
     };
 }
