@@ -34,7 +34,7 @@ public:
     void loadImageAtFrame(QString strFileName, int);
 
     QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
+    void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;

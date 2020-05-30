@@ -17,8 +17,10 @@ GNU General Public License for more details.
 
 
 #include "bezierarea.h"
-
 #include "pencilerror.h"
+
+#include <QXmlStreamWriter>
+#include <QDomElement>
 
 BezierArea::BezierArea()
 {
@@ -85,7 +87,7 @@ Status BezierArea::createDomElement( QXmlStreamWriter& xmlStream )
     return Status::OK;
 }
 
-void BezierArea::loadDomElement(QDomElement element)
+void BezierArea::loadDomElement(const QDomElement& element)
 {
     mColourNumber = element.attribute("colourNumber").toInt();
 
