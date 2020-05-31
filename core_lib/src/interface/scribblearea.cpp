@@ -1357,7 +1357,6 @@ void ScribbleArea::applySelectionChanges()
 
     // apply the transformed selection to make the selection modification absolute.
     applyTransformedSelection();
-
 }
 
 void ScribbleArea::applyTransformedSelection()
@@ -1373,10 +1372,11 @@ void ScribbleArea::applyTransformedSelection()
     auto selectMan = mEditor->select();
     if (selectMan->somethingSelected())
     {
-        if (selectMan->mySelectionRect().isEmpty()) { return; }
+        if (selectMan->mySelectionRect().isEmpty() || selectMan->selectionTransform().isIdentity()) { return; }
 
         if (layer->type() == Layer::BITMAP)
         {
+            handleDrawingOnEmptyFrame();
             BitmapImage* bitmapImage = currentBitmapImage(layer);
             BitmapImage transformedImage = bitmapImage->transformed(selectMan->mySelectionRect().toRect(), selectMan->selectionTransform(), true);
 
@@ -1385,6 +1385,9 @@ void ScribbleArea::applyTransformedSelection()
         }
         else if (layer->type() == Layer::VECTOR)
         {
+            // Unfortunately this doesn't work right currently so vector transforms
+            // will always be applied on the previous keyframe when on an empty frame
+            //handleDrawingOnEmptyFrame();
             VectorImage* vectorImage = currentVectorImage(layer);
             vectorImage->applySelectionTransformation();
 
@@ -1543,6 +1546,8 @@ void ScribbleArea::deleteSelection()
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if (layer == nullptr) { return; }
+
+        handleDrawingOnEmptyFrame();
 
         mEditor->backup(tr("Delete Selection", "Undo Step: clear the selection area."));
 

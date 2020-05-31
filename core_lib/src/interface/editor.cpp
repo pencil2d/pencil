@@ -584,12 +584,14 @@ void Editor::paste()
                 }
             }
             auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
+            mScribbleArea->handleDrawingOnEmptyFrame();
             pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->paste(&tobePasted); // paste the clipboard
         }
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
             backup(tr("Paste"));
             deselectAll();
+            mScribbleArea->handleDrawingOnEmptyFrame();
             VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             select()->setSelection(vectorImage->getSelectionRect(), false);
