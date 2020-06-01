@@ -999,10 +999,10 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                 // ----- paints the edited elements
                 QPen pen2(Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
                 painter.setPen(pen2);
-                QColor colour;
+                QColor color;
                 // ------------ vertices of the edited curves
-                colour = QColor(200, 200, 200);
-                painter.setBrush(colour);
+                color = QColor(200, 200, 200);
+                painter.setBrush(color);
                 VectorSelection vectorSelection = selectMan->vectorSelection;
                 for (int k = 0; k < vectorSelection.curve.size(); k++)
                 {
@@ -1019,8 +1019,8 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                     }
                 }
                 // ------------ selected vertices of the edited curves
-                colour = QColor(100, 100, 255);
-                painter.setBrush(colour);
+                color = QColor(100, 100, 255);
+                painter.setBrush(color);
                 for (int k = 0; k < vectorSelection.vertex.size(); k++)
                 {
                     VertexRef vertexRef = vectorSelection.vertex.at(k);
@@ -1029,8 +1029,8 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                     painter.drawRect(rectangle0);
                 }
                 // ----- paints the closest vertices
-                colour = QColor(255, 0, 0);
-                painter.setBrush(colour);
+                color = QColor(255, 0, 0);
+                painter.setBrush(color);
                 QList<VertexRef> closestVertices = selectMan->closestVertices();
                 if (vectorSelection.curve.size() > 0)
                 {
@@ -1162,15 +1162,15 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     mCanvasPainter.paint();
 }
 
-void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
+void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset)
 {
     if (offset < 0) { offset = 0; }
     if (offset > 100) { offset = 100; }
 
-    int r = colour.red();
-    int g = colour.green();
-    int b = colour.blue();
-    qreal a = colour.alphaF();
+    int r = color.red();
+    int g = color.green();
+    int b = color.blue();
+    qreal a = color.alphaF();
 
     int mainColorAlpha = qRound(a * 255 * opacity);
 
@@ -1182,34 +1182,34 @@ void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal
     gradient.setColorAt(1.0 - (offset / 100.0), QColor(r, g, b, mainColorAlpha - alphaAdded));
 }
 
-void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA)
+void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA)
 {
     QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
-    mBufferImg->drawEllipse(rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
+    mBufferImg->drawEllipse(rectangle, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern),
                             QPainter::CompositionMode_Source, useAA);
 }
 
-void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColour, qreal opacity)
+void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
 {
-    drawBrush(thePoint, brushWidth, fixedBrushFeather, fillColour, opacity, true);
+    drawBrush(thePoint, brushWidth, fixedBrushFeather, fillColor, opacity, true);
 }
 
-void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity, bool usingFeather, bool useAA)
+void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColor, qreal opacity, bool usingFeather, bool useAA)
 {
     QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
     if (usingFeather)
     {
         QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
-        setGaussianGradient(radialGrad, fillColour, opacity, mOffset);
+        setGaussianGradient(radialGrad, fillColor, opacity, mOffset);
 
         mBufferImg->drawEllipse(rectangle, Qt::NoPen, radialGrad,
                                 QPainter::CompositionMode_SourceOver, false);
     }
     else
     {
-        mBufferImg->drawEllipse(rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
+        mBufferImg->drawEllipse(rectangle, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern),
                                 QPainter::CompositionMode_SourceOver, useAA);
     }
 }
@@ -1443,13 +1443,13 @@ void ScribbleArea::displaySelectionProperties()
                 mEditor->tools()->setFeather(vectorImage->curve(selectedCurve).getFeather());
                 mEditor->tools()->setInvisibility(vectorImage->curve(selectedCurve).isInvisible());
                 mEditor->tools()->setPressure(vectorImage->curve(selectedCurve).getVariableWidth());
-                mEditor->color()->setColorNumber(vectorImage->curve(selectedCurve).getColourNumber());
+                mEditor->color()->setColorNumber(vectorImage->curve(selectedCurve).getColorNumber());
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
             if (selectedArea != -1)
             {
-                mEditor->color()->setColorNumber(vectorImage->mArea[selectedArea].mColourNumber);
+                mEditor->color()->setColorNumber(vectorImage->mArea[selectedArea].mColorNumber);
             }
         }
     }

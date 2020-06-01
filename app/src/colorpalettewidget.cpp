@@ -36,7 +36,7 @@ GNU General Public License for more details.
 #include <QAbstractItemModel>
 
 // Project
-#include "colourref.h"
+#include "colorref.h"
 #include "object.h"
 #include "editor.h"
 #include "colorbox.h"
@@ -92,7 +92,7 @@ void ColorPaletteWidget::initUI()
     connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
     connect(ui->colorListWidget->model(), &QAbstractItemModel::rowsMoved, this, &ColorPaletteWidget::onRowsMoved);
 
-    connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
+    connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColorName);
     connect(ui->colorListWidget, &QListWidget::itemChanged, this, &ColorPaletteWidget::onItemChanged);
 
     connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
@@ -131,14 +131,14 @@ void ColorPaletteWidget::showContextMenu(const QPoint& pos)
 void ColorPaletteWidget::addItem()
 {
     QSignalBlocker b(ui->colorListWidget);
-    QColor newColour = mEditor->color()->frontColor();
+    QColor newColor = mEditor->color()->frontColor();
 
     // add in front of selected color
     int colorIndex = ui->colorListWidget->currentRow()+1;
 
-    ColourRef ref(newColour);
+    ColorRef ref(newColor);
 
-    mObject->addColourAtIndex(colorIndex, ref);
+    mObject->addColorAtIndex(colorIndex, ref);
     refreshColorList();
     if (mFitSwatches)
     {
@@ -151,12 +151,12 @@ void ColorPaletteWidget::replaceItem()
     QSignalBlocker b(ui->colorListWidget);
     int index = ui->colorListWidget->currentRow();
 
-    QColor newColour = mEditor->color()->frontColor();
+    QColor newColor = mEditor->color()->frontColor();
 
     if (index >= 0)
     {
-        updateItemColor(index, newColour);
-        emit colorChanged(newColour);
+        updateItemColor(index, newColor);
+        emit colorChanged(newColor);
         ui->colorListWidget->setCurrentRow(index);
     }
 }
@@ -183,7 +183,7 @@ void ColorPaletteWidget::selectColorNumber(int colorNumber)
     ui->colorListWidget->setCurrentRow(colorNumber);
 }
 
-int ColorPaletteWidget::currentColourNumber()
+int ColorPaletteWidget::currentColorNumber()
 {
     if (ui->colorListWidget->currentRow() < 0)
     {
@@ -200,11 +200,11 @@ void ColorPaletteWidget::refreshColorList()
         ui->colorListWidget->clear();
     }
 
-    QPixmap originalColourSwatch(mIconSize);
-    QPainter swatchPainter(&originalColourSwatch);
+    QPixmap originalColorSwatch(mIconSize);
+    QPainter swatchPainter(&originalColorSwatch);
     swatchPainter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
     swatchPainter.end();
-    QPixmap colourSwatch;
+    QPixmap colorSwatch;
     QPen borderShadow(QColor(0, 0, 0, 200), 1, Qt::DotLine, Qt::FlatCap, Qt::MiterJoin);
     QVector<qreal> dashPattern;
     dashPattern << 4 << 4;
@@ -213,27 +213,27 @@ void ColorPaletteWidget::refreshColorList()
     borderHighlight.setColor(QColor(255, 255, 255, 200));
     borderHighlight.setDashOffset(4);
 
-    int colourCount = mObject->getColourCount();
+    int colorCount = mObject->getColorCount();
 
-    for (int i = 0; i < colourCount; i++)
+    for (int i = 0; i < colorCount; i++)
     {
-        const ColourRef colourRef = mObject->getColour(i);
-        QListWidgetItem* colourItem = new QListWidgetItem(ui->colorListWidget);
+        const ColorRef colorRef = mObject->getColor(i);
+        QListWidgetItem* colorItem = new QListWidgetItem(ui->colorListWidget);
 
         if (ui->colorListWidget->viewMode() != QListView::IconMode)
         {
-            colourItem->setText(colourRef.name);
+            colorItem->setText(colorRef.name);
         }
         else
         {
-            colourItem->setToolTip(colourRef.name);
+            colorItem->setToolTip(colorRef.name);
         }
-        colourSwatch = originalColourSwatch;
-        swatchPainter.begin(&colourSwatch);
-        swatchPainter.fillRect(0, 0, mIconSize.width(), mIconSize.height(), colourRef.colour);
+        colorSwatch = originalColorSwatch;
+        swatchPainter.begin(&colorSwatch);
+        swatchPainter.fillRect(0, 0, mIconSize.width(), mIconSize.height(), colorRef.color);
 
         QIcon swatchIcon;
-        swatchIcon.addPixmap(colourSwatch, QIcon::Normal);
+        swatchIcon.addPixmap(colorSwatch, QIcon::Normal);
 
         // Draw selection border
         if(ui->colorListWidget->viewMode() == QListView::IconMode) {
@@ -242,19 +242,19 @@ void ColorPaletteWidget::refreshColorList()
             swatchPainter.setPen(borderShadow);
             swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
         }
-        swatchIcon.addPixmap(colourSwatch, QIcon::Selected);
+        swatchIcon.addPixmap(colorSwatch, QIcon::Selected);
 
-        colourItem->setIcon(swatchIcon);
+        colorItem->setIcon(swatchIcon);
         swatchPainter.end();
-        colourItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
+        colorItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
 
-        ui->colorListWidget->addItem(colourItem);
+        ui->colorListWidget->addItem(colorItem);
     }
     updateGridUI();
     update();
 }
 
-void ColorPaletteWidget::changeColourName(QListWidgetItem* item)
+void ColorPaletteWidget::changeColorName(QListWidgetItem* item)
 {
     Q_ASSERT(item != NULL);
 
@@ -265,14 +265,14 @@ void ColorPaletteWidget::changeColourName(QListWidgetItem* item)
         {
             bool ok;
             QString text = QInputDialog::getText(this,
-                                                 tr("Colour name"),
-                                                 tr("Colour name"),
+                                                 tr("Color name"),
+                                                 tr("Color name"),
                                                  QLineEdit::Normal,
-                                                 mObject->getColour(colorNumber).name,
+                                                 mObject->getColor(colorNumber).name,
                                                  &ok);
             if (ok && !text.isEmpty())
             {
-                mObject->renameColour(colorNumber, text);
+                mObject->renameColor(colorNumber, text);
                 refreshColorList();
             }
         }
@@ -283,7 +283,7 @@ void ColorPaletteWidget::onItemChanged(QListWidgetItem* item)
 {
     int index = ui->colorListWidget->row(item);
     QString newColorName = item->text();
-    mObject->renameColour(index, newColorName);
+    mObject->renameColor(index, newColorName);
 }
 
 void ColorPaletteWidget::onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
@@ -303,13 +303,13 @@ void ColorPaletteWidget::onRowsMoved(const QModelIndex &parent, int start, int e
 
         mObject->movePaletteColor(startIndex, endIndex);
 
-        mObject->addColour(mObject->getColour(startIndex));
-        mObject->moveVectorColor(startIndex, mObject->getColourCount() - 1);
+        mObject->addColor(mObject->getColor(startIndex));
+        mObject->moveVectorColor(startIndex, mObject->getColorCount() - 1);
         for (int i = startIndex; i < endIndex; i++)
         {
             mObject->moveVectorColor(i + 1, i);
         }
-        mObject->moveVectorColor(mObject->getColourCount() - 1, endIndex);
+        mObject->moveVectorColor(mObject->getColorCount() - 1, endIndex);
     }
     else
     {
@@ -320,16 +320,16 @@ void ColorPaletteWidget::onRowsMoved(const QModelIndex &parent, int start, int e
 
         mObject->movePaletteColor(startIndex, endIndex);
 
-        mObject->addColour(mObject->getColour(startIndex));
-        mObject->moveVectorColor(startIndex, mObject->getColourCount() - 1);
+        mObject->addColor(mObject->getColor(startIndex));
+        mObject->moveVectorColor(startIndex, mObject->getColorCount() - 1);
         for (int i = startIndex; i > endIndex; i--)
         {
             mObject->moveVectorColor(i - 1, i);
         }
-        mObject->moveVectorColor(mObject->getColourCount() - 1, endIndex);
+        mObject->moveVectorColor(mObject->getColorCount() - 1, endIndex);
     }
 
-    mObject->removeColour(mObject->getColourCount() - 1);
+    mObject->removeColor(mObject->getColorCount() - 1);
 
     refreshColorList();
 }
@@ -478,7 +478,7 @@ void ColorPaletteWidget::fitSwatchSize()
     int width = ui->colorListWidget->width();
     int hScrollBar = ui->colorListWidget->horizontalScrollBar()->geometry().height() + 6;
     int vScrollBar = ui->colorListWidget->verticalScrollBar()->geometry().width() * 2;
-    int colorCount = editor()->object()->getColourCount();
+    int colorCount = editor()->object()->getColorCount();
     int size;
 
     if (ui->colorListWidget->viewMode() == QListView::ListMode)
@@ -565,26 +565,26 @@ void ColorPaletteWidget::clickAddColorButton()
 {
     QColor prevColor = Qt::white;
 
-    QColor newColour;
+    QColor newColor;
 
     if (mIsColorDialog)
-        newColour = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
+        newColor = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
     else 
-        newColour = mEditor->color()->frontColor();
+        newColor = mEditor->color()->frontColor();
 
-    if (!newColour.isValid())
+    if (!newColor.isValid())
     {
         return; // User canceled operation
     }
 
-    int colorIndex = mObject->getColourCount();
-    ColourRef ref(newColour);
+    int colorIndex = mObject->getColorCount();
+    ColorRef ref(newColor);
 
-    mObject->addColour(ref);
+    mObject->addColor(ref);
     refreshColorList();
 
     editor()->color()->setColorNumber(colorIndex);
-    editor()->color()->setColor(ref.colour);
+    editor()->color()->setColor(ref.color);
     if (mFitSwatches)
     {
         fitSwatchSize();
@@ -600,24 +600,24 @@ void ColorPaletteWidget::clickRemoveColorButton()
         // items are not deleted by qt, it has to be done manually
         // delete should happen before removing the color from from palette
         // as the palette will be one ahead and crash otherwise
-        if (mObject->isColourInUse(index))
+        if (mObject->isColorInUse(index))
         {
             bool accepted = false;
             if (!mMultipleSelected)
                 accepted = showPaletteWarning();
 
-            if ((accepted || mMultipleSelected) && mObject->getColourCount() > 1)
+            if ((accepted || mMultipleSelected) && mObject->getColorCount() > 1)
             {
                 delete item;
-                mObject->removeColour(index);
+                mObject->removeColor(index);
             }
         }
-        else if (mObject->getColourCount() > 1)
+        else if (mObject->getColorCount() > 1)
         {
             delete item;
-            mObject->removeColour(index);
+            mObject->removeColor(index);
         }
-        else if (mObject->getColourCount() == 1)
+        else if (mObject->getColorCount() == 1)
         {
             showPaletteReminder();
         }
@@ -657,8 +657,8 @@ void ColorPaletteWidget::showPaletteReminder()
 
 void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
 {
-    QPixmap colourSwatch(mIconSize);
-    QPainter swatchPainter(&colourSwatch);
+    QPixmap colorSwatch(mIconSize);
+    QPainter swatchPainter(&colorSwatch);
     swatchPainter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
     swatchPainter.fillRect(0, 0, mIconSize.width(), mIconSize.height(), newColor);
 
@@ -671,7 +671,7 @@ void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
     borderHighlight.setDashOffset(4);
 
     QIcon swatchIcon;
-    swatchIcon.addPixmap(colourSwatch, QIcon::Normal);
+    swatchIcon.addPixmap(colorSwatch, QIcon::Normal);
 
     if(ui->colorListWidget->viewMode() == QListView::IconMode)
     {
@@ -681,7 +681,7 @@ void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
         swatchPainter.setPen(borderShadow);
         swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
     }
-    swatchIcon.addPixmap(colourSwatch, QIcon::Selected);
+    swatchIcon.addPixmap(colorSwatch, QIcon::Selected);
 
     ui->colorListWidget->item(itemIndex)->setIcon(swatchIcon);
 

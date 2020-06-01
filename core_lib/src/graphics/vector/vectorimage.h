@@ -81,10 +81,10 @@ public:
 
     void paste(VectorImage&);
 
-    QColor getColour(int i);
-    int  getColourNumber(QPointF point);
-    bool usesColour(int index);
-    void removeColour(int index);
+    QColor getColor(int i);
+    int  getColorNumber(QPointF point);
+    bool usesColor(int index);
+    void removeColor(int index);
     void moveColor(int start, int end);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
@@ -95,16 +95,16 @@ public:
     void setSelectionTransformation(QTransform transform);
     void applySelectionTransformation();
     void applySelectionTransformation(QTransform transform);
-    void applyColourToSelectedCurve(int colourNumber);
-    void applyColourToSelectedArea(int colourNumber);
+    void applyColorToSelectedCurve(int colorNumber);
+    void applyColorToSelectedArea(int colorNumber);
     void applyWidthToSelection(qreal width);
     void applyFeatherToSelection(qreal feather);
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void fillContour(QList<QPointF> contourPath, int colour);
-    void fillSelectedPath(int colour);
-    //    void fill(QPointF point, int colour, float tolerance);
+    void fillContour(QList<QPointF> contourPath, int color);
+    void fillSelectedPath(int color);
+    //    void fill(QPointF point, int color, float tolerance);
     void addArea(BezierArea bezierArea);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);

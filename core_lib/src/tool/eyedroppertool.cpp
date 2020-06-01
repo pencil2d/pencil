@@ -56,7 +56,7 @@ QCursor EyedropperTool::cursor()
     }
 }
 
-QCursor EyedropperTool::cursor(const QColor colour)
+QCursor EyedropperTool::cursor(const QColor color)
 {
     QPixmap icon(":icons/eyedropper.png");
 
@@ -66,7 +66,7 @@ QCursor EyedropperTool::cursor(const QColor colour)
     QPainter painter(&pixmap);
     painter.drawPixmap(0, 0, icon);
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.setBrush(colour);
+    painter.setBrush(color);
     painter.drawRect(16, 16, 15, 15);
     painter.end();
 
@@ -86,17 +86,17 @@ void EyedropperTool::pointerMoveEvent(PointerEvent*)
         BitmapImage* targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
         if (targetImage->contains(getCurrentPoint()))
         {
-            QColor pickedColour;
-            //pickedColour.setRgba(targetImage->pixel(getCurrentPoint().x(), getCurrentPoint().y()));
-            pickedColour.setRgba(targetImage->pixel(getCurrentPoint().x(), getCurrentPoint().y()));
-            int transp = 255 - pickedColour.alpha();
-            pickedColour.setRed(pickedColour.red() + transp);
-            pickedColour.setGreen(pickedColour.green() + transp);
-            pickedColour.setBlue(pickedColour.blue() + transp);
+            QColor pickedColor;
+            //pickedColor.setRgba(targetImage->pixel(getCurrentPoint().x(), getCurrentPoint().y()));
+            pickedColor.setRgba(targetImage->pixel(getCurrentPoint().x(), getCurrentPoint().y()));
+            int transp = 255 - pickedColor.alpha();
+            pickedColor.setRed(pickedColor.red() + transp);
+            pickedColor.setGreen(pickedColor.green() + transp);
+            pickedColor.setBlue(pickedColor.blue() + transp);
 
-            if (pickedColour.alpha() != 0)
+            if (pickedColor.alpha() != 0)
             {
-                mScribbleArea->setCursor(cursor(pickedColour));
+                mScribbleArea->setCursor(cursor(pickedColor));
             }
             else
             {
@@ -111,10 +111,10 @@ void EyedropperTool::pointerMoveEvent(PointerEvent*)
     if (layer->type() == Layer::VECTOR)
     {
         VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-        int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
-        if (colourNumber != -1)
+        int colorNumber = vectorImage->getColorNumber(getCurrentPoint());
+        if (colorNumber != -1)
         {
-            mScribbleArea->setCursor(cursor(mEditor->object()->getColour(colourNumber).colour));
+            mScribbleArea->setCursor(cursor(mEditor->object()->getColor(colorNumber).color));
         }
         else
         {
@@ -142,24 +142,24 @@ void EyedropperTool::updateFrontColor()
     if (layer->type() == Layer::BITMAP)
     {
         BitmapImage* targetImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-        QColor pickedColour;
-        pickedColour.setRgba(targetImage->pixel(getLastPoint().x(), getLastPoint().y()));
-        int transp = 255 - pickedColour.alpha();
-        pickedColour.setRed(pickedColour.red() + transp);
-        pickedColour.setGreen(pickedColour.green() + transp);
-        pickedColour.setBlue(pickedColour.blue() + transp);
-        if (pickedColour.alpha() != 0)
+        QColor pickedColor;
+        pickedColor.setRgba(targetImage->pixel(getLastPoint().x(), getLastPoint().y()));
+        int transp = 255 - pickedColor.alpha();
+        pickedColor.setRed(pickedColor.red() + transp);
+        pickedColor.setGreen(pickedColor.green() + transp);
+        pickedColor.setBlue(pickedColor.blue() + transp);
+        if (pickedColor.alpha() != 0)
         {
-            mEditor->color()->setColor(pickedColour);
+            mEditor->color()->setColor(pickedColor);
         }
     }
     else if (layer->type() == Layer::VECTOR)
     {
         VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-        int colourNumber = vectorImage->getColourNumber(getLastPoint());
-        if (colourNumber != -1)
+        int colorNumber = vectorImage->getColorNumber(getLastPoint());
+        if (colorNumber != -1)
         {
-            mEditor->color()->setColorNumber(colourNumber);
+            mEditor->color()->setColorNumber(colorNumber);
         }
     }
 }

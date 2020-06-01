@@ -493,7 +493,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="268"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="269"/>
-        <source>Colour name</source>
+        <source>Color name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2455,7 +2455,7 @@ Color(s) in strokes will be altered by this action!
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="320"/>
-        <source>Colour %1</source>
+        <source>Color %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4402,7 +4402,7 @@ Check selection, and please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/graphics/vector/colourref.cpp" line="28"/>
+        <location filename="../core_lib/src/graphics/vector/colorref.cpp" line="28"/>
         <source>Green</source>
         <translation type="unfinished"></translation>
     </message>

@@ -430,7 +430,7 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="244"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="245"/>
-        <source>Colour name</source>
+        <source>Color name</source>
         <translation>Nazwa koloru</translation>
     </message>
     <message>

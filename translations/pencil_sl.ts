@@ -429,7 +429,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="244"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="245"/>
-        <source>Colour name</source>
+        <source>Color name</source>
         <translation>Ime barve</translation>
     </message>
     <message>
@@ -4188,7 +4188,7 @@ Uspešno ste izbpraznili seznam</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="100"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
-        <translation>Orodje zamazanje (%1): &lt;br&gt;Uredi večsegmentne črte/krivulje&lt;br&gt;Razmaži bitne točke&lt;br&gt; (%1)+[Alt]: Zgladi</translation>
+        <translation>Orodje zamazanje (%1): &lt;br&gt;Uredi večsegmentne črte/krivulje&lt;br&gt;Razmaži bitne točke&lt;br&gt; (%1)+[Alt]: Zgladi</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="104"/>
