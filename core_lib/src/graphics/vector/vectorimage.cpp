@@ -1080,7 +1080,20 @@ int VectorImage::getColourNumber(QPointF point)
     }
     return result;
 }
-
+/**
+ * @brief VectorImage::getCurvesColor
+ * @param curve: Int of the curve from a QList of curves
+ * @return The color number of the curve
+ */
+int VectorImage::getCurvesColor(int curve)
+{
+    int result = -1;
+    if (curve > -1)
+    {
+        result = mCurves[curve].getColourNumber();
+    }
+    return result;
+}
 /**
  * @brief VectorImage::usesColour
  * @param index
@@ -2222,7 +2235,6 @@ int VectorImage::getLastAreaNumber(QPointF point)
 {
     return getLastAreaNumber(point, mArea.size() - 1);
 }
-
 /**
  * @brief VectorImage::getLastCurveNumber
  * @return int of the last curve number
