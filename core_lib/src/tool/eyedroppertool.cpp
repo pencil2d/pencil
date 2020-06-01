@@ -112,9 +112,16 @@ void EyedropperTool::pointerMoveEvent(PointerEvent*)
     {
         VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
+        qreal myqreal = 10.0;
+        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), myqreal);
         if (colourNumber != -1)
         {
             mScribbleArea->setCursor(cursor(mEditor->object()->getColour(colourNumber).colour));
+        }
+        else if(!closestCurve.isEmpty())
+        {
+            int curveColor = vectorImage->getCurvesColor(closestCurve.first());
+            mScribbleArea->setCursor(cursor(mEditor->object()->getColour(curveColor).colour));
         }
         else
         {
@@ -157,9 +164,16 @@ void EyedropperTool::updateFrontColor()
     {
         VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         int colourNumber = vectorImage->getColourNumber(getLastPoint());
+        qreal myqreal = 10.0;
+        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), myqreal);
         if (colourNumber != -1)
         {
             mEditor->color()->setColorNumber(colourNumber);
+        }
+        else if(!closestCurve.isEmpty())
+        {
+            int curveColor = vectorImage->getCurvesColor(closestCurve.first());
+            mEditor->color()->setColorNumber(curveColor);
         }
     }
 }
