@@ -54,7 +54,7 @@ void BezierArea::setSelected(bool YesOrNo)
 Status BezierArea::createDomElement( QXmlStreamWriter& xmlStream )
 {
     xmlStream.writeStartElement( "area" );
-    xmlStream.writeAttribute( "colorNumber", QString::number( mColorNumber ) );
+    xmlStream.writeAttribute( "colourNumber", QString::number( mColorNumber ) );
     xmlStream.writeAttribute("filled", QString::number( mIsFilled ) );
 
     int errorLocation = -1;
@@ -89,7 +89,7 @@ Status BezierArea::createDomElement( QXmlStreamWriter& xmlStream )
 
 void BezierArea::loadDomElement(const QDomElement& element)
 {
-    mColorNumber = element.attribute("colorNumber").toInt();
+    mColorNumber = element.attribute("colourNumber").toInt();
 
     QDomNode vertexTag = element.firstChild();
     while (!vertexTag.isNull())
