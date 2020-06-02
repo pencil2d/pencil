@@ -85,6 +85,7 @@ public:
     int  getColorNumber(QPointF point);
     bool usesColor(int index);
     void removeColor(int index);
+    int getCurvesColor(int curve);
     void moveColor(int start, int end);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
