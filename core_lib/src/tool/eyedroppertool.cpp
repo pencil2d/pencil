@@ -112,8 +112,8 @@ void EyedropperTool::pointerMoveEvent(PointerEvent*)
     {
         VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
-        qreal myqreal = 10.0;
-        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), myqreal);
+        const qreal toleranceDistance = 10.0;
+        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
         if (colourNumber != -1)
         {
             mScribbleArea->setCursor(cursor(mEditor->object()->getColour(colourNumber).colour));
@@ -134,7 +134,7 @@ void EyedropperTool::pointerReleaseEvent(PointerEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        qDebug() << "was left button or tablet button";
+        //qDebug() << "was left button or tablet button";
         updateFrontColor();
 
         // reset cursor
@@ -164,8 +164,8 @@ void EyedropperTool::updateFrontColor()
     {
         VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         int colourNumber = vectorImage->getColourNumber(getLastPoint());
-        qreal myqreal = 10.0;
-        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), myqreal);
+        const qreal toleranceDistance = 10.0;
+        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
         if (colourNumber != -1)
         {
             mEditor->color()->setColorNumber(colourNumber);
