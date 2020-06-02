@@ -429,7 +429,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="244"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="245"/>
-        <source>Color name</source>
+        <source>Colour name</source>
         <translation>颜色名</translation>
     </message>
     <message>
