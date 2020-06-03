@@ -84,6 +84,7 @@ public:
     QColor getColour(int i);
     int  getColourNumber(QPointF point);
     int getCurvesColor(int curve);
+    bool isCurveInvisible(int curve);
     bool usesColour(int index);
     void removeColour(int index);
     void moveColor(int start, int end);
