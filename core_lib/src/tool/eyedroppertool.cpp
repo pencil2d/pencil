@@ -112,8 +112,8 @@ void EyedropperTool::pointerMoveEvent(PointerEvent*)
     {
         VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
-        qreal myqreal = 10.0;
-        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), myqreal);
+        const qreal toleranceDistance = 10.0;
+        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
         for (int i = closestCurve.length()-1; i >= 0; i--)
         {
             if(vectorImage->isCurveInvisible(closestCurve[i]))
@@ -171,8 +171,8 @@ void EyedropperTool::updateFrontColor()
     {
         VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         int colourNumber = vectorImage->getColourNumber(getLastPoint());
-        qreal myqreal = 10.0;
-        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), myqreal);
+        const qreal toleranceDistance = 10.0;
+        QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
         for (int i = closestCurve.length()-1; i >= 0; i--)
         {
             if(vectorImage->isCurveInvisible(closestCurve[i]))
