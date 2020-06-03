@@ -114,14 +114,21 @@ void EyedropperTool::pointerMoveEvent(PointerEvent*)
         int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
         qreal myqreal = 10.0;
         QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), myqreal);
-        if (colourNumber != -1)
+        for (int i = closestCurve.length()-1; i >= 0; i--)
+        {
+            if(vectorImage->isCurveInvisible(closestCurve[i]))
+            {
+                closestCurve.removeAt(i);
+            }
+        }
+        if(!closestCurve.isEmpty())
+        {
+            int curveColor = vectorImage->getCurvesColor(closestCurve.last());
+            mScribbleArea->setCursor(cursor(mEditor->object()->getColour(curveColor).colour));
+        }
+        else if (colourNumber != -1)
         {
             mScribbleArea->setCursor(cursor(mEditor->object()->getColour(colourNumber).colour));
-        }
-        else if(!closestCurve.isEmpty())
-        {
-            int curveColor = vectorImage->getCurvesColor(closestCurve.first());
-            mScribbleArea->setCursor(cursor(mEditor->object()->getColour(curveColor).colour));
         }
         else
         {
@@ -166,14 +173,21 @@ void EyedropperTool::updateFrontColor()
         int colourNumber = vectorImage->getColourNumber(getLastPoint());
         qreal myqreal = 10.0;
         QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), myqreal);
-        if (colourNumber != -1)
+        for (int i = closestCurve.length()-1; i >= 0; i--)
+        {
+            if(vectorImage->isCurveInvisible(closestCurve[i]))
+            {
+                closestCurve.removeAt(i);
+            }
+        }
+        if(!closestCurve.isEmpty())
+        {
+            int curveColor = vectorImage->getCurvesColor(closestCurve.last());
+            mEditor->color()->setColorNumber(curveColor);
+        }
+        else if (colourNumber != -1)
         {
             mEditor->color()->setColorNumber(colourNumber);
-        }
-        else if(!closestCurve.isEmpty())
-        {
-            int curveColor = vectorImage->getCurvesColor(closestCurve.first());
-            mEditor->color()->setColorNumber(curveColor);
         }
     }
 }
