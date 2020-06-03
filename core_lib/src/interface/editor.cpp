@@ -958,11 +958,15 @@ void Editor::selectAll()
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
         // as the drawing area is not limited
         BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mFrame);
+        if (bitmapImage == nullptr) { return; }
+
         rect = bitmapImage->bounds();
     }
     else if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        if (vectorImage == nullptr) { return; }
+
         vectorImage->selectAll();
         rect = vectorImage->getSelectionRect();
     }
@@ -977,7 +981,10 @@ void Editor::deselectAll()
 
     if (layer->type() == Layer::VECTOR)
     {
-        static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame, 0)->deselectAll();
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        if (vectorImage == nullptr) { return; }
+
+        vectorImage->deselectAll();
     }
 
     select()->resetSelectionProperties();
