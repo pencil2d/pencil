@@ -111,7 +111,7 @@ void EyedropperTool::pointerReleaseEvent(PointerEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        qDebug() << "was left button or tablet button";
+        //qDebug() << "was left button or tablet button";
         updateFrontColor();
 
         // reset cursor
@@ -156,6 +156,16 @@ int EyedropperTool::getVectorColor(LayerVector* layer)
 {
     VectorImage* vectorImage = layer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
     if (vectorImage == nullptr) return -1;
+
+    // Check curves
+    const qreal toleranceDistance = 10.0;
+    QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
+    if(!closestCurve.isEmpty())
+    {
+        return vectorImage->getCurvesColor(closestCurve.first());
+    }
+
+    // Check fills
     int colorNumber = vectorImage->getColourNumber(getLastPoint());
     return colorNumber;
 }
