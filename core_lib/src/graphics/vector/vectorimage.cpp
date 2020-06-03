@@ -1097,7 +1097,7 @@ int VectorImage::getCurvesColor(int curve)
 /**
  * @brief VectorImage::isCurveInvisible
  * @param curve: Int of the curve from a QList of curves
- * @return bool, true = invisible, false = not invisible
+ * @return bool: true = invisible, false = visible
  */
 bool VectorImage::isCurveInvisible(int curve)
 {
