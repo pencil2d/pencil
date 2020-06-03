@@ -162,7 +162,7 @@ int EyedropperTool::getVectorColor(LayerVector* layer)
     QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
     if(!closestCurve.isEmpty())
     {
-        return vectorImage->getCurvesColor(closestCurve.first());
+        return vectorImage->getCurvesColor(closestCurve.last());
     }
 
     // Check fills
