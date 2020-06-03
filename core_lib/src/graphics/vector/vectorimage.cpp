@@ -1089,8 +1089,22 @@ int VectorImage::getCurvesColor(int curve)
 {
     int result = -1;
     if (curve > -1)
-    {
+    {        
         result = mCurves[curve].getColourNumber();
+    }
+    return result;
+}
+/**
+ * @brief VectorImage::isCurveInvisible
+ * @param curve: Int of the curve from a QList of curves
+ * @return bool, true = invisible, false = not invisible
+ */
+bool VectorImage::isCurveInvisible(int curve)
+{
+    int result = false;
+    if (curve > -1)
+    {
+        result = mCurves[curve].isInvisible();
     }
     return result;
 }
