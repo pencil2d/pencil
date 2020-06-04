@@ -35,6 +35,7 @@ public:
     VectorImage();
     VectorImage(const VectorImage&);
     virtual ~VectorImage();
+    VectorImage& operator=(const VectorImage& a);
 
     VectorImage* clone() override;
 

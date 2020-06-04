@@ -1015,11 +1015,6 @@
     <string>Peg bar Alignment</string>
    </property>
   </action>
-  <action name="actionImport_MovieVideo">
-   <property name="text">
-    <string>Movie Video...</string>
-   </property>
-  </action>
   <action name="actionImport_MovieAudio">
    <property name="text">
     <string>Movie Audio...</string>

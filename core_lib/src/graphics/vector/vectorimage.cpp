@@ -42,6 +42,17 @@ VectorImage::~VectorImage()
 {
 }
 
+VectorImage& VectorImage::operator=(const VectorImage& a) {
+    if (this != &a) {
+        deselectAll();
+        mObject = a.mObject;
+        mCurves = a.mCurves;
+        mArea = a.mArea;
+        modification();
+    }
+    return *this;
+}
+
 VectorImage* VectorImage::clone()
 {
     return new VectorImage(*this);
@@ -96,7 +107,7 @@ Status VectorImage::write(QString filePath, QString format)
     debugInfo << "VectorImage::write";
     debugInfo << QString("filePath = ").append(filePath);
     debugInfo << QString("format = ").append(format);
-    
+
     QFile file(filePath);
     bool result = file.open(QIODevice::WriteOnly);
     if (!result)
@@ -599,8 +610,8 @@ void VectorImage::setSelected(int curveNumber, bool YesOrNo)
     if (mCurves.isEmpty()) return;
 
     mCurves[curveNumber].setSelected(YesOrNo);
-    
-    if (YesOrNo) 
+
+    if (YesOrNo)
         mSelectionRect |= mCurves[curveNumber].getBoundingRect();
     modification();
 }
