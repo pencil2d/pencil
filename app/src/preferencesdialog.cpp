@@ -185,50 +185,50 @@ void GeneralPage::updateValues()
 
     if (index >= 0)
     {
-        SignalBlocker b(ui->languageCombo);
+        QSignalBlocker b(ui->languageCombo);
         ui->languageCombo->setCurrentIndex(index);
     }
 
-    SignalBlocker b1(ui->curveSmoothingLevel);
+    QSignalBlocker b1(ui->curveSmoothingLevel);
     ui->curveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
-    SignalBlocker b2(ui->windowOpacityLevel);
+    QSignalBlocker b2(ui->windowOpacityLevel);
     ui->windowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
-    SignalBlocker b3(ui->shadowsBox);
+    QSignalBlocker b3(ui->shadowsBox);
     ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
-    SignalBlocker b4(ui->toolCursorsBox);
+    QSignalBlocker b4(ui->toolCursorsBox);
     ui->toolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
-    SignalBlocker b5(ui->antialiasingBox);
+    QSignalBlocker b5(ui->antialiasingBox);
     ui->antialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
-    SignalBlocker b6(ui->dottedCursorBox);
+    QSignalBlocker b6(ui->dottedCursorBox);
     ui->dottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
-    SignalBlocker b7(ui->gridSizeInputW);
+    QSignalBlocker b7(ui->gridSizeInputW);
     ui->gridSizeInputW->setValue(mManager->getInt(SETTING::GRID_SIZE_W));
-    SignalBlocker b11(ui->gridSizeInputH);
+    QSignalBlocker b11(ui->gridSizeInputH);
     ui->gridSizeInputH->setValue(mManager->getInt(SETTING::GRID_SIZE_H));
-    SignalBlocker b8(ui->gridCheckBox);
+    QSignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
-    SignalBlocker b16(ui->actionSafeCheckBox);
+    QSignalBlocker b16(ui->actionSafeCheckBox);
 
     bool actionSafeOn = mManager->isOn(SETTING::ACTION_SAFE_ON);
     ui->actionSafeCheckBox->setChecked(actionSafeOn);
-    SignalBlocker b14(ui->actionSafeInput);
+    QSignalBlocker b14(ui->actionSafeInput);
     ui->actionSafeInput->setValue(mManager->getInt(SETTING::ACTION_SAFE));
-    SignalBlocker b17(ui->titleSafeCheckBox);
+    QSignalBlocker b17(ui->titleSafeCheckBox);
     bool titleSafeOn = mManager->isOn(SETTING::TITLE_SAFE_ON);
     ui->titleSafeCheckBox->setChecked(titleSafeOn);
-    SignalBlocker b15(ui->titleSafeInput);
+    QSignalBlocker b15(ui->titleSafeInput);
     ui->titleSafeInput->setValue(mManager->getInt(SETTING::TITLE_SAFE));
 
-    SignalBlocker b18(ui->safeHelperTextCheckbox);
+    QSignalBlocker b18(ui->safeHelperTextCheckbox);
     ui->safeHelperTextCheckbox->setChecked(mManager->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON));
 
-    SignalBlocker b9(ui->highResBox);
+    QSignalBlocker b9(ui->highResBox);
     ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
 
-    SignalBlocker b10(ui->backgroundButtons);
+    QSignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
 
-    SignalBlocker b12(ui->framePoolSizeSpin);
+    QSignalBlocker b12(ui->framePoolSizeSpin);
     ui->framePoolSizeSpin->setValue(mManager->getInt(SETTING::FRAME_POOL_SIZE));
 
     int buttonIdx = 1;
@@ -392,17 +392,17 @@ TimelinePage::~TimelinePage()
 
 void TimelinePage::updateValues()
 {
-    SignalBlocker b1(ui->scrubBox);
+    QSignalBlocker b1(ui->scrubBox);
     ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
 
-    SignalBlocker b3(ui->timelineLength);
+    QSignalBlocker b3(ui->timelineLength);
     ui->timelineLength->setValue(mManager->getInt(SETTING::TIMELINE_SIZE));
     if (mManager->getString(SETTING::TIMELINE_SIZE).toInt() <= 0)
         ui->timelineLength->setValue(240);
 
-    SignalBlocker b4(ui->radioButtonAddNewKey);
-    SignalBlocker b5(ui->radioButtonDuplicate);
-    SignalBlocker b6(ui->radioButtonDrawOnPrev);
+    QSignalBlocker b4(ui->radioButtonAddNewKey);
+    QSignalBlocker b5(ui->radioButtonDuplicate);
+    QSignalBlocker b6(ui->radioButtonDrawOnPrev);
     int action = mManager->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
     switch (action)
     {
@@ -472,10 +472,10 @@ void TimelinePage::layerVisibilityThresholdChanged(int value)
     float percentage = static_cast<float>(value/100.0f);
     mManager->set(SETTING::LAYER_VISIBILITY_THRESHOLD, percentage);
 
-    SignalBlocker b8(ui->visibilitySlider);
+    QSignalBlocker b8(ui->visibilitySlider);
     ui->visibilitySlider->setValue(value);
 
-    SignalBlocker b9(ui->visibilitySpinbox);
+    QSignalBlocker b9(ui->visibilitySpinbox);
     ui->visibilitySpinbox->setValue(value);
 }
 
