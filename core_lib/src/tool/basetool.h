@@ -143,7 +143,7 @@ protected:
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
 
-    QMap<Qt::KeyboardModifiers,ToolPropertyType> mQuickSizingProperties;
+    QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
 
 private:
     StrokeManager* mStrokeManager = nullptr;
