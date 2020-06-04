@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QXmlStreamWriter>
 #include <QDomElement>
 #include <QDebug>
+#include <QPainterPath>
 #include "object.h"
 #include "pencilerror.h"
 

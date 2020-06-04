@@ -925,9 +925,10 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
                 mEditor->scrubTo(frameNumber);
                 break;
             }
-            // if the previous keyframe doesn't exist,
-            // fallthrough and create empty keyframe
         }
+        // if the previous keyframe doesn't exist,
+        // an empty keyframe needs to be created, so
+        // fallthrough
         case CREATE_NEW_KEY:
             mEditor->addNewKey();
 
