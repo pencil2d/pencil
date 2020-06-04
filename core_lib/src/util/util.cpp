@@ -47,17 +47,6 @@ QTransform RectMapTransform( QRectF source, QRectF target )
     return matrix;
 }
 
-SignalBlocker::SignalBlocker( QObject* o )
-    : mObject( o ),
-    mBlocked( o && o->blockSignals( true ) )
-{}
-
-SignalBlocker::~SignalBlocker()
-{
-    if ( mObject )
-        mObject->blockSignals( mBlocked );
-}
-
 void clearFocusOnFinished(QAbstractSpinBox *spinBox)
 {
     QObject::connect(spinBox, &QAbstractSpinBox::editingFinished, spinBox, &QAbstractSpinBox::clearFocus);
