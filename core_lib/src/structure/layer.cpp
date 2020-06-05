@@ -18,6 +18,8 @@ GNU General Public License for more details.
 
 #include <QDebug>
 #include <QSettings>
+#include <QPainter>
+#include <QDomElement>
 #include "keyframe.h"
 #include "object.h"
 #include "timelinecells.h"
@@ -394,7 +396,7 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
             painter.setBrush(QColor(60, 60, 60));
         }
         else if (selected)
-        {            
+        {
             painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
         }
 
@@ -724,7 +726,7 @@ QDomElement Layer::createBaseDomElement(QDomDocument& doc)
     return layerTag;
 }
 
-void Layer::loadBaseDomElement(QDomElement& elem)
+void Layer::loadBaseDomElement(const QDomElement& elem)
 {
     if (!elem.attribute("id").isNull())
     {

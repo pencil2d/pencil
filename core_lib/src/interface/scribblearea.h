@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include <memory>
 
 #include <QColor>
-#include <QTransform>
 #include <QPoint>
 #include <QWidget>
 #include <QPixmapCache>
@@ -34,8 +33,6 @@ GNU General Public License for more details.
 #include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
-#include "colourref.h"
-#include "vectorselection.h"
 #include "canvaspainter.h"
 #include "preferencemanager.h"
 #include "strokemanager.h"
@@ -47,6 +44,7 @@ class BaseTool;
 class PointerEvent;
 class BitmapImage;
 class VectorImage;
+
 
 class ScribbleArea : public QWidget
 {
@@ -96,7 +94,6 @@ public:
     void updateAllVectorLayersAt(int frameNumber);
 
     void setModified(int layerNumber, int frameNumber);
-    bool shouldUpdateAll() const { return mNeedUpdateAll; }
     void setAllDirty();
 
     void flipSelection(bool flipVertical);
@@ -214,8 +211,6 @@ private:
     bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
 
-    bool mNeedUpdateAll = false;
-
 private:
     bool mKeyboardInUse = false;
     bool mMouseInUse = false;
@@ -228,10 +223,9 @@ private:
     int mDoubleClickMillis = 0;
     // Microsoft suggests that a double click action should be no more than 500 ms
     const int DOUBLE_CLICK_THRESHOLD = 500;
-    QTimer* mDoubleClickTimer;
+    QTimer* mDoubleClickTimer = nullptr;
 
     QPoint mCursorCenterPos;
-
     QPointF mTransformedCursorPos;
 
     //instant tool (temporal eg. eraser)

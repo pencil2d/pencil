@@ -57,5 +57,7 @@ private:
     bool mBlocked = false;
 };
 
+QString ffprobeLocation();
+QString ffmpegLocation();
 
 #endif // UTIL_H

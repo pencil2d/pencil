@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 #include "canvaspainter.h"
 
+#include <QtMath>
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -44,8 +45,12 @@ void CanvasPainter::setCanvas(QPixmap* canvas)
 
 void CanvasPainter::setViewTransform(const QTransform view, const QTransform viewInverse)
 {
-    mViewTransform = view;
-    mViewInverse = viewInverse;
+    if (mViewTransform != view || mViewInverse != viewInverse) {
+        mViewTransform = view;
+        mViewInverse = viewInverse;
+
+        resetLayerCache();
+    }
 }
 
 void CanvasPainter::setTransformedSelection(QRect selection, QTransform transform)

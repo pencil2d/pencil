@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #define VECTORIMAGE_H
 
 #include <QTransform>
-#include <QStringList>
 
 #include "bezierarea.h"
 #include "beziercurve.h"
@@ -84,6 +83,7 @@ public:
 
     QColor getColour(int i);
     int  getColourNumber(QPointF point);
+    int getCurvesColor(int curve);
     bool usesColour(int index);
     void removeColour(int index);
     void moveColor(int start, int end);

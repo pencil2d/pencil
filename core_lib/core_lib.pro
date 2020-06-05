@@ -9,7 +9,7 @@
 QT += core widgets gui xml xmlpatterns multimedia svg
 
 TEMPLATE = lib
-CONFIG += qt staticlib
+CONFIG += qt staticlib precompile_header
 
 RESOURCES += data/core_lib.qrc
 
@@ -28,8 +28,10 @@ INCLUDEPATH += src \
     src/managers \
     src/external
 
-# Input
+PRECOMPILED_HEADER = src/corelib-pch.h
+
 HEADERS +=  \
+    src/corelib-pch.h \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \
@@ -56,6 +58,7 @@ HEADERS +=  \
     src/managers/viewmanager.h \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
+    src/movieimporter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -84,6 +87,7 @@ HEADERS +=  \
     src/util/blitrect.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
+    src/util/filetype.h \
     src/util/mathutils.h \
     src/util/pencildef.h \
     src/util/pencilerror.h \
@@ -127,6 +131,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/preferencemanager.cpp \
     src/managers/playbackmanager.cpp \
     src/managers/viewmanager.cpp \
+    src/movieimporter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \

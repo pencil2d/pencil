@@ -12,7 +12,7 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt
+CONFIG += qt precompile_header
 
 DESTDIR = ../bin
 
@@ -37,7 +37,10 @@ INCLUDEPATH += \
     ../core_lib/src/managers \
     ../core_lib/src/external
 
+PRECOMPILED_HEADER = src/app-pch.h
+
 HEADERS += \
+    src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/mainwindow2.h \
@@ -167,7 +170,7 @@ win32 {
     RC_FILE = data/pencil2d.rc
 }
 
-linux {
+unix:!macx {
     target.path = $${PREFIX}/bin
 
     bashcompletion.files = data/pencil2d
@@ -176,29 +179,52 @@ linux {
     zshcompletion.files = data/_pencil2d
     zshcompletion.path = $${PREFIX}/share/zsh/site-functions
 
-    mimepackage.files = data/pencil2d.xml
+    metainfo.files = data/org.pencil2d.Pencil2D.metainfo.xml
+    metainfo.path = $${PREFIX}/share/metainfo
+
+    mimepackage.files = data/org.pencil2d.Pencil2D.xml
     mimepackage.path = $${PREFIX}/share/mime/packages
 
-    desktopentry.files = data/pencil2d.desktop
+    desktopentry.files = data/org.pencil2d.Pencil2D.desktop
     desktopentry.path = $${PREFIX}/share/applications
 
-    icon.files = data/pencil2d.png
+    icon.files = data/org.pencil2d.Pencil2D.png
     icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps
 
-    INSTALLS += bashcompletion zshcompletion target mimepackage desktopentry icon
+    INSTALLS += bashcompletion zshcompletion target metainfo mimepackage desktopentry icon
 }
 
-
-
 # --- core_lib ---
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -lcore_lib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core_lib/debug/ -lcore_lib
-else:unix: LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
 
 INCLUDEPATH += $$PWD/../core_lib/src
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/libcore_lib.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/libcore_lib.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/core_lib.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/core_lib.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+CONFIG(debug,debug|release) BUILDTYPE = debug
+CONFIG(release,debug|release) BUILDTYPE = release
+
+win32-msvc*{
+  LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
+}
+
+
+# From 5.14, MinGW windows builds are not build with debug-release flag
+versionAtLeast(QT_VERSION, 5.14) {
+
+    win32-g++{
+      LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+    }
+
+} else {
+
+    win32-g++{
+      LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
+    }
+}
+
+# --- mac os and linux
+unix {
+  LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+}

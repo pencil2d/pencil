@@ -182,7 +182,7 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
     return layerElem;
 }
 
-void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
+void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
     this->loadBaseDomElement(element);
 

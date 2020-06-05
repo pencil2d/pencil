@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define BRUSHTOOL_H
 
 #include "stroketool.h"
+#include <QColor>
 
 
 class BrushTool : public StrokeTool

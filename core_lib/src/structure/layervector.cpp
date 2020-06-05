@@ -17,6 +17,9 @@ GNU General Public License for more details.
 #include "layervector.h"
 
 #include "vectorimage.h"
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 
 
 LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
@@ -144,7 +147,7 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
     return layerElem;
 }
 
-void LayerVector::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
+void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
     this->loadBaseDomElement(element);
 

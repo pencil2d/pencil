@@ -26,32 +26,13 @@ GNU General Public License for more details.
 #include <QStandardPaths>
 #include <QThread>
 #include <QtMath>
+#include <QPainter>
 
 #include "object.h"
 #include "layercamera.h"
 #include "layersound.h"
 #include "soundclip.h"
-
-QString ffmpegLocation()
-{
-#ifdef _WIN32
-    return QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
-#elif __APPLE__
-    return QApplication::applicationDirPath() + "/plugins/ffmpeg";
-#else
-    QString ffmpegPath = QStandardPaths::findExecutable(
-        "ffmpeg",
-        QStringList()
-        << QApplication::applicationDirPath() + "/plugins"
-        << QApplication::applicationDirPath() + "/../plugins" // linuxdeployqt in FHS-like mode
-    );
-    if (!ffmpegPath.isEmpty())
-    {
-        return ffmpegPath;
-    }
-    return QStandardPaths::findExecutable("ffmpeg"); // ffmpeg is a standalone project.
-#endif
-}
+#include "util.h"
 
 MovieExporter::MovieExporter()
 {
@@ -111,7 +92,7 @@ Status MovieExporter::run(const Object* obj,
         return Status::ERROR_FFMPEG_NOT_FOUND;
     }
 
-    STATUS_CHECK(checkInputParameters(desc));
+    STATUS_CHECK(checkInputParameters(desc))
     mDesc = desc;
 
     qDebug() << "OutFile: " << mDesc.strFileName;
@@ -129,25 +110,25 @@ Status MovieExporter::run(const Object* obj,
     if (desc.strFileName.endsWith("gif", Qt::CaseInsensitive))
     {
         majorProgress(0.03f, 1.f);
-        progressMessage("Generating gif...");
+        progressMessage(QObject::tr("Generating GIF..."));
         minorProgress(0.f);
-        STATUS_CHECK(generateGif(obj, ffmpegPath, desc.strFileName, minorProgress));
+        STATUS_CHECK(generateGif(obj, ffmpegPath, desc.strFileName, minorProgress))
     }
     else
     {
         majorProgress(0.03f, 0.25f);
-        progressMessage("Assembling audio...");
+        progressMessage(QObject::tr("Assembling audio..."));
         minorProgress(0.f);
-        STATUS_CHECK(assembleAudio(obj, ffmpegPath, minorProgress));
+        STATUS_CHECK(assembleAudio(obj, ffmpegPath, minorProgress))
         minorProgress(1.f);
         majorProgress(0.25f, 1.f);
-        progressMessage("Generating movie...");
-        STATUS_CHECK(generateMovie(obj, ffmpegPath, desc.strFileName, minorProgress));
+        progressMessage(QObject::tr("Generating movie..."));
+        STATUS_CHECK(generateMovie(obj, ffmpegPath, desc.strFileName, minorProgress))
     }
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
     progressMessage(QObject::tr("Done"));
-    
+
     clock_t t2 = clock() - t1;
     qDebug("MOVIE = %.1f sec", static_cast<double>(t2 / CLOCKS_PER_SEC));
 
@@ -186,7 +167,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     QDir dir(mTempWorkDir);
     Q_ASSERT(dir.exists());
 
-    QString tempAudioPath = mTempWorkDir + "/tmpaudio0.wav";
+    QString tempAudioPath = QDir(mTempWorkDir).filePath("tmpaudio.wav");
     qDebug() << "TempAudio=" << tempAudioPath;
 
     std::vector< SoundClip* > allSoundClips;
@@ -199,6 +180,8 @@ Status MovieExporter::assembleAudio(const Object* obj,
             allSoundClips.push_back(static_cast<SoundClip*>(key));
         });
     }
+
+    if (allSoundClips.empty()) return Status::SAFE;
 
     int clipCount = 0;
 
@@ -238,9 +221,9 @@ Status MovieExporter::assembleAudio(const Object* obj,
     strCmd += QString(" -ss %1").arg((startFrame - 1) / static_cast<double>(fps));
     strCmd += QString(" -to %1").arg(endFrame / static_cast<double>(fps));
     // Output path
-    strCmd += " " + mTempWorkDir + "/tmpaudio.wav";
+    strCmd += QString(" \"%1\"").arg(tempAudioPath);
 
-    STATUS_CHECK(executeFFMpeg(strCmd, progress));
+    STATUS_CHECK(MovieExporter::executeFFmpeg(strCmd, [&progress, this] (int frame) { progress(frame / static_cast<float>(mDesc.endFrame - mDesc.startFrame)); return !mCanceled; }))
     qDebug() << "audio file: " + tempAudioPath;
 
     return Status::OK;
@@ -319,7 +302,7 @@ Status MovieExporter::generateMovie(
     // Build FFmpeg command
 
     //int exportFps = mDesc.videoFps;
-    const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
+    const QString tempAudioPath = QDir(mTempWorkDir).filePath("tmpaudio.wav");
 
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
     strCmd += QString(" -f rawvideo -pixel_format bgra");
@@ -524,7 +507,7 @@ Status MovieExporter::generateGif(
  *  @return Returns Status::OK if everything went well, and Status::FAIL
  *  and error is detected (usually a non-zero exit code for ffmpeg).
  */
-Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> progress)
+Status MovieExporter::executeFFmpeg(QString strCmd, std::function<bool(int)> progress)
 {
     qDebug() << strCmd;
 
@@ -533,6 +516,9 @@ Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> p
     // FFmpeg writes to stderr only for some reason, so we just read both channels together
     ffmpeg.setProcessChannelMode(QProcess::MergedChannels);
     ffmpeg.start(strCmd);
+
+    Status status = Status::OK;
+    DebugDetails dd;
     if (ffmpeg.waitForStarted() == true)
     {
         while(ffmpeg.state() == QProcess::Running)
@@ -543,14 +529,23 @@ Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> p
             QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
             for (const QString& s : sList)
             {
-                qDebug() << "[stdout]" << s;
+                qDebug() << "[ffmpeg]" << s;
+                dd << s;
             }
 
             if(output.startsWith("frame="))
             {
                 QString frame = output.mid(6, output.indexOf(' '));
 
-                progress(frame.toInt() / static_cast<float>(mDesc.endFrame - mDesc.startFrame));
+                bool shouldContinue = progress(frame.toInt());
+                if (!shouldContinue)
+                {
+                    ffmpeg.terminate();
+                    ffmpeg.waitForFinished(3000);
+                    if (ffmpeg.state() == QProcess::Running) ffmpeg.kill();
+                    ffmpeg.waitForFinished();
+                    return Status::CANCELED;
+                }
             }
         }
 
@@ -559,20 +554,29 @@ Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> p
         for (const QString& s : sList)
         {
             qDebug() << "[ffmpeg]" << s;
+            dd << s;
         }
 
-        if(ffmpeg.exitStatus() != QProcess::NormalExit)
+        if(ffmpeg.exitStatus() != QProcess::NormalExit || ffmpeg.exitCode() != 0)
         {
-            qDebug() << "ERROR: FFmpeg crashed";
-            return Status::FAIL;
+            status = Status::FAIL;
+            status.setTitle(QObject::tr("Something went wrong"));
+            status.setDescription(QObject::tr("Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists."));
+            dd << QString("Exit status: ").append(QProcess::NormalExit ? "NormalExit": "CrashExit")
+               << QString("Exit code: %1").arg(ffmpeg.exitCode());
+            status.setDetails(dd);
+            return status;
         }
     }
     else
     {
         qDebug() << "ERROR: Could not execute FFmpeg.";
-        return Status::FAIL;
+        status = Status::FAIL;
+        status.setTitle(QObject::tr("Something went wrong"));
+        status.setDescription(QObject::tr("Couldn't start the video backend, please try again."));
+        status.setDetails(dd);
     }
-    return Status::OK;
+    return status;
 }
 
 /** Runs the specified command (should be ffmpeg), and lets
@@ -637,6 +641,7 @@ Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float
             if (mCanceled)
             {
                 ffmpeg.terminate();
+                if (ffmpeg.state() == QProcess::Running) ffmpeg.kill();
                 return Status::CANCELED;
             }
 

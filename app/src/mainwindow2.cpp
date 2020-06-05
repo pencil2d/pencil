@@ -29,6 +29,8 @@ GNU General Public License for more details.
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QTabletEvent>
+#include <QStandardPaths>
+#include <QDateTime>
 
 // core_lib headers
 #include "pencildef.h"
@@ -260,10 +262,12 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence);
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importPredefinedImageSet);
     connect(ui->actionImportLayers_from_pclx, &QAction::triggered, this, &MainWindow2::importLayers);
+    connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
-    connect(ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
+    connect(ui->actionImport_MovieAudio, &QAction::triggered, this, &MainWindow2::importMovieAudio);
+
     connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
@@ -401,6 +405,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDiscord, &QAction::triggered, mCommands, &ActionCommands::discord);
     connect(ui->actionCheck_for_Updates, &QAction::triggered, mCommands, &ActionCommands::checkForUpdates);
     connect(ui->actionReport_Bug, &QAction::triggered, mCommands, &ActionCommands::reportbug);
+    connect(ui->actionOpen_Temporary_Directory, &QAction::triggered, mCommands, &ActionCommands::openTemporaryDirectory);
     connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
 
     //--- Menus ---
@@ -460,7 +465,7 @@ void MainWindow2::openPegAlignDialog()
     mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
     mPegAlign->setRefKey(mEditor->currentFrame());
     mPegAlign->setLabRefKey();
-    mPegAlign->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mPegAlign->setWindowFlags(mPegAlign->windowFlags() | Qt::WindowStaysOnTopHint);
     mPegAlign->show();
 }
 
@@ -752,6 +757,8 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     mEditor->object()->setFilePath(strSavedFileName);
     mEditor->object()->setModified(false);
 
+    mEditor->clearTemporary();
+
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, strSavedFileName);
 
@@ -811,7 +818,7 @@ bool MainWindow2::autoSave()
 
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Question);
-    msgBox.setWindowTitle("AutoSave Reminder");
+    msgBox.setWindowTitle(tr("AutoSave Reminder"));
     msgBox.setText(tr("The animation is not saved yet.\n Do you want to save now?"));
     msgBox.addButton(tr("Never ask again", "AutoSave reminder button"), QMessageBox::RejectRole);
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -984,7 +991,7 @@ void MainWindow2::importGIF()
     {
         QMessageBox::warning(this,
                              tr("Warning"),
-                             tr("was unable to import") + strImgFileLower,
+                             tr("was unable to import %1").arg(strImgFileLower),
                              QMessageBox::Ok,
                              QMessageBox::Ok);
     }
@@ -993,17 +1000,6 @@ void MainWindow2::importGIF()
     progress.close();
 
     mIsImportingImageSequence = false;
-}
-
-void MainWindow2::importMovie()
-{
-    FileDialog fileDialog(this);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
-    if (filePath.isEmpty())
-    {
-        return;
-    }
-    mEditor->importMovie(filePath, mEditor->playback()->fps());
 }
 
 void MainWindow2::lockWidgets(bool shouldLock)
@@ -1017,7 +1013,17 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mOnionSkinWidget->setFeatures(feat);
     mToolOptions->setFeatures(feat);
     mToolBox->setFeatures(feat);
-    mTimeLine->setFeatures(feat);    
+    mTimeLine->setFeatures(feat);
+}
+
+void MainWindow2::setSoundScrubActive(bool b)
+{
+    mEditor->playback()->setSoundScrubActive(b);
+}
+
+void MainWindow2::setSoundScrubMsec(int msec)
+{
+    mEditor->playback()->setSoundScrubMsec(msec);
 }
 
 void MainWindow2::preferences()
@@ -1034,6 +1040,8 @@ void MainWindow2::preferences()
     mPrefDialog->init(mEditor->preference());
 
     connect(mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubChanged, this, &MainWindow2::setSoundScrubActive);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubMsecChanged, this, &MainWindow2::setSoundScrubMsec);
     connect(mPrefDialog, &PreferencesDialog::finished, [&]
     {
         clearKeyboardShortcuts();
@@ -1066,7 +1074,7 @@ bool MainWindow2::newObject()
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
 {
-    Object* object = nullptr;   
+    Object* object = nullptr;
     QString presetFilePath = (presetIndex > 0) ? PresetDialog::getPresetPath(presetIndex) : "";
     if (!presetFilePath.isEmpty())
     {
@@ -1096,6 +1104,10 @@ void  MainWindow2::showPresetDialog()
             if (result == QDialog::Accepted)
             {
                 int presetIndex = presetDialog->getPresetIndex();
+                if (presetDialog->shouldAlwaysUse()) {
+                    mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
+                    mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetIndex);
+                }
                 newObjectFromPresets(presetIndex);
                 qDebug() << "Accepted!";
             }
@@ -1148,7 +1160,8 @@ void MainWindow2::setupKeyboardShortcuts()
 
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
-    ui->actionImport_Movie->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE));
+    ui->actionImport_MovieVideo->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_VIDEO));
+    ui->actionImport_MovieAudio->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_AUDIO));
     ui->actionImport_Append_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
     ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
 
@@ -1244,7 +1257,7 @@ void MainWindow2::setupKeyboardShortcuts()
     mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
-    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));    
+    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
     mOnionSkinWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_ONION_SKIN));
 
@@ -1476,7 +1489,7 @@ void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
 void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
-    statusBar()->showMessage(QString("Zoom: %0%1").arg(static_cast<double>(zoom), 0, 'f', 1).arg("%"));
+    statusBar()->showMessage(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)
@@ -1492,6 +1505,21 @@ void MainWindow2::changePlayState(bool isPlaying)
         ui->actionPlay->setIcon(mStartIcon);
     }
     update();
+}
+
+void MainWindow2::importMovieVideo()
+{
+    // Flag this so we don't prompt the user about auto-save in the middle of the import.
+    mIsImportingImageSequence = true;
+
+    mCommands->importMovieVideo();
+
+    mIsImportingImageSequence = false;
+}
+
+void MainWindow2::importMovieAudio()
+{
+    mCommands->importMovieAudio();
 }
 
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)

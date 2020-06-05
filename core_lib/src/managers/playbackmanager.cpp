@@ -46,8 +46,15 @@ bool PlaybackManager::init()
     mFlipTimer = new QTimer(this);
     mFlipTimer->setTimerType(Qt::PreciseTimer);
 
+    mScrubTimer = new QTimer(this);
+    mScrubTimer->setTimerType(Qt::PreciseTimer);
+    mSoundclipsToPLay.clear();
+
     QSettings settings (PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
+    mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
+    if (mMsecSoundScrub == 0) { mMsecSoundScrub = 100; }
+    mSoundScrub = settings.value(SETTING_SOUND_SCRUB_ACTIVE).toBool();
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
@@ -206,6 +213,34 @@ void PlaybackManager::playFlipInBetween()
     emit playStateChanged(true);
 }
 
+void PlaybackManager::playScrub(int frame)
+{
+    if (!mSoundScrub || !mSoundclipsToPLay.isEmpty()) {return; }
+
+    auto layerMan = editor()->layers();
+    for (int i = 0; i < layerMan->count(); i++)
+    {
+        Layer* layer = layerMan->getLayer(i);
+        if (layer->type() == Layer::SOUND && layer->visible())
+        {
+            KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
+            if (key != nullptr)
+            {
+                SoundClip* clip = static_cast<SoundClip*>(key);
+                mSoundclipsToPLay.append(clip);
+            }
+        }
+    }
+
+    if (mSoundclipsToPLay.isEmpty()) { return; }
+
+    mScrubTimer->singleShot(mMsecSoundScrub, this, &PlaybackManager::stopScrubPlayback);
+    for (int i = 0; i < mSoundclipsToPLay.count(); i++)
+    {
+        mSoundclipsToPLay.at(i)->playFromPosition(frame, mFps);
+    }
+}
+
 void PlaybackManager::setFps(int fps)
 {
     if (mFps != fps)
@@ -357,6 +392,15 @@ void PlaybackManager::stopSounds()
             clip->stop();
         });
     }
+}
+
+void PlaybackManager::stopScrubPlayback()
+{
+    for (int i = 0; i < mSoundclipsToPLay.count(); i++)
+    {
+        mSoundclipsToPLay.at(i)->pause();
+    }
+    mSoundclipsToPLay.clear();
 }
 
 void PlaybackManager::timerTick()

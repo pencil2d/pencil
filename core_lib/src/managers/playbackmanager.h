@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 class QTimer;
 class QElapsedTimer;
+class SoundClip;
 
 
 class PlaybackManager : public BaseManager
@@ -44,6 +45,11 @@ public:
     void stop();
     void playFlipRoll();
     void playFlipInBetween();
+    void playScrub(int frame);
+    void setSoundScrubMsec(int mSec) { mMsecSoundScrub = mSec; }
+    int  getSoundScrubMsec() { return mMsecSoundScrub; }
+    void setSoundScrubActive(bool b) { mSoundScrub = b; }
+    bool getSoundScrubActive() { return mSoundScrub; }
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
@@ -61,6 +67,9 @@ public:
     void enableSound(bool b);
 
     void stopSounds();
+
+private slots:
+    void stopScrubPlayback();
 
 Q_SIGNALS:
     void fpsChanged(int fps);
@@ -93,14 +102,18 @@ private:
     int mFlipRollInterval = 100;
     int mFlipInbetweenInterval = 100;
     int mFlipRollMax = 5;
+    int mMsecSoundScrub = 100;
+    bool mSoundScrub = false;
 
     QTimer* mTimer = nullptr;
     QTimer* mFlipTimer = nullptr;
+    QTimer* mScrubTimer = nullptr;
     QElapsedTimer* mElapsedTimer = nullptr;
     int mPlayingFrameCounter = 0; // how many frames has passed after pressing play
 
     bool mCheckForSoundsHalfway = false;
     QVector<int> mListOfActiveSoundFrames;
+    QVector<SoundClip*> mSoundclipsToPLay;
     QVector<int> mFlipList;
 };
 

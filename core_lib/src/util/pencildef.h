@@ -91,6 +91,9 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
     return vis = (vis == LayerVisibility::CURRENTONLY) ? LayerVisibility::ALL : static_cast<LayerVisibility>(static_cast<int>(vis)-1);
 }
 
+// Max frames that can be imported and loaded onto the timeline
+constexpr int MaxFramesBound = 9999;
+
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"
@@ -98,7 +101,8 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define CMD_SAVE_AS "CmdSaveAs"
 #define CMD_IMPORT_IMAGE "CmdImportImage"
 #define CMD_IMPORT_IMAGE_SEQ "CmdImportImageSequence"
-#define CMD_IMPORT_MOVIE "CmdImportMovie"
+#define CMD_IMPORT_MOVIE_VIDEO "CmdImportMovieVideo"
+#define CMD_IMPORT_MOVIE_AUDIO "CmdImportMovieAudio"
 #define CMD_IMPORT_PALETTE "CmdImportPalette"
 #define CMD_IMPORT_SOUND "CmdImportSound"
 #define CMD_EXPORT_IMAGE_SEQ "CmdExportImageSequence"
@@ -249,6 +253,8 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define SETTING_FLIP_ROLL_MSEC          "FlipRoll"
 #define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
+#define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
+#define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

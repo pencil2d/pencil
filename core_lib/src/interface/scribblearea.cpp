@@ -39,7 +39,6 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "selectionmanager.h"
 
-
 ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent),
 mLog("ScribbleArea")
 {
@@ -103,8 +102,6 @@ bool ScribbleArea::init()
 
     int nLength = mEditor->layers()->animationLength();
     mPixmapCacheKeys.resize(static_cast<unsigned>(std::max(nLength, 240)));
-
-    mNeedUpdateAll = false;
 
     return true;
 }
@@ -210,7 +207,6 @@ void ScribbleArea::updateAllFrames()
     std::fill(mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key());
 
     update();
-    mNeedUpdateAll = false;
 }
 
 void ScribbleArea::updateAllVectorLayersAtCurrentFrame()
@@ -244,7 +240,6 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
 
 void ScribbleArea::setAllDirty()
 {
-    mNeedUpdateAll = true;
     mCanvasPainter.resetLayerCache();
 }
 

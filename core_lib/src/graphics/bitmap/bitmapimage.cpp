@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QtMath>
 #include <QFile>
+#include <QPainterPath>
 #include "util.h"
 
 BitmapImage::BitmapImage()
