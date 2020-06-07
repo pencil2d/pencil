@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "colourref.h"
+#include "colorref.h"
 
 #include <cmath>
 #include <QtMath>
@@ -22,21 +22,21 @@ GNU General Public License for more details.
 
 #include "util/colordictionary.h"
 
-ColourRef::ColourRef()
+ColorRef::ColorRef()
 {
-    colour = Qt::green;
+    color = Qt::green;
     name = QObject::tr("Green");
 }
 
-ColourRef::ColourRef(QColor theColour, QString theName)
+ColorRef::ColorRef(QColor theColor, QString theName)
 {
-    colour = theColour;
-    name = theName.isNull() ? ColourRef::getDefaultColorName(theColour) : theName;
+    color = theColor;
+    name = theName.isNull() ? ColorRef::getDefaultColorName(theColor) : theName;
 }
 
-bool ColourRef::operator==(ColourRef colourRef1)
+bool ColorRef::operator==(ColorRef colorRef1)
 {
-    if ( (colour == colourRef1.colour) && (name == colourRef1.name) )
+    if ( (color == colorRef1.color) && (name == colorRef1.name) )
     {
         return true;
     }
@@ -46,9 +46,9 @@ bool ColourRef::operator==(ColourRef colourRef1)
     }
 }
 
-bool ColourRef::operator!=(ColourRef colourRef1)
+bool ColorRef::operator!=(ColorRef colorRef1)
 {
-    if ( (colour != colourRef1.colour) || (name != colourRef1.name) )
+    if ( (color != colorRef1.color) || (name != colorRef1.name) )
     {
         return true;
     }
@@ -58,13 +58,13 @@ bool ColourRef::operator!=(ColourRef colourRef1)
     }
 }
 
-QDebug& operator<<(QDebug debug, const ColourRef& colourRef)
+QDebug& operator<<(QDebug debug, const ColorRef& colorRef)
 {
-    debug.nospace() << "ColourRef(" << colourRef.colour << " " << colourRef.name <<")";
+    debug.nospace() << "ColorRef(" << colorRef.color << " " << colorRef.name <<")";
     return debug.maybeSpace();
 }
 
-QString ColourRef::getDefaultColorName(const QColor c)
+QString ColorRef::getDefaultColorName(const QColor c)
 {
     // Separate rgb values for convenience
     const int r = c.red();

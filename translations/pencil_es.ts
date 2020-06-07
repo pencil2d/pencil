@@ -1532,7 +1532,7 @@
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="532"/>
         <source>Show next onion skin</source>
-        <translation>Mostrar papel cebolla posterior </translation>
+        <translation>Mostrar papel cebolla posterior </translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>

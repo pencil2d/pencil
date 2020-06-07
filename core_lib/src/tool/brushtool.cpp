@@ -324,7 +324,7 @@ void BrushTool::paintVectorStroke()
         curve.setFilled(false);
         curve.setInvisibility(properties.invisibility);
         curve.setVariableWidth(properties.pressure);
-        curve.setColourNumber(mEditor->color()->frontColorNumber());
+        curve.setColorNumber(mEditor->color()->frontColorNumber());
 
         VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         vectorImage->addCurve(curve, mEditor->view()->scaling(), false);

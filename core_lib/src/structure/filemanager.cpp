@@ -435,7 +435,7 @@ QDomElement FileManager::saveProjectData(ObjectData* data, QDomDocument& xmlDoc)
     currentFrameTag.setAttribute("value", data->getCurrentFrame());
     rootTag.appendChild(currentFrameTag);
 
-    // Current Colour
+    // Current Color
     QDomElement currentColorTag = xmlDoc.createElement("currentColor");
     QColor color = data->getCurrentColor();
     currentColorTag.setAttribute("r", color.red());
@@ -602,16 +602,16 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     mstrLastTempFolder = strUnzipTarget;
 }
 
-QList<ColourRef> FileManager::loadPaletteFile(QString strFilename)
+QList<ColorRef> FileManager::loadPaletteFile(QString strFilename)
 {
     QFileInfo fileInfo(strFilename);
     if (!fileInfo.exists())
     {
-        return QList<ColourRef>();
+        return QList<ColorRef>();
     }
 
     // TODO: Load Palette.
-    return QList<ColourRef>();
+    return QList<ColorRef>();
 }
 
 Status FileManager::verifyObject(Object* obj)

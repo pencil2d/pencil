@@ -33,7 +33,7 @@ TEST_CASE("Object::addXXXLayer()")
     {
         obj->init();
         REQUIRE(obj->getLayerCount() == 0);
-        REQUIRE(obj->getColourCount() > 0);
+        REQUIRE(obj->getColorCount() > 0);
     }
 
     SECTION("Add a bitmap layer")
@@ -158,7 +158,7 @@ void TestObject::testExportColorPalette()
 {
     std::shared_ptr< Object > obj = std::make_shared<Object>();
 
-    obj->addColour(ColourRef(QColor(255, 254, 253, 100), "TestColor1"));
+    obj->addColor(ColorRef(QColor(255, 254, 253, 100), "TestColor1"));
 
     QTemporaryDir dir;
     if (dir.isValid())
@@ -167,13 +167,13 @@ void TestObject::testExportColorPalette()
         QVERIFY(obj->exportPalette(sOutPath));
         QVERIFY(obj->importPalette(sOutPath));
 
-        ColourRef c = obj->getColour(0);
+        ColorRef c = obj->getColor(0);
 
         QVERIFY(c.name == "TestColor1");
-        QCOMPARE(c.colour.red(), 255);
-        QCOMPARE(c.colour.green(), 254);
-        QCOMPARE(c.colour.blue(), 253);
-        QCOMPARE(c.colour.alpha(), 100);
+        QCOMPARE(c.color.red(), 255);
+        QCOMPARE(c.color.green(), 254);
+        QCOMPARE(c.color.blue(), 253);
+        QCOMPARE(c.color.alpha(), 100);
     }
 
 }

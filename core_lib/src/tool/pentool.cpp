@@ -277,7 +277,7 @@ void PenTool::paintVectorStroke(Layer* layer)
     curve.setFilled(false);
     curve.setInvisibility(properties.invisibility);
     curve.setVariableWidth(properties.pressure);
-    curve.setColourNumber(mEditor->color()->frontColorNumber());
+    curve.setColorNumber(mEditor->color()->frontColorNumber());
 
     auto pLayerVector = static_cast<LayerVector*>(layer);
     VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);

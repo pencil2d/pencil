@@ -1056,27 +1056,27 @@ void VectorImage::paste(VectorImage& vectorImage)
 }
 
 /**
- * @brief VectorImage::getColour
- * @param colourNumber: the color number which is referred to in the palette
+ * @brief VectorImage::getColor
+ * @param colorNumber: the color number which is referred to in the palette
  * @return QColor
  */
-QColor VectorImage::getColour(int colourNumber)
+QColor VectorImage::getColor(int colorNumber)
 {
-    return mObject->getColour(colourNumber).colour;
+    return mObject->getColor(colorNumber).color;
 }
 
 /**
- * @brief VectorImage::getColourNumber
+ * @brief VectorImage::getColorNumber
  * @param point: The QPoint of the BezierArea
  * @return The color number in the palette based on the BezierArea
  */
-int VectorImage::getColourNumber(QPointF point)
+int VectorImage::getColorNumber(QPointF point)
 {
     int result = -1;
     int areaNumber = getLastAreaNumber(point);
     if (areaNumber != -1)
     {
-        result = mArea[areaNumber].mColourNumber;
+        result = mArea[areaNumber].mColorNumber;
     }
     return result;
 }
@@ -1090,41 +1090,41 @@ int VectorImage::getCurvesColor(int curve)
     int result = -1;
     if (curve > -1)
     {
-        result = mCurves[curve].getColourNumber();
+        result = mCurves[curve].getColorNumber();
     }
     return result;
 }
 /**
- * @brief VectorImage::usesColour
+ * @brief VectorImage::usesColor
  * @param index
  * @return
  */
-bool VectorImage::usesColour(int index)
+bool VectorImage::usesColor(int index)
 {
     for (int i = 0; i < mArea.size(); i++)
     {
-        if (mArea[i].mColourNumber == index) return true;
+        if (mArea[i].mColorNumber == index) return true;
     }
     for (int i = 0; i < mCurves.size(); i++)
     {
-        if (mCurves[i].getColourNumber() == index) return true;
+        if (mCurves[i].getColorNumber() == index) return true;
     }
     return false;
 }
 
 /**
- * @brief VectorImage::removeColour
+ * @brief VectorImage::removeColor
  * @param index: int
  */
-void VectorImage::removeColour(int index)
+void VectorImage::removeColor(int index)
 {
     for (int i = 0; i < mArea.size(); i++)
     {
-        if (mArea[i].getColourNumber() > index) mArea[i].decreaseColourNumber();
+        if (mArea[i].getColorNumber() > index) mArea[i].decreaseColorNumber();
     }
     for (int i = 0; i < mCurves.size(); i++)
     {
-        if (mCurves[i].getColourNumber() > index) mCurves[i].decreaseColourNumber();
+        if (mCurves[i].getColorNumber() > index) mCurves[i].decreaseColorNumber();
     }
 }
 
@@ -1132,11 +1132,11 @@ void VectorImage::moveColor(int start, int end)
 {
     for(int i=0; i< mArea.size(); i++)
      {
-         if (mArea[i].getColourNumber() == start) mArea[i].setColourNumber(end);
+         if (mArea[i].getColorNumber() == start) mArea[i].setColorNumber(end);
      }
      for(int i=0; i< mCurves.size(); i++)
      {
-         if (mCurves[i].getColourNumber() == start) mCurves[i].setColourNumber(end);
+         if (mCurves[i].getColorNumber() == start) mCurves[i].setColorNumber(end);
      }
 }
 
@@ -1169,19 +1169,19 @@ void VectorImage::paintImage(QPainter& painter,
             updateArea(mArea[i]); // to do: if selected
 
             // --- fill areas ---- //
-            QColor colour = getColour(mArea[i].mColourNumber);
+            QColor color = getColor(mArea[i].mColorNumber);
 
             painter.save();
             painter.setWorldMatrixEnabled(false);
 
             if (mArea[i].isSelected())
             {
-                painter.setBrush(QBrush(qPremultiply(colour.rgba()), Qt::Dense2Pattern));
+                painter.setBrush(QBrush(qPremultiply(color.rgba()), Qt::Dense2Pattern));
             }
             else
             {
-                painter.setPen(QPen(QBrush(colour), 1, Qt::NoPen, Qt::RoundCap, Qt::RoundJoin));
-                painter.setBrush(QBrush(colour, Qt::SolidPattern));
+                painter.setPen(QPen(QBrush(color), 1, Qt::NoPen, Qt::RoundCap, Qt::RoundJoin));
+                painter.setBrush(QBrush(color, Qt::SolidPattern));
             }
 
             painter.drawPath(painter.transform().map(mArea[i].mPath));
@@ -1272,28 +1272,28 @@ void VectorImage::applySelectionTransformation(QTransform transf)
 }
 
 /**
- * @brief VectorImage::applyColourToSelectedCurve
- * @param colourNumber: int
+ * @brief VectorImage::applyColorToSelectedCurve
+ * @param colorNumber: int
  * Changes the color of the curve
  */
-void VectorImage::applyColourToSelectedCurve(int colourNumber)
+void VectorImage::applyColorToSelectedCurve(int colorNumber)
 {
     for (int i = 0; i < mCurves.size(); i++)
     {
-        if (mCurves.at(i).isSelected()) mCurves[i].setColourNumber(colourNumber);
+        if (mCurves.at(i).isSelected()) mCurves[i].setColorNumber(colorNumber);
     }
     modification();
 }
 
 /**
- * @brief VectorImage::applyColourToSelectedArea
- * @param colourNumber: int
+ * @brief VectorImage::applyColorToSelectedArea
+ * @param colorNumber: int
  */
-void VectorImage::applyColourToSelectedArea(int colourNumber)
+void VectorImage::applyColorToSelectedArea(int colorNumber)
 {
     for (int i = 0; i < mArea.size(); i++)
     {
-        if (mArea.at(i).isSelected()) mArea[i].setColourNumber(colourNumber);
+        if (mArea.at(i).isSelected()) mArea[i].setColorNumber(colorNumber);
     }
     modification();
 }
@@ -1761,10 +1761,10 @@ BezierArea VectorImage::getSelectedArea(QPointF currentPoint)
 /**
  * @brief VectorImage::fillSelectedPath
  * @param QPointF currentPoint
- * @param int colour
+ * @param int color
  * fills the selected path with a given color
  */
-void VectorImage::fillSelectedPath(int colour)
+void VectorImage::fillSelectedPath(int color)
 {
     QList<VertexRef> vertexPath;
     QList<int> curveNumbers = getSelectedCurveNumbers();
@@ -1785,7 +1785,7 @@ void VectorImage::fillSelectedPath(int colour)
             }
         }
 
-        BezierArea bezierArea(vertexPath, colour);
+        BezierArea bezierArea(vertexPath, color);
         addArea(bezierArea);
 
         // set selected curves as filled
@@ -1801,10 +1801,10 @@ void VectorImage::fillSelectedPath(int colour)
 /**
  * @brief VectorImage::fillContour
  * @param QList<QPointF> contourPath
- * @param int colour
+ * @param int color
  * fills the contour with a given color
  */
-void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
+void VectorImage::fillContour(QList<QPointF> contourPath, int color)
 {
     QList<VertexRef> vertexPath;
     VertexRef vertex;
@@ -1820,7 +1820,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
         }
     }
 
-    BezierArea bezierArea(vertexPath, colour);
+    BezierArea bezierArea(vertexPath, color);
 
     addArea(bezierArea);
     modification();
@@ -1853,9 +1853,9 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //    QPointF startPoint((maxWidth / 2) + point.x(), (maxHeight / 2) + point.y());
 //    queue.append( startPoint.toPoint() );
 
-//    // Check the colour of the clicked point
-//    QRgb colourFrom = image->pixel(startPoint.x(), startPoint.y());
-//    QRgb colourTo = Qt::green;
+//    // Check the color of the clicked point
+//    QRgb colorFrom = image->pixel(startPoint.x(), startPoint.y());
+//    QRgb colorTo = Qt::green;
 
 //    QPoint currentPoint;
 
@@ -1872,7 +1872,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //        queue.removeAt(0);
 
 //        // Inspect a line from edge to edge
-//        if (image->pixel(currentPoint.x(), currentPoint.y()) == colourFrom) {
+//        if (image->pixel(currentPoint.x(), currentPoint.y()) == colorFrom) {
 //            leftX = currentPoint.x();
 //            rightX = currentPoint.x();
 
@@ -1892,8 +1892,8 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //                QPoint leftPoint = QPoint(leftX, currentPoint.y());
 
 //                // Are we getting to a curve ?
-//                if ( image->pixel(leftPoint.x(), leftPoint.y()) != colourFrom &&
-//                     image->pixel(leftPoint.x(), leftPoint.y()) != colourTo ) {
+//                if ( image->pixel(leftPoint.x(), leftPoint.y()) != colorFrom &&
+//                     image->pixel(leftPoint.x(), leftPoint.y()) != colorTo ) {
 
 //                    foundLeftBound = true;
 
@@ -1907,7 +1907,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //                    while (leftPoint.x() - increment > 0 && increment < 3 && !foundFillAfter) {
 //                        QPoint pointAfter = QPoint(leftPoint.x() - increment, leftPoint.y());
 
-//                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+//                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colorTo) {
 //                            foundFillAfter = true;
 //                        }
 
@@ -1938,8 +1938,8 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //                QPoint rightPoint = QPoint(rightX, currentPoint.y());
 
 //                // Are we getting to a curve ?
-//                if ( image->pixel(rightPoint.x(), rightPoint.y()) != colourFrom &&
-//                     image->pixel(rightPoint.x(), rightPoint.y()) != colourTo) {
+//                if ( image->pixel(rightPoint.x(), rightPoint.y()) != colorFrom &&
+//                     image->pixel(rightPoint.x(), rightPoint.y()) != colorTo) {
 
 //                    foundRightBound = true;
 
@@ -1953,7 +1953,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //                    while (rightPoint.x() + increment < maxWidth && increment < 3 && !foundFillAfter) {
 //                        QPoint pointAfter = QPoint(rightPoint.x() + increment, rightPoint.y());
 
-//                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+//                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colorTo) {
 //                            foundFillAfter = true;
 //                        }
 
@@ -1982,14 +1982,14 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 
 //            for (int x = leftX + 1; x < rightX; x++) {
 
-//                // The current line point is checked (Coloured)
+//                // The current line point is checked (Colored)
 //                QPoint linePoint = QPoint(x, lineY);
-//                image->setPixel(linePoint.x(), linePoint.y(), colourTo);
+//                image->setPixel(linePoint.x(), linePoint.y(), colorTo);
 
 //                QPoint topPoint = QPoint(x, topY);
 
-//                if ( image->pixel(topPoint.x(), topPoint.y()) != colourFrom &&
-//                     image->pixel(topPoint.x(), topPoint.y()) != colourTo) {
+//                if ( image->pixel(topPoint.x(), topPoint.y()) != colorFrom &&
+//                     image->pixel(topPoint.x(), topPoint.y()) != colorTo) {
 
 //                    // Convert point to view coordinates
 //                    QPointF contourPoint( topPoint.x() - (maxWidth / 2), topPoint.y() - (maxHeight / 2));
@@ -2001,7 +2001,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //                    while (topPoint.y() - increment > 0 && increment < 3 && !foundFillAfter) {
 //                        QPoint pointAfter = QPoint(topPoint.x(), topPoint.y() - increment);
 
-//                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+//                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colorTo) {
 //                            foundFillAfter = true;
 //                        }
 //                        increment ++;
@@ -2021,8 +2021,8 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 
 //                QPoint bottomPoint = QPoint(x, bottomY);
 
-//                if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != colourFrom &&
-//                     image->pixel(bottomPoint.x(), bottomPoint.y()) != colourTo ) {
+//                if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != colorFrom &&
+//                     image->pixel(bottomPoint.x(), bottomPoint.y()) != colorTo ) {
 
 //                    QPointF contourPoint( bottomPoint.x() - (maxWidth / 2), bottomPoint.y() - (maxHeight / 2));
 
@@ -2033,7 +2033,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //                    while (bottomPoint.y() + increment < maxHeight && increment < 3 && !foundFillAfter) {
 //                        QPoint pointAfter = QPoint(bottomPoint.x(), bottomPoint.y() + increment);
 
-//                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+//                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colorTo) {
 //                            foundFillAfter = true;
 //                        }
 
@@ -2068,7 +2068,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //    return contourPoints;
 //}
 
-//void VectorImage::fill(QPointF point, int colour, float tolerance)
+//void VectorImage::fill(QPointF point, int color, float tolerance)
 //{
 //    // Check if we clicked on a curve. In that case, we change its color.
 //    QList<int> closestCurves = getCurvesCloseTo( point, tolerance );
@@ -2078,7 +2078,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //        // For each clicked curves, we change the color if requiered
 //        for (int i = 0; i < closestCurves.size(); i++) {
 //            int curveNumber = closestCurves[i];
-//            m_curves[curveNumber].setColourNumber(colour);
+//            m_curves[curveNumber].setColorNumber(color);
 //        }
 
 //        return;
@@ -2087,7 +2087,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //    // Check if we clicked on an area of the same color.
 //    // We don't want to create another area.
 //    int areaNum = getLastAreaNumber(point);
-//    if (areaNum > -1 && area[areaNum].mColourNumber == colour) {
+//    if (areaNum > -1 && area[areaNum].mColorNumber == color) {
 //        return;
 //    }
 
@@ -2177,7 +2177,7 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 
 //    // Fill the path if we have one.
 //    if (completedPath) {
-//        fillSelectedPath(mainContourPath, colour);
+//        fillSelectedPath(mainContourPath, color);
 //    }
 //    else {
 //        // Check if we clicked on an area in this position and as we couldn't create one,
@@ -2185,10 +2185,10 @@ void VectorImage::fillContour(QList<QPointF> contourPath, int colour)
 //        int areaNum = getLastAreaNumber(point);
 //        if (areaNum > -1) {
 
-//            int clickedColorNum = area[areaNum].getColourNumber();
+//            int clickedColorNum = area[areaNum].getColorNumber();
 
-//            if (clickedColorNum != colour) {
-//                area[areaNum].setColourNumber(colour);
+//            if (clickedColorNum != color) {
+//                area[areaNum].setColorNumber(color);
 //            }
 //        }
 //    }

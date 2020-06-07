@@ -251,7 +251,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         {
             curve.setWidth(properties.width);
         }
-        curve.setColourNumber(mEditor->color()->frontColorNumber());
+        curve.setColorNumber(mEditor->color()->frontColorNumber());
         curve.setVariableWidth(false);
         curve.setInvisibility(mScribbleArea->makeInvisible());
 
