@@ -5756,12 +5756,10 @@ Check selection, and please try again.</source>
         <source>15 degrees</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../app/src/preferencesdialog.cpp" line="794"/>
-        <source>%n degree(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <source>1% degrees</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
