@@ -493,7 +493,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="268"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="269"/>
-        <source>Colour name</source>
+        <source>Color name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1563,7 +1563,7 @@ Read the instructions and try again</source>
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/src/structure/layercamera.cpp" line="80"/>
+        <location filename="../core_lib/src/structure/layercamera.cpp" line="78"/>
         <source>Camera Layer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1716,7 +1716,6 @@ Read the instructions and try again</source>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="356"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1020"/>
         <source>Movie Video...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2082,13 +2081,13 @@ Read the instructions and try again</source>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1000"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1060"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1055"/>
         <source>Current layer only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1005"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1065"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1060"/>
         <source>Relative</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2103,53 +2102,53 @@ Read the instructions and try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1025"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1020"/>
         <source>Movie Audio...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1030"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1025"/>
         <source>Append to Palette...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1035"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1030"/>
         <source>Replace Palette...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1040"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1035"/>
         <source>Other Palette format...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1045"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1040"/>
         <source>Current keyframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1050"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1045"/>
         <source>All keyframes on layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1055"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1050"/>
         <source>Layers from PCLX...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1070"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1065"/>
         <source>All layers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1078"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1081"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1073"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1076"/>
         <source>Onion Skins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1086"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1081"/>
         <source>Open Temporary Directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2416,32 +2415,32 @@ Color(s) in strokes will be altered by this action!
 <context>
     <name>MovieImporter</name>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="197"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="194"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="198"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="195"/>
         <source>This should not happen...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="232"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="227"/>
         <source>Video processed, adding frames...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="278"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="273"/>
         <source>Failed import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="279"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="274"/>
         <source>Was unable to find internal files, import unsucessful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="308"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="303"/>
         <source> Move the scrubber to a empty position on the timeline and try again</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2451,11 +2450,6 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="298"/>
         <source>error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="320"/>
-        <source>Colour %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2571,6 +2565,11 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="623"/>
         <source>Skin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="320"/>
+        <source>Color %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4183,18 +4182,18 @@ Check selection, and please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="563"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="575"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="562"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="574"/>
         <source>Something went wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="564"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="563"/>
         <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="576"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="575"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4402,79 +4401,79 @@ Check selection, and please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/graphics/vector/colourref.cpp" line="28"/>
+        <location filename="../core_lib/src/graphics/vector/colorref.cpp" line="28"/>
         <source>Green</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="36"/>
-        <location filename="../core_lib/src/movieimporter.cpp" line="213"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="210"/>
         <source>Bitmap only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="37"/>
-        <location filename="../core_lib/src/movieimporter.cpp" line="214"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="211"/>
         <source>You need to be on the bitmap layer to import a movie clip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="129"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="126"/>
         <source>Loading video failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="130"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="127"/>
         <source>Could not get duration from the specified video. Are you sure you are importing a valid video file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="155"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="152"/>
         <source>Error creating folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="156"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="153"/>
         <source>Unable to create a temporary folder, cannot import video.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="170"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="167"/>
         <source>Imported movie too big!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="171"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="168"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="294"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="289"/>
         <source>Sound only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="295"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="290"/>
         <source>You need to be on a sound layer to import the audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="307"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="302"/>
         <source>Move to an empty frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="308"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="303"/>
         <source>A frame already exists on frame: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="353"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="345"/>
         <source>FFmpeg Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="354"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="346"/>
         <source>Please place the ffmpeg binary in plugins directory and try again</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5000,50 +4999,50 @@ Check selection, and please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1555"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1556"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1571"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1579"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1572"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1580"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1605"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1606"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1606"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1607"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1610"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1611"/>
         <source>Out of bound.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1611"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1612"/>
         <source>Could not find a closed path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1612"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1613"/>
         <source>Could not find the root index.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1613"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1614"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1613"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1614"/>
         <source>Flood fill error</source>
         <translation type="unfinished"></translation>
     </message>
