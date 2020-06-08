@@ -3980,7 +3980,7 @@ namespace Catch {
         InLexicographicalOrder,
         InRandomOrder
     }; };
-    struct UseColor { enum YesOrNo {
+    struct UseColour { enum YesOrNo {
         Auto,
         Yes,
         No
@@ -4013,7 +4013,7 @@ namespace Catch {
         virtual RunTests::InWhatOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
         virtual int benchmarkResolutionMultiple() const = 0;
-        virtual UseColor::YesOrNo useColor() const = 0;
+        virtual UseColour::YesOrNo useColour() const = 0;
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual Verbosity verbosity() const = 0;
     };
@@ -4058,7 +4058,7 @@ namespace Catch {
         WarnAbout::What warnings = WarnAbout::Nothing;
         ShowDurations::OrNot showDurations = ShowDurations::DefaultForReporter;
         RunTests::InWhatOrder runOrder = RunTests::InDeclarationOrder;
-        UseColor::YesOrNo useColor = UseColor::Auto;
+        UseColour::YesOrNo useColour = UseColour::Auto;
         WaitForKeypress::When waitForKeypress = WaitForKeypress::Never;
 
         std::string outputFilename;
@@ -4110,7 +4110,7 @@ namespace Catch {
         RunTests::InWhatOrder runOrder() const override;
         unsigned int rngSeed() const override;
         int benchmarkResolutionMultiple() const override;
-        UseColor::YesOrNo useColor() const override;
+        UseColour::YesOrNo useColour() const override;
         bool shouldDebugBreak() const override;
         int abortAfter() const override;
         bool showInvisibles() const override;
@@ -4713,11 +4713,11 @@ namespace Catch {
 } // end namespace Catch
 
 // end catch_reporter_bases.hpp
-// start catch_console_color.h
+// start catch_console_colour.h
 
 namespace Catch {
 
-    struct Color {
+    struct Colour {
         enum Code {
             None = 0,
 
@@ -4755,23 +4755,23 @@ namespace Catch {
         };
 
         // Use constructed object for RAII guard
-        Color( Code _colorCode );
-        Color( Color&& other ) noexcept;
-        Color& operator=( Color&& other ) noexcept;
-        ~Color();
+        Colour( Code _colourCode );
+        Colour( Colour&& other ) noexcept;
+        Colour& operator=( Colour&& other ) noexcept;
+        ~Colour();
 
         // Use static method for one-shot changes
-        static void use( Code _colorCode );
+        static void use( Code _colourCode );
 
     private:
         bool m_moved = false;
     };
 
-    std::ostream& operator << ( std::ostream& os, Color const& );
+    std::ostream& operator << ( std::ostream& os, Colour const& );
 
 } // end namespace Catch
 
-// end catch_console_color.h
+// end catch_console_colour.h
 // start catch_reporter_registrars.hpp
 
 
@@ -7287,17 +7287,17 @@ namespace Catch {
                 config.rngSeed = static_cast<unsigned int>( std::time(nullptr) );
                 return ParserResult::ok( ParseResultType::Matched );
             };
-        auto const setColorUsage = [&]( std::string const& useColor ) {
-                    auto mode = toLower( useColor );
+        auto const setColourUsage = [&]( std::string const& useColour ) {
+                    auto mode = toLower( useColour );
 
                     if( mode == "yes" )
-                        config.useColor = UseColor::Yes;
+                        config.useColour = UseColour::Yes;
                     else if( mode == "no" )
-                        config.useColor = UseColor::No;
+                        config.useColour = UseColour::No;
                     else if( mode == "auto" )
-                        config.useColor = UseColor::Auto;
+                        config.useColour = UseColour::Auto;
                     else
-                        return ParserResult::runtimeError( "color mode must be one of: auto, yes or no. '" + useColor + "' not recognised" );
+                        return ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setWaitForKeypress = [&]( std::string const& keypress ) {
@@ -7403,9 +7403,9 @@ namespace Catch {
             | Opt( setRngSeed, "'time'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            | Opt( setColorUsage, "yes|no" )
-                ["--use-color"]
-                ( "should output be colorised" )
+            | Opt( setColourUsage, "yes|no" )
+                ["--use-colour"]
+                ( "should output be colourised" )
             | Opt( config.libIdentify )
                 ["--libidentify"]
                 ( "report name and version according to libidentify standard" )
@@ -7512,7 +7512,7 @@ namespace Catch {
     RunTests::InWhatOrder Config::runOrder() const     { return m_data.runOrder; }
     unsigned int Config::rngSeed() const               { return m_data.rngSeed; }
     int Config::benchmarkResolutionMultiple() const    { return m_data.benchmarkResolutionMultiple; }
-    UseColor::YesOrNo Config::useColor() const       { return m_data.useColor; }
+    UseColour::YesOrNo Config::useColour() const       { return m_data.useColour; }
     bool Config::shouldDebugBreak() const              { return m_data.shouldDebugBreak; }
     int Config::abortAfter() const                     { return m_data.abortAfter; }
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
@@ -7524,7 +7524,7 @@ namespace Catch {
 
 } // end namespace Catch
 // end catch_config.cpp
-// start catch_console_color.cpp
+// start catch_console_colour.cpp
 
 #if defined(__clang__)
 #    pragma clang diagnostic push
@@ -7551,16 +7551,16 @@ namespace Catch {
 namespace Catch {
     namespace {
 
-        struct IColorImpl {
-            virtual ~IColorImpl() = default;
-            virtual void use( Color::Code _colorCode ) = 0;
+        struct IColourImpl {
+            virtual ~IColourImpl() = default;
+            virtual void use( Colour::Code _colourCode ) = 0;
         };
 
-        struct NoColorImpl : IColorImpl {
-            void use( Color::Code ) {}
+        struct NoColourImpl : IColourImpl {
+            void use( Colour::Code ) {}
 
-            static IColorImpl* instance() {
-                static NoColorImpl s_instance;
+            static IColourImpl* instance() {
+                static NoColourImpl s_instance;
                 return &s_instance;
             }
         };
@@ -7581,9 +7581,9 @@ namespace Catch {
 namespace Catch {
 namespace {
 
-    class Win32ColorImpl : public IColorImpl {
+    class Win32ColourImpl : public IColourImpl {
     public:
-        Win32ColorImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
+        Win32ColourImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
         {
             CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
             GetConsoleScreenBufferInfo( stdoutHandle, &csbiInfo );
@@ -7591,27 +7591,27 @@ namespace {
             originalBackgroundAttributes = csbiInfo.wAttributes & ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
         }
 
-        virtual void use( Color::Code _colorCode ) override {
-            switch( _colorCode ) {
-                case Color::None:      return setTextAttribute( originalForegroundAttributes );
-                case Color::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
-                case Color::Red:       return setTextAttribute( FOREGROUND_RED );
-                case Color::Green:     return setTextAttribute( FOREGROUND_GREEN );
-                case Color::Blue:      return setTextAttribute( FOREGROUND_BLUE );
-                case Color::Cyan:      return setTextAttribute( FOREGROUND_BLUE | FOREGROUND_GREEN );
-                case Color::Yellow:    return setTextAttribute( FOREGROUND_RED | FOREGROUND_GREEN );
-                case Color::Grey:      return setTextAttribute( 0 );
+        virtual void use( Colour::Code _colourCode ) override {
+            switch( _colourCode ) {
+                case Colour::None:      return setTextAttribute( originalForegroundAttributes );
+                case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+                case Colour::Red:       return setTextAttribute( FOREGROUND_RED );
+                case Colour::Green:     return setTextAttribute( FOREGROUND_GREEN );
+                case Colour::Blue:      return setTextAttribute( FOREGROUND_BLUE );
+                case Colour::Cyan:      return setTextAttribute( FOREGROUND_BLUE | FOREGROUND_GREEN );
+                case Colour::Yellow:    return setTextAttribute( FOREGROUND_RED | FOREGROUND_GREEN );
+                case Colour::Grey:      return setTextAttribute( 0 );
 
-                case Color::LightGrey:     return setTextAttribute( FOREGROUND_INTENSITY );
-                case Color::BrightRed:     return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED );
-                case Color::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
-                case Color::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
-                case Color::BrightYellow:  return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN );
+                case Colour::LightGrey:     return setTextAttribute( FOREGROUND_INTENSITY );
+                case Colour::BrightRed:     return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED );
+                case Colour::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
+                case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+                case Colour::BrightYellow:  return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN );
 
-                case Color::Bright: CATCH_INTERNAL_ERROR( "not a color" );
+                case Colour::Bright: CATCH_INTERNAL_ERROR( "not a colour" );
 
                 default:
-                    CATCH_ERROR( "Unknown color requested" );
+                    CATCH_ERROR( "Unknown colour requested" );
             }
         }
 
@@ -7624,18 +7624,18 @@ namespace {
         WORD originalBackgroundAttributes;
     };
 
-    IColorImpl* platformColorInstance() {
-        static Win32ColorImpl s_instance;
+    IColourImpl* platformColourInstance() {
+        static Win32ColourImpl s_instance;
 
         IConfigPtr config = getCurrentContext().getConfig();
-        UseColor::YesOrNo colorMode = config
-            ? config->useColor()
-            : UseColor::Auto;
-        if( colorMode == UseColor::Auto )
-            colorMode = UseColor::Yes;
-        return colorMode == UseColor::Yes
+        UseColour::YesOrNo colourMode = config
+            ? config->useColour()
+            : UseColour::Auto;
+        if( colourMode == UseColour::Auto )
+            colourMode = UseColour::Yes;
+        return colourMode == UseColour::Yes
             ? &s_instance
-            : NoColorImpl::instance();
+            : NoColourImpl::instance();
     }
 
 } // end anon namespace
@@ -7652,41 +7652,41 @@ namespace {
     // Thanks to Adam Strzelecki for original contribution
     // (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
-    class PosixColorImpl : public IColorImpl {
+    class PosixColourImpl : public IColourImpl {
     public:
-        virtual void use( Color::Code _colorCode ) override {
-            switch( _colorCode ) {
-                case Color::None:
-                case Color::White:     return setColor( "[0m" );
-                case Color::Red:       return setColor( "[0;31m" );
-                case Color::Green:     return setColor( "[0;32m" );
-                case Color::Blue:      return setColor( "[0;34m" );
-                case Color::Cyan:      return setColor( "[0;36m" );
-                case Color::Yellow:    return setColor( "[0;33m" );
-                case Color::Grey:      return setColor( "[1;30m" );
+        virtual void use( Colour::Code _colourCode ) override {
+            switch( _colourCode ) {
+                case Colour::None:
+                case Colour::White:     return setColour( "[0m" );
+                case Colour::Red:       return setColour( "[0;31m" );
+                case Colour::Green:     return setColour( "[0;32m" );
+                case Colour::Blue:      return setColour( "[0;34m" );
+                case Colour::Cyan:      return setColour( "[0;36m" );
+                case Colour::Yellow:    return setColour( "[0;33m" );
+                case Colour::Grey:      return setColour( "[1;30m" );
 
-                case Color::LightGrey:     return setColor( "[0;37m" );
-                case Color::BrightRed:     return setColor( "[1;31m" );
-                case Color::BrightGreen:   return setColor( "[1;32m" );
-                case Color::BrightWhite:   return setColor( "[1;37m" );
-                case Color::BrightYellow:  return setColor( "[1;33m" );
+                case Colour::LightGrey:     return setColour( "[0;37m" );
+                case Colour::BrightRed:     return setColour( "[1;31m" );
+                case Colour::BrightGreen:   return setColour( "[1;32m" );
+                case Colour::BrightWhite:   return setColour( "[1;37m" );
+                case Colour::BrightYellow:  return setColour( "[1;33m" );
 
-                case Color::Bright: CATCH_INTERNAL_ERROR( "not a color" );
-                default: CATCH_INTERNAL_ERROR( "Unknown color requested" );
+                case Colour::Bright: CATCH_INTERNAL_ERROR( "not a colour" );
+                default: CATCH_INTERNAL_ERROR( "Unknown colour requested" );
             }
         }
-        static IColorImpl* instance() {
-            static PosixColorImpl s_instance;
+        static IColourImpl* instance() {
+            static PosixColourImpl s_instance;
             return &s_instance;
         }
 
     private:
-        void setColor( const char* _escapeCode ) {
+        void setColour( const char* _escapeCode ) {
             Catch::cout() << '\033' << _escapeCode;
         }
     };
 
-    bool useColorOnPlatform() {
+    bool useColourOnPlatform() {
         return
 #ifdef CATCH_PLATFORM_MAC
             !isDebuggerActive() &&
@@ -7698,19 +7698,19 @@ namespace {
 #endif
             ;
     }
-    IColorImpl* platformColorInstance() {
+    IColourImpl* platformColourInstance() {
         ErrnoGuard guard;
         IConfigPtr config = getCurrentContext().getConfig();
-        UseColor::YesOrNo colorMode = config
-            ? config->useColor()
-            : UseColor::Auto;
-        if( colorMode == UseColor::Auto )
-            colorMode = useColorOnPlatform()
-                ? UseColor::Yes
-                : UseColor::No;
-        return colorMode == UseColor::Yes
-            ? PosixColorImpl::instance()
-            : NoColorImpl::instance();
+        UseColour::YesOrNo colourMode = config
+            ? config->useColour()
+            : UseColour::Auto;
+        if( colourMode == UseColour::Auto )
+            colourMode = useColourOnPlatform()
+                ? UseColour::Yes
+                : UseColour::No;
+        return colourMode == UseColour::Yes
+            ? PosixColourImpl::instance()
+            : NoColourImpl::instance();
     }
 
 } // end anon namespace
@@ -7720,7 +7720,7 @@ namespace {
 
 namespace Catch {
 
-    static IColorImpl* platformColorInstance() { return NoColorImpl::instance(); }
+    static IColourImpl* platformColourInstance() { return NoColourImpl::instance(); }
 
 } // end namespace Catch
 
@@ -7728,25 +7728,25 @@ namespace Catch {
 
 namespace Catch {
 
-    Color::Color( Code _colorCode ) { use( _colorCode ); }
-    Color::Color( Color&& rhs ) noexcept {
+    Colour::Colour( Code _colourCode ) { use( _colourCode ); }
+    Colour::Colour( Colour&& rhs ) noexcept {
         m_moved = rhs.m_moved;
         rhs.m_moved = true;
     }
-    Color& Color::operator=( Color&& rhs ) noexcept {
+    Colour& Colour::operator=( Colour&& rhs ) noexcept {
         m_moved = rhs.m_moved;
         rhs.m_moved  = true;
         return *this;
     }
 
-    Color::~Color(){ if( !m_moved ) use( None ); }
+    Colour::~Colour(){ if( !m_moved ) use( None ); }
 
-    void Color::use( Code _colorCode ) {
-        static IColorImpl* impl = platformColorInstance();
-        impl->use( _colorCode );
+    void Colour::use( Code _colourCode ) {
+        static IColourImpl* impl = platformColourInstance();
+        impl->use( _colourCode );
     }
 
-    std::ostream& operator << ( std::ostream& os, Color const& ) {
+    std::ostream& operator << ( std::ostream& os, Colour const& ) {
         return os;
     }
 
@@ -7756,7 +7756,7 @@ namespace Catch {
 #    pragma clang diagnostic pop
 #endif
 
-// end catch_console_color.cpp
+// end catch_console_colour.cpp
 // start catch_context.cpp
 
 namespace Catch {
@@ -8566,10 +8566,10 @@ namespace Catch {
 
         auto matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
         for( auto const& testCaseInfo : matchedTestCases ) {
-            Color::Code color = testCaseInfo.isHidden()
-                ? Color::SecondaryText
-                : Color::None;
-            Color colorGuard( color );
+            Colour::Code colour = testCaseInfo.isHidden()
+                ? Colour::SecondaryText
+                : Colour::None;
+            Colour colourGuard( colour );
 
             Catch::cout() << Column( testCaseInfo.name ).initialIndent( 2 ).indent( 4 ) << "\n";
             if( config.verbosity() >= Verbosity::High ) {
@@ -10382,7 +10382,7 @@ namespace Catch {
         const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
         if ( !exceptions.empty() ) {
             m_startupExceptions = true;
-            Color colorGuard( Color::Red );
+            Colour colourGuard( Colour::Red );
             Catch::cerr() << "Errors occurred during startup!" << '\n';
             // iterate over all exceptions and notify user
             for ( const auto& ex_ptr : exceptions ) {
@@ -10423,7 +10423,7 @@ namespace Catch {
         auto result = m_cli.parse( clara::Args( argc, argv ) );
         if( !result ) {
             Catch::cerr()
-                << Color( Color::Red )
+                << Colour( Colour::Red )
                 << "\nError(s) in input:\n"
                 << Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
@@ -12501,8 +12501,8 @@ namespace {
     const char* passedString() { return "passed"; }
 #endif
 
-    // Color::LightGrey
-    Catch::Color::Code dimColor() { return Catch::Color::FileName; }
+    // Colour::LightGrey
+    Catch::Colour::Code dimColour() { return Catch::Colour::FileName; }
 
     std::string bothOrAll( std::size_t count ) {
         return count == 1 ? std::string() :
@@ -12513,7 +12513,7 @@ namespace {
 
 namespace Catch {
 namespace {
-// Color, message variants:
+// Colour, message variants:
 // - white: No tests ran.
 // -   red: Failed [both/all] N test cases, failed [both/all] M assertions.
 // - white: Passed [both/all] N test cases (no assertions).
@@ -12523,7 +12523,7 @@ void printTotals(std::ostream& out, const Totals& totals) {
     if (totals.testCases.total() == 0) {
         out << "No tests ran.";
     } else if (totals.testCases.failed == totals.testCases.total()) {
-        Color color(Color::ResultError);
+        Colour colour(Colour::ResultError);
         const std::string qualify_assertions_failed =
             totals.assertions.failed == totals.assertions.total() ?
             bothOrAll(totals.assertions.failed) : std::string();
@@ -12538,12 +12538,12 @@ void printTotals(std::ostream& out, const Totals& totals) {
             << pluralise(totals.testCases.total(), "test case")
             << " (no assertions).";
     } else if (totals.assertions.failed) {
-        Color color(Color::ResultError);
+        Colour colour(Colour::ResultError);
         out <<
             "Failed " << pluralise(totals.testCases.failed, "test case") << ", "
             "failed " << pluralise(totals.assertions.failed, "assertion") << '.';
     } else {
-        Color color(Color::ResultSuccess);
+        Colour colour(Colour::ResultSuccess);
         out <<
             "Passed " << bothOrAll(totals.testCases.passed)
             << pluralise(totals.testCases.passed, "test case") <<
@@ -12570,77 +12570,77 @@ public:
 
         switch (result.getResultType()) {
         case ResultWas::Ok:
-            printResultType(Color::ResultSuccess, passedString());
+            printResultType(Colour::ResultSuccess, passedString());
             printOriginalExpression();
             printReconstructedExpression();
             if (!result.hasExpression())
-                printRemainingMessages(Color::None);
+                printRemainingMessages(Colour::None);
             else
                 printRemainingMessages();
             break;
         case ResultWas::ExpressionFailed:
             if (result.isOk())
-                printResultType(Color::ResultSuccess, failedString() + std::string(" - but was ok"));
+                printResultType(Colour::ResultSuccess, failedString() + std::string(" - but was ok"));
             else
-                printResultType(Color::Error, failedString());
+                printResultType(Colour::Error, failedString());
             printOriginalExpression();
             printReconstructedExpression();
             printRemainingMessages();
             break;
         case ResultWas::ThrewException:
-            printResultType(Color::Error, failedString());
+            printResultType(Colour::Error, failedString());
             printIssue("unexpected exception with message:");
             printMessage();
             printExpressionWas();
             printRemainingMessages();
             break;
         case ResultWas::FatalErrorCondition:
-            printResultType(Color::Error, failedString());
+            printResultType(Colour::Error, failedString());
             printIssue("fatal error condition with message:");
             printMessage();
             printExpressionWas();
             printRemainingMessages();
             break;
         case ResultWas::DidntThrowException:
-            printResultType(Color::Error, failedString());
+            printResultType(Colour::Error, failedString());
             printIssue("expected exception, got none");
             printExpressionWas();
             printRemainingMessages();
             break;
         case ResultWas::Info:
-            printResultType(Color::None, "info");
+            printResultType(Colour::None, "info");
             printMessage();
             printRemainingMessages();
             break;
         case ResultWas::Warning:
-            printResultType(Color::None, "warning");
+            printResultType(Colour::None, "warning");
             printMessage();
             printRemainingMessages();
             break;
         case ResultWas::ExplicitFailure:
-            printResultType(Color::Error, failedString());
+            printResultType(Colour::Error, failedString());
             printIssue("explicitly");
-            printRemainingMessages(Color::None);
+            printRemainingMessages(Colour::None);
             break;
             // These cases are here to prevent compiler warnings
         case ResultWas::Unknown:
         case ResultWas::FailureBit:
         case ResultWas::Exception:
-            printResultType(Color::Error, "** internal error **");
+            printResultType(Colour::Error, "** internal error **");
             break;
         }
     }
 
 private:
     void printSourceInfo() const {
-        Color colorGuard(Color::FileName);
+        Colour colourGuard(Colour::FileName);
         stream << result.getSourceInfo() << ':';
     }
 
-    void printResultType(Color::Code color, std::string const& passOrFail) const {
+    void printResultType(Colour::Code colour, std::string const& passOrFail) const {
         if (!passOrFail.empty()) {
             {
-                Color colorGuard(color);
+                Colour colourGuard(colour);
                 stream << ' ' << passOrFail;
             }
             stream << ':';
@@ -12655,7 +12655,7 @@ private:
         if (result.hasExpression()) {
             stream << ';';
             {
-                Color color(dimColor());
+                Colour colour(dimColour());
                 stream << " expression was:";
             }
             printOriginalExpression();
@@ -12671,7 +12671,7 @@ private:
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
             {
-                Color color(dimColor());
+                Colour colour(dimColour());
                 stream << " for: ";
             }
             stream << result.getExpandedExpression();
@@ -12685,7 +12685,7 @@ private:
         }
     }
 
-    void printRemainingMessages(Color::Code color = dimColor()) {
+    void printRemainingMessages(Colour::Code colour = dimColour()) {
         if (itMessage == messages.end())
             return;
 
@@ -12694,7 +12694,7 @@ private:
         const std::size_t N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
         {
-            Color colorGuard(color);
+            Colour colourGuard(colour);
             stream << " with " << pluralise(N, "message") << ':';
         }
 
@@ -12703,7 +12703,7 @@ private:
             if (printInfoMessages || itMessage->type != ResultWas::Info) {
                 stream << " '" << itMessage->message << '\'';
                 if (++itMessage != itEnd) {
-                    Color colorGuard(dimColor());
+                    Colour colourGuard(dimColour());
                     stream << " and";
                 }
             }
@@ -12796,13 +12796,13 @@ public:
         : stream(_stream),
         stats(_stats),
         result(_stats.assertionResult),
-        color(Color::None),
+        colour(Colour::None),
         message(result.getMessage()),
         messages(_stats.infoMessages),
         printInfoMessages(_printInfoMessages) {
         switch (result.getResultType()) {
         case ResultWas::Ok:
-            color = Color::Success;
+            colour = Colour::Success;
             passOrFail = "PASSED";
             //if( result.hasMessage() )
             if (_stats.infoMessages.size() == 1)
@@ -12812,10 +12812,10 @@ public:
             break;
         case ResultWas::ExpressionFailed:
             if (result.isOk()) {
-                color = Color::Success;
+                colour = Colour::Success;
                 passOrFail = "FAILED - but was ok";
             } else {
-                color = Color::Error;
+                colour = Colour::Error;
                 passOrFail = "FAILED";
             }
             if (_stats.infoMessages.size() == 1)
@@ -12824,7 +12824,7 @@ public:
                 messageLabel = "with messages";
             break;
         case ResultWas::ThrewException:
-            color = Color::Error;
+            colour = Colour::Error;
             passOrFail = "FAILED";
             messageLabel = "due to unexpected exception with ";
             if (_stats.infoMessages.size() == 1)
@@ -12833,12 +12833,12 @@ public:
                 messageLabel += "messages";
             break;
         case ResultWas::FatalErrorCondition:
-            color = Color::Error;
+            colour = Colour::Error;
             passOrFail = "FAILED";
             messageLabel = "due to a fatal error condition";
             break;
         case ResultWas::DidntThrowException:
-            color = Color::Error;
+            colour = Colour::Error;
             passOrFail = "FAILED";
             messageLabel = "because no exception was thrown where one was expected";
             break;
@@ -12850,7 +12850,7 @@ public:
             break;
         case ResultWas::ExplicitFailure:
             passOrFail = "FAILED";
-            color = Color::Error;
+            colour = Colour::Error;
             if (_stats.infoMessages.size() == 1)
                 messageLabel = "explicitly with message";
             if (_stats.infoMessages.size() > 1)
@@ -12861,7 +12861,7 @@ public:
         case ResultWas::FailureBit:
         case ResultWas::Exception:
             passOrFail = "** internal error **";
-            color = Color::Error;
+            colour = Colour::Error;
             break;
         }
     }
@@ -12881,13 +12881,13 @@ public:
 private:
     void printResultType() const {
         if (!passOrFail.empty()) {
-            Color colorGuard(color);
+            Colour colourGuard(colour);
             stream << passOrFail << ":\n";
         }
     }
     void printOriginalExpression() const {
         if (result.hasExpression()) {
-            Color colorGuard(Color::OriginalExpression);
+            Colour colourGuard(Colour::OriginalExpression);
             stream << "  ";
             stream << result.getExpressionInMacro();
             stream << '\n';
@@ -12896,7 +12896,7 @@ private:
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
             stream << "with expansion:\n";
-            Color colorGuard(Color::ReconstructedExpression);
+            Colour colourGuard(Colour::ReconstructedExpression);
             stream << Column(result.getExpandedExpression()).indent(2) << '\n';
         }
     }
@@ -12910,14 +12910,14 @@ private:
         }
     }
     void printSourceInfo() const {
-        Color colorGuard(Color::FileName);
+        Colour colourGuard(Colour::FileName);
         stream << result.getSourceInfo() << ": ";
     }
 
     std::ostream& stream;
     AssertionStats const& stats;
     AssertionResult const& result;
-    Color::Code color;
+    Colour::Code colour;
     std::string passOrFail;
     std::string messageLabel;
     std::string message;
@@ -13139,7 +13139,7 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     m_tablePrinter->close();
     if (_sectionStats.missingAssertions) {
         lazyPrint();
-        Color color(Color::ResultError);
+        Colour colour(Colour::ResultError);
         if (m_sectionStack.size() > 1)
             stream << "\nNo assertions in section";
         else
@@ -13219,7 +13219,7 @@ void ConsoleReporter::lazyPrintWithoutClosingBenchmarkTable() {
 }
 void ConsoleReporter::lazyPrintRunInfo() {
     stream << '\n' << getLineOfChars<'~'>() << '\n';
-    Color color(Color::SecondaryText);
+    Colour colour(Colour::SecondaryText);
     stream << currentTestRunInfo->name
         << " is a Catch v" << libraryVersion() << " host application.\n"
         << "Run with -? for options\n\n";
@@ -13240,7 +13240,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     printOpenHeader(currentTestCaseInfo->name);
 
     if (m_sectionStack.size() > 1) {
-        Color colorGuard(Color::Headers);
+        Colour colourGuard(Colour::Headers);
 
         auto
             it = m_sectionStack.begin() + 1, // Skip first section (test case)
@@ -13253,7 +13253,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
 
     if (!lineInfo.empty()) {
         stream << getLineOfChars<'-'>() << '\n';
-        Color colorGuard(Color::FileName);
+        Colour colourGuard(Colour::FileName);
         stream << lineInfo << '\n';
     }
     stream << getLineOfChars<'.'>() << '\n' << std::endl;
@@ -13266,7 +13266,7 @@ void ConsoleReporter::printClosedHeader(std::string const& _name) {
 void ConsoleReporter::printOpenHeader(std::string const& _name) {
     stream << getLineOfChars<'-'>() << '\n';
     {
-        Color colorGuard(Color::Headers);
+        Colour colourGuard(Colour::Headers);
         printHeaderString(_name);
     }
 }
@@ -13284,9 +13284,9 @@ void ConsoleReporter::printHeaderString(std::string const& _string, std::size_t 
 
 struct SummaryColumn {
 
-    SummaryColumn( std::string _label, Color::Code _color )
+    SummaryColumn( std::string _label, Colour::Code _colour )
     :   label( std::move( _label ) ),
-        color( _color ) {}
+        colour( _colour ) {}
     SummaryColumn addRow( std::size_t count ) {
         ReusableStringStream rss;
         rss << count;
@@ -13302,16 +13302,16 @@ struct SummaryColumn {
     }
 
     std::string label;
-    Color::Code color;
+    Colour::Code colour;
     std::vector<std::string> rows;
 
 };
 
 void ConsoleReporter::printTotals( Totals const& totals ) {
     if (totals.testCases.total() == 0) {
-        stream << Color(Color::Warning) << "No tests ran\n";
+        stream << Colour(Colour::Warning) << "No tests ran\n";
     } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {
-        stream << Color(Color::ResultSuccess) << "All tests passed";
+        stream << Colour(Colour::ResultSuccess) << "All tests passed";
         stream << " ("
             << pluralise(totals.assertions.passed, "assertion") << " in "
             << pluralise(totals.testCases.passed, "test case") << ')'
@@ -13319,16 +13319,16 @@ void ConsoleReporter::printTotals( Totals const& totals ) {
     } else {
 
         std::vector<SummaryColumn> columns;
-        columns.push_back(SummaryColumn("", Color::None)
+        columns.push_back(SummaryColumn("", Colour::None)
                           .addRow(totals.testCases.total())
                           .addRow(totals.assertions.total()));
-        columns.push_back(SummaryColumn("passed", Color::Success)
+        columns.push_back(SummaryColumn("passed", Colour::Success)
                           .addRow(totals.testCases.passed)
                           .addRow(totals.assertions.passed));
-        columns.push_back(SummaryColumn("failed", Color::ResultError)
+        columns.push_back(SummaryColumn("failed", Colour::ResultError)
                           .addRow(totals.testCases.failed)
                           .addRow(totals.assertions.failed));
-        columns.push_back(SummaryColumn("failed as expected", Color::ResultExpectedFailure)
+        columns.push_back(SummaryColumn("failed as expected", Colour::ResultExpectedFailure)
                           .addRow(totals.testCases.failedButOk)
                           .addRow(totals.assertions.failedButOk));
 
@@ -13344,10 +13344,10 @@ void ConsoleReporter::printSummaryRow(std::string const& label, std::vector<Summ
             if (value != "0")
                 stream << value;
             else
-                stream << Color(Color::Warning) << "- none -";
+                stream << Colour(Colour::Warning) << "- none -";
         } else if (value != "0") {
-            stream << Color(Color::LightGrey) << " | ";
-            stream << Color(col.color)
+            stream << Colour(Colour::LightGrey) << " | ";
+            stream << Colour(col.colour)
                 << value << ' ' << col.label;
         }
     }
@@ -13364,14 +13364,14 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
         while (failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH - 1)
             findMax(failedRatio, failedButOkRatio, passedRatio)--;
 
-        stream << Color(Color::Error) << std::string(failedRatio, '=');
-        stream << Color(Color::ResultExpectedFailure) << std::string(failedButOkRatio, '=');
+        stream << Colour(Colour::Error) << std::string(failedRatio, '=');
+        stream << Colour(Colour::ResultExpectedFailure) << std::string(failedButOkRatio, '=');
         if (totals.testCases.allPassed())
-            stream << Color(Color::ResultSuccess) << std::string(passedRatio, '=');
+            stream << Colour(Colour::ResultSuccess) << std::string(passedRatio, '=');
         else
-            stream << Color(Color::Success) << std::string(passedRatio, '=');
+            stream << Colour(Colour::Success) << std::string(passedRatio, '=');
     } else {
-        stream << Color(Color::Warning) << std::string(CATCH_CONFIG_CONSOLE_WIDTH - 1, '=');
+        stream << Colour(Colour::Warning) << std::string(CATCH_CONFIG_CONSOLE_WIDTH - 1, '=');
     }
     stream << '\n';
 }

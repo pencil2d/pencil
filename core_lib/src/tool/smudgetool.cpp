@@ -51,6 +51,9 @@ void SmudgeTool::loadSettings()
     properties.feather = settings.value("smudgeFeather", 48.0).toDouble();
     properties.pressure = false;
     properties.stabilizerLevel = -1;
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
 void SmudgeTool::resetToDefault()

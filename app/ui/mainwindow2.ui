@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>41</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -135,7 +135,6 @@
      </property>
      <addaction name="actionOnionPrev"/>
      <addaction name="actionOnionNext"/>
-     <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
     <widget class="QMenu" name="menuZoom">
      <property name="title">
@@ -825,7 +824,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>MultiLayer Onion Skin</string>
+    <string>Multilayer Onion Skin</string>
    </property>
   </action>
   <action name="actionLoopControl">

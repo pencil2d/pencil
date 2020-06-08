@@ -86,6 +86,7 @@ Status PlaybackManager::save(Object* o)
     data->setMarkInFrameNumber(mMarkInFrame);
     data->setMarkOutFrameNumber(mMarkOutFrame);
     data->setFrameRate(mFps);
+    data->setCurrentFrame(editor()->currentFrame());
     return Status::OK;
 }
 

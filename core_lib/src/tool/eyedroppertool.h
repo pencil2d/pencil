@@ -20,6 +20,8 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 
+class LayerBitmap;
+class LayerVector;
 
 class EyedropperTool : public BaseTool
 {
@@ -37,6 +39,12 @@ public:
 
     /** Updates front color for bitmap and color index for vector */
     void updateFrontColor();
+
+private:
+    /** Retrieves color of the pixel under the cursor for a bitmap layer */
+    QColor getBitmapColor(LayerBitmap* layer);
+    /** Retrieves the color index of the pixel under the cursor for a vector layer */
+    int getVectorColor(LayerVector *layer);
 };
 
 #endif // EYEDROPPERTOOL_H

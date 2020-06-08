@@ -147,6 +147,20 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
     endStroke();
 }
 
+bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
+{
+    mQuickSizingProperties.clear();
+    if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
+    {
+        mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    }
+    else
+    {
+        mQuickSizingProperties.insert(Qt::ControlModifier, TOLERANCE);
+    }
+    return BaseTool::startAdjusting(modifiers, argStep);
+}
+
 void BucketTool::paintBitmap(Layer* layer)
 {
     Layer* targetLayer = layer; // by default

@@ -70,6 +70,7 @@ public slots:
     void openPegAlignDialog();
     void closePegAlignDialog();
     void currentLayerChanged();
+    void selectionChanged();
 
 public:
     void newDocument(bool force = false);
@@ -126,7 +127,7 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    void showPresetDialog();
+    void tryLoadPreset();
 
     void openPalette();
     void importPalette();

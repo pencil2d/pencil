@@ -586,9 +586,11 @@ void CanvasPainter::paintOverlayCenter(QPainter &painter)
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    int offset = OVERLAY_SAFE_CENTER_CROSS_SIZE;
-    painter.drawLine(rect.center().x()-offset, rect.center().y(), rect.center().x()+offset, rect.center().y());
-    painter.drawLine(rect.center().x(), rect.center().y()-offset, rect.center().x(), rect.center().y()+offset);
+    QPoint offsetX(OVERLAY_SAFE_CENTER_CROSS_SIZE, 0), offsetY(0, OVERLAY_SAFE_CENTER_CROSS_SIZE);
+    painter.drawLine(rect.center(), rect.center() - offsetX);
+    painter.drawLine(rect.center(), rect.center() + offsetX);
+    painter.drawLine(rect.center(), rect.center() - offsetY);
+    painter.drawLine(rect.center(), rect.center() + offsetY);
 
     painter.restore();
 }

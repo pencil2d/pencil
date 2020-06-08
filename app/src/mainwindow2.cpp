@@ -43,6 +43,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
+#include "selectionmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
 
@@ -121,6 +122,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
     readSettings();
 
     updateZoomLabel();
+    selectionChanged();
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
@@ -131,7 +133,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
 
-    showPresetDialog();
+    tryLoadPreset();
 }
 
 MainWindow2::~MainWindow2()
@@ -271,6 +273,7 @@ void MainWindow2::createMenus()
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
     connect(ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste);
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
@@ -316,7 +319,6 @@ void MainWindow2::createMenus()
 
     bindActionWithSetting(ui->actionOnionPrev, SETTING::PREV_ONION);
     bindActionWithSetting(ui->actionOnionNext, SETTING::NEXT_ONION);
-    bindActionWithSetting(ui->actionMultiLayerOnionSkin, SETTING::MULTILAYER_ONION);
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -434,6 +436,7 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty())
     {
         mRecentFileMenu->clear();
+        mRecentFileMenu->saveToDisk();
         QMessageBox::information(this, nullptr,
                                  tr("\n\n You have successfully cleared the list"),
                                  QMessageBox::Ok);
@@ -479,6 +482,12 @@ void MainWindow2::currentLayerChanged()
     }
 }
 
+void MainWindow2::selectionChanged()
+{
+    bool somethingSelected = mEditor->select()->somethingSelected();
+    ui->menuSelection->setEnabled(somethingSelected);
+}
+
 void MainWindow2::closeEvent(QCloseEvent* event)
 {
     if (m2ndCloseEvent)
@@ -516,18 +525,7 @@ void MainWindow2::newDocument(bool force)
     }
     else if (maybeSave())
     {
-        if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
-        {
-            showPresetDialog();
-        }
-        else
-        {
-            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
-            newObjectFromPresets(defaultPreset);
-
-            setWindowTitle(PENCIL_WINDOW_TITLE);
-            updateSaveState();
-        }
+        tryLoadPreset();
     }
 }
 
@@ -660,8 +658,12 @@ bool MainWindow2::openObject(QString strFilePath)
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, object->filePath());
 
-    mRecentFileMenu->addRecentFile(object->filePath());
-    mRecentFileMenu->saveToDisk();
+    // Add to recent file list, but only if we are
+    if (!object->filePath().isEmpty())
+    {
+        mRecentFileMenu->addRecentFile(object->filePath());
+        mRecentFileMenu->saveToDisk();
+    }
 
     setWindowTitle(object->filePath().prepend("[*]"));
     setWindowModified(false);
@@ -1065,10 +1067,14 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     }
     mEditor->setObject(object);
     object->setFilePath(QString());
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
+    updateSaveState();
+
     return true;
 }
 
-void  MainWindow2::showPresetDialog()
+void  MainWindow2::tryLoadPreset()
 {
     if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
     {
@@ -1088,6 +1094,11 @@ void  MainWindow2::showPresetDialog()
             }
         });
         presetDialog->open();
+    }
+    else
+    {
+        int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+        newObjectFromPresets(defaultPreset);
     }
 }
 

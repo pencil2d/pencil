@@ -54,8 +54,9 @@ void SelectTool::beginSelection()
     // paint and apply the transformation
     mScribbleArea->paintTransformedSelection();
     mScribbleArea->applyTransformedSelection();
+    mMoveMode = selectMan->validateMoveMode(getLastPoint());
 
-    if (selectMan->somethingSelected()) // there is something selected
+    if (selectMan->somethingSelected() && mMoveMode != MoveMode::NONE) // there is something selected
     {
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
@@ -63,18 +64,10 @@ void SelectTool::beginSelection()
         }
 
         mAnchorOriginPoint = selectMan->whichAnchorPoint(getLastPoint());
-
-        // the user did not click on one of the corners
-        if (selectMan->validateMoveMode(getLastPoint()) == MoveMode::NONE)
-        {
-            const QRectF& newRect = QRectF(getLastPoint(), getLastPoint());
-            selectMan->setSelection(newRect);
-        }
     }
     else
     {
-        selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(),1,1));
-        mMoveMode = MoveMode::NONE;
+        selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     }
     mScribbleArea->update();
 }
@@ -167,17 +160,17 @@ void SelectTool::keepSelection()
     if (mCurrentLayer->type() == Layer::BITMAP) {
         if (!selectMan->myTempTransformedSelectionRect().isValid())
         {
-            selectMan->setSelection(selectMan->myTempTransformedSelectionRect().normalized());
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect().normalized(), true);
         }
         else
         {
-            selectMan->setSelection(selectMan->myTempTransformedSelectionRect());
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), true);
         }
     }
     else if (mCurrentLayer->type() == Layer::VECTOR)
     {
         VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-        selectMan->setSelection(vectorImage->getSelectionRect());
+        selectMan->setSelection(vectorImage->getSelectionRect(), false);
     }
 }
 

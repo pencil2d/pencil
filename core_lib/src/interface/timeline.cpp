@@ -141,6 +141,7 @@ void TimeLine::initUI()
     zoomSlider->setValue(mTracks->getFrameSize());
     zoomSlider->setToolTip(tr("Adjust frame width"));
     zoomSlider->setOrientation(Qt::Horizontal);
+    zoomSlider->setFocusPolicy(Qt::TabFocus);
 
     timelineButtons->addWidget(keyLabel);
     timelineButtons->addWidget(addKeyButton);

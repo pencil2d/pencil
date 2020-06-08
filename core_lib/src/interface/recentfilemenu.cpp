@@ -51,16 +51,16 @@ void RecentFileMenu::clear()
     mRecentFiles.clear();
     mRecentActions.clear();
     addAction(mEmptyAction);
-    saveToDisk();
 }
 
 void RecentFileMenu::setRecentFiles(const QStringList& filenames)
 {
     clear();
 
+    // Iterate in reverse because items are prepended to the list when first added
     for (auto filename = filenames.crbegin(); filename != filenames.crend(); filename++)
     {
-        if (*filename != "")
+        if (!filename->isEmpty())
         {
             addRecentFile(*filename);
         }
@@ -114,7 +114,10 @@ void RecentFileMenu::addRecentFile(QString filename)
         addAction(action);
         addAction(mClearSeparator);
         addAction(mClearAction);
-        QObject::connect(mClearAction, &QAction::triggered, this, &RecentFileMenu::clear);
+        QObject::connect(mClearAction, &QAction::triggered, [this] {
+            clear();
+            saveToDisk();
+        });
     }
     else
     {

@@ -518,7 +518,8 @@ Status MovieExporter::executeFFmpeg(const QString& cmd, const QStringList& args,
 
     Status status = Status::OK;
     DebugDetails dd;
-    if (ffmpeg.waitForStarted() == true)
+    dd << QStringLiteral("Command: %1 %2").arg(cmd).arg(args.join(' '));
+    if (ffmpeg.waitForStarted())
     {
         while(ffmpeg.state() == QProcess::Running)
         {
@@ -630,6 +631,10 @@ Status MovieExporter::executeFFMpegPipe(const QString& cmd, const QStringList& a
     // FFmpeg writes to stderr only for some reason, so we just read both channels together
     ffmpeg.setProcessChannelMode(QProcess::MergedChannels);
     ffmpeg.start(cmd, args);
+
+    Status status = Status::OK;
+    DebugDetails dd;
+    dd << QStringLiteral("Command: %1 %2").arg(cmd).arg(args.join(' '));
     if (ffmpeg.waitForStarted())
     {
         int framesGenerated = 0;
@@ -655,6 +660,7 @@ Status MovieExporter::executeFFMpegPipe(const QString& cmd, const QStringList& a
                 for (const QString& s : sList)
                 {
                     qDebug() << "[ffmpeg]" << s;
+                    dd << s;
                 }
                 if(output.startsWith("frame="))
                 {
@@ -685,21 +691,30 @@ Status MovieExporter::executeFFMpegPipe(const QString& cmd, const QStringList& a
         for (const QString& s : sList)
         {
             qDebug() << "[ffmpeg]" << s;
+            dd << s;
         }
 
-        if(ffmpeg.exitStatus() != QProcess::NormalExit)
+        if(ffmpeg.exitStatus() != QProcess::NormalExit  || ffmpeg.exitCode() != 0)
         {
-            qDebug() << "ERROR: FFmpeg crashed";
-            return Status::FAIL;
+            status = Status::FAIL;
+            status.setTitle(QObject::tr("Something went wrong"));
+            status.setDescription(QObject::tr("Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists."));
+            dd << QString("Exit status: ").append(QProcess::NormalExit ? "NormalExit": "CrashExit")
+               << QString("Exit code: %1").arg(ffmpeg.exitCode());
+            status.setDetails(dd);
+            return status;
         }
     }
     else
     {
-        qDebug() << "ERROR: Could not start FFmpeg.";
-        return Status::FAIL;
+        qDebug() << "ERROR: Could not execute FFmpeg.";
+        status = Status::FAIL;
+        status.setTitle(QObject::tr("Something went wrong"));
+        status.setDescription(QObject::tr("Couldn't start the video backend, please try again."));
+        status.setDetails(dd);
     }
 
-    return Status::OK;
+    return status;
 }
 
 Status MovieExporter::checkInputParameters(const ExportMovieDesc& desc)

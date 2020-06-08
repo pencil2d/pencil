@@ -56,6 +56,8 @@ void PencilTool::loadSettings()
     properties.useFillContour = false;
     //    properties.invisibility = 1;
     //    properties.preserveAlpha = 0;
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
 
 void PencilTool::resetToDefault()

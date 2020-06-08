@@ -475,8 +475,21 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
             mTabletInUse = false;
         }
     }
+
+#if defined Q_OS_LINUX
+    // Generate mouse events on linux to work around bug where the
+    // widget will not receive mouseEnter/mouseLeave
+    // events and the cursor will not update correctly.
+    // See https://codereview.qt-project.org/c/qt/qtbase/+/255384
+    // Scribblearea should not do anything with the mouse event when mTabletInUse is true.
+    event.ignore();
+#else
     // Always accept so that mouse events are not generated (theoretically)
+    // Unfortunately Windows sometimes generates the events anyway
+    // As long as mTabletInUse is true, mouse events *should* be ignored even when
+    // the are generated
     event.accept();
+#endif
 }
 
 void ScribbleArea::pointerPressEvent(PointerEvent* event)
@@ -504,7 +517,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
     if (isPressed && mQuickSizing)
     {
         //qDebug() << "Start Adjusting" << event->buttons();
-        if (isDoingAssistedToolAdjustment(event->modifiers()))
+        if (currentTool()->startAdjusting(event->modifiers(), 1))
         {
             return;
         }
@@ -673,30 +686,6 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
     updateAllFrames();
 }
 
-bool ScribbleArea::isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod)
-{
-    if ((keyMod == Qt::ShiftModifier) && (currentTool()->properties.width > -1))
-    {
-        //adjust width if not locked
-        currentTool()->startAdjusting(WIDTH, 1);
-        return true;
-    }
-    if ((keyMod == Qt::ControlModifier) && (currentTool()->properties.feather > -1))
-    {
-        //adjust feather if not locked
-        currentTool()->startAdjusting(FEATHER, 1);
-        return true;
-    }
-    if ((keyMod == (Qt::ControlModifier | Qt::AltModifier)) &&
-        (currentTool()->properties.feather > -1))
-    {
-        //adjust feather if not locked
-        currentTool()->startAdjusting(FEATHER, 0);
-        return true;
-    }
-    return false;
-}
-
 void ScribbleArea::showLayerNotVisibleWarning()
 {
     QMessageBox::warning(this, tr("Warning"),
@@ -839,7 +828,7 @@ void ScribbleArea::refreshVector(const QRectF& rect, int rad)
 void ScribbleArea::paintCanvasCursor(QPainter& painter)
 {
     QTransform view = mEditor->view()->getView();
-    QPointF mousePos = currentTool()->getCurrentPoint();
+    QPointF mousePos = currentTool()->isAdjusting() ? currentTool()->getCurrentPressPoint() : currentTool()->getCurrentPoint();
     int centerCal = mCursorImg.width() / 2;
 
     mTransformedCursorPos = view.map(mousePos);
@@ -869,7 +858,7 @@ void ScribbleArea::updateCanvasCursor()
     qreal brushFeather = currentTool()->properties.feather;
     if (currentTool()->isAdjusting())
     {
-        mCursorImg = currentTool()->quickSizeCursor(static_cast<float>(brushWidth), static_cast<float>(brushFeather), scalingFac);
+        mCursorImg = currentTool()->quickSizeCursor(scalingFac);
     }
     else if (mEditor->preference()->isOn(SETTING::DOTTED_CURSOR))
     {
@@ -1090,7 +1079,12 @@ void ScribbleArea::paintSelectionVisuals()
     if (selectMan->currentSelectionPolygonF().count() < 4) { return; }
 
     QPolygonF lastSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->lastSelectionPolygonF());
-    QPolygonF currentSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->currentSelectionPolygonF());
+    QPolygonF currentSelectionPolygon = selectMan->currentSelectionPolygonF();
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        currentSelectionPolygon = currentSelectionPolygon.toPolygon();
+    }
+    currentSelectionPolygon = editor()->view()->mapPolygonToScreen(currentSelectionPolygon);
 
     TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
     mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
@@ -1356,7 +1350,7 @@ void ScribbleArea::applySelectionChanges()
         const QRectF& normalizedRect = selectMan->myTempTransformedSelectionRect().normalized();
         selectMan->setTempTransformedSelectionRect(normalizedRect);
     }
-    selectMan->setSelection(selectMan->myTempTransformedSelectionRect());
+    selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), false);
     paintTransformedSelection();
 
     // Calculate the new transformation based on the new selection
@@ -1364,7 +1358,6 @@ void ScribbleArea::applySelectionChanges()
 
     // apply the transformed selection to make the selection modification absolute.
     applyTransformedSelection();
-
 }
 
 void ScribbleArea::applyTransformedSelection()
@@ -1380,10 +1373,11 @@ void ScribbleArea::applyTransformedSelection()
     auto selectMan = mEditor->select();
     if (selectMan->somethingSelected())
     {
-        if (selectMan->mySelectionRect().isEmpty()) { return; }
+        if (selectMan->mySelectionRect().isEmpty() || selectMan->selectionTransform().isIdentity()) { return; }
 
         if (layer->type() == Layer::BITMAP)
         {
+            handleDrawingOnEmptyFrame();
             BitmapImage* bitmapImage = currentBitmapImage(layer);
             BitmapImage transformedImage = bitmapImage->transformed(selectMan->mySelectionRect().toRect(), selectMan->selectionTransform(), true);
 
@@ -1392,6 +1386,9 @@ void ScribbleArea::applyTransformedSelection()
         }
         else if (layer->type() == Layer::VECTOR)
         {
+            // Unfortunately this doesn't work right currently so vector transforms
+            // will always be applied on the previous keyframe when on an empty frame
+            //handleDrawingOnEmptyFrame();
             VectorImage* vectorImage = currentVectorImage(layer);
             vectorImage->applySelectionTransformation();
 
@@ -1419,11 +1416,9 @@ void ScribbleArea::cancelTransformedSelection()
             vectorImage->setSelectionTransformation(QTransform());
         }
 
-        mEditor->select()->setSelection(selectMan->mySelectionRect());
+        mEditor->select()->setSelection(selectMan->mySelectionRect(), false);
 
         selectMan->resetSelectionProperties();
-
-        updateCurrentFrame();
     }
 }
 
@@ -1552,6 +1547,8 @@ void ScribbleArea::deleteSelection()
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if (layer == nullptr) { return; }
+
+        handleDrawingOnEmptyFrame();
 
         mEditor->backup(tr("Delete Selection", "Undo Step: clear the selection area."));
 
