@@ -217,7 +217,7 @@ void ImportImageSeqDialog::importArbitrarySequence()
     {
         QMessageBox::warning(mParent,
                              tr("Warning"),
-                             tr("was unable to import") + failedFiles,
+                             tr("Unable to import") + failedFiles,
                              QMessageBox::Ok,
                              QMessageBox::Ok);
     }
