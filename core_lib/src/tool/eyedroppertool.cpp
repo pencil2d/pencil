@@ -56,7 +56,7 @@ QCursor EyedropperTool::cursor()
     }
 }
 
-QCursor EyedropperTool::cursor(const QColor colour)
+QCursor EyedropperTool::cursor(const QColor color)
 {
     QPixmap icon(":icons/eyedropper.png");
 
@@ -66,7 +66,7 @@ QCursor EyedropperTool::cursor(const QColor colour)
     QPainter painter(&pixmap);
     painter.drawPixmap(0, 0, icon);
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.setBrush(colour);
+    painter.setBrush(color);
     painter.drawRect(16, 16, 15, 15);
     painter.end();
 

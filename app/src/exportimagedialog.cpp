@@ -64,8 +64,8 @@ void ExportImageDialog::setDefaultRange(int startFrame, int endFrame, int endFra
     mEndFrame = endFrame;
     mEndFrameWithSounds = endFrameWithSounds;
 
-    SignalBlocker b1( ui->startSpinBox );
-    SignalBlocker b2( ui->endSpinBox );
+    QSignalBlocker b1( ui->startSpinBox );
+    QSignalBlocker b2( ui->endSpinBox );
 
     ui->startSpinBox->setValue( startFrame );
     ui->endSpinBox->setValue( endFrame );

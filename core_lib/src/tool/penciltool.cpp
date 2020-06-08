@@ -314,7 +314,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
     curve.setFilled(false);
     curve.setInvisibility(true);
     curve.setVariableWidth(false);
-    curve.setColourNumber(mEditor->color()->frontColorNumber());
+    curve.setColorNumber(mEditor->color()->frontColorNumber());
     VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
     vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), properties.vectorMergeEnabled);

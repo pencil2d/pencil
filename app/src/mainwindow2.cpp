@@ -415,7 +415,7 @@ void MainWindow2::createMenus()
 
 void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
 {
-    SignalBlocker b(action);
+    QSignalBlocker b(action);
     action->setChecked(bChecked);
 }
 
@@ -1321,11 +1321,11 @@ void MainWindow2::importPalette()
 void MainWindow2::openPalette()
 {
     int count = 0;
-    int maxNumber = mEditor->object()->getColourCount();
+    int maxNumber = mEditor->object()->getColorCount();
     bool openPalette = true;
     while (count < maxNumber)
     {
-        if (mEditor->object()->isColourInUse(count))
+        if (mEditor->object()->isColorInUse(count))
         {
             QMessageBox msgBox;
             msgBox.setText(tr("Opening palette, will replace the old palette.\n"

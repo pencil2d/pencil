@@ -396,7 +396,7 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
             painter.setBrush(QColor(60, 60, 60));
         }
         else if (selected)
-        {            
+        {
             painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
         }
 

@@ -155,7 +155,7 @@ FileType ImportImageSeqDialog::getFileType()
 
 void ImportImageSeqDialog::setSpace(int number)
 {
-    SignalBlocker b1(uiOptionsBox->spaceSpinBox);
+    QSignalBlocker b1(uiOptionsBox->spaceSpinBox);
     uiOptionsBox->spaceSpinBox->setValue(number);
 }
 

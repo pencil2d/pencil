@@ -192,8 +192,8 @@ void BucketTool::paintVector(Layer* layer)
     }
 
     vectorImage->applyWidthToSelection(properties.width);
-    vectorImage->applyColourToSelectedCurve(mEditor->color()->frontColorNumber());
-    vectorImage->applyColourToSelectedArea(mEditor->color()->frontColorNumber());
+    vectorImage->applyColorToSelectedCurve(mEditor->color()->frontColorNumber());
+    vectorImage->applyColorToSelectedArea(mEditor->color()->frontColorNumber());
 
     applyChanges();
 

@@ -423,7 +423,7 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
     vectorImage->outputImage(pImage, mViewTransform, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
 
     //painter.drawImage( QPoint( 0, 0 ), *pImage );
-    // Go through a Bitmap image to paint the onion skin colour
+    // Go through a Bitmap image to paint the onion skin color
     BitmapImage tempBitmapImage;
     tempBitmapImage.setImage(pImage);
 

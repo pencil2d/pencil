@@ -39,8 +39,8 @@ public:
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
 
-    bool usesColour(int index);
-    void removeColour(int index);
+    bool usesColor(int index);
+    void removeColor(int index);
     void moveColor(int start, int end);
 
 protected:

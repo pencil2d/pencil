@@ -117,15 +117,15 @@ void BackgroundWidget::drawShadow( QPainter& painter )
     int radius1 = 12;
     int radius2 = 8;
 
-    QColor colour = Qt::black;
+    QColor color = Qt::black;
     qreal opacity = 0.15;
 
     QLinearGradient shadow = QLinearGradient( 0, 0, 0, radius1 );
 
-    int r = colour.red();
-    int g = colour.green();
-    int b = colour.blue();
-    qreal a = colour.alphaF();
+    int r = color.red();
+    int g = color.green();
+    int b = color.blue();
+    qreal a = color.alphaF();
     shadow.setColorAt( 0.0, QColor( r, g, b, qRound( a * 255 * opacity ) ) );
     shadow.setColorAt( 1.0, QColor( r, g, b, 0 ) );
 

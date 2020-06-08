@@ -31,7 +31,7 @@ public:
     ToolType type() override { return EYEDROPPER; }
     void loadSettings() override;
     QCursor cursor() override;
-    QCursor cursor( const QColor colour );
+    QCursor cursor( const QColor color );
 
     void pointerPressEvent( PointerEvent* ) override;
     void pointerReleaseEvent( PointerEvent* event ) override;

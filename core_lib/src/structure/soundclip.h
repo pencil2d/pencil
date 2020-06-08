@@ -29,6 +29,7 @@ public:
     explicit SoundClip();
     explicit SoundClip(const SoundClip&);
     ~SoundClip() override;
+    SoundClip& operator=(const SoundClip& a);
 
     SoundClip* clone() override;
 

@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QtMath>
 #include <QFile>
+#include <QPainterPath>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -36,11 +37,11 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
     mImage = std::make_shared<QImage>(*a.mImage);
 }
 
-BitmapImage::BitmapImage(const QRect& rectangle, const QColor& colour)
+BitmapImage::BitmapImage(const QRect& rectangle, const QColor& color)
 {
     mBounds = rectangle;
     mImage = std::make_shared<QImage>(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
-    mImage->fill(colour.rgba());
+    mImage->fill(color.rgba());
     mMinBound = false;
 }
 
@@ -526,17 +527,17 @@ QRgb BitmapImage::pixel(QPoint p)
     return result;
 }
 
-void BitmapImage::setPixel(int x, int y, QRgb colour)
+void BitmapImage::setPixel(int x, int y, QRgb color)
 {
-    setPixel(QPoint(x, y), colour);
+    setPixel(QPoint(x, y), color);
 }
 
-void BitmapImage::setPixel(QPoint p, QRgb colour)
+void BitmapImage::setPixel(QPoint p, QRgb color)
 {
     setCompositionModeBounds(QRect(p, QSize(1,1)), true, QPainter::CompositionMode_SourceOver);
     if (mBounds.contains(p))
     {
-        image()->setPixel(p - mBounds.topLeft(), colour);
+        image()->setPixel(p - mBounds.topLeft(), color);
     }
     modification();
 }
@@ -746,7 +747,7 @@ QRgb BitmapImage::constScanLine(int x, int y) const
     return result;
 }
 
-void BitmapImage::scanLine(int x, int y, QRgb colour)
+void BitmapImage::scanLine(int x, int y, QRgb color)
 {
     extend(QPoint(x, y));
     if (mBounds.contains(QPoint(x, y)))
@@ -754,10 +755,10 @@ void BitmapImage::scanLine(int x, int y, QRgb colour)
         // Make sure color is premultiplied before calling
         *(reinterpret_cast<QRgb*>(image()->scanLine(y - mBounds.top())) + x - mBounds.left()) =
             qRgba(
-                qRed(colour),
-                qGreen(colour),
-                qBlue(colour),
-                qAlpha(colour));
+                qRed(color),
+                qGreen(color),
+                qBlue(color),
+                qAlpha(color));
     }
 }
 

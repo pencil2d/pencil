@@ -214,7 +214,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         QPointF curPoint = getCurrentPoint();
         QPointF anchorPoint = selectionRect.center();
-        mRotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, curPoint)) - selectMan->myRotation();
+        mRotatedAngle = qRadiansToDegrees(MathUtils::getDifferenceAngle(anchorPoint, curPoint)) - selectMan->myRotation();
     }
 }
 
