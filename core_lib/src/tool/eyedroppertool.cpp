@@ -98,7 +98,7 @@ void EyedropperTool::pointerMoveEvent(PointerEvent*)
         int pickedColor = getVectorColor(static_cast<LayerVector*>(layer));
         if (pickedColor >= 0)
         {
-            mScribbleArea->setCursor(cursor(mEditor->object()->getColour(pickedColor).colour));
+            mScribbleArea->setCursor(cursor(mEditor->object()->getColor(pickedColor).color));
         }
         else
         {
@@ -166,6 +166,6 @@ int EyedropperTool::getVectorColor(LayerVector* layer)
     }
 
     // Check fills
-    int colorNumber = vectorImage->getColourNumber(getLastPoint());
+    int colorNumber = vectorImage->getColorNumber(getLastPoint());
     return colorNumber;
 }

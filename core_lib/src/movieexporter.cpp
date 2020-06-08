@@ -518,7 +518,7 @@ Status MovieExporter::executeFFmpeg(const QString& cmd, const QStringList& args,
 
     Status status = Status::OK;
     DebugDetails dd;
-    dd << QStringLiteral("Command: ").append(strCmd);
+    dd << QStringLiteral("Command: %1 %2").arg(cmd).arg(args.join(' '));
     if (ffmpeg.waitForStarted())
     {
         while(ffmpeg.state() == QProcess::Running)
