@@ -18,7 +18,7 @@ win32-g++ {
 }
 
 win32-msvc* {
-    QMAKE_CXXFLAGS += /MP
+    QMAKE_CXXFLAGS += /MP /utf-8
 }
 
 macx {
