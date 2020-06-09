@@ -101,32 +101,43 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    ui->languageCombo->addItem(tr("Arabic (%1)").arg("عربى"), "ar");
-    ui->languageCombo->addItem(tr("Catalan (%1)").arg("Català"), "ca");
-    ui->languageCombo->addItem(tr("Czech (%1)").arg("čeština"), "cs");
-    ui->languageCombo->addItem(tr("Danish (%1)").arg("Dansk"), "da");
-    ui->languageCombo->addItem(tr("German (%1)").arg("Deutsche"), "de");
-    ui->languageCombo->addItem(tr("Greek (%1)").arg("γκρί"), "el");
-    ui->languageCombo->addItem(tr("English (%1)").arg("English"), "en");
-    ui->languageCombo->addItem(tr("Spanish (%1)").arg("Español"), "es");
-    ui->languageCombo->addItem(tr("Estonian (%1)").arg("Eestlane"), "et");
-    ui->languageCombo->addItem(tr("French (%1)").arg("Français"), "fr");
-    ui->languageCombo->addItem(tr("Hebrew (%1)").arg("עברית"), "he");
-    ui->languageCombo->addItem(tr("Hungarian (%1)").arg("Magyar"), "hu_HU");
-    ui->languageCombo->addItem(tr("Indonesian (%1)").arg("bahasa Indonesia"), "id");
-    ui->languageCombo->addItem(tr("Italian (%1)").arg("Italiano"), "it");
-    ui->languageCombo->addItem(tr("Japanese (%1)").arg("日本語"), "ja");
-    ui->languageCombo->addItem(tr("Kabyle (%1)").arg("Taqbaylit"), "kab");
-    ui->languageCombo->addItem(tr("Polish (%1)").arg("Polskie"), "pl");
-    ui->languageCombo->addItem(tr("Portuguese \u2013 Portugal (%1)").arg("Português Portugal"), "pt");
-    ui->languageCombo->addItem(tr("Portuguese \u2013 Brazil (%1)").arg("Português Brasil"), "pt_BR");
-    ui->languageCombo->addItem(tr("Russian (%1)").arg("русский"), "ru");
-    ui->languageCombo->addItem(tr("Slovene (%1)").arg("Slovenščina"), "sl");
-    ui->languageCombo->addItem(tr("Swedish (%1)").arg("svenska"), "sv");
-    ui->languageCombo->addItem(tr("Turkish (%1)").arg("Türk"), "tr");
-    ui->languageCombo->addItem(tr("Vietnamese (%1)").arg("Tiếng Việt"), "vi");
-    ui->languageCombo->addItem(tr("Chinese \u2013 China (%1)").arg("简体中文"), "zh_CN");
-    ui->languageCombo->addItem(tr("Chinese \u2013 Taiwan (%1)").arg("繁體中文"), "zh_TW");
+    const std::tuple<QString, QString, QString> languages [] =
+    {
+        // translatable string, endonym, locale code
+        { tr("Arabic"), QStringLiteral("عربى"), "ar" },
+        { tr("Catalan"), QStringLiteral("Català"), "ca" },
+        { tr("Czech"), QStringLiteral("čeština"), "cs" },
+        { tr("Danish"), QStringLiteral("Dansk"), "da" },
+        { tr("German"), QStringLiteral("Deutsche"), "de" },
+        { tr("Greek"), QStringLiteral("γκρί"), "el" },
+        { tr("English"), QStringLiteral("English"), "en" },
+        { tr("Spanish"), QStringLiteral("Español"), "es" },
+        { tr("Estonian"), QStringLiteral("Eestlane"), "et" },
+        { tr("French"), QStringLiteral("Français"), "fr" },
+        { tr("Hebrew"), QStringLiteral("עברית"), "he" },
+        { tr("Hungarian"), QStringLiteral("Magyar"), "hu_HU" },
+        { tr("Indonesian"), QStringLiteral("bahasa Indonesia"), "id" },
+        { tr("Italian"), QStringLiteral("Italiano"), "it" },
+        { tr("Japanese"), QStringLiteral("日本語"), "ja" },
+        { tr("Kabyle"), QStringLiteral("Taqbaylit"), "kab" },
+        { tr("Polish"), QStringLiteral("Polskie"), "pl" },
+        { tr("Portuguese \u2013 Portugal"), QStringLiteral("Português Portugal"), "pt" },
+        { tr("Portuguese \u2013 Brazil"), QStringLiteral("Português Brasil"), "pt_BR" },
+        { tr("Russian"), QStringLiteral("русский"), "ru" },
+        { tr("Slovene"), QStringLiteral("Slovenščina"), "sl" },
+        { tr("Swedish"), QStringLiteral("svenska"), "sv" },
+        { tr("Turkish"), QStringLiteral("Türk"), "tr" },
+        { tr("Vietnamese"), QStringLiteral(" Tiếng Việt"), "vi" },
+        { tr("Chinese \u2013 China"), QStringLiteral("简体中文"), "zh_CN" },
+        { tr("Chinese \u2013 Taiwan"), QStringLiteral("繁體中文"), "zh_TW" },
+    };
+
+    for (auto& lang : languages)
+    {
+        QString itemText = QStringLiteral("%1 (%2)").arg(std::get<0>(lang)).arg(std::get<1>(lang));
+        QString localeCode = std::get<2>(lang);
+        ui->languageCombo->addItem(itemText, localeCode);
+    }
 
     int value = settings.value("windowOpacity").toInt();
     ui->windowOpacityLevel->setValue(100 - value);
