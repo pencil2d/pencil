@@ -1501,7 +1501,7 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
     if (currentTool() != nullptr && eToolMode != currentTool()->type())
     {
-        qDebug() << "Set Current Tool" << BaseTool::TypeName(eToolMode);
+        //qDebug() << "Set Current Tool" << BaseTool::TypeName(eToolMode);
         if (BaseTool::TypeName(eToolMode) == "")
         {
             // tool does not exist
@@ -1596,18 +1596,20 @@ void ScribbleArea::paletteColorChanged(QColor color)
     updateAllVectorLayersAtCurrentFrame();
 }
 
-
 void ScribbleArea::floodFillError(int errorType)
 {
     QString message, error;
     if (errorType == 1) { message = tr("There is a gap in your drawing (or maybe you have zoomed too much)."); }
-    if (errorType == 2 || errorType == 3) message = tr("Sorry! This doesn't always work."
-                                                       "Please try again (zoom a bit, click at another location... )<br>"
-                                                       "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).");
+    if (errorType == 2 || errorType == 3)
+    {
+        message = tr("Sorry! This doesn't always work."
+                     "Please try again (zoom a bit, click at another location... )<br>"
+                     "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).");
+    }
 
-    if (errorType == 1) { error = tr("Out of bound."); }
-    if (errorType == 2) { error = tr("Could not find a closed path."); }
-    if (errorType == 3) { error = tr("Could not find the root index."); }
+    if (errorType == 1) { error = tr("Out of bound.", "Bucket tool fill error message"); }
+    if (errorType == 2) { error = tr("Could not find a closed path.", "Bucket tool fill error message"); }
+    if (errorType == 3) { error = tr("Could not find the root index.", "Bucket tool fill error message"); }
     QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok);
     mEditor->deselectAll();
 }

@@ -41,7 +41,7 @@ ShortcutsPage::ShortcutsPage( QWidget* parent )
     ui->setupUi(this);
     m_treeModel = new QStandardItemModel(this);
     m_treeModel->setColumnCount(2);
-    m_treeModel->setHorizontalHeaderLabels({ tr("Action"), tr("Shortcut") });
+    m_treeModel->setHorizontalHeaderLabels({ tr("Action", "Shortcut table header"), tr("Shortcut", "Shortcut table header") });
     treeModelLoadShortcutsSetting();
 
     ui->treeView->setModel(m_treeModel);

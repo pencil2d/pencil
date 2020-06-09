@@ -28,8 +28,8 @@ RecentFileMenu::RecentFileMenu(QString title, QWidget *parent) :
     mClearSeparator = new QAction(this);
     mClearSeparator->setSeparator(true);
 
-    mClearAction = new QAction(tr("Clear"), this); // share the same translation
-    mEmptyAction = new QAction(tr("Empty"), this);
+    mClearAction = new QAction(tr("Clear", "Clear Recent File menu"), this); // share the same translation
+    mEmptyAction = new QAction(tr("Empty", "Showing when Recent File Menu is empty"), this);
     mEmptyAction->setEnabled(false);
 }
 
