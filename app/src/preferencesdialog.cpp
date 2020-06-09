@@ -101,7 +101,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    const std::tuple<QString, QString, QString> languages [] =
+    QString languages [][3]
     {
         // translatable string, endonym, locale code
         { tr("Arabic"), QStringLiteral("عربى"), "ar" },
@@ -134,8 +134,8 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 
     for (auto& lang : languages)
     {
-        QString itemText = QStringLiteral("%1 (%2)").arg(std::get<0>(lang)).arg(std::get<1>(lang));
-        QString localeCode = std::get<2>(lang);
+        const QString itemText = QStringLiteral("%1 (%2)").arg(lang[0]).arg(lang[1]);
+        const QString localeCode = lang[2];
         ui->languageCombo->addItem(itemText, localeCode);
     }
 
