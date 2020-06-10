@@ -1755,7 +1755,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="428"/>
         <source>Select All</source>
-        <translation>Vælg Alt</translation>
+        <translation>Markér Alt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="433"/>
