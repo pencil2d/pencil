@@ -1760,7 +1760,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="433"/>
         <source>Deselect All</source>
-        <translation>Fravælg Alt</translation>
+        <translation>Afmarker Alt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="442"/>
