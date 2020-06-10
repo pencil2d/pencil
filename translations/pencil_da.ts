@@ -5243,7 +5243,7 @@ Kontroller markering, og prøv igen.</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
         <source>New Vector Layer</source>
-        <translation>Nyt Vector Lag</translation>
+        <translation>Nyt Vektor Lag</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
