@@ -1942,7 +1942,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="749"/>
         <source>New Vector Layer</source>
-        <translation>Nyt Vector Lag</translation>
+        <translation>Nyt Vektor Lag</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="758"/>
