@@ -5475,7 +5475,7 @@ Kontroller markering, og prøv igen.</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="80"/>
         <source>Select Tool (%1): Select an object</source>
-        <translation>Udvælgelsesværktøj (%1): Vælg et objekt</translation>
+        <translation>Udvælgelsesværktøj (%1): Markér et objekt</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="82"/>
