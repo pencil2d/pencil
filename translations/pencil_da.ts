@@ -4525,7 +4525,7 @@ Kontroller markering, og prøv igen.</translation>
         <location filename="../app/src/shortcutspage.cpp" line="296"/>
         <source>Deselect All</source>
         <comment>Shortcut</comment>
-        <translation>Fravælg alt</translation>
+        <translation>Afmarker alt</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="297"/>
