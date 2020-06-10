@@ -1616,7 +1616,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="106"/>
         <source>Selection</source>
-        <translation>Valg</translation>
+        <translation>Markering</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="130"/>
