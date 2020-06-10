@@ -149,7 +149,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="777"/>
         <source>Vector Layer</source>
-        <translation>Vector Lag</translation>
+        <translation>Vektor Lag</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="790"/>
