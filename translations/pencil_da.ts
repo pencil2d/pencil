@@ -2720,7 +2720,7 @@ Farve(-r) i strøg vil blive ændret ved denne handling!
         <source>Peg hole not found!
 Check selection, and please try again.</source>
         <translation>Peg hul ikke fundet!
-Kontroller valg, og prøv igen.</translation>
+Kontroller markering, og prøv igen.</translation>
     </message>
 </context>
 <context>
