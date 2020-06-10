@@ -1887,7 +1887,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="650"/>
         <source>Select</source>
-        <translation>Vælg</translation>
+        <translation>Markér</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="659"/>
