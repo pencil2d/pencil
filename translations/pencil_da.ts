@@ -5008,7 +5008,7 @@ Kontroller valg, og prøv igen.</translation>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1553"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
-        <translation>Slet valgte</translation>
+        <translation>Slet markering</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1569"/>
