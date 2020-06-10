@@ -2673,7 +2673,7 @@ Farve(-r) i strøg vil blive ændret ved denne handling!
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="53"/>
         <source>1) Select a reference area around center pegs.</source>
-        <translation>1) Vælg et referenceområde omkring midter peg.</translation>
+        <translation>1) Markér et referenceområde omkring midter peg.</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="60"/>
