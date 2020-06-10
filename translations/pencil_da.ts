@@ -1201,7 +1201,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="209"/>
         <source>Vector curve smoothing</source>
-        <translation>Vector kurve udglatning</translation>
+        <translation>Vektor kurve udglatning</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="229"/>
