@@ -728,7 +728,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="238"/>
         <source>Export keyframes only</source>
-        <translation>Eksporter kun nøgletegninger</translation>
+        <translation>Eksporter kun keyframes</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="177"/>
