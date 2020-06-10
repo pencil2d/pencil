@@ -4903,7 +4903,7 @@ Kontroller markering, og prøv igen.</translation>
         <location filename="../app/src/shortcutspage.cpp" line="359"/>
         <source>Select Tool</source>
         <comment>Shortcut</comment>
-        <translation>Udvælgelsesværktøj</translation>
+        <translation>Markeringssværktøj</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="360"/>
