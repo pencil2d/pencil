@@ -4795,7 +4795,7 @@ Kontroller markering, og prøv igen.</translation>
         <location filename="../app/src/shortcutspage.cpp" line="341"/>
         <source>Select All</source>
         <comment>Shortcut</comment>
-        <translation>Vælg Alt</translation>
+        <translation>Markér Alt</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="342"/>
