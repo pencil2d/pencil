@@ -199,7 +199,7 @@
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Select</source>
-        <translation>Udvælg</translation>
+        <translation>Markér</translation>
     </message>
     <message>
         <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
