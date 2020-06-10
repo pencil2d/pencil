@@ -1583,7 +1583,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../core_lib/src/structure/layervector.cpp" line="27"/>
         <source>Vector Layer</source>
-        <translation>Vector Lag</translation>
+        <translation>Vektor Lag</translation>
     </message>
 </context>
 <context>
