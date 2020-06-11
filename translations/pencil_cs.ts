@@ -68,7 +68,6 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="762"/>
         <location filename="../app/src/actioncommands.cpp" line="775"/>
-        <location filename="../app/src/actioncommands.cpp" line="788"/>
         <location filename="../app/src/actioncommands.cpp" line="801"/>
         <source>Layer Properties</source>
         <translation>Vlastnosti vrstvy</translation>
@@ -150,6 +149,12 @@
         <location filename="../app/src/actioncommands.cpp" line="777"/>
         <source>Vector Layer</source>
         <translation>Vektorová vrstva</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="788"/>
+        <source>Layer Properties</source>
+        <comment>A popup when creating a new layer</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="790"/>
@@ -463,7 +468,7 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="330"/>
         <source>Fit swatch to window (19-36 px)</source>
-        <translation type="unfinished"/>
+        <translation>Přizpůsobit vzorek oknu (19-36 px)</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="333"/>
@@ -618,7 +623,7 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="1197"/>
         <source>Peg bar not found at %1, %2</source>
-        <translation type="unfinished"/>
+        <translation>Příložné pravítko (příložník - pruh s kolíky) nenalezen při %1, %2</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="850"/>
@@ -1035,12 +1040,12 @@
     <message>
         <location filename="../app/ui/filespage.ui" line="31"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="38"/>
         <source>-</source>
-        <translation type="unfinished"/>
+        <translation>-</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="45"/>
@@ -1140,7 +1145,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="366"/>
         <source>Enable Title Safe area (%)</source>
-        <translation type="unfinished"/>
+        <translation>Povolit oblast bezpečného názvu (%)</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="406"/>
@@ -1476,7 +1481,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="51"/>
         <source>2. Select layers from file:</source>
-        <translation type="unfinished"/>
+        <translation>2. Vyberte vrstvy ze souboru:</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="76"/>
@@ -1506,7 +1511,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/src/importlayersdialog.cpp" line="101"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1529,7 +1534,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="16"/>
         <source>Center of canvas (0,0)</source>
-        <translation type="unfinished"/>
+        <translation>Střed plátna (0,0)</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="17"/>
@@ -1653,7 +1658,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="228"/>
         <source>Change line color</source>
-        <translation type="unfinished"/>
+        <translation>Změnit barvu čáry</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="245"/>
@@ -2078,12 +2083,12 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1009"/>
         <source>All Layers</source>
-        <translation type="unfinished"/>
+        <translation>Všechny vrstvy</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1014"/>
         <source>Peg bar Alignment</source>
-        <translation type="unfinished"/>
+        <translation>Zarovnání příložníku</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1019"/>
@@ -2108,7 +2113,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1039"/>
         <source>Current keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Nynější klíčový snímek</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1044"/>
@@ -2134,7 +2139,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1080"/>
         <source>Open Temporary Directory</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít dočasný adresář</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="308"/>
@@ -2373,7 +2378,7 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1333"/>
         <source>Open Palette</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít paletu</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1334"/>
@@ -2415,7 +2420,7 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="195"/>
         <source>This should not happen...</source>
-        <translation type="unfinished"/>
+        <translation>Toto se nemělo stát...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="227"/>
@@ -2443,7 +2448,7 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="298"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>chyba</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="603"/>
@@ -2548,12 +2553,12 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="624"/>
         <source>Skin – shade</source>
-        <translation type="unfinished"/>
+        <translation>Tělová - odstín</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="626"/>
         <source>Dark Skin – shade</source>
-        <translation type="unfinished"/>
+        <translation>Tmavá tělová - odstín</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="623"/>
@@ -2596,7 +2601,7 @@ Color(s) in strokes will be altered by this action!
         <location filename="../app/ui/onionskin.ui" line="148"/>
         <location filename="../app/ui/onionskin.ui" line="214"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="99"/>
@@ -2607,7 +2612,7 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../app/ui/onionskin.ui" line="130"/>
         <source>Next Frames</source>
-        <translation type="unfinished"/>
+        <translation>Další snímky</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="142"/>
@@ -2624,7 +2629,7 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../app/ui/onionskin.ui" line="239"/>
         <source>Distributed Opacity</source>
-        <translation type="unfinished"/>
+        <translation>Rozložená neprůhlednost</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="253"/>
@@ -2652,12 +2657,12 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="14"/>
         <source>Peg bar Alignment</source>
-        <translation type="unfinished"/>
+        <translation>Zarovnání příložníku</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="30"/>
         <source>Peg Bar Alignment:</source>
-        <translation type="unfinished"/>
+        <translation>Zarovnání příložníku:</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="46"/>
@@ -2667,12 +2672,12 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="53"/>
         <source>1) Select a reference area around center pegs.</source>
-        <translation type="unfinished"/>
+        <translation>2) Vyberte referenční oblast okolo středových kolíků.</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="60"/>
         <source>2) Select one reference keyframe from timeline.</source>
-        <translation type="unfinished"/>
+        <translation>2) Vyberte jeden referenční klíčový snímek z časové osy.</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="67"/>
@@ -2692,17 +2697,17 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="104"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Textový popisek</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="144"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Zavřít</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="154"/>
         <source>Align Peg Bars</source>
-        <translation type="unfinished"/>
+        <translation>Zarovnat příložník</translation>
     </message>
     <message>
         <location filename="../app/src/pegbaralignmentdialog.cpp" line="136"/>
@@ -2713,7 +2718,8 @@ Color(s) in strokes will be altered by this action!
         <location filename="../app/src/pegbaralignmentdialog.cpp" line="145"/>
         <source>Peg hole not found!
 Check selection, and please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Děrování nenalezeno.
+Prověřte výběr a zkuste to, prosím, znovu.</translation>
     </message>
 </context>
 <context>
@@ -4180,7 +4186,7 @@ Check selection, and please try again.</source>
         <location filename="../core_lib/src/movieexporter.cpp" line="700"/>
         <location filename="../core_lib/src/movieexporter.cpp" line="712"/>
         <source>Something went wrong</source>
-        <translation type="unfinished"/>
+        <translation>Něco neproběhlo, jak mělo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="564"/>
@@ -4192,7 +4198,7 @@ Check selection, and please try again.</source>
         <location filename="../core_lib/src/movieexporter.cpp" line="576"/>
         <location filename="../core_lib/src/movieexporter.cpp" line="713"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se spustit podpůrnou vrstvu obrazového záznamu. Zkuste to, prosím, znovu.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="75"/>
@@ -4452,12 +4458,12 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="290"/>
         <source>You need to be on a sound layer to import the audio</source>
-        <translation type="unfinished"/>
+        <translation>Pro zavedení zvuku musíte být na zvukové vrstvě</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="302"/>
         <source>Move to an empty frame</source>
-        <translation type="unfinished"/>
+        <translation>Přesunout na prázdné políčko snímku:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="303"/>
@@ -4467,12 +4473,12 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="345"/>
         <source>FFmpeg Not Found</source>
-        <translation type="unfinished"/>
+        <translation>FFmpeg nenalezen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="346"/>
         <source>Please place the ffmpeg binary in plugins directory and try again</source>
-        <translation type="unfinished"/>
+        <translation>Umístěte, prosím, spustitelný soubor do adresáře s přídavnými moduly a zkuste to znovu</translation>
     </message>
     <message>
         <location filename="../app/src/predefinedsetmodel.h" line="46"/>
@@ -4530,7 +4536,7 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="298"/>
         <source>Exit</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ukončit</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="299"/>
@@ -4548,7 +4554,7 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="301"/>
         <source>Export Movie</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Vyvést film</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="302"/>
@@ -4566,7 +4572,7 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="304"/>
         <source>Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Vodorovné převrácení</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="305"/>
@@ -4584,7 +4590,7 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="307"/>
         <source>Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Svislé převrácení</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="308"/>
@@ -4710,7 +4716,7 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="328"/>
         <source>Toggle Previous Onion Skin</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Zobrazit předchozí cibulovou slupku</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="329"/>
@@ -4800,13 +4806,13 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="343"/>
         <source>Toggle Color Palette Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Přepnout viditelnost okna palety barev</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="344"/>
         <source>Toggle Color Box Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Přepnout viditelnost okna políčka barev</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="345"/>
@@ -4884,13 +4890,13 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="357"/>
         <source>Pencil Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Nástroj tužka</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="358"/>
         <source>Polyline Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Nástroj lomená čára</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="359"/>
@@ -4908,7 +4914,7 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="361"/>
         <source>Undo</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Zpět</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="362"/>
@@ -4926,7 +4932,7 @@ Check selection, and please try again.</source>
         <location filename="../app/src/shortcutspage.cpp" line="364"/>
         <source>Set Zoom to 25%</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Nastavit zvětšení na 25 %</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="365"/>
@@ -5211,7 +5217,8 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
         <source>Timeline</source>
-        <translation>Časová osa</translation>
+        <comment>Subpanel title</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
@@ -5655,13 +5662,32 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
-        <translation>Bézier</translation>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Pressure</source>
-        <comment>Brush</comment>
-        <translation>Tlak</translation>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="157"/>
+        <source>Invisible</source>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="167"/>
+        <source>Alpha</source>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="199"/>
+        <source>None</source>
+        <comment>Stablizer level</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="147"/>
@@ -5670,25 +5696,19 @@ Check selection, and please try again.</source>
         <translation>Vyhlazování</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="177"/>
-        <source>Merge</source>
-        <comment>Vector line merge</comment>
-        <translation>Sloučit</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="200"/>
+        <location filename="../app/ui/tooloptions.ui" line="203"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
         <translation>Žádná</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="205"/>
+        <location filename="../app/ui/tooloptions.ui" line="208"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
         <translation>Jednoduchá</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="210"/>
+        <location filename="../app/ui/tooloptions.ui" line="213"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
         <translation>Silná</translation>
@@ -5704,24 +5724,20 @@ Check selection, and please try again.</source>
         <translation>Rozsah, po který se bude s barevným kolísáním zacházet jako se stejným</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="157"/>
-        <source>Invisible</source>
-        <translation>Neviditelná</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
         <source>Preserve Alpha</source>
         <translation>Zachovat alfa kanál</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="167"/>
-        <source>Alpha</source>
-        <translation>Alfa kanál</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Sloučit vektorové čáry, když jsou blízko u sebe</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="177"/>
+        <source>Merge</source>
+        <comment>Vector line merge (Tool options)</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>
@@ -5744,7 +5760,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/toolspage.ui" line="60"/>
         <source>Move Tool</source>
-        <translation type="unfinished"/>
+        <translation>Nástroj pro přesun</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="66"/>
