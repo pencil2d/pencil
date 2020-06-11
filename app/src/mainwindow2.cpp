@@ -1491,7 +1491,7 @@ void MainWindow2::updateTimecodeLabel()
     int mm = frames / (60 * fps) % 60;
     int ss = frames / fps % 60;
     int ff = frames % fps;
-    mTimecodeLabel->setText(QString("mm:ss:ff : %1:%2:%3").arg(QString::number(mm).rightJustified(2,'0'))
+    mTimecodeLabel->setText(QString("MM:SS:FF : %1:%2:%3").arg(QString::number(mm).rightJustified(2,'0'))
                                                                .arg(QString::number(ss).rightJustified(2, '0'))
                                                                     .arg(QString::number(ff).rightJustified(2, '0')));
 }
