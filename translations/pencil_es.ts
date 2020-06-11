@@ -68,7 +68,6 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="762"/>
         <location filename="../app/src/actioncommands.cpp" line="775"/>
-        <location filename="../app/src/actioncommands.cpp" line="788"/>
         <location filename="../app/src/actioncommands.cpp" line="801"/>
         <source>Layer Properties</source>
         <translation>Propiedades de la capa</translation>
@@ -150,6 +149,12 @@
         <location filename="../app/src/actioncommands.cpp" line="777"/>
         <source>Vector Layer</source>
         <translation>Capa de vector</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="788"/>
+        <source>Layer Properties</source>
+        <comment>A popup when creating a new layer</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="790"/>
@@ -5209,7 +5214,8 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
         <source>Timeline</source>
-        <translation>Línea de Tiempo</translation>
+        <comment>Subpanel title</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
@@ -5653,13 +5659,32 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
-        <translation>Bezier</translation>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Pressure</source>
-        <comment>Brush</comment>
-        <translation>Presión</translation>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="157"/>
+        <source>Invisible</source>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="167"/>
+        <source>Alpha</source>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="199"/>
+        <source>None</source>
+        <comment>Stablizer level</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="147"/>
@@ -5668,25 +5693,19 @@ Check selection, and please try again.</source>
         <translation>Suavizado</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="177"/>
-        <source>Merge</source>
-        <comment>Vector line merge</comment>
-        <translation>Unir</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="200"/>
+        <location filename="../app/ui/tooloptions.ui" line="203"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
         <translation>Ninguno</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="205"/>
+        <location filename="../app/ui/tooloptions.ui" line="208"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
         <translation>Sencillo</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="210"/>
+        <location filename="../app/ui/tooloptions.ui" line="213"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
         <translation>Fuerte</translation>
@@ -5702,24 +5721,20 @@ Check selection, and please try again.</source>
         <translation>Rango por el cual los cambios de color serán vistos como semejantes</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="157"/>
-        <source>Invisible</source>
-        <translation>Invisible</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
         <source>Preserve Alpha</source>
         <translation>Preservar Alfa</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="167"/>
-        <source>Alpha</source>
-        <translation>Alfa</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Unir lineas vectoriales cuando se encuentran próximas</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="177"/>
+        <source>Merge</source>
+        <comment>Vector line merge (Tool options)</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>
