@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include <QTabletEvent>
 #include <QStandardPaths>
 #include <QDateTime>
+#include <QLabel>
 
 // core_lib headers
 #include "pencildef.h"
@@ -97,6 +98,11 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui(new Ui::MainWindow2)
 {
     ui->setupUi(this);
+
+    mZoomLabel = new QLabel("");
+    statusBar()->addWidget(mZoomLabel);
+    mTimecodeLabel = new QLabel("");
+    statusBar()->addWidget(mTimecodeLabel);
 
     // Initialize order
     // 1. editor 2. object 3. scribble area 4. other widgets
@@ -1362,6 +1368,7 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
+    connect(editor, &Editor::currentFrameChanged, this, &MainWindow2::updateTimecodeLabel);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1397,6 +1404,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound);
     connect(pTimeline, &TimeLine::fpsChanged, pPlaybackManager, &PlaybackManager::setFps);
     connect(pTimeline, &TimeLine::fpsChanged, pEditor, &Editor::setFps);
+    connect(pTimeline, &TimeLine::fpsChanged, this, &MainWindow2::updateTimecodeLabel);
 
     connect(pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
@@ -1473,7 +1481,19 @@ void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
 void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
-    statusBar()->showMessage(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
+    mZoomLabel->setText(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
+}
+
+void MainWindow2::updateTimecodeLabel()
+{
+    int fps = mEditor->fps();
+    int frames = mEditor->currentFrame();
+    int mm = frames / (60 * fps) % 60;
+    int ss = frames / fps % 60;
+    int ff = frames % fps;
+    mTimecodeLabel->setText(QString("mm:ss:ff : %1:%2:%3").arg(QString::number(mm).rightJustified(2,'0'))
+                                                               .arg(QString::number(ss).rightJustified(2, '0'))
+                                                                    .arg(QString::number(ff).rightJustified(2, '0')));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

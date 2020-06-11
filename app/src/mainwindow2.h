@@ -44,6 +44,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class QLabel;
 
 
 
@@ -127,6 +128,7 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
+    void updateTimecodeLabel();
     void tryLoadPreset();
 
     void openPalette();
@@ -182,6 +184,11 @@ private:
     // whether we are currently importing an image sequence.
     bool mIsImportingImageSequence = false;
     
+    // statusbar widgets
+    QLabel* mZoomLabel = nullptr;
+    QLabel* mTimecodeLabel = nullptr;
+
+
     Ui::MainWindow2* ui = nullptr;
 };
 
