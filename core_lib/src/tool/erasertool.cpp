@@ -302,11 +302,12 @@ void EraserTool::removeVectorPaint()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        VectorImage*vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        mScribbleArea->clearBitmapBuffer();
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
         // Clear the area containing the last point
         //vectorImage->removeArea(lastPoint);
         // Clear the temporary pixel path
-        mScribbleArea->clearBitmapBuffer();
         vectorImage->deleteSelectedPoints();
 
         mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());

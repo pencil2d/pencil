@@ -668,8 +668,10 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             {
                 LayerVector* layerVector = static_cast<LayerVector*>(layer);
                 VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
-                if (vec)
+                if (vec != nullptr)
+                {
                     vec->paintImage(painter, false, false, antialiasing);
+                }
             }
         }
     }

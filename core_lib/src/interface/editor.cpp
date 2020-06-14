@@ -556,7 +556,11 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        g_clipboardVectorImage = *((static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+        if (vectorImage != nullptr)
+        {
+            g_clipboardVectorImage = *vectorImage;  // copy the image
+        }
     }
 }
 
@@ -592,7 +596,8 @@ void Editor::paste()
             backup(tr("Paste"));
             deselectAll();
             mScribbleArea->handleDrawingOnEmptyFrame();
-            VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            Q_CHECK_PTR(vectorImage);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             select()->setSelection(vectorImage->getSelectionRect(), false);
         }
@@ -967,10 +972,11 @@ void Editor::selectAll()
     else if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
-        if (vectorImage == nullptr) { return; }
-
-        vectorImage->selectAll();
-        rect = vectorImage->getSelectionRect();
+        if (vectorImage != nullptr)
+        {
+            vectorImage->selectAll();
+            rect = vectorImage->getSelectionRect();
+        }
     }
     select()->setSelection(rect, false);
 }
@@ -983,9 +989,10 @@ void Editor::deselectAll()
     if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
-        if (vectorImage == nullptr) { return; }
-
-        vectorImage->deselectAll();
+        if (vectorImage != nullptr)
+        {
+            vectorImage->deselectAll();
+        }
     }
 
     select()->resetSelectionProperties();
