@@ -1391,6 +1391,7 @@ void ScribbleArea::applyTransformedSelection()
         {
             handleDrawingOnEmptyFrame();
             BitmapImage* bitmapImage = currentBitmapImage(layer);
+            if (bitmapImage == nullptr) { return; }
             BitmapImage transformedImage = bitmapImage->transformed(selectMan->mySelectionRect().toRect(), selectMan->selectionTransform(), true);
 
             bitmapImage->clear(selectMan->mySelectionRect());
@@ -1577,7 +1578,9 @@ void ScribbleArea::deleteSelection()
         }
         else if (layer->type() == Layer::BITMAP)
         {
-            currentBitmapImage(layer)->clear(selectMan->mySelectionRect());
+            BitmapImage* bitmapImage = currentBitmapImage(layer);
+            Q_CHECK_PTR(bitmapImage);
+            bitmapImage->clear(selectMan->mySelectionRect());
         }
         updateAllFrames();
     }
@@ -1603,7 +1606,10 @@ void ScribbleArea::clearImage()
     else if (layer->type() == Layer::BITMAP)
     {
         mEditor->backup(tr("Clear Image", "Undo step text"));
-        currentBitmapImage(layer)->clear();
+
+        BitmapImage* bitmapImage = currentBitmapImage(layer);
+        if (bitmapImage == nullptr) return;
+        bitmapImage->clear();
     }
     else
     {
