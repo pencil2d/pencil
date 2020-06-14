@@ -659,8 +659,10 @@ void Object::paintImage(QPainter& painter,int frameNumber,
                 LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
 
                 BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
-                if (bitmap)
+                if (bitmap != nullptr)
+                {
                     bitmap->paintImage(painter);
+                }
 
             }
             // paints the vector images
