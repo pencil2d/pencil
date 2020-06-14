@@ -41,11 +41,13 @@ Status MovieImporter::estimateFrames(const QString &filePath, int fps, int *fram
     // --------- Import all the temporary frames ----------
     STATUS_CHECK(verifyFFmpegExists());
     QString ffmpegPath = ffmpegLocation();
+    dd << "ffmpeg path:" << ffmpegPath;
 
     // Get frame estimate
     int frames = -1;
     bool ok = true;
     QString ffprobePath = ffprobeLocation();
+    dd << "ffprobe path:" << ffprobePath;
     if (QFileInfo::exists(ffprobePath))
     {
         QStringList probeArgs = {"-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", filePath};
@@ -79,6 +81,11 @@ Status MovieImporter::estimateFrames(const QString &filePath, int fps, int *fram
                << QString("Exit code: %1").arg(ffprobe.exitCode())
                << "Output:"
                << ffprobe.readAll();
+        }
+        if (frames < 0)
+        {
+            qDebug() << "ffprobe execution failed. Details:";
+            qDebug() << dd.str();
         }
     }
     if (frames < 0)
