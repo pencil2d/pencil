@@ -188,6 +188,7 @@ void ScribbleArea::updateCurrentFrame()
 void ScribbleArea::updateFrame(int frame)
 {
     int frameNumber = mEditor->layers()->LastFrameAtFrame(frame);
+    if (frameNumber < 0) { return; }
 
     Q_ASSERT(frame >= 0);
     if (mPixmapCacheKeys.size() <= static_cast<unsigned>(frame))
@@ -745,8 +746,11 @@ void ScribbleArea::paintBitmapBuffer()
 
     // Update the cache for the last key-frame.
     auto lastKeyFramePosition = mEditor->layers()->LastFrameAtFrame(frameNumber);
-    QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
-    mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)] = QPixmapCache::Key();
+    if (lastKeyFramePosition >= 0)
+    {
+        QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
+        mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)] = QPixmapCache::Key();
+    }
     layer->setModified(frameNumber, true);
 
     mBufferImg->clear();
@@ -942,14 +946,21 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         int curIndex = mEditor->currentFrame();
         int frameNumber = mEditor->layers()->LastFrameAtFrame(curIndex);
 
-        QPixmapCache::Key cachedKey = mPixmapCacheKeys[static_cast<unsigned>(frameNumber)];
-
-        if (!QPixmapCache::find(cachedKey, &mCanvas))
+        if (frameNumber < 0)
         {
             drawCanvas(mEditor->currentFrame(), event->rect());
+        }
+        else
+        {
+            QPixmapCache::Key cachedKey = mPixmapCacheKeys[static_cast<unsigned>(frameNumber)];
 
-            mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
-            //qDebug() << "Repaint canvas!";
+            if (!QPixmapCache::find(cachedKey, &mCanvas))
+            {
+                drawCanvas(mEditor->currentFrame(), event->rect());
+
+                mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
+                //qDebug() << "Repaint canvas!";
+            }
         }
     }
     else
