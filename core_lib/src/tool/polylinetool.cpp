@@ -118,7 +118,9 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
 
             if (layer->type() == Layer::VECTOR)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+                VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+                Q_CHECK_PTR(vectorImage);
+                vectorImage->deselectAll();
                 if (mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
                 {
                     mScribbleArea->toggleThinLines();
@@ -239,6 +241,7 @@ void PolylineTool::cancelPolyline()
 void PolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
+    mScribbleArea->clearBitmapBuffer();
 
     if (layer->type() == Layer::VECTOR)
     {
@@ -255,7 +258,9 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         curve.setVariableWidth(false);
         curve.setInvisibility(mScribbleArea->makeInvisible());
 
-        ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->addCurve(curve, mEditor->view()->scaling());
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
+        vectorImage->addCurve(curve, mEditor->view()->scaling());
     }
     if (layer->type() == Layer::BITMAP)
     {
@@ -263,6 +268,5 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
         bitmapImage->paste(mScribbleArea->mBufferImg);
     }
-    mScribbleArea->mBufferImg->clear();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }
