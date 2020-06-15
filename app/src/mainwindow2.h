@@ -133,7 +133,7 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    void updateTimecodeLabel(int frame);
+    void updateTimecodeLabel();
     void tryLoadPreset();
 
     void openPalette();
