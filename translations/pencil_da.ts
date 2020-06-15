@@ -68,7 +68,6 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="762"/>
         <location filename="../app/src/actioncommands.cpp" line="775"/>
-        <location filename="../app/src/actioncommands.cpp" line="788"/>
         <location filename="../app/src/actioncommands.cpp" line="801"/>
         <source>Layer Properties</source>
         <translation>Lag Egenskaber</translation>
@@ -150,6 +149,12 @@
         <location filename="../app/src/actioncommands.cpp" line="777"/>
         <source>Vector Layer</source>
         <translation>Vektor Lag</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="788"/>
+        <source>Layer Properties</source>
+        <comment>A popup when creating a new layer</comment>
+        <translation>Lag Egenskaber</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="790"/>
@@ -5218,7 +5223,8 @@ Kontroller markering, og prøv igen.</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
         <source>Timeline</source>
-        <translation>Tidslinje</translation>
+        <comment>Subpanel title</comment>
+        <translation>Tidsinje</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
@@ -5662,13 +5668,32 @@ Kontroller markering, og prøv igen.</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
+        <comment>Tool options</comment>
         <translation>Bezier</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Pressure</source>
-        <comment>Brush</comment>
+        <comment>Tool options</comment>
         <translation>Trykfølsomhed</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="157"/>
+        <source>Invisible</source>
+        <comment>Tool options</comment>
+        <translation>Usynlig</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="167"/>
+        <source>Alpha</source>
+        <comment>Tool options</comment>
+        <translation>Alpha</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="199"/>
+        <source>None</source>
+        <comment>Stablizer level</comment>
+        <translation>Ingen</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="147"/>
@@ -5677,25 +5702,19 @@ Kontroller markering, og prøv igen.</translation>
         <translation>Anti-Aliasing</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="177"/>
-        <source>Merge</source>
-        <comment>Vector line merge</comment>
-        <translation>Sammenflet</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="200"/>
+        <location filename="../app/ui/tooloptions.ui" line="203"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
         <translation>Ingen</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="205"/>
+        <location filename="../app/ui/tooloptions.ui" line="208"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
         <translation>Simpel</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="210"/>
+        <location filename="../app/ui/tooloptions.ui" line="213"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
         <translation>Stærk</translation>
@@ -5711,24 +5730,20 @@ Kontroller markering, og prøv igen.</translation>
         <translation>Det omfang som en farvevariation vil blive behandlet som værende ens</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="157"/>
-        <source>Invisible</source>
-        <translation>Usynlig</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
         <source>Preserve Alpha</source>
         <translation>Gem Alpha</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="167"/>
-        <source>Alpha</source>
-        <translation>Alpha</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Sammenflet vektorlinjer når de er tæt på hinanden</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="177"/>
+        <source>Merge</source>
+        <comment>Vector line merge (Tool options)</comment>
+        <translation>Sammenflet</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>

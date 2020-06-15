@@ -785,7 +785,7 @@ Status ActionCommands::addNewVectorLayer()
 Status ActionCommands::addNewCameraLayer()
 {
     bool ok;
-    QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
+    QString text = QInputDialog::getText(nullptr, tr("Layer Properties", "A popup when creating a new layer"),
                                          tr("Layer name:"), QLineEdit::Normal,
                                          mEditor->layers()->nameSuggestLayer(tr("Camera Layer")), &ok);
     if (ok && !text.isEmpty())

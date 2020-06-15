@@ -68,7 +68,6 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="762"/>
         <location filename="../app/src/actioncommands.cpp" line="775"/>
-        <location filename="../app/src/actioncommands.cpp" line="788"/>
         <location filename="../app/src/actioncommands.cpp" line="801"/>
         <source>Layer Properties</source>
         <translation>Propriedades da Camada</translation>
@@ -150,6 +149,12 @@
         <location filename="../app/src/actioncommands.cpp" line="777"/>
         <source>Vector Layer</source>
         <translation>Camada Vectorial</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="788"/>
+        <source>Layer Properties</source>
+        <comment>A popup when creating a new layer</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="790"/>
@@ -1071,7 +1076,7 @@
         <translation>Número de modificações antes de gravar automaticamente:</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="621"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="632"/>
         <source>&lt;br&gt;&lt;br&gt;Error: your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please include the following details in your issue:</source>
         <translation type="unfinished"/>
     </message>
@@ -1209,142 +1214,142 @@
         <translation>Alta resolução para tablet</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
-        <source>Arabic (%1)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
-        <source>Catalan (%1)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
-        <source>Czech (%1)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../app/src/preferencesdialog.cpp" line="107"/>
-        <source>Danish (%1)</source>
+        <source>Arabic</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="108"/>
-        <source>German (%1)</source>
+        <source>Catalan</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
-        <source>Greek (%1)</source>
+        <source>Czech</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
-        <source>English (%1)</source>
+        <source>Danish</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
-        <source>Spanish (%1)</source>
+        <source>German</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="112"/>
-        <source>Estonian (%1)</source>
+        <source>Greek</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="113"/>
-        <source>French (%1)</source>
+        <source>English</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="114"/>
-        <source>Hebrew (%1)</source>
+        <source>Spanish</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
-        <source>Hungarian (%1)</source>
+        <source>Estonian</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="116"/>
-        <source>Indonesian (%1)</source>
+        <source>French</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="117"/>
-        <source>Italian (%1)</source>
+        <source>Hebrew</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="118"/>
-        <source>Japanese (%1)</source>
+        <source>Hungarian</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="119"/>
-        <source>Kabyle (%1)</source>
+        <source>Indonesian</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="120"/>
-        <source>Polish (%1)</source>
+        <source>Italian</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="121"/>
-        <source>Portuguese – Portugal (%1)</source>
+        <source>Japanese</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="122"/>
-        <source>Portuguese – Brazil (%1)</source>
+        <source>Kabyle</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="123"/>
-        <source>Russian (%1)</source>
+        <source>Polish</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="124"/>
-        <source>Slovene (%1)</source>
+        <source>Portuguese – Portugal</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="125"/>
-        <source>Swedish (%1)</source>
+        <source>Portuguese – Brazil</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="126"/>
-        <source>Turkish (%1)</source>
+        <source>Russian</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="127"/>
-        <source>Vietnamese (%1)</source>
+        <source>Slovene</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="128"/>
-        <source>Chinese – China (%1)</source>
+        <source>Swedish</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="129"/>
-        <source>Chinese – Taiwan (%1)</source>
+        <source>Turkish</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="251"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="130"/>
+        <source>Vietnamese</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="131"/>
+        <source>Chinese – China</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="132"/>
+        <source>Chinese – Taiwan</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="262"/>
         <source>Restart Required</source>
         <translation>Reinício requerido</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="252"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="263"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>A mudança de idioma tomará efeito após reiniciar Pencil2D</translation>
     </message>
@@ -1418,7 +1423,7 @@ The importer will search and find images matching the same criteria. You can see
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="220"/>
-        <source>was unable to import</source>
+        <source>Unable to import</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1564,15 +1569,6 @@ Read the instructions and try again</source>
         <location filename="../core_lib/src/structure/layercamera.cpp" line="78"/>
         <source>Camera Layer</source>
         <translation>Camada da Câmara</translation>
-    </message>
-</context>
-<context>
-    <name>LayerManager</name>
-    <message>
-        <location filename="../core_lib/src/managers/layermanager.cpp" line="172"/>
-        <source>%1 %2</source>
-        <comment>Layer name template: base name (translated separately) + number</comment>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4982,11 +4978,13 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="31"/>
         <source>Clear</source>
-        <translation>Limpar</translation>
+        <comment>Clear Recent File menu</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="32"/>
         <source>Empty</source>
+        <comment>Showing when Recent File Menu is empty</comment>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -5017,37 +5015,40 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
         <translation>Limpar Imagem</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1603"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1602"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Há uma abertura no seu desenho (ou talvez tenha aumentado o zoom em excesso).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1604"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1605"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Desculpe! Isto nem sempre funciona. Por favor tente novamente (aumente um pouco o zoom, clique em outro lugar... )&lt;br&gt;Caso não funcione, aumente um pouco o zoom e certifique-se que os caminhos estão conectados pressionando F1).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1608"/>
-        <source>Out of bound.</source>
-        <translation>Fora do limite</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1609"/>
-        <source>Could not find a closed path.</source>
-        <translation>Não é possível encontrar um caminho fechado.</translation>
-    </message>
-    <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1610"/>
-        <source>Could not find the root index.</source>
-        <translation>Não é possível encontrar o índice principal</translation>
+        <source>Out of bound.</source>
+        <comment>Bucket tool fill error message</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="1611"/>
+        <source>Could not find a closed path.</source>
+        <comment>Bucket tool fill error message</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1612"/>
+        <source>Could not find the root index.</source>
+        <comment>Bucket tool fill error message</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1613"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Erro: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1611"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1613"/>
         <source>Flood fill error</source>
         <translation>Erro de preenchimento</translation>
     </message>
@@ -5097,11 +5098,13 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="44"/>
         <source>Action</source>
+        <comment>Shortcut table header</comment>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="44"/>
         <source>Shortcut</source>
+        <comment>Shortcut table header</comment>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5212,7 +5215,8 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
         <source>Timeline</source>
-        <translation>Linha do tempo</translation>
+        <comment>Subpanel title</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
@@ -5656,13 +5660,32 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="133"/>
         <source>Bezier</source>
-        <translation>Bézier</translation>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Pressure</source>
-        <comment>Brush</comment>
-        <translation>Pressão</translation>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="157"/>
+        <source>Invisible</source>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="167"/>
+        <source>Alpha</source>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="199"/>
+        <source>None</source>
+        <comment>Stablizer level</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="147"/>
@@ -5671,25 +5694,19 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
         <translation>Anti-serrilhamento</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="177"/>
-        <source>Merge</source>
-        <comment>Vector line merge</comment>
-        <translation>Juntar</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="200"/>
+        <location filename="../app/ui/tooloptions.ui" line="203"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
         <translation>Nenhum</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="205"/>
+        <location filename="../app/ui/tooloptions.ui" line="208"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
         <translation>Simples</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="210"/>
+        <location filename="../app/ui/tooloptions.ui" line="213"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
         <translation>Forte</translation>
@@ -5705,24 +5722,20 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
         <translation>A extensão através da qual a variação de cor será vista como sendo semelhante</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="157"/>
-        <source>Invisible</source>
-        <translation>Oculto</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="164"/>
         <source>Preserve Alpha</source>
         <translation>Conservar transparência</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="167"/>
-        <source>Alpha</source>
-        <translation>Transparência</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="174"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Unir linhas vectoriais quando estiverem próximas</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="177"/>
+        <source>Merge</source>
+        <comment>Vector line merge (Tool options)</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="192"/>
@@ -5758,7 +5771,7 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="794"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="805"/>
         <source>1% degrees</source>
         <translation type="unfinished"/>
     </message>

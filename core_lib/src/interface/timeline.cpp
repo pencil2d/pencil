@@ -43,7 +43,7 @@ void TimeLine::initUI()
 {
     Q_ASSERT(editor() != nullptr);
 
-    setWindowTitle(tr("Timeline"));
+    setWindowTitle(tr("Timeline", "Subpanel title"));
 
     QWidget* timeLineContent = new QWidget(this);
 
