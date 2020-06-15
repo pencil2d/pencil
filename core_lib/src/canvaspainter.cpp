@@ -354,16 +354,21 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     }
 
     // If the current frame on the current layer has a transformation, we apply it.
-    if (mRenderTransform && nFrame == mFrameNumber && layer == mObject->getLayer(mCurrentLayerIndex))
+    bool shouldPaintTransform = mRenderTransform && nFrame == mFrameNumber && layer == mObject->getLayer(mCurrentLayerIndex);
+    if (shouldPaintTransform)
     {
         paintToImage.clear(mSelection);
-        paintTransformedSelection(painter);
     }
 
     painter.setWorldMatrixEnabled(true);
 
     prescale(&paintToImage);
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
+
+    if (shouldPaintTransform)
+    {
+        paintTransformedSelection(painter);
+    }
 }
 
 void CanvasPainter::prescale(BitmapImage* bitmapImage)
