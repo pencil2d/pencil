@@ -32,6 +32,7 @@ GNU General Public License for more details.
 #include <QStandardPaths>
 #include <QDateTime>
 #include <QLabel>
+#include <QToolButton>
 
 // core_lib headers
 #include "pencildef.h"
@@ -99,11 +100,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
 {
     ui->setupUi(this);
 
-    mZoomLabel = new QLabel("");
-    statusBar()->addWidget(mZoomLabel);
-    mTimecodeLabel = new QLabel("");
-    statusBar()->addWidget(mTimecodeLabel);
-
     // Initialize order
     // 1. editor 2. object 3. scribble area 4. other widgets
     mEditor = new Editor(this);
@@ -126,6 +122,19 @@ MainWindow2::MainWindow2(QWidget* parent) :
     setupKeyboardShortcuts();
 
     readSettings();
+
+    mZoomLabel = new QLabel("");
+    ui->statusbar->addPermanentWidget(mZoomLabel);
+    mTimecodeButton = new QToolButton();
+    mTimecodeButton->setIcon(QIcon(":app/icons/new/svg/more_options.svg"));
+    mTimecodeButton->setArrowType(Qt::NoArrow);
+    mTimecodeButton->setPopupMode(QToolButton::InstantPopup);
+    connect(mTimecodeButton, &QToolButton::pressed, this, &MainWindow2::showTimecodeLabelMenu);
+    ui->statusbar->addPermanentWidget(mTimecodeButton);
+    mTimecodeLabel = new QLabel("");
+    ui->statusbar->addPermanentWidget(mTimecodeLabel);
+    mExpander = new QLabel("");
+    ui->statusbar->addPermanentWidget(mExpander, 1); // left justifies the rest
 
     updateZoomLabel();
     selectionChanged();
@@ -1045,6 +1054,30 @@ void MainWindow2::resetAndDockAllSubWidgets()
     }
 }
 
+void MainWindow2::noTimecodeText()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_TIMECODE_TEXT, 0);
+    mTimecodeLabelEnum = 0;
+    updateTimecodeLabel(mEditor->currentFrame());
+}
+
+void MainWindow2::onlyFramesText()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_TIMECODE_TEXT, 1);
+    mTimecodeLabelEnum = 1;
+    updateTimecodeLabel(mEditor->currentFrame());
+}
+
+void MainWindow2::timecodeText()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_TIMECODE_TEXT, 2);
+    mTimecodeLabelEnum = 2;
+    updateTimecodeLabel(mEditor->currentFrame());
+}
+
 bool MainWindow2::newObject()
 {
     Object* object = nullptr;
@@ -1121,8 +1154,9 @@ void MainWindow2::readSettings()
     QString myPath = settings.value(LAST_PCLX_PATH, QVariant(QDir::homePath())).toString();
 
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
-
     setOpacity(100 - opacity);
+
+    mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
 }
 
 void MainWindow2::writeSettings()
@@ -1484,16 +1518,38 @@ void MainWindow2::updateZoomLabel()
     mZoomLabel->setText(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
 }
 
-void MainWindow2::updateTimecodeLabel()
+void MainWindow2::updateTimecodeLabel(int frame)
 {
     int fps = mEditor->fps();
-    int frames = mEditor->currentFrame();
-    int mm = frames / (60 * fps) % 60;
-    int ss = frames / fps % 60;
-    int ff = frames % fps;
-    mTimecodeLabel->setText(QString("MM:SS:FF : %1:%2:%3").arg(QString::number(mm).rightJustified(2,'0'))
-                                                               .arg(QString::number(ss).rightJustified(2, '0'))
-                                                                    .arg(QString::number(ff).rightJustified(2, '0')));
+
+    switch (mTimecodeLabelEnum)
+    {
+    case TimecodeTextLevel::TIMECODE:
+        mTimecodeLabel->setText(QString("MM:SS:FF : %1:%2:%3")
+                                .arg(QString::number(frame / (60 * fps) % 60).rightJustified(2,'0'))
+                                .arg(QString::number(frame / fps % 60).rightJustified(2, '0'))
+                                .arg(QString::number(frame % fps).rightJustified(2, '0')));
+        break;
+    case TimecodeTextLevel::FRAMES:
+        mTimecodeLabel->setText(tr("Frame : %1").arg(QString::number(frame).rightJustified(4, '0')));
+        break;
+    case TimecodeTextLevel::NOTEXT:
+    default:
+        mTimecodeLabel->setText("");
+        break;
+    }
+
+}
+
+void MainWindow2::showTimecodeLabelMenu()
+{
+    QMenu* menu = new QMenu();
+    menu->addAction(tr("No text"), this, &MainWindow2::noTimecodeText);
+    menu->addAction(tr("Frames"),  this, &MainWindow2::onlyFramesText);
+    menu->addAction(tr("Timecode"), this, &MainWindow2::timecodeText);
+    mTimecodeButton->setMenu(menu);
+
+    menu->exec();
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

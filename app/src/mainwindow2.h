@@ -45,7 +45,7 @@ class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
 class QLabel;
-
+class QToolButton;
 
 
 namespace Ui
@@ -115,6 +115,11 @@ protected:
 
 private slots:
     void resetAndDockAllSubWidgets();
+    // help functions for timecode label
+    void noTimecodeText();
+    void onlyFramesText();
+    void showTimecodeLabelMenu();
+    void timecodeText();
 
 private:
     bool newObject();
@@ -128,7 +133,7 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    void updateTimecodeLabel();
+    void updateTimecodeLabel(int frame);
     void tryLoadPreset();
 
     void openPalette();
@@ -186,8 +191,10 @@ private:
     
     // statusbar widgets
     QLabel* mZoomLabel = nullptr;
+    QToolButton* mTimecodeButton = nullptr;
     QLabel* mTimecodeLabel = nullptr;
-
+    int mTimecodeLabelEnum;
+    QLabel* mExpander = nullptr;
 
     Ui::MainWindow2* ui = nullptr;
 };
