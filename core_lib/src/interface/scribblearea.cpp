@@ -205,6 +205,7 @@ void ScribbleArea::updateAllFrames()
 {
     QPixmapCache::clear();
     std::fill(mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key());
+    setAllDirty();
 
     update();
 }
