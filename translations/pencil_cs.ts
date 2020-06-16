@@ -917,7 +917,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="203"/>
         <source>Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Animovaný GIF</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="245"/>
@@ -928,27 +928,27 @@
         <location filename="../app/src/filedialogex.cpp" line="246"/>
         <location filename="../app/src/filedialogex.cpp" line="247"/>
         <source>untitled.png</source>
-        <translation type="unfinished"/>
+        <translation>nepojmenovaný.png</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="248"/>
         <source>untitled.gif</source>
-        <translation type="unfinished"/>
+        <translation>nepojmenovaný.gif</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="249"/>
         <source>untitled.mp4</source>
-        <translation type="unfinished"/>
+        <translation>nepojmenovaný.mp4</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="250"/>
         <source>untitled.wav</source>
-        <translation type="unfinished"/>
+        <translation>nepojmenovaný.wav</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="251"/>
         <source>untitled.xml</source>
-        <translation type="unfinished"/>
+        <translation>nepojmenovaný.xml</translation>
     </message>
 </context>
 <context>
@@ -1029,13 +1029,13 @@
     <message>
         <location filename="../app/ui/filespage.ui" line="17"/>
         <source>Startup Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavení spuštění</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="25"/>
         <location filename="../app/ui/filespage.ui" line="28"/>
         <source>Saving the current project as a preset</source>
-        <translation type="unfinished"/>
+        <translation>Nynější projekt se ukládá jako přednastavení</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="31"/>
@@ -1050,12 +1050,12 @@
     <message>
         <location filename="../app/ui/filespage.ui" line="45"/>
         <source>Make Default</source>
-        <translation type="unfinished"/>
+        <translation>Udělat výchozím</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="61"/>
         <source>Ask on startup</source>
-        <translation type="unfinished"/>
+        <translation>Zeptat se při spuštění</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="71"/>
@@ -1216,132 +1216,132 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Arabic</source>
-        <translation type="unfinished"/>
+        <translation>Arabština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Catalan</source>
-        <translation type="unfinished"/>
+        <translation>Katalánština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Czech</source>
-        <translation type="unfinished"/>
+        <translation>Čeština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Danish</source>
-        <translation type="unfinished"/>
+        <translation>Dánština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>German</source>
-        <translation type="unfinished"/>
+        <translation>Němčina</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="112"/>
         <source>Greek</source>
-        <translation type="unfinished"/>
+        <translation>Řečtina</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>English</source>
-        <translation type="unfinished"/>
+        <translation>Angličtina</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Spanish</source>
-        <translation type="unfinished"/>
+        <translation>Španělština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
         <source>Estonian</source>
-        <translation type="unfinished"/>
+        <translation>Estonština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>French</source>
-        <translation type="unfinished"/>
+        <translation>Francoužština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="117"/>
         <source>Hebrew</source>
-        <translation type="unfinished"/>
+        <translation>Hebrejština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="118"/>
         <source>Hungarian</source>
-        <translation type="unfinished"/>
+        <translation>Maďarština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="119"/>
         <source>Indonesian</source>
-        <translation type="unfinished"/>
+        <translation>Indonésština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="120"/>
         <source>Italian</source>
-        <translation type="unfinished"/>
+        <translation>Italština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="121"/>
         <source>Japanese</source>
-        <translation type="unfinished"/>
+        <translation>Japonština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="122"/>
         <source>Kabyle</source>
-        <translation type="unfinished"/>
+        <translation>Kabylština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="123"/>
         <source>Polish</source>
-        <translation type="unfinished"/>
+        <translation>Polština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="124"/>
         <source>Portuguese – Portugal</source>
-        <translation type="unfinished"/>
+        <translation>Portugalština (Portugalsko)</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="125"/>
         <source>Portuguese – Brazil</source>
-        <translation type="unfinished"/>
+        <translation>Portugalština (Brazílie)</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="126"/>
         <source>Russian</source>
-        <translation type="unfinished"/>
+        <translation>Ruština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="127"/>
         <source>Slovene</source>
-        <translation type="unfinished"/>
+        <translation>Slovinština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="128"/>
         <source>Swedish</source>
-        <translation type="unfinished"/>
+        <translation>Švédština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="129"/>
         <source>Turkish</source>
-        <translation type="unfinished"/>
+        <translation>Turečtina</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="130"/>
         <source>Vietnamese</source>
-        <translation type="unfinished"/>
+        <translation>Větnamština</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="131"/>
         <source>Chinese – China</source>
-        <translation type="unfinished"/>
+        <translation>Čínština (Čína)</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="132"/>
         <source>Chinese – Taiwan</source>
-        <translation type="unfinished"/>
+        <translation>Čínština (Tchaj-wan)</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="262"/>
@@ -1359,7 +1359,7 @@
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="38"/>
         <source>Instructions</source>
-        <translation type="unfinished"/>
+        <translation>Pokyny</translation>
     </message>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="48"/>
@@ -1379,7 +1379,7 @@
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="96"/>
         <source>Imports</source>
-        <translation type="unfinished"/>
+        <translation>Zavedení</translation>
     </message>
 </context>
 <context>
@@ -1397,7 +1397,7 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="68"/>
         <source>Import predefined keyframe set</source>
-        <translation type="unfinished"/>
+        <translation>Zavést předem stanovenou sadu klíčových snímků</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="69"/>
@@ -1408,33 +1408,33 @@ The importer will search and find images matching the same criteria. You can see
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="168"/>
         <source>Importing image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>Zavádí se řada obrázků...</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="168"/>
         <location filename="../app/src/importimageseqdialog.cpp" line="306"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="219"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Varování</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="220"/>
         <source>Unable to import</source>
-        <translation type="unfinished"/>
+        <translation>Nelze zavést</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="306"/>
         <source>Importing images...</source>
-        <translation type="unfinished"/>
+        <translation>Zavádí se obrázky...</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="362"/>
         <source>Invalid path</source>
-        <translation type="unfinished"/>
+        <translation>Neplatná cesta</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="363"/>
