@@ -4454,7 +4454,7 @@ Kontroller markering, og prøv igen.</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="168"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
-        <translation>Videoklippet er for langt. Pencil2D kan kun have %1 billeder, men denne video er på %2. Forkort venligst din video og prøv igen.</translation>
+        <translation>Videoklippet er for langt. Pencil2D kan kun have %1 frames, men denne video er på %2. Forkort venligst din video og prøv igen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="289"/>
