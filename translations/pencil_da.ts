@@ -1543,7 +1543,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="17"/>
         <source>Center of camera, current frame</source>
-        <translation>Kameras centrum, nuværende kamera</translation>
+        <translation>Kameras centrum, nuværende frame</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="18"/>
