@@ -1161,7 +1161,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="431"/>
         <source>Cached Frame Number:</source>
-        <translation>Cachede antal tegninger:</translation>
+        <translation>Antal cachede frames:</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="77"/>
