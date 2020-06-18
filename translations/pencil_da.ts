@@ -616,12 +616,12 @@
         <translation>Indsæt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1112"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1119"/>
         <source>Remove frame</source>
         <translation>Fjern frame</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1197"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1204"/>
         <source>Peg bar not found at %1, %2</source>
         <translation>Pegbar ikke fundet ved %1, %2</translation>
     </message>
@@ -738,7 +738,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="177"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sidste frame er sat til den sidste farve-mulige keyframe (Brugbart når du kun vil eksportere til den sidste animerede frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sidste frame er sat til den sidste redigerbare keyframe (Brugbart når du kun vil eksportere til den sidste animerede frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="183"/>
@@ -1161,7 +1161,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="431"/>
         <source>Cached Frame Number:</source>
-        <translation>Cachede antal tegninger:</translation>
+        <translation>Antal cachede frames:</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="77"/>
@@ -1543,7 +1543,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="17"/>
         <source>Center of camera, current frame</source>
-        <translation>Kameras centrum, nuværende kamera</translation>
+        <translation>Kameras centrum, nuværende frame</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="18"/>
@@ -2224,7 +2224,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="150"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
-        <translation>farve palet:&lt;br&gt;tryk på &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;Slå til/fra ved markøren</translation>
+        <translation>farve palet:&lt;br&gt;tryk på &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;Toggle ved markøren</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="154"/>
@@ -4454,7 +4454,7 @@ Kontroller markering, og prøv igen.</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="168"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
-        <translation>Videoklippet er for langt. Pencil2D kan kun have %1 billeder, men denne video er på %2. Forkort venligst din video og prøv igen.</translation>
+        <translation>Videoklippet er for langt. Pencil2D kan kun have %1 frames, men denne video er på %2. Forkort venligst din video og prøv igen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="289"/>
