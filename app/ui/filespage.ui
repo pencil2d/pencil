@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>316</width>
-    <height>285</height>
+    <height>314</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -59,6 +59,13 @@
        <widget class="QCheckBox" name="askPresetCheckBox">
         <property name="text">
          <string>Ask on startup</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="loadMostRecentCheckBox">
+        <property name="text">
+         <string>Load most recent file</string>
         </property>
        </widget>
       </item>

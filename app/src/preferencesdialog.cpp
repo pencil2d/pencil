@@ -576,6 +576,7 @@ FilesPage::FilesPage()
     connect(ui->removePreset, &QPushButton::clicked, this, &FilesPage::removePreset);
     connect(ui->setDefaultPreset, &QPushButton::clicked, this, &FilesPage::setDefaultPreset);
     connect(ui->askPresetCheckBox, &QCheckBox::stateChanged, this, &FilesPage::askForPresetChange);
+    connect(ui->loadMostRecentCheckBox, &QCheckBox::stateChanged, this, &FilesPage::loadMostRecentChange);
     connect(ui->presetListWidget, &QListWidget::itemChanged, this, &FilesPage::presetNameChanged);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
@@ -726,7 +727,9 @@ void FilesPage::presetNameChanged(QListWidgetItem* item)
 
 void FilesPage::updateValues()
 {
+
     ui->askPresetCheckBox->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
+    ui->loadMostRecentCheckBox->setChecked(mManager->isOn(SETTING::LOAD_MOST_RECENT));
 
     bool ok = true;
     int defaultPresetIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
@@ -752,6 +755,11 @@ void FilesPage::updateValues()
 void FilesPage::askForPresetChange(int b)
 {
     mManager->set(SETTING::ASK_FOR_PRESET, b != Qt::Unchecked);
+}
+
+void FilesPage::loadMostRecentChange(int b)
+{
+    mManager->set(SETTING::LOAD_MOST_RECENT, b != Qt::Unchecked);
 }
 
 void FilesPage::autosaveChange(int b)

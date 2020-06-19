@@ -215,6 +215,7 @@ constexpr int MaxFramesBound = 9999;
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
 #define SETTING_ASK_FOR_PRESET      "AskForPreset"
+#define SETTING_OPEN_MOST_RECENT    "OpenMostRecent"
 #define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
 #define SETTING_ANTIALIAS        "Antialiasing"

@@ -83,6 +83,7 @@ enum class SETTING
     FRAME_POOL_SIZE,
     ROTATION_INCREMENT,
     ASK_FOR_PRESET,
+    LOAD_MOST_RECENT,
     DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };

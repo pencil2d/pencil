@@ -1095,6 +1095,12 @@ void  MainWindow2::tryLoadPreset()
         });
         presetDialog->open();
     }
+    else if(mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT))
+    {
+        QSettings settings(PENCIL2D, PENCIL2D);
+        QString myPath = settings.value(LAST_PCLX_PATH, QVariant(QDir::homePath())).toString();
+        openObject(myPath);
+    }
     else
     {
         int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);

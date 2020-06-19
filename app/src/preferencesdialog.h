@@ -163,6 +163,7 @@ public slots:
 
     void updateValues();
     void askForPresetChange(int b);
+    void loadMostRecentChange(int b);
     void autosaveChange(int b);
     void autosaveNumberChange(int number);
 

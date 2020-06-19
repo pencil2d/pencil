@@ -92,6 +92,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              false).toBool());
     set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       256).toInt());
     set(SETTING::ASK_FOR_PRESET,           settings.value(SETTING_ASK_FOR_PRESET,         false).toBool());
+    set(SETTING::LOAD_MOST_RECENT,         settings.value(SETTING_OPEN_MOST_RECENT,       false).toBool());
     set(SETTING::DEFAULT_PRESET,           settings.value(SETTING_DEFAULT_PRESET,         0).toInt());
 
     // Timeline
@@ -417,6 +418,9 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::ASK_FOR_PRESET:
         settings.setValue(SETTING_ASK_FOR_PRESET, value);
+        break;
+    case SETTING::LOAD_MOST_RECENT:
+        settings.setValue(SETTING_OPEN_MOST_RECENT, value);
         break;
     default:
         Q_ASSERT(false);
