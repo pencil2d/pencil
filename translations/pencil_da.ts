@@ -4920,7 +4920,7 @@ Kontroller markering, og prøv igen.</translation>
         <location filename="../app/src/shortcutspage.cpp" line="361"/>
         <source>Undo</source>
         <comment>Shortcut</comment>
-        <translation>Gendan</translation>
+        <translation>Fortryd</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="362"/>
