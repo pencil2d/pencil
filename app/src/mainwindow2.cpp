@@ -613,7 +613,6 @@ bool MainWindow2::openObject(QString strFilePath)
         progress.show();
     }
 
-    mEditor->layers()->setCurrentLayer(0);
 
     FileManager fm(this);
     connect(&fm, &FileManager::progressChanged, [&progress](int p)
