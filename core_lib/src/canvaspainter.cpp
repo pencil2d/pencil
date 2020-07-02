@@ -27,8 +27,8 @@ GNU General Public License for more details.
 
 
 
-CanvasPainter::CanvasPainter(QObject* parent) : QObject(parent)
-, mLog("CanvasRenderer")
+CanvasPainter::CanvasPainter()
+    : mLog("CanvasPainter")
 {
     ENABLE_DEBUG_LOG(mLog, false);
 }
@@ -127,7 +127,7 @@ void CanvasPainter::initializePainter(QPainter& painter, QPixmap& pixmap)
     painter.setWorldTransform(mViewTransform);
 }
 
-void CanvasPainter::renderPreLayers(QPixmap *pixmap)
+void CanvasPainter::renderPreLayers(QPixmap* pixmap)
 {
     QPainter painter;
     initializePainter(painter, *pixmap);
@@ -138,14 +138,14 @@ void CanvasPainter::renderPreLayers(QPainter& painter)
 {
     if (mOptions.eLayerVisibility != LayerVisibility::CURRENTONLY || mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA)
     {
-        paintCurrentFrame(painter, 0, mCurrentLayerIndex-1);
+        paintCurrentFrame(painter, 0, mCurrentLayerIndex - 1);
     }
 
     paintOnionSkin(painter);
     painter.setOpacity(1.0);
 }
 
-void CanvasPainter::renderCurLayer(QPixmap *pixmap)
+void CanvasPainter::renderCurLayer(QPixmap* pixmap)
 {
     QPainter painter;
     initializePainter(painter, *pixmap);
@@ -157,7 +157,7 @@ void CanvasPainter::renderCurLayer(QPainter& painter)
     paintCurrentFrame(painter, mCurrentLayerIndex, mCurrentLayerIndex);
 }
 
-void CanvasPainter::renderPostLayers(QPixmap *pixmap)
+void CanvasPainter::renderPostLayers(QPixmap* pixmap)
 {
     QPainter painter;
     initializePainter(painter, *pixmap);
@@ -168,7 +168,7 @@ void CanvasPainter::renderPostLayers(QPainter& painter)
 {
     if (mOptions.eLayerVisibility != LayerVisibility::CURRENTONLY || mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA)
     {
-        paintCurrentFrame(painter, mCurrentLayerIndex+1, mObject->getLayerCount()-1);
+        paintCurrentFrame(painter, mCurrentLayerIndex + 1, mObject->getLayerCount() - 1);
     }
 
     paintCameraBorder(painter);
@@ -180,9 +180,9 @@ void CanvasPainter::renderPostLayers(QPainter& painter)
     }
 }
 
-void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage *buffer)
+void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer)
 {
-    Q_UNUSED(rect)
+    Q_UNUSED(rect);
     Q_ASSERT(object);
     mObject = object;
 
@@ -230,7 +230,7 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
         int onionFrameNumber = mFrameNumber;
         if (mOptions.bIsOnionAbsolute)
         {
-            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber+1, true);
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber + 1, true);
         }
         onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
 
@@ -552,13 +552,13 @@ void CanvasPainter::paintGrid(QPainter& painter)
     painter.setBrush(Qt::NoBrush);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
-    // draw vertical gridlines
+    // draw vertical grid lines
     for (int x = left; x < right; x += gridSizeW)
     {
         painter.drawLine(x, top, x, bottom);
     }
 
-    // draw horizontal gridlines
+    // draw horizontal grid lines
     for (int y = top; y < bottom; y += gridSizeH)
     {
         painter.drawLine(left, y, right, y);
@@ -566,7 +566,7 @@ void CanvasPainter::paintGrid(QPainter& painter)
     painter.setRenderHints(previous_renderhints);
 }
 
-void CanvasPainter::paintOverlayCenter(QPainter &painter)
+void CanvasPainter::paintOverlayCenter(QPainter& painter)
 {
     QRect rect = getCameraRect();
 
@@ -596,7 +596,7 @@ void CanvasPainter::paintOverlayCenter(QPainter &painter)
     painter.restore();
 }
 
-void CanvasPainter::paintOverlayThirds(QPainter &painter)
+void CanvasPainter::paintOverlayThirds(QPainter& painter)
 {
     QRect rect = getCameraRect();
     painter.save();
@@ -617,16 +617,16 @@ void CanvasPainter::paintOverlayThirds(QPainter &painter)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    painter.drawLine(rect.x(), rect.y() + (rect.height()/3), rect.right(), rect.y() + (rect.height()/3));
-    painter.drawLine(rect.x(), rect.y() + (rect.height() * 2/3), rect.x() + rect.width(), rect.y() + (rect.height() * 2/3));
-    painter.drawLine(rect.x() + rect.width()/3, rect.y(), rect.x() + rect.width()/3, rect.y() + rect.height());
-    painter.drawLine(rect.x() + rect.width() *2/3, rect.y(), rect.x() + rect.width() *2/3, rect.y() + rect.height());
+    painter.drawLine(rect.x(), rect.y() + (rect.height() / 3), rect.right(), rect.y() + (rect.height() / 3));
+    painter.drawLine(rect.x(), rect.y() + (rect.height() * 2 / 3), rect.x() + rect.width(), rect.y() + (rect.height() * 2 / 3));
+    painter.drawLine(rect.x() + rect.width() / 3, rect.y(), rect.x() + rect.width() / 3, rect.y() + rect.height());
+    painter.drawLine(rect.x() + rect.width() * 2 / 3, rect.y(), rect.x() + rect.width() * 2 / 3, rect.y() + rect.height());
 
     painter.setRenderHints(previous_renderhints);
     painter.restore();
 }
 
-void CanvasPainter::paintOverlayGolden(QPainter &painter)
+void CanvasPainter::paintOverlayGolden(QPainter& painter)
 {
     QRect rect = getCameraRect();
     painter.save();
@@ -656,7 +656,7 @@ void CanvasPainter::paintOverlayGolden(QPainter &painter)
     painter.restore();
 }
 
-void CanvasPainter::paintOverlaySafeAreas(QPainter &painter)
+void CanvasPainter::paintOverlaySafeAreas(QPainter& painter)
 {
     QRect rect = getCameraRect();
 
@@ -680,21 +680,29 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter &painter)
     if (mOptions.bActionSafe)
     {
         int action = mOptions.nActionSafe;
-        QRect safeAction = QRect(rect.x() + rect.width()*action/200, rect.y() + rect.height()*action/200, rect.width()*(100-action)/100, rect.height()*(100-action)/100);
+        QRect safeAction = QRect(rect.x() + rect.width() * action / 200,
+                                 rect.y() + rect.height() * action / 200,
+                                 rect.width() * (100 - action) / 100,
+                                 rect.height() * (100 - action) / 100);
         painter.drawRect(safeAction);
 
-        if (mOptions.bShowSafeAreaHelperText) {
-            painter.drawText(safeAction.x(), safeAction.y()-1, tr("Safe Action area %1 %").arg(action));
+        if (mOptions.bShowSafeAreaHelperText)
+        {
+            painter.drawText(safeAction.x(), safeAction.y() - 1, QObject::tr("Safe Action area %1 %").arg(action));
         }
     }
     if (mOptions.bTitleSafe)
     {
         int title = mOptions.nTitleSafe;
-        QRect safeTitle = QRect(rect.x() + rect.width()*title/200, rect.y() + rect.height()*title/200, rect.width()*(100-title)/100, rect.height()*(100-title)/100);
+        QRect safeTitle = QRect(rect.x() + rect.width() * title / 200,
+                                rect.y() + rect.height() * title / 200,
+                                rect.width() * (100 - title) / 100,
+                                rect.height() * (100 - title) / 100);
         painter.drawRect(safeTitle);
 
-        if (mOptions.bShowSafeAreaHelperText) {
-            painter.drawText(safeTitle.x(), safeTitle.y()-1, tr("Safe Title area %1 %").arg(title));
+        if (mOptions.bShowSafeAreaHelperText)
+        {
+            painter.drawText(safeTitle.x(), safeTitle.y() - 1, QObject::tr("Safe Title area %1 %").arg(title));
         }
     }
 
@@ -711,7 +719,7 @@ void CanvasPainter::renderGrid(QPainter& painter)
     }
 }
 
-void CanvasPainter::renderOverlays(QPainter &painter)
+void CanvasPainter::renderOverlays(QPainter& painter)
 {
     if (mOptions.bCenter)
     {
@@ -735,12 +743,12 @@ void CanvasPainter::renderOverlays(QPainter &painter)
     }
 }
 
-void CanvasPainter::paintCameraBorder(QPainter &painter)
+void CanvasPainter::paintCameraBorder(QPainter& painter)
 {
     LayerCamera* cameraLayer = nullptr;
     bool isCameraMode = false;
 
-    // Find the first visiable camera layers
+    // Find the first visible camera layers
     for (int i = 0; i < mObject->getLayerCount(); ++i)
     {
         Layer* layer = mObject->getLayer(i);
