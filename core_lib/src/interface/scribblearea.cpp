@@ -1334,10 +1334,7 @@ QPointF ScribbleArea::getCentralPoint()
 void ScribbleArea::paintTransformedSelection()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr)
-    {
-        return;
-    }
+    if (layer == nullptr) { return; }
 
     auto selectMan = mEditor->select();
     if (selectMan->somethingSelected())    // there is something selected
@@ -1388,10 +1385,7 @@ void ScribbleArea::applyTransformedSelection()
     mCanvasPainter.ignoreTransformedSelection();
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr)
-    {
-        return;
-    }
+    if (layer == nullptr) { return; }
 
     auto selectMan = mEditor->select();
     if (selectMan->somethingSelected())
@@ -1434,8 +1428,8 @@ void ScribbleArea::cancelTransformedSelection()
         Layer* layer = mEditor->layers()->currentLayer();
         if (layer == nullptr) { return; }
 
-        if (layer->type() == Layer::VECTOR) {
-
+        if (layer->type() == Layer::VECTOR)
+        {
             VectorImage* vectorImage = currentVectorImage(layer);
             if (vectorImage != nullptr)
             {
