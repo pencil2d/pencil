@@ -114,7 +114,8 @@ void RecentFileMenu::addRecentFile(QString filename)
         addAction(action);
         addAction(mClearSeparator);
         addAction(mClearAction);
-        QObject::connect(mClearAction, &QAction::triggered, [this] {
+        QObject::connect(mClearAction, &QAction::triggered, [this]
+        {
             clear();
             saveToDisk();
         });
@@ -122,7 +123,6 @@ void RecentFileMenu::addRecentFile(QString filename)
     else
     {
         QString firstFile = mRecentFiles[1];
-        qDebug() << "Recent file" << firstFile;
         insertAction(mRecentActions[firstFile], action);
     }
 }
