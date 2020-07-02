@@ -22,7 +22,7 @@ win32-msvc* {
     CONFIG(release) {
         QMAKE_CXXFLAGS += /Gy /GL 
         CONFIG += ltcg
-        #CONFIG += force_debug_info
+        CONFIG += force_debug_info
     }
 }
 
