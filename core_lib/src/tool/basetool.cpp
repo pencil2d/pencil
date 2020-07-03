@@ -325,7 +325,6 @@ void BaseTool::stopAdjusting()
 
 void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
 {
-    if (mQuickSizingProperties.contains(modifiers));
     qreal inc = qPow(msOriginalPropertyValue * 100, 0.5);
     qreal newValue = inc + getCurrentPoint().x();
 
