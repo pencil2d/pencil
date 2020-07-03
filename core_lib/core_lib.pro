@@ -161,6 +161,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \
+    src/util/log.cpp \
     src/util/util.cpp \
     src/canvaspainter.cpp \
     src/soundplayer.cpp \

@@ -74,8 +74,6 @@ private:
 
     int mCurrentProgress = 0;
     int mMaxProgressValue = 100;
-
-    QLoggingCategory mLog;
 };
 
 #endif // OBJECTSAVELOADER_H

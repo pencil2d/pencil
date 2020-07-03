@@ -123,6 +123,8 @@ private:
 
     /** Calculate layer opacity based on current layer offset */
     qreal calculateRelativeOpacityForLayer(int layerIndex) const;
+
+    void savePaintResult(QString layerName, int frameNum);
 private:
     CanvasPainterOptions mOptions;
 
@@ -145,8 +147,6 @@ private:
     bool mRenderTransform = false;
     QRect mSelection;
     QTransform mSelectionTransform;
-
-    QLoggingCategory mLog;
 
     // Caches specifically for when drawing on the canvas
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;

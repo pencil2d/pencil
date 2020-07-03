@@ -26,11 +26,8 @@ GNU General Public License for more details.
 #include "util.h"
 
 
-
 CanvasPainter::CanvasPainter()
-    : mLog("CanvasPainter")
 {
-    ENABLE_DEBUG_LOG(mLog, false);
 }
 
 CanvasPainter::~CanvasPainter()
@@ -186,6 +183,7 @@ void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int
     Q_ASSERT(object);
     mObject = object;
 
+    CANVASPAINTER_LOG("Set CurrentLayerIndex = %d", currentLayer);
     mCurrentLayerIndex = currentLayer;
     mFrameNumber = frame;
     mBuffer = buffer;
@@ -289,20 +287,17 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
 {
 #ifdef _DEBUG
     LayerBitmap* bitmapLayer = dynamic_cast<LayerBitmap*>(layer);
-    if (bitmapLayer == nullptr)
-    {
-        Q_ASSERT(bitmapLayer);
-        return;
-    }
+    Q_ASSERT(bitmapLayer);
 #else
     LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(layer);
 #endif
 
-    //qCDebug(mLog) << "Paint Onion skin bitmap, Frame = " << nFrame;
+    CANVASPAINTER_LOG("    Paint Bitmap Frame = %d, UseLastKeyFrame = %d", nFrame, useLastKeyFrame);
     BitmapImage* paintedImage = nullptr;
     if (useLastKeyFrame)
     {
         paintedImage = bitmapLayer->getLastBitmapImageAtFrame(nFrame, 0);
+        CANVASPAINTER_LOG("      Actual frame = %d", paintedImage->pos());
     }
     else
     {
@@ -317,11 +312,11 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
 
     if (paintedImage == nullptr)
     {
-        paintedImage = new BitmapImage();
+        paintedImage = new BitmapImage;
     }
 
     paintedImage->loadFile(); // Critical! force the BitmapImage to load the image
-    //qCDebug(mLog) << "Paint Image Size:" << paintedImage->image()->size();
+    CANVASPAINTER_LOG("        Paint Image Size: %dx%d", paintedImage->image()->width(), paintedImage->image()->height());
 
     BitmapImage paintToImage;
     paintToImage.paste(paintedImage);
@@ -362,6 +357,13 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
 
     prescale(&paintToImage);
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
+
+//    static int cc = 0;
+//    QString path = QString("C:/Temp/pencil2d/canvas-%1-%2-%3.png")
+//        .arg(cc++, 3, 10, QChar('0'))
+//        .arg(layer->name())
+//        .arg(mFrameNumber);
+//    Q_ASSERT(mCanvas->save(path));
 }
 
 void CanvasPainter::prescale(BitmapImage* bitmapImage)
@@ -395,16 +397,12 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
 {
 #ifdef _DEBUG
     LayerVector* vectorLayer = dynamic_cast<LayerVector*>(layer);
-    if (vectorLayer == nullptr)
-    {
-        Q_ASSERT(vectorLayer);
-        return;
-    }
+    Q_ASSERT(vectorLayer);
 #else
     LayerVector* vectorLayer = static_cast<LayerVector*>(layer);
 #endif
 
-    qCDebug(mLog) << "Paint Onion skin vector, Frame = " << nFrame;
+    CANVASPAINTER_LOG("Paint Onion skin vector, Frame = %d", nFrame);
     VectorImage* vectorImage = nullptr;
     if (useLastKeyFrame)
     {
@@ -494,10 +492,12 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
         if (layer->visible() == false)
             continue;
 
-        if (mOptions.eLayerVisibility == LayerVisibility::RELATED && !isCameraLayer) {
+        if (mOptions.eLayerVisibility == LayerVisibility::RELATED && !isCameraLayer)
+        {
             painter.setOpacity(calculateRelativeOpacityForLayer(i));
         }
 
+        CANVASPAINTER_LOG("  Render Layer[%d] %s", i, layer->name());
         switch (layer->type())
         {
         case Layer::BITMAP: { paintBitmapFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break; }
@@ -512,7 +512,8 @@ qreal CanvasPainter::calculateRelativeOpacityForLayer(int layerIndex) const
     int layerOffset = mCurrentLayerIndex - layerIndex;
     int absoluteOffset = qAbs(layerOffset);
     qreal newOpacity = 1.0;
-    if (absoluteOffset != 0) {
+    if (absoluteOffset != 0)
+    {
         newOpacity = qPow(static_cast<qreal>(mOptions.fLayerVisibilityThreshold), absoluteOffset);
     }
     return newOpacity;
