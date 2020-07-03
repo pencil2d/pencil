@@ -22,6 +22,8 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QStandardPaths>
 #include <QtMath>
+#include <QSettings>
+
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"

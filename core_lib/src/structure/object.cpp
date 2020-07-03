@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QDebug>
 #include <QDateTime>
+#include <QSettings>
 
 #include "layer.h"
 #include "layerbitmap.h"

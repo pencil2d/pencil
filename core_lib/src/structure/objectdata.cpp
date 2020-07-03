@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "objectdata.h"
+#include <QSettings>
 
 ObjectData::ObjectData()
 {

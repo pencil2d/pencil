@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 #include "polylinetool.h"
 
-
+#include <QSettings>
 #include "editor.h"
 #include "scribblearea.h"
 

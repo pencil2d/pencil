@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "pentool.h"
 
 #include <QPixmap>
+#include <QSettings>
 
 #include "vectorimage.h"
 #include "layervector.h"

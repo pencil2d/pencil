@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include <QColor>
 #include <QTransform>
 #include "pencildef.h"
-#include <qsettings.h>
 
 
 class ObjectData
