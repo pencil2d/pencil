@@ -304,17 +304,12 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
         paintedImage = bitmapLayer->getBitmapImageAtFrame(nFrame);
     }
 
-    if (paintedImage == nullptr)
-    {
-        paintedImage = new BitmapImage;
-    }
-
+    if (paintedImage == nullptr) { return; }
     paintedImage->loadFile(); // Critical! force the BitmapImage to load the image
     CANVASPAINTER_LOG("        Paint Image Size: %dx%d", paintedImage->image()->width(), paintedImage->image()->height());
 
     const bool frameIsEmpty = (paintedImage == nullptr || paintedImage->bounds().isEmpty());
     const bool isDrawing = isCurrentFrame && mBuffer && !mBuffer->bounds().isEmpty();
-
     if (frameIsEmpty && !isDrawing)
     {
         CANVASPAINTER_LOG("        Early return frame %d, %d", frameIsEmpty, isDrawing);
@@ -350,10 +345,10 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     }
 
     // If the current frame on the current layer has a transformation, we apply it.
-    if (mRenderTransform && nFrame == mFrameNumber && layer == mObject->getLayer(mCurrentLayerIndex))
+    bool shouldPaintTransform = mRenderTransform && nFrame == mFrameNumber && layer == mObject->getLayer(mCurrentLayerIndex);
+    if (shouldPaintTransform)
     {
         paintToImage.clear(mSelection);
-        paintTransformedSelection(painter);
     }
 
     painter.setWorldMatrixEnabled(true);
@@ -361,12 +356,17 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     prescale(&paintToImage);
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 
+    if (shouldPaintTransform)
+    {
+        paintTransformedSelection(painter);
+    }
 //    static int cc = 0;
 //    QString path = QString("C:/Temp/pencil2d/canvas-%1-%2-%3.png")
 //        .arg(cc++, 3, 10, QChar('0'))
 //        .arg(layer->name())
 //        .arg(mFrameNumber);
 //    Q_ASSERT(mCanvas->save(path));
+
 }
 
 void CanvasPainter::prescale(BitmapImage* bitmapImage)

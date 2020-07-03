@@ -121,7 +121,12 @@ void ExportMovieDialog::frameCheckboxClicked(bool checked)
 void ExportMovieDialog::onFilePathsChanged(QStringList filePaths)
 {
     QString filePath = filePaths.first().toLower();
-    ui->loopCheckBox->setEnabled(supportsLooping(filePath));
+    bool canLoop = supportsLooping(filePath);
+    ui->loopCheckBox->setEnabled(canLoop);
+    if (!canLoop)
+    {
+        ui->loopCheckBox->setChecked(false);
+    }
     ui->transparencyCheckBox->setEnabled(supportsTransparency(filePath));
 }
 
