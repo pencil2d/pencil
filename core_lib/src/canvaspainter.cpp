@@ -304,12 +304,6 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
         paintedImage = bitmapLayer->getBitmapImageAtFrame(nFrame);
     }
 
-    if ((paintedImage == nullptr || paintedImage->bounds().isEmpty())
-        && !(isCurrentFrame && mBuffer != nullptr && !mBuffer->bounds().isEmpty()))
-    {
-        return;
-    }
-
     if (paintedImage == nullptr)
     {
         paintedImage = new BitmapImage;
@@ -317,6 +311,15 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
 
     paintedImage->loadFile(); // Critical! force the BitmapImage to load the image
     CANVASPAINTER_LOG("        Paint Image Size: %dx%d", paintedImage->image()->width(), paintedImage->image()->height());
+
+    const bool frameIsEmpty = (paintedImage == nullptr || paintedImage->bounds().isEmpty());
+    const bool isDrawing = isCurrentFrame && mBuffer && !mBuffer->bounds().isEmpty();
+
+    if (frameIsEmpty && !isDrawing)
+    {
+        CANVASPAINTER_LOG("        Early return frame %d, %d", frameIsEmpty, isDrawing);
+        return;
+    }
 
     BitmapImage paintToImage;
     paintToImage.paste(paintedImage);
