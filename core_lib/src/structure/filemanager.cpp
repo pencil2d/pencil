@@ -40,10 +40,8 @@ namespace
                            "</ul>";
 }
 
-FileManager::FileManager(QObject* parent) : QObject(parent),
-mLog("FileManager")
+FileManager::FileManager(QObject* parent) : QObject(parent)
 {
-    ENABLE_DEBUG_LOG(mLog, false);
     srand(static_cast<uint>(time(nullptr)));
 }
 
@@ -53,7 +51,7 @@ Object* FileManager::load(QString sFileName)
     dd << QString("File name: ").append(sFileName);
     if (!QFile::exists(sFileName))
     {
-        qCDebug(mLog) << "ERROR - File doesn't exist.";
+        DEBUG_LOG_FILEMANAGER("ERROR - File doesn't exist");
         return cleanUpWithErrorCode(Status(Status::FILE_NOT_FOUND, dd, tr("Could not open file"),
                                            tr("The file does not exist, so we are unable to open it. Please check "
                                            "to make sure the path is correct and that the file is accessible and try again.")));
@@ -116,7 +114,7 @@ Object* FileManager::load(QString sFileName)
     QDomDocument xmlDoc;
     if (!xmlDoc.setContent(&file))
     {
-        qCDebug(mLog) << "Couldn't open the main XML file.";
+        DEBUG_LOG_FILEMANAGER("Couldn't open the main XML file");
         dd << "Error parsing or opening the main XML file";
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
@@ -124,6 +122,7 @@ Object* FileManager::load(QString sFileName)
     QDomDocumentType type = xmlDoc.doctype();
     if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
     {
+        DEBUG_LOG_FILEMANAGER("Invalid main XML doctype");
         dd << QString("Invalid main XML doctype: ").append(type.name());
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
@@ -178,8 +177,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
         if (element.tagName() == "object")
         {
             ok = object->loadXML(element, [this]{ progressForward(); });
-
-            if (!ok) qCDebug(mLog) << "Failed to Load object";
+            if (!ok) FILEMANAGER_LOG("Failed to Load object");
 
         }
         else if (element.tagName() == "editor" || element.tagName() == "projectdata")
@@ -311,7 +309,7 @@ Status FileManager::save(Object* object, QString sFileName)
         Layer* layer = object->getLayer(i);
 
         dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
-        
+
         Status st = layer->save(sDataFolder, zippedFiles, [this] { progressForward(); });
         if (!st.ok())
         {
@@ -328,7 +326,7 @@ Status FileManager::save(Object* object, QString sFileName)
         zippedFiles.append(sPaletteFile);
     else
         dd << "Failed to save the palette xml";
-    
+
     progressForward();
 
     // -------- save main XML file -----------
@@ -379,7 +377,7 @@ Status FileManager::save(Object* object, QString sFileName)
         if (!s.ok())
         {
             dd.collect(s.details());
-            return Status(Status::ERROR_MINIZ_FAIL, dd, 
+            return Status(Status::ERROR_MINIZ_FAIL, dd,
                           tr("Miniz Error"),
                           tr("An internal error occurred. Your file may not be saved successfully."));
         }
@@ -435,7 +433,7 @@ QDomElement FileManager::saveProjectData(ObjectData* data, QDomDocument& xmlDoc)
     currentFrameTag.setAttribute("value", data->getCurrentFrame());
     rootTag.appendChild(currentFrameTag);
 
-    // Current Colour
+    // Current Color
     QDomElement currentColorTag = xmlDoc.createElement("currentColor");
     QColor color = data->getCurrentColor();
     currentColorTag.setAttribute("r", color.red());
@@ -559,7 +557,7 @@ QString FileManager::backupPreviousFile(const QString& fileName)
     bool ok = QFile::rename(info.absoluteFilePath(), sBackupFileFullPath);
     if (!ok)
     {
-        qDebug() << "Cannot backup the previous file.";
+        FILEMANAGER_LOG("Cannot backup the previous file");
         return "";
     }
     return sBackupFileFullPath;
@@ -581,7 +579,7 @@ void FileManager::progressForward()
 
 bool FileManager::loadPalette(Object* obj)
 {
-    qCDebug(mLog) << "Load Palette..";
+    DEBUG_LOG_FILEMANAGER("Load Palette..");
 
     QString paletteFilePath = QDir(obj->dataDir()).filePath(PFF_PALETTE_FILE);
     if (!obj->importPalette(paletteFilePath))
@@ -602,16 +600,16 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     mstrLastTempFolder = strUnzipTarget;
 }
 
-QList<ColourRef> FileManager::loadPaletteFile(QString strFilename)
+QList<ColorRef> FileManager::loadPaletteFile(QString strFilename)
 {
     QFileInfo fileInfo(strFilename);
     if (!fileInfo.exists())
     {
-        return QList<ColourRef>();
+        return QList<ColorRef>();
     }
 
     // TODO: Load Palette.
-    return QList<ColourRef>();
+    return QList<ColorRef>();
 }
 
 Status FileManager::verifyObject(Object* obj)
@@ -623,7 +621,7 @@ Status FileManager::verifyObject(Object* obj)
     {
         obj->data()->setCurrentLayer(maxLayer - 1);
     }
-    
+
     // Must have at least 1 camera layer
     std::vector<LayerCamera*> camLayers = obj->getLayersByType<LayerCamera>();
     if (camLayers.empty())

@@ -202,6 +202,8 @@ QPointF SelectionManager::whichAnchorPoint(QPointF currentPoint)
 
 void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement)
 {
+    offsetX = qRound(offsetX);
+    offsetY = qRound(offsetY);
     QRectF& transformedSelection = mTransformedSelection;
 
     switch (mMoveMode)
@@ -236,7 +238,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     {
         mTempTransformedSelection = transformedSelection;
         QPointF anchorPoint = transformedSelection.center();
-        qreal rotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
+        qreal rotatedAngle = qRadiansToDegrees(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
         if (rotationIncrement > 0) {
             mRotatedAngle = constrainRotationToAngle(rotatedAngle, rotationIncrement);
         } else {
@@ -254,9 +256,13 @@ int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const 
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
 
-void SelectionManager::setSelection(QRectF rect)
+void SelectionManager::setSelection(QRectF rect, bool roundPixels)
 {
     resetSelectionTransformProperties();
+    if (roundPixels)
+    {
+        rect = QRect(rect.topLeft().toPoint(), rect.bottomRight().toPoint() - QPoint(1,1));
+    }
     mSelection = rect;
     mTransformedSelection = rect;
     mTempTransformedSelection = rect;
@@ -371,5 +377,7 @@ void SelectionManager::resetSelectionProperties()
 
     mSomethingSelected = false;
     vectorSelection.clear();
+
+    emit selectionChanged();
 }
 

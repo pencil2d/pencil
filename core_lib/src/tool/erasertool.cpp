@@ -62,6 +62,9 @@ void EraserTool::loadSettings()
     properties.useAA = settings.value("eraserAA", 1).toInt();
 
     if (properties.useFeather) { properties.useAA = -1; }
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
 void EraserTool::resetToDefault()
@@ -187,19 +190,12 @@ void EraserTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal opacity = 1.0;
-        mCurrentWidth = properties.width;
-        if (properties.pressure == true)
-        {
-            opacity = strokeManager()->getPressure();
-            mCurrentWidth = (mCurrentWidth + (strokeManager()->getPressure() * mCurrentWidth)) * 0.5;
-        }
+        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width * pressure;
+        mCurrentWidth = brushWidth;
 
-        qreal brushWidth = mCurrentWidth;
-
-        BlitRect rect;
-
-        rect.extend(point.toPoint());
+        BlitRect rect(point.toPoint());
         mScribbleArea->drawBrush(point,
                                  brushWidth,
                                  properties.feather,
@@ -208,7 +204,7 @@ void EraserTool::paintAt(QPointF point)
                                  properties.useFeather,
                                  properties.useAA == ON);
 
-        int rad = qRound(brushWidth) / 2 + 2;
+        int rad = qRound(brushWidth / 2 + 2);
 
         //continuously update buffer to update stroke behind grid.
         mScribbleArea->paintBitmapBufferRect(rect);
@@ -306,11 +302,12 @@ void EraserTool::removeVectorPaint()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        VectorImage*vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        mScribbleArea->clearBitmapBuffer();
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
         // Clear the area containing the last point
         //vectorImage->removeArea(lastPoint);
         // Clear the temporary pixel path
-        mScribbleArea->clearBitmapBuffer();
         vectorImage->deleteSelectedPoints();
 
         mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());

@@ -36,6 +36,13 @@ SoundClip::~SoundClip()
     //QFile::remove( fileName() );
 }
 
+SoundClip& SoundClip::operator=(const SoundClip& a) {
+    if (this != &a) {
+        mOriginalSoundClipName = a.mOriginalSoundClipName;
+    }
+    return *this;
+}
+
 SoundClip* SoundClip::clone()
 {
     return new SoundClip(*this);

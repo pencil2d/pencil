@@ -15,19 +15,24 @@ GNU General Public License for more details.
 
 */
 
-#ifndef LOG_H
-#define LOG_H
+#pragma once
+#include<QLoggingCategory>
 
-#if QT_VERSION >= QT_VERSION_CHECK( 5, 2, 0 )
-	#include<QLoggingCategory>
-    #define ENABLE_DEBUG_LOG( Logger, OnOff ) Logger.setEnabled( QtDebugMsg, OnOff )
+//#define DEBUG_LOG_CANVASPAINTER
+#define DEBUG_LOG_FILEMANAGER
+
+#ifdef DEBUG_LOG_CANVASPAINTER
+  Q_DECLARE_LOGGING_CATEGORY(logCanvasPainter);
+  #define CANVASPAINTER_LOG(...) qCDebug(logCanvasPainter, __VA_ARGS__)
+#else
+  #define CANVASPAINTER_LOG(...) (0)
 #endif
 
-#if QT_VERSION < QT_VERSION_CHECK( 5, 2, 0 )
-    #define QLoggingCategory QString
-    #define qCDebug( C ) qDebug()
-    #define qCWarning( C ) qWarning()
-    #define ENABLE_DEBUG_LOG( Logger, OnOff )
+#ifdef DEBUG_LOG_FILEMANAGER
+  Q_DECLARE_LOGGING_CATEGORY(logFileManager);
+  #define FILEMANAGER_LOG(...) qCDebug(logFileManager, __VA_ARGS__)
+#else
+  #define FILEMANAGER_LOG(...) (0)
 #endif
 
-#endif // LOG_H
+void initCategoryLogging();

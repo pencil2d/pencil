@@ -42,7 +42,6 @@ bool LayerManager::init()
 
 Status LayerManager::load(Object* o)
 {
-    Q_UNUSED(o)
     mLastCameraLayerIdx = 0;
     // Do not emit layerCountChanged here because the editor has not updated to this object yet
     // Leave that to the caller of this function
@@ -170,7 +169,7 @@ QString LayerManager::nameSuggestLayer(const QString& name)
     int newIndex = 2;
     QString newName = name;
     do {
-        newName = tr("%1 %2", "Layer name template: base name (translated separately) + number")
+        newName = QStringLiteral("%1 %2")
             .arg(name).arg(QString::number(newIndex++));
     } while (sLayers.contains(newName));
     return newName;

@@ -43,7 +43,7 @@ void TimeLine::initUI()
 {
     Q_ASSERT(editor() != nullptr);
 
-    setWindowTitle(tr("Timeline"));
+    setWindowTitle(tr("Timeline", "Subpanel title"));
 
     QWidget* timeLineContent = new QWidget(this);
 
@@ -141,6 +141,7 @@ void TimeLine::initUI()
     zoomSlider->setValue(mTracks->getFrameSize());
     zoomSlider->setToolTip(tr("Adjust frame width"));
     zoomSlider->setOrientation(Qt::Horizontal);
+    zoomSlider->setFocusPolicy(Qt::TabFocus);
 
     timelineButtons->addWidget(keyLabel);
     timelineButtons->addWidget(addKeyButton);

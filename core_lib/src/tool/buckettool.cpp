@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QPixmap>
 #include <QPainter>
 #include <QtMath>
+#include <QSettings>
 #include "pointerevent.h"
 
 #include "layer.h"
@@ -147,12 +148,27 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
     endStroke();
 }
 
+bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
+{
+    mQuickSizingProperties.clear();
+    if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
+    {
+        mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    }
+    else
+    {
+        mQuickSizingProperties.insert(Qt::ControlModifier, TOLERANCE);
+    }
+    return BaseTool::startAdjusting(modifiers, argStep);
+}
+
 void BucketTool::paintBitmap(Layer* layer)
 {
     Layer* targetLayer = layer; // by default
     int layerNumber = editor()->layers()->currentLayerIndex(); // by default
 
-    BitmapImage* targetImage = ((LayerBitmap*)targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
+    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
+    if (targetImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
 
     QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
@@ -170,7 +186,8 @@ void BucketTool::paintVector(Layer* layer)
 {
     mScribbleArea->clearBitmapBuffer();
 
-    VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
 
     if (!vectorImage->isPathFilled())
     {
@@ -178,8 +195,8 @@ void BucketTool::paintVector(Layer* layer)
     }
 
     vectorImage->applyWidthToSelection(properties.width);
-    vectorImage->applyColourToSelectedCurve(mEditor->color()->frontColorNumber());
-    vectorImage->applyColourToSelectedArea(mEditor->color()->frontColorNumber());
+    vectorImage->applyColorToSelectedCurve(mEditor->color()->frontColorNumber());
+    vectorImage->applyColorToSelectedArea(mEditor->color()->frontColorNumber());
 
     applyChanges();
 

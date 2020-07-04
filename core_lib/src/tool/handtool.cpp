@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "viewmanager.h"
 #include "scribblearea.h"
-#include "mathutils.h"
 
 
 HandTool::HandTool(QObject* parent) : BaseTool(parent)
@@ -109,7 +108,7 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
         QVector2D curV(getCurrentPixel() - centralPixel);
 
         qreal angleOffset = static_cast<qreal>(atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x()));
-        angleOffset = MathUtils::radToDeg(angleOffset);
+        angleOffset = qRadiansToDegrees(angleOffset);
         float newAngle = viewMgr->rotation() + static_cast<float>(angleOffset);
         viewMgr->rotate(newAngle);
     }

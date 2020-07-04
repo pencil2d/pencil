@@ -130,14 +130,14 @@
    <item>
     <widget class="QCheckBox" name="useBezierBox">
      <property name="text">
-      <string>Bezier</string>
+      <string comment="Tool options">Bezier</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="usePressureBox">
      <property name="text">
-      <string comment="Brush">Pressure</string>
+      <string comment="Tool options">Pressure</string>
      </property>
     </widget>
    </item>
@@ -154,7 +154,7 @@
       <string>Make invisible</string>
      </property>
      <property name="text">
-      <string>Invisible</string>
+      <string comment="Tool options">Invisible</string>
      </property>
     </widget>
    </item>
@@ -164,7 +164,7 @@
       <string>Preserve Alpha</string>
      </property>
      <property name="text">
-      <string>Alpha</string>
+      <string comment="Tool options">Alpha</string>
      </property>
     </widget>
    </item>
@@ -174,7 +174,7 @@
       <string>Merge vector lines when they are close together</string>
      </property>
      <property name="text">
-      <string comment="Vector line merge">Merge</string>
+      <string comment="Vector line merge (Tool options)">Merge</string>
      </property>
     </widget>
    </item>
@@ -195,6 +195,9 @@
      </item>
      <item>
       <widget class="QComboBox" name="inpolLevelsCombo">
+       <property name="currentText">
+        <string comment="Stablizer level">None</string>
+       </property>
        <item>
         <property name="text">
          <string comment="Stabilizer option">None</string>

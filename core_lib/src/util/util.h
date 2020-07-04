@@ -27,6 +27,7 @@ QTransform RectMapTransform( QRectF source, QRectF target );
 
 void clearFocusOnFinished(QAbstractSpinBox *spinBox);
 
+// NOTE: Replace this implementation with QScopeGuard once we drop support for Qt < 5.12
 class ScopeGuard
 {
 public:
@@ -46,16 +47,6 @@ private:
 #define NULLReturn( p, ret ) if ( p == nullptr ) { return ret; }
 #define NULLReturnAssert( p ) if ( p == nullptr ) { Q_ASSERT(false); return; }
 
-
-class SignalBlocker
-{
-public:
-    explicit SignalBlocker(QObject* o);
-    ~SignalBlocker();
-private:
-    QObject* mObject = nullptr;
-    bool mBlocked = false;
-};
 
 QString ffprobeLocation();
 QString ffmpegLocation();

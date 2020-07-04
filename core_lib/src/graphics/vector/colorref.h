@@ -15,26 +15,26 @@ GNU General Public License for more details.
 
 */
 
-#ifndef COLOURREF_H
-#define COLOURREF_H
+#ifndef COLORREF_H
+#define COLORREF_H
 
 #include <QColor>
 #include <QString>
 
-class ColourRef
+class ColorRef
 {
 public:
-    ColourRef();
-    ColourRef(QColor theColour, QString theName = QString());
-    bool operator==(ColourRef colourRef1);
-    bool operator!=(ColourRef colourRef1);
+    ColorRef();
+    ColorRef(QColor theColor, QString theName = QString());
+    bool operator==(ColorRef colorRef1);
+    bool operator!=(ColorRef colorRef1);
 
-    QColor colour;
+    QColor color;
     QString name;
 
     static QString getDefaultColorName(const QColor c);
 };
 
-QDebug& operator<<(QDebug debug, const ColourRef &colourRef);
+QDebug& operator<<(QDebug debug, const ColorRef &colorRef);
 
 #endif

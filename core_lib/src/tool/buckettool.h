@@ -37,6 +37,8 @@ public:
     void pointerMoveEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
 
+    bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep) override;
+
     void setTolerance(const int tolerance) override;
     void setWidth(const qreal width) override;
 
