@@ -61,8 +61,8 @@ void ExportMovieDialog::updateResolutionCombo( int index )
 {
     QSize camSize = ui->cameraCombo->itemData( index ).toSize();
 
-    SignalBlocker b1( ui->widthSpinBox );
-    SignalBlocker b2( ui->heightSpinBox );
+    QSignalBlocker b1( ui->widthSpinBox );
+    QSignalBlocker b2( ui->heightSpinBox );
 
     ui->widthSpinBox->setValue( camSize.width() );
     ui->heightSpinBox->setValue( camSize.height() );
@@ -73,8 +73,8 @@ void ExportMovieDialog::setDefaultRange(int startFrame, int endFrame, int endFra
     mEndFrame = endFrame;
     mEndFrameWithSounds = endFrameWithSounds;
 
-    SignalBlocker b1( ui->startSpinBox );
-    SignalBlocker b2( ui->endSpinBox );
+    QSignalBlocker b1( ui->startSpinBox );
+    QSignalBlocker b2( ui->endSpinBox );
 
     ui->startSpinBox->setValue( startFrame );
     ui->endSpinBox->setValue( endFrame );
@@ -121,7 +121,12 @@ void ExportMovieDialog::frameCheckboxClicked(bool checked)
 void ExportMovieDialog::onFilePathsChanged(QStringList filePaths)
 {
     QString filePath = filePaths.first().toLower();
-    ui->loopCheckBox->setEnabled(supportsLooping(filePath));
+    bool canLoop = supportsLooping(filePath);
+    ui->loopCheckBox->setEnabled(canLoop);
+    if (!canLoop)
+    {
+        ui->loopCheckBox->setChecked(false);
+    }
     ui->transparencyCheckBox->setEnabled(supportsTransparency(filePath));
 }
 

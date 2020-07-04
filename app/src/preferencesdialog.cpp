@@ -22,6 +22,8 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QStandardPaths>
 #include <QtMath>
+#include <QSettings>
+
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
@@ -101,32 +103,43 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    ui->languageCombo->addItem(tr("Arabic (%1)").arg("Arabic"), "ar");
-    ui->languageCombo->addItem(tr("Catalan (%1)").arg("Catalan"), "ca");
-    ui->languageCombo->addItem(tr("Czech (%1)").arg("Czech"), "cs");
-    ui->languageCombo->addItem(tr("Danish (%1)").arg("Danish"), "da");
-    ui->languageCombo->addItem(tr("German (%1)").arg("German"), "de");
-    ui->languageCombo->addItem(tr("Greek (%1)").arg("Greek"), "el");
-    ui->languageCombo->addItem(tr("English (%1)").arg("English"), "en");
-    ui->languageCombo->addItem(tr("Spanish (%1)").arg("Spanish"), "es");
-    ui->languageCombo->addItem(tr("Estonian (%1)").arg("Estonian"), "et");
-    ui->languageCombo->addItem(tr("French (%1)").arg("French"), "fr");
-    ui->languageCombo->addItem(tr("Hebrew (%1)").arg("Hebrew"), "he");
-    ui->languageCombo->addItem(tr("Hungarian (%1)").arg("Hungarian"), "hu_HU");
-    ui->languageCombo->addItem(tr("Indonesian (%1)").arg("Indonesian"), "id");
-    ui->languageCombo->addItem(tr("Italian (%1)").arg("Italian"), "it");
-    ui->languageCombo->addItem(tr("Japanese (%1)").arg("Japanese"), "ja");
-    ui->languageCombo->addItem(tr("Kabyle (%1)").arg("Kabyle"), "kab");
-    ui->languageCombo->addItem(tr("Polish (%1)").arg("Polish"), "pl");
-    ui->languageCombo->addItem(tr("Portuguese \u2013 Portugal (%1)").arg("Portuguese \u2013 Portugal"), "pt");
-    ui->languageCombo->addItem(tr("Portuguese \u2013 Brazil (%1)").arg("Portuguese \u2013 Brazil"), "pt_BR");
-    ui->languageCombo->addItem(tr("Russian (%1)").arg("Russian"), "ru");
-    ui->languageCombo->addItem(tr("Slovene (%1)").arg("Slovene"), "sl");
-    ui->languageCombo->addItem(tr("Swedish (%1)").arg("Swedish"), "sv");
-    ui->languageCombo->addItem(tr("Turkish (%1)").arg("Turkish"), "tr");
-    ui->languageCombo->addItem(tr("Vietnamese (%1)").arg("Vietnamese"), "vi");
-    ui->languageCombo->addItem(tr("Chinese \u2013 China (%1)").arg("Chinese \u2013 China"), "zh_CN");
-    ui->languageCombo->addItem(tr("Chinese \u2013 Taiwan (%1)").arg("Chinese \u2013 Taiwan"), "zh_TW");
+    QString languages [][3]
+    {
+        // translatable string, endonym, locale code
+        { tr("Arabic"), QStringLiteral("عربى"), "ar" },
+        { tr("Catalan"), QStringLiteral("Català"), "ca" },
+        { tr("Czech"), QStringLiteral("čeština"), "cs" },
+        { tr("Danish"), QStringLiteral("Dansk"), "da" },
+        { tr("German"), QStringLiteral("Deutsche"), "de" },
+        { tr("Greek"), QStringLiteral("Ελληνικά"), "el" },
+        { tr("English"), QStringLiteral("English"), "en" },
+        { tr("Spanish"), QStringLiteral("Español"), "es" },
+        { tr("Estonian"), QStringLiteral("Eestlane"), "et" },
+        { tr("French"), QStringLiteral("Français"), "fr" },
+        { tr("Hebrew"), QStringLiteral("עברית"), "he" },
+        { tr("Hungarian"), QStringLiteral("Magyar"), "hu_HU" },
+        { tr("Indonesian"), QStringLiteral("Bahasa Indonesia"), "id" },
+        { tr("Italian"), QStringLiteral("Italiano"), "it" },
+        { tr("Japanese"), QStringLiteral("日本語"), "ja" },
+        { tr("Kabyle"), QStringLiteral("Taqbaylit"), "kab" },
+        { tr("Polish"), QStringLiteral("Polski"), "pl" },
+        { tr("Portuguese \u2013 Portugal"), QStringLiteral("Português Portugal"), "pt_PT" },
+        { tr("Portuguese \u2013 Brazil"), QStringLiteral("Português Brasil"), "pt_BR" },
+        { tr("Russian"), QStringLiteral("русский"), "ru" },
+        { tr("Slovene"), QStringLiteral("Slovenščina"), "sl" },
+        { tr("Swedish"), QStringLiteral("Svenska"), "sv" },
+        { tr("Turkish"), QStringLiteral("Türk"), "tr" },
+        { tr("Vietnamese"), QStringLiteral(" Tiếng Việt"), "vi" },
+        { tr("Chinese \u2013 China"), QStringLiteral("简体中文"), "zh_CN" },
+        { tr("Chinese \u2013 Taiwan"), QStringLiteral("繁體中文"), "zh_TW" },
+    };
+
+    for (auto& lang : languages)
+    {
+        const QString itemText = QStringLiteral("%1 (%2)").arg(lang[0]).arg(lang[1]);
+        const QString localeCode = lang[2];
+        ui->languageCombo->addItem(itemText, localeCode);
+    }
 
     int value = settings.value("windowOpacity").toInt();
     ui->windowOpacityLevel->setValue(100 - value);
@@ -185,50 +198,50 @@ void GeneralPage::updateValues()
 
     if (index >= 0)
     {
-        SignalBlocker b(ui->languageCombo);
+        QSignalBlocker b(ui->languageCombo);
         ui->languageCombo->setCurrentIndex(index);
     }
 
-    SignalBlocker b1(ui->curveSmoothingLevel);
+    QSignalBlocker b1(ui->curveSmoothingLevel);
     ui->curveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
-    SignalBlocker b2(ui->windowOpacityLevel);
+    QSignalBlocker b2(ui->windowOpacityLevel);
     ui->windowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
-    SignalBlocker b3(ui->shadowsBox);
+    QSignalBlocker b3(ui->shadowsBox);
     ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
-    SignalBlocker b4(ui->toolCursorsBox);
+    QSignalBlocker b4(ui->toolCursorsBox);
     ui->toolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
-    SignalBlocker b5(ui->antialiasingBox);
+    QSignalBlocker b5(ui->antialiasingBox);
     ui->antialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
-    SignalBlocker b6(ui->dottedCursorBox);
+    QSignalBlocker b6(ui->dottedCursorBox);
     ui->dottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
-    SignalBlocker b7(ui->gridSizeInputW);
+    QSignalBlocker b7(ui->gridSizeInputW);
     ui->gridSizeInputW->setValue(mManager->getInt(SETTING::GRID_SIZE_W));
-    SignalBlocker b11(ui->gridSizeInputH);
+    QSignalBlocker b11(ui->gridSizeInputH);
     ui->gridSizeInputH->setValue(mManager->getInt(SETTING::GRID_SIZE_H));
-    SignalBlocker b8(ui->gridCheckBox);
+    QSignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
-    SignalBlocker b16(ui->actionSafeCheckBox);
+    QSignalBlocker b16(ui->actionSafeCheckBox);
 
     bool actionSafeOn = mManager->isOn(SETTING::ACTION_SAFE_ON);
     ui->actionSafeCheckBox->setChecked(actionSafeOn);
-    SignalBlocker b14(ui->actionSafeInput);
+    QSignalBlocker b14(ui->actionSafeInput);
     ui->actionSafeInput->setValue(mManager->getInt(SETTING::ACTION_SAFE));
-    SignalBlocker b17(ui->titleSafeCheckBox);
+    QSignalBlocker b17(ui->titleSafeCheckBox);
     bool titleSafeOn = mManager->isOn(SETTING::TITLE_SAFE_ON);
     ui->titleSafeCheckBox->setChecked(titleSafeOn);
-    SignalBlocker b15(ui->titleSafeInput);
+    QSignalBlocker b15(ui->titleSafeInput);
     ui->titleSafeInput->setValue(mManager->getInt(SETTING::TITLE_SAFE));
 
-    SignalBlocker b18(ui->safeHelperTextCheckbox);
+    QSignalBlocker b18(ui->safeHelperTextCheckbox);
     ui->safeHelperTextCheckbox->setChecked(mManager->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON));
 
-    SignalBlocker b9(ui->highResBox);
+    QSignalBlocker b9(ui->highResBox);
     ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
 
-    SignalBlocker b10(ui->backgroundButtons);
+    QSignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
 
-    SignalBlocker b12(ui->framePoolSizeSpin);
+    QSignalBlocker b12(ui->framePoolSizeSpin);
     ui->framePoolSizeSpin->setValue(mManager->getInt(SETTING::FRAME_POOL_SIZE));
 
     int buttonIdx = 1;
@@ -392,17 +405,17 @@ TimelinePage::~TimelinePage()
 
 void TimelinePage::updateValues()
 {
-    SignalBlocker b1(ui->scrubBox);
+    QSignalBlocker b1(ui->scrubBox);
     ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
 
-    SignalBlocker b3(ui->timelineLength);
+    QSignalBlocker b3(ui->timelineLength);
     ui->timelineLength->setValue(mManager->getInt(SETTING::TIMELINE_SIZE));
     if (mManager->getString(SETTING::TIMELINE_SIZE).toInt() <= 0)
         ui->timelineLength->setValue(240);
 
-    SignalBlocker b4(ui->radioButtonAddNewKey);
-    SignalBlocker b5(ui->radioButtonDuplicate);
-    SignalBlocker b6(ui->radioButtonDrawOnPrev);
+    QSignalBlocker b4(ui->radioButtonAddNewKey);
+    QSignalBlocker b5(ui->radioButtonDuplicate);
+    QSignalBlocker b6(ui->radioButtonDrawOnPrev);
     int action = mManager->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
     switch (action)
     {
@@ -472,10 +485,10 @@ void TimelinePage::layerVisibilityThresholdChanged(int value)
     float percentage = static_cast<float>(value/100.0f);
     mManager->set(SETTING::LAYER_VISIBILITY_THRESHOLD, percentage);
 
-    SignalBlocker b8(ui->visibilitySlider);
+    QSignalBlocker b8(ui->visibilitySlider);
     ui->visibilitySlider->setValue(value);
 
-    SignalBlocker b9(ui->visibilitySpinbox);
+    QSignalBlocker b9(ui->visibilitySpinbox);
     ui->visibilitySpinbox->setValue(value);
 }
 
@@ -791,7 +804,7 @@ void ToolsPage::rotationIncrementChange(int value)
     while (360 % angle != 0) {
         angle++;
     }
-    ui->rotationIncrementDisplay->setText(tr("%n degree(s)", "", angle));
+    ui->rotationIncrementDisplay->setText(tr("1% degrees").arg(angle)); // don't use tr()'s plural settings, it breaks Transifex.
     mManager->set(SETTING::ROTATION_INCREMENT, angle);
 }
 

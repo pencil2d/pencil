@@ -27,6 +27,7 @@ ImportExportDialog::ImportExportDialog(QWidget* parent, Mode eMode, FileType eFi
 
     ui = new Ui::ImportExportDialog;
     ui->setupUi(this);
+    hidePreviewGroupBox(true);
     m_fileDialog = new FileDialog(this);
     connect(ui->browseButton, &QPushButton::clicked, this, &ImportExportDialog::browse);
 

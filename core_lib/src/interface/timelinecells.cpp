@@ -735,7 +735,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     int layerNumber = getLayerNumber(event->pos().y());
 
     // -- short scrub --
-    if (event->pos().y() < 20 && event->pos().x() > 20)
+    if (event->pos().y() < 20)
     {
         mPrefs->set(SETTING::SHORT_SCRUB, !mbShortScrub);
     }

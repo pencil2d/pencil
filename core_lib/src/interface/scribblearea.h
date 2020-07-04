@@ -131,8 +131,6 @@ public slots:
     void updateToolCursor();
     void paletteColorChanged(QColor);
 
-    bool isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod);
-
     void showLayerNotVisibleWarning();
 
 
@@ -152,9 +150,9 @@ public:
     void drawPolyline(QPainterPath path, QPen pen, bool useAA);
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
-    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA = true);
-    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColour, qreal opacity);
-    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true, bool useAA = false);
+    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA = true);
+    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, qreal opacity, bool usingFeather = true, bool useAA = false);
     void blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
@@ -164,7 +162,7 @@ public:
     void clearBitmapBuffer();
     void refreshBitmap(const QRectF& rect, int rad);
     void refreshVector(const QRectF& rect, int rad);
-    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
+    void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
     void pointerMoveEvent(PointerEvent*);

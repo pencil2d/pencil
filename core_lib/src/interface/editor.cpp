@@ -371,7 +371,7 @@ void BackupBitmapElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
     auto selectMan = editor->select();
-    selectMan->setSelection(mySelection);
+    selectMan->setSelection(mySelection, true);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
     selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
     selectMan->setRotation(rotationAngle);
@@ -401,7 +401,7 @@ void BackupVectorElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
     auto selectMan = editor->select();
-    selectMan->setSelection(mySelection);
+    selectMan->setSelection(mySelection, false);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
     selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
     selectMan->setRotation(rotationAngle);
@@ -477,7 +477,7 @@ void Editor::undo()
         if (layer->type() == Layer::VECTOR) {
             VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(mFrame);
             vectorImage->calculateSelectionRect();
-            select()->setSelection(vectorImage->getSelectionRect());
+            select()->setSelection(vectorImage->getSelectionRect(), false);
         }
         emit updateBackup();
     }
@@ -541,13 +541,15 @@ void Editor::copy()
     if (layer->type() == Layer::BITMAP)
     {
         LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
+        BitmapImage* bitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+        if (bitmapImage == nullptr) { return; }
         if (select()->somethingSelected())
         {
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(select()->mySelectionRect().toRect());  // copy part of the image
+            g_clipboardBitmapImage = bitmapImage->copy(select()->mySelectionRect().toRect());  // copy part of the image
         }
         else
         {
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
+            g_clipboardBitmapImage = bitmapImage->copy();  // copy the whole image
         }
         clipboardBitmapOk = true;
         if (g_clipboardBitmapImage.image() != nullptr)
@@ -556,7 +558,9 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        g_clipboardVectorImage = *((static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+        if (vectorImage == nullptr) { return; }
+        g_clipboardVectorImage = *vectorImage;  // copy the image
     }
 }
 
@@ -584,15 +588,20 @@ void Editor::paste()
                 }
             }
             auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
-            pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->paste(&tobePasted); // paste the clipboard
+            mScribbleArea->handleDrawingOnEmptyFrame();
+            BitmapImage *bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+            Q_CHECK_PTR(bitmapImage);
+            bitmapImage->paste(&tobePasted); // paste the clipboard
         }
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
             backup(tr("Paste"));
             deselectAll();
-            VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
+            mScribbleArea->handleDrawingOnEmptyFrame();
+            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            Q_CHECK_PTR(vectorImage);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
-            select()->setSelection(vectorImage->getSelectionRect());
+            select()->setSelection(vectorImage->getSelectionRect(), false);
         }
     }
     mScribbleArea->updateCurrentFrame();
@@ -720,7 +729,7 @@ void Editor::updateObject()
     {
         mScribbleArea->updateAllFrames();
     }
-    
+
     if (mPreferenceManager)
     {
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
@@ -958,16 +967,20 @@ void Editor::selectAll()
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
         // as the drawing area is not limited
         BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mFrame);
+        if (bitmapImage == nullptr) { return; }
+
         rect = bitmapImage->bounds();
     }
     else if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
-        vectorImage->selectAll();
-        rect = vectorImage->getSelectionRect();
+        if (vectorImage != nullptr)
+        {
+            vectorImage->selectAll();
+            rect = vectorImage->getSelectionRect();
+        }
     }
-    select()->setSelection(rect);
-    emit updateCurrentFrame();
+    select()->setSelection(rect, false);
 }
 
 void Editor::deselectAll()
@@ -977,7 +990,11 @@ void Editor::deselectAll()
 
     if (layer->type() == Layer::VECTOR)
     {
-        static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame, 0)->deselectAll();
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        if (vectorImage != nullptr)
+        {
+            vectorImage->deselectAll();
+        }
     }
 
     select()->resetSelectionProperties();

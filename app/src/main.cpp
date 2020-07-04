@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "layercamera.h"
 #include "platformhandler.h"
+#include "log.h"
 
 void installTranslator(PencilApplication& app)
 {
@@ -331,6 +332,8 @@ int main(int argc, char* argv[])
         // Only work in Windows & X11
         PencilApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     }
+
+    initCategoryLogging();
 
     PencilApplication app(argc, argv);
 

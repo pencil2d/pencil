@@ -18,7 +18,12 @@ win32-g++ {
 }
 
 win32-msvc* {
-    QMAKE_CXXFLAGS += /MP
+    QMAKE_CXXFLAGS += /MP /utf-8 
+    CONFIG(release) {
+        QMAKE_CXXFLAGS += /Gy /GL 
+        CONFIG += ltcg
+        CONFIG += force_debug_info
+    }
 }
 
 macx {

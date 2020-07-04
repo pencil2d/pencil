@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 
+#include <QPainterPath>
 #include "viewmanager.h"
 #include "editor.h"
 #include "object.h"

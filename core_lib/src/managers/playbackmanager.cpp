@@ -86,6 +86,7 @@ Status PlaybackManager::save(Object* o)
     data->setMarkInFrameNumber(mMarkInFrame);
     data->setMarkOutFrameNumber(mMarkOutFrame);
     data->setFrameRate(mFps);
+    data->setCurrentFrame(editor()->currentFrame());
     return Status::OK;
 }
 
@@ -109,20 +110,6 @@ void PlaybackManager::play()
     {
         editor()->scrubTo(mStartFrame);
         frame = editor()->currentFrame();
-    }
-
-    // get keyframe from layer
-    KeyFrame* key = nullptr;
-    if (!mListOfActiveSoundFrames.isEmpty())
-    {
-        for (int i = 0; i < object()->getLayerCount(); ++i)
-        {
-            Layer* layer = object()->getLayer(i);
-            if (layer->type() == Layer::SOUND)
-            {
-                key = layer->getKeyFrameWhichCovers(frame);
-            }
-        }
     }
 
     mListOfActiveSoundFrames.clear();
@@ -359,14 +346,14 @@ bool PlaybackManager::skipFrame()
     //float expectedTime = (mPlayingFrameCounter) * (1000.f / mFps);
     //qDebug("Expected:  %.2f ms", expectedTime);
     //qDebug("Actual:    %d   ms", mElapsedTimer->elapsed());
-    
+
     int t = qRound((mPlayingFrameCounter - 1) * (1000.f / mFps));
     if (mElapsedTimer->elapsed() < t)
     {
         qDebug() << "skip";
         return true;
     }
-    
+
     ++mPlayingFrameCounter;
     return false;
 }
@@ -425,7 +412,7 @@ void PlaybackManager::timerTick()
     if (skipFrame())
         return;
 
-    // keep going 
+    // keep going
     editor()->scrubForward();
 
     int newFrame = editor()->currentFrame();

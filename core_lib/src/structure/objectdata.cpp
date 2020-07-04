@@ -16,10 +16,11 @@ GNU General Public License for more details.
 */
 
 #include "objectdata.h"
+#include <QSettings>
 
 ObjectData::ObjectData()
 {
-    QSettings settings(PENCIL2D,PENCIL2D);
+    QSettings settings(PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
     if (mFps < 1)
         mFps = 12;

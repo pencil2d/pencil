@@ -35,7 +35,7 @@ HEADERS +=  \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \
-    src/graphics/vector/colourref.h \
+    src/graphics/vector/colorref.h \
     src/graphics/vector/vectorimage.h \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
@@ -110,7 +110,7 @@ HEADERS +=  \
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
-    src/graphics/vector/colourref.cpp \
+    src/graphics/vector/colorref.cpp \
     src/graphics/vector/vectorimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
@@ -161,6 +161,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \
+    src/util/log.cpp \
     src/util/util.cpp \
     src/canvaspainter.cpp \
     src/soundplayer.cpp \

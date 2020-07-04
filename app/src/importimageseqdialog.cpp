@@ -53,7 +53,6 @@ void ImportImageSeqDialog::setupLayout()
 {
 
     hideInstructionsLabel(true);
-    hidePreviewGroupBox(true);
 
     if (mFileType == FileType::GIF) {
         setWindowTitle(tr("Import Animated GIF"));
@@ -70,6 +69,7 @@ void ImportImageSeqDialog::setupPredefinedLayout()
     setInstructionsLabel(tr("Select an image that matches the criteria: MyFile000.png, eg. Joe001.png \n"
                          "The importer will search and find images matching the same criteria. You can see the result in the preview box below."));
     hideOptionsGroupBox(true);
+    hidePreviewGroupBox(false);
 
     connect(this, &ImportImageSeqDialog::filePathsChanged, this, &ImportImageSeqDialog::updatePreviewList);
 }
@@ -155,7 +155,7 @@ FileType ImportImageSeqDialog::getFileType()
 
 void ImportImageSeqDialog::setSpace(int number)
 {
-    SignalBlocker b1(uiOptionsBox->spaceSpinBox);
+    QSignalBlocker b1(uiOptionsBox->spaceSpinBox);
     uiOptionsBox->spaceSpinBox->setValue(number);
 }
 
@@ -217,7 +217,7 @@ void ImportImageSeqDialog::importArbitrarySequence()
     {
         QMessageBox::warning(mParent,
                              tr("Warning"),
-                             tr("was unable to import") + failedFiles,
+                             tr("Unable to import") + failedFiles,
                              QMessageBox::Ok,
                              QMessageBox::Ok);
     }

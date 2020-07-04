@@ -26,6 +26,7 @@ GNU General Public License for more details.
 
 class QListWidgetItem;
 class PreferenceManager;
+class QSettings;
 
 namespace Ui {
 class PreferencesDialog;
@@ -122,7 +123,7 @@ public slots:
 
     void timelineLengthChanged(int);
     void fontSizeChanged(int);
-    void scrubChanged(int);    
+    void scrubChanged(int);
     void drawEmptyKeyRadioButtonToggled(bool);
     void flipRollMsecSliderChanged(int value);
     void flipRollMsecSpinboxChanged(int value);

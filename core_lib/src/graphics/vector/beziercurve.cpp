@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QXmlStreamWriter>
 #include <QDomElement>
 #include <QDebug>
+#include <QPainterPath>
 #include "object.h"
 #include "pencilerror.h"
 
@@ -91,7 +92,7 @@ Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
     if (feather>0) xmlStream.writeAttribute( "feather", QString::number( feather ) );
     xmlStream.writeAttribute( "invisible", invisible ? "true" : "false" );
     xmlStream.writeAttribute( "filled", mFilled ? "true" : "false" );
-    xmlStream.writeAttribute( "colourNumber", QString::number( colourNumber ) );
+    xmlStream.writeAttribute( "colourNumber", QString::number( colorNumber ) );
     xmlStream.writeAttribute( "originX", QString::number( origin.x() ) );
     xmlStream.writeAttribute( "originY", QString::number( origin.y() ) );
     xmlStream.writeAttribute( "originPressure", QString::number( pressure.at(0) ) );
@@ -124,7 +125,7 @@ Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
         debugInfo << QString("feather = %1").arg(feather);
         debugInfo << QString("invisible = %1").arg(invisible);
         debugInfo << QString("filled = %1").arg(mFilled);
-        debugInfo << QString("colourNumber = %1").arg(colourNumber);
+        debugInfo << QString("colorNumber = %1").arg(colorNumber);
         debugInfo << QString("originX = %1").arg(origin.x());
         debugInfo << QString("originY = %1").arg(origin.y());
         debugInfo << QString("originPressure = %1").arg(pressure.at(0));
@@ -152,7 +153,7 @@ void BezierCurve::loadDomElement(const QDomElement& element)
     mFilled = (element.attribute("filled") == "1") || (element.attribute("filled") == "true");
     if (width == 0) invisible = true;
 
-    colourNumber = element.attribute("colourNumber").toInt();
+    colorNumber = element.attribute("colourNumber").toInt();
     origin = QPointF( element.attribute("originX").toFloat(), element.attribute("originY").toFloat() );
     pressure.append( element.attribute("originPressure").toFloat() );
     selected.append(false);
@@ -430,7 +431,7 @@ void BezierCurve::removeVertex(int i)
 
 void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transformation, bool simplified, bool showThinLines )
 {
-    QColor colour = object->getColour(colourNumber).colour;
+    QColor color = object->getColor(colorNumber).color;
 
     BezierCurve myCurve;
     if (isPartlySelected()) { myCurve = (transformed(transformation)); }
@@ -438,8 +439,8 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
 
     if ( variableWidth && !simplified && !invisible)
     {
-        painter.setPen(QPen(QBrush(colour), 1, Qt::NoPen, Qt::RoundCap,Qt::RoundJoin));
-        painter.setBrush(colour);
+        painter.setPen(QPen(QBrush(color), 1, Qt::NoPen, Qt::RoundCap,Qt::RoundJoin));
+        painter.setBrush(color);
         painter.drawPath(myCurve.getStrokedPath());
     }
     else
@@ -464,7 +465,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
                 }
                 else
                 {
-                    painter.setPen(QPen(QBrush(colour), 0, Qt::DotLine, Qt::RoundCap,Qt::RoundJoin));
+                    painter.setPen(QPen(QBrush(color), 0, Qt::DotLine, Qt::RoundCap,Qt::RoundJoin));
                 }
             }
             else
@@ -474,7 +475,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
         }
         else
         {
-            painter.setPen( QPen( QBrush( colour ), renderedWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
+            painter.setPen( QPen( QBrush( color ), renderedWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
             //painter.setPen( QPen( Qt::darkYellow , 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
         }
         QPainterPath path = myCurve.getSimplePath();
@@ -484,11 +485,11 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
     if (!simplified)
     {
         // highlight the selected elements
-        colour = QColor(100,150,255);  // highlight colour
+        color = QColor(100,150,255);  // highlight color
         painter.setBrush(Qt::NoBrush);
         qreal lineWidth = 1.5/painter.worldTransform().m11();
         lineWidth = fabs(lineWidth); // make sure line width is positive, otherwise nothing is drawn
-        painter.setPen(QPen(QBrush(colour), lineWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
+        painter.setPen(QPen(QBrush(color), lineWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         if (isSelected()) painter.drawPath(myCurve.getSimplePath());
 
 
@@ -496,9 +497,9 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
         {
             if (isSelected(i))
             {
-//                painter.fillRect(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth, colour);
+//                painter.fillRect(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth, color);
 
-                //painter.fillRect(QRectF(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth), colour);
+                //painter.fillRect(QRectF(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth), color);
 
                 /*painter.drawText(myCurve.getVertex(i)+QPointF(4.0,0.0), QString::number(i)+"-"+QString::number(myCurve.getVertex(i).x())+","+QString::number(myCurve.getVertex(i).y()));
                 QPointF normale = QPointF(4.0, 0.0);
@@ -652,7 +653,7 @@ void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal
     {
         smoothCurve();
     }
-    //colourNumber = 0;
+    //colorNumber = 0;
     feather = 0;
 }
 

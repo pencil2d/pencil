@@ -41,19 +41,19 @@ Status MovieImporter::estimateFrames(const QString &filePath, int fps, int *fram
     // --------- Import all the temporary frames ----------
     STATUS_CHECK(verifyFFmpegExists());
     QString ffmpegPath = ffmpegLocation();
+    dd << "ffmpeg path:" << ffmpegPath;
 
     // Get frame estimate
     int frames = -1;
     bool ok = true;
     QString ffprobePath = ffprobeLocation();
+    dd << "ffprobe path:" << ffprobePath;
     if (QFileInfo::exists(ffprobePath))
     {
-        QString probeCmd = QString("\"%1\"").arg(ffprobePath);
-        probeCmd += QString(" -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1");
-        probeCmd += QString(" \"%1\"").arg(filePath);
+        QStringList probeArgs = {"-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", filePath};
         QProcess ffprobe;
         ffprobe.setReadChannel(QProcess::StandardOutput);
-        ffprobe.start(probeCmd);
+        ffprobe.start(ffprobePath, probeArgs);
         ffprobe.waitForFinished();
         if (ffprobe.exitStatus() == QProcess::NormalExit && ffprobe.exitCode() == 0)
         {
@@ -75,23 +75,27 @@ Status MovieImporter::estimateFrames(const QString &filePath, int fps, int *fram
         }
         else
         {
-            ffprobe.setReadChannelMode(QProcess::MergedChannels);
+            ffprobe.setProcessChannelMode(QProcess::MergedChannels);
             dd << "FFprobe did not exit normally"
                << QString("Exit status: ").append(ffprobe.exitStatus() == QProcess::NormalExit ? "NormalExit" : "CrashExit")
                << QString("Exit code: %1").arg(ffprobe.exitCode())
                << "Output:"
                << ffprobe.readAll();
         }
+        if (frames < 0)
+        {
+            qDebug() << "ffprobe execution failed. Details:";
+            qDebug() << dd.str();
+        }
     }
     if (frames < 0)
     {
         // Fallback to ffmpeg
-        QString probeCmd = QString("\"%1\"").arg(ffmpegPath);
-        probeCmd += QString(" -i \"%1\"").arg(filePath);
+        QStringList probeArgs = {"-i", filePath};
         QProcess ffmpeg;
         // FFmpeg writes to stderr only for some reason, so we just read both channels together
         ffmpeg.setProcessChannelMode(QProcess::MergedChannels);
-        ffmpeg.start(probeCmd);
+        ffmpeg.start(ffmpegPath, probeArgs);
         if (ffmpeg.waitForStarted() == true)
         {
             int index = -1;
@@ -215,13 +219,11 @@ Status MovieImporter::importMovieVideo(const QString &filePath, int fps, int fra
         return status;
     }
 
-    QString ffmpegPath = ffmpegLocation();
-    QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += QString(" -i \"%1\"").arg(filePath);
-    strCmd += QString(" -r %1").arg(fps);
-    strCmd += QString(" \"%1\"").arg(QDir(mTempDir->path()).filePath("%05d.png"));
+    QStringList args = {"-i", filePath};
+    args << "-r" << QString::number(fps);
+    args << QDir(mTempDir->path()).filePath("%05d.png");
 
-    status = MovieExporter::executeFFmpeg(strCmd, [&progress, frameEstimate, this] (int frame) {
+    status = MovieExporter::executeFFmpeg(ffmpegLocation(), args, [&progress, frameEstimate, this] (int frame) {
         progress(qFloor(qMin(frame / static_cast<double>(frameEstimate), 1.0) * 50)); return !mCanceled; }
     );
 
@@ -312,12 +314,9 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<vo
 
     QString audioPath = QDir(mTempDir->path()).filePath("audio.wav");
 
-    QString ffmpegPath = ffmpegLocation();
-    QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += QString(" -i \"%1\"").arg(filePath);
-    strCmd += QString(" \"%1\"").arg(audioPath);
+    QStringList args = {"-i", filePath, audioPath};
 
-    status = MovieExporter::executeFFmpeg(strCmd, [&progress, this] (int frame) {
+    status = MovieExporter::executeFFmpeg(ffmpegLocation(), args, [&progress, this] (int frame) {
         Q_UNUSED(frame)
         progress(50); return !mCanceled;
     });

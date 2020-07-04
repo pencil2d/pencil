@@ -56,6 +56,8 @@ void PencilTool::loadSettings()
     properties.useFillContour = false;
     //    properties.invisibility = 1;
     //    properties.preserveAlpha = 0;
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
 
 void PencilTool::resetToDefault()
@@ -312,9 +314,9 @@ void PencilTool::paintVectorStroke(Layer* layer)
     curve.setFilled(false);
     curve.setInvisibility(true);
     curve.setVariableWidth(false);
-    curve.setColourNumber(mEditor->color()->frontColorNumber());
-    VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-
+    curve.setColorNumber(mEditor->color()->frontColorNumber());
+    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), properties.vectorMergeEnabled);
 
     if (properties.useFillContour)

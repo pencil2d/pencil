@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include "log.h"
 #include "pencildef.h"
 #include "pencilerror.h"
-#include "colourref.h"
+#include "colorref.h"
 
 class Object;
 class ObjectData;
@@ -41,7 +41,7 @@ public:
     Object* load(QString sFilenNme);
     Status  save(Object*, QString sFileName);
 
-    QList<ColourRef> loadPaletteFile(QString strFilename);
+    QList<ColorRef> loadPaletteFile(QString strFilename);
     Status error() const { return mError; }
     Status verifyObject(Object* obj);
 
@@ -74,8 +74,6 @@ private:
 
     int mCurrentProgress = 0;
     int mMaxProgressValue = 100;
-
-    QLoggingCategory mLog;
 };
 
 #endif // OBJECTSAVELOADER_H
