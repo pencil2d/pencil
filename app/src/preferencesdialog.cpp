@@ -804,7 +804,7 @@ void ToolsPage::rotationIncrementChange(int value)
     while (360 % angle != 0) {
         angle++;
     }
-    ui->rotationIncrementDisplay->setText(tr("1% degrees").arg(angle)); // don't use tr()'s plural settings, it breaks Transifex.
+    ui->rotationIncrementDisplay->setText(tr("%1 degrees").arg(angle)); // don't use tr()'s plural settings, it breaks Transifex.
     mManager->set(SETTING::ROTATION_INCREMENT, angle);
 }
 
