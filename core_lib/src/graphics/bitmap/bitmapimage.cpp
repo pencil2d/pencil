@@ -741,28 +741,28 @@ void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool
             rgba = img->constScanLine(x, y);
             if (qAlpha(img->constScanLine(x, y)) > 0)
             {
-                if(qRed(rgba) - 50 > qGreen(rgba))
+                if(qRed(rgba) > qGreen(rgba) && qRed(rgba) > qBlue(rgba))
                 {
                     if(red)
                         img->scanLine(x, y, redline);
                     else
                         img->scanLine(x, y, transp);
                 }
-                else if(qBlue(rgba) - 50 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
+                else if(qBlue(rgba) > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
                 {
                     if(blue)
                         img->scanLine(x, y, blueline);
                     else
                         img->scanLine(x, y, transp);
                 }
-                else if(qGreen(rgba) - 50 > qRed(rgba) && qGreen(rgba) > qBlue(rgba))
+                else if(qGreen(rgba) > qRed(rgba) && qGreen(rgba) > qBlue(rgba))
                 {
                     if(green)
                         img->scanLine(x, y, greenline);
                     else
                         img->scanLine(x, y, transp);
                 }
-                else if(black)
+                else if(black && qRed(rgba) == qGreen(rgba) && qRed(rgba) == qBlue(rgba))
                 {
                     img->scanLine(x, y, blackline);
                 }

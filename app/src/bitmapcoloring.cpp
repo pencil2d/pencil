@@ -439,11 +439,12 @@ void BitmapColoring::trace()
         mEditor->paste();
     }
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-    mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
-                                                   mSelectAreas,
-                                                   ui->cb2TraceRed->isChecked(),
-                                                   ui->cb2TraceGreen->isChecked(),
-                                                   ui->cb2TraceBlue->isChecked());
+    if (ui->cb1Threshold->isChecked())
+        mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
+                                                       mSelectAreas,
+                                                       ui->cb2TraceRed->isChecked(),
+                                                       ui->cb2TraceGreen->isChecked(),
+                                                       ui->cb2TraceBlue->isChecked());
     prepareLines();
     mEditor->backup("Trace lines");
 }
