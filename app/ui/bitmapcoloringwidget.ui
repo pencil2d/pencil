@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>229</width>
+    <width>239</width>
     <height>374</height>
    </rect>
   </property>
@@ -500,6 +500,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_9">
             <item>
              <widget class="QCheckBox" name="cb2ThinRed">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Thin Red</string>
               </property>
@@ -534,6 +537,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_10">
             <item>
              <widget class="QCheckBox" name="cb2ThinGreen">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Thin Green</string>
               </property>
@@ -568,6 +574,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_11">
             <item>
              <widget class="QCheckBox" name="cb2ThinBlue">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Thin Blue</string>
               </property>
@@ -716,6 +725,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_14">
             <item>
              <widget class="QCheckBox" name="cb2BlendRed">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Blend Red</string>
               </property>
@@ -750,6 +762,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_15">
             <item>
              <widget class="QCheckBox" name="cb2BlendGreen">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Blend Green</string>
               </property>
@@ -784,6 +799,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_16">
             <item>
              <widget class="QCheckBox" name="cb2BlendBlue">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Blend Blue</string>
               </property>
