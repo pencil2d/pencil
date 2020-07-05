@@ -730,6 +730,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
 
 void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue)
 {
+    qDebug() << "in traceline...";
     Q_ASSERT(bitmapimage != nullptr);
 
     BitmapImage* img = bitmapimage;
@@ -764,6 +765,7 @@ void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool
                 }
                 else if(black && qRed(rgba) == qGreen(rgba) && qRed(rgba) == qBlue(rgba))
                 {
+                    qDebug() << "gray red green: " << qGray(rgba) << " " << qRed(rgba) << " " << qGreen(rgba);
                     img->scanLine(x, y, blackline);
                 }
             }

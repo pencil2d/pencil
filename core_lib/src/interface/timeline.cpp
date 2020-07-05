@@ -151,7 +151,6 @@ void TimeLine::initUI()
     timelineButtons->addWidget(zoomLabel);
     timelineButtons->addWidget(zoomSlider);
     timelineButtons->addSeparator();
-    timelineButtons->addSeparator();
     timelineButtons->setFixedHeight(30);
 
     // --------- Time controls ---------
@@ -171,6 +170,7 @@ void TimeLine::initUI()
 
     QGridLayout* rightLayout = new QGridLayout();
     rightLayout->addWidget(rightToolBar, 0, 0);
+    rightLayout->setAlignment(Qt::AlignLeft);
     rightLayout->addWidget(mTracks, 1, 0);
     rightLayout->setMargin(0);
     rightLayout->setSpacing(0);
