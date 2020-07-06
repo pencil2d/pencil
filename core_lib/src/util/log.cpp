@@ -1,6 +1,5 @@
 
 #include "log.h"
-#include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(logCanvasPainter, "core.canvasPainter");
 Q_LOGGING_CATEGORY(logFileManager, "core.FileManager");

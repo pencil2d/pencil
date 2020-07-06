@@ -18,6 +18,12 @@ GNU General Public License for more details.
 #pragma once
 #include<QLoggingCategory>
 
+
+/**
+ * With Qt Category logging, it allows devs to turn on/off the debug log for certain modules
+ * Uncomment the following #define DEBUG_LOG_ModuleName to enable the category logging
+ */
+
 //#define DEBUG_LOG_CANVASPAINTER
 //#define DEBUG_LOG_FILEMANAGER
 
