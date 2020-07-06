@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include<QLoggingCategory>
 
 //#define DEBUG_LOG_CANVASPAINTER
-#define DEBUG_LOG_FILEMANAGER
+//#define DEBUG_LOG_FILEMANAGER
 
 #ifdef DEBUG_LOG_CANVASPAINTER
   Q_DECLARE_LOGGING_CATEGORY(logCanvasPainter);
