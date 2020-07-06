@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>24</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -108,6 +108,13 @@
      <addaction name="actionFlip_X"/>
      <addaction name="actionFlip_Y"/>
     </widget>
+    <widget class="QMenu" name="menuPrepare_scanned_drawings">
+     <property name="title">
+      <string>Prepare scanned drawings</string>
+     </property>
+     <addaction name="actionPeg_bar_Alignment"/>
+     <addaction name="actionAdd_Transparency_to_paper"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
@@ -121,7 +128,7 @@
     <addaction name="actionSelect_All"/>
     <addaction name="actionDeselect_All"/>
     <addaction name="separator"/>
-    <addaction name="actionPegbarAlignment"/>
+    <addaction name="menuPrepare_scanned_drawings"/>
     <addaction name="separator"/>
     <addaction name="actionPreference"/>
    </widget>
@@ -1078,6 +1085,16 @@
   <action name="actionOpen_Temporary_Directory">
    <property name="text">
     <string>Open Temporary Directory</string>
+   </property>
+  </action>
+  <action name="actionPeg_bar_Alignment">
+   <property name="text">
+    <string>Peg bar Alignment</string>
+   </property>
+  </action>
+  <action name="actionAdd_Transparency_to_paper">
+   <property name="text">
+    <string>Add Transparency to paper</string>
    </property>
   </action>
  </widget>

@@ -28,7 +28,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     BaseDockWidget(parent)
 {
     QWidget* innerWidget = new QWidget;
-    setWindowTitle(tr("Bitmap Coloring"));
+    setWindowTitle(tr("Advanced Bitmap Coloring"));
 
     ui = new Ui::BitmapColoringWidget;
     ui->setupUi(innerWidget);
@@ -39,7 +39,6 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
         mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-    ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
     checkRedBoxes();
     checkGreenBoxes();
     checkBlueBoxes();
@@ -53,11 +52,11 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
 
     // Prepare
     connect(ui->tabWidget, &QTabWidget::tabBarClicked, this, &BitmapColoring::tabWidgetClicked);
-    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &BitmapColoring::updateBtnSelect);
-    connect(ui->sb1Threshold, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setThreshold);
     connect(ui->btnApplyTrace, &QPushButton::clicked, this, &BitmapColoring::traceLines);
     // Thin
     connect(ui->sbSpotAreas, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setSpotArea);
+    connect(ui->cbSpotAreas, &QCheckBox::stateChanged, this, &BitmapColoring::updateFillSpotsButton);
+    connect(ui->btnFillAreas, &QPushButton::clicked, this, &BitmapColoring::fillSpotAreas);
     connect(ui->btnApplyThin, &QPushButton::clicked, this, &BitmapColoring::thinLines);
     // Finish
     connect(ui->btnApplyBlend, &QPushButton::clicked, this, &BitmapColoring::blendLines);
@@ -147,7 +146,7 @@ void BitmapColoring::checkBlueBoxes()
 
 void BitmapColoring::checkAllKeyframesBoxes()
 {
-    ui->cb3ThinAllKeyframes->setChecked(ui->cb3TraceAllKeyframes->isChecked());
+    ui->cbThinAllKeyframes->setChecked(ui->cb3TraceAllKeyframes->isChecked());
     ui->cb3BlendAllKeyframes->setChecked(ui->cb3TraceAllKeyframes->isChecked());
 }
 
@@ -172,8 +171,6 @@ void BitmapColoring::tabWidgetClicked(int index)
 void BitmapColoring::resetColoringDock()
 {
     ui->cbMethodSelector->setCurrentIndex(0);
-    ui->cb1Threshold->setChecked(false);
-    ui->sb1Threshold->setValue(220);
     ui->cbSpotAreas->setChecked(false);
     ui->sbSpotAreas->setValue(6);
     ui->cb2TraceRed->setChecked(false);
@@ -199,20 +196,6 @@ void BitmapColoring::updateTraceBoxes()
     {
         ui->tab1->setEnabled(true);
         ui->gb2Trace->setEnabled(true);
-    }
-}
-
-void BitmapColoring::updateBtnSelect()
-{
-    if (mEditor->select()->somethingSelected())
-    {
-        mSelectAreas = true;
-        ui->btnSelectAreas->setIcon(QIcon(":/icons/select_ok.png"));
-    }
-    else
-    {
-        mSelectAreas = false;
-        ui->btnSelectAreas->setIcon(QIcon(":/icons/select.png"));
     }
 }
 
@@ -270,8 +253,41 @@ void BitmapColoring::traceLines()
         trace();
     }
     mEditor->deselectAll();
-    ui->cb1Threshold->setChecked(false);
-    updateBtnSelect();
+}
+
+void BitmapColoring::updateFillSpotsButton()
+{
+    if (ui->cbSpotAreas->isChecked())
+        ui->btnFillAreas->setEnabled(true);
+    else
+        ui->btnFillAreas->setEnabled(false);
+}
+
+void BitmapColoring::fillSpotAreas()
+{
+    if (!ui->cbThinAllKeyframes->isChecked() && mLayerBitmap->keyExists(mEditor->currentFrame()))
+    {
+        mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+        mBitmapImage->setSpotArea(ui->sbSpotAreas->value());
+        mBitmapImage->fillSpotAreas(mBitmapImage);
+        mBitmapImage->modification();
+        mEditor->scrubTo(mEditor->currentFrame());
+    }
+    else
+    {
+        for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
+        {
+            if (mLayerBitmap->keyExists(i))
+            {
+                mEditor->scrubTo(i);
+                mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+                mBitmapImage->setSpotArea(ui->sbSpotAreas->value());
+                mBitmapImage->fillSpotAreas(mBitmapImage);
+                mBitmapImage->modification();
+            }
+        }
+    }
+    updateUI();
 }
 
 // public Thin functions
@@ -297,7 +313,7 @@ void BitmapColoring::thinLines()
 {
     if (mLayerBitmap == nullptr) { return; }
 
-    if (!ui->cb3ThinAllKeyframes->isChecked() && mLayerBitmap->keyExists(mEditor->currentFrame()))
+    if (!ui->cbThinAllKeyframes->isChecked() && mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
         thin();
     }
@@ -351,7 +367,9 @@ void BitmapColoring::blendLines()
     if (mLayerBitmap == nullptr) { return; }
 
     QString orgName = mLayerBitmap->name();
-    orgName.chop(2);
+    if (ui->cbMethodSelector->currentIndex() == 2)
+        orgName.chop(2);
+    qDebug() << "artlayer: " << orgName;
     LayerBitmap* artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(orgName));
     if (artLayer == nullptr) { return; }
 
@@ -439,12 +457,6 @@ void BitmapColoring::trace()
         mEditor->paste();
     }
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-    if (ui->cb1Threshold->isChecked())
-        mBitmapImage = mBitmapImage->scanToTransparent(mBitmapImage,
-                                                       mSelectAreas,
-                                                       ui->cb2TraceRed->isChecked(),
-                                                       ui->cb2TraceGreen->isChecked(),
-                                                       ui->cb2TraceBlue->isChecked());
     prepareLines();
     mEditor->backup("Trace lines");
 }
@@ -454,10 +466,6 @@ void BitmapColoring::thin()
     bool black;
     ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-    if (ui->cbSpotAreas->isChecked())
-    {
-        mBitmapImage->fillSpotAreas(mBitmapImage);
-    }
     mBitmapImage->toThinLine(mBitmapImage,
                              black,
                              ui->cb2ThinRed->isChecked(),

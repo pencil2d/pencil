@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QMainWindow>
 #include "preferencemanager.h"
 #include "pegbaralignmentdialog.h"
+#include "addtransparencytopaperdialog.h"
 
 
 template<typename T> class QList;
@@ -70,6 +71,8 @@ public slots:
     void clearRecentFilesList();
     void openPegAlignDialog();
     void closePegAlignDialog();
+    void openAddTranspToPaperDialog();
+    void closeAddTranspToPaperDialog();
     void currentLayerChanged();
     void selectionChanged();
 
@@ -170,6 +173,7 @@ private:
     BackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
+    AddTransparencyToPaperDialog* mAddTranspToPaper = nullptr;
 
 private:
     ActionCommands* mCommands = nullptr;

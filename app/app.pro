@@ -40,6 +40,7 @@ INCLUDEPATH += \
 PRECOMPILED_HEADER = src/app-pch.h
 
 HEADERS += \
+    src/addtransparencytopaperdialog.h \
     src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
@@ -77,6 +78,7 @@ HEADERS += \
     src/presetdialog.h
 
 SOURCES += \
+    src/addtransparencytopaperdialog.cpp \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/main.cpp \
@@ -113,6 +115,7 @@ SOURCES += \
     src/presetdialog.cpp
 
 FORMS += \
+    ui/addtransparencytopaperdialog.ui \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \

@@ -39,10 +39,11 @@ public slots:
     void enableTabs(int index);
     // 1: Trace
     void updateTraceBoxes();
-    void updateBtnSelect();
     void setThreshold(int threshold);
     void traceLines();
     // 2: Thin
+    void updateFillSpotsButton();
+    void fillSpotAreas();
     void updateThinBoxes();
     void setSpotArea(int size);
     void thinLines();

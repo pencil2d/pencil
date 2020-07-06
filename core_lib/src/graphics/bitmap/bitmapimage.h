@@ -114,7 +114,7 @@ public:
     // coloring methods
     int getThreshold() { return mThreshold; }
     int getSpotArea() { return mSpotArea; }
-    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool green, bool blue);
     void traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
     void fillSpotAreas(BitmapImage* bitmapimage);
     void toThinLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);

@@ -665,11 +665,11 @@ void BitmapImage::setBounds(QRect rect)
     updateBounds(rect);
 }
 
-BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black, bool red, bool green, bool blue)
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool green, bool blue)
 {
-    Q_ASSERT(bitmapimage != nullptr);
+    Q_ASSERT(img != nullptr);
 
-    BitmapImage* img = bitmapimage;
+//    BitmapImage* img = bitmapimage;
     img->enableAutoCrop(false);
 
     QRgb rgba;
@@ -682,7 +682,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
             {
                 img->scanLine(x, y, transp);
             }   // IF Red line
-            else if(qRed(rgba) -40 > qGreen(rgba) && qRed(rgba) > qBlue(rgba))
+            else if(qRed(rgba) - 20 > qGreen(rgba) && qRed(rgba) - 20 > qBlue(rgba))
             {
                 if (red)
                 {
@@ -693,7 +693,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
                     img->scanLine(x, y, transp);
                 }
             }   // IF Blue line
-            else if(qBlue(rgba) -40 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
+            else if(qBlue(rgba) -20 > qRed(rgba) && qBlue(rgba) - 20 > qGreen(rgba))
             {
                 if (blue)
                 {
@@ -704,7 +704,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
                     img->scanLine(x, y, transp);
                 }
             }   // IF Green line
-            else if(qGreen(rgba) -40 > qRed(rgba) &&  qGreen(rgba) > qBlue(rgba))
+            else if(qGreen(rgba) - 20 > qRed(rgba) &&  qGreen(rgba) - 20 > qBlue(rgba))
             {
                 if (green)
                 {
@@ -714,13 +714,22 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
                 {
                     img->scanLine(x, y, transp);
                 }
-            }   // IF in grayscale graduation area
-            else if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold && black)
+            }   // okay, so it is in grayscale graduation area
+            else
             {
-                qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
-                int alpha = static_cast<int>(255 * factor);
-                QRgb tmp  = qRgba(0, 0, 0, alpha);
-                img->scanLine(x , y, tmp);
+                if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
+                {
+                    qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
+                    int alpha = static_cast<int>(255 * factor);
+                    QRgb tmp  = qRgba(0, 0, 0, alpha);
+                    img->scanLine(x , y, tmp);
+                }
+                else
+                {
+                    int c = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
+                    QRgb tmp = qRgba(c, c, c, qAlpha(rgba));
+                    img->scanLine(x, y, tmp);
+                }
             }
         }
     }
@@ -728,11 +737,11 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
     return img;
 }
 
-void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue)
+void BitmapImage::traceLine(BitmapImage* img, bool black, bool red, bool green, bool blue)
 {
-    Q_ASSERT(bitmapimage != nullptr);
+    Q_ASSERT(img != nullptr);
 
-    BitmapImage* img = bitmapimage;
+//    BitmapImage* img = bitmapimage;
     QRgb rgba;
     for (int x = img->left(); x <= img->right(); x++)
     {

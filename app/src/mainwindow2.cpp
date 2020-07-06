@@ -283,7 +283,8 @@ void MainWindow2::createMenus()
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
-    connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
+    connect(ui->actionPeg_bar_Alignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
+    connect(ui->actionAdd_Transparency_to_paper, &QAction::triggered, this, &MainWindow2::openAddTranspToPaperDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
@@ -476,6 +477,29 @@ void MainWindow2::closePegAlignDialog()
 {
     disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
     mPegAlign = nullptr;
+}
+
+void MainWindow2::openAddTranspToPaperDialog()
+{
+    if (mAddTranspToPaper != nullptr)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Dialog is already open!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    mAddTranspToPaper = new AddTransparencyToPaperDialog();
+    connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, this , &MainWindow2::closeAddTranspToPaperDialog);
+    mAddTranspToPaper->setCore(mEditor);
+    mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mAddTranspToPaper->show();
+}
+
+void MainWindow2::closeAddTranspToPaperDialog()
+{
+    disconnect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, this , &MainWindow2::closeAddTranspToPaperDialog);
+    mAddTranspToPaper = nullptr;
 }
 
 void MainWindow2::currentLayerChanged()

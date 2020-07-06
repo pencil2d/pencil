@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>239</width>
+    <width>240</width>
     <height>374</height>
    </rect>
   </property>
@@ -65,7 +65,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -87,117 +87,6 @@
        <property name="bottomMargin">
         <number>4</number>
        </property>
-       <item>
-        <widget class="QGroupBox" name="gb1Trace">
-         <property name="title">
-          <string>Prepare Drawings?</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="spacing">
-           <number>2</number>
-          </property>
-          <property name="leftMargin">
-           <number>4</number>
-          </property>
-          <property name="topMargin">
-           <number>4</number>
-          </property>
-          <property name="rightMargin">
-           <number>4</number>
-          </property>
-          <property name="bottomMargin">
-           <number>4</number>
-          </property>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QCheckBox" name="cb1Threshold">
-              <property name="text">
-               <string>Threshold</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_18">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="sb1Threshold">
-              <property name="minimum">
-               <number>160</number>
-              </property>
-              <property name="maximum">
-               <number>245</number>
-              </property>
-              <property name="value">
-               <number>220</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLabel" name="lab1UsingSelectTool">
-              <property name="text">
-               <string>Using Selecttool?</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btnSelectAreas">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>20</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Something is selected</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../data/app.qrc">
-                <normaloff>:/icons/select.png</normaloff>:/icons/select.png</iconset>
-              </property>
-              <property name="flat">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item>
         <widget class="QGroupBox" name="gb2Trace">
          <property name="title">
@@ -426,25 +315,10 @@
          <property name="title">
           <string>Fill spot areas?</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
-          <property name="spacing">
-           <number>2</number>
-          </property>
-          <property name="leftMargin">
-           <number>4</number>
-          </property>
-          <property name="topMargin">
-           <number>4</number>
-          </property>
-          <property name="rightMargin">
-           <number>4</number>
-          </property>
-          <property name="bottomMargin">
-           <number>4</number>
-          </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="0" colspan="2">
              <widget class="QCheckBox" name="cbSpotAreas">
               <property name="toolTip">
                <string>Fill small, unwanted areas in lines</string>
@@ -454,7 +328,7 @@
               </property>
              </widget>
             </item>
-            <item>
+            <item row="0" column="2">
              <widget class="QSpinBox" name="sbSpotAreas">
               <property name="toolTip">
                <string>Size of area to fill (1-15)</string>
@@ -467,6 +341,29 @@
               </property>
               <property name="value">
                <number>6</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1" colspan="2">
+             <widget class="QPushButton" name="btnFillAreas">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Fill areas</string>
               </property>
              </widget>
             </item>
@@ -632,7 +529,7 @@
            <number>4</number>
           </property>
           <item>
-           <widget class="QCheckBox" name="cb3ThinAllKeyframes">
+           <widget class="QCheckBox" name="cbThinAllKeyframes">
             <property name="text">
              <string>All keyframes</string>
             </property>
@@ -884,7 +781,7 @@
          <item>
           <widget class="QPushButton" name="btnApplyBlend">
            <property name="text">
-            <string>Apply</string>
+            <string>Apply and Finish</string>
            </property>
           </widget>
          </item>
