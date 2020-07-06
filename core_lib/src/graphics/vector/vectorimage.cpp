@@ -1114,7 +1114,7 @@ int VectorImage::getCurvesColor(int curve)
 bool VectorImage::isCurveInvisible(int curve)
 {
     int result = false;
-    if (curve > -1)
+    if (curve > -1 && curve < mCurves.length())
     {
         result = mCurves[curve].isInvisible();
     }
