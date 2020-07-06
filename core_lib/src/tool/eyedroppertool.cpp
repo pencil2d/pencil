@@ -30,7 +30,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layermanager.h"
 #include "scribblearea.h"
-
+#include "util.h"
 
 EyedropperTool::EyedropperTool(QObject* parent) : BaseTool(parent)
 {
@@ -158,19 +158,12 @@ int EyedropperTool::getVectorColor(LayerVector* layer)
 
     // Check curves
     const qreal toleranceDistance = 10.0;
-    QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
+    const QList<int> closestCurves = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
+    const QList<int> visibleClosestCurves = filter(closestCurves, [vectorImage](int i) { return vectorImage->isCurveVisible(i); });
 
-    for (int i = closestCurve.length() - 1; i >= 0; i--)
+    if (!visibleClosestCurves.isEmpty())
     {
-        if (vectorImage->isCurveInvisible(closestCurve[i]))
-        {
-            closestCurve.removeAt(i);
-        }
-    }
-
-    if (!closestCurve.isEmpty())
-    {
-        return vectorImage->getCurvesColor(closestCurve.last());
+        return vectorImage->getCurvesColor(visibleClosestCurves.last());
     }
 
     // Check fills

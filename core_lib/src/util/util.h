@@ -41,6 +41,12 @@ private:
 
 #define OnScopeExit( callback ) ScopeGuard SCOPEGUARD_LINENAME( myScopeGuard, __LINE__ ) ( [&] { callback; } );
 
+template <typename Container, typename Pred>
+Container filter(const Container& container, Pred predicate) {
+    Container result;
+    std::copy_if(container.begin(), container.end(), std::back_inserter(result), predicate);
+    return result;
+}
 
 QString ffprobeLocation();
 QString ffmpegLocation();
