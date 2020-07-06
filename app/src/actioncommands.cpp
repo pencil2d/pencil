@@ -163,8 +163,11 @@ Status ActionCommands::importMovieAudio()
 Status ActionCommands::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    Q_ASSERT(layer);
-    NULLReturn(layer, Status::FAIL);
+    if (layer == nullptr)
+    {
+        Q_ASSERT(layer);
+        return Status::FAIL;
+    }
 
     if (layer->type() != Layer::SOUND)
     {

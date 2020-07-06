@@ -19,7 +19,6 @@ GNU General Public License for more details.
 
 #include <cstddef>
 #include <functional>
-#include <QTransform>
 
 class QAbstractSpinBox;
 
@@ -41,11 +40,6 @@ private:
 #define SCOPEGUARD_LINENAME(name, line) SCOPEGUARD_LINENAME_CAT(name, line)
 
 #define OnScopeExit( callback ) ScopeGuard SCOPEGUARD_LINENAME( myScopeGuard, __LINE__ ) ( [&] { callback; } );
-
-
-#define NULLReturnVoid( p ) if ( p == nullptr ) { return; }
-#define NULLReturn( p, ret ) if ( p == nullptr ) { return ret; }
-#define NULLReturnAssert( p ) if ( p == nullptr ) { Q_ASSERT(false); return; }
 
 
 QString ffprobeLocation();
