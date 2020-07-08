@@ -253,14 +253,29 @@ void BitmapColoring::traceLines()
         trace();
     }
     mEditor->deselectAll();
+    if (ui->cb3TraceAllKeyframes->isChecked())
+    {
+        ui->tabWidget->setCurrentIndex(1);
+        QMessageBox msgBox;
+        msgBox.setText(tr("Ready for thinning lines!"));
+        msgBox.exec();
+    }
 }
 
 void BitmapColoring::updateFillSpotsButton()
 {
     if (ui->cbSpotAreas->isChecked())
+    {
         ui->btnFillAreas->setEnabled(true);
+        ui->btnApplyThin->setEnabled(false);
+        ui->labReminder->setText(tr("Fill areas blocks Thin button!"));
+    }
     else
+    {
         ui->btnFillAreas->setEnabled(false);
+        ui->btnApplyThin->setEnabled(true);
+        ui->labReminder->setText("");
+    }
 }
 
 void BitmapColoring::fillSpotAreas()
@@ -304,6 +319,7 @@ void BitmapColoring::fillSpotAreas()
         mProgress.close();
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
+        ui->cbSpotAreas->setChecked(false);
     }
     updateUI();
 }
@@ -365,6 +381,13 @@ void BitmapColoring::thinLines()
         mEditor->setAutoSaveCounter(count);
     }
     ui->cbSpotAreas->setChecked(false);
+    if (ui->cbThinAllKeyframes->isChecked())
+    {
+        ui->tabWidget->setCurrentIndex(2);
+        QMessageBox msgBox;
+        msgBox.setText(tr("Ready for coloring!"));
+        msgBox.exec();
+    }
 }
 
 // public Blend functions
@@ -422,9 +445,14 @@ void BitmapColoring::blendLines()
                 }
             }
         }
-
+        progress.close();
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
+        ui->tabWidget->setCurrentIndex(0);
+        resetColoringDock();
+        QMessageBox msgBox;
+        msgBox.setText(tr("Coloring finished!\nDialog reset..."));
+        msgBox.exec();
     }
 }
 
