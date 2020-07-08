@@ -275,17 +275,35 @@ void BitmapColoring::fillSpotAreas()
     }
     else
     {
+        mEditor->setIsDoingRepeatColoring(true);
+        int count = mEditor->getAutoSaveCounter();
+        QProgressDialog* mProgress = new QProgressDialog(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
+        mProgress->setWindowModality(Qt::WindowModal);
+        mProgress->show();
+        mProgress->setMaximum(mLayerBitmap->keyFrameCount());
+        mProgress->setValue(0);
+        int keysThinned = 0;
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
         {
             if (mLayerBitmap->keyExists(i))
             {
+                mProgress->setValue(keysThinned++);
                 mEditor->scrubTo(i);
                 mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
                 mBitmapImage->setSpotArea(ui->sbSpotAreas->value());
                 mBitmapImage->fillSpotAreas(mBitmapImage);
                 mBitmapImage->modification();
+                count++;
+            }
+            if (mProgress->wasCanceled())
+            {
+                break;
             }
         }
+        mProgress->close();
+        mEditor->setIsDoingRepeatColoring(false);
+        mEditor->setAutoSaveCounter(count);
     }
     updateUI();
 }
@@ -395,13 +413,13 @@ void BitmapColoring::blendLines()
             if (mLayerBitmap->keyExists(i))
             {
                 mEditor->scrubTo(i);
-                blend(artLayer);
                 count++;
                 progress.setValue(keysBlended++);
                 if (progress.wasCanceled())
                 {
                     break;
                 }
+                blend(artLayer);
             }
         }
         mEditor->setIsDoingRepeatColoring(false);

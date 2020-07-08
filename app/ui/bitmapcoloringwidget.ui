@@ -65,7 +65,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -269,7 +269,7 @@
          <item>
           <widget class="QPushButton" name="btnApplyTrace">
            <property name="text">
-            <string>Apply</string>
+            <string>Trace...</string>
            </property>
           </widget>
          </item>
@@ -313,7 +313,7 @@
        <item>
         <widget class="QGroupBox" name="gbSpotAreas">
          <property name="title">
-          <string>Fill spot areas?</string>
+          <string>Fill small areas?</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
@@ -324,7 +324,7 @@
                <string>Fill small, unwanted areas in lines</string>
               </property>
               <property name="text">
-               <string>Fill spots areas</string>
+               <string>Fill small areas</string>
               </property>
              </widget>
             </item>
@@ -556,7 +556,7 @@
          <item>
           <widget class="QPushButton" name="btnApplyThin">
            <property name="text">
-            <string>Apply</string>
+            <string>Thin...</string>
            </property>
           </widget>
          </item>
@@ -781,7 +781,7 @@
          <item>
           <widget class="QPushButton" name="btnApplyBlend">
            <property name="text">
-            <string>Apply and Finish</string>
+            <string>Blend and Finish...</string>
            </property>
           </widget>
          </item>

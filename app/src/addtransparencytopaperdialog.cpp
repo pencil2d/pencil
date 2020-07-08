@@ -1,11 +1,14 @@
 #include "addtransparencytopaperdialog.h"
 #include "ui_addtransparencytopaperdialog.h"
 
+#include <QProgressDialog>
+
 #include "editor.h"
 #include "layermanager.h"
 #include "selectionmanager.h"
 #include "layerbitmap.h"
 #include "bitmapimage.h"
+
 
 AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QWidget *parent) :
     QWidget(parent),
@@ -62,11 +65,26 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
     }
     else
     {
+        mEditor->setIsDoingRepeatColoring(true);
+        int count = mEditor->getAutoSaveCounter();
+        QProgressDialog* mProgress = new QProgressDialog(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
+        mProgress->setWindowModality(Qt::WindowModal);
+        mProgress->show();
+        mProgress->setMaximum(layer->keyFrameCount());
+        mProgress->setValue(0);
+        int keysThinned = 0;
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         for (int i = layer->firstKeyFramePosition(); i <= layer->getMaxKeyFramePosition(); i++)
         {
-            mEditor->scrubTo(i);
             if (layer->keyExists(i))
             {
+                mProgress->setValue(keysThinned++);
+                mEditor->scrubTo(i);
+                count++;
+                if (mProgress->wasCanceled())
+                {
+                    break;
+                }
                 if (somethingSelected)
                 {
                     mEditor->copy();
@@ -82,6 +100,9 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
                                              ui->cb_Blue->isChecked());
             }
         }
+        mProgress->close();
+        mEditor->setIsDoingRepeatColoring(false);
+        mEditor->setAutoSaveCounter(count);
     }
 }
 

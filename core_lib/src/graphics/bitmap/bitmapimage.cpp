@@ -669,21 +669,20 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
 {
     Q_ASSERT(img != nullptr);
 
-//    BitmapImage* img = bitmapimage;
     img->enableAutoCrop(false);
 
     QRgb rgba;
     for (int x = img->left(); x <= img->right(); x++)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
-        {       // IF Threshold or above
+        {
             rgba = img->constScanLine(x, y);
             if (qGray(rgba) >= mThreshold)
-            {
+            {   // IF Threshold or above
                 img->scanLine(x, y, transp);
-            }   // IF Red line
-            else if(qRed(rgba) - 20 > qGreen(rgba) && qRed(rgba) - 20 > qBlue(rgba))
-            {
+            }
+            else if(qRed(rgba) > qGreen(rgba) + COLORDIFF && qRed(rgba) > qBlue(rgba) + COLORDIFF)
+            {   // IF Red line
                 if (red)
                 {
                     img->scanLine(x, y, redline);
@@ -692,20 +691,9 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
                 {
                     img->scanLine(x, y, transp);
                 }
-            }   // IF Blue line
-            else if(qBlue(rgba) -20 > qRed(rgba) && qBlue(rgba) - 20 > qGreen(rgba))
-            {
-                if (blue)
-                {
-                    img->scanLine(x, y, blueline);
-                }
-                else
-                {
-                    img->scanLine(x, y, transp);
-                }
-            }   // IF Green line
-            else if(qGreen(rgba) - 20 > qRed(rgba) &&  qGreen(rgba) - 20 > qBlue(rgba))
-            {
+            }
+            else if(qGreen(rgba) > qRed(rgba) + COLORDIFF &&  qGreen(rgba) > qBlue(rgba) + COLORDIFF)
+            {   // IF Green line
                 if (green)
                 {
                     img->scanLine(x, y, greenline);
@@ -714,21 +702,28 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
                 {
                     img->scanLine(x, y, transp);
                 }
-            }   // okay, so it is in grayscale graduation area
-            else
-            {
-                if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
+            }
+            else if(qBlue(rgba) > qRed(rgba) + COLORDIFF && qBlue(rgba) > qGreen(rgba) + COLORDIFF)
+            {   // IF Blue line
+                if (blue)
                 {
-                    qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
-                    int alpha = static_cast<int>(255 * factor);
-                    QRgb tmp  = qRgba(0, 0, 0, alpha);
-                    img->scanLine(x , y, tmp);
+                    img->scanLine(x, y, blueline);
                 }
                 else
                 {
-                    int c = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
-                    QRgb tmp = qRgba(c, c, c, qAlpha(rgba));
-                    img->scanLine(x, y, tmp);
+                    img->scanLine(x, y, transp);
+                }
+            }
+            else
+            {   // okay, so it is in grayscale graduation area
+                if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
+                {
+                    qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
+                    img->scanLine(x , y, qRgba(0, 0, 0, static_cast<int>(mThreshold * factor)));
+                }
+                else
+                {
+                    img->scanLine(x , y, blackline);
                 }
             }
         }
