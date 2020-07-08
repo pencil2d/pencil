@@ -736,7 +736,6 @@ void BitmapImage::traceLine(BitmapImage* img, bool black, bool red, bool green, 
 {
     Q_ASSERT(img != nullptr);
 
-//    BitmapImage* img = bitmapimage;
     QRgb rgba;
     for (int x = img->left(); x <= img->right(); x++)
     {

@@ -212,12 +212,12 @@ void BitmapColoring::traceLines()
     {
         mEditor->setIsDoingRepeatColoring(true);
         int count = mEditor->getAutoSaveCounter();
-        QProgressDialog* mProgress = new QProgressDialog(tr("Tracing lines in bitmaps..."), tr("Abort"), 0, 100, this);
-        mProgress->setWindowModality(Qt::WindowModal);
-        mProgress->show();
+        QProgressDialog mProgress(tr("Tracing lines in bitmaps..."), tr("Abort"), 0, 100, this);
+        mProgress.setWindowModality(Qt::WindowModal);
+        mProgress.show();
         int keysToTrace = mLayerBitmap->keyFrameCount();
-        mProgress->setMaximum(keysToTrace);
-        mProgress->setValue(0);
+        mProgress.setMaximum(keysToTrace);
+        mProgress.setValue(0);
         int keysTraced = 0;
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
@@ -225,17 +225,17 @@ void BitmapColoring::traceLines()
         {
             if (mLayerBitmap->keyExists(i))
             {
-                mProgress->setValue(keysTraced++);
+                mProgress.setValue(keysTraced++);
                 mEditor->scrubTo(i);
                 trace();
                 count++;
-                if (mProgress->wasCanceled())
+                if (mProgress.wasCanceled())
                 {
                     break;
                 }
             }
         }
-        mProgress->close();
+        mProgress.close();
 
         // move colorLayer beneath Animation layer
         while (mColLayer > mAnimLayer)
@@ -277,18 +277,18 @@ void BitmapColoring::fillSpotAreas()
     {
         mEditor->setIsDoingRepeatColoring(true);
         int count = mEditor->getAutoSaveCounter();
-        QProgressDialog* mProgress = new QProgressDialog(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
-        mProgress->setWindowModality(Qt::WindowModal);
-        mProgress->show();
-        mProgress->setMaximum(mLayerBitmap->keyFrameCount());
-        mProgress->setValue(0);
+        QProgressDialog mProgress(tr("Fill small areas in bitmaps..."), tr("Abort"), 0, 100, this);
+        mProgress.setWindowModality(Qt::WindowModal);
+        mProgress.show();
+        mProgress.setMaximum(mLayerBitmap->keyFrameCount());
+        mProgress.setValue(0);
         int keysThinned = 0;
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
         {
             if (mLayerBitmap->keyExists(i))
             {
-                mProgress->setValue(keysThinned++);
+                mProgress.setValue(keysThinned++);
                 mEditor->scrubTo(i);
                 mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
                 mBitmapImage->setSpotArea(ui->sbSpotAreas->value());
@@ -296,12 +296,12 @@ void BitmapColoring::fillSpotAreas()
                 mBitmapImage->modification();
                 count++;
             }
-            if (mProgress->wasCanceled())
+            if (mProgress.wasCanceled())
             {
                 break;
             }
         }
-        mProgress->close();
+        mProgress.close();
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
     }
@@ -339,28 +339,28 @@ void BitmapColoring::thinLines()
     {
         mEditor->setIsDoingRepeatColoring(true);
         int count = mEditor->getAutoSaveCounter();
-        QProgressDialog* mProgress = new QProgressDialog(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
-        mProgress->setWindowModality(Qt::WindowModal);
-        mProgress->show();
-        mProgress->setMaximum(mLayerBitmap->keyFrameCount());
-        mProgress->setValue(0);
+        QProgressDialog mProgress(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
+        mProgress.setWindowModality(Qt::WindowModal);
+        mProgress.show();
+        mProgress.setMaximum(mLayerBitmap->keyFrameCount());
+        mProgress.setValue(0);
         int keysThinned = 0;
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         for (int i = mLayerBitmap->firstKeyFramePosition(); i <= mLayerBitmap->getMaxKeyFramePosition(); i++)
         {
             if (mLayerBitmap->keyExists(i))
             {
-                mProgress->setValue(keysThinned++);
+                mProgress.setValue(keysThinned++);
                 mEditor->scrubTo(i);
                 thin();
                 count++;
             }
-            if (mProgress->wasCanceled())
+            if (mProgress.wasCanceled())
             {
                 break;
             }
         }
-        mProgress->close();
+        mProgress.close();
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
     }
@@ -415,13 +415,14 @@ void BitmapColoring::blendLines()
                 mEditor->scrubTo(i);
                 count++;
                 progress.setValue(keysBlended++);
+                blend(artLayer);
                 if (progress.wasCanceled())
                 {
                     break;
                 }
-                blend(artLayer);
             }
         }
+
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
     }

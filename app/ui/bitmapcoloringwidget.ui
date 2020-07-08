@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>240</width>
-    <height>374</height>
+    <width>254</width>
+    <height>325</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -247,6 +247,13 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
+          <widget class="QPushButton" name="btnResetTrace">
+           <property name="text">
+            <string>Reset</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_6">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -258,13 +265,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnResetTrace">
-           <property name="text">
-            <string>Reset</string>
-           </property>
-          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="btnApplyTrace">
@@ -316,22 +316,30 @@
           <string>Fill small areas?</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <property name="leftMargin">
+           <number>4</number>
+          </property>
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="rightMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
+           <number>4</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="0" colspan="2">
-             <widget class="QCheckBox" name="cbSpotAreas">
-              <property name="toolTip">
-               <string>Fill small, unwanted areas in lines</string>
-              </property>
-              <property name="text">
-               <string>Fill small areas</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="2">
              <widget class="QSpinBox" name="sbSpotAreas">
               <property name="toolTip">
                <string>Size of area to fill (1-15)</string>
+              </property>
+              <property name="suffix">
+               <string> px</string>
               </property>
               <property name="minimum">
                <number>1</number>
@@ -344,20 +352,17 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+            <item row="0" column="0" colspan="2">
+             <widget class="QCheckBox" name="cbSpotAreas">
+              <property name="toolTip">
+               <string>Fill small, unwanted areas in lines</string>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
+              <property name="text">
+               <string>Fill</string>
               </property>
-             </spacer>
+             </widget>
             </item>
-            <item row="1" column="1" colspan="2">
+            <item row="0" column="3">
              <widget class="QPushButton" name="btnFillAreas">
               <property name="enabled">
                <bool>false</bool>
