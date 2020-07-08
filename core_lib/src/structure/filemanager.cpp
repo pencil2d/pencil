@@ -51,7 +51,7 @@ Object* FileManager::load(QString sFileName)
     dd << QString("File name: ").append(sFileName);
     if (!QFile::exists(sFileName))
     {
-        DEBUG_LOG_FILEMANAGER("ERROR - File doesn't exist");
+        FILEMANAGER_LOG("ERROR - File doesn't exist");
         return cleanUpWithErrorCode(Status(Status::FILE_NOT_FOUND, dd, tr("Could not open file"),
                                            tr("The file does not exist, so we are unable to open it. Please check "
                                            "to make sure the path is correct and that the file is accessible and try again.")));
@@ -114,7 +114,7 @@ Object* FileManager::load(QString sFileName)
     QDomDocument xmlDoc;
     if (!xmlDoc.setContent(&file))
     {
-        DEBUG_LOG_FILEMANAGER("Couldn't open the main XML file");
+        FILEMANAGER_LOG("Couldn't open the main XML file");
         dd << "Error parsing or opening the main XML file";
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
@@ -122,7 +122,7 @@ Object* FileManager::load(QString sFileName)
     QDomDocumentType type = xmlDoc.doctype();
     if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
     {
-        DEBUG_LOG_FILEMANAGER("Invalid main XML doctype");
+        FILEMANAGER_LOG("Invalid main XML doctype");
         dd << QString("Invalid main XML doctype: ").append(type.name());
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
@@ -579,7 +579,7 @@ void FileManager::progressForward()
 
 bool FileManager::loadPalette(Object* obj)
 {
-    DEBUG_LOG_FILEMANAGER("Load Palette..");
+    FILEMANAGER_LOG("Load Palette..");
 
     QString paletteFilePath = QDir(obj->dataDir()).filePath(PFF_PALETTE_FILE);
     if (!obj->importPalette(paletteFilePath))

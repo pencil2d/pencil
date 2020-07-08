@@ -1105,6 +1105,16 @@ int VectorImage::getCurvesColor(int curve)
     }
     return result;
 }
+
+bool VectorImage::isCurveVisible(int curve)
+{
+    if (curve > -1 && curve < mCurves.length())
+    {
+        return !mCurves[curve].isInvisible();
+    }
+    return false;
+}
+
 /**
  * @brief VectorImage::usesColor
  * @param index

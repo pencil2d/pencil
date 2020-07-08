@@ -56,3 +56,7 @@ after_build:
   - if %APPVEYOR_REPO_BRANCH%==release set upload=yes
   - if "%FORCE_NIGHTLY_UPLOAD%"=="yes" set upload=yes
   - powershell ..\util\after-build.ps1 -upload %upload% -platform %PLATFORM_% -branch %APPVEYOR_REPO_BRANCH%
+
+test_script:
+  - echo "Running tests"
+  - tests\release\tests.exe

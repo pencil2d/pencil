@@ -19,7 +19,6 @@ GNU General Public License for more details.
 
 #include <cstddef>
 #include <functional>
-#include <QTransform>
 
 class QAbstractSpinBox;
 
@@ -42,11 +41,12 @@ private:
 
 #define OnScopeExit( callback ) ScopeGuard SCOPEGUARD_LINENAME( myScopeGuard, __LINE__ ) ( [&] { callback; } );
 
-
-#define NULLReturnVoid( p ) if ( p == nullptr ) { return; }
-#define NULLReturn( p, ret ) if ( p == nullptr ) { return ret; }
-#define NULLReturnAssert( p ) if ( p == nullptr ) { Q_ASSERT(false); return; }
-
+template <typename Container, typename Pred>
+Container filter(const Container& container, Pred predicate) {
+    Container result;
+    std::copy_if(container.begin(), container.end(), std::back_inserter(result), predicate);
+    return result;
+}
 
 QString ffprobeLocation();
 QString ffmpegLocation();

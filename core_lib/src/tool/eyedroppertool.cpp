@@ -30,7 +30,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layermanager.h"
 #include "scribblearea.h"
-
+#include "util.h"
 
 EyedropperTool::EyedropperTool(QObject* parent) : BaseTool(parent)
 {
@@ -111,7 +111,6 @@ void EyedropperTool::pointerReleaseEvent(PointerEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        //qDebug() << "was left button or tablet button";
         updateFrontColor();
 
         // reset cursor
@@ -154,18 +153,20 @@ QColor EyedropperTool::getBitmapColor(LayerBitmap* layer)
 
 int EyedropperTool::getVectorColor(LayerVector* layer)
 {
-    VectorImage* vectorImage = layer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    auto vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
     if (vectorImage == nullptr) return -1;
 
     // Check curves
     const qreal toleranceDistance = 10.0;
-    QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
-    if(!closestCurve.isEmpty())
+    const QList<int> closestCurves = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
+    const QList<int> visibleClosestCurves = filter(closestCurves, [vectorImage](int i) { return vectorImage->isCurveVisible(i); });
+
+    if (!visibleClosestCurves.isEmpty())
     {
-        return vectorImage->getCurvesColor(closestCurve.last());
+        return vectorImage->getCurvesColor(visibleClosestCurves.last());
     }
 
     // Check fills
-    int colorNumber = vectorImage->getColorNumber(getLastPoint());
+    int colorNumber = vectorImage->getColorNumber(getCurrentPoint());
     return colorNumber;
 }
