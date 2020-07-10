@@ -2,6 +2,10 @@
 #include "ui_addtransparencytopaperdialog.h"
 
 #include <QProgressDialog>
+#include <QMessageBox>
+#include <QPixmap>
+#include <QGraphicsScene>
+#include <QDebug>
 
 #include "editor.h"
 #include "layermanager.h"
@@ -10,14 +14,17 @@
 #include "bitmapimage.h"
 
 
-AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QWidget *parent) :
-    QWidget(parent),
+AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QDialog *parent) :
+    QDialog(parent),
     ui(new Ui::AddTransparencyToPaperDialog)
 {
     ui->setupUi(this);
+    ui->mainLayout->setStretchFactor(ui->optionsLayout, 1);
+    ui->mainLayout->setStretchFactor(ui->previewLayout, 10);
 
     connect(ui->btnCancel, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::closeClicked);
     connect(ui->btnTrace, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::traceScannedDrawings);
+    connect(this, &QDialog::finished, this, &AddTransparencyToPaperDialog::closeClicked);
 }
 
 AddTransparencyToPaperDialog::~AddTransparencyToPaperDialog()
@@ -28,6 +35,7 @@ AddTransparencyToPaperDialog::~AddTransparencyToPaperDialog()
 void AddTransparencyToPaperDialog::setCore(Editor *editor)
 {
     mEditor = editor;
+    loadDrawing(mEditor->currentFrame());
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &AddTransparencyToPaperDialog::updateTraceButton);
 }
 
@@ -37,6 +45,30 @@ void AddTransparencyToPaperDialog::updateTraceButton()
         ui->btnTrace->setEnabled(true);
     else
         ui->btnTrace->setEnabled(false);
+}
+
+void AddTransparencyToPaperDialog::loadDrawing(int frame)
+{
+    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP) { return; }
+
+    LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+    BitmapImage* img = nullptr;
+    if (layer->keyExists(frame))
+        img = layer->getBitmapImageAtFrame(mEditor->currentFrame());
+    else
+        img = layer->getBitmapImageAtFrame(layer->getPreviousKeyFramePosition(frame));
+    if (img == nullptr)
+    {
+        QMessageBox msgBox;
+        msgBox.setText( tr("No image at or before frame %1").arg(QString::number(frame)));
+        msgBox.exec();
+        return;
+    }
+    mLoadedImage = *img->image();
+    mPixmapFromImage = QPixmap::fromImage(mLoadedImage);
+    scene.addPixmap(mPixmapFromImage);
+    ui->preview->setScene(&scene);
+    ui->preview->update();
 }
 
 void AddTransparencyToPaperDialog::traceScannedDrawings()
