@@ -133,16 +133,30 @@ void ColorPaletteWidget::addItem()
     QSignalBlocker b(ui->colorListWidget);
     QColor newColor = mEditor->color()->frontColor();
 
-    // add in front of selected color
-    int colorIndex = ui->colorListWidget->currentRow()+1;
+    // add at bottom
+    int colorIndex = ui->colorListWidget->count();
 
     ColorRef ref(newColor);
 
     mObject->addColorAtIndex(colorIndex, ref);
     refreshColorList();
+
     if (mFitSwatches)
     {
         fitSwatchSize();
+    }
+
+    bool ok;
+    QString text = QInputDialog::getText(this,
+                                         tr("Color name"),
+                                         tr("Color name"),
+                                         QLineEdit::Normal,
+                                         mObject->getColor(colorIndex).name,
+                                         &ok);
+    if (ok && !text.isEmpty())
+    {
+        mObject->renameColor(colorIndex, text);
+        refreshColorList();
     }
 }
 
