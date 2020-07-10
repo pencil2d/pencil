@@ -139,13 +139,6 @@ void ColorPaletteWidget::addItem()
     ColorRef ref(newColor);
 
     mObject->addColorAtIndex(colorIndex, ref);
-    refreshColorList();
-
-    if (mFitSwatches)
-    {
-        fitSwatchSize();
-    }
-
     bool ok;
     QString text = QInputDialog::getText(this,
                                          tr("Color name"),
@@ -156,7 +149,13 @@ void ColorPaletteWidget::addItem()
     if (ok && !text.isEmpty())
     {
         mObject->renameColor(colorIndex, text);
-        refreshColorList();
+    }
+
+    refreshColorList();
+
+    if (mFitSwatches)
+    {
+        fitSwatchSize();
     }
 }
 
