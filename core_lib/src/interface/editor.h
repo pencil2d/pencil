@@ -126,6 +126,7 @@ Q_SIGNALS:
 
     void changeThinLinesButton(bool);
     void currentFrameChanged(int n);
+    void scrubbedTo(int frame);
 
     void needSave();
     void needDisplayInfo(const QString& title, const QString& body);

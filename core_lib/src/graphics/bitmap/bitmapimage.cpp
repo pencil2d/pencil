@@ -671,12 +671,17 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
 
     img->enableAutoCrop(false);
 
-    QRgb rgba;
+    QRgb rgba = img->constScanLine(img->left(), img->top());
+    if (qAlpha(rgba) == 0)
+        return img;
+
     for (int x = img->left(); x <= img->right(); x++)
     {
         for (int y = img->top(); y <= img->bottom(); y++)
         {
             rgba = img->constScanLine(x, y);
+            if (qAlpha(rgba) == 0)
+                break;
             if (qGray(rgba) >= mThreshold)
             {   // IF Threshold or above
                 img->scanLine(x, y, transp);

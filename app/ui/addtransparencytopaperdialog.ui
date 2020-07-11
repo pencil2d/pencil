@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>609</width>
-    <height>343</height>
+    <width>671</width>
+    <height>375</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,42 +19,79 @@
      <item>
       <layout class="QVBoxLayout" name="optionsLayout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QLabel" name="labThreshold">
-           <property name="text">
-            <string>Threshold</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="labThreshold">
+             <property name="text">
+              <string>Threshold</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>13</width>
+               <height>19</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
          <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="sb_treshold">
-           <property name="toolTip">
-            <string>Color pick values above treshold, will become transparent</string>
-           </property>
-           <property name="minimum">
-            <number>150</number>
-           </property>
-           <property name="maximum">
-            <number>245</number>
-           </property>
-           <property name="value">
-            <number>220</number>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QSlider" name="sliderThreshold">
+             <property name="minimum">
+              <number>150</number>
+             </property>
+             <property name="maximum">
+              <number>245</number>
+             </property>
+             <property name="value">
+              <number>220</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="sb_treshold">
+             <property name="toolTip">
+              <string>Color pick values above treshold, will become transparent</string>
+             </property>
+             <property name="minimum">
+              <number>150</number>
+             </property>
+             <property name="maximum">
+              <number>245</number>
+             </property>
+             <property name="value">
+              <number>220</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -262,11 +299,18 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="previewLayout">
+      <layout class="QVBoxLayout" name="previewLayout" stretch="0,20">
+       <item>
+        <widget class="QLabel" name="labShowingFrame">
+         <property name="text">
+          <string>(Previewing frame: )</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QGraphicsView" name="preview">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -276,6 +320,9 @@
            <width>400</width>
            <height>300</height>
           </size>
+         </property>
+         <property name="sizeAdjustPolicy">
+          <enum>QAbstractScrollArea::AdjustToContents</enum>
          </property>
         </widget>
        </item>

@@ -1043,6 +1043,7 @@ void Editor::scrubTo(int frame)
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
     mObject->updateActiveFrames(frame);
+    Q_EMIT scrubbedTo(frame);
 }
 
 void Editor::scrubForward()

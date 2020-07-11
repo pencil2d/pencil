@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 
 class Editor;
+class BitmapImage;
 
 namespace Ui {
 class AddTransparencyToPaperDialog;
@@ -22,8 +23,11 @@ public:
     void setCore(Editor* editor);
 
 public slots:
-    void updateTraceButton();
+    void SpinboxChanged(int value);
+    void SliderChanged(int value);
     void loadDrawing(int frame);
+    void updateDrawing();
+    void layerChanged(int index);
 
 signals:
     void closeDialog();
@@ -36,6 +40,8 @@ private:
 
     QGraphicsScene scene;
 
+    int mThreshold = 220;
+    BitmapImage* mBitmap = nullptr;
     QImage mLoadedImage;
     QPixmap mPixmapFromImage;
     Editor* mEditor = nullptr;
