@@ -28,7 +28,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     BaseDockWidget(parent)
 {
     QWidget* innerWidget = new QWidget;
-    setWindowTitle(tr("Advanced Bitmap Coloring"));
+    setWindowTitle(tr("Manga Coloring"));
 
     ui = new Ui::BitmapColoringWidget;
     ui->setupUi(innerWidget);
