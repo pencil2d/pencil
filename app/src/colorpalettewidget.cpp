@@ -26,7 +26,6 @@ GNU General Public License for more details.
 #include <QListWidgetItem>
 #include <QInputDialog>
 #include <QColorDialog>
-#include <QToolBar>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSettings>
@@ -34,16 +33,14 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QScrollBar>
 #include <QAbstractItemModel>
+#include <QPainter>
 
 // Project
 #include "colorref.h"
 #include "object.h"
 #include "editor.h"
-#include "colorbox.h"
-#include "scribblearea.h"
 #include "layerbitmap.h"
 #include "colormanager.h"
-#include "layermanager.h"
 
 
 ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) :
@@ -582,7 +579,7 @@ void ColorPaletteWidget::clickAddColorButton()
 
     if (mIsColorDialog)
         newColor = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
-    else 
+    else
         newColor = mEditor->color()->frontColor();
 
     if (!newColor.isValid())
