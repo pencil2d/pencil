@@ -117,7 +117,9 @@ void ColorPaletteWidget::showContextMenu(const QPoint& pos)
 {
     QPoint globalPos = ui->colorListWidget->mapToGlobal(pos);
 
-    QMenu* menu = new QMenu();
+    QMenu* menu = new QMenu;
+    connect(menu, &QMenu::triggered, menu, &QMenu::deleteLater);
+
     menu->addAction(tr("Add"), this, &ColorPaletteWidget::addItem, 0);
     menu->addAction(tr("Replace"),  this, &ColorPaletteWidget::replaceItem, 0);
     menu->addAction(tr("Remove"), this, &ColorPaletteWidget::removeItem, 0);
