@@ -172,11 +172,13 @@ void BucketTool::paintBitmap(Layer* layer)
 
     QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
+    QString fillErrorMsg = tr("Fill extends image area! Fill cancelled.\nPlease close area and try again.");
     BitmapImage::floodFill(targetImage,
                            cameraRect,
                            point,
                            qPremultiply(mEditor->color()->frontColor().rgba()),
-                           properties.tolerance);
+                           static_cast<int>(properties.tolerance),
+                           fillErrorMsg);
 
     mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
     mScribbleArea->setAllDirty();

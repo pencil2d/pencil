@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QFile>
 #include <QPainterPath>
+#include <QMessageBox>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -825,7 +826,8 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
                             QRgb newColor,
-                            int tolerance)
+                            int tolerance,
+                            QString msg)
 {
     // If the point we are supposed to fill is outside the image and camera bounds, do nothing
     if(!cameraRect.united(targetImage->bounds()).contains(point))
@@ -846,6 +848,8 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
     QPoint tempPoint;
     QRgb newPlacedColor = 0;
     QScopedPointer< QHash<QRgb, bool> > cache(new QHash<QRgb, bool>());
+    QRect orgBounds = targetImage->bounds();
+    bool fillOutsideBounds = false;
 
     int xTemp = 0;
     bool spanLeft = false;
@@ -882,23 +886,37 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
             replaceImage->scanLine(xTemp, point.y(), newColor);
 
             if (!spanLeft && (point.y() > targetImage->mBounds.top()) &&
-                compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
+                compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data()))
+            {
+                if (!orgBounds.contains(QPoint(xTemp, point.y() - 1)))
+                {
+                    fillOutsideBounds = true;
+                    break;
+                }
                 queue.append(QPoint(xTemp, point.y() - 1));
                 spanLeft = true;
             }
             else if (spanLeft && (point.y() > targetImage->mBounds.top()) &&
-                     !compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
+                     !compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data()))
+            {
                 spanLeft = false;
             }
 
             if (!spanRight && point.y() < targetImage->mBounds.bottom() &&
-                compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance, cache.data())) {
+                compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance, cache.data()))
+            {
+                if (!orgBounds.contains(QPoint(xTemp, point.y() - 1)))
+                {
+                    fillOutsideBounds = true;
+                    break;
+                }
                 queue.append(QPoint(xTemp, point.y() + 1));
                 spanRight = true;
 
             }
             else if (spanRight && point.y() < targetImage->mBounds.bottom() &&
-                     !compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance, cache.data())) {
+                     !compareColor(targetImage->constScanLine(xTemp, point.y() + 1), oldColor, tolerance, cache.data()))
+            {
                 spanRight = false;
             }
 
@@ -907,7 +925,16 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         }
     }
 
-    targetImage->paste(replaceImage);
-    targetImage->modification();
+    if (!fillOutsideBounds)
+    {
+        targetImage->paste(replaceImage);
+        targetImage->modification();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setText(msg);
+        msgBox.exec();
+    }
     delete replaceImage;
 }
