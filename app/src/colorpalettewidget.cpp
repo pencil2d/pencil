@@ -138,6 +138,7 @@ void ColorPaletteWidget::addItem()
     ColorRef ref(newColor);
 
     mObject->addColorAtIndex(colorIndex, ref);
+
     bool ok;
     QString text = QInputDialog::getText(this,
                                          tr("Color name"),
@@ -213,19 +214,19 @@ void ColorPaletteWidget::refreshColorList()
     }
 
     QPixmap originalColorSwatch(mIconSize);
-    QPainter swatchPainter(&originalColorSwatch);
-    swatchPainter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
-    swatchPainter.end();
-    QPixmap colorSwatch;
+    QPainter painter(&originalColorSwatch);
+    painter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
+    painter.end();
+
     QPen borderShadow(QColor(0, 0, 0, 200), 1, Qt::DotLine, Qt::FlatCap, Qt::MiterJoin);
-    QVector<qreal> dashPattern;
-    dashPattern << 4 << 4;
+    QVector<qreal> dashPattern{ 4, 4 };
     borderShadow.setDashPattern(dashPattern);
+
     QPen borderHighlight(borderShadow);
     borderHighlight.setColor(QColor(255, 255, 255, 200));
     borderHighlight.setDashOffset(4);
 
-    int colorCount = mObject->getColorCount();
+    const int colorCount = mObject->getColorCount();
 
     for (int i = 0; i < colorCount; i++)
     {
@@ -240,15 +241,16 @@ void ColorPaletteWidget::refreshColorList()
         {
             colorItem->setToolTip(colorRef.name);
         }
-        colorSwatch = originalColorSwatch;
-        swatchPainter.begin(&colorSwatch);
+        QPixmap colorSwatch = originalColorSwatch;
+        QPainter swatchPainter(&colorSwatch);
         swatchPainter.fillRect(0, 0, mIconSize.width(), mIconSize.height(), colorRef.color);
 
         QIcon swatchIcon;
         swatchIcon.addPixmap(colorSwatch, QIcon::Normal);
 
         // Draw selection border
-        if(ui->colorListWidget->viewMode() == QListView::IconMode) {
+        if (ui->colorListWidget->viewMode() == QListView::IconMode)
+        {
             swatchPainter.setPen(borderHighlight);
             swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
             swatchPainter.setPen(borderShadow);
@@ -257,7 +259,6 @@ void ColorPaletteWidget::refreshColorList()
         swatchIcon.addPixmap(colorSwatch, QIcon::Selected);
 
         colorItem->setIcon(swatchIcon);
-        swatchPainter.end();
         colorItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
 
         ui->colorListWidget->addItem(colorItem);
