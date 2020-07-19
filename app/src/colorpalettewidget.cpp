@@ -139,24 +139,16 @@ void ColorPaletteWidget::addItem()
 
     mObject->addColorAtIndex(colorIndex, ref);
 
-    bool ok;
-    QString text = QInputDialog::getText(this,
-                                         tr("Color name"),
-                                         tr("Color name"),
-                                         QLineEdit::Normal,
-                                         mObject->getColor(colorIndex).name,
-                                         &ok);
-    if (ok && !text.isEmpty())
-    {
-        mObject->renameColor(colorIndex, text);
-    }
-
     refreshColorList();
 
     if (mFitSwatches)
     {
         fitSwatchSize();
     }
+
+    QListWidgetItem* item = ui->colorListWidget->item(colorIndex);
+    ui->colorListWidget->editItem(item);
+    ui->colorListWidget->scrollToItem(item);
 }
 
 void ColorPaletteWidget::replaceItem()
