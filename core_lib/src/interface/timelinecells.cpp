@@ -737,7 +737,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     int layerNumber = getLayerNumber(event->pos().y());
 
     // -- short scrub --
-    if (event->pos().y() < 20)
+    if (event->pos().y() < 20 && (mType != TIMELINE_CELL_TYPE::Layers || event->pos().x() >= 15))
     {
         mPrefs->set(SETTING::SHORT_SCRUB, !mbShortScrub);
     }
@@ -750,7 +750,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         {
             mEditor->object()->getLayer(layerNumber)->mouseDoubleClick(event, frameNumber);
         }
-        else if (mType == TIMELINE_CELL_TYPE::Layers)
+        else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
         {
             if (layer->type() == Layer::CAMERA)
             {
