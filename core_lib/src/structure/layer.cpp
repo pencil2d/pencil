@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 #include "layer.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QSettings>
 #include <QPainter>
@@ -322,6 +323,7 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
                        bool selected, int frameSize)
 {
+    const QPalette palette = QApplication::palette();
     if (mVisible)
     {
         QColor col;
@@ -332,10 +334,10 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
 
         painter.save();
         painter.setBrush(col);
-        painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.setPen(QPen(QBrush(palette.color(QPalette::Mid)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.drawRect(x, y - 1, width, height);
 
-        // changes the apparence if selected
+        // changes the appearance if selected
         if (selected)
         {
             paintSelection(painter, x, y, width, height);
@@ -358,8 +360,8 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
     }
     else
     {
-        painter.setBrush(Qt::gray);
-        painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.setBrush(palette.color(QPalette::Base));
+        painter.setPen(QPen(QBrush(palette.color(QPalette::Mid)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
     }
 }
@@ -409,36 +411,41 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        bool selected, LayerVisibility layerVisibility)
 {
     Q_UNUSED(cells)
-    painter.setBrush(Qt::lightGray);
-    painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
-
+    const QPalette palette = QApplication::palette();
 
     if (selected)
     {
-        paintSelection(painter, x, y, width, height);
-    } else {
-        painter.save();
-        QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-        linearGrad.setColorAt(0, QColor(255,255,255,150));
-        linearGrad.setColorAt(1, QColor(0,0,0,0));
-        painter.setCompositionMode(QPainter::CompositionMode_Overlay);
-        painter.setBrush(linearGrad);
-        painter.drawRect(x, y - 1, width, height);
-        painter.restore();
-    }
-
-    if (mVisible)
-    {
-        if ((layerVisibility == LayerVisibility::ALL) || selected) painter.setBrush(Qt::black);
-        else if (layerVisibility == LayerVisibility::CURRENTONLY) painter.setBrush(Qt::NoBrush);
-        else if (layerVisibility == LayerVisibility::RELATED) painter.setBrush(Qt::darkGray);
+        painter.setBrush(palette.color(QPalette::Highlight));
     }
     else
     {
-        painter.setBrush(Qt::NoBrush);
+        painter.setBrush(palette.color(QPalette::Base));
     }
-    painter.setPen(Qt::black);
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
+
+    if (!mVisible)
+    {
+        painter.setBrush(palette.color(QPalette::Base));
+    }
+    else
+    {
+        if ((layerVisibility == LayerVisibility::ALL) || selected)
+        {
+            painter.setBrush(palette.color(QPalette::Highlight));
+        }
+        else if (layerVisibility == LayerVisibility::CURRENTONLY)
+        {
+            painter.setBrush(palette.color(QPalette::Base));
+        }
+        else if (layerVisibility == LayerVisibility::RELATED)
+        {
+            QColor color = palette.color(QPalette::Highlight);
+            color.setAlpha(128);
+            painter.setBrush(color);
+        }
+    }
+    painter.setPen(palette.color(QPalette::Mid));
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.drawEllipse(x + 6, y + 4, 9, 9);
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -448,7 +455,14 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
     if (type() == SOUND) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-sound.png"));
     if (type() == CAMERA) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-camera.png"));
 
-    painter.setPen(Qt::black);
+    if (selected)
+    {
+        painter.setPen(palette.color(QPalette::HighlightedText));
+    }
+    else
+    {
+        painter.setPen(palette.color(QPalette::Text));
+    }
     painter.drawText(QPoint(45, y + (2 * height) / 3), mName);
 }
 

@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "timelinecells.h"
 
+#include <QApplication>
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
@@ -172,6 +173,8 @@ bool TimeLineCells::didDetatchLayer() {
 
 void TimeLineCells::drawContent()
 {
+    const QPalette palette = QApplication::palette();
+
     if (mCache == nullptr)
     {
         mCache = new QPixmap(size());
@@ -195,7 +198,7 @@ void TimeLineCells::drawContent()
 
     // grey background of the view
     painter.setPen(Qt::NoPen);
-    painter.setBrush(Qt::lightGray);
+    painter.setBrush(palette.color(QPalette::Base));
     painter.drawRect(QRect(0, 0, width(), height()));
 
     // --- draw layers of the current object
@@ -229,7 +232,7 @@ void TimeLineCells::drawContent()
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks)
         {
-            layer->paintTrack(painter, this, 
+            layer->paintTrack(painter, this,
                               mOffsetX, getLayerY(mEditor->layers()->currentLayerIndex()) + getMouseMoveY(),
                               width() - mOffsetX, getLayerHeight(),
                               true, mFrameSize);
@@ -271,22 +274,29 @@ void TimeLineCells::drawContent()
 
     // --- draw top
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(220, 220, 220));
+    painter.setBrush(palette.color(QPalette::Base));
     painter.drawRect(QRect(0, 0, width() - 1, mOffsetY - 1));
-    painter.setPen(Qt::gray);
-    painter.drawLine(0, 0, width() - 1, 0);
+    painter.setPen(palette.color(QPalette::Mid));
     painter.drawLine(0, mOffsetY - 2, width() - 1, mOffsetY - 2);
-    painter.setPen(Qt::lightGray);
-    painter.drawLine(0, mOffsetY - 3, width() - 1, mOffsetY - 3);
-    painter.drawLine(0, 0, 0, mOffsetY - 3);
 
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
         // --- draw circle
-        painter.setPen(Qt::black);
-        if (mEditor->layerVisibility() == LayerVisibility::CURRENTONLY) { painter.setBrush(Qt::NoBrush); }
-        else if (mEditor->layerVisibility() == LayerVisibility::RELATED) { painter.setBrush(Qt::darkGray); }
-        else if (mEditor->layerVisibility() == LayerVisibility::ALL) { painter.setBrush(Qt::black); }
+        painter.setPen(palette.color(QPalette::Mid));
+        if (mEditor->layerVisibility() == LayerVisibility::CURRENTONLY)
+        {
+            painter.setBrush(palette.color(QPalette::Base));
+        }
+        else if (mEditor->layerVisibility() == LayerVisibility::RELATED)
+        {
+            QColor color = palette.color(QPalette::Highlight);
+            color.setAlpha(128);
+            painter.setBrush(color);
+        }
+        else if (mEditor->layerVisibility() == LayerVisibility::ALL)
+        {
+            painter.setBrush(palette.brush(QPalette::Highlight));
+        }
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.drawEllipse(6, 4, 9, 9);
         painter.setRenderHint(QPainter::Antialiasing, false);
@@ -294,30 +304,23 @@ void TimeLineCells::drawContent()
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
         // --- draw ticks
-        painter.setPen(QColor(70, 70, 70, 255));
-        painter.setBrush(Qt::darkGray);
-        int incr = 0;
+        painter.setPen(palette.color(QPalette::Text));
+        painter.setBrush(palette.brush(QPalette::Text));
         int fps = mEditor->playback()->fps();
         for (int i = mFrameOffset; i < mFrameOffset + (width() - mOffsetX) / mFrameSize; i++)
         {
-            incr = (i < 9) ? 4 : 0;
-
             if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
             {
                 painter.setPen(Qt::NoPen);
-                painter.setBrush(Qt::yellow);
+                painter.setBrush(palette.color(QPalette::Highlight));
 
                 painter.drawRect(getFrameX(i), 1, mFrameSize + 1, 2);
 
-                painter.setPen(QColor(70, 70, 70, 255));
-                painter.setBrush(Qt::darkGray);
+                painter.setPen(palette.color(QPalette::Text));
+                painter.setBrush(palette.brush(QPalette::Text));
             }
 
-            if (i%fps == 0)
-            {
-                painter.drawLine(getFrameX(i), 1, getFrameX(i), 5);
-            }
-            else if (i%fps == fps / 2)
+            if (i%fps == 0 || i%fps == fps / 2)
             {
                 painter.drawLine(getFrameX(i), 1, getFrameX(i), 5);
             }
@@ -327,19 +330,16 @@ void TimeLineCells::drawContent()
             }
             if (i == 0 || i % fps == fps - 1)
             {
+                int incr = (i < 9) ? 4 : 0; // poor man’s text centering
                 painter.drawText(QPoint(getFrameX(i) + incr, 15), QString::number(i + 1));
             }
         }
-
-        // --- draw left border line
-        painter.setPen(Qt::darkGray);
-        painter.drawLine(0, 0, 0, height());
     }
 }
 
 void TimeLineCells::paintLayerGutter(QPainter& painter)
 {
-    painter.setPen(Qt::black);
+    painter.setPen(QApplication::palette().color(QPalette::Mid));
     if (getMouseMoveY() > mLayerDetatchThreshold)
     {
         painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+mLayerHeight, width(), 2);
@@ -415,6 +415,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
 
     Q_ASSUME(object != nullptr && layer != nullptr);
 
+    const QPalette palette = QApplication::palette();
     QPainter painter(this);
 
     bool isPlaying = mEditor->playback()->isPlaying();
@@ -443,7 +444,9 @@ void TimeLineCells::paintEvent(QPaintEvent*)
         // --- draw the position of the current frame
         if (mEditor->currentFrame() > mFrameOffset)
         {
-            painter.setBrush(QColor(255, 0, 0, 128));
+            QColor scrubColor = palette.color(QPalette::Highlight);
+            scrubColor.setAlpha(160);
+            painter.setBrush(scrubColor);
             painter.setPen(Qt::NoPen);
             //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
             QRect scrubRect;
@@ -454,7 +457,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
                 scrubRect.setBottomRight(QPoint(getFrameX(mEditor->currentFrame()), 19));
             }
             painter.drawRect(scrubRect);
-            painter.setPen(QColor(70, 70, 70, 255));
+            painter.setPen(palette.color(QPalette::HighlightedText));
             int incr = (mEditor->currentFrame() < 10) ? 4 : 0;
             painter.drawText(QPoint(getFrameX(mEditor->currentFrame() - 1) + incr, 15),
                              QString::number(mEditor->currentFrame()));
