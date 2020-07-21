@@ -324,46 +324,40 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
                        bool selected, int frameSize)
 {
     const QPalette palette = QApplication::palette();
-    if (mVisible)
+    QColor col;
+    if (type() == BITMAP) col = QColor(51, 155, 252);
+    if (type() == VECTOR) col = QColor(70, 205, 123);
+    if (type() == SOUND) col = QColor(255, 141, 112);
+    if (type() == CAMERA) col = QColor(253, 202, 92);
+    if (!mVisible) col.setAlpha(64);
+
+    painter.save();
+    painter.setBrush(col);
+    painter.setPen(QPen(QBrush(palette.color(QPalette::Mid)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.drawRect(x, y - 1, width, height);
+
+    if (!mVisible) return;
+
+    // changes the appearance if selected
+    if (selected)
     {
-        QColor col;
-        if (type() == BITMAP) col = QColor(51, 155, 252);
-        if (type() == VECTOR) col = QColor(70, 205, 123);
-        if (type() == SOUND) col = QColor(255, 141, 112);
-        if (type() == CAMERA) col = QColor(253, 202, 92);
-
-        painter.save();
-        painter.setBrush(col);
-        painter.setPen(QPen(QBrush(palette.color(QPalette::Mid)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(x, y - 1, width, height);
-
-        // changes the appearance if selected
-        if (selected)
-        {
-            paintSelection(painter, x, y, width, height);
-        }
-        else
-        {
-            painter.save();
-            QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-            linearGrad.setColorAt(0, QColor(255,255,255,150));
-            linearGrad.setColorAt(1, QColor(0,0,0,0));
-            painter.setCompositionMode(QPainter::CompositionMode_Overlay);
-            painter.setBrush(linearGrad);
-            painter.drawRect(x, y - 1, width, height);
-            painter.restore();
-        }
-
-        paintFrames(painter, col, cells, y, height, selected, frameSize);
-
-        painter.restore();
+        paintSelection(painter, x, y, width, height);
     }
     else
     {
-        painter.setBrush(palette.color(QPalette::Base));
-        painter.setPen(QPen(QBrush(palette.color(QPalette::Mid)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
+        painter.save();
+        QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
+        linearGrad.setColorAt(0, QColor(255,255,255,150));
+        linearGrad.setColorAt(1, QColor(0,0,0,0));
+        painter.setCompositionMode(QPainter::CompositionMode_Overlay);
+        painter.setBrush(linearGrad);
+        painter.drawRect(x, y - 1, width, height);
+        painter.restore();
     }
+
+    paintFrames(painter, col, cells, y, height, selected, frameSize);
+
+    painter.restore();
 }
 
 void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize)
@@ -432,7 +426,7 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
     {
         if ((layerVisibility == LayerVisibility::ALL) || selected)
         {
-            painter.setBrush(palette.color(QPalette::Highlight));
+            painter.setBrush(palette.color(QPalette::Text));
         }
         else if (layerVisibility == LayerVisibility::CURRENTONLY)
         {
@@ -440,12 +434,19 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
         }
         else if (layerVisibility == LayerVisibility::RELATED)
         {
-            QColor color = palette.color(QPalette::Highlight);
+            QColor color = palette.color(QPalette::Text);
             color.setAlpha(128);
             painter.setBrush(color);
         }
     }
-    painter.setPen(palette.color(QPalette::Mid));
+    if (selected)
+    {
+        painter.setPen(palette.color(QPalette::HighlightedText));
+    }
+    else
+    {
+        painter.setPen(palette.color(QPalette::Text));
+    }
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.drawEllipse(x + 6, y + 4, 9, 9);
     painter.setRenderHint(QPainter::Antialiasing, false);
