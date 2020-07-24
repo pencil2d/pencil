@@ -2849,7 +2849,7 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="290"/>
         <source>Pale Pink</source>
-        <translation>Světlá růžová</translation>
+        <translation>Bledá růžová</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="291"/>
