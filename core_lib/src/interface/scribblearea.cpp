@@ -398,20 +398,21 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
+    const QPointF offset = mEditor->view()->mapScreenToCanvas(event->position());
 
     const float currentScale = mEditor->view()->scaling();
     if (!pixels.isNull())
     {
         const auto delta = static_cast<float>(pixels.y());
         const float newScale = currentScale * (1.f + (delta * 0.01f));
-        mEditor->view()->scale(newScale);
+        mEditor->view()->scale(newScale, offset);
     }
     else if (!angle.isNull())
     {
         const auto delta = static_cast<float>(angle.y());
         // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
         const float newScale = currentScale * std::pow(100.f, delta / (12 * 120));
-        mEditor->view()->scale(newScale);
+        mEditor->view()->scale(newScale, offset);
     }
     updateCanvasCursor();
     event->accept();
@@ -510,6 +511,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
     if (event->buttons() & (Qt::MidButton | Qt::RightButton))
     {
         setTemporaryTool(HAND);
+        getTool(HAND)->pointerPressEvent(event);
     }
 
     const bool isPressed = event->buttons() & Qt::LeftButton;

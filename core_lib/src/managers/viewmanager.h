@@ -63,7 +63,7 @@ public:
     void rotate(float degree);
 
     float scaling();
-    void scale(float scaleValue);
+    void scale(float scaleValue, QPointF offset = {0, 0});
     void scaleUp();
     void scaleDown();
     void scale400();

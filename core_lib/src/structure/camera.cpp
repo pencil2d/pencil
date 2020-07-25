@@ -120,8 +120,11 @@ void Camera::rotate(qreal degree)
     modification();
 }
 
-void Camera::scale(qreal scaleValue)
+void Camera::scale(qreal scaleValue, QPointF offset)
 {
+    if (!offset.isNull()) {
+        mTranslate = (mTranslate + offset) * mScale / scaleValue - offset;
+    }
     mScale = scaleValue;
 
     mNeedUpdateView = true;

@@ -43,7 +43,7 @@ public:
     void rotate(qreal degree);
     qreal rotation() { return mRotate; }
 
-    void scale(qreal scaleValue);
+    void scale(qreal scaleValue, QPointF offset = {0, 0});
     qreal scaling() { return mScale; }
 
     QTransform view;

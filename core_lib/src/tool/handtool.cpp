@@ -51,6 +51,7 @@ QCursor HandTool::cursor()
 void HandTool::pointerPressEvent(PointerEvent*)
 {
     mLastPixel = getCurrentPixel();
+    mStartPoint = mEditor->view()->mapScreenToCanvas(mLastPixel);
     mIsHeld = true;
 
     mScribbleArea->updateToolCursor();
@@ -116,6 +117,6 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
     {
         float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
         float scaleValue = viewMgr->scaling() * (1.f + delta);
-        viewMgr->scale(scaleValue);
+        viewMgr->scale(scaleValue, mStartPoint);
     }
 }

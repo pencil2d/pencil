@@ -275,7 +275,7 @@ void ViewManager::scale25()
     scale(0.25f);
 }
 
-void ViewManager::scale(float scaleValue)
+void ViewManager::scale(float scaleValue, QPointF offset)
 {
     if (scaleValue < mMinScale)
     {
@@ -288,7 +288,7 @@ void ViewManager::scale(float scaleValue)
 
     if (mCurrentCamera)
     {
-        mCurrentCamera->scale(static_cast<qreal>(scaleValue));
+        mCurrentCamera->scale(static_cast<qreal>(scaleValue), offset);
         updateViewTransforms();
 
         Q_EMIT viewChanged();
