@@ -400,18 +400,18 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
     const QPoint angle = event->angleDelta();
     const QPointF offset = mEditor->view()->mapScreenToCanvas(event->position());
 
-    const float currentScale = mEditor->view()->scaling();
+    const qreal currentScale = mEditor->view()->scaling();
     if (!pixels.isNull())
     {
-        const auto delta = static_cast<float>(pixels.y());
-        const float newScale = currentScale * (1.f + (delta * 0.01f));
+        const int delta = pixels.y();
+        const qreal newScale = currentScale * (1 + (delta * 0.01));
         mEditor->view()->scale(newScale, offset);
     }
     else if (!angle.isNull())
     {
-        const auto delta = static_cast<float>(angle.y());
+        const int delta = angle.y();
         // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
-        const float newScale = currentScale * std::pow(100.f, delta / (12 * 120));
+        const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
         mEditor->view()->scale(newScale, offset);
     }
     updateCanvasCursor();
