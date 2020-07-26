@@ -102,22 +102,22 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="77"/>
         <source>Importing movie...</source>
-        <translation type="unfinished"/>
+        <translation>Asali n usaru...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="85"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>Tessuliḍ-d aṭas n tugniwin, ḥader acku ayagi yezmer ad iɛṭel aṭas. Tebɣiḍ s tidet ad tkemleḍ?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="129"/>
         <source>Importing movie audio...</source>
-        <translation type="unfinished"/>
+        <translation>Asali n imesli n usaru...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Importing sound...</source>
-        <translation type="unfinished"/>
+        <translation>Asali n ṣut...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="399"/>
@@ -336,7 +336,7 @@
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
         <source>Version %1</source>
-        <translation type="unfinished"/>
+        <translation>Lqem %1</translation>
     </message>
 </context>
 <context>
@@ -463,17 +463,17 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="327"/>
         <source>Fit Swatch</source>
-        <translation type="unfinished"/>
+        <translation>Fit Swatch</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="330"/>
         <source>Fit swatch to window (19-36 px)</source>
-        <translation type="unfinished"/>
+        <translation>Fit swatch to window (19-36 px)</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="333"/>
         <source>Swatch fits window</source>
-        <translation type="unfinished"/>
+        <translation>Swatch fits window</translation>
     </message>
 </context>
 <context>
@@ -497,7 +497,7 @@
         <location filename="../app/src/colorpalettewidget.cpp" line="268"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="269"/>
         <source>Color name</source>
-        <translation type="unfinished"/>
+        <translation>Isem n wunuɣ</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="636"/>
@@ -616,12 +616,12 @@
         <translation>Senteḍ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1112"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1119"/>
         <source>Remove frame</source>
         <translation>Kkes akatar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1197"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1204"/>
         <source>Peg bar not found at %1, %2</source>
         <translation type="unfinished"/>
     </message>
