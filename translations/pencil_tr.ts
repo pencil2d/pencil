@@ -616,12 +616,12 @@
         <translation>Yapıştır</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1112"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1119"/>
         <source>Remove frame</source>
         <translation>Çerçeveyi kaldır</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1197"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1204"/>
         <source>Peg bar not found at %1, %2</source>
         <translation>Peg çubuğu %1, %2 konumunda bulunamadı</translation>
     </message>

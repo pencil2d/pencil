@@ -617,12 +617,12 @@ Polskie tłumaczenie: Reptile (&lt;a href=mailto:&quot;reptile@o2.pl&quot;&gt;re
         <translation>Wklej</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1112"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1119"/>
         <source>Remove frame</source>
         <translation>Usuń kratke</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1197"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1204"/>
         <source>Peg bar not found at %1, %2</source>
         <translation type="unfinished"/>
     </message>

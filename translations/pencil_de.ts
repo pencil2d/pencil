@@ -127,7 +127,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="399"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Der Export hat keine Fehler erzeugt, aber wir können die Ausgabedatei nicht finden. Möglicherweise wurde Ihr Export nicht erfolgreich abgeschlossen.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="547"/>
@@ -616,12 +616,12 @@
         <translation>Einfügen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1112"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1119"/>
         <source>Remove frame</source>
         <translation>Einzelbild entfernen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1197"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1204"/>
         <source>Peg bar not found at %1, %2</source>
         <translation>Trickschiene nicht gefunden auf %1, %2</translation>
     </message>
