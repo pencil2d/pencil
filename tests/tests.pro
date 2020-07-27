@@ -43,6 +43,8 @@ SOURCES += \
     src/test_bitmapimage.cpp \
     src/test_viewmanager.cpp
 
+RESOURCES += data/tests.qrc
+
 # --- core_lib ---
 
 INCLUDEPATH += $$PWD/../core_lib/src

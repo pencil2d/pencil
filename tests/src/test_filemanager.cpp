@@ -213,12 +213,40 @@ TEST_CASE("FileManager Loading XML Tests")
     }
 }
 
+// Turn a Qt resource file into an acutal file on disk
+QString getQtResourceFile(QString rscPath, QTemporaryDir& tempDir)
+{
+    QFile fin(rscPath);
+    if (!fin.open(QFile::ReadOnly))
+    {
+        qWarning() << __FUNCTION__ << "Cannot open" << rscPath;
+        return "";
+    }
+    QByteArray content = fin.readAll();
+    fin.close();
+
+    QFileInfo info(rscPath);
+    QString filePathOnDisk = tempDir.filePath(info.fileName());
+
+    QFile fout(filePathOnDisk);
+    if (!fout.open(QFile::WriteOnly))
+    {
+        qWarning() << __FUNCTION__ << "Cannot write to" << filePathOnDisk;
+    }
+    fout.write(content);
+    fout.close();
+    qDebug() << filePathOnDisk;
+    return filePathOnDisk;
+}
+
 TEST_CASE("FileManager Load-a-zip Test")
 {
     SECTION("Load an empty PCLX")
     {
+        QTemporaryDir tempDir;
+
         FileManager fm;
-        Object* o = fm.load("data/empty.pclx");
+        Object* o = fm.load(getQtResourceFile(":/empty.pclx", tempDir));
         REQUIRE(o != nullptr);
         if (o)
         {
