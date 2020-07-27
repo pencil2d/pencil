@@ -59,4 +59,4 @@ after_build:
 
 test_script:
   - echo "Running tests"
-  - tests\release\tests.exe
+  - tests\bin\tests.exe
