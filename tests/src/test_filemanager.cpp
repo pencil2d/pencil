@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2012-2018 Matthew Chiawen Chang
@@ -215,8 +215,17 @@ TEST_CASE("FileManager Loading XML Tests")
 
 TEST_CASE("FileManager Load-a-zip Test")
 {
-    SECTION("Load a PCLX zip file")
+    SECTION("Load an empty PCLX")
     {
+        FileManager fm;
+        Object* o = fm.load("data/empty.pclx");
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
     }
 }
 
@@ -274,7 +283,7 @@ TEST_CASE("FileManager File-saving")
         o1->createDefaultLayers();
 
         LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
-        for (int i = 100; i < 150; ++i) 
+        for (int i = 100; i < 150; ++i)
         {
             layer->addNewKeyFrameAt(i);
             auto bitmap = layer->getBitmapImageAtFrame(i);
@@ -302,7 +311,7 @@ TEST_CASE("FileManager File-saving")
         fm.save(o2, animationPath);
         delete o2;
 
-        // 4. Check no lost frames 
+        // 4. Check no lost frames
         Object* o3 = fm.load(animationPath);
         layer = dynamic_cast<LayerBitmap*>(o3->getLayer(2));
         for (int i = 2; i < 150; ++i)

@@ -17,6 +17,7 @@ CONFIG   -= app_bundle
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
+DESTDIR = bin
 
 INCLUDEPATH += \
     ../core_lib/src/graphics \
