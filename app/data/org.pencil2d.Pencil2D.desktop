@@ -19,6 +19,9 @@ Keywords=picture;drawing;vector;bitmap;cartoon;animation;
 
 
 # Translations
+
+
+# Translations
 Name[ar]=بنسل2دي
 GenericName[ar]=برنامج تحريك الرسومات
 Comment[ar]=أنشئ رسومات متحركة  كلاسيكية بإستخدام الصور النقطية و المتجهة
@@ -28,9 +31,11 @@ Comment[ca]=Crea animacions tradicionals a mà utilitzant gràfics de mapa de bi
 Name[cs]=Pencil2D
 GenericName[cs]=Animační program
 Comment[cs]=Tvořte tradiční ručně kreslenou animaci pomocí bitmapové i vektorové grafiky
+Icon[cs]=org.pencil2d.Pencil2D
 Name[da]=Pencil2D
 GenericName[da]=Animationssoftware
 Comment[da]=Lav traditionel håndtegnet animation, ved brug af både bitmap og vektorgrafik
+Icon[da]=org.pencil2d.Pencil2D
 Name[de]=Pencil2D
 GenericName[de]=Animationssoftware
 Comment[de]=Traditionelle handgezeichnete Animation sowohl mit Raster- als auch mit Vektorgrafik erstellen
@@ -47,6 +52,7 @@ Comment[et]=Loo traditsioonilisi käsitsijoonistatud animatsioone kasutades nii 
 Name[fr]=Pencil2D
 GenericName[fr]=Logiciel d'Animation
 Comment[fr]=Créez une animation traditionnelle dessinée à la main à l'aide de graphiques bitmap et vectoriels
+Icon[fr]=org.pencil2d.Pencil2D
 Name[he]=Pencil2D
 GenericName[he]=תוכנת הנפשה
 Comment[he]=צרו הנפשה מסורתית מצויירת ביד באמצעות כלי מפת ביטים וכלים וקטוריים
@@ -81,6 +87,10 @@ Name[sv]=Pencil2D
 GenericName[sv]=Animeringsprogram
 Comment[sv]=Skapa traditionellt handritade animationer, med både bitmap- och vektorgrafik
 Icon[sv]=org.pencil2d.Pencil2D
+Name[hi_IN]=कोयला कलम २ डी
+GenericName[hi_IN]=एनीमेशन सॉफ्टवेयर
+Comment[hi_IN]=बिटमैप और वेक्टर दृश्यों दोनों को हाथ के  चित्रवर्णन से चलचित्र बनाइए
+Icon[hi_IN]=org.pencil2d.Pencil2D
 Name[tr]=Pencil2D
 GenericName[tr]=Animasyon Yazılımı
 Comment[tr]=Hem bitmap hem de vektör grafikleri kullanarak geleneksel elle çizilmiş animasyonlar oluşturun
