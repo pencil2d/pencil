@@ -63,7 +63,7 @@ QStringList FileDialog::openFiles(FileType fileType)
                                                           strTitle,
                                                           strInitialFilePath,
                                                           strFilter,
-                                                          strSelectedFilter.isNull() ? Q_NULLPTR : &strSelectedFilter);
+                                                          strSelectedFilter.isNull() ? nullptr : &strSelectedFilter);
     if (!filePaths.isEmpty() && !filePaths.first().isEmpty())
     {
         setLastOpenPath(fileType, filePaths.first());
@@ -83,7 +83,7 @@ QString FileDialog::saveFile(FileType fileType)
                                                     strTitle,
                                                     strInitialFilePath,
                                                     strFilter,
-                                                    strSelectedFilter.isNull() ? Q_NULLPTR : &strSelectedFilter);
+                                                    strSelectedFilter.isNull() ? nullptr : &strSelectedFilter);
 
     if (filePath.isEmpty()) { return QString(); }
 
@@ -207,7 +207,6 @@ QString FileDialog::saveFileFilters(FileType fileType)
 
 QString FileDialog::getFilterForFile(QString filters, QString filePath)
 {
-    qDebug() << __FUNCTION__ << filters << filePath;
     if (!filePath.contains("."))
     {
         return QString();
@@ -227,7 +226,6 @@ QString FileDialog::getFilterForFile(QString filters, QString filePath)
         QStringList filterExts = filter.mid(start, end - start).split(" ");
         if (filterExts.contains(fileExt))
         {
-            qDebug() << "Found" << filter;
             return filter.trimmed();
         }
     }
