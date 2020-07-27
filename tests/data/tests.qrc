@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>empty.pclx</file>
+        <file>許功蓋.pclx</file>
+        <file>構わない.pclx</file>
+        <file>대박이야.pclx</file>
     </qresource>
 </RCC>

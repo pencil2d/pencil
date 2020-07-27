@@ -213,7 +213,7 @@ TEST_CASE("FileManager Loading XML Tests")
     }
 }
 
-// Turn a Qt resource file into an acutal file on disk
+// Turn a Qt resource file into an actual file on disk
 QString getQtResourceFile(QString rscPath, QTemporaryDir& tempDir)
 {
     QFile fin(rscPath);
@@ -235,18 +235,62 @@ QString getQtResourceFile(QString rscPath, QTemporaryDir& tempDir)
     }
     fout.write(content);
     fout.close();
-    qDebug() << filePathOnDisk;
     return filePathOnDisk;
 }
 
-TEST_CASE("FileManager Load-a-zip Test")
+TEST_CASE("FileManager Load PCLX")
 {
-    SECTION("Load an empty PCLX")
+    SECTION("Empty PCLX")
     {
         QTemporaryDir tempDir;
 
         FileManager fm;
         Object* o = fm.load(getQtResourceFile(":/empty.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Chinese Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(getQtResourceFile(":/許功蓋.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Japanese Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(getQtResourceFile(":/構わない.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Korean Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(getQtResourceFile(":/대박이야.pclx", tempDir));
         REQUIRE(o != nullptr);
         if (o)
         {
