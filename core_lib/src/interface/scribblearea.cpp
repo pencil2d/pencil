@@ -398,11 +398,14 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
-    const QPointF offset = mEditor->view()->mapScreenToCanvas(event->position());
+    const QPointF offset = mEditor->view()->mapScreenToCanvas(event->posF());
 
     const qreal currentScale = mEditor->view()->scaling();
     if (!pixels.isNull())
     {
+        // XXX: This pixel-based zooming algorithm currently has some shortcomings compared to the angle-based one:
+        //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
+        //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
         const int delta = pixels.y();
         const qreal newScale = currentScale * (1 + (delta * 0.01));
         mEditor->view()->scale(newScale, offset);
