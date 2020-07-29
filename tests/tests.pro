@@ -17,7 +17,6 @@ CONFIG   -= app_bundle
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
-DESTDIR = bin
 
 INCLUDEPATH += \
     ../core_lib/src/graphics \
@@ -42,8 +41,6 @@ SOURCES += \
     src/test_filemanager.cpp \
     src/test_bitmapimage.cpp \
     src/test_viewmanager.cpp
-
-RESOURCES += data/tests.qrc
 
 # --- core_lib ---
 

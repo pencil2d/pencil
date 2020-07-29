@@ -81,7 +81,6 @@ private:
     void setupLayout();
     void setupPredefinedLayout();
     Status validateKeySet(const PredefinedKeySet& keySet, const QStringList& filepaths);
-    Status validateFiles(const QStringList& filepaths);
 
     Ui::ImportImageSeqOptions *uiOptionsBox;
     Ui::ImportImageSeqPreviewGroupBox *uiGroupBoxPreview;

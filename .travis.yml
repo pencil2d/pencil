@@ -86,7 +86,7 @@ script:
     qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_NIGHTLY;
   fi'
   - make;
-  - "$TRAVIS_BUILD_DIR/build/tests/bin/tests"
+  - "$TRAVIS_BUILD_DIR/build/tests/tests"
 
 after_success:
   - "${TRAVIS_BUILD_DIR}/util/after-build.sh"
