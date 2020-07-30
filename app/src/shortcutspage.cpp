@@ -58,6 +58,10 @@ ShortcutsPage::ShortcutsPage( QWidget* parent )
     tableItemClicked(m_treeModel->index(0, 0));
 }
 
+ShortcutsPage::~ShortcutsPage() {
+    delete ui;
+}
+
 void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
 {
     int row = modelIndex.row();

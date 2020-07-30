@@ -41,6 +41,7 @@ public:
     explicit ShortcutsPage(QWidget* parent = nullptr);
 
     void setManager( PreferenceManager* p ) { mManager = p; }
+    ~ShortcutsPage() override;
 
 private slots:
     void tableItemClicked(const QModelIndex&);
