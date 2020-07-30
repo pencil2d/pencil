@@ -619,12 +619,12 @@ void Object::loadDefaultPalette()
     addColor(ColorRef(QColor(Qt::lightGray), QString(tr("Light Grey"))));
     addColor(ColorRef(QColor(Qt::gray), QString(tr("Grey"))));
     addColor(ColorRef(QColor(Qt::darkGray), QString(tr("Dark Grey"))));
-    addColor(ColorRef(QColor(255, 227, 187), QString(tr("Light Skin"))));
-    addColor(ColorRef(QColor(221, 196, 161), QString(tr("Light Skin \u2013 shade"))));
-    addColor(ColorRef(QColor(255, 214, 156), QString(tr("Skin"))));
-    addColor(ColorRef(QColor(207, 174, 127), QString(tr("Skin \u2013 shade"))));
-    addColor(ColorRef(QColor(255, 198, 116), QString(tr("Dark Skin"))));
-    addColor(ColorRef(QColor(227, 177, 105), QString(tr("Dark Skin \u2013 shade")) ));
+    addColor(ColorRef(QColor(255, 227, 187), QString(tr("Pale Orange Yellow"))));
+    addColor(ColorRef(QColor(221, 196, 161), QString(tr("Pale Grayish Orange Yellow"))));
+    addColor(ColorRef(QColor(255, 214, 156), QString(tr("Orange Yellow "))));
+    addColor(ColorRef(QColor(207, 174, 127), QString(tr("Grayish Orange Yellow"))));
+    addColor(ColorRef(QColor(255, 198, 116), QString(tr("Light Orange Yellow"))));
+    addColor(ColorRef(QColor(227, 177, 105), QString(tr("Light Grayish Orange Yellow")) ));
 }
 
 void Object::paintImage(QPainter& painter,int frameNumber,
