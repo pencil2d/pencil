@@ -19,12 +19,12 @@ Pencil2D Website: <https://www.pencil2d.org/>
 | [64-bit][w64]    | [10.12+][mac]      | [64-bit][l64]     |
 | [32-bit][w32]    | [10.7-10.11][macl] | [32-bit][l32]     |
 
-[w64]: https://github.com/pencil2d/pencil/releases/download/v0.6.4/pencil2d-win64-0.6.5.zip
-[w32]: https://github.com/pencil2d/pencil/releases/download/v0.6.4/pencil2d-win32-0.6.5.zip
-[mac]: https://github.com/pencil2d/pencil/releases/download/v0.6.4/pencil2d-mac-0.6.5.zip
-[macl]: https://github.com/pencil2d/pencil/releases/download/v0.6.4/pencil2d-mac-legacy-0.6.5.zip
-[l64]: https://github.com/pencil2d/pencil/releases/download/v0.6.4/pencil2d-linux-amd64-0.6.5.AppImage
-[l32]: https://github.com/pencil2d/pencil/releases/download/v0.6.4/pencil2D-linux-i386-0.6.5.AppImage
+[w64]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-win64-0.6.5.zip
+[w32]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-win32-0.6.5.zip
+[mac]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-mac-0.6.5.zip
+[macl]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-mac-legacy-0.6.5.zip
+[l64]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-linux-amd64-0.6.5.AppImage
+[l32]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2D-linux-i386-0.6.5.AppImage
 
 ### Nightly Builds
 
