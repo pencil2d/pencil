@@ -42,9 +42,9 @@ void AboutDialog::init()
 {
     QStringList devText;
 
-#ifdef PENCIL2D_RELEASE_BUILD
+#if defined(PENCIL2D_RELEASE_BUILD)
     devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
-#elifdef PENCIL2D_RELEASE_BUILD
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
     devText << "Nightly Build " __DATE__;
 #else
     devText << "Development Build " __DATE__;
