@@ -36,6 +36,8 @@ public:
     void setCore(Editor* e) { mEditor = e; }
 
     // file 
+    Status importMovieVideo();
+    Status importMovieAudio();
     Status importSound();
     Status exportMovie(bool isGif = false);
     Status exportImageSequence();
@@ -45,6 +47,8 @@ public:
     // edit
     void flipSelectionX();
     void flipSelectionY();
+    void selectAll();
+    void deselectAll();
 
     // view
     void ZoomIn();
@@ -73,7 +77,10 @@ public:
     Status addNewCameraLayer();
     Status addNewSoundLayer();
     Status deleteCurrentLayer();
-    QString nameSuggest(QString s);
+    void changeKeyframeLineColor();
+    void changeallKeyframeLineColor();
+
+    void setLayerVisibilityIndex(int index);
 
     // Help
     void help();
@@ -83,9 +90,13 @@ public:
     void discord();
     void reportbug();
     void checkForUpdates();
+    void openTemporaryDirectory();
     void about();
 
 private:
+
+    Status convertSoundToWav(const QString& filePath);
+
     Editor* mEditor = nullptr;
     QWidget* mParent = nullptr;
 };

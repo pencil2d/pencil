@@ -48,6 +48,9 @@ protected:
     bool emptyFrameActionEnabled() override;
 
 private:
+
+    QPointF offsetFromPressPos();
+
     QPointF mLastBrushPoint;
 };
 

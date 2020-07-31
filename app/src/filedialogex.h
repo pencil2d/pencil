@@ -20,16 +20,7 @@ GNU General Public License for more details.
 
 #include <QObject>
 
-enum class FileType
-{
-    ANIMATION,
-    IMAGE,
-    IMAGE_SEQUENCE,
-    GIF,
-    MOVIE,
-    SOUND,
-    PALETTE
-};
+#include "filetype.h"
 
 class FileDialog : public QObject
 {
@@ -54,6 +45,8 @@ private:
     QString saveFileFilters( FileType fileType );
     QString getFilterForFile( QString fileType, QString filePath );
     QString defaultFileName( FileType fileType );
+
+    QString addDefaultExtensionSuffix(const FileType fileType);
 
     QString toSettingKey( FileType fileType);
 

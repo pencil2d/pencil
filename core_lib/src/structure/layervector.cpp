@@ -17,6 +17,9 @@ GNU General Public License for more details.
 #include "layervector.h"
 
 #include "vectorimage.h"
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 
 
 LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
@@ -28,25 +31,34 @@ LayerVector::~LayerVector()
 {
 }
 
-bool LayerVector::usesColour(int colorIndex)
+bool LayerVector::usesColor(int colorIndex)
 {
     bool bUseColor = false;
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
         auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
 
-        bUseColor = bUseColor || pVecImage->usesColour(colorIndex);
+        bUseColor = bUseColor || pVecImage->usesColor(colorIndex);
     });
 
     return bUseColor;
 }
 
-void LayerVector::removeColour(int colorIndex)
+void LayerVector::removeColor(int colorIndex)
 {
     foreachKeyFrame([=](KeyFrame* pKeyFrame)
     {
         auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
-        pVecImage->removeColour(colorIndex);
+        pVecImage->removeColor(colorIndex);
+    });
+}
+
+void LayerVector::moveColor(int start, int end)
+{
+    foreachKeyFrame( [=] (KeyFrame* pKeyFrame)
+    {
+        auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
+        pVecImage->moveColor(start, end);
     });
 }
 
@@ -120,35 +132,24 @@ bool LayerVector::needSaveFrame(KeyFrame* key, const QString& strSavePath)
 
 QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
-    QDomElement layerTag = doc.createElement("layer");
-
-    layerTag.setAttribute("id", id());
-    layerTag.setAttribute("name", name());
-    layerTag.setAttribute("visibility", visible());
-    layerTag.setAttribute("type", type());
+    QDomElement layerElem = this->createBaseDomElement(doc);
 
     foreachKeyFrame([&](KeyFrame* keyframe)
     {
         QDomElement imageTag = doc.createElement("image");
         imageTag.setAttribute("frame", keyframe->pos());
         imageTag.setAttribute("src", fileName(keyframe));
-        layerTag.appendChild(imageTag);
+        layerElem.appendChild(imageTag);
 
         Q_ASSERT(QFileInfo(keyframe->fileName()).fileName() == fileName(keyframe));
     });
 
-    return layerTag;
+    return layerElem;
 }
 
-void LayerVector::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
+void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
-    if (!element.attribute("id").isNull())
-    {
-        int id = element.attribute("id").toInt();
-        setId(id);
-    }
-    setName(element.attribute("name"));
-    setVisible(element.attribute("visibility") == "1");
+    this->loadBaseDomElement(element);
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

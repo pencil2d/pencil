@@ -23,13 +23,13 @@ GNU General Public License for more details.
 
 class SoundPlayer;
 
-
 class SoundClip : public KeyFrame
 {
 public:
     explicit SoundClip();
     explicit SoundClip(const SoundClip&);
     ~SoundClip() override;
+    SoundClip& operator=(const SoundClip& a);
 
     SoundClip* clone() override;
 
@@ -45,6 +45,7 @@ public:
 
     void play();
     void playFromPosition(int frameNumber, int fps);
+    void pause();
     void stop();
 
     int64_t duration() const;

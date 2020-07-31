@@ -22,15 +22,6 @@ GNU General Public License for more details.
 #define M_PI 3.14159265358979323846
 #endif
 
-#define PENCIL_MOVIE_EXT \
-    QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
-
-#define PENCIL_IMAGE_FILTER \
-   QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
-
-#define PENCIL_IMAGE_SEQ_FILTER \
-    QObject::tr( "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)" )
-
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 #define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
@@ -81,6 +72,28 @@ enum StabilizationLevel
     STRONG
 };
 
+
+enum class LayerVisibility
+{
+    CURRENTONLY = 0,
+    RELATED = 1,
+    ALL = 2,
+    // If you are adding new enum values here, be sure to update the ++/-- operators below
+};
+
+inline LayerVisibility& operator++(LayerVisibility& vis)
+{
+    return vis = (vis == LayerVisibility::ALL) ? LayerVisibility::CURRENTONLY : static_cast<LayerVisibility>(static_cast<int>(vis)+1);
+}
+
+inline LayerVisibility& operator--(LayerVisibility& vis)
+{
+    return vis = (vis == LayerVisibility::CURRENTONLY) ? LayerVisibility::ALL : static_cast<LayerVisibility>(static_cast<int>(vis)-1);
+}
+
+// Max frames that can be imported and loaded onto the timeline
+constexpr int MaxFramesBound = 9999;
+
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"
@@ -88,7 +101,8 @@ enum StabilizationLevel
 #define CMD_SAVE_AS "CmdSaveAs"
 #define CMD_IMPORT_IMAGE "CmdImportImage"
 #define CMD_IMPORT_IMAGE_SEQ "CmdImportImageSequence"
-#define CMD_IMPORT_MOVIE "CmdImportMovie"
+#define CMD_IMPORT_MOVIE_VIDEO "CmdImportMovieVideo"
+#define CMD_IMPORT_MOVIE_AUDIO "CmdImportMovieAudio"
 #define CMD_IMPORT_PALETTE "CmdImportPalette"
 #define CMD_IMPORT_SOUND "CmdImportSound"
 #define CMD_EXPORT_IMAGE_SEQ "CmdExportImageSequence"
@@ -153,6 +167,9 @@ enum StabilizationLevel
 #define CMD_NEW_SOUND_LAYER "CmdNewSoundLayer"
 #define CMD_NEW_CAMERA_LAYER "CmdNewCameraLayer"
 #define CMD_DELETE_CUR_LAYER "CmdDeleteCurrentLayer"
+#define CMD_CURRENT_LAYER_VISIBILITY "CmdLayerVisibilityCurrentOnly"
+#define CMD_RELATIVE_LAYER_VISIBILITY "CmdLayerVisibilityRelative"
+#define CMD_ALL_LAYER_VISIBILITY "CmdLayerVisibilityAll"
 #define CMD_HELP "CmdHelp"
 #define CMD_TOGGLE_TOOLBOX "CmdToggleToolBox"
 #define CMD_TOGGLE_TOOL_OPTIONS "CmdToggleToolOptions"
@@ -160,6 +177,7 @@ enum StabilizationLevel
 #define CMD_TOGGLE_COLOR_INSPECTOR "CmdToggleColorInspector"
 #define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
 #define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
+#define CMD_TOGGLE_ONION_SKIN "CmdToggleOnionSkin"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
 #define CMD_INCREASE_SIZE "CmdIncreaseSize"
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"
@@ -167,6 +185,9 @@ enum StabilizationLevel
 
 // Save / Export
 #define LAST_PCLX_PATH          "LastFilePath"
+
+// Import
+#define IMPORT_REPOSITION_TYPE      "ImportRepositionType"
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
@@ -192,6 +213,9 @@ enum StabilizationLevel
 #define SETTING_DRAW_LABEL          "DrawLabel"
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
+#define SETTING_ROTATION_INCREMENT  "RotationIncrement"
+#define SETTING_ASK_FOR_PRESET      "AskForPreset"
+#define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"
@@ -210,6 +234,15 @@ enum StabilizationLevel
 #define SETTING_FRAME_POOL_SIZE "FramePoolSize"
 #define SETTING_GRID_SIZE_W      "GridSizeW"
 #define SETTING_GRID_SIZE_H      "GridSizeH"
+#define SETTING_OVERLAY_CENTER   "OverlayCenter"
+#define SETTING_OVERLAY_THIRDS   "OverlayThirds"
+#define SETTING_OVERLAY_GOLDEN   "OverlayGolden"
+#define SETTING_OVERLAY_SAFE     "OverlaySafe"
+#define SETTING_TITLE_SAFE_ON    "TitleSafeOn"
+#define SETTING_TITLE_SAFE       "TitleSafe"
+#define SETTING_ACTION_SAFE_ON   "ActionSafeOn"
+#define SETTING_ACTION_SAFE      "ActionSafe"
+#define SETTING_OVERLAY_SAFE_HELPER_TEXT_ON "OverlaySafeHelperTextOn"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
@@ -220,7 +253,11 @@ enum StabilizationLevel
 #define SETTING_FLIP_ROLL_MSEC          "FlipRoll"
 #define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
+#define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
+#define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
 
+#define SETTING_LAYER_VISIBILITY "LayerVisibility"
+#define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"
 
 #define SETTING_DRAW_ON_EMPTY_FRAME_ACTION  "DrawOnEmptyFrameAction"
 

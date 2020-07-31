@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include <QMainWindow>
 #include "preferencemanager.h"
+#include "pegbaralignmentdialog.h"
 
 
 template<typename T> class QList;
@@ -30,6 +31,7 @@ class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
 class DisplayOptionWidget;
+class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
@@ -60,14 +62,17 @@ public:
 
     Editor* mEditor = nullptr;
 
-    public slots:
+public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
+    void openPegAlignDialog();
+    void closePegAlignDialog();
+    void currentLayerChanged();
+    void selectionChanged();
 
 public:
-    void setOpacity(int opacity);
     void newDocument(bool force = false);
     void openDocument();
     bool saveDocument();
@@ -80,16 +85,25 @@ public:
     void importImageSequence();
     void importImageSequenceNumbered();
     void addLayerByFilename(QString strFilePath);
-    void importMovie();
+    void importPredefinedImageSet();
+    void importLayers();
+    void importMovieVideo();
     void importGIF();
+    void importMovieAudio();
 
     void lockWidgets(bool shouldLock);
 
+    void setSoundScrubActive(bool b);
+    void setSoundScrubMsec(int msec);
+    void setOpacity(int opacity);
     void preferences();
-    
+ 
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
+
+    void displayMessageBox(const QString& title, const QString& body);
+    void displayMessageBoxNoTitle(const QString& body);
 
 Q_SIGNALS:
     void updateRecentFilesList(bool b);
@@ -102,7 +116,9 @@ private slots:
     void resetAndDockAllSubWidgets();
 
 private:
-    bool openObject(QString strFilename, bool checkForChanges);
+    bool newObject();
+    bool newObjectFromPresets(int presetIndex);
+    bool openObject(QString strFilename);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();
@@ -111,7 +127,9 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
+    void tryLoadPreset();
 
+    void openPalette();
     void importPalette();
     void exportPalette();
 
@@ -128,11 +146,12 @@ private:
     void makeConnections(Editor*, TimeLine*);
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
+    void makeConnections(Editor*, OnionSkinWidget*);
 
     void bindActionWithSetting(QAction*, SETTING);
 
     // UI: Dock widgets
-    ColorBox*           mColorBox = nullptr;
+    ColorBox*             mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
@@ -143,13 +162,16 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr; // be public temporary
     ColorInspector*       mColorInspector = nullptr;
+    OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
     BackupElement* mBackupAtSave = nullptr;
 
+    PegBarAlignmentDialog* mPegAlign = nullptr;
+
 private:
     ActionCommands* mCommands = nullptr;
-    QList< BaseDockWidget* > mDockWidgets;
+    QList<BaseDockWidget*> mDockWidgets;
 
     QIcon mStartIcon;
     QIcon mStopIcon;

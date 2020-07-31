@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QtMath>
 #include <QFile>
+#include <QPainterPath>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -36,11 +37,11 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
     mImage = std::make_shared<QImage>(*a.mImage);
 }
 
-BitmapImage::BitmapImage(const QRect& rectangle, const QColor& colour)
+BitmapImage::BitmapImage(const QRect& rectangle, const QColor& color)
 {
     mBounds = rectangle;
     mImage = std::make_shared<QImage>(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
-    mImage->fill(colour.rgba());
+    mImage->fill(color.rgba());
     mMinBound = false;
 }
 
@@ -436,7 +437,7 @@ void BitmapImage::autoCrop()
     int relRight = mBounds.width()-1;
 
     // Check left row
-    isEmpty = (relBottom >= relTop); // Check left only when 
+    isEmpty = (relBottom >= relTop); // Check left only when
     while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relLeft
@@ -526,21 +527,28 @@ QRgb BitmapImage::pixel(QPoint p)
     return result;
 }
 
-void BitmapImage::setPixel(int x, int y, QRgb colour)
+void BitmapImage::setPixel(int x, int y, QRgb color)
 {
-    setPixel(QPoint(x, y), colour);
+    setPixel(QPoint(x, y), color);
 }
 
-void BitmapImage::setPixel(QPoint p, QRgb colour)
+void BitmapImage::setPixel(QPoint p, QRgb color)
 {
     setCompositionModeBounds(QRect(p, QSize(1,1)), true, QPainter::CompositionMode_SourceOver);
     if (mBounds.contains(p))
     {
-        image()->setPixel(p - mBounds.topLeft(), colour);
+        image()->setPixel(p - mBounds.topLeft(), color);
     }
     modification();
 }
 
+void BitmapImage::fillNonAlphaPixels(const QRgb color)
+{
+    if (mBounds.isEmpty()) { return; }
+
+    BitmapImage fill(bounds(), color);
+    paste(&fill, QPainter::CompositionMode_SourceIn);
+}
 
 void BitmapImage::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing)
 {
@@ -621,7 +629,7 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
         painter.setPen(pen);
         painter.setBrush(brush);
         painter.setTransform(QTransform().translate(-mBounds.left(), -mBounds.top()));
-        painter.setMatrixEnabled(true);
+        painter.setWorldMatrixEnabled(true);
         if (path.length() > 0)
         {
             /*
@@ -652,6 +660,54 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
+Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
+{
+    Status::StatusInt retValues;
+    retValues.value = -1;
+    retValues.errorcode = Status::FAIL;
+    int left = static_cast<int>(rect.left());
+    int right = static_cast<int>(rect.right());
+    int top = static_cast<int>(rect.top());
+    int bottom = static_cast<int>(rect.bottom());
+    for (int x = left; x <= right; x++)
+    {
+        for (int y = top; y <= bottom; y++)
+        {
+            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
+            {
+                retValues.value = x;
+                retValues.errorcode = Status::OK;
+                return retValues;
+            }
+        }
+    }
+    return retValues;
+}
+
+Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
+{
+    Status::StatusInt retValues;
+    retValues.value = -1;
+    retValues.errorcode = Status::FAIL;
+    int left = static_cast<int>(rect.left());
+    int right = static_cast<int>(rect.right());
+    int top = static_cast<int>(rect.top());
+    int bottom = static_cast<int>(rect.bottom());
+    for (int y = top; y <= bottom; y++)
+    {
+        for (int x = left; x <= right; x++)
+        {
+            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
+            {
+                retValues.value = y;
+                retValues.errorcode = Status::OK;
+                return retValues;
+            }
+        }
+    }
+    return retValues;
+}
+
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (mImage && !mImage->isNull())
@@ -659,7 +715,7 @@ Status BitmapImage::writeFile(const QString& filename)
         bool b = mImage->save(filename);
         return (b) ? Status::OK : Status::FAIL;
     }
-    
+
     if (bounds().isEmpty())
     {
         QFile f(filename);
@@ -681,7 +737,7 @@ void BitmapImage::clear()
     modification();
 }
 
-QRgb BitmapImage::constScanLine(int x, int y)
+QRgb BitmapImage::constScanLine(int x, int y) const
 {
     QRgb result = qRgba(0, 0, 0, 0);
     if (mBounds.contains(QPoint(x, y)))
@@ -691,7 +747,7 @@ QRgb BitmapImage::constScanLine(int x, int y)
     return result;
 }
 
-void BitmapImage::scanLine(int x, int y, QRgb colour)
+void BitmapImage::scanLine(int x, int y, QRgb color)
 {
     extend(QPoint(x, y));
     if (mBounds.contains(QPoint(x, y)))
@@ -699,10 +755,10 @@ void BitmapImage::scanLine(int x, int y, QRgb colour)
         // Make sure color is premultiplied before calling
         *(reinterpret_cast<QRgb*>(image()->scanLine(y - mBounds.top())) + x - mBounds.left()) =
             qRgba(
-                qRed(colour),
-                qGreen(colour),
-                qBlue(colour),
-                qAlpha(colour));
+                qRed(color),
+                qGreen(color),
+                qBlue(color),
+                qAlpha(color));
     }
 }
 
@@ -797,7 +853,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
 
     // Extend to size of Camera
     targetImage->extend(cameraRect);
-    replaceImage = new BitmapImage(cameraRect, Qt::transparent);
+    replaceImage = new BitmapImage(targetImage->mBounds, Qt::transparent);
 
     queue.append(point);
     // Preparations END

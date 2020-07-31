@@ -27,7 +27,7 @@ class BitmapImage : public KeyFrame
 public:
     BitmapImage();
     BitmapImage(const BitmapImage&);
-    BitmapImage(const QRect &rectangle, const QColor& colour);
+    BitmapImage(const QRect &rectangle, const QColor& color);
     BitmapImage(const QPoint& topLeft, const QImage& image);
     BitmapImage(const QPoint& topLeft, const QString& path);
 
@@ -63,15 +63,17 @@ public:
 
     QRgb pixel(int x, int y);
     QRgb pixel(QPoint p);
-    void setPixel(int x, int y, QRgb colour);
-    void setPixel(QPoint p, QRgb colour);
-    QRgb constScanLine(int x, int y);
-    void scanLine(int x, int y, QRgb colour);
+    void setPixel(int x, int y, QRgb color);
+    void setPixel(QPoint p, QRgb color);
+    void fillNonAlphaPixels(const QRgb color);
+
+    inline QRgb constScanLine(int x, int y) const;
+    inline void scanLine(int x, int y, QRgb color);
     void clear();
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
-    static bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
+    static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
     static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb newColor, int tolerance);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
@@ -90,6 +92,11 @@ public:
     int width() { autoCrop(); return mBounds.width(); }
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
+
+    // peg bar alignment
+    Status::StatusInt findLeft(QRectF rect, int grayValue);
+    Status::StatusInt findTop(QRectF rect, int grayValue);
+
 
     QRect& bounds() { autoCrop(); return mBounds; }
 

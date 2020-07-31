@@ -19,11 +19,14 @@ GNU General Public License for more details.
 
 #include <cstddef>
 #include <functional>
-#include <QTransform>
 
+class QAbstractSpinBox;
 
 QTransform RectMapTransform( QRectF source, QRectF target );
 
+void clearFocusOnFinished(QAbstractSpinBox *spinBox);
+
+// NOTE: Replace this implementation with QScopeGuard once we drop support for Qt < 5.12
 class ScopeGuard
 {
 public:
@@ -38,21 +41,14 @@ private:
 
 #define OnScopeExit( callback ) ScopeGuard SCOPEGUARD_LINENAME( myScopeGuard, __LINE__ ) ( [&] { callback; } );
 
+template <typename Container, typename Pred>
+Container filter(const Container& container, Pred predicate) {
+    Container result;
+    std::copy_if(container.begin(), container.end(), std::back_inserter(result), predicate);
+    return result;
+}
 
-#define NULLReturnVoid( p ) if ( p == nullptr ) { return; }
-#define NULLReturn( p, ret ) if ( p == nullptr ) { return ret; }
-#define NULLReturnAssert( p ) if ( p == nullptr ) { Q_ASSERT(false); return; }
-
-
-class SignalBlocker
-{
-public:
-    explicit SignalBlocker(QObject* o);
-    ~SignalBlocker();
-private:
-    QObject* mObject = nullptr;
-    bool mBlocked = false;
-};
-
+QString ffprobeLocation();
+QString ffmpegLocation();
 
 #endif // UTIL_H

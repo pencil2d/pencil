@@ -18,32 +18,34 @@ GNU General Public License for more details.
 #define BEZIERAREA_H
 
 
-#include <QtXml>
 #include <QPainterPath>
 
 #include "vertexref.h"
 
 class Status;
+class QXmlStreamWriter;
+class QDomElement;
+
 
 class BezierArea
 {
 public:
     BezierArea();
-    BezierArea(QList<VertexRef> vertexList, int colour);
+    BezierArea(QList<VertexRef> vertexList, int color);
 
     Status createDomElement(QXmlStreamWriter& xmlStream);
-    void loadDomElement(QDomElement element);
+    void loadDomElement(const QDomElement& element);
 
     VertexRef getVertexRef(int i);
-    int getColourNumber() { return mColourNumber; }
-    void decreaseColourNumber() { mColourNumber--; }
+    int getColorNumber() { return mColorNumber; }
+    void decreaseColorNumber() { mColorNumber--; }
     void setSelected(bool YesOrNo);
     bool isSelected() const { return mSelected; }
-    void setColourNumber(int cn) { mColourNumber = cn; }
+    void setColorNumber(int cn) { mColorNumber = cn; }
 
     QList<VertexRef> mVertex;
     QPainterPath mPath;
-    int mColourNumber = 0;
+    int mColorNumber = 0;
 
 private:
     bool mSelected = false;

@@ -17,6 +17,7 @@ CONFIG   -= app_bundle
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
+DESTDIR = bin
 
 INCLUDEPATH += \
     ../core_lib/src/graphics \
@@ -34,6 +35,7 @@ HEADERS += \
 
 SOURCES += \
     src/main.cpp \
+    src/test_colormanager.cpp \
     src/test_layer.cpp \
     src/test_layermanager.cpp \
     src/test_object.cpp \
@@ -41,17 +43,41 @@ SOURCES += \
     src/test_bitmapimage.cpp \
     src/test_viewmanager.cpp
 
-# --- CoreLib ---
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -lcore_lib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core_lib/debug/ -lcore_lib
-else:unix: LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+RESOURCES += data/tests.qrc
+
+# --- core_lib ---
 
 INCLUDEPATH += $$PWD/../core_lib/src
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/libcore_lib.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/libcore_lib.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/core_lib.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/core_lib.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+CONFIG(debug,debug|release) BUILDTYPE = debug
+CONFIG(release,debug|release) BUILDTYPE = release
+
+win32-msvc*{
+  LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
+}
+
+
+# From 5.14, MinGW windows builds are not build with debug-release flag
+versionAtLeast(QT_VERSION, 5.14) {
+
+    win32-g++{
+      LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+    }
+
+} else {
+
+    win32-g++{
+      LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
+    }
+}
 
 macx: LIBS += -framework AppKit
+
+# --- mac os and linux
+unix {
+  LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+}

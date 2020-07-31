@@ -8,8 +8,8 @@ source_lang = en
 type = QT
 
 [pencil2d.desktop-entry]
-source_file = app/data/pencil2d.desktop
+source_file = app/data/org.pencil2d.Pencil2D.desktop
 source_lang = en
-trans.en = app/data/pencil2d.desktop
+trans.en = app/data/org.pencil2d.Pencil2D.desktop
 type = DESKTOP
 

@@ -62,6 +62,7 @@ public:
     void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
     void paintLayerGutter(QPainter& painter);
     bool didDetatchLayer();
+    int getCurrentFrame() { return mCurrentFrame; }
 
 Q_SIGNALS:
     void mouseMovedY(int);
@@ -76,6 +77,7 @@ public slots:
     void setMouseMoveY(int x);
 
 protected:
+    void trackScrubber();
     void drawContent();
     void paintOnionSkin(QPainter& painter);
     void paintEvent(QPaintEvent* event);
@@ -89,6 +91,7 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
+
     TimeLine* mTimeLine;
     Editor* mEditor; // the editor for which this timeLine operates
     PreferenceManager* mPrefs;
@@ -106,6 +109,9 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
+    int mCurrentFrame = 0;
+    int mLastScrubFrame = 0;
+
     int mFromLayer = 0;
     int mToLayer   = 1;
     int mStartLayerNumber = -1;
@@ -113,6 +119,7 @@ private:
     int mLastFrameNumber = -1;
     int mMouseMoveY = 0;
     int mMouseMoveX = 0;
+    int mPrevFrame = 0;
     int mFrameOffset = 0;
     int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;

@@ -43,7 +43,7 @@ void TimeLine::initUI()
 {
     Q_ASSERT(editor() != nullptr);
 
-    setWindowTitle(tr("Timeline"));
+    setWindowTitle(tr("Timeline", "Subpanel title"));
 
     QWidget* timeLineContent = new QWidget(this);
 
@@ -141,13 +141,7 @@ void TimeLine::initUI()
     zoomSlider->setValue(mTracks->getFrameSize());
     zoomSlider->setToolTip(tr("Adjust frame width"));
     zoomSlider->setOrientation(Qt::Horizontal);
-
-    QLabel* onionLabel = new QLabel(tr("Onion skin:"));
-
-    QToolButton* onionTypeButton = new QToolButton(this);
-    onionTypeButton->setIcon(QIcon(":icons/onion_type.png"));
-    onionTypeButton->setToolTip(tr("Toggle match keyframes"));
-    onionTypeButton->setFixedSize(24, 24);
+    zoomSlider->setFocusPolicy(Qt::TabFocus);
 
     timelineButtons->addWidget(keyLabel);
     timelineButtons->addWidget(addKeyButton);
@@ -157,8 +151,6 @@ void TimeLine::initUI()
     timelineButtons->addWidget(zoomLabel);
     timelineButtons->addWidget(zoomSlider);
     timelineButtons->addSeparator();
-    timelineButtons->addWidget(onionLabel);
-    timelineButtons->addWidget(onionTypeButton);
     timelineButtons->addSeparator();
     timelineButtons->setFixedHeight(30);
 
@@ -213,7 +205,6 @@ void TimeLine::initUI()
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
-    connect(onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick);
 
     connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);
@@ -234,14 +225,14 @@ void TimeLine::initUI()
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);
+    mNumLayers = layer->count();
 
     scrubbing = false;
 }
 
 void TimeLine::updateUI()
 {
-    mTracks->update();
-    mLayerList->update();
+    updateContent();
 }
 
 int TimeLine::getLength()
@@ -298,7 +289,7 @@ void TimeLine::deleteCurrentLayer()
 
     int ret = QMessageBox::warning(this,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: ") + strLayerName + " ?",
+                                   tr("Are you sure you want to delete layer: %1?").arg(strLayerName),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)
@@ -327,7 +318,7 @@ void TimeLine::updateLayerView()
     int pageDisplay = (mTracks->height() - mTracks->getOffsetY()) / mTracks->getLayerHeight();
 
     mVScrollbar->setMinimum(0);
-    mVScrollbar->setMaximum(qMax(0, qMax(0, mNumLayers - pageDisplay)));
+    mVScrollbar->setMaximum(qMax(0, mNumLayers - pageDisplay));
     update();
     updateContent();
 }
@@ -360,7 +351,7 @@ void TimeLine::setLoop(bool loop)
 
 void TimeLine::setPlaying(bool isPlaying)
 {
-    Q_UNUSED(isPlaying);
+    Q_UNUSED(isPlaying)
     mTimeControls->updatePlayState();
 }
 
@@ -382,4 +373,5 @@ int TimeLine::getRangeUpper()
 void TimeLine::onObjectLoaded()
 {
     mTimeControls->updateUI();
+    updateLayerNumber(editor()->layers()->count());
 }

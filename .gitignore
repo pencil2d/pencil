@@ -26,6 +26,7 @@ Makefile*
 *-build-*
 .moc
 moc_predefs.h
+*-pch.h.cpp
 
 Makefile
 Makefile.Debug

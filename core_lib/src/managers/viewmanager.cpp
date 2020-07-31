@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 
+#include <QPainterPath>
 #include "viewmanager.h"
 #include "editor.h"
 #include "object.h"
@@ -37,6 +38,10 @@ ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
 {
     mDefaultEditorCamera = new Camera;
     mCurrentCamera = mDefaultEditorCamera;
+}
+
+ViewManager::~ViewManager() {
+    delete mDefaultEditorCamera;
 }
 
 bool ViewManager::init()
@@ -96,6 +101,16 @@ QRectF ViewManager::mapCanvasToScreen(const QRectF& rect)
 QRectF ViewManager::mapScreenToCanvas(const QRectF& rect)
 {
     return mViewCanvasInverse.mapRect(rect);
+}
+
+QPolygonF ViewManager::mapPolygonToScreen(const QPolygonF &polygon)
+{
+    return mViewCanvas.map(polygon);
+}
+
+QPolygonF ViewManager::mapPolygonToCanvas(const QPolygonF &polygon)
+{
+    return mViewCanvasInverse.map(polygon);
 }
 
 QPainterPath ViewManager::mapScreenToCanvas(const QPainterPath& path)
@@ -301,6 +316,46 @@ void ViewManager::flipVertical(bool b)
 
         Q_EMIT viewChanged();
         Q_EMIT viewFlipped();
+    }
+}
+
+void ViewManager::setOverlayCenter(bool b)
+{
+    if (b != mOverlayCenter)
+    {
+        mOverlayCenter = b;
+        updateViewTransforms();
+        Q_EMIT viewChanged();
+    }
+}
+
+void ViewManager::setOverlayThirds(bool b)
+{
+    if (b != mOverlayThirds)
+    {
+        mOverlayThirds = b;
+        updateViewTransforms();
+        Q_EMIT viewChanged();
+    }
+}
+
+void ViewManager::setOverlayGoldenRatio(bool b)
+{
+    if (b != mOverlayGoldenRatio)
+    {
+        mOverlayGoldenRatio = b;
+        updateViewTransforms();
+        Q_EMIT viewChanged();
+    }
+}
+
+void ViewManager::setOverlaySafeAreas(bool b)
+{
+    if (b != mOverlaySafeAreas)
+    {
+        mOverlaySafeAreas = b;
+        updateViewTransforms();
+        Q_EMIT viewChanged();
     }
 }
 

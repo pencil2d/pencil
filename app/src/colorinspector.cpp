@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "editor.h"
 #include "colormanager.h"
+#include "util/util.h"
 
 
 ColorInspector::ColorInspector(QWidget *parent) :
@@ -37,12 +38,6 @@ ColorInspector::ColorInspector(QWidget *parent) :
     ui = new Ui::ColorInspector;
     ui->setupUi(innerWidget);
     setWidget(innerWidget);
-
-    QButtonGroup* colorModeChangeGroup = new QButtonGroup;
-
-    colorModeChangeGroup->addButton(ui->hsvButton);
-    colorModeChangeGroup->addButton(ui->rgbButton);
-    colorModeChangeGroup->setExclusive(true);
 }
 
 ColorInspector::~ColorInspector()
@@ -87,9 +82,13 @@ void ColorInspector::initUI()
 
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    clearFocusOnFinished(ui->RedspinBox);
     connect(ui->GreenspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    clearFocusOnFinished(ui->GreenspinBox);
     connect(ui->BluespinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    clearFocusOnFinished(ui->BluespinBox);
     connect(ui->AlphaspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    clearFocusOnFinished(ui->AlphaspinBox);
     connect(ui->rgbButton, &QPushButton::clicked, this, &ColorInspector::onModeChanged);
     connect(ui->hsvButton, &QPushButton::clicked, this, &ColorInspector::onModeChanged);
 
@@ -139,7 +138,7 @@ void ColorInspector::setColor(QColor newColor)
 
     if(isRgbColors)
     {
-        QSignalBlocker b1(ui->red_slider); 
+        QSignalBlocker b1(ui->red_slider);
         QSignalBlocker b2(ui->green_slider);
         QSignalBlocker b3(ui->blue_slider);
         QSignalBlocker b4(ui->alpha_slider);
@@ -298,7 +297,7 @@ void ColorInspector::onModeChanged()
         mCurrentColor = mCurrentColor.toHsv();
 
         const qreal bound = 100.0 / 255.0; // from 255 to 100
-        
+
         ui->RedspinBox->setValue(mCurrentColor.hsvHue());
         ui->GreenspinBox->setValue(qRound(mCurrentColor.hsvSaturation()*bound));
         ui->BluespinBox->setValue(qRound(mCurrentColor.value()*bound));

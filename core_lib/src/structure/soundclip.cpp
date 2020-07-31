@@ -36,6 +36,13 @@ SoundClip::~SoundClip()
     //QFile::remove( fileName() );
 }
 
+SoundClip& SoundClip::operator=(const SoundClip& a) {
+    if (this != &a) {
+        mOriginalSoundClipName = a.mOriginalSoundClipName;
+    }
+    return *this;
+}
+
 SoundClip* SoundClip::clone()
 {
     return new SoundClip(*this);
@@ -94,11 +101,18 @@ void SoundClip::playFromPosition(int frameNumber, int fps)
     }
     qreal msPerFrame = 1000.0 / fps;
     qint64 msIntoSound = qRound(framesIntoSound * msPerFrame);
-
     if (mPlayer)
     {
         mPlayer->setMediaPlayerPosition(msIntoSound);
         mPlayer->play();
+    }
+}
+
+void SoundClip::pause()
+{
+    if (mPlayer)
+    {
+        mPlayer->pause();
     }
 }
 

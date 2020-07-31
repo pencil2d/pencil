@@ -18,16 +18,14 @@ GNU General Public License for more details.
 #ifndef STROKEMANAGER_H
 #define STROKEMANAGER_H
 
+#include <ctime>
 #include <QQueue>
 #include <QPointF>
 #include <QList>
-#include <QPoint>
-#include <time.h>
-#include <QTabletEvent>
 #include <QTimer>
-#include <QTime>
+#include <QElapsedTimer>
 #include "object.h"
-#include "assert.h"
+
 
 class PointerEvent;
 
@@ -46,6 +44,7 @@ public:
     int getStabilizerLevel() { return mStabilizerLevel; }
     bool isTabletInUse() { return mTabletInUse; }
     void setTabletinUse(bool inUse) { mTabletInUse = inUse; }
+    bool isActive() { return mStrokeStarted; }
 
     QList<QPointF> interpolateStroke();
     void interpolatePoll();
@@ -75,7 +74,7 @@ private:
 
     QTimer timer;
 
-    QTime mSingleshotTime;
+    QElapsedTimer mSingleshotTime;
     QPointF mCurrentPressPixel = { 0, 0 };
     QPointF mLastPressPixel2 = { 0, 0 };
     QPointF mLastPressPixel = { 0, 0 };

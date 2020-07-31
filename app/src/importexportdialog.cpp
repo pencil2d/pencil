@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "importexportdialog.h"
 #include "ui_importexportdialog.h"
 #include <QFileInfo>
+#include <QDialogButtonBox>
 
 ImportExportDialog::ImportExportDialog(QWidget* parent, Mode eMode, FileType eFileType) : QDialog(parent)
 {
@@ -26,8 +27,8 @@ ImportExportDialog::ImportExportDialog(QWidget* parent, Mode eMode, FileType eFi
 
     ui = new Ui::ImportExportDialog;
     ui->setupUi(this);
+    hidePreviewGroupBox(true);
     m_fileDialog = new FileDialog(this);
-
     connect(ui->browseButton, &QPushButton::clicked, this, &ImportExportDialog::browse);
 
     Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint;
@@ -38,6 +39,12 @@ ImportExportDialog::~ImportExportDialog()
 {
     delete ui;
 }
+
+QDialogButtonBox* ImportExportDialog::getDialogButtonBox()
+{
+    return ui->buttonBox;
+}
+
 
 QString ImportExportDialog::getFilePath() const
 {
@@ -53,6 +60,16 @@ QString ImportExportDialog::getAbsolutePath()
 {
     QFileInfo info(m_filePaths.first());
     return info.absolutePath();
+}
+
+void ImportExportDialog::hideInstructionsLabel(bool hide)
+{
+    ui->instructionsLabel->setHidden(hide);
+}
+
+void ImportExportDialog::setInstructionsLabel(const QString& text)
+{
+    ui->instructionsLabel->setText(text);
 }
 
 void ImportExportDialog::init()
@@ -76,6 +93,21 @@ void ImportExportDialog::init()
 QGroupBox* ImportExportDialog::getOptionsGroupBox()
 {
     return ui->optionsGroupBox;
+}
+
+void ImportExportDialog::hideOptionsGroupBox(bool hide)
+{
+    ui->optionsGroupBox->setHidden(hide);
+}
+
+void ImportExportDialog::hidePreviewGroupBox(bool hide)
+{
+    ui->previewGroupBox->setHidden(hide);
+}
+
+QGroupBox* ImportExportDialog::getPreviewGroupBox()
+{
+    return ui->previewGroupBox;
 }
 
 void ImportExportDialog::setFileExtension(QString extension)

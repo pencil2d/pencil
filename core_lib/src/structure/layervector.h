@@ -34,13 +34,14 @@ public:
     void loadImageAtFrame(QString strFileName, int);
 
     QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
+    void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
 
-    bool usesColour(int index);
-    void removeColour(int index);
+    bool usesColor(int index);
+    void removeColor(int index);
+    void moveColor(int start, int end);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;

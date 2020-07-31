@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QPainter>
 
 #include "object.h"
 #include "editor.h"
@@ -29,7 +30,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "toolmanager.h"
 
-
+#include <QDebug>
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
     mTimeLine = parent;
@@ -181,6 +182,8 @@ void TimeLineCells::drawContent()
         }
     }
 
+    mCurrentFrame = mEditor->currentFrame();
+
     QPainter painter(mCache);
 
     Object* object = mEditor->object();
@@ -203,6 +206,7 @@ void TimeLineCells::drawContent()
             continue;
         }
         Layer* layeri = object->getLayer(i);
+
         if (layeri != nullptr)
         {
             switch (mType)
@@ -216,7 +220,7 @@ void TimeLineCells::drawContent()
             case TIMELINE_CELL_TYPE::Layers:
                 layeri->paintLabel(painter, this, 0,
                                    getLayerY(i), width() - 1,
-                                   getLayerHeight(), false, mEditor->allLayers());
+                                   getLayerHeight(), false, mEditor->layerVisibility());
                 break;
             }
         }
@@ -234,7 +238,7 @@ void TimeLineCells::drawContent()
         {
             layer->paintLabel(painter, this,
                               0, getLayerY(mEditor->layers()->currentLayerIndex()) + getMouseMoveY(),
-                              width() - 1, getLayerHeight(), true, mEditor->allLayers());
+                              width() - 1, getLayerHeight(), true, mEditor->layerVisibility());
 
             paintLayerGutter(painter);
         }
@@ -261,7 +265,7 @@ void TimeLineCells::drawContent()
                               width() - 1,
                               getLayerHeight(),
                               true,
-                              mEditor->allLayers());
+                              mEditor->layerVisibility());
         }
     }
 
@@ -280,9 +284,9 @@ void TimeLineCells::drawContent()
     {
         // --- draw circle
         painter.setPen(Qt::black);
-        if (mEditor->allLayers() == 0) { painter.setBrush(Qt::NoBrush); }
-        if (mEditor->allLayers() == 1) { painter.setBrush(Qt::darkGray); }
-        if (mEditor->allLayers() == 2) { painter.setBrush(Qt::black); }
+        if (mEditor->layerVisibility() == LayerVisibility::CURRENTONLY) { painter.setBrush(Qt::NoBrush); }
+        else if (mEditor->layerVisibility() == LayerVisibility::RELATED) { painter.setBrush(Qt::darkGray); }
+        else if (mEditor->layerVisibility() == LayerVisibility::ALL) { painter.setBrush(Qt::black); }
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.drawEllipse(6, 4, 9, 9);
         painter.setRenderHint(QPainter::Antialiasing, false);
@@ -360,7 +364,12 @@ void TimeLineCells::paintOnionSkin(QPainter& painter)
 
     if (mEditor->preference()->isOn(SETTING::PREV_ONION) && prevOnionSkinCount > 0)
     {
-        int onionFrameNumber = layer->getPreviousFrameNumber(frameNumber, isAbsolute);
+        int onionFrameNumber = frameNumber;
+        if (isAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber+1, true);
+        }
+        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isAbsolute);
         int onionPosition = 0;
 
         while (onionPosition < prevOnionSkinCount && onionFrameNumber > 0)
@@ -420,8 +429,15 @@ void TimeLineCells::paintEvent(QPaintEvent*)
 
     if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-        if (!isPlaying) {
+        if (!isPlaying)
+        {
             paintOnionSkin(painter);
+        }
+
+        if (mPrevFrame != mEditor->currentFrame()  || mEditor->playback()->isPlaying())
+        {
+            mPrevFrame = mEditor->currentFrame();
+            trackScrubber();
         }
 
         // --- draw the position of the current frame
@@ -498,7 +514,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         {
             if (event->pos().x() < 15)
             {
-                mEditor->toggleShowAllLayers();
+                if (event->button() == Qt::LeftButton) {
+                    mEditor->increaseLayerVisibilityIndex();
+                } else if (event->button() == Qt::RightButton) {
+                    mEditor->decreaseLayerVisibilityIndex();
+                }
             }
         }
         break;
@@ -579,6 +599,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         {
                             mEditor->playback()->stop();
                         }
+                        if (mEditor->playback()->getSoundScrubActive() && mLastScrubFrame != frameNumber)
+                        {
+                            mEditor->playback()->playScrub(frameNumber);
+                            mLastScrubFrame = frameNumber;
+                        }
 
                         mEditor->scrubTo(frameNumber);
 
@@ -613,6 +638,11 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
         {
             if (mTimeLine->scrubbing)
             {
+                if (mEditor->playback()->getSoundScrubActive() && mLastScrubFrame != frameNumber)
+                {
+                    mEditor->playback()->playScrub(frameNumber);
+                    mLastScrubFrame = frameNumber;
+                }
                 mEditor->scrubTo(frameNumber);
             }
             else
@@ -739,6 +769,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
             }
         }
     }
+    QWidget::mouseDoubleClickEvent(event);
 }
 
 void TimeLineCells::hScrollChange(int x)
@@ -759,5 +790,26 @@ void TimeLineCells::setMouseMoveY(int x)
     if (x == 0)
     {
         update();
+    }
+}
+
+void TimeLineCells::trackScrubber()
+{
+    if (mEditor->currentFrame() <= mFrameOffset)
+    {
+        // Move the timeline back if the scrubber is offscreen to the left
+        mFrameOffset = mEditor->currentFrame() - 1;
+        emit offsetChanged(mFrameOffset);
+        mTimeLine->updateContent();
+    }
+    else if (width() < (mEditor->currentFrame() - mFrameOffset + 1) * mFrameSize)
+    {
+        // Move timeline forward if the scrubber is offscreen to the right
+        if (mEditor->playback()->isPlaying())
+            mFrameOffset = mFrameOffset + ((mEditor->currentFrame() - mFrameOffset) / 2);
+        else
+            mFrameOffset = mEditor->currentFrame() - width() / mFrameSize;
+        emit offsetChanged(mFrameOffset);
+        mTimeLine->updateContent();
     }
 }

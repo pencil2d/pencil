@@ -1,9 +1,14 @@
 
-VERSION = 0.6.4
+VERSION = 0.6.5
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
-NIGHTLY {
-    DEFINES += NIGHTLY_BUILD
+PENCIL2D_NIGHTLY {
+    DEFINES += PENCIL2D_NIGHTLY_BUILD
+}
+
+PENCIL2D_RELEASE {
+    DEFINES += QT_NO_DEBUG_OUTPUT
+    DEFINES += PENCIL2D_RELEASE_BUILD
 }
 
 CONFIG += c++11
@@ -13,7 +18,12 @@ win32-g++ {
 }
 
 win32-msvc* {
-    QMAKE_CXXFLAGS += /MP
+    QMAKE_CXXFLAGS += /MP /utf-8 
+    CONFIG(release) {
+        QMAKE_CXXFLAGS += /Gy /GL 
+        CONFIG += ltcg
+        CONFIG += force_debug_info
+    }
 }
 
 macx {

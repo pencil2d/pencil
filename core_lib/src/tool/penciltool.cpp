@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "viewmanager.h"
 #include "preferencemanager.h"
+#include "selectionmanager.h"
 
 #include "editor.h"
 #include "scribblearea.h"
@@ -55,6 +56,8 @@ void PencilTool::loadSettings()
     properties.useFillContour = false;
     //    properties.invisibility = 1;
     //    properties.preserveAlpha = 0;
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
 
 void PencilTool::resetToDefault()
@@ -153,7 +156,7 @@ void PencilTool::pointerPressEvent(PointerEvent*)
     startStroke();
 
     // note: why are we doing this on device press event?
-    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
     {
         mScribbleArea->toggleThinLines();
     }
@@ -182,7 +185,7 @@ void PencilTool::pointerReleaseEvent(PointerEvent*)
     {
         drawStroke();
     }
-    
+
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
         paintBitmapStroke();
@@ -311,9 +314,9 @@ void PencilTool::paintVectorStroke(Layer* layer)
     curve.setFilled(false);
     curve.setInvisibility(true);
     curve.setVariableWidth(false);
-    curve.setColourNumber(mEditor->color()->frontColorNumber());
-    VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-
+    curve.setColorNumber(mEditor->color()->frontColorNumber());
+    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), properties.vectorMergeEnabled);
 
     if (properties.useFillContour)
@@ -322,9 +325,9 @@ void PencilTool::paintVectorStroke(Layer* layer)
                                  mEditor->color()->frontColorNumber());
     }
 
-    if (vectorImage->isAnyCurveSelected() || mScribbleArea->isSomethingSelected())
+    if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected())
     {
-        mScribbleArea->deselectAll();
+        mEditor->deselectAll();
     }
 
     // select last/newest curve

@@ -9,13 +9,13 @@
 QT += core widgets gui xml xmlpatterns multimedia svg
 
 TEMPLATE = lib
-CONFIG += qt staticlib
+CONFIG += qt staticlib precompile_header
 
 RESOURCES += data/core_lib.qrc
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
-
+UI_DIR = .ui
 
 INCLUDEPATH += src \
     src/graphics \
@@ -25,16 +25,17 @@ INCLUDEPATH += src \
     src/structure \
     src/tool \
     src/util \
-    ui \
     src/managers \
     src/external
 
-# Input
+PRECOMPILED_HEADER = src/corelib-pch.h
+
 HEADERS +=  \
+    src/corelib-pch.h \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \
-    src/graphics/vector/colourref.h \
+    src/graphics/vector/colorref.h \
     src/graphics/vector/vectorimage.h \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
@@ -49,6 +50,7 @@ HEADERS +=  \
     src/interface/basedockwidget.h \
     src/interface/backgroundwidget.h \
     src/managers/basemanager.h \
+    src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
     src/managers/toolmanager.h \
@@ -56,6 +58,7 @@ HEADERS +=  \
     src/managers/viewmanager.h \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
+    src/movieimporter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -84,6 +87,8 @@ HEADERS +=  \
     src/util/blitrect.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
+    src/util/filetype.h \
+    src/util/mathutils.h \
     src/util/pencildef.h \
     src/util/pencilerror.h \
     src/util/pencilsettings.h \
@@ -98,13 +103,14 @@ HEADERS +=  \
     src/activeframepool.h \
     src/external/platformhandler.h \
     src/external/macosx/macosxnative.h \
-    src/util/pointerevent.h
+    src/util/pointerevent.h \
+    src/selectionpainter.h
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
-    src/graphics/vector/colourref.cpp \
+    src/graphics/vector/colorref.cpp \
     src/graphics/vector/vectorimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
@@ -118,12 +124,14 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/basedockwidget.cpp \
     src/interface/backgroundwidget.cpp \
     src/managers/basemanager.cpp \
+    src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \
     src/managers/toolmanager.cpp \
     src/managers/preferencemanager.cpp \
     src/managers/playbackmanager.cpp \
     src/managers/viewmanager.cpp \
+    src/movieimporter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \
@@ -153,6 +161,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \
+    src/util/log.cpp \
     src/util/util.cpp \
     src/canvaspainter.cpp \
     src/soundplayer.cpp \
@@ -161,7 +170,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/miniz.cpp \
     src/qminiz.cpp \
     src/activeframepool.cpp \
-    src/util/pointerevent.cpp
+    src/util/pointerevent.cpp \
+    src/selectionpainter.cpp
 
 FORMS += \
     ui/camerapropertiesdialog.ui

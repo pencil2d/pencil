@@ -17,8 +17,8 @@ GNU General Public License for more details.
 
 #include "timecontrols.h"
 
-#include <QtGui>
 #include <QLabel>
+#include <QSettings>
 
 #include "editor.h"
 #include "playbackmanager.h"
@@ -43,7 +43,7 @@ void TimeControls::initUI()
     mFpsBox->setValue(settings.value("fps").toInt());
     mFpsBox->setMinimum(1);
     mFpsBox->setMaximum(90);
-    mFpsBox->setSuffix(" fps");
+    mFpsBox->setSuffix(tr(" fps"));
     mFpsBox->setToolTip(tr("Frames per second"));
     mFpsBox->setFocusPolicy(Qt::WheelFocus);
 
@@ -70,11 +70,16 @@ void TimeControls::initUI()
     mPlayButton = new QPushButton(this);
     mLoopButton = new QPushButton(this);
     mSoundButton = new QPushButton(this);
+    mSoundScrubButton = new QPushButton(this);
     mJumpToEndButton = new QPushButton(this);
     mJumpToStartButton = new QPushButton(this);
 
     mLoopIcon = QIcon(":icons/controls/loop.png");
     mSoundIcon = QIcon(":icons/controls/sound.png");
+    if (mEditor->preference()->isOn(SETTING::SOUND_SCRUB_ACTIVE))
+        mSoundScrubIcon = QIcon(":icons/controls/soundscrub.png");
+    else
+        mSoundScrubIcon = QIcon(":icons/controls/soundscrub-disabled.png");
     mJumpToEndIcon = QIcon(":icons/controls/endplay.png");
     mJumpToStartIcon = QIcon(":icons/controls/startplay.png");
     mStartIcon = QIcon(":icons/controls/play.png");
@@ -82,18 +87,23 @@ void TimeControls::initUI()
     mPlayButton->setIcon(mStartIcon);
     mLoopButton->setIcon(mLoopIcon);
     mSoundButton->setIcon(mSoundIcon);
+    mSoundScrubButton->setIcon(mSoundScrubIcon);
     mJumpToEndButton->setIcon(mJumpToEndIcon);
     mJumpToStartButton->setIcon(mJumpToStartIcon);
 
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));
     mSoundButton->setToolTip(tr("Sound on/off"));
-    mJumpToEndButton->setToolTip(tr("End"));
-    mJumpToStartButton->setToolTip(tr("Start"));
+    mSoundScrubButton->setToolTip(tr("Sound scrub on/off"));
+    mJumpToEndButton->setToolTip(tr("Jump to the End", "Tooltip of the jump to end button"));
+    mJumpToStartButton->setToolTip(tr("Jump to the Start", "Tooltip of the jump to start button"));
 
     mLoopButton->setCheckable(true);
     mSoundButton->setCheckable(true);
     mSoundButton->setChecked(true);
+    mSoundScrubButton->setCheckable(true);
+    mSoundScrubButton->setChecked(mEditor->preference()->isOn(SETTING::SOUND_SCRUB_ACTIVE));
+
 
     addWidget(mJumpToStartButton);
     addWidget(mPlayButton);
@@ -103,6 +113,7 @@ void TimeControls::initUI()
     addWidget(mLoopStartSpinBox);
     addWidget(mLoopEndSpinBox);
     addWidget(mSoundButton);
+    addWidget(mSoundScrubButton);
     addWidget(mFpsBox);
 
     makeConnections();
@@ -116,16 +127,16 @@ void TimeControls::updateUI()
 
     mPlaybackRangeCheckBox->setChecked(playback->isRangedPlaybackOn()); // don't block this signal since it enables start/end range spinboxes.
 
-    SignalBlocker b1(mLoopStartSpinBox);
+    QSignalBlocker b1(mLoopStartSpinBox);
     mLoopStartSpinBox->setValue(playback->markInFrame());
 
-    SignalBlocker b2(mLoopEndSpinBox);
+    QSignalBlocker b2(mLoopEndSpinBox);
     mLoopEndSpinBox->setValue(playback->markOutFrame());
 
-    SignalBlocker b3(mFpsBox);
+    QSignalBlocker b3(mFpsBox);
     mFpsBox->setValue(playback->fps());
 
-    SignalBlocker b4(mLoopButton);
+    QSignalBlocker b4(mLoopButton);
     mLoopButton->setChecked(playback->isLooping());
 }
 
@@ -137,7 +148,7 @@ void TimeControls::setEditor(Editor* editor)
 
 void TimeControls::setFps(int value)
 {
-    SignalBlocker blocker(mFpsBox);
+    QSignalBlocker blocker(mFpsBox);
     mFpsBox->setValue(value);
 }
 
@@ -162,19 +173,21 @@ void TimeControls::makeConnections()
 
     auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartValueChanged);
+    clearFocusOnFinished(mLoopStartSpinBox);
     connect(mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndValueChanged);
+    clearFocusOnFinished(mLoopEndSpinBox);
 
     connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopStartSpinBox, &QSpinBox::setEnabled);
     connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled);
 
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::soundToggled);
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon);
-    auto connection = connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsChanged);
-    if(!connection)
-    {
-        // Use "editingFinished" if the "spinBoxValueChanged" signal doesn't work...
-        connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
-    }
+
+    connect(mSoundScrubButton, &QPushButton::clicked, this, &TimeControls::soundScrubToggled);
+    connect(mSoundScrubButton, &QPushButton::clicked, this, &TimeControls::updateSoundScrubIcon);
+
+    connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsChanged);
+    connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
 }
 
 void TimeControls::playButtonClicked()
@@ -192,7 +205,7 @@ void TimeControls::updatePlayState()
     else
     {
         mPlayButton->setIcon(mStartIcon);
-        mPlayButton->setToolTip(tr("Start"));
+        mPlayButton->setToolTip(tr("Play"));
     }
 }
 
@@ -262,8 +275,25 @@ void TimeControls::updateSoundIcon(bool soundEnabled)
     }
 }
 
+void TimeControls::updateSoundScrubIcon(bool soundScrubEnabled)
+{
+    if (soundScrubEnabled)
+    {
+        mSoundScrubButton->setIcon(QIcon(":icons/controls/soundscrub.png"));
+        mEditor->playback()->setSoundScrubActive(true);
+        mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, true);
+    }
+    else
+    {
+        mSoundScrubButton->setIcon(QIcon(":icons/controls/soundscrub-disabled.png"));
+        mEditor->playback()->setSoundScrubActive(false);
+        mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, false);
+    }
+}
+
 void TimeControls::onFpsEditingFinished()
 {
+    mFpsBox->clearFocus();
     emit fpsChanged(mFpsBox->value());
 }
 

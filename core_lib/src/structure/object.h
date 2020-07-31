@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include <QList>
 #include <QColor>
 #include "layer.h"
-#include "colourref.h"
+#include "colorref.h"
 #include "pencilerror.h"
 #include "pencildef.h"
 #include "objectdata.h"
@@ -83,20 +83,23 @@ public:
     QString copyFileToDataFolder(QString strFilePath);
 
     // Color palette
-    ColourRef getColour(int index) const;
-    void setColour(int index, QColor newColour);
-    void setColourRef(int index, ColourRef newColourRef);
-    void addColour(QColor);
+    ColorRef getColor(int index) const;
+    void setColor(int index, QColor newColor);
+    void setColorRef(int index, ColorRef newColorRef);
+    void addColor(QColor);
+    void movePaletteColor(int start, int end);
+    void moveVectorColor(int start, int end);
 
-    void addColour(ColourRef newColour) { mPalette.append(newColour); }
-    void addColourAtIndex(int index, ColourRef newColour);
-    void removeColour(int index);
-    bool isColourInUse(int index);
-    void renameColour(int i, QString text);
-    int getColourCount() { return mPalette.size(); }
+    void addColor(ColorRef newColor) { mPalette.append(newColor); }
+    void addColorAtIndex(int index, ColorRef newColor);
+    void removeColor(int index);
+    bool isColorInUse(int index);
+    void renameColor(int i, QString text);
+    int getColorCount() { return mPalette.size(); }
     bool importPalette(QString filePath);
     void importPaletteGPL(QFile& file);
     void importPalettePencil(QFile& file);
+    void openPalette(QString filePath);
 
     bool exportPalette(QString filePath);
     void exportPaletteGPL(QFile& file);
@@ -117,6 +120,7 @@ public:
     bool swapLayers(int i, int j);
     void deleteLayer(int i);
     void deleteLayer(Layer*);
+    void addLayer(Layer* layer);
 
     template<typename T>
     std::vector<T*> getLayersByType() const
@@ -152,6 +156,7 @@ public:
 
 signals:
     void layerViewChanged();
+    void paletteImported();
 
 private:
     int getMaxLayerID();
@@ -164,7 +169,7 @@ private:
     QList<Layer*> mLayers;
     bool modified = false;
 
-    QList<ColourRef> mPalette;
+    QList<ColorRef> mPalette;
 
     std::unique_ptr<ObjectData> mData;
     mutable std::unique_ptr<ActiveFramePool> mActiveFramePool;

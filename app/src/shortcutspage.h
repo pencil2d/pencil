@@ -41,10 +41,13 @@ public:
     explicit ShortcutsPage(QWidget* parent = nullptr);
 
     void setManager( PreferenceManager* p ) { mManager = p; }
+    ~ShortcutsPage() override;
 
 private slots:
     void tableItemClicked(const QModelIndex&);
     void keyCapLineEditTextChanged();
+    void saveShortcutsButtonClicked();
+    void loadShortcutsButtonClicked();
     void restoreShortcutsButtonClicked();
     void clearButtonClicked();
 
@@ -55,7 +58,7 @@ private:
 
     QStandardItemModel* m_treeModel = nullptr;
     QModelIndex m_currentItemIndex;
-    
+
     Ui::ShortcutsPage* ui = nullptr;
 
     PreferenceManager* mManager = nullptr;

@@ -57,16 +57,19 @@ DebugDetails& DebugDetails::operator<<(const QString& s)
 
 void DebugDetails::appendSystemInfo()
 {
-    if (mDetails.last() == "end")
+    if (mDetails.empty() || mDetails.last() == "end")
         return;
 
 #if QT_VERSION >= 0x050400
     mDetails << "System Info";
-#if !defined(PENCIL2D_RELEASE)
-    mDetails << "Pencil version: " APP_VERSION " (dev)";
-#else
+#if defined(PENCIL2D_RELEASE_BUILD)
     mDetails << "Pencil version: " APP_VERSION " (stable)";
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+    mDetails << "Pencil version: " APP_VERSION " (nightly)";
+#else
+    mDetails << "Pencil version: " APP_VERSION " (dev)";
 #endif
+
 #if defined(GIT_EXISTS)
     mDetails << "Commit: " S__GIT_COMMIT_HASH;
 #endif
@@ -114,4 +117,9 @@ QString Status::msg()
 bool Status::operator==(Status::ErrorCode code) const
 {
     return (mCode == code);
+}
+
+bool Status::operator!=(Status::ErrorCode code) const
+{
+    return (mCode != code);
 }

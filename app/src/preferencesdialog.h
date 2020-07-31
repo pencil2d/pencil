@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define _PREFERENCES_H_
 
 #include <QDialog>
+#include <QDir>
 
 #include "pencildef.h"
 #include "scribblearea.h"
@@ -25,6 +26,7 @@ GNU General Public License for more details.
 
 class QListWidgetItem;
 class PreferenceManager;
+class QSettings;
 
 namespace Ui {
 class PreferencesDialog;
@@ -50,6 +52,8 @@ public slots:
 
 Q_SIGNALS:
     void windowOpacityChange(int);
+    void soundScrubChanged(bool b);
+    void soundScrubMsecChanged(int mSec);
     void curveOpacityChange(int);
     void clearRecentList();
     void updateRecentFileListBtn();
@@ -76,6 +80,11 @@ public slots:
     void updateValues();
     void gridWidthChanged(int value);
     void gridHeightChanged(int value);
+    void actionSafeCheckBoxStateChanged(int b);
+    void actionSafeAreaChanged(int value);
+    void titleSafeCheckBoxStateChanged(int b);
+    void titleSafeAreaChanged(int value);
+    void SafeAreaHelperTextCheckBoxStateChanged(int b);
 
 signals:
     void windowOpacityChange(int value);
@@ -93,6 +102,9 @@ private slots:
     void frameCacheNumberChanged(int value);
 
 private:
+
+    void updateSafeHelperTextEnabledState();
+
     Ui::GeneralPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
 };
@@ -112,7 +124,6 @@ public slots:
     void timelineLengthChanged(int);
     void fontSizeChanged(int);
     void scrubChanged(int);
-    void playbackStateChanged(int);
     void drawEmptyKeyRadioButtonToggled(bool);
     void flipRollMsecSliderChanged(int value);
     void flipRollMsecSpinboxChanged(int value);
@@ -120,6 +131,15 @@ public slots:
     void flipRollNumDrawingdSpinboxChanged(int value);
     void flipInbetweenMsecSliderChanged(int value);
     void flipInbetweenMsecSpinboxChanged(int value);
+    void soundScrubActiveChanged(int i);
+    void soundScrubMsecSliderChanged(int value);
+    void soundScrubMsecSpinboxChanged(int value);
+    void layerVisibilityChanged(int);
+    void layerVisibilityThresholdChanged(int);
+
+signals:
+    void soundScrubChanged(bool b);
+    void soundScrubMsecChanged(int mSec);
 
 private:
     Ui::TimelinePage* ui = nullptr;
@@ -136,7 +156,14 @@ public:
     void setManager(PreferenceManager* p) { mManager = p; }
 
 public slots:
+    void initPreset();
+    void addPreset();
+    void removePreset();
+    void setDefaultPreset();
+    void presetNameChanged(QListWidgetItem* item);
+
     void updateValues();
+    void askForPresetChange(int b);
     void autosaveChange(int b);
     void autosaveNumberChange(int number);
 
@@ -146,6 +173,9 @@ Q_SIGNALS:
 private:
     Ui::FilesPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
+    QSettings* mPresetSettings = nullptr;
+    QDir mPresetDir;
+    int mMaxPresetIndex = 0;
 };
 
 
@@ -159,11 +189,9 @@ public:
 
 public slots:
     void updateValues();
-    void onionMaxOpacityChange(int);
-    void onionMinOpacityChange(int);
-    void onionPrevFramesNumChange(int);
-    void onionNextFramesNumChange(int);
     void quickSizingChange(int);
+    void setRotationIncrement(int);
+    void rotationIncrementChange(int);
 private:
     Ui::ToolsPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
