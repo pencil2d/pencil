@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
-trap 'echo -e "\033[1m\033[31m==> ERROR:\033[0m \033[1mCommand failed\033[0m" >&2' ERR
+trap 'echo "::error::Command failed"' ERR
 set -eE
 
-msg() {
-  echo -e "\033[1m\033[32m==>\033[0m \033[1m$1\033[0m"
-}
-
-package_linux() {
+create_package_linux() {
+  echo "::group::Set up AppImage contents"
   make install INSTALL_ROOT="${PWD}/Pencil2D"
+  echo "::endgroup::"
 
-  msg "Creating AppImage..."
+  echo "::group::Create AppImage"
   # "Downgrade" the desktop entry to version 1.0
   sed -i "/^Keywords\(\[[a-zA-Z_.@]\+\]\)\?=/d;/^Version=/cVersion=1.0" \
     Pencil2D/usr/share/applications/org.pencil2d.Pencil2D.desktop
@@ -33,86 +31,69 @@ package_linux() {
     -executable=Pencil2D/usr/plugins/ffmpeg \
     ${gst_executables} \
     -appimage
-  mv Pencil2D*.AppImage* "pencil2d-linux-$(date +%F).AppImage"
-  msg "AppImage created"
+  mv Pencil2D*.AppImage* "pencil2d-linux-$1-$(date +%F).AppImage"
+  echo "::set-output name=package-name::pencil2d-linux-$1-$(date +%F).AppImage"
+  echo "::endgroup::"
 }
 
-package_osx() {
-  msg "Cleaning..."
+create_package_macos() {
+  echo "::group::Clean"
   make clean
   mv bin Pencil2D
   pushd Pencil2D >/dev/null
+  echo "::endgroup::"
 
-  msg "Copying FFmpeg plugin..."
+  echo "::group::Copy FFmpeg plugin"
   mkdir Pencil2D.app/Contents/MacOS/plugins
   curl -fsSLo ffmpeg.7z https://evermeet.cx/ffmpeg/getrelease/7z
   curl -fsSLo ffmpeg.7z.sig https://evermeet.cx/ffmpeg/getrelease/7z/sig
+  mkdir -m700 ~/.gnupg
   echo "trusted-key 0x476C4B611A660874" > ~/.gnupg/gpg.conf
   curl -fsSL https://evermeet.cx/ffmpeg/0x1A660874.asc | gpg --import
   gpg --verify ffmpeg.7z.sig ffmpeg.7z
   bsdtar xfC ffmpeg.7z Pencil2D.app/Contents/MacOS/plugins
   rm ffmpeg.7z ffmpeg.7z.sig
+  echo "::endgroup::"
 
-  msg "Copying required Qt frameworks..."
+  echo "Deploy Qt libraries"
   macdeployqt Pencil2D.app
-  msg "Applying macdeployqt fix..."
+  echo "::group::Apply macdeployqt fix"
   curl -fsSLO https://github.com/aurelien-rainone/macdeployqtfix/archive/master.zip
   bsdtar xf master.zip
-  python "${TRAVIS_BUILD_DIR}/build/Pencil2D/macdeployqtfix-master/macdeployqtfix.py" \
-    "${TRAVIS_BUILD_DIR}/build/Pencil2D/Pencil2D.app/Contents/MacOS/Pencil2D" \
+  python macdeployqtfix-master/macdeployqtfix.py \
+    Pencil2D.app/Contents/MacOS/Pencil2D \
     /usr/local/Cellar/qt/5.9.1/
-  msg "Removing files..."
+  echo "::endgroup::"
+  echo "Remove files"
   rm -rf macdeployqtfix-master master.zip
   popd >/dev/null
-  msg "Zipping..."
-  bsdtar caf "pencil2d-mac-$(date +%F).zip" Pencil2D
-  msg "Zipping done"
+  echo "Create ZIP"
+  bsdtar caf "pencil2d-mac-$1-$(date +%F).zip" Pencil2D
+  echo "::set-output name=package-name::pencil2d-mac-$1-$(date +%F).zip"
 }
 
-upload_default() {
-  cd "${TRAVIS_BUILD_DIR}/util"
+create_package_windows() {
+  echo "Copy FFmpeg plugin"
+  local platform="${INPUT_ARCH%%_*}"
+  local ffmpeg="ffmpeg-${platform}.zip"
+  curl -fsSLO "https://github.com/pencil2d/pencil2d-deps/releases/download/ffmpge-v4.1.1/$ffmpeg"
+  "${WINDIR}\\System32\\tar" xf "${ffmpeg}"
+  mkdir bin/plugins
+  mv "ffmpeg.exe" bin/plugins/
+  rm -rf "${ffmpeg}"
 
-  msg "Starting upload to Google Drive..."
-  case "${TRAVIS_OS_NAME}" in
-    linux)
-      python3 nightly-build-upload.py "${LINUX_NIGHTLY_PARENT}" \
-        "${TRAVIS_BUILD_DIR}/build/pencil2d-linux-$(date +%F).AppImage"
-      ;;
-    osx)
-      python3 nightly-build-upload.py "${OSX_NIGHTLY_PARENT}" \
-        "${TRAVIS_BUILD_DIR}/build/pencil2d-mac-$(date +%F).zip"
-      ;;
-  esac
-  msg "Upload complete"
+  mv bin Pencil2D
+  echo "Remove files"
+  find \( -name '*.pdb' -o -name '*.ilk' \) -delete
+  echo "::group::Deploy Qt libraries"
+  windeployqt Pencil2D/pencil2d.exe
+  echo "::endgroup::"
+  echo "Copy OpenSSL DLLs"
+  local xbits="-x${platform#win}"
+  cp "C:\\Program Files\\OpenSSL\\lib"{ssl,crypto}"-1_1${xbits/-x32/}.dll" Pencil2D/
+  echo "Create ZIP"
+  "${WINDIR}\\System32\\tar" caf "pencil2d-${platform}-$1-$(date +%F).zip" Pencil2D
+  echo "::set-output name=package-name::pencil2d-${platform}-$1-$(date +%F).zip"
 }
 
-upload_pr() {
-  cd "${TRAVIS_BUILD_DIR}/util"
-
-  msg "Starting upload to Google Drive..."
-  case "${TRAVIS_OS_NAME}" in
-    linux)
-      mv "${TRAVIS_BUILD_DIR}/build/pencil2d-linux-$(date +%F).AppImage" \
-        "${TRAVIS_BUILD_DIR}/build/pencil2d-linux-pr-${TRAVIS_PULL_REQUEST}.AppImage"
-      python3 pr-build-upload.py "${LINUX_PR_PARENT}" \
-        "${TRAVIS_BUILD_DIR}/build/pencil2d-linux-pr-${TRAVIS_PULL_REQUEST}.AppImage"
-      ;;
-    osx)
-      mv "${TRAVIS_BUILD_DIR}/build/pencil2d-mac-$(date +%F).zip" \
-        "${TRAVIS_BUILD_DIR}/build/pencil2d-mac-pr-${TRAVIS_PULL_REQUEST}.zip"
-      python3 pr-build-upload.py "${OSX_PR_PARENT}" \
-        "${TRAVIS_BUILD_DIR}/build/pencil2d-mac-pr-${TRAVIS_PULL_REQUEST}.zip"
-      ;;
-  esac
-  msg "Upload complete"
-}
-
-"package_${TRAVIS_OS_NAME}"
-
-if [ "${TRAVIS_BRANCH}" = "master" ] || [ "${TRAVIS_BRANCH}" = "release" ] || [ "${FORCE_NIGHTLY_UPLOAD}" = "yes" ]; then
-  upload_default
-fi
-
-if [ "${TRAVIS_PULL_REQUEST_SLUG}" = "pencil2d/pencil" ]; then
-  upload_pr
-fi
+"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}"
