@@ -92,7 +92,7 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 }
 
 // Max frames that can be imported and loaded onto the timeline
-constexpr int MaxFramesBound = 9999;
+const static int MaxFramesBound = 9999;
 
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
