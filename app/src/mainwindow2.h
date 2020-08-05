@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -19,9 +19,6 @@ GNU General Public License for more details.
 #define MAINWINDOW2_H
 
 #include <QMainWindow>
-#include "preferencemanager.h"
-#include "pegbaralignmentdialog.h"
-
 
 template<typename T> class QList;
 class QActionGroup;
@@ -44,7 +41,8 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
-
+class PegBarAlignmentDialog;
+enum class SETTING;
 
 
 namespace Ui
@@ -148,7 +146,7 @@ private:
     void makeConnections(Editor*, ToolOptionWidget*);
     void makeConnections(Editor*, OnionSkinWidget*);
 
-    void bindActionWithSetting(QAction*, SETTING);
+    void bindActionWithSetting(QAction*, const SETTING&);
 
     // UI: Dock widgets
     ColorBox*             mColorBox = nullptr;
