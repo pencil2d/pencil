@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -275,7 +275,7 @@ void ViewManager::scale25()
     scale(0.25);
 }
 
-void ViewManager::scale(qreal scaleValue, QPointF offset)
+void ViewManager::scale(qreal scaleValue)
 {
     if (scaleValue < mMinScale)
     {
@@ -288,7 +288,27 @@ void ViewManager::scale(qreal scaleValue, QPointF offset)
 
     if (mCurrentCamera)
     {
-        mCurrentCamera->scale(scaleValue, offset);
+        mCurrentCamera->scale(scaleValue);
+        updateViewTransforms();
+
+        Q_EMIT viewChanged();
+    }
+}
+
+void ViewManager::scaleWithOffset(qreal scaleValue, QPointF offset)
+{
+    if (scaleValue < mMinScale)
+    {
+        scaleValue = mMinScale;
+    }
+    else if (scaleValue > mMaxScale)
+    {
+        scaleValue = mMaxScale;
+    }
+
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->scaleWithOffset(scaleValue, offset);
         updateViewTransforms();
 
         Q_EMIT viewChanged();
