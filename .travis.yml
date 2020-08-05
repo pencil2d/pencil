@@ -55,8 +55,6 @@ addons:
     - gpg
 
 before_install:
-  - echo "Any source code changed?"
-  - test "${FORCE_NIGHTLY_UPLOAD}" = "yes" || test "$TRAVIS_BRANCH" = "release" || bash $TRAVIS_BUILD_DIR/util/checkchanges.sh || travis_terminate 0;
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
         brew link qt --force;
