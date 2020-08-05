@@ -398,26 +398,24 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
-    //qDebug() <<"angle"<<angle<<"pixels"<<pixels;
+    const QPointF offset = mEditor->view()->mapScreenToCanvas(event->posF());
 
+    const qreal currentScale = mEditor->view()->scaling();
     if (!pixels.isNull())
     {
-        float delta = pixels.y();
-        float currentScale = mEditor->view()->scaling();
-        float newScale = currentScale * (1.f + (delta * 0.01f));
-        mEditor->view()->scale(newScale);
+        // XXX: This pixel-based zooming algorithm currently has some shortcomings compared to the angle-based one:
+        //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
+        //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
+        const int delta = pixels.y();
+        const qreal newScale = currentScale * (1 + (delta * 0.01));
+        mEditor->view()->scaleWithOffset(newScale, offset);
     }
     else if (!angle.isNull())
     {
-        float delta = angle.y();
-        if (delta < 0)
-        {
-            mEditor->view()->scaleDown();
-        }
-        else
-        {
-            mEditor->view()->scaleUp();
-        }
+        const int delta = angle.y();
+        // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
+        const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
+        mEditor->view()->scaleWithOffset(newScale, offset);
     }
     updateCanvasCursor();
     event->accept();
@@ -516,6 +514,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
     if (event->buttons() & (Qt::MidButton | Qt::RightButton))
     {
         setTemporaryTool(HAND);
+        getTool(HAND)->pointerPressEvent(event);
     }
 
     const bool isPressed = event->buttons() & Qt::LeftButton;

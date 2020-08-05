@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2012-2018 Matthew Chiawen Chang
@@ -122,6 +122,15 @@ void Camera::rotate(qreal degree)
 
 void Camera::scale(qreal scaleValue)
 {
+    mScale = scaleValue;
+
+    mNeedUpdateView = true;
+    modification();
+}
+
+void Camera::scaleWithOffset(qreal scaleValue, QPointF offset)
+{
+    mTranslate = (mTranslate + offset) * mScale / scaleValue - offset;
     mScale = scaleValue;
 
     mNeedUpdateView = true;

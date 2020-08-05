@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -22,15 +22,15 @@ GNU General Public License for more details.
 #include "camera.h"
 #include "layercamera.h"
 
-const static float mMinScale = 0.01f;
-const static float mMaxScale = 100.0f;
+const static qreal mMinScale = 0.01;
+const static qreal mMaxScale = 100.0;
 
-const std::vector<float> gZoomLevels
+const std::vector<qreal> gZoomLevels
 {
-    0.01f, 0.02f, 0.04f, 0.06f, 0.08f, 0.12f,
-    0.16f, 0.25f, 0.33f, 0.5f, 0.75f, 1.0f,
-    1.5f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f,
-    8.0f, 16.0f, 32.f, 48.f, 64.f, 96.0f
+    0.01, 0.02, 0.04, 0.06, 0.08, 0.12,
+    0.16, 0.25, 0.33, 0.5, 0.75, 1.0,
+    1.5, 2.0, 3.0, 4.0, 5.0, 6.0,
+    8.0, 16.0, 32.0, 48.0, 64.0, 96.0
 };
 
 
@@ -203,13 +203,13 @@ void ViewManager::rotate(float degree)
     }
 }
 
-float ViewManager::scaling()
+qreal ViewManager::scaling()
 {
     if (mCurrentCamera)
     {
-        return static_cast<float>(mCurrentCamera->scaling());
+        return mCurrentCamera->scaling();
     }
-    return 0.0f;
+    return 0.0;
 }
 
 void ViewManager::scaleUp()
@@ -224,7 +224,7 @@ void ViewManager::scaleUp()
     }
 
     // out of pre-defined zoom levels
-    scale(scaling() * 1.18f);
+    scale(scaling() * 1.18);
 }
 
 void ViewManager::scaleDown()
@@ -237,45 +237,45 @@ void ViewManager::scaleDown()
             return;
         }
     }
-    scale(scaling() * 0.8333f);
+    scale(scaling() * 0.8333);
 }
 
 void ViewManager::scale100()
 {
-    scale(1.0f);
+    scale(1.0);
 }
 
 void ViewManager::scale400()
 {
-    scale(4.0f);
+    scale(4.0);
 }
 
 void ViewManager::scale300()
 {
-    scale(3.0f);
+    scale(3.0);
 }
 
 void ViewManager::scale200()
 {
-    scale(2.0f);
+    scale(2.0);
 }
 
 void ViewManager::scale50()
 {
-    scale(0.5f);
+    scale(0.5);
 }
 
 void ViewManager::scale33()
 {
-    scale(0.33f);
+    scale(0.33);
 }
 
 void ViewManager::scale25()
 {
-    scale(0.25f);
+    scale(0.25);
 }
 
-void ViewManager::scale(float scaleValue)
+void ViewManager::scale(qreal scaleValue)
 {
     if (scaleValue < mMinScale)
     {
@@ -288,7 +288,27 @@ void ViewManager::scale(float scaleValue)
 
     if (mCurrentCamera)
     {
-        mCurrentCamera->scale(static_cast<qreal>(scaleValue));
+        mCurrentCamera->scale(scaleValue);
+        updateViewTransforms();
+
+        Q_EMIT viewChanged();
+    }
+}
+
+void ViewManager::scaleWithOffset(qreal scaleValue, QPointF offset)
+{
+    if (scaleValue < mMinScale)
+    {
+        scaleValue = mMinScale;
+    }
+    else if (scaleValue > mMaxScale)
+    {
+        scaleValue = mMaxScale;
+    }
+
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->scaleWithOffset(scaleValue, offset);
         updateViewTransforms();
 
         Q_EMIT viewChanged();
