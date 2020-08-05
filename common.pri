@@ -27,8 +27,8 @@ win32-msvc* {
 }
 
 macx {
-   QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
-   LIBS += -lobjc -framework Carbon
+    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
+    LIBS += -lobjc -framework Carbon -framework AppKit
 }
 
 unix:!macx {

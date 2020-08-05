@@ -185,7 +185,6 @@ win32 {
 
 macx {
     INCLUDEPATH += src/external/macosx
-    LIBS += -framework AppKit
     SOURCES += src/external/macosx/macosx.cpp
     OBJECTIVE_SOURCES += src/external/macosx/macosxnative.mm
 }
