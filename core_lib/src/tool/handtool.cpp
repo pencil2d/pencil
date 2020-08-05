@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -117,6 +117,6 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
     {
         float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
         qreal scaleValue = viewMgr->scaling() * (1 + delta);
-        viewMgr->scale(scaleValue, mStartPoint);
+        viewMgr->scaleWithOffset(scaleValue, mStartPoint);
     }
 }

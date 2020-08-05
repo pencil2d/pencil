@@ -408,14 +408,14 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
         const int delta = pixels.y();
         const qreal newScale = currentScale * (1 + (delta * 0.01));
-        mEditor->view()->scale(newScale, offset);
+        mEditor->view()->scaleWithOffset(newScale, offset);
     }
     else if (!angle.isNull())
     {
         const int delta = angle.y();
         // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
         const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
-        mEditor->view()->scale(newScale, offset);
+        mEditor->view()->scaleWithOffset(newScale, offset);
     }
     updateCanvasCursor();
     event->accept();

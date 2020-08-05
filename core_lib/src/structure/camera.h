@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2012-2018 Matthew Chiawen Chang
@@ -43,7 +43,8 @@ public:
     void rotate(qreal degree);
     qreal rotation() { return mRotate; }
 
-    void scale(qreal scaleValue, QPointF offset = {0, 0});
+    void scale(qreal scaleValue);
+    void scaleWithOffset(qreal scaleValue, QPointF offset); // for zooming at the mouse position
     qreal scaling() { return mScale; }
 
     QTransform view;

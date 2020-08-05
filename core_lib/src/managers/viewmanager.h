@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -63,7 +63,8 @@ public:
     void rotate(float degree);
 
     qreal scaling();
-    void scale(qreal scaleValue, QPointF offset = {0, 0});
+    void scale(qreal scaleValue);
+    void scaleWithOffset(qreal scaleValue, QPointF offset);
     void scaleUp();
     void scaleDown();
     void scale400();
