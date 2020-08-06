@@ -78,7 +78,7 @@ void CheckUpdatesDialog::startChecking()
 void CheckUpdatesDialog::regularBuildCheck()
 {
     mNetworkManager = new QNetworkAccessManager(this);
-    QUrl url("http://github.com/pencil2d/pencil/releases.atom");
+    QUrl url("https://github.com/pencil2d/pencil/releases.atom");
 
     QNetworkRequest req;
     req.setUrl(url);
