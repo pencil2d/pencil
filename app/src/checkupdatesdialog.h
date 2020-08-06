@@ -1,4 +1,4 @@
-#ifndef CHECKUPDATESDIALOG_H
+﻿#ifndef CHECKUPDATESDIALOG_H
 #define CHECKUPDATESDIALOG_H
 
 #include <QDialog>
@@ -24,6 +24,8 @@ private:
     void regularBuildCheck();
     void nightlyBuildCheck();
     void networkErrorHappened();
+    void networkResponseIsEmpty();
+    void invalidReleaseXml();
 
     void networkRequestFinished(QNetworkReply* reply);
     bool compareVersion(QString currentVersion, QString latestVersion);
