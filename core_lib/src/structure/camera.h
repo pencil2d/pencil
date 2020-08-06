@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2012-2018 Matthew Chiawen Chang

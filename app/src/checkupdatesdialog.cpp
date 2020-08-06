@@ -1,4 +1,4 @@
-﻿#include "checkupdatesdialog.h"
+#include "checkupdatesdialog.h"
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QHBoxLayout>

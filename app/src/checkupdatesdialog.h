@@ -1,4 +1,4 @@
-﻿#ifndef CHECKUPDATESDIALOG_H
+#ifndef CHECKUPDATESDIALOG_H
 #define CHECKUPDATESDIALOG_H
 
 #include <QDialog>

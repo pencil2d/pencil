@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
