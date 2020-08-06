@@ -1,4 +1,4 @@
-#include "checkupdatesdialog.h"
+﻿#include "checkupdatesdialog.h"
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QHBoxLayout>
@@ -108,6 +108,24 @@ void CheckUpdatesDialog::networkErrorHappened()
     mDownloadButton->setEnabled(false);
 }
 
+void CheckUpdatesDialog::networkResponseIsEmpty()
+{
+    mTitleLabel->setText(tr("<b>An error occurred while checking for updates</b>", "error msg of check-for-update"));
+    mDetailLabel->setText(tr("Network response is empty", "error msg of check-for-update"));
+    mProgressBar->setRange(0, 1);
+    mProgressBar->setValue(1);
+    mDownloadButton->setEnabled(false);
+}
+
+void CheckUpdatesDialog::invalidReleaseXml()
+{
+    mTitleLabel->setText(tr("<b>An error occurred while checking for updates</b>", "error msg of check-for-update"));
+    mDetailLabel->setText(tr("Couldn't retrieve the version information", "error msg of check-for-update"));
+    mProgressBar->setRange(0, 1);
+    mProgressBar->setValue(1);
+    mDownloadButton->setEnabled(false);
+}
+
 void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
@@ -122,9 +140,18 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
     }
 
     auto releasesAtom = QString::fromUtf8(reply->readAll()).trimmed();
-    //qDebug() << releasesAtom;
+    if (releasesAtom.isEmpty())
+    {
+        networkResponseIsEmpty();
+        return;
+    }
 
     QString latestVersionString = getVersionNumberFromXml(releasesAtom);
+    if (latestVersionString == "0.0.1")
+    {
+        invalidReleaseXml();
+        return;
+    }
 
     bool isNewVersionAvailable = compareVersion(APP_VERSION, latestVersionString);
     if (isNewVersionAvailable)
@@ -153,7 +180,7 @@ bool CheckUpdatesDialog::compareVersion(QString currentVersion, QString latestVe
 
 QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
 {
-    // XML source: http://github.com/pencil2d/pencil/releases.atom
+    // XML source: https://github.com/pencil2d/pencil/releases.atom
 
     QXmlStreamReader xmlReader(xml);
 
