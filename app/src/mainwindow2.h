@@ -96,7 +96,7 @@ public:
     void setSoundScrubMsec(int msec);
     void setOpacity(int opacity);
     void preferences();
- 
+
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
@@ -111,6 +111,7 @@ Q_SIGNALS:
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void resetAndDockAllSubWidgets();
@@ -150,6 +151,8 @@ private:
 
     void bindActionWithSetting(QAction*, const SETTING&);
 
+    void tryRecoverUnsavedProject();
+
     // UI: Dock widgets
     ColorBox*             mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
@@ -181,7 +184,7 @@ private:
 
     // whether we are currently importing an image sequence.
     bool mIsImportingImageSequence = false;
-    
+
     Ui::MainWindow2* ui = nullptr;
 };
 

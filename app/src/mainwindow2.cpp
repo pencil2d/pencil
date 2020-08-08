@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -515,6 +515,16 @@ void MainWindow2::closeEvent(QCloseEvent* event)
     else
     {
         event->ignore();
+    }
+}
+
+void MainWindow2::showEvent(QShowEvent*)
+{
+    static bool firstShowEvent = true;
+    if (firstShowEvent)
+    {
+        firstShowEvent = false;
+        tryRecoverUnsavedProject();
     }
 }
 
@@ -1524,4 +1534,42 @@ void MainWindow2::displayMessageBox(const QString& title, const QString& body)
 void MainWindow2::displayMessageBoxNoTitle(const QString& body)
 {
     QMessageBox::information(this, nullptr, tr(qPrintable(body)), QMessageBox::Ok);
+}
+
+void MainWindow2::tryRecoverUnsavedProject()
+{
+    FileManager fm;
+    QStringList recoverables = fm.searchForUnsavedProjects();
+
+    if (recoverables.size() == 0)
+    {
+        return;
+    }
+
+    QString caption = tr("Restore Project?");
+    QString text = tr("Pencil2D didn't close correctly. Would you like to restore the project?");
+
+    QString recoverPath = recoverables[0];
+
+    QMessageBox* msgBox = new QMessageBox(this);
+    msgBox->setWindowTitle(tr("Restore project"));
+    msgBox->setWindowModality(Qt::ApplicationModal);
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setIconPixmap(QPixmap(":/icons/logo.png"));
+    msgBox->setText(QString("<h4>%1</h4>%2").arg(caption).arg(text));
+    msgBox->setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
+    msgBox->setStandardButtons(QMessageBox::Open | QMessageBox::Discard);
+    hideQuestionMark(*msgBox);
+
+    connect(msgBox, &QMessageBox::finished, [recoverPath, this](int result)
+    {
+        if (QMessageBox::Open == result)
+        {
+            FileManager fm;
+            Object* o = fm.recoverUnsavedProject(recoverPath);
+            mEditor->setObject(o);
+            updateSaveState();
+        }
+    });
+    msgBox->open();
 }

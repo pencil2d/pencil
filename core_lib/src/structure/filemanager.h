@@ -45,6 +45,9 @@ public:
     Status error() const { return mError; }
     Status verifyObject(Object* obj);
 
+    QStringList searchForUnsavedProjects();
+    Object* recoverUnsavedProject(QString projectIntermediatePath);
+
 Q_SIGNALS:
     void progressChanged(int progress);
     void progressRangeChanged(int maxValue);
@@ -67,6 +70,10 @@ private:
     void deleteBackupFile(const QString& fileName);
 
     void progressForward();
+
+private: // Project recovery
+    Status recoverObject(Object* object);
+    bool isProjectRecoverable(const QString& projectFolder);
 
 private:
     Status mError = Status::OK;

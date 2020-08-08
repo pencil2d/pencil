@@ -630,3 +630,95 @@ Status FileManager::verifyObject(Object* obj)
     }
     return Status::OK;
 }
+
+QStringList FileManager::searchForUnsavedProjects()
+{
+    QDir pencil2DTempDir = QDir::temp();
+    bool folderExists = pencil2DTempDir.cd("Pencil2D");
+    if (!folderExists)
+    {
+        return QStringList();
+    }
+
+    const QStringList nameFilter("*_" PFF_TMP_DECOMPRESS_EXT "_*"); // match name pattern like "Default_Y2xD_0a4e44e9"
+    QStringList entries = pencil2DTempDir.entryList(nameFilter, QDir::Dirs | QDir::Readable);
+
+    QStringList recoverables;
+    for (const QString path : entries)
+    {
+        QString fullPath = pencil2DTempDir.filePath(path);
+        if (isProjectRecoverable(fullPath))
+        {
+            qDebug() << "Found debris at" << fullPath;
+            recoverables.append(fullPath);
+        }
+    }
+    return recoverables;
+}
+
+bool FileManager::isProjectRecoverable(const QString& projectFolder)
+{
+    QDir dir(projectFolder);
+    if (!dir.exists()) { return false; }
+
+    // There must be a subfolder called "data"
+    if (!dir.exists("data")) { return false; }
+
+    bool ok = dir.cd("data");
+    Q_ASSERT(ok);
+
+    QStringList nameFiler;
+    nameFiler << "*.png" << "*.vec" << "*.xml";
+    QStringList entries = dir.entryList(nameFiler, QDir::Files);
+
+    return (entries.size() > 0);
+}
+
+Object* FileManager::recoverUnsavedProject(QString intermeidatePath)
+{
+    qDebug() << "TODO: recover project" << intermeidatePath;
+
+    QDir projectDir(intermeidatePath);
+    const QString mainXMLPath = projectDir.filePath(PFF_XML_FILE_NAME);
+    const QString dataFolder = projectDir.filePath(PFF_DATA_DIR);
+
+    std::unique_ptr<Object> object = std::make_unique<Object>();
+    object->setWorkingDir(intermeidatePath);
+    object->setMainXMLFile(mainXMLPath);
+    object->setDataDir(dataFolder);
+
+    recoverObject(object.get());
+
+    // Transfer ownership to the caller
+    return object.release();
+}
+
+Status FileManager::recoverObject(Object* object)
+{
+    QFile file(object->mainXMLFile());
+    if (!file.exists()) { return Status::FAIL; }
+
+    bool openOK = file.open(QFile::ReadOnly);
+    if (!openOK) { return Status::FAIL; }
+
+    QDomDocument xmlDoc;
+    if (!xmlDoc.setContent(&file)) { return Status::FAIL; }
+
+    QDomDocumentType type = xmlDoc.doctype();
+    if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
+    {
+        return Status::FAIL;;
+    }
+
+    QDomElement root = xmlDoc.documentElement();
+    if (root.isNull()) { return Status::FAIL; }
+
+    QDomElement e = root.firstChildElement("object");
+    if (e.isNull()) { return Status::FAIL; }
+
+    bool ok = loadObject(object, root);
+    verifyObject(object);
+
+    return ok ? Status::OK : Status::FAIL;
+}
+
