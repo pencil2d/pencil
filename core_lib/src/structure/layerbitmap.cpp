@@ -184,6 +184,7 @@ void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath
 {
     this->loadBaseDomElement(element);
 
+    QList<int> frameList;
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
     {
@@ -199,10 +200,13 @@ void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();
                 loadImageAtFrame(path, QPoint(x, y), position);
+                frameList.append(position);
 
                 progressStep();
             }
         }
         imageTag = imageTag.nextSibling();
     }
+    if (!frameList.contains(1))
+        removeKeyFrame(1);
 }

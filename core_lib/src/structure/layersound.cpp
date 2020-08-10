@@ -90,6 +90,7 @@ void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath,
 {
     this->loadBaseDomElement(element);
 
+    QList<int> frameList;
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())
     {
@@ -112,12 +113,15 @@ void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath,
                 int position = soundElement.attribute("frame").toInt();
                 Status st = loadSoundClipAtFrame(sSoundClipName, sFullPath, position);
                 Q_ASSERT(st.ok());
+                frameList.append(position);
             }
             progressStep();
         }
 
         soundTag = soundTag.nextSibling();
     }
+    if (!frameList.contains(1))
+        removeKeyFrame(1);
 }
 
 Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)

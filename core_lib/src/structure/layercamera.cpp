@@ -289,6 +289,7 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
 
     this->loadBaseDomElement(element);
 
+    QList<int> frameList;
     int width = element.attribute("width").toInt();
     int height = element.attribute("height").toInt();
     viewRect = QRect(-width / 2, -height / 2, width, height);
@@ -309,8 +310,11 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 qreal dy = imageElement.attribute("dy", "0").toDouble();
 
                 loadImageAtFrame(frame, dx, dy, rotate, scale);
+                frameList.append(frame);
             }
         }
         imageTag = imageTag.nextSibling();
     }
+    if (!frameList.contains(1))
+        removeKeyFrame(1);
 }

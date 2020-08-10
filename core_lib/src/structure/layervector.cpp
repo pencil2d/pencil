@@ -151,6 +151,7 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
 {
     this->loadBaseDomElement(element);
 
+    QList<int> frameList;
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
     {
@@ -166,18 +167,22 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
                     if (!fi.exists()) path = imageElement.attribute("src");
                     int position = imageElement.attribute("frame").toInt();
                     loadImageAtFrame(path, position);
+                    frameList.append(position);
                 }
                 else
                 {
                     int frame = imageElement.attribute("frame").toInt();
                     addNewKeyFrameAt(frame);
                     getVectorImageAtFrame(frame)->loadDomElement(imageElement);
+                    frameList.append(frame);
                 }
                 progressStep();
             }
         }
         imageTag = imageTag.nextSibling();
     }
+    if (!frameList.contains(1))
+        removeKeyFrame(1);
 }
 
 VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber) const
