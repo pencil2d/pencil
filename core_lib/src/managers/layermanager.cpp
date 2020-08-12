@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -39,9 +39,8 @@ bool LayerManager::init()
     return true;
 }
 
-Status LayerManager::load(Object* o)
+Status LayerManager::load(Object*)
 {
-    Q_UNUSED(o);
     mLastCameraLayerIdx = 0;
     // Do not emit layerCountChanged here because the editor has not updated to this object yet
     // Leave that to the caller of this function

@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -26,7 +26,6 @@ GNU General Public License for more details.
 #include <QListWidgetItem>
 #include <QInputDialog>
 #include <QColorDialog>
-#include <QToolBar>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSettings>
@@ -34,16 +33,14 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QScrollBar>
 #include <QAbstractItemModel>
+#include <QPainter>
 
 // Project
 #include "colorref.h"
 #include "object.h"
 #include "editor.h"
-#include "colorbox.h"
-#include "scribblearea.h"
 #include "layerbitmap.h"
 #include "colormanager.h"
-#include "layermanager.h"
 
 
 ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) :
@@ -120,7 +117,9 @@ void ColorPaletteWidget::showContextMenu(const QPoint& pos)
 {
     QPoint globalPos = ui->colorListWidget->mapToGlobal(pos);
 
-    QMenu* menu = new QMenu();
+    QMenu* menu = new QMenu;
+    connect(menu, &QMenu::triggered, menu, &QMenu::deleteLater);
+
     menu->addAction(tr("Add"), this, &ColorPaletteWidget::addItem, 0);
     menu->addAction(tr("Replace"),  this, &ColorPaletteWidget::replaceItem, 0);
     menu->addAction(tr("Remove"), this, &ColorPaletteWidget::removeItem, 0);
@@ -133,17 +132,23 @@ void ColorPaletteWidget::addItem()
     QSignalBlocker b(ui->colorListWidget);
     QColor newColor = mEditor->color()->frontColor();
 
-    // add in front of selected color
-    int colorIndex = ui->colorListWidget->currentRow()+1;
+    // add at bottom
+    int colorIndex = ui->colorListWidget->count();
 
     ColorRef ref(newColor);
 
     mObject->addColorAtIndex(colorIndex, ref);
+
     refreshColorList();
+
     if (mFitSwatches)
     {
         fitSwatchSize();
     }
+
+    QListWidgetItem* item = ui->colorListWidget->item(colorIndex);
+    ui->colorListWidget->editItem(item);
+    ui->colorListWidget->scrollToItem(item);
 }
 
 void ColorPaletteWidget::replaceItem()
@@ -201,19 +206,19 @@ void ColorPaletteWidget::refreshColorList()
     }
 
     QPixmap originalColorSwatch(mIconSize);
-    QPainter swatchPainter(&originalColorSwatch);
-    swatchPainter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
-    swatchPainter.end();
-    QPixmap colorSwatch;
+    QPainter painter(&originalColorSwatch);
+    painter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
+    painter.end();
+
     QPen borderShadow(QColor(0, 0, 0, 200), 1, Qt::DotLine, Qt::FlatCap, Qt::MiterJoin);
-    QVector<qreal> dashPattern;
-    dashPattern << 4 << 4;
+    QVector<qreal> dashPattern{ 4, 4 };
     borderShadow.setDashPattern(dashPattern);
+
     QPen borderHighlight(borderShadow);
     borderHighlight.setColor(QColor(255, 255, 255, 200));
     borderHighlight.setDashOffset(4);
 
-    int colorCount = mObject->getColorCount();
+    const int colorCount = mObject->getColorCount();
 
     for (int i = 0; i < colorCount; i++)
     {
@@ -228,15 +233,16 @@ void ColorPaletteWidget::refreshColorList()
         {
             colorItem->setToolTip(colorRef.name);
         }
-        colorSwatch = originalColorSwatch;
-        swatchPainter.begin(&colorSwatch);
+        QPixmap colorSwatch = originalColorSwatch;
+        QPainter swatchPainter(&colorSwatch);
         swatchPainter.fillRect(0, 0, mIconSize.width(), mIconSize.height(), colorRef.color);
 
         QIcon swatchIcon;
         swatchIcon.addPixmap(colorSwatch, QIcon::Normal);
 
         // Draw selection border
-        if(ui->colorListWidget->viewMode() == QListView::IconMode) {
+        if (ui->colorListWidget->viewMode() == QListView::IconMode)
+        {
             swatchPainter.setPen(borderHighlight);
             swatchPainter.drawRect(0, 0, mIconSize.width() - 1, mIconSize.height() - 1);
             swatchPainter.setPen(borderShadow);
@@ -245,7 +251,6 @@ void ColorPaletteWidget::refreshColorList()
         swatchIcon.addPixmap(colorSwatch, QIcon::Selected);
 
         colorItem->setIcon(swatchIcon);
-        swatchPainter.end();
         colorItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
 
         ui->colorListWidget->addItem(colorItem);
@@ -569,7 +574,7 @@ void ColorPaletteWidget::clickAddColorButton()
 
     if (mIsColorDialog)
         newColor = QColorDialog::getColor(prevColor.rgba(), this, QString(), QColorDialog::ShowAlphaChannel);
-    else 
+    else
         newColor = mEditor->color()->frontColor();
 
     if (!newColor.isValid())

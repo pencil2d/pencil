@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -60,7 +60,10 @@ void SelectTool::beginSelection()
     {
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
-            static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+            VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            if (vectorImage != nullptr) {
+                vectorImage->deselectAll();
+            }
         }
 
         mAnchorOriginPoint = selectMan->whichAnchorPoint(getLastPoint());
@@ -106,9 +109,10 @@ void SelectTool::pointerMoveEvent(PointerEvent*)
 
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
-            static_cast<LayerVector*>(mCurrentLayer)->
-                    getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->
-                    select(selectMan->myTempTransformedSelectionRect());
+            VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            if (vectorImage != nullptr) {
+                vectorImage->select(selectMan->myTempTransformedSelectionRect());
+            }
         }
     }
 
@@ -170,6 +174,7 @@ void SelectTool::keepSelection()
     else if (mCurrentLayer->type() == Layer::VECTOR)
     {
         VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        if (vectorImage == nullptr) { return; }
         selectMan->setSelection(vectorImage->getSelectionRect(), false);
     }
 }

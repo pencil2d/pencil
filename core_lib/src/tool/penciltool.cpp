@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -156,7 +156,7 @@ void PencilTool::pointerPressEvent(PointerEvent*)
     startStroke();
 
     // note: why are we doing this on device press event?
-    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
     {
         mScribbleArea->toggleThinLines();
     }
@@ -185,7 +185,7 @@ void PencilTool::pointerReleaseEvent(PointerEvent*)
     {
         drawStroke();
     }
-    
+
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
         paintBitmapStroke();
@@ -315,8 +315,8 @@ void PencilTool::paintVectorStroke(Layer* layer)
     curve.setInvisibility(true);
     curve.setVariableWidth(false);
     curve.setColorNumber(mEditor->color()->frontColorNumber());
-    VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-
+    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), properties.vectorMergeEnabled);
 
     if (properties.useFillContour)

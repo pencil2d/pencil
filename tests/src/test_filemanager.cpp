@@ -1,7 +1,7 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -213,10 +213,91 @@ TEST_CASE("FileManager Loading XML Tests")
     }
 }
 
-TEST_CASE("FileManager Load-a-zip Test")
+// Turn a Qt resource file into an actual file on disk
+QString getQtResourceFile(QString rscPath, QTemporaryDir& tempDir)
 {
-    SECTION("Load a PCLX zip file")
+    QFile fin(rscPath);
+    if (!fin.open(QFile::ReadOnly))
     {
+        qWarning() << __FUNCTION__ << "Cannot open" << rscPath;
+        return "";
+    }
+    QByteArray content = fin.readAll();
+    fin.close();
+
+    QFileInfo info(rscPath);
+    QString filePathOnDisk = tempDir.filePath(info.fileName());
+
+    QFile fout(filePathOnDisk);
+    if (!fout.open(QFile::WriteOnly))
+    {
+        qWarning() << __FUNCTION__ << "Cannot write to" << filePathOnDisk;
+    }
+    fout.write(content);
+    fout.close();
+    return filePathOnDisk;
+}
+
+TEST_CASE("FileManager Load PCLX")
+{
+    SECTION("Empty PCLX")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(getQtResourceFile(":/empty.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Chinese Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(getQtResourceFile(":/許功蓋.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Japanese Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(getQtResourceFile(":/構わない.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Korean Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(getQtResourceFile(":/대박이야.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
     }
 }
 
@@ -274,7 +355,7 @@ TEST_CASE("FileManager File-saving")
         o1->createDefaultLayers();
 
         LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
-        for (int i = 100; i < 150; ++i) 
+        for (int i = 100; i < 150; ++i)
         {
             layer->addNewKeyFrameAt(i);
             auto bitmap = layer->getBitmapImageAtFrame(i);
@@ -302,7 +383,7 @@ TEST_CASE("FileManager File-saving")
         fm.save(o2, animationPath);
         delete o2;
 
-        // 4. Check no lost frames 
+        // 4. Check no lost frames
         Object* o3 = fm.load(animationPath);
         layer = dynamic_cast<LayerBitmap*>(o3->getLayer(2));
         for (int i = 2; i < 150; ++i)

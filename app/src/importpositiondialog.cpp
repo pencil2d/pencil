@@ -1,9 +1,9 @@
 #include "importpositiondialog.h"
 #include "ui_importpositiondialog.h"
 
+#include <QSettings>
 #include "editor.h"
 #include "viewmanager.h"
-
 #include "scribblearea.h"
 
 ImportPositionDialog::ImportPositionDialog(QWidget *parent) :

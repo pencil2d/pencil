@@ -1,3 +1,76 @@
+## Pencil2D 0.6.5 - 31 July 2019
+
+### Features
+
+- [c13aa62](https://github.com/pencil2d/pencil/commit/c13aa624ea52bf6cabcaa891db0855a1f41c9cfd) Add an action to open Pencil2D's temporary directory
+- [fef4858](https://github.com/pencil2d/pencil/commit/fef4858e23d1156910cebed2939ffd7e046f930d) Implement Movie Import
+- [481e8b8](https://github.com/pencil2d/pencil/commit/481e8b8a7bd24d4ca8ace58f4ff9ea819cdfc1e2) Implement Sound Scrubbing, using shortcuts or mouse
+- [e485a2c](https://github.com/pencil2d/pencil/commit/e485a2c4f7ab2a0504cc661603a410a7141db55c) Reimplement enhanced relative layer visibility a.k.a Light Table mode
+- [904486e](https://github.com/pencil2d/pencil/commit/904486ee189624ff43872c58d6db5396a0b133f8) Implement Camera Overlay system
+- [3469949](https://github.com/pencil2d/pencil/commit/34699492fcdafba6bbe5b743e89a12baf94fef20) Implement File Template "Preset" System
+- [0757436](https://github.com/pencil2d/pencil/commit/0757436c3b8ff8891702fe50163bddacd10e393b) Feature to change pixel color on bitmap layer
+- [6ff2580](https://github.com/pencil2d/pencil/commit/6ff25803672daaac183f862a793f048c522a68d1) Implement Layer Import. Import specific layers from *.pclx into active project
+- [623b585](https://github.com/pencil2d/pencil/commit/623b5852fea9727874541488a58b77c955c7dc10) Implement simple pixel tracking & repositioning system a.k.a pegbar alignment
+- [cf7f925](https://github.com/pencil2d/pencil/commit/cf7f9252bdca65820c7ad34dcc1f883301ec2ae0) Added Onion Skin Panel
+
+### Enhancements
+
+- [ccaca20](https://github.com/pencil2d/pencil/commit/ccaca20533bee4841df83e735260702ad2e3f0e1) New timeline colors
+- [9785b5e](https://github.com/pencil2d/pencil/commit/9785b5ea30c11ed0891123a8b11cb1ab515af144) Improve Audio sync audio
+- [fb58993](https://github.com/pencil2d/pencil/commit/fb58993ccfb09192393ea8852e73530be3a8fa35) Disabling OK until files are selected and verified
+- [1031d5c](https://github.com/pencil2d/pencil/commit/1031d5c60193854b515fefcaa9f18140d81252eb) Position new palette colors at bottom, and rename them immediately
+- [939abcd](https://github.com/pencil2d/pencil/commit/939abcd9aaf0d0a29f045bdaf1c18353b2048303) Show endonym (the name of the language in its own language) in preferences
+- [9ad6c32](https://github.com/pencil2d/pencil/commit/9ad6c32da62c7ce3a833ef99d616a7b179b74b27) More consistent palette import behavior
+- [2f3dafa](https://github.com/pencil2d/pencil/commit/2f3dafab6a546725371a891e8fed765aa1976caf) Add a default file extension if none is given
+- [59b6fd6](https://github.com/pencil2d/pencil/commit/59b6fd61add0e77671fe49575776e682a2d46157) Add capabilities for image import to choose resting position
+- [526a0e4](https://github.com/pencil2d/pencil/commit/526a0e414a7cd8a5d0a27b3c0332c14c147e7d3a) Drag and drop in palette
+- [90e7164](https://github.com/pencil2d/pencil/commit/90e7164349d8d542bc2e96a546716ac5d9156883) Hide question mark in the progress dialogs
+- [32fff24](https://github.com/pencil2d/pencil/commit/32fff24f02874b6fe6750c4d6507fcf561484fec) Save/Load shortcut list
+- [c8addc3](https://github.com/pencil2d/pencil/commit/c8addc35100c2340c2e4951a37dcfed6dc0b5aaf) Import drawings on wanted position
+- [c9fc9a7](https://github.com/pencil2d/pencil/commit/c9fc9a7b9de95ee1fb239090cc3ec32c6b524347) Remove AA and feathering buttons for brush tool
+- [5341b85](https://github.com/pencil2d/pencil/commit/5341b85338e14a6f8e048023d0a4f2d4eb0e20d4) Always show timeline scrub while playback
+- [c2d123e](https://github.com/pencil2d/pencil/commit/c2d123eb071dbcb7abd6ab93c466c1e1ab5a0f11) Enable selection rotation constraints with angle settings
+- [a5b4501](https://github.com/pencil2d/pencil/commit/a5b4501ef6fb4b8f00af8cc5d93d850577cbed66) Add compile/runtime Qt version to About dialog
+- [75d6cc5](https://github.com/pencil2d/pencil/commit/75d6cc594b8c03d56e588af4a250f29ff56b991f) Check for null pointer returned by getLastBitmapImageAtFrame where relevant
+- [f535aa7](https://github.com/pencil2d/pencil/commit/f535aa719862c9368242b40b7269d2a69e3603e1) Speed up compilation by using precompile headers
+- [b11aa67](https://github.com/pencil2d/pencil/commit/b11aa67b472153a960a197c6c9d391ec41c5e835) Rewrite the category logging for canvas painter and file manager
+- [5a59189](https://github.com/pencil2d/pencil/commit/5a591897e1c9f2f6f2d27bbf2210c33e54c40f9f) Add Install support for other unix systems
+
+### Fixes
+
+- [c718ee5](https://github.com/pencil2d/pencil/commit/c718ee5094bb396afdcbb37b6502c8613e3c0db1) Fix select and deselect all crashing
+- [e4f722a](https://github.com/pencil2d/pencil/commit/e4f722ab0d0ddfe31a01dc33912a4685760232f0) Fix Anticlockwise rotation shortcut
+- [5bded97](https://github.com/pencil2d/pencil/commit/5bded97ab3dba46c02b6c9dac340bd7b3fcd37e1) Fix Linux AppImage sound issue
+- [a9768fd](https://github.com/pencil2d/pencil/commit/a9768fda0e87d4216fe6d6da811f8a0ec5730ddc) Fix Timeline UI update incorrectly under certain conditions
+- [c7f7555](https://github.com/pencil2d/pencil/commit/c7f7555325bdda72e238711d26b91d32523b7e4f) Fix atrocious contrast in about dialog with dark themes
+- [d9c7ddc](https://github.com/pencil2d/pencil/commit/d9c7ddc9411e6ea6a330a88b18b9fc8637d54473) Fix incorrect file extension, somtimes suffix being added even though one exists
+- [aee2f1c](https://github.com/pencil2d/pencil/commit/aee2f1ce84ac7d58c9556d70ffdf926e119d7ff9) Fix onionskin button shortcuts
+- [e7d70e8](https://github.com/pencil2d/pencil/commit/e7d70e8264dd28554352d6437a56eb5c53b150f6) Fix FPS was not updated in preferences
+- [6dc848a](https://github.com/pencil2d/pencil/commit/6dc848ab79d221f038330cac1f8bd38f11f9bbc6) Fix check the frame bounds after calling loadFile
+- [6488999](https://github.com/pencil2d/pencil/commit/64889994e817af9bb3dc4bc6a8171b62796e8ac9) Ignore empty file path in save dialog
+- [41501dd](https://github.com/pencil2d/pencil/commit/41501dd1c8efc6bf40c8195c41b01812bf2b14ca) Fix Restore saved Autosave Setting in Preferences
+- [5a4487c](https://github.com/pencil2d/pencil/commit/5a4487c203e7c4a40e7c544bb40fb53f31f588e7) Fix unhandled cases where LastFrameAtFrame returns -1
+- [6ebc293](https://github.com/pencil2d/pencil/commit/6ebc2935602e3824a5476209b17ec8a7866a5a1c) Fix Play button tooltip
+- [d3ace70](https://github.com/pencil2d/pencil/commit/d3ace7041d61836cded2de8e70fd3e4a6c0973c6) Fix partial file wipe issue #1280
+- [841dced](https://github.com/pencil2d/pencil/commit/841dced46ceb5a69ba59220c420bb39c23c4e8a5) Fix eraser feathering
+- [b1e6171](https://github.com/pencil2d/pencil/commit/b1e6171) Fix selection rotation behavior
+
+### Continuous Integration
+
+- [190b3f5](https://github.com/pencil2d/pencil/commit/190b3f5e14948327f92dd0d5f5b74c9dc86191c1) Run unit tests on AppVeyor as well
+- [4298aec](https://github.com/pencil2d/pencil/commit/4298aec7040af0a360df7ff7e70ee73d73b87117) Upgrade to Qt 5.9.7 for linux builds
+- [29e5a26](https://github.com/pencil2d/pencil/commit/29e5a26e132eb016a8d4d8a2345f15d0824097b4) Upgrade to Qt 5.12 for windows builds
+- [559c70d](https://github.com/pencil2d/pencil/commit/559c70d3074c24002247ee43f480c636aa0c79f6) Use latest release build of ffmpeg for mac build
+
+### Unit Tests
+
+- [ff230f5](https://github.com/pencil2d/pencil/commit/ff230f568d42e079d5d3adaed4a925c12b4bffae) - Add CJK filename project loading test
+- [70fcbac](https://github.com/pencil2d/pencil/commit/70fcbaca933374a12166b83788d32f468f24fd9e) - Add an empty project loading test an empty pclx
+
+### Translations
+
+- Add new languages: Swedish, Turkish, Arabic
+
 ## Pencil2D 0.6.4 - 31 May 2019
 
 ### Enhancements
@@ -17,7 +90,7 @@
 - 96dca6d: Fix some move export issues on Windows.
 - 97f5891, 7a41226, 168bb1f: Fix various English typos throughout the program.
 - d3a41d3, fddf846, ef235f0: Fix some subtle display issues.
-- b43b024: Fix potential program crash when deleting a keyframe while a selection is active (by [Oliver Stevns](https://github.com/CandyFace) | alternate solution by [ryyharris](https://github.com/ryyharris)).
+- b43b024: Fix potential crash when deleting a keyframe while a selection is active (by [Oliver Stevns](https://github.com/CandyFace) | alternate solution by [ryyharris](https://github.com/ryyharris)).
 - 9942932: Fix transformations temporarily applying to all frames during playback.
 - 5aa4d9c: Fix the first item in the color palette not changing the bitmap brush color.
 - b293c28: Fix a partial file wipe issue when using Save As to convert pclx files to pcl files.
@@ -61,43 +134,43 @@
 
 ### Fixes
 
-* #926 Scrubber should move to start of range
-* #1059 Use tablet events for tablet input
-* #1089 Copy and Paste Doesn't Function
-* #1090 Minor image export bugs -- [Philippe Rzetelski](https://github.com/przet)
-* #1092 Loading a file removes the application icon on windows until next restart
-* #1093 Loading a file and exiting will change "open recent" file order -- [Matthew McGonagle](https://github.com/MatthewMcGonagle)
-* #1094 *.gpl file palette importer miss-handling whitespace and names -- [Andrey Nevdokimof](https://github.com/nevdokimof)
-* #1095 Pencil2D crashes after selecting the camera layer when move tool is selected
-* #1096 Pencil2D crashes when drawing on vector layer under specific conditions
-* #1101 Range input boxes come activated even when the checkbox is not ticked during application initialization -- [David Lamhauge](https://github.com/davidlamhauge)
-* #1107 FFix most warnings in core_lib/structure from g++
-* #1111 Fix rename optimization during save
-* #1132 Master resolve warnings (NULL and C-style Casts) -- [David Lamhauge](https://github.com/davidlamhauge)
-* #1134 Remove Show Tab Bar from the View menu on mac
-* #1135 Error counting digits fixed
-* #1137 Improve darkmode QDockWidget titlebar
-* #1139 Fix audio volume in movie export
-* #1141 Resolved warnings for NULL and old-casts -- [David Lamhauge](https://github.com/davidlamhauge)
-* #1142 Force light theme on mac os
-* #1144 Renable dark mode on macOS
-* #1154 The Drawing tools left round marks on most strokes
-* #1155 Fix pressure artifacts at end of brush stroke
-* #1157 Sound export audio samples synchronization issues
-* #1166 Fix XML fields corrupting because of locale decimal types.
-* #1168 Fix tablet events and cleanup events handling
-* #1175 Grayscale color wheel
-* #1181 Fix canvas bugs
-* #1188 Miscellaneous fixes: Fixes regression for #677. Fixes duplicate selection box.
-* #1120 Windows Nightly Builds not working
+- #926 Scrubber should move to start of range
+- #1059 Use tablet events for tablet input
+- #1089 Copy and Paste Doesn't Function
+- #1090 Minor image export bugs -- [Philippe Rzetelski](https://github.com/przet)
+- #1092 Loading a file removes the application icon on windows until next restart
+- #1093 Loading a file and exiting will change "open recent" file order -- [Matthew McGonagle](https://github.com/MatthewMcGonagle)
+- #1094 `.gpl` file palette importer miss-handling whitespace and names -- [Andrey Nevdokimof](https://github.com/nevdokimof)
+- #1095 Pencil2D crashes after selecting the camera layer when move tool is selected
+- #1096 Pencil2D crashes when drawing on vector layer under specific conditions
+- #1101 Range input boxes come activated even when the checkbox is not ticked during application initialization -- [David Lamhauge](https://github.com/davidlamhauge)
+- #1107 FFix most warnings in core_lib/structure from g++
+- #1111 Fix rename optimization during save
+- #1132 Master resolve warnings (NULL and C-style Casts) -- [David Lamhauge](https://github.com/davidlamhauge)
+- #1134 Remove Show Tab Bar from the View menu on mac
+- #1135 Error counting digits fixed
+- #1137 Improve darkmode QDockWidget titlebar
+- #1139 Fix audio volume in movie export
+- #1141 Resolved warnings for NULL and old-casts -- [David Lamhauge](https://github.com/davidlamhauge)
+- #1142 Force light theme on mac os
+- #1144 Renable dark mode on macOS
+- #1154 The Drawing tools left round marks on most strokes
+- #1155 Fix pressure artifacts at end of brush stroke
+- #1157 Sound export audio samples synchronization issues
+- #1166 Fix XML fields corrupting because of locale decimal types.
+- #1168 Fix tablet events and cleanup events handling
+- #1175 Grayscale color wheel
+- #1181 Fix canvas bugs
+- #1188 Miscellaneous fixes: Fixes regression for #677. Fixes duplicate selection box.
+- #1120 Windows Nightly Builds not working
+- `b1064ab` Fix auto-crop being disabled in duplicate frames.
+- `aafd048` Fix: mistakingly empty the filename of source keyframe when duplicating a frame
+- `4f7b4bb` Fix sound key length
 
-* `b1064ab` Fix auto-crop being disabled in duplicate frames.
-* `aafd048` Fix: mistakingly empty the filename of source keyframe when duplicating a frame
-* `4f7b4bb` Fix sound key length
+### Translations
 
-Translations
-* Added translations: Catalan, Greek and Kabyle.
-* `8f42d46` Updated most recent translations from Transifex
+- Added translations: Catalan, Greek and Kabyle.
+- `8f42d46` Updated most recent translations from Transifex
 
 ## Pencil2D 0.6.2 - 26 September 2018
 

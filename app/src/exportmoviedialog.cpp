@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -121,7 +121,12 @@ void ExportMovieDialog::frameCheckboxClicked(bool checked)
 void ExportMovieDialog::onFilePathsChanged(QStringList filePaths)
 {
     QString filePath = filePaths.first().toLower();
-    ui->loopCheckBox->setEnabled(supportsLooping(filePath));
+    bool canLoop = supportsLooping(filePath);
+    ui->loopCheckBox->setEnabled(canLoop);
+    if (!canLoop)
+    {
+        ui->loopCheckBox->setChecked(false);
+    }
     ui->transparencyCheckBox->setEnabled(supportsTransparency(filePath));
 }
 

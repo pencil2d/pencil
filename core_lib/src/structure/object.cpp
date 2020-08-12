@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QDebug>
 #include <QDateTime>
+#include <QSettings>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -618,12 +619,12 @@ void Object::loadDefaultPalette()
     addColor(ColorRef(QColor(Qt::lightGray), QString(tr("Light Grey"))));
     addColor(ColorRef(QColor(Qt::gray), QString(tr("Grey"))));
     addColor(ColorRef(QColor(Qt::darkGray), QString(tr("Dark Grey"))));
-    addColor(ColorRef(QColor(255, 227, 187), QString(tr("Light Skin"))));
-    addColor(ColorRef(QColor(221, 196, 161), QString(tr("Light Skin \u2013 shade"))));
-    addColor(ColorRef(QColor(255, 214, 156), QString(tr("Skin"))));
-    addColor(ColorRef(QColor(207, 174, 127), QString(tr("Skin \u2013 shade"))));
-    addColor(ColorRef(QColor(255, 198, 116), QString(tr("Dark Skin"))));
-    addColor(ColorRef(QColor(227, 177, 105), QString(tr("Dark Skin \u2013 shade")) ));
+    addColor(ColorRef(QColor(255, 227, 187), QString(tr("Pale Orange Yellow"))));
+    addColor(ColorRef(QColor(221, 196, 161), QString(tr("Pale Grayish Orange Yellow"))));
+    addColor(ColorRef(QColor(255, 214, 156), QString(tr("Orange Yellow "))));
+    addColor(ColorRef(QColor(207, 174, 127), QString(tr("Grayish Orange Yellow"))));
+    addColor(ColorRef(QColor(255, 198, 116), QString(tr("Light Orange Yellow"))));
+    addColor(ColorRef(QColor(227, 177, 105), QString(tr("Light Grayish Orange Yellow")) ));
 }
 
 void Object::paintImage(QPainter& painter,int frameNumber,
@@ -659,8 +660,10 @@ void Object::paintImage(QPainter& painter,int frameNumber,
                 LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
 
                 BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
-                if (bitmap)
+                if (bitmap != nullptr)
+                {
                     bitmap->paintImage(painter);
+                }
 
             }
             // paints the vector images
@@ -668,8 +671,10 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             {
                 LayerVector* layerVector = static_cast<LayerVector*>(layer);
                 VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
-                if (vec)
+                if (vec != nullptr)
+                {
                     vec->paintImage(painter, false, false, antialiasing);
+                }
             }
         }
     }

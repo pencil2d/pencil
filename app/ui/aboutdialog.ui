@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string comment="About Dialog Window Title">About</string>
   </property>
-  <layout class="QVBoxLayout" name="lay">
+  <layout class="QVBoxLayout" name="lay" stretch="0,0,0,1,0">
    <item>
     <widget class="QLabel" name="logo">
      <property name="pixmap">
@@ -68,7 +68,7 @@
       <string notr="true">QLabel { background-color: palette(base); border-style: solid; border-width: 1px; border-color: palette(mid); }</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
      <property name="textInteractionFlags">
       <set>Qt::TextSelectableByMouse</set>

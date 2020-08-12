@@ -41,11 +41,13 @@ Status MovieImporter::estimateFrames(const QString &filePath, int fps, int *fram
     // --------- Import all the temporary frames ----------
     STATUS_CHECK(verifyFFmpegExists());
     QString ffmpegPath = ffmpegLocation();
+    dd << "ffmpeg path:" << ffmpegPath;
 
     // Get frame estimate
     int frames = -1;
     bool ok = true;
     QString ffprobePath = ffprobeLocation();
+    dd << "ffprobe path:" << ffprobePath;
     if (QFileInfo::exists(ffprobePath))
     {
         QStringList probeArgs = {"-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", filePath};
@@ -79,6 +81,11 @@ Status MovieImporter::estimateFrames(const QString &filePath, int fps, int *fram
                << QString("Exit code: %1").arg(ffprobe.exitCode())
                << "Output:"
                << ffprobe.readAll();
+        }
+        if (frames < 0)
+        {
+            qDebug() << "ffprobe execution failed. Details:";
+            qDebug() << dd.str();
         }
     }
     if (frames < 0)
@@ -180,16 +187,25 @@ Status MovieImporter::run(const QString &filePath, int fps, FileType type,
             if (!canProceed) { return Status::CANCELED; }
         }
 
-        return importMovieVideo(filePath, fps, frames, [&progress, this](int prog) {
+        auto progressCallback = [&progress, this](int prog) -> bool
+        {
             progress(prog); return !mCanceled;
-        }, [&progressMessage](QString message) {
+        };
+        auto progressMsgCallback = [&progressMessage](QString message)
+        {
             progressMessage(message);
-        });
-    } else if (type == FileType::SOUND) {
-        return importMovieAudio(filePath, [&progress, this](int prog) {
+        };
+        return importMovieVideo(filePath, fps, frames, progressCallback, progressMsgCallback);
+    }
+    else if (type == FileType::SOUND)
+    {
+        return importMovieAudio(filePath, [&progress, this](int prog) -> bool
+        {
             progress(prog); return !mCanceled;
         });
-    } else {
+    }
+    else
+    {
         Status st = Status::FAIL;
         st.setTitle(tr("Unknown error"));
         st.setTitle(tr("This should not happen..."));
@@ -198,7 +214,7 @@ Status MovieImporter::run(const QString &filePath, int fps, FileType type,
 }
 
 Status MovieImporter::importMovieVideo(const QString &filePath, int fps, int frameEstimate,
-                                       std::function<void(int)> progress,
+                                       std::function<bool(int)> progress,
                                        std::function<void(QString)> progressMessage)
 {
     Status status = Status::OK;
@@ -228,12 +244,13 @@ Status MovieImporter::importMovieVideo(const QString &filePath, int fps, int fra
 
     progress(50);
 
-    return generateFrames([this, &progress](int prog) {
+    return generateFrames([this, &progress](int prog) -> bool
+    {
         progress(prog); return mCanceled;
     });
 }
 
-Status MovieImporter::generateFrames(std::function<void (int)> progress)
+Status MovieImporter::generateFrames(std::function<bool(int)> progress)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     Status status = Status::OK;
@@ -278,7 +295,7 @@ Status MovieImporter::generateFrames(std::function<void (int)> progress)
     return status;
 }
 
-Status MovieImporter::importMovieAudio(const QString& filePath, std::function<void(int)> progress)
+Status MovieImporter::importMovieAudio(const QString& filePath, std::function<bool(int)> progress)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
