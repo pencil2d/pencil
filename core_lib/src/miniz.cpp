@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
  *
  * Copyright 2013-2014 RAD Game Tools and Valve Software
  * Copyright 2010-2014 Rich Geldreich and Tenacious Software LLC
@@ -2989,27 +2989,26 @@ void tinfl_decompressor_free(tinfl_decompressor *pDecomp)
 #if defined(_MSC_VER) || defined(__MINGW64__)
 #include <codecvt>
 #include <string>
-#endif
-
-#ifdef __MINGW64__
 #include <locale>
-#endif
 
-#if defined(_MSC_VER) || defined(__MINGW64__)
 static FILE *mz_fopen(const char *pFilename, const char *pMode)
 {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring sWideFilename = converter.from_bytes(pFilename);
-    std::wstring sWideMode = converter.from_bytes(pMode);
+    std::wstring wideFilename = converter.from_bytes(pFilename);
+    std::wstring wideMode = converter.from_bytes(pMode);
 
     FILE *pFile = NULL;
-    _wfopen_s(&pFile, sWideFilename.c_str(), sWideMode.c_str());
+    _wfopen_s(&pFile, wideFilename.c_str(), wideMode.c_str());
     return pFile;
 }
 static FILE *mz_freopen(const char *pPath, const char *pMode, FILE *pStream)
 {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring widePath = converter.from_bytes(pPath);
+    std::wstring wideMode = converter.from_bytes(pMode);
+
     FILE *pFile = NULL;
-    if (freopen_s(&pFile, pPath, pMode, pStream))
+    if (_wfreopen_s(&pFile, widePath.c_str(), wideMode.c_str(), pStream))
         return NULL;
     return pFile;
 }
@@ -6193,8 +6192,8 @@ mz_bool mz_zip_writer_add_mem_ex_v2(mz_zip_archive *pZip, const char *pArchive_n
     if (!pState->m_zip64)
     {
         /* Bail early if the archive would obviously become too large */
-        if ((pZip->m_archive_size + num_alignment_padding_bytes + MZ_ZIP_LOCAL_DIR_HEADER_SIZE + archive_name_size 
-			+ MZ_ZIP_CENTRAL_DIR_HEADER_SIZE + archive_name_size + comment_size + user_extra_data_len + 
+        if ((pZip->m_archive_size + num_alignment_padding_bytes + MZ_ZIP_LOCAL_DIR_HEADER_SIZE + archive_name_size
+			+ MZ_ZIP_CENTRAL_DIR_HEADER_SIZE + archive_name_size + comment_size + user_extra_data_len +
 			pState->m_central_dir.m_size + MZ_ZIP_END_OF_CENTRAL_DIR_HEADER_SIZE + user_extra_data_central_len
 			+ MZ_ZIP_DATA_DESCRIPTER_SIZE32) > 0xFFFFFFFF)
         {
