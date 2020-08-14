@@ -220,6 +220,7 @@ int handleArguments(PencilApplication& app)
 
     // Now that (almost) all possible user errors are handled, the actual program can be initialized
     MainWindow2 mainWindow;
+    QObject::connect(&app, &PencilApplication::lostFocus, &mainWindow, &MainWindow2::appLostFocus);
     QObject::connect(&app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openFile);
     app.emitOpenFileRequest();
 
