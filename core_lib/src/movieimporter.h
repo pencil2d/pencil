@@ -49,11 +49,11 @@ private:
 
     Status verifyFFmpegExists();
     Status importMovieVideo(const QString& filePath, int fps, int frameEstimate,
-                            std::function<void(int)> progress,
+                            std::function<bool(int)> progress,
                             std::function<void(QString)> progressMessage);
-    Status importMovieAudio(const QString& filePath, std::function<void(int)> progress);
+    Status importMovieAudio(const QString& filePath, std::function<bool(int)> progress);
 
-    Status generateFrames(std::function<void(int)> progress);
+    Status generateFrames(std::function<bool(int)> progress);
 
     Editor* mEditor = nullptr;
 

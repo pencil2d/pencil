@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -1105,6 +1105,16 @@ int VectorImage::getCurvesColor(int curve)
     }
     return result;
 }
+
+bool VectorImage::isCurveVisible(int curve)
+{
+    if (curve > -1 && curve < mCurves.length())
+    {
+        return !mCurves[curve].isInvisible();
+    }
+    return false;
+}
+
 /**
  * @brief VectorImage::usesColor
  * @param index

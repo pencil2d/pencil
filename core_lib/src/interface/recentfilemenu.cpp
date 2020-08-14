@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -114,7 +114,8 @@ void RecentFileMenu::addRecentFile(QString filename)
         addAction(action);
         addAction(mClearSeparator);
         addAction(mClearAction);
-        QObject::connect(mClearAction, &QAction::triggered, [this] {
+        QObject::connect(mClearAction, &QAction::triggered, [this]
+        {
             clear();
             saveToDisk();
         });
@@ -122,7 +123,6 @@ void RecentFileMenu::addRecentFile(QString filename)
     else
     {
         QString firstFile = mRecentFiles[1];
-        qDebug() << "Recent file" << firstFile;
         insertAction(mRecentActions[firstFile], action);
     }
 }
