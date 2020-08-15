@@ -757,11 +757,17 @@ void FilesPage::updateValues()
 void FilesPage::askForPresetChange(int b)
 {
     mManager->set(SETTING::ASK_FOR_PRESET, b != Qt::Unchecked);
+    QSignalBlocker b1(ui->loadMostRecentCheckBox);
+    ui->loadMostRecentCheckBox->setCheckState(Qt::Unchecked);
+    mManager->set(SETTING::LOAD_MOST_RECENT, b == Qt::Unchecked);
 }
 
 void FilesPage::loadMostRecentChange(int b)
 {
     mManager->set(SETTING::LOAD_MOST_RECENT, b != Qt::Unchecked);
+    QSignalBlocker b1(ui->askPresetCheckBox);
+    ui->askPresetCheckBox->setCheckState(Qt::Unchecked);
+    mManager->set(SETTING::ASK_FOR_PRESET, b == Qt::Unchecked);
 }
 
 void FilesPage::autosaveChange(int b)

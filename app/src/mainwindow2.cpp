@@ -1103,11 +1103,12 @@ void  MainWindow2::tryLoadPreset()
         });
         presetDialog->open();
     }
-    else if(mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT))
+    else if(mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT) && mLoadMostRecent)
     {
         QSettings settings(PENCIL2D, PENCIL2D);
         QString myPath = settings.value(LAST_PCLX_PATH, QVariant(QDir::homePath())).toString();
         openObject(myPath);
+        mLoadMostRecent = false;
     }
     else
     {
