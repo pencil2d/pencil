@@ -141,7 +141,7 @@ QCursor PencilTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
+        return QCursor(QPixmap(":icons/pencil.svg"), 0, 20);
     }
     return Qt::CrossCursor;
 }

@@ -52,7 +52,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/onionPrev.png</normaloff>:/app/icons/onionPrev.png</iconset>
+          <normaloff>:/app/icons/onion/onion-prev.svg</normaloff>:/app/icons/onion/onion-prev.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -106,7 +106,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/onion-red.png</normaloff>:/app/icons/onion-red.png</iconset>
+          <normaloff>:/app/icons/onion/onion-red.svg</normaloff>:/app/icons/onion/onion-red.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -149,7 +149,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/onionNext.png</normaloff>:/app/icons/onionNext.png</iconset>
+          <normaloff>:/app/icons/onion/onion-next.svg</normaloff>:/app/icons/onion/onion-next.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -215,7 +215,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/onion-blue.png</normaloff>:/app/icons/onion-blue.png</iconset>
+          <normaloff>:/app/icons/onion/onion-blue.svg</normaloff>:/app/icons/onion/onion-blue.svg</iconset>
         </property>
         <property name="iconSize">
          <size>

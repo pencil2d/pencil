@@ -111,7 +111,7 @@ QCursor PenTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/pen.png"), -5, 0);
+        return QCursor(QPixmap(":icons/pen.svg"), 2, 20);
     }
     return Qt::CrossCursor;
 }
