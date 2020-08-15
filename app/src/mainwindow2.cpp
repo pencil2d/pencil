@@ -1105,10 +1105,19 @@ void  MainWindow2::tryLoadPreset()
     }
     else if(mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT) && mLoadMostRecent)
     {
+        mLoadMostRecent = false;
         QSettings settings(PENCIL2D, PENCIL2D);
         QString myPath = settings.value(LAST_PCLX_PATH, QVariant(QDir::homePath())).toString();
-        openObject(myPath);
-        mLoadMostRecent = false;
+        QFile file(myPath);
+        if (file.exists())
+        {
+            openObject(myPath);
+        }
+        else
+        {
+            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+            newObjectFromPresets(defaultPreset);
+        }
     }
     else
     {
