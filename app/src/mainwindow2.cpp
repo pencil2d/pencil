@@ -456,6 +456,7 @@ void MainWindow2::openPegAlignDialog()
     }
 
     mPegAlign = new PegBarAlignmentDialog(mEditor, this);
+    mPegAlign->setAttribute(Qt::WA_DeleteOnClose);
     connect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
     mPegAlign->updatePegRegLayers();
     mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
