@@ -45,7 +45,7 @@ void ImportLayersDialog::getFileName()
     FileDialog fd(this);
     mFileName = QFileDialog::getOpenFileName(this, tr("Choose file"),
                                              fd.getLastOpenPath(FileType::ANIMATION),
-                                             tr("Pencil Animation file (*.pclx)"));
+                                             tr("Pencil Animation file (*.pclx *.pcl)"));
     if (mFileName.isEmpty()) { return; }
     getLayers();
 }
