@@ -48,16 +48,21 @@ void ImportLayersDialog::getFileName()
                                              tr("Pencil Animation file (*.pclx)"));
     if (mFileName.isEmpty()) { return; }
     getLayers();
-    for (int i = 0; i < mImportObject->getLayerCount(); i++)
-        ui->lwLayers->addItem(mImportObject->getLayer(i)->name());
 }
 
 void ImportLayersDialog::listWidgetChanged()
 {
-    if (ui->lwLayers->count() > 0)
+    qDebug() << "selected 1: " << mItemsSelected;
+    mItemsSelected.clear();
+    for (int i = 0; i < ui->lwLayers->count(); i++)
+        if (ui->lwLayers->item(i)->isSelected())
+            mItemsSelected.append(i);
+
+    if (!mItemsSelected.isEmpty())
         ui->btnImportLayers->setEnabled(true);
     else
         ui->btnImportLayers->setEnabled(false);
+    qDebug() << "selected 2: " << mItemsSelected;
 }
 
 void ImportLayersDialog::importLayers()
@@ -67,10 +72,11 @@ void ImportLayersDialog::importLayers()
     {
         if (ui->lwLayers->item(i)->isSelected())
         {
-            Layer *tmpLayer = mImportObject->findLayerByName(ui->lwLayers->item(i)->text());
-            if (tmpLayer->type() == Layer::SOUND)
+            mImportLayer = mImportObject->findLayerByName(ui->lwLayers->item(i)->text());
+            mImportLayer->setName(mEditor->layers()->nameSuggestLayer(ui->lwLayers->item(i)->text()));
+            if (mImportLayer->type() == Layer::SOUND)
             {
-                LayerSound* layerSound = static_cast<LayerSound*>(tmpLayer);
+                LayerSound* layerSound = static_cast<LayerSound*>(mImportLayer);
                 int count = 0;
                 while (count < layerSound->getNextKeyFramePosition(count))
                 {
@@ -84,10 +90,13 @@ void ImportLayersDialog::importLayers()
             }
             else
             {
-                mObject->addLayer(tmpLayer);
+                mObject->addLayer(mImportLayer);
             }
+            mEditor->object()->modification();
         }
     }
+    mImportObject = nullptr;
+    getLayers();
     mEditor->scrubTo(currentFrame);
 }
 
@@ -119,4 +128,9 @@ void ImportLayersDialog::getLayers()
         progress.setRange(0, max + 3);
     });
     mImportObject = fm.load(mFileName);
+
+    ui->lwLayers->clear();
+    for (int i = 0; i < mImportObject->getLayerCount(); i++)
+        ui->lwLayers->addItem(mImportObject->getLayer(i)->name());
+
 }
