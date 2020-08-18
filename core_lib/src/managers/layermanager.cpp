@@ -223,7 +223,7 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
     return layer;
 }
 
-int LayerManager::LastFrameAtFrame(int frameIndex)
+int LayerManager::lastFrameAtFrame(int frameIndex)
 {
     Object* o = object();
     for (int i = frameIndex; i >= 0; i -= 1)

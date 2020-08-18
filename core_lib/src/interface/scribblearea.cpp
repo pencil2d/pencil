@@ -187,7 +187,7 @@ void ScribbleArea::updateCurrentFrame()
 
 void ScribbleArea::updateFrame(int frame)
 {
-    int frameNumber = mEditor->layers()->LastFrameAtFrame(frame);
+    int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
     if (frameNumber < 0) { return; }
 
     Q_ASSERT(frame >= 0);
@@ -438,7 +438,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     {
         event.accept();
         mStrokeManager->pointerPressEvent(&event);
-        mStrokeManager->setTabletinUse(true);
+        mStrokeManager->setTabletInUse(true);
         if (mIsFirstClick)
         {
             mIsFirstClick = false;
@@ -474,7 +474,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         {
             mStrokeManager->pointerReleaseEvent(&event);
             pointerReleaseEvent(&event);
-            mStrokeManager->setTabletinUse(false);
+            mStrokeManager->setTabletInUse(false);
             mTabletInUse = false;
         }
     }
@@ -744,7 +744,7 @@ void ScribbleArea::paintBitmapBuffer()
     update(rect);
 
     // Update the cache for the last key-frame.
-    auto lastKeyFramePosition = mEditor->layers()->LastFrameAtFrame(frameNumber);
+    auto lastKeyFramePosition = mEditor->layers()->lastFrameAtFrame(frameNumber);
     if (lastKeyFramePosition >= 0)
     {
         QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
@@ -943,7 +943,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
-        int frameNumber = mEditor->layers()->LastFrameAtFrame(curIndex);
+        int frameNumber = mEditor->layers()->lastFrameAtFrame(curIndex);
 
         if (frameNumber < 0)
         {
