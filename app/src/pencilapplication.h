@@ -32,6 +32,7 @@ public:
 
 signals:
     void openFileRequested(QString filename);
+    void lostFocus();
 
 private:
     QString mStartPath;

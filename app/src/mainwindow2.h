@@ -105,6 +105,7 @@ public:
 
 Q_SIGNALS:
     void updateRecentFilesList(bool b);
+    void appLostFocus();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
