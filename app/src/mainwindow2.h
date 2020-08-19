@@ -71,12 +71,13 @@ public slots:
     void selectionChanged();
 
 public:
-    void newDocument(bool force = false);
+    void newDocument();
     void openDocument();
     bool saveDocument();
     bool saveAsNewDocument();
     bool maybeSave();
     bool autoSave();
+    void newEmptyDocumentAfterErrorOccurred();
 
     // import
     void importImage();
