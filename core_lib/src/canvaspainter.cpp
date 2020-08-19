@@ -420,18 +420,13 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
         return;
     }
 
-    QImage* pImage = new QImage(mCanvas->size(), QImage::Format_ARGB32_Premultiplied);
-    vectorImage->outputImage(pImage, mViewTransform, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
+    QImage* strokeImage = new QImage(mCanvas->size(), QImage::Format_ARGB32_Premultiplied);
+    strokeImage->fill(Qt::transparent);
+    vectorImage->outputImage(strokeImage, mViewTransform, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
 
-    //painter.drawImage( QPoint( 0, 0 ), *pImage );
-    // Go through a Bitmap image to paint the onion skin color
-    BitmapImage tempBitmapImage;
-    tempBitmapImage.setImage(pImage);
-
-    if (isCurrentFrame)
-    {
-        tempBitmapImage.paste(mBuffer, mOptions.cmBufferBlendMode);
-    }
+    // Go through a Bitmap image to paint the onion skin colour
+    BitmapImage rasterizedVectorImage;
+    rasterizedVectorImage.setImage(strokeImage);
 
     if (colorize)
     {
@@ -445,13 +440,25 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
         {
             colorBrush = QBrush(Qt::blue);
         }
-        tempBitmapImage.drawRect(pImage->rect(),
+        rasterizedVectorImage.drawRect(strokeImage->rect(),
                                  Qt::NoPen, colorBrush,
                                  QPainter::CompositionMode_SourceIn, false);
     }
 
-    painter.setWorldMatrixEnabled(false); // Don't transform the image here as we used the viewTransform in the image output
-    tempBitmapImage.paintImage(painter);
+    // Don't transform the image here as we used the viewTransform in the image output
+    painter.setWorldMatrixEnabled(false);
+
+    // Paint image as is
+    rasterizedVectorImage.paintImage(painter);
+    if (isCurrentFrame)
+    {
+        // Paste buffer onto image to see stroke in realtime
+        rasterizedVectorImage.paste(mBuffer, mOptions.cmBufferBlendMode);
+    }
+
+    // Paint buffer pasted on top of vector image:
+    // fixes polyline not being rendered properly
+    rasterizedVectorImage.paintImage(painter);
 }
 
 void CanvasPainter::paintTransformedSelection(QPainter& painter)
