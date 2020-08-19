@@ -687,8 +687,12 @@ Object* FileManager::recoverUnsavedProject(QString intermeidatePath)
     object->setMainXMLFile(mainXMLPath);
     object->setDataDir(dataFolder);
 
-    recoverObject(object.get());
-
+    Status st = recoverObject(object.get());
+    if (!st.ok())
+    {
+        mError = st;
+        return nullptr;
+    }
     // Transfer ownership to the caller
     return object.release();
 }

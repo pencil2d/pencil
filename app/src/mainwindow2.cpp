@@ -1559,6 +1559,7 @@ void MainWindow2::tryRecoverUnsavedProject()
     msgBox->setText(QString("<h4>%1</h4>%2").arg(caption).arg(text));
     msgBox->setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
     msgBox->setStandardButtons(QMessageBox::Open | QMessageBox::Discard);
+
     hideQuestionMark(*msgBox);
 
     connect(msgBox, &QMessageBox::finished, [recoverPath, this](int result)
@@ -1567,8 +1568,11 @@ void MainWindow2::tryRecoverUnsavedProject()
         {
             FileManager fm;
             Object* o = fm.recoverUnsavedProject(recoverPath);
-            mEditor->setObject(o);
-            updateSaveState();
+            if (fm.error().ok())
+            {
+                mEditor->setObject(o);
+                updateSaveState();
+            }
         }
     });
     msgBox->open();
