@@ -682,7 +682,7 @@ Object* FileManager::recoverUnsavedProject(QString intermeidatePath)
     const QString mainXMLPath = projectDir.filePath(PFF_XML_FILE_NAME);
     const QString dataFolder = projectDir.filePath(PFF_DATA_DIR);
 
-    std::unique_ptr<Object> object = std::make_unique<Object>();
+    std::unique_ptr<Object> object(new Object);
     object->setWorkingDir(intermeidatePath);
     object->setMainXMLFile(mainXMLPath);
     object->setDataDir(dataFolder);

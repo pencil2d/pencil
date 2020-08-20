@@ -1579,6 +1579,7 @@ void MainWindow2::startProjectRecovery(int result)
     Object* o = fm.recoverUnsavedProject(recoverPath);
     if (!fm.error().ok())
     {
+        Q_ASSERT(o == nullptr);
         QMessageBox::information(this, tr("Recovery Failed."), tr("Sorry! Pencil2D is unable to restore your project"));
     }
 
