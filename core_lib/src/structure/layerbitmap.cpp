@@ -149,7 +149,7 @@ QString LayerBitmap::fileName(KeyFrame* key) const
 }
 
 bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& savePath)
-{    
+{
     if (key->isModified()) // keyframe was modified
         return true;
     if (QFile::exists(savePath) == false) // hasn't been saved before
