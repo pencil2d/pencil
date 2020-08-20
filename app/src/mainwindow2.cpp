@@ -1559,21 +1559,31 @@ void MainWindow2::tryRecoverUnsavedProject()
     msgBox->setText(QString("<h4>%1</h4>%2").arg(caption).arg(text));
     msgBox->setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
     msgBox->setStandardButtons(QMessageBox::Open | QMessageBox::Discard);
-
+    msgBox->setProperty("RecoverPath", recoverPath);
     hideQuestionMark(*msgBox);
 
-    connect(msgBox, &QMessageBox::finished, [recoverPath, this](int result)
-    {
-        if (QMessageBox::Open == result)
-        {
-            FileManager fm;
-            Object* o = fm.recoverUnsavedProject(recoverPath);
-            if (fm.error().ok())
-            {
-                mEditor->setObject(o);
-                updateSaveState();
-            }
-        }
-    });
+    connect(msgBox, &QMessageBox::finished, this, &MainWindow2::startProjectRecovery);
     msgBox->open();
+}
+
+void MainWindow2::startProjectRecovery(int result)
+{
+    if (result != QMessageBox::Open)
+    {
+        return;
+    }
+    QMessageBox* msgBox = dynamic_cast<QMessageBox*>(QObject::sender());
+    const QString recoverPath = msgBox->property("RecoverPath").toString();
+
+    FileManager fm;
+    Object* o = fm.recoverUnsavedProject(recoverPath);
+    if (!fm.error().ok())
+    {
+        QMessageBox::information(this, tr("Recovery Failed."), tr("Sorry! Pencil2D is unable to restore your project"));
+    }
+
+    mEditor->setObject(o);
+    updateSaveState();
+
+    QMessageBox::information(this, tr("Recovery Succeeded!"), tr("Please save your work immediately to prevent loss of data"));
 }

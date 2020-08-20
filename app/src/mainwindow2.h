@@ -152,6 +152,7 @@ private:
     void bindActionWithSetting(QAction*, const SETTING&);
 
     void tryRecoverUnsavedProject();
+    void startProjectRecovery(int result);
 
     // UI: Dock widgets
     ColorBox*             mColorBox = nullptr;
