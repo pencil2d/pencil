@@ -538,16 +538,9 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
     event->ignore();
 }
 
-void MainWindow2::newDocument(bool force)
+void MainWindow2::newDocument()
 {
-    if (force)
-    {
-        newObject();
-
-        setWindowTitle(PENCIL_WINDOW_TITLE);
-        updateSaveState();
-    }
-    else if (maybeSave())
+    if (maybeSave())
     {
         tryLoadPreset();
     }
@@ -662,7 +655,7 @@ bool MainWindow2::openObject(QString strFilePath)
         dd.collect(error.details());
         ErrorDialog errorDialog(error.title(), error.description(), dd.str());
         errorDialog.exec();
-        newDocument(true);
+        newEmptyDocumentAfterErrorOccurred();
         return false;
     }
 
@@ -672,7 +665,7 @@ bool MainWindow2::openObject(QString strFilePath)
                                 tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fullPath));
         errorDialog.exec();
-        newDocument(true);
+        newEmptyDocumentAfterErrorOccurred();
         return false;
     }
 
@@ -835,6 +828,14 @@ bool MainWindow2::autoSave()
     }
 
     return false;
+}
+
+void MainWindow2::newEmptyDocumentAfterErrorOccurred()
+{
+    newObject();
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
+    updateSaveState();
 }
 
 void MainWindow2::importImage()
@@ -1406,6 +1407,7 @@ void MainWindow2::openPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
+    connect(this, &MainWindow2::appLostFocus, editor->getScribbleArea(), &ScribbleArea::setPrevTool);
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
@@ -1522,8 +1524,8 @@ void MainWindow2::bindActionWithSetting(QAction* action, const SETTING& setting)
 
 void MainWindow2::updateZoomLabel()
 {
-    float zoom = mEditor->view()->scaling() * 100.f;
-    mZoomLabel->setText(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
+    qreal zoom = mEditor->view()->scaling() * 100.f;
+    mZoomLabel->setText(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
 }
 
 void MainWindow2::updateTimecodeLabel()

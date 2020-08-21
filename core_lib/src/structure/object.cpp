@@ -87,7 +87,6 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
     {
         return false;
     }
-    int layerNumber = -1;
 
     const QString dataDirPath = mDataDirPath;
 
@@ -96,16 +95,25 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if (element.tagName() == "layer")
         {
+            Layer* newLayer;
             switch (element.attribute("type").toInt())
             {
-            case Layer::BITMAP: addNewBitmapLayer(); break;
-            case Layer::VECTOR: addNewVectorLayer(); break;
-            case Layer::SOUND:  addNewSoundLayer();  break;
-            case Layer::CAMERA: addNewCameraLayer(); break;
-            default: Q_ASSERT(false); break;
+            case Layer::BITMAP:
+                newLayer = new LayerBitmap(this);
+                break;
+            case Layer::VECTOR:
+                newLayer = new LayerVector(this);
+                break;
+            case Layer::SOUND:
+                newLayer = new LayerSound(this);
+                break;
+            case Layer::CAMERA:
+                newLayer = new LayerCamera(this);
+                break;
+            default: Q_ASSERT(false); continue;
             }
-            layerNumber++;
-            getLayer(layerNumber)->loadDomElement(element, dataDirPath, progressForward);
+            mLayers.append(newLayer);
+            newLayer->loadDomElement(element, dataDirPath, progressForward);
         }
     }
     return true;

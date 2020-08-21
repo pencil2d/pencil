@@ -154,7 +154,6 @@ public: //slots
 
     void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
-    void showLayerNotVisibleWarning();
     void swapLayers(int i, int j);
     Status::StatusInt pegBarAlignment(QStringList layers);
 

@@ -288,7 +288,7 @@ Status MovieImporter::generateFrames(std::function<bool(int)> progress)
     if (!QFileInfo::exists(tempDir.filePath("00001.png"))) {
         status = Status::FAIL;
         status.setTitle(tr("Failed import"));
-        status.setDescription(tr("Was unable to find internal files, import unsucessful."));
+        status.setDescription(tr("Was unable to find internal files, import unsuccessful."));
         return status;
     }
 

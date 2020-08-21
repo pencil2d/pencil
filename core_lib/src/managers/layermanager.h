@@ -62,7 +62,7 @@ public:
     LayerSound*  createSoundLayer(const QString& strLayerName);
 
     // KeyFrame Management
-    int LastFrameAtFrame(int frameIndex);
+    int lastFrameAtFrame(int frameIndex);
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 
