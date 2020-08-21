@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -223,7 +223,7 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
     return layer;
 }
 
-int LayerManager::LastFrameAtFrame(int frameIndex)
+int LayerManager::lastFrameAtFrame(int frameIndex)
 {
     Object* o = object();
     for (int i = frameIndex; i >= 0; i -= 1)

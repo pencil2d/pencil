@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "viewmanager.h"
 #include "layermanager.h"
+#include "scribblearea.h"
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "colormanager.h"
@@ -702,7 +703,7 @@ void ActionCommands::duplicateKey()
     if (layer == nullptr) return;
     if (!layer->visible())
     {
-        mEditor->showLayerNotVisibleWarning();
+        mEditor->getScribbleArea()->showLayerNotVisibleWarning();
         return;
     }
 

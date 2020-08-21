@@ -9,7 +9,7 @@
 language: cpp
 compiler: g++
 dist: trusty
-osx_image: xcode11.3
+osx_image: xcode12
 
 os:
   - linux
@@ -47,15 +47,16 @@ addons:
       - graphviz
       - python3
       - python3-pip
+  homebrew:
+    packages:
+    - qt
+    - python3
+    - libarchive
+    - gpg
 
 before_install:
-  - echo "are changes related to source code?"
-  - test "${FORCE_NIGHTLY_UPLOAD}" = "yes" || bash $TRAVIS_BUILD_DIR/util/checkchanges.sh || travis_terminate 0;
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-        brew update;
-        brew install python3
-        brew install libarchive qt gpg;
         brew link qt --force;
         export PATH="/usr/local/opt/libarchive/bin:$PATH"
     fi
@@ -86,7 +87,7 @@ script:
     qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_NIGHTLY;
   fi'
   - make;
-  - "$TRAVIS_BUILD_DIR/build/tests/tests"
+  - "$TRAVIS_BUILD_DIR/build/tests/bin/tests"
 
 after_success:
   - "${TRAVIS_BUILD_DIR}/util/after-build.sh"

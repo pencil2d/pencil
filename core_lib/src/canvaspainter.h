@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -151,7 +151,7 @@ private:
     // Caches specifically for when drawing on the canvas
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
 
-    constexpr static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
+    const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };
 
 #endif // CANVASRENDERER_H

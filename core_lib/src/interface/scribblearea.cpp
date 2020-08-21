@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -187,7 +187,7 @@ void ScribbleArea::updateCurrentFrame()
 
 void ScribbleArea::updateFrame(int frame)
 {
-    int frameNumber = mEditor->layers()->LastFrameAtFrame(frame);
+    int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
     if (frameNumber < 0) { return; }
 
     Q_ASSERT(frame >= 0);
@@ -398,26 +398,24 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
-    //qDebug() <<"angle"<<angle<<"pixels"<<pixels;
+    const QPointF offset = mEditor->view()->mapScreenToCanvas(event->posF());
 
+    const qreal currentScale = mEditor->view()->scaling();
     if (!pixels.isNull())
     {
-        float delta = pixels.y();
-        float currentScale = mEditor->view()->scaling();
-        float newScale = currentScale * (1.f + (delta * 0.01f));
-        mEditor->view()->scale(newScale);
+        // XXX: This pixel-based zooming algorithm currently has some shortcomings compared to the angle-based one:
+        //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
+        //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
+        const int delta = pixels.y();
+        const qreal newScale = currentScale * (1 + (delta * 0.01));
+        mEditor->view()->scaleWithOffset(newScale, offset);
     }
     else if (!angle.isNull())
     {
-        float delta = angle.y();
-        if (delta < 0)
-        {
-            mEditor->view()->scaleDown();
-        }
-        else
-        {
-            mEditor->view()->scaleUp();
-        }
+        const int delta = angle.y();
+        // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
+        const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
+        mEditor->view()->scaleWithOffset(newScale, offset);
     }
     updateCanvasCursor();
     event->accept();
@@ -440,7 +438,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     {
         event.accept();
         mStrokeManager->pointerPressEvent(&event);
-        mStrokeManager->setTabletinUse(true);
+        mStrokeManager->setTabletInUse(true);
         if (mIsFirstClick)
         {
             mIsFirstClick = false;
@@ -476,7 +474,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         {
             mStrokeManager->pointerReleaseEvent(&event);
             pointerReleaseEvent(&event);
-            mStrokeManager->setTabletinUse(false);
+            mStrokeManager->setTabletInUse(false);
             mTabletInUse = false;
         }
     }
@@ -516,6 +514,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
     if (event->buttons() & (Qt::MidButton | Qt::RightButton))
     {
         setTemporaryTool(HAND);
+        getTool(HAND)->pointerPressEvent(event);
     }
 
     const bool isPressed = event->buttons() & Qt::LeftButton;
@@ -745,7 +744,7 @@ void ScribbleArea::paintBitmapBuffer()
     update(rect);
 
     // Update the cache for the last key-frame.
-    auto lastKeyFramePosition = mEditor->layers()->LastFrameAtFrame(frameNumber);
+    auto lastKeyFramePosition = mEditor->layers()->lastFrameAtFrame(frameNumber);
     if (lastKeyFramePosition >= 0)
     {
         QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
@@ -944,7 +943,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
-        int frameNumber = mEditor->layers()->LastFrameAtFrame(curIndex);
+        int frameNumber = mEditor->layers()->lastFrameAtFrame(curIndex);
 
         if (frameNumber < 0)
         {
@@ -1488,6 +1487,7 @@ void ScribbleArea::toggleOutlines()
 void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
 {
     mLayerVisibility = visibility;
+    mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
     updateAllFrames();
 }
 
@@ -1625,8 +1625,11 @@ void ScribbleArea::clearImage()
 
 void ScribbleArea::setPrevTool()
 {
-    editor()->tools()->setCurrentTool(mPrevTemporalToolType);
-    mInstantTool = false;
+    if (mInstantTool)
+    {
+        editor()->tools()->setCurrentTool(mPrevTemporalToolType);
+        mInstantTool = false;
+    }
 }
 
 void ScribbleArea::paletteColorChanged(QColor color)

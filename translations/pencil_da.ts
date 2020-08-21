@@ -1626,7 +1626,7 @@ Læs instruktionerne og prøv igen</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="130"/>
         <source>View</source>
-        <translation>Se</translation>
+        <translation>Vis</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="134"/>

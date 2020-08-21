@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -87,7 +87,6 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
     {
         return false;
     }
-    int layerNumber = -1;
 
     const QString dataDirPath = mDataDirPath;
 
@@ -96,16 +95,25 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if (element.tagName() == "layer")
         {
+            Layer* newLayer;
             switch (element.attribute("type").toInt())
             {
-            case Layer::BITMAP: addNewBitmapLayer(); break;
-            case Layer::VECTOR: addNewVectorLayer(); break;
-            case Layer::SOUND:  addNewSoundLayer();  break;
-            case Layer::CAMERA: addNewCameraLayer(); break;
-            default: Q_ASSERT(false); break;
+            case Layer::BITMAP:
+                newLayer = new LayerBitmap(this);
+                break;
+            case Layer::VECTOR:
+                newLayer = new LayerVector(this);
+                break;
+            case Layer::SOUND:
+                newLayer = new LayerSound(this);
+                break;
+            case Layer::CAMERA:
+                newLayer = new LayerCamera(this);
+                break;
+            default: Q_ASSERT(false); continue;
             }
-            layerNumber++;
-            getLayer(layerNumber)->loadDomElement(element, dataDirPath, progressForward);
+            mLayers.append(newLayer);
+            newLayer->loadDomElement(element, dataDirPath, progressForward);
         }
     }
     return true;
@@ -619,12 +627,12 @@ void Object::loadDefaultPalette()
     addColor(ColorRef(QColor(Qt::lightGray), QString(tr("Light Grey"))));
     addColor(ColorRef(QColor(Qt::gray), QString(tr("Grey"))));
     addColor(ColorRef(QColor(Qt::darkGray), QString(tr("Dark Grey"))));
-    addColor(ColorRef(QColor(255, 227, 187), QString(tr("Light Skin"))));
-    addColor(ColorRef(QColor(221, 196, 161), QString(tr("Light Skin \u2013 shade"))));
-    addColor(ColorRef(QColor(255, 214, 156), QString(tr("Skin"))));
-    addColor(ColorRef(QColor(207, 174, 127), QString(tr("Skin \u2013 shade"))));
-    addColor(ColorRef(QColor(255, 198, 116), QString(tr("Dark Skin"))));
-    addColor(ColorRef(QColor(227, 177, 105), QString(tr("Dark Skin \u2013 shade")) ));
+    addColor(ColorRef(QColor(255, 227, 187), QString(tr("Pale Orange Yellow"))));
+    addColor(ColorRef(QColor(221, 196, 161), QString(tr("Pale Grayish Orange Yellow"))));
+    addColor(ColorRef(QColor(255, 214, 156), QString(tr("Orange Yellow "))));
+    addColor(ColorRef(QColor(207, 174, 127), QString(tr("Grayish Orange Yellow"))));
+    addColor(ColorRef(QColor(255, 198, 116), QString(tr("Light Orange Yellow"))));
+    addColor(ColorRef(QColor(227, 177, 105), QString(tr("Light Grayish Orange Yellow")) ));
 }
 
 void Object::paintImage(QPainter& painter,int frameNumber,
