@@ -1568,12 +1568,15 @@ void MainWindow2::tryRecoverUnsavedProject()
 
 void MainWindow2::startProjectRecovery(int result)
 {
-    if (result != QMessageBox::Open)
-    {
-        return;
-    }
     QMessageBox* msgBox = dynamic_cast<QMessageBox*>(QObject::sender());
     const QString recoverPath = msgBox->property("RecoverPath").toString();
+
+    if (result != QMessageBox::Open)
+    {
+        // The user presses discard
+        QDir(recoverPath).removeRecursively();
+        return;
+    }
 
     FileManager fm;
     Object* o = fm.recoverUnsavedProject(recoverPath);
