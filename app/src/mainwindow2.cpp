@@ -1580,11 +1580,15 @@ void MainWindow2::startProjectRecovery(int result)
     if (!fm.error().ok())
     {
         Q_ASSERT(o == nullptr);
-        QMessageBox::information(this, tr("Recovery Failed."), tr("Sorry! Pencil2D is unable to restore your project"));
+        const QString title = tr("Recovery Failed.");
+        const QString text = tr("Sorry! Pencil2D is unable to restore your project");
+        QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
     }
 
     mEditor->setObject(o);
     updateSaveState();
 
-    QMessageBox::information(this, tr("Recovery Succeeded!"), tr("Please save your work immediately to prevent loss of data"));
+    const QString title = tr("Recovery Succeeded!");
+    const QString text = tr("Please save your work immediately to prevent loss of data");
+    QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
 }
