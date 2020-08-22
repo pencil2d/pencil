@@ -132,8 +132,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->background->init(mEditor->preference());
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
-
-    tryLoadPreset();
 }
 
 MainWindow2::~MainWindow2()
@@ -524,7 +522,11 @@ void MainWindow2::showEvent(QShowEvent*)
     if (firstShowEvent)
     {
         firstShowEvent = false;
-        tryRecoverUnsavedProject();
+        bool needRecovery = tryRecoverUnsavedProject();
+        if (!needRecovery)
+        {
+            tryLoadPreset();
+        }
     }
 }
 
@@ -1536,14 +1538,14 @@ void MainWindow2::displayMessageBoxNoTitle(const QString& body)
     QMessageBox::information(this, nullptr, tr(qPrintable(body)), QMessageBox::Ok);
 }
 
-void MainWindow2::tryRecoverUnsavedProject()
+bool MainWindow2::tryRecoverUnsavedProject()
 {
     FileManager fm;
     QStringList recoverables = fm.searchForUnsavedProjects();
 
     if (recoverables.size() == 0)
     {
-        return;
+        return false;
     }
 
     QString caption = tr("Restore Project?");
@@ -1564,19 +1566,22 @@ void MainWindow2::tryRecoverUnsavedProject()
 
     connect(msgBox, &QMessageBox::finished, this, &MainWindow2::startProjectRecovery);
     msgBox->open();
+    return true;
 }
 
 void MainWindow2::startProjectRecovery(int result)
 {
-    QMessageBox* msgBox = dynamic_cast<QMessageBox*>(QObject::sender());
+    const QMessageBox* msgBox = dynamic_cast<QMessageBox*>(QObject::sender());
     const QString recoverPath = msgBox->property("RecoverPath").toString();
 
-    if (result != QMessageBox::Open)
+    if (result == QMessageBox::Discard)
     {
         // The user presses discard
         QDir(recoverPath).removeRecursively();
+        tryLoadPreset();
         return;
     }
+    Q_ASSERT(result == QMessageBox::Open);
 
     FileManager fm;
     Object* o = fm.recoverUnsavedProject(recoverPath);
