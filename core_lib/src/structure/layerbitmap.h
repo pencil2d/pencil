@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ public:
     ~LayerBitmap() override;
 
     QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
+    void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
     Status presave(const QString& sDataFolder) override;
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);

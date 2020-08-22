@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -38,6 +38,11 @@ PencilApplication::PencilApplication(int& argc, char** argv) :
 
 bool PencilApplication::event(QEvent* event)
 {
+    if(event->type() == QEvent::ApplicationStateChange && static_cast<QApplicationStateChangeEvent*>(event)->applicationState() == Qt::ApplicationInactive) {
+        emit lostFocus();
+        return true;
+    }
+
     if (event->type() == QEvent::FileOpen)
     {
         mStartPath = static_cast<QFileOpenEvent*>(event)->file();

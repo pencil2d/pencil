@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -64,8 +64,8 @@ void ExportImageDialog::setDefaultRange(int startFrame, int endFrame, int endFra
     mEndFrame = endFrame;
     mEndFrameWithSounds = endFrameWithSounds;
 
-    SignalBlocker b1( ui->startSpinBox );
-    SignalBlocker b2( ui->endSpinBox );
+    QSignalBlocker b1( ui->startSpinBox );
+    QSignalBlocker b2( ui->endSpinBox );
 
     ui->startSpinBox->setValue( startFrame );
     ui->endSpinBox->setValue( endFrame );

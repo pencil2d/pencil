@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include <memory>
 
 #include <QColor>
-#include <QTransform>
 #include <QPoint>
 #include <QWidget>
 #include <QPixmapCache>
@@ -34,8 +33,6 @@ GNU General Public License for more details.
 #include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
-#include "colourref.h"
-#include "vectorselection.h"
 #include "canvaspainter.h"
 #include "preferencemanager.h"
 #include "strokemanager.h"
@@ -47,6 +44,7 @@ class BaseTool;
 class PointerEvent;
 class BitmapImage;
 class VectorImage;
+
 
 class ScribbleArea : public QWidget
 {
@@ -134,8 +132,6 @@ public slots:
     void updateToolCursor();
     void paletteColorChanged(QColor);
 
-    bool isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod);
-
     void showLayerNotVisibleWarning();
     void updateOriginalPolygonF();
     void setOriginalPolygonF(QPolygonF polygon) { mOriginalPolygonF = polygon; }
@@ -158,9 +154,9 @@ public:
     void drawPolyline(QPainterPath path, QPen pen, bool useAA);
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
-    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA = true);
-    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColour, qreal opacity);
-    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true, bool useAA = false);
+    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA = true);
+    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, qreal opacity, bool usingFeather = true, bool useAA = false);
     void blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
@@ -170,7 +166,7 @@ public:
     void clearBitmapBuffer();
     void refreshBitmap(const QRectF& rect, int rad);
     void refreshVector(const QRectF& rect, int rad);
-    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
+    void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
     void pointerMoveEvent(PointerEvent*);
@@ -229,10 +225,9 @@ private:
     int mDoubleClickMillis = 0;
     // Microsoft suggests that a double click action should be no more than 500 ms
     const int DOUBLE_CLICK_THRESHOLD = 500;
-    QTimer* mDoubleClickTimer;
+    QTimer* mDoubleClickTimer = nullptr;
 
     QPoint mCursorCenterPos;
-
     QPointF mTransformedCursorPos;
 
     //instant tool (temporal eg. eraser)

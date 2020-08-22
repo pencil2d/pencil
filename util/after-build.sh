@@ -13,7 +13,7 @@ package_linux() {
   msg "Creating AppImage..."
   # "Downgrade" the desktop entry to version 1.0
   sed -i "/^Keywords\(\[[a-zA-Z_.@]\+\]\)\?=/d;/^Version=/cVersion=1.0" \
-    Pencil2D/usr/share/applications/pencil2d.desktop
+    Pencil2D/usr/share/applications/org.pencil2d.Pencil2D.desktop
   install -Dm755 /usr/bin/ffmpeg Pencil2D/usr/plugins/ffmpeg
   install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
     "Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
@@ -29,7 +29,7 @@ package_linux() {
   chmod 755 linuxdeployqt-continuous-x86_64.AppImage
   LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/x86_64-linux-gnu/pulseaudio" \
     ./linuxdeployqt-continuous-x86_64.AppImage \
-    Pencil2D/usr/share/applications/pencil2d.desktop \
+    Pencil2D/usr/share/applications/org.pencil2d.Pencil2D.desktop \
     -executable=Pencil2D/usr/plugins/ffmpeg \
     ${gst_executables} \
     -appimage

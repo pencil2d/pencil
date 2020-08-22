@@ -48,7 +48,9 @@
 **
 ****************************************************************************/
 
-#include <QtWidgets>
+#include <QWidget>
+#include <QLayout>
+#include <QtMath>
 
 #include "flowlayout.h"
 //! [1]
