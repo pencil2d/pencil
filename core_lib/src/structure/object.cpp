@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QDebug>
 #include <QDateTime>
+#include <QSettings>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -86,7 +87,6 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
     {
         return false;
     }
-    int layerNumber = -1;
 
     const QString dataDirPath = mDataDirPath;
 
@@ -95,16 +95,25 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if (element.tagName() == "layer")
         {
+            Layer* newLayer;
             switch (element.attribute("type").toInt())
             {
-            case Layer::BITMAP: addNewBitmapLayer(); break;
-            case Layer::VECTOR: addNewVectorLayer(); break;
-            case Layer::SOUND:  addNewSoundLayer();  break;
-            case Layer::CAMERA: addNewCameraLayer(); break;
-            default: Q_ASSERT(false); break;
+            case Layer::BITMAP:
+                newLayer = new LayerBitmap(this);
+                break;
+            case Layer::VECTOR:
+                newLayer = new LayerVector(this);
+                break;
+            case Layer::SOUND:
+                newLayer = new LayerSound(this);
+                break;
+            case Layer::CAMERA:
+                newLayer = new LayerCamera(this);
+                break;
+            default: Q_ASSERT(false); continue;
             }
-            layerNumber++;
-            getLayer(layerNumber)->loadDomElement(element, dataDirPath, progressForward);
+            mLayers.append(newLayer);
+            newLayer->loadDomElement(element, dataDirPath, progressForward);
         }
     }
     return true;
@@ -293,9 +302,9 @@ void Object::addLayer(Layer *layer)
     }
 }
 
-ColourRef Object::getColour(int index) const
+ColorRef Object::getColor(int index) const
 {
-    ColourRef result(Qt::white, tr("error"));
+    ColorRef result(Qt::white, tr("error"));
     if (index > -1 && index < mPalette.size())
     {
         result = mPalette.at(index);
@@ -303,21 +312,21 @@ ColourRef Object::getColour(int index) const
     return result;
 }
 
-void Object::setColour(int index, QColor newColour)
+void Object::setColor(int index, QColor newColor)
 {
     Q_ASSERT(index >= 0);
 
-    mPalette[index].colour = newColour;
+    mPalette[index].color = newColor;
 }
 
-void Object::setColourRef(int index, ColourRef newColourRef)
+void Object::setColorRef(int index, ColorRef newColorRef)
 {
-    mPalette[index] = newColourRef;
+    mPalette[index] = newColorRef;
 }
 
-void Object::addColour(QColor colour)
+void Object::addColor(QColor color)
 {
-    addColour(ColourRef(colour, tr("Colour %1").arg(QString::number(mPalette.size()))));
+    addColor(ColorRef(color, tr("Color %1").arg(QString::number(mPalette.size()))));
 }
 
 void Object::movePaletteColor(int start, int end)
@@ -337,12 +346,12 @@ void Object::moveVectorColor(int start, int end)
     }
 }
 
-void Object::addColourAtIndex(int index, ColourRef newColour)
+void Object::addColorAtIndex(int index, ColorRef newColor)
 {
-    mPalette.insert(index, newColour);
+    mPalette.insert(index, newColor);
 }
 
-bool Object::isColourInUse(int index)
+bool Object::isColorInUse(int index)
 {
     for (int i = 0; i < getLayerCount(); i++)
     {
@@ -351,7 +360,7 @@ bool Object::isColourInUse(int index)
         {
             LayerVector* layerVector = static_cast<LayerVector*>(layer);
 
-            if (layerVector->usesColour(index))
+            if (layerVector->usesColor(index))
             {
                 return true;
             }
@@ -361,7 +370,7 @@ bool Object::isColourInUse(int index)
 
 }
 
-void Object::removeColour(int index)
+void Object::removeColor(int index)
 {
     for (int i = 0; i < getLayerCount(); i++)
     {
@@ -369,16 +378,16 @@ void Object::removeColour(int index)
         if (layer->type() == Layer::VECTOR)
         {
             LayerVector* layerVector = static_cast<LayerVector*>(layer);
-            layerVector->removeColour(index);
+            layerVector->removeColor(index);
         }
     }
 
     mPalette.removeAt(index);
 
-    // update the vector pictures using that colour !
+    // update the vector pictures using that color !
 }
 
-void Object::renameColour(int i, QString text)
+void Object::renameColor(int i, QString text)
 {
     mPalette[i].name = text;
 }
@@ -402,9 +411,9 @@ void Object::exportPaletteGPL(QFile& file)
     out << "Name: " << fileName << "\n";
     out << "#" << "\n";
 
-    for (ColourRef ref : mPalette)
+    for (ColorRef ref : mPalette)
     {
-        QColor toRgb = ref.colour.toRgb();
+        QColor toRgb = ref.color.toRgb();
         out << QString("%1 %2 %3").arg(toRgb.red()).arg(toRgb.green()).arg(toRgb.blue());
         out << " " << ref.name << "\n";
     }
@@ -419,13 +428,13 @@ void Object::exportPalettePencil(QFile& file)
     doc.appendChild(root);
     for (int i = 0; i < mPalette.size(); i++)
     {
-        ColourRef ref = mPalette.at(i);
-        QDomElement tag = doc.createElement("Colour");
+        ColorRef ref = mPalette.at(i);
+        QDomElement tag = doc.createElement("Color");
         tag.setAttribute("name", ref.name);
-        tag.setAttribute("red", ref.colour.red());
-        tag.setAttribute("green", ref.colour.green());
-        tag.setAttribute("blue", ref.colour.blue());
-        tag.setAttribute("alpha", ref.colour.alpha());
+        tag.setAttribute("red", ref.color.red());
+        tag.setAttribute("green", ref.color.green());
+        tag.setAttribute("blue", ref.color.blue());
+        tag.setAttribute("alpha", ref.color.alpha());
         root.appendChild(tag);
     }
     int IndentSize = 2;
@@ -458,7 +467,7 @@ bool Object::exportPalette(QString filePath)
  * This should load colors the same as GIMP, with the following intentional exceptions:
  * - Whitespace before and after a name does not appear in the name
  * - The last line is processed, even if there is not a trailing newline
- * - Colours without a name will use our automatic naming system rather than "Untitled"
+ * - Colors without a name will use our automatic naming system rather than "Untitled"
  */
 void Object::importPaletteGPL(QFile& file)
 {
@@ -484,9 +493,9 @@ void Object::importPaletteGPL(QFile& file)
         }
     }
 
-    // Colours inherit the value from the previous colour for missing channels
+    // Colors inherit the value from the previous color for missing channels
     // Some palettes may rely on this behavior so we should try to replicate it
-    QColor prevColour(Qt::black);
+    QColor prevColor(Qt::black);
 
     do
     {
@@ -522,20 +531,20 @@ void Object::importPaletteGPL(QFile& file)
         // trim additional spaces
         name = name.trimmed();
 
-        // Get values from previous colour if necessary
-        if (countInLine < 2) green = prevColour.green();
-        if (countInLine < 3) blue = prevColour.blue();
+        // Get values from previous color if necessary
+        if (countInLine < 2) green = prevColor.green();
+        if (countInLine < 3) blue = prevColor.blue();
 
-        // GIMP assigns colours the name "Untitled" by default now
+        // GIMP assigns colors the name "Untitled" by default now
         // so in addition to missing names, we also use automatic
         // naming for this
         if (name.isEmpty() || name == "Untitled") name = QString();
 
-        QColor colour(red, green, blue);
-        if (colour.isValid())
+        QColor color(red, green, blue);
+        if (color.isValid())
         {
-            mPalette.append(ColourRef(colour, name));
-            prevColour = colour;
+            mPalette.append(ColorRef(color, name));
+            prevColor = color;
         }
     } while (in.readLineInto(&line));
 }
@@ -557,7 +566,7 @@ void Object::importPalettePencil(QFile& file)
             int g = e.attribute("green").toInt();
             int b = e.attribute("blue").toInt();
             int a = e.attribute("alpha", "255").toInt();
-            mPalette.append(ColourRef(QColor(r, g, b, a), name));
+            mPalette.append(ColorRef(QColor(r, g, b, a), name));
         }
         tag = tag.nextSibling();
     }
@@ -600,30 +609,30 @@ bool Object::importPalette(QString filePath)
 void Object::loadDefaultPalette()
 {
     mPalette.clear();
-    addColour(ColourRef(QColor(Qt::black), QString(tr("Black"))));
-    addColour(ColourRef(QColor(Qt::red), QString(tr("Red"))));
-    addColour(ColourRef(QColor(Qt::darkRed), QString(tr("Dark Red"))));
-    addColour(ColourRef(QColor(255, 128, 0), QString(tr("Orange"))));
-    addColour(ColourRef(QColor(128, 64, 0), QString(tr("Dark Orange"))));
-    addColour(ColourRef(QColor(Qt::yellow), QString(tr("Yellow"))));
-    addColour(ColourRef(QColor(Qt::darkYellow), QString(tr("Dark Yellow"))));
-    addColour(ColourRef(QColor(Qt::green), QString(tr("Green"))));
-    addColour(ColourRef(QColor(Qt::darkGreen), QString(tr("Dark Green"))));
-    addColour(ColourRef(QColor(Qt::cyan), QString(tr("Cyan"))));
-    addColour(ColourRef(QColor(Qt::darkCyan), QString(tr("Dark Cyan"))));
-    addColour(ColourRef(QColor(Qt::blue), QString(tr("Blue"))));
-    addColour(ColourRef(QColor(Qt::darkBlue), QString(tr("Dark Blue"))));
-    addColour(ColourRef(QColor(255, 255, 255), QString(tr("White"))));
-    addColour(ColourRef(QColor(220, 220, 229), QString(tr("Very Light Grey"))));
-    addColour(ColourRef(QColor(Qt::lightGray), QString(tr("Light Grey"))));
-    addColour(ColourRef(QColor(Qt::gray), QString(tr("Grey"))));
-    addColour(ColourRef(QColor(Qt::darkGray), QString(tr("Dark Grey"))));
-    addColour(ColourRef(QColor(255, 227, 187), QString(tr("Light Skin"))));
-    addColour(ColourRef(QColor(221, 196, 161), QString(tr("Light Skin \u2013 shade"))));
-    addColour(ColourRef(QColor(255, 214, 156), QString(tr("Skin"))));
-    addColour(ColourRef(QColor(207, 174, 127), QString(tr("Skin \u2013 shade"))));
-    addColour(ColourRef(QColor(255, 198, 116), QString(tr("Dark Skin"))));
-    addColour(ColourRef(QColor(227, 177, 105), QString(tr("Dark Skin \u2013 shade")) ));
+    addColor(ColorRef(QColor(Qt::black), QString(tr("Black"))));
+    addColor(ColorRef(QColor(Qt::red), QString(tr("Red"))));
+    addColor(ColorRef(QColor(Qt::darkRed), QString(tr("Dark Red"))));
+    addColor(ColorRef(QColor(255, 128, 0), QString(tr("Orange"))));
+    addColor(ColorRef(QColor(128, 64, 0), QString(tr("Dark Orange"))));
+    addColor(ColorRef(QColor(Qt::yellow), QString(tr("Yellow"))));
+    addColor(ColorRef(QColor(Qt::darkYellow), QString(tr("Dark Yellow"))));
+    addColor(ColorRef(QColor(Qt::green), QString(tr("Green"))));
+    addColor(ColorRef(QColor(Qt::darkGreen), QString(tr("Dark Green"))));
+    addColor(ColorRef(QColor(Qt::cyan), QString(tr("Cyan"))));
+    addColor(ColorRef(QColor(Qt::darkCyan), QString(tr("Dark Cyan"))));
+    addColor(ColorRef(QColor(Qt::blue), QString(tr("Blue"))));
+    addColor(ColorRef(QColor(Qt::darkBlue), QString(tr("Dark Blue"))));
+    addColor(ColorRef(QColor(255, 255, 255), QString(tr("White"))));
+    addColor(ColorRef(QColor(220, 220, 229), QString(tr("Very Light Grey"))));
+    addColor(ColorRef(QColor(Qt::lightGray), QString(tr("Light Grey"))));
+    addColor(ColorRef(QColor(Qt::gray), QString(tr("Grey"))));
+    addColor(ColorRef(QColor(Qt::darkGray), QString(tr("Dark Grey"))));
+    addColor(ColorRef(QColor(255, 227, 187), QString(tr("Pale Orange Yellow"))));
+    addColor(ColorRef(QColor(221, 196, 161), QString(tr("Pale Grayish Orange Yellow"))));
+    addColor(ColorRef(QColor(255, 214, 156), QString(tr("Orange Yellow "))));
+    addColor(ColorRef(QColor(207, 174, 127), QString(tr("Grayish Orange Yellow"))));
+    addColor(ColorRef(QColor(255, 198, 116), QString(tr("Light Orange Yellow"))));
+    addColor(ColorRef(QColor(227, 177, 105), QString(tr("Light Grayish Orange Yellow")) ));
 }
 
 void Object::paintImage(QPainter& painter,int frameNumber,
@@ -659,8 +668,10 @@ void Object::paintImage(QPainter& painter,int frameNumber,
                 LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
 
                 BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
-                if (bitmap)
+                if (bitmap != nullptr)
+                {
                     bitmap->paintImage(painter);
+                }
 
             }
             // paints the vector images
@@ -668,8 +679,10 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             {
                 LayerVector* layerVector = static_cast<LayerVector*>(layer);
                 VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
-                if (vec)
+                if (vec != nullptr)
+                {
                     vec->paintImage(painter, false, false, antialiasing);
+                }
             }
         }
     }

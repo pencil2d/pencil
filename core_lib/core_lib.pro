@@ -35,7 +35,7 @@ HEADERS +=  \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \
-    src/graphics/vector/colourref.h \
+    src/graphics/vector/colorref.h \
     src/graphics/vector/vectorimage.h \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
@@ -97,6 +97,7 @@ HEADERS +=  \
     src/util/util.h \
     src/util/log.h \
     src/util/movemode.h \
+    src/util/pointerevent.h \
     src/canvaspainter.h \
     src/soundplayer.h \
     src/movieexporter.h \
@@ -105,14 +106,13 @@ HEADERS +=  \
     src/activeframepool.h \
     src/external/platformhandler.h \
     src/external/macosx/macosxnative.h \
-    src/util/pointerevent.h \
     src/selectionpainter.h
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
-    src/graphics/vector/colourref.cpp \
+    src/graphics/vector/colorref.cpp \
     src/graphics/vector/vectorimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
@@ -134,6 +134,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/preferencemanager.cpp \
     src/managers/playbackmanager.cpp \
     src/managers/viewmanager.cpp \
+    src/managers/soundmanager.cpp \
     src/movieimporter.cpp \
     src/overlaypainter.cpp \
     src/structure/camera.cpp \
@@ -165,15 +166,15 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \
+    src/util/log.cpp \
     src/util/util.cpp \
+    src/util/pointerevent.cpp \
     src/canvaspainter.cpp \
     src/soundplayer.cpp \
-    src/managers/soundmanager.cpp \
     src/movieexporter.cpp \
     src/miniz.cpp \
     src/qminiz.cpp \
     src/activeframepool.cpp \
-    src/util/pointerevent.cpp \
     src/selectionpainter.cpp
 
 FORMS += \
@@ -188,7 +189,6 @@ win32 {
 
 macx {
     INCLUDEPATH += src/external/macosx
-    LIBS += -framework AppKit
     SOURCES += src/external/macosx/macosx.cpp
     OBJECTIVE_SOURCES += src/external/macosx/macosxnative.mm
 }

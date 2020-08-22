@@ -1,9 +1,9 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
-Copyright (C) 2011-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -43,6 +43,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
+#include "selectionmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
 
@@ -72,10 +73,8 @@ GNU General Public License for more details.
 #include "shortcutfilter.h"
 #include "app_util.h"
 #include "presetdialog.h"
+#include "pegbaralignmentdialog.h"
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
 
 #ifdef GIT_TIMESTAMP
 #define BUILD_DATE S__GIT_TIMESTAMP
@@ -83,10 +82,12 @@ GNU General Public License for more details.
 #define BUILD_DATE __DATE__
 #endif
 
-#ifdef PENCIL2D_NIGHTLY_BUILD
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg(BUILD_DATE)
-#else
+#if defined(PENCIL2D_RELEASE_BUILD)
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Nightly Build %1").arg(BUILD_DATE)
+#else
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Development Build %1").arg(BUILD_DATE)
 #endif
 
 
@@ -121,6 +122,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
     readSettings();
 
     updateZoomLabel();
+    selectionChanged();
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
@@ -131,7 +133,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
 
-    showPresetDialog();
+    tryLoadPreset();
 }
 
 MainWindow2::~MainWindow2()
@@ -272,6 +274,7 @@ void MainWindow2::createMenus()
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
     connect(ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste);
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
@@ -289,10 +292,19 @@ void MainWindow2::createMenus()
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
 
     QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
+    auto visibilityGroup = new QActionGroup(this);
+    visibilityGroup->setExclusive(true);
     for (int i = 0; i < visibilityActions.size(); i++) {
         QAction* action = visibilityActions[i];
+        visibilityGroup->addAction(action);
         connect(action, &QAction::triggered, [=] { mCommands->setLayerVisibilityIndex(i); });
     }
+    visibilityActions[mEditor->preference()->getInt(SETTING::LAYER_VISIBILITY)]->setChecked(true);
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, [=](SETTING e) {
+        if (e == SETTING::LAYER_VISIBILITY) {
+            visibilityActions[mEditor->preference()->getInt(SETTING::LAYER_VISIBILITY)]->setChecked(true);
+        }
+    });
 
     // --- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
@@ -317,7 +329,6 @@ void MainWindow2::createMenus()
 
     bindActionWithSetting(ui->actionOnionPrev, SETTING::PREV_ONION);
     bindActionWithSetting(ui->actionOnionNext, SETTING::NEXT_ONION);
-    bindActionWithSetting(ui->actionMultiLayerOnionSkin, SETTING::MULTILAYER_ONION);
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -414,7 +425,7 @@ void MainWindow2::createMenus()
 
 void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
 {
-    SignalBlocker b(action);
+    QSignalBlocker b(action);
     action->setChecked(bChecked);
 }
 
@@ -435,6 +446,7 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty())
     {
         mRecentFileMenu->clear();
+        mRecentFileMenu->saveToDisk();
         QMessageBox::information(this, nullptr,
                                  tr("\n\n You have successfully cleared the list"),
                                  QMessageBox::Ok);
@@ -480,6 +492,12 @@ void MainWindow2::currentLayerChanged()
     }
 }
 
+void MainWindow2::selectionChanged()
+{
+    bool somethingSelected = mEditor->select()->somethingSelected();
+    ui->menuSelection->setEnabled(somethingSelected);
+}
+
 void MainWindow2::closeEvent(QCloseEvent* event)
 {
     if (m2ndCloseEvent)
@@ -506,29 +524,11 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
     event->ignore();
 }
 
-void MainWindow2::newDocument(bool force)
+void MainWindow2::newDocument()
 {
-    if (force)
+    if (maybeSave())
     {
-        newObject();
-
-        setWindowTitle(PENCIL_WINDOW_TITLE);
-        updateSaveState();
-    }
-    else if (maybeSave())
-    {
-        if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
-        {
-            showPresetDialog();
-        }
-        else
-        {
-            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
-            newObjectFromPresets(defaultPreset);
-
-            setWindowTitle(PENCIL_WINDOW_TITLE);
-            updateSaveState();
-        }
+        tryLoadPreset();
     }
 }
 
@@ -616,7 +616,6 @@ bool MainWindow2::openObject(QString strFilePath)
         progress.show();
     }
 
-    mEditor->layers()->setCurrentLayer(0);
 
     FileManager fm(this);
     connect(&fm, &FileManager::progressChanged, [&progress](int p)
@@ -642,7 +641,7 @@ bool MainWindow2::openObject(QString strFilePath)
         dd.collect(error.details());
         ErrorDialog errorDialog(error.title(), error.description(), dd.str());
         errorDialog.exec();
-        newDocument(true);
+        newEmptyDocumentAfterErrorOccurred();
         return false;
     }
 
@@ -652,7 +651,7 @@ bool MainWindow2::openObject(QString strFilePath)
                                 tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fullPath));
         errorDialog.exec();
-        newDocument(true);
+        newEmptyDocumentAfterErrorOccurred();
         return false;
     }
 
@@ -661,8 +660,12 @@ bool MainWindow2::openObject(QString strFilePath)
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, object->filePath());
 
-    mRecentFileMenu->addRecentFile(object->filePath());
-    mRecentFileMenu->saveToDisk();
+    // Add to recent file list, but only if we are
+    if (!object->filePath().isEmpty())
+    {
+        mRecentFileMenu->addRecentFile(object->filePath());
+        mRecentFileMenu->saveToDisk();
+    }
 
     setWindowTitle(object->filePath().prepend("[*]"));
     setWindowModified(false);
@@ -811,6 +814,14 @@ bool MainWindow2::autoSave()
     }
 
     return false;
+}
+
+void MainWindow2::newEmptyDocumentAfterErrorOccurred()
+{
+    newObject();
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
+    updateSaveState();
 }
 
 void MainWindow2::importImage()
@@ -1066,10 +1077,14 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     }
     mEditor->setObject(object);
     object->setFilePath(QString());
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
+    updateSaveState();
+
     return true;
 }
 
-void  MainWindow2::showPresetDialog()
+void  MainWindow2::tryLoadPreset()
 {
     if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
     {
@@ -1089,6 +1104,11 @@ void  MainWindow2::showPresetDialog()
             }
         });
         presetDialog->open();
+    }
+    else
+    {
+        int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+        newObjectFromPresets(defaultPreset);
     }
 }
 
@@ -1311,11 +1331,11 @@ void MainWindow2::importPalette()
 void MainWindow2::openPalette()
 {
     int count = 0;
-    int maxNumber = mEditor->object()->getColourCount();
+    int maxNumber = mEditor->object()->getColorCount();
     bool openPalette = true;
     while (count < maxNumber)
     {
-        if (mEditor->object()->isColourInUse(count))
+        if (mEditor->object()->isColorInUse(count))
         {
             QMessageBox msgBox;
             msgBox.setText(tr("Opening palette, will replace the old palette.\n"
@@ -1348,6 +1368,7 @@ void MainWindow2::openPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
+    connect(this, &MainWindow2::appLostFocus, editor->getScribbleArea(), &ScribbleArea::setPrevTool);
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
@@ -1438,7 +1459,7 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
-void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
+void MainWindow2::bindActionWithSetting(QAction* action, const SETTING& setting)
 {
     PreferenceManager* prefs = mEditor->preference();
 
@@ -1462,8 +1483,8 @@ void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
 
 void MainWindow2::updateZoomLabel()
 {
-    float zoom = mEditor->view()->scaling() * 100.f;
-    statusBar()->showMessage(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
+    qreal zoom = mEditor->view()->scaling() * 100.f;
+    statusBar()->showMessage(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -31,25 +31,25 @@ LayerVector::~LayerVector()
 {
 }
 
-bool LayerVector::usesColour(int colorIndex)
+bool LayerVector::usesColor(int colorIndex)
 {
     bool bUseColor = false;
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
         auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
 
-        bUseColor = bUseColor || pVecImage->usesColour(colorIndex);
+        bUseColor = bUseColor || pVecImage->usesColor(colorIndex);
     });
 
     return bUseColor;
 }
 
-void LayerVector::removeColour(int colorIndex)
+void LayerVector::removeColor(int colorIndex)
 {
     foreachKeyFrame([=](KeyFrame* pKeyFrame)
     {
         auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
-        pVecImage->removeColour(colorIndex);
+        pVecImage->removeColor(colorIndex);
     });
 }
 

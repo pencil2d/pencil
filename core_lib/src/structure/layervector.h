@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -39,8 +39,8 @@ public:
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
 
-    bool usesColour(int index);
-    void removeColour(int index);
+    bool usesColor(int index);
+    void removeColor(int index);
     void moveColor(int start, int end);
 
 protected:

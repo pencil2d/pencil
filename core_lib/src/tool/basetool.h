@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -83,15 +83,15 @@ public:
     virtual bool keyReleaseEvent(QKeyEvent*) { return false; }
 
     // dynamic cursor adjustment
-    virtual void startAdjusting(ToolPropertyType argSettingType, qreal argStep);
+    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep);
     virtual void stopAdjusting();
-    virtual void adjustCursor(Qt::KeyboardModifiers keyMod);
+    virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
 
     virtual void clearToolData() {}
     virtual void resetToDefault() {}
 
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
-    static QPixmap quickSizeCursor(float brushWidth, float brushFeather, float scalingFac);
+    QPixmap quickSizeCursor(qreal scalingFac);
     static QCursor selectMoveCursor(MoveMode mode, ToolType type);
     static bool isAdjusting() { return msIsAdjusting; }
 
@@ -142,6 +142,8 @@ protected:
 
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
+
+    QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
 
 private:
     StrokeManager* mStrokeManager = nullptr;

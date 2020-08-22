@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ class BitmapImage : public KeyFrame
 public:
     BitmapImage();
     BitmapImage(const BitmapImage&);
-    BitmapImage(const QRect &rectangle, const QColor& colour);
+    BitmapImage(const QRect &rectangle, const QColor& color);
     BitmapImage(const QPoint& topLeft, const QImage& image);
     BitmapImage(const QPoint& topLeft, const QString& path);
 
@@ -63,12 +63,12 @@ public:
 
     QRgb pixel(int x, int y);
     QRgb pixel(QPoint p);
-    void setPixel(int x, int y, QRgb colour);
-    void setPixel(QPoint p, QRgb colour);
+    void setPixel(int x, int y, QRgb color);
+    void setPixel(QPoint p, QRgb color);
     void fillNonAlphaPixels(const QRgb color);
 
     inline QRgb constScanLine(int x, int y) const;
-    inline void scanLine(int x, int y, QRgb colour);
+    inline void scanLine(int x, int y, QRgb color);
     void clear();
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }

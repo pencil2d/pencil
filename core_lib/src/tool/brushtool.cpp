@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -66,6 +66,9 @@ void BrushTool::loadSettings()
 
     if (properties.width <= 0) { setWidth(15); }
     if (std::isnan(properties.feather)) { setFeather(15); }
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
 void BrushTool::resetToDefault()
@@ -324,7 +327,7 @@ void BrushTool::paintVectorStroke()
         curve.setFilled(false);
         curve.setInvisibility(properties.invisibility);
         curve.setVariableWidth(properties.pressure);
-        curve.setColourNumber(mEditor->color()->frontColorNumber());
+        curve.setColorNumber(mEditor->color()->frontColorNumber());
 
         VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         vectorImage->addCurve(curve, mEditor->view()->scaling(), false);

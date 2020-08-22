@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QToolButton>
 #include <QGridLayout>
+#include <QSettings>
 
 #include "preferencemanager.h"
 #include "viewmanager.h"
@@ -170,31 +171,31 @@ void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
 
-    SignalBlocker b1(ui->thinLinesButton);
+    QSignalBlocker b1(ui->thinLinesButton);
     ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));
 
-    SignalBlocker b2(ui->outLinesButton);
+    QSignalBlocker b2(ui->outLinesButton);
     ui->outLinesButton->setChecked(prefs->isOn(SETTING::OUTLINES));
 
-    SignalBlocker b9(ui->overlayCenterButton);
+    QSignalBlocker b9(ui->overlayCenterButton);
     ui->overlayCenterButton->setChecked(prefs->isOn(SETTING::OVERLAY_CENTER));
 
-    SignalBlocker b10(ui->overlayThirdsButton);
+    QSignalBlocker b10(ui->overlayThirdsButton);
     ui->overlayThirdsButton->setChecked(prefs->isOn(SETTING::OVERLAY_THIRDS));
 
-    SignalBlocker b11(ui->overlayGoldenRatioButton);
+    QSignalBlocker b11(ui->overlayGoldenRatioButton);
     ui->overlayGoldenRatioButton->setChecked(prefs->isOn(SETTING::OVERLAY_GOLDEN));
 
-    SignalBlocker b12(ui->overlaySafeAreaButton);
+    QSignalBlocker b12(ui->overlaySafeAreaButton);
     ui->overlaySafeAreaButton->setChecked(prefs->isOn(SETTING::OVERLAY_SAFE));
 
-    SignalBlocker b13(ui->overlayPerspective1Button);
+    QSignalBlocker b13(ui->overlayPerspective1Button);
     ui->overlayPerspective1Button->setChecked(prefs->isOn(SETTING::OVERLAY_PERSPECTIVE1));
 
-    SignalBlocker b14(ui->overlayPerspective2Button);
+    QSignalBlocker b14(ui->overlayPerspective2Button);
     ui->overlayPerspective2Button->setChecked(prefs->isOn(SETTING::OVERLAY_PERSPECTIVE2));
 
-    SignalBlocker b15(ui->overlayPerspective3Button);
+    QSignalBlocker b15(ui->overlayPerspective3Button);
     ui->overlayPerspective3Button->setChecked(prefs->isOn(SETTING::OVERLAY_PERSPECTIVE3));
     if (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON))
     {
@@ -205,10 +206,10 @@ void DisplayOptionWidget::updateUI()
 
     ViewManager* view = editor()->view();
 
-    SignalBlocker b3(ui->mirrorButton);
+    QSignalBlocker b3(ui->mirrorButton);
     ui->mirrorButton->setChecked(view->isFlipHorizontal());
 
-    SignalBlocker b4(ui->mirrorVButton);
+    QSignalBlocker b4(ui->mirrorVButton);
     ui->mirrorVButton->setChecked(view->isFlipVertical());
 }
 

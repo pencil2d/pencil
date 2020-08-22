@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,7 +19,6 @@ GNU General Public License for more details.
 
 #include <cstddef>
 #include <functional>
-#include <QTransform>
 
 class QAbstractSpinBox;
 
@@ -27,6 +26,7 @@ QTransform RectMapTransform( QRectF source, QRectF target );
 
 void clearFocusOnFinished(QAbstractSpinBox *spinBox);
 
+// NOTE: Replace this implementation with QScopeGuard once we drop support for Qt < 5.12
 class ScopeGuard
 {
 public:
@@ -41,21 +41,12 @@ private:
 
 #define OnScopeExit( callback ) ScopeGuard SCOPEGUARD_LINENAME( myScopeGuard, __LINE__ ) ( [&] { callback; } );
 
-
-#define NULLReturnVoid( p ) if ( p == nullptr ) { return; }
-#define NULLReturn( p, ret ) if ( p == nullptr ) { return ret; }
-#define NULLReturnAssert( p ) if ( p == nullptr ) { Q_ASSERT(false); return; }
-
-
-class SignalBlocker
-{
-public:
-    explicit SignalBlocker(QObject* o);
-    ~SignalBlocker();
-private:
-    QObject* mObject = nullptr;
-    bool mBlocked = false;
-};
+template <typename Container, typename Pred>
+Container filter(const Container& container, Pred predicate) {
+    Container result;
+    std::copy_if(container.begin(), container.end(), std::back_inserter(result), predicate);
+    return result;
+}
 
 QString ffprobeLocation();
 QString ffmpegLocation();

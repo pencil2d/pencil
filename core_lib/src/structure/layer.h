@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -119,10 +119,10 @@ public:
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
     void paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility);
-    virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
+    void paintSelection(QPainter& painter, int x, int y, int height, int width);
     void mouseDoubleClick(QMouseEvent*, int frameNumber);
 
-    virtual void editProperties();
+    virtual void editProperties(); // TODO: it's used by camera layers only, should move somewhere else
 
     bool isPaintable() const;
 
