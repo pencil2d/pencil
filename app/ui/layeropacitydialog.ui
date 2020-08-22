@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>225</width>
-    <height>314</height>
+    <height>378</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -162,6 +162,19 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="labInfo">
+     <property name="text">
+      <string>Be aware that opacity changes are made in the rendering, and will not change your artwork.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">

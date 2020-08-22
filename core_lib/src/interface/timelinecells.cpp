@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QPainter>
 
 #include "object.h"
 #include "editor.h"
@@ -733,7 +734,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     int layerNumber = getLayerNumber(event->pos().y());
 
     // -- short scrub --
-    if (event->pos().y() < 20 && event->pos().x() > 20)
+    if (event->pos().y() < 20)
     {
         mPrefs->set(SETTING::SHORT_SCRUB, !mbShortScrub);
     }

@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>41</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -135,7 +135,6 @@
      </property>
      <addaction name="actionOnionPrev"/>
      <addaction name="actionOnionNext"/>
-     <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
     <widget class="QMenu" name="menuZoom">
      <property name="title">
@@ -826,7 +825,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>MultiLayer Onion Skin</string>
+    <string>Multilayer Onion Skin</string>
    </property>
   </action>
   <action name="actionLoopControl">
@@ -1016,11 +1015,6 @@
     <string>Peg bar Alignment</string>
    </property>
   </action>
-  <action name="actionImport_MovieVideo">
-   <property name="text">
-    <string>Movie Video...</string>
-   </property>
-  </action>
   <action name="actionImport_MovieAudio">
    <property name="text">
     <string>Movie Audio...</string>
@@ -1057,16 +1051,25 @@
    </property>
   </action>
   <action name="actionVisibilityCurrentLayerOnly">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Current layer only</string>
    </property>
   </action>
   <action name="actionVisibilityRelative">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Relative</string>
    </property>
   </action>
   <action name="actionVisibilityAll">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>All layers</string>
    </property>

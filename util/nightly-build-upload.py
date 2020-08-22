@@ -37,16 +37,18 @@ drive_service = discovery.build('drive', 'v3', http=http)
 
 # upload nightly build
 file_metadata = { 'name' : os.path.basename(file), 'parents': [parent] }
+print(file_metadata)
+
 media = MediaFileUpload(file)
 file = drive_service.files().create(body=file_metadata, media_body=media).execute()
 
 # delete files older than 90 days
-check_date = datetime.datetime.now() + datetime.timedelta(-90)
+check_date = datetime.datetime.now() + datetime.timedelta(-120)
 filter = "name contains 'pencil2d'"
 filter += " and createdTime < '{}'".format(check_date.strftime("%Y-%m-%dT%H:%M:%S"))
 
 print('filter=', filter)
-print('List files older than 90 days')
+print('List files older than 120 days')
 
 response = drive_service.files().list(q=filter, spaces='drive').execute()
 

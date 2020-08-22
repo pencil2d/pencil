@@ -49,10 +49,15 @@ void LayerOpacityDialog::init()
     connect(mLayerManager->currentLayer(), &Layer::selectedFramesChanged, this, &LayerOpacityDialog::selectedFramesChanged);
     connect(this, &QDialog::finished, this, &LayerOpacityDialog::closeClicked);
 
-    if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
-        initBitmap();
-    else
-        initVector();
+    if (mLayerManager->currentLayer()->keyExists(mEditor->currentFrame()) &&
+            (mLayerManager->currentLayer()->type() == Layer::BITMAP ||
+             mLayerManager->currentLayer()->type() == Layer::VECTOR))
+    {
+        if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
+            initBitmap();
+        else
+            initVector();
+    }
     currentLayerChanged(mLayerManager->currentLayerIndex());
 }
 
@@ -123,8 +128,8 @@ void LayerOpacityDialog::allLayerOpacity()
 
 void LayerOpacityDialog::selectedKeyframesOpacity()
 {
-    SignalBlocker b1(ui->chooseOpacitySlider);
-    SignalBlocker b2(ui->chooseOpacitySpinBox);
+    QSignalBlocker b1(ui->chooseOpacitySlider);
+    QSignalBlocker b2(ui->chooseOpacitySpinBox);
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
@@ -156,8 +161,8 @@ void LayerOpacityDialog::selectedKeyframesOpacity()
 
 void LayerOpacityDialog::fadeInPressed()
 {
-    SignalBlocker b1(ui->chooseOpacitySlider);
-    SignalBlocker b2(ui->chooseOpacitySpinBox);
+    QSignalBlocker b1(ui->chooseOpacitySlider);
+    QSignalBlocker b2(ui->chooseOpacitySpinBox);
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
@@ -205,8 +210,8 @@ void LayerOpacityDialog::fadeInPressed()
 
 void LayerOpacityDialog::fadeOutPressed()
 {
-    SignalBlocker b1(ui->chooseOpacitySlider);
-    SignalBlocker b2(ui->chooseOpacitySpinBox);
+    QSignalBlocker b1(ui->chooseOpacitySlider);
+    QSignalBlocker b2(ui->chooseOpacitySpinBox);
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
@@ -290,7 +295,9 @@ void LayerOpacityDialog::currentFrameChanged(int frame)
             selectedFramesChanged();
         }
         else
+        {
             disableDialog();
+        }
     }
 }
 
@@ -326,8 +333,8 @@ void LayerOpacityDialog::updateSlider()
 {
     if (!mLayerManager->currentLayer()->keyExists(mEditor->currentFrame())) { return; }
 
-    SignalBlocker b1(ui->chooseOpacitySlider);
-    SignalBlocker b2(ui->chooseOpacitySpinBox);
+    QSignalBlocker b1(ui->chooseOpacitySlider);
+    QSignalBlocker b2(ui->chooseOpacitySpinBox);
     if (mLayerManager->currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layer = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
@@ -447,7 +454,7 @@ void LayerOpacityDialog::disableDialog()
     ui->groupBoxFade->setEnabled(false);
     ui->chooseOpacitySlider->setEnabled(false);
     ui->chooseOpacitySpinBox->setEnabled(false);
-    ui->btnClose->setEnabled(false);
+    ui->btnClose->setEnabled(true);
 }
 
 void LayerOpacityDialog::closeClicked()

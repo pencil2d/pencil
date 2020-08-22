@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -45,17 +45,6 @@ QTransform RectMapTransform( QRectF source, QRectF target )
         matrix.reset();
     }
     return matrix;
-}
-
-SignalBlocker::SignalBlocker( QObject* o )
-    : mObject( o ),
-    mBlocked( o && o->blockSignals( true ) )
-{}
-
-SignalBlocker::~SignalBlocker()
-{
-    if ( mObject )
-        mObject->blockSignals( mBlocked );
 }
 
 void clearFocusOnFinished(QAbstractSpinBox *spinBox)
