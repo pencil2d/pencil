@@ -488,6 +488,7 @@ void MainWindow2::openRepositionDialog()
     }
 
     mReposDialog = new RepositionFramesDialog();
+    mReposDialog->setAttribute(Qt::WA_DeleteOnClose);
     connect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
     mReposDialog->setCore(mEditor);
     mReposDialog->initUI();

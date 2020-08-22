@@ -49,10 +49,7 @@ void RepositionFramesDialog::initUI()
     connect(this, &QDialog::finished, this, &RepositionFramesDialog::closeClicked);
     connect(mEditor->getScribbleArea(), &ScribbleArea::selectionUpdated, this, &RepositionFramesDialog::updateDialogText);
     connect(mEditor->select(), &SelectionManager::selectionReset, this, &RepositionFramesDialog::closeClicked);
-    QMessageBox::information(this, nullptr,
-                             tr("Please move selection to desired destination"),
-                             QMessageBox::Ok);
-    mEndPoint = mStartPoint;
+    mEndPoint = mStartPoint = QPoint(0,0);
     mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
     updateDialogSelectedFrames();
     updateDialogText();
@@ -60,8 +57,10 @@ void RepositionFramesDialog::initUI()
 
 void RepositionFramesDialog::updateDialogText()
 {
-    if (mOriginalPolygonF.isEmpty())
+    if (mOriginalPolygonF.boundingRect().isEmpty())
+    {
         mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
+    }
     mCurrentPolygonF = mEditor->select()->currentSelectionPolygonF();
     QPoint point = getRepositionPoint();
     ui->labRepositioned->setText(tr("Repositioned: ( %1, %2 )").arg(point.x()).arg(point.y()));

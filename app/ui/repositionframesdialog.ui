@@ -25,6 +25,19 @@
     <widget class="QListWidget" name="listSelectedFrames"/>
    </item>
    <item>
+    <widget class="QLabel" name="labInfo">
+     <property name="text">
+      <string>(Please move selection to desired destination.)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="labRepositioned">
      <property name="text">
       <string>Reposition (x,y): </string>
