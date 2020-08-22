@@ -50,7 +50,7 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-        friend class MoveTool;
+    friend class MoveTool;
     friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
@@ -118,6 +118,7 @@ signals:
     void modification(int);
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
+    void selectionUpdated();
 
 public slots:
     void clearImage();
@@ -132,6 +133,9 @@ public slots:
     void paletteColorChanged(QColor);
 
     void showLayerNotVisibleWarning();
+    void updateOriginalPolygonF();
+    void setOriginalPolygonF(QPolygonF polygon) { mOriginalPolygonF = polygon; }
+    QPolygonF getOriginalPolygonF() { return mOriginalPolygonF; }
 
 
 protected:
@@ -234,6 +238,8 @@ private:
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
     SelectionPainter mSelectionPainter;
+
+    QPolygonF mOriginalPolygonF = QPolygonF();
 
     // Pixmap Cache keys
     std::vector<QPixmapCache::Key> mPixmapCacheKeys;

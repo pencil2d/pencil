@@ -100,9 +100,9 @@ public:
     void setTransformedSelectionRect(const QRectF& rect) { mTransformedSelection = rect; }
     void setRotation(const qreal& rotation) { mRotatedAngle = rotation; }
 
-
 signals:
     void selectionChanged();
+    void selectionReset();
     void needPaintAndApply();
     void needDeleteSelection();
 

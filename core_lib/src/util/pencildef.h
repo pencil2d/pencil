@@ -57,7 +57,8 @@ enum ToolPropertyType
     ANTI_ALIASING,
     STABILIZATION,
     TOLERANCE,
-    FILLCONTOUR
+    FILLCONTOUR,
+    SHOWSELECTIONINFO
 };
 
 enum BackgroundStyle
@@ -214,6 +215,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
+#define SETTING_SHOW_SELECTION_INFO "ShowSelectionInfo"
 #define SETTING_ASK_FOR_PRESET      "AskForPreset"
 #define SETTING_DEFAULT_PRESET      "DefaultPreset"
 

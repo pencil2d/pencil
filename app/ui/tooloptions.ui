@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>164</width>
-    <height>361</height>
+    <width>198</width>
+    <height>460</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -216,6 +216,16 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showInfoBox">
+     <property name="text">
+      <string>Show Size and Diff.</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
