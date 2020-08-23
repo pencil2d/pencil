@@ -81,6 +81,7 @@ void ToolOptionWidget::updateUI()
     setStabilizerLevel(p.stabilizerLevel);
     setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
+
 }
 
 void ToolOptionWidget::createUI()
@@ -187,6 +188,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
             ui->sizeSlider->setLabel(tr("Stroke Thickness"));
             ui->toleranceSlider->setVisible(false);
             ui->toleranceSpinBox->setVisible(false);
+            ui->abortFillBox->setVisible(true);
             break;
         default:
             ui->sizeSlider->setLabel(tr("Width"));
@@ -206,6 +208,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
         case BUCKET:
             ui->brushSpinBox->setVisible(false);
             ui->sizeSlider->setVisible(false);
+            ui->abortFillBox->setVisible(true);
             break;
         default:
             ui->makeInvisibleBox->setVisible(false);
@@ -328,6 +331,12 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
+void ToolOptionWidget::setAbortFillSpill(bool abort)
+{
+    QSignalBlocker b(ui->abortFillBox);
+    ui->abortFillBox->setChecked(abort);
+}
+
 void ToolOptionWidget::disableAllOptions()
 {
     ui->sizeSlider->hide();
@@ -345,4 +354,5 @@ void ToolOptionWidget::disableAllOptions()
     ui->toleranceSlider->hide();
     ui->toleranceSpinBox->hide();
     ui->fillContourBox->hide();
+    ui->abortFillBox->hide();
 }

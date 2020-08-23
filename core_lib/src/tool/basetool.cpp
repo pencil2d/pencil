@@ -457,3 +457,8 @@ void BaseTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;
 }
+
+void BaseTool::setAbortFillSpill(const bool abortFillSpill)
+{
+    properties.abortFillSpill = abortFillSpill;
+}

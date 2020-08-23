@@ -65,6 +65,7 @@ private:
     void setTolerance(int);
     void setFillContour(int);
     void setBezier(bool);
+    void setAbortFillSpill(bool);
 
     void disableAllOptions();
     void createUI();

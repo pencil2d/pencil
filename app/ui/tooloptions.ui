@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>164</width>
-    <height>361</height>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -175,6 +175,13 @@
      </property>
      <property name="text">
       <string comment="Vector line merge (Tool options)">Merge</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="abortFillBox">
+     <property name="text">
+      <string>Abort if line is broken</string>
      </property>
     </widget>
    </item>
