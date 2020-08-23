@@ -1089,19 +1089,11 @@ bool MainWindow2::loadMostRecent()
     {
         QSettings settings(PENCIL2D, PENCIL2D);
         QString myPath = settings.value(LAST_PCLX_PATH, QVariant("")).toString();
-        if (myPath.isEmpty())
+        if (myPath.isEmpty() || !QFile::exists(myPath))
         {
-            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
-            newObjectFromPresets(defaultPreset);
-            return true;
+            return false;
         }
-
-        QFile file(myPath);
-        if (file.exists())
-        {
-            openObject(myPath);
-        }
-        return true;
+        return openObject(myPath);
     }
     return false;
 }
