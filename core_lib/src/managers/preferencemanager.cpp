@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 
 #include <QSettings>
-
+#include <QDebug>
 
 PreferenceManager::PreferenceManager(Editor* editor) : BaseManager(editor)
 {
@@ -93,6 +93,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       256).toInt());
     set(SETTING::ASK_FOR_PRESET,           settings.value(SETTING_ASK_FOR_PRESET,         false).toBool());
     set(SETTING::LOAD_MOST_RECENT,         settings.value(SETTING_LOAD_MOST_RECENT,       false).toBool());
+    set(SETTING::LOAD_DEFAULT_PRESET,      settings.value(SETTING_LOAD_DEFAULT_PRESET,    true).toBool());
     set(SETTING::DEFAULT_PRESET,           settings.value(SETTING_DEFAULT_PRESET,         0).toInt());
 
     // Timeline
@@ -421,6 +422,9 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::LOAD_MOST_RECENT:
         settings.setValue(SETTING_LOAD_MOST_RECENT, value);
+        break;
+    case SETTING::LOAD_DEFAULT_PRESET:
+        settings.setValue(SETTING_LOAD_DEFAULT_PRESET, value);
         break;
     default:
         Q_ASSERT(false);
