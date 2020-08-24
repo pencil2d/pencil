@@ -125,7 +125,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
     readSettings();
 
     mZoomLabel = new QLabel("");
-    ui->statusbar->addPermanentWidget(mZoomLabel);
+    ui->statusbar->addWidget(mZoomLabel);
     mTimecodeButton = new QToolButton();
     mTimecodeButton->setIcon(QIcon(":app/icons/new/svg/more_options.svg"));
     mTimecodeButton->setPopupMode(QToolButton::InstantPopup);
@@ -133,8 +133,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->statusbar->addPermanentWidget(mTimecodeButton);
     mTimecodeLabel = new QLabel("");
     ui->statusbar->addPermanentWidget(mTimecodeLabel);
-    mExpander = new QLabel("");
-    ui->statusbar->addPermanentWidget(mExpander, 1); // left justifies the rest
 
     updateZoomLabel();
     selectionChanged();
