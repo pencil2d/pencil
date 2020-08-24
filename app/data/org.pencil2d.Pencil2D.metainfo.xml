@@ -26,6 +26,9 @@
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="0.6.5" date="2020-07-31">
+      <url type="details">https://www.pencil2d.org/2020/07/pencil2d-0.6.5-release.html</url>
+    </release>
     <release version="0.6.4" date="2019-06-03">
       <url type="details">https://www.pencil2d.org/2019/05/pencil2d-0.6.4-release.html</url>
     </release>

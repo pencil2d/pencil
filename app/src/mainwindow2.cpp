@@ -1,9 +1,9 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
-Copyright (C) 2011-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -76,10 +76,8 @@ GNU General Public License for more details.
 #include "shortcutfilter.h"
 #include "app_util.h"
 #include "presetdialog.h"
+#include "pegbaralignmentdialog.h"
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
 
 #ifdef GIT_TIMESTAMP
 #define BUILD_DATE S__GIT_TIMESTAMP
@@ -87,10 +85,12 @@ GNU General Public License for more details.
 #define BUILD_DATE __DATE__
 #endif
 
-#ifdef PENCIL2D_NIGHTLY_BUILD
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg(BUILD_DATE)
-#else
+#if defined(PENCIL2D_RELEASE_BUILD)
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Nightly Build %1").arg(BUILD_DATE)
+#else
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Development Build %1").arg(BUILD_DATE)
 #endif
 
 
@@ -304,10 +304,19 @@ void MainWindow2::createMenus()
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
 
     QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
+    auto visibilityGroup = new QActionGroup(this);
+    visibilityGroup->setExclusive(true);
     for (int i = 0; i < visibilityActions.size(); i++) {
         QAction* action = visibilityActions[i];
+        visibilityGroup->addAction(action);
         connect(action, &QAction::triggered, [=] { mCommands->setLayerVisibilityIndex(i); });
     }
+    visibilityActions[mEditor->preference()->getInt(SETTING::LAYER_VISIBILITY)]->setChecked(true);
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, [=](SETTING e) {
+        if (e == SETTING::LAYER_VISIBILITY) {
+            visibilityActions[mEditor->preference()->getInt(SETTING::LAYER_VISIBILITY)]->setChecked(true);
+        }
+    });
 
     // --- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
@@ -527,16 +536,9 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
     event->ignore();
 }
 
-void MainWindow2::newDocument(bool force)
+void MainWindow2::newDocument()
 {
-    if (force)
-    {
-        newObject();
-
-        setWindowTitle(PENCIL_WINDOW_TITLE);
-        updateSaveState();
-    }
-    else if (maybeSave())
+    if (maybeSave())
     {
         tryLoadPreset();
     }
@@ -626,7 +628,6 @@ bool MainWindow2::openObject(QString strFilePath)
         progress.show();
     }
 
-    mEditor->layers()->setCurrentLayer(0);
 
     FileManager fm(this);
     connect(&fm, &FileManager::progressChanged, [&progress](int p)
@@ -652,7 +653,7 @@ bool MainWindow2::openObject(QString strFilePath)
         dd.collect(error.details());
         ErrorDialog errorDialog(error.title(), error.description(), dd.str());
         errorDialog.exec();
-        newDocument(true);
+        newEmptyDocumentAfterErrorOccurred();
         return false;
     }
 
@@ -662,7 +663,7 @@ bool MainWindow2::openObject(QString strFilePath)
                                 tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fullPath));
         errorDialog.exec();
-        newDocument(true);
+        newEmptyDocumentAfterErrorOccurred();
         return false;
     }
 
@@ -825,6 +826,14 @@ bool MainWindow2::autoSave()
     }
 
     return false;
+}
+
+void MainWindow2::newEmptyDocumentAfterErrorOccurred()
+{
+    newObject();
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
+    updateSaveState();
 }
 
 void MainWindow2::importImage()
@@ -1396,6 +1405,7 @@ void MainWindow2::openPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
+    connect(this, &MainWindow2::appLostFocus, editor->getScribbleArea(), &ScribbleArea::setPrevTool);
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
@@ -1488,7 +1498,7 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
-void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
+void MainWindow2::bindActionWithSetting(QAction* action, const SETTING& setting)
 {
     PreferenceManager* prefs = mEditor->preference();
 
@@ -1512,8 +1522,8 @@ void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
 
 void MainWindow2::updateZoomLabel()
 {
-    float zoom = mEditor->view()->scaling() * 100.f;
-    mZoomLabel->setText(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
+    qreal zoom = mEditor->view()->scaling() * 100.f;
+    mZoomLabel->setText(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
 }
 
 void MainWindow2::updateTimecodeLabel()
@@ -1524,7 +1534,7 @@ void MainWindow2::updateTimecodeLabel()
     switch (mTimecodeLabelEnum)
     {
     case TimecodeTextLevel::TIMECODE:
-        mTimecodeLabel->setText(QString("MM:SS:FF  %1:%2:%3")
+        mTimecodeLabel->setText(QString("MM:SS.FF  %1:%2.%3")
                                 .arg(QString::number(frame / (60 * fps) % 60).rightJustified(2,'0'))
                                 .arg(QString::number(frame / fps % 60).rightJustified(2, '0'))
                                 .arg(QString::number(frame % fps).rightJustified(2, '0')));
@@ -1534,7 +1544,7 @@ void MainWindow2::updateTimecodeLabel()
         break;
     case TimecodeTextLevel::NOTEXT:
     default:
-        mTimecodeLabel->setText("");
+        mTimecodeLabel->setText("...");
         break;
     }
 

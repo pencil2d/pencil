@@ -1,3 +1,20 @@
+﻿/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #include "checkupdatesdialog.h"
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
@@ -78,7 +95,7 @@ void CheckUpdatesDialog::startChecking()
 void CheckUpdatesDialog::regularBuildCheck()
 {
     mNetworkManager = new QNetworkAccessManager(this);
-    QUrl url("http://github.com/pencil2d/pencil/releases.atom");
+    QUrl url("https://github.com/pencil2d/pencil/releases.atom");
 
     QNetworkRequest req;
     req.setUrl(url);
@@ -108,6 +125,24 @@ void CheckUpdatesDialog::networkErrorHappened()
     mDownloadButton->setEnabled(false);
 }
 
+void CheckUpdatesDialog::networkResponseIsEmpty()
+{
+    mTitleLabel->setText(tr("<b>An error occurred while checking for updates</b>", "error msg of check-for-update"));
+    mDetailLabel->setText(tr("Network response is empty", "error msg of check-for-update"));
+    mProgressBar->setRange(0, 1);
+    mProgressBar->setValue(1);
+    mDownloadButton->setEnabled(false);
+}
+
+void CheckUpdatesDialog::invalidReleaseXml()
+{
+    mTitleLabel->setText(tr("<b>An error occurred while checking for updates</b>", "error msg of check-for-update"));
+    mDetailLabel->setText(tr("Couldn't retrieve the version information", "error msg of check-for-update"));
+    mProgressBar->setRange(0, 1);
+    mProgressBar->setValue(1);
+    mDownloadButton->setEnabled(false);
+}
+
 void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
@@ -122,9 +157,18 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
     }
 
     auto releasesAtom = QString::fromUtf8(reply->readAll()).trimmed();
-    //qDebug() << releasesAtom;
+    if (releasesAtom.isEmpty())
+    {
+        networkResponseIsEmpty();
+        return;
+    }
 
     QString latestVersionString = getVersionNumberFromXml(releasesAtom);
+    if (latestVersionString == "0.0.1")
+    {
+        invalidReleaseXml();
+        return;
+    }
 
     bool isNewVersionAvailable = compareVersion(APP_VERSION, latestVersionString);
     if (isNewVersionAvailable)
@@ -153,7 +197,7 @@ bool CheckUpdatesDialog::compareVersion(QString currentVersion, QString latestVe
 
 QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
 {
-    // XML source: http://github.com/pencil2d/pencil/releases.atom
+    // XML source: https://github.com/pencil2d/pencil/releases.atom
 
     QXmlStreamReader xmlReader(xml);
 

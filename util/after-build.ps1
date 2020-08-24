@@ -14,6 +14,18 @@ $arch = switch ($platform) {
   default {"Unknown"; break}
 }
 
+$libcrypto = switch ($platform) {
+  "x86"   {"C:\OpenSSL-v111-Win32\bin\libcrypto-1_1.dll"; break}
+  "amd64" {"C:\OpenSSL-v111-Win64\bin\libcrypto-1_1-x64.dll"; break}
+  default {""; break}
+}
+
+$libssl = switch ($platform) {
+  "x86"   {"C:\OpenSSL-v111-Win32\bin\libssl-1_1.dll"; break}
+  "amd64" {"C:\OpenSSL-v111-Win64\bin\libssl-1_1-x64.dll"; break}
+  default {""; break}
+}
+
 [string]$ffmpegFileName = "ffmpeg-4.1.1-$arch-static"
 [string]$ffmpegUrl = "https://ffmpeg.zeranoe.com/builds/$arch/static/$ffmpegFileName.zip"
 
@@ -43,15 +55,19 @@ Remove-Item -Path "./$ffmpegFileName" -Recurse
 
 Remove-Item -Path "./Pencil2D" -Recurse -ErrorAction SilentlyContinue
 Copy-Item -Path "./bin" -Destination "./Pencil2D" -Recurse
+Remove-Item -Path "./Pencil2D/*.pdb"
+Remove-Item -Path "./Pencil2D/*.ilk"
 
 echo ">>> Deploying Qt libraries"
 
 & "windeployqt" @("Pencil2D/pencil2d.exe")
 
+echo ">>> Copy OpenSSL DLLs"
+Copy-Item $libcrypto -Destination "./Pencil2D"
+Copy-Item $libssl -Destination "./Pencil2D"
+
 echo ">>> Zipping bin folder"
 
-Remove-Item -Path "./Pencil2D/*.pdb"
-Remove-Item -Path "./Pencil2D/*.ilk"
 Compress-Archive -Path "./Pencil2D" -DestinationPath "./Pencil2D.zip"
 
 $today = Get-Date -Format "yyyy-MM-dd"

@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "pentool.h"
 
 #include <QPixmap>
+#include <QSettings>
 
 #include "vectorimage.h"
 #include "layervector.h"
@@ -283,6 +284,7 @@ void PenTool::paintVectorStroke(Layer* layer)
 
     auto pLayerVector = static_cast<LayerVector*>(layer);
     VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
 
     if (vectorImage->isAnyCurveSelected() || mEditor->select()->somethingSelected())

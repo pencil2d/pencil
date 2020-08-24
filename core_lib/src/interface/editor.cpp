@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -541,13 +541,15 @@ void Editor::copy()
     if (layer->type() == Layer::BITMAP)
     {
         LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
+        BitmapImage* bitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+        if (bitmapImage == nullptr) { return; }
         if (select()->somethingSelected())
         {
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(select()->mySelectionRect().toRect());  // copy part of the image
+            g_clipboardBitmapImage = bitmapImage->copy(select()->mySelectionRect().toRect());  // copy part of the image
         }
         else
         {
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
+            g_clipboardBitmapImage = bitmapImage->copy();  // copy the whole image
         }
         clipboardBitmapOk = true;
         if (g_clipboardBitmapImage.image() != nullptr)
@@ -556,7 +558,9 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        g_clipboardVectorImage = *((static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+        if (vectorImage == nullptr) { return; }
+        g_clipboardVectorImage = *vectorImage;  // copy the image
     }
 }
 
@@ -585,14 +589,17 @@ void Editor::paste()
             }
             auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
             mScribbleArea->handleDrawingOnEmptyFrame();
-            pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->paste(&tobePasted); // paste the clipboard
+            BitmapImage *bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+            Q_CHECK_PTR(bitmapImage);
+            bitmapImage->paste(&tobePasted); // paste the clipboard
         }
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
             backup(tr("Paste"));
             deselectAll();
             mScribbleArea->handleDrawingOnEmptyFrame();
-            VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            Q_CHECK_PTR(vectorImage);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             select()->setSelection(vectorImage->getSelectionRect(), false);
         }
@@ -722,7 +729,7 @@ void Editor::updateObject()
     {
         mScribbleArea->updateAllFrames();
     }
-    
+
     if (mPreferenceManager)
     {
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
@@ -967,10 +974,11 @@ void Editor::selectAll()
     else if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
-        if (vectorImage == nullptr) { return; }
-
-        vectorImage->selectAll();
-        rect = vectorImage->getSelectionRect();
+        if (vectorImage != nullptr)
+        {
+            vectorImage->selectAll();
+            rect = vectorImage->getSelectionRect();
+        }
     }
     select()->setSelection(rect, false);
 }
@@ -983,9 +991,10 @@ void Editor::deselectAll()
     if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
-        if (vectorImage == nullptr) { return; }
-
-        vectorImage->deselectAll();
+        if (vectorImage != nullptr)
+        {
+            vectorImage->deselectAll();
+        }
     }
 
     select()->resetSelectionProperties();
@@ -1151,11 +1160,6 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     mScribbleArea->updateAllFrames();
 
     emit updateTimeLine();
-}
-
-void Editor::showLayerNotVisibleWarning()
-{
-    return mScribbleArea->showLayerNotVisibleWarning();
 }
 
 void Editor::swapLayers(int i, int j)
