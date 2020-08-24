@@ -716,7 +716,7 @@ Status FileManager::recoverObject(Object* object)
     mainXmlOK &= (!root.isNull());
 
     QDomElement objectTag = root.firstChildElement("object");
-    mainXmlOK &= (objectTag.isNull());
+    mainXmlOK &= (objectTag.isNull() == false);
 
     if (mainXmlOK == false)
     {
