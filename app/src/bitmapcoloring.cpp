@@ -28,7 +28,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     BaseDockWidget(parent)
 {
     QWidget* innerWidget = new QWidget;
-    setWindowTitle(tr("Manga Coloring"));
+    setWindowTitle(tr("Anime Coloring"));
 
     ui = new Ui::BitmapColoringWidget;
     ui->setupUi(innerWidget);
@@ -487,7 +487,14 @@ void BitmapColoring::prepareLines()
     {
         mLayerBitmap->copyFrame(mLayerBitmap, colorLayer, mEditor->currentFrame());
     }
-    colorLayer->getBitmapImageAtFrame(mEditor->currentFrame())->traceLine(colorLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
+    mBitmapImage = colorLayer->getBitmapImageAtFrame(mEditor->currentFrame());
+    if (mBitmapImage == nullptr)
+    {
+        nonValidBitmap(mEditor->currentFrame());
+        return;
+    }
+
+    mBitmapImage->traceLine(colorLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
                                                                           black,
                                                                           ui->cb2TraceRed->isChecked(),
                                                                           ui->cb2TraceGreen->isChecked(),
@@ -504,6 +511,12 @@ void BitmapColoring::trace()
         mEditor->paste();
     }
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+    if (mBitmapImage == nullptr)
+    {
+        nonValidBitmap(mEditor->currentFrame());
+        return;
+    }
+
     prepareLines();
     mEditor->backup("Trace lines");
 }
@@ -513,6 +526,12 @@ void BitmapColoring::thin()
     bool black;
     ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+    if (mBitmapImage == nullptr)
+    {
+        nonValidBitmap(mEditor->currentFrame());
+        return;
+    }
+
     mBitmapImage->toThinLine(mBitmapImage,
                              black,
                              ui->cb2ThinRed->isChecked(),
@@ -526,7 +545,14 @@ void BitmapColoring::blend(LayerBitmap *artLayer)
 {
     bool black;
     ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
-    mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame())->blendLines(mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame()),
+    mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+    if (mBitmapImage == nullptr)
+    {
+        nonValidBitmap(mEditor->currentFrame());
+        return;
+    }
+
+    mBitmapImage->blendLines(mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame()),
                                                        black,
                                                        ui->cb2BlendRed->isChecked(),
                                                        ui->cb2BlendGreen->isChecked(),
@@ -534,12 +560,22 @@ void BitmapColoring::blend(LayerBitmap *artLayer)
     mEditor->backup("Blend lines");
     if (ui->cbMethodSelector->currentIndex() == 2 && artLayer != nullptr)
     {
-        artLayer->getBitmapImageAtFrame(mEditor->currentFrame())->traceLine(artLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
-                                                                            false,
-                                                                            false,
-                                                                            false,
-                                                                            false);
+        mBitmapImage = artLayer->getBitmapImageAtFrame(mEditor->currentFrame());
+        if (mBitmapImage == nullptr)
+        {
+            nonValidBitmap(mEditor->currentFrame());
+            return;
+        }
+
+        mBitmapImage->eraseRedGreenBlueLines(mBitmapImage);
         mEditor->backup("Blend lines");
     }
     updateUI();
+}
+
+void BitmapColoring::nonValidBitmap(int frame)
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("Frame %1 is not valid!\nAborting frame...").arg(frame));
+    msgBox.exec();
 }

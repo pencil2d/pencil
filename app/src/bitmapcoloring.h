@@ -56,6 +56,7 @@ protected:
     void trace();
     void thin();
     void blend(LayerBitmap* artLayer);
+    void nonValidBitmap(int frame);
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;

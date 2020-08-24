@@ -116,6 +116,7 @@ public:
     int getSpotArea() { return mSpotArea; }
     BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool green, bool blue);
     void traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
+    void eraseRedGreenBlueLines(BitmapImage* img);
     void fillSpotAreas(BitmapImage* bitmapimage);
     void toThinLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);
     void blendLines(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
@@ -160,6 +161,7 @@ private:
     const int mLowThreshold = 30;   // threshold for images to be given transparency
     int mSpotArea = 6;
     const int COLORDIFF = 20;       // difference in color values to decide color
+    const int TRANSP_THRESHOLD = 60;// threshold when tracing black for two layer coloring
 
 };
 

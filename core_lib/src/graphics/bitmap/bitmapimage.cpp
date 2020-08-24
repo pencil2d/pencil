@@ -770,10 +770,32 @@ void BitmapImage::traceLine(BitmapImage* img, bool black, bool red, bool green, 
                     else
                         img->scanLine(x, y, transp);
                 }
-                else if(black && qRed(rgba) == qGray(rgba))
+                else
                 {
-                    img->scanLine(x, y, blackline);
+                    if (black && qAlpha(rgba) > TRANSP_THRESHOLD)
+                        img->scanLine(x, y, blackline);
+                    else
+                        img->scanLine(x, y, transp);
                 }
+            }
+        }
+    }
+    img->modification();
+}
+
+void BitmapImage::eraseRedGreenBlueLines(BitmapImage *img)
+{
+    Q_ASSERT(img != nullptr);
+
+    QRgb rgba;
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            rgba = img->constScanLine(x, y);
+            if (rgba == redline || rgba == greenline || rgba == blueline)
+            {
+                        img->scanLine(x, y, transp);
             }
         }
     }
