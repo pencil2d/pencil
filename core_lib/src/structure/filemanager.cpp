@@ -705,6 +705,7 @@ Status FileManager::recoverObject(Object* object)
     QFile file(object->mainXMLFile());
     mainXmlOK &= file.exists();
     mainXmlOK &= file.open(QFile::ReadOnly);
+    file.close();
 
     QDomDocument xmlDoc;
     mainXmlOK &= xmlDoc.setContent(&file);
