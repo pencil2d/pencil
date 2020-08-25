@@ -59,7 +59,7 @@ Object* FileManager::load(QString sFileName)
 
     progressForward();
 
-    Object* obj = new Object;
+    std::unique_ptr<Object> obj(new Object);
     obj->setFilePath(sFileName);
     obj->createWorkingDir();
 
@@ -134,29 +134,29 @@ Object* FileManager::load(QString sFileName)
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
 
-    loadPalette(obj);
+    loadPalette(obj.get());
 
     bool ok = true;
 
     if (root.tagName() == "document")
     {
-        ok = loadObject(obj, root);
+        ok = loadObject(obj.get(), root);
     }
     else if (root.tagName() == "object" || root.tagName() == "MyOject") // old Pencil format (<=0.4.3)
     {
-        ok = loadObjectOldWay(obj, root);
+        ok = loadObjectOldWay(obj.get(), root);
     }
 
     if (!ok)
     {
-        delete obj;
+        obj.reset();
         dd << "Issue occurred during object loading";
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, ""));
     }
 
-    verifyObject(obj);
+    verifyObject(obj.get());
 
-    return obj;
+    return obj.release();
 }
 
 bool FileManager::loadObject(Object* object, const QDomElement& root)
