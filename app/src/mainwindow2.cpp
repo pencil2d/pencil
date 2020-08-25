@@ -133,7 +133,8 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
 
-    tryLoadPreset();
+    if (!loadMostRecent())
+        tryLoadPreset();
 }
 
 MainWindow2::~MainWindow2()
@@ -1081,6 +1082,21 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     updateSaveState();
 
     return true;
+}
+
+bool MainWindow2::loadMostRecent()
+{
+    if(mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT))
+    {
+        QSettings settings(PENCIL2D, PENCIL2D);
+        QString myPath = settings.value(LAST_PCLX_PATH, QVariant("")).toString();
+        if (myPath.isEmpty() || !QFile::exists(myPath))
+        {
+            return false;
+        }
+        return openObject(myPath);
+    }
+    return false;
 }
 
 void  MainWindow2::tryLoadPreset()

@@ -127,6 +127,7 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
+    bool loadMostRecent();
     void tryLoadPreset();
 
     void openPalette();
@@ -181,7 +182,8 @@ private:
 
     // whether we are currently importing an image sequence.
     bool mIsImportingImageSequence = false;
-    
+//    bool mLoadMostRecent = true;
+
     Ui::MainWindow2* ui = nullptr;
 };
 
