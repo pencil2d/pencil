@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "pencilerror.h"
 #include "colorref.h"
+#include "layer.h"
 
 class Object;
 class ObjectData;
@@ -44,6 +45,9 @@ public:
     QList<ColorRef> loadPaletteFile(QString strFilename);
     Status error() const { return mError; }
     Status verifyObject(Object* obj);
+
+    QStringList searchForUnsavedProjects();
+    Object* recoverUnsavedProject(QString projectIntermediatePath);
 
 Q_SIGNALS:
     void progressChanged(int progress);
@@ -67,6 +71,17 @@ private:
     void deleteBackupFile(const QString& fileName);
 
     void progressForward();
+
+
+private: // Project recovery
+    bool isProjectRecoverable(const QString& projectFolder);
+    Status recoverObject(Object* object);
+    Status rebuildMainXML(Object* object);
+    Status rebuildLayerXmlTag(QDomDocument& doc, QDomElement& elemObject,
+                              const int layerIndex, const QStringList& frames);
+    QString recoverLayerName(Layer::LAYER_TYPE, int index);
+    int layerIndexFromFilename(const QString& filename);
+    int framePosFromFilename(const QString& filename);
 
 private:
     Status mError = Status::OK;

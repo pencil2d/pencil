@@ -62,6 +62,7 @@ public:
     void init();
     void createWorkingDir();
     void deleteWorkingDir() const;
+    void setWorkingDir(const QString& path); // used by crash recovery
     void createDefaultLayers();
 
     QString filePath() const { return mFilePath; }

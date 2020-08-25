@@ -71,8 +71,9 @@ GNU General Public License for more details.
 #define PFF_TMP_DECOMPRESS_EXT 	"Y2xD"
 #define PFF_PALETTE_FILE        "palette.xml"
 
-bool removePFFTmpDirectory (const QString& dirName);
+bool removePFFTmpDirectory(const QString& dirName);
 QString uniqueString(int len);
+QString retrieveProjectNameFromTempPath(const QString& path);
 
 
 #endif

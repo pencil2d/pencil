@@ -163,15 +163,15 @@ LayerCamera* Object::addNewCameraLayer()
 
 void Object::createWorkingDir()
 {
-    QString strFolderName;
+    QString projectName;
     if (mFilePath.isEmpty())
     {
-        strFolderName = "Default";
+        projectName = "Default";
     }
     else
     {
         QFileInfo fileInfo(mFilePath);
-        strFolderName = fileInfo.completeBaseName();
+        projectName = fileInfo.completeBaseName();
     }
     QDir dir(QDir::tempPath());
 
@@ -180,7 +180,7 @@ void Object::createWorkingDir()
     {
         strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/")
             .arg(QDir::tempPath())
-            .arg(strFolderName)
+            .arg(projectName)
             .arg(PFF_TMP_DECOMPRESS_EXT)
             .arg(uniqueString(8));
     }
@@ -200,8 +200,16 @@ void Object::deleteWorkingDir() const
     if (!mWorkingDirPath.isEmpty())
     {
         QDir dir(mWorkingDirPath);
-        dir.removeRecursively();
+        bool ok = dir.removeRecursively();
+        Q_ASSERT(ok);
     }
+}
+
+void Object::setWorkingDir(const QString& path)
+{
+    QDir dir(path);
+    Q_ASSERT(dir.exists());
+    mWorkingDirPath = path;
 }
 
 void Object::createDefaultLayers()

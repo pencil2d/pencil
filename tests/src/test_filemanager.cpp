@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
@@ -430,7 +430,7 @@ TEST_CASE("Empty Sound Frames")
             REQUIRE(newObj->getLayer(0)->type() == 4);
             REQUIRE(newObj->getLayer(0)->id() == 5);
             REQUIRE(newObj->getLayer(0)->name() == "GoodLayer");
-            REQUIRE(newObj->getLayer(0)->getVisibility() == 1);
+            REQUIRE(newObj->getLayer(0)->getVisibility() == true);
             REQUIRE(newObj->getLayer(0)->getKeyFrameAt(1) == nullptr);
 
             delete newObj;

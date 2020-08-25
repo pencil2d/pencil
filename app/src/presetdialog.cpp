@@ -45,11 +45,19 @@ bool PresetDialog::shouldAlwaysUse()
 
 QString PresetDialog::getPresetPath(int index)
 {
-    QString filename = QString("%1.pclx").arg(index);
+    if (index == 0)
+    {
+        return QString();
+    }
+
+    const QString filename = QString("%1.pclx").arg(index);
     QDir dataDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
     if (dataDir.cd("presets"))
     {
-        return dataDir.filePath(filename);
+        if (dataDir.exists(filename))
+        {
+            return dataDir.filePath(filename);
+        }
     }
     return QString();
 }
@@ -77,7 +85,7 @@ void PresetDialog::initPresets()
         return;
     }
     QSettings presets(dataDir.filePath("presets.ini"), QSettings::IniFormat, this);
-    
+
     bool ok = true;
     for (const QString& key : presets.allKeys())
     {

@@ -77,7 +77,7 @@ public:
     bool saveAsNewDocument();
     bool maybeSave();
     bool autoSave();
-    void newEmptyDocumentAfterErrorOccurred();
+    void emptyDocumentWhenErrorOccurred();
 
     // import
     void importImage();
@@ -96,7 +96,7 @@ public:
     void setSoundScrubMsec(int msec);
     void setOpacity(int opacity);
     void preferences();
- 
+
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
@@ -111,6 +111,7 @@ Q_SIGNALS:
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void resetAndDockAllSubWidgets();
@@ -128,7 +129,7 @@ private:
     void clearKeyboardShortcuts();
     void updateZoomLabel();
     bool loadMostRecent();
-    void tryLoadPreset();
+    bool tryLoadPreset();
 
     void openPalette();
     void importPalette();
@@ -150,6 +151,9 @@ private:
     void makeConnections(Editor*, OnionSkinWidget*);
 
     void bindActionWithSetting(QAction*, const SETTING&);
+
+    bool tryRecoverUnsavedProject();
+    void startProjectRecovery(int result);
 
     // UI: Dock widgets
     ColorBox*             mColorBox = nullptr;
@@ -182,7 +186,6 @@ private:
 
     // whether we are currently importing an image sequence.
     bool mIsImportingImageSequence = false;
-//    bool mLoadMostRecent = true;
 
     Ui::MainWindow2* ui = nullptr;
 };
