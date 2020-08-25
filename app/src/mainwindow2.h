@@ -66,7 +66,6 @@ public slots:
     void updateSaveState();
     void clearRecentFilesList();
     void openPegAlignDialog();
-    void closePegAlignDialog();
     void currentLayerChanged();
     void selectionChanged();
 

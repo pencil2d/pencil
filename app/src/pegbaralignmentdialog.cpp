@@ -16,7 +16,6 @@ PegBarAlignmentDialog::PegBarAlignmentDialog(Editor *editor, QWidget *parent) :
     connect(ui->btnAlign, &QPushButton::clicked, this, &PegBarAlignmentDialog::alignPegs);
     connect(ui->btnCancel, &QPushButton::clicked, this, &PegBarAlignmentDialog::closeClicked);
     connect(ui->lwLayers, &QListWidget::clicked, this, &PegBarAlignmentDialog::updatePegRegDialog);
-    connect(this, &QDialog::finished, this, &PegBarAlignmentDialog::closeClicked);
 
     connect(mEditor->layers(), &LayerManager::layerCountChanged, this, &PegBarAlignmentDialog::updatePegRegLayers);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &PegBarAlignmentDialog::updatePegRegDialog);
@@ -93,17 +92,15 @@ void PegBarAlignmentDialog::updatePegRegLayers()
 void PegBarAlignmentDialog::updatePegRegDialog()
 {
     // is something selected in scribblearea?
-    if (mEditor->select()->somethingSelected())
-        setAreaSelected(true);
-    else
-        setAreaSelected(false);
+    setAreaSelected(mEditor->select()->somethingSelected());
 
+    const Layer* currentLayer = mEditor->layers()->currentLayer();
     // is the reference key valid?
-    setRefLayer(mEditor->layers()->currentLayer()->name());
+    setRefLayer(currentLayer->name());
     setRefKey(mEditor->currentFrame());
 
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP &&
-            mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+    if (currentLayer->type() == Layer::BITMAP &&
+        currentLayer->keyExists(mEditor->currentFrame()))
     {
         setReferenceSelected(true);
     }
@@ -115,10 +112,12 @@ void PegBarAlignmentDialog::updatePegRegDialog()
     bitmaplayers = getLayerList();
 
     if (bitmaplayers.isEmpty())
+    {
         setLayerSelected(false);
+    }
     else
     {
-        setRefLayer(mEditor->layers()->currentLayer()->name());
+        setRefLayer(currentLayer->name());
         setRefKey(mEditor->currentFrame());
         setLayerSelected(true);
     }
@@ -132,22 +131,21 @@ void PegBarAlignmentDialog::alignPegs()
     bitmaplayers = getLayerList();
     if (bitmaplayers.isEmpty())
     {
-        QMessageBox::information(this, nullptr,
-                                 tr("No layers selected!"),
+        QMessageBox::information(this, "Pencil2D",
+                                 tr("No layers selected!", "PegBar Dialog error message"),
                                  QMessageBox::Ok);
+        return;
     }
-    else
+
+    Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
+    if (statusint.errorcode == Status::FAIL)
     {
-        Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
-        if (statusint.errorcode == Status::FAIL)
-        {
-            QMessageBox::information(this, nullptr,
-                                     tr("Peg hole not found!\nCheck selection, and please try again."),
-                                     QMessageBox::Ok);
-            return;
-        }
-        emit closedialog();
+        QMessageBox::information(this, "Pencil2D",
+                                 tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar Dialog error message"),
+                                 QMessageBox::Ok);
+        return;
     }
+    done(QDialog::Accepted);
 }
 
 void PegBarAlignmentDialog::setBtnAlignEnabled()
@@ -172,6 +170,5 @@ void PegBarAlignmentDialog::setRefKey(int i)
 
 void PegBarAlignmentDialog::closeClicked()
 {
-    emit closedialog();
-    close();
+    done(QDialog::Accepted);
 }

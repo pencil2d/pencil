@@ -457,19 +457,20 @@ void MainWindow2::openPegAlignDialog()
 
     mPegAlign = new PegBarAlignmentDialog(mEditor, this);
     mPegAlign->setAttribute(Qt::WA_DeleteOnClose);
-    connect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
     mPegAlign->updatePegRegLayers();
     mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
     mPegAlign->setRefKey(mEditor->currentFrame());
     mPegAlign->setLabRefKey();
-    mPegAlign->setWindowFlags(mPegAlign->windowFlags() | Qt::WindowStaysOnTopHint);
-    mPegAlign->show();
-}
 
-void MainWindow2::closePegAlignDialog()
-{
-    disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
-    mPegAlign = nullptr;
+    Qt::WindowFlags flags = mPegAlign->windowFlags();
+    flags |= Qt::WindowStaysOnTopHint;
+    flags &= (~Qt::WindowContextHelpButtonHint);
+    mPegAlign->setWindowFlags(flags);
+    mPegAlign->show();
+    connect(mPegAlign, &PegBarAlignmentDialog::finished, [=]
+    {
+        mPegAlign = nullptr;
+    });
 }
 
 void MainWindow2::currentLayerChanged()
