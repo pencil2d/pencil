@@ -113,9 +113,6 @@ protected:
     void closeEvent(QCloseEvent*) override;
     void showEvent(QShowEvent*) override;
 
-private slots:
-    void resetAndDockAllSubWidgets();
-
 private:
     bool newObject();
     bool newObjectFromPresets(int presetIndex);
@@ -136,6 +133,7 @@ private:
 
     void readSettings();
     void writeSettings();
+    void resetAndDockAllSubWidgets();
 
     void changePlayState(bool isPlaying);
 
