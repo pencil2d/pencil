@@ -77,7 +77,7 @@ public:
     bool saveAsNewDocument();
     bool maybeSave();
     bool autoSave();
-    void newEmptyDocumentAfterErrorOccurred();
+    void emptyDocumentWhenErrorOccurred();
 
     // import
     void importImage();
@@ -128,7 +128,8 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    void tryLoadPreset();
+    bool loadMostRecent();
+    bool tryLoadPreset();
 
     void openPalette();
     void importPalette();

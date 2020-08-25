@@ -522,11 +522,10 @@ void MainWindow2::showEvent(QShowEvent*)
     if (firstShowEvent)
     {
         firstShowEvent = false;
-        bool needRecovery = tryRecoverUnsavedProject();
-        if (!needRecovery)
-        {
-            tryLoadPreset();
-        }
+        if (tryRecoverUnsavedProject()) { return; }
+        if (loadMostRecent()) { return; }
+        if (tryLoadPreset()) { return; }
+        newObject();
     }
 }
 
@@ -539,7 +538,10 @@ void MainWindow2::newDocument()
 {
     if (maybeSave())
     {
-        tryLoadPreset();
+        if (!tryLoadPreset())
+        {
+            newObject();
+        }
     }
 }
 
@@ -652,7 +654,7 @@ bool MainWindow2::openObject(QString strFilePath)
         dd.collect(error.details());
         ErrorDialog errorDialog(error.title(), error.description(), dd.str());
         errorDialog.exec();
-        newEmptyDocumentAfterErrorOccurred();
+        emptyDocumentWhenErrorOccurred();
         return false;
     }
 
@@ -662,7 +664,7 @@ bool MainWindow2::openObject(QString strFilePath)
                                 tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fullPath));
         errorDialog.exec();
-        newEmptyDocumentAfterErrorOccurred();
+        emptyDocumentWhenErrorOccurred();
         return false;
     }
 
@@ -827,7 +829,7 @@ bool MainWindow2::autoSave()
     return false;
 }
 
-void MainWindow2::newEmptyDocumentAfterErrorOccurred()
+void MainWindow2::emptyDocumentWhenErrorOccurred()
 {
     newObject();
 
@@ -1073,19 +1075,21 @@ bool MainWindow2::newObject()
 bool MainWindow2::newObjectFromPresets(int presetIndex)
 {
     Object* object = nullptr;
-    QString presetFilePath = (presetIndex > 0) ? PresetDialog::getPresetPath(presetIndex) : "";
-    if (!presetFilePath.isEmpty())
+    QString presetFilePath = PresetDialog::getPresetPath(presetIndex);
+
+    if (presetFilePath.isEmpty())
     {
-        FileManager fm(this);
-        object = fm.load(presetFilePath);
-        if (fm.error().ok() == false) object = nullptr;
+        return false;
     }
-    if (object == nullptr)
+
+    FileManager fm(this);
+    object = fm.load(presetFilePath);
+
+    if (fm.error().ok() == false || object == nullptr)
     {
-        object = new Object();
-        object->init();
-        object->createDefaultLayers();
+        return false;
     }
+
     mEditor->setObject(object);
     object->setFilePath(QString());
 
@@ -1095,7 +1099,22 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     return true;
 }
 
-void  MainWindow2::tryLoadPreset()
+bool MainWindow2::loadMostRecent()
+{
+    if(mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT))
+    {
+        QSettings settings(PENCIL2D, PENCIL2D);
+        QString myPath = settings.value(LAST_PCLX_PATH, QVariant("")).toString();
+        if (myPath.isEmpty() || !QFile::exists(myPath))
+        {
+            return false;
+        }
+        return openObject(myPath);
+    }
+    return false;
+}
+
+bool MainWindow2::tryLoadPreset()
 {
     if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
     {
@@ -1106,12 +1125,15 @@ void  MainWindow2::tryLoadPreset()
             if (result == QDialog::Accepted)
             {
                 int presetIndex = presetDialog->getPresetIndex();
-                if (presetDialog->shouldAlwaysUse()) {
+                if (presetDialog->shouldAlwaysUse())
+                {
                     mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
                     mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetIndex);
                 }
-                newObjectFromPresets(presetIndex);
-                qDebug() << "Accepted!";
+                if (!newObjectFromPresets(presetIndex))
+                {
+                    newObject();
+                }
             }
         });
         presetDialog->open();
@@ -1119,8 +1141,9 @@ void  MainWindow2::tryLoadPreset()
     else
     {
         int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
-        newObjectFromPresets(defaultPreset);
+        return newObjectFromPresets(defaultPreset);
     }
+    return true;
 }
 
 void MainWindow2::readSettings()
