@@ -108,7 +108,8 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
-    src/presetdialog.cpp
+    src/presetdialog.cpp \
+    src/app_util.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \

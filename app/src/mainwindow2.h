@@ -124,7 +124,6 @@ private:
 
     void createDockWidgets();
     void createMenus();
-    void setMenuActionChecked(QAction*, bool bChecked);
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();

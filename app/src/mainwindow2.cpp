@@ -420,12 +420,6 @@ void MainWindow2::createMenus()
     connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
-void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
-{
-    QSignalBlocker b(action);
-    action->setChecked(bChecked);
-}
-
 void MainWindow2::setOpacity(int opacity)
 {
     mEditor->preference()->set(SETTING::WINDOW_OPACITY, 100 - opacity);
