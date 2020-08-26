@@ -1187,13 +1187,13 @@ PegbarResult Editor::pegBarAlignment(QStringList layers)
     QRectF rect = select()->mySelectionRect();
     retLeft = img->findLeft(rect, 121);
     retRight = img->findTop(rect, 121);
-    if (retLeft.errorcode == Status::FAIL || retRight.errorcode == Status::FAIL)
+    if (STATUS_FAILED(retLeft.errorcode) || STATUS_FAILED(retRight.errorcode))
     {
         retLeft.errorcode = Status::FAIL;
         return retLeft;
     }
-    int peg_x = retLeft.value;
-    int peg_y = retRight.value;
+    const int peg_x = retLeft.value;
+    const int peg_y = retRight.value;
 
     // move other layers
     for (int i = 0; i < layers.count(); i++)
@@ -1206,13 +1206,13 @@ PegbarResult Editor::pegBarAlignment(QStringList layers)
                 img = layerbitmap->getBitmapImageAtFrame(k);
                 retLeft = img->findLeft(rect, 121);
                 const QString body = tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
-                if (retLeft.errorcode == Status::FAIL)
+                if (STATUS_FAILED(retLeft.errorcode))
                 {
                     emit needDisplayInfoNoTitle(body);
                     return retLeft;
                 }
                 retRight = img->findTop(rect, 121);
-                if (retRight.errorcode == Status::FAIL)
+                if (STATUS_FAILED(retRight.errorcode))
                 {
                     emit needDisplayInfoNoTitle(body);
                     return retRight;

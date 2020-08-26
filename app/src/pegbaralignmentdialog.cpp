@@ -131,8 +131,8 @@ void PegBarAlignmentDialog::alignPegs()
         return;
     }
 
-    PegbarResult statusint = mEditor->pegBarAlignment(bitmaplayers);
-    if (statusint.errorcode == Status::FAIL)
+    PegbarResult result = mEditor->pegBarAlignment(bitmaplayers);
+    if (STATUS_FAILED(result.errorcode))
     {
         QMessageBox::information(this, "Pencil2D",
                                  tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar Dialog error message"),

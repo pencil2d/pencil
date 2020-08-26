@@ -101,10 +101,13 @@ struct PegbarResult
     Status::ErrorCode errorcode = Status::OK;
 };
 
-
 #ifndef STATUS_CHECK
 #define STATUS_CHECK( x )\
 	{ Status st = (x); if (!st.ok()) { return st; } }
+#endif
+
+#ifndef STATUS_FAILED
+#define STATUS_FAILED(stcode) ((int)stcode >= (int)Status::FAIL)
 #endif
 
 #endif // PENCILERROR_H
