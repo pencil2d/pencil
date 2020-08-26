@@ -155,7 +155,7 @@ public: //slots
     void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
-    PegbarResult pegBarAlignment(QStringList layers);
+    Status pegBarAlignment(QStringList layers);
 
     void backup(QString undoText);
     void backup(int layerNumber, int frameNumber, QString undoText);

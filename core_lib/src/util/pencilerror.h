@@ -71,8 +71,9 @@ public:
         ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER
     };
 
-    Status(ErrorCode code);
-    Status(ErrorCode code, const DebugDetails& detailsList, QString title = "", QString description = "");
+    Status(const ErrorCode code);
+    Status(const ErrorCode code, const QString& title, const QString& description);
+    Status(const ErrorCode code, const DebugDetails& detailsList, QString title = "", QString description = "");
 
     ErrorCode   code() { return mCode; }
     bool        ok() const { return (mCode == OK) || (mCode == SAFE); }

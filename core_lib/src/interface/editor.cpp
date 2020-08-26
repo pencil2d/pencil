@@ -1177,7 +1177,7 @@ void Editor::swapLayers(int i, int j)
     mScribbleArea->updateAllFrames();
 }
 
-PegbarResult Editor::pegBarAlignment(QStringList layers)
+Status Editor::pegBarAlignment(QStringList layers)
 {
     PegbarResult retLeft;
     PegbarResult retRight;
@@ -1189,8 +1189,7 @@ PegbarResult Editor::pegBarAlignment(QStringList layers)
     retRight = img->findTop(rect, 121);
     if (STATUS_FAILED(retLeft.errorcode) || STATUS_FAILED(retRight.errorcode))
     {
-        retLeft.errorcode = Status::FAIL;
-        return retLeft;
+        return Status(Status::FAIL, "", tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar error message"));
     }
     const int peg_x = retLeft.value;
     const int peg_y = retRight.value;
@@ -1205,17 +1204,15 @@ PegbarResult Editor::pegBarAlignment(QStringList layers)
             {
                 img = layerbitmap->getBitmapImageAtFrame(k);
                 retLeft = img->findLeft(rect, 121);
-                const QString body = tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
+                const QString errorDescription = tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
                 if (STATUS_FAILED(retLeft.errorcode))
                 {
-                    emit needDisplayInfoNoTitle(body);
-                    return retLeft;
+                    return Status(retLeft.errorcode, "", errorDescription);
                 }
                 retRight = img->findTop(rect, 121);
                 if (STATUS_FAILED(retRight.errorcode))
                 {
-                    emit needDisplayInfoNoTitle(body);
-                    return retRight;
+                    return Status(retRight.errorcode, "", errorDescription);
                 }
                 img->moveTopLeft(QPoint(img->left() + (peg_x - retLeft.value), img->top() + (peg_y - retRight.value)));
             }
@@ -1223,7 +1220,7 @@ PegbarResult Editor::pegBarAlignment(QStringList layers)
     }
     deselectAll();
 
-    return retLeft;
+    return retLeft.errorcode;
 }
 
 void Editor::prepareSave()
