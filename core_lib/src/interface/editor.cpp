@@ -1177,10 +1177,10 @@ void Editor::swapLayers(int i, int j)
     mScribbleArea->updateAllFrames();
 }
 
-Status::StatusInt Editor::pegBarAlignment(QStringList layers)
+PegbarResult Editor::pegBarAlignment(QStringList layers)
 {
-    Status::StatusInt retLeft;
-    Status::StatusInt retRight;
+    PegbarResult retLeft;
+    PegbarResult retRight;
 
     LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
     BitmapImage* img = layerbitmap->getBitmapImageAtFrame(currentFrame());

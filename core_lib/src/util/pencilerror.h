@@ -71,11 +71,6 @@ public:
         ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER
     };
 
-    struct StatusInt{
-        int value = 0;
-        ErrorCode errorcode = Status::OK;
-    };
-
     Status(ErrorCode code);
     Status(ErrorCode code, const DebugDetails& detailsList, QString title = "", QString description = "");
 
@@ -100,9 +95,14 @@ private:
     DebugDetails mDetails;
 };
 
+struct PegbarResult
+{
+    int value = 0;
+    Status::ErrorCode errorcode = Status::OK;
+};
 
 
-#ifndef STATUS_CHECK 
+#ifndef STATUS_CHECK
 #define STATUS_CHECK( x )\
 	{ Status st = (x); if (!st.ok()) { return st; } }
 #endif

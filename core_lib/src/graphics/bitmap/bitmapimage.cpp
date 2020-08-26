@@ -660,9 +660,9 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
-Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
+PegbarResult BitmapImage::findLeft(QRectF rect, int grayValue)
 {
-    Status::StatusInt retValues;
+    PegbarResult retValues;
     retValues.value = -1;
     retValues.errorcode = Status::FAIL;
     int left = static_cast<int>(rect.left());
@@ -684,9 +684,9 @@ Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
     return retValues;
 }
 
-Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
+PegbarResult BitmapImage::findTop(QRectF rect, int grayValue)
 {
-    Status::StatusInt retValues;
+    PegbarResult retValues;
     retValues.value = -1;
     retValues.errorcode = Status::FAIL;
     int left = static_cast<int>(rect.left());

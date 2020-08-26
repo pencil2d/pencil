@@ -94,8 +94,8 @@ public:
     QSize size() { autoCrop(); return mBounds.size(); }
 
     // peg bar alignment
-    Status::StatusInt findLeft(QRectF rect, int grayValue);
-    Status::StatusInt findTop(QRectF rect, int grayValue);
+    PegbarResult findLeft(QRectF rect, int grayValue);
+    PegbarResult findTop(QRectF rect, int grayValue);
 
 
     QRect& bounds() { autoCrop(); return mBounds; }

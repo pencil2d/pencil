@@ -131,7 +131,7 @@ void PegBarAlignmentDialog::alignPegs()
         return;
     }
 
-    Status::StatusInt statusint = mEditor->pegBarAlignment(bitmaplayers);
+    PegbarResult statusint = mEditor->pegBarAlignment(bitmaplayers);
     if (statusint.errorcode == Status::FAIL)
     {
         QMessageBox::information(this, "Pencil2D",
