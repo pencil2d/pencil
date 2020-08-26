@@ -53,26 +53,26 @@ QStringList PegBarAlignmentDialog::getLayerList()
     return selectedLayers;
 }
 
-void PegBarAlignmentDialog::setLabRefKey()
+void PegBarAlignmentDialog::updateRefKeyLabelText()
 {
-    ui->labRefKey->setText(refLayer + " - " + QString::number(refkey));
+    ui->labRefKey->setText(QStringLiteral("%1 - %2").arg(mRefLayer).arg(mRefkey));
 }
 
 void PegBarAlignmentDialog::setAreaSelected(bool b)
 {
-    areaSelected = b;
+    mAreaSelected = b;
     setBtnAlignEnabled();
 }
 
 void PegBarAlignmentDialog::setReferenceSelected(bool b)
 {
-    referenceSelected = b;
+    mReferenceSelected = b;
     setBtnAlignEnabled();
 }
 
 void PegBarAlignmentDialog::setLayerSelected(bool b)
 {
-    layerSelected = b;
+    mLayerSelected = b;
     setBtnAlignEnabled();
 }
 
@@ -99,17 +99,12 @@ void PegBarAlignmentDialog::updatePegRegDialog()
     setRefLayer(currentLayer->name());
     setRefKey(mEditor->currentFrame());
 
-    if (currentLayer->type() == Layer::BITMAP &&
-        currentLayer->keyExists(mEditor->currentFrame()))
-    {
-        setReferenceSelected(true);
-    }
-    else
-        setReferenceSelected(false);
+    bool isReferenceSelected = (currentLayer->type() == Layer::BITMAP &&
+                                currentLayer->keyExists(mEditor->currentFrame()));
+    setReferenceSelected(isReferenceSelected);
 
     // has minimum one layer been selected?
-    QStringList bitmaplayers;
-    bitmaplayers = getLayerList();
+    const QStringList bitmaplayers = getLayerList();
 
     if (bitmaplayers.isEmpty())
     {
@@ -127,8 +122,7 @@ void PegBarAlignmentDialog::updatePegRegDialog()
 
 void PegBarAlignmentDialog::alignPegs()
 {
-    QStringList bitmaplayers;
-    bitmaplayers = getLayerList();
+    const QStringList bitmaplayers = getLayerList();
     if (bitmaplayers.isEmpty())
     {
         QMessageBox::information(this, "Pencil2D",
@@ -150,7 +144,7 @@ void PegBarAlignmentDialog::alignPegs()
 
 void PegBarAlignmentDialog::setBtnAlignEnabled()
 {
-    if (areaSelected && referenceSelected && layerSelected)
+    if (mAreaSelected && mReferenceSelected && mLayerSelected)
         ui->btnAlign->setEnabled(true);
     else
         ui->btnAlign->setEnabled(false);
@@ -158,14 +152,14 @@ void PegBarAlignmentDialog::setBtnAlignEnabled()
 
 void PegBarAlignmentDialog::setRefLayer(QString s)
 {
-    refLayer = s;
-    setLabRefKey();
+    mRefLayer = s;
+    updateRefKeyLabelText();
 }
 
 void PegBarAlignmentDialog::setRefKey(int i)
 {
-    refkey = i;
-    setLabRefKey();
+    mRefkey = i;
+    updateRefKeyLabelText();
 }
 
 void PegBarAlignmentDialog::closeClicked()

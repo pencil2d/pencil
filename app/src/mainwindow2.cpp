@@ -460,7 +460,6 @@ void MainWindow2::openPegAlignDialog()
     mPegAlign->updatePegRegLayers();
     mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
     mPegAlign->setRefKey(mEditor->currentFrame());
-    mPegAlign->setLabRefKey();
 
     Qt::WindowFlags flags = mPegAlign->windowFlags();
     flags |= Qt::WindowStaysOnTopHint;
@@ -475,14 +474,8 @@ void MainWindow2::openPegAlignDialog()
 
 void MainWindow2::currentLayerChanged()
 {
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-    {
-        ui->menuChange_line_color->setEnabled(true);
-    }
-    else
-    {
-        ui->menuChange_line_color->setEnabled(false);
-    }
+    bool isBitmap = (mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
+    ui->menuChange_line_color->setEnabled(isBitmap);
 }
 
 void MainWindow2::selectionChanged()

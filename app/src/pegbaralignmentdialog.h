@@ -19,9 +19,9 @@ public:
 
     void setLayerList(QStringList layerList);
     QStringList getLayerList();
-    int getRefKey() { return refkey; }
-    QString getRefLayer() { return refLayer; }
-    void setLabRefKey();
+    int getRefKey() { return mRefkey; }
+    QString getRefLayer() { return mRefLayer; }
+    void updateRefKeyLabelText();
 
     void setAreaSelected(bool b);
     void setReferenceSelected(bool b);
@@ -42,11 +42,11 @@ private:
     Ui::PegBarAlignmentDialog* ui;
     QStringList mLayernames;
     Editor* mEditor = nullptr;
-    bool areaSelected = false;
-    bool referenceSelected = false;
-    bool layerSelected = false;
-    QString refLayer;
-    int refkey = 0;
+    bool mAreaSelected = false;
+    bool mReferenceSelected = false;
+    bool mLayerSelected = false;
+    QString mRefLayer;
+    int mRefkey = 0;
 };
 
 #endif // PEGBARALIGNMENTDIALOG_H
