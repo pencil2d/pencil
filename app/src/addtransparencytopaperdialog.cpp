@@ -29,7 +29,7 @@ AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QDialog *parent) :
     connect(ui->cb_Green, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Blue, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->btnCancel, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::closeClicked);
-    connect(ui->btnTrace, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::traceScannedDrawings);
+    connect(ui->btnAddTransparency, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::traceScannedDrawings);
 }
 
 AddTransparencyToPaperDialog::~AddTransparencyToPaperDialog()

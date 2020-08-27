@@ -251,9 +251,9 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="btnTrace">
+          <widget class="QPushButton" name="btnAddTransparency">
            <property name="text">
-            <string>Trace</string>
+            <string>Add tranparency to paper</string>
            </property>
           </widget>
          </item>

@@ -397,7 +397,7 @@
             <item>
              <widget class="QCheckBox" name="cb2ThinRed">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Thin Red</string>
@@ -434,7 +434,7 @@
             <item>
              <widget class="QCheckBox" name="cb2ThinGreen">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Thin Green</string>
@@ -471,7 +471,7 @@
             <item>
              <widget class="QCheckBox" name="cb2ThinBlue">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Thin Blue</string>
@@ -622,7 +622,7 @@
             <item>
              <widget class="QCheckBox" name="cb2BlendRed">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Blend Red</string>
@@ -659,7 +659,7 @@
             <item>
              <widget class="QCheckBox" name="cb2BlendGreen">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Blend Green</string>
@@ -696,7 +696,7 @@
             <item>
              <widget class="QCheckBox" name="cb2BlendBlue">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Blend Blue</string>
