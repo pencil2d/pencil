@@ -19,13 +19,9 @@ GNU General Public License for more details.
 #define MAINWINDOW2_H
 
 #include <QMainWindow>
-#include "pencildef.h"
 
 template<typename T> class QList;
 class QActionGroup;
-class QComboBox;
-class QLabel;
-class QSlider;
 class Object;
 class Editor;
 class ScribbleArea;
@@ -47,6 +43,7 @@ class ImportImageSeqDialog;
 class BackupElement;
 class LayerOpacityDialog;
 class PegBarAlignmentDialog;
+class StatusBar;
 enum class SETTING;
 
 
@@ -122,13 +119,8 @@ private:
 
     void createDockWidgets();
     void createMenus();
-    void createStatusBar();
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
-    void updateToolStatus(ToolType tool);
-    void updateLayerStatus();
-    void updateLayerStatus(int layer);
-    void updateZoomStatus();
     bool loadMostRecent();
     bool tryLoadPreset();
 
@@ -151,6 +143,7 @@ private:
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
     void makeConnections(Editor*, OnionSkinWidget*);
+    void makeConnections(Editor*, StatusBar*);
 
     bool tryRecoverUnsavedProject();
     void startProjectRecovery(int result);
@@ -181,21 +174,8 @@ private:
     QIcon mStartIcon;
     QIcon mStopIcon;
 
-    QIcon mBitmapIcon;
-    QIcon mVectorIcon;
-    QIcon mSoundIcon;
-    QIcon mCameraIcon;
-
     // a hack for MacOS because closeEvent fires twice
     bool m2ndCloseEvent = false;
-
-    // statusbar widgets
-    QLabel*    mToolIcon = nullptr;
-    QLabel*    mToolLabel = nullptr;
-    QLabel*    mModifiedLabel = nullptr;
-    QComboBox* mLayerBox = nullptr;
-    QComboBox* mZoomBox = nullptr;
-    QSlider*   mZoomSlider = nullptr;
 
     // Whether to suppress the auto save dialog due to internal work
     bool mSuppressAutoSaveDialog = false;

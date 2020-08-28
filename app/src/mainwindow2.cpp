@@ -19,9 +19,6 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
-// standard headers
-#include <cmath>
-
 // Qt headers
 #include <QDir>
 #include <QList>
@@ -32,11 +29,6 @@ GNU General Public License for more details.
 #include <QTabletEvent>
 #include <QStandardPaths>
 #include <QDateTime>
-#include <QSlider>
-#include <QLabel>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QWindow>
 
 // core_lib headers
 #include "pencildef.h"
@@ -117,12 +109,15 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
 
+    ui->statusBar->setEditor(mEditor);
+    ui->statusBar->updateLayerStatus();
+    ui->statusBar->updateZoomStatus();
+
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
 
     createDockWidgets();
     createMenus();
-    createStatusBar();
     setupKeyboardShortcuts();
 
     readSettings();
@@ -229,6 +224,7 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
     makeConnections(mEditor, mDisplayOptionWidget);
+    makeConnections(mEditor, ui->statusBar);
 
     for (BaseDockWidget* w : mDockWidgets)
     {
@@ -418,55 +414,6 @@ void MainWindow2::createMenus()
     connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
-void MainWindow2::createStatusBar() {
-    mToolIcon = new QLabel(this);
-    ui->statusbar->addWidget(mToolIcon);
-    mToolLabel = new QLabel(this);
-    ui->statusbar->addWidget(mToolLabel);
-    connect(mEditor->tools(), &ToolManager::toolChanged, this, &MainWindow2::updateToolStatus);
-    connect(mEditor->tools()->getTool(POLYLINE), &BaseTool::isActiveChanged, this, &MainWindow2::updateToolStatus);
-
-    mModifiedLabel = new QLabel("*", this);
-    mModifiedLabel->setToolTip(tr("The file has unsaved changes"));
-    ui->statusbar->addPermanentWidget(mModifiedLabel);
-
-    mBitmapIcon = QIcon(":/icons/layer-bitmap.png");
-    mVectorIcon = QIcon(":/icons/layer-vector.png");
-    mSoundIcon = QIcon(":/icons/layer-sound.png");
-    mCameraIcon = QIcon(":/icons/layer-camera.png");
-
-    mLayerBox = new QComboBox(this);
-    ui->statusbar->addPermanentWidget(mLayerBox);
-    updateLayerStatus();
-    connect(mEditor->layers(), &LayerManager::layerCountChanged, this, QOverload<>::of(&MainWindow2::updateLayerStatus));
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, QOverload<int>::of(&MainWindow2::updateLayerStatus));
-    connect(mLayerBox, QOverload<int>::of(&QComboBox::currentIndexChanged), mEditor->layers(), QOverload<int>::of(&LayerManager::setCurrentLayer));
-
-    mZoomBox = new QComboBox(this);
-    mZoomBox->setEditable(true);
-    mZoomBox->lineEdit()->setAlignment(Qt::AlignRight);
-    ui->statusbar->addPermanentWidget(mZoomBox);
-    connect(mZoomBox, QOverload<const QString &>::of(&QComboBox::activated), [this](const QString &currentText) {
-        QString zoomString = currentText;
-        zoomString = zoomString.remove('%');
-        mEditor->view()->scale(zoomString.toDouble() / 100);
-    });
-
-    mZoomSlider = new QSlider(Qt::Horizontal, this);
-    mZoomSlider->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    mZoomSlider->setMinimum(-200);
-    mZoomSlider->setMaximum(200);
-    mZoomSlider->setTickPosition(QSlider::TicksBelow);
-    mZoomSlider->setTickInterval(200);
-    ui->statusbar->addPermanentWidget(mZoomSlider);
-    connect(mZoomSlider, &QSlider::valueChanged, [this](int value) {
-        mEditor->view()->scale(std::pow(10, value / 100.));
-    });
-
-    connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomStatus);
-    updateZoomStatus();
-}
-
 void MainWindow2::setOpacity(int opacity)
 {
     mEditor->preference()->set(SETTING::WINDOW_OPACITY, 100 - opacity);
@@ -476,7 +423,7 @@ void MainWindow2::setOpacity(int opacity)
 void MainWindow2::updateSaveState()
 {
     setWindowModified(mEditor->currentBackup() != mBackupAtSave);
-    mModifiedLabel->setVisible(mEditor->currentBackup() != mBackupAtSave);
+    ui->statusBar->updateModifiedStatus(mEditor->currentBackup() != mBackupAtSave);
 }
 
 void MainWindow2::clearRecentFilesList()
@@ -670,7 +617,7 @@ bool MainWindow2::openObject(const QString& strFilePath)
 
     setWindowTitle(mEditor->object()->filePath().prepend("[*]"));
     setWindowModified(false);
-    mModifiedLabel->hide();
+    ui->statusBar->updateModifiedStatus(false);
 
     progress.setValue(progress.maximum());
 
@@ -1491,115 +1438,17 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
-void MainWindow2::updateToolStatus(ToolType tool)
+void MainWindow2::makeConnections(Editor* editor, StatusBar *statusBar)
 {
-    switch (tool) {
-        case PENCIL:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/pencil_detailed.svg"));
-            mToolLabel->setText(tr("Click to draw. Hold Ctrl and Shift to erase or Alt to select a color from the canvas."));
-            break;
-        case ERASER:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/eraser_detailed.svg"));
-            mToolLabel->setText(tr("Click to erase."));
-            break;
-        case SELECT:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/selection.svg"));
-            mToolLabel->setText(tr("Click and drag to create or modify a selection. Hold Alt to modify its contents."));
-            break;
-        case MOVE:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/arrow.svg"));
-            if (ui->scribbleArea->isTemporaryTool()) {
-                mToolLabel->setText(tr("Click and drag to move an object."));
-            } else {
-                mToolLabel->setText(tr("Click and drag to move an object. Hold Ctrl to rotate."));
-            }
-            break;
-        case HAND:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/hand_detailed.svg"));
-            mToolLabel->setText(tr("Click and drag to pan. Hold Ctrl to zoom or Alt to rotate."));
-            break;
-        case SMUDGE:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/smudge_detailed.svg"));
-            mToolLabel->setText(tr("Click to liquefy pixels or modify a vector line. Hold Alt to smooth."));
-            break;
-        case PEN:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/pen_detailed.svg"));
-            mToolLabel->setText(tr("Click to draw. Hold Ctrl and Shift to erase or Alt to select a color from the canvas."));
-            break;
-        case POLYLINE:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/line.svg"));
-            if (mEditor->tools()->getTool(tool)->isActive()) {
-                mToolLabel->setText(tr("Click to continue the polyline. Double-click or press enter to complete the line or press Escape to discard it."));
-            } else {
-                mToolLabel->setText(tr("Click to create a new polyline. Hold Ctrl and Shift to erase or Alt to select a color from the canvas."));
-            }
-            break;
-        case BUCKET:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/bucket_detailed.svg"));
-            mToolLabel->setText(tr("Click to fill an area with the current color. Hold Alt to select a color from the canvas."));
-            break;
-        case EYEDROPPER:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/eyedropper_detailed.svg"));
-            mToolLabel->setText(tr("Click to select a color from the canvas."));
-            break;
-        case BRUSH:
-            mToolIcon->setPixmap(QPixmap(":icons/new/svg/brush_detailed.svg"));
-            mToolLabel->setText(tr("Click to paint. Hold Ctrl and Shift to erase or Alt to select a color from the canvas."));
-            break;
-        default:
-            Q_ASSERT(false);
-    }
-    mToolIcon->setToolTip(BaseTool::TypeName(tool));
-}
+    connect(editor->tools(), &ToolManager::toolChanged, statusBar, &StatusBar::updateToolStatus);
+    connect(editor->tools()->getTool(POLYLINE), &BaseTool::isActiveChanged, statusBar, &StatusBar::updateToolStatus);
 
-void MainWindow2::updateLayerStatus()
-{
-    QSignalBlocker b(mLayerBox);
-    mLayerBox->clear();
-    for (int i = 0; i < mEditor->layers()->count(); i++)
-    {
-        Layer *layer = mEditor->layers()->getLayer(i);
-        mLayerBox->addItem(layer->name());
-        switch (layer->type())
-        {
-            case Layer::BITMAP:
-                mLayerBox->setItemIcon(i, mBitmapIcon);
-                break;
-            case Layer::VECTOR:
-                mLayerBox->setItemIcon(i, mVectorIcon);
-                break;
-            case Layer::SOUND:
-                mLayerBox->setItemIcon(i, mSoundIcon);
-                break;
-            case Layer::CAMERA:
-                mLayerBox->setItemIcon(i, mCameraIcon);
-                break;
-            case Layer::MOVIE:
-            case Layer::UNDEFINED:
-                // no icon
-                break;
-        }
-    }
-    mLayerBox->setCurrentIndex(mEditor->layers()->currentLayerIndex());
-}
+    connect(editor->layers(), &LayerManager::layerCountChanged, statusBar, QOverload<>::of(&StatusBar::updateLayerStatus));
+    connect(editor->layers(), &LayerManager::currentLayerChanged, statusBar, QOverload<int>::of(&StatusBar::updateLayerStatus));
+    connect(statusBar, &StatusBar::layerIndexChanged, editor->layers(), QOverload<int>::of(&LayerManager::setCurrentLayer));
 
-void MainWindow2::updateLayerStatus(int layer)
-{
-    mLayerBox->setItemText(layer, mEditor->layers()->getLayer(layer)->name());
-    mLayerBox->setCurrentIndex(layer);
-}
-
-void MainWindow2::updateZoomStatus()
-{
-    double zoom = mEditor->view()->scaling() * 100;
-    QSignalBlocker b1(mZoomBox);
-    mZoomBox->clear();
-    // Keep the dropdown list limited to our predefined entries
-    // insertPolicy can't handle that without preventing custom values outright
-    mZoomBox->addItems(QStringList() << "10000.0%" << "6400.0%" << "1600.0%" << "800.0%" << "400.0%" << "200.0%" << "100.0%" << "75.0%" << "50.0%" << "33.0%" << "25.0%" << "12.0%" << "1.0%");
-    mZoomBox->setCurrentText(QString("%0%").arg(zoom, 0, 'f', 1));
-    QSignalBlocker b2(mZoomSlider);
-    mZoomSlider->setValue(static_cast<int>(std::round(std::log10(mEditor->view()->scaling()) * 100)));
+    connect(editor->view(), &ViewManager::viewChanged, statusBar, &StatusBar::updateZoomStatus);
+    connect(statusBar, &StatusBar::zoomChanged, editor->view(), &ViewManager::scale);
 }
 
 void MainWindow2::changePlayState(bool isPlaying)
