@@ -89,6 +89,7 @@ void AddTransparencyToPaperDialog::loadDrawing(int frame)
     mLoadedImage = *mBitmap->image();
     mPixmapFromImage = QPixmap::fromImage(mLoadedImage);
     scene.clear();
+    scene.setBackgroundBrush(Qt::white);
     scene.addPixmap(mPixmapFromImage);
     ui->preview->items().clear();
     ui->preview->setScene(&scene);
