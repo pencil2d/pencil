@@ -114,8 +114,8 @@ public:
     // coloring methods
     int getThreshold() { return mThreshold; }
     int getSpotArea() { return mSpotArea; }
-    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool red, bool green, bool blue);
-    void traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    void traceLine(BitmapImage* bitmapimage, bool blackEnabled, bool redEnabled, bool greenEnabled, bool blueEnabled);
     void eraseRedGreenBlueLines(BitmapImage* img);
     void fillSpotAreas(BitmapImage* bitmapimage);
     void toThinLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);
@@ -157,10 +157,11 @@ private:
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
 
+    int mSpotArea = 6;
     int mThreshold = 200;
     const int mLowThreshold = 30;   // threshold for images to be given transparency
-    int mSpotArea = 6;
-    const int COLORDIFF = 20;       // difference in color values to decide color
+    const int COLORDIFF = 5; // difference in color values to decide color
+    const int GRAYSCALEDIFF = 15; // difference in grasycale values to decide color
     const int TRANSP_THRESHOLD = 60;// threshold when tracing black for two layer coloring
 
 };

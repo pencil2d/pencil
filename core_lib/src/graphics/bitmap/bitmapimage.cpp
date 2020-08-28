@@ -665,7 +665,7 @@ void BitmapImage::setBounds(QRect rect)
     updateBounds(rect);
 }
 
-BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool green, bool blue)
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, bool greenEnabled, bool blueEnabled)
 {
     Q_ASSERT(img != nullptr);
 
@@ -680,15 +680,21 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
         for (int y = img->top(); y <= img->bottom(); y++)
         {
             rgba = img->constScanLine(x, y);
-            if (qAlpha(rgba) == 0)
+
+            int grayValue = qGray(rgba);
+            int redValue = qRed(rgba);
+            int greenValue = qGreen(rgba);
+            int blueValue = qBlue(rgba);
+            int alphaValue = qAlpha(rgba);
+            if (alphaValue == 0)
                 break;
-            if (qGray(rgba) >= mThreshold)
+            if (grayValue >= mThreshold)
             {   // IF Threshold or above
                 img->scanLine(x, y, transp);
             }
-            else if(qRed(rgba) > qGreen(rgba) + COLORDIFF && qRed(rgba) > qBlue(rgba) + COLORDIFF)
+            else if(redValue > greenValue + COLORDIFF && redValue > blueValue + COLORDIFF && redValue > grayValue + GRAYSCALEDIFF)
             {   // IF Red line
-                if (red)
+                if (redEnabled)
                 {
                     img->scanLine(x, y, redline);
                 }
@@ -697,9 +703,9 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
                     img->scanLine(x, y, transp);
                 }
             }
-            else if(qGreen(rgba) > qRed(rgba) + COLORDIFF &&  qGreen(rgba) > qBlue(rgba) + COLORDIFF)
+            else if(greenValue > redValue + COLORDIFF && greenValue > blueValue + COLORDIFF && greenValue > grayValue + GRAYSCALEDIFF)
             {   // IF Green line
-                if (green)
+                if (greenEnabled)
                 {
                     img->scanLine(x, y, greenline);
                 }
@@ -708,9 +714,9 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
                     img->scanLine(x, y, transp);
                 }
             }
-            else if(qBlue(rgba) > qRed(rgba) + COLORDIFF && qBlue(rgba) > qGreen(rgba) + COLORDIFF)
+            else if(blueValue > redValue + COLORDIFF && blueValue > greenValue + COLORDIFF && blueValue > grayValue + GRAYSCALEDIFF)
             {   // IF Blue line
-                if (blue)
+                if (blueEnabled)
                 {
                     img->scanLine(x, y, blueline);
                 }
@@ -721,9 +727,9 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
             }
             else
             {   // okay, so it is in grayscale graduation area
-                if(qGray(rgba) >= mLowThreshold && qGray(rgba) < mThreshold)
+                if(grayValue >= mLowThreshold && grayValue < mThreshold)
                 {
-                    qreal factor = qreal(mThreshold - qGray(rgba)) / qreal(mThreshold - mLowThreshold);
+                    qreal factor = qreal(mThreshold - grayValue) / qreal(mThreshold - mLowThreshold);
                     img->scanLine(x , y, qRgba(0, 0, 0, static_cast<int>(mThreshold * factor)));
                 }
                 else
@@ -737,7 +743,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool red, bool gre
     return img;
 }
 
-void BitmapImage::traceLine(BitmapImage* img, bool black, bool red, bool green, bool blue)
+void BitmapImage::traceLine(BitmapImage* img, bool blackEnabled, bool redEnabled, bool greenEnabled, bool blueEnabled)
 {
     Q_ASSERT(img != nullptr);
 
@@ -747,32 +753,37 @@ void BitmapImage::traceLine(BitmapImage* img, bool black, bool red, bool green, 
         for (int y = img->top(); y <= img->bottom(); y++)
         {
             rgba = img->constScanLine(x, y);
-            if (qAlpha(img->constScanLine(x, y)) > 0)
+
+            int redValue = qRed(rgba);
+            int greenValue = qGreen(rgba);
+            int blueValue = qBlue(rgba);
+            int alphaValue = qAlpha(rgba);
+            if (alphaValue > 0)
             {
-                if(qRed(rgba) > qGreen(rgba) && qRed(rgba) > qBlue(rgba))
+                if(redValue > greenValue && redValue > blueValue)
                 {
-                    if(red)
+                    if(redEnabled)
                         img->scanLine(x, y, redline);
                     else
                         img->scanLine(x, y, transp);
                 }
-                else if(qBlue(rgba) > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
+                else if(blueValue > redValue && blueValue > greenValue)
                 {
-                    if(blue)
+                    if(blueEnabled)
                         img->scanLine(x, y, blueline);
                     else
                         img->scanLine(x, y, transp);
                 }
-                else if(qGreen(rgba) > qRed(rgba) && qGreen(rgba) > qBlue(rgba))
+                else if(greenValue > redValue && greenValue > blueValue)
                 {
-                    if(green)
+                    if(greenEnabled)
                         img->scanLine(x, y, greenline);
                     else
                         img->scanLine(x, y, transp);
                 }
                 else
                 {
-                    if (black && qAlpha(rgba) > TRANSP_THRESHOLD)
+                    if (blackEnabled && alphaValue > TRANSP_THRESHOLD)
                         img->scanLine(x, y, blackline);
                     else
                         img->scanLine(x, y, transp);
@@ -795,7 +806,7 @@ void BitmapImage::eraseRedGreenBlueLines(BitmapImage *img)
             rgba = img->constScanLine(x, y);
             if (rgba == redline || rgba == greenline || rgba == blueline)
             {
-                        img->scanLine(x, y, transp);
+                img->scanLine(x, y, transp);
             }
         }
     }
