@@ -159,9 +159,9 @@ bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& savePath)
     return false;
 }
 
-QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
+QDomElement LayerBitmap::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerElem = this->createBaseDomElement(doc);
+    QDomElement layerElem = createBaseDomElement(doc);
 
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
