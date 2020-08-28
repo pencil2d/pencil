@@ -203,7 +203,7 @@ bool FileManager::isOldForamt(const QString& fileName) const
     return !(MiniZ::isZip(fileName));
 }
 
-Status FileManager::save(Object* object, QString sFileName)
+Status FileManager::save(const Object* object, QString sFileName)
 {
     DebugDetails dd;
     dd << "FileManager::save";

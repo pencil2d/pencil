@@ -40,7 +40,8 @@ public:
     FileManager(QObject* parent = 0);
 
     Object* load(QString sFilenNme);
-    Status  save(Object*, QString sFileName);
+    Status  save(const Object*, QString sFileName);
+    //Status  flush(Object*);
 
     QList<ColorRef> loadPaletteFile(QString strFilename);
     Status error() const { return mError; }
@@ -71,7 +72,6 @@ private:
     void deleteBackupFile(const QString& fileName);
 
     void progressForward();
-
 
 private: // Project recovery
     bool isProjectRecoverable(const QString& projectFolder);

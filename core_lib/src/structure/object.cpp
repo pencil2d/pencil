@@ -68,7 +68,7 @@ void Object::init()
     loadDefaultPalette();
 }
 
-QDomElement Object::saveXML(QDomDocument& doc)
+QDomElement Object::saveXML(QDomDocument& doc) const
 {
     QDomElement objectTag = doc.createElement("object");
 
@@ -400,7 +400,7 @@ void Object::renameColor(int i, QString text)
     mPalette[i].name = text;
 }
 
-QString Object::savePalette(QString dataFolder)
+QString Object::savePalette(const QString& dataFolder) const
 {
     QString fullPath = QDir(dataFolder).filePath("palette.xml");
     bool ok = exportPalette(fullPath);
@@ -409,9 +409,8 @@ QString Object::savePalette(QString dataFolder)
     return "";
 }
 
-void Object::exportPaletteGPL(QFile& file)
+void Object::exportPaletteGPL(QFile& file) const
 {
-
     QString fileName = QFileInfo(file).baseName();
     QTextStream out(&file);
 
@@ -427,7 +426,7 @@ void Object::exportPaletteGPL(QFile& file)
     }
 }
 
-void Object::exportPalettePencil(QFile& file)
+void Object::exportPalettePencil(QFile& file) const
 {
     QTextStream out(&file);
 
@@ -449,7 +448,7 @@ void Object::exportPalettePencil(QFile& file)
     doc.save(out, IndentSize);
 }
 
-bool Object::exportPalette(QString filePath)
+bool Object::exportPalette(const QString& filePath) const
 {
     QFile file(filePath);
     if (!file.open(QFile::WriteOnly | QFile::Text))
@@ -459,11 +458,9 @@ bool Object::exportPalette(QString filePath)
     }
 
     if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
-    {
         exportPaletteGPL(file);
-    } else {
+    else
         exportPalettePencil(file);
-    }
 
     file.close();
     return true;
@@ -885,7 +882,7 @@ int Object::getLayerCount() const
     return mLayers.size();
 }
 
-ObjectData* Object::data()
+ObjectData* Object::data() const
 {
     Q_ASSERT(mData != nullptr);
     return mData.get();
@@ -897,10 +894,10 @@ void Object::setData(ObjectData* d)
     mData.reset(d);
 }
 
-int Object::totalKeyFrameCount()
+int Object::totalKeyFrameCount() const
 {
     int sum = 0;
-    for (Layer* layer : mLayers)
+    for (const Layer* layer : mLayers)
     {
         sum += layer->keyFrameCount();
     }
