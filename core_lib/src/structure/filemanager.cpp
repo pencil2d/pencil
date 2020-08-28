@@ -333,6 +333,7 @@ Status FileManager::save(Object* object, QString sFileName)
     QFile file(sMainXMLFile);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
+        dd << "Open Main XML File failed";
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
 
