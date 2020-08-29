@@ -4,9 +4,11 @@
 #include <QDialog>
 #include <QImage>
 #include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+
+#include "bitmapimage.h"
 
 class Editor;
-class BitmapImage;
 
 namespace Ui {
 class AddTransparencyToPaperDialog;
@@ -18,32 +20,42 @@ class AddTransparencyToPaperDialog : public QDialog
 
 public:
     explicit AddTransparencyToPaperDialog(QDialog *parent = nullptr);
-    ~AddTransparencyToPaperDialog();
+    ~AddTransparencyToPaperDialog() override;
 
     void setCore(Editor* editor);
 
     void initUI();
 
-public slots:
 signals:
     void closeDialog();
+
+protected:
+    void resizeEvent(QResizeEvent*) override;
+
+private slots:
     void SpinboxChanged(int value);
     void SliderChanged(int value);
     void loadDrawing(int frame);
     void updateDrawing();
     void layerChanged(int index);
+    void checkerStateChanged(bool state);
+    void zoomChanged(int zoomLevel);
 
 private:
-    Ui::AddTransparencyToPaperDialog *ui;
 
+    void updatePreview();
     void traceScannedDrawings();
     void closeClicked();
 
+    int mZoomLevel = 1;
+
+    Ui::AddTransparencyToPaperDialog *ui;
+
     QGraphicsScene scene;
+    QGraphicsPixmapItem* mPreviewImageItem = nullptr;
 
     int mThreshold = 220;
-    BitmapImage* mBitmap = nullptr;
-    QImage mLoadedImage;
+    BitmapImage mBitmap;
     QPixmap mPixmapFromImage;
     Editor* mEditor = nullptr;
 };

@@ -132,7 +132,11 @@ Q_SIGNALS:
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
 
+    // Something was updated on the current frame, notify receivers
+    void currentFrameUpdated();
+
 public: //slots
+
     void clearCurrentFrame();
 
     void cut();
@@ -153,6 +157,7 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
+    void notifyCurrentFrameUpdated();
     void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void showLayerNotVisibleWarning();

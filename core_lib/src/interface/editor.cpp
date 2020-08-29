@@ -983,6 +983,11 @@ void Editor::selectAll()
     select()->setSelection(rect, false);
 }
 
+void Editor::notifyCurrentFrameUpdated()
+{
+    emit currentFrameUpdated();
+}
+
 void Editor::deselectAll()
 {
     Layer* layer = layers()->currentLayer();

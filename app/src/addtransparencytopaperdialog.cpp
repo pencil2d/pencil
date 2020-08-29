@@ -2,9 +2,6 @@
 #include "ui_addtransparencytopaperdialog.h"
 
 #include <QProgressDialog>
-#include <QMessageBox>
-#include <QPixmap>
-#include <QGraphicsScene>
 #include <QDebug>
 
 #include "editor.h"
@@ -23,13 +20,15 @@ AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QDialog *parent) :
     ui->mainLayout->setStretchFactor(ui->previewLayout, 20);
 
     connect(this, &QDialog::finished, this, &AddTransparencyToPaperDialog::closeClicked);
-    connect(ui->sb_treshold, QOverload<int>::of(&QSpinBox::valueChanged), this, &AddTransparencyToPaperDialog::SpinboxChanged);
+    connect(ui->sb_treshold, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AddTransparencyToPaperDialog::SpinboxChanged);
     connect(ui->sliderThreshold, &QSlider::valueChanged, this, &AddTransparencyToPaperDialog::SliderChanged);
     connect(ui->cb_Red, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Green, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Blue, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->btnCancel, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::closeClicked);
     connect(ui->btnTrace, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::traceScannedDrawings);
+    connect(ui->testTransparencyCheckbox, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::checkerStateChanged);
+    connect(ui->zoomSlider, &QSlider::valueChanged, this, &AddTransparencyToPaperDialog::zoomChanged);
 }
 
 AddTransparencyToPaperDialog::~AddTransparencyToPaperDialog()
@@ -49,10 +48,15 @@ void AddTransparencyToPaperDialog::initUI()
     loadDrawing(mEditor->currentFrame());
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &AddTransparencyToPaperDialog::layerChanged);
     connect(mEditor, &Editor::scrubbedTo, this, &AddTransparencyToPaperDialog::updateDrawing);
+    connect(mEditor, &Editor::currentFrameUpdated, this, &AddTransparencyToPaperDialog::updateDrawing);
 
     scene.setBackgroundBrush(Qt::white);
     ui->preview->setScene(&scene);
     ui->preview->show();
+
+    if (!mBitmap.bounds().isValid()) {
+        ui->btnTrace->setEnabled(false);
+    }
 }
 
 void AddTransparencyToPaperDialog::SpinboxChanged(int value)
@@ -67,6 +71,43 @@ void AddTransparencyToPaperDialog::SliderChanged(int value)
     mThreshold = value;
     ui->sb_treshold->setValue(value);
     updateDrawing();
+}
+
+void AddTransparencyToPaperDialog::checkerStateChanged(bool state)
+{
+    if (state) {
+        scene.setBackgroundBrush(QBrush(QImage(":/background/checkerboard.png")));
+    } else {
+        scene.setBackgroundBrush(Qt::white);
+    }
+}
+
+void AddTransparencyToPaperDialog::zoomChanged(int zoomLevel)
+{
+    mZoomLevel = zoomLevel;
+    updatePreview();
+}
+
+void AddTransparencyToPaperDialog::resizeEvent(QResizeEvent*)
+{
+    updatePreview();
+}
+
+void AddTransparencyToPaperDialog::updatePreview()
+{
+    QImage loadedImage = *mBitmap.image();
+
+    QSize previewSize = ui->preview->size()*mZoomLevel;
+    QSize size = mBitmap.size().scaled(previewSize, Qt::KeepAspectRatioByExpanding);
+    mPixmapFromImage = QPixmap(size);
+    mPixmapFromImage.fill(Qt::transparent);
+
+    QPainter painter(&mPixmapFromImage);
+
+    painter.drawImage(QRect(QPoint(0,0),QSize(size)), loadedImage, loadedImage.rect());
+    mPreviewImageItem->setPixmap(mPixmapFromImage);
+
+    scene.setSceneRect(QRect(QPoint(), previewSize));
 }
 
 void AddTransparencyToPaperDialog::loadDrawing(int frame)
@@ -85,23 +126,27 @@ void AddTransparencyToPaperDialog::loadDrawing(int frame)
 
     ui->labShowingFrame->setText(tr("Previewing frame %1").arg(QString::number(frame)));
 
-    mBitmap = nullptr;
-    mBitmap = layer->getBitmapImageAtFrame(frame)->clone();
-    mBitmap->setThreshold(mThreshold);
+    BitmapImage* currentImage = layer->getBitmapImageAtFrame(frame);
 
-    mBitmap = mBitmap->scanToTransparent(mBitmap,
+    if (!currentImage) { return; }
+
+    mBitmap = currentImage->copy();
+    mBitmap.setThreshold(mThreshold);
+
+    mBitmap = *mBitmap.scanToTransparent(&mBitmap,
                                          ui->cb_Red->isChecked(),
                                          ui->cb_Green->isChecked(),
                                          ui->cb_Blue->isChecked());
 
-    mLoadedImage = *mBitmap->image();
-    mPixmapFromImage = QPixmap::fromImage(mLoadedImage);
-    scene.clear();
-    scene.setBackgroundBrush(Qt::white);
-    scene.addPixmap(mPixmapFromImage);
-    ui->preview->items().clear();
-    ui->preview->setScene(&scene);
-    ui->preview->show();
+    if (mPreviewImageItem == nullptr) {
+        mPreviewImageItem = scene.addPixmap(mPixmapFromImage);
+    } else {
+        mPreviewImageItem->setPixmap(mPixmapFromImage);
+    }
+
+    ui->btnTrace->setEnabled(true);
+
+    updatePreview();
 }
 
 void AddTransparencyToPaperDialog::updateDrawing()

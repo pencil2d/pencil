@@ -753,6 +753,8 @@ void ScribbleArea::paintBitmapBuffer()
     }
     layer->setModified(frameNumber, true);
 
+    mEditor->notifyCurrentFrameUpdated();
+
     mBufferImg->clear();
 }
 
