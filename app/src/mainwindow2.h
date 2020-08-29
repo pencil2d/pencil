@@ -72,7 +72,6 @@ public slots:
     void openPegAlignDialog();
     void closePegAlignDialog();
     void openAddTranspToPaperDialog();
-    void closeAddTranspToPaperDialog();
     void currentLayerChanged();
     void selectionChanged();
 

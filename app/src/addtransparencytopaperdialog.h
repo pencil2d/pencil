@@ -22,15 +22,16 @@ public:
 
     void setCore(Editor* editor);
 
+    void initUI();
+
 public slots:
+signals:
+    void closeDialog();
     void SpinboxChanged(int value);
     void SliderChanged(int value);
     void loadDrawing(int frame);
     void updateDrawing();
     void layerChanged(int index);
-
-signals:
-    void closeDialog();
 
 private:
     Ui::AddTransparencyToPaperDialog *ui;

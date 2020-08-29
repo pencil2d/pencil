@@ -40,11 +40,19 @@ AddTransparencyToPaperDialog::~AddTransparencyToPaperDialog()
 void AddTransparencyToPaperDialog::setCore(Editor *editor)
 {
     mEditor = editor;
+}
+
+void AddTransparencyToPaperDialog::initUI()
+{
     if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP)
         this->setEnabled(false);
     loadDrawing(mEditor->currentFrame());
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &AddTransparencyToPaperDialog::layerChanged);
     connect(mEditor, &Editor::scrubbedTo, this, &AddTransparencyToPaperDialog::updateDrawing);
+
+    scene.setBackgroundBrush(Qt::white);
+    ui->preview->setScene(&scene);
+    ui->preview->show();
 }
 
 void AddTransparencyToPaperDialog::SpinboxChanged(int value)
@@ -198,5 +206,4 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
 void AddTransparencyToPaperDialog::closeClicked()
 {
     emit closeDialog();
-    close();
 }

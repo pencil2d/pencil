@@ -481,25 +481,23 @@ void MainWindow2::closePegAlignDialog()
 
 void MainWindow2::openAddTranspToPaperDialog()
 {
-    if (mAddTranspToPaper != nullptr)
+    if (mAddTranspToPaper == nullptr)
     {
-        QMessageBox::information(this, nullptr,
-                                 tr("Dialog is already open!"),
-                                 QMessageBox::Ok);
-        return;
+        mAddTranspToPaper = new AddTransparencyToPaperDialog();
+        mAddTranspToPaper->setCore(mEditor);
+        mAddTranspToPaper->initUI();
+        mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
+        mAddTranspToPaper->show();
+
+        connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, [=] {
+            mAddTranspToPaper->deleteLater();
+            mAddTranspToPaper = nullptr;
+        });
+
+    } else {
+        mAddTranspToPaper->raise();
     }
 
-    mAddTranspToPaper = new AddTransparencyToPaperDialog();
-    connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, this , &MainWindow2::closeAddTranspToPaperDialog);
-    mAddTranspToPaper->setCore(mEditor);
-    mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
-    mAddTranspToPaper->show();
-}
-
-void MainWindow2::closeAddTranspToPaperDialog()
-{
-    disconnect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, this , &MainWindow2::closeAddTranspToPaperDialog);
-    mAddTranspToPaper = nullptr;
 }
 
 void MainWindow2::currentLayerChanged()
