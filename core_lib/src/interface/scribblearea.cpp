@@ -235,7 +235,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     {
         layer->setModified(frameNumber, true);
         emit modification(layerNumber);
-        updateAllFrames();
+        updateFrame(frameNumber);
     }
 }
 

@@ -1380,10 +1380,19 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, [editor, scribbleArea]
+    {
+        // Changing the current layer will only change the frame (as viewed by the user) under the following circumstances
+        if(editor->preference()->isOn(SETTING::PREV_ONION) ||
+           editor->preference()->isOn(SETTING::NEXT_ONION) ||
+           scribbleArea->getLayerVisibility() != LayerVisibility::ALL)
+        {
+            scribbleArea->updateAllFrames();
+        }
+    });
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
-    connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
+    connect(editor, &Editor::currentFrameChanged, [scribbleArea] { scribbleArea->update(); });
 
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
     //connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );
