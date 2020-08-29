@@ -785,7 +785,7 @@ void BitmapImage::traceLine(BitmapImage* img, bool blackEnabled, bool redEnabled
                 {
                     if (blackEnabled && alphaValue > TRANSP_THRESHOLD)
                         img->scanLine(x, y, blackline);
-                    else
+                    else if (black)
                         img->scanLine(x, y, transp);
                 }
             }
@@ -813,16 +813,15 @@ void BitmapImage::eraseRedGreenBlueLines(BitmapImage *img)
     img->modification();
 }
 
-void BitmapImage::fillSpotAreas(BitmapImage *bitmapimage)
+void BitmapImage::fillSpotAreas(BitmapImage *img)
 {
-    Q_ASSERT(bitmapimage != nullptr);
-
-    BitmapImage* img = bitmapimage;
+    Q_ASSERT(img != nullptr);
 
     // fill areas size 'area' or less with appropriate color
     QVector<QPoint> points;
     points.clear();
-    QRgb active, previous = blackline;
+    QRgb active = blackline;
+    QRgb previous = blackline;
     for (int x = img->left() + 1; x < img->right(); x++)
     {
         for (int y = img->top() + 1; y < img->bottom(); y++)
@@ -834,6 +833,7 @@ void BitmapImage::fillSpotAreas(BitmapImage *bitmapimage)
                 int areaSize = fillWithColor(QPoint(x, y), transp, rosa, img);
                 if (areaSize <= mSpotArea)
                 {   // replace rosa with last color
+                    qDebug() << "Fill spot area " << areaSize <<  " with:  " << qRed(previous) << " " << qGreen(previous) << " " << qBlue(previous) << " " << qAlpha(previous);
                     fillWithColor(points.last(), rosa, previous, img);
                     points.removeLast();
                 }
@@ -849,11 +849,10 @@ void BitmapImage::fillSpotAreas(BitmapImage *bitmapimage)
     img->modification();
 }
 
-void BitmapImage::toThinLine(BitmapImage * colorImage, bool black, bool red, bool green, bool blue)
+void BitmapImage::toThinLine(BitmapImage * img, bool black, bool red, bool green, bool blue)
 {
-    Q_ASSERT(colorImage != nullptr);
+    Q_ASSERT(img != nullptr);
 
-    BitmapImage* img = colorImage;
     bool N = true, E = true, S = true, W = true, pixelRemoved, search;
 
     QList<QRgb> colors;
@@ -1061,11 +1060,9 @@ void BitmapImage::toThinLine(BitmapImage * colorImage, bool black, bool red, boo
     img->modification();
 }
 
-void BitmapImage::blendLines(BitmapImage *bitmapimage, bool black, bool red, bool green, bool blue)
+void BitmapImage::blendLines(BitmapImage *img, bool black, bool red, bool green, bool blue)
 {
-    Q_ASSERT(bitmapimage != nullptr);
-
-    BitmapImage* img = bitmapimage;
+    Q_ASSERT(img != nullptr);
 
     int r, g, b, a;         //red, green, blue, alpha
     QList<QPoint> points;   // QPoints to add in calculation
@@ -1108,11 +1105,10 @@ void BitmapImage::blendLines(BitmapImage *bitmapimage, bool black, bool red, boo
     img->modification();
 }
 
-int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage *bitmapimage)
+int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage *img)
 {
-    Q_ASSERT(bitmapimage != nullptr);
+    Q_ASSERT(img != nullptr);
 
-    BitmapImage* img = bitmapimage;
     QList<QPoint> fillList;
     fillList.clear();
     // fill first pixel

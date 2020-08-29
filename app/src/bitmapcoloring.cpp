@@ -206,7 +206,7 @@ void BitmapColoring::setThreshold(int threshold)
 
 void BitmapColoring::traceLines()
 {
-    if (mLayerBitmap == nullptr) { return; }
+    if (mLayerBitmap == nullptr || mLayerBitmap->type() != Layer::BITMAP) { return; }
 
     if (ui->cb3TraceAllKeyframes->isChecked())
     {
@@ -280,6 +280,10 @@ void BitmapColoring::updateFillSpotsButton()
 
 void BitmapColoring::fillSpotAreas()
 {
+    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP) { return; }
+
+    mLayerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+
     if (!ui->cbThinAllKeyframes->isChecked() && mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
         mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
@@ -303,10 +307,11 @@ void BitmapColoring::fillSpotAreas()
         {
             if (mLayerBitmap->keyExists(i))
             {
-                mProgress.setValue(keysThinned++);
                 mEditor->scrubTo(i);
+                mProgress.setValue(keysThinned++);
                 mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
                 mBitmapImage->setSpotArea(ui->sbSpotAreas->value());
+                qDebug() << "Frame: " << i << ", Spot area: " << ui->sbSpotAreas->value();
                 mBitmapImage->fillSpotAreas(mBitmapImage);
                 mBitmapImage->modification();
                 count++;

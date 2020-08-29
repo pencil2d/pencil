@@ -117,10 +117,10 @@ public:
     BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool redEnabled, bool greenEnabled, bool blueEnabled);
     void traceLine(BitmapImage* bitmapimage, bool blackEnabled, bool redEnabled, bool greenEnabled, bool blueEnabled);
     void eraseRedGreenBlueLines(BitmapImage* img);
-    void fillSpotAreas(BitmapImage* bitmapimage);
+    void fillSpotAreas(BitmapImage* img);
     void toThinLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);
     void blendLines(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
-    int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* bitmapimage);
+    int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* img);
 
     /** Determines if the BitmapImage is minimally bounded.
      *

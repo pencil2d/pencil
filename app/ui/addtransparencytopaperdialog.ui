@@ -308,7 +308,7 @@
          <item>
           <widget class="QPushButton" name="btnTrace">
            <property name="text">
-            <string>Trace</string>
+            <string>Apply</string>
            </property>
            <property name="default">
             <bool>true</bool>
