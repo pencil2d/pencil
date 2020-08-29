@@ -306,7 +306,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="btnTrace">
+          <widget class="QPushButton" name="btnApply">
            <property name="text">
             <string>Apply</string>
            </property>
