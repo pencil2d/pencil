@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -83,6 +83,8 @@ enum class SETTING
     FRAME_POOL_SIZE,
     ROTATION_INCREMENT,
     ASK_FOR_PRESET,
+    LOAD_MOST_RECENT,
+    LOAD_DEFAULT_PRESET,
     DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };

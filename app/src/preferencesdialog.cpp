@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,6 +22,8 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QStandardPaths>
 #include <QtMath>
+#include <QSettings>
+
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
@@ -104,15 +106,15 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     QString languages [][3]
     {
         // translatable string, endonym, locale code
-        { tr("Arabic"), QStringLiteral("عربى"), "ar" },
+        { tr("Arabic"), QStringLiteral("العربية"), "ar" },
         { tr("Catalan"), QStringLiteral("Català"), "ca" },
-        { tr("Czech"), QStringLiteral("čeština"), "cs" },
+        { tr("Czech"), QStringLiteral("Čeština"), "cs" },
         { tr("Danish"), QStringLiteral("Dansk"), "da" },
-        { tr("German"), QStringLiteral("Deutsche"), "de" },
+        { tr("German"), QStringLiteral("Deutsch"), "de" },
         { tr("Greek"), QStringLiteral("Ελληνικά"), "el" },
         { tr("English"), QStringLiteral("English"), "en" },
         { tr("Spanish"), QStringLiteral("Español"), "es" },
-        { tr("Estonian"), QStringLiteral("Eestlane"), "et" },
+        { tr("Estonian"), QStringLiteral("Eesti"), "et" },
         { tr("French"), QStringLiteral("Français"), "fr" },
         { tr("Hebrew"), QStringLiteral("עברית"), "he" },
         { tr("Hungarian"), QStringLiteral("Magyar"), "hu_HU" },
@@ -121,13 +123,13 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
         { tr("Japanese"), QStringLiteral("日本語"), "ja" },
         { tr("Kabyle"), QStringLiteral("Taqbaylit"), "kab" },
         { tr("Polish"), QStringLiteral("Polski"), "pl" },
-        { tr("Portuguese \u2013 Portugal"), QStringLiteral("Português Portugal"), "pt_PT" },
-        { tr("Portuguese \u2013 Brazil"), QStringLiteral("Português Brasil"), "pt_BR" },
-        { tr("Russian"), QStringLiteral("русский"), "ru" },
+        { tr("Portuguese \u2013 Portugal"), QStringLiteral("Português \u2013 Portugal"), "pt_PT" },
+        { tr("Portuguese \u2013 Brazil"), QStringLiteral("Português \u2013 Brasil"), "pt_BR" },
+        { tr("Russian"), QStringLiteral("Русский"), "ru" },
         { tr("Slovene"), QStringLiteral("Slovenščina"), "sl" },
         { tr("Swedish"), QStringLiteral("Svenska"), "sv" },
-        { tr("Turkish"), QStringLiteral("Türk"), "tr" },
-        { tr("Vietnamese"), QStringLiteral(" Tiếng Việt"), "vi" },
+        { tr("Turkish"), QStringLiteral("Türkçe"), "tr" },
+        { tr("Vietnamese"), QStringLiteral("Tiếng Việt"), "vi" },
         { tr("Chinese \u2013 China"), QStringLiteral("简体中文"), "zh_CN" },
         { tr("Chinese \u2013 Taiwan"), QStringLiteral("繁體中文"), "zh_TW" },
     };
@@ -575,7 +577,9 @@ FilesPage::FilesPage()
     connect(ui->addPreset, &QPushButton::clicked, this, &FilesPage::addPreset);
     connect(ui->removePreset, &QPushButton::clicked, this, &FilesPage::removePreset);
     connect(ui->setDefaultPreset, &QPushButton::clicked, this, &FilesPage::setDefaultPreset);
-    connect(ui->askPresetCheckBox, &QCheckBox::stateChanged, this, &FilesPage::askForPresetChange);
+    connect(ui->askPresetRbtn, &QRadioButton::toggled, this, &FilesPage::askForPresetChange);
+    connect(ui->loadLastActiveRbtn, &QRadioButton::toggled, this, &FilesPage::loadMostRecentChange);
+    connect(ui->loadDefaultPresetRbtn, &QRadioButton::toggled, this, &FilesPage::loadDefaultPreset);
     connect(ui->presetListWidget, &QListWidget::itemChanged, this, &FilesPage::presetNameChanged);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
@@ -726,8 +730,6 @@ void FilesPage::presetNameChanged(QListWidgetItem* item)
 
 void FilesPage::updateValues()
 {
-    ui->askPresetCheckBox->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
-
     bool ok = true;
     int defaultPresetIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
 
@@ -747,11 +749,24 @@ void FilesPage::updateValues()
     }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+    ui->askPresetRbtn->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
+    ui->loadDefaultPresetRbtn->setChecked(mManager->isOn(SETTING::LOAD_DEFAULT_PRESET));
+    ui->loadLastActiveRbtn->setChecked(mManager->isOn(SETTING::LOAD_MOST_RECENT));
 }
 
 void FilesPage::askForPresetChange(int b)
 {
     mManager->set(SETTING::ASK_FOR_PRESET, b != Qt::Unchecked);
+}
+
+void FilesPage::loadMostRecentChange(int b)
+{
+    mManager->set(SETTING::LOAD_MOST_RECENT, b != Qt::Unchecked);
+}
+
+void FilesPage::loadDefaultPreset(int b)
+{
+    mManager->set(SETTING::LOAD_DEFAULT_PRESET, b != Qt::Unchecked);
 }
 
 void FilesPage::autosaveChange(int b)
@@ -802,7 +817,7 @@ void ToolsPage::rotationIncrementChange(int value)
     while (360 % angle != 0) {
         angle++;
     }
-    ui->rotationIncrementDisplay->setText(tr("1% degrees").arg(angle)); // don't use tr()'s plural settings, it breaks Transifex.
+    ui->rotationIncrementDisplay->setText(tr("%1 degrees").arg(angle)); // don't use tr()'s plural settings, it breaks Transifex.
     mManager->set(SETTING::ROTATION_INCREMENT, angle);
 }
 

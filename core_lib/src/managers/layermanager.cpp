@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -39,9 +39,8 @@ bool LayerManager::init()
     return true;
 }
 
-Status LayerManager::load(Object* o)
+Status LayerManager::load(Object*)
 {
-    Q_UNUSED(o);
     mLastCameraLayerIdx = 0;
     // Do not emit layerCountChanged here because the editor has not updated to this object yet
     // Leave that to the caller of this function
@@ -178,9 +177,7 @@ QString LayerManager::nameSuggestLayer(const QString& name)
 LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 {
     LayerBitmap* layer = object()->addNewBitmapLayer();
-
-    const QString& name = nameSuggestLayer(strLayerName);
-    layer->setName(name);
+    layer->setName(strLayerName);
 
     Q_EMIT layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
@@ -191,8 +188,7 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 {
     LayerVector* layer = object()->addNewVectorLayer();
-    const QString& name = nameSuggestLayer(strLayerName);
-    layer->setName(name);
+    layer->setName(strLayerName);
 
     Q_EMIT layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
@@ -203,8 +199,7 @@ LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
 {
     LayerCamera* layer = object()->addNewCameraLayer();
-    const QString& name = nameSuggestLayer(strLayerName);
-    layer->setName(name);
+    layer->setName(strLayerName);
 
     Q_EMIT layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
@@ -215,8 +210,7 @@ LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
 LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
 {
     LayerSound* layer = object()->addNewSoundLayer();
-    const QString& name = nameSuggestLayer(strLayerName);
-    layer->setName(name);
+    layer->setName(strLayerName);
 
     Q_EMIT layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
@@ -224,7 +218,7 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
     return layer;
 }
 
-int LayerManager::LastFrameAtFrame(int frameIndex)
+int LayerManager::lastFrameAtFrame(int frameIndex)
 {
     Object* o = object();
     for (int i = frameIndex; i >= 0; i -= 1)

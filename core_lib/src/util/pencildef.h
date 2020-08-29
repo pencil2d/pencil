@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -92,7 +92,7 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 }
 
 // Max frames that can be imported and loaded onto the timeline
-constexpr int MaxFramesBound = 9999;
+const static int MaxFramesBound = 9999;
 
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
@@ -215,6 +215,8 @@ constexpr int MaxFramesBound = 9999;
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
 #define SETTING_ASK_FOR_PRESET      "AskForPreset"
+#define SETTING_LOAD_MOST_RECENT    "LoadMostRecent"
+#define SETTING_LOAD_DEFAULT_PRESET "LoadDefaultPreset"
 #define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
 #define SETTING_ANTIALIAS        "Antialiasing"

@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "viewmanager.h"
 #include "layermanager.h"
+#include "scribblearea.h"
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "colormanager.h"
@@ -163,8 +164,11 @@ Status ActionCommands::importMovieAudio()
 Status ActionCommands::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    Q_ASSERT(layer);
-    NULLReturn(layer, Status::FAIL);
+    if (layer == nullptr)
+    {
+        Q_ASSERT(layer);
+        return Status::FAIL;
+    }
 
     if (layer->type() != Layer::SOUND)
     {
@@ -183,7 +187,7 @@ Status ActionCommands::importSound()
         bool ok = false;
         QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties", "Dialog title on creating a sound layer"),
                                                      tr("Layer name:"), QLineEdit::Normal,
-                                                     tr("Sound Layer", "Default name on creating a sound layer"), &ok);
+                                                     mEditor->layers()->nameSuggestLayer(tr("Sound Layer", "Default name on creating a sound layer")), &ok);
         if (ok && !strLayerName.isEmpty())
         {
             Layer* newLayer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -699,7 +703,7 @@ void ActionCommands::duplicateKey()
     if (layer == nullptr) return;
     if (!layer->visible())
     {
-        mEditor->showLayerNotVisibleWarning();
+        mEditor->getScribbleArea()->showLayerNotVisibleWarning();
         return;
     }
 

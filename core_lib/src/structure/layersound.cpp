@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -65,9 +65,9 @@ void LayerSound::updateFrameLengths(int fps)
     });
 }
 
-QDomElement LayerSound::createDomElement(QDomDocument& doc)
+QDomElement LayerSound::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerElem = this->createBaseDomElement(doc);
+    QDomElement layerElem = createBaseDomElement(doc);
 
     foreachKeyFrame([&doc, &layerElem](KeyFrame* pKeyFrame)
     {

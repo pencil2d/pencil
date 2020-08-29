@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -40,10 +40,8 @@ namespace
                            "</ul>";
 }
 
-FileManager::FileManager(QObject* parent) : QObject(parent),
-mLog("FileManager")
+FileManager::FileManager(QObject* parent) : QObject(parent)
 {
-    ENABLE_DEBUG_LOG(mLog, false);
     srand(static_cast<uint>(time(nullptr)));
 }
 
@@ -53,7 +51,7 @@ Object* FileManager::load(QString sFileName)
     dd << QString("File name: ").append(sFileName);
     if (!QFile::exists(sFileName))
     {
-        qCDebug(mLog) << "ERROR - File doesn't exist.";
+        FILEMANAGER_LOG("ERROR - File doesn't exist");
         return cleanUpWithErrorCode(Status(Status::FILE_NOT_FOUND, dd, tr("Could not open file"),
                                            tr("The file does not exist, so we are unable to open it. Please check "
                                            "to make sure the path is correct and that the file is accessible and try again.")));
@@ -61,7 +59,7 @@ Object* FileManager::load(QString sFileName)
 
     progressForward();
 
-    Object* obj = new Object;
+    std::unique_ptr<Object> obj(new Object);
     obj->setFilePath(sFileName);
     obj->createWorkingDir();
 
@@ -116,7 +114,7 @@ Object* FileManager::load(QString sFileName)
     QDomDocument xmlDoc;
     if (!xmlDoc.setContent(&file))
     {
-        qCDebug(mLog) << "Couldn't open the main XML file.";
+        FILEMANAGER_LOG("Couldn't open the main XML file");
         dd << "Error parsing or opening the main XML file";
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
@@ -124,6 +122,7 @@ Object* FileManager::load(QString sFileName)
     QDomDocumentType type = xmlDoc.doctype();
     if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
     {
+        FILEMANAGER_LOG("Invalid main XML doctype");
         dd << QString("Invalid main XML doctype: ").append(type.name());
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
@@ -135,29 +134,29 @@ Object* FileManager::load(QString sFileName)
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
     }
 
-    loadPalette(obj);
+    loadPalette(obj.get());
 
     bool ok = true;
 
     if (root.tagName() == "document")
     {
-        ok = loadObject(obj, root);
+        ok = loadObject(obj.get(), root);
     }
     else if (root.tagName() == "object" || root.tagName() == "MyOject") // old Pencil format (<=0.4.3)
     {
-        ok = loadObjectOldWay(obj, root);
+        ok = loadObjectOldWay(obj.get(), root);
     }
 
     if (!ok)
     {
-        delete obj;
+        obj.reset();
         dd << "Issue occurred during object loading";
         return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, ""));
     }
 
-    verifyObject(obj);
+    verifyObject(obj.get());
 
-    return obj;
+    return obj.release();
 }
 
 bool FileManager::loadObject(Object* object, const QDomElement& root)
@@ -178,8 +177,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
         if (element.tagName() == "object")
         {
             ok = object->loadXML(element, [this]{ progressForward(); });
-
-            if (!ok) qCDebug(mLog) << "Failed to Load object";
+            if (!ok) FILEMANAGER_LOG("Failed to Load object");
 
         }
         else if (element.tagName() == "editor" || element.tagName() == "projectdata")
@@ -205,7 +203,7 @@ bool FileManager::isOldForamt(const QString& fileName) const
     return !(MiniZ::isZip(fileName));
 }
 
-Status FileManager::save(Object* object, QString sFileName)
+Status FileManager::save(const Object* object, QString sFileName)
 {
     DebugDetails dd;
     dd << "FileManager::save";
@@ -311,7 +309,7 @@ Status FileManager::save(Object* object, QString sFileName)
         Layer* layer = object->getLayer(i);
 
         dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
-        
+
         Status st = layer->save(sDataFolder, zippedFiles, [this] { progressForward(); });
         if (!st.ok())
         {
@@ -328,13 +326,14 @@ Status FileManager::save(Object* object, QString sFileName)
         zippedFiles.append(sPaletteFile);
     else
         dd << "Failed to save the palette xml";
-    
+
     progressForward();
 
     // -------- save main XML file -----------
     QFile file(sMainXMLFile);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
+        dd << "Open Main XML File failed";
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
 
@@ -379,7 +378,7 @@ Status FileManager::save(Object* object, QString sFileName)
         if (!s.ok())
         {
             dd.collect(s.details());
-            return Status(Status::ERROR_MINIZ_FAIL, dd, 
+            return Status(Status::ERROR_MINIZ_FAIL, dd,
                           tr("Miniz Error"),
                           tr("An internal error occurred. Your file may not be saved successfully."));
         }
@@ -559,7 +558,7 @@ QString FileManager::backupPreviousFile(const QString& fileName)
     bool ok = QFile::rename(info.absoluteFilePath(), sBackupFileFullPath);
     if (!ok)
     {
-        qDebug() << "Cannot backup the previous file.";
+        FILEMANAGER_LOG("Cannot backup the previous file");
         return "";
     }
     return sBackupFileFullPath;
@@ -581,7 +580,7 @@ void FileManager::progressForward()
 
 bool FileManager::loadPalette(Object* obj)
 {
-    qCDebug(mLog) << "Load Palette..";
+    FILEMANAGER_LOG("Load Palette..");
 
     QString paletteFilePath = QDir(obj->dataDir()).filePath(PFF_PALETTE_FILE);
     if (!obj->importPalette(paletteFilePath))
@@ -623,7 +622,7 @@ Status FileManager::verifyObject(Object* obj)
     {
         obj->data()->setCurrentLayer(maxLayer - 1);
     }
-    
+
     // Must have at least 1 camera layer
     std::vector<LayerCamera*> camLayers = obj->getLayersByType<LayerCamera>();
     if (camLayers.empty())
@@ -631,4 +630,247 @@ Status FileManager::verifyObject(Object* obj)
         obj->addNewCameraLayer();
     }
     return Status::OK;
+}
+
+QStringList FileManager::searchForUnsavedProjects()
+{
+    QDir pencil2DTempDir = QDir::temp();
+    bool folderExists = pencil2DTempDir.cd("Pencil2D");
+    if (!folderExists)
+    {
+        return QStringList();
+    }
+
+    const QStringList nameFilter("*_" PFF_TMP_DECOMPRESS_EXT "_*"); // match name pattern like "Default_Y2xD_0a4e44e9"
+    QStringList entries = pencil2DTempDir.entryList(nameFilter, QDir::Dirs | QDir::Readable);
+
+    QStringList recoverables;
+    for (const QString path : entries)
+    {
+        QString fullPath = pencil2DTempDir.filePath(path);
+        if (isProjectRecoverable(fullPath))
+        {
+            qDebug() << "Found debris at" << fullPath;
+            recoverables.append(fullPath);
+        }
+    }
+    return recoverables;
+}
+
+bool FileManager::isProjectRecoverable(const QString& projectFolder)
+{
+    QDir dir(projectFolder);
+    if (!dir.exists()) { return false; }
+
+    // There must be a subfolder called "data"
+    if (!dir.exists("data")) { return false; }
+
+    bool ok = dir.cd("data");
+    Q_ASSERT(ok);
+
+    QStringList nameFiler;
+    nameFiler << "*.png" << "*.vec" << "*.xml";
+    QStringList entries = dir.entryList(nameFiler, QDir::Files);
+
+    return (entries.size() > 0);
+}
+
+Object* FileManager::recoverUnsavedProject(QString intermeidatePath)
+{
+    qDebug() << "TODO: recover project" << intermeidatePath;
+
+    QDir projectDir(intermeidatePath);
+    const QString mainXMLPath = projectDir.filePath(PFF_XML_FILE_NAME);
+    const QString dataFolder = projectDir.filePath(PFF_DATA_DIR);
+
+    std::unique_ptr<Object> object(new Object);
+    object->setWorkingDir(intermeidatePath);
+    object->setMainXMLFile(mainXMLPath);
+    object->setDataDir(dataFolder);
+
+    Status st = recoverObject(object.get());
+    if (!st.ok())
+    {
+        mError = st;
+        return nullptr;
+    }
+    // Transfer ownership to the caller
+    return object.release();
+}
+
+Status FileManager::recoverObject(Object* object)
+{
+    // Check whether the main.xml is fine, if not we should make a valid one.
+    bool mainXmlOK = true;
+
+    QFile file(object->mainXMLFile());
+    mainXmlOK &= file.exists();
+    mainXmlOK &= file.open(QFile::ReadOnly);
+    file.close();
+
+    QDomDocument xmlDoc;
+    mainXmlOK &= xmlDoc.setContent(&file);
+
+    QDomDocumentType type = xmlDoc.doctype();
+    mainXmlOK &= (type.name() == "PencilDocument" || type.name() == "MyObject");
+
+    QDomElement root = xmlDoc.documentElement();
+    mainXmlOK &= (!root.isNull());
+
+    QDomElement objectTag = root.firstChildElement("object");
+    mainXmlOK &= (objectTag.isNull() == false);
+
+    if (mainXmlOK == false)
+    {
+        // the main.xml is broken, try to rebuild one
+        rebuildMainXML(object);
+
+        // Load the newly built main.xml
+        QFile file(object->mainXMLFile());
+        file.open(QFile::ReadOnly);
+        xmlDoc.setContent(&file);
+        root = xmlDoc.documentElement();
+        objectTag = root.firstChildElement("object");
+    }
+    loadPalette(object);
+
+    bool ok = loadObject(object, root);
+    verifyObject(object);
+
+    return ok ? Status::OK : Status::FAIL;
+}
+
+/** Create a new main.xml based on the png/vec filenames left in the data folder */
+Status FileManager::rebuildMainXML(Object* object)
+{
+    QDir dataDir(object->dataDir());
+
+    QStringList nameFiler;
+    nameFiler << "*.png" << "*.vec";
+    const QStringList entries = dataDir.entryList(nameFiler, QDir::Files | QDir::Readable, QDir::Name);
+
+    QMap<int, QStringList> keyFrameGroups;
+
+    // grouping keyframe files by layers
+    for (const QString& s : entries)
+    {
+        int layerIndex = layerIndexFromFilename(s);
+        if (layerIndex > 0)
+        {
+            keyFrameGroups[layerIndex].append(s);
+        }
+    }
+
+    // build the new main XML file
+    const QString mainXMLPath = object->mainXMLFile();
+    QFile file(mainXMLPath);
+    if (!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        return Status::ERROR_FILE_CANNOT_OPEN;
+    }
+
+    QDomDocument xmlDoc("PencilDocument");
+    QDomElement root = xmlDoc.createElement("document");
+    QDomProcessingInstruction encoding = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
+    xmlDoc.appendChild(encoding);
+    xmlDoc.appendChild(root);
+
+    // save editor information
+    QDomElement projDataXml = saveProjectData(object->data(), xmlDoc);
+    root.appendChild(projDataXml);
+
+    // save object
+    QDomElement elemObject = xmlDoc.createElement("object");
+    root.appendChild(elemObject);
+
+    for (const int layerIndex : keyFrameGroups.keys())
+    {
+        const QStringList& frames = keyFrameGroups.value(layerIndex);
+        Status st = rebuildLayerXmlTag(xmlDoc, elemObject, layerIndex, frames);
+    }
+
+    QTextStream fout(&file);
+    xmlDoc.save(fout, 2);
+    fout.flush();
+    file.close();
+
+    return Status::OK;
+}
+/**
+ *  Rebuild a layer xml tag. example:
+ *    <layer id="2" type="2" visibility="1" name="Vector Layer">
+ *      <image src="002.001.vec" frame="1"/>
+ *    </layer>
+ */
+Status FileManager::rebuildLayerXmlTag(QDomDocument& doc,
+                                       QDomElement& elemObject,
+                                       const int layerIndex,
+                                       const QStringList& frames)
+{
+    Q_ASSERT(frames.length() > 0);
+
+    Layer::LAYER_TYPE type = frames[0].endsWith(".png") ? Layer::BITMAP : Layer::VECTOR;
+
+    QDomElement elemLayer = doc.createElement("layer");
+    elemLayer.setAttribute("id", layerIndex + 1); // starts from 1, not 0.
+    elemLayer.setAttribute("name", recoverLayerName(type, layerIndex));
+    elemLayer.setAttribute("visibility", true);
+    elemLayer.setAttribute("type", type);
+    elemObject.appendChild(elemLayer);
+
+    for (const QString& s : frames)
+    {
+        const int framePos = framePosFromFilename(s);
+        if (framePos < 0) { continue; }
+
+        QDomElement elemFrame = doc.createElement("image");
+        elemFrame.setAttribute("frame", framePos);
+        elemFrame.setAttribute("src", s);
+
+        if (type == Layer::BITMAP)
+        {
+            // Since we have no way to know the original img position
+            // Put it at the top left corner of the default camera
+            elemFrame.setAttribute("topLeftX", -800);
+            elemFrame.setAttribute("topLeftY", -600);
+        }
+        elemLayer.appendChild(elemFrame);
+    }
+    return Status::OK;
+}
+
+QString FileManager::recoverLayerName(Layer::LAYER_TYPE type, int index)
+{
+    switch (type)
+    {
+    case Layer::BITMAP:
+        return QString("%1 %2").arg(tr("Bitmap Layer")).arg(index);
+    case Layer::VECTOR:
+        return QString("%1 %2").arg(tr("Vector Layer")).arg(index);
+    case Layer::SOUND:
+        return QString("%1 %2").arg(tr("Sound Layer")).arg(index);
+    default:
+        Q_ASSERT(false);
+    }
+    return "";
+}
+
+int FileManager::layerIndexFromFilename(const QString& filename)
+{
+    const QStringList tokens = filename.split("."); // e.g., 001.019.png or 012.132.vec
+    if (tokens.length() >= 3) // a correct file name must have 3 tokens
+    {
+        return tokens[0].toInt();
+    }
+    return -1;
+}
+
+int FileManager::framePosFromFilename(const QString& filename)
+{
+    const QStringList tokens = filename.split("."); // e.g., 001.019.png or 012.132.vec
+    if (tokens.length() >= 3) // a correct file name must have 3 tokens
+    {
+        return tokens[1].toInt();
+    }
+    return -1;
 }

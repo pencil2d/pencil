@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -52,7 +52,7 @@ Layer::~Layer()
     mKeyFrames.clear();
 }
 
-void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action)
+void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action) const
 {
     for (auto pair : mKeyFrames)
     {
@@ -701,7 +701,7 @@ KeyFrame* Layer::getKeyFrameWhichCovers(int frameNumber) const
     return nullptr;
 }
 
-QDomElement Layer::createBaseDomElement(QDomDocument& doc)
+QDomElement Layer::createBaseDomElement(QDomDocument& doc) const
 {
     QDomElement layerTag = doc.createElement("layer");
     layerTag.setAttribute("id", id());

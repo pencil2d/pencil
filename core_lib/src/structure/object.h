@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -62,6 +62,7 @@ public:
     void init();
     void createWorkingDir();
     void deleteWorkingDir() const;
+    void setWorkingDir(const QString& path); // used by crash recovery
     void createDefaultLayers();
 
     QString filePath() const { return mFilePath; }
@@ -75,7 +76,7 @@ public:
     QString mainXMLFile() const { return mMainXMLFile; }
     void    setMainXMLFile(QString file) { mMainXMLFile = file; }
 
-    QDomElement saveXML(QDomDocument& doc);
+    QDomElement saveXML(QDomDocument& doc) const;
     bool loadXML(QDomElement element, ProgressCallback progressForward);
 
     void paintImage(QPainter& painter, int frameNumber, bool background, bool antialiasing) const;
@@ -101,10 +102,10 @@ public:
     void importPalettePencil(QFile& file);
     void openPalette(QString filePath);
 
-    bool exportPalette(QString filePath);
-    void exportPaletteGPL(QFile& file);
-    void exportPalettePencil(QFile& file);
-    QString savePalette(QString filePath);
+    bool exportPalette(const QString& filePath) const;
+    void exportPaletteGPL(QFile& file) const;
+    void exportPalettePencil(QFile& file) const;
+    QString savePalette(const QString& filePath) const;
 
     void loadDefaultPalette();
 
@@ -147,10 +148,10 @@ public:
 
     int getUniqueLayerID();
 
-    ObjectData* data();
+    ObjectData* data() const;
     void setData(ObjectData*);
 
-    int totalKeyFrameCount();
+    int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;
     void setActiveFramePoolSize(int n);
 

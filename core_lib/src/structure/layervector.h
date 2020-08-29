@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ public:
     // method from layerImage
     void loadImageAtFrame(QString strFileName, int);
 
-    QDomElement createDomElement(QDomDocument& doc) override;
+    QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
@@ -48,7 +48,7 @@ protected:
     KeyFrame* createKeyFrame(int position, Object*) override;
 
 private:
-    QString fileName(KeyFrame* key);
+    QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
 };
 

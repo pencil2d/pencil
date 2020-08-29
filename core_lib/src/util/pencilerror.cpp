@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -90,6 +90,13 @@ Status::Status(Status::ErrorCode eCode, const DebugDetails& detailsList, QString
     , mTitle(title)
     , mDescription(description)
     , mDetails(detailsList)
+{
+}
+
+Status::Status(const ErrorCode code, const QString& title, const QString& description)
+    : mCode(code)
+    , mTitle(title)
+    , mDescription(description)
 {
 }
 

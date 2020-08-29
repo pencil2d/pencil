@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -541,13 +541,15 @@ void Editor::copy()
     if (layer->type() == Layer::BITMAP)
     {
         LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
+        BitmapImage* bitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+        if (bitmapImage == nullptr) { return; }
         if (select()->somethingSelected())
         {
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy(select()->mySelectionRect().toRect());  // copy part of the image
+            g_clipboardBitmapImage = bitmapImage->copy(select()->mySelectionRect().toRect());  // copy part of the image
         }
         else
         {
-            g_clipboardBitmapImage = layerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->copy();  // copy the whole image
+            g_clipboardBitmapImage = bitmapImage->copy();  // copy the whole image
         }
         clipboardBitmapOk = true;
         if (g_clipboardBitmapImage.image() != nullptr)
@@ -556,7 +558,9 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        g_clipboardVectorImage = *((static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+        if (vectorImage == nullptr) { return; }
+        g_clipboardVectorImage = *vectorImage;  // copy the image
     }
 }
 
@@ -585,14 +589,17 @@ void Editor::paste()
             }
             auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
             mScribbleArea->handleDrawingOnEmptyFrame();
-            pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0)->paste(&tobePasted); // paste the clipboard
+            BitmapImage *bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+            Q_CHECK_PTR(bitmapImage);
+            bitmapImage->paste(&tobePasted); // paste the clipboard
         }
         else if (layer->type() == Layer::VECTOR && clipboardVectorOk)
         {
             backup(tr("Paste"));
             deselectAll();
             mScribbleArea->handleDrawingOnEmptyFrame();
-            VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getLastVectorImageAtFrame(currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            Q_CHECK_PTR(vectorImage);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             select()->setSelection(vectorImage->getSelectionRect(), false);
         }
@@ -722,7 +729,7 @@ void Editor::updateObject()
     {
         mScribbleArea->updateAllFrames();
     }
-    
+
     if (mPreferenceManager)
     {
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
@@ -967,10 +974,11 @@ void Editor::selectAll()
     else if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
-        if (vectorImage == nullptr) { return; }
-
-        vectorImage->selectAll();
-        rect = vectorImage->getSelectionRect();
+        if (vectorImage != nullptr)
+        {
+            vectorImage->selectAll();
+            rect = vectorImage->getSelectionRect();
+        }
     }
     select()->setSelection(rect, false);
 }
@@ -983,9 +991,10 @@ void Editor::deselectAll()
     if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
-        if (vectorImage == nullptr) { return; }
-
-        vectorImage->deselectAll();
+        if (vectorImage != nullptr)
+        {
+            vectorImage->deselectAll();
+        }
     }
 
     select()->resetSelectionProperties();
@@ -1153,11 +1162,6 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     emit updateTimeLine();
 }
 
-void Editor::showLayerNotVisibleWarning()
-{
-    return mScribbleArea->showLayerNotVisibleWarning();
-}
-
 void Editor::swapLayers(int i, int j)
 {
     mObject->swapLayers(i, j);
@@ -1173,23 +1177,22 @@ void Editor::swapLayers(int i, int j)
     mScribbleArea->updateAllFrames();
 }
 
-Status::StatusInt Editor::pegBarAlignment(QStringList layers)
+Status Editor::pegBarAlignment(QStringList layers)
 {
-    Status::StatusInt retLeft;
-    Status::StatusInt retRight;
+    PegbarResult retLeft;
+    PegbarResult retRight;
 
     LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
     BitmapImage* img = layerbitmap->getBitmapImageAtFrame(currentFrame());
     QRectF rect = select()->mySelectionRect();
     retLeft = img->findLeft(rect, 121);
     retRight = img->findTop(rect, 121);
-    if (retLeft.errorcode == Status::FAIL || retRight.errorcode == Status::FAIL)
+    if (STATUS_FAILED(retLeft.errorcode) || STATUS_FAILED(retRight.errorcode))
     {
-        retLeft.errorcode = Status::FAIL;
-        return retLeft;
+        return Status(Status::FAIL, "", tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar error message"));
     }
-    int peg_x = retLeft.value;
-    int peg_y = retRight.value;
+    const int peg_x = retLeft.value;
+    const int peg_y = retRight.value;
 
     // move other layers
     for (int i = 0; i < layers.count(); i++)
@@ -1201,17 +1204,15 @@ Status::StatusInt Editor::pegBarAlignment(QStringList layers)
             {
                 img = layerbitmap->getBitmapImageAtFrame(k);
                 retLeft = img->findLeft(rect, 121);
-                const QString body = tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
-                if (retLeft.errorcode == Status::FAIL)
+                const QString errorDescription = tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
+                if (STATUS_FAILED(retLeft.errorcode))
                 {
-                    emit needDisplayInfoNoTitle(body);
-                    return retLeft;
+                    return Status(retLeft.errorcode, "", errorDescription);
                 }
                 retRight = img->findTop(rect, 121);
-                if (retRight.errorcode == Status::FAIL)
+                if (STATUS_FAILED(retRight.errorcode))
                 {
-                    emit needDisplayInfoNoTitle(body);
-                    return retRight;
+                    return Status(retRight.errorcode, "", errorDescription);
                 }
                 img->moveTopLeft(QPoint(img->left() + (peg_x - retLeft.value), img->top() + (peg_y - retRight.value)));
             }
@@ -1219,7 +1220,7 @@ Status::StatusInt Editor::pegBarAlignment(QStringList layers)
     }
     deselectAll();
 
-    return retLeft;
+    return retLeft.errorcode;
 }
 
 void Editor::prepareSave()

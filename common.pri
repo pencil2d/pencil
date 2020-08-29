@@ -1,5 +1,5 @@
 
-VERSION = 0.6.4
+VERSION = 0.6.5
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 PENCIL2D_NIGHTLY {
@@ -22,13 +22,13 @@ win32-msvc* {
     CONFIG(release) {
         QMAKE_CXXFLAGS += /Gy /GL 
         CONFIG += ltcg
-        #CONFIG += force_debug_info
+        CONFIG += force_debug_info
     }
 }
 
 macx {
-   QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
-   LIBS += -lobjc -framework Carbon
+    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
+    LIBS += -lobjc -framework Carbon -framework AppKit
 }
 
 unix:!macx {

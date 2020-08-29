@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -51,6 +51,7 @@ QCursor HandTool::cursor()
 void HandTool::pointerPressEvent(PointerEvent*)
 {
     mLastPixel = getCurrentPixel();
+    mStartPoint = mEditor->view()->mapScreenToCanvas(mLastPixel);
     mIsHeld = true;
 
     mScribbleArea->updateToolCursor();
@@ -107,7 +108,7 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
         QVector2D startV(getLastPixel() - centralPixel);
         QVector2D curV(getCurrentPixel() - centralPixel);
 
-        qreal angleOffset = static_cast<qreal>(atan2(curV.y(), curV.x()) - atan2(startV.y(), startV.x()));
+        qreal angleOffset = static_cast<qreal>(std::atan2(curV.y(), curV.x()) - std::atan2(startV.y(), startV.x()));
         angleOffset = qRadiansToDegrees(angleOffset);
         float newAngle = viewMgr->rotation() + static_cast<float>(angleOffset);
         viewMgr->rotate(newAngle);
@@ -115,7 +116,7 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
     else if (isScale)
     {
         float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
-        float scaleValue = viewMgr->scaling() * (1.f + delta);
-        viewMgr->scale(scaleValue);
+        qreal scaleValue = viewMgr->scaling() * (1 + delta);
+        viewMgr->scaleWithOffset(scaleValue, mStartPoint);
     }
 }

@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ public:
     void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
 
     void editProperties() override;
-    QDomElement createDomElement(QDomDocument& doc) override;
+    QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     Camera* getCameraAtFrame(int frameNumber);
