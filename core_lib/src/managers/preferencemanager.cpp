@@ -82,7 +82,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::BACKGROUND_STYLE,         settings.value(SETTING_BACKGROUND_STYLE,       "white").toString());
 
     set(SETTING::LAYOUT_LOCK,              settings.value(SETTING_LAYOUT_LOCK,            false).toBool());
-    set(SETTING::FRAME_POOL_SIZE,          settings.value(SETTING_FRAME_POOL_SIZE,        200).toInt());
+    set(SETTING::FRAME_POOL_SIZE,          settings.value(SETTING_FRAME_POOL_SIZE,        1024).toInt());
 
     set(SETTING::FPS,                      settings.value(SETTING_FPS,                    12).toInt());
     set(SETTING::FIELD_W,                  settings.value(SETTING_FIELD_W,                800).toInt());
