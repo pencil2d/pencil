@@ -38,6 +38,7 @@ public:
     void loadFile() override;
     void unloadFile() override;
     bool isLoaded() override;
+    quint64 memoryUsage() override;
 
     void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);

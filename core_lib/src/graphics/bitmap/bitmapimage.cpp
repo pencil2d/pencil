@@ -112,6 +112,15 @@ bool BitmapImage::isLoaded()
     return (mImage != nullptr);
 }
 
+quint64 BitmapImage::memoryUsage()
+{
+    if (mImage)
+    {
+        return imageSize(*mImage);
+    }
+    return 0;
+}
+
 void BitmapImage::paintImage(QPainter& painter)
 {
     painter.drawImage(mBounds.topLeft(), *image());

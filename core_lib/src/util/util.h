@@ -51,4 +51,6 @@ Container filter(const Container& container, Pred predicate) {
 QString ffprobeLocation();
 QString ffmpegLocation();
 
+quint64 imageSize(const QImage&);
+
 #endif // UTIL_H

@@ -153,7 +153,7 @@ public:
 
     int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;
-    void setActiveFramePoolSize(int n);
+    void setActiveFramePoolSize(int sizeInMB);
 
 signals:
     void layerViewChanged();

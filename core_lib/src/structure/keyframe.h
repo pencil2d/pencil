@@ -57,6 +57,8 @@ public:
     virtual void unloadFile() {}
     virtual bool isLoaded() { return true; }
 
+    virtual quint64 memoryUsage() { return 0; }
+
 private:
     int mFrame = -1;
     int mLength = 1;
