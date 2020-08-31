@@ -61,6 +61,9 @@ private:
     bool loadObjectOldWay(Object*, const QDomElement& root);
     bool isOldForamt(const QString& fileName) const;
     bool loadPalette(Object*);
+    Status flushKeyFrameFiles(const Object* obj, const QString& dataFolder, QStringList& files);
+    Status writeMainXml(const Object* obj, const QString& mainXml, QStringList& files);
+    Status writePalette(const Object* obj, const QString& dataFolder, QStringList& files);
 
     ObjectData* loadProjectData(const QDomElement& element);
     QDomElement saveProjectData(ObjectData*, QDomDocument& xmlDoc);

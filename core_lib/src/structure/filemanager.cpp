@@ -206,7 +206,7 @@ bool FileManager::isOldForamt(const QString& fileName) const
 Status FileManager::save(const Object* object, QString sFileName)
 {
     DebugDetails dd;
-    dd << "FileManager::save";
+    dd << __FUNCTION__;
     dd << ("sFileName = " + sFileName);
 
     if (object == nullptr)
@@ -215,7 +215,7 @@ Status FileManager::save(const Object* object, QString sFileName)
         return Status(Status::INVALID_ARGUMENT, dd);
     }
 
-    int totalCount = object->totalKeyFrameCount();
+    const int totalCount = object->totalKeyFrameCount();
     mMaxProgressValue = totalCount + 5;
     emit progressRangeChanged(mMaxProgressValue);
 
@@ -249,7 +249,7 @@ Status FileManager::save(const Object* object, QString sFileName)
     QString sMainXMLFile;
     QString sDataFolder;
 
-    bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
+    const bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
     if (isOldType)
     {
         dd << "Old Pencil File Format (*.pcl) !";
@@ -291,80 +291,17 @@ Status FileManager::save(const Object* object, QString sFileName)
                       tr("\"%1\" is a file. Please delete the file and try again.").arg(dataInfo.absoluteFilePath()));
     }
 
-    // save data
-    int numLayers = object->getLayerCount();
-    dd << QString("Total %1 layers").arg(numLayers);
+    QStringList filesToZip; // A files list in the working folder needs to be zipped
+    Status stKeyFrames = flushKeyFrameFiles(object, sDataFolder, filesToZip);
+    dd.collect(stKeyFrames.details());
 
-    for (int i = 0; i < numLayers; ++i)
-    {
-        Layer* layer = object->getLayer(i);
-        layer->presave(sDataFolder);
-    }
+    Status stMainXml = writeMainXml(object, sMainXMLFile, filesToZip);
+    dd.collect(stMainXml.details());
 
-    QStringList zippedFiles;
+    Status stPalette = writePalette(object, sDataFolder, filesToZip);
+    dd.collect(stPalette.details());
 
-    bool saveLayersOK = true;
-    for (int i = 0; i < numLayers; ++i)
-    {
-        Layer* layer = object->getLayer(i);
-
-        dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
-
-        Status st = layer->save(sDataFolder, zippedFiles, [this] { progressForward(); });
-        if (!st.ok())
-        {
-            saveLayersOK = false;
-            dd.collect(st.details());
-            dd << QString("  !! Failed to save Layer[%1] %2").arg(i).arg(layer->name());
-        }
-    }
-    dd << "All Layers saved";
-
-    // save palette
-    QString sPaletteFile = object->savePalette(sDataFolder);
-    if (!sPaletteFile.isEmpty())
-        zippedFiles.append(sPaletteFile);
-    else
-        dd << "Failed to save the palette xml";
-
-    progressForward();
-
-    // -------- save main XML file -----------
-    QFile file(sMainXMLFile);
-    if (!file.open(QFile::WriteOnly | QFile::Text))
-    {
-        dd << "Open Main XML File failed";
-        return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
-    }
-
-    QDomDocument xmlDoc("PencilDocument");
-    QDomElement root = xmlDoc.createElement("document");
-    QDomProcessingInstruction encoding = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
-    xmlDoc.appendChild(encoding);
-    xmlDoc.appendChild(root);
-
-    progressForward();
-
-    // save editor information
-    QDomElement projDataXml = saveProjectData(object->data(), xmlDoc);
-    root.appendChild(projDataXml);
-
-    // save object
-    QDomElement objectElement = object->saveXML(xmlDoc);
-    root.appendChild(objectElement);
-
-    dd << "Writing main xml file...";
-
-    const int indentSize = 2;
-
-    QTextStream out(&file);
-    xmlDoc.save(out, indentSize);
-    out.flush();
-    file.close();
-
-    dd << "Done writing main xml file at" << sMainXMLFile;
-
-    zippedFiles.append(sMainXMLFile);
+    const bool saveOk = stKeyFrames.ok() && stMainXml.ok() && stPalette.ok();
 
     progressForward();
 
@@ -374,23 +311,23 @@ Status FileManager::save(const Object* object, QString sFileName)
 
         QString sBackupFile = backupPreviousFile(sFileName);
 
-        Status s = MiniZ::compressFolder(sFileName, sTempWorkingFolder, zippedFiles);
-        if (!s.ok())
+        Status stMiniz = MiniZ::compressFolder(sFileName, sTempWorkingFolder, filesToZip);
+        if (!stMiniz.ok())
         {
-            dd.collect(s.details());
+            dd.collect(stMiniz.details());
             return Status(Status::ERROR_MINIZ_FAIL, dd,
                           tr("Miniz Error"),
                           tr("An internal error occurred. Your file may not be saved successfully."));
         }
         dd << "Zip file saved successfully";
 
-        if (s.ok() && saveLayersOK)
+        if (stMiniz.ok() && saveOk)
             deleteBackupFile(sBackupFile);
     }
 
     progressForward();
 
-    if (!saveLayersOK)
+    if (!saveOk)
     {
         return Status(Status::FAIL, dd,
                       tr("Internal Error"),
@@ -588,6 +525,97 @@ bool FileManager::loadPalette(Object* obj)
         obj->loadDefaultPalette();
     }
     return true;
+}
+
+Status FileManager::flushKeyFrameFiles(const Object* object, const QString& dataFolder, QStringList& filesFlushed)
+{
+    DebugDetails dd;
+
+    const int numLayers = object->getLayerCount();
+    dd << QString("Total %1 layers").arg(numLayers);
+
+    for (int i = 0; i < numLayers; ++i)
+    {
+        Layer* layer = object->getLayer(i);
+        layer->presave(dataFolder);
+    }
+
+    bool saveLayersOK = true;
+    for (int i = 0; i < numLayers; ++i)
+    {
+        Layer* layer = object->getLayer(i);
+
+        dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
+
+        Status st = layer->save(dataFolder, filesFlushed, [this] { progressForward(); });
+        if (!st.ok())
+        {
+            saveLayersOK = false;
+            dd.collect(st.details());
+            dd << QString("  !! Failed to save Layer[%1] %2").arg(i).arg(layer->name());
+        }
+    }
+    dd << "All Layers saved";
+
+    progressForward();
+
+    auto errorCode = (saveLayersOK) ? Status::OK : Status::FAIL;
+    return Status(errorCode, dd);
+}
+
+Status FileManager::writeMainXml(const Object* object, const QString& mainXml, QStringList& files)
+{
+    DebugDetails dd;
+
+    QFile file(mainXml);
+    if (!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        dd << "Failed to open Main XML" << mainXml;
+        return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
+    }
+
+    QDomDocument xmlDoc("PencilDocument");
+    QDomElement root = xmlDoc.createElement("document");
+    QDomProcessingInstruction encoding = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
+    xmlDoc.appendChild(encoding);
+    xmlDoc.appendChild(root);
+
+    progressForward();
+
+    // save editor information
+    QDomElement projDataXml = saveProjectData(object->data(), xmlDoc);
+    root.appendChild(projDataXml);
+
+    // save object
+    QDomElement objectElement = object->saveXML(xmlDoc);
+    root.appendChild(objectElement);
+
+    dd << "Writing main xml file...";
+
+    const int indentSize = 2;
+
+    QTextStream out(&file);
+    xmlDoc.save(out, indentSize);
+    out.flush();
+    file.close();
+
+    dd << "Done writing main xml file: " << mainXml;
+
+    files.append(mainXml);
+    return Status(Status::OK, dd);
+}
+
+Status FileManager::writePalette(const Object* object, const QString& dataFolder, QStringList& files)
+{
+    const QString paletteFile = object->savePalette(dataFolder);
+    if (paletteFile.isEmpty())
+    {
+        DebugDetails dd;
+        dd << "Failed to save palette";
+        return Status(Status::FAIL, dd);
+    }
+    files.append(paletteFile);
+    return Status::OK;
 }
 
 void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
