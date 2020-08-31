@@ -44,7 +44,7 @@ GNU General Public License for more details.
 Object::Object(QObject* parent) : QObject(parent)
 {
     setData(new ObjectData());
-    mActiveFramePool.reset(new ActiveFramePool(400));
+    mActiveFramePool.reset(new ActiveFramePool);
 }
 
 Object::~Object()
@@ -919,7 +919,8 @@ void Object::updateActiveFrames(int frame) const
     }
 }
 
-void Object::setActiveFramePoolSize(int n)
+void Object::setActiveFramePoolSize(int sizeInMB)
 {
-    mActiveFramePool->resize(n);
+    // convert MB to Byte
+    mActiveFramePool->resize(qint64(sizeInMB) * 1024 * 1024);
 }

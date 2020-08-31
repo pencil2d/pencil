@@ -93,3 +93,12 @@ QString ffmpegLocation()
     return QStandardPaths::findExecutable("ffmpeg"); // ffmpeg is a standalone project.
 #endif
 }
+
+quint64 imageSize(const QImage& img)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    return img.sizeInBytes();
+#else
+    return img.byteCount();
+#endif
+}
