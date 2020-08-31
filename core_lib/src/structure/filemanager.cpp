@@ -337,6 +337,28 @@ Status FileManager::save(const Object* object, QString sFileName)
     return Status::OK;
 }
 
+Status FileManager::flush(const Object* object)
+{
+    DebugDetails dd;
+
+    QStringList filesWritten;
+
+    const QString dataFolder = object->dataDir();
+    const QString mainXml = object->mainXMLFile();
+
+    Status stKeyFrames = flushKeyFrameFiles(object, dataFolder, filesWritten);
+    dd.collect(stKeyFrames.details());
+
+    Status stMainXml = writeMainXml(object, mainXml, filesWritten);
+    dd.collect(stMainXml.details());
+
+    Status stPalette = writePalette(object, dataFolder, filesWritten);
+    dd.collect(stPalette.details());
+
+    const bool saveOk = stKeyFrames.ok() && stMainXml.ok() && stPalette.ok();
+
+}
+
 ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
 {
     ObjectData* data = new ObjectData;
@@ -563,7 +585,7 @@ Status FileManager::flushKeyFrameFiles(const Object* object, const QString& data
     return Status(errorCode, dd);
 }
 
-Status FileManager::writeMainXml(const Object* object, const QString& mainXml, QStringList& files)
+Status FileManager::writeMainXml(const Object* object, const QString& mainXml, QStringList& filesWritten)
 {
     DebugDetails dd;
 
@@ -601,11 +623,11 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXml, Q
 
     dd << "Done writing main xml file: " << mainXml;
 
-    files.append(mainXml);
+    filesWritten.append(mainXml);
     return Status(Status::OK, dd);
 }
 
-Status FileManager::writePalette(const Object* object, const QString& dataFolder, QStringList& files)
+Status FileManager::writePalette(const Object* object, const QString& dataFolder, QStringList& filesWritten)
 {
     const QString paletteFile = object->savePalette(dataFolder);
     if (paletteFile.isEmpty())
@@ -614,7 +636,7 @@ Status FileManager::writePalette(const Object* object, const QString& dataFolder
         dd << "Failed to save palette";
         return Status(Status::FAIL, dd);
     }
-    files.append(paletteFile);
+    filesWritten.append(paletteFile);
     return Status::OK;
 }
 

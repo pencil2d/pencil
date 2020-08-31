@@ -41,7 +41,7 @@ public:
 
     Object* load(QString sFilenNme);
     Status  save(const Object*, QString sFileName);
-    //Status  flush(Object*);
+    Status  flush(const Object*);
 
     QList<ColorRef> loadPaletteFile(QString strFilename);
     Status error() const { return mError; }
