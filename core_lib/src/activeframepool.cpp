@@ -58,11 +58,6 @@ void ActiveFramePool::put(KeyFrame* key)
     discardLeastUsedFrames();
 }
 
-size_t ActiveFramePool::size() const
-{
-    return mCacheFramesMap.size();
-}
-
 void ActiveFramePool::clear()
 {
     for (KeyFrame* key : mCacheFramesList)

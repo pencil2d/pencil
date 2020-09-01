@@ -28,7 +28,7 @@ GNU General Public License for more details.
  * A key frame will be unloaded if it's not accessed for a while (at the end of cache list)
  * The ActiveFramePool will be updated whenever Editor::scrubTo() gets called.
  *
- * Note: ActiveFramePool doesn't not handle file saving. It loads frames, but never write frames to disks.
+ * Note: ActiveFramePool does not handle file saving. It loads frames, but never writes frames to disks.
  */
 class ActiveFramePool : public KeyFrameEventListener
 {
@@ -37,9 +37,8 @@ public:
     virtual ~ActiveFramePool();
 
     void put(KeyFrame* key);
-    size_t size() const;
     void clear();
-    void resize(quint64 n);
+    void resize(quint64 memoryBudget);
     bool isFrameInPool(KeyFrame*);
 
     void onKeyFrameDestroy(KeyFrame*) override;
