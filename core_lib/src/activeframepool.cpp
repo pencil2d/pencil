@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "activeframepool.h"
 #include "keyframe.h"
 #include "pencildef.h"
-#include <QDebug>
 
 
 ActiveFramePool::ActiveFramePool()
@@ -52,7 +51,6 @@ void ActiveFramePool::put(KeyFrame* key)
     if (!keyExistsInPool)
     {
         mTotalUsedMemory += key->memoryUsage();
-        //qDebug() << "Total Memory:" << mTotalUsedMemory;
     }
 
     discardLeastUsedFrames();
@@ -115,10 +113,8 @@ void ActiveFramePool::discardLeastUsedFrames()
 
 void ActiveFramePool::unloadFrame(KeyFrame* key)
 {
-    //qDebug() << "Unload frame:" << key->pos();
     mTotalUsedMemory -= key->memoryUsage();
     key->unloadFile();
-    //qDebug() << "Total Memory:" << mTotalUsedMemory;
 }
 
 void ActiveFramePool::recalcuateTotalUsedMemory()
@@ -128,5 +124,4 @@ void ActiveFramePool::recalcuateTotalUsedMemory()
     {
         mTotalUsedMemory += key->memoryUsage();
     }
-    //qDebug() << "Total Memory:" << mTotalUsedMemory;
 }
