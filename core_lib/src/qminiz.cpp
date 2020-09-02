@@ -50,10 +50,15 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     }
 
     mz_zip_archive* mz = new mz_zip_archive;
-    OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_writer_init_file(mz, zipFilePath.toUtf8().data(), 0);
+
+    ScopeGuard mzScopeGuard([&] {
+        mz_zip_writer_end(mz);
+        delete mz;
+    });
+
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
@@ -87,6 +92,10 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     }
 
     ok &= mz_zip_writer_end(mz);
+
+    mzScopeGuard.dismiss();
+    ScopeGuard mzScopeGuard2([&] { delete mz; });
+
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
@@ -118,10 +127,15 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
     baseDir.makeAbsolute();
 
     mz_zip_archive* mz = new mz_zip_archive;
-    OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_reader_init_file(mz, zipFilePath.toUtf8().data(), 0);
+
+    ScopeGuard mzScopeGuard([&] {
+        mz_zip_reader_end(mz);
+        delete mz;
+    });
+
     if (!ok)
         return Status(Status::FAIL, dd);
 
@@ -142,7 +156,7 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
             bool mkDirOK = baseDir.mkpath(sFolderPath);
             Q_ASSERT(mkDirOK);
             if (!mkDirOK)
-                dd << "  Make Dir failed.";
+                dd << "Make Dir failed.";
         }
     }
 
@@ -161,12 +175,17 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
             if (!extractOK)
             {
                 ok = false;
-                dd << "  File extraction failed.";
+                dd << "File extraction failed.";
             }
         }
     }
 
-    mz_zip_reader_end(mz);
+    ok &= mz_zip_reader_end(mz);
+
+    mzScopeGuard.dismiss();
+    ScopeGuard mzScopeGuard2([&] {
+        delete mz;
+    });
 
     if (!ok)
     {
