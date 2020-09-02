@@ -7,6 +7,7 @@
 #include "app_util.h"
 #include "filemanager.h"
 #include "filedialogex.h"
+#include "fileformat.h"
 #include "layermanager.h"
 #include "soundmanager.h"
 #include "layer.h"
@@ -45,7 +46,7 @@ void ImportLayersDialog::getFileName()
     FileDialog fd(this);
     mFileName = QFileDialog::getOpenFileName(this, tr("Choose file"),
                                              fd.getLastOpenPath(FileType::ANIMATION),
-                                             tr("Pencil Animation file (*.pclx *.pcl)"));
+                                             PFF_PROJECT_EXT_FILTER);
     if (mFileName.isEmpty()) { return; }
     getLayers();
 }
