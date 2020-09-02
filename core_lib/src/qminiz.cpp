@@ -57,7 +57,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Miniz writer init failed: %1").arg((int)err);
+        dd << QString("Miniz writer init failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));;
     }
 
     //qDebug() << "SrcFolder=" << srcFolderPath;
@@ -75,17 +75,25 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("  Cannot add %1: error %2, %3").arg(sRelativePath).arg((int)err).arg(mz_zip_get_error_string(err));
+            dd << QString("Cannot add %1: error %2, %3").arg(sRelativePath).arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         }
     }
     ok &= mz_zip_writer_finalize_archive(mz);
-    mz_zip_writer_end(mz);
-
     if (!ok)
     {
-        dd << "Miniz finalize archive failed";
+        mz_zip_error err = mz_zip_get_last_error(mz);
+        dd << QString("Miniz finalize archive failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         return Status(Status::FAIL, dd);
     }
+
+    ok &= mz_zip_writer_end(mz);
+    if (!ok)
+    {
+        mz_zip_error err = mz_zip_get_last_error(mz);
+        dd << QString("Miniz writer end failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        return Status(Status::FAIL, dd);
+    }
+
     return Status::OK;
 }
 
