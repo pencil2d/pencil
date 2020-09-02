@@ -1044,11 +1044,25 @@ void MainWindow2::preferences()
 
 void MainWindow2::resetAndDockAllSubWidgets()
 {
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.remove(SETTING_WINDOW_GEOMETRY);
+    settings.remove(SETTING_WINDOW_STATE);
+
     for (BaseDockWidget* dock : mDockWidgets)
     {
         dock->setFloating(false);
+        dock->raise();
         dock->show();
     }
+
+    addDockWidget(Qt::RightDockWidgetArea, mColorBox);
+    addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
+    addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
+    addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
+    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
+    addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
+    addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 }
 
 bool MainWindow2::newObject()
@@ -1145,17 +1159,14 @@ void MainWindow2::readSettings()
     QVariant winState = settings.value(SETTING_WINDOW_STATE);
     restoreState(winState.toByteArray());
 
-    QString myPath = settings.value(LAST_PCLX_PATH, QVariant(QDir::homePath())).toString();
+    QString myPath = settings.value(LAST_PCLX_PATH, QDir::homePath()).toString();
 
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
-
     setOpacity(100 - opacity);
 }
 
 void MainWindow2::writeSettings()
 {
-    qDebug("Save current windows layout.");
-
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_WINDOW_GEOMETRY, saveGeometry());
     settings.setValue(SETTING_WINDOW_STATE, saveState());
