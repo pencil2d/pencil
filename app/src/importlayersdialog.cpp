@@ -26,6 +26,8 @@ ImportLayersDialog::ImportLayersDialog(QWidget *parent) :
     connect(ui->btnClose, &QPushButton::clicked, this, &ImportLayersDialog::cancel);
     ui->lwLayers->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->btnImportLayers->setEnabled(false);
+
+    hideQuestionMark(*this);
 }
 
 ImportLayersDialog::~ImportLayersDialog()
