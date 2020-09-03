@@ -53,7 +53,6 @@ void ImportLayersDialog::getFileName()
 
 void ImportLayersDialog::listWidgetChanged()
 {
-    qDebug() << "selected 1: " << mItemsSelected;
     mItemsSelected.clear();
     for (int i = 0; i < ui->lwLayers->count(); i++)
         if (ui->lwLayers->item(i)->isSelected())
@@ -63,7 +62,6 @@ void ImportLayersDialog::listWidgetChanged()
         ui->btnImportLayers->setEnabled(true);
     else
         ui->btnImportLayers->setEnabled(false);
-    qDebug() << "selected 2: " << mItemsSelected;
 }
 
 void ImportLayersDialog::importLayers()
