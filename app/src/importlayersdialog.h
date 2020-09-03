@@ -30,11 +30,10 @@ private:
 
     void getLayers();
 
-    Object *mObject = nullptr;
     Object *mImportObject = nullptr;
     Layer* mImportLayer = nullptr;
     Editor *mEditor = nullptr;
-    QString mFileName = "";
+    QString mFileName;
     QList<int> mItemsSelected;
 };
 

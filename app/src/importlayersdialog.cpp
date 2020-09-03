@@ -38,7 +38,6 @@ ImportLayersDialog::~ImportLayersDialog()
 void ImportLayersDialog::setCore(Editor *editor)
 {
     mEditor = editor;
-    mObject = mEditor->object();
 }
 
 void ImportLayersDialog::getFileName()
@@ -68,6 +67,7 @@ void ImportLayersDialog::listWidgetChanged()
 
 void ImportLayersDialog::importLayers()
 {
+    Object* object = mEditor->object();
     int currentFrame = mEditor->currentFrame();
     for (int i = 0; i < mImportObject->getLayerCount(); i++ )
     {
@@ -87,11 +87,11 @@ void ImportLayersDialog::importLayers()
                     Status st = mEditor->sound()->loadSound(clip, clip->fileName());
                     count = newKeyPos;
                 }
-                mObject->addLayer(layerSound);
+                object->addLayer(layerSound);
             }
             else
             {
-                mObject->addLayer(mImportLayer);
+                object->addLayer(mImportLayer);
             }
             mEditor->object()->modification();
         }
