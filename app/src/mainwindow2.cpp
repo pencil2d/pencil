@@ -319,7 +319,7 @@ void MainWindow2::createMenus()
     connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
     connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
 
-    //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
+    //# connect(previewAct, &QAction::triggered, editor, &Editor::getCameraLayer);//TODO: Preview view
 
     setMenuActionChecked(ui->actionGrid, mEditor->preference()->isOn(SETTING::GRID));
     connect(ui->actionGrid, &QAction::triggered, mCommands, &ActionCommands::showGrid);

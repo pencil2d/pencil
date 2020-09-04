@@ -47,7 +47,7 @@ public:
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
-Q_SIGNALS:
+signals:
     void soundToggled(bool);
     void soundScrubToggled(bool);
     void fpsChanged(int);

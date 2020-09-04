@@ -72,7 +72,7 @@ public:
     QString nameSuggestLayer(const QString& name);
     int getLastLayerIndex() { return count() - 1; }
 
-Q_SIGNALS:
+signals:
     void currentLayerChanged(int index);
     void layerCountChanged(int count);
     void animationLengthChanged(int length);

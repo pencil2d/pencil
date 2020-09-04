@@ -1032,8 +1032,8 @@ void Editor::scrubTo(int frame)
     int oldFrame = mFrame;
     mFrame = frame;
 
-    Q_EMIT currentFrameChanged(oldFrame);
-    Q_EMIT currentFrameChanged(frame);
+    emit currentFrameChanged(oldFrame);
+    emit currentFrameChanged(frame);
 
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
@@ -1132,7 +1132,7 @@ void Editor::removeKey()
 
     scrubBackward();
     layers()->notifyAnimationLengthChanged();
-    Q_EMIT layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+    emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
 }
 
 void Editor::scrubNextKeyFrame()

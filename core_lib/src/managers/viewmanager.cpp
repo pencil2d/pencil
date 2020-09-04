@@ -174,7 +174,7 @@ void ViewManager::translate(float dx, float dy)
         mCurrentCamera->translate(static_cast<qreal>(dx), static_cast<qreal>(dy));
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -199,7 +199,7 @@ void ViewManager::rotate(float degree)
         mCurrentCamera->rotate(static_cast<qreal>(degree));
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -291,7 +291,7 @@ void ViewManager::scale(qreal scaleValue)
         mCurrentCamera->scale(scaleValue);
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -311,7 +311,7 @@ void ViewManager::scaleWithOffset(qreal scaleValue, QPointF offset)
         mCurrentCamera->scaleWithOffset(scaleValue, offset);
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -322,8 +322,8 @@ void ViewManager::flipHorizontal(bool b)
         mIsFlipHorizontal = b;
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
-        Q_EMIT viewFlipped();
+        emit viewChanged();
+        emit viewFlipped();
     }
 }
 
@@ -334,8 +334,8 @@ void ViewManager::flipVertical(bool b)
         mIsFlipVertical = b;
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
-        Q_EMIT viewFlipped();
+        emit viewChanged();
+        emit viewFlipped();
     }
 }
 
@@ -345,7 +345,7 @@ void ViewManager::setOverlayCenter(bool b)
     {
         mOverlayCenter = b;
         updateViewTransforms();
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -355,7 +355,7 @@ void ViewManager::setOverlayThirds(bool b)
     {
         mOverlayThirds = b;
         updateViewTransforms();
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -365,7 +365,7 @@ void ViewManager::setOverlayGoldenRatio(bool b)
     {
         mOverlayGoldenRatio = b;
         updateViewTransforms();
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -375,7 +375,7 @@ void ViewManager::setOverlaySafeAreas(bool b)
     {
         mOverlaySafeAreas = b;
         updateViewTransforms();
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -385,7 +385,7 @@ void ViewManager::setCanvasSize(QSize size)
     mCentre = QTransform::fromTranslate(mCanvasSize.width() / 2., mCanvasSize.height() / 2.);
 
     updateViewTransforms();
-    Q_EMIT viewChanged();
+    emit viewChanged();
 }
 
 void ViewManager::setCameraLayer(Layer* layer)
@@ -421,7 +421,7 @@ void ViewManager::resetView()
     {
         mCurrentCamera->reset();
         updateViewTransforms();
-        Q_EMIT viewChanged();
-        Q_EMIT viewFlipped();
+        emit viewChanged();
+        emit viewFlipped();
     }
 }

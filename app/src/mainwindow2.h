@@ -103,7 +103,7 @@ public:
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
-Q_SIGNALS:
+signals:
     void updateRecentFilesList(bool b);
     void appLostFocus();
 

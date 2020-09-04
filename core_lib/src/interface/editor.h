@@ -117,7 +117,7 @@ public:
     BackupElement* currentBackup();
     QList<BackupElement*> mBackupList;
 
-Q_SIGNALS:
+signals:
     void updateTimeLine();
     void updateLayerCount();
     void updateBackup();

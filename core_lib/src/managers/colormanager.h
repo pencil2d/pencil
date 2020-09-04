@@ -40,7 +40,7 @@ public:
     void setColor(const QColor& color);
     void setColorNumber(int n);
 
-Q_SIGNALS:
+signals:
     void colorChanged(QColor, int); // new color and color index
     void colorNumberChanged(int);
 

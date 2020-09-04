@@ -123,7 +123,7 @@ public:
     int     getInt(SETTING option);
     float getFloat(SETTING option);
 
-Q_SIGNALS:
+signals:
     void optionChanged(SETTING e);
 
 private:

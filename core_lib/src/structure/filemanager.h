@@ -50,7 +50,7 @@ public:
     QStringList searchForUnsavedProjects();
     Object* recoverUnsavedProject(QString projectIntermediatePath);
 
-Q_SIGNALS:
+signals:
     void progressChanged(int progress);
     void progressRangeChanged(int maxValue);
 

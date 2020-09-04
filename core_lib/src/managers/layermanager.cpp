@@ -113,7 +113,7 @@ void LayerManager::setCurrentLayer(int layerIndex)
     // Do not check if layer index has changed
     // because the current layer may have changed either way
     editor()->setCurrentLayerIndex(layerIndex);
-    Q_EMIT currentLayerChanged(layerIndex);
+    emit currentLayerChanged(layerIndex);
 
     if (object())
     {
@@ -134,7 +134,7 @@ void LayerManager::gotoNextLayer()
     if (editor()->currentLayerIndex() < object()->getLayerCount() - 1)
     {
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
-        Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
+        emit currentLayerChanged(editor()->currentLayerIndex());
     }
 }
 
@@ -143,7 +143,7 @@ void LayerManager::gotoPreviouslayer()
     if (editor()->currentLayerIndex() > 0)
     {
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
-        Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
+        emit currentLayerChanged(editor()->currentLayerIndex());
     }
 }
 
@@ -179,7 +179,7 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
     LayerBitmap* layer = object()->addNewBitmapLayer();
     layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
+    emit layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
 
     return layer;
@@ -190,7 +190,7 @@ LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
     LayerVector* layer = object()->addNewVectorLayer();
     layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
+    emit layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
 
     return layer;
@@ -201,7 +201,7 @@ LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
     LayerCamera* layer = object()->addNewCameraLayer();
     layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
+    emit layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
 
     return layer;
@@ -212,7 +212,7 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
     LayerSound* layer = object()->addNewSoundLayer();
     layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
+    emit layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
 
     return layer;
@@ -299,8 +299,8 @@ Status LayerManager::deleteLayer(int index)
         setCurrentLayer(currentLayerIndex());
     }
 
-    Q_EMIT layerDeleted(index);
-    Q_EMIT layerCountChanged(count());
+    emit layerDeleted(index);
+    emit layerCountChanged(count());
 
     return Status::OK;
 }
