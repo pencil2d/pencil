@@ -307,6 +307,7 @@ void TimeLine::updateFrame(int frameNumber)
 {
     Q_ASSERT(mTracks);
 
+
     mTracks->updateFrame(mLastUpdatedFrame);
     mTracks->updateFrame(frameNumber);
 

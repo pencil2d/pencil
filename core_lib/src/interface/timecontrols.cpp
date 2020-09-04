@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "util.h"
 #include "preferencemanager.h"
 #include "timeline.h"
+#include "pencildef.h"
 
 
 TimeControls::TimeControls(TimeLine* parent) : QToolBar(parent)
@@ -46,6 +47,12 @@ void TimeControls::initUI()
     mFpsBox->setSuffix(tr(" fps"));
     mFpsBox->setToolTip(tr("Frames per second"));
     mFpsBox->setFocusPolicy(Qt::WheelFocus);
+
+    mFps = mFpsBox->value();
+    mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
+    mTimecodeLabel = new QLabel(this);
+    mTimecodeLabel->setContentsMargins(5, 0, 5, 0);
+    mTimecodeLabel->setText("");
 
     mLoopStartSpinBox = new QSpinBox(this);
     mLoopStartSpinBox->setFixedHeight(24);
@@ -115,6 +122,7 @@ void TimeControls::initUI()
     addWidget(mSoundButton);
     addWidget(mSoundScrubButton);
     addWidget(mFpsBox);
+    addWidget(mTimecodeLabel);
 
     makeConnections();
 
@@ -150,6 +158,7 @@ void TimeControls::setFps(int value)
 {
     QSignalBlocker blocker(mFpsBox);
     mFpsBox->setValue(value);
+    mFps = mFpsBox->value();
 }
 
 void TimeControls::setLoop(bool checked)
@@ -295,6 +304,35 @@ void TimeControls::onFpsEditingFinished()
 {
     mFpsBox->clearFocus();
     emit fpsChanged(mFpsBox->value());
+    mFps = mFpsBox->value();
+}
+
+void TimeControls::updateTimecodeLabel(int frame)
+{
+
+    switch (mTimecodeLabelEnum)
+    {
+    case TimecodeTextLevel::SMPTE:
+        mTimecodeLabel->setText(QString("%1:%2:%3")
+                                .arg(QString::number(frame / (60 * mFps) % 60).rightJustified(2,'0'))
+                                .arg(QString::number(frame / mFps % 60).rightJustified(2, '0'))
+                                .arg(QString::number(frame % mFps).rightJustified(2, '0')));
+        break;
+    case TimecodeTextLevel::SFF:
+        mTimecodeLabel->setText(QString("%1:%2")
+                                .arg(QString::number(frame / mFps).rightJustified(2, '0'))
+                                .arg(QString::number(frame % mFps).rightJustified(2, '0')));
+        break;
+    case TimecodeTextLevel::FRAMES:
+        mTimecodeLabel->setText(tr("%1").arg(QString::number(frame).rightJustified(4, '0')));
+        break;
+    case TimecodeTextLevel::NOTEXT:
+    default:
+        mTimecodeLabel->setText("...");
+        break;
+    }
+
+
 }
 
 void TimeControls::updateLength(int frameLength)

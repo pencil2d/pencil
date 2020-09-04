@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QToolButton>
 #include <QSpinBox>
 #include <QCheckBox>
+#include <QLabel>
 
 class Editor;
 class PreferenceManager;
@@ -56,6 +57,7 @@ Q_SIGNALS:
 public slots:
     /// Work-around in case the FPS spin-box "valueChanged" signal doesn't work.
     void onFpsEditingFinished();
+    void updateTimecodeLabel(int frame);
 
 private:
     void makeConnections();
@@ -81,6 +83,7 @@ private:
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
     QSpinBox*    mLoopEndSpinBox = nullptr;
+    QLabel*      mTimecodeLabel = nullptr;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
@@ -92,6 +95,8 @@ private:
 
     TimeLine* mTimeline = nullptr;
     Editor* mEditor = nullptr;
+    int mFps = 12;
+    int mTimecodeLabelEnum;
 };
 
 #endif

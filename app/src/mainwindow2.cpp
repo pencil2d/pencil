@@ -1533,7 +1533,7 @@ void MainWindow2::updateTimecodeLabel()
 
     switch (mTimecodeLabelEnum)
     {
-    case TimecodeTextLevel::TIMECODE:
+    case TimecodeTextLevel::SMPTE:
         mTimecodeLabel->setText(QString("MM:SS.FF  %1:%2.%3")
                                 .arg(QString::number(frame / (60 * fps) % 60).rightJustified(2,'0'))
                                 .arg(QString::number(frame / fps % 60).rightJustified(2, '0'))
