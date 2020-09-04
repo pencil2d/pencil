@@ -292,7 +292,7 @@ Status FileManager::save(const Object* object, QString sFileName)
     }
 
     QStringList filesToZip; // A files list in the working folder needs to be zipped
-    Status stKeyFrames = flushKeyFrameFiles(object, sDataFolder, filesToZip);
+    Status stKeyFrames = writeKeyFrameFiles(object, sDataFolder, filesToZip);
     dd.collect(stKeyFrames.details());
 
     Status stMainXml = writeMainXml(object, sMainXMLFile, filesToZip);
@@ -337,7 +337,7 @@ Status FileManager::save(const Object* object, QString sFileName)
     return Status::OK;
 }
 
-Status FileManager::flush(const Object* object)
+Status FileManager::writeToWorkingFolder(const Object* object)
 {
     DebugDetails dd;
 
@@ -346,7 +346,7 @@ Status FileManager::flush(const Object* object)
     const QString dataFolder = object->dataDir();
     const QString mainXml = object->mainXMLFile();
 
-    Status stKeyFrames = flushKeyFrameFiles(object, dataFolder, filesWritten);
+    Status stKeyFrames = writeKeyFrameFiles(object, dataFolder, filesWritten);
     dd.collect(stKeyFrames.details());
 
     Status stMainXml = writeMainXml(object, mainXml, filesWritten);
@@ -549,7 +549,7 @@ bool FileManager::loadPalette(Object* obj)
     return true;
 }
 
-Status FileManager::flushKeyFrameFiles(const Object* object, const QString& dataFolder, QStringList& filesFlushed)
+Status FileManager::writeKeyFrameFiles(const Object* object, const QString& dataFolder, QStringList& filesFlushed)
 {
     DebugDetails dd;
 
