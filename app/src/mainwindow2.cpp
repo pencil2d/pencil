@@ -110,8 +110,8 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->scribbleArea->init();
 
     ui->statusBar->setEditor(mEditor);
-    ui->statusBar->updateLayerStatus();
     ui->statusBar->updateZoomStatus();
+    ui->statusBar->setVisible(mEditor->preference()->isOn(SETTING::SHOW_STATUS_BAR));
 
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
@@ -325,6 +325,8 @@ void MainWindow2::createMenus()
     connect(mEditor->view(), &ViewManager::viewFlipped, this, &MainWindow2::viewFlipped);
 
     PreferenceManager* prefs = mEditor->preference();
+    connect(ui->actionStatusBar, &QAction::triggered, ui->statusBar, &QStatusBar::setVisible);
+    bindPreferenceSetting(ui->actionStatusBar, prefs, SETTING::SHOW_STATUS_BAR);
     bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
     bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
     bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
@@ -1181,6 +1183,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionGrid->setShortcut(cmdKeySeq(CMD_GRID));
     ui->actionOnionPrev->setShortcut(cmdKeySeq(CMD_ONIONSKIN_PREV));
     ui->actionOnionNext->setShortcut(cmdKeySeq(CMD_ONIONSKIN_NEXT));
+    ui->actionStatusBar->setShortcut(cmdKeySeq(CMD_TOGGLE_STATUS_BAR));
 
     ui->actionPlay->setShortcut(cmdKeySeq(CMD_PLAY));
     ui->actionLoop->setShortcut(cmdKeySeq(CMD_LOOP));
@@ -1442,10 +1445,6 @@ void MainWindow2::makeConnections(Editor* editor, StatusBar *statusBar)
 {
     connect(editor->tools(), &ToolManager::toolChanged, statusBar, &StatusBar::updateToolStatus);
     connect(editor->tools()->getTool(POLYLINE), &BaseTool::isActiveChanged, statusBar, &StatusBar::updateToolStatus);
-
-    connect(editor->layers(), &LayerManager::layerCountChanged, statusBar, QOverload<>::of(&StatusBar::updateLayerStatus));
-    connect(editor->layers(), &LayerManager::currentLayerChanged, statusBar, QOverload<int>::of(&StatusBar::updateLayerStatus));
-    connect(statusBar, &StatusBar::layerIndexChanged, editor->layers(), QOverload<int>::of(&LayerManager::setCurrentLayer));
 
     connect(editor->view(), &ViewManager::viewChanged, statusBar, &StatusBar::updateZoomStatus);
     connect(statusBar, &StatusBar::zoomChanged, editor->view(), &ViewManager::scale);

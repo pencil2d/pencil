@@ -77,6 +77,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::ROTATION_INCREMENT,       settings.value(SETTING_ROTATION_INCREMENT,     15).toInt());
 
     set(SETTING::WINDOW_OPACITY,           settings.value(SETTING_WINDOW_OPACITY,         0).toInt());
+    set(SETTING::SHOW_STATUS_BAR,          settings.value(SETTING_SHOW_STATUS_BAR,        true).toBool());
     set(SETTING::CURVE_SMOOTHING,          settings.value(SETTING_CURVE_SMOOTHING,        20).toInt());
 
     set(SETTING::BACKGROUND_STYLE,         settings.value(SETTING_BACKGROUND_STYLE,       "white").toString());
@@ -343,6 +344,9 @@ void PreferenceManager::set(SETTING option, bool value)
     QSettings settings(PENCIL2D, PENCIL2D);
     switch (option)
     {
+    case SETTING::SHOW_STATUS_BAR:
+        settings.setValue(SETTING_SHOW_STATUS_BAR, value);
+        break;
     case SETTING::ANTIALIAS:
         settings.setValue(SETTING_ANTIALIAS, value);
         break;

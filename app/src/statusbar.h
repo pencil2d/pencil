@@ -66,35 +66,11 @@ public slots:
     void updateModifiedStatus(bool modified);
 
     /**
-     * Completely rebuilds the layer status for all layers.
-     *
-     * This is necessary when layers are added, removed or reordered.
-     *
-     * @see updateLayerStatus(int)
-     */
-    void updateLayerStatus();
-
-    /**
-     * Updates the current layer.
-     *
-     * @param layer The index of the currently active layer
-     *
-     * @see updateLayerStatus()
-     */
-    void updateLayerStatus(int layer);
-
-    /**
      * Updates the zoom level displayed in the status bar.
      */
     void updateZoomStatus();
 
 signals:
-    /**
-     * This signal is sent when the user selects a new active layer through the status bar.
-     *
-     * @param index The index of the newly selected layer
-     */
-    void layerIndexChanged(int index);
 
     /**
      * This signal is sent when the user chooses a new zoom level through the status bar.
@@ -113,8 +89,6 @@ private:
     QLabel *mToolLabel = nullptr;
     /** Label indicating that the current file contains unsaved changes */
     QLabel *mModifiedLabel = nullptr;
-    /** Combo box for the active layer */
-    QComboBox *mLayerBox = nullptr;
     /** Combo box for choosing pre-defined or custom zoom levels */
     QComboBox *mZoomBox = nullptr;
     /** Slider for adjusting the zoom level */

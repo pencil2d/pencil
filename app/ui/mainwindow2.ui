@@ -94,7 +94,6 @@
     <addaction name="menuImport"/>
     <addaction name="menuExport"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -173,12 +172,11 @@
     <addaction name="menuOnion_Skin"/>
     <addaction name="menuLayer_Visibility"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionGrid"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionPreview"/>
+    <addaction name="separator"/>
+    <addaction name="actionStatusBar"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -1121,6 +1119,17 @@
   <action name="actionReset_Rotation">
    <property name="text">
     <string>Reset Rotation</string>
+   </property>
+  </action>
+  <action name="actionStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Status Bar</string>
    </property>
   </action>
  </widget>

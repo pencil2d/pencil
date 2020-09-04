@@ -37,12 +37,9 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
     addWidget(mToolLabel);
 
     mModifiedLabel = new QLabel(this);
+    mModifiedLabel->setPixmap(QPixmap(":/icons/save.png"));
     updateModifiedStatus(false);
     addPermanentWidget(mModifiedLabel);
-
-    mLayerBox = new QComboBox(this);
-    connect(mLayerBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &StatusBar::layerIndexChanged);
-    addPermanentWidget(mLayerBox);
 
     mZoomBox = new QComboBox(this);
     mZoomBox->addItems(QStringList()
@@ -56,6 +53,7 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
         if (mZoomBox->count() == mZoomBox->maxCount())
         {
             // Keep the size of the list reasonable by preventing user entries
+            // insertPolicy is unsuitable as it prevents entering custom values at all
             mZoomBox->removeItem(mZoomBox->maxCount() - 1);
         }
         emit zoomChanged(QString(currentText).remove('%').toDouble() / 100);
@@ -148,61 +146,13 @@ void StatusBar::updateToolStatus(ToolType tool)
 
 void StatusBar::updateModifiedStatus(bool modified)
 {
-    static QPixmap modifiedIcon(":/icons/saveas.png"),
-                   unmodifiedIcon(":/icons/save.png");
-
+    mModifiedLabel->setDisabled(!modified);
     if (modified)
     {
-        mModifiedLabel->setPixmap(modifiedIcon);
-        mModifiedLabel->setToolTip(tr("The file has unsaved changes"));
+        mModifiedLabel->setToolTip(tr("This file has unsaved changes"));
         return;
     }
-    mModifiedLabel->setPixmap(unmodifiedIcon);
-    mModifiedLabel->setToolTip(tr("The file has no unsaved changes"));
-}
-
-void StatusBar::updateLayerStatus()
-{
-    Q_ASSERT(mEditor);
-    static QIcon bitmapIcon(":/icons/layer-bitmap.png"),
-                 vectorIcon(":/icons/layer-vector.png"),
-                 soundIcon(":/icons/layer-sound.png"),
-                 cameraIcon(":/icons/layer-camera.png");
-
-    QSignalBlocker b(mLayerBox);
-    mLayerBox->clear();
-    for (int i = 0; i < mEditor->layers()->count(); i++)
-    {
-        Layer *layer = mEditor->layers()->getLayer(i);
-        mLayerBox->addItem(layer->name());
-        switch (layer->type())
-        {
-            case Layer::BITMAP:
-                mLayerBox->setItemIcon(i, bitmapIcon);
-                break;
-            case Layer::VECTOR:
-                mLayerBox->setItemIcon(i, vectorIcon);
-                break;
-            case Layer::SOUND:
-                mLayerBox->setItemIcon(i, soundIcon);
-                break;
-            case Layer::CAMERA:
-                mLayerBox->setItemIcon(i, cameraIcon);
-                break;
-            case Layer::MOVIE:
-            case Layer::UNDEFINED:
-                // no icon
-                break;
-        }
-    }
-    mLayerBox->setCurrentIndex(mEditor->layers()->currentLayerIndex());
-}
-
-void StatusBar::updateLayerStatus(int layer)
-{
-    Q_ASSERT(mEditor);
-    mLayerBox->setItemText(layer, mEditor->layers()->getLayer(layer)->name());
-    mLayerBox->setCurrentIndex(layer);
+    mModifiedLabel->setToolTip(tr("This file has no unsaved changes"));
 }
 
 void StatusBar::updateZoomStatus()
