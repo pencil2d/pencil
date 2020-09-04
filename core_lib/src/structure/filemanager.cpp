@@ -320,8 +320,9 @@ Status FileManager::save(const Object* object, QString sFileName)
                           tr("An internal error occurred. Your file may not be saved successfully."));
         }
         dd << "Zip file saved successfully";
+        Q_ASSERT(stMiniz.ok());
 
-        if (stMiniz.ok() && saveOk)
+        if (saveOk)
             deleteBackupFile(sBackupFile);
     }
 
