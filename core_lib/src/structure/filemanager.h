@@ -41,7 +41,7 @@ public:
 
     Object* load(QString sFilenNme);
     Status  save(const Object*, QString sFileName);
-    Status  flush(const Object*);
+    Status  writeToWorkingFolder(const Object*);
 
     QList<ColorRef> loadPaletteFile(QString strFilename);
     Status error() const { return mError; }
@@ -61,7 +61,7 @@ private:
     bool loadObjectOldWay(Object*, const QDomElement& root);
     bool isOldForamt(const QString& fileName) const;
     bool loadPalette(Object*);
-    Status flushKeyFrameFiles(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
+    Status writeKeyFrameFiles(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
     Status writeMainXml(const Object* obj, const QString& mainXml, QStringList& filesWritten);
     Status writePalette(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
 
