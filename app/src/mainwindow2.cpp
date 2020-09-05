@@ -126,13 +126,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     mZoomLabel = new QLabel("");
     ui->statusbar->addWidget(mZoomLabel);
-    mTimecodeButton = new QToolButton();
-    mTimecodeButton->setIcon(QIcon(":app/icons/new/svg/more_options.svg"));
-    mTimecodeButton->setPopupMode(QToolButton::InstantPopup);
-    connect(mTimecodeButton, &QToolButton::clicked, this, &MainWindow2::showTimecodeLabelMenu);
-    ui->statusbar->addPermanentWidget(mTimecodeButton);
-    mTimecodeLabel = new QLabel("");
-    ui->statusbar->addPermanentWidget(mTimecodeLabel);
 
     updateZoomLabel();
     selectionChanged();
@@ -1061,30 +1054,6 @@ void MainWindow2::resetAndDockAllSubWidgets()
     }
 }
 
-void MainWindow2::noTimecodeText()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_TIMECODE_TEXT, 0);
-    mTimecodeLabelEnum = 0;
-    updateTimecodeLabel();
-}
-
-void MainWindow2::onlyFramesText()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_TIMECODE_TEXT, 1);
-    mTimecodeLabelEnum = 1;
-    updateTimecodeLabel();
-}
-
-void MainWindow2::timecodeText()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_TIMECODE_TEXT, 2);
-    mTimecodeLabelEnum = 2;
-    updateTimecodeLabel();
-}
-
 bool MainWindow2::newObject()
 {
     Object* object = nullptr;
@@ -1162,8 +1131,6 @@ void MainWindow2::readSettings()
 
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
     setOpacity(100 - opacity);
-
-    mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
 }
 
 void MainWindow2::writeSettings()
@@ -1410,7 +1377,6 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
-    connect(editor, &Editor::currentFrameChanged, this, &MainWindow2::updateTimecodeLabel);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1446,7 +1412,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound);
     connect(pTimeline, &TimeLine::fpsChanged, pPlaybackManager, &PlaybackManager::setFps);
     connect(pTimeline, &TimeLine::fpsChanged, pEditor, &Editor::setFps);
-    connect(pTimeline, &TimeLine::fpsChanged, this, &MainWindow2::updateTimecodeLabel);
 
     connect(pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
@@ -1524,42 +1489,6 @@ void MainWindow2::updateZoomLabel()
 {
     qreal zoom = mEditor->view()->scaling() * 100.f;
     mZoomLabel->setText(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
-}
-
-void MainWindow2::updateTimecodeLabel()
-{
-    int frame = mEditor->currentFrame();
-    int fps = mEditor->fps();
-
-    switch (mTimecodeLabelEnum)
-    {
-    case TimecodeTextLevel::TIMECODE:
-        mTimecodeLabel->setText(QString("MM:SS.FF  %1:%2.%3")
-                                .arg(QString::number(frame / (60 * fps) % 60).rightJustified(2,'0'))
-                                .arg(QString::number(frame / fps % 60).rightJustified(2, '0'))
-                                .arg(QString::number(frame % fps).rightJustified(2, '0')));
-        break;
-    case TimecodeTextLevel::FRAMES:
-        mTimecodeLabel->setText(tr("Frame : %1").arg(QString::number(frame).rightJustified(4, '0')));
-        break;
-    case TimecodeTextLevel::NOTEXT:
-    default:
-        mTimecodeLabel->setText("...");
-        break;
-    }
-
-}
-
-void MainWindow2::showTimecodeLabelMenu()
-{
-    QPoint pos = mTimecodeButton->mapToGlobal(QPoint(mTimecodeButton->x(), mTimecodeButton->y()));
-
-    QMenu* menu = new QMenu();
-    menu->addAction(tr("No text"), this, &MainWindow2::noTimecodeText, 0);
-    menu->addAction(tr("Frames"),  this, &MainWindow2::onlyFramesText, 0);
-    menu->addAction(tr("Timecode"), this, &MainWindow2::timecodeText, 0);
-
-    menu->exec(pos);
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

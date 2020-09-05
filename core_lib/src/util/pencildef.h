@@ -75,8 +75,9 @@ enum StabilizationLevel
 enum TimecodeTextLevel
 {
     NOTEXT,
-    FRAMES,
-    TIMECODE
+    FRAMES, // FF
+    SMPTE,  // HH:MM:SS:FF
+    SFF     // S:FF
 };
 
 enum class LayerVisibility

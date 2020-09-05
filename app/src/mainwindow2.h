@@ -117,10 +117,6 @@ protected:
 private slots:
     void resetAndDockAllSubWidgets();
     // help functions for timecode label
-    void noTimecodeText();
-    void onlyFramesText();
-    void showTimecodeLabelMenu();
-    void timecodeText();
 
 private:
     bool newObject();
@@ -134,7 +130,6 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    void updateTimecodeLabel();
     void tryLoadPreset();
 
     void openPalette();

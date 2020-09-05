@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QLabel>
 #include <QSettings>
+#include <QMenu>
 
 #include "editor.h"
 #include "playbackmanager.h"
@@ -27,7 +28,8 @@ GNU General Public License for more details.
 #include "util.h"
 #include "preferencemanager.h"
 #include "timeline.h"
-
+#include "pencildef.h"
+#include <QDebug>
 
 TimeControls::TimeControls(TimeLine* parent) : QToolBar(parent)
 {
@@ -40,12 +42,38 @@ void TimeControls::initUI()
 
     mFpsBox = new QSpinBox(this);
     mFpsBox->setFixedHeight(24);
-    mFpsBox->setValue(settings.value("fps").toInt());
+    mFpsBox->setValue(settings.value("Fps").toInt());
     mFpsBox->setMinimum(1);
     mFpsBox->setMaximum(90);
     mFpsBox->setSuffix(tr(" fps"));
     mFpsBox->setToolTip(tr("Frames per second"));
     mFpsBox->setFocusPolicy(Qt::WheelFocus);
+
+    mFps = mFpsBox->value();
+    mTimecodeSelect = new QToolButton(this);
+    mTimecodeSelect->setIcon(QIcon(":app/icons/new/svg/more_options.svg"));
+    mTimecodeSelect->setPopupMode(QToolButton::InstantPopup);
+    mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
+    mTimecodeLabel = new QLabel(this);
+    mTimecodeLabel->setContentsMargins(5, 0, 5, 0);
+    mTimecodeLabel->setText("");
+    switch (mTimecodeLabelEnum)
+    {
+    case NOTEXT:
+        mTimecodeLabel->setToolTip("");
+        break;
+    case FRAMES:
+        mTimecodeLabel->setToolTip(tr("Actual frame number"));
+        break;
+    case SMPTE:
+        mTimecodeLabel->setToolTip(tr("Timecode format MM:SS:FF"));
+        break;
+    case SFF:
+        mTimecodeLabel->setToolTip(tr("Timecode format S:FF"));
+        break;
+    default:
+        mTimecodeLabel->setToolTip("");
+    }
 
     mLoopStartSpinBox = new QSpinBox(this);
     mLoopStartSpinBox->setFixedHeight(24);
@@ -115,6 +143,8 @@ void TimeControls::initUI()
     addWidget(mSoundButton);
     addWidget(mSoundScrubButton);
     addWidget(mFpsBox);
+    addWidget(mTimecodeSelect);
+    addWidget(mTimecodeLabel);
 
     makeConnections();
 
@@ -148,8 +178,11 @@ void TimeControls::setEditor(Editor* editor)
 
 void TimeControls::setFps(int value)
 {
+    qDebug() << "SetFps: " << value;
     QSignalBlocker blocker(mFpsBox);
     mFpsBox->setValue(value);
+    mFps = value;
+    updateTimecodeLabel(mEditor->currentFrame());
 }
 
 void TimeControls::setLoop(bool checked)
@@ -188,6 +221,9 @@ void TimeControls::makeConnections()
 
     connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsChanged);
     connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
+
+    connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::updateTimecodeLabel);
+    connect(mTimecodeSelect, &QToolButton::clicked, this, &TimeControls::showTimecodeLabelMenu);
 }
 
 void TimeControls::playButtonClicked()
@@ -208,6 +244,18 @@ void TimeControls::updatePlayState()
         mPlayButton->setToolTip(tr("Play"));
     }
 }
+
+void TimeControls::showTimecodeLabelMenu()
+{
+    QPoint globalPos = mTimecodeSelect->cursor().pos();
+
+    QMenu* menu = new QMenu();
+    menu->addAction(tr("No text"), this, &TimeControls::noTimecodeText, 0);
+    menu->addAction(tr("Frames"),  this, &TimeControls::onlyFramesText, 0);
+    menu->addAction(tr("SMPTE Timecode"), this, &TimeControls::SMPTE_text, 0);
+    menu->addAction(tr("SFF Timecode"), this, &TimeControls::SFF_text, 0);
+
+    menu->exec(globalPos);}
 
 void TimeControls::jumpToStartButtonClicked()
 {
@@ -291,10 +339,74 @@ void TimeControls::updateSoundScrubIcon(bool soundScrubEnabled)
     }
 }
 
+void TimeControls::noTimecodeText()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_TIMECODE_TEXT, NOTEXT);
+    mTimecodeLabelEnum = NOTEXT;
+    mTimecodeLabel->setToolTip(tr(""));
+    updateTimecodeLabel(mEditor->currentFrame());
+}
+
+void TimeControls::onlyFramesText()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_TIMECODE_TEXT, FRAMES);
+    mTimecodeLabelEnum = FRAMES;
+    mTimecodeLabel->setToolTip(tr("Actual frame number"));
+    updateTimecodeLabel(mEditor->currentFrame());
+}
+
+void TimeControls::SFF_text()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_TIMECODE_TEXT, SFF);
+    mTimecodeLabelEnum = SFF;
+    mTimecodeLabel->setToolTip(tr("Timecode format S:FF"));
+    updateTimecodeLabel(mEditor->currentFrame());
+}
+
+void TimeControls::SMPTE_text()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_TIMECODE_TEXT, SMPTE);
+    mTimecodeLabelEnum = SMPTE;
+    mTimecodeLabel->setToolTip(tr("Timecode format MM:SS:FF"));
+    updateTimecodeLabel(mEditor->currentFrame());
+}
+
 void TimeControls::onFpsEditingFinished()
 {
     mFpsBox->clearFocus();
     emit fpsChanged(mFpsBox->value());
+    mFps = mFpsBox->value();
+}
+
+void TimeControls::updateTimecodeLabel(int frame)
+{
+    switch (mTimecodeLabelEnum)
+    {
+    case TimecodeTextLevel::SMPTE:
+        mTimecodeLabel->setText(QString("%1:%2:%3")
+                                .arg(QString::number(frame / (60 * mFps) % 60).rightJustified(2,'0'))
+                                .arg(QString::number(frame / mFps % 60).rightJustified(2, '0'))
+                                .arg(QString::number(frame % mFps).rightJustified(2, '0')));
+        break;
+    case TimecodeTextLevel::SFF:
+        mTimecodeLabel->setText(QString("%1:%2")
+                                .arg(QString::number(frame / mFps))
+                                .arg(QString::number(frame % mFps).rightJustified(2, '0')));
+        break;
+    case TimecodeTextLevel::FRAMES:
+        mTimecodeLabel->setText(tr("%1").arg(QString::number(frame).rightJustified(4, '0')));
+        break;
+    case TimecodeTextLevel::NOTEXT:
+    default:
+        mTimecodeLabel->setText("");
+        break;
+    }
+
+
 }
 
 void TimeControls::updateLength(int frameLength)
