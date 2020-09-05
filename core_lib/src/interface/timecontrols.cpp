@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "timecontrols.h"
 
 #include <QLabel>
+#include <QMenu>
 #include <QSettings>
 
 #include "editor.h"
@@ -46,6 +47,11 @@ void TimeControls::initUI()
     mFpsBox->setSuffix(tr(" fps"));
     mFpsBox->setToolTip(tr("Frames per second"));
     mFpsBox->setFocusPolicy(Qt::WheelFocus);
+    mFpsBox->setContextMenuPolicy(Qt::ActionsContextMenu);
+    QMenu *mFpsMenu = new QMenu(mFpsBox);
+    QAction *retimeAction = new QAction(tr("Retime"), mFpsMenu);
+    connect(retimeAction, &QAction::triggered, this, &TimeControls::retimeTriggered);
+    mFpsBox->addAction(retimeAction);
 
     mLoopStartSpinBox = new QSpinBox(this);
     mLoopStartSpinBox->setFixedHeight(24);
@@ -207,6 +213,12 @@ void TimeControls::updatePlayState()
         mPlayButton->setIcon(mStartIcon);
         mPlayButton->setToolTip(tr("Play"));
     }
+}
+
+void TimeControls::updateFps(int fps)
+{
+    QSignalBlocker b(mFpsBox);
+    mFpsBox->setValue(fps);
 }
 
 void TimeControls::jumpToStartButtonClicked()

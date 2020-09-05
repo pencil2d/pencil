@@ -1452,6 +1452,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer);
 
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
+    connect(mTimeLine, &TimeLine::retimeTriggered, mCommands, &ActionCommands::retime);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
@@ -1460,6 +1461,8 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
+
+    connect(pEditor, &Editor::retimed, pTimeline, &TimeLine::updateFps);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }

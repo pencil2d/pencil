@@ -52,8 +52,10 @@ signals:
     void soundScrubToggled(bool);
     void fpsChanged(int);
     void playButtonTriggered();
+    void retimeTriggered();
 
 public slots:
+    void updateFps(int fps);
     /// Work-around in case the FPS spin-box "valueChanged" signal doesn't work.
     void onFpsEditingFinished();
 

@@ -49,6 +49,7 @@ public:
     void flipSelectionY();
     void selectAll();
     void deselectAll();
+    void retime();
 
     // view
     void ZoomIn();
