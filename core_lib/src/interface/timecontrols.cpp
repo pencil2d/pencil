@@ -57,6 +57,7 @@ void TimeControls::initUI()
     mTimecodeLabel = new QLabel(this);
     mTimecodeLabel->setContentsMargins(5, 0, 5, 0);
     mTimecodeLabel->setText("");
+
     switch (mTimecodeLabelEnum)
     {
     case NOTEXT:
@@ -222,7 +223,7 @@ void TimeControls::makeConnections()
     connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsChanged);
     connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
 
-    connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::updateTimecodeLabel);
+    connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::setFps);
     connect(mTimecodeSelect, &QToolButton::clicked, this, &TimeControls::showTimecodeLabelMenu);
 }
 

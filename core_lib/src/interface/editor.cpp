@@ -123,8 +123,6 @@ int Editor::fps()
 
 void Editor::setFps(int fps)
 {
-    qDebug() << "SetFps: " << fps;
-
     mPreferenceManager->set(SETTING::FPS, fps);
 }
 
