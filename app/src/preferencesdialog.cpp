@@ -577,7 +577,9 @@ FilesPage::FilesPage()
     connect(ui->addPreset, &QPushButton::clicked, this, &FilesPage::addPreset);
     connect(ui->removePreset, &QPushButton::clicked, this, &FilesPage::removePreset);
     connect(ui->setDefaultPreset, &QPushButton::clicked, this, &FilesPage::setDefaultPreset);
-    connect(ui->askPresetCheckBox, &QCheckBox::stateChanged, this, &FilesPage::askForPresetChange);
+    connect(ui->askPresetRbtn, &QRadioButton::toggled, this, &FilesPage::askForPresetChange);
+    connect(ui->loadLastActiveRbtn, &QRadioButton::toggled, this, &FilesPage::loadMostRecentChange);
+    connect(ui->loadDefaultPresetRbtn, &QRadioButton::toggled, this, &FilesPage::loadDefaultPreset);
     connect(ui->presetListWidget, &QListWidget::itemChanged, this, &FilesPage::presetNameChanged);
 
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
@@ -728,8 +730,6 @@ void FilesPage::presetNameChanged(QListWidgetItem* item)
 
 void FilesPage::updateValues()
 {
-    ui->askPresetCheckBox->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
-
     bool ok = true;
     int defaultPresetIndex = mManager->getInt(SETTING::DEFAULT_PRESET);
 
@@ -749,11 +749,24 @@ void FilesPage::updateValues()
     }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+    ui->askPresetRbtn->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
+    ui->loadDefaultPresetRbtn->setChecked(mManager->isOn(SETTING::LOAD_DEFAULT_PRESET));
+    ui->loadLastActiveRbtn->setChecked(mManager->isOn(SETTING::LOAD_MOST_RECENT));
 }
 
 void FilesPage::askForPresetChange(int b)
 {
     mManager->set(SETTING::ASK_FOR_PRESET, b != Qt::Unchecked);
+}
+
+void FilesPage::loadMostRecentChange(int b)
+{
+    mManager->set(SETTING::LOAD_MOST_RECENT, b != Qt::Unchecked);
+}
+
+void FilesPage::loadDefaultPreset(int b)
+{
+    mManager->set(SETTING::LOAD_DEFAULT_PRESET, b != Qt::Unchecked);
 }
 
 void FilesPage::autosaveChange(int b)

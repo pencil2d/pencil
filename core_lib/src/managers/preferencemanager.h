@@ -84,6 +84,8 @@ enum class SETTING
     FRAME_POOL_SIZE,
     ROTATION_INCREMENT,
     ASK_FOR_PRESET,
+    LOAD_MOST_RECENT,
+    LOAD_DEFAULT_PRESET,
     DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };
@@ -122,7 +124,7 @@ public:
     int     getInt(SETTING option);
     float getFloat(SETTING option);
 
-Q_SIGNALS:
+signals:
     void optionChanged(SETTING e);
 
 private:

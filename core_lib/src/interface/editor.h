@@ -117,7 +117,7 @@ public:
     BackupElement* currentBackup();
     QList<BackupElement*> mBackupList;
 
-Q_SIGNALS:
+signals:
     void updateTimeLine();
     void updateLayerCount();
     void updateBackup();
@@ -156,7 +156,7 @@ public: //slots
     void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
-    Status::StatusInt pegBarAlignment(QStringList layers);
+    Status pegBarAlignment(QStringList layers);
 
     void backup(QString undoText);
     void backup(int layerNumber, int frameNumber, QString undoText);

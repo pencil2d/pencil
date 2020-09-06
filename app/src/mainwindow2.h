@@ -68,7 +68,6 @@ public slots:
     void updateSaveState();
     void clearRecentFilesList();
     void openPegAlignDialog();
-    void closePegAlignDialog();
     void currentLayerChanged();
     void selectionChanged();
 
@@ -79,7 +78,7 @@ public:
     bool saveAsNewDocument();
     bool maybeSave();
     bool autoSave();
-    void newEmptyDocumentAfterErrorOccurred();
+    void emptyDocumentWhenErrorOccurred();
 
     // import
     void importImage();
@@ -98,7 +97,7 @@ public:
     void setSoundScrubMsec(int msec);
     void setOpacity(int opacity);
     void preferences();
- 
+
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
@@ -106,17 +105,14 @@ public:
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
-Q_SIGNALS:
+signals:
     void updateRecentFilesList(bool b);
     void appLostFocus();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
-
-private slots:
-    void resetAndDockAllSubWidgets();
-    // help functions for timecode label
+    void showEvent(QShowEvent*) override;
 
 private:
     bool newObject();
@@ -126,11 +122,11 @@ private:
 
     void createDockWidgets();
     void createMenus();
-    void setMenuActionChecked(QAction*, bool bChecked);
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    void tryLoadPreset();
+    bool loadMostRecent();
+    bool tryLoadPreset();
 
     void openPalette();
     void importPalette();
@@ -138,6 +134,7 @@ private:
 
     void readSettings();
     void writeSettings();
+    void resetAndDockAllSubWidgets();
 
     void changePlayState(bool isPlaying);
 
@@ -152,6 +149,9 @@ private:
     void makeConnections(Editor*, OnionSkinWidget*);
 
     void bindActionWithSetting(QAction*, const SETTING&);
+
+    bool tryRecoverUnsavedProject();
+    void startProjectRecovery(int result);
 
     // UI: Dock widgets
     ColorBox*             mColorBox = nullptr;

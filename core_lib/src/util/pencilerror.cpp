@@ -93,6 +93,13 @@ Status::Status(Status::ErrorCode eCode, const DebugDetails& detailsList, QString
 {
 }
 
+Status::Status(const ErrorCode code, const QString& title, const QString& description)
+    : mCode(code)
+    , mTitle(title)
+    , mDescription(description)
+{
+}
+
 QString Status::msg()
 {
     static std::map<ErrorCode, QString> msgMap =

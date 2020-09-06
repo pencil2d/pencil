@@ -101,8 +101,9 @@ public:
 
     void updateViewTransforms();
 
-    Q_SIGNAL void viewChanged();
-    Q_SIGNAL void viewFlipped();
+signals:
+    void viewChanged();
+    void viewFlipped();
 
 private:
 

@@ -44,8 +44,8 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     buttonsLayout->addWidget(closeButton);
 
     // --- connections ---
-    connect( closeButton , SIGNAL( clicked() ) , mContainer , SLOT( togglePopupPalette() ) );
-    connect( mColorBox, SIGNAL( colorChanged(QColor) ), this, SLOT( onColorChanged(QColor) ) );
+    connect( closeButton , &QPushButton::clicked , mContainer , &ScribbleArea::togglePopupPalette );
+    connect( mColorBox, &ColorBox::colorChanged, this, &PopupColorPaletteWidget::onColorChanged );
 }
 
 void PopupColorPaletteWidget::popup()

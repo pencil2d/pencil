@@ -1072,7 +1072,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
         {
-            paintSelectionVisuals();
+            paintSelectionVisuals(painter);
         }
     }
 
@@ -1087,10 +1087,8 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     event->accept();
 }
 
-void ScribbleArea::paintSelectionVisuals()
+void ScribbleArea::paintSelectionVisuals(QPainter &painter)
 {
-    QPainter painter(this);
-
     Object* object = mEditor->object();
 
     auto selectMan = mEditor->select();

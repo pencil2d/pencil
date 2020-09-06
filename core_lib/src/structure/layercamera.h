@@ -57,7 +57,7 @@ public:
     void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
 
     void editProperties() override;
-    QDomElement createDomElement(QDomDocument& doc) override;
+    QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     Camera* getCameraAtFrame(int frameNumber);

@@ -53,7 +53,7 @@ public:
     int getOffsetX() { return mOffsetX; }
     int getOffsetY() { return mOffsetY; }
     int getLayerHeight() { return mLayerHeight; }
-    
+
     int getFrameLength() {return mFrameLength;}
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
@@ -64,7 +64,7 @@ public:
     bool didDetatchLayer();
     int getCurrentFrame() { return mCurrentFrame; }
 
-Q_SIGNALS:
+signals:
     void mouseMovedY(int);
     void lengthChanged(int);
     void offsetChanged(int);
