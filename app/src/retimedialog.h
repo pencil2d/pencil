@@ -18,6 +18,8 @@ public:
     void setOrigFps(int origFps);
     int getNewFps();
 
+    qreal getNewSpeed();
+
 private:
     Ui::RetimeDialog *ui;
 };

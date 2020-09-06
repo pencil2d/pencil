@@ -23,3 +23,8 @@ int RetimeDialog::getNewFps()
 {
     return ui->newFpsBox->value();
 }
+
+qreal RetimeDialog::getNewSpeed()
+{
+    return ui->newSpeedBox->value();
+}

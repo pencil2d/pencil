@@ -91,7 +91,7 @@ public:
     int currentFrame();
     int fps();
     void setFps(int fps);
-    void retime(int newFps);
+    void retime(int newFps, qreal speed);
 
     int  currentLayerIndex() { return mCurrentLayerIndex; }
     void setCurrentLayerIndex(int i);

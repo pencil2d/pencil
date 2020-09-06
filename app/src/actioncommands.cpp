@@ -769,7 +769,7 @@ void ActionCommands::retime()
 
     if (dialog->result() == QDialog::Accepted)
     {
-        mEditor->retime(dialog->getNewFps());
+        mEditor->retime(dialog->getNewFps(), dialog->getNewSpeed());
     }
 }
 

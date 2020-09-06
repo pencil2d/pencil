@@ -126,11 +126,11 @@ void Editor::setFps(int fps)
     mPreferenceManager->set(SETTING::FPS, fps);
 }
 
-void Editor::retime(int newFps)
+void Editor::retime(int newFps, qreal speed)
 {
     const int origFps = fps();
-    if(origFps == newFps) return;
-    const qreal multiplier = static_cast<qreal>(newFps) / origFps;
+    const qreal multiplier = (static_cast<qreal>(newFps) / origFps) * (1 / speed);
+    if (qFuzzyCompare(multiplier, 1)) return;
 
     for (int i = 0; i < mObject->getLayerCount(); i++)
     {
@@ -194,6 +194,7 @@ void Editor::retime(int newFps)
     setFps(newFps);
     layers()->notifyAnimationLengthChanged();
     emit retimed(newFps);
+    emit updateTimeLine();
 }
 
 void Editor::makeConnections()
