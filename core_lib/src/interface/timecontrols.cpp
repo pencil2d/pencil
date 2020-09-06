@@ -179,7 +179,6 @@ void TimeControls::setEditor(Editor* editor)
 
 void TimeControls::setFps(int value)
 {
-    qDebug() << "SetFps: " << value;
     QSignalBlocker blocker(mFpsBox);
     mFpsBox->setValue(value);
     mFps = value;
@@ -224,6 +223,7 @@ void TimeControls::makeConnections()
     connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
 
     connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::setFps);
+    connect(mEditor, &Editor::fpsChanged, this, &TimeControls::setFps);
     connect(mTimecodeSelect, &QToolButton::clicked, this, &TimeControls::showTimecodeLabelMenu);
 }
 

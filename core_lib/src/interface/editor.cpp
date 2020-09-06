@@ -124,6 +124,7 @@ int Editor::fps()
 void Editor::setFps(int fps)
 {
     mPreferenceManager->set(SETTING::FPS, fps);
+    emit fpsChanged(fps);
 }
 
 void Editor::makeConnections()

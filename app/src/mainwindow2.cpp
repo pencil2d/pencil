@@ -32,8 +32,6 @@ GNU General Public License for more details.
 #include <QStandardPaths>
 #include <QDateTime>
 #include <QLabel>
-#include <QToolButton>
-#include <QPushButton>
 
 // core_lib headers
 #include "pencildef.h"
@@ -678,6 +676,7 @@ bool MainWindow2::openObject(QString strFilePath)
     progress.setValue(progress.value() + 1);
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    mEditor->setFps(mEditor->playback()->fps());
 
     progress.setValue(progress.maximum());
 

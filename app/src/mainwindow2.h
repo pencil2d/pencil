@@ -187,10 +187,6 @@ private:
     
     // statusbar widgets
     QLabel* mZoomLabel = nullptr;
-    QToolButton* mTimecodeButton = nullptr;
-    QLabel* mTimecodeLabel = nullptr;
-    int mTimecodeLabelEnum;
-    QLabel* mExpander = nullptr;
 
     Ui::MainWindow2* ui = nullptr;
 };
