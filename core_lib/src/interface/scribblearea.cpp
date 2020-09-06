@@ -1658,3 +1658,17 @@ void ScribbleArea::floodFillError(int errorType)
     QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok);
     mEditor->deselectAll();
 }
+
+/** Check if the content of the canvas depends on the active layer.
+  *
+  * Currently layers are only affected by Onion skins are displayed only for the active layer, and the opacity of all layers
+  * is affected when relative layer visiblity is active.
+  *
+  * @return True if the active layer could potentially influence the content of the canvas. False otherwise.
+  */
+bool ScribbleArea::isAffectedByActiveLayer() const
+{
+    return mPrefs->isOn(SETTING::PREV_ONION) ||
+            mPrefs->isOn(SETTING::NEXT_ONION) ||
+            getLayerVisibility() != LayerVisibility::ALL;
+}
