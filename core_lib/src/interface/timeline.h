@@ -70,6 +70,8 @@ signals:
     void onionPrevClick();
     void onionNextClick();
     void playButtonTriggered();
+    void retimeTriggered();
+    void updateFps(int fps);
 
 public:
     bool scrubbing = false;

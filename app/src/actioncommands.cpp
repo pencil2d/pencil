@@ -56,6 +56,7 @@ GNU General Public License for more details.
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
 #include "errordialog.h"
+#include "retimedialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -757,6 +758,18 @@ void ActionCommands::moveFrameBackward()
         {
             mEditor->scrubBackward();
         }
+    }
+}
+
+void ActionCommands::retime()
+{
+    auto dialog = new RetimeDialog(mParent);
+    dialog->setOrigFps(mEditor->fps());
+    dialog->exec();
+
+    if (dialog->result() == QDialog::Accepted)
+    {
+        mEditor->retime(dialog->getNewFps(), dialog->getNewSpeed());
     }
 }
 

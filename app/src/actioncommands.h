@@ -70,6 +70,7 @@ public:
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
+    void retime();
 
     // Layer
     Status addNewBitmapLayer();

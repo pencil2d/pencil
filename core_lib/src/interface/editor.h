@@ -91,6 +91,7 @@ public:
     int currentFrame();
     int fps();
     void setFps(int fps);
+    void retime(int newFps, qreal speed);
 
     int  currentLayerIndex() { return mCurrentLayerIndex; }
     void setCurrentLayerIndex(int i);
@@ -130,6 +131,8 @@ signals:
     void needSave();
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
+
+    void retimed(int newFps);
 
 public: //slots
     void clearCurrentFrame();

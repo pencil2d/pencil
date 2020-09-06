@@ -126,10 +126,83 @@ void Editor::setFps(int fps)
     mPreferenceManager->set(SETTING::FPS, fps);
 }
 
+void Editor::retime(int newFps, qreal speed)
+{
+    const int origFps = fps();
+    const qreal multiplier = (static_cast<qreal>(newFps) / origFps) * (1 / speed);
+    if (qFuzzyCompare(multiplier, 1)) return;
+
+    for (int i = 0; i < mObject->getLayerCount(); i++)
+    {
+        Layer* layer = mObject->getLayer(i);
+        QMap<int,int> frameRemap; // New frame -> old frame
+        QList<int> deleteFrames;
+        for (int origPos = layer->firstKeyFramePosition(); origPos <= layer->getMaxKeyFramePosition(); origPos++)
+        {
+            if (layer->keyExists(origPos))
+            {
+                // Scale the current position to the new fps
+                // The offset is to make sure that frame 1 stays at frame 1
+                int newPos = qRound((origPos-1)*multiplier)+1;
+                if (frameRemap.contains(newPos))
+                {
+                    // If two frames get mapped to the same new frame, choose the closer of them
+                    if (qAbs((frameRemap.value(newPos)-1)*multiplier+1-newPos) > qAbs((origPos-1)*multiplier+1-newPos))
+                    {
+                        deleteFrames.append(frameRemap.value(newPos));
+                        frameRemap.insert(newPos, origPos);
+                    }
+                    else
+                    {
+                        deleteFrames.append(origPos);
+                    }
+                }
+                else
+                {
+                    frameRemap.insert(newPos, origPos);
+                }
+            }
+        }
+
+        foreach (const int frame, deleteFrames)
+        {
+            layer->removeKeyFrame(frame);
+        }
+
+        if (multiplier < 1)
+        {
+            for (auto iter = frameRemap.constBegin(); iter != frameRemap.constEnd(); iter++)
+            {
+                if (iter.value() != iter.key())
+                {
+                    layer->swapKeyFrames(iter.value(), iter.key());
+                }
+            }
+        }
+        else
+        {
+            for (auto iter = frameRemap.keys().crbegin(); iter != frameRemap.keys().crend(); iter++)
+            {
+                if (frameRemap.value(*iter) != *iter)
+                {
+                    layer->swapKeyFrames(frameRemap.value(*iter), *iter);
+                }
+            }
+        }
+    }
+
+    setFps(newFps);
+    layers()->notifyAnimationLengthChanged();
+    emit retimed(newFps);
+    emit updateTimeLine();
+}
+
 void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged);
+
+    connect(this, &Editor::retimed, playback(), &PlaybackManager::setFps);
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)

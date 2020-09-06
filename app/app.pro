@@ -73,7 +73,8 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/presetdialog.h    
+    src/presetdialog.h \
+    src/retimedialog.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -109,7 +110,8 @@ SOURCES += \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
     src/presetdialog.cpp \
-    src/app_util.cpp
+    src/app_util.cpp \
+    src/retimedialog.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
@@ -137,7 +139,8 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
-    ui/presetdialog.ui
+    ui/presetdialog.ui \
+    ui/retimedialog.ui
 
 
 
