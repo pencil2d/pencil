@@ -320,6 +320,7 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<bo
             status.setDescription(QObject::tr("A frame already exists on frame: ") + QString::number(currentFrame) + tr(" Move the scrubber to a empty position on the timeline and try again"));
             return status;
         }
+        layer->removeKeyFrame(currentFrame);
     }
 
     QString audioPath = QDir(mTempDir->path()).filePath("audio.wav");
