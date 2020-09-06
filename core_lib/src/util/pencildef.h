@@ -151,6 +151,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_REMOVE_FRAME "CmdRemoveFrame"
 #define CMD_MOVE_FRAME_BACKWARD "CmdMoveFrameBackward"
 #define CMD_MOVE_FRAME_FORWARD "CmdMoveFrameForward"
+#define CMD_RETIME "CmdRetime"
 #define CMD_TOOL_MOVE "CmdToolMove"
 #define CMD_TOOL_SELECT "CmdToolSelect"
 #define CMD_TOOL_BRUSH "CmdToolBrush"

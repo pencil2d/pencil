@@ -330,6 +330,7 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_LOOP, QObject::tr("Toggle Loop", "Shortcut")},
         {CMD_MOVE_FRAME_BACKWARD, QObject::tr("Move Frame Backward", "Shortcut")},
         {CMD_MOVE_FRAME_FORWARD, QObject::tr("Move Frame Forward", "Shortcut")},
+        {CMD_RETIME, QObject::tr("Retime Animation", "Shortcut")},
         {CMD_NEW_BITMAP_LAYER, QObject::tr("New Bitmap Layer", "Shortcut")},
         {CMD_NEW_CAMERA_LAYER, QObject::tr("New Camera Layer", "Shortcut")},
         {CMD_NEW_FILE, QObject::tr("New File", "Shortcut")},

@@ -579,18 +579,6 @@ void ActionCommands::deselectAll()
     mEditor->deselectAll();
 }
 
-void ActionCommands::retime()
-{
-    auto dialog = new RetimeDialog(mParent);
-    dialog->setOrigFps(mEditor->fps());
-    dialog->exec();
-
-    if (dialog->result() == QDialog::Accepted)
-    {
-        mEditor->retime(dialog->getNewFps());
-    }
-}
-
 void ActionCommands::ZoomIn()
 {
     mEditor->view()->scaleUp();
@@ -770,6 +758,18 @@ void ActionCommands::moveFrameBackward()
         {
             mEditor->scrubBackward();
         }
+    }
+}
+
+void ActionCommands::retime()
+{
+    auto dialog = new RetimeDialog(mParent);
+    dialog->setOrigFps(mEditor->fps());
+    dialog->exec();
+
+    if (dialog->result() == QDialog::Accepted)
+    {
+        mEditor->retime(dialog->getNewFps());
     }
 }
 

@@ -49,7 +49,6 @@ public:
     void flipSelectionY();
     void selectAll();
     void deselectAll();
-    void retime();
 
     // view
     void ZoomIn();
@@ -71,6 +70,7 @@ public:
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
+    void retime();
 
     // Layer
     Status addNewBitmapLayer();
