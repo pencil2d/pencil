@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -919,9 +919,10 @@ void MainWindow2::importPredefinedImageSet()
 
 void MainWindow2::importLayers()
 {
-    ImportLayersDialog *importLayers = new ImportLayersDialog(this);
+    ImportLayersDialog* importLayers = new ImportLayersDialog(this);
     importLayers->setCore(mEditor);
-    importLayers->exec();
+    importLayers->setAttribute(Qt::WA_DeleteOnClose);
+    importLayers->open();
 }
 
 void MainWindow2::importGIF()
