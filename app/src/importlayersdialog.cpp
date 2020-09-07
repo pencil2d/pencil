@@ -76,7 +76,9 @@ void ImportLayersDialog::importLayers()
         QListWidgetItem* item = ui->lwLayers->item(i);
         if (item->isSelected())
         {
-            mImportLayer = mImportObject->findLayerByName(item->text());
+            int layerId = item->data(Qt::UserRole).toInt();
+
+            mImportLayer = mImportObject->takeLayer(layerId);
             mImportLayer->setName(mEditor->layers()->nameSuggestLayer(item->text()));
             object->addLayer(mImportLayer);
 
