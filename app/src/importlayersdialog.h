@@ -30,7 +30,7 @@ private:
 
     void getLayers();
 
-    Object *mImportObject = nullptr;
+    std::unique_ptr<Object> mImportObject;
     Layer* mImportLayer = nullptr;
     Editor* mEditor = nullptr;
     QString mFileName;

@@ -97,7 +97,7 @@ void ImportLayersDialog::importLayers()
     }
     mEditor->object()->modification();
 
-    mImportObject = nullptr;
+    mImportObject.reset();
     getLayers();
     mEditor->scrubTo(currentFrame);
 }
@@ -129,7 +129,7 @@ void ImportLayersDialog::getLayers()
     {
         progress.setRange(0, max + 3);
     });
-    mImportObject = fm.load(mFileName);
+    mImportObject.reset(fm.load(mFileName));
 
     ui->lwLayers->clear();
     for (int i = 0; i < mImportObject->getLayerCount(); i++)
