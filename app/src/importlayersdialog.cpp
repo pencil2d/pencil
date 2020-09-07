@@ -133,6 +133,13 @@ void ImportLayersDialog::getLayers()
 
     ui->lwLayers->clear();
     for (int i = 0; i < mImportObject->getLayerCount(); i++)
-        ui->lwLayers->addItem(mImportObject->getLayer(i)->name());
+    {
+        const QString layerName = mImportObject->getLayer(i)->name();
+        const int layerId = mImportObject->getLayer(i)->id();
 
+        // Store the layer name as well as layer ID cuz two layers could have the same name
+        QListWidgetItem* item = new QListWidgetItem(layerName);
+        item->setData(Qt::UserRole, layerId);
+        ui->lwLayers->addItem(item);
+    }
 }
