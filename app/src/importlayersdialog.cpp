@@ -69,12 +69,17 @@ void ImportLayersDialog::importLayers()
 {
     Object* object = mEditor->object();
     int currentFrame = mEditor->currentFrame();
-    for (int i = 0; i < mImportObject->getLayerCount(); i++ )
+    Q_ASSERT(ui->lwLayers->count() == mImportObject->getLayerCount());
+
+    for (int i = 0; i < ui->lwLayers->count(); i++ )
     {
-        if (ui->lwLayers->item(i)->isSelected())
+        QListWidgetItem* item = ui->lwLayers->item(i);
+        if (item->isSelected())
         {
-            mImportLayer = mImportObject->findLayerByName(ui->lwLayers->item(i)->text());
-            mImportLayer->setName(mEditor->layers()->nameSuggestLayer(ui->lwLayers->item(i)->text()));
+            mImportLayer = mImportObject->findLayerByName(item->text());
+            mImportLayer->setName(mEditor->layers()->nameSuggestLayer(item->text()));
+            object->addLayer(mImportLayer);
+
             if (mImportLayer->type() == Layer::SOUND)
             {
                 LayerSound* layerSound = static_cast<LayerSound*>(mImportLayer);
@@ -87,15 +92,11 @@ void ImportLayersDialog::importLayers()
                     Status st = mEditor->sound()->loadSound(clip, clip->fileName());
                     count = newKeyPos;
                 }
-                object->addLayer(layerSound);
             }
-            else
-            {
-                object->addLayer(mImportLayer);
-            }
-            mEditor->object()->modification();
         }
     }
+    mEditor->object()->modification();
+
     mImportObject = nullptr;
     getLayers();
     mEditor->scrubTo(currentFrame);

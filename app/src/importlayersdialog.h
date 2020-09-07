@@ -32,7 +32,7 @@ private:
 
     Object *mImportObject = nullptr;
     Layer* mImportLayer = nullptr;
-    Editor *mEditor = nullptr;
+    Editor* mEditor = nullptr;
     QString mFileName;
     QList<int> mItemsSelected;
 };
