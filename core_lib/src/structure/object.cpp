@@ -308,12 +308,19 @@ void Object::deleteLayer(Layer* layer)
     }
 }
 
-void Object::addLayer(Layer *layer)
+bool Object::addLayer(Layer* layer)
 {
-    if (layer != nullptr)
+    if (layer == nullptr)
     {
-        mLayers.append(layer);
+        return false;
     }
+    if (mLayers.contains(layer))
+    {
+        return false;
+    }
+    layer->setObject(this);
+    mLayers.append(layer);
+    return true;
 }
 
 ColorRef Object::getColor(int index) const

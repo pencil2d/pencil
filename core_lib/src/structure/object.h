@@ -121,7 +121,7 @@ public:
     bool swapLayers(int i, int j);
     void deleteLayer(int i);
     void deleteLayer(Layer*);
-    void addLayer(Layer* layer);
+    bool addLayer(Layer* layer);
 
     template<typename T>
     std::vector<T*> getLayersByType() const
