@@ -80,6 +80,8 @@ void ImportLayersDialog::importLayers()
 
             mImportLayer = mImportObject->takeLayer(layerId);
             mImportLayer->setName(mEditor->layers()->nameSuggestLayer(item->text()));
+            loadKeyFrames(mImportLayer); // all keyframes of this layer must be in memory
+
             object->addLayer(mImportLayer);
 
             if (mImportLayer->type() == Layer::SOUND)
@@ -144,4 +146,15 @@ void ImportLayersDialog::getLayers()
         item->setData(Qt::UserRole, layerId);
         ui->lwLayers->addItem(item);
     }
+}
+
+void ImportLayersDialog::loadKeyFrames(Layer* importedLayer)
+{
+    // Pencil2D only keeps a small portion of keyframes in the memory initially
+    // Here we need to force load all the keyframes of this layer into memory
+    // Otherwise the keyframe data will lose after mImportObject is deleted
+    importedLayer->foreachKeyFrame([](KeyFrame* k)
+    {
+        k->loadFile();
+    });
 }

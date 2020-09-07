@@ -35,6 +35,7 @@ private:
     Editor* mEditor = nullptr;
     QString mFileName;
     QList<int> mItemsSelected;
+    void loadKeyFrames(Layer* importedLayer);
 };
 
 #endif // IMPORTLAYERSDIALOG_H
