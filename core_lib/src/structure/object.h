@@ -117,11 +117,12 @@ public:
     int  getLayerCount() const;
     Layer* getLayer(int i) const;
     Layer* findLayerByName(QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
+    Layer* takeLayer(int layerId); // Note: transfer ownership of the layer
 
     bool swapLayers(int i, int j);
     void deleteLayer(int i);
     void deleteLayer(Layer*);
-    void addLayer(Layer* layer);
+    bool addLayer(Layer* layer);
 
     template<typename T>
     std::vector<T*> getLayersByType() const
