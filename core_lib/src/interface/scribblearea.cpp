@@ -206,6 +206,7 @@ void ScribbleArea::updateAllFrames()
 {
     QPixmapCache::clear();
     std::fill(mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key());
+    setAllDirty();
 
     update();
 }
@@ -239,7 +240,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     {
         layer->setModified(frameNumber, true);
         emit modification(layerNumber);
-        updateAllFrames();
+        updateFrame(frameNumber);
     }
 }
 
@@ -567,7 +568,7 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
-    if (event->button() == Qt::RightButton)
+    if (event->buttons() & (Qt::RightButton | Qt::MiddleButton))
     {
         getTool(HAND)->pointerReleaseEvent(event);
         mMouseRightButtonInUse = false;
@@ -632,6 +633,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
+    // Workaround for tablet issue (#677 part 2)
+    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerMoveEvent(&event);
@@ -1652,4 +1655,18 @@ void ScribbleArea::floodFillError(int errorType)
     if (errorType == 3) { error = tr("Could not find the root index.", "Bucket tool fill error message"); }
     QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok);
     mEditor->deselectAll();
+}
+
+/** Check if the content of the canvas depends on the active layer.
+  *
+  * Currently layers are only affected by Onion skins are displayed only for the active layer, and the opacity of all layers
+  * is affected when relative layer visiblity is active.
+  *
+  * @return True if the active layer could potentially influence the content of the canvas. False otherwise.
+  */
+bool ScribbleArea::isAffectedByActiveLayer() const
+{
+    return mPrefs->isOn(SETTING::PREV_ONION) ||
+            mPrefs->isOn(SETTING::NEXT_ONION) ||
+            getLayerVisibility() != LayerVisibility::ALL;
 }

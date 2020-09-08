@@ -64,7 +64,7 @@ TEST_CASE("FileManager invalid operations")
         FileManager fm;
         Object* pObj = fm.load(strBadXMLPath);
 
-        REQUIRE(pObj == NULL);
+        REQUIRE(pObj == nullptr);
         REQUIRE(fm.error().code() == Status::ERROR_INVALID_XML_FILE);
     }
 
@@ -82,7 +82,7 @@ TEST_CASE("FileManager invalid operations")
         FileManager fm;
         Object* pObj = fm.load(strBadXMLPath);
 
-        REQUIRE(pObj == NULL);
+        REQUIRE(pObj == nullptr);
         REQUIRE(fm.error().code() == Status::ERROR_INVALID_PENCIL_FILE);
     }
 }
