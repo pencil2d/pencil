@@ -111,6 +111,8 @@ public:
     bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
     bool isTemporaryTool() const { return mInstantTool; }
 
+    bool isAffectedByActiveLayer() const;
+
     void keyEvent(QKeyEvent* event);
     void keyEventForSelection(QKeyEvent* event);
 
@@ -183,7 +185,7 @@ private:
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
-    void paintSelectionVisuals();
+    void paintSelectionVisuals(QPainter &painter);
 
     BitmapImage* currentBitmapImage(Layer* layer) const;
     VectorImage* currentVectorImage(Layer* layer) const;

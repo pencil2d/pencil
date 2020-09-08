@@ -52,7 +52,7 @@ Layer::~Layer()
     mKeyFrames.clear();
 }
 
-void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action)
+void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action) const
 {
     for (auto pair : mKeyFrames)
     {
@@ -701,7 +701,7 @@ KeyFrame* Layer::getKeyFrameWhichCovers(int frameNumber) const
     return nullptr;
 }
 
-QDomElement Layer::createBaseDomElement(QDomDocument& doc)
+QDomElement Layer::createBaseDomElement(QDomDocument& doc) const
 {
     QDomElement layerTag = doc.createElement("layer");
     layerTag.setAttribute("id", id());

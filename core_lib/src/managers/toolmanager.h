@@ -46,7 +46,7 @@ public:
     void tabletRestorePrevTool();
     int propertySwitch(bool condition, int property);
 
-Q_SIGNALS:
+signals:
     void penWidthValueChanged(float);
     void penFeatherValueChanged(float);
     void toleranceValueChanged(qreal);

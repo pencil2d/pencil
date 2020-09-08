@@ -50,7 +50,7 @@ public:
 public slots:
     void changePage(QListWidgetItem* current, QListWidgetItem* previous);
 
-Q_SIGNALS:
+signals:
     void windowOpacityChange(int);
     void soundScrubChanged(bool b);
     void soundScrubMsecChanged(int mSec);
@@ -164,10 +164,12 @@ public slots:
 
     void updateValues();
     void askForPresetChange(int b);
+    void loadMostRecentChange(int b);
+    void loadDefaultPreset(int b);
     void autosaveChange(int b);
     void autosaveNumberChange(int number);
 
-Q_SIGNALS:
+signals:
     void clearRecentList();
 
 private:

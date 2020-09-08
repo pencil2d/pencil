@@ -43,7 +43,7 @@ public:
     void setLoop( bool loop );
     void setRangeState( bool range );
     void setPlaying( bool isPlaying );
-    
+
     int  getLength();
     void setLength(int frame);
     void extendLength(int frame);
@@ -53,7 +53,7 @@ public:
 
     void onObjectLoaded();
 
-Q_SIGNALS:
+signals:
     void modification();
 
     void addKeyClick();

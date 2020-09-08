@@ -215,6 +215,8 @@ const static int MaxFramesBound = 9999;
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
 #define SETTING_ASK_FOR_PRESET      "AskForPreset"
+#define SETTING_LOAD_MOST_RECENT    "LoadMostRecent"
+#define SETTING_LOAD_DEFAULT_PRESET "LoadDefaultPreset"
 #define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
@@ -231,7 +233,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_ONION_BLUE       "OnionBlue"
 #define SETTING_ONION_RED        "OnionRed"
 
-#define SETTING_FRAME_POOL_SIZE "FramePoolSize"
+#define SETTING_FRAME_POOL_SIZE  "FramePoolSizeInMB"
 #define SETTING_GRID_SIZE_W      "GridSizeW"
 #define SETTING_GRID_SIZE_H      "GridSizeH"
 #define SETTING_OVERLAY_CENTER   "OverlayCenter"

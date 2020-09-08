@@ -38,6 +38,11 @@ PencilApplication::PencilApplication(int& argc, char** argv) :
 
 bool PencilApplication::event(QEvent* event)
 {
+    if(event->type() == QEvent::ApplicationStateChange && static_cast<QApplicationStateChangeEvent*>(event)->applicationState() == Qt::ApplicationInactive) {
+        emit lostFocus();
+        return true;
+    }
+
     if (event->type() == QEvent::FileOpen)
     {
         mStartPath = static_cast<QFileOpenEvent*>(event)->file();

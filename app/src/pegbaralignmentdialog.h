@@ -14,14 +14,14 @@ class PegBarAlignmentDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PegBarAlignmentDialog(Editor* editor, QWidget *parent = nullptr);
+    explicit PegBarAlignmentDialog(Editor* editor, QWidget* parent = nullptr);
     ~PegBarAlignmentDialog();
 
     void setLayerList(QStringList layerList);
     QStringList getLayerList();
-    int getRefKey() {return refkey; }
-    QString getRefLayer() {return refLayer; }
-    void setLabRefKey();
+    int getRefKey() { return mRefkey; }
+    QString getRefLayer() { return mRefLayer; }
+    void updateRefKeyLabelText();
 
     void setAreaSelected(bool b);
     void setReferenceSelected(bool b);
@@ -36,22 +36,17 @@ public slots:
     void setRefLayer(QString s);
     void setRefKey(int i);
 
-signals:
-    void closedialog();
-
 private:
-    Ui::PegBarAlignmentDialog *ui;
+    void closeClicked();
+
+    Ui::PegBarAlignmentDialog* ui;
     QStringList mLayernames;
     Editor* mEditor = nullptr;
-    bool areaSelected = false;
-    bool referenceSelected = false;
-    bool layerSelected = false;
-
-    void closeClicked();
-    void alignClicked();
-    void layerListUpdate();
-    QString refLayer = "";
-    int refkey = 0;
+    bool mAreaSelected = false;
+    bool mReferenceSelected = false;
+    bool mLayerSelected = false;
+    QString mRefLayer;
+    int mRefkey = 0;
 };
 
 #endif // PEGBARALIGNMENTDIALOG_H

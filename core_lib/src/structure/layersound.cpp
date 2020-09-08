@@ -65,9 +65,9 @@ void LayerSound::updateFrameLengths(int fps)
     });
 }
 
-QDomElement LayerSound::createDomElement(QDomDocument& doc)
+QDomElement LayerSound::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerElem = this->createBaseDomElement(doc);
+    QDomElement layerElem = createBaseDomElement(doc);
 
     foreachKeyFrame([&doc, &layerElem](KeyFrame* pKeyFrame)
     {

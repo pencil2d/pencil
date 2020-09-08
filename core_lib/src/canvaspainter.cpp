@@ -45,8 +45,6 @@ void CanvasPainter::setViewTransform(const QTransform view, const QTransform vie
     if (mViewTransform != view || mViewInverse != viewInverse) {
         mViewTransform = view;
         mViewInverse = viewInverse;
-
-        resetLayerCache();
     }
 }
 

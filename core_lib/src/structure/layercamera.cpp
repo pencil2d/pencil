@@ -260,9 +260,9 @@ void LayerCamera::editProperties()
     }
 }
 
-QDomElement LayerCamera::createDomElement(QDomDocument& doc)
+QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerElem = this->createBaseDomElement(doc);
+    QDomElement layerElem = createBaseDomElement(doc);
     layerElem.setAttribute("width", viewRect.width());
     layerElem.setAttribute("height", viewRect.height());
 

@@ -44,7 +44,7 @@ GNU General Public License for more details.
 Object::Object(QObject* parent) : QObject(parent)
 {
     setData(new ObjectData());
-    mActiveFramePool.reset(new ActiveFramePool(400));
+    mActiveFramePool.reset(new ActiveFramePool);
 }
 
 Object::~Object()
@@ -68,7 +68,7 @@ void Object::init()
     loadDefaultPalette();
 }
 
-QDomElement Object::saveXML(QDomDocument& doc)
+QDomElement Object::saveXML(QDomDocument& doc) const
 {
     QDomElement objectTag = doc.createElement("object");
 
@@ -87,7 +87,6 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
     {
         return false;
     }
-    int layerNumber = -1;
 
     const QString dataDirPath = mDataDirPath;
 
@@ -96,16 +95,25 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if (element.tagName() == "layer")
         {
+            Layer* newLayer;
             switch (element.attribute("type").toInt())
             {
-            case Layer::BITMAP: addNewBitmapLayer(); break;
-            case Layer::VECTOR: addNewVectorLayer(); break;
-            case Layer::SOUND:  addNewSoundLayer();  break;
-            case Layer::CAMERA: addNewCameraLayer(); break;
-            default: Q_ASSERT(false); break;
+            case Layer::BITMAP:
+                newLayer = new LayerBitmap(this);
+                break;
+            case Layer::VECTOR:
+                newLayer = new LayerVector(this);
+                break;
+            case Layer::SOUND:
+                newLayer = new LayerSound(this);
+                break;
+            case Layer::CAMERA:
+                newLayer = new LayerCamera(this);
+                break;
+            default: Q_ASSERT(false); continue;
             }
-            layerNumber++;
-            getLayer(layerNumber)->loadDomElement(element, dataDirPath, progressForward);
+            mLayers.append(newLayer);
+            newLayer->loadDomElement(element, dataDirPath, progressForward);
         }
     }
     return true;
@@ -155,15 +163,15 @@ LayerCamera* Object::addNewCameraLayer()
 
 void Object::createWorkingDir()
 {
-    QString strFolderName;
+    QString projectName;
     if (mFilePath.isEmpty())
     {
-        strFolderName = "Default";
+        projectName = "Default";
     }
     else
     {
         QFileInfo fileInfo(mFilePath);
-        strFolderName = fileInfo.completeBaseName();
+        projectName = fileInfo.completeBaseName();
     }
     QDir dir(QDir::tempPath());
 
@@ -172,7 +180,7 @@ void Object::createWorkingDir()
     {
         strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/")
             .arg(QDir::tempPath())
-            .arg(strFolderName)
+            .arg(projectName)
             .arg(PFF_TMP_DECOMPRESS_EXT)
             .arg(uniqueString(8));
     }
@@ -192,8 +200,16 @@ void Object::deleteWorkingDir() const
     if (!mWorkingDirPath.isEmpty())
     {
         QDir dir(mWorkingDirPath);
-        dir.removeRecursively();
+        bool ok = dir.removeRecursively();
+        Q_ASSERT(ok);
     }
+}
+
+void Object::setWorkingDir(const QString& path)
+{
+    QDir dir(path);
+    Q_ASSERT(dir.exists());
+    mWorkingDirPath = path;
 }
 
 void Object::createDefaultLayers()
@@ -384,7 +400,7 @@ void Object::renameColor(int i, QString text)
     mPalette[i].name = text;
 }
 
-QString Object::savePalette(QString dataFolder)
+QString Object::savePalette(const QString& dataFolder) const
 {
     QString fullPath = QDir(dataFolder).filePath("palette.xml");
     bool ok = exportPalette(fullPath);
@@ -393,9 +409,8 @@ QString Object::savePalette(QString dataFolder)
     return "";
 }
 
-void Object::exportPaletteGPL(QFile& file)
+void Object::exportPaletteGPL(QFile& file) const
 {
-
     QString fileName = QFileInfo(file).baseName();
     QTextStream out(&file);
 
@@ -411,7 +426,7 @@ void Object::exportPaletteGPL(QFile& file)
     }
 }
 
-void Object::exportPalettePencil(QFile& file)
+void Object::exportPalettePencil(QFile& file) const
 {
     QTextStream out(&file);
 
@@ -433,7 +448,7 @@ void Object::exportPalettePencil(QFile& file)
     doc.save(out, IndentSize);
 }
 
-bool Object::exportPalette(QString filePath)
+bool Object::exportPalette(const QString& filePath) const
 {
     QFile file(filePath);
     if (!file.open(QFile::WriteOnly | QFile::Text))
@@ -443,11 +458,9 @@ bool Object::exportPalette(QString filePath)
     }
 
     if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
-    {
         exportPaletteGPL(file);
-    } else {
+    else
         exportPalettePencil(file);
-    }
 
     file.close();
     return true;
@@ -869,7 +882,7 @@ int Object::getLayerCount() const
     return mLayers.size();
 }
 
-ObjectData* Object::data()
+ObjectData* Object::data() const
 {
     Q_ASSERT(mData != nullptr);
     return mData.get();
@@ -881,10 +894,10 @@ void Object::setData(ObjectData* d)
     mData.reset(d);
 }
 
-int Object::totalKeyFrameCount()
+int Object::totalKeyFrameCount() const
 {
     int sum = 0;
-    for (Layer* layer : mLayers)
+    for (const Layer* layer : mLayers)
     {
         sum += layer->keyFrameCount();
     }
@@ -906,7 +919,8 @@ void Object::updateActiveFrames(int frame) const
     }
 }
 
-void Object::setActiveFramePoolSize(int n)
+void Object::setActiveFramePoolSize(int sizeInMB)
 {
-    mActiveFramePool->resize(n);
+    // convert MB to Byte
+    mActiveFramePool->resize(qint64(sizeInMB) * 1024 * 1024);
 }

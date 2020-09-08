@@ -31,9 +31,13 @@ class ScopeGuard
 {
 public:
     explicit ScopeGuard(std::function< void() > onScopeExit) { m_onScopeExit = onScopeExit; }
-    ~ScopeGuard() { m_onScopeExit(); }
+    ScopeGuard(const ScopeGuard&) = delete;
+    ~ScopeGuard() { if(m_invoke) { m_onScopeExit(); } }
+
+    void dismiss() { m_invoke = false; };
 private:
     std::function<void()> m_onScopeExit;
+    bool m_invoke = true;
 };
 
 #define SCOPEGUARD_LINENAME_CAT(name, line) name##line
@@ -50,5 +54,7 @@ Container filter(const Container& container, Pred predicate) {
 
 QString ffprobeLocation();
 QString ffmpegLocation();
+
+quint64 imageSize(const QImage&);
 
 #endif // UTIL_H

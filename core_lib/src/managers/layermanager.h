@@ -62,7 +62,7 @@ public:
     LayerSound*  createSoundLayer(const QString& strLayerName);
 
     // KeyFrame Management
-    int LastFrameAtFrame(int frameIndex);
+    int lastFrameAtFrame(int frameIndex);
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 
@@ -72,7 +72,7 @@ public:
     QString nameSuggestLayer(const QString& name);
     int getLastLayerIndex() { return count() - 1; }
 
-Q_SIGNALS:
+signals:
     void currentLayerChanged(int index);
     void layerCountChanged(int count);
     void animationLengthChanged(int length);

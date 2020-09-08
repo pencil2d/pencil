@@ -239,6 +239,12 @@ void ShortcutsPage::treeModelLoadShortcutsSetting()
     int row = 0;
     foreach (QString strCmdName, settings.allKeys())
     {
+        const QString &strShortcutName = getHumanReadableShortcutName(strCmdName);
+        if (strShortcutName.isEmpty()) {
+            // Shortcut not supported by this version of Pencil2D
+            continue;
+        }
+
         QString strKeySequence = settings.value(strCmdName).toString();
 
         //convert to native format
@@ -250,13 +256,14 @@ void ShortcutsPage::treeModelLoadShortcutsSetting()
             m_treeModel->setItem(row, KEY_SEQ_COLUMN, new QStandardItem());
 
         m_treeModel->item(row, ACT_NAME_COLUMN)->setData(strCmdName);
-        m_treeModel->item(row, ACT_NAME_COLUMN)->setText(getHumanReadableShortcutName(strCmdName));
+        m_treeModel->item(row, ACT_NAME_COLUMN)->setText(strShortcutName);
         m_treeModel->item(row, ACT_NAME_COLUMN)->setEditable(false);
         m_treeModel->item(row, KEY_SEQ_COLUMN)->setText(strKeySequence);
         m_treeModel->item(row, KEY_SEQ_COLUMN)->setEditable(false);
 
         row++;
     }
+    m_treeModel->setRowCount(row);
     settings.endGroup();
 
     ui->treeView->resizeColumnToContents( 0 );
@@ -334,6 +341,7 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_PASTE, QObject::tr("Paste", "Shortcut")},
         {CMD_PLAY, QObject::tr("Play/Stop", "Shortcut")},
         {CMD_PREFERENCE, QObject::tr("Preferences", "Shortcut")},
+        {CMD_PREVIEW, QObject::tr("Preview", "Shortcut")},
         {CMD_REDO, QObject::tr("Redo", "Shortcut")},
         {CMD_REMOVE_FRAME, QObject::tr("Remove Frame", "Shortcut")},
         {CMD_RESET_WINDOWS, QObject::tr("Reset Windows", "Shortcut")},
@@ -374,5 +382,5 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_ZOOM_OUT, QObject::tr("Zoom Out", "Shortcut")},
     };
 
-    return humanReadableShortcutNames.value(cmdName, cmdName);
+    return humanReadableShortcutNames.value(cmdName, QString());
 }

@@ -71,7 +71,7 @@ public:
 private slots:
     void stopScrubPlayback();
 
-Q_SIGNALS:
+signals:
     void fpsChanged(int fps);
     void loopStateChanged(bool b);
     void rangedPlaybackStateChanged(bool b);
