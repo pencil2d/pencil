@@ -31,15 +31,15 @@ bool sortAsc(int left, int right)
     return left < right;
 }
 
-Layer::Layer(Object* pObject, LAYER_TYPE eType) : QObject(pObject)
+Layer::Layer(Object* object, LAYER_TYPE eType) : QObject(object)
 {
     Q_ASSERT(eType != UNDEFINED);
 
-    mObject = pObject;
+    mObject = object;
     meType = eType;
     mName = QString(tr("Undefined Layer"));
 
-    mId = pObject->getUniqueLayerID();
+    mId = object->getUniqueLayerID();
 }
 
 Layer::~Layer()
@@ -50,6 +50,14 @@ Layer::~Layer()
         delete pKeyFrame;
     }
     mKeyFrames.clear();
+}
+
+void Layer::setObject(Object* obj)
+{
+    Q_ASSERT(obj);
+    mObject = obj;
+    setParent(mObject);
+    mId = mObject->getUniqueLayerID();
 }
 
 void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action)

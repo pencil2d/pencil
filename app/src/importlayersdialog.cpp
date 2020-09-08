@@ -26,6 +26,8 @@ ImportLayersDialog::ImportLayersDialog(QWidget *parent) :
     connect(ui->btnClose, &QPushButton::clicked, this, &ImportLayersDialog::cancel);
     ui->lwLayers->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->btnImportLayers->setEnabled(false);
+
+    hideQuestionMark(*this);
 }
 
 ImportLayersDialog::~ImportLayersDialog()
@@ -36,7 +38,6 @@ ImportLayersDialog::~ImportLayersDialog()
 void ImportLayersDialog::setCore(Editor *editor)
 {
     mEditor = editor;
-    mObject = mEditor->object();
 }
 
 void ImportLayersDialog::getFileName()
@@ -66,13 +67,23 @@ void ImportLayersDialog::listWidgetChanged()
 
 void ImportLayersDialog::importLayers()
 {
+    Object* object = mEditor->object();
     int currentFrame = mEditor->currentFrame();
-    for (int i = 0; i < mImportObject->getLayerCount(); i++ )
+    Q_ASSERT(ui->lwLayers->count() == mImportObject->getLayerCount());
+
+    for (int i = 0; i < ui->lwLayers->count(); i++ )
     {
-        if (ui->lwLayers->item(i)->isSelected())
+        QListWidgetItem* item = ui->lwLayers->item(i);
+        if (item->isSelected())
         {
-            mImportLayer = mImportObject->findLayerByName(ui->lwLayers->item(i)->text());
-            mImportLayer->setName(mEditor->layers()->nameSuggestLayer(ui->lwLayers->item(i)->text()));
+            int layerId = item->data(Qt::UserRole).toInt();
+
+            mImportLayer = mImportObject->takeLayer(layerId);
+            mImportLayer->setName(mEditor->layers()->nameSuggestLayer(item->text()));
+            loadKeyFrames(mImportLayer); // all keyframes of this layer must be in memory
+
+            object->addLayer(mImportLayer);
+
             if (mImportLayer->type() == Layer::SOUND)
             {
                 LayerSound* layerSound = static_cast<LayerSound*>(mImportLayer);
@@ -85,16 +96,12 @@ void ImportLayersDialog::importLayers()
                     Status st = mEditor->sound()->loadSound(clip, clip->fileName());
                     count = newKeyPos;
                 }
-                mObject->addLayer(layerSound);
             }
-            else
-            {
-                mObject->addLayer(mImportLayer);
-            }
-            mEditor->object()->modification();
         }
     }
-    mImportObject = nullptr;
+    mEditor->object()->modification();
+
+    mImportObject.reset();
     getLayers();
     mEditor->scrubTo(currentFrame);
 }
@@ -126,10 +133,28 @@ void ImportLayersDialog::getLayers()
     {
         progress.setRange(0, max + 3);
     });
-    mImportObject = fm.load(mFileName);
+    mImportObject.reset(fm.load(mFileName));
 
     ui->lwLayers->clear();
     for (int i = 0; i < mImportObject->getLayerCount(); i++)
-        ui->lwLayers->addItem(mImportObject->getLayer(i)->name());
+    {
+        const QString layerName = mImportObject->getLayer(i)->name();
+        const int layerId = mImportObject->getLayer(i)->id();
 
+        // Store the layer name as well as layer ID cuz two layers could have the same name
+        QListWidgetItem* item = new QListWidgetItem(layerName);
+        item->setData(Qt::UserRole, layerId);
+        ui->lwLayers->addItem(item);
+    }
+}
+
+void ImportLayersDialog::loadKeyFrames(Layer* importedLayer)
+{
+    // Pencil2D only keeps a small portion of keyframes in the memory initially
+    // Here we need to force load all the keyframes of this layer into memory
+    // Otherwise the keyframe data will lose after mImportObject is deleted
+    importedLayer->foreachKeyFrame([](KeyFrame* k)
+    {
+        k->loadFile();
+    });
 }
