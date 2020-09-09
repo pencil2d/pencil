@@ -55,9 +55,10 @@ public:
     virtual ~Layer();
 
     int id() const { return mId; }
-
     LAYER_TYPE type() const { return meType; }
+
     Object* object() const { return mObject; }
+    void setObject(Object* obj);
 
     void setName(QString name) { mName = name; }
     QString name() const { return mName; }
