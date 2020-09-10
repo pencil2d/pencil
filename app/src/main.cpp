@@ -223,6 +223,7 @@ int handleArguments(PencilApplication& app)
     QObject::connect(&app, &PencilApplication::lostFocus, &mainWindow, &MainWindow2::appLostFocus);
     QObject::connect(&app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openFile);
     app.emitOpenFileRequest();
+    app.setMainWindow(&mainWindow);
 
     // If there are no output paths, open up the GUI (to the input path if there is one)
     if (outputPaths.isEmpty())

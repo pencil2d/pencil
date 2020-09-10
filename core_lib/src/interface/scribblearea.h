@@ -170,6 +170,9 @@ public:
     void pointerMoveEvent(PointerEvent*);
     void pointerReleaseEvent(PointerEvent*);
 
+    void onTabletLeaveProximity(QTabletEvent *event);
+    void onTabletEnterProximity(QTabletEvent* event);
+
     void updateCanvasCursor();
 
     /// Call this when starting to use a paint tool. Checks whether we are drawing

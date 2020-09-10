@@ -1630,3 +1630,15 @@ void MainWindow2::startProjectRecovery(int result)
     const QString text = tr("Please save your work immediately to prevent loss of data");
     QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
 }
+
+void MainWindow2::onTabletProximity(QTabletEvent* event)
+{
+    if (event->type() == QEvent::TabletEnterProximity) {
+        ui->scribbleArea->onTabletEnterProximity(event);
+    }
+    else if(event->type() == QEvent::TabletLeaveProximity) {
+        ui->scribbleArea->onTabletLeaveProximity(event);
+    }
+}
+
+

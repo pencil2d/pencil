@@ -98,6 +98,8 @@ public:
 
     void openFile(QString filename);
 
+    void onTabletProximity(QTabletEvent* event);
+
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
 
     void displayMessageBox(const QString& title, const QString& body);

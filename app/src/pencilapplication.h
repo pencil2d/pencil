@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define PENCILAPPLICATION_H
 
 #include <QApplication>
+#include <mainwindow2.h>
 
 class PencilApplication : public QApplication
 {
@@ -30,12 +31,15 @@ public:
     bool event(QEvent* event) override;
     void emitOpenFileRequest();
 
+    void setMainWindow(MainWindow2* mainWindow);
+
 signals:
     void openFileRequested(QString filename);
     void lostFocus();
 
 private:
     QString mStartPath;
+    MainWindow2* mMainWindow = nullptr;
 };
 
 #endif // PENCILAPPLICATION_H

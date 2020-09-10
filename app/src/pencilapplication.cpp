@@ -42,11 +42,16 @@ bool PencilApplication::event(QEvent* event)
         emit lostFocus();
         return true;
     }
-
-    if (event->type() == QEvent::FileOpen)
+    else if (event->type() == QEvent::FileOpen)
     {
         mStartPath = static_cast<QFileOpenEvent*>(event)->file();
         emit openFileRequested(mStartPath);
+        return true;
+    }
+    else if (event->type() == QEvent::TabletEnterProximity ||
+        event->type() == QEvent::TabletLeaveProximity ) {
+
+        mMainWindow->onTabletProximity(static_cast<QTabletEvent *>(event));
         return true;
     }
     return QApplication::event(event);
@@ -58,4 +63,9 @@ void PencilApplication::emitOpenFileRequest()
     {
         emit openFileRequested(mStartPath);
     }
+}
+
+void PencilApplication::setMainWindow(MainWindow2 *mainWindow)
+{
+    mMainWindow = mainWindow;
 }
