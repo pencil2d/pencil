@@ -357,7 +357,8 @@ Status FileManager::writeToWorkingFolder(const Object* object)
     dd.collect(stPalette.details());
 
     const bool saveOk = stKeyFrames.ok() && stMainXml.ok() && stPalette.ok();
-
+    const auto errorCode = (saveOk) ? Status::OK : Status::FAIL;
+    return Status(errorCode, dd);
 }
 
 ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
