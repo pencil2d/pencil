@@ -87,7 +87,7 @@ bool ScribbleArea::init()
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     setTabletTracking(true); // tablet tracking first added in 5.9
 #endif
 

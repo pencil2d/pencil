@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -39,23 +39,23 @@ public:
     Status save(Object*) override;
     void workingLayerChanged(Layer* layer) override;
 
-    QTransform getView();
-    QTransform getViewInverse();
+    QTransform getView() const;
+    QTransform getViewInverse() const;
     void resetView();
 
-    QPointF mapCanvasToScreen(QPointF p);
-    QPointF mapScreenToCanvas(QPointF p);
+    QPointF mapCanvasToScreen(QPointF p) const;
+    QPointF mapScreenToCanvas(QPointF p) const;
 
-    QRectF mapCanvasToScreen(const QRectF& rect);
-    QRectF mapScreenToCanvas(const QRectF& rect);
+    QRectF mapCanvasToScreen(const QRectF& rect) const;
+    QRectF mapScreenToCanvas(const QRectF& rect) const;
 
-    QPolygonF mapPolygonToScreen(const QPolygonF& polygon);
-    QPolygonF mapPolygonToCanvas(const QPolygonF& polygon);
+    QPolygonF mapPolygonToScreen(const QPolygonF& polygon) const;
+    QPolygonF mapPolygonToCanvas(const QPolygonF& polygon) const;
 
-    QPainterPath mapCanvasToScreen(const QPainterPath& path);
-    QPainterPath mapScreenToCanvas(const QPainterPath& path);
+    QPainterPath mapCanvasToScreen(const QPainterPath& path) const;
+    QPainterPath mapScreenToCanvas(const QPainterPath& path) const;
 
-    QPointF translation();
+    QPointF translation() const;
     void translate(float dx, float dy);
     void translate(QPointF offset);
 
@@ -82,12 +82,12 @@ public:
     void setOverlayGoldenRatio(bool b);
     void setOverlaySafeAreas(bool b);
 
-    bool isFlipHorizontal() { return mIsFlipHorizontal; }
-    bool isFlipVertical() { return mIsFlipVertical; }
-    bool getOverlayCenter() { return mOverlayCenter; }
-    bool getOverlayThirds() { return mOverlayThirds; }
-    bool getOverlayGoldenRatio() { return mOverlayGoldenRatio; }
-    bool getOverlaySafeAreas() { return mOverlaySafeAreas; }
+    bool isFlipHorizontal() const { return mIsFlipHorizontal; }
+    bool isFlipVertical() const { return mIsFlipVertical; }
+    bool getOverlayCenter() const { return mOverlayCenter; }
+    bool getOverlayThirds() const { return mOverlayThirds; }
+    bool getOverlayGoldenRatio() const { return mOverlayGoldenRatio; }
+    bool getOverlaySafeAreas() const { return mOverlaySafeAreas; }
 
 
     void setCanvasSize(QSize size);

@@ -78,52 +78,52 @@ void ViewManager::workingLayerChanged(Layer* layer)
     }
 }
 
-QPointF ViewManager::mapCanvasToScreen(QPointF p)
+QPointF ViewManager::mapCanvasToScreen(QPointF p) const
 {
     return mViewCanvas.map(p);
 }
 
-QPointF ViewManager::mapScreenToCanvas(QPointF p)
+QPointF ViewManager::mapScreenToCanvas(QPointF p) const
 {
     return mViewCanvasInverse.map(p);
 }
 
-QPainterPath ViewManager::mapCanvasToScreen(const QPainterPath& path)
+QPainterPath ViewManager::mapCanvasToScreen(const QPainterPath& path) const
 {
     return mViewCanvas.map(path);
 }
 
-QRectF ViewManager::mapCanvasToScreen(const QRectF& rect)
+QRectF ViewManager::mapCanvasToScreen(const QRectF& rect) const
 {
     return mViewCanvas.mapRect(rect);
 }
 
-QRectF ViewManager::mapScreenToCanvas(const QRectF& rect)
+QRectF ViewManager::mapScreenToCanvas(const QRectF& rect) const
 {
     return mViewCanvasInverse.mapRect(rect);
 }
 
-QPolygonF ViewManager::mapPolygonToScreen(const QPolygonF &polygon)
+QPolygonF ViewManager::mapPolygonToScreen(const QPolygonF &polygon) const
 {
     return mViewCanvas.map(polygon);
 }
 
-QPolygonF ViewManager::mapPolygonToCanvas(const QPolygonF &polygon)
+QPolygonF ViewManager::mapPolygonToCanvas(const QPolygonF &polygon) const
 {
     return mViewCanvasInverse.map(polygon);
 }
 
-QPainterPath ViewManager::mapScreenToCanvas(const QPainterPath& path)
+QPainterPath ViewManager::mapScreenToCanvas(const QPainterPath& path) const
 {
     return mViewCanvasInverse.map(path);
 }
 
-QTransform ViewManager::getView()
+QTransform ViewManager::getView() const
 {
     return mViewCanvas;
 }
 
-QTransform ViewManager::getViewInverse()
+QTransform ViewManager::getViewInverse() const
 {
     return mViewCanvasInverse;
 }
@@ -158,7 +158,7 @@ void ViewManager::updateViewTransforms()
     mViewCanvasInverse = mViewCanvas.inverted();
 }
 
-QPointF ViewManager::translation()
+QPointF ViewManager::translation() const
 {
     if (mCurrentCamera)
     {
