@@ -99,6 +99,7 @@ public:
     void openFile(QString filename);
 
     void onTabletProximity(QTabletEvent* event);
+    bool eventHandling(QEvent* event);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
 

@@ -29,16 +29,10 @@ public:
     PencilApplication(int &argc, char **argv);
 
     bool event(QEvent* event) override;
-    void emitOpenFileRequest();
 
     void setMainWindow(MainWindow2* mainWindow);
 
-signals:
-    void openFileRequested(QString filename);
-    void lostFocus();
-
 private:
-    QString mStartPath;
     MainWindow2* mMainWindow = nullptr;
 };
 

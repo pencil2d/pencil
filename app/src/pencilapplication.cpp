@@ -38,31 +38,17 @@ PencilApplication::PencilApplication(int& argc, char** argv) :
 
 bool PencilApplication::event(QEvent* event)
 {
-    if(event->type() == QEvent::ApplicationStateChange && static_cast<QApplicationStateChangeEvent*>(event)->applicationState() == Qt::ApplicationInactive) {
-        emit lostFocus();
-        return true;
-    }
-    else if (event->type() == QEvent::FileOpen)
-    {
-        mStartPath = static_cast<QFileOpenEvent*>(event)->file();
-        emit openFileRequested(mStartPath);
-        return true;
-    }
-    else if (event->type() == QEvent::TabletEnterProximity ||
-        event->type() == QEvent::TabletLeaveProximity ) {
+    bool appEventState = false;
 
-        mMainWindow->onTabletProximity(static_cast<QTabletEvent *>(event));
-        return true;
+    if (mMainWindow) {
+        appEventState = mMainWindow->eventHandling(event);
     }
-    return QApplication::event(event);
-}
 
-void PencilApplication::emitOpenFileRequest()
-{
-    if (mStartPath.size() != 0)
-    {
-        emit openFileRequested(mStartPath);
+    // If we don't handle the event ourself, pass the event onto application
+    if (!appEventState) {
+        return QApplication::event(event);
     }
+    return appEventState;
 }
 
 void PencilApplication::setMainWindow(MainWindow2 *mainWindow)

@@ -1631,6 +1631,30 @@ void MainWindow2::startProjectRecovery(int result)
     QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
 }
 
+bool MainWindow2::eventHandling(QEvent* event)
+{
+    if(event->type() == QEvent::ApplicationStateChange && static_cast<QApplicationStateChangeEvent*>(event)->applicationState() == Qt::ApplicationInactive) {
+        emit appLostFocus();
+        return true;
+    }
+    else if (event->type() == QEvent::FileOpen)
+    {
+        QString mStartPath = static_cast<QFileOpenEvent*>(event)->file();
+
+        if (mStartPath.size() != 0) {
+            openFile(mStartPath);
+        }
+        return true;
+    }
+    else if (event->type() == QEvent::TabletEnterProximity ||
+        event->type() == QEvent::TabletLeaveProximity ) {
+
+        onTabletProximity(static_cast<QTabletEvent *>(event));
+        return true;
+    }
+    return false;
+}
+
 void MainWindow2::onTabletProximity(QTabletEvent* event)
 {
     if (event->type() == QEvent::TabletEnterProximity) {
