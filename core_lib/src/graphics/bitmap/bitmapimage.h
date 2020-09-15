@@ -125,8 +125,8 @@ protected:
     void setCompositionModeBounds(QRect sourceBounds, bool isSourceMinBounds, QPainter::CompositionMode cm);
 
 private:
-    std::shared_ptr< QImage > mImage;
-    QRect   mBounds;
+    std::unique_ptr<QImage> mImage;
+    QRect mBounds;
 
     /** @see isMinimallyBounded() */
     bool mMinBound = true;

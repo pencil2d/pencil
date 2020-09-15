@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    mImage = std::make_shared<QImage>(); // create null image
+    mImage.reset(new QImage); // create null image
     mBounds = QRect(0, 0, 0, 0);
 }
 
@@ -34,13 +34,13 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
     mEnableAutoCrop = a.mEnableAutoCrop;
-    mImage = std::make_shared<QImage>(*a.mImage);
+    mImage.reset(new QImage(*a.mImage));
 }
 
 BitmapImage::BitmapImage(const QRect& rectangle, const QColor& color)
 {
     mBounds = rectangle;
-    mImage = std::make_shared<QImage>(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
+    mImage.reset(new QImage(mBounds.size(), QImage::Format_ARGB32_Premultiplied));
     mImage->fill(color.rgba());
     mMinBound = false;
 }
@@ -49,7 +49,7 @@ BitmapImage::BitmapImage(const QPoint& topLeft, const QImage& image)
 {
     mBounds = QRect(topLeft, image.size());
     mMinBound = true;
-    mImage = std::make_shared<QImage>(image);
+    mImage.reset(new QImage(image));
 }
 
 BitmapImage::BitmapImage(const QPoint& topLeft, const QString& path)
@@ -79,7 +79,7 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
-    mImage = std::make_shared<QImage>(*a.mImage);
+    mImage.reset(new QImage(*a.mImage));
     modification();
     return *this;
 }
@@ -93,7 +93,7 @@ void BitmapImage::loadFile()
 {
     if (mImage == nullptr)
     {
-        mImage = std::make_shared<QImage>(fileName());
+        mImage.reset(new QImage(fileName()));
         mBounds.setSize(mImage->size());
         mMinBound = false;
     }
@@ -740,7 +740,7 @@ Status BitmapImage::writeFile(const QString& filename)
 
 void BitmapImage::clear()
 {
-    mImage = std::make_shared<QImage>(); // null image
+    mImage.reset(new QImage); // null image
     mBounds = QRect(0, 0, 0, 0);
     mMinBound = true;
     modification();
