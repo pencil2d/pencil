@@ -189,11 +189,11 @@ void TimeLineCells::drawContent()
 
     QPainter painter(mCache);
 
-    Object* object = mEditor->object();
+    const Object* object = mEditor->object();
 
     Q_ASSERT(object != nullptr);
 
-    Layer* layer = mEditor->layers()->currentLayer();
+    const Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) return;
 
     // grey background of the view
@@ -237,7 +237,7 @@ void TimeLineCells::drawContent()
                               width() - mOffsetX, getLayerHeight(),
                               true, mFrameSize);
         }
-        if (mType == TIMELINE_CELL_TYPE::Layers)
+        else if (mType == TIMELINE_CELL_TYPE::Layers)
         {
             layer->paintLabel(painter, this,
                               0, getLayerY(mEditor->layers()->currentLayerIndex()) + getMouseMoveY(),
@@ -259,7 +259,7 @@ void TimeLineCells::drawContent()
                               true,
                               mFrameSize);
         }
-        if (mType == TIMELINE_CELL_TYPE::Layers)
+        else if (mType == TIMELINE_CELL_TYPE::Layers)
         {
             layer->paintLabel(painter,
                               this,

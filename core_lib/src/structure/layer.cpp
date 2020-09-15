@@ -329,7 +329,7 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
 
 void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
-                       bool selected, int frameSize)
+                       bool selected, int frameSize) const
 {
     const QPalette palette = QApplication::palette();
     QColor col;
@@ -368,7 +368,7 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
     painter.restore();
 }
 
-void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize)
+void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize) const
 {
     painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
@@ -410,7 +410,7 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
 
 void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
-                       bool selected, LayerVisibility layerVisibility)
+                       bool selected, LayerVisibility layerVisibility) const
 {
     Q_UNUSED(cells)
     const QPalette palette = QApplication::palette();
@@ -475,7 +475,7 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
     painter.drawText(QPoint(45, y + (2 * height) / 3), mName);
 }
 
-void Layer::paintSelection(QPainter& painter, int x, int y, int width, int height)
+void Layer::paintSelection(QPainter& painter, int x, int y, int width, int height) const
 {
     QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
     QSettings settings(PENCIL2D, PENCIL2D);
