@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -87,11 +87,8 @@ bool ScribbleArea::init()
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
 
-#if QT_VERSION >= 0x50900
-
-    // tablet tracking first added in 5.9
-    setTabletTracking(true);
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0);
+    setTabletTracking(true); // tablet tracking first added in 5.9
 #endif
 
     mDebugRect = QRectF(0, 0, 0, 0);

@@ -708,7 +708,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 
     if (!st.ok())
     {
-#if QT_VERSION >= 0x050400
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
         QDir errorLogFolder(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 #else
         QDir errorLogFolder(QStandardPaths::writableLocation(QStandardPaths::DataLocation));

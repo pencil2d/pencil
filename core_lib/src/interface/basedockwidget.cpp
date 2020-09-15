@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "basedockwidget.h"
 #include "platformhandler.h"
 
-BaseDockWidget::BaseDockWidget(QWidget* pParent) 
+BaseDockWidget::BaseDockWidget(QWidget* pParent)
 : QDockWidget(pParent, Qt::Tool)
 {
 
