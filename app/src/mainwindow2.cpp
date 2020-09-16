@@ -1621,4 +1621,11 @@ void MainWindow2::createToolbars()
     mOverlayToolbar->addAction(ui->actionGrid);
 
     mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
+
+    ui->menuWindows->addSeparator();
+    QMenu* toolbarMenu = ui->menuWindows->addMenu(tr("Toolbars"));
+    for (QToolBar* tb : mToolbars)
+    {
+        toolbarMenu->addAction(tb->toggleViewAction());
+    }
 }
