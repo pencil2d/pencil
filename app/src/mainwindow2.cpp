@@ -29,8 +29,12 @@ GNU General Public License for more details.
 #include <QTabletEvent>
 #include <QStandardPaths>
 #include <QDateTime>
+<<<<<<< HEAD
 #include <QLabel>
 #include <QClipboard>
+=======
+#include <QToolBar>
+>>>>>>> bd2acacd (Add 3 Toolbars: main, view and overlay)
 
 // core_lib headers
 #include "pencildef.h"
@@ -120,6 +124,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     createDockWidgets();
     createMenus();
+    createToolbars();
     setupKeyboardShortcuts();
 
     readSettings();
@@ -1586,4 +1591,31 @@ void MainWindow2::startProjectRecovery(int result)
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
     QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
+}
+
+void MainWindow2::createToolbars()
+{
+    mMainToolbar = addToolBar("Main Toolbar");
+    mMainToolbar->addAction(ui->actionNew);
+    mMainToolbar->addAction(ui->actionOpen);
+    mMainToolbar->addAction(ui->actionSave);
+    mMainToolbar->addSeparator();
+    mMainToolbar->addAction(ui->actionUndo);
+    mMainToolbar->addAction(ui->actionRedo);
+    mMainToolbar->addSeparator();
+    mMainToolbar->addAction(ui->actionCut);
+    mMainToolbar->addAction(ui->actionCopy);
+    mMainToolbar->addAction(ui->actionPaste);
+
+    mViewToolbar = addToolBar("View Toolbar");
+    mViewToolbar->addAction(ui->actionZoom_In);
+    mViewToolbar->addAction(ui->actionZoom_Out);
+    mViewToolbar->addAction(ui->actionReset_View);
+    mViewToolbar->addAction(ui->actionHorizontal_Flip);
+    mViewToolbar->addAction(ui->actionVertical_Flip);
+
+    mOverlayToolbar = addToolBar("Overlay Toolbar");
+    mOverlayToolbar->addAction(ui->actionGrid);
+
+    mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
 }
