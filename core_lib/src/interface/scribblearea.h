@@ -238,7 +238,7 @@ private:
     SelectionPainter mSelectionPainter;
 
     // Pixmap Cache keys
-    std::vector<QPixmapCache::Key> mPixmapCacheKeys;
+    QMap<unsigned int, QPixmapCache::Key> mPixmapCacheKeys;
 
     // debug
     QLoggingCategory mLog{ "ScribbleArea" };
