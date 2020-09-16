@@ -983,16 +983,11 @@ void MainWindow2::importGIF()
 
 void MainWindow2::lockWidgets(bool shouldLock)
 {
-    QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
-
-    mColorBox->setFeatures(feat);
-    mColorInspector->setFeatures(feat);
-    mColorPalette->setFeatures(feat);
-    mDisplayOptionWidget->setFeatures(feat);
-    mOnionSkinWidget->setFeatures(feat);
-    mToolOptions->setFeatures(feat);
-    mToolBox->setFeatures(feat);
-    mTimeLine->setFeatures(feat);
+    QDockWidget::DockWidgetFeatures feat = shouldLock ? QDockWidget::NoDockWidgetFeatures : QDockWidget::AllDockWidgetFeatures;
+    for (QDockWidget* d : mDockWidgets)
+    {
+        d->setFeatures(feat);
+    }
 }
 
 void MainWindow2::setSoundScrubActive(bool b)
