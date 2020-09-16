@@ -35,7 +35,7 @@ public:
 
     void setCore(Editor* e) { mEditor = e; }
 
-    // file 
+    // file
     Status importMovieVideo();
     Status importMovieAudio();
     Status importSound();
@@ -57,7 +57,6 @@ public:
     void rotateCounterClockwise();
     void toggleMirror();
     void toggleMirrorV();
-    void showGrid(bool bShow);
 
     // Animation
     void PlayStop();

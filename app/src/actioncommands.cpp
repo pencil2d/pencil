@@ -612,15 +612,6 @@ void ActionCommands::toggleMirrorV()
     mEditor->view()->flipVertical(!flipY);
 }
 
-void ActionCommands::showGrid(bool bShow)
-{
-    auto prefs = mEditor->preference();
-    if (bShow)
-        prefs->turnOn(SETTING::GRID);
-    else
-        prefs->turnOff(SETTING::GRID);
-}
-
 void ActionCommands::PlayStop()
 {
     PlaybackManager* playback = mEditor->playback();
