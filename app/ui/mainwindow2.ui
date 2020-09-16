@@ -261,7 +261,9 @@
     <property name="title">
      <string>Windows</string>
     </property>
-    <addaction name="actionReset_Windows"/>
+    <addaction name="actionResetWindows"/>
+    <addaction name="actionLockWindows"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -450,7 +452,7 @@
     <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
-  <action name="actionReset_Windows">
+  <action name="actionResetWindows">
    <property name="text">
     <string>Reset Windows</string>
    </property>
@@ -1087,6 +1089,14 @@
   <action name="actionOpen_Temporary_Directory">
    <property name="text">
     <string>Open Temporary Directory</string>
+   </property>
+  </action>
+  <action name="actionLockWindows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock Windows</string>
    </property>
   </action>
  </widget>

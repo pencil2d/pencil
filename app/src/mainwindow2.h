@@ -146,8 +146,6 @@ private:
     void makeConnections(Editor*, ToolOptionWidget*);
     void makeConnections(Editor*, OnionSkinWidget*);
 
-    void bindActionWithSetting(QAction*, const SETTING&);
-
     bool tryRecoverUnsavedProject();
     void startProjectRecovery(int result);
 

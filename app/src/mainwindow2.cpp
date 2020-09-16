@@ -319,9 +319,10 @@ void MainWindow2::createMenus()
     connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
     connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
 
-    bindActionWithSetting(ui->actionGrid, SETTING::GRID);
-    bindActionWithSetting(ui->actionOnionPrev, SETTING::PREV_ONION);
-    bindActionWithSetting(ui->actionOnionNext, SETTING::NEXT_ONION);
+    PreferenceManager* prefs = mEditor->preference();
+    bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
+    bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
+    bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -365,7 +366,6 @@ void MainWindow2::createMenus()
 
     //--- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
-    winMenu->clear();
     const std::vector<QAction*> actions
     {
         mToolBox->toggleViewAction(),
@@ -383,16 +383,9 @@ void MainWindow2::createMenus()
         action->setMenuRole(QAction::NoRole);
         winMenu->addAction(action);
     }
-
-    winMenu->addSeparator();
-    QAction* lockWidgets = new QAction(tr("Lock Windows"), winMenu);
-    lockWidgets->setCheckable(true);
-    winMenu->addAction(lockWidgets);
-    winMenu->addAction(ui->actionReset_Windows);
-
-    connect(lockWidgets, &QAction::toggled, this, &MainWindow2::lockWidgets);
-    bindActionWithSetting(lockWidgets, SETTING::LAYOUT_LOCK);
-    connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
+    connect(ui->actionResetWindows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
+    connect(ui->actionLockWindows, &QAction::toggled, this, &MainWindow2::lockWidgets);
+    bindPreferenceSetting(ui->actionLockWindows, prefs, SETTING::LAYOUT_LOCK);
 
     //--- Help Menu ---
     connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
@@ -1209,7 +1202,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionPreference->setShortcut(cmdKeySeq(CMD_PREFERENCE));
 
     // View menu
-    ui->actionReset_Windows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
+    ui->actionResetWindows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
     ui->actionReset_View->setShortcut(cmdKeySeq(CMD_RESET_ZOOM_ROTATE));
     ui->actionZoom_In->setShortcut(cmdKeySeq(CMD_ZOOM_IN));
     ui->actionZoom_Out->setShortcut(cmdKeySeq(CMD_ZOOM_OUT));
@@ -1495,28 +1488,6 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
 
     connect(pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor);
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
-}
-
-void MainWindow2::bindActionWithSetting(QAction* action, const SETTING& setting)
-{
-    PreferenceManager* prefs = mEditor->preference();
-
-    // set initial state
-    action->setChecked(prefs->isOn(setting));
-
-    // 2-way binding
-    connect(action, &QAction::triggered, prefs, [=](bool b)
-    {
-        prefs->set(setting, b);
-    });
-
-    connect(prefs, &PreferenceManager::optionChanged, action, [=](SETTING s)
-    {
-        if (s == setting)
-        {
-            action->setChecked(prefs->isOn(setting));
-        }
-    });
 }
 
 void MainWindow2::updateZoomLabel()
