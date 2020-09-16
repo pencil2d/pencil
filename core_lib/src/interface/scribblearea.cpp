@@ -99,9 +99,7 @@ bool ScribbleArea::init()
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
 
     QPixmapCache::setCacheLimit(100 * 1024); // unit is kb, so it's 100MB cache
-
-    int nLength = mEditor->layers()->animationLength();
-    mPixmapCacheKeys.resize(static_cast<unsigned>(std::max(nLength, 240)));
+    mPixmapCacheKeys.clear();
 
     return true;
 }
@@ -187,17 +185,17 @@ void ScribbleArea::updateCurrentFrame()
 
 void ScribbleArea::updateFrame(int frame)
 {
+    Q_ASSERT(frame >= 0);
+
     int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
     if (frameNumber < 0) { return; }
 
-    Q_ASSERT(frame >= 0);
-    if (mPixmapCacheKeys.size() <= static_cast<unsigned>(frame))
+    auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(frameNumber));
+    if (cacheKeyIter != mPixmapCacheKeys.end())
     {
-        mPixmapCacheKeys.resize(static_cast<unsigned>(frame + 10)); // a buffer
+        QPixmapCache::remove(cacheKeyIter.value());
+        mPixmapCacheKeys.remove(cacheKeyIter.key());
     }
-
-    QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(frameNumber)]);
-    mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::Key();
 
     update();
 }
@@ -205,7 +203,7 @@ void ScribbleArea::updateFrame(int frame)
 void ScribbleArea::updateAllFrames()
 {
     QPixmapCache::clear();
-    std::fill(mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key());
+    mPixmapCacheKeys.clear();
     setAllDirty();
 
     update();
@@ -747,12 +745,7 @@ void ScribbleArea::paintBitmapBuffer()
     update(rect);
 
     // Update the cache for the last key-frame.
-    auto lastKeyFramePosition = mEditor->layers()->lastFrameAtFrame(frameNumber);
-    if (lastKeyFramePosition >= 0)
-    {
-        QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
-        mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)] = QPixmapCache::Key();
-    }
+    updateFrame(frameNumber);
     layer->setModified(frameNumber, true);
 
     mBufferImg->clear();
@@ -795,8 +788,7 @@ void ScribbleArea::paintBitmapBufferRect(const QRect& rect)
         int frameNumber = mEditor->currentFrame();
         layer->setModified(frameNumber, true);
 
-        QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(frameNumber)]);
-        mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::Key();
+        updateFrame(frameNumber);
 
         drawCanvas(frameNumber, rect.adjusted(-1, -1, 1, 1));
         update(rect);
@@ -950,13 +942,13 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
         if (frameNumber < 0)
         {
-            drawCanvas(mEditor->currentFrame(), event->rect());
+            drawCanvas(curIndex, event->rect());
         }
         else
         {
-            QPixmapCache::Key cachedKey = mPixmapCacheKeys[static_cast<unsigned>(frameNumber)];
+            auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned>(frameNumber));
 
-            if (!QPixmapCache::find(cachedKey, &mCanvas))
+            if (cacheKeyIter == mPixmapCacheKeys.end() || !QPixmapCache::find(cacheKeyIter.value(), &mCanvas))
             {
                 drawCanvas(mEditor->currentFrame(), event->rect());
 
