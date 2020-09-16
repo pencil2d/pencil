@@ -1595,7 +1595,7 @@ void MainWindow2::startProjectRecovery(int result)
 
 void MainWindow2::createToolbars()
 {
-    mMainToolbar = addToolBar("Main Toolbar");
+    mMainToolbar = addToolBar(tr("Main Toolbar"));
     mMainToolbar->addAction(ui->actionNew);
     mMainToolbar->addAction(ui->actionOpen);
     mMainToolbar->addAction(ui->actionSave);
@@ -1607,14 +1607,14 @@ void MainWindow2::createToolbars()
     mMainToolbar->addAction(ui->actionCopy);
     mMainToolbar->addAction(ui->actionPaste);
 
-    mViewToolbar = addToolBar("View Toolbar");
+    mViewToolbar = addToolBar(tr("View Toolbar"));
     mViewToolbar->addAction(ui->actionZoom_In);
     mViewToolbar->addAction(ui->actionZoom_Out);
     mViewToolbar->addAction(ui->actionReset_View);
     mViewToolbar->addAction(ui->actionHorizontal_Flip);
     mViewToolbar->addAction(ui->actionVertical_Flip);
 
-    mOverlayToolbar = addToolBar("Overlay Toolbar");
+    mOverlayToolbar = addToolBar(tr("Overlay Toolbar"));
     mOverlayToolbar->addAction(ui->actionGrid);
 
     mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
