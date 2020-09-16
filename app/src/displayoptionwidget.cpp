@@ -79,7 +79,7 @@ void DisplayOptionWidget::initUI()
 }
 
 void DisplayOptionWidget::makeConnections()
-{    
+{
     connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
     connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
     connect(ui->overlayCenterButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayCenter);
@@ -120,14 +120,10 @@ void DisplayOptionWidget::updateUI()
     QSignalBlocker b12(ui->overlaySafeAreaButton);
     ui->overlaySafeAreaButton->setChecked(prefs->isOn(SETTING::OVERLAY_SAFE));
 
-    if (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON))
-    {
-        ui->overlaySafeAreaButton->setEnabled(true);
-    } else {
-        ui->overlaySafeAreaButton->setEnabled(false);
-    }
+    bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
+    ui->overlaySafeAreaButton->setEnabled(enableSafeArea);
 
-    ViewManager* view = editor()->view();
+    const ViewManager* view = editor()->view();
 
     QSignalBlocker b3(ui->mirrorButton);
     ui->mirrorButton->setChecked(view->isFlipHorizontal());
