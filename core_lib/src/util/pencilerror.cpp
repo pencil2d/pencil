@@ -60,7 +60,7 @@ void DebugDetails::appendSystemInfo()
     if (mDetails.empty() || mDetails.last() == "end")
         return;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     mDetails << "System Info";
 #if defined(PENCIL2D_RELEASE_BUILD)
     mDetails << "Pencil version: " APP_VERSION " (stable)";
