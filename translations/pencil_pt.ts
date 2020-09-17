@@ -102,7 +102,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="77"/>
         <source>Importing movie...</source>
-        <translation type="unfinished"/>
+        <translation>A importar vídeo...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="85"/>
@@ -112,17 +112,17 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="129"/>
         <source>Importing movie audio...</source>
-        <translation type="unfinished"/>
+        <translation>A importar vídeo áudio...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Importing sound...</source>
-        <translation type="unfinished"/>
+        <translation>Importando som</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="399"/>
         <source>Unknown export error</source>
-        <translation type="unfinished"/>
+        <translation>Erro de exportação desconhecido</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="399"/>
@@ -154,7 +154,7 @@
         <location filename="../app/src/actioncommands.cpp" line="788"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
-        <translation type="unfinished"/>
+        <translation>Propriedades da Camada</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="790"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="819"/>
         <source>Are you sure you want to delete layer: %1?</source>
-        <translation type="unfinished"/>
+        <translation>Têm a certeza que quer eliminar a camada: %1?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="828"/>
@@ -270,7 +270,7 @@
     <message>
         <location filename="../core_lib/src/canvaspainter.cpp" line="686"/>
         <source>Safe Action area %1 %</source>
-        <translation type="unfinished"/>
+        <translation>Área de segurança %1 %</translation>
     </message>
     <message>
         <location filename="../core_lib/src/canvaspainter.cpp" line="696"/>
@@ -336,7 +336,7 @@
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
         <source>Version %1</source>
-        <translation type="unfinished"/>
+        <translation>Versão %1</translation>
     </message>
 </context>
 <context>
@@ -428,7 +428,7 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="281"/>
         <source>Show palette as icons</source>
-        <translation>Mostrar paleta como Icones</translation>
+        <translation>Mostrar paleta como Ícones</translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="291"/>
@@ -877,7 +877,7 @@
     <message>
         <location filename="../app/src/filedialogex.cpp" line="161"/>
         <source>Open palette</source>
-        <translation type="unfinished"/>
+        <translation>Abrir paleta</translation>
     </message>
     <message>
         <location filename="../app/src/filedialogex.cpp" line="170"/>
@@ -1466,7 +1466,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="14"/>
         <source>Import Layers from other *.pclx files</source>
-        <translation type="unfinished"/>
+        <translation>Importar Camadas de outros ficheiros *.pclx</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="22"/>
@@ -1481,7 +1481,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="51"/>
         <source>2. Select layers from file:</source>
-        <translation type="unfinished"/>
+        <translation>2. Selecionar camadas do ficheiro:</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="76"/>
@@ -1491,7 +1491,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="83"/>
         <source>Import layers</source>
-        <translation type="unfinished"/>
+        <translation>Importar Camadas</translation>
     </message>
     <message>
         <location filename="../app/src/importlayersdialog.cpp" line="46"/>
@@ -1637,7 +1637,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="153"/>
         <source>Layer Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Visibilidade da Camada</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="183"/>
@@ -2093,7 +2093,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1019"/>
         <source>Movie Audio...</source>
-        <translation type="unfinished"/>
+        <translation>Vídeo Áudio...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1024"/>
@@ -2103,12 +2103,12 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1029"/>
         <source>Replace Palette...</source>
-        <translation type="unfinished"/>
+        <translation>Substituir Paleta</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1034"/>
         <source>Other Palette format...</source>
-        <translation type="unfinished"/>
+        <translation>Outro formato de Paleta...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1039"/>
@@ -2149,7 +2149,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="340"/>
         <source>Palette</source>
-        <translation type="unfinished"/>
+        <translation>Paleta</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="365"/>
@@ -2376,7 +2376,7 @@ Color(s) in strokes will be altered by this action!
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1333"/>
         <source>Open Palette</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Paleta</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1334"/>
@@ -4367,7 +4367,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="33"/>
         <source>Movie formats</source>
-        <translation type="unfinished"/>
+        <translation>Formatos de vídeo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="38"/>
@@ -4378,7 +4378,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>Palette formats</source>
-        <translation type="unfinished"/>
+        <translation>Formatos de Paleta</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="44"/>
@@ -4415,7 +4415,7 @@ Check selection, and please try again.</source>
         <location filename="../core_lib/src/movieimporter.cpp" line="37"/>
         <location filename="../core_lib/src/movieimporter.cpp" line="211"/>
         <source>You need to be on the bitmap layer to import a movie clip</source>
-        <translation type="unfinished"/>
+        <translation>Selecionar a camada de bitmap para importar vídeo clips</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="126"/>
@@ -5404,7 +5404,7 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="326"/>
         <source>Layer Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Visibilidade da Camada</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="332"/>
@@ -5429,7 +5429,7 @@ Por favor selecione outra camada (ou torne está camada visível)</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="358"/>
         <source>When layer visibility is relative (gray dot)</source>
-        <translation type="unfinished"/>
+        <translation>Quando a visibilidade da camada é relativa (ponto cinzento)</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="148"/>
