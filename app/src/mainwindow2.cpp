@@ -1144,10 +1144,11 @@ void MainWindow2::readSettings()
     QVariant winState = settings.value(SETTING_WINDOW_STATE);
     restoreState(winState.toByteArray());
 
-    QString myPath = settings.value(LAST_PCLX_PATH, QDir::homePath()).toString();
-
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
     setOpacity(100 - opacity);
+
+    bool isWindowsLocked = mEditor->preference()->isOn(SETTING::LAYOUT_LOCK);
+    lockWidgets(isWindowsLocked);
 }
 
 void MainWindow2::writeSettings()
