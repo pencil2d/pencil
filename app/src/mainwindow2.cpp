@@ -984,9 +984,16 @@ void MainWindow2::importGIF()
 void MainWindow2::lockWidgets(bool shouldLock)
 {
     QDockWidget::DockWidgetFeatures feat = shouldLock ? QDockWidget::NoDockWidgetFeatures : QDockWidget::AllDockWidgetFeatures;
+
     for (QDockWidget* d : mDockWidgets)
     {
         d->setFeatures(feat);
+
+        // https://doc.qt.io/qt-5/qdockwidget.html#setTitleBarWidget
+        // A empty QWidget looks like the tittle bar is hidden.
+        // nullptr means removing the custom title bar and restoring the default one
+        QWidget* customTitleBarWidget = shouldLock ? (new QWidget) : nullptr;
+        d->setTitleBarWidget(customTitleBarWidget);
     }
 }
 
