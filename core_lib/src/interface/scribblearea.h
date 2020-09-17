@@ -89,6 +89,7 @@ public:
 
     void updateCurrentFrame();
     void updateFrame(int frame);
+    void updateOnionSkinsAround(int frame);
     void updateAllFrames();
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frameNumber);

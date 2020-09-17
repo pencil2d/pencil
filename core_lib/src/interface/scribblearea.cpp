@@ -137,6 +137,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_RED:
     case SETTING::INVISIBLE_LINES:
     case SETTING::OUTLINES:
+    case SETTING::ONION_TYPE:
         updateAllFrames();
         break;
     case SETTING::QUICK_SIZING:
@@ -197,7 +198,60 @@ void ScribbleArea::updateFrame(int frame)
         mPixmapCacheKeys.remove(cacheKeyIter.key());
     }
 
+    updateOnionSkinsAround(frame);
+
     update();
+}
+
+void ScribbleArea::updateOnionSkinsAround(int frameNumber)
+{
+    if (frameNumber < 0) { return; }
+
+    bool isOnionAbsolute = mPrefs->getString(SETTING::ONION_TYPE) == "absolute";
+    Layer *layer = mEditor->layers()->currentLayer(0);
+
+    // The current layer can be null if updateFrame is triggered when creating a new project
+    if (!layer) return;
+
+    if (mPrefs->isOn(SETTING::PREV_ONION))
+    {
+        int onionFrameNumber = frameNumber;
+        if (isOnionAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber + 1, true);
+        }
+
+        for(int i = 1; i <= mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM); i++)
+        {
+            onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, isOnionAbsolute);
+            if (onionFrameNumber < 0) break;
+
+            auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(onionFrameNumber));
+            if (cacheKeyIter != mPixmapCacheKeys.end())
+            {
+                QPixmapCache::remove(cacheKeyIter.value());
+                mPixmapCacheKeys.remove(cacheKeyIter.key());
+            }
+        }
+    }
+
+    if (mPrefs->isOn(SETTING::NEXT_ONION))
+    {
+        int onionFrameNumber = frameNumber;
+
+        for(int i = 1; i <= mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM); i++)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isOnionAbsolute);
+            if (onionFrameNumber < 0) break;
+
+            auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(onionFrameNumber));
+            if (cacheKeyIter != mPixmapCacheKeys.end())
+            {
+                QPixmapCache::remove(cacheKeyIter.value());
+                mPixmapCacheKeys.remove(cacheKeyIter.key());
+            }
+        }
+    }
 }
 
 void ScribbleArea::updateAllFrames()
