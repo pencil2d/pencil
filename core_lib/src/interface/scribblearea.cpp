@@ -1703,13 +1703,6 @@ void ScribbleArea::floodFillError(int errorType)
     mEditor->deselectAll();
 }
 
-/** Check if the content of the canvas depends on the active layer.
-  *
-  * Currently layers are only affected by Onion skins are displayed only for the active layer, and the opacity of all layers
-  * is affected when relative layer visiblity is active.
-  *
-  * @return True if the active layer could potentially influence the content of the canvas. False otherwise.
-  */
 bool ScribbleArea::isAffectedByActiveLayer() const
 {
     return mPrefs->isOn(SETTING::PREV_ONION) ||
