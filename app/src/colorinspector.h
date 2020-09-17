@@ -28,7 +28,7 @@ class ColorInspector : public BaseDockWidget
     Q_OBJECT
 
     friend class ColorSliders;
-    
+
 public:
     explicit ColorInspector(QWidget *parent = nullptr);
     ~ColorInspector() override;
@@ -36,9 +36,6 @@ public:
 
     void initUI() override;
     void updateUI() override;
-
-protected:
-    void paintEvent(QPaintEvent *) override;
 
 signals:
     void colorChanged(const QColor& c);
@@ -51,7 +48,7 @@ private slots:
     void onModeChanged();
     void onColorChanged();
     void onSliderChanged(QColor color);
-    
+
 private:
 
     Ui::ColorInspector* ui = nullptr;
