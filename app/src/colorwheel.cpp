@@ -18,9 +18,7 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QPainter>
 #include <QResizeEvent>
-#include <QPixmapCache>
 #include <QStyleOption>
-#include <QStylePainter>
 #include <QRect>
 #include <QDebug>
 #include "pencildef.h"

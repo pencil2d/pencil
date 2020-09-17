@@ -241,9 +241,7 @@ private:
     std::vector<QPixmapCache::Key> mPixmapCacheKeys;
 
     // debug
-    QRectF mDebugRect;
-    QLoggingCategory mLog;
-    std::deque<clock_t> mDebugTimeQue;
+    QLoggingCategory mLog{ "ScribbleArea" };
 };
 
 #endif

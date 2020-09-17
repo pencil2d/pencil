@@ -39,8 +39,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "selectionmanager.h"
 
-ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent),
-mLog("ScribbleArea")
+ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent)
 {
     setObjectName("ScribbleArea");
 
@@ -90,8 +89,6 @@ bool ScribbleArea::init()
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     setTabletTracking(true); // tablet tracking first added in 5.9
 #endif
-
-    mDebugRect = QRectF(0, 0, 0, 0);
 
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
 
@@ -637,26 +634,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
     mStrokeManager->pointerMoveEvent(&event);
 
     pointerMoveEvent(&event);
-
-#ifdef DEBUG_FPS
-    if (mMouseInUse)
-    {
-        clock_t curTime = clock();
-        mDebugTimeQue.push_back(curTime);
-
-        while (mDebugTimeQue.size() > 30)
-        {
-            mDebugTimeQue.pop_front();
-        }
-
-        if (mDebugTimeQue.size() > 30)
-        {
-            clock_t interval = mDebugTimeQue.back() - mDebugTimeQue.front();
-            double fps = mDebugTimeQue.size() / ((double)interval) * CLOCKS_PER_SEC;
-            qDebug() << fps;
-        }
-    }
-#endif
 }
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)

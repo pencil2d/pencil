@@ -17,10 +17,7 @@ GNU General Public License for more details.
 #include "ui_colorinspector.h"
 
 #include <QSettings>
-#include <QStyleOption>
 #include <QDebug>
-#include <QStylePainter>
-#include <QButtonGroup>
 
 #include "colorslider.h"
 #include "pencildef.h"
