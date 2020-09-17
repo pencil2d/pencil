@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define STROKETOOL_H
 
 #include "basetool.h"
+#include "pointerevent.h"
 
 #include <QList>
 #include <QPointF>
@@ -31,7 +32,7 @@ class StrokeTool : public BaseTool
 public:
     explicit StrokeTool(QObject* parent);
     
-    void startStroke();
+    void startStroke(PointerEvent::InputType inputType);
     void drawStroke();
     void endStroke();
 
@@ -46,6 +47,8 @@ protected:
 
     qreal mCurrentWidth    = 0.0;
     qreal mCurrentPressure = 0.5;
+
+    PointerEvent::InputType mCurrentInputType = PointerEvent::Unknown;
 
     /// Whether to enable the "drawing on empty frame" preference.
     /// If true, then the user preference is honored.

@@ -42,7 +42,7 @@ StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
     detectWhichOSX();
 }
 
-void StrokeTool::startStroke()
+void StrokeTool::startStroke(PointerEvent::InputType inputType)
 {
     if (emptyFrameActionEnabled())
     {
@@ -60,6 +60,8 @@ void StrokeTool::startStroke()
 
     mStrokePressures.clear();
     mStrokePressures << strokeManager()->getPressure();
+
+    mCurrentInputType = inputType;
 
     disableCoalescing();
 }

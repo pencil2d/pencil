@@ -139,18 +139,18 @@ QCursor BrushTool::cursor()
     return Qt::CrossCursor;
 }
 
-void BrushTool::pointerPressEvent(PointerEvent*)
+void BrushTool::pointerPressEvent(PointerEvent *event)
 {
     mScribbleArea->setAllDirty();
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
-    startStroke();
+    startStroke(event->inputType());
 }
 
 void BrushTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
         drawStroke();
@@ -159,8 +159,10 @@ void BrushTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void BrushTool::pointerReleaseEvent(PointerEvent*)
+void BrushTool::pointerReleaseEvent(PointerEvent *event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     Layer* layer = mEditor->layers()->currentLayer();
     mEditor->backup(typeName());
 

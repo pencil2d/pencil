@@ -108,17 +108,16 @@ void BucketTool::setTolerance(const int tolerance)
 
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
-    startStroke();
+    startStroke(event->inputType());
     if (event->button() == Qt::LeftButton)
     {
         mScribbleArea->setAllDirty();
     }
-    startStroke();
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if (layer->type() == Layer::VECTOR)
@@ -130,6 +129,8 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
 
 void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     Layer* layer = editor()->layers()->currentLayer();
     if (layer == nullptr) { return; }
 
