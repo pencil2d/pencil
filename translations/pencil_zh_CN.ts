@@ -102,32 +102,32 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="77"/>
         <source>Importing movie...</source>
-        <translation type="unfinished"/>
+        <translation>导入电影中...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="85"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>您正在导入大量帧，请注意，这可能需要一些时间。您确定要继续吗？</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="129"/>
         <source>Importing movie audio...</source>
-        <translation type="unfinished"/>
+        <translation>导入电影音频中...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="243"/>
         <source>Importing sound...</source>
-        <translation type="unfinished"/>
+        <translation>导入声音中...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="399"/>
         <source>Unknown export error</source>
-        <translation type="unfinished"/>
+        <translation>未知的导出错误</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="399"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
-        <translation type="unfinished"/>
+        <translation>导出没有产生任何错误，但是我们找不到输出文件。您的导出可能没有成功完成。</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="547"/>
@@ -154,7 +154,7 @@
         <location filename="../app/src/actioncommands.cpp" line="788"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
-        <translation type="unfinished"/>
+        <translation>图层属性</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="790"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="819"/>
         <source>Are you sure you want to delete layer: %1?</source>
-        <translation type="unfinished"/>
+        <translation>您确定要删除图层：%1？</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="828"/>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="917"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
-        <translation type="unfinished"/>
+        <translation>临时目录只能由 Pencil2D 使用。除非您知道自己在做什么，否则请勿对其进行修改。</translation>
     </message>
 </context>
 <context>
@@ -336,7 +336,7 @@
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
         <source>Version %1</source>
-        <translation type="unfinished"/>
+        <translation>版本 %1</translation>
     </message>
 </context>
 <context>
@@ -1216,132 +1216,132 @@
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="107"/>
         <source>Arabic</source>
-        <translation type="unfinished"/>
+        <translation>阿拉伯语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="108"/>
         <source>Catalan</source>
-        <translation type="unfinished"/>
+        <translation>加泰罗尼亚语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="109"/>
         <source>Czech</source>
-        <translation type="unfinished"/>
+        <translation>加泰罗尼亚语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="110"/>
         <source>Danish</source>
-        <translation type="unfinished"/>
+        <translation>丹麦语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="111"/>
         <source>German</source>
-        <translation type="unfinished"/>
+        <translation>德语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="112"/>
         <source>Greek</source>
-        <translation type="unfinished"/>
+        <translation>希腊语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="113"/>
         <source>English</source>
-        <translation type="unfinished"/>
+        <translation>英语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="114"/>
         <source>Spanish</source>
-        <translation type="unfinished"/>
+        <translation>西班牙语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="115"/>
         <source>Estonian</source>
-        <translation type="unfinished"/>
+        <translation>爱沙尼亚语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="116"/>
         <source>French</source>
-        <translation type="unfinished"/>
+        <translation>法语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="117"/>
         <source>Hebrew</source>
-        <translation type="unfinished"/>
+        <translation>希伯来语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="118"/>
         <source>Hungarian</source>
-        <translation type="unfinished"/>
+        <translation>匈牙利语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="119"/>
         <source>Indonesian</source>
-        <translation type="unfinished"/>
+        <translation>印度尼西亚语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="120"/>
         <source>Italian</source>
-        <translation type="unfinished"/>
+        <translation>意大利语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="121"/>
         <source>Japanese</source>
-        <translation type="unfinished"/>
+        <translation>日语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="122"/>
         <source>Kabyle</source>
-        <translation type="unfinished"/>
+        <translation>卡拜尔语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="123"/>
         <source>Polish</source>
-        <translation type="unfinished"/>
+        <translation>波兰语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="124"/>
         <source>Portuguese – Portugal</source>
-        <translation type="unfinished"/>
+        <translation>葡萄牙语 – 葡萄牙</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="125"/>
         <source>Portuguese – Brazil</source>
-        <translation type="unfinished"/>
+        <translation>葡萄牙语 – 巴西</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="126"/>
         <source>Russian</source>
-        <translation type="unfinished"/>
+        <translation>俄语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="127"/>
         <source>Slovene</source>
-        <translation type="unfinished"/>
+        <translation>斯洛文尼亚语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="128"/>
         <source>Swedish</source>
-        <translation type="unfinished"/>
+        <translation>瑞典语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="129"/>
         <source>Turkish</source>
-        <translation type="unfinished"/>
+        <translation>土耳其语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="130"/>
         <source>Vietnamese</source>
-        <translation type="unfinished"/>
+        <translation>越南语</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="131"/>
         <source>Chinese – China</source>
-        <translation type="unfinished"/>
+        <translation>汉语 - 中国</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="132"/>
         <source>Chinese – Taiwan</source>
-        <translation type="unfinished"/>
+        <translation>汉语 - 台湾</translation>
     </message>
     <message>
         <location filename="../app/src/preferencesdialog.cpp" line="262"/>
@@ -1359,7 +1359,7 @@
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="38"/>
         <source>Instructions</source>
-        <translation type="unfinished"/>
+        <translation>使用说明</translation>
     </message>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="48"/>
@@ -1403,38 +1403,39 @@
         <location filename="../app/src/importimageseqdialog.cpp" line="69"/>
         <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
 The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
-        <translation type="unfinished"/>
+        <translation>选择符合条件的图像：MyFile000.png，例如:Joe001.png
+导入时将搜索并找到符合相同条件的图像。您可以在下面的预览框中查看结果。</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="168"/>
         <source>Importing image sequence...</source>
-        <translation type="unfinished"/>
+        <translation>倒入图像序列...</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="168"/>
         <location filename="../app/src/importimageseqdialog.cpp" line="306"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>中止</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="219"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="220"/>
         <source>Unable to import</source>
-        <translation type="unfinished"/>
+        <translation>无法导入</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="306"/>
         <source>Importing images...</source>
-        <translation type="unfinished"/>
+        <translation>导入图像...</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="362"/>
         <source>Invalid path</source>
-        <translation type="unfinished"/>
+        <translation>无效的路径</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="363"/>
@@ -1442,7 +1443,10 @@ The importer will search and find images matching the same criteria. You can see
 %1 
 
 Read the instructions and try again</source>
-        <translation type="unfinished"/>
+        <translation>以下文件不符合条件：
+%1
+
+阅读说明，然后重试</translation>
     </message>
 </context>
 <context>
@@ -1476,7 +1480,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="42"/>
         <source>Select File</source>
-        <translation type="unfinished"/>
+        <translation>选择文件</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="51"/>
@@ -1486,7 +1490,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="76"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="83"/>
@@ -1496,7 +1500,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/src/importlayersdialog.cpp" line="46"/>
         <source>Choose file</source>
-        <translation type="unfinished"/>
+        <translation>选择文件</translation>
     </message>
     <message>
         <location filename="../app/src/importlayersdialog.cpp" line="48"/>
@@ -1506,12 +1510,12 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/src/importlayersdialog.cpp" line="101"/>
         <source>Opening document...</source>
-        <translation type="unfinished"/>
+        <translation>打开文档...</translation>
     </message>
     <message>
         <location filename="../app/src/importlayersdialog.cpp" line="101"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>中止</translation>
     </message>
 </context>
 <context>
@@ -1637,7 +1641,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="153"/>
         <source>Layer Visibility</source>
-        <translation type="unfinished"/>
+        <translation>图层可见性</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="183"/>
@@ -1658,7 +1662,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="228"/>
         <source>Change line color</source>
-        <translation type="unfinished"/>
+        <translation>更改线条颜色</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="245"/>
@@ -2113,12 +2117,12 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1039"/>
         <source>Current keyframe</source>
-        <translation type="unfinished"/>
+        <translation>当前关键帧</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1044"/>
         <source>All keyframes on layer</source>
-        <translation type="unfinished"/>
+        <translation>图层上的所有关键帧</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1049"/>
@@ -2128,7 +2132,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1064"/>
         <source>All layers</source>
-        <translation type="unfinished"/>
+        <translation>所有层</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1072"/>
@@ -4447,7 +4451,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="168"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
-        <translation type="unfinished"/>
+        <translation>影片剪辑太长。Pencil2D 只能容纳 %1 帧，但该影片达到 %2 帧。请缩短您的视频，然后重试。</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="289"/>
@@ -4457,7 +4461,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="290"/>
         <source>You need to be on a sound layer to import the audio</source>
-        <translation type="unfinished"/>
+        <translation>您需要在声音层上才能导入音频</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="302"/>
@@ -5217,7 +5221,7 @@ Check selection, and please try again.</source>
         <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
         <source>Timeline</source>
         <comment>Subpanel title</comment>
-        <translation type="unfinished"/>
+        <translation>时间轴</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
@@ -5420,12 +5424,12 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="345"/>
         <source>Relative</source>
-        <translation type="unfinished"/>
+        <translation>相对的</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="350"/>
         <source>All Layers</source>
-        <translation type="unfinished"/>
+        <translation>所有层</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="358"/>
@@ -5759,7 +5763,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/toolspage.ui" line="60"/>
         <source>Move Tool</source>
-        <translation type="unfinished"/>
+        <translation>移动工具</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="66"/>
