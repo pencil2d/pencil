@@ -419,7 +419,6 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
     }
 
     QImage* strokeImage = new QImage(mCanvas->size(), QImage::Format_ARGB32_Premultiplied);
-    strokeImage->fill(Qt::transparent);
     vectorImage->outputImage(strokeImage, mViewTransform, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
 
     // Go through a Bitmap image to paint the onion skin colour
