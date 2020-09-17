@@ -147,18 +147,18 @@ QCursor EraserTool::cursor()
     return Qt::CrossCursor;
 }
 
-void EraserTool::pointerPressEvent(PointerEvent*)
+void EraserTool::pointerPressEvent(PointerEvent *event)
 {
     mScribbleArea->setAllDirty();
 
-    startStroke();
+    startStroke(event->inputType());
     mLastBrushPoint = getCurrentPoint();
     mMouseDownPoint = getCurrentPoint();
 }
 
 void EraserTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
         updateStrokes();
@@ -167,8 +167,10 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void EraserTool::pointerReleaseEvent(PointerEvent*)
+void EraserTool::pointerReleaseEvent(PointerEvent *event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     mEditor->backup(typeName());
 
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();

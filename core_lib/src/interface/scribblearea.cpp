@@ -481,7 +481,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         editor()->tools()->tabletRestorePrevTool();
     }
 
-    if (event.type() == QTabletEvent::TabletPress)
+    if (event.eventType() == QTabletEvent::TabletPress)
     {
         event.accept();
         mStrokeManager->pointerPressEvent(&event);
@@ -507,7 +507,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         }
         mTabletInUse = event.isAccepted();
     }
-    else if (event.type() == QTabletEvent::TabletMove)
+    else if (event.eventType() == QTabletEvent::TabletMove)
     {
         if (!(event.buttons() & (Qt::LeftButton | Qt::RightButton)) || mTabletInUse)
         {
@@ -515,7 +515,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
             pointerMoveEvent(&event);
         }
     }
-    else if (event.type() == QTabletEvent::TabletRelease)
+    else if (event.eventType() == QTabletEvent::TabletRelease)
     {
         if (mTabletInUse)
         {
@@ -679,8 +679,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
-    // Workaround for tablet issue (#677 part 2)
-    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerMoveEvent(&event);
@@ -690,8 +688,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 {
-    // Workaround for tablet issue (#677 part 2)
-    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerReleaseEvent(&event);
