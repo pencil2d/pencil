@@ -26,9 +26,10 @@ class Editor;
 class BaseDockWidget : public QDockWidget
 {
     Q_OBJECT
+
 protected:
     explicit BaseDockWidget(QWidget* pParent);
-    virtual  ~BaseDockWidget();
+    virtual  ~BaseDockWidget() override;
 
     void resizeEvent(QResizeEvent *event) override;
 
@@ -40,10 +41,13 @@ public:
     void setEditor( Editor* e ) { mEditor = e; }
 
 protected:
+    bool event(QEvent* event) override;
+
     virtual int getMinHeightForWidth(int width);
 
 private:
     Editor* mEditor = nullptr;
+    QWidget* mNoTitlebar = nullptr;
 };
 
 #endif // BASEDOCKWIDGET_H

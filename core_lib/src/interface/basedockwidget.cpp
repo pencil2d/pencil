@@ -34,7 +34,7 @@ BaseDockWidget::BaseDockWidget(QWidget* pParent)
                       "border-width: 1px; }");
     }
 #endif
-
+    mNoTitlebar = new QWidget();
 }
 
 BaseDockWidget::~BaseDockWidget()
@@ -62,4 +62,32 @@ int BaseDockWidget::getMinHeightForWidth(int width)
 {
     Q_UNUSED(width)
     return -1;
+}
+
+bool BaseDockWidget::event(QEvent *event)
+{
+    QDockWidget::event(event);
+
+    // it's not good enough to only check while the wiget is not floating
+    // because the state changes several times upon being initialized and ends up
+    // showing the titlebar until you enter and leave again.
+    if (event->type() == event->WindowTitleChange) {
+        this->setTitleBarWidget(mNoTitlebar);
+        return true;
+    } else if (!this->isFloating()) {
+        if (event->type() == QEvent::Enter) {
+            this->setTitleBarWidget(nullptr);
+            return true;
+        } else if (event->type() == QEvent::Leave)  {
+            this->setTitleBarWidget(mNoTitlebar);
+            return true;
+        }
+    } else if (event->type() == QEvent::Leave) {
+        if (this->titleBarWidget()) {
+            this->setTitleBarWidget(nullptr);
+            return false;
+        }
+    }
+
+    return false;
 }
