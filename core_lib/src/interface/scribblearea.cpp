@@ -654,7 +654,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
     // Workaround for tablet issue (#677 part 2)
-    if (mTabletInUse) { e->ignore(); return; }
+    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerMoveEvent(&event);
