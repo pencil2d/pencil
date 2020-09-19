@@ -439,6 +439,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     {
         event.accept();
         mStrokeManager->pointerPressEvent(&event);
+        mStrokeManager->setTabletInUse(true);
         if (mIsFirstClick)
         {
             mIsFirstClick = false;
@@ -474,6 +475,8 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         {
             mStrokeManager->pointerReleaseEvent(&event);
             pointerReleaseEvent(&event);
+            mStrokeManager->setTabletInUse(false);
+            mTabletInUse = false;
         }
     }
 
@@ -614,18 +617,12 @@ bool ScribbleArea::allowSmudging()
 
 void ScribbleArea::onTabletLeaveProximity(QTabletEvent* event)
 {
-    mTabletInUse = false;
-    mMouseInUse = true;
-    mStrokeManager->setTabletInUse(false);
     event->ignore();
 }
 
 void ScribbleArea::onTabletEnterProximity(QTabletEvent *event)
 {
-    mMouseInUse = false;
-    mTabletInUse = true;
-    mStrokeManager->setTabletInUse(true);
-    if ( event->pointerType() == QTabletEvent::Eraser )
+    if (event->pointerType() == QTabletEvent::Eraser)
     {
         editor()->tools()->tabletSwitchToEraser();
     }
