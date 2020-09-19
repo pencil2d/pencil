@@ -269,5 +269,8 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         if (bitmapImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
         bitmapImage->paste(mScribbleArea->mBufferImg);
     }
+
+    mScribbleArea->setAllDirty();
+    mScribbleArea->clearBitmapBuffer();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }
