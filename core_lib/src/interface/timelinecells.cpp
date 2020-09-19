@@ -752,6 +752,10 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks && (layerNumber != -1) && (frameNumber > 0) && layerNumber < mEditor->object()->getLayerCount())
         {
+            if (event->button() == Qt::LeftButton) {
+                mEditor->scrubTo(frameNumber);
+                emit insertNewKeyFrame();
+            }
             mEditor->object()->getLayer(layerNumber)->mouseDoubleClick(event, frameNumber);
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)

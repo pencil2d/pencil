@@ -69,6 +69,7 @@ signals:
     void lengthChanged(int);
     void offsetChanged(int);
     void selectionChanged();
+    void insertNewKeyFrame();
 
 public slots:
     void updateContent();

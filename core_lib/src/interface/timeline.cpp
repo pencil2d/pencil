@@ -219,6 +219,7 @@ void TimeLine::initUI()
     connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
     connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
     connect(mTracks, &TimeLineCells::selectionChanged, this, &TimeLine::selectionChanged);
+    connect(mTracks, &TimeLineCells::insertNewKeyFrame, this, &TimeLine::insertKeyClick);
 
     connect(editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame);
 
