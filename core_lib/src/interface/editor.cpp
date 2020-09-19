@@ -1377,6 +1377,7 @@ void Editor::removeKey()
 
     if (!layer->keyExistsWhichCovers(currentFrame()))
     {
+        scrubBackward();
         return;
     }
 
@@ -1384,8 +1385,6 @@ void Editor::removeKey()
 
     deselectAll();
     layer->removeKeyFrame(currentFrame());
-
-    scrubBackward();
     layers()->notifyAnimationLengthChanged();
     emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
 }
