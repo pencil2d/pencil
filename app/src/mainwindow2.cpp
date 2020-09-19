@@ -345,13 +345,11 @@ void MainWindow2::createMenus()
     connect(ui->actionAdd_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::addNewEmpty);
     connect(ui->actionRemove_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::removeEmpty);
     connect(ui->actionInsert_Frame, &QAction::triggered, mCommands, &ActionCommands::insertNewKey);
-    connect(ui->actionNext_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoNextFrame);
-    connect(ui->actionPrevious_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevFrame);
+    connect(ui->actionNext_Frame, &QAction::triggered, mCommands, &ActionCommands::scrubForward);
+    connect(ui->actionPrevious_Frame, &QAction::triggered, mCommands, &ActionCommands::scrubBackward);
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame);
     connect(ui->actionPrev_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevKeyFrame);
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mCommands, &ActionCommands::duplicateKey);
-    connect(ui->actionMove_Frame_Forward, &QAction::triggered, mCommands, &ActionCommands::moveFrameForward);
-    connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
 
     connect(ui->actionReverse_selected_frames, &QAction::triggered, mCommands, &ActionCommands::reverseSelected);
     connect(ui->actionRemove_selected_frames, &QAction::triggered, mCommands, &ActionCommands::removeSelected);

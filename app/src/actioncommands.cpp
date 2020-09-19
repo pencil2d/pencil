@@ -625,16 +625,6 @@ void ActionCommands::PlayStop()
     }
 }
 
-void ActionCommands::GotoNextFrame()
-{
-    mEditor->scrubForward();
-}
-
-void ActionCommands::GotoPrevFrame()
-{
-    mEditor->scrubBackward();
-}
-
 void ActionCommands::GotoNextKeyFrame()
 {
     mEditor->scrubNextKeyFrame();
@@ -835,7 +825,7 @@ void ActionCommands::duplicateKey()
     mEditor->layers()->notifyAnimationLengthChanged();
 }
 
-void ActionCommands::moveFrameForward()
+void ActionCommands::scrubForward()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
@@ -849,7 +839,7 @@ void ActionCommands::moveFrameForward()
     mEditor->layers()->notifyAnimationLengthChanged();
 }
 
-void ActionCommands::moveFrameBackward()
+void ActionCommands::scrubBackward()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)

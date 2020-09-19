@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -202,8 +202,6 @@
     <addaction name="actionReverse_selected_frames"/>
     <addaction name="actionRemove_selected_frames"/>
     <addaction name="separator"/>
-    <addaction name="actionMove_Frame_Forward"/>
-    <addaction name="actionMove_Frame_Backward"/>
     <addaction name="separator"/>
     <addaction name="actionFlip_inbetween"/>
     <addaction name="actionFlip_rolling"/>

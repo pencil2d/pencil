@@ -60,8 +60,6 @@ public:
 
     // Animation
     void PlayStop();
-    void GotoNextFrame();
-    void GotoPrevFrame();
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     Status addNewKey();
@@ -70,8 +68,8 @@ public:
     void removeEmpty();
     void removeKey();
     void duplicateKey();
-    void moveFrameForward();
-    void moveFrameBackward();
+    void scrubForward();
+    void scrubBackward();
     void removeSelected();
     void reverseSelected();
 
