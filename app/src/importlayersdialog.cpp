@@ -7,6 +7,7 @@
 #include "app_util.h"
 #include "filemanager.h"
 #include "filedialogex.h"
+#include "fileformat.h"
 #include "layermanager.h"
 #include "soundmanager.h"
 #include "layer.h"
@@ -25,6 +26,8 @@ ImportLayersDialog::ImportLayersDialog(QWidget *parent) :
     connect(ui->btnClose, &QPushButton::clicked, this, &ImportLayersDialog::cancel);
     ui->lwLayers->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->btnImportLayers->setEnabled(false);
+
+    hideQuestionMark(*this);
 }
 
 ImportLayersDialog::~ImportLayersDialog()
@@ -35,7 +38,6 @@ ImportLayersDialog::~ImportLayersDialog()
 void ImportLayersDialog::setCore(Editor *editor)
 {
     mEditor = editor;
-    mObject = mEditor->object();
 }
 
 void ImportLayersDialog::getFileName()
@@ -45,16 +47,19 @@ void ImportLayersDialog::getFileName()
     FileDialog fd(this);
     mFileName = QFileDialog::getOpenFileName(this, tr("Choose file"),
                                              fd.getLastOpenPath(FileType::ANIMATION),
-                                             tr("Pencil Animation file (*.pclx)"));
+                                             PFF_PROJECT_EXT_FILTER);
     if (mFileName.isEmpty()) { return; }
     getLayers();
-    for (int i = 0; i < mImportObject->getLayerCount(); i++)
-        ui->lwLayers->addItem(mImportObject->getLayer(i)->name());
 }
 
 void ImportLayersDialog::listWidgetChanged()
 {
-    if (ui->lwLayers->count() > 0)
+    mItemsSelected.clear();
+    for (int i = 0; i < ui->lwLayers->count(); i++)
+        if (ui->lwLayers->item(i)->isSelected())
+            mItemsSelected.append(i);
+
+    if (!mItemsSelected.isEmpty())
         ui->btnImportLayers->setEnabled(true);
     else
         ui->btnImportLayers->setEnabled(false);
@@ -62,15 +67,26 @@ void ImportLayersDialog::listWidgetChanged()
 
 void ImportLayersDialog::importLayers()
 {
+    Object* object = mEditor->object();
     int currentFrame = mEditor->currentFrame();
-    for (int i = 0; i < mImportObject->getLayerCount(); i++ )
+    Q_ASSERT(ui->lwLayers->count() == mImportObject->getLayerCount());
+
+    for (int i = 0; i < ui->lwLayers->count(); i++ )
     {
-        if (ui->lwLayers->item(i)->isSelected())
+        QListWidgetItem* item = ui->lwLayers->item(i);
+        if (item->isSelected())
         {
-            Layer *tmpLayer = mImportObject->findLayerByName(ui->lwLayers->item(i)->text());
-            if (tmpLayer->type() == Layer::SOUND)
+            int layerId = item->data(Qt::UserRole).toInt();
+
+            mImportLayer = mImportObject->takeLayer(layerId);
+            mImportLayer->setName(mEditor->layers()->nameSuggestLayer(item->text()));
+            loadKeyFrames(mImportLayer); // all keyframes of this layer must be in memory
+
+            object->addLayer(mImportLayer);
+
+            if (mImportLayer->type() == Layer::SOUND)
             {
-                LayerSound* layerSound = static_cast<LayerSound*>(tmpLayer);
+                LayerSound* layerSound = static_cast<LayerSound*>(mImportLayer);
                 int count = 0;
                 while (count < layerSound->getNextKeyFramePosition(count))
                 {
@@ -80,14 +96,13 @@ void ImportLayersDialog::importLayers()
                     Status st = mEditor->sound()->loadSound(clip, clip->fileName());
                     count = newKeyPos;
                 }
-                mObject->addLayer(layerSound);
-            }
-            else
-            {
-                mObject->addLayer(tmpLayer);
             }
         }
     }
+    mEditor->object()->modification();
+
+    mImportObject.reset();
+    getLayers();
     mEditor->scrubTo(currentFrame);
 }
 
@@ -118,5 +133,28 @@ void ImportLayersDialog::getLayers()
     {
         progress.setRange(0, max + 3);
     });
-    mImportObject = fm.load(mFileName);
+    mImportObject.reset(fm.load(mFileName));
+
+    ui->lwLayers->clear();
+    for (int i = 0; i < mImportObject->getLayerCount(); i++)
+    {
+        const QString layerName = mImportObject->getLayer(i)->name();
+        const int layerId = mImportObject->getLayer(i)->id();
+
+        // Store the layer name as well as layer ID cuz two layers could have the same name
+        QListWidgetItem* item = new QListWidgetItem(layerName);
+        item->setData(Qt::UserRole, layerId);
+        ui->lwLayers->addItem(item);
+    }
+}
+
+void ImportLayersDialog::loadKeyFrames(Layer* importedLayer)
+{
+    // Pencil2D only keeps a small portion of keyframes in the memory initially
+    // Here we need to force load all the keyframes of this layer into memory
+    // Otherwise the keyframe data will lose after mImportObject is deleted
+    importedLayer->foreachKeyFrame([](KeyFrame* k)
+    {
+        k->loadFile();
+    });
 }

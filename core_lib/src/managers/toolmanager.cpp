@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -94,7 +94,7 @@ void ToolManager::setCurrentTool(ToolType eToolType)
     }
 
     mCurrentTool = getTool(eToolType);
-    Q_EMIT toolChanged(eToolType);
+    emit toolChanged(eToolType);
 }
 
 bool ToolManager::leavingThisTool()
@@ -131,8 +131,8 @@ void ToolManager::setWidth(float newWidth)
     }
 
     currentTool()->setWidth(static_cast<qreal>(newWidth));
-    Q_EMIT penWidthValueChanged(newWidth);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), WIDTH);
+    emit penWidthValueChanged(newWidth);
+    emit toolPropertyChanged(currentTool()->type(), WIDTH);
 }
 
 void ToolManager::setFeather(float newFeather)
@@ -143,8 +143,8 @@ void ToolManager::setFeather(float newFeather)
     }
 
     currentTool()->setFeather(static_cast<qreal>(newFeather));
-    Q_EMIT penFeatherValueChanged(newFeather);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), FEATHER);
+    emit penFeatherValueChanged(newFeather);
+    emit toolPropertyChanged(currentTool()->type(), FEATHER);
 }
 
 void ToolManager::setUseFeather(bool usingFeather)
@@ -154,50 +154,50 @@ void ToolManager::setUseFeather(bool usingFeather)
 
     currentTool()->setAA(value);
     currentTool()->setUseFeather(usingFeather);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), USEFEATHER);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
+    emit toolPropertyChanged(currentTool()->type(), USEFEATHER);
+    emit toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
 }
 
 void ToolManager::setInvisibility(bool isInvisible)
 {
     currentTool()->setInvisibility(isInvisible);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), INVISIBILITY);
+    emit toolPropertyChanged(currentTool()->type(), INVISIBILITY);
 }
 
 void ToolManager::setPreserveAlpha(bool isPreserveAlpha)
 {
     currentTool()->setPreserveAlpha(isPreserveAlpha);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), PRESERVEALPHA);
+    emit toolPropertyChanged(currentTool()->type(), PRESERVEALPHA);
 }
 
 void ToolManager::setVectorMergeEnabled(bool isVectorMergeEnabled)
 {
     currentTool()->setVectorMergeEnabled(isVectorMergeEnabled);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), VECTORMERGE);
+    emit toolPropertyChanged(currentTool()->type(), VECTORMERGE);
 }
 
 void ToolManager::setBezier(bool isBezierOn)
 {
     currentTool()->setBezier(isBezierOn);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), BEZIER);
+    emit toolPropertyChanged(currentTool()->type(), BEZIER);
 }
 
 void ToolManager::setPressure(bool isPressureOn)
 {
     currentTool()->setPressure(isPressureOn);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), PRESSURE);
+    emit toolPropertyChanged(currentTool()->type(), PRESSURE);
 }
 
 void ToolManager::setAA(int usingAA)
 {
     currentTool()->setAA(usingAA);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
+    emit toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
 }
 
 void ToolManager::setStabilizerLevel(int level)
 {
     currentTool()->setStabilizerLevel(level);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), STABILIZATION);
+    emit toolPropertyChanged(currentTool()->type(), STABILIZATION);
 }
 
 void ToolManager::setTolerance(int newTolerance)
@@ -205,14 +205,14 @@ void ToolManager::setTolerance(int newTolerance)
     newTolerance = qMax(0, newTolerance);
 
     currentTool()->setTolerance(newTolerance);
-    Q_EMIT toleranceValueChanged(newTolerance);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), TOLERANCE);
+    emit toleranceValueChanged(newTolerance);
+    emit toolPropertyChanged(currentTool()->type(), TOLERANCE);
 }
 
 void ToolManager::setUseFillContour(bool useFillContour)
 {
     currentTool()->setUseFillContour(useFillContour);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
+    emit toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
 

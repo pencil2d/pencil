@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -125,7 +125,7 @@ public:
     BackupElement* currentBackup();
     QList<BackupElement*> mBackupList;
 
-Q_SIGNALS:
+signals:
     void updateTimeLine();
     void updateLayerCount();
     void updateBackup();
@@ -168,9 +168,8 @@ public: //slots
     void notifyAnimationLengthChanged();
 
     void switchVisibilityOfLayer(int layerNumber);
-    void showLayerNotVisibleWarning();
     void swapLayers(int i, int j);
-    Status::StatusInt pegBarAlignment(QStringList layers);
+    Status pegBarAlignment(QStringList layers);
 
     void backup(QString undoText);
     void backup(int layerNumber, int frameNumber, QString undoText);

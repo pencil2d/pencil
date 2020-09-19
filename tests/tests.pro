@@ -12,11 +12,12 @@ TEMPLATE = app
 
 TARGET = tests
 
-CONFIG   += console
-CONFIG   -= app_bundle
+CONFIG += console
+CONFIG -= app_bundle
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
+DESTDIR = bin
 
 INCLUDEPATH += \
     ../core_lib/src/graphics \
@@ -34,12 +35,15 @@ HEADERS += \
 
 SOURCES += \
     src/main.cpp \
+    src/test_colormanager.cpp \
     src/test_layer.cpp \
     src/test_layermanager.cpp \
     src/test_object.cpp \
     src/test_filemanager.cpp \
     src/test_bitmapimage.cpp \
     src/test_viewmanager.cpp
+
+RESOURCES += data/tests.qrc
 
 # --- core_lib ---
 
@@ -57,20 +61,18 @@ win32-msvc*{
 # From 5.14, MinGW windows builds are not build with debug-release flag
 versionAtLeast(QT_VERSION, 5.14) {
 
-    win32-g++{
-      LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
-      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
-    }
+  win32-g++{
+    LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+  }
 
 } else {
 
-    win32-g++{
-      LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
-      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
-    }
+  win32-g++{
+    LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
+  }
 }
-
-macx: LIBS += -framework AppKit
 
 # --- mac os and linux
 unix {

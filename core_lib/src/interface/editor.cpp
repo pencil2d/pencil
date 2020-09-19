@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QImageReader>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QMimeData>
 
 #include "object.h"
 #include "objectdata.h"
@@ -364,7 +365,7 @@ void BackupBitmapElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
     auto selectMan = editor->select();
-    selectMan->setSelection(mySelection);
+    selectMan->setSelection(mySelection, true);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
     selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
     selectMan->setRotation(rotationAngle);
@@ -394,7 +395,7 @@ void BackupVectorElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
     auto selectMan = editor->select();
-    selectMan->setSelection(mySelection);
+    selectMan->setSelection(mySelection, false);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
     selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
     selectMan->setRotation(rotationAngle);
@@ -470,7 +471,7 @@ void Editor::undo()
         if (layer->type() == Layer::VECTOR) {
             VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(mFrame);
             vectorImage->calculateSelectionRect();
-            select()->setSelection(vectorImage->getSelectionRect());
+            select()->setSelection(vectorImage->getSelectionRect(), false);
         }
         emit updateBackup();
     }
@@ -979,7 +980,7 @@ void Editor::updateObject()
     {
         mScribbleArea->updateAllFrames();
     }
-    
+
     if (mPreferenceManager)
     {
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
@@ -1217,16 +1218,20 @@ void Editor::selectAll()
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
         // as the drawing area is not limited
         BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mFrame);
+        if (bitmapImage == nullptr) { return; }
+
         rect = bitmapImage->bounds();
     }
     else if (layer->type() == Layer::VECTOR)
     {
         VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
-        vectorImage->selectAll();
-        rect = vectorImage->getSelectionRect();
+        if (vectorImage != nullptr)
+        {
+            vectorImage->selectAll();
+            rect = vectorImage->getSelectionRect();
+        }
     }
-    select()->setSelection(rect);
-    emit updateCurrentFrame();
+    select()->setSelection(rect, false);
 }
 
 void Editor::deselectAll()
@@ -1236,7 +1241,11 @@ void Editor::deselectAll()
 
     if (layer->type() == Layer::VECTOR)
     {
-        static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame, 0)->deselectAll();
+        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        if (vectorImage != nullptr)
+        {
+            vectorImage->deselectAll();
+        }
     }
 
     select()->resetSelectionProperties();
@@ -1278,8 +1287,8 @@ void Editor::scrubTo(int frame)
     int oldFrame = mFrame;
     mFrame = frame;
 
-    Q_EMIT currentFrameChanged(oldFrame);
-    Q_EMIT currentFrameChanged(frame);
+    emit currentFrameChanged(oldFrame);
+    emit currentFrameChanged(frame);
 
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
@@ -1378,7 +1387,7 @@ void Editor::removeKey()
 
     scrubBackward();
     layers()->notifyAnimationLengthChanged();
-    Q_EMIT layers()->currentLayerChanged(currentLayerIndex()); // trigger timeline repaint.
+    emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
 }
 
 void Editor::scrubNextKeyFrame()
@@ -1409,11 +1418,6 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     emit updateTimeLine();
 }
 
-void Editor::showLayerNotVisibleWarning()
-{
-    return mScribbleArea->showLayerNotVisibleWarning();
-}
-
 void Editor::swapLayers(int i, int j)
 {
     mObject->swapLayers(i, j);
@@ -1429,23 +1433,22 @@ void Editor::swapLayers(int i, int j)
     mScribbleArea->updateAllFrames();
 }
 
-Status::StatusInt Editor::pegBarAlignment(QStringList layers)
+Status Editor::pegBarAlignment(QStringList layers)
 {
-    Status::StatusInt retLeft;
-    Status::StatusInt retRight;
+    PegbarResult retLeft;
+    PegbarResult retRight;
 
     LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
     BitmapImage* img = layerbitmap->getBitmapImageAtFrame(currentFrame());
     QRectF rect = select()->mySelectionRect();
     retLeft = img->findLeft(rect, 121);
     retRight = img->findTop(rect, 121);
-    if (retLeft.errorcode == Status::FAIL || retRight.errorcode == Status::FAIL)
+    if (STATUS_FAILED(retLeft.errorcode) || STATUS_FAILED(retRight.errorcode))
     {
-        retLeft.errorcode = Status::FAIL;
-        return retLeft;
+        return Status(Status::FAIL, "", tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar error message"));
     }
-    int peg_x = retLeft.value;
-    int peg_y = retRight.value;
+    const int peg_x = retLeft.value;
+    const int peg_y = retRight.value;
 
     // move other layers
     for (int i = 0; i < layers.count(); i++)
@@ -1457,17 +1460,15 @@ Status::StatusInt Editor::pegBarAlignment(QStringList layers)
             {
                 img = layerbitmap->getBitmapImageAtFrame(k);
                 retLeft = img->findLeft(rect, 121);
-                const QString body = tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
-                if (retLeft.errorcode == Status::FAIL)
+                const QString errorDescription = tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
+                if (STATUS_FAILED(retLeft.errorcode))
                 {
-                    emit needDisplayInfoNoTitle(body);
-                    return retLeft;
+                    return Status(retLeft.errorcode, "", errorDescription);
                 }
                 retRight = img->findTop(rect, 121);
-                if (retRight.errorcode == Status::FAIL)
+                if (STATUS_FAILED(retRight.errorcode))
                 {
-                    emit needDisplayInfoNoTitle(body);
-                    return retRight;
+                    return Status(retRight.errorcode, "", errorDescription);
                 }
                 img->moveTopLeft(QPoint(img->left() + (peg_x - retLeft.value), img->top() + (peg_y - retRight.value)));
             }
@@ -1475,7 +1476,7 @@ Status::StatusInt Editor::pegBarAlignment(QStringList layers)
     }
     deselectAll();
 
-    return retLeft;
+    return retLeft.errorcode;
 }
 
 void Editor::prepareSave()

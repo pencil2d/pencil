@@ -30,10 +30,12 @@ private:
 
     void getLayers();
 
-    Object *mObject = nullptr;
-    Object *mImportObject = nullptr;
-    Editor *mEditor = nullptr;
-    QString mFileName = "";
+    std::unique_ptr<Object> mImportObject;
+    Layer* mImportLayer = nullptr;
+    Editor* mEditor = nullptr;
+    QString mFileName;
+    QList<int> mItemsSelected;
+    void loadKeyFrames(Layer* importedLayer);
 };
 
 #endif // IMPORTLAYERSDIALOG_H

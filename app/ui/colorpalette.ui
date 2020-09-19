@@ -342,7 +342,7 @@
  <slots>
   <slot>colorListCurrentItemChanged(QListWidgetItem*,QListWidgetItem*)</slot>
   <slot>clickColorListItem(QListWidgetItem*)</slot>
-  <slot>changeColourName(QListWidgetItem*)</slot>
+  <slot>changeColorName(QListWidgetItem*)</slot>
   <slot>onActiveColorNameChange(QString)</slot>
   <slot>clickAddColorButton()</slot>
   <slot>clickRemoveColorButton()</slot>

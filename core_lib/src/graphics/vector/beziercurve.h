@@ -16,11 +16,12 @@ GNU General Public License for more details.
 #ifndef BEZIERCURVE_H
 #define BEZIERCURVE_H
 
-#include <QtXml>
 #include <QPainter>
 
 class Object;
 class Status;
+class QXmlStreamWriter;
+class QDomElement;
 
 struct Intersection
 {
@@ -37,13 +38,13 @@ public:
     explicit BezierCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, double tol, bool smooth=true);
 
     Status createDomElement(QXmlStreamWriter &xmlStream);
-    void loadDomElement(QDomElement element);
+    void loadDomElement(const QDomElement& element);
 
     qreal getWidth() const { return width; }
     qreal getFeather() const { return feather; }
     bool getVariableWidth() const { return variableWidth; }
-    int getColourNumber() const { return colourNumber; }
-    void decreaseColourNumber() { colourNumber--; }
+    int getColorNumber() const { return colorNumber; }
+    void decreaseColorNumber() { colorNumber--; }
     int getVertexSize() const { return vertex.size(); }
     QPointF getOrigin() const {	return origin; }
     QPointF getVertex(int i) const { if (i==-1) { return origin; } else { return vertex.at(i);} }
@@ -68,7 +69,7 @@ public:
     void setFeather(qreal desiredFeather);
     void setVariableWidth(bool YesOrNo);
     void setInvisibility(bool YesOrNo);
-    void setColourNumber(int colourNumber) { this->colourNumber = colourNumber; }
+    void setColorNumber(int colorNumber) { this->colorNumber = colorNumber; }
     void setSelected(bool YesOrNo) { for(int i=0; i<selected.size(); i++) { selected[i] = YesOrNo; } }
     void setSelected(int i, bool YesOrNo);
     void setFilled(bool yesOrNo);
@@ -107,7 +108,7 @@ private:
     QList<QPointF> c2;
     QList<QPointF> vertex;
     QList<float> pressure; // this list has one more element than the other list (the first element is for the origin)
-    int colourNumber = 0;
+    int colorNumber = 0;
     float width = 0.f;
     float feather = 0.f;
     bool variableWidth = 0.f;

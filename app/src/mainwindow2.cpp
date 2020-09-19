@@ -3,7 +3,7 @@
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
-Copyright (C) 2011-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -29,6 +29,8 @@ GNU General Public License for more details.
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QTabletEvent>
+#include <QStandardPaths>
+#include <QDateTime>
 
 // core_lib headers
 #include "pencildef.h"
@@ -41,6 +43,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
+#include "selectionmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
 
@@ -70,10 +73,8 @@ GNU General Public License for more details.
 #include "shortcutfilter.h"
 #include "app_util.h"
 #include "presetdialog.h"
+#include "pegbaralignmentdialog.h"
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
 
 #ifdef GIT_TIMESTAMP
 #define BUILD_DATE S__GIT_TIMESTAMP
@@ -81,10 +82,12 @@ GNU General Public License for more details.
 #define BUILD_DATE __DATE__
 #endif
 
-#ifdef PENCIL2D_NIGHTLY_BUILD
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg(BUILD_DATE)
-#else
+#if defined(PENCIL2D_RELEASE_BUILD)
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Nightly Build %1").arg(BUILD_DATE)
+#else
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Development Build %1").arg(BUILD_DATE)
 #endif
 
 
@@ -119,6 +122,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
     readSettings();
 
     updateZoomLabel();
+    selectionChanged();
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
@@ -128,8 +132,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->background->init(mEditor->preference());
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
-
-    showPresetDialog();
 }
 
 MainWindow2::~MainWindow2()
@@ -269,6 +271,7 @@ void MainWindow2::createMenus()
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
     connect(ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste);
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
@@ -286,10 +289,19 @@ void MainWindow2::createMenus()
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
 
     QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
+    auto visibilityGroup = new QActionGroup(this);
+    visibilityGroup->setExclusive(true);
     for (int i = 0; i < visibilityActions.size(); i++) {
         QAction* action = visibilityActions[i];
+        visibilityGroup->addAction(action);
         connect(action, &QAction::triggered, [=] { mCommands->setLayerVisibilityIndex(i); });
     }
+    visibilityActions[mEditor->preference()->getInt(SETTING::LAYER_VISIBILITY)]->setChecked(true);
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, [=](SETTING e) {
+        if (e == SETTING::LAYER_VISIBILITY) {
+            visibilityActions[mEditor->preference()->getInt(SETTING::LAYER_VISIBILITY)]->setChecked(true);
+        }
+    });
 
     // --- View Menu ---
     connect(ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn);
@@ -307,14 +319,10 @@ void MainWindow2::createMenus()
     connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
     connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
 
-    //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
-
-    setMenuActionChecked(ui->actionGrid, mEditor->preference()->isOn(SETTING::GRID));
-    connect(ui->actionGrid, &QAction::triggered, mCommands, &ActionCommands::showGrid);
-
-    bindActionWithSetting(ui->actionOnionPrev, SETTING::PREV_ONION);
-    bindActionWithSetting(ui->actionOnionNext, SETTING::NEXT_ONION);
-    bindActionWithSetting(ui->actionMultiLayerOnionSkin, SETTING::MULTILAYER_ONION);
+    PreferenceManager* prefs = mEditor->preference();
+    bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
+    bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
+    bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -364,7 +372,6 @@ void MainWindow2::createMenus()
 
     //--- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
-    winMenu->clear();
     const std::vector<QAction*> actions
     {
         mToolBox->toggleViewAction(),
@@ -382,20 +389,13 @@ void MainWindow2::createMenus()
         action->setMenuRole(QAction::NoRole);
         winMenu->addAction(action);
     }
-
-    winMenu->addSeparator();
-    QAction* lockWidgets = new QAction(tr("Lock Windows"), winMenu);
-    lockWidgets->setCheckable(true);
-    winMenu->addAction(lockWidgets);
-    winMenu->addAction(ui->actionReset_Windows);
+    connect(ui->actionResetWindows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
+    connect(ui->actionLockWindows, &QAction::toggled, this, &MainWindow2::lockWidgets);
+    bindPreferenceSetting(ui->actionLockWindows, prefs, SETTING::LAYOUT_LOCK);
 
     ui->actionCopy->setEnabled(false);
     ui->actionCut->setEnabled(false);
     ui->actionPaste->setEnabled(false);
-
-    connect(lockWidgets, &QAction::toggled, this, &MainWindow2::lockWidgets);
-    bindActionWithSetting(lockWidgets, SETTING::LAYOUT_LOCK);
-    connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
 
     //--- Help Menu ---
     connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
@@ -405,6 +405,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDiscord, &QAction::triggered, mCommands, &ActionCommands::discord);
     connect(ui->actionCheck_for_Updates, &QAction::triggered, mCommands, &ActionCommands::checkForUpdates);
     connect(ui->actionReport_Bug, &QAction::triggered, mCommands, &ActionCommands::reportbug);
+    connect(ui->actionOpen_Temporary_Directory, &QAction::triggered, mCommands, &ActionCommands::openTemporaryDirectory);
     connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
 
     //--- Menus ---
@@ -442,7 +443,7 @@ void MainWindow2::disablePaste()
 
 void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
 {
-    SignalBlocker b(action);
+    QSignalBlocker b(action);
     action->setChecked(bChecked);
 }
 
@@ -463,6 +464,7 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty())
     {
         mRecentFileMenu->clear();
+        mRecentFileMenu->saveToDisk();
         QMessageBox::information(this, nullptr,
                                  tr("\n\n You have successfully cleared the list"),
                                  QMessageBox::Ok);
@@ -481,31 +483,32 @@ void MainWindow2::openPegAlignDialog()
     }
 
     mPegAlign = new PegBarAlignmentDialog(mEditor, this);
-    connect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
+    mPegAlign->setAttribute(Qt::WA_DeleteOnClose);
     mPegAlign->updatePegRegLayers();
     mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
     mPegAlign->setRefKey(mEditor->currentFrame());
-    mPegAlign->setLabRefKey();
-    mPegAlign->setWindowFlags(mPegAlign->windowFlags() | Qt::WindowStaysOnTopHint);
-    mPegAlign->show();
-}
 
-void MainWindow2::closePegAlignDialog()
-{
-    disconnect(mPegAlign, &PegBarAlignmentDialog::closedialog, this, &MainWindow2::closePegAlignDialog);
-    mPegAlign = nullptr;
+    Qt::WindowFlags flags = mPegAlign->windowFlags();
+    flags |= Qt::WindowStaysOnTopHint;
+    flags &= (~Qt::WindowContextHelpButtonHint);
+    mPegAlign->setWindowFlags(flags);
+    mPegAlign->show();
+    connect(mPegAlign, &PegBarAlignmentDialog::finished, [=]
+    {
+        mPegAlign = nullptr;
+    });
 }
 
 void MainWindow2::currentLayerChanged()
 {
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-    {
-        ui->menuChange_line_color->setEnabled(true);
-    }
-    else
-    {
-        ui->menuChange_line_color->setEnabled(false);
-    }
+    bool isBitmap = (mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
+    ui->menuChange_line_color->setEnabled(isBitmap);
+}
+
+void MainWindow2::selectionChanged()
+{
+    bool somethingSelected = mEditor->select()->somethingSelected();
+    ui->menuSelection->setEnabled(somethingSelected);
 }
 
 void MainWindow2::closeEvent(QCloseEvent* event)
@@ -529,33 +532,31 @@ void MainWindow2::closeEvent(QCloseEvent* event)
     }
 }
 
+void MainWindow2::showEvent(QShowEvent*)
+{
+    static bool firstShowEvent = true;
+    if (firstShowEvent)
+    {
+        firstShowEvent = false;
+        if (tryRecoverUnsavedProject()) { return; }
+        if (loadMostRecent()) { return; }
+        if (tryLoadPreset()) { return; }
+        newObject();
+    }
+}
+
 void MainWindow2::tabletEvent(QTabletEvent* event)
 {
     event->ignore();
 }
 
-void MainWindow2::newDocument(bool force)
+void MainWindow2::newDocument()
 {
-    if (force)
+    if (maybeSave())
     {
-        newObject();
-
-        setWindowTitle(PENCIL_WINDOW_TITLE);
-        updateSaveState();
-    }
-    else if (maybeSave())
-    {
-        if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
+        if (!tryLoadPreset())
         {
-            showPresetDialog();
-        }
-        else
-        {
-            int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
-            newObjectFromPresets(defaultPreset);
-
-            setWindowTitle(PENCIL_WINDOW_TITLE);
-            updateSaveState();
+            newObject();
         }
     }
 }
@@ -644,7 +645,6 @@ bool MainWindow2::openObject(QString strFilePath)
         progress.show();
     }
 
-    mEditor->layers()->setCurrentLayer(0);
 
     FileManager fm(this);
     connect(&fm, &FileManager::progressChanged, [&progress](int p)
@@ -670,7 +670,7 @@ bool MainWindow2::openObject(QString strFilePath)
         dd.collect(error.details());
         ErrorDialog errorDialog(error.title(), error.description(), dd.str());
         errorDialog.exec();
-        newDocument(true);
+        emptyDocumentWhenErrorOccurred();
         return false;
     }
 
@@ -680,7 +680,7 @@ bool MainWindow2::openObject(QString strFilePath)
                                 tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
                                 QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fullPath));
         errorDialog.exec();
-        newDocument(true);
+        emptyDocumentWhenErrorOccurred();
         return false;
     }
 
@@ -689,8 +689,12 @@ bool MainWindow2::openObject(QString strFilePath)
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(LAST_PCLX_PATH, object->filePath());
 
-    mRecentFileMenu->addRecentFile(object->filePath());
-    mRecentFileMenu->saveToDisk();
+    // Add to recent file list, but only if we are
+    if (!object->filePath().isEmpty())
+    {
+        mRecentFileMenu->addRecentFile(object->filePath());
+        mRecentFileMenu->saveToDisk();
+    }
 
     setWindowTitle(object->filePath().prepend("[*]"));
     setWindowModified(false);
@@ -731,7 +735,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 
     if (!st.ok())
     {
-#if QT_VERSION >= 0x050400
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
         QDir errorLogFolder(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 #else
         QDir errorLogFolder(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
@@ -841,6 +845,14 @@ bool MainWindow2::autoSave()
     return false;
 }
 
+void MainWindow2::emptyDocumentWhenErrorOccurred()
+{
+    newObject();
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
+    updateSaveState();
+}
+
 void MainWindow2::importImage()
 {
     FileDialog fileDialog(this);
@@ -938,9 +950,10 @@ void MainWindow2::importPredefinedImageSet()
 
 void MainWindow2::importLayers()
 {
-    ImportLayersDialog *importLayers = new ImportLayersDialog(this);
+    ImportLayersDialog* importLayers = new ImportLayersDialog(this);
     importLayers->setCore(mEditor);
-    importLayers->exec();
+    importLayers->setAttribute(Qt::WA_DeleteOnClose);
+    importLayers->open();
 }
 
 void MainWindow2::importGIF()
@@ -1008,16 +1021,11 @@ void MainWindow2::importGIF()
 
 void MainWindow2::lockWidgets(bool shouldLock)
 {
-    QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
-
-    mColorBox->setFeatures(feat);
-    mColorInspector->setFeatures(feat);
-    mColorPalette->setFeatures(feat);
-    mDisplayOptionWidget->setFeatures(feat);
-    mOnionSkinWidget->setFeatures(feat);
-    mToolOptions->setFeatures(feat);
-    mToolBox->setFeatures(feat);
-    mTimeLine->setFeatures(feat);
+    QDockWidget::DockWidgetFeatures feat = shouldLock ? QDockWidget::NoDockWidgetFeatures : QDockWidget::AllDockWidgetFeatures;
+    for (QDockWidget* d : mDockWidgets)
+    {
+        d->setFeatures(feat);
+    }
 }
 
 void MainWindow2::setSoundScrubActive(bool b)
@@ -1059,11 +1067,25 @@ void MainWindow2::preferences()
 
 void MainWindow2::resetAndDockAllSubWidgets()
 {
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.remove(SETTING_WINDOW_GEOMETRY);
+    settings.remove(SETTING_WINDOW_STATE);
+
     for (BaseDockWidget* dock : mDockWidgets)
     {
         dock->setFloating(false);
+        dock->raise();
         dock->show();
     }
+
+    addDockWidget(Qt::RightDockWidgetArea, mColorBox);
+    addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
+    addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
+    addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
+    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
+    addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
+    addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 }
 
 bool MainWindow2::newObject()
@@ -1079,25 +1101,46 @@ bool MainWindow2::newObject()
 bool MainWindow2::newObjectFromPresets(int presetIndex)
 {
     Object* object = nullptr;
-    QString presetFilePath = (presetIndex > 0) ? PresetDialog::getPresetPath(presetIndex) : "";
-    if (!presetFilePath.isEmpty())
+    QString presetFilePath = PresetDialog::getPresetPath(presetIndex);
+
+    if (presetFilePath.isEmpty())
     {
-        FileManager fm(this);
-        object = fm.load(presetFilePath);
-        if (fm.error().ok() == false) object = nullptr;
+        return false;
     }
-    if (object == nullptr)
+
+    FileManager fm(this);
+    object = fm.load(presetFilePath);
+
+    if (fm.error().ok() == false || object == nullptr)
     {
-        object = new Object();
-        object->init();
-        object->createDefaultLayers();
+        return false;
     }
+
     mEditor->setObject(object);
     object->setFilePath(QString());
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
+    updateSaveState();
+
     return true;
 }
 
-void  MainWindow2::showPresetDialog()
+bool MainWindow2::loadMostRecent()
+{
+    if(mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT))
+    {
+        QSettings settings(PENCIL2D, PENCIL2D);
+        QString myPath = settings.value(LAST_PCLX_PATH, QVariant("")).toString();
+        if (myPath.isEmpty() || !QFile::exists(myPath))
+        {
+            return false;
+        }
+        return openObject(myPath);
+    }
+    return false;
+}
+
+bool MainWindow2::tryLoadPreset()
 {
     if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
     {
@@ -1108,16 +1151,25 @@ void  MainWindow2::showPresetDialog()
             if (result == QDialog::Accepted)
             {
                 int presetIndex = presetDialog->getPresetIndex();
-                if (presetDialog->shouldAlwaysUse()) {
+                if (presetDialog->shouldAlwaysUse())
+                {
                     mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
                     mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetIndex);
                 }
-                newObjectFromPresets(presetIndex);
-                qDebug() << "Accepted!";
+                if (!newObjectFromPresets(presetIndex))
+                {
+                    newObject();
+                }
             }
         });
         presetDialog->open();
     }
+    else
+    {
+        int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
+        return newObjectFromPresets(defaultPreset);
+    }
+    return true;
 }
 
 void MainWindow2::readSettings()
@@ -1130,17 +1182,15 @@ void MainWindow2::readSettings()
     QVariant winState = settings.value(SETTING_WINDOW_STATE);
     restoreState(winState.toByteArray());
 
-    QString myPath = settings.value(LAST_PCLX_PATH, QVariant(QDir::homePath())).toString();
-
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
-
     setOpacity(100 - opacity);
+
+    bool isWindowsLocked = mEditor->preference()->isOn(SETTING::LAYOUT_LOCK);
+    lockWidgets(isWindowsLocked);
 }
 
 void MainWindow2::writeSettings()
 {
-    qDebug("Save current windows layout.");
-
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_WINDOW_GEOMETRY, saveGeometry());
     settings.setValue(SETTING_WINDOW_STATE, saveState());
@@ -1186,7 +1236,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionPreference->setShortcut(cmdKeySeq(CMD_PREFERENCE));
 
     // View menu
-    ui->actionReset_Windows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
+    ui->actionResetWindows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
     ui->actionReset_View->setShortcut(cmdKeySeq(CMD_RESET_ZOOM_ROTATE));
     ui->actionZoom_In->setShortcut(cmdKeySeq(CMD_ZOOM_IN));
     ui->actionZoom_Out->setShortcut(cmdKeySeq(CMD_ZOOM_OUT));
@@ -1343,11 +1393,11 @@ void MainWindow2::importPalette()
 void MainWindow2::openPalette()
 {
     int count = 0;
-    int maxNumber = mEditor->object()->getColourCount();
+    int maxNumber = mEditor->object()->getColorCount();
     bool openPalette = true;
     while (count < maxNumber)
     {
-        if (mEditor->object()->isColourInUse(count))
+        if (mEditor->object()->isColorInUse(count))
         {
             QMessageBox msgBox;
             msgBox.setText(tr("Opening palette, will replace the old palette.\n"
@@ -1380,6 +1430,7 @@ void MainWindow2::openPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
+    connect(this, &MainWindow2::appLostFocus, editor->getScribbleArea(), &ScribbleArea::setPrevTool);
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
@@ -1407,10 +1458,17 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, [scribbleArea]
+    {
+        // Changing the current layer will only change the frame (as viewed by the user) under the following circumstances
+        if(scribbleArea->isAffectedByActiveLayer())
+        {
+            scribbleArea->updateAllFrames();
+        }
+    });
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
-    connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
+    connect(editor, &Editor::currentFrameChanged, [scribbleArea] { scribbleArea->update(); });
 
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
     //connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );
@@ -1477,32 +1535,10 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
-void MainWindow2::bindActionWithSetting(QAction* action, SETTING setting)
-{
-    PreferenceManager* prefs = mEditor->preference();
-
-    // set initial state
-    action->setChecked(prefs->isOn(setting));
-
-    // 2-way binding
-    connect(action, &QAction::triggered, prefs, [=](bool b)
-    {
-        prefs->set(setting, b);
-    });
-
-    connect(prefs, &PreferenceManager::optionChanged, action, [=](SETTING s)
-    {
-        if (s == setting)
-        {
-            action->setChecked(prefs->isOn(setting));
-        }
-    });
-}
-
 void MainWindow2::updateZoomLabel()
 {
-    float zoom = mEditor->view()->scaling() * 100.f;
-    statusBar()->showMessage(tr("Zoom: %0%").arg(static_cast<double>(zoom), 0, 'f', 1));
+    qreal zoom = mEditor->view()->scaling() * 100.f;
+    statusBar()->showMessage(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)
@@ -1543,4 +1579,67 @@ void MainWindow2::displayMessageBox(const QString& title, const QString& body)
 void MainWindow2::displayMessageBoxNoTitle(const QString& body)
 {
     QMessageBox::information(this, nullptr, tr(qPrintable(body)), QMessageBox::Ok);
+}
+
+bool MainWindow2::tryRecoverUnsavedProject()
+{
+    FileManager fm;
+    QStringList recoverables = fm.searchForUnsavedProjects();
+
+    if (recoverables.size() == 0)
+    {
+        return false;
+    }
+
+    QString caption = tr("Restore Project?");
+    QString text = tr("Pencil2D didn't close correctly. Would you like to restore the project?");
+
+    QString recoverPath = recoverables[0];
+
+    QMessageBox* msgBox = new QMessageBox(this);
+    msgBox->setWindowTitle(tr("Restore project"));
+    msgBox->setWindowModality(Qt::ApplicationModal);
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setIconPixmap(QPixmap(":/icons/logo.png"));
+    msgBox->setText(QString("<h4>%1</h4>%2").arg(caption).arg(text));
+    msgBox->setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
+    msgBox->setStandardButtons(QMessageBox::Open | QMessageBox::Discard);
+    msgBox->setProperty("RecoverPath", recoverPath);
+    hideQuestionMark(*msgBox);
+
+    connect(msgBox, &QMessageBox::finished, this, &MainWindow2::startProjectRecovery);
+    msgBox->open();
+    return true;
+}
+
+void MainWindow2::startProjectRecovery(int result)
+{
+    const QMessageBox* msgBox = dynamic_cast<QMessageBox*>(QObject::sender());
+    const QString recoverPath = msgBox->property("RecoverPath").toString();
+
+    if (result == QMessageBox::Discard)
+    {
+        // The user presses discard
+        QDir(recoverPath).removeRecursively();
+        tryLoadPreset();
+        return;
+    }
+    Q_ASSERT(result == QMessageBox::Open);
+
+    FileManager fm;
+    Object* o = fm.recoverUnsavedProject(recoverPath);
+    if (!fm.error().ok())
+    {
+        Q_ASSERT(o == nullptr);
+        const QString title = tr("Recovery Failed.");
+        const QString text = tr("Sorry! Pencil2D is unable to restore your project");
+        QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
+    }
+
+    mEditor->setObject(o);
+    updateSaveState();
+
+    const QString title = tr("Recovery Succeeded!");
+    const QString text = tr("Please save your work immediately to prevent loss of data");
+    QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
 }

@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -71,13 +71,9 @@ public:
         ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER
     };
 
-    struct StatusInt{
-        int value = 0;
-        ErrorCode errorcode = Status::OK;
-    };
-
-    Status(ErrorCode code);
-    Status(ErrorCode code, const DebugDetails& detailsList, QString title = "", QString description = "");
+    Status(const ErrorCode code);
+    Status(const ErrorCode code, const QString& title, const QString& description);
+    Status(const ErrorCode code, const DebugDetails& detailsList, QString title = "", QString description = "");
 
     ErrorCode   code() { return mCode; }
     bool        ok() const { return (mCode == OK) || (mCode == SAFE); }
@@ -100,11 +96,19 @@ private:
     DebugDetails mDetails;
 };
 
+struct PegbarResult
+{
+    int value = 0;
+    Status::ErrorCode errorcode = Status::OK;
+};
 
-
-#ifndef STATUS_CHECK 
+#ifndef STATUS_CHECK
 #define STATUS_CHECK( x )\
 	{ Status st = (x); if (!st.ok()) { return st; } }
+#endif
+
+#ifndef STATUS_FAILED
+#define STATUS_FAILED(stcode) ((int)stcode >= (int)Status::FAIL)
 #endif
 
 #endif // PENCILERROR_H

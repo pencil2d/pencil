@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,8 +17,8 @@ GNU General Public License for more details.
 
 #include "timecontrols.h"
 
-#include <QtGui>
 #include <QLabel>
+#include <QSettings>
 
 #include "editor.h"
 #include "playbackmanager.h"
@@ -127,16 +127,16 @@ void TimeControls::updateUI()
 
     mPlaybackRangeCheckBox->setChecked(playback->isRangedPlaybackOn()); // don't block this signal since it enables start/end range spinboxes.
 
-    SignalBlocker b1(mLoopStartSpinBox);
+    QSignalBlocker b1(mLoopStartSpinBox);
     mLoopStartSpinBox->setValue(playback->markInFrame());
 
-    SignalBlocker b2(mLoopEndSpinBox);
+    QSignalBlocker b2(mLoopEndSpinBox);
     mLoopEndSpinBox->setValue(playback->markOutFrame());
 
-    SignalBlocker b3(mFpsBox);
+    QSignalBlocker b3(mFpsBox);
     mFpsBox->setValue(playback->fps());
 
-    SignalBlocker b4(mLoopButton);
+    QSignalBlocker b4(mLoopButton);
     mLoopButton->setChecked(playback->isLooping());
 }
 
@@ -148,7 +148,7 @@ void TimeControls::setEditor(Editor* editor)
 
 void TimeControls::setFps(int value)
 {
-    SignalBlocker blocker(mFpsBox);
+    QSignalBlocker blocker(mFpsBox);
     mFpsBox->setValue(value);
 }
 

@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "viewmanager.h"
 #include "layermanager.h"
+#include "scribblearea.h"
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "colormanager.h"
@@ -163,8 +164,11 @@ Status ActionCommands::importMovieAudio()
 Status ActionCommands::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    Q_ASSERT(layer);
-    NULLReturn(layer, Status::FAIL)
+    if (layer == nullptr)
+    {
+        Q_ASSERT(layer);
+        return Status::FAIL;
+    }
 
     if (layer->type() != Layer::SOUND)
     {
@@ -183,7 +187,7 @@ Status ActionCommands::importSound()
         bool ok = false;
         QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties", "Dialog title on creating a sound layer"),
                                                      tr("Layer name:"), QLineEdit::Normal,
-                                                     tr("Sound Layer", "Default name on creating a sound layer"), &ok);
+                                                     mEditor->layers()->nameSuggestLayer(tr("Sound Layer", "Default name on creating a sound layer")), &ok);
         if (ok && !strLayerName.isEmpty())
         {
             Layer* newLayer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -396,7 +400,7 @@ Status ActionCommands::exportMovie(bool isGif)
         }
         else
         {
-            ErrorDialog errorDialog("Unknown export error", "The export did not produce any errors, however we can't find the output file. Your export may not have completed successfully.", QString(), mParent);
+            ErrorDialog errorDialog(tr("Unknown export error"), tr("The export did not produce any errors, however we can't find the output file. Your export may not have completed successfully."), QString(), mParent);
             errorDialog.exec();
         }
     }
@@ -608,15 +612,6 @@ void ActionCommands::toggleMirrorV()
     mEditor->view()->flipVertical(!flipY);
 }
 
-void ActionCommands::showGrid(bool bShow)
-{
-    auto prefs = mEditor->preference();
-    if (bShow)
-        prefs->turnOn(SETTING::GRID);
-    else
-        prefs->turnOff(SETTING::GRID);
-}
-
 void ActionCommands::PlayStop()
 {
     PlaybackManager* playback = mEditor->playback();
@@ -809,7 +804,7 @@ void ActionCommands::duplicateKey()
     if (layer == nullptr) return;
     if (!layer->visible())
     {
-        mEditor->showLayerNotVisibleWarning();
+        mEditor->getScribbleArea()->showLayerNotVisibleWarning();
         return;
     }
 
@@ -895,7 +890,7 @@ Status ActionCommands::addNewVectorLayer()
 Status ActionCommands::addNewCameraLayer()
 {
     bool ok;
-    QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
+    QString text = QInputDialog::getText(nullptr, tr("Layer Properties", "A popup when creating a new layer"),
                                          tr("Layer name:"), QLineEdit::Normal,
                                          mEditor->layers()->nameSuggestLayer(tr("Camera Layer")), &ok);
     if (ok && !text.isEmpty())
@@ -1019,6 +1014,16 @@ void ActionCommands::checkForUpdates()
     CheckUpdatesDialog dialog;
     dialog.startChecking();
     dialog.exec();
+}
+
+// This action is a temporary measure until we have an automated recover mechanism in place
+void ActionCommands::openTemporaryDirectory()
+{
+    int ret = QMessageBox::warning(mParent, tr("Warning"), tr("The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing."), QMessageBox::Cancel, QMessageBox::Ok);
+    if (ret == QMessageBox::Ok)
+    {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::temp().filePath("Pencil2D")));
+    }
 }
 
 void ActionCommands::about()

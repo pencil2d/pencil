@@ -39,7 +39,7 @@ public:
 
     void flipSelection(bool flipVertical);
 
-    void setSelection(QRectF rect);
+    void setSelection(QRectF rect, bool roundPixels=false);
 
     void translate(QPointF point);
 

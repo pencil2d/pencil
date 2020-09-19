@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>316</width>
-    <height>285</height>
+    <height>422</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -56,9 +56,29 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="askPresetCheckBox">
+       <widget class="QRadioButton" name="askPresetRbtn">
         <property name="text">
          <string>Ask on startup</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="loadDefaultPresetRbtn">
+        <property name="text">
+         <string>Load default preset</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="loadLastActiveRbtn">
+        <property name="text">
+         <string>Load last active file</string>
         </property>
        </widget>
       </item>

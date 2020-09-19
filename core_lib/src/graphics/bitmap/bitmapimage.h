@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ class BitmapImage : public KeyFrame
 public:
     BitmapImage();
     BitmapImage(const BitmapImage&);
-    BitmapImage(const QRect &rectangle, const QColor& colour);
+    BitmapImage(const QRect &rectangle, const QColor& color);
     BitmapImage(const QPoint& topLeft, const QImage& image);
     BitmapImage(const QPoint& topLeft, const QString& path);
 
@@ -39,6 +39,7 @@ public:
     void loadFile() override;
     void unloadFile() override;
     bool isLoaded() override;
+    quint64 memoryUsage() override;
 
     void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);
@@ -64,12 +65,12 @@ public:
 
     QRgb pixel(int x, int y);
     QRgb pixel(QPoint p);
-    void setPixel(int x, int y, QRgb colour);
-    void setPixel(QPoint p, QRgb colour);
+    void setPixel(int x, int y, QRgb color);
+    void setPixel(QPoint p, QRgb color);
     void fillNonAlphaPixels(const QRgb color);
 
     inline QRgb constScanLine(int x, int y) const;
-    inline void scanLine(int x, int y, QRgb colour);
+    inline void scanLine(int x, int y, QRgb color);
     void clear();
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
@@ -95,8 +96,8 @@ public:
     QSize size() { autoCrop(); return mBounds.size(); }
 
     // peg bar alignment
-    Status::StatusInt findLeft(QRectF rect, int grayValue);
-    Status::StatusInt findTop(QRectF rect, int grayValue);
+    PegbarResult findLeft(QRectF rect, int grayValue);
+    PegbarResult findTop(QRectF rect, int grayValue);
 
 
     QRect& bounds() { autoCrop(); return mBounds; }
@@ -125,8 +126,8 @@ protected:
     void setCompositionModeBounds(QRect sourceBounds, bool isSourceMinBounds, QPainter::CompositionMode cm);
 
 private:
-    std::shared_ptr< QImage > mImage;
-    QRect   mBounds;
+    std::unique_ptr<QImage> mImage;
+    QRect mBounds;
 
     /** @see isMinimallyBounded() */
     bool mMinBound = true;

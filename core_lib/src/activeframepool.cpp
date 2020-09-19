@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,15 +18,11 @@ GNU General Public License for more details.
 #include "activeframepool.h"
 #include "keyframe.h"
 #include "pencildef.h"
-#include <QDebug>
 
 
-ActiveFramePool::ActiveFramePool(unsigned long n)
+ActiveFramePool::ActiveFramePool()
 {
-    size_t maxSize = n;
-
-    Q_ASSERT(maxSize > 10);
-    mMaxSize = maxSize;
+    Q_ASSERT(mMemoryBudgetInBytes >= (1024 * 1024 * 100)); // at least 100MB
 }
 
 ActiveFramePool::~ActiveFramePool() {}
@@ -38,22 +34,26 @@ void ActiveFramePool::put(KeyFrame* key)
 
     Q_ASSERT(key->pos() > 0);
 
-    auto it = mCacheFramesMap.find(key);
-    mCacheFramesList.push_front(key);
-    if (it != mCacheFramesMap.end())
-    {
-        mCacheFramesList.erase(it->second);
-    }
-    mCacheFramesMap[key] = mCacheFramesList.begin();
-    key->addEventListener(this);
     key->loadFile();
 
-    discardLeastUsedFrames();
-}
+    auto it = mCacheFramesMap.find(key);
+    const bool keyExistsInPool = (it != mCacheFramesMap.end());
+    if (keyExistsInPool)
+    {
+        // move the keyframe to the front of the list, if the key already exists in frame pool
+        mCacheFramesList.erase(it->second);
+    }
+    mCacheFramesList.push_front(key);
+    mCacheFramesMap[key] = mCacheFramesList.begin();
 
-size_t ActiveFramePool::size() const
-{
-    return mCacheFramesMap.size();
+    key->addEventListener(this);
+
+    if (!keyExistsInPool)
+    {
+        mTotalUsedMemory += key->memoryUsage();
+    }
+
+    discardLeastUsedFrames();
 }
 
 void ActiveFramePool::clear()
@@ -66,11 +66,11 @@ void ActiveFramePool::clear()
     mCacheFramesMap.clear();
 }
 
-void ActiveFramePool::resize(int n)
+void ActiveFramePool::resize(quint64 memoryBudget)
 {
-    n = std::min(n, 1500);
-    n = std::max(n, 10);
-    mMaxSize = static_cast<unsigned>(n);
+    memoryBudget = qMin(memoryBudget, quint64(1024) * 1024 * 1024 * 16); // 16GB
+    memoryBudget = qMax(memoryBudget, quint64(1024) * 1024 * 100); // 100MB
+    mMemoryBudgetInBytes = memoryBudget;
     discardLeastUsedFrames();
 }
 
@@ -87,12 +87,16 @@ void ActiveFramePool::onKeyFrameDestroy(KeyFrame* key)
     {
         mCacheFramesList.erase(it->second);
         mCacheFramesMap.erase(it);
+
+        // Just recalculate the total usage
+        // Not safe to call key->memoryUsage() here cuz it's in the KeyFrame's destructor
+        recalcuateTotalUsedMemory();
     }
 }
 
 void ActiveFramePool::discardLeastUsedFrames()
 {
-    while (mCacheFramesMap.size() > mMaxSize)
+    while (mTotalUsedMemory > mMemoryBudgetInBytes)
     {
         list_iterator_t last = mCacheFramesList.end();
         last--;
@@ -109,6 +113,15 @@ void ActiveFramePool::discardLeastUsedFrames()
 
 void ActiveFramePool::unloadFrame(KeyFrame* key)
 {
-    //qDebug() << "Unload frame:" << key->pos();
+    mTotalUsedMemory -= key->memoryUsage();
     key->unloadFile();
+}
+
+void ActiveFramePool::recalcuateTotalUsedMemory()
+{
+    mTotalUsedMemory = 0;
+    for (KeyFrame* key : mCacheFramesList)
+    {
+        mTotalUsedMemory += key->memoryUsage();
+    }
 }

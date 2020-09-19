@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>831</width>
     <height>600</height>
    </rect>
   </property>
@@ -48,8 +48,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>22</height>
+     <width>831</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -135,7 +135,6 @@
      </property>
      <addaction name="actionOnionPrev"/>
      <addaction name="actionOnionNext"/>
-     <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
     <widget class="QMenu" name="menuZoom">
      <property name="title">
@@ -261,6 +260,7 @@
     <addaction name="separator"/>
     <addaction name="actionCheck_for_Updates"/>
     <addaction name="actionReport_Bug"/>
+    <addaction name="actionOpen_Temporary_Directory"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -268,7 +268,9 @@
     <property name="title">
      <string>Windows</string>
     </property>
-    <addaction name="actionReset_Windows"/>
+    <addaction name="actionResetWindows"/>
+    <addaction name="actionLockWindows"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -457,7 +459,7 @@
     <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
-  <action name="actionReset_Windows">
+  <action name="actionResetWindows">
    <property name="text">
     <string>Reset Windows</string>
    </property>
@@ -853,7 +855,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>MultiLayer Onion Skin</string>
+    <string>Multilayer Onion Skin</string>
    </property>
   </action>
   <action name="actionLoopControl">
@@ -1043,15 +1045,10 @@
     <string>Peg bar Alignment</string>
    </property>
   </action>
-  <action name="actionImport_MovieVideo">
-   <property name="text">
-    <string>Movie Video...</string>
-   </property>
-  </action>
   <action name="actionImport_MovieAudio">
    <property name="text">
     <string>Movie Audio...</string>
-    </property>
+   </property>
   </action>
   <action name="actionImport_Append_Palette">
    <property name="text">
@@ -1080,20 +1077,29 @@
   </action>
   <action name="actionImportLayers_from_pclx">
    <property name="text">
-    <string>Layers from PCLX...</string>
+    <string>Layers from Project file...</string>
    </property>
   </action>
   <action name="actionVisibilityCurrentLayerOnly">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Current layer only</string>
    </property>
   </action>
   <action name="actionVisibilityRelative">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Relative</string>
    </property>
   </action>
   <action name="actionVisibilityAll">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>All layers</string>
    </property>
@@ -1132,6 +1138,19 @@
   <action name="actionPaste_selected_frames">
    <property name="text">
     <string>Paste selected Frames</string>
+   </property>
+  </action>
+  <action name="actionOpen_Temporary_Directory">
+   <property name="text">
+    <string>Open Temporary Directory</string>
+   </property>
+  </action>
+  <action name="actionLockWindows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock Windows</string>
    </property>
   </action>
  </widget>
