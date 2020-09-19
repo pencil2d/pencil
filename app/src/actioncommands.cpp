@@ -708,7 +708,7 @@ Status ActionCommands::insertNewKey(){
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
 
-    if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition())
+    if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition() && currentLayer->getKeyFrameWhichCovers(currentPosition) != nullptr)
     {
         currentLayer->selectAllFramesAfter(currentPosition + 1);
         currentLayer->moveSelectedFrames(1);
