@@ -199,7 +199,7 @@ void TimeLine::initUI()
 
     connect(splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength);
 
-    connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::addKeyClick);
+    connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::insertKeyClick);
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);

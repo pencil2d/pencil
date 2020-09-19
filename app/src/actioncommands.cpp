@@ -720,7 +720,7 @@ Status ActionCommands::insertNewKey(){
 
     if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition())
     {
-        currentLayer->selectAllFramesAfter( currentPosition + 1);
+        currentLayer->selectAllFramesAfter(currentPosition + 1);
         currentLayer->moveSelectedFrames(1);
         currentLayer->deselectAll();
     }

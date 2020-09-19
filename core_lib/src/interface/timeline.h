@@ -57,7 +57,7 @@ signals:
     void selectionChanged();
     void modification();
 
-    void addKeyClick();
+    void insertKeyClick();
     void removeKeyClick();
     void duplicateKeyClick();
 
