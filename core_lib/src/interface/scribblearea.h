@@ -170,8 +170,8 @@ public:
     void pointerMoveEvent(PointerEvent*);
     void pointerReleaseEvent(PointerEvent*);
 
-    void onTabletLeaveProximity(QTabletEvent *event);
     void onTabletEnterProximity(QTabletEvent* event);
+    void onTabletLeaveProximity(QTabletEvent *event);
 
     void updateCanvasCursor();
 
