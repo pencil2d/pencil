@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,10 +17,7 @@ GNU General Public License for more details.
 #include "ui_colorinspector.h"
 
 #include <QSettings>
-#include <QStyleOption>
 #include <QDebug>
-#include <QStylePainter>
-#include <QButtonGroup>
 
 #include "colorslider.h"
 #include "pencildef.h"
@@ -38,12 +35,6 @@ ColorInspector::ColorInspector(QWidget *parent) :
     ui = new Ui::ColorInspector;
     ui->setupUi(innerWidget);
     setWidget(innerWidget);
-
-    QButtonGroup* colorModeChangeGroup = new QButtonGroup;
-
-    colorModeChangeGroup->addButton(ui->hsvButton);
-    colorModeChangeGroup->addButton(ui->rgbButton);
-    colorModeChangeGroup->setExclusive(true);
 }
 
 ColorInspector::~ColorInspector()
@@ -144,7 +135,7 @@ void ColorInspector::setColor(QColor newColor)
 
     if(isRgbColors)
     {
-        QSignalBlocker b1(ui->red_slider); 
+        QSignalBlocker b1(ui->red_slider);
         QSignalBlocker b2(ui->green_slider);
         QSignalBlocker b3(ui->blue_slider);
         QSignalBlocker b4(ui->alpha_slider);
@@ -201,22 +192,6 @@ void ColorInspector::setColor(QColor newColor)
 QColor ColorInspector::color()
 {
     return mCurrentColor;
-}
-
-void ColorInspector::paintEvent(QPaintEvent*)
-{
-    // HACK: possible bug in 5.9
-    // title style is not set when window is not docked
-    // this enforces the style again. This is what QDockWidget
-    // should be doing behind the scene
-    if (!this->isFloating())
-    {
-        QStyleOptionDockWidget opt;
-        initStyleOption(&opt);
-
-        QStylePainter p(this);
-        p.drawControl(QStyle::CE_DockWidgetTitle, opt);
-    }
 }
 
 void ColorInspector::onModeChanged()
@@ -303,7 +278,7 @@ void ColorInspector::onModeChanged()
         mCurrentColor = mCurrentColor.toHsv();
 
         const qreal bound = 100.0 / 255.0; // from 255 to 100
-        
+
         ui->RedspinBox->setValue(mCurrentColor.hsvHue());
         ui->GreenspinBox->setValue(qRound(mCurrentColor.hsvSaturation()*bound));
         ui->BluespinBox->setValue(qRound(mCurrentColor.value()*bound));

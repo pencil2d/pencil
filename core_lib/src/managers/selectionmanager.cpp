@@ -13,18 +13,7 @@
 //#endif
 
 
-SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor),
-    mSelection(QRectF()),
-    mTempTransformedSelection(QRectF()),
-    mTransformedSelection(QRectF()),
-    mRotatedAngle(0),
-    mScaleX(1),
-    mScaleY(1),
-    mSomethingSelected(false),
-    mLastSelectionPolygonF(QPolygonF()),
-    mCurrentSelectionPolygonF(QPolygonF()),
-    mOffset(QPointF()),
-    mMoveMode(MoveMode::NONE)
+SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor)
 {
 }
 
@@ -39,6 +28,7 @@ bool SelectionManager::init()
 
 Status SelectionManager::load(Object*)
 {
+    resetSelectionProperties();
     return Status::OK;
 }
 
@@ -223,6 +213,8 @@ QPointF SelectionManager::whichAnchorPoint(QPointF currentPoint)
 
 void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement)
 {
+    offsetX = qRound(offsetX);
+    offsetY = qRound(offsetY);
     QRectF& transformedSelection = mTransformedSelection;
 
     switch (mMoveMode)
@@ -257,7 +249,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     {
         mTempTransformedSelection = transformedSelection;
         QPointF anchorPoint = transformedSelection.center();
-        qreal rotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
+        qreal rotatedAngle = qRadiansToDegrees(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
         if (rotationIncrement > 0) {
             mRotatedAngle = constrainRotationToAngle(rotatedAngle, rotationIncrement);
         } else {
@@ -280,9 +272,13 @@ bool SelectionManager::selectionMoved() const
     return !mSelectionTransform.isIdentity();
 }
 
-void SelectionManager::setSelection(QRectF rect)
+void SelectionManager::setSelection(QRectF rect, bool roundPixels)
 {
     resetSelectionTransformProperties();
+    if (roundPixels)
+    {
+        rect = QRect(rect.topLeft().toPoint(), rect.bottomRight().toPoint() - QPoint(1,1));
+    }
     mSelection = rect;
     mTransformedSelection = rect;
     mTempTransformedSelection = rect;
@@ -385,6 +381,7 @@ void SelectionManager::flipSelection(bool flipVertical)
     mSelectionTransform *= _translate * scale * translate;
     mScaleX = scale.m11();
     mScaleY = scale.m22();
+    emit needPaintAndApply();
 }
 
 void SelectionManager::translate(QPointF point)
@@ -405,6 +402,7 @@ void SelectionManager::resetSelectionProperties()
 
     mSomethingSelected = false;
     mVectorSelection.clear();
+    emit selectionChanged();
 }
 
 void SelectionManager::addCurvesAndVerticesToVectorSelection(const QList<int> curves, const QList<VertexRef> vertices)

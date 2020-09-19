@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -37,13 +37,16 @@ public:
     void initUI() override;
     void updateUI() override;
 
+protected:
+    int getMinHeightForWidth(int width) override;
+
 private slots:
-    void onionPrevButtonClicked(bool);
-    void onionNextButtonClicked(bool);
-    void onionBlueButtonClicked(bool);
-    void onionRedButtonClicked(bool);
     void toggleMirror(bool);
     void toggleMirrorV(bool);
+    void toggleOverlayCenter(bool isOn);
+    void toggleOverlayThirds(bool isOn);
+    void toggleOverlayGoldenRatio(bool isOn);
+    void toggleOverlaySafeAreas(bool isOn);
 
 private:
     void makeConnections();

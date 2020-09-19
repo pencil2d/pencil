@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include <QList>
 #include <QColor>
 #include "layer.h"
-#include "colourref.h"
+#include "colorref.h"
 #include "pencilerror.h"
 #include "pencildef.h"
 #include "objectdata.h"
@@ -62,6 +62,7 @@ public:
     void init();
     void createWorkingDir();
     void deleteWorkingDir() const;
+    void setWorkingDir(const QString& path); // used by crash recovery
     void createDefaultLayers();
 
     QString filePath() const { return mFilePath; }
@@ -75,7 +76,7 @@ public:
     QString mainXMLFile() const { return mMainXMLFile; }
     void    setMainXMLFile(QString file) { mMainXMLFile = file; }
 
-    QDomElement saveXML(QDomDocument& doc);
+    QDomElement saveXML(QDomDocument& doc) const;
     bool loadXML(QDomElement element, ProgressCallback progressForward);
 
     void paintImage(QPainter& painter, int frameNumber, bool background, bool antialiasing) const;
@@ -83,25 +84,28 @@ public:
     QString copyFileToDataFolder(QString strFilePath);
 
     // Color palette
-    ColourRef getColour(int index) const;
-    void setColour(int index, QColor newColour);
-    void setColourRef(int index, ColourRef newColourRef);
-    void addColour(QColor);
+    ColorRef getColor(int index) const;
+    void setColor(int index, QColor newColor);
+    void setColorRef(int index, ColorRef newColorRef);
+    void addColor(QColor);
+    void movePaletteColor(int start, int end);
+    void moveVectorColor(int start, int end);
 
-    void addColour(ColourRef newColour) { mPalette.append(newColour); }
-    void addColourAtIndex(int index, ColourRef newColour);
-    void removeColour(int index);
-    bool isColourInUse(int index);
-    void renameColour(int i, QString text);
-    int getColourCount() { return mPalette.size(); }
+    void addColor(ColorRef newColor) { mPalette.append(newColor); }
+    void addColorAtIndex(int index, ColorRef newColor);
+    void removeColor(int index);
+    bool isColorInUse(int index);
+    void renameColor(int i, QString text);
+    int getColorCount() { return mPalette.size(); }
     bool importPalette(QString filePath);
     void importPaletteGPL(QFile& file);
     void importPalettePencil(QFile& file);
+    void openPalette(QString filePath);
 
-    bool exportPalette(QString filePath);
-    void exportPaletteGPL(QFile& file);
-    void exportPalettePencil(QFile& file);
-    QString savePalette(QString filePath);
+    bool exportPalette(const QString& filePath) const;
+    void exportPaletteGPL(QFile& file) const;
+    void exportPalettePencil(QFile& file) const;
+    QString savePalette(const QString& filePath) const;
 
     void loadDefaultPalette();
 
@@ -120,23 +124,26 @@ public:
     Layer* getLayer(int i) const;
 	Layer* findLayerByName( QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED ) const;
     Layer* findLayerById(int layerId) const;
+    Layer* takeLayer(int layerId);
 
     bool swapLayers(int i, int j);
     void deleteLayer(int i);
+    void deleteLayer(Layer*);
     void deleteLayerWithId(int layerId);
-	
-	template< typename T >
-	std::vector< T* > getLayersByType() const
-	{
-		std::vector< T* > result;
-		for ( Layer* layer : mLayers)
-		{
-			T* t = dynamic_cast<T*>(layer);
-			if ( t )
-			    result.push_back(t);
-		}
-		return result;
-	}
+    bool addLayer(Layer* layer);
+
+    template<typename T>
+    std::vector<T*> getLayersByType() const
+    {
+        std::vector<T*> result;
+        for (Layer* layer : mLayers)
+        {
+            T* t = dynamic_cast<T*>(layer);
+            if (t)
+                result.push_back(t);
+        }
+        return result;
+    }
 
     // these functions need to be moved to somewhere...
     bool exportFrames(int frameStart, int frameEnd, LayerCamera* cameraLayer, QSize exportSize, QString filePath, QString format,
@@ -150,15 +157,16 @@ public:
 
     int getUniqueLayerID();
 
-    ObjectData* data();
+    ObjectData* data() const;
     void setData(ObjectData*);
 
-    int totalKeyFrameCount();
+    int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;
-    void setActiveFramePoolSize(int n);
+    void setActiveFramePoolSize(int sizeInMB);
 
 signals:
     void layerViewChanged();
+    void paletteImported();
 
 private:
     int getMaxLayerID();
@@ -171,7 +179,7 @@ private:
     QList<Layer*> mLayers;
     bool modified = false;
 
-    QList<ColourRef> mPalette;
+    QList<ColorRef> mPalette;
 
     std::unique_ptr<ObjectData> mData;
     mutable std::unique_ptr<ActiveFramePool> mActiveFramePool;

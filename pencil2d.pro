@@ -4,24 +4,26 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = \ # sub-project names
-    core_lib \
-    app \
-    tests
-
 # build the project sequentially as listed in SUBDIRS !
 CONFIG += ordered
 
-# where to find the sub projects - give the folders
+SUBDIRS += core_lib
 core_lib.subdir = core_lib
-app.subdir      = app
-tests.subdir    = tests
 
-# what subproject depends on others
-app.depends      = core_lib
-tests.depends    = core_lib
+SUBDIRS += app
+app.subdir = app
+app.depends = core_lib
+
+SUBDIRS += tests
+tests.subdir = tests
+tests.depends = core_lib
+
+NO_TESTS {
+  SUBDIRS -= tests
+}
 
 TRANSLATIONS += translations/pencil.ts \
+                translations/pencil_ar.ts \
                 translations/pencil_ca.ts \
                 translations/pencil_cs.ts \
                 translations/pencil_da.ts \
@@ -41,8 +43,9 @@ TRANSLATIONS += translations/pencil.ts \
                 translations/pencil_pt_BR.ts \
                 translations/pencil_ru.ts \
                 translations/pencil_sl.ts \
+                translations/pencil_sv.ts \
+                translations/pencil_tr.ts \
                 translations/pencil_vi.ts \
                 translations/pencil_zh_CN.ts \
                 translations/pencil_zh_TW.ts
 
-macx: LIBS += -framework AppKit

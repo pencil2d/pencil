@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,10 +22,12 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QList>
 #include "pencilerror.h"
+#include "pencildef.h"
 
 
 class QDragEnterEvent;
 class QDropEvent;
+class QTemporaryDir;
 class Object;
 class KeyFrame;
 class LayerCamera;
@@ -100,6 +102,7 @@ public:
 
     int currentFrame();
     int fps();
+    void setFps(int fps);
 
     int  currentLayerIndex() { return mCurrentLayerIndex; }
     void setCurrentLayerIndex(int i);
@@ -108,7 +111,12 @@ public:
     void scrubTo(Layer* layer, const int frameIndex);
     void scrubTo(const int layerId, const int frameIndex);
 
-    int  allLayers();
+
+    /**
+     * @brief The visiblity value should match any of the VISIBILITY enum values
+     */
+    void setLayerVisibility(LayerVisibility visibility);
+    LayerVisibility layerVisibility();
     bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
     bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
 
@@ -118,9 +126,7 @@ public:
 
     QString workingDir() const;
 
-    void importMovie(QString filePath, int fps);
-
-Q_SIGNALS:
+signals:
     void updateTimeLine();
     void updateLayerCount();
 
@@ -168,25 +174,35 @@ public: //slots
     void removeKeyAt(int layerIndex, int frameIndex);
     void removeKeyAtLayerId(int layerId, int frameIndex);
 
+    void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void showLayerNotVisibleWarning();
     void moveLayers(const int& fromIndex, const int& toIndex);
-    Status::StatusInt pegBarAlignment(QStringList layers);
+    Status pegBarAlignment(QStringList layers);
 
     void copy();
     void paste();
 
     void clipboardChanged();
-    void toggleShowAllLayers();
+    void increaseLayerVisibilityIndex();
+    void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
 
     void toogleOnionSkinType();
+
+    void clearTemporary();
+    void addTemporaryDir(QTemporaryDir* const dir);
 
     void settingUpdated(SETTING);
 
     void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
     bool autoSaveNeverAskAgain() { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
+
+    void createNewBitmapLayer(const QString& name);
+    void createNewVectorLayer(const QString& name);
+    void createNewSoundLayer(const QString& name);
+    void createNewCameraLayer(const QString& name);
 
 signals:
     void needPaint();
@@ -231,6 +247,7 @@ private:
     bool mAutosaveNeverAskAgain = false;
 
     void makeConnections();
+    QList<QTemporaryDir*> mTemporaryDirs;
 
     // clipboard
     bool clipboardBitmapOk = true;

@@ -61,6 +61,8 @@ public:
     void accept();
     void ignore();
 
+    bool isAccepted();
+
     QEvent::Type type() const;
 
     QTabletEvent::TabletDevice device() const;

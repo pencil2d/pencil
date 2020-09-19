@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -16,6 +16,8 @@ GNU General Public License for more details.
 */
 #include "util.h"
 #include <QAbstractSpinBox>
+#include <QApplication>
+#include <QStandardPaths>
 
 QTransform RectMapTransform( QRectF source, QRectF target )
 {
@@ -45,18 +47,58 @@ QTransform RectMapTransform( QRectF source, QRectF target )
     return matrix;
 }
 
-SignalBlocker::SignalBlocker( QObject* o )
-    : mObject( o ),
-    mBlocked( o && o->blockSignals( true ) )
-{}
-
-SignalBlocker::~SignalBlocker()
-{
-    if ( mObject )
-        mObject->blockSignals( mBlocked );
-}
-
 void clearFocusOnFinished(QAbstractSpinBox *spinBox)
 {
     QObject::connect(spinBox, &QAbstractSpinBox::editingFinished, spinBox, &QAbstractSpinBox::clearFocus);
+}
+
+QString ffprobeLocation()
+{
+#ifdef _WIN32
+    return QApplication::applicationDirPath() + "/plugins/ffprobe.exe";
+#elif __APPLE__
+    return QApplication::applicationDirPath() + "/plugins/ffprobe";
+#else
+    QString ffprobePath = QStandardPaths::findExecutable(
+        "ffprobe",
+        QStringList()
+        << QApplication::applicationDirPath() + "/plugins"
+        << QApplication::applicationDirPath() + "/../plugins" // linuxdeployqt in FHS-like mode
+    );
+    if (!ffprobePath.isEmpty())
+    {
+        return ffprobePath;
+    }
+    return QStandardPaths::findExecutable("ffprobe"); // ffprobe is a standalone project.
+#endif
+}
+
+QString ffmpegLocation()
+{
+#ifdef _WIN32
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
+#elif __APPLE__
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg";
+#else
+    QString ffmpegPath = QStandardPaths::findExecutable(
+        "ffmpeg",
+        QStringList()
+        << QApplication::applicationDirPath() + "/plugins"
+        << QApplication::applicationDirPath() + "/../plugins" // linuxdeployqt in FHS-like mode
+    );
+    if (!ffmpegPath.isEmpty())
+    {
+        return ffmpegPath;
+    }
+    return QStandardPaths::findExecutable("ffmpeg"); // ffmpeg is a standalone project.
+#endif
+}
+
+quint64 imageSize(const QImage& img)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    return img.sizeInBytes();
+#else
+    return img.byteCount();
+#endif
 }

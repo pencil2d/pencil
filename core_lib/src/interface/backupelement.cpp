@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include <QCoreApplication>
 #include "QProgressDialog"
+#include <QDebug>
 
 #include "layermanager.h"
 #include "backupmanager.h"

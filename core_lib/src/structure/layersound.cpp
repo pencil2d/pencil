@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -72,16 +72,11 @@ void LayerSound::updateFrameLengths(int fps)
     });
 }
 
-QDomElement LayerSound::createDomElement(QDomDocument& doc)
+QDomElement LayerSound::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerTag = doc.createElement("layer");
+    QDomElement layerElem = createBaseDomElement(doc);
 
-    layerTag.setAttribute("id", id());
-    layerTag.setAttribute("name", name());
-    layerTag.setAttribute("visibility", visible());
-    layerTag.setAttribute("type", type());
-
-    foreachKeyFrame([&doc, &layerTag](KeyFrame* pKeyFrame)
+    foreachKeyFrame([&doc, &layerElem](KeyFrame* pKeyFrame)
     {
         SoundClip* clip = static_cast<SoundClip*>(pKeyFrame);
 
@@ -92,21 +87,15 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
         QFileInfo info(clip->fileName());
         //qDebug() << "Save=" << info.fileName();
         imageTag.setAttribute("src", info.fileName());
-        layerTag.appendChild(imageTag);
+        layerElem.appendChild(imageTag);
     });
 
-    return layerTag;
+    return layerElem;
 }
 
-void LayerSound::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
+void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
-    if (!element.attribute("id").isNull())
-    {
-        int myId = element.attribute("id").toInt();
-        setId(myId);
-    }
-    setName(element.attribute("name"));
-    setVisible(element.attribute("visibility").toInt() == 1);
+    this->loadBaseDomElement(element);
 
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())
@@ -163,9 +152,10 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
             DebugDetails dd;
             dd << __FUNCTION__;
             dd << QString("  KeyFrame.pos() = %1").arg(key->pos());
+            dd << QString("  Key->fileName() = %1").arg(key->fileName());
             dd << QString("  FilePath = %1").arg(sDestFileLocation);
             dd << QString("Couldn't save the sound clip");
-            return Status::FAIL;
+            return Status(Status::FAIL, dd);
         }
         key->setFileName(sDestFileLocation);
     }

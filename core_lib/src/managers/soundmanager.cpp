@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "soundclip.h"
 #include "soundplayer.h"
+#include "layermanager.h"
 
 SoundManager::SoundManager(Editor* editor) : BaseManager(editor)
 {
@@ -145,6 +146,8 @@ Status SoundManager::loadSound(SoundClip* soundClip, QString strSoundFile)
         return st;
     }
 
+    editor()->layers()->notifyAnimationLengthChanged();
+
     return Status::OK;
 }
 
@@ -175,6 +178,8 @@ void SoundManager::onDurationChanged(SoundPlayer* player, int64_t duration)
     double frameLength = duration * fps / 1000.0;
     clip->setLength(static_cast<int>(frameLength));
     clip->setDuration(duration);
+
+    editor()->layers()->notifyAnimationLengthChanged();
 
     emit soundClipDurationChanged();
 }

@@ -30,7 +30,7 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     setGraphicsEffect(effect);
 
     setAutoFillBackground(true);
-    setWindowTitle("Color palette");
+    setWindowTitle(tr("Color palette"));
     setWindowFlags( ( (windowFlags()
                        | Qt::CustomizeWindowHint)
                       & ~Qt::WindowMaximizeButtonHint
@@ -40,12 +40,12 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
     mainLayout->addLayout(buttonsLayout);
     closeButton = new QPushButton(this);
-    closeButton->setText("close/toggle");
+    closeButton->setText(tr("close/toggle"));
     buttonsLayout->addWidget(closeButton);
 
     // --- connections ---
-    connect( closeButton , SIGNAL( clicked() ) , mContainer , SLOT( togglePopupPalette() ) );
-    connect( mColorBox, SIGNAL( colorChanged(QColor) ), this, SLOT( onColorChanged(QColor) ) );
+    connect( closeButton , &QPushButton::clicked , mContainer , &ScribbleArea::togglePopupPalette );
+    connect( mColorBox, &ColorBox::colorChanged, this, &PopupColorPaletteWidget::onColorChanged );
 }
 
 void PopupColorPaletteWidget::popup()

@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -50,14 +50,19 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     }
 
     mz_zip_archive* mz = new mz_zip_archive;
-    OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_writer_init_file(mz, zipFilePath.toUtf8().data(), 0);
+
+    ScopeGuard mzScopeGuard([&] {
+        mz_zip_writer_end(mz);
+        delete mz;
+    });
+
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Miniz writer init failed: %1").arg((int)err);
+        dd << QString("Miniz writer init failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));;
     }
 
     //qDebug() << "SrcFolder=" << srcFolderPath;
@@ -75,17 +80,29 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("  Cannot add %1: error %2, %3").arg(sRelativePath).arg((int)err).arg(mz_zip_get_error_string(err));
+            dd << QString("Cannot add %1: error %2, %3").arg(sRelativePath).arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         }
     }
     ok &= mz_zip_writer_finalize_archive(mz);
-    mz_zip_writer_end(mz);
+    if (!ok)
+    {
+        mz_zip_error err = mz_zip_get_last_error(mz);
+        dd << QString("Miniz finalize archive failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        return Status(Status::FAIL, dd);
+    }
+
+    ok &= mz_zip_writer_end(mz);
+
+    mzScopeGuard.dismiss();
+    ScopeGuard mzScopeGuard2([&] { delete mz; });
 
     if (!ok)
     {
-        dd << "Miniz finalize archive failed";
+        mz_zip_error err = mz_zip_get_last_error(mz);
+        dd << QString("Miniz writer end failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         return Status(Status::FAIL, dd);
     }
+
     return Status::OK;
 }
 
@@ -110,10 +127,15 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
     baseDir.makeAbsolute();
 
     mz_zip_archive* mz = new mz_zip_archive;
-    OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_reader_init_file(mz, zipFilePath.toUtf8().data(), 0);
+
+    ScopeGuard mzScopeGuard([&] {
+        mz_zip_reader_end(mz);
+        delete mz;
+    });
+
     if (!ok)
         return Status(Status::FAIL, dd);
 
@@ -134,7 +156,7 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
             bool mkDirOK = baseDir.mkpath(sFolderPath);
             Q_ASSERT(mkDirOK);
             if (!mkDirOK)
-                dd << "  Make Dir failed.";
+                dd << "Make Dir failed.";
         }
     }
 
@@ -153,12 +175,17 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
             if (!extractOK)
             {
                 ok = false;
-                dd << "  File extraction failed.";
+                dd << "File extraction failed.";
             }
         }
     }
 
-    mz_zip_reader_end(mz);
+    ok &= mz_zip_reader_end(mz);
+
+    mzScopeGuard.dismiss();
+    ScopeGuard mzScopeGuard2([&] {
+        delete mz;
+    });
 
     if (!ok)
     {

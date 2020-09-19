@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 #include "polylinetool.h"
 
-
+#include <QSettings>
 #include "editor.h"
 #include "scribblearea.h"
 
@@ -92,6 +92,11 @@ void PolylineTool::setAA(const int AA)
     settings.sync();
 }
 
+bool PolylineTool::isActive()
+{
+    return !mPoints.isEmpty();
+}
+
 QCursor PolylineTool::cursor()
 {
     return Qt::CrossCursor;
@@ -114,7 +119,9 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
 
             if (layer->type() == Layer::VECTOR)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+                VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+                Q_CHECK_PTR(vectorImage);
+                vectorImage->deselectAll();
                 if (mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
                 {
                     mScribbleArea->toggleThinLines();
@@ -233,11 +240,12 @@ void PolylineTool::cancelPolyline()
 void PolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
+    mScribbleArea->clearBitmapBuffer();
 
     mEditor->backups()->saveStates();
     if ( layer->type() == Layer::VECTOR )
     {
-        BezierCurve curve = BezierCurve(points);
+        BezierCurve curve = BezierCurve(points, properties.bezier_state);
         if (mScribbleArea->makeInvisible() == true)
         {
             curve.setWidth(0);
@@ -246,20 +254,24 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         {
             curve.setWidth(properties.width);
         }
-        curve.setColourNumber(mEditor->color()->frontColorNumber());
+        curve.setColorNumber(mEditor->color()->frontColorNumber());
         curve.setVariableWidth(false);
         curve.setInvisibility(mScribbleArea->makeInvisible());
 
-        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, mEditor->view()->scaling() );
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
+        vectorImage->addCurve(curve, mEditor->view()->scaling());
+
         mEditor->backups()->vector(tr("Vector: Polyline"));
     }
     if (layer->type() == Layer::BITMAP)
     {
         drawPolyline( points, points.last() );
-        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+        if (bitmapImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
         bitmapImage->paste( mScribbleArea->mBufferImg );
+        
         mEditor->backups()->bitmap(tr("Bitmap: Polyline"));
     }
-    mScribbleArea->mBufferImg->clear();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

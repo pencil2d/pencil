@@ -40,7 +40,7 @@ public:
 
     void flipSelection(bool flipVertical);
 
-    void setSelection(QRectF rect);
+    void setSelection(QRectF rect, bool roundPixels=false);
 
     void translate(QPointF point);
 
@@ -116,7 +116,6 @@ signals:
     void needDeleteSelection();
 
 private:
-
     int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
 
     VectorSelection mVectorSelection;
@@ -127,7 +126,7 @@ private:
     qreal mScaleX;
     qreal mScaleY;
 
-    bool mSomethingSelected;
+    bool mSomethingSelected = false;
     QPolygonF mLastSelectionPolygonF;
     QPolygonF mCurrentSelectionPolygonF;
     QPointF mOffset;
@@ -135,10 +134,8 @@ private:
     QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
 
-    MoveMode mMoveMode;
-
+    MoveMode mMoveMode = MoveMode::NONE;
     QTransform mSelectionTransform;
-
     const qreal mSelectionTolerance = 8.0;
 };
 

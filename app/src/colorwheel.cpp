@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,9 +18,7 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QPainter>
 #include <QResizeEvent>
-#include <QPixmapCache>
 #include <QStyleOption>
-#include <QStylePainter>
 #include <QRect>
 #include <QDebug>
 #include "pencildef.h"
@@ -71,7 +69,6 @@ QColor ColorWheel::pickColor(const QPoint& point)
     if (mIsInWheel)
     {
         qreal hue = 0;
-        int r = qMin(width(), height()) / 2;
         QPoint center(width() / 2, height() / 2);
         QPoint diff = point - center;
 
@@ -173,7 +170,7 @@ void ColorWheel::mouseReleaseEvent(QMouseEvent *)
 void ColorWheel::resizeEvent(QResizeEvent* event)
 {
     mWheelPixmap = QPixmap(event->size());
-    mWheelPixmap.fill(palette().background().color());
+    mWheelPixmap.fill(palette().window().color());
     drawWheelImage(event->size());
     drawSquareImage(mCurrentColor.hue());
 

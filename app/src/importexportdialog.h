@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -26,6 +26,8 @@ namespace Ui {
 class ImportExportDialog;
 }
 
+class QDialogButtonBox;
+
 class ImportExportDialog : public QDialog
 {
     Q_OBJECT
@@ -40,16 +42,26 @@ public:
     QString getFilePath() const;
     QString getAbsolutePath();
     QStringList getFilePaths();
+    int getPosIndex() { return mPosIndex; }
 
 signals:
     void filePathsChanged(QStringList filePaths);
 
 protected:
     QGroupBox* getOptionsGroupBox();
+    QGroupBox* getPreviewGroupBox();
+    QDialogButtonBox* getDialogButtonBox();
+
     void setFileExtension(QString extension);
+    void hideOptionsGroupBox(bool hide);
+    void hidePreviewGroupBox(bool hide);
+    void hideInstructionsLabel(bool hide);
+
+    void setInstructionsLabel(const QString& text);
 
 private slots:
     void browse();
+    void setPosIndex(int index) { mPosIndex = index; }
 
 private:
     Ui::ImportExportDialog* ui = nullptr;
@@ -59,6 +71,7 @@ private:
 
     FileType mFileType = FileType::ANIMATION;
     Mode mMode = Import;
+    int mPosIndex = 0;
 };
 
 #endif // IMPORTEXPORTDIALOG_H

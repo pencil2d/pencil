@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -16,8 +16,11 @@ GNU General Public License for more details.
 */
 #include "layer.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QSettings>
+#include <QPainter>
+#include <QDomElement>
 #include "keyframe.h"
 #include "object.h"
 #include "timelinecells.h"
@@ -29,15 +32,15 @@ bool sortAsc(int left, int right)
     return left < right;
 }
 
-Layer::Layer(Object* pObject, LAYER_TYPE eType) : QObject(pObject)
+Layer::Layer(Object* object, LAYER_TYPE eType) : QObject(object)
 {
     Q_ASSERT(eType != UNDEFINED);
 
-    mObject = pObject;
+    mObject = object;
     meType = eType;
     mName = QString(tr("Undefined Layer"));
 
-    mId = pObject->getUniqueLayerID();
+    mId = object->getUniqueLayerID();
 }
 
 Layer::~Layer()
@@ -50,7 +53,15 @@ Layer::~Layer()
     mKeyFrames.clear();
 }
 
-void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action)
+void Layer::setObject(Object* obj)
+{
+    Q_ASSERT(obj);
+    mObject = obj;
+    setParent(mObject);
+    mId = mObject->getUniqueLayerID();
+}
+
+void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action) const
 {
     for (auto pair : mKeyFrames)
     {
@@ -347,37 +358,46 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
 
 void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
-                       bool selected, int frameSize)
+                       bool selected, int frameSize) const
 {
-    if (mVisible)
+    const QPalette palette = QApplication::palette();
+    QColor col;
+    if (type() == BITMAP) col = QColor(51, 155, 252);
+    if (type() == VECTOR) col = QColor(70, 205, 123);
+    if (type() == SOUND) col = QColor(255, 141, 112);
+    if (type() == CAMERA) col = QColor(253, 202, 92);
+    if (!mVisible) col.setAlpha(64);
+
+    painter.save();
+    painter.setBrush(col);
+    painter.setPen(QPen(QBrush(palette.color(QPalette::Mid)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.drawRect(x, y - 1, width, height);
+
+    if (!mVisible) return;
+
+    // changes the appearance if selected
+    if (selected)
     {
-        QColor col;
-        if (type() == BITMAP) col = QColor(151, 176, 244);
-        if (type() == VECTOR) col = QColor(150, 242, 150);
-        if (type() == SOUND) col = QColor(237, 147, 147, 100);
-        if (type() == CAMERA) col = QColor(239, 232, 148);
-
-        painter.setBrush(col);
-        painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(x, y - 1, width, height);
-
-        paintFrames(painter, cells, y, height, selected, frameSize);
-
-        // changes the apparence if selected
-        if (selected)
-        {
-            paintSelection(painter, x, y, width, height);
-        }
+        paintSelection(painter, x, y, width, height);
     }
     else
     {
-        painter.setBrush(Qt::gray);
-        painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
+        painter.save();
+        QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
+        linearGrad.setColorAt(0, QColor(255,255,255,150));
+        linearGrad.setColorAt(1, QColor(0,0,0,0));
+        painter.setCompositionMode(QPainter::CompositionMode_Overlay);
+        painter.setBrush(linearGrad);
+        painter.drawRect(x, y - 1, width, height);
+        painter.restore();
     }
+
+    paintFrames(painter, col, cells, y, height, selected, frameSize);
+
+    painter.restore();
 }
 
-void Layer::paintFrames(QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize)
+void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize) const
 {
     painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
@@ -398,13 +418,19 @@ void Layer::paintFrames(QPainter& painter, TimeLineCells* cells, int y, int heig
             recWidth = frameSize * key->length() - 2;
         }
 
+        if (selected && key->pos() == cells->getCurrentFrame()) {
+            painter.setPen(Qt::white);
+        } else {
+            painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        }
+
         if (pair.second->isSelected())
         {
             painter.setBrush(QColor(60, 60, 60));
         }
         else if (selected)
         {
-            painter.setBrush(QColor(60, 60, 60, 120));
+            painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
         }
 
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
@@ -413,59 +439,90 @@ void Layer::paintFrames(QPainter& painter, TimeLineCells* cells, int y, int heig
 
 void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
                        int x, int y, int width, int height,
-                       bool selected, int allLayers)
+                       bool selected, LayerVisibility layerVisibility) const
 {
-    Q_UNUSED(cells);
-    painter.setBrush(Qt::lightGray);
-    painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
-
-    if (mVisible)
-    {
-        if (allLayers == 0) painter.setBrush(Qt::NoBrush);
-        if (allLayers == 1) painter.setBrush(Qt::darkGray);
-        if ((allLayers == 2) || selected) painter.setBrush(Qt::black);
-    }
-    else
-    {
-        painter.setBrush(Qt::NoBrush);
-    }
-    painter.setPen(Qt::black);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawEllipse(x + 6, y + 4, 9, 9);
-    painter.setRenderHint(QPainter::Antialiasing, false);
+    Q_UNUSED(cells)
+    const QPalette palette = QApplication::palette();
 
     if (selected)
     {
-        paintSelection(painter, x, y, width, height);
+        painter.setBrush(palette.color(QPalette::Highlight));
     }
+    else
+    {
+        painter.setBrush(palette.color(QPalette::Base));
+    }
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
+
+    if (!mVisible)
+    {
+        painter.setBrush(palette.color(QPalette::Base));
+    }
+    else
+    {
+        if ((layerVisibility == LayerVisibility::ALL) || selected)
+        {
+            painter.setBrush(palette.color(QPalette::Text));
+        }
+        else if (layerVisibility == LayerVisibility::CURRENTONLY)
+        {
+            painter.setBrush(palette.color(QPalette::Base));
+        }
+        else if (layerVisibility == LayerVisibility::RELATED)
+        {
+            QColor color = palette.color(QPalette::Text);
+            color.setAlpha(128);
+            painter.setBrush(color);
+        }
+    }
+    if (selected)
+    {
+        painter.setPen(palette.color(QPalette::HighlightedText));
+    }
+    else
+    {
+        painter.setPen(palette.color(QPalette::Text));
+    }
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.drawEllipse(x + 6, y + 4, 9, 9);
+    painter.setRenderHint(QPainter::Antialiasing, false);
 
     if (type() == BITMAP) painter.drawPixmap(QPoint(20, y + 2), QPixmap(":/icons/layer-bitmap.png"));
     if (type() == VECTOR) painter.drawPixmap(QPoint(20, y + 2), QPixmap(":/icons/layer-vector.png"));
     if (type() == SOUND) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-sound.png"));
     if (type() == CAMERA) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-camera.png"));
 
-    painter.setPen(Qt::black);
+    if (selected)
+    {
+        painter.setPen(palette.color(QPalette::HighlightedText));
+    }
+    else
+    {
+        painter.setPen(palette.color(QPalette::Text));
+    }
     painter.drawText(QPoint(45, y + (2 * height) / 3), mName);
 }
 
-void Layer::paintSelection(QPainter& painter, int x, int y, int width, int height)
+void Layer::paintSelection(QPainter& painter, int x, int y, int width, int height) const
 {
     QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
     QSettings settings(PENCIL2D, PENCIL2D);
     QString style = settings.value("style").toString();
-    linearGrad.setColorAt(0, QColor(255, 255, 255, 128));
-    linearGrad.setColorAt(0.50, QColor(255, 255, 255, 64));
+    linearGrad.setColorAt(0, QColor(0, 0, 0, 255));
     linearGrad.setColorAt(1, QColor(255, 255, 255, 0));
+    painter.save();
+    painter.setCompositionMode(QPainter::CompositionMode_Overlay);
     painter.setBrush(linearGrad);
     painter.setPen(Qt::NoPen);
     painter.drawRect(x, y, width, height - 1);
+    painter.restore();
 }
 
 void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
 {
-    Q_UNUSED(event);
-    Q_UNUSED(frameNumber);
+    Q_UNUSED(event)
+    Q_UNUSED(frameNumber)
 }
 
 void Layer::editProperties()
@@ -546,10 +603,10 @@ bool Layer::setFrameSelected(int position, bool isSelected)
     return false;
 }
 
-Status::StatusBool Layer::toggleFrameSelected(int position, bool allowMultiple)
+bool Layer::toggleFrameSelected(int position, bool allowMultiple)
 {
     bool wasSelected = isFrameSelected(position);
-    Status::StatusBool status;
+    bool result = false;
     if (!allowMultiple)
     {
         deselectAll();
@@ -557,16 +614,13 @@ Status::StatusBool Layer::toggleFrameSelected(int position, bool allowMultiple)
 
     bool success = setFrameSelected(position, !wasSelected);
 
-    status.value = !wasSelected;
-
-    qDebug() << "isSelected: " << status.value;
+    result = !wasSelected;
 
     if (success) {
-        status.errorcode = Status::OK;
+        return true;
     } else {
-        status.errorcode = Status::FAIL;
+        return false;
     }
-    return status;
 }
 
 QList<int> Layer::selectionExtendedTo(int position)
@@ -754,4 +808,25 @@ KeyFrame* Layer::getKeyFrameWhichCovers(int frameNumber) const
         }
     }
     return nullptr;
+}
+
+QDomElement Layer::createBaseDomElement(QDomDocument& doc) const
+{
+    QDomElement layerTag = doc.createElement("layer");
+    layerTag.setAttribute("id", id());
+    layerTag.setAttribute("name", name());
+    layerTag.setAttribute("visibility", visible());
+    layerTag.setAttribute("type", type());
+    return layerTag;
+}
+
+void Layer::loadBaseDomElement(const QDomElement& elem)
+{
+    if (!elem.attribute("id").isNull())
+    {
+        int id = elem.attribute("id").toInt();
+        setId(id);
+    }
+    setName(elem.attribute("name", "untitled"));
+    setVisible(elem.attribute("visibility", "1").toInt());
 }

@@ -6,6 +6,7 @@ namespace PlatformHandler
 
 void configurePlatformSpecificSettings();
 bool isDarkMode();
+void initialise();
 
 }
 

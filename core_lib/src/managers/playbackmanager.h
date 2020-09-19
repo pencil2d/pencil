@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 class QTimer;
 class QElapsedTimer;
+class SoundClip;
 
 
 class PlaybackManager : public BaseManager
@@ -44,6 +45,11 @@ public:
     void stop();
     void playFlipRoll();
     void playFlipInBetween();
+    void playScrub(int frame);
+    void setSoundScrubMsec(int mSec) { mMsecSoundScrub = mSec; }
+    int  getSoundScrubMsec() { return mMsecSoundScrub; }
+    void setSoundScrubActive(bool b) { mSoundScrub = b; }
+    bool getSoundScrubActive() { return mSoundScrub; }
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
@@ -62,7 +68,10 @@ public:
 
     void stopSounds();
 
-Q_SIGNALS:
+private slots:
+    void stopScrubPlayback();
+
+signals:
     void fpsChanged(int fps);
     void loopStateChanged(bool b);
     void rangedPlaybackStateChanged(bool b);
@@ -93,14 +102,18 @@ private:
     int mFlipRollInterval = 100;
     int mFlipInbetweenInterval = 100;
     int mFlipRollMax = 5;
+    int mMsecSoundScrub = 100;
+    bool mSoundScrub = false;
 
     QTimer* mTimer = nullptr;
     QTimer* mFlipTimer = nullptr;
+    QTimer* mScrubTimer = nullptr;
     QElapsedTimer* mElapsedTimer = nullptr;
     int mPlayingFrameCounter = 0; // how many frames has passed after pressing play
 
     bool mCheckForSoundsHalfway = false;
     QVector<int> mListOfActiveSoundFrames;
+    QVector<SoundClip*> mSoundclipsToPLay;
     QVector<int> mFlipList;
 };
 

@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -44,6 +44,8 @@ public:
     void setWidth(const qreal width) override;
     void setFeather(const qreal feather) override;
     void setAA(const int AA) override;
+
+    virtual bool isActive() override;
 
 private:
     QList<QPointF> mPoints;

@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 #include "smudgetool.h"
 #include <QPixmap>
+#include <QSettings>
 
 #include "pointerevent.h"
 #include "vectorimage.h"
@@ -54,6 +55,9 @@ void SmudgeTool::loadSettings()
     properties.feather = settings.value("smudgeFeather", 48.0).toDouble();
     properties.pressure = false;
     properties.stabilizerLevel = -1;
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
 void SmudgeTool::resetToDefault()
@@ -152,9 +156,10 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
         else if (layer->type() == Layer::VECTOR)
         {
             const int currentFrame = mEditor->currentFrame();
-            const qreal distanceFrom = selectMan->selectionTolerance();
+            const float distanceFrom = selectMan->selectionTolerance();
             VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame, 0);
 
+            if (vectorImage == nullptr) { return; }
             selectMan->setCurves(vectorImage->getCurvesCloseTo(getCurrentPoint(), distanceFrom));
             selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), distanceFrom));
             if (selectMan->closestCurves().size() > 0 || selectMan->closestVertices().size() > 0)      // the user clicks near a vertex or a curve
@@ -226,6 +231,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
             if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
             {
                 VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+                if (vectorImage == nullptr) { return; }
                 // transforms the selection
 
                 if (vectorImage->isSelected(selectMan->vectorSelection().vertices)) {
@@ -241,6 +247,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
         if (layer->type() == Layer::VECTOR)
         {
             VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            if (vectorImage == nullptr) { return; }
 
             selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
         }
@@ -266,6 +273,7 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
         else if (layer->type() == Layer::VECTOR)
         {
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            if (vectorImage == nullptr) { return; }
             vectorImage->applySelectionTransformation();
 
             auto selectMan = mEditor->select();
@@ -290,9 +298,10 @@ void SmudgeTool::drawStroke()
     if (!mScribbleArea->isLayerPaintable()) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
 
-    BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+    BitmapImage *targetImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+    if (targetImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     StrokeTool::drawStroke();
     QList<QPointF> p = strokeManager()->interpolateStroke();
 

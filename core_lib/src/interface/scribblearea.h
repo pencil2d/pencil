@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include <memory>
 
 #include <QColor>
-#include <QTransform>
 #include <QPoint>
 #include <QWidget>
 #include <QPixmapCache>
@@ -34,8 +33,6 @@ GNU General Public License for more details.
 #include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
-#include "colourref.h"
-#include "vectorselection.h"
 #include "canvaspainter.h"
 #include "preferencemanager.h"
 #include "strokemanager.h"
@@ -47,6 +44,7 @@ class BaseTool;
 class PointerEvent;
 class BitmapImage;
 class VectorImage;
+
 
 class ScribbleArea : public QWidget
 {
@@ -81,7 +79,7 @@ public:
 
     void setEffect(SETTING e, bool isOn);
 
-    int showAllLayers() const { return mShowAllLayers; }
+    LayerVisibility getLayerVisibility() const { return mLayerVisibility; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
@@ -96,12 +94,11 @@ public:
     void updateAllVectorLayersAt(int frameNumber);
 
     void setModified(int layerNumber, int frameNumber);
-    bool shouldUpdateAll() const { return mNeedUpdateAll; }
-    void setAllDirty() { mNeedUpdateAll = true; }
+    void setAllDirty();
 
     void flipSelection(bool flipVertical);
 
-    BaseTool* currentTool();
+    BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
     void setTemporaryTool(ToolType eToolMode);
@@ -110,11 +107,17 @@ public:
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
-    bool isPointerInUse() const { return mMouseInUse || mStrokeManager->isTabletInUse(); }
+    bool isTabletInUse() const { return mTabletInUse; }
+    bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
     bool isTemporaryTool() const { return mInstantTool; }
+
+    bool isAffectedByActiveLayer() const;
 
     void keyEvent(QKeyEvent* event);
     void keyEventForSelection(QKeyEvent* event);
+
+    VectorImage* currentVectorImage(Layer* layer) const;
+    BitmapImage* currentBitmapImage(Layer* layer) const;
 
 signals:
     void modification(int);
@@ -126,12 +129,12 @@ public slots:
     void setCurveSmoothing(int);
     void toggleThinLines();
     void toggleOutlines();
-    void toggleShowAllLayers();
+    void increaseLayerVisibilityIndex();
+    void decreaseLayerVisibilityIndex();
+    void setLayerVisibility(LayerVisibility visibility);
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
-
-    bool isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod);
 
     void showLayerNotVisibleWarning();
 
@@ -152,9 +155,9 @@ public:
     void drawPolyline(QPainterPath path, QPen pen, bool useAA);
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
-    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA = true);
-    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColour, qreal opacity);
-    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true, int useAA = 0);
+    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA = true);
+    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, qreal opacity, bool usingFeather = true, bool useAA = false);
     void blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
@@ -164,7 +167,7 @@ public:
     void clearBitmapBuffer();
     void refreshBitmap(const QRectF& rect, int rad);
     void refreshVector(const QRectF& rect, int rad);
-    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
+    void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
     void pointerMoveEvent(PointerEvent*);
@@ -182,9 +185,10 @@ public:
     QPixmap mTransCursImg;
 
 private:
+    void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
-    void paintSelectionVisuals();
+    void paintSelectionVisuals(QPainter &painter);
 
     MoveMode mMoveMode = MoveMode::NONE;
     ToolType mPrevTemporalToolType = ERASER;
@@ -199,21 +203,19 @@ private:
     bool mIsSimplified = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
-    int  mShowAllLayers = 1;
-    bool mUsePressure = true;
+    LayerVisibility mLayerVisibility = LayerVisibility::ALL;
+    bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;
     bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
 
-    bool mNeedUpdateAll = false;
-
 private:
     bool mKeyboardInUse = false;
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
-    bool mPenHeldDown = false;
+    bool mTabletInUse = false;
 
     // Double click handling for tablet input
     void handleDoubleClick();
@@ -221,10 +223,9 @@ private:
     int mDoubleClickMillis = 0;
     // Microsoft suggests that a double click action should be no more than 500 ms
     const int DOUBLE_CLICK_THRESHOLD = 500;
-    QTimer* mDoubleClickTimer;
+    QTimer* mDoubleClickTimer = nullptr;
 
     QPoint mCursorCenterPos;
-
     QPointF mTransformedCursorPos;
 
     //instant tool (temporal eg. eraser)
@@ -233,15 +234,14 @@ private:
     PreferenceManager* mPrefs = nullptr;
 
     QPixmap mCanvas;
+    CanvasPainter mCanvasPainter;
     SelectionPainter mSelectionPainter;
 
     // Pixmap Cache keys
     std::vector<QPixmapCache::Key> mPixmapCacheKeys;
 
     // debug
-    QRectF mDebugRect;
-    QLoggingCategory mLog;
-    std::deque<clock_t> mDebugTimeQue;
+    QLoggingCategory mLog{ "ScribbleArea" };
 };
 
 #endif

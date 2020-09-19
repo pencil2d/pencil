@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -73,14 +73,11 @@ void CameraPropertiesDialog::setHeight(int height)
     ui->heightBox->setValue(height);
 }
 
-// ------
-
-LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
+LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
     setName(tr("Camera Layer"));
 
-    // TODO: remove duplicate code
-    QSettings settings (PENCIL2D, PENCIL2D);
+    QSettings settings(PENCIL2D, PENCIL2D);
     mFieldW = settings.value("FieldW").toInt();
     mFieldH = settings.value("FieldH").toInt();
     if (mFieldW < 2 || mFieldH < 2)
@@ -88,22 +85,21 @@ LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
         mFieldW = 800;
         mFieldH = 600;
     }
-    viewRect = QRect(QPoint(-mFieldW/2, -mFieldH/2), QSize(mFieldW, mFieldH));
+    viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
 }
 
-LayerCamera::LayerCamera(const int layerId, Object* object ) : Layer( object, Layer::CAMERA )
+/**
+ * @brief LayerCamra::LayerCamera
+ * @param layer
+ * @param object
+ *
+ * Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerCamera::LayerCamera(int id, Object* object) : Layer(object, Layer::CAMERA)
 {
-    setName(tr("Camera Layer"));
-    setId(layerId);
-    QSettings settings (PENCIL2D, PENCIL2D);
-    mFieldW = settings.value("FieldW").toInt();
-    mFieldH = settings.value("FieldH").toInt();
-    if (mFieldW < 2 || mFieldH < 2)
-    {
-        mFieldW = 800;
-        mFieldH = 600;
-    }
-    viewRect = QRect(QPoint(-mFieldW/2, -mFieldH/2), QSize(mFieldW, mFieldH));
+    setName(tr("Bitmap Layer"));
+    setId(id);
 }
 
 LayerCamera::~LayerCamera()
@@ -112,7 +108,7 @@ LayerCamera::~LayerCamera()
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber)
 {
-    return static_cast< Camera* >( getKeyFrameAt( frameNumber ) );
+    return static_cast<Camera*>(getKeyFrameAt(frameNumber));
 }
 
 void LayerCamera::putCameraIntoFrame(KeyFrame *keyframe, int frameIndex)
@@ -123,20 +119,20 @@ void LayerCamera::putCameraIntoFrame(KeyFrame *keyframe, int frameIndex)
 
 Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
 {
-    return static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
+    return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
 QTransform LayerCamera::getViewAtFrame(int frameNumber)
 {
-    if ( keyFrameCount() == 0 )
+    if (keyFrameCount() == 0)
     {
         return QTransform();
     }
 
-    Camera* camera1 = static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber ) );
+    Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
 
-    int nextFrame = getNextKeyFramePosition( frameNumber );
-    Camera* camera2 = static_cast< Camera* >( getLastKeyFrameAtPosition( nextFrame ) );
+    int nextFrame = getNextKeyFramePosition(frameNumber);
+    Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -151,7 +147,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
         return camera1->view;
     }
 
-    if ( camera1 == camera2 )
+    if (camera1 == camera2)
     {
         return camera1->view;
     }
@@ -160,20 +156,20 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
     double frame2 = camera2->pos();
 
     // linear interpolation
-    qreal c2 = ( frameNumber - frame1) / ( frame2 - frame1 );
+    qreal c2 = (frameNumber - frame1) / (frame2 - frame1);
     qreal c1 = 1.0 - c2;
 
-    auto interpolation = [=]( double f1, double f2 ) -> double
+    auto interpolation = [=](double f1, double f2) -> double
     {
         return f1 * c1 + f2 * c2;
     };
 
-    return QTransform( interpolation( camera1->view.m11(), camera2->view.m11() ),
-                       interpolation( camera1->view.m12(), camera2->view.m12() ),
-                       interpolation( camera1->view.m21(), camera2->view.m21() ),
-                       interpolation( camera1->view.m22(), camera2->view.m22() ),
-                       interpolation( camera1->view.dx(),  camera2->view.dx() ),
-                       interpolation( camera1->view.dy(),  camera2->view.dy() ) );
+    return QTransform(interpolation(camera1->view.m11(), camera2->view.m11()),
+                      interpolation(camera1->view.m12(), camera2->view.m12()),
+                      interpolation(camera1->view.m21(), camera2->view.m21()),
+                      interpolation(camera1->view.m22(), camera2->view.m22()),
+                      interpolation(camera1->view.dx(), camera2->view.dx()),
+                      interpolation(camera1->view.dy(), camera2->view.dy()));
 
 }
 
@@ -237,14 +233,14 @@ QSize LayerCamera::getViewSize()
     return viewRect.size();
 }
 
-void LayerCamera::loadImageAtFrame( int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale)
+void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale)
 {
-    if ( keyExists( frameNumber ) )
+    if (keyExists(frameNumber))
     {
-        removeKeyFrame( frameNumber );
+        removeKeyFrame(frameNumber);
     }
     Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
-    camera->setPos( frameNumber );
+    camera->setPos(frameNumber);
     loadKey(camera);
 }
 
@@ -261,43 +257,38 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
     return c;
 }
 
-QDomElement LayerCamera::createDomElement( QDomDocument& doc )
+QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerTag = doc.createElement("layer");
+    QDomElement layerElem = createBaseDomElement(doc);
+    layerElem.setAttribute("width", viewRect.width());
+    layerElem.setAttribute("height", viewRect.height());
 
-    layerTag.setAttribute("name", name());
-    layerTag.setAttribute("visibility", visible());
-    layerTag.setAttribute("type", type());
-    layerTag.setAttribute("width", viewRect.width());
-    layerTag.setAttribute("height", viewRect.height());
+    foreachKeyFrame([&](KeyFrame* pKeyFrame)
+                    {
+                        Camera* camera = static_cast<Camera*>(pKeyFrame);
+                        QDomElement keyTag = doc.createElement("camera");
+                        keyTag.setAttribute("frame", camera->pos());
 
-    foreachKeyFrame( [&]( KeyFrame* pKeyFrame )
-    {
-        Camera* camera = static_cast< Camera* >( pKeyFrame );
-        QDomElement keyTag = doc.createElement("camera");
-        keyTag.setAttribute( "frame", camera->pos() );
+                        keyTag.setAttribute("r", camera->rotation());
+                        keyTag.setAttribute("s", camera->scaling());
+                        keyTag.setAttribute("dx", camera->translation().x());
+                        keyTag.setAttribute("dy", camera->translation().y());
+                        layerElem.appendChild(keyTag);
+                    });
 
-        keyTag.setAttribute( "r", camera->rotation() );
-        keyTag.setAttribute( "s", camera->scaling() );
-        keyTag.setAttribute( "dx",  camera->translation().x() );
-        keyTag.setAttribute( "dy",  camera->translation().y() );
-        layerTag.appendChild( keyTag );
-    } );
-
-    return layerTag;
+    return layerElem;
 }
 
-void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
+void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
-    Q_UNUSED(dataDirPath);
-    Q_UNUSED(progressStep);
+    Q_UNUSED(dataDirPath)
+    Q_UNUSED(progressStep)
 
-    setName( element.attribute("name") );
-    setVisible( true );
+    this->loadBaseDomElement(element);
 
-    int width = element.attribute( "width" ).toInt();
-    int height = element.attribute( "height" ).toInt();
-    viewRect = QRect( -width / 2, -height / 2, width, height );
+    int width = element.attribute("width").toInt();
+    int height = element.attribute("height").toInt();
+    viewRect = QRect(-width / 2, -height / 2, width, height);
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
@@ -314,7 +305,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath, Progr
                 qreal dx = imageElement.attribute("dx", "0").toDouble();
                 qreal dy = imageElement.attribute("dy", "0").toDouble();
 
-                loadImageAtFrame( frame, dx, dy, rotate, scale );
+                loadImageAtFrame(frame, dx, dy, rotate, scale);
             }
         }
         imageTag = imageTag.nextSibling();

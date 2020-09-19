@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -47,8 +47,9 @@ public:
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
-Q_SIGNALS:
+signals:
     void soundToggled(bool);
+    void soundScrubToggled(bool);
     void fpsChanged(int);
     void playButtonTriggered();
 
@@ -67,6 +68,7 @@ private:
     void loopStartValueChanged(int);
     void loopEndValueChanged(int);
     void updateSoundIcon(bool soundEnabled);
+    void updateSoundScrubIcon(bool soundScrubEnabled);
 
 private:
     QPushButton* mPlayButton = nullptr;
@@ -74,6 +76,7 @@ private:
     QPushButton* mJumpToStartButton = nullptr;
     QPushButton* mLoopButton = nullptr;
     QPushButton* mSoundButton = nullptr;
+    QPushButton* mSoundScrubButton = nullptr;
     QSpinBox*    mFpsBox = nullptr;
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
@@ -83,6 +86,7 @@ private:
     QIcon mStopIcon;
     QIcon mLoopIcon;
     QIcon mSoundIcon;
+    QIcon mSoundScrubIcon;
     QIcon mJumpToEndIcon;
     QIcon mJumpToStartIcon;
 

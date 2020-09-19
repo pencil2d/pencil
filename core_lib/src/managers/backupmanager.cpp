@@ -18,6 +18,8 @@ GNU General Public License for more details.
 #include "object.h"
 #include "editor.h"
 
+#include <QDebug>
+
 #include "layermanager.h"
 #include "soundmanager.h"
 #include "backupmanager.h"

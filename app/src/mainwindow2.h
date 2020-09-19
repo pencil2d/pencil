@@ -3,7 +3,7 @@
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
-Copyright (C) 2011-2015 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,9 +19,6 @@ GNU General Public License for more details.
 #define MAINWINDOW2_H
 
 #include <QMainWindow>
-#include "preferencemanager.h"
-#include "pegbaralignmentdialog.h"
-
 
 template<typename T> class QList;
 class QActionGroup;
@@ -31,6 +28,7 @@ class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
 class DisplayOptionWidget;
+class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
@@ -43,8 +41,10 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class PegBarAlignmentDialog;
 class HistoryViewerWidget;
 
+enum class SETTING;
 
 
 namespace Ui
@@ -62,34 +62,41 @@ public:
 
     Editor* mEditor = nullptr;
 
-    public slots:
+public slots:
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
     void openPegAlignDialog();
-    void closePegAlignDialog();
+    void currentLayerChanged();
+    void selectionChanged();
 
 public:
-    void setOpacity(int opacity);
-    void newDocument(bool force = false);
+    void newDocument();
     void openDocument();
     bool saveDocument();
     bool saveAsNewDocument();
     bool maybeSave();
     bool autoSave();
+    void emptyDocumentWhenErrorOccurred();
 
     // import
     void importImage();
     void importImageSequence();
     void importImageSequenceNumbered();
     void addLayerByFilename(QString strFilePath);
-    void importMovie();
+    void importPredefinedImageSet();
+    void importLayers();
+    void importMovieVideo();
     void importGIF();
+    void importMovieAudio();
 
     void lockWidgets(bool shouldLock);
 
+    void setSoundScrubActive(bool b);
+    void setSoundScrubMsec(int msec);
+    void setOpacity(int opacity);
     void preferences();
-    
+
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
@@ -97,32 +104,36 @@ public:
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
-Q_SIGNALS:
+signals:
     void updateRecentFilesList(bool b);
+    void appLostFocus();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
-
-private slots:
-    void resetAndDockAllSubWidgets();
+    void showEvent(QShowEvent*) override;
 
 private:
-    bool openObject(QString strFilename, bool checkForChanges);
+    bool newObject();
+    bool newObjectFromPresets(int presetIndex);
+    bool openObject(QString strFilename);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();
     void createMenus();
-    void setMenuActionChecked(QAction*, bool bChecked);
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
+    bool loadMostRecent();
+    bool tryLoadPreset();
 
+    void openPalette();
     void importPalette();
     void exportPalette();
 
     void readSettings();
     void writeSettings();
+    void resetAndDockAllSubWidgets();
 
     void changePlayState(bool isPlaying);
 
@@ -134,11 +145,13 @@ private:
     void makeConnections(Editor*, TimeLine*);
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
+    void makeConnections(Editor*, OnionSkinWidget*);
 
-    void bindActionWithSetting(QAction*, SETTING);
+    bool tryRecoverUnsavedProject();
+    void startProjectRecovery(int result);
 
     // UI: Dock widgets
-    ColorBox*           mColorBox = nullptr;
+    ColorBox*             mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
@@ -150,6 +163,7 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr; // be public temporary
     ColorInspector*       mColorInspector = nullptr;
+    OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
     const BackupElement* mBackupAtSave = nullptr;
@@ -158,7 +172,7 @@ private:
 
 private:
     ActionCommands* mCommands = nullptr;
-    QList< BaseDockWidget* > mDockWidgets;
+    QList<BaseDockWidget*> mDockWidgets;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
@@ -168,7 +182,7 @@ private:
 
     // whether we are currently importing an image sequence.
     bool mIsImportingImageSequence = false;
-    
+
     Ui::MainWindow2* ui = nullptr;
 };
 
