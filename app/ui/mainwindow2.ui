@@ -192,7 +192,6 @@
     <addaction name="actionPrev_KeyFrame"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_Frame"/>
-    <addaction name="actionInsert_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
     <addaction name="separator"/>

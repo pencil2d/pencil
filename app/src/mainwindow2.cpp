@@ -340,11 +340,10 @@ void MainWindow2::createMenus()
     connect(ui->actionFlip_inbetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipInBetween);
     connect(ui->actionFlip_rolling, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
 
-    connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::addNewKey);
+    connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::insertNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
     connect(ui->actionAdd_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::addNewEmpty);
     connect(ui->actionRemove_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::removeEmpty);
-    connect(ui->actionInsert_Frame, &QAction::triggered, mCommands, &ActionCommands::insertNewKey);
     connect(ui->actionNext_Frame, &QAction::triggered, mCommands, &ActionCommands::scrubForward);
     connect(ui->actionPrevious_Frame, &QAction::triggered, mCommands, &ActionCommands::scrubBackward);
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame);
@@ -1265,7 +1264,6 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
     ui->actionAdd_EmptyFrame->setShortcut(cmdKeySeq(CMD_ADD_EMPTY));
     ui->actionRemove_EmptyFrame->setShortcut(cmdKeySeq(CMD_REMOVE_EMPTY));
-    ui->actionInsert_Frame->setShortcut(cmdKeySeq(CMD_INSERT_FRAME));
     ui->actionReverse_selected_frames->setShortcut(cmdKeySeq(CMD_REVERSE_FRAMES));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
