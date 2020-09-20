@@ -114,6 +114,12 @@ public:
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
+
+    /** selectNextBatchOfSelectedFrames
+     *  Willl select all frames from the specified position till there is a blank frame
+     *  @param position, the current position
+     */
+    void selectNextBatchOfConnectedFrames(int position);
     void deselectAll();
 
     bool moveSelectedFrames(int offset);

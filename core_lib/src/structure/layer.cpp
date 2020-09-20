@@ -619,6 +619,22 @@ void Layer::extendSelectionTo(int position)
     }
 }
 
+void Layer::selectNextBatchOfConnectedFrames(int position)
+{
+    // Deselect all before extending to make sure we don't get already
+    // selected frames
+    deselectAll();
+
+    setFrameSelected(position, true);
+
+    // Find keyframes that are connected and make sure we're below max.
+    while (position < getMaxKeyFramePosition() && getKeyFrameWhichCovers(position) != nullptr) {
+        position++;
+    }
+
+    extendSelectionTo(position);
+}
+
 void Layer::selectAllFramesAfter(int position)
 {
     int startPosition = position;
