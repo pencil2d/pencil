@@ -48,6 +48,7 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setMinimumSize(500, 4 * mLayerHeight);
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
     setAttribute(Qt::WA_OpaquePaintEvent, false);
+    setMouseTracking(true);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
 }
@@ -186,6 +187,7 @@ void TimeLineCells::drawContent()
     }
 
     mCurrentFrame = mEditor->currentFrame();
+    mLayerIndex = mEditor->currentLayerIndex();
 
     QPainter painter(mCache);
 
@@ -626,10 +628,15 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
+
+    mMouseX = event->pos().x();
+    mMouseY = event->pos().y();
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
-        mEndY = event->pos().y();
-        emit mouseMovedY(mEndY - mStartY);
+        if (event->buttons() & Qt::LeftButton ) {
+            mEndY = event->pos().y();
+            emit mouseMovedY(mEndY - mStartY);
+        }
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
@@ -654,34 +661,36 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
             }
             else
             {
-                if (mStartLayerNumber != -1 && mStartLayerNumber < mEditor->object()->getLayerCount())
-                {
-                    Layer *currentLayer = mEditor->object()->getLayer(mStartLayerNumber);
-
-                    // Did we move to another frame ?
-                    if (frameNumber != mLastFrameNumber)
+                if (event->buttons() & Qt::LeftButton) {
+                    if (mStartLayerNumber != -1 && mStartLayerNumber < mEditor->object()->getLayerCount())
                     {
-                        // Check if the frame we clicked was selected
-                        if (mCanMoveFrame) {
+                        Layer *currentLayer = mEditor->object()->getLayer(mStartLayerNumber);
 
-                            // If it is the case, we move the selected frames in the layer
-                            mMovingFrames = true;
-
-                            int offset = frameNumber - mLastFrameNumber;
-                            currentLayer->moveSelectedFrames(offset);
-                            mEditor->layers()->notifyAnimationLengthChanged();
-                            mEditor->updateCurrentFrame();
-                        }
-                        else if (mCanBoxSelect)
+                        // Did we move to another frame ?
+                        if (frameNumber != mLastFrameNumber)
                         {
-                            // Otherwise, we do a box select
-                            mBoxSelecting = true;
+                            // Check if the frame we clicked was selected
+                            if (mCanMoveFrame) {
 
-                            currentLayer->deselectAll();
-                            currentLayer->setFrameSelected(mStartFrameNumber, true);
-                            currentLayer->extendSelectionTo(frameNumber);
+                                // If it is the case, we move the selected frames in the layer
+                                mMovingFrames = true;
+
+                                int offset = frameNumber - mLastFrameNumber;
+                                currentLayer->moveSelectedFrames(offset);
+                                mEditor->layers()->notifyAnimationLengthChanged();
+                                mEditor->updateCurrentFrame();
+                            }
+                            else if (mCanBoxSelect)
+                            {
+                                // Otherwise, we do a box select
+                                mBoxSelecting = true;
+
+                                currentLayer->deselectAll();
+                                currentLayer->setFrameSelected(mStartFrameNumber, true);
+                                currentLayer->extendSelectionTo(frameNumber);
+                            }
+                            mLastFrameNumber = frameNumber;
                         }
-                        mLastFrameNumber = frameNumber;
                     }
                 }
             }

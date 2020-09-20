@@ -436,6 +436,23 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
 
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
     }
+
+    if (selected && cells->getLayerNumber(cells->getMouseY()) != -1
+            && cells->getLayerNumber(cells->getMouseY()) == cells->getCurrentLayerIndex()) {
+        // This aligns the frame with where the frame will be placed.
+        int space = 2;
+
+        // the offset to adjust from the container switching to another frame
+        int offset = cells->getMouseX() - frameSize;
+
+        int recLeft = cells->getFrameX(cells->getFrameNumber(offset)) + space;
+        int recTop = y + 1;
+        int recWidth = frameSize - 2;
+        int recHeight = height - 4;
+
+        painter.setPen(QColor(255,255,255,100));
+        painter.drawRect(recLeft, recTop, recWidth, recHeight);
+    }
 }
 
 void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,

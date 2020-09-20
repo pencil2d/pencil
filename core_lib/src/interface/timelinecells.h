@@ -54,6 +54,9 @@ public:
     int getOffsetY() { return mOffsetY; }
     int getLayerHeight() { return mLayerHeight; }
 
+    int getMouseX() { return mMouseX; }
+    int getMouseY() { return mMouseY; }
+
     int getFrameLength() {return mFrameLength;}
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
@@ -63,6 +66,7 @@ public:
     void paintLayerGutter(QPainter& painter);
     bool didDetatchLayer();
     int getCurrentFrame() { return mCurrentFrame; }
+    int getCurrentLayerIndex() { return mLayerIndex; }
 
 signals:
     void mouseMovedY(int);
@@ -111,14 +115,20 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
+    int mLayerIndex = 0;
     int mCurrentFrame = 0;
     int mLastScrubFrame = 0;
+
+    int mMouseX = 0;
+    int mMouseY = 0;
 
     int mFromLayer = 0;
     int mToLayer   = 1;
     int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
+
+    // is used to move layers, don't use this to get mousePos;
     int mMouseMoveY = 0;
     int mMouseMoveX = 0;
     int mPrevFrame = 0;
