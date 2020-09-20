@@ -570,10 +570,15 @@ void Layer::setFrameSelected(int position, bool isSelected)
         {
             // Remove the selected frame from the lists
             int iLast = mSelectedFrames_byLast.indexOf(startPosition);
-            mSelectedFrames_byLast.removeAt(iLast);
+
+            if (iLast < mSelectedFrames_byLast.count() && iLast > 0) {
+                mSelectedFrames_byLast.removeAt(iLast);
+            }
 
             int iPos = mSelectedFrames_byPosition.indexOf(startPosition);
-            mSelectedFrames_byPosition.removeAt(iPos);
+            if (iPos < mSelectedFrames_byPosition.count() && iPos > 0) {
+                mSelectedFrames_byPosition.removeAt(iPos);
+            }
         }
         keyFrame->setSelected(isSelected);
     }
