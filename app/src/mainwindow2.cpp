@@ -342,8 +342,8 @@ void MainWindow2::createMenus()
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::insertNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
-    connect(ui->actionAdd_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::addNewEmpty);
-    connect(ui->actionRemove_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::removeEmpty);
+    connect(ui->actionAdd_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::increaseFrameExposure);
+    connect(ui->actionRemove_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::decreaseFrameExposure);
     connect(ui->actionNext_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoNextFrame);
     connect(ui->actionPrevious_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevFrame);
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame);

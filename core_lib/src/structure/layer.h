@@ -115,11 +115,18 @@ public:
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
 
-    /** selectNextBatchOfSelectedFrames
+    /** selectBatchOfSelectedFrames
      *  Willl select all frames from the specified position till there is a blank frame
      *  @param position, the current position
      */
+    void selectBatchOfConnectedFrames(int position);
+
+    /** selectNextBatchOfSelectedFrames
+     *  Willl select all frames from the next keyframe position till there is a blank frame
+     *  @param position, the current position
+     */
     void selectNextBatchOfConnectedFrames(int position);
+
     void deselectAll();
 
     bool moveSelectedFrames(int offset);

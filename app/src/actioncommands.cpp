@@ -677,13 +677,13 @@ Status ActionCommands::addNewKey()
     return Status::OK;
 }
 
-void ActionCommands::addNewEmpty(){
+void ActionCommands::increaseFrameExposure() {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
 
     if(currentPosition < currentLayer->getMaxKeyFramePosition())
     {
-        currentLayer->selectAllFramesAfter( currentPosition + 1);
+        currentLayer->selectNextBatchOfConnectedFrames(currentPosition);
         currentLayer->moveSelectedFrames(1);
         currentLayer->deselectAll();
         mEditor->updateTimeLine();
@@ -691,24 +691,17 @@ void ActionCommands::addNewEmpty(){
     }
 }
 
-void ActionCommands::removeEmpty(){
+void ActionCommands::decreaseFrameExposure() {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
+    int nextPos = currentLayer->getNextKeyFramePosition(currentPosition);
 
-    if (currentPosition < currentLayer->getMaxKeyFramePosition())
+    if (currentPosition < currentLayer->getMaxKeyFramePosition() &&
+        currentLayer->getKeyFrameWhichCovers(currentPosition+1) == nullptr )
     {
-        if (!currentLayer->keyExists(currentPosition))
-        {
-            currentLayer->selectAllFramesAfter(currentPosition);
-            currentLayer->moveSelectedFrames(-1);
-            currentLayer->deselectAll();
-        }
-        else if (currentLayer->keyExists(currentPosition) && !currentLayer->keyExists(currentPosition + 1))
-        {
-            currentLayer->selectAllFramesAfter(currentPosition + 1);
-            currentLayer->moveSelectedFrames(-1);
-            currentLayer->deselectAll();
-        }
+        currentLayer->setFrameSelected(nextPos, true);
+        currentLayer->moveSelectedFrames(-1);
+        currentLayer->deselectAll();
         mEditor->updateTimeLine();
         mEditor->updateCurrentFrame();
     }
@@ -720,7 +713,7 @@ Status ActionCommands::insertNewKey(){
 
     if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition() && currentLayer->getKeyFrameWhichCovers(currentPosition) != nullptr)
     {
-        currentLayer->selectNextBatchOfConnectedFrames(currentPosition + 1);
+        currentLayer->selectBatchOfConnectedFrames(currentPosition + 1);
         currentLayer->moveSelectedFrames(1);
         currentLayer->deselectAll();
     }
@@ -735,7 +728,7 @@ void ActionCommands::removeSelected()
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Remove selected frames", "Windows title of remove selected frames pop-up."),
-                                   tr("Are you sure you want to remove selected frames? This action is irreversible currently!"),
+                                   tr("Are you sure you want to remove the selected frames? This action is irreversible currently!"),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
 

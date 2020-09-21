@@ -66,14 +66,14 @@ public:
     void GotoPrevKeyFrame();
     Status addNewKey();
     Status insertNewKey();
-    void addNewEmpty();
-    void removeEmpty();
     void removeKey();
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
     void removeSelected();
     void reverseSelected();
+    void increaseFrameExposure();
+    void decreaseFrameExposure();
 
     // Layer
     Status addNewBitmapLayer();

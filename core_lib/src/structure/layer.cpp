@@ -641,7 +641,7 @@ void Layer::extendSelectionTo(int position)
     }
 }
 
-void Layer::selectNextBatchOfConnectedFrames(int position)
+void Layer::selectBatchOfConnectedFrames(int position)
 {
     // Deselect all before extending to make sure we don't get already
     // selected frames
@@ -655,6 +655,11 @@ void Layer::selectNextBatchOfConnectedFrames(int position)
     }
 
     extendSelectionTo(position);
+}
+
+void Layer::selectNextBatchOfConnectedFrames(int position)
+{
+    selectBatchOfConnectedFrames(getNextKeyFramePosition(position));
 }
 
 void Layer::selectAllFramesAfter(int position)
