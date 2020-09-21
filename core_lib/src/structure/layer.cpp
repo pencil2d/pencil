@@ -442,14 +442,12 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
         // This aligns the frame with where the frame will be placed.
         int space = 2;
 
-        // the offset to adjust from the container switching to another frame
-        int offset = cells->getMouseX() - frameSize;
-
-        int recLeft = cells->getFrameX(cells->getFrameNumber(offset)) + space;
+        int recLeft = cells->getFrameX(cells->getFrameNumber(cells->getMouseX())) + space - frameSize;
         int recTop = y + 1;
         int recWidth = frameSize - 2;
         int recHeight = height - 4;
 
+        painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
         painter.setPen(QColor(255,255,255,100));
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
     }
