@@ -58,7 +58,7 @@ struct CanvasPainterOptions
     bool  bOutlines = false;
     bool  bIsOnionAbsolute = false;
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
-    float fLayerVisibilityThreshold;
+    float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
@@ -124,7 +124,6 @@ private:
     /** Calculate layer opacity based on current layer offset */
     qreal calculateRelativeOpacityForLayer(int layerIndex) const;
 
-    void savePaintResult(QString layerName, int frameNum);
 private:
     CanvasPainterOptions mOptions;
 

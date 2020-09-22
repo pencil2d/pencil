@@ -216,7 +216,7 @@ private:
     bool mMakeInvisible = false;
     bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;
-    bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
+    bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
 
 private:

@@ -81,8 +81,8 @@ private:
     qreal mMin = 0.0;
     qreal mMax = 0.0;
 
-    ColorType mColorType;
-    ColorSpecType mSpecType;
+    ColorType mColorType = ColorType::HUE;
+    ColorSpecType mSpecType = ColorSpecType::RGB;
 
     QSize mSize = QSize(0,0);
 

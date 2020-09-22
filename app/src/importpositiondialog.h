@@ -52,7 +52,7 @@ private slots:
 private:
     Ui::ImportPositionDialog *ui;
 
-    ImportPosition::Type mImportOption;
+    ImportPosition::Type mImportOption = ImportPosition::None;
     Editor* mEditor = nullptr;
 };
 

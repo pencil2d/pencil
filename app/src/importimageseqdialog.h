@@ -29,15 +29,14 @@ class ImportImageSeqOptions;
 class ImportImageSeqPreviewGroupBox;
 }
 
-struct PredefinedKeySetParams {
-    int dot;
-    int digits;
+struct PredefinedKeySetParams
+{
+    int dot = 0;
+    int digits = 0;
     QStringList filenames;
     QStringList absolutePaths;
     QString folderPath;
     QString prefix;
-
-    Status pathsValid() const;
 };
 
 enum ImportCriteria { Arbitrary, PredefinedSet };
