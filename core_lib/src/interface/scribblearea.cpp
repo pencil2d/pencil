@@ -189,7 +189,8 @@ void ScribbleArea::updateFrame(int frame)
     if (cacheKeyIter != mPixmapCacheKeys.end())
     {
         QPixmapCache::remove(cacheKeyIter.value());
-        mPixmapCacheKeys.remove(cacheKeyIter.key());
+        unsigned int key = cacheKeyIter.key();
+        mPixmapCacheKeys.remove(key);
     }
 
     updateOnionSkinsAround(frame);
