@@ -45,8 +45,6 @@ void DisplayOptionWidget::initUI()
     updateUI();
     makeConnections();
 
-    delete ui->innerWidget->layout();
-
     FlowLayout *layout = new FlowLayout;
     layout->setAlignment(Qt::AlignHCenter);
     layout->addWidget(ui->mirrorButton);
@@ -58,7 +56,8 @@ void DisplayOptionWidget::initUI()
     layout->addWidget(ui->overlayGoldenRatioButton);
     layout->addWidget(ui->overlaySafeAreaButton);
 
-    ui->innerWidget->setLayout(layout);
+    delete ui->scrollAreaWidgetContents->layout();
+    ui->scrollAreaWidgetContents->setLayout(layout);
 
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
