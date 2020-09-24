@@ -140,7 +140,6 @@ void ToolBoxWidget::initUI()
     connect(ui->brushButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn);
     connect(ui->smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
 
-    delete ui->toolGroup->layout();
     FlowLayout* flowlayout = new FlowLayout;
 
     flowlayout->addWidget(ui->clearButton);
@@ -155,7 +154,9 @@ void ToolBoxWidget::initUI()
     flowlayout->addWidget(ui->eyedropperButton);
     flowlayout->addWidget(ui->brushButton);
     flowlayout->addWidget(ui->smudgeButton);
-    ui->toolGroup->setLayout(flowlayout);
+
+    delete ui->scrollAreaWidgetContents_2->layout();
+    ui->scrollAreaWidgetContents_2->setLayout(flowlayout);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
