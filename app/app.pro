@@ -162,7 +162,6 @@ macx {
 }
 
 win32 {
-    CONFIG -= flat
     RC_FILE = data/pencil2d.rc
 }
 

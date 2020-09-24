@@ -177,8 +177,6 @@ FORMS += \
     ui/camerapropertiesdialog.ui
 
 win32 {
-    CONFIG -= flat
-
     INCLUDEPATH += src/external/win32
     SOURCES += src/external/win32/win32.cpp
 }
