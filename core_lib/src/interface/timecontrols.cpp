@@ -109,12 +109,12 @@ void TimeControls::initUI()
     addWidget(mPlayButton);
     addWidget(mJumpToEndButton);
     addWidget(mLoopButton);
+    addWidget(mFpsBox);
     addWidget(mPlaybackRangeCheckBox);
     addWidget(mLoopStartSpinBox);
     addWidget(mLoopEndSpinBox);
     addWidget(mSoundButton);
     addWidget(mSoundScrubButton);
-    addWidget(mFpsBox);
 
     makeConnections();
 
