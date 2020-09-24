@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 #include "preferencemanager.h"
 #include "viewmanager.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
@@ -100,6 +101,10 @@ void DisplayOptionWidget::makeConnections()
 void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
+
+    bool canEnableVectorButtons = editor()->layers()->currentLayer()->type() == Layer::VECTOR;
+    ui->thinLinesButton->setEnabled(canEnableVectorButtons);
+    ui->outLinesButton->setEnabled(canEnableVectorButtons);
 
     QSignalBlocker b1(ui->thinLinesButton);
     ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));
