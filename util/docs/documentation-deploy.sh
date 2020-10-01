@@ -63,8 +63,10 @@ git config user.email "travis@travis-ci.org"
 # stayed the same and will only update the changed files. So the gh-pages branch
 # can be safely cleaned, and it is sure that everything pushed later is the new
 # documentation.
+mv docs/CNAME .
 rm -rf docs/
 mkdir docs
+mv CNAME docs/
 
 ################################################################################
 ##### Generate the Doxygen code documentation and log the output.          #####
