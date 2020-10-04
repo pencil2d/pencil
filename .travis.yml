@@ -15,10 +15,23 @@ os:
   - linux
   - osx
 
+jobs:
+  include:
+    - name: Documentation Update
+      if: branch = master AND env(GH_REPO_TOKEN) IS present
+      os: linux
+      addons:
+        apt:
+          - doxygen
+          - graphviz
+      before_install: skip
+      install: skip
+      before_script: skip
+      script: util/documentation-deploy.sh pencil2d/pencil-docs
+      after_success: skip
+
 env:
   global:
-    - GH_REPO_REF: github.com/pencil2d/pencil-docs.git
-    - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
     - MAKEFLAGS: -j2
 
 addons:
@@ -42,8 +55,6 @@ addons:
       - gstreamer1.0-plugins-bad
       - gstreamer1.0-alsa
       - gstreamer1.0-pulseaudio
-      - doxygen
-      - graphviz
       - python3
       - python3-pip
   homebrew:
