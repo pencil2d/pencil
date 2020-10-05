@@ -90,8 +90,8 @@ private:
     /**
      * CanvasPainter::initializePainter
      * Enriches the painter with a context and sets it's initial matrix.
-     * @param The in/out painter
-     * @param The paint device ie. a pixmap
+     * @param painter The in/out painter
+     * @param pixmap The paint device ie. a pixmap
      */
     void initializePainter(QPainter& painter, QPixmap& pixmap);
 

@@ -850,9 +850,11 @@ Status FileManager::rebuildMainXML(Object* object)
 }
 /**
  *  Rebuild a layer xml tag. example:
+ *  @code{.xml}
  *    <layer id="2" type="2" visibility="1" name="Vector Layer">
  *      <image src="002.001.vec" frame="1"/>
  *    </layer>
+ *  @endcode
  */
 Status FileManager::rebuildLayerXmlTag(QDomDocument& doc,
                                        QDomElement& elemObject,

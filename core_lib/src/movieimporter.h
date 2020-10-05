@@ -32,6 +32,8 @@ public:
     Status estimateFrames(const QString& filePath, int fps, int* frameEstimate);
 
     /**
+     * @param filePath Path to the video file.
+     * @param fps Frames per second to import at.
      * @param type FileType to import, should be either MOVIE or SOUND
      * @param progress a function that returns and notify the progress
      * @param progressMessage a function that returns and change the progress message
