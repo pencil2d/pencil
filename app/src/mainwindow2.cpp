@@ -66,6 +66,7 @@ GNU General Public License for more details.
 //#include "preview.h"
 #include "timeline2.h"
 #include "errordialog.h"
+#include "filedialog.h"
 #include "importimageseqdialog.h"
 #include "importlayersdialog.h"
 #include "importpositiondialog.h"
@@ -528,8 +529,7 @@ void MainWindow2::openDocument()
 {
     if (maybeSave())
     {
-        FileDialog fileDialog(this);
-        QString fileName = fileDialog.openFile(FileType::ANIMATION);
+        QString fileName = FileDialog::getOpenFileName(this, FileType::ANIMATION);
         if (!fileName.isEmpty())
         {
             openObject(fileName);
@@ -539,8 +539,7 @@ void MainWindow2::openDocument()
 
 bool MainWindow2::saveAsNewDocument()
 {
-    FileDialog fileDialog(this);
-    QString fileName = fileDialog.saveFile(FileType::ANIMATION);
+    QString fileName = FileDialog::getSaveFileName(this, FileType::ANIMATION);
     if (fileName.isEmpty())
     {
         return false;
@@ -818,8 +817,7 @@ void MainWindow2::emptyDocumentWhenErrorOccurred()
 
 void MainWindow2::importImage()
 {
-    FileDialog fileDialog(this);
-    QString strFilePath = fileDialog.openFile(FileType::IMAGE);
+    QString strFilePath = FileDialog::getOpenFileName(this, FileType::IMAGE);
 
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
@@ -1328,8 +1326,7 @@ void MainWindow2::undoActSetEnabled()
 
 void MainWindow2::exportPalette()
 {
-    FileDialog FileDialog(this);
-    QString filePath = FileDialog.saveFile(FileType::PALETTE);
+    QString filePath = FileDialog::getSaveFileName(this, FileType::PALETTE);
     if (!filePath.isEmpty())
     {
         mEditor->object()->exportPalette(filePath);
@@ -1338,8 +1335,7 @@ void MainWindow2::exportPalette()
 
 void MainWindow2::importPalette()
 {
-    FileDialog fileDialog(this);
-    QString filePath = fileDialog.openFile(FileType::PALETTE);
+    QString filePath = FileDialog::getOpenFileName(this, FileType::PALETTE);
     if (!filePath.isEmpty())
     {
         mEditor->object()->importPalette(filePath);
@@ -1376,8 +1372,7 @@ void MainWindow2::openPalette()
 
     if (openPalette)
     {
-        FileDialog fileDialog(this);
-        QString filePath = fileDialog.openFile(FileType::PALETTE);
+        QString filePath = FileDialog::getOpenFileName(this, FileType::PALETTE);
         if (!filePath.isEmpty())
         {
             mEditor->object()->openPalette(filePath);

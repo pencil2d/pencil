@@ -1,12 +1,11 @@
 #include "importlayersdialog.h"
 #include "ui_importlayersdialog.h"
 
-#include <QFileDialog>
 #include <QProgressDialog>
 
 #include "app_util.h"
 #include "filemanager.h"
-#include "filedialogex.h"
+#include "filedialog.h"
 #include "fileformat.h"
 #include "layermanager.h"
 #include "soundmanager.h"
@@ -44,10 +43,7 @@ void ImportLayersDialog::getFileName()
 {
     mFileName.clear();
     ui->lwLayers->clear();
-    FileDialog fd(this);
-    mFileName = QFileDialog::getOpenFileName(this, tr("Choose file"),
-                                             fd.getLastOpenPath(FileType::ANIMATION),
-                                             PFF_PROJECT_EXT_FILTER);
+    mFileName = FileDialog::getOpenFileName(this, FileType::ANIMATION, tr("Choose file"));
     if (mFileName.isEmpty()) { return; }
     getLayers();
 }

@@ -15,35 +15,26 @@ GNU General Public License for more details.
 
 */
 
-#include "filedialogex.h"
+#include "filedialog.h"
 
 #include <QSettings>
 #include <QFileInfo>
 #include <QFileDialog>
-#include <QDebug>
 
 #include "fileformat.h"
 #include "pencildef.h"
 
-FileDialog::FileDialog(QWidget* parent) : QObject(parent)
+QString FileDialog::getOpenFileName(QWidget* parent, FileType fileType, const QString& caption)
 {
-    mRoot = parent;
-}
-
-FileDialog::~FileDialog()
-{
-}
-
-QString FileDialog::openFile(FileType fileType)
-{
-    QString strTitle = openDialogTitle(fileType);
     QString strInitialFilePath = getLastOpenPath(fileType);
     QString strFilter = openFileFilters(fileType);
+    QString strSelectedFilter = getFilterForFile(strFilter, strInitialFilePath);
 
-    QString filePath = QFileDialog::getOpenFileName(mRoot,
-                                                    strTitle,
+    QString filePath = QFileDialog::getOpenFileName(parent,
+                                                    caption.isEmpty() ? openDialogCaption(fileType) : caption,
                                                     strInitialFilePath,
-                                                    strFilter);
+                                                    strFilter,
+                                                    strSelectedFilter.isNull() ? nullptr : &strSelectedFilter);
     if (!filePath.isEmpty())
     {
         setLastOpenPath(fileType, filePath);
@@ -52,15 +43,14 @@ QString FileDialog::openFile(FileType fileType)
     return filePath;
 }
 
-QStringList FileDialog::openFiles(FileType fileType)
+QStringList FileDialog::getOpenFileNames(QWidget* parent, FileType fileType, const QString& caption)
 {
-    QString strTitle = openDialogTitle(fileType);
     QString strInitialFilePath = getLastOpenPath(fileType);
     QString strFilter = openFileFilters(fileType);
     QString strSelectedFilter = getFilterForFile(strFilter, strInitialFilePath);
 
-    QStringList filePaths = QFileDialog::getOpenFileNames(mRoot,
-                                                          strTitle,
+    QStringList filePaths = QFileDialog::getOpenFileNames(parent,
+                                                          caption.isEmpty() ? openDialogCaption(fileType) : caption,
                                                           strInitialFilePath,
                                                           strFilter,
                                                           strSelectedFilter.isNull() ? nullptr : &strSelectedFilter);
@@ -72,15 +62,14 @@ QStringList FileDialog::openFiles(FileType fileType)
     return filePaths;
 }
 
-QString FileDialog::saveFile(FileType fileType)
+QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QString& caption)
 {
-    QString strTitle = saveDialogTitle(fileType);
     QString strInitialFilePath = getLastSavePath(fileType);
     QString strFilter = saveFileFilters(fileType);
     QString strSelectedFilter = getFilterForFile(strFilter, strInitialFilePath);
 
-    QString filePath = QFileDialog::getSaveFileName(mRoot,
-                                                    strTitle,
+    QString filePath = QFileDialog::getSaveFileName(parent,
+                                                    caption.isEmpty() ? saveDialogCaption(fileType) : caption,
                                                     strInitialFilePath,
                                                     strFilter,
                                                     strSelectedFilter.isNull() ? nullptr : &strSelectedFilter);
@@ -120,7 +109,7 @@ QString FileDialog::getLastOpenPath(FileType fileType)
     return setting.value(toSettingKey(fileType), QDir::homePath()).toString();
 }
 
-void FileDialog::setLastOpenPath(FileType fileType, QString openPath)
+void FileDialog::setLastOpenPath(FileType fileType, const QString& openPath)
 {
     QSettings setting(PENCIL2D, PENCIL2D);
     setting.beginGroup("LastOpenPath");
@@ -137,7 +126,7 @@ QString FileDialog::getLastSavePath(FileType fileType)
                          QDir::homePath() + "/" + defaultFileName(fileType)).toString();
 }
 
-void FileDialog::setLastSavePath(FileType fileType, QString savePath)
+void FileDialog::setLastSavePath(FileType fileType, const QString& savePath)
 {
     QSettings setting(PENCIL2D, PENCIL2D);
     setting.beginGroup("LastSavePath");
@@ -145,7 +134,7 @@ void FileDialog::setLastSavePath(FileType fileType, QString savePath)
     setting.setValue(toSettingKey(fileType), savePath);
 }
 
-QString FileDialog::openDialogTitle(FileType fileType)
+QString FileDialog::openDialogCaption(FileType fileType)
 {
     switch (fileType)
     {
@@ -160,7 +149,7 @@ QString FileDialog::openDialogTitle(FileType fileType)
     return "";
 }
 
-QString FileDialog::saveDialogTitle(FileType fileType)
+QString FileDialog::saveDialogCaption(FileType fileType)
 {
     switch (fileType)
     {
@@ -195,7 +184,7 @@ QString FileDialog::saveFileFilters(FileType fileType)
     switch (fileType)
     {
     case FileType::ANIMATION: return PFF_PROJECT_EXT_FILTER;
-    case FileType::IMAGE: return "";
+    case FileType::IMAGE:
     case FileType::IMAGE_SEQUENCE: return "";
     case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
     case FileType::MOVIE: return "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)";
@@ -205,7 +194,7 @@ QString FileDialog::saveFileFilters(FileType fileType)
     return "";
 }
 
-QString FileDialog::getFilterForFile(QString filters, QString filePath)
+QString FileDialog::getFilterForFile(const QString& filters, QString filePath)
 {
     if (!filePath.contains("."))
     {
@@ -214,7 +203,7 @@ QString FileDialog::getFilterForFile(QString filters, QString filePath)
     QString fileExt = filePath.remove(0, filePath.lastIndexOf(".")).prepend("*");
 
     QStringList filtersSplit = filters.split(";;");
-    for (QString filter : filtersSplit)
+    for (const QString& filter : filtersSplit)
     {
         int start = filter.indexOf("(");
         int end = filter.indexOf(")");
@@ -238,7 +227,7 @@ QString FileDialog::defaultFileName(FileType fileType)
     switch (fileType)
     {
     case FileType::ANIMATION: return tr("MyAnimation.pclx");
-    case FileType::IMAGE: return tr("untitled.png");
+    case FileType::IMAGE:
     case FileType::IMAGE_SEQUENCE: return tr("untitled.png");
     case FileType::GIF: return tr("untitled.gif");
     case FileType::MOVIE: return tr("untitled.mp4");

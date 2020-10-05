@@ -57,7 +57,7 @@ HEADERS += \
     src/colorinspector.h \
     src/colorpalettewidget.h \
     src/colorwheel.h \
-    src/filedialogex.h \
+    src/filedialog.h \
     src/displayoptionwidget.h \
     src/pencilapplication.h \
     src/exportmoviedialog.h \
@@ -73,7 +73,7 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/presetdialog.h    
+    src/presetdialog.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -93,7 +93,7 @@ SOURCES += \
     src/colorinspector.cpp \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
-    src/filedialogex.cpp \
+    src/filedialog.cpp \
     src/displayoptionwidget.cpp \
     src/pencilapplication.cpp \
     src/exportmoviedialog.cpp \

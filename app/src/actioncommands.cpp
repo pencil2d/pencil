@@ -49,7 +49,7 @@ GNU General Public License for more details.
 
 #include "movieimporter.h"
 #include "movieexporter.h"
-#include "filedialogex.h"
+#include "filedialog.h"
 #include "exportmoviedialog.h"
 #include "exportimagedialog.h"
 #include "aboutdialog.h"
@@ -67,8 +67,7 @@ ActionCommands::~ActionCommands() {}
 
 Status ActionCommands::importMovieVideo()
 {
-    FileDialog fileDialog(mParent);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    QString filePath = FileDialog::getOpenFileName(mParent, FileType::MOVIE);
     if (filePath.isEmpty())
     {
         return Status::FAIL;
@@ -119,8 +118,7 @@ Status ActionCommands::importMovieVideo()
 
 Status ActionCommands::importMovieAudio()
 {
-    FileDialog fileDialog(mParent);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    QString filePath = FileDialog::getOpenFileName(mParent, FileType::MOVIE);
     if (filePath.isEmpty())
     {
         return Status::FAIL;
@@ -215,8 +213,7 @@ Status ActionCommands::importSound()
         return Status::SAFE;
     }
 
-    FileDialog fileDialog(mParent);
-    QString strSoundFile = fileDialog.openFile(FileType::SOUND);
+    QString strSoundFile = FileDialog::getOpenFileName(mParent, FileType::SOUND);
 
     if (strSoundFile.isEmpty())
     {
@@ -652,8 +649,7 @@ Status ActionCommands::addNewKey()
     SoundClip* clip = dynamic_cast<SoundClip*>(key);
     if (clip)
     {
-        FileDialog fileDialog(mParent);
-        QString strSoundFile = fileDialog.openFile(FileType::SOUND);
+        QString strSoundFile = FileDialog::getOpenFileName(mParent, FileType::SOUND);
 
         if (strSoundFile.isEmpty())
         {
