@@ -14,30 +14,19 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
 #include <QApplication>
-#include <QString>
-#include <QStringList>
-#include <QDir>
-#include <QProcess>
-#include <QProgressDialog>
-#include <QSysInfo>
-#include <QSettings>
-#include <QDebug>
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
   #include <QOperatingSystemVersion>
 #endif
 
-#include "object.h"
-#include "editor.h"
-#include "pencildef.h"
-#include "macosxnative.h"
-
 #include <CoreFoundation/CoreFoundation.h>
+
+#include "macosxnative.h"
 
 namespace PlatformHandler
 {
-
     void configurePlatformSpecificSettings()
     {
         MacOSXNative::removeUnwantedMenuItems();
@@ -55,30 +44,28 @@ namespace PlatformHandler
 }
 
 extern "C" {
+
 // this is not declared in Carbon.h anymore, but it's in the framework
 OSStatus
 SetMouseCoalescingEnabled(
  Boolean    inNewState,
  Boolean *  outOldState);
-}
 
-extern "C" {
-
-bool gIsMouseCoalecing = false;
+bool gIsMouseCoalescing = false;
 
 void detectWhichOSX()
 {
  #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     QOperatingSystemVersion current = QOperatingSystemVersion::current();
-    gIsMouseCoalecing = ( current >= QOperatingSystemVersion::OSXElCapitan );
+    gIsMouseCoalescing = ( current >= QOperatingSystemVersion::OSXElCapitan );
 #else
-    gIsMouseCoalecing = false;
+    gIsMouseCoalescing = false;
 #endif
 }
 
 void disableCoalescing()
 {
-    SetMouseCoalescingEnabled(gIsMouseCoalecing, NULL);
+    SetMouseCoalescingEnabled(gIsMouseCoalescing, NULL);
     //MacOSXNative::setMouseCoalescingEnabled(false);
 }
 

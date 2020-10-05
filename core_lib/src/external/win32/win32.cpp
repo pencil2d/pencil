@@ -16,20 +16,6 @@ GNU General Public License for more details.
 
 */
 
-#include <cstdint>
-#include <QFile>
-#include <QProcess>
-#include <QDir>
-#include <QString>
-#include <QProgressDialog>
-#include <QImageReader>
-#include <QImageWriter>
-#include <QSettings>
-#include <QDebug>
-
-#include "object.h"
-#include "editor.h"
-#include "layersound.h"
 #include "platformhandler.h"
 
 namespace PlatformHandler
