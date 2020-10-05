@@ -107,26 +107,6 @@ upload_pr() {
   msg "Upload complete"
 }
 
-deploy_docs() {
-  cd "${TRAVIS_BUILD_DIR}/util/docs"
-
-  msg "Updating online documentation..."
-  for i in core gui network svg testlib widgets xml xmlpatterns; do
-    curl -fsSLO "https://doc.qt.io/qt-5/qt${i}.tags"
-  done
-
-  cd "${TRAVIS_BUILD_DIR}"
-
-  cp Doxyfile Doxyfile-Travis;
-  echo "PROJECT_NUMBER = ${TRAVIS_COMMIT}" >> Doxyfile-Travis;
-  echo "HTML_HEADER = util/docs/header.html" >> Doxyfile-Travis;
-  echo "HTML_EXTRA_STYLESHEET = util/docs/extra.css" >> Doxyfile-Travis;
-  doxygen Doxyfile-Travis 2>&1 | tee doxygen.log
-
-  util/docs/documentation-deploy.sh
-  msg "Documentation updated"
-}
-
 "package_${TRAVIS_OS_NAME}"
 
 if [ "${TRAVIS_BRANCH}" = "master" ] || [ "${TRAVIS_BRANCH}" = "release" ] || [ "${FORCE_NIGHTLY_UPLOAD}" = "yes" ]; then
@@ -135,8 +115,4 @@ fi
 
 if [ "${TRAVIS_PULL_REQUEST_SLUG}" = "pencil2d/pencil" ]; then
   upload_pr
-fi
-
-if [ "${TRAVIS_BRANCH}" = "master" ] && [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-  deploy_docs
 fi
