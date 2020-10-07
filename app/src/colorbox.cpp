@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 
 
-ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
+ColorBox::ColorBox(QWidget* parent) : BaseDockWidget( parent )
 {
     setWindowTitle(tr("Color Box", "Color Box window title"));
 }
