@@ -63,11 +63,11 @@ void DebugDetails::appendSystemInfo()
 #if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     mDetails << "System Info";
 #if defined(PENCIL2D_RELEASE_BUILD)
-    mDetails << "Pencil version: " APP_VERSION " (stable)";
+    mDetails << "Pencil2D version: " APP_VERSION " (stable)";
 #elif defined(PENCIL2D_NIGHTLY_BUILD)
-    mDetails << "Pencil version: " APP_VERSION " (nightly)";
+    mDetails << "Pencil2D version: " APP_VERSION " (nightly)";
 #else
-    mDetails << "Pencil version: " APP_VERSION " (dev)";
+    mDetails << "Pencil2D version: " APP_VERSION " (dev)";
 #endif
 
 #if defined(GIT_EXISTS)

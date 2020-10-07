@@ -72,14 +72,14 @@ Object* FileManager::load(QString sFileName)
 
     if (oldFormat)
     {
-        dd << "Recognized Old Pencil File Format (*.pcl) !";
+        dd << "Recognized Old Pencil2D File Format (*.pcl) !";
 
         strMainXMLFile = sFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dd << "Recognized New zipped Pencil File Format (*.pclx) !";
+        dd << "Recognized New zipped Pencil2D File Format (*.pclx) !";
 
         unzip(sFileName, obj->workingDir());
 
@@ -252,14 +252,14 @@ Status FileManager::save(const Object* object, QString sFileName)
     const bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
     if (isOldType)
     {
-        dd << "Old Pencil File Format (*.pcl) !";
+        dd << "Old Pencil2D File Format (*.pcl) !";
 
         sMainXMLFile = sFileName;
         sDataFolder = sMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dd << "New zipped Pencil File Format (*.pclx) !";
+        dd << "New zipped Pencil2D File Format (*.pclx) !";
 
         sTempWorkingFolder = object->workingDir();
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
