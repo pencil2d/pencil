@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -168,7 +168,7 @@ QString FileDialog::openFileFilters(FileType fileType)
 {
     switch (fileType)
     {
-    case FileType::ANIMATION: return PFF_PROJECT_EXT_FILTER;
+    case FileType::ANIMATION: return PFF_OPEN_PROJECT_EXT_FILTER;
     case FileType::IMAGE: return PFF_IMAGE_FILTER;
     case FileType::IMAGE_SEQUENCE: return PFF_IMAGE_SEQ_FILTER;
     case FileType::GIF: return PFF_GIF_EXT_FILTER;
@@ -183,8 +183,8 @@ QString FileDialog::saveFileFilters(FileType fileType)
 {
     switch (fileType)
     {
-    case FileType::ANIMATION: return PFF_PROJECT_EXT_FILTER;
-    case FileType::IMAGE:
+    case FileType::ANIMATION: return PFF_SAVE_PROJECT_EXT_FILTER;
+    case FileType::IMAGE: return "";
     case FileType::IMAGE_SEQUENCE: return "";
     case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
     case FileType::MOVIE: return "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)";

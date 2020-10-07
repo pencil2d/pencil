@@ -26,8 +26,11 @@ GNU General Public License for more details.
 #define PFF_EXTENSION				    ".pclx"
 #define PFF_BIG_LETTER_EXTENSION	    "PCLX"
 
-#define PFF_PROJECT_EXT_FILTER \
+#define PFF_OPEN_PROJECT_EXT_FILTER \
     QObject::tr("Pencil formats") + " (*.pclx *.pcl);;" + QObject::tr("Pencil Project") + " (*.pclx);;" + QObject::tr("Legacy Pencil Project") + " (*.pcl)"
+
+#define PFF_SAVE_PROJECT_EXT_FILTER \
+    QObject::tr("Pencil Project") + " (*.pclx);;" + QObject::tr("Legacy Pencil Project") + " (*.pcl)"
 
 #define PFF_MOVIE_EXT \
     QObject::tr("Movie formats") + "*.avi *.mpg *.mpeg *.mov *.mp4 *.mkv *.ogv *.swf *.flv *.webm *.wmv);;" \
