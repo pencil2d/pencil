@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPixmap>
 #include <QBitmap>
+#include <QtMath>
 #include "pointerevent.h"
 
 #include "vectorimage.h"
@@ -63,10 +64,22 @@ QCursor EyedropperTool::cursor(const QColor color)
     QPixmap pixmap(32, 32);
     pixmap.fill(Qt::transparent);
 
+
+    /// Color should not blend with background
+    qreal alpha = color.alpha() / 255.0;
+    qreal oneMinusAlpha = 1.0 - alpha;
+    int red = static_cast<int>((color.red() * alpha) + (oneMinusAlpha * 255));
+    int green = static_cast<int>((color.green() * alpha) + (oneMinusAlpha * 255));
+    int blue = static_cast<int>((color.blue() * alpha) + (oneMinusAlpha * 255));
+
     QPainter painter(&pixmap);
     painter.drawPixmap(0, 0, icon);
+    painter.save();
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.setBrush(color);
+    painter.restore();
+    painter.drawRect(17, 17, 13, 13);
+    painter.setPen(QPen(Qt::white, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.setBrush(QColor(red, green, blue));
     painter.drawRect(16, 16, 15, 15);
     painter.end();
 
@@ -143,10 +156,13 @@ void EyedropperTool::updateFrontColor()
 QColor EyedropperTool::getBitmapColor(LayerBitmap* layer)
 {
     BitmapImage* targetImage = layer->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-    if (targetImage == nullptr || !targetImage->contains(getLastPoint())) return QColor();
+    if (targetImage == nullptr || !targetImage->contains(getCurrentPoint())) return QColor();
 
     QColor pickedColour;
-    pickedColour.setRgba(qUnpremultiply(targetImage->pixel(getLastPoint().x(), getLastPoint().y())));
+    const QRgb pixelColor = targetImage->constScanLine(qFloor(qMin(getCurrentPoint().x(),getLastPoint().x())),
+                                                       qFloor(qMin(getCurrentPoint().y(),getLastPoint().y())));
+    pickedColour.setRgba(pixelColor);
+
     if (pickedColour.alpha() <= 0) pickedColour = QColor();
     return pickedColour;
 }
