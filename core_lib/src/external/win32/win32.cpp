@@ -21,6 +21,6 @@ GNU General Public License for more details.
 namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
-
+    bool isDarkMode() { return false; };
     void initialise() {};
 }

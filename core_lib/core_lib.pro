@@ -103,7 +103,6 @@ HEADERS +=  \
     src/qminiz.h \
     src/activeframepool.h \
     src/external/platformhandler.h \
-    src/external/macosx/macosxnative.h \
     src/selectionpainter.h
 
 
@@ -183,6 +182,7 @@ win32 {
 
 macx {
     INCLUDEPATH += src/external/macosx
+    HEADERS += src/external/macosx/macosxnative.h
     SOURCES += src/external/macosx/macosx.cpp
     OBJECTIVE_SOURCES += src/external/macosx/macosxnative.mm
 }
