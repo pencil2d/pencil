@@ -64,22 +64,13 @@ QCursor EyedropperTool::cursor(const QColor color)
     QPixmap pixmap(32, 32);
     pixmap.fill(Qt::transparent);
 
-
-    /// Color should not blend with background
-    qreal alpha = color.alpha() / 255.0;
-    qreal oneMinusAlpha = 1.0 - alpha;
-    int red = static_cast<int>((color.red() * alpha) + (oneMinusAlpha * 255));
-    int green = static_cast<int>((color.green() * alpha) + (oneMinusAlpha * 255));
-    int blue = static_cast<int>((color.blue() * alpha) + (oneMinusAlpha * 255));
-
     QPainter painter(&pixmap);
     painter.drawPixmap(0, 0, icon);
-    painter.save();
-    painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.restore();
+
+    painter.setBrush(Qt::white);
     painter.drawRect(17, 17, 13, 13);
     painter.setPen(QPen(Qt::white, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.setBrush(QColor(red, green, blue));
+    painter.setBrush(color);
     painter.drawRect(16, 16, 15, 15);
     painter.end();
 
