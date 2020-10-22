@@ -68,8 +68,8 @@ public:
     void setPixel(QPoint p, QRgb color);
     void fillNonAlphaPixels(const QRgb color);
 
-    inline QRgb constScanLine(int x, int y) const;
-    inline void scanLine(int x, int y, QRgb color);
+    QRgb constScanLine(int x, int y) const;
+    void scanLine(int x, int y, QRgb color);
     void clear();
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }

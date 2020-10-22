@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPixmap>
 #include <QBitmap>
+#include <QtMath>
 #include "pointerevent.h"
 
 #include "vectorimage.h"
@@ -65,7 +66,10 @@ QCursor EyedropperTool::cursor(const QColor color)
 
     QPainter painter(&pixmap);
     painter.drawPixmap(0, 0, icon);
-    painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+
+    painter.setBrush(Qt::white);
+    painter.drawRect(17, 17, 13, 13);
+    painter.setPen(QPen(Qt::white, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.setBrush(color);
     painter.drawRect(16, 16, 15, 15);
     painter.end();
@@ -143,10 +147,13 @@ void EyedropperTool::updateFrontColor()
 QColor EyedropperTool::getBitmapColor(LayerBitmap* layer)
 {
     BitmapImage* targetImage = layer->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-    if (targetImage == nullptr || !targetImage->contains(getLastPoint())) return QColor();
+    if (targetImage == nullptr || !targetImage->contains(getCurrentPoint())) return QColor();
 
     QColor pickedColour;
-    pickedColour.setRgba(qUnpremultiply(targetImage->pixel(getLastPoint().x(), getLastPoint().y())));
+    const QRgb pixelColor = targetImage->constScanLine(qFloor(getCurrentPoint().x()),
+                                                       qFloor(getCurrentPoint().y()));
+    pickedColour.setRgba(pixelColor);
+
     if (pickedColour.alpha() <= 0) pickedColour = QColor();
     return pickedColour;
 }
