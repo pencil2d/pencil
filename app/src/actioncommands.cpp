@@ -193,8 +193,7 @@ Status ActionCommands::importSound()
         }
         else
         {
-            Q_ASSERT(false);
-            return Status::FAIL;
+            return Status::SAFE;
         }
     }
 
