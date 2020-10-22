@@ -18,7 +18,7 @@ os:
 jobs:
   include:
     - name: Documentation Update
-      if: branch = master AND env(GH_REPO_TOKEN) IS present
+      if: type != pull_request AND branch = master AND env(GH_REPO_TOKEN) IS present
       os: linux
       addons:
         apt:
