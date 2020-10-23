@@ -252,7 +252,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
             {
                 BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
                 element->layer = backupLayer;
-                element->frame = backupFrame;
+                element->frame = bitmapImage->pos();
                 element->undoText = undoText;
                 element->somethingSelected = select()->somethingSelected();
                 element->mySelection = select()->mySelectionRect();
@@ -270,7 +270,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
             {
                 BackupVectorElement* element = new BackupVectorElement(vectorImage);
                 element->layer = backupLayer;
-                element->frame = backupFrame;
+                element->frame = vectorImage->pos();
                 element->undoText = undoText;
                 element->somethingSelected = select()->somethingSelected();
                 element->mySelection = select()->mySelectionRect();
