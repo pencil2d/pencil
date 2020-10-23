@@ -73,7 +73,6 @@ public:
     void cancelTransformedSelection();
 
     bool isLayerPaintable() const;
-    bool allowSmudging();
 
     QVector<QPoint> calcSelectionCenterPoints();
 
