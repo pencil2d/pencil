@@ -51,7 +51,11 @@ HEADERS += \
     src/timeline2.h \
     src/actioncommands.h \
     src/preferencesdialog.h \
+    src/filespage.h \
+    src/generalpage.h \
     src/shortcutspage.h \
+    src/timelinepage.h \
+    src/toolspage.h \
     src/preview.h \
     src/colorbox.h \
     src/colorinspector.h \
@@ -87,7 +91,11 @@ SOURCES += \
     src/timeline2.cpp \
     src/actioncommands.cpp \
     src/preferencesdialog.cpp \
+    src/filespage.cpp \
+    src/generalpage.cpp \
     src/shortcutspage.cpp \
+    src/timelinepage.cpp \
+    src/toolspage.cpp \
     src/preview.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \

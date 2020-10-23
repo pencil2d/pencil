@@ -114,11 +114,4 @@
  </widget>
  <resources/>
  <connections/>
- <slots>
-  <slot>onionMaxOpacityChange(int)</slot>
-  <slot>onionMinOpacityChange(int)</slot>
-  <slot>onionPrevFramesNumChange(int)</slot>
-  <slot>onionNextFramesNumChange(int)</slot>
-  <slot>quickSizingChange(int)</slot>
- </slots>
 </ui>

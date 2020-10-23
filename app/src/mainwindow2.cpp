@@ -19,10 +19,8 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
-// standard headers
-#include <memory>
-
 // Qt headers
+#include <QDir>
 #include <QList>
 #include <QMenu>
 #include <QFile>
