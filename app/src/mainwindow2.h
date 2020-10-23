@@ -68,6 +68,7 @@ public slots:
     void openPegAlignDialog();
     void currentLayerChanged();
     void selectionChanged();
+    void viewFlipped();
 
 public:
     void newDocument();

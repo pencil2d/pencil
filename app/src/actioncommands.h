@@ -55,8 +55,6 @@ public:
     void ZoomOut();
     void rotateClockwise();
     void rotateCounterClockwise();
-    void toggleMirror();
-    void toggleMirrorV();
 
     // Animation
     void PlayStop();

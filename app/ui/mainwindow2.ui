@@ -491,6 +491,9 @@
    </property>
   </action>
   <action name="actionHorizontal_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
@@ -500,6 +503,9 @@
    </property>
   </action>
   <action name="actionVertical_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>

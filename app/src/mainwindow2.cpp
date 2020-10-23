@@ -318,8 +318,9 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom50, &QAction::triggered, mEditor->view(), &ViewManager::scale50);
     connect(ui->actionZoom33, &QAction::triggered, mEditor->view(), &ViewManager::scale33);
     connect(ui->actionZoom25, &QAction::triggered, mEditor->view(), &ViewManager::scale25);
-    connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
-    connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
+    connect(ui->actionHorizontal_Flip, &QAction::triggered, mEditor->view(), &ViewManager::flipHorizontal);
+    connect(ui->actionVertical_Flip, &QAction::triggered, mEditor->view(), &ViewManager::flipVertical);
+    connect(mEditor->view(), &ViewManager::viewFlipped, this, &MainWindow2::viewFlipped);
 
     PreferenceManager* prefs = mEditor->preference();
     bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
@@ -473,6 +474,12 @@ void MainWindow2::selectionChanged()
 {
     bool somethingSelected = mEditor->select()->somethingSelected();
     ui->menuSelection->setEnabled(somethingSelected);
+}
+
+void MainWindow2::viewFlipped()
+{
+    ui->actionHorizontal_Flip->setChecked(mEditor->view()->isFlipHorizontal());
+    ui->actionVertical_Flip->setChecked(mEditor->view()->isFlipVertical());
 }
 
 void MainWindow2::closeEvent(QCloseEvent* event)
