@@ -114,6 +114,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/vectorimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
+    src/interface/backupelement.cpp \
     src/interface/camerapropertiesdialog.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
