@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>30</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -261,7 +261,9 @@
     <property name="title">
      <string>Windows</string>
     </property>
-    <addaction name="actionReset_Windows"/>
+    <addaction name="actionResetWindows"/>
+    <addaction name="actionLockWindows"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -450,7 +452,7 @@
     <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
-  <action name="actionReset_Windows">
+  <action name="actionResetWindows">
    <property name="text">
     <string>Reset Windows</string>
    </property>
@@ -489,6 +491,9 @@
    </property>
   </action>
   <action name="actionHorizontal_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
@@ -498,6 +503,9 @@
    </property>
   </action>
   <action name="actionVertical_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
@@ -1046,7 +1054,7 @@
   </action>
   <action name="actionImportLayers_from_pclx">
    <property name="text">
-    <string>Layers from PCLX...</string>
+    <string>Layers from Project file...</string>
    </property>
   </action>
   <action name="actionVisibilityCurrentLayerOnly">
@@ -1087,6 +1095,14 @@
   <action name="actionOpen_Temporary_Directory">
    <property name="text">
     <string>Open Temporary Directory</string>
+   </property>
+  </action>
+  <action name="actionLockWindows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock Windows</string>
    </property>
   </action>
  </widget>

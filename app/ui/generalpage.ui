@@ -502,19 +502,6 @@
  </tabstops>
  <resources/>
  <connections/>
- <slots>
-  <signal>windowOpacityChange(int)</signal>
-  <slot>gridSizeChange(int)</slot>
-  <slot>languageChanged(int)</slot>
-  <slot>shadowsCheckboxStateChanged(int)</slot>
-  <slot>toolCursorsCheckboxStateChanged(int)</slot>
-  <slot>antiAliasCheckboxStateChanged(int)</slot>
-  <slot>curveSmoothingChange(int)</slot>
-  <slot>highResCheckboxStateChanged(int)</slot>
-  <slot>dottedCursorCheckboxStateChanged(int)</slot>
-  <slot>gridCheckBoxStateChanged(int)</slot>
-  <slot>backgroundChange(int)</slot>
- </slots>
  <buttongroups>
   <buttongroup name="backgroundButtons"/>
  </buttongroups>

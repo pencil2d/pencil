@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -72,14 +72,14 @@ Object* FileManager::load(QString sFileName)
 
     if (oldFormat)
     {
-        dd << "Recognized Old Pencil File Format (*.pcl) !";
+        dd << "Recognized Old Pencil2D File Format (*.pcl) !";
 
         strMainXMLFile = sFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dd << "Recognized New zipped Pencil File Format (*.pclx) !";
+        dd << "Recognized New zipped Pencil2D File Format (*.pclx) !";
 
         unzip(sFileName, obj->workingDir());
 
@@ -252,14 +252,14 @@ Status FileManager::save(const Object* object, QString sFileName)
     const bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
     if (isOldType)
     {
-        dd << "Old Pencil File Format (*.pcl) !";
+        dd << "Old Pencil2D File Format (*.pcl) !";
 
         sMainXMLFile = sFileName;
         sDataFolder = sMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dd << "New zipped Pencil File Format (*.pclx) !";
+        dd << "New zipped Pencil2D File Format (*.pclx) !";
 
         sTempWorkingFolder = object->workingDir();
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
@@ -357,7 +357,8 @@ Status FileManager::writeToWorkingFolder(const Object* object)
     dd.collect(stPalette.details());
 
     const bool saveOk = stKeyFrames.ok() && stMainXml.ok() && stPalette.ok();
-
+    const auto errorCode = (saveOk) ? Status::OK : Status::FAIL;
+    return Status(errorCode, dd);
 }
 
 ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
@@ -849,9 +850,11 @@ Status FileManager::rebuildMainXML(Object* object)
 }
 /**
  *  Rebuild a layer xml tag. example:
+ *  @code{.xml}
  *    <layer id="2" type="2" visibility="1" name="Vector Layer">
  *      <image src="002.001.vec" frame="1"/>
  *    </layer>
+ *  @endcode
  */
 Status FileManager::rebuildLayerXmlTag(QDomDocument& doc,
                                        QDomElement& elemObject,

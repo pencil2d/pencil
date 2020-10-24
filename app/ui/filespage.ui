@@ -150,9 +150,4 @@
  </widget>
  <resources/>
  <connections/>
- <slots>
-  <slot>autosaveChange(int)</slot>
-  <slot>autosaveNumberChange(int)</slot>
-  <slot>clearRecentFilesList()</slot>
- </slots>
 </ui>

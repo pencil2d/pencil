@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -262,6 +262,28 @@ Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
     return nullptr;
 }
 
+Layer* Object::takeLayer(int layerId)
+{
+    // Removes the layer from this Object and returns it
+    // The ownership of this layer has been transfer to the caller
+    int index = -1;
+    for (int i = 0; i< mLayers.length(); ++i)
+    {
+        Layer* layer = mLayers[i];
+        if (layer->id() == layerId)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1) { return nullptr; }
+
+    Layer* layer = mLayers.takeAt(index);
+    layer->setParent(nullptr);
+    return layer;
+}
+
 bool Object::swapLayers(int i, int j)
 {
     if (i < 0 || i >= mLayers.size())
@@ -302,12 +324,19 @@ void Object::deleteLayer(Layer* layer)
     }
 }
 
-void Object::addLayer(Layer *layer)
+bool Object::addLayer(Layer* layer)
 {
-    if (layer != nullptr)
+    if (layer == nullptr)
     {
-        mLayers.append(layer);
+        return false;
     }
+    if (mLayers.contains(layer))
+    {
+        return false;
+    }
+    layer->setObject(this);
+    mLayers.append(layer);
+    return true;
 }
 
 ColorRef Object::getColor(int index) const

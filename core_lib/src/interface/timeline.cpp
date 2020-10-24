@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -150,7 +150,6 @@ void TimeLine::initUI()
     timelineButtons->addSeparator();
     timelineButtons->addWidget(zoomLabel);
     timelineButtons->addWidget(zoomSlider);
-    timelineButtons->addSeparator();
     timelineButtons->addSeparator();
     timelineButtons->setFixedHeight(30);
 

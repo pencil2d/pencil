@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ public:
 
     void setCore(Editor* e) { mEditor = e; }
 
-    // file 
+    // file
     Status importMovieVideo();
     Status importMovieAudio();
     Status importSound();
@@ -55,9 +55,6 @@ public:
     void ZoomOut();
     void rotateClockwise();
     void rotateCounterClockwise();
-    void toggleMirror();
-    void toggleMirrorV();
-    void showGrid(bool bShow);
 
     // Animation
     void PlayStop();

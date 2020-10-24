@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
 Copyright (C) 2012-2020 Matthew Chiawen Chang
@@ -19,10 +19,8 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
-// standard headers
-#include <memory>
-
 // Qt headers
+#include <QDir>
 #include <QList>
 #include <QMenu>
 #include <QFile>
@@ -67,6 +65,7 @@ GNU General Public License for more details.
 //#include "preview.h"
 #include "timeline2.h"
 #include "errordialog.h"
+#include "filedialog.h"
 #include "importimageseqdialog.h"
 #include "importlayersdialog.h"
 #include "importpositiondialog.h"
@@ -227,6 +226,7 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mColorInspector);
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
+    makeConnections(mEditor, mDisplayOptionWidget);
 
     for (BaseDockWidget* w : mDockWidgets)
     {
@@ -320,16 +320,14 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom50, &QAction::triggered, mEditor->view(), &ViewManager::scale50);
     connect(ui->actionZoom33, &QAction::triggered, mEditor->view(), &ViewManager::scale33);
     connect(ui->actionZoom25, &QAction::triggered, mEditor->view(), &ViewManager::scale25);
-    connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
-    connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
+    connect(ui->actionHorizontal_Flip, &QAction::triggered, mEditor->view(), &ViewManager::flipHorizontal);
+    connect(ui->actionVertical_Flip, &QAction::triggered, mEditor->view(), &ViewManager::flipVertical);
+    connect(mEditor->view(), &ViewManager::viewFlipped, this, &MainWindow2::viewFlipped);
 
-    //# connect(previewAct, &QAction::triggered, editor, &Editor::getCameraLayer);//TODO: Preview view
-
-    setMenuActionChecked(ui->actionGrid, mEditor->preference()->isOn(SETTING::GRID));
-    connect(ui->actionGrid, &QAction::triggered, mCommands, &ActionCommands::showGrid);
-
-    bindActionWithSetting(ui->actionOnionPrev, SETTING::PREV_ONION);
-    bindActionWithSetting(ui->actionOnionNext, SETTING::NEXT_ONION);
+    PreferenceManager* prefs = mEditor->preference();
+    bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
+    bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
+    bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -373,7 +371,6 @@ void MainWindow2::createMenus()
 
     //--- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
-    winMenu->clear();
     const std::vector<QAction*> actions
     {
         mToolBox->toggleViewAction(),
@@ -391,16 +388,9 @@ void MainWindow2::createMenus()
         action->setMenuRole(QAction::NoRole);
         winMenu->addAction(action);
     }
-
-    winMenu->addSeparator();
-    QAction* lockWidgets = new QAction(tr("Lock Windows"), winMenu);
-    lockWidgets->setCheckable(true);
-    winMenu->addAction(lockWidgets);
-    winMenu->addAction(ui->actionReset_Windows);
-
-    connect(lockWidgets, &QAction::toggled, this, &MainWindow2::lockWidgets);
-    bindActionWithSetting(lockWidgets, SETTING::LAYOUT_LOCK);
-    connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
+    connect(ui->actionResetWindows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
+    connect(ui->actionLockWindows, &QAction::toggled, this, &MainWindow2::lockWidgets);
+    bindPreferenceSetting(ui->actionLockWindows, prefs, SETTING::LAYOUT_LOCK);
 
     //--- Help Menu ---
     connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
@@ -488,6 +478,12 @@ void MainWindow2::selectionChanged()
     ui->menuSelection->setEnabled(somethingSelected);
 }
 
+void MainWindow2::viewFlipped()
+{
+    ui->actionHorizontal_Flip->setChecked(mEditor->view()->isFlipHorizontal());
+    ui->actionVertical_Flip->setChecked(mEditor->view()->isFlipVertical());
+}
+
 void MainWindow2::closeEvent(QCloseEvent* event)
 {
     if (m2ndCloseEvent)
@@ -542,8 +538,7 @@ void MainWindow2::openDocument()
 {
     if (maybeSave())
     {
-        FileDialog fileDialog(this);
-        QString fileName = fileDialog.openFile(FileType::ANIMATION);
+        QString fileName = FileDialog::getOpenFileName(this, FileType::ANIMATION);
         if (!fileName.isEmpty())
         {
             openObject(fileName);
@@ -553,8 +548,7 @@ void MainWindow2::openDocument()
 
 bool MainWindow2::saveAsNewDocument()
 {
-    FileDialog fileDialog(this);
-    QString fileName = fileDialog.saveFile(FileType::ANIMATION);
+    QString fileName = FileDialog::getSaveFileName(this, FileType::ANIMATION);
     if (fileName.isEmpty())
     {
         return false;
@@ -713,7 +707,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 
     if (!st.ok())
     {
-#if QT_VERSION >= 0x050400
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
         QDir errorLogFolder(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 #else
         QDir errorLogFolder(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
@@ -833,8 +827,7 @@ void MainWindow2::emptyDocumentWhenErrorOccurred()
 
 void MainWindow2::importImage()
 {
-    FileDialog fileDialog(this);
-    QString strFilePath = fileDialog.openFile(FileType::IMAGE);
+    QString strFilePath = FileDialog::getOpenFileName(this, FileType::IMAGE);
 
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
@@ -928,9 +921,10 @@ void MainWindow2::importPredefinedImageSet()
 
 void MainWindow2::importLayers()
 {
-    ImportLayersDialog *importLayers = new ImportLayersDialog(this);
+    ImportLayersDialog* importLayers = new ImportLayersDialog(this);
     importLayers->setCore(mEditor);
-    importLayers->exec();
+    importLayers->setAttribute(Qt::WA_DeleteOnClose);
+    importLayers->open();
 }
 
 void MainWindow2::importGIF()
@@ -998,16 +992,18 @@ void MainWindow2::importGIF()
 
 void MainWindow2::lockWidgets(bool shouldLock)
 {
-    QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
+    QDockWidget::DockWidgetFeatures feat = shouldLock ? QDockWidget::NoDockWidgetFeatures : QDockWidget::AllDockWidgetFeatures;
 
-    mColorBox->setFeatures(feat);
-    mColorInspector->setFeatures(feat);
-    mColorPalette->setFeatures(feat);
-    mDisplayOptionWidget->setFeatures(feat);
-    mOnionSkinWidget->setFeatures(feat);
-    mToolOptions->setFeatures(feat);
-    mToolBox->setFeatures(feat);
-    mTimeLine->setFeatures(feat);
+    for (QDockWidget* d : mDockWidgets)
+    {
+        d->setFeatures(feat);
+
+        // https://doc.qt.io/qt-5/qdockwidget.html#setTitleBarWidget
+        // A empty QWidget looks like the tittle bar is hidden.
+        // nullptr means removing the custom title bar and restoring the default one
+        QWidget* customTitleBarWidget = shouldLock ? (new QWidget) : nullptr;
+        d->setTitleBarWidget(customTitleBarWidget);
+    }
 }
 
 void MainWindow2::setSoundScrubActive(bool b)
@@ -1164,10 +1160,11 @@ void MainWindow2::readSettings()
     QVariant winState = settings.value(SETTING_WINDOW_STATE);
     restoreState(winState.toByteArray());
 
-    QString myPath = settings.value(LAST_PCLX_PATH, QDir::homePath()).toString();
-
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
     setOpacity(100 - opacity);
+
+    bool isWindowsLocked = mEditor->preference()->isOn(SETTING::LAYOUT_LOCK);
+    lockWidgets(isWindowsLocked);
 }
 
 void MainWindow2::writeSettings()
@@ -1217,7 +1214,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionPreference->setShortcut(cmdKeySeq(CMD_PREFERENCE));
 
     // View menu
-    ui->actionReset_Windows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
+    ui->actionResetWindows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
     ui->actionReset_View->setShortcut(cmdKeySeq(CMD_RESET_ZOOM_ROTATE));
     ui->actionZoom_In->setShortcut(cmdKeySeq(CMD_ZOOM_IN));
     ui->actionZoom_Out->setShortcut(cmdKeySeq(CMD_ZOOM_OUT));
@@ -1346,8 +1343,7 @@ void MainWindow2::undoActSetEnabled()
 
 void MainWindow2::exportPalette()
 {
-    FileDialog FileDialog(this);
-    QString filePath = FileDialog.saveFile(FileType::PALETTE);
+    QString filePath = FileDialog::getSaveFileName(this, FileType::PALETTE);
     if (!filePath.isEmpty())
     {
         mEditor->object()->exportPalette(filePath);
@@ -1356,8 +1352,7 @@ void MainWindow2::exportPalette()
 
 void MainWindow2::importPalette()
 {
-    FileDialog fileDialog(this);
-    QString filePath = fileDialog.openFile(FileType::PALETTE);
+    QString filePath = FileDialog::getOpenFileName(this, FileType::PALETTE);
     if (!filePath.isEmpty())
     {
         mEditor->object()->importPalette(filePath);
@@ -1394,8 +1389,7 @@ void MainWindow2::openPalette()
 
     if (openPalette)
     {
-        FileDialog fileDialog(this);
-        QString filePath = fileDialog.openFile(FileType::PALETTE);
+        QString filePath = FileDialog::getOpenFileName(this, FileType::PALETTE);
         if (!filePath.isEmpty())
         {
             mEditor->object()->openPalette(filePath);
@@ -1430,10 +1424,17 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, [scribbleArea]
+    {
+        // Changing the current layer will only change the frame (as viewed by the user) under the following circumstances
+        if(scribbleArea->isAffectedByActiveLayer())
+        {
+            scribbleArea->updateAllFrames();
+        }
+    });
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
-    connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
+    connect(editor, &Editor::currentFrameChanged, [scribbleArea] { scribbleArea->update(); });
 
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
     //connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );
@@ -1469,8 +1470,9 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
-void MainWindow2::makeConnections(Editor*, DisplayOptionWidget*)
+void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* displayWidget)
 {
+    connect(editor->layers(), &LayerManager::currentLayerChanged, displayWidget, &DisplayOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
@@ -1496,28 +1498,6 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
 
     connect(pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor);
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
-}
-
-void MainWindow2::bindActionWithSetting(QAction* action, const SETTING& setting)
-{
-    PreferenceManager* prefs = mEditor->preference();
-
-    // set initial state
-    action->setChecked(prefs->isOn(setting));
-
-    // 2-way binding
-    connect(action, &QAction::triggered, prefs, [=](bool b)
-    {
-        prefs->set(setting, b);
-    });
-
-    connect(prefs, &PreferenceManager::optionChanged, action, [=](SETTING s)
-    {
-        if (s == setting)
-        {
-            action->setChecked(prefs->isOn(setting));
-        }
-    });
 }
 
 void MainWindow2::updateZoomLabel()

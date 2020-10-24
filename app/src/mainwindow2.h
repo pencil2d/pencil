@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
 Copyright (C) 2012-2020 Matthew Chiawen Chang
@@ -69,6 +69,7 @@ public slots:
     void openPegAlignDialog();
     void currentLayerChanged();
     void selectionChanged();
+    void viewFlipped();
 
 public:
     void newDocument();
@@ -146,8 +147,6 @@ private:
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
     void makeConnections(Editor*, OnionSkinWidget*);
-
-    void bindActionWithSetting(QAction*, const SETTING&);
 
     bool tryRecoverUnsavedProject();
     void startProjectRecovery(int result);

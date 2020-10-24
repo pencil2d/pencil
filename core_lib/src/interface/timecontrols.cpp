@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -137,6 +137,7 @@ void TimeControls::initUI()
     addWidget(mPlayButton);
     addWidget(mJumpToEndButton);
     addWidget(mLoopButton);
+    addWidget(mFpsBox);
     addWidget(mPlaybackRangeCheckBox);
     addWidget(mLoopStartSpinBox);
     addWidget(mLoopEndSpinBox);

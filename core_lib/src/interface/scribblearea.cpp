@@ -1,6 +1,6 @@
-﻿/*
+/*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -39,8 +39,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "selectionmanager.h"
 
-ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent),
-mLog("ScribbleArea")
+ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent)
 {
     setObjectName("ScribbleArea");
 
@@ -87,21 +86,14 @@ bool ScribbleArea::init()
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
 
-#if QT_VERSION >= 0x50900
-
-    // tablet tracking first added in 5.9
-    setTabletTracking(true);
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
+    setTabletTracking(true); // tablet tracking first added in 5.9
 #endif
-
-    mDebugRect = QRectF(0, 0, 0, 0);
 
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
 
     QPixmapCache::setCacheLimit(100 * 1024); // unit is kb, so it's 100MB cache
-
-    int nLength = mEditor->layers()->animationLength();
-    mPixmapCacheKeys.resize(static_cast<unsigned>(std::max(nLength, 240)));
+    mPixmapCacheKeys.clear();
 
     return true;
 }
@@ -139,6 +131,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_RED:
     case SETTING::INVISIBLE_LINES:
     case SETTING::OUTLINES:
+    case SETTING::ONION_TYPE:
         updateAllFrames();
         break;
     case SETTING::QUICK_SIZING:
@@ -187,25 +180,80 @@ void ScribbleArea::updateCurrentFrame()
 
 void ScribbleArea::updateFrame(int frame)
 {
+    Q_ASSERT(frame >= 0);
+
     int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
     if (frameNumber < 0) { return; }
 
-    Q_ASSERT(frame >= 0);
-    if (mPixmapCacheKeys.size() <= static_cast<unsigned>(frame))
+    auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(frameNumber));
+    if (cacheKeyIter != mPixmapCacheKeys.end())
     {
-        mPixmapCacheKeys.resize(static_cast<unsigned>(frame + 10)); // a buffer
+        QPixmapCache::remove(cacheKeyIter.value());
+        unsigned int key = cacheKeyIter.key();
+        mPixmapCacheKeys.remove(key);
     }
 
-    QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(frameNumber)]);
-    mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::Key();
+    updateOnionSkinsAround(frame);
 
     update();
+}
+
+void ScribbleArea::updateOnionSkinsAround(int frameNumber)
+{
+    if (frameNumber < 0) { return; }
+
+    bool isOnionAbsolute = mPrefs->getString(SETTING::ONION_TYPE) == "absolute";
+    Layer *layer = mEditor->layers()->currentLayer(0);
+
+    // The current layer can be null if updateFrame is triggered when creating a new project
+    if (!layer) return;
+
+    if (mPrefs->isOn(SETTING::PREV_ONION))
+    {
+        int onionFrameNumber = frameNumber;
+        if (isOnionAbsolute)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber + 1, true);
+        }
+
+        for(int i = 1; i <= mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM); i++)
+        {
+            onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, isOnionAbsolute);
+            if (onionFrameNumber < 0) break;
+
+            auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(onionFrameNumber));
+            if (cacheKeyIter != mPixmapCacheKeys.end())
+            {
+                QPixmapCache::remove(cacheKeyIter.value());
+                mPixmapCacheKeys.remove(cacheKeyIter.key());
+            }
+        }
+    }
+
+    if (mPrefs->isOn(SETTING::NEXT_ONION))
+    {
+        int onionFrameNumber = frameNumber;
+
+        for(int i = 1; i <= mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM); i++)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isOnionAbsolute);
+            if (onionFrameNumber < 0) break;
+
+            auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(onionFrameNumber));
+            if (cacheKeyIter != mPixmapCacheKeys.end())
+            {
+                QPixmapCache::remove(cacheKeyIter.value());
+                mPixmapCacheKeys.remove(cacheKeyIter.key());
+            }
+        }
+    }
 }
 
 void ScribbleArea::updateAllFrames()
 {
     QPixmapCache::clear();
-    std::fill(mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key());
+    mPixmapCacheKeys.clear();
+    setAllDirty();
 
     update();
 }
@@ -239,7 +287,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     {
         layer->setModified(frameNumber, true);
         emit modification(layerNumber);
-        updateAllFrames();
+        updateFrame(frameNumber);
     }
 }
 
@@ -434,7 +482,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         editor()->tools()->tabletRestorePrevTool();
     }
 
-    if (event.type() == QTabletEvent::TabletPress)
+    if (event.eventType() == QTabletEvent::TabletPress)
     {
         event.accept();
         mStrokeManager->pointerPressEvent(&event);
@@ -460,7 +508,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         }
         mTabletInUse = event.isAccepted();
     }
-    else if (event.type() == QTabletEvent::TabletMove)
+    else if (event.eventType() == QTabletEvent::TabletMove)
     {
         if (!(event.buttons() & (Qt::LeftButton | Qt::RightButton)) || mTabletInUse)
         {
@@ -468,7 +516,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
             pointerMoveEvent(&event);
         }
     }
-    else if (event.type() == QTabletEvent::TabletRelease)
+    else if (event.eventType() == QTabletEvent::TabletRelease)
     {
         if (mTabletInUse)
         {
@@ -567,7 +615,7 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
-    if (event->button() == Qt::RightButton)
+    if (event->buttons() & (Qt::RightButton | Qt::MiddleButton))
     {
         getTool(HAND)->pointerReleaseEvent(event);
         mMouseRightButtonInUse = false;
@@ -637,32 +685,10 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
     mStrokeManager->pointerMoveEvent(&event);
 
     pointerMoveEvent(&event);
-
-#ifdef DEBUG_FPS
-    if (mMouseInUse)
-    {
-        clock_t curTime = clock();
-        mDebugTimeQue.push_back(curTime);
-
-        while (mDebugTimeQue.size() > 30)
-        {
-            mDebugTimeQue.pop_front();
-        }
-
-        if (mDebugTimeQue.size() > 30)
-        {
-            clock_t interval = mDebugTimeQue.back() - mDebugTimeQue.front();
-            double fps = mDebugTimeQue.size() / ((double)interval) * CLOCKS_PER_SEC;
-            qDebug() << fps;
-        }
-    }
-#endif
 }
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 {
-    // Workaround for tablet issue (#677 part 2)
-    if (mStrokeManager->isTabletInUse() || !isMouseInUse()) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerReleaseEvent(&event);
@@ -744,12 +770,7 @@ void ScribbleArea::paintBitmapBuffer()
     update(rect);
 
     // Update the cache for the last key-frame.
-    auto lastKeyFramePosition = mEditor->layers()->lastFrameAtFrame(frameNumber);
-    if (lastKeyFramePosition >= 0)
-    {
-        QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)]);
-        mPixmapCacheKeys[static_cast<unsigned>(lastKeyFramePosition)] = QPixmapCache::Key();
-    }
+    updateFrame(frameNumber);
     layer->setModified(frameNumber, true);
 
     mBufferImg->clear();
@@ -792,8 +813,7 @@ void ScribbleArea::paintBitmapBufferRect(const QRect& rect)
         int frameNumber = mEditor->currentFrame();
         layer->setModified(frameNumber, true);
 
-        QPixmapCache::remove(mPixmapCacheKeys[static_cast<unsigned>(frameNumber)]);
-        mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::Key();
+        updateFrame(frameNumber);
 
         drawCanvas(frameNumber, rect.adjusted(-1, -1, 1, 1));
         update(rect);
@@ -947,13 +967,13 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
         if (frameNumber < 0)
         {
-            drawCanvas(mEditor->currentFrame(), event->rect());
+            drawCanvas(curIndex, event->rect());
         }
         else
         {
-            QPixmapCache::Key cachedKey = mPixmapCacheKeys[static_cast<unsigned>(frameNumber)];
+            auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned>(frameNumber));
 
-            if (!QPixmapCache::find(cachedKey, &mCanvas))
+            if (cacheKeyIter == mPixmapCacheKeys.end() || !QPixmapCache::find(cacheKeyIter.value(), &mCanvas))
             {
                 drawCanvas(mEditor->currentFrame(), event->rect());
 
@@ -1652,4 +1672,11 @@ void ScribbleArea::floodFillError(int errorType)
     if (errorType == 3) { error = tr("Could not find the root index.", "Bucket tool fill error message"); }
     QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok);
     mEditor->deselectAll();
+}
+
+bool ScribbleArea::isAffectedByActiveLayer() const
+{
+    return mPrefs->isOn(SETTING::PREV_ONION) ||
+            mPrefs->isOn(SETTING::NEXT_ONION) ||
+            getLayerVisibility() != LayerVisibility::ALL;
 }

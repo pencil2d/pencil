@@ -26,8 +26,8 @@ $libssl = switch ($platform) {
   default {""; break}
 }
 
-[string]$ffmpegFileName = "ffmpeg-4.1.1-$arch-static"
-[string]$ffmpegUrl = "https://ffmpeg.zeranoe.com/builds/$arch/static/$ffmpegFileName.zip"
+[string]$ffmpegFileName = "ffmpeg-$arch.zip"
+[string]$ffmpegUrl = "https://github.com/pencil2d/pencil2d-ffmpeg/releases/download/v4.4.1/$ffmpegFileName"
 
 
 echo $PSScriptRoot
@@ -41,17 +41,12 @@ New-Item -ItemType 'directory' -Path './bin/plugins' -ErrorAction Continue
 
 echo ">>> Downloading ffmpeg: $ffmpegUrl"
  
-wget -Uri $ffmpegUrl -OutFile "$ffmpegFileName.zip" -ErrorAction Stop
-Expand-Archive -Path "$ffmpegFileName.zip" -DestinationPath "."
-
-echo ">>> Move ffmpeg.exe to plugin folder"
-
-Move-Item -Path "./$ffmpegFileName/bin/ffmpeg.exe" -Destination "./bin/plugins"
+wget -Uri $ffmpegUrl -OutFile "$ffmpegFileName" -ErrorAction Stop
+Expand-Archive -Path "$ffmpegFileName" -DestinationPath "./bin/plugins" -ErrorAction Stop
 
 echo ">>> Clean up ffmpeg"
 
-Remove-Item -Path "./$ffmpegFileName.zip"
-Remove-Item -Path "./$ffmpegFileName" -Recurse
+Remove-Item -Path "./$ffmpegFileName"
 
 Remove-Item -Path "./Pencil2D" -Recurse -ErrorAction SilentlyContinue
 Copy-Item -Path "./bin" -Destination "./Pencil2D" -Recurse
@@ -79,13 +74,14 @@ Rename-Item -Path "./Pencil2D.zip" -NewName $zipFileName
 echo ">>> Zip ok?"
 Test-Path $zipFileName
 
+cd $PSScriptRoot
+
 if ($upload -ne "yes") {
   echo ">>> Done. No need to upload binaries."
   exit 0
 }
 
 echo ">>> Upload to Google drive"
-cd $PSScriptRoot
 
 $python3 = if (Test-Path env:PYTHON) { "$env:PYTHON\python.exe" } else { "python.exe" }
 
