@@ -355,6 +355,15 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
+    if (flipVertical)
+    {
+        editor()->backup(tr("Flip selection vertically"));
+    }
+    else
+    {
+        editor()->backup(tr("Flip selection horizontally"));
+    }
+
     qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
     qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
     QVector<QPointF> centerPoints = calcSelectionCenterPoints();
