@@ -175,7 +175,11 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 
 void ScribbleArea::updateCurrentFrame()
 {
-    updateFrame(mEditor->currentFrame());
+    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA) {
+        updateFrame(mEditor->currentFrame());
+    } else {
+        update();
+    }
 }
 
 void ScribbleArea::updateFrame(int frame)
@@ -196,6 +200,15 @@ void ScribbleArea::updateFrame(int frame)
     updateOnionSkinsAround(frame);
 
     update();
+}
+
+void ScribbleArea::updateAllFramesIfNeeded() {
+
+    // Changing the current layer will only change the frame (as viewed by the user) under the following circumstances
+    if(isAffectedByActiveLayer())
+    {
+        updateAllFrames();
+    }
 }
 
 void ScribbleArea::updateOnionSkinsAround(int frameNumber)
