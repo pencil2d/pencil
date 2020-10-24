@@ -183,6 +183,11 @@ void ViewManager::translate(QPointF offset)
     translate(static_cast<float>(offset.x()), static_cast<float>(offset.y()));
 }
 
+void ViewManager::centerView()
+{
+    translate(0, 0);
+}
+
 float ViewManager::rotation()
 {
     if (mCurrentCamera)
@@ -201,6 +206,11 @@ void ViewManager::rotate(float degree)
 
         emit viewChanged();
     }
+}
+
+void ViewManager::resetRotation()
+{
+    rotate(0);
 }
 
 qreal ViewManager::scaling()

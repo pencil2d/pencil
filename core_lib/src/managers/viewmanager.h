@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -58,9 +58,11 @@ public:
     QPointF translation() const;
     void translate(float dx, float dy);
     void translate(QPointF offset);
+    void centerView();
 
     float rotation();
     void rotate(float degree);
+    void resetRotation();
 
     qreal scaling();
     void scale(qreal scaleValue);

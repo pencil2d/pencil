@@ -157,6 +157,7 @@
      <addaction name="actionVisibilityAll"/>
     </widget>
     <addaction name="actionReset_View"/>
+    <addaction name="actionCenter_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
@@ -164,6 +165,7 @@
     <addaction name="separator"/>
     <addaction name="actionRotate_Clockwise"/>
     <addaction name="actionRotate_Anticlockwise"/>
+    <addaction name="actionReset_Rotation"/>
     <addaction name="separator"/>
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
@@ -487,7 +489,7 @@
   </action>
   <action name="actionReset_View">
    <property name="text">
-    <string>Reset Zoom/Rotate</string>
+    <string>Reset</string>
    </property>
   </action>
   <action name="actionHorizontal_Flip">
@@ -1103,6 +1105,16 @@
    </property>
    <property name="text">
     <string>Lock Windows</string>
+   </property>
+  </action>
+  <action name="actionCenter_View">
+   <property name="text">
+    <string>Center</string>
+   </property>
+  </action>
+  <action name="actionReset_Rotation">
+   <property name="text">
+    <string>Reset Rotation</string>
    </property>
   </action>
  </widget>
