@@ -42,7 +42,6 @@ class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
 class QLabel;
-class QToolButton;
 class PegBarAlignmentDialog;
 enum class SETTING;
 

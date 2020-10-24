@@ -50,7 +50,7 @@ public:
 
     void showTimecodeLabelMenu();
 
-Q_SIGNALS:
+signals:
     void soundToggled(bool);
     void soundScrubToggled(bool);
     void fpsChanged(int);

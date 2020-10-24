@@ -29,7 +29,6 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "pencildef.h"
-#include <QDebug>
 
 TimeControls::TimeControls(TimeLine* parent) : QToolBar(parent)
 {
@@ -55,7 +54,7 @@ void TimeControls::initUI()
     mTimecodeSelect->setPopupMode(QToolButton::InstantPopup);
     mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
     mTimecodeLabel = new QLabel(this);
-    mTimecodeLabel->setContentsMargins(5, 0, 5, 0);
+    mTimecodeLabel->setContentsMargins(2, 0, 0, 0);
     mTimecodeLabel->setText("");
 
     switch (mTimecodeLabelEnum)
@@ -256,7 +255,8 @@ void TimeControls::showTimecodeLabelMenu()
     menu->addAction(tr("SMPTE Timecode"), this, &TimeControls::SMPTE_text, 0);
     menu->addAction(tr("SFF Timecode"), this, &TimeControls::SFF_text, 0);
 
-    menu->exec(globalPos);}
+    menu->exec(globalPos);
+}
 
 void TimeControls::jumpToStartButtonClicked()
 {
