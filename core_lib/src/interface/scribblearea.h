@@ -87,6 +87,10 @@ public:
     QPointF getCentralPoint();
 
     void updateCurrentFrame();
+
+    /** Check if the cache should be invalidated for all frames since the last paint operation
+     */
+    void updateAllFramesIfNeeded();
     void updateFrame(int frame);
     void updateOnionSkinsAround(int frame);
     void updateAllFrames();
