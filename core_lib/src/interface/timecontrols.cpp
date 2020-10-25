@@ -52,6 +52,10 @@ void TimeControls::initUI()
     mTimecodeSelect = new QToolButton(this);
     mTimecodeSelect->setIcon(QIcon(":app/icons/new/svg/more_options.svg"));
     mTimecodeSelect->setPopupMode(QToolButton::InstantPopup);
+    mTimecodeSelect->addAction(mNoTimecodeAction = new QAction(tr("No text"), this));
+    mTimecodeSelect->addAction(mOnlyFramesAction = new QAction(tr("Frames"), this));
+    mTimecodeSelect->addAction(mSmpteAction = new QAction(tr("SMPTE Timecode"), this));
+    mTimecodeSelect->addAction(mSffAction = new QAction(tr("SFF Timecode"), this));
     mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
     mTimecodeLabel = new QLabel(this);
     mTimecodeLabel->setContentsMargins(2, 0, 0, 0);
