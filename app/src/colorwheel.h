@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -63,8 +63,8 @@ private:
     QPixmap mWheelPixmap;
    
     int mWheelThickness = 20;
-    QRegion mWheelRegion;
-    QRegion mSquareRegion;
+    QRect mWheelRect;
+    QRect mSquareRect;
     QColor mCurrentColor = Qt::red;
     bool mIsInWheel = false;
     bool mIsInSquare = false;

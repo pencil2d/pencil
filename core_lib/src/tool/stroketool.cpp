@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "stroketool.h"
 
+#include <QKeyEvent>
 #include "scribblearea.h"
 #include "strokemanager.h"
 #include "viewmanager.h"
@@ -36,42 +37,43 @@ extern "C" {
 }
 #endif
 
-StrokeTool::StrokeTool( QObject *parent ) :
-BaseTool( parent )
+StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
 {
     detectWhichOSX();
 }
 
-void StrokeTool::startStroke()
+void StrokeTool::startStroke(PointerEvent::InputType inputType)
 {
-    if(emptyFrameActionEnabled())
+    if (emptyFrameActionEnabled())
     {
         mScribbleArea->handleDrawingOnEmptyFrame();
     }
 
     mFirstDraw = true;
     mLastPixel = getCurrentPixel();
-    
+
     mStrokePoints.clear();
 
     //Experimental
-    QPointF startStrokes =  m_pStrokeManager->interpolateStart(mLastPixel);
-    mStrokePoints << mEditor->view()->mapScreenToCanvas( startStrokes );
+    QPointF startStrokes = strokeManager()->interpolateStart(mLastPixel);
+    mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
 
     mStrokePressures.clear();
-    mStrokePressures << m_pStrokeManager->getPressure();
+    mStrokePressures << strokeManager()->getPressure();
+
+    mCurrentInputType = inputType;
 
     disableCoalescing();
 }
 
 bool StrokeTool::keyPressEvent(QKeyEvent *event)
 {
-    switch ( event->key() ) {
+    switch (event->key()) {
     case Qt::Key_Alt:
-        mScribbleArea->setTemporaryTool( EYEDROPPER );
+        mScribbleArea->setTemporaryTool(EYEDROPPER);
         return true;
     case Qt::Key_Space:
-        mScribbleArea->setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
+        mScribbleArea->setTemporaryTool(HAND); // just call "setTemporaryTool()" to activate temporarily any tool
         return true;
     }
     return false;
@@ -90,8 +92,8 @@ bool StrokeTool::emptyFrameActionEnabled()
 
 void StrokeTool::endStroke()
 {
-    m_pStrokeManager->interpolateEnd();
-    mStrokePressures << m_pStrokeManager->getPressure();
+    strokeManager()->interpolateEnd();
+    mStrokePressures << strokeManager()->getPressure();
     mStrokePoints.clear();
     mStrokePressures.clear();
 
@@ -101,14 +103,12 @@ void StrokeTool::endStroke()
 void StrokeTool::drawStroke()
 {
     QPointF pixel = getCurrentPixel();
-    if ( pixel != mLastPixel || !mFirstDraw )
+    if (pixel != mLastPixel || !mFirstDraw)
     {
-
         // get last pixel before interpolation initializes
-        QPointF startStrokes =  m_pStrokeManager->interpolateStart(getLastPixel());
-        mStrokePoints << mEditor->view()->mapScreenToCanvas( startStrokes );
-        mStrokePressures << m_pStrokeManager->getPressure();
-
+        QPointF startStrokes = strokeManager()->interpolateStart(getLastPixel());
+        mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
+        mStrokePressures << strokeManager()->getPressure();
     }
     else
     {

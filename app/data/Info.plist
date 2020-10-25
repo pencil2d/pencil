@@ -16,7 +16,7 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>mac_pcl_icon.icns</string>
 			<key>CFBundleTypeName</key>
-			<string>Pencil Animation File</string>
+			<string>Pencil2D Animation File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -34,7 +34,7 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>mac_pclx_icon.icns</string>
 			<key>CFBundleTypeName</key>
-			<string>New Pencil Animation File</string>
+			<string>New Pencil2D Animation File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -50,7 +50,7 @@
 	<key>CFBundleIconFile</key>
 	<string>pencil2d.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -58,13 +58,15 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.6.2</string>
+	<string>${QMAKE_FULL_VERSION}</string>
 	<key>CFBundleSignature</key>
 	<string>PC2D</string>
 	<key>CFBundleVersion</key>
-	<string>0.6.2.1</string>
+	<string>${QMAKE_FULL_VERSION}</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.graphics-design</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHighResolutionCapable</key>
 	<string>True</string>
 	<key>NSPrincipalClass</key>
@@ -77,7 +79,7 @@
 				<string>public.xml</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Pencil Animation File</string>
+			<string>Pencil2D Animation File</string>
 			<key>UTTypeIconFile</key>
 			<string>mac_pcl_icon.icns</string>
 			<key>UTTypeIdentifier</key>
@@ -96,7 +98,7 @@
 				<string>public.zip-archive</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>New Pencil Animation File</string>
+			<string>New Pencil2D Animation File</string>
 			<key>UTTypeIconFile</key>
 			<string>mac_pclx_icon.icns</string>
 			<key>UTTypeIdentifier</key>

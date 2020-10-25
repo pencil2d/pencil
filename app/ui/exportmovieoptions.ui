@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>413</width>
-    <height>340</height>
+    <height>480</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -276,6 +276,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>cameraCombo</tabstop>
+  <tabstop>widthSpinBox</tabstop>
+  <tabstop>heightSpinBox</tabstop>
+  <tabstop>startSpinBox</tabstop>
+  <tabstop>endSpinBox</tabstop>
+  <tabstop>frameCheckBox</tabstop>
+  <tabstop>loopCheckBox</tabstop>
+  <tabstop>transparencyCheckBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -1,4 +1,19 @@
+/*
 
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #include "popupcolorpalettewidget.h"
 
 #include <QBoxLayout>
@@ -30,7 +45,7 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     setGraphicsEffect(effect);
 
     setAutoFillBackground(true);
-    setWindowTitle("Color palette");
+    setWindowTitle(tr("Color palette"));
     setWindowFlags( ( (windowFlags()
                        | Qt::CustomizeWindowHint)
                       & ~Qt::WindowMaximizeButtonHint
@@ -40,12 +55,12 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
     mainLayout->addLayout(buttonsLayout);
     closeButton = new QPushButton(this);
-    closeButton->setText("close/toggle");
+    closeButton->setText(tr("close/toggle"));
     buttonsLayout->addWidget(closeButton);
 
     // --- connections ---
-    connect( closeButton , SIGNAL( clicked() ) , mContainer , SLOT( togglePopupPalette() ) );
-    connect( mColorBox, SIGNAL( colorChanged(QColor) ), this, SLOT( onColorChanged(QColor) ) );
+    connect( closeButton , &QPushButton::clicked , mContainer , &ScribbleArea::togglePopupPalette );
+    connect( mColorBox, &ColorBox::colorChanged, this, &PopupColorPaletteWidget::onColorChanged );
 }
 
 void PopupColorPaletteWidget::popup()

@@ -2,13 +2,14 @@
 host = https://www.transifex.com
 
 [pencil2d.pencil]
+file_filter = translations/pencil_<lang>.ts
 source_file = translations/pencil.ts
 source_lang = en
 type = QT
-file_filter = translations/pencil_<lang>.ts
 
 [pencil2d.desktop-entry]
-source_file = app/data/pencil2d.desktop
+source_file = app/data/org.pencil2d.Pencil2D.desktop
 source_lang = en
+trans.en = app/data/org.pencil2d.Pencil2D.desktop
 type = DESKTOP
-trans.en = app/data/pencil2d.desktop
+

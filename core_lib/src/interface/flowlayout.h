@@ -54,13 +54,13 @@
 #include <QLayout>
 #include <QRect>
 #include <QStyle>
-//! [0]
+
 class FlowLayout : public QLayout
 {
 public:
     explicit FlowLayout(QWidget *parent, int margin = -1, int hSpacing = -1, int vSpacing = -1);
     explicit FlowLayout(int margin = -1, int hSpacing = -1, int vSpacing = -1);
-    ~FlowLayout();
+    ~FlowLayout() override;
 
     void addItem(QLayoutItem *item) override;
     int horizontalSpacing() const;
@@ -83,6 +83,5 @@ private:
     int m_hSpace;
     int m_vSpace;
 };
-//! [0]
 
 #endif // FLOWLAYOUT_H

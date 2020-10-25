@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,10 +22,12 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QList>
 #include "pencilerror.h"
+#include "pencildef.h"
 
 
 class QDragEnterEvent;
 class QDropEvent;
+class QTemporaryDir;
 class Object;
 class KeyFrame;
 class LayerCamera;
@@ -37,6 +39,7 @@ class LayerManager;
 class PlaybackManager;
 class ViewManager;
 class PreferenceManager;
+class SelectionManager;
 class SoundManager;
 class ScribbleArea;
 class TimeLine;
@@ -57,10 +60,11 @@ class Editor : public QObject
         Q_PROPERTY(ViewManager*     view     READ view)
         Q_PROPERTY(PreferenceManager* preference READ preference)
         Q_PROPERTY(SoundManager*    sound    READ sound)
+        Q_PROPERTY(SelectionManager* select READ select)
 
 public:
     explicit Editor(QObject* parent = nullptr);
-    virtual ~Editor();
+    ~Editor() override;
 
     bool init();
 
@@ -74,6 +78,7 @@ public:
     ViewManager*       view() const { return mViewManager; }
     PreferenceManager* preference() const { return mPreferenceManager; }
     SoundManager*      sound() const { return mSoundManager; }
+    SelectionManager*  select() const { return mSelectionManager; }
 
     Object* object() const { return mObject.get(); }
     Status setObject(Object* object);
@@ -85,26 +90,34 @@ public:
 
     int currentFrame();
     int fps();
+    void setFps(int fps);
 
-    int  currentLayerIndex() { return mCurrentLayerIndex; }
+    int  currentLayerIndex() const { return mCurrentLayerIndex; }
     void setCurrentLayerIndex(int i);
 
     void scrubTo(int frameNumber);
 
-    int  allLayers();
+
+    /**
+     * @brief The visiblity value should match any of the VISIBILITY enum values
+     */
+    void setLayerVisibility(LayerVisibility visibility);
+    LayerVisibility layerVisibility();
     bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
     bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
 
-    QString workingDir() const;
+    qreal viewScaleInversed();
+    void deselectAll();
+    void selectAll();
 
-    void importMovie(QString filePath, int fps);
+    QString workingDir() const;
 
     // backup
     int mBackupIndex;
     BackupElement* currentBackup();
     QList<BackupElement*> mBackupList;
 
-Q_SIGNALS:
+signals:
     void updateTimeLine();
     void updateLayerCount();
     void updateBackup();
@@ -115,6 +128,8 @@ Q_SIGNALS:
     void currentFrameChanged(int n);
 
     void needSave();
+    void needDisplayInfo(const QString& title, const QString& body);
+    void needDisplayInfoNoTitle(const QString& body);
 
 public: //slots
     void clearCurrentFrame();
@@ -137,26 +152,49 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
+    void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
-    void moveLayer(int i, int j);
+    void swapLayers(int i, int j);
+    Status pegBarAlignment(QStringList layers);
 
     void backup(QString undoText);
     void backup(int layerNumber, int frameNumber, QString undoText);
+    /**
+     * Restores integrity of the backup elements after a layer has been deleted.
+     * Removes backup elements affecting the deleted layer and adjusts the layer
+     * index on other backup elements as necessary.
+     *
+     * @param layerIndex The index of the layer that was deleted
+     *
+     * @warning This serves as a temporary hack to prevent crashes until #864 is done
+     *          (see #1412).
+     */
+    void sanitizeBackupElementsAfterLayerDeletion(int layerIndex);
     void undo();
     void redo();
     void copy();
 
     void paste();
     void clipboardChanged();
-    void toggleShowAllLayers();
+    void increaseLayerVisibilityIndex();
+    void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
 
-    void toogleOnionSkinType();
+    void toggleOnionSkinType();
+
+    void clearTemporary();
+    void addTemporaryDir(QTemporaryDir* dir);
 
     void settingUpdated(SETTING);
 
-    void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
-    bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
+    void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
+    bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
+    void resetAutoSaveCounter();
+
+    void createNewBitmapLayer(const QString& name);
+    void createNewVectorLayer(const QString& name);
+    void createNewSoundLayer(const QString& name);
+    void createNewCameraLayer(const QString& name);
 
 protected:
     // Need to move to somewhere...
@@ -182,18 +220,19 @@ private:
     ViewManager*       mViewManager = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
     SoundManager*      mSoundManager = nullptr;
+    SelectionManager* mSelectionManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
-
-    bool mIsAltPressed = false;
 
     bool mIsAutosave = true;
     int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
-    bool mAutosaveNerverAskAgain = false;
+    bool mAutosaveNeverAskAgain = false;
 
     void makeConnections();
     KeyFrame* addKeyFrame(int layerNumber, int frameNumber);
+
+    QList<QTemporaryDir*> mTemporaryDirs;
 
     // backup
     void clearUndoStack();

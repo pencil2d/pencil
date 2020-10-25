@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,11 +21,13 @@ GNU General Public License for more details.
 #include <functional>
 #include <QObject>
 #include <QString>
-#include <QPainter>
 #include <QDomElement>
 #include "pencilerror.h"
+#include "pencildef.h"
 
 class QMouseEvent;
+class QPainter;
+
 class KeyFrame;
 class Object;
 class TimeLineCells;
@@ -50,12 +52,13 @@ public:
     };
 
     explicit Layer(Object*, LAYER_TYPE);
-    virtual ~Layer();
+    ~Layer() override;
 
     int id() const { return mId; }
-
     LAYER_TYPE type() const { return meType; }
+
     Object* object() const { return mObject; }
+    void setObject(Object* obj);
 
     void setName(QString name) { mName = name; }
     QString name() const { return mName; }
@@ -66,8 +69,10 @@ public:
     void setVisible(bool b) { mVisible = b; }
 
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
-    virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
-    virtual QDomElement createDomElement(QDomDocument& doc) = 0;
+    virtual void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressForward) = 0;
+    virtual QDomElement createDomElement(QDomDocument& doc) const = 0;
+    QDomElement createBaseDomElement(QDomDocument& doc) const;
+    void loadBaseDomElement(const QDomElement& elem);
 
     // KeyFrame interface
     int getMaxKeyFramePosition() const;
@@ -92,9 +97,9 @@ public:
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
     KeyFrame *getKeyFrameWhichCovers(int frameNumber) const;
-    bool getVisibility() { return mVisible; }
+    bool getVisibility() const { return mVisible; }
 
-    void foreachKeyFrame(std::function<void(KeyFrame*)>);
+    void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
 
     void setModified(int position, bool isModified);
 
@@ -110,15 +115,6 @@ public:
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
-
-    // graphic representation -- could be put in another class
-    void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
-    void paintFrames(QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
-    void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
-    virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
-    void mouseDoubleClick(QMouseEvent*, int frameNumber);
-
-    virtual void editProperties();
 
     bool isPaintable() const;
 

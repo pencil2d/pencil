@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -88,13 +88,13 @@ void ToolManager::setDefaultTool()
 
 void ToolManager::setCurrentTool(ToolType eToolType)
 {
-    if (mCurrentTool != NULL)
+    if (mCurrentTool != nullptr)
     {
        leavingThisTool();
     }
 
     mCurrentTool = getTool(eToolType);
-    Q_EMIT toolChanged(eToolType);
+    emit toolChanged(eToolType);
 }
 
 bool ToolManager::leavingThisTool()
@@ -104,9 +104,9 @@ bool ToolManager::leavingThisTool()
 
 void ToolManager::cleanupAllToolsData()
 {
-    foreach(BaseTool* pTool, mToolSetHash.values())
+    foreach(BaseTool* tool, mToolSetHash)
     {
-        pTool->clear();
+        tool->clearToolData();
     }
 }
 
@@ -115,24 +115,11 @@ void ToolManager::resetAllTools()
     // Reset can be useful to solve some pencil settings problems.
     // Beta-testers should be recommended to reset before sending tool related issues.
     // This can prevent from users to stop working on their project.
-    getTool(PEN)->properties.width = 1.5; // not supposed to use feather
-    getTool(PEN)->properties.stabilizerLevel = -1;
-    getTool(POLYLINE)->properties.width = 1.5; // PEN dependent
-    getTool(PENCIL)->properties.width = 1.0;
-    getTool(PENCIL)->properties.feather = -1.0; // locks feather usage (can be changed)
-    getTool(PENCIL)->properties.stabilizerLevel = -1;
-    getTool(ERASER)->properties.width = 25.0;
-    getTool(ERASER)->properties.feather = 50.0;
-    getTool(BRUSH)->properties.width = 15.0;
-    getTool(BRUSH)->properties.feather = 200.0;
-    getTool(BRUSH)->properties.stabilizerLevel = -1;
-    getTool(BRUSH)->properties.useFeather = false;
-    getTool(SMUDGE)->properties.width = 25.0;
-    getTool(SMUDGE)->properties.feather = 200.0;
-    getTool(BUCKET)->properties.tolerance = 10.0;
 
-    // todo: add all the default settings
-
+    foreach(BaseTool* tool, mToolSetHash)
+    {
+        tool->resetToDefault();
+    }
     qDebug("tools restored to default settings");
 }
 
@@ -143,9 +130,9 @@ void ToolManager::setWidth(float newWidth)
         newWidth = 1.f;
     }
 
-    currentTool()->setWidth(newWidth);
-    Q_EMIT penWidthValueChanged(newWidth);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), WIDTH);
+    currentTool()->setWidth(static_cast<qreal>(newWidth));
+    emit penWidthValueChanged(newWidth);
+    emit toolPropertyChanged(currentTool()->type(), WIDTH);
 }
 
 void ToolManager::setFeather(float newFeather)
@@ -155,9 +142,9 @@ void ToolManager::setFeather(float newFeather)
         newFeather = 0.f;
     }
 
-    currentTool()->setFeather(newFeather);
-    Q_EMIT penFeatherValueChanged(newFeather);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), FEATHER);
+    currentTool()->setFeather(static_cast<qreal>(newFeather));
+    emit penFeatherValueChanged(newFeather);
+    emit toolPropertyChanged(currentTool()->type(), FEATHER);
 }
 
 void ToolManager::setUseFeather(bool usingFeather)
@@ -167,68 +154,65 @@ void ToolManager::setUseFeather(bool usingFeather)
 
     currentTool()->setAA(value);
     currentTool()->setUseFeather(usingFeather);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), USEFEATHER);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
+    emit toolPropertyChanged(currentTool()->type(), USEFEATHER);
+    emit toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
 }
 
 void ToolManager::setInvisibility(bool isInvisible)
 {
     currentTool()->setInvisibility(isInvisible);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), INVISIBILITY);
+    emit toolPropertyChanged(currentTool()->type(), INVISIBILITY);
 }
 
 void ToolManager::setPreserveAlpha(bool isPreserveAlpha)
 {
     currentTool()->setPreserveAlpha(isPreserveAlpha);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), PRESERVEALPHA);
+    emit toolPropertyChanged(currentTool()->type(), PRESERVEALPHA);
 }
 
 void ToolManager::setVectorMergeEnabled(bool isVectorMergeEnabled)
 {
     currentTool()->setVectorMergeEnabled(isVectorMergeEnabled);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), VECTORMERGE);
+    emit toolPropertyChanged(currentTool()->type(), VECTORMERGE);
 }
 
 void ToolManager::setBezier(bool isBezierOn)
 {
     currentTool()->setBezier(isBezierOn);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), BEZIER);
+    emit toolPropertyChanged(currentTool()->type(), BEZIER);
 }
 
 void ToolManager::setPressure(bool isPressureOn)
 {
     currentTool()->setPressure(isPressureOn);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), PRESSURE);
+    emit toolPropertyChanged(currentTool()->type(), PRESSURE);
 }
 
 void ToolManager::setAA(int usingAA)
 {
     currentTool()->setAA(usingAA);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
+    emit toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
 }
 
 void ToolManager::setStabilizerLevel(int level)
 {
     currentTool()->setStabilizerLevel(level);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), STABILIZATION);
+    emit toolPropertyChanged(currentTool()->type(), STABILIZATION);
 }
 
 void ToolManager::setTolerance(int newTolerance)
 {
-    if (newTolerance < 0)
-    {
-        newTolerance = 1;
-    }
+    newTolerance = qMax(0, newTolerance);
 
     currentTool()->setTolerance(newTolerance);
-    Q_EMIT toleranceValueChanged(newTolerance);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), TOLERANCE);
+    emit toleranceValueChanged(newTolerance);
+    emit toolPropertyChanged(currentTool()->type(), TOLERANCE);
 }
 
 void ToolManager::setUseFillContour(bool useFillContour)
 {
     currentTool()->setUseFillContour(useFillContour);
-    Q_EMIT toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
+    emit toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
 

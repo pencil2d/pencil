@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -30,20 +30,18 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *) override;
-    void mouseReleaseEvent(QMouseEvent *) override;
-    void mouseMoveEvent(QMouseEvent *) override;
-    void mouseDoubleClickEvent(QMouseEvent *) override;
+    void pointerPressEvent(PointerEvent *) override;
+    void pointerReleaseEvent(PointerEvent *) override;
+    void pointerMoveEvent(PointerEvent *) override;
+    void pointerDoubleClickEvent(PointerEvent *) override;
 
-    void tabletPressEvent(QTabletEvent*) override;
-    void tabletMoveEvent(QTabletEvent*) override;
-    void tabletReleaseEvent(QTabletEvent*) override;
+    virtual bool isActive() override { return false; }
 
 private:
-
     void transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons);
 
     QPointF mLastPixel;
+    QPointF mStartPoint;
     bool mIsHeld = false;
 };
 

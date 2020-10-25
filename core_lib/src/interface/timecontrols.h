@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -33,26 +33,27 @@ class TimeControls : public QToolBar
     Q_OBJECT
 
 public:
-    TimeControls(TimeLine* parent = 0);
+    TimeControls(TimeLine* parent = nullptr);
     void initUI();
     void updateUI();
-
-    void setFps(int value);
     void setEditor(Editor* editor);
+    void setFps(int value);
+    void setLoop(bool);
+    void setRangeState(bool);
+
     void updateLength(int frameLength);
     void updatePlayState();
+
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
-Q_SIGNALS:
-    void soundClick(bool);
-    void fpsClick(int);
+signals:
+    void soundToggled(bool);
+    void soundScrubToggled(bool);
+    void fpsChanged(int);
     void playButtonTriggered();
 
 public slots:
-    void toggleLoop(bool);
-    void toggleLoopControl(bool);
-
     /// Work-around in case the FPS spin-box "valueChanged" signal doesn't work.
     void onFpsEditingFinished();
 
@@ -67,6 +68,7 @@ private:
     void loopStartValueChanged(int);
     void loopEndValueChanged(int);
     void updateSoundIcon(bool soundEnabled);
+    void updateSoundScrubIcon(bool soundScrubEnabled);
 
 private:
     QPushButton* mPlayButton = nullptr;
@@ -74,6 +76,7 @@ private:
     QPushButton* mJumpToStartButton = nullptr;
     QPushButton* mLoopButton = nullptr;
     QPushButton* mSoundButton = nullptr;
+    QPushButton* mSoundScrubButton = nullptr;
     QSpinBox*    mFpsBox = nullptr;
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
@@ -83,6 +86,7 @@ private:
     QIcon mStopIcon;
     QIcon mLoopIcon;
     QIcon mSoundIcon;
+    QIcon mSoundScrubIcon;
     QIcon mJumpToEndIcon;
     QIcon mJumpToStartIcon;
 

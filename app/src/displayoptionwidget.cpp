@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,9 +22,11 @@ GNU General Public License for more details.
 
 #include "preferencemanager.h"
 #include "viewmanager.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
+#include "flowlayout.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
@@ -44,24 +46,46 @@ void DisplayOptionWidget::initUI()
     updateUI();
     makeConnections();
 
+    FlowLayout *layout = new FlowLayout;
+    layout->setAlignment(Qt::AlignHCenter);
+    layout->addWidget(ui->mirrorButton);
+    layout->addWidget(ui->mirrorVButton);
+    layout->addWidget(ui->thinLinesButton);
+    layout->addWidget(ui->outLinesButton);
+    layout->addWidget(ui->overlayCenterButton);
+    layout->addWidget(ui->overlayThirdsButton);
+    layout->addWidget(ui->overlayGoldenRatioButton);
+    layout->addWidget(ui->overlaySafeAreaButton);
+
+    delete ui->scrollAreaWidgetContents->layout();
+    ui->scrollAreaWidgetContents->setLayout(layout);
+
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
     QString stylesheet =
         "QToolButton { border: 0px; } "
         "QToolButton:pressed{ border: 1px solid #FFADAD; border-radius: 2px; background-color: #D5D5D5; }"
         "QToolButton:checked{ border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
-    setStyleSheet(this->styleSheet().append(stylesheet));
+
+    ui->mirrorButton->setStyleSheet(stylesheet);
+    ui->mirrorVButton->setStyleSheet(stylesheet);
+    ui->thinLinesButton->setStyleSheet(stylesheet);
+    ui->outLinesButton->setStyleSheet(stylesheet);
+    ui->overlayCenterButton->setStyleSheet(stylesheet);
+    ui->overlayThirdsButton->setStyleSheet(stylesheet);
+    ui->overlayGoldenRatioButton->setStyleSheet(stylesheet);
+    ui->overlaySafeAreaButton->setStyleSheet(stylesheet);
 #endif
 }
 
 void DisplayOptionWidget::makeConnections()
 {
-    connect(ui->onionPrevButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionPrevButtonClicked);
-    connect(ui->onionNextButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionNextButtonClicked);
-    connect(ui->onionBlueButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionBlueButtonClicked);
-    connect(ui->onionRedButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionRedButtonClicked);
     connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
     connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
+    connect(ui->overlayCenterButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayCenter);
+    connect(ui->overlayThirdsButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayThirds);
+    connect(ui->overlayGoldenRatioButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayGoldenRatio);
+    connect(ui->overlaySafeAreaButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlaySafeAreas);
 
     PreferenceManager* prefs = editor()->preference();
     ScribbleArea* pScriArea = editor()->getScribbleArea();
@@ -78,56 +102,43 @@ void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
 
-    SignalBlocker b(ui->thinLinesButton);
+    bool canEnableVectorButtons = editor()->layers()->currentLayer()->type() == Layer::VECTOR;
+    ui->thinLinesButton->setEnabled(canEnableVectorButtons);
+    ui->outLinesButton->setEnabled(canEnableVectorButtons);
+
+    QSignalBlocker b1(ui->thinLinesButton);
     ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));
 
-    SignalBlocker b2(ui->outLinesButton);
+    QSignalBlocker b2(ui->outLinesButton);
     ui->outLinesButton->setChecked(prefs->isOn(SETTING::OUTLINES));
 
-    SignalBlocker b3(ui->onionPrevButton);
-    ui->onionPrevButton->setChecked(prefs->isOn(SETTING::PREV_ONION));
+    QSignalBlocker b9(ui->overlayCenterButton);
+    ui->overlayCenterButton->setChecked(prefs->isOn(SETTING::OVERLAY_CENTER));
 
-    SignalBlocker b4(ui->onionNextButton);
-    ui->onionNextButton->setChecked(prefs->isOn(SETTING::NEXT_ONION));
+    QSignalBlocker b10(ui->overlayThirdsButton);
+    ui->overlayThirdsButton->setChecked(prefs->isOn(SETTING::OVERLAY_THIRDS));
 
-    SignalBlocker b5(ui->onionBlueButton);
-    ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
+    QSignalBlocker b11(ui->overlayGoldenRatioButton);
+    ui->overlayGoldenRatioButton->setChecked(prefs->isOn(SETTING::OVERLAY_GOLDEN));
 
-    SignalBlocker b6(ui->onionRedButton);
-    ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));
+    QSignalBlocker b12(ui->overlaySafeAreaButton);
+    ui->overlaySafeAreaButton->setChecked(prefs->isOn(SETTING::OVERLAY_SAFE));
 
-    ViewManager* view = editor()->view();
+    bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
+    ui->overlaySafeAreaButton->setEnabled(enableSafeArea);
 
-    SignalBlocker b7(ui->mirrorButton);
+    const ViewManager* view = editor()->view();
+
+    QSignalBlocker b3(ui->mirrorButton);
     ui->mirrorButton->setChecked(view->isFlipHorizontal());
 
-    SignalBlocker b8(ui->mirrorVButton);
+    QSignalBlocker b4(ui->mirrorVButton);
     ui->mirrorVButton->setChecked(view->isFlipVertical());
 }
 
-
-void DisplayOptionWidget::onionPrevButtonClicked(bool isOn)
+int DisplayOptionWidget::getMinHeightForWidth(int width)
 {
-    PreferenceManager* prefs = editor()->preference();
-    prefs->set(SETTING::PREV_ONION, isOn);
-}
-
-void DisplayOptionWidget::onionNextButtonClicked(bool isOn)
-{
-    PreferenceManager* prefs = editor()->preference();
-    prefs->set(SETTING::NEXT_ONION, isOn);
-}
-
-void DisplayOptionWidget::onionBlueButtonClicked(bool isOn)
-{
-    PreferenceManager* prefs = editor()->preference();
-    prefs->set(SETTING::ONION_BLUE, isOn);
-}
-
-void DisplayOptionWidget::onionRedButtonClicked(bool isOn)
-{
-    PreferenceManager* prefs = editor()->preference();
-    prefs->set(SETTING::ONION_RED, isOn);
+    return ui->innerWidget->layout()->heightForWidth(width);
 }
 
 void DisplayOptionWidget::toggleMirror(bool isOn)
@@ -138,4 +149,28 @@ void DisplayOptionWidget::toggleMirror(bool isOn)
 void DisplayOptionWidget::toggleMirrorV(bool isOn)
 {
     editor()->view()->flipVertical(isOn);
+}
+
+void DisplayOptionWidget::toggleOverlayCenter(bool isOn)
+{
+    editor()->view()->setOverlayCenter(isOn);
+    editor()->preference()->set(SETTING::OVERLAY_CENTER, isOn);
+}
+
+void DisplayOptionWidget::toggleOverlayThirds(bool isOn)
+{
+    editor()->view()->setOverlayThirds(isOn);
+    editor()->preference()->set(SETTING::OVERLAY_THIRDS, isOn);
+}
+
+void DisplayOptionWidget::toggleOverlayGoldenRatio(bool isOn)
+{
+    editor()->view()->setOverlayGoldenRatio(isOn);
+    editor()->preference()->set(SETTING::OVERLAY_GOLDEN, isOn);
+}
+
+void DisplayOptionWidget::toggleOverlaySafeAreas(bool isOn)
+{
+    editor()->view()->setOverlaySafeAreas(isOn);
+    editor()->preference()->set(SETTING::OVERLAY_SAFE, isOn);
 }

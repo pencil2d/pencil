@@ -1,3 +1,20 @@
+﻿/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #include "checkupdatesdialog.h"
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
@@ -29,7 +46,7 @@ CheckUpdatesDialog::CheckUpdatesDialog()
     mDetailLabel = new QLabel;
     mDetailLabel->setWordWrap(true);
 
-    //If minimum and maximum both are set to 0, the bar shows a busy indicator instead of a percentage of steps. 
+    //If minimum and maximum both are set to 0, the bar shows a busy indicator instead of a percentage of steps.
     mProgressBar = new QProgressBar;
     mProgressBar->setMaximum(0);
     mProgressBar->setMinimum(0);
@@ -42,7 +59,7 @@ CheckUpdatesDialog::CheckUpdatesDialog()
     QHBoxLayout* hButtonLayout = new QHBoxLayout;
     hButtonLayout->addWidget(mDownloadButton);
     hButtonLayout->addWidget(mCloseButton);
-    
+
     QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->addWidget(mTitleLabel);
     vLayout->addWidget(mDetailLabel);
@@ -67,7 +84,7 @@ CheckUpdatesDialog::~CheckUpdatesDialog()
 }
 
 void CheckUpdatesDialog::startChecking()
-{   
+{
 #ifdef NIGHTLY
     nightlyBuildCheck();
 #else
@@ -108,6 +125,24 @@ void CheckUpdatesDialog::networkErrorHappened()
     mDownloadButton->setEnabled(false);
 }
 
+void CheckUpdatesDialog::networkResponseIsEmpty()
+{
+    mTitleLabel->setText(tr("<b>An error occurred while checking for updates</b>", "error msg of check-for-update"));
+    mDetailLabel->setText(tr("Network response is empty", "error msg of check-for-update"));
+    mProgressBar->setRange(0, 1);
+    mProgressBar->setValue(1);
+    mDownloadButton->setEnabled(false);
+}
+
+void CheckUpdatesDialog::invalidReleaseXml()
+{
+    mTitleLabel->setText(tr("<b>An error occurred while checking for updates</b>", "error msg of check-for-update"));
+    mDetailLabel->setText(tr("Couldn't retrieve the version information", "error msg of check-for-update"));
+    mProgressBar->setRange(0, 1);
+    mProgressBar->setValue(1);
+    mDownloadButton->setEnabled(false);
+}
+
 void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
@@ -122,9 +157,18 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
     }
 
     auto releasesAtom = QString::fromUtf8(reply->readAll()).trimmed();
-    //qDebug() << releasesAtom;
+    if (releasesAtom.isEmpty())
+    {
+        networkResponseIsEmpty();
+        return;
+    }
 
     QString latestVersionString = getVersionNumberFromXml(releasesAtom);
+    if (latestVersionString == "0.0.1")
+    {
+        invalidReleaseXml();
+        return;
+    }
 
     bool isNewVersionAvailable = compareVersion(APP_VERSION, latestVersionString);
     if (isNewVersionAvailable)
@@ -139,7 +183,7 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
     else
     {
         mTitleLabel->setText(tr("<b>Pencil2D is up to date</b>"));
-        mDetailLabel->setText(tr("Version") + " " APP_VERSION);
+        mDetailLabel->setText(tr("Version %1").arg(APP_VERSION));
         mProgressBar->setRange(0, 1);
         mProgressBar->setValue(1);
         mDownloadButton->setEnabled(false);
@@ -154,7 +198,7 @@ bool CheckUpdatesDialog::compareVersion(QString currentVersion, QString latestVe
 QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
 {
     // XML source: https://github.com/pencil2d/pencil/releases.atom
-    
+
     QXmlStreamReader xmlReader(xml);
 
     while (!xmlReader.atEnd() && !xmlReader.hasError())

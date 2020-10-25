@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "basetool.h"
 
 class Layer;
+class SelectionManager;
 
 class SelectTool : public BaseTool
 {
@@ -34,32 +35,28 @@ public:
 
 private:
 
-    void mousePressEvent(QMouseEvent*) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
-    bool keyPressEvent(QKeyEvent *event) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
+    void pointerMoveEvent(PointerEvent*) override;
 
-    void tabletPressEvent(QTabletEvent*) override;
-    void tabletMoveEvent(QTabletEvent*) override;
-    void tabletReleaseEvent(QTabletEvent*) override;
+    bool keyPressEvent(QKeyEvent* event) override;
 
-    QPointF whichAnchorPoint();
-    void controlOffsetOrigin();
+    void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
+    void controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint);
 
     void beginSelection();
     void keepSelection();
 
+    QPointF offsetFromPressPos();
+
     inline bool isSelectionPointValid() { return mAnchorOriginPoint != getLastPoint(); }
     bool maybeDeselect();
-
 
     // Store selection origin so we can calculate
     // the selection rectangle in mousePressEvent.
     QPointF mAnchorOriginPoint;
-    MoveMode mOldMoveMode;
-
+    MoveMode mMoveMode;
     Layer* mCurrentLayer = nullptr;
-
 };
 
 #endif

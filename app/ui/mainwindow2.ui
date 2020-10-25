@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>831</width>
     <height>600</height>
    </rect>
   </property>
@@ -48,8 +48,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>20</height>
+     <width>831</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -63,12 +63,16 @@
      <addaction name="separator"/>
      <addaction name="actionImport_Image"/>
      <addaction name="actionImport_ImageSeq"/>
-     <addaction name="actionImport_Movie"/>
      <addaction name="actionImport_ImageSeqNum"/>
+     <addaction name="actionImport_MovieVideo"/>
      <addaction name="actionImport_Gif"/>
-     <addaction name="actionImport_Sound"/>
+     <addaction name="actionImportLayers_from_pclx"/>
      <addaction name="separator"/>
-     <addaction name="actionImport_Palette"/>
+     <addaction name="actionImport_Sound"/>
+     <addaction name="actionImport_MovieAudio"/>
+     <addaction name="separator"/>
+     <addaction name="actionImport_Replace_Palette"/>
+     <addaction name="actionImport_Append_Palette"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -117,6 +121,8 @@
     <addaction name="actionSelect_All"/>
     <addaction name="actionDeselect_All"/>
     <addaction name="separator"/>
+    <addaction name="actionPegbarAlignment"/>
+    <addaction name="separator"/>
     <addaction name="actionPreference"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -129,7 +135,6 @@
      </property>
      <addaction name="actionOnionPrev"/>
      <addaction name="actionOnionNext"/>
-     <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
     <widget class="QMenu" name="menuZoom">
      <property name="title">
@@ -143,6 +148,14 @@
      <addaction name="actionZoom33"/>
      <addaction name="actionZoom25"/>
     </widget>
+    <widget class="QMenu" name="menuLayer_Visibility">
+     <property name="title">
+      <string>Layer Visibility</string>
+     </property>
+     <addaction name="actionVisibilityCurrentLayerOnly"/>
+     <addaction name="actionVisibilityRelative"/>
+     <addaction name="actionVisibilityAll"/>
+    </widget>
     <addaction name="actionReset_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
@@ -150,16 +163,20 @@
     <addaction name="menuZoom"/>
     <addaction name="separator"/>
     <addaction name="actionRotate_Clockwise"/>
-    <addaction name="actionRotate_Anticlosewise"/>
+    <addaction name="actionRotate_Anticlockwise"/>
     <addaction name="separator"/>
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
     <addaction name="separator"/>
-    <addaction name="actionPreview"/>
+    <addaction name="menuOnion_Skin"/>
+    <addaction name="menuLayer_Visibility"/>
+    <addaction name="separator"/>
     <addaction name="separator"/>
     <addaction name="actionGrid"/>
     <addaction name="separator"/>
-    <addaction name="menuOnion_Skin"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreview"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -180,6 +197,9 @@
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
+    <addaction name="separator"/>
+    <addaction name="actionFlip_inbetween"/>
+    <addaction name="actionFlip_rolling"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -203,12 +223,22 @@
     <property name="title">
      <string>Layer</string>
     </property>
+    <widget class="QMenu" name="menuChange_line_color">
+     <property name="title">
+      <string>Change line color</string>
+     </property>
+     <addaction name="actionChangeLineColorCurrent_keyframe"/>
+     <addaction name="actionChangeLineColorAll_keyframes_on_layer"/>
+    </widget>
     <addaction name="actionNew_Bitmap_Layer"/>
     <addaction name="actionNew_Vector_Layer"/>
     <addaction name="actionNew_Sound_Layer"/>
     <addaction name="actionNew_Camera_Layer"/>
     <addaction name="separator"/>
     <addaction name="actionDelete_Current_Layer"/>
+    <addaction name="separator"/>
+    <addaction name="menuChange_line_color"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -223,6 +253,7 @@
     <addaction name="separator"/>
     <addaction name="actionCheck_for_Updates"/>
     <addaction name="actionReport_Bug"/>
+    <addaction name="actionOpen_Temporary_Directory"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -230,7 +261,9 @@
     <property name="title">
      <string>Windows</string>
     </property>
-    <addaction name="actionReset_Windows"/>
+    <addaction name="actionResetWindows"/>
+    <addaction name="actionLockWindows"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -306,7 +339,7 @@
   </action>
   <action name="actionExport_Palette">
    <property name="text">
-    <string>Palette...</string>
+    <string>Palette</string>
    </property>
   </action>
   <action name="actionImport_Image">
@@ -319,12 +352,9 @@
     <string>Image Sequence...</string>
    </property>
   </action>
-  <action name="actionImport_Movie">
+  <action name="actionImport_MovieVideo">
    <property name="text">
-    <string>Movie...</string>
-   </property>
-   <property name="visible">
-    <bool>false</bool>
+    <string>Movie Video...</string>
    </property>
   </action>
   <action name="actionImport_Sound">
@@ -332,14 +362,9 @@
     <string>Sound...</string>
    </property>
   </action>
-  <action name="actionImport_Palette">
-   <property name="text">
-    <string>Palette...</string>
-   </property>
-  </action>
   <action name="actionImport_ImageSeqNum">
    <property name="text">
-    <string>Image Sequence Numbered...</string>
+    <string>Image Predefined set...</string>
    </property>
   </action>
   <action name="actionUndo">
@@ -427,7 +452,7 @@
     <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
-  <action name="actionReset_Windows">
+  <action name="actionResetWindows">
    <property name="text">
     <string>Reset Windows</string>
    </property>
@@ -455,9 +480,9 @@
     <string>Rotate Clockwise</string>
    </property>
   </action>
-  <action name="actionRotate_Anticlosewise">
+  <action name="actionRotate_Anticlockwise">
    <property name="text">
-    <string>Rotate AntiClosewise</string>
+    <string>Rotate Anticlockwise</string>
    </property>
   </action>
   <action name="actionReset_View">
@@ -466,18 +491,24 @@
    </property>
   </action>
   <action name="actionHorizontal_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
-    <iconset>
-     <normaloff>:/icons/mirror.png</normaloff>:/icons/mirror.png</iconset>
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
    </property>
    <property name="text">
     <string>Horizontal Flip</string>
    </property>
   </action>
   <action name="actionVertical_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
-    <iconset>
-     <normaloff>:/icons/mirrorV.png</normaloff>:/icons/mirrorV.png</iconset>
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
    </property>
    <property name="text">
     <string>Vertical Flip</string>
@@ -774,10 +805,10 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Next KeyFrame</string>
+    <string>Next Keyframe</string>
    </property>
    <property name="toolTip">
-    <string>Next KeyFrame</string>
+    <string>Next Keyframe</string>
    </property>
   </action>
   <action name="actionPrev_KeyFrame">
@@ -801,7 +832,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>MultiLayer Onion Skin</string>
+    <string>Multilayer Onion Skin</string>
    </property>
   </action>
   <action name="actionLoopControl">
@@ -959,6 +990,119 @@
   <action name="actionZoom100">
    <property name="text">
     <string>100%</string>
+   </property>
+  </action>
+  <action name="actionFlip_inbetween">
+   <property name="text">
+    <string>Flip In-Between</string>
+   </property>
+  </action>
+  <action name="actionFlip_rolling">
+   <property name="text">
+    <string>Flip Rolling</string>
+   </property>
+  </action>
+  <action name="actionLayerHidden">
+   <property name="text">
+    <string>Current layer only</string>
+   </property>
+  </action>
+  <action name="actionLayerRelative">
+   <property name="text">
+    <string>Relative</string>
+   </property>
+  </action>
+  <action name="actionLayerFull">
+   <property name="text">
+    <string>All Layers</string>
+   </property>
+  </action>
+  <action name="actionPegbarAlignment">
+   <property name="text">
+    <string>Peg bar Alignment</string>
+   </property>
+  </action>
+  <action name="actionImport_MovieAudio">
+   <property name="text">
+    <string>Movie Audio...</string>
+   </property>
+  </action>
+  <action name="actionImport_Append_Palette">
+   <property name="text">
+    <string>Append to Palette...</string>
+   </property>
+  </action>
+  <action name="actionImport_Replace_Palette">
+   <property name="text">
+    <string>Replace Palette...</string>
+   </property>
+  </action>
+  <action name="actionExport_Other_Palette_formats">
+   <property name="text">
+    <string>Other Palette format...</string>
+   </property>
+  </action>
+  <action name="actionChangeLineColorCurrent_keyframe">
+   <property name="text">
+    <string>Current keyframe</string>
+   </property>
+  </action>
+  <action name="actionChangeLineColorAll_keyframes_on_layer">
+   <property name="text">
+    <string>All keyframes on layer</string>
+   </property>
+  </action>
+  <action name="actionImportLayers_from_pclx">
+   <property name="text">
+    <string>Layers from Project file...</string>
+   </property>
+  </action>
+  <action name="actionVisibilityCurrentLayerOnly">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Current layer only</string>
+   </property>
+  </action>
+  <action name="actionVisibilityRelative">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Relative</string>
+   </property>
+  </action>
+  <action name="actionVisibilityAll">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>All layers</string>
+   </property>
+  </action>
+  <action name="actionOnionSkins">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Onion Skins</string>
+   </property>
+   <property name="toolTip">
+    <string>Onion Skins</string>
+   </property>
+  </action>
+  <action name="actionOpen_Temporary_Directory">
+   <property name="text">
+    <string>Open Temporary Directory</string>
+   </property>
+  </action>
+  <action name="actionLockWindows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock Windows</string>
    </property>
   </action>
  </widget>

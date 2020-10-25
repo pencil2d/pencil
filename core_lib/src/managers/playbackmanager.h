@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,9 +19,11 @@ GNU General Public License for more details.
 #define PLAYBACKMANAGER_H
 
 #include "basemanager.h"
+#include <QVector>
 
 class QTimer;
 class QElapsedTimer;
+class SoundClip;
 
 
 class PlaybackManager : public BaseManager
@@ -29,7 +31,7 @@ class PlaybackManager : public BaseManager
     Q_OBJECT
 public:
     explicit PlaybackManager(Editor* editor);
-    ~PlaybackManager();
+    ~PlaybackManager() override;
 
     bool init() override;
     Status load(Object*) override;
@@ -41,6 +43,13 @@ public:
 
     void play();
     void stop();
+    void playFlipRoll();
+    void playFlipInBetween();
+    void playScrub(int frame);
+    void setSoundScrubMsec(int mSec) { mMsecSoundScrub = mSec; }
+    int  getSoundScrubMsec() { return mMsecSoundScrub; }
+    void setSoundScrubActive(bool b) { mSoundScrub = b; }
+    bool getSoundScrubActive() { return mSoundScrub; }
 
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
@@ -59,7 +68,10 @@ public:
 
     void stopSounds();
 
-Q_SIGNALS:
+private slots:
+    void stopScrubPlayback();
+
+signals:
     void fpsChanged(int fps);
     void loopStateChanged(bool b);
     void rangedPlaybackStateChanged(bool b);
@@ -67,6 +79,7 @@ Q_SIGNALS:
 
 private:
     void timerTick();
+    void flipTimerTick();
     void playSounds(int frame);
     bool skipFrame();
 
@@ -86,12 +99,22 @@ private:
 
     int mFps = 12;
 
+    int mFlipRollInterval = 100;
+    int mFlipInbetweenInterval = 100;
+    int mFlipRollMax = 5;
+    int mMsecSoundScrub = 100;
+    bool mSoundScrub = false;
+
     QTimer* mTimer = nullptr;
+    QTimer* mFlipTimer = nullptr;
+    QTimer* mScrubTimer = nullptr;
     QElapsedTimer* mElapsedTimer = nullptr;
     int mPlayingFrameCounter = 0; // how many frames has passed after pressing play
 
     bool mCheckForSoundsHalfway = false;
-    QList<int> mListOfActiveSoundFrames;
+    QVector<int> mListOfActiveSoundFrames;
+    QVector<SoundClip*> mSoundclipsToPLay;
+    QVector<int> mFlipList;
 };
 
 #endif // PLAYBACKMANAGER_H

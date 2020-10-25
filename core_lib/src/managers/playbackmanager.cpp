@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layermanager.h"
 #include "soundclip.h"
+#include "toolmanager.h"
 
 
 PlaybackManager::PlaybackManager(Editor* editor) : BaseManager(editor)
@@ -41,23 +42,35 @@ bool PlaybackManager::init()
 {
     mTimer = new QTimer(this);
     mTimer->setTimerType(Qt::PreciseTimer);
+
+    mFlipTimer = new QTimer(this);
+    mFlipTimer->setTimerType(Qt::PreciseTimer);
+
+    mScrubTimer = new QTimer(this);
+    mScrubTimer->setTimerType(Qt::PreciseTimer);
+    mSoundclipsToPLay.clear();
+
     QSettings settings (PENCIL2D, PENCIL2D);
     mFps = settings.value(SETTING_FPS).toInt();
+    mMsecSoundScrub = settings.value(SETTING_SOUND_SCRUB_MSEC).toInt();
+    if (mMsecSoundScrub == 0) { mMsecSoundScrub = 100; }
+    mSoundScrub = settings.value(SETTING_SOUND_SCRUB_ACTIVE).toBool();
 
     mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
+    connect(mFlipTimer, &QTimer::timeout, this, &PlaybackManager::flipTimerTick);
     return true;
 }
 
 Status PlaybackManager::load(Object* o)
 {
-    const ObjectData* e = o->data();
+    const ObjectData* data = o->data();
 
-    mIsLooping = e->isLooping();
-    mIsRangedPlayback = e->isRangedPlayback();
-    mMarkInFrame = e->getMarkInFrameNumber();
-    mMarkOutFrame = e->getMarkOutFrameNumber();
-    mFps = e->getFrameRate();
+    mIsLooping = data->isLooping();
+    mIsRangedPlayback = data->isRangedPlayback();
+    mMarkInFrame = data->getMarkInFrameNumber();
+    mMarkOutFrame = data->getMarkOutFrameNumber();
+    mFps = data->getFrameRate();
 
     updateStartFrame();
     updateEndFrame();
@@ -73,12 +86,13 @@ Status PlaybackManager::save(Object* o)
     data->setMarkInFrameNumber(mMarkInFrame);
     data->setMarkOutFrameNumber(mMarkOutFrame);
     data->setFrameRate(mFps);
+    data->setCurrentFrame(editor()->currentFrame());
     return Status::OK;
 }
 
 bool PlaybackManager::isPlaying()
 {
-    return mTimer->isActive();
+    return (mTimer->isActive() || mFlipTimer->isActive());
 }
 
 void PlaybackManager::play()
@@ -86,51 +100,29 @@ void PlaybackManager::play()
     updateStartFrame();
     updateEndFrame();
 
+    // This is probably not the right place or function to be calling this, but it's the easiest thing to do right now that works
+    // TODO make a new tool function to handle playing (or perhaps generic scrubbing)
+    bool switchLayer = editor()->tools()->currentTool()->switchingLayer();
+    if (!switchLayer) return;
+
     int frame = editor()->currentFrame();
     if (frame >= mEndFrame || frame < mStartFrame)
     {
         editor()->scrubTo(mStartFrame);
+        frame = editor()->currentFrame();
     }
 
-    // get keyframe from layer
-    KeyFrame* key = nullptr;
-    if (!mListOfActiveSoundFrames.isEmpty())
-    {
-        for (int i = 0; i < object()->getLayerCount(); ++i)
-        {
-            Layer* layer = object()->getLayer(i);
-            if (layer->type() == Layer::SOUND)
-            {
-                key = layer->getKeyFrameWhichCovers(frame);
-            }
-        }
-    }
+    mListOfActiveSoundFrames.clear();
+    // Check for any sounds we should start playing part-way through.
+    mCheckForSoundsHalfway = true;
+    playSounds(frame);
 
-    // check list content before playing
-    for (int pos = 0; pos < mListOfActiveSoundFrames.count(); pos++)
-    {
-        if (key != nullptr)
-        {
-            if (key->pos() + key->length() >= frame)
-            {
-                mListOfActiveSoundFrames.takeLast();
-            }
-        }
-        else if (frame < mListOfActiveSoundFrames.at(pos))
-        {
-            mListOfActiveSoundFrames.clear();
-        }
-    }
-
-    mTimer->setInterval(1000.f / mFps);
+    mTimer->setInterval(static_cast<int>(1000.f / mFps));
     mTimer->start();
 
     // for error correction, please ref skipFrame()
     mPlayingFrameCounter = 1;
     mElapsedTimer->start();
-
-    // Check for any sounds we should start playing part-way through.
-    mCheckForSoundsHalfway = true;
 
     emit playStateChanged(true);
 }
@@ -140,6 +132,100 @@ void PlaybackManager::stop()
     mTimer->stop();
     stopSounds();
     emit playStateChanged(false);
+}
+
+void PlaybackManager::playFlipRoll()
+{
+    if (isPlaying()) { return; }
+
+    int start = editor()->currentFrame();
+    int tmp = start;
+    mFlipList.clear();
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mFlipRollMax = settings.value(SETTING_FLIP_ROLL_DRAWINGS).toInt();
+    for (int i = 0; i < mFlipRollMax; i++)
+    {
+        int prev = editor()->layers()->currentLayer()->getPreviousKeyFramePosition(tmp);
+        if (prev < tmp)
+        {
+            mFlipList.prepend(prev);
+            tmp = prev;
+        }
+    }
+    if (mFlipList.isEmpty()) { return; }
+
+    // run the roll...
+    mFlipRollInterval = settings.value(SETTING_FLIP_ROLL_MSEC).toInt();
+    mFlipList.append(start);
+    mFlipTimer->setInterval(mFlipRollInterval);
+
+    editor()->scrubTo(mFlipList[0]);
+    mFlipTimer->start();
+    emit playStateChanged(true);
+}
+
+void PlaybackManager::playFlipInBetween()
+{
+    if (isPlaying()) { return; }
+
+    LayerManager* layerMgr = editor()->layers();
+    int start = editor()->currentFrame();
+
+    int prev = layerMgr->currentLayer()->getPreviousKeyFramePosition(start);
+    int next = layerMgr->currentLayer()->getNextKeyFramePosition(start);
+
+    if (prev < start && next > start &&
+            layerMgr->currentLayer()->keyExists(prev) &&
+            layerMgr->currentLayer()->keyExists(next))
+    {
+        mFlipList.clear();
+        mFlipList.append(prev);
+        mFlipList.append(prev);
+        mFlipList.append(start);
+        mFlipList.append(next);
+        mFlipList.append(next);
+        mFlipList.append(start);
+    }
+    else
+    {
+        return;
+    }
+    // run the flip in-between...
+    QSettings settings(PENCIL2D, PENCIL2D);
+    mFlipInbetweenInterval = settings.value(SETTING_FLIP_INBETWEEN_MSEC).toInt();
+
+    mFlipTimer->setInterval(mFlipInbetweenInterval);
+    editor()->scrubTo(mFlipList[0]);
+    mFlipTimer->start();
+    emit playStateChanged(true);
+}
+
+void PlaybackManager::playScrub(int frame)
+{
+    if (!mSoundScrub || !mSoundclipsToPLay.isEmpty()) {return; }
+
+    auto layerMan = editor()->layers();
+    for (int i = 0; i < layerMan->count(); i++)
+    {
+        Layer* layer = layerMan->getLayer(i);
+        if (layer->type() == Layer::SOUND && layer->visible())
+        {
+            KeyFrame* key = layer->getKeyFrameWhichCovers(frame);
+            if (key != nullptr)
+            {
+                SoundClip* clip = static_cast<SoundClip*>(key);
+                mSoundclipsToPLay.append(clip);
+            }
+        }
+    }
+
+    if (mSoundclipsToPLay.isEmpty()) { return; }
+
+    mScrubTimer->singleShot(mMsecSoundScrub, this, &PlaybackManager::stopScrubPlayback);
+    for (int i = 0; i < mSoundclipsToPLay.count(); i++)
+    {
+        mSoundclipsToPLay.at(i)->playFromPosition(frame, mFps);
+    }
 }
 
 void PlaybackManager::setFps(int fps)
@@ -251,23 +337,23 @@ void PlaybackManager::playSounds(int frame)
 
 /**
  * @brief PlaybackManager::skipFrame()
- * Small errors will accumulate while playing animation
- * If the error time is larger than a frame interval, skip a frame.
+ * Small errors accumulate while playing animation
+ * If the error is greater than a frame interval, skip a frame
  */
 bool PlaybackManager::skipFrame()
 {
-    // uncomment these debug output to see what happens
+    // uncomment these debug outputs to see what happens
     //float expectedTime = (mPlayingFrameCounter) * (1000.f / mFps);
     //qDebug("Expected:  %.2f ms", expectedTime);
     //qDebug("Actual:    %d   ms", mElapsedTimer->elapsed());
-    
+
     int t = qRound((mPlayingFrameCounter - 1) * (1000.f / mFps));
     if (mElapsedTimer->elapsed() < t)
     {
         qDebug() << "skip";
         return true;
     }
-    
+
     ++mPlayingFrameCounter;
     return false;
 }
@@ -295,10 +381,18 @@ void PlaybackManager::stopSounds()
     }
 }
 
+void PlaybackManager::stopScrubPlayback()
+{
+    for (int i = 0; i < mSoundclipsToPLay.count(); i++)
+    {
+        mSoundclipsToPLay.at(i)->pause();
+    }
+    mSoundclipsToPLay.clear();
+}
+
 void PlaybackManager::timerTick()
 {
     int currentFrame = editor()->currentFrame();
-    playSounds(currentFrame);
 
     // reach the end
     if (currentFrame >= mEndFrame)
@@ -318,8 +412,26 @@ void PlaybackManager::timerTick()
     if (skipFrame())
         return;
 
-    // keep going 
+    // keep going
     editor()->scrubForward();
+
+    int newFrame = editor()->currentFrame();
+    playSounds(newFrame);
+}
+
+void PlaybackManager::flipTimerTick()
+{
+    if (mFlipList.count() < 2 || editor()->currentFrame() != mFlipList[0])
+    {
+        mFlipTimer->stop();
+        editor()->scrubTo(mFlipList.last());
+        emit playStateChanged(false);
+    }
+    else
+    {
+        editor()->scrubTo(mFlipList[1]);
+        mFlipList.removeFirst();
+    }
 }
 
 void PlaybackManager::setLooping(bool isLoop)

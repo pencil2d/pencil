@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,29 +25,26 @@ class EraserTool : public StrokeTool
     Q_OBJECT
 
 public:
-    explicit EraserTool( QObject* parent = 0 );
+    explicit EraserTool(QObject* parent = nullptr);
     ToolType type() override;
     void loadSettings() override;
+    void resetToDefault() override;
     QCursor cursor() override;
 
-    void mouseMoveEvent( QMouseEvent* ) override;
-    void mousePressEvent( QMouseEvent* ) override;
-    void mouseReleaseEvent( QMouseEvent* ) override;
-
-    void tabletPressEvent( QTabletEvent* ) override;
-    void tabletMoveEvent( QTabletEvent* ) override;
-    void tabletReleaseEvent( QTabletEvent* ) override;
-
-    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
+    void pointerMoveEvent(PointerEvent*) override;
+    void pointerPressEvent(PointerEvent*) override;
+    void pointerReleaseEvent(PointerEvent*) override;
 
     void drawStroke();
-    void paintAt( QPointF point );
+    void paintAt(QPointF point);
     void removeVectorPaint();
     void updateStrokes();
 
-    void setWidth( const qreal width ) override;
-    void setFeather( const qreal feather ) override;
-    void setPressure( const bool pressure ) override;
+    void setWidth(const qreal width) override;
+    void setFeather(const qreal feather) override;
+    void setUseFeather(const bool usingFeather) override;
+    void setPressure(const bool pressure) override;
+    void setAA(const int aa) override;
     void setStabilizerLevel(const int level) override;
 
 protected:

@@ -167,13 +167,13 @@
   <customwidget>
    <class>GeneralPage</class>
    <extends>QWidget</extends>
-   <header>preferencesdialog.h</header>
+   <header>generalpage.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>FilesPage</class>
    <extends>QWidget</extends>
-   <header>preferencesdialog.h</header>
+   <header>filespage.h</header>
    <container>1</container>
    <slots>
     <signal>clearRecentList()</signal>
@@ -182,13 +182,13 @@
   <customwidget>
    <class>TimelinePage</class>
    <extends>QWidget</extends>
-   <header>preferencesdialog.h</header>
+   <header>timelinepage.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ToolsPage</class>
    <extends>QWidget</extends>
-   <header>preferencesdialog.h</header>
+   <header>toolspage.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

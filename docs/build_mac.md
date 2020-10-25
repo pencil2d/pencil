@@ -1,19 +1,20 @@
-# Building Pencil2D on macOS
+Building Pencil2D on macOS {#build_macos}
+==========================
 
-These are instructions for building Pencil2D on a Mac. If you are using Windows go [here](docs/build_win.md), and Linux please go [here](docs/build_linux.md).
+These are instructions for building Pencil2D on a Mac. If you are using Windows go [here](@ref build_windows), and Linux please go [here](@ref build_linux).
 
 This guide is primarily targeted towards developers. If you just want to use the latest version, download it from our [nightly builds](https://www.pencil2d.org/download/#nightlybuild). This tutorial was made with macOS Sierra (10.12) in mind, however this will probably work with all versions Yosemite (10.10) and up.
 
 There are 4 steps in total:
 
 1. Install Xcode
-2. Install Qt SDK
+2. Install %Qt SDK
 3. Get the source code
 4. Configure and compile Pencil2D
 
 ## TL;DR
 
-If you are an *experienced Qt developer*, compiling Pencil2D would be extremely easy for you. Just open up `pencil2d.pro` in Qt Creator and compile, that's it.
+If you are an *experienced %Qt developer*, compiling Pencil2D would be extremely easy for you. Just open up `pencil2d.pro` in %Qt Creator and compile, that's it.
 
 ## 1. Install Xcode
 
@@ -31,26 +32,26 @@ If you prefer to install Xcode by command-line, run the following command in Ter
 
 A dialog should pop up asking if you want to install the command line developer tools. Click *Install* and wait for the installation to complete.
 
-## 2. Qt SDK
+## 2. %Qt SDK
 
-### Official Qt Installer (Recommended)
+### Official %Qt Installer (Recommended)
 
-- Download the **Qt Online Installer for OS X** from [Qt Downloads](https://www.qt.io/download-open-source/)
+- Download the <b>%Qt Online Installer for OS X</b> from [%Qt Downloads](https://www.qt.io/download-open-source/)
 - Opening the file will mount the disk image, and will result in a Finder window appearing with a single file.
-- The file is the Qt installer application, so go ahead and open it. Click continue. You can skip the the step of creating Qt account. It's not necessary.
-- Next, specify a location for Qt, put it somewhere you can find it in case you ever need to navigate to the Qt files manually.
-- Then choose the Qt version and components you wish to install.
-  - If you have no idea what to do, select `Qt 5.9.x -> macOS`.
-  - Also make sure Qt Creator under the Tools section is being installed (at the time of writing there is no option to uncheck this, but it's worth double checking!).
-- Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press `Done` and it will launch Qt Creator for you.
+- The file is the %Qt installer application, so go ahead and open it. Click continue. You can skip the the step of creating %Qt account. It's not necessary.
+- Next, specify a location for %Qt, put it somewhere you can find it in case you ever need to navigate to the %Qt files manually.
+- Then choose the %Qt version and components you wish to install.
+  - If you have no idea what to do, select `%Qt 5.9.x -> macOS`.
+  - Also make sure %Qt Creator under the Tools section is being installed (at the time of writing there is no option to uncheck this, but it's worth double checking!).
+- Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press `Done` and it will launch %Qt Creator for you.
 
 ### Command-line method
 
-If you have `Homebrew` installed, you can install Qt 5 framework via Homebrew as well. To install Qt 5, run this command:
+If you have `Homebrew` installed, you can install %Qt 5 framework via Homebrew as well. To install %Qt 5, run this command:
 
     brew install qt5
 
-And also run the following commands to install Qt Creator:
+And also run the following commands to install %Qt Creator:
 
     brew tap caskroom/cask
     brew cask install qt-creator
@@ -64,9 +65,9 @@ And also run the following commands to install Qt Creator:
 
 Now it's time to build the application.
 
-### With Qt Creator (recommended)
+### With %Qt Creator (recommended)
 
-- Open up the Qt Creator application.
+- Open up the %Qt Creator application.
 - From the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root source folder and open the `pencil2d.pro` file. 
 - Next, you'll be asked to configure your **kits** for the project. Kits determine compilers, target environment, and various build settings among other things. The Desktop option should be the only one checked. Click Configure Project to complete the kit selection.
 - Now all you have to do to build is click the plain **green arrow** in the bottom left corner of the window or press `Command+r`. A small progress bar will show up on the bottom right and console output will appear in the bottom section.
@@ -76,7 +77,7 @@ If there is an error, the issues tab will open up at the bottom and display erro
 
 ### With QMake/GNU Make
 
-If you do not have or do not want to use Qt Creator for some reason then you can follow this two step process. First you have to use QMake to let Qt do its preprocessing and generate the Makefiles. Make sure that the qmake executable that came with Qt is in your PATH. Then cd to the root git directory for Pencil2d and run:
+If you do not have or do not want to use %Qt Creator for some reason then you can follow this two step process. First you have to use QMake to let %Qt do its preprocessing and generate the Makefiles. Make sure that the qmake executable that came with %Qt is in your PATH. Then cd to the root git directory for Pencil2d and run:
 
     qmake pencil2d.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug && /usr/bin/make qmake_all
 
@@ -90,4 +91,4 @@ You can then open Pencil2D by opening Pencil2D.app in app or by running:
 
 ## Next steps
 
-Now that you can build Pencil2D, the next step is to learn about [navigating the source code](docs/dive-into-code.md).
+Now that you can build Pencil2D, the next step is to learn about [navigating the source code](@ref code_overview).

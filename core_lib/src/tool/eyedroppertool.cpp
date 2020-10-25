@@ -1,8 +1,8 @@
-/*
+﻿/*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,7 +20,8 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPixmap>
 #include <QBitmap>
-#include <QMouseEvent>
+#include <QtMath>
+#include "pointerevent.h"
 
 #include "vectorimage.h"
 #include "layervector.h"
@@ -30,10 +31,9 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layermanager.h"
 #include "scribblearea.h"
+#include "util.h"
 
-
-EyedropperTool::EyedropperTool(QObject *parent) :
-    BaseTool(parent)
+EyedropperTool::EyedropperTool(QObject* parent) : BaseTool(parent)
 {
 }
 
@@ -47,17 +47,17 @@ void EyedropperTool::loadSettings()
 
 QCursor EyedropperTool::cursor()
 {
-    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
+    if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
         return QCursor(QPixmap(":icons/eyedropper.png"), 0, 15);
-    } 
+    }
     else
     {
         return Qt::CrossCursor;
     }
 }
 
-QCursor EyedropperTool::cursor(const QColor colour)
+QCursor EyedropperTool::cursor(const QColor color)
 {
     QPixmap icon(":icons/eyedropper.png");
 
@@ -66,80 +66,31 @@ QCursor EyedropperTool::cursor(const QColor colour)
 
     QPainter painter(&pixmap);
     painter.drawPixmap(0, 0, icon);
-    painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.setBrush(colour);
+
+    painter.setBrush(Qt::white);
+    painter.drawRect(17, 17, 13, 13);
+    painter.setPen(QPen(Qt::white, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.setBrush(color);
     painter.drawRect(16, 16, 15, 15);
     painter.end();
 
     return QCursor(pixmap, 0, 15);
 }
 
-void EyedropperTool::mousePressEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-}
+void EyedropperTool::pointerPressEvent(PointerEvent*)
+{}
 
-void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
+void EyedropperTool::pointerMoveEvent(PointerEvent*)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
-
-    if (event->button() == Qt::LeftButton)
-    {
-        if (layer->type() == Layer::BITMAP)
-        {
-            BitmapImage* targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0);
-            //QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
-            QColor pickedColour;
-            pickedColour.setRgba( targetImage->pixel( getLastPoint().x(), getLastPoint().y() ) );
-            int transp = 255 - pickedColour.alpha();
-            pickedColour.setRed( pickedColour.red() + transp );
-            pickedColour.setGreen( pickedColour.green() + transp );
-            pickedColour.setBlue( pickedColour.blue() + transp );
-            if (pickedColour.alpha() != 0)
-            {
-                mEditor->color()->setColor(pickedColour);
-            }
-        }
-        else if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-            int colourNumber = vectorImage->getColourNumber(getLastPoint());
-            if (colourNumber != -1)
-            {
-                mEditor->color()->setColorNumber(colourNumber);
-            }
-        }
-    }
-}
-
-void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
 
     if (layer->type() == Layer::BITMAP)
     {
-        BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-        if (targetImage->contains(getCurrentPoint()))
+        QColor pickedColor = getBitmapColor(static_cast<LayerBitmap*>(layer));
+        if (pickedColor.isValid())
         {
-            QColor pickedColour;
-            //pickedColour.setRgba(targetImage->pixel(getCurrentPoint().x(), getCurrentPoint().y()));
-            pickedColour.setRgba( targetImage->pixel( getCurrentPoint().x(), getCurrentPoint().y() ) );
-            int transp = 255 - pickedColour.alpha();
-            pickedColour.setRed( pickedColour.red() + transp );
-            pickedColour.setGreen( pickedColour.green() + transp );
-            pickedColour.setBlue( pickedColour.blue() + transp );
-            if (pickedColour.alpha() != 0)
-            {
-                mScribbleArea->setCursor(cursor(pickedColour));
-            }
-            else
-            {
-                mScribbleArea->setCursor(cursor());
-            }
+            mScribbleArea->setCursor(cursor(pickedColor));
         }
         else
         {
@@ -148,15 +99,81 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
     }
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-        int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
-        if (colourNumber != -1)
+        int pickedColor = getVectorColor(static_cast<LayerVector*>(layer));
+        if (pickedColor >= 0)
         {
-            mScribbleArea->setCursor(cursor(mEditor->object()->getColour(colourNumber).colour));
+            mScribbleArea->setCursor(cursor(mEditor->object()->getColor(pickedColor).color));
         }
         else
         {
             mScribbleArea->setCursor(cursor());
         }
     }
+}
+
+void EyedropperTool::pointerReleaseEvent(PointerEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        updateFrontColor();
+
+        // reset cursor
+        mScribbleArea->setCursor(cursor());
+    }
+}
+
+void EyedropperTool::updateFrontColor()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer == nullptr) { return; }
+    if (layer->type() == Layer::BITMAP)
+    {
+        QColor pickedColor = getBitmapColor(static_cast<LayerBitmap*>(layer));
+        if (pickedColor.isValid())
+        {
+            mEditor->color()->setColor(pickedColor);
+        }
+    }
+    else if (layer->type() == Layer::VECTOR)
+    {
+        int pickedColor = getVectorColor(static_cast<LayerVector*>(layer));
+        if (pickedColor >= 0)
+        {
+            mEditor->color()->setColorNumber(pickedColor);
+        }
+    }
+}
+
+QColor EyedropperTool::getBitmapColor(LayerBitmap* layer)
+{
+    BitmapImage* targetImage = layer->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+    if (targetImage == nullptr || !targetImage->contains(getCurrentPoint())) return QColor();
+
+    QColor pickedColour;
+    const QRgb pixelColor = targetImage->constScanLine(qFloor(getCurrentPoint().x()),
+                                                       qFloor(getCurrentPoint().y()));
+    pickedColour.setRgba(pixelColor);
+
+    if (pickedColour.alpha() <= 0) pickedColour = QColor();
+    return pickedColour;
+}
+
+int EyedropperTool::getVectorColor(LayerVector* layer)
+{
+    auto vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
+    if (vectorImage == nullptr) return -1;
+
+    // Check curves
+    const qreal toleranceDistance = 10.0;
+    const QList<int> closestCurves = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
+    const QList<int> visibleClosestCurves = filter(closestCurves, [vectorImage](int i) { return vectorImage->isCurveVisible(i); });
+
+    if (!visibleClosestCurves.isEmpty())
+    {
+        return vectorImage->getCurvesColor(visibleClosestCurves.last());
+    }
+
+    // Check fills
+    int colorNumber = vectorImage->getColorNumber(getCurrentPoint());
+    return colorNumber;
 }

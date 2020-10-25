@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>empty.pclx</file>
+        <file>cjk-test.pclx</file>
+    </qresource>
+</RCC>
