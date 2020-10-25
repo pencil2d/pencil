@@ -52,6 +52,10 @@ void TimeControls::initUI()
     mTimecodeSelect = new QToolButton(this);
     mTimecodeSelect->setIcon(QIcon(":app/icons/new/svg/more_options.svg"));
     mTimecodeSelect->setPopupMode(QToolButton::InstantPopup);
+    mTimecodeSelect->addAction(mNoTimecodeAction = new QAction(tr("No text"), this));
+    mTimecodeSelect->addAction(mOnlyFramesAction = new QAction(tr("Frames"), this));
+    mTimecodeSelect->addAction(mSmpteAction = new QAction(tr("SMPTE Timecode"), this));
+    mTimecodeSelect->addAction(mSffAction = new QAction(tr("SFF Timecode"), this));
     mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
     mTimecodeLabel = new QLabel(this);
     mTimecodeLabel->setContentsMargins(2, 0, 0, 0);
@@ -224,7 +228,10 @@ void TimeControls::makeConnections()
 
     connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::setFps);
     connect(mEditor, &Editor::fpsChanged, this, &TimeControls::setFps);
-    connect(mTimecodeSelect, &QToolButton::clicked, this, &TimeControls::showTimecodeLabelMenu);
+    connect(mNoTimecodeAction, &QAction::triggered, this, &TimeControls::noTimecodeText);
+    connect(mOnlyFramesAction, &QAction::triggered, this, &TimeControls::onlyFramesText);
+    connect(mSmpteAction, &QAction::triggered, this, &TimeControls::SMPTE_text);
+    connect(mSffAction, &QAction::triggered, this, &TimeControls::SFF_text);
 }
 
 void TimeControls::playButtonClicked()
@@ -244,19 +251,6 @@ void TimeControls::updatePlayState()
         mPlayButton->setIcon(mStartIcon);
         mPlayButton->setToolTip(tr("Play"));
     }
-}
-
-void TimeControls::showTimecodeLabelMenu()
-{
-    QPoint globalPos = mTimecodeSelect->cursor().pos();
-
-    QMenu* menu = new QMenu();
-    menu->addAction(tr("No text"), this, &TimeControls::noTimecodeText, 0);
-    menu->addAction(tr("Frames"),  this, &TimeControls::onlyFramesText, 0);
-    menu->addAction(tr("SMPTE Timecode"), this, &TimeControls::SMPTE_text, 0);
-    menu->addAction(tr("SFF Timecode"), this, &TimeControls::SFF_text, 0);
-
-    menu->exec(globalPos);
 }
 
 void TimeControls::jumpToStartButtonClicked()

@@ -48,8 +48,6 @@ public:
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
-    void showTimecodeLabelMenu();
-
 signals:
     void soundToggled(bool);
     void soundScrubToggled(bool);
@@ -92,6 +90,10 @@ private:
     QSpinBox*    mLoopEndSpinBox = nullptr;
     QToolButton* mTimecodeSelect = nullptr;
     QLabel*      mTimecodeLabel = nullptr;
+    QAction*     mNoTimecodeAction = nullptr;
+    QAction*     mOnlyFramesAction = nullptr;
+    QAction*     mSmpteAction = nullptr;
+    QAction*     mSffAction = nullptr;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
