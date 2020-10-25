@@ -228,7 +228,10 @@ void TimeControls::makeConnections()
 
     connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::setFps);
     connect(mEditor, &Editor::fpsChanged, this, &TimeControls::setFps);
-    connect(mTimecodeSelect, &QToolButton::clicked, this, &TimeControls::showTimecodeLabelMenu);
+    connect(mNoTimecodeAction, &QAction::triggered, this, &TimeControls::noTimecodeText);
+    connect(mOnlyFramesAction, &QAction::triggered, this, &TimeControls::onlyFramesText);
+    connect(mSmpteAction, &QAction::triggered, this, &TimeControls::SMPTE_text);
+    connect(mSffAction, &QAction::triggered, this, &TimeControls::SFF_text);
 }
 
 void TimeControls::playButtonClicked()
