@@ -253,19 +253,6 @@ void TimeControls::updatePlayState()
     }
 }
 
-void TimeControls::showTimecodeLabelMenu()
-{
-    QPoint globalPos = mTimecodeSelect->cursor().pos();
-
-    QMenu* menu = new QMenu();
-    menu->addAction(tr("No text"), this, &TimeControls::noTimecodeText, 0);
-    menu->addAction(tr("Frames"),  this, &TimeControls::onlyFramesText, 0);
-    menu->addAction(tr("SMPTE Timecode"), this, &TimeControls::SMPTE_text, 0);
-    menu->addAction(tr("SFF Timecode"), this, &TimeControls::SFF_text, 0);
-
-    menu->exec(globalPos);
-}
-
 void TimeControls::jumpToStartButtonClicked()
 {
     if (mPlaybackRangeCheckBox->isChecked())
