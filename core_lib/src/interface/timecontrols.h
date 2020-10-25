@@ -92,6 +92,10 @@ private:
     QSpinBox*    mLoopEndSpinBox = nullptr;
     QToolButton* mTimecodeSelect = nullptr;
     QLabel*      mTimecodeLabel = nullptr;
+    QAction*     mNoTimecodeAction = nullptr;
+    QAction*     mOnlyFramesAction = nullptr;
+    QAction*     mSmpteAction = nullptr;
+    QAction*     mSffAction = nullptr;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
