@@ -20,7 +20,7 @@ GNU General Public License for more details.
 #include <QLabel>
 #include <QSettings>
 #include <QMenu>
-
+#include <QDebug>
 #include "editor.h"
 #include "playbackmanager.h"
 #include "layermanager.h"
@@ -386,6 +386,8 @@ void TimeControls::onFpsEditingFinished()
 
 void TimeControls::updateTimecodeLabel(int frame)
 {
+    mTimecodeLabel->setVisible(true);
+
     switch (mTimecodeLabelEnum)
     {
     case TimecodeTextLevel::SMPTE:
@@ -404,10 +406,10 @@ void TimeControls::updateTimecodeLabel(int frame)
         break;
     case TimecodeTextLevel::NOTEXT:
     default:
-        mTimecodeLabel->setText("");
+        mTimecodeLabel->clear();
+        mTimecodeLabel->setVisible(false);
         break;
     }
-
 
 }
 
