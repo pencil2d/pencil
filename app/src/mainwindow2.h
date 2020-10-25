@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QMainWindow>
 #include "preferencemanager.h"
 #include "xsheet.h"
+#include "pegbaralignmentdialog.h"
 
 template<typename T> class QList;
 class QActionGroup;
