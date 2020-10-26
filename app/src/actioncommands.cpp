@@ -57,7 +57,6 @@ GNU General Public License for more details.
 #include "checkupdatesdialog.h"
 #include "errordialog.h"
 
-
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
 {
     mParent = parent;

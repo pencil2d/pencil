@@ -19,6 +19,9 @@ GNU General Public License for more details.
 #define MAINWINDOW2_H
 
 #include <QMainWindow>
+#include "preferencemanager.h"
+#include "xsheet.h"
+#include "pegbaralignmentdialog.h"
 
 template<typename T> class QList;
 class QActionGroup;
@@ -41,6 +44,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class Xsheet;
 class PegBarAlignmentDialog;
 enum class SETTING;
 
@@ -157,6 +161,7 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr;
     ColorInspector*       mColorInspector = nullptr;
+    Xsheet*               mXsheet = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
