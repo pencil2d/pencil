@@ -68,11 +68,11 @@
          <height>254</height>
         </rect>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>250</width>
-         <height>16777215</height>
-        </size>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <property name="leftMargin">
@@ -159,11 +159,11 @@
                 <height>0</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>50</width>
-                <height>16777215</height>
-               </size>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -265,11 +265,11 @@
                 <height>0</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>50</width>
-                <height>16777215</height>
-               </size>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -358,11 +358,11 @@
                 <height>0</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>50</width>
-                <height>16777215</height>
-               </size>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -393,11 +393,11 @@
                 <height>0</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>50</width>
-                <height>16777215</height>
-               </size>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
