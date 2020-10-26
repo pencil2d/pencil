@@ -311,6 +311,14 @@ void ScribbleArea::setAllDirty()
     mCanvasPainter.resetLayerCache();
 }
 
+bool ScribbleArea::event(QEvent *event)
+{
+    if (event->type() == QEvent::WindowDeactivate) {
+        setPrevTool();
+    }
+    return QWidget::event(event);
+}
+
 /************************************************************************/
 /* key event handlers                                                   */
 /************************************************************************/

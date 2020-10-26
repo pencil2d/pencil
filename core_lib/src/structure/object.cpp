@@ -753,16 +753,16 @@ QString Object::copyFileToDataFolder(QString strFilePath)
 }
 
 bool Object::exportFrames(int frameStart, int frameEnd,
-                          LayerCamera* cameraLayer,
+                          const LayerCamera* cameraLayer,
                           QSize exportSize,
                           QString filePath,
                           QString format,
                           bool transparency,
                           bool exportKeyframesOnly,
-                          QString layerName,
+                          const QString& layerName,
                           bool antialiasing,
                           QProgressDialog* progress = nullptr,
-                          int progressMax = 50)
+                          int progressMax = 50) const
 {
     Q_ASSERT(cameraLayer);
 
@@ -885,7 +885,7 @@ bool Object::exportX(int frameStart, int frameEnd, QTransform view, QSize export
     return true;
 }
 
-bool Object::exportIm(int frame, QTransform view, QSize cameraSize, QSize exportSize, QString filePath, QString format, bool antialiasing, bool transparency)
+bool Object::exportIm(int frame, QTransform view, QSize cameraSize, QSize exportSize, QString filePath, QString format, bool antialiasing, bool transparency) const
 {
     QImage imageToExport(exportSize, QImage::Format_ARGB32_Premultiplied);
 
