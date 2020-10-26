@@ -290,7 +290,7 @@ void TimeLine::deleteCurrentLayer()
 
     int ret = QMessageBox::warning(this,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: %1?").arg(strLayerName),
+                                   tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(strLayerName),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)

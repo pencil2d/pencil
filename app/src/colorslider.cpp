@@ -22,12 +22,11 @@ GNU General Public License for more details.
 #include <QStyleOption>
 #include <QPixmapCache>
 #include <QPainter>
-#include <QSlider>
 
 
 ColorSlider::ColorSlider(QWidget* parent) : QWidget(parent)
 {
-
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
 ColorSlider::~ColorSlider()
@@ -35,17 +34,18 @@ ColorSlider::~ColorSlider()
 
 }
 
-void ColorSlider::init(ColorType type, QColor color, qreal min, qreal max)
+void ColorSlider::init(ColorSpecType specType, ColorType type, QColor color, qreal min, qreal max)
 {
-    init(type, color, min, max, QSize(this->size()));
+    init(specType, type, color, min, max, QSize(this->size()));
 }
 
-void ColorSlider::init(ColorType type, QColor color, qreal min, qreal max, QSize size)
+void ColorSlider::init(ColorSpecType specType, ColorType type, QColor color, qreal min, qreal max, QSize size)
 {
     mMin = min;
     mMax = max;
     mColor = color;
     mColorType = type;
+    mSpecType = specType;
 
     drawColorBox(color, size);
 }
@@ -237,6 +237,11 @@ void ColorSlider::drawColorBox(QColor color, QSize size)
                             mBoxPixmapSource.width(),
                             Qt::SizeMode::AbsoluteSize);
     painter.end();
+}
+
+QSize ColorSlider::sizeHint() const
+{
+    return {-1, 10};
 }
 
 void ColorSlider::mouseMoveEvent(QMouseEvent* event)

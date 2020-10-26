@@ -63,7 +63,7 @@ GNU General Public License for more details.
 #include "onionskinwidget.h"
 
 //#include "preview.h"
-#include "timeline2.h"
+//#include "timeline2.h"
 #include "errordialog.h"
 #include "filedialog.h"
 #include "importimageseqdialog.h"
@@ -263,7 +263,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
 
     connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
-    connect(ui->actionImport_MovieAudio, &QAction::triggered, this, &MainWindow2::importMovieAudio);
+    connect(ui->actionImport_MovieAudio, &QAction::triggered, mCommands, &ActionCommands::importMovieAudio);
 
     connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
@@ -493,29 +493,26 @@ void MainWindow2::closeEvent(QCloseEvent* event)
         return;
     }
 
-    if (maybeSave())
-    {
-        writeSettings();
-        event->accept();
-        m2ndCloseEvent = true;
-    }
-    else
+    if (!maybeSave())
     {
         event->ignore();
+        return;
     }
+    writeSettings();
+    event->accept();
+    m2ndCloseEvent = true;
 }
 
 void MainWindow2::showEvent(QShowEvent*)
 {
     static bool firstShowEvent = true;
-    if (firstShowEvent)
+    if (!firstShowEvent)
     {
-        firstShowEvent = false;
-        if (tryRecoverUnsavedProject()) { return; }
-        if (loadMostRecent()) { return; }
-        if (tryLoadPreset()) { return; }
-        newObject();
+        return;
     }
+    firstShowEvent = false;
+    if (tryRecoverUnsavedProject() || loadMostRecent() || tryLoadPreset()) { return; }
+    newObject();
 }
 
 void MainWindow2::tabletEvent(QTabletEvent* event)
@@ -525,24 +522,22 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
 
 void MainWindow2::newDocument()
 {
-    if (maybeSave())
+    if (maybeSave() && !tryLoadPreset())
     {
-        if (!tryLoadPreset())
-        {
-            newObject();
-        }
+        newObject();
     }
 }
 
 void MainWindow2::openDocument()
 {
-    if (maybeSave())
+    if (!maybeSave())
     {
-        QString fileName = FileDialog::getOpenFileName(this, FileType::ANIMATION);
-        if (!fileName.isEmpty())
-        {
-            openObject(fileName);
-        }
+        return;
+    }
+    QString fileName = FileDialog::getOpenFileName(this, FileType::ANIMATION);
+    if (!fileName.isEmpty())
+    {
+        openObject(fileName);
     }
 }
 
@@ -556,7 +551,7 @@ bool MainWindow2::saveAsNewDocument()
     return saveObject(fileName);
 }
 
-void MainWindow2::openFile(QString filename)
+void MainWindow2::openFile(const QString& filename)
 {
     if (maybeSave())
     {
@@ -564,7 +559,7 @@ void MainWindow2::openFile(QString filename)
     }
 }
 
-bool MainWindow2::openObject(QString strFilePath)
+bool MainWindow2::openObject(const QString& strFilePath)
 {
     // Check for potential issues with the file
     QFileInfo fileInfo(strFilePath);
@@ -768,19 +763,18 @@ bool MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if (mEditor->currentBackup() != mBackupAtSave)
+    if (mEditor->currentBackup() == mBackupAtSave)
     {
-        int ret = QMessageBox::warning(this, tr("Warning"),
-                                       tr("This animation has been modified.\n Do you want to save your changes?"),
-                                       QMessageBox::Discard | QMessageBox::Save | QMessageBox::Cancel);
-        if (ret == QMessageBox::Save)
-            return saveDocument();
-        else if (ret == QMessageBox::Discard)
-            return true;
-        else
-            return false;
+        return true;
     }
-    return true;
+
+    int ret = QMessageBox::warning(this, tr("Warning"),
+                                   tr("This animation has been modified.\n Do you want to save your changes?"),
+                                   QMessageBox::Discard | QMessageBox::Save | QMessageBox::Cancel);
+    if (ret == QMessageBox::Save)
+        return saveDocument();
+    else
+        return ret == QMessageBox::Discard;
 }
 
 bool MainWindow2::autoSave()
@@ -793,7 +787,7 @@ bool MainWindow2::autoSave()
     if (mEditor->autoSaveNeverAskAgain())
         return false;
 
-    if(mIsImportingImageSequence)
+    if(mSuppressAutoSaveDialog)
         return false;
 
     QMessageBox msgBox(this);
@@ -809,7 +803,7 @@ bool MainWindow2::autoSave()
     {
         return saveDocument();
     }
-    else if (ret != QMessageBox::No) // Never ask again
+    if (ret != QMessageBox::No) // Never ask again
     {
         mEditor->dontAskAutoSave(true);
     }
@@ -854,14 +848,13 @@ void MainWindow2::importImage()
         return;
     }
 
-
     ui->scribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
 }
 
 void MainWindow2::importImageSequence()
 {
-    mIsImportingImageSequence = true;
+    mSuppressAutoSaveDialog = true;
 
     ImportImageSeqDialog* imageSeqDialog = new ImportImageSeqDialog(this);
     OnScopeExit(delete imageSeqDialog)
@@ -887,7 +880,7 @@ void MainWindow2::importImageSequence()
 
     imageSeqDialog->importArbitrarySequence();
 
-    mIsImportingImageSequence = false;
+    mSuppressAutoSaveDialog = false;
 }
 
 void MainWindow2::importPredefinedImageSet()
@@ -898,7 +891,7 @@ void MainWindow2::importPredefinedImageSet()
 
     connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
 
-    mIsImportingImageSequence = true;
+    mSuppressAutoSaveDialog = true;
     imageSeqDialog->exec();
     if (imageSeqDialog->result() == QDialog::Rejected)
     {
@@ -916,7 +909,7 @@ void MainWindow2::importPredefinedImageSet()
     }
 
     imageSeqDialog->importPredefinedSet();
-    mIsImportingImageSequence = false;
+    mSuppressAutoSaveDialog = false;
 }
 
 void MainWindow2::importLayers()
@@ -937,7 +930,7 @@ void MainWindow2::importGIF()
     }
 
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
-    mIsImportingImageSequence = true;
+    mSuppressAutoSaveDialog = true;
 
     ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
     OnScopeExit(delete positionDialog)
@@ -957,10 +950,10 @@ void MainWindow2::importGIF()
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
-    bool importOK = true;
     QString strImgFileLower = gifDialog->getFilePath();
+    bool importOK = strImgFileLower.endsWith(".gif");
 
-    if (strImgFileLower.endsWith(".gif"))
+    if (importOK)
     {
         bool ok = mEditor->importGIF(strImgFileLower, space);
         if (!ok)
@@ -968,11 +961,6 @@ void MainWindow2::importGIF()
 
         progress.setValue(50);
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-
-    }
-    else
-    {
-        importOK = false;
     }
 
     if (!importOK)
@@ -987,7 +975,7 @@ void MainWindow2::importGIF()
     progress.setValue(100);
     progress.close();
 
-    mIsImportingImageSequence = false;
+    mSuppressAutoSaveDialog = false;
 }
 
 void MainWindow2::lockWidgets(bool shouldLock)
@@ -1006,16 +994,6 @@ void MainWindow2::lockWidgets(bool shouldLock)
     }
 }
 
-void MainWindow2::setSoundScrubActive(bool b)
-{
-    mEditor->playback()->setSoundScrubActive(b);
-}
-
-void MainWindow2::setSoundScrubMsec(int msec)
-{
-    mEditor->playback()->setSoundScrubMsec(msec);
-}
-
 void MainWindow2::preferences()
 {
     if (mPrefDialog)
@@ -1030,8 +1008,8 @@ void MainWindow2::preferences()
     mPrefDialog->init(mEditor->preference());
 
     connect(mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity);
-    connect(mPrefDialog, &PreferencesDialog::soundScrubChanged, this, &MainWindow2::setSoundScrubActive);
-    connect(mPrefDialog, &PreferencesDialog::soundScrubMsecChanged, this, &MainWindow2::setSoundScrubMsec);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubChanged, mEditor->playback(), &PlaybackManager::setSoundScrubActive);
+    connect(mPrefDialog, &PreferencesDialog::soundScrubMsecChanged, mEditor->playback(), &PlaybackManager::setSoundScrubMsec);
     connect(mPrefDialog, &PreferencesDialog::finished, [&]
     {
         clearKeyboardShortcuts();
@@ -1066,19 +1044,16 @@ void MainWindow2::resetAndDockAllSubWidgets()
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 }
 
-bool MainWindow2::newObject()
+void MainWindow2::newObject() const
 {
-    Object* object = nullptr;
-    object = new Object();
+    auto object = new Object();
     object->init();
     object->createDefaultLayers();
     mEditor->setObject(object);
-    return true;
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
 {
-    Object* object = nullptr;
     QString presetFilePath = PresetDialog::getPresetPath(presetIndex);
 
     if (presetFilePath.isEmpty())
@@ -1087,9 +1062,9 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     }
 
     FileManager fm(this);
-    object = fm.load(presetFilePath);
+    Object* object = fm.load(presetFilePath);
 
-    if (fm.error().ok() == false || object == nullptr)
+    if (!fm.error().ok() || object == nullptr)
     {
         return false;
     }
@@ -1105,48 +1080,49 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
 
 bool MainWindow2::loadMostRecent()
 {
-    if(mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT))
+    if(!mEditor->preference()->isOn(SETTING::LOAD_MOST_RECENT))
     {
-        QSettings settings(PENCIL2D, PENCIL2D);
-        QString myPath = settings.value(LAST_PCLX_PATH, QVariant("")).toString();
-        if (myPath.isEmpty() || !QFile::exists(myPath))
-        {
-            return false;
-        }
-        return openObject(myPath);
+        return false;
     }
-    return false;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    QString myPath = settings.value(LAST_PCLX_PATH, QVariant("")).toString();
+    if (myPath.isEmpty() || !QFile::exists(myPath))
+    {
+        return false;
+    }
+    return openObject(myPath);
 }
 
 bool MainWindow2::tryLoadPreset()
 {
-    if (mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
-    {
-        PresetDialog* presetDialog = new PresetDialog(mEditor->preference(), this);
-        presetDialog->setAttribute(Qt::WA_DeleteOnClose);
-        connect(presetDialog, &PresetDialog::finished, [=](int result)
-        {
-            if (result == QDialog::Accepted)
-            {
-                int presetIndex = presetDialog->getPresetIndex();
-                if (presetDialog->shouldAlwaysUse())
-                {
-                    mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
-                    mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetIndex);
-                }
-                if (!newObjectFromPresets(presetIndex))
-                {
-                    newObject();
-                }
-            }
-        });
-        presetDialog->open();
-    }
-    else
+    if (!mEditor->preference()->isOn(SETTING::ASK_FOR_PRESET))
     {
         int defaultPreset = mEditor->preference()->getInt(SETTING::DEFAULT_PRESET);
         return newObjectFromPresets(defaultPreset);
     }
+
+    PresetDialog* presetDialog = new PresetDialog(mEditor->preference(), this);
+    presetDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(presetDialog, &PresetDialog::finished, [=](int result)
+    {
+        if (result != QDialog::Accepted)
+        {
+            return;
+        }
+
+        int presetIndex = presetDialog->getPresetIndex();
+        if (presetDialog->shouldAlwaysUse())
+        {
+            mEditor->preference()->set(SETTING::ASK_FOR_PRESET, false);
+            mEditor->preference()->set(SETTING::DEFAULT_PRESET, presetIndex);
+        }
+        if (!newObjectFromPresets(presetIndex))
+        {
+            newObject();
+        }
+    });
+    presetDialog->open();
     return true;
 }
 
@@ -1248,7 +1224,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
     ui->actionFlip_rolling->setShortcut(cmdKeySeq(CMD_FLIP_ROLLING));
 
-    ShortcutFilter* shortcutfilter = new ShortcutFilter(ui->scribbleArea, this);
+    ShortcutFilter* shortcutFilter = new ShortcutFilter(ui->scribbleArea, this);
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
     ui->actionSelect->setShortcut(cmdKeySeq(CMD_TOOL_SELECT));
     ui->actionBrush->setShortcut(cmdKeySeq(CMD_TOOL_BRUSH));
@@ -1261,18 +1237,18 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionEyedropper->setShortcut(cmdKeySeq(CMD_TOOL_EYEDROPPER));
     ui->actionEraser->setShortcut(cmdKeySeq(CMD_TOOL_ERASER));
 
-    ui->actionMove->installEventFilter(shortcutfilter);
-    ui->actionMove->installEventFilter(shortcutfilter);
-    ui->actionSelect->installEventFilter(shortcutfilter);
-    ui->actionBrush->installEventFilter(shortcutfilter);
-    ui->actionPolyline->installEventFilter(shortcutfilter);
-    ui->actionSmudge->installEventFilter(shortcutfilter);
-    ui->actionPen->installEventFilter(shortcutfilter);
-    ui->actionHand->installEventFilter(shortcutfilter);
-    ui->actionPencil->installEventFilter(shortcutfilter);
-    ui->actionBucket->installEventFilter(shortcutfilter);
-    ui->actionEyedropper->installEventFilter(shortcutfilter);
-    ui->actionEraser->installEventFilter(shortcutfilter);
+    ui->actionMove->installEventFilter(shortcutFilter);
+    ui->actionMove->installEventFilter(shortcutFilter);
+    ui->actionSelect->installEventFilter(shortcutFilter);
+    ui->actionBrush->installEventFilter(shortcutFilter);
+    ui->actionPolyline->installEventFilter(shortcutFilter);
+    ui->actionSmudge->installEventFilter(shortcutFilter);
+    ui->actionPen->installEventFilter(shortcutFilter);
+    ui->actionHand->installEventFilter(shortcutFilter);
+    ui->actionPencil->installEventFilter(shortcutFilter);
+    ui->actionBucket->installEventFilter(shortcutFilter);
+    ui->actionEyedropper->installEventFilter(shortcutFilter);
+    ui->actionEraser->installEventFilter(shortcutFilter);
 
     ui->actionNew_Bitmap_Layer->setShortcut(cmdKeySeq(CMD_NEW_BITMAP_LAYER));
     ui->actionNew_Vector_Layer->setShortcut(cmdKeySeq(CMD_NEW_VECTOR_LAYER));
@@ -1364,39 +1340,34 @@ void MainWindow2::importPalette()
 
 void MainWindow2::openPalette()
 {
-    int count = 0;
-    int maxNumber = mEditor->object()->getColorCount();
-    bool openPalette = true;
-    while (count < maxNumber)
+    for (int i = 0; i < mEditor->object()->getColorCount(); i++)
     {
-        if (mEditor->object()->isColorInUse(count))
+        if (!mEditor->object()->isColorInUse(i))
         {
-            QMessageBox msgBox;
-            msgBox.setText(tr("Opening palette, will replace the old palette.\n"
-                              "Color(s) in strokes will be altered by this action!\n"));
-            msgBox.addButton(tr("Open Palette"), QMessageBox::AcceptRole);
-            msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
-
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::RejectRole)
-            {
-                openPalette = false;
-            }
-            count = maxNumber;
+            continue;
         }
-        count++;
+
+        QMessageBox msgBox;
+        msgBox.setText(tr("Opening a palette will replace the old palette.\n"
+                          "Color(s) in strokes will be altered by this action!"));
+        msgBox.addButton(tr("Open Palette"), QMessageBox::AcceptRole);
+        msgBox.addButton(QMessageBox::Cancel);
+
+        if (msgBox.exec() == QMessageBox::Cancel) {
+            return;
+        }
+        break;
     }
 
-    if (openPalette)
+    QString filePath = FileDialog::getOpenFileName(this, FileType::PALETTE);
+    if (filePath.isEmpty())
     {
-        QString filePath = FileDialog::getOpenFileName(this, FileType::PALETTE);
-        if (!filePath.isEmpty())
-        {
-            mEditor->object()->openPalette(filePath);
-            mColorPalette->refreshColorList();
-            mEditor->color()->setColorNumber(0);
-        }
+        return;
     }
+
+    mEditor->object()->openPalette(filePath);
+    mColorPalette->refreshColorList();
+    mEditor->color()->setColorNumber(0);
 }
 
 void MainWindow2::makeConnections(Editor* editor)
@@ -1437,7 +1408,6 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor, &Editor::currentFrameChanged, [scribbleArea] { scribbleArea->update(); });
 
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
-    //connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );
 }
 
 void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
@@ -1524,16 +1494,11 @@ void MainWindow2::changePlayState(bool isPlaying)
 void MainWindow2::importMovieVideo()
 {
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
-    mIsImportingImageSequence = true;
+    mSuppressAutoSaveDialog = true;
 
     mCommands->importMovieVideo();
 
-    mIsImportingImageSequence = false;
-}
-
-void MainWindow2::importMovieAudio()
-{
-    mCommands->importMovieAudio();
+    mSuppressAutoSaveDialog = false;
 }
 
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)
@@ -1551,7 +1516,7 @@ bool MainWindow2::tryRecoverUnsavedProject()
     FileManager fm;
     QStringList recoverables = fm.searchForUnsavedProjects();
 
-    if (recoverables.size() == 0)
+    if (recoverables.empty())
     {
         return false;
     }
@@ -1599,8 +1564,10 @@ void MainWindow2::startProjectRecovery(int result)
         const QString title = tr("Recovery Failed.");
         const QString text = tr("Sorry! Pencil2D is unable to restore your project");
         QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
+        return;
     }
 
+    Q_ASSERT(o);
     mEditor->setObject(o);
     updateSaveState();
 

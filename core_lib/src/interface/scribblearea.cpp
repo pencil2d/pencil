@@ -652,16 +652,6 @@ bool ScribbleArea::isLayerPaintable() const
     return layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR;
 }
 
-bool ScribbleArea::allowSmudging()
-{
-    ToolType toolType = currentTool()->type();
-    if (toolType == SMUDGE)
-    {
-        return true;
-    }
-    return false;
-}
-
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
     if (mTabletInUse)
@@ -778,7 +768,7 @@ void ScribbleArea::paintBitmapBuffer()
 
 void ScribbleArea::paintBitmapBufferRect(const QRect& rect)
 {
-    if (allowSmudging() || mEditor->playback()->isPlaying())
+    if (mEditor->playback()->isPlaying())
     {
         Layer* layer = mEditor->layers()->currentLayer();
         Q_ASSERT(layer);

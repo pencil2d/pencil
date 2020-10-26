@@ -380,6 +380,7 @@ void TimeControls::onFpsEditingFinished()
 
 void TimeControls::updateTimecodeLabel(int frame)
 {
+    mNoTimecodeAction->setVisible(true);
     mTimecodeLabel->setVisible(true);
 
     switch (mTimecodeLabelEnum)
@@ -400,7 +401,7 @@ void TimeControls::updateTimecodeLabel(int frame)
         break;
     case TimecodeTextLevel::NOTEXT:
     default:
-        mTimecodeLabel->clear();
+        mNoTimecodeAction->setVisible(false);
         mTimecodeLabel->setVisible(false);
         break;
     }
