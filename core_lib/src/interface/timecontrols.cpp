@@ -149,7 +149,7 @@ void TimeControls::initUI()
     addWidget(mSoundScrubButton);
     addWidget(mFpsBox);
     addWidget(mTimecodeSelect);
-    addWidget(mTimecodeLabel);
+    mTimecodeLabelAction = addWidget(mTimecodeLabel);
 
     makeConnections();
 
@@ -380,8 +380,7 @@ void TimeControls::onFpsEditingFinished()
 
 void TimeControls::updateTimecodeLabel(int frame)
 {
-    mNoTimecodeAction->setVisible(true);
-    mTimecodeLabel->setVisible(true);
+    mTimecodeLabelAction->setVisible(true);
 
     switch (mTimecodeLabelEnum)
     {
@@ -401,8 +400,7 @@ void TimeControls::updateTimecodeLabel(int frame)
         break;
     case TimecodeTextLevel::NOTEXT:
     default:
-        mNoTimecodeAction->setVisible(false);
-        mTimecodeLabel->setVisible(false);
+        mTimecodeLabelAction->setVisible(false);
         break;
     }
 

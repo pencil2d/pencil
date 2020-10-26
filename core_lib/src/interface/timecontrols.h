@@ -94,6 +94,7 @@ private:
     QAction*     mOnlyFramesAction = nullptr;
     QAction*     mSmpteAction = nullptr;
     QAction*     mSffAction = nullptr;
+    QAction*     mTimecodeLabelAction = nullptr;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
