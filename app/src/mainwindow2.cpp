@@ -312,7 +312,9 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
     connect(ui->actionRotate_Anticlockwise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
+    connect(ui->actionReset_Rotation, &QAction::triggered, mEditor->view(), &ViewManager::resetRotation);
     connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
+    connect(ui->actionCenter_View, &QAction::triggered, mEditor->view(), &ViewManager::centerView);
     connect(ui->actionZoom400, &QAction::triggered, mEditor->view(), &ViewManager::scale400);
     connect(ui->actionZoom300, &QAction::triggered, mEditor->view(), &ViewManager::scale300);
     connect(ui->actionZoom200, &QAction::triggered, mEditor->view(), &ViewManager::scale200);
@@ -1192,6 +1194,7 @@ void MainWindow2::setupKeyboardShortcuts()
     // View menu
     ui->actionResetWindows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
     ui->actionReset_View->setShortcut(cmdKeySeq(CMD_RESET_ZOOM_ROTATE));
+    ui->actionCenter_View->setShortcut(cmdKeySeq(CMD_CENTER_VIEW));
     ui->actionZoom_In->setShortcut(cmdKeySeq(CMD_ZOOM_IN));
     ui->actionZoom_Out->setShortcut(cmdKeySeq(CMD_ZOOM_OUT));
     ui->actionZoom400->setShortcut(cmdKeySeq(CMD_ZOOM_400));
@@ -1203,6 +1206,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionZoom25->setShortcut(cmdKeySeq(CMD_ZOOM_25));
     ui->actionRotate_Clockwise->setShortcut(cmdKeySeq(CMD_ROTATE_CLOCK));
     ui->actionRotate_Anticlockwise->setShortcut(cmdKeySeq(CMD_ROTATE_ANTI_CLOCK));
+    ui->actionReset_Rotation->setShortcut(cmdKeySeq(CMD_RESET_ROTATION));
     ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_FLIP_HORIZONTAL));
     ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
     ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));

@@ -131,10 +131,7 @@ void Camera::scale(qreal scaleValue)
 void Camera::scaleWithOffset(qreal scaleValue, QPointF offset)
 {
     mTranslate = (mTranslate + offset) * mScale / scaleValue - offset;
-    mScale = scaleValue;
-
-    mNeedUpdateView = true;
-    modification();
+    scale(scaleValue);
 }
 
 bool Camera::operator==(const Camera& rhs) const
