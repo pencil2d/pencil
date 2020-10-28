@@ -208,6 +208,9 @@ void TimeLine::initUI()
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::updateLength);
     connect(mTimeControls, &TimeControls::playButtonTriggered, this, &TimeLine::playButtonTriggered);
+    connect(editor(), &Editor::currentFrameChanged, mTimeControls, &TimeControls::updateTimecodeLabel);
+    connect(mTimeControls, &TimeControls::fpsChanged, mTimeControls, &TimeControls::setFps);
+    connect(this, &TimeLine::fpsChanged, mTimeControls, &TimeControls::setFps);
 
     connect(newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer);
     connect(newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer);
@@ -304,6 +307,7 @@ void TimeLine::deleteCurrentLayer()
 void TimeLine::updateFrame(int frameNumber)
 {
     Q_ASSERT(mTracks);
+
 
     mTracks->updateFrame(mLastUpdatedFrame);
     mTracks->updateFrame(frameNumber);

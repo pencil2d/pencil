@@ -72,6 +72,13 @@ enum StabilizationLevel
     STRONG
 };
 
+enum TimecodeTextLevel
+{
+    NOTEXT,
+    FRAMES, // FF
+    SMPTE,  // HH:MM:SS:FF
+    SFF     // S:FF
+};
 
 enum class LayerVisibility
 {
@@ -245,6 +252,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_ACTION_SAFE_ON   "ActionSafeOn"
 #define SETTING_ACTION_SAFE      "ActionSafe"
 #define SETTING_OVERLAY_SAFE_HELPER_TEXT_ON "OverlaySafeHelperTextOn"
+#define SETTING_TIMECODE_TEXT    "TimecodeText"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"

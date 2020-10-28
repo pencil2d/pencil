@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include <QTabletEvent>
 #include <QStandardPaths>
 #include <QDateTime>
+#include <QLabel>
 
 // core_lib headers
 #include "pencildef.h"
@@ -119,6 +120,9 @@ MainWindow2::MainWindow2(QWidget* parent) :
     setupKeyboardShortcuts();
 
     readSettings();
+
+    mZoomLabel = new QLabel("");
+    ui->statusbar->addWidget(mZoomLabel);
 
     updateZoomLabel();
     selectionChanged();
@@ -664,6 +668,7 @@ bool MainWindow2::openObject(const QString& strFilePath)
     progress.setValue(progress.value() + 1);
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    mEditor->setFps(mEditor->playback()->fps());
 
     progress.setValue(progress.maximum());
 
@@ -1468,7 +1473,7 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
 void MainWindow2::updateZoomLabel()
 {
     qreal zoom = mEditor->view()->scaling() * 100.f;
-    statusBar()->showMessage(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
+    mZoomLabel->setText(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

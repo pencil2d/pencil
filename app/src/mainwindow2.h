@@ -41,6 +41,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class QLabel;
 class PegBarAlignmentDialog;
 enum class SETTING;
 
@@ -172,6 +173,9 @@ private:
 
     // a hack for MacOS because closeEvent fires twice
     bool m2ndCloseEvent = false;
+
+    // statusbar widgets
+    QLabel* mZoomLabel = nullptr;
 
     // Whether to suppress the auto save dialog due to internal work
     bool mSuppressAutoSaveDialog = false;
