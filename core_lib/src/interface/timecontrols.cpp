@@ -147,7 +147,6 @@ void TimeControls::initUI()
     addWidget(mLoopEndSpinBox);
     addWidget(mSoundButton);
     addWidget(mSoundScrubButton);
-    addWidget(mFpsBox);
     addWidget(mTimecodeSelect);
     mTimecodeLabelAction = addWidget(mTimecodeLabel);
 
@@ -230,8 +229,8 @@ void TimeControls::makeConnections()
     connect(mEditor, &Editor::fpsChanged, this, &TimeControls::setFps);
     connect(mNoTimecodeAction, &QAction::triggered, this, &TimeControls::noTimecodeText);
     connect(mOnlyFramesAction, &QAction::triggered, this, &TimeControls::onlyFramesText);
-    connect(mSmpteAction, &QAction::triggered, this, &TimeControls::SMPTE_text);
-    connect(mSffAction, &QAction::triggered, this, &TimeControls::SFF_text);
+    connect(mSmpteAction, &QAction::triggered, this, &TimeControls::smpteText);
+    connect(mSffAction, &QAction::triggered, this, &TimeControls::sffText);
 }
 
 void TimeControls::playButtonClicked()
@@ -353,7 +352,7 @@ void TimeControls::onlyFramesText()
     updateTimecodeLabel(mEditor->currentFrame());
 }
 
-void TimeControls::SFF_text()
+void TimeControls::sffText()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_TIMECODE_TEXT, SFF);
@@ -362,7 +361,7 @@ void TimeControls::SFF_text()
     updateTimecodeLabel(mEditor->currentFrame());
 }
 
-void TimeControls::SMPTE_text()
+void TimeControls::smpteText()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_TIMECODE_TEXT, SMPTE);

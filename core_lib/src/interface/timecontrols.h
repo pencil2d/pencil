@@ -74,8 +74,8 @@ private:
 
     void noTimecodeText();
     void onlyFramesText();
-    void SFF_text();
-    void SMPTE_text();
+    void sffText();
+    void smpteText();
 
 private:
     QPushButton* mPlayButton = nullptr;
