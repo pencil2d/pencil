@@ -136,7 +136,7 @@ QCursor BrushTool::cursor()
     {
         return QCursor(QPixmap(":icons/brush.png"), 0, 13);
     }
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
 void BrushTool::pointerPressEvent(PointerEvent *event)

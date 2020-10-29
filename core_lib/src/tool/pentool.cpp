@@ -113,7 +113,7 @@ QCursor PenTool::cursor()
     {
         return QCursor(QPixmap(":icons/pen.png"), -5, 0);
     }
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
 void PenTool::pointerPressEvent(PointerEvent *event)
