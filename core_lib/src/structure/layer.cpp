@@ -426,40 +426,22 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
             painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         }
 
-        if (pair.second->isSelected())
-        {
-            painter.setBrush(QColor(60, 60, 60));
-        }
-        else if (selected)
+        if (selected)
         {            
             painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
         }
 
-        if (key->isSelected() && cells->movingFrames() && cells->mouseButtonDown()) {
-            movingFrames << key;
-        } else {
+        if (!key->isSelected()) {
             painter.drawRect(recLeft, recTop, recWidth, recHeight);
         }
     }
 
+    paintSelectedFrames(painter, cells, y, height, frameSize);
+}
 
-    cells->clearMovedFrames();
-
-    for (KeyFrame* key : movingFrames) {
-
-        int framePos = key->pos();
-        int direction = 0;
-        if (cells->mousePressPosX() > cells->getMouseX())
-        {
-//            qDebug() << "moving right";
-             direction = 1;
-        }
-        else
-        {
-//            qDebug() <<" moving left";
-            direction = -1;
-        }
-
+void Layer::paintSelectedFrames(QPainter& painter, TimeLineCells* cells, int y, int height, int frameSize)
+{
+    for (int framePos : mSelectedFrames_byPosition) {
         int recTop = y + 1;
         int recWidth = frameSize - 2;
         int recHeight = height - 4;
@@ -471,13 +453,9 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
 
         int newFrameX = cells->getFrameX(framePos)+(offset*frameSize)+translatedFramePos;
 //        int newFramePos = cells->getFrameNumber(newFrameX);
+        int currentFrameX = cells->getFrameX(framePos) - frameSize + 2;
 
-        int movingFromStart = cells->getFrameNumber(cells->getMouseX()) - framePos;
-
-//        qDebug() << "moving from: " << key->pos();
-//        qDebug() << "moved to: " << newFramePos;
-
-
+        KeyFrame* key = getKeyFrameAt(framePos);
         if (key->length() > 1)
         {
             // This is especially for sound clip.
@@ -489,9 +467,12 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
         {
             painter.setBrush(QColor(60, 60, 60));
         }
-        painter.drawRect(newFrameX, recTop, recWidth, recHeight);
 
-        cells->addFramesToBeMoved(key->pos(), movingFromStart+offset);
+        if (cells->movingFrames()) {
+            painter.drawRect(newFrameX, recTop, recWidth, recHeight);
+        } else {
+            painter.drawRect(currentFrameX, recTop, recWidth, recHeight);
+        }
     }
 }
 

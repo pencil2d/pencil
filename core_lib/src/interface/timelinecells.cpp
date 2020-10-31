@@ -739,28 +739,6 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
         if (mMovingFrames) {
 
-//            if (mDragDirection == MOUSE_DRAG_DIRECTION::Right) {
-//                for (int i = 0; i < mFramesToMove.count(); i++) {
-
-//                    MoveFrameContainer con = mFramesToMove[i];
-//                    int newPos = con.oldPos + con.offset;
-
-//                    currentLayer->moveFrame(con.oldPos, newPos, InsertBehaviour::INBETWEEN);
-
-//                    mEditor->layers()->notifyAnimationLengthChanged();
-//                    mEditor->updateCurrentFrame();
-//                }
-//            } else if (mDragDirection == MOUSE_DRAG_DIRECTION::Left) {
-//                for (int i = mFramesToMove.count()-1; i >= 0; i--) {
-//                    MoveFrameContainer con = mFramesToMove[i];
-//                    int newPos = con.oldPos + con.offset;
-
-//                    currentLayer->moveFrame(con.oldPos, newPos, InsertBehaviour::INBETWEEN);
-
-//                    mEditor->layers()->notifyAnimationLengthChanged();
-//                    mEditor->updateCurrentFrame();
-//                }
-//            }
             int posUnderCursor = getFrameNumber(mousePressPosX());
             int offset = frameNumber - posUnderCursor;
 
