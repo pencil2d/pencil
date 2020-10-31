@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ GNU General Public License for more details.
 
 #include "movieimporter.h"
 #include "movieexporter.h"
-#include "filedialogex.h"
+#include "filedialog.h"
 #include "exportmoviedialog.h"
 #include "exportimagedialog.h"
 #include "aboutdialog.h"
@@ -67,8 +67,7 @@ ActionCommands::~ActionCommands() {}
 
 Status ActionCommands::importMovieVideo()
 {
-    FileDialog fileDialog(mParent);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    QString filePath = FileDialog::getOpenFileName(mParent, FileType::MOVIE);
     if (filePath.isEmpty())
     {
         return Status::FAIL;
@@ -119,8 +118,7 @@ Status ActionCommands::importMovieVideo()
 
 Status ActionCommands::importMovieAudio()
 {
-    FileDialog fileDialog(mParent);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    QString filePath = FileDialog::getOpenFileName(mParent, FileType::MOVIE);
     if (filePath.isEmpty())
     {
         return Status::FAIL;
@@ -195,8 +193,7 @@ Status ActionCommands::importSound()
         }
         else
         {
-            Q_ASSERT(false);
-            return Status::FAIL;
+            return Status::SAFE;
         }
     }
 
@@ -215,8 +212,7 @@ Status ActionCommands::importSound()
         return Status::SAFE;
     }
 
-    FileDialog fileDialog(mParent);
-    QString strSoundFile = fileDialog.openFile(FileType::SOUND);
+    QString strSoundFile = FileDialog::getOpenFileName(mParent, FileType::SOUND);
 
     if (strSoundFile.isEmpty())
     {
@@ -600,18 +596,6 @@ void ActionCommands::rotateCounterClockwise()
     mEditor->view()->rotate(currentRotation - 15.f);
 }
 
-void ActionCommands::toggleMirror()
-{
-    bool flipX = mEditor->view()->isFlipHorizontal();
-    mEditor->view()->flipHorizontal(!flipX);
-}
-
-void ActionCommands::toggleMirrorV()
-{
-    bool flipY = mEditor->view()->isFlipVertical();
-    mEditor->view()->flipVertical(!flipY);
-}
-
 void ActionCommands::PlayStop()
 {
     PlaybackManager* playback = mEditor->playback();
@@ -652,8 +636,7 @@ Status ActionCommands::addNewKey()
     SoundClip* clip = dynamic_cast<SoundClip*>(key);
     if (clip)
     {
-        FileDialog fileDialog(mParent);
-        QString strSoundFile = fileDialog.openFile(FileType::SOUND);
+        QString strSoundFile = FileDialog::getOpenFileName(mParent, FileType::SOUND);
 
         if (strSoundFile.isEmpty())
         {
@@ -914,7 +897,7 @@ Status ActionCommands::deleteCurrentLayer()
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: %1?").arg(strLayerName),
+                                   tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(strLayerName),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)

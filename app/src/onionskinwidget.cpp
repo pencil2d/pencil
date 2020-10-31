@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -94,6 +94,9 @@ void OnionSkinWidget::updateUI()
 
     QSignalBlocker b3(ui->onionBlueButton);
     ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
+
+    ui->onionRedButton->setEnabled(ui->onionPrevButton->isChecked());
+    ui->onionBlueButton->setEnabled(ui->onionNextButton->isChecked());
 
     QSignalBlocker b4(ui->onionRedButton);
     ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -72,6 +72,13 @@ enum StabilizationLevel
     STRONG
 };
 
+enum TimecodeTextLevel
+{
+    NOTEXT,
+    FRAMES, // FF
+    SMPTE,  // HH:MM:SS:FF
+    SFF     // S:FF
+};
 
 enum class LayerVisibility
 {
@@ -124,7 +131,9 @@ const static int MaxFramesBound = 9999;
 #define CMD_ZOOM_OUT "CmdZoomOut"
 #define CMD_ROTATE_CLOCK "CmdRotateClockwise"
 #define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClockwise"
+#define CMD_RESET_ROTATION "CmdResetRotation"
 #define CMD_RESET_ZOOM_ROTATE "CmdResetZoomRotate"
+#define CMD_CENTER_VIEW "CmdCenterView"
 #define CMD_ZOOM_400 "CmdZoom400"
 #define CMD_ZOOM_300 "CmdZoom300"
 #define CMD_ZOOM_200 "CmdZoom200"
@@ -252,6 +261,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_ACTION_SAFE_ON   "ActionSafeOn"
 #define SETTING_ACTION_SAFE      "ActionSafe"
 #define SETTING_OVERLAY_SAFE_HELPER_TEXT_ON "OverlaySafeHelperTextOn"
+#define SETTING_TIMECODE_TEXT    "TimecodeText"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -39,17 +39,18 @@ public:
 
 signals:
     void colorChanged(const QColor& c);
-    void modeChange(const bool& isRgb);
+    void colorSpecChanged(const bool& isRgb);
 
 public slots:
     void setColor(QColor newColor);
 
 private slots:
-    void onModeChanged();
+    void onColorSpecChanged();
     void onColorChanged();
-    void onSliderChanged(QColor color);
+    void onColorChanged(const QColor& color);
 
 private:
+    void updateControls();
 
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;

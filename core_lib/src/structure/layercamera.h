@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -17,46 +17,21 @@ GNU General Public License for more details.
 #ifndef LAYERCAMERA_H
 #define LAYERCAMERA_H
 
-#include <QList>
-#include <QDialog>
+#include <QRect>
 #include "layer.h"
 
-class QLineEdit;
-class QSpinBox;
 class Camera;
-
-namespace Ui {
-    class CameraPropertiesDialog;
-}
-
-// TODO: move this to somewhere else
-class CameraPropertiesDialog : public QDialog
-{
-    Q_OBJECT
-public:
-    CameraPropertiesDialog(QString name, int width, int height);
-    ~CameraPropertiesDialog();
-    QString getName();
-    void setName(QString);
-    int getWidth();
-    void setWidth(int);
-    int getHeight();
-    void setHeight(int);
-private:
-    Ui::CameraPropertiesDialog* ui = nullptr;
-};
 
 class LayerCamera : public Layer
 {
     Q_OBJECT
 
 public:
-    LayerCamera(Object* object);
-    ~LayerCamera();
+    explicit LayerCamera(Object* object);
+    ~LayerCamera() override;
 
     void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
 
-    void editProperties() override;
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
@@ -66,6 +41,7 @@ public:
 
     QRect getViewRect();
     QSize getViewSize();
+    void setViewRect(QRect newViewRect);
 
 signals:
     void resolutionChanged();
@@ -80,7 +56,6 @@ private:
     int mFieldW = 800;
     int mFieldH = 600;
     QRect viewRect;
-    CameraPropertiesDialog* dialog = nullptr;
 };
 
 #endif

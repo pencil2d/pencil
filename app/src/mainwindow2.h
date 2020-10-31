@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
 Copyright (C) 2012-2020 Matthew Chiawen Chang
@@ -41,6 +41,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class QLabel;
 class PegBarAlignmentDialog;
 enum class SETTING;
 
@@ -68,6 +69,7 @@ public slots:
     void openPegAlignDialog();
     void currentLayerChanged();
     void selectionChanged();
+    void viewFlipped();
 
     void enableCopyCut();
     void disableCopyCut();
@@ -87,22 +89,17 @@ public:
     // import
     void importImage();
     void importImageSequence();
-    void importImageSequenceNumbered();
-    void addLayerByFilename(QString strFilePath);
     void importPredefinedImageSet();
     void importLayers();
     void importMovieVideo();
     void importGIF();
-    void importMovieAudio();
 
     void lockWidgets(bool shouldLock);
 
-    void setSoundScrubActive(bool b);
-    void setSoundScrubMsec(int msec);
     void setOpacity(int opacity);
     void preferences();
 
-    void openFile(QString filename);
+    void openFile(const QString& filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
 
@@ -119,9 +116,9 @@ protected:
     void showEvent(QShowEvent*) override;
 
 private:
-    bool newObject();
+    void newObject() const;
     bool newObjectFromPresets(int presetIndex);
-    bool openObject(QString strFilename);
+    bool openObject(const QString& strFilename);
     bool saveObject(QString strFileName);
 
     void createDockWidgets();
@@ -162,11 +159,11 @@ private:
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
     ToolBoxWidget*        mToolBox = nullptr;
-    Timeline2*            mTimeline2 = nullptr;
+    //Timeline2*          mTimeline2 = nullptr;
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;
-    TimeLine*             mTimeLine = nullptr; // be public temporary
+    TimeLine*             mTimeLine = nullptr;
     ColorInspector*       mColorInspector = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
@@ -175,7 +172,6 @@ private:
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
 
-private:
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;
 
@@ -185,8 +181,11 @@ private:
     // a hack for MacOS because closeEvent fires twice
     bool m2ndCloseEvent = false;
 
-    // whether we are currently importing an image sequence.
-    bool mIsImportingImageSequence = false;
+    // statusbar widgets
+    QLabel* mZoomLabel = nullptr;
+
+    // Whether to suppress the auto save dialog due to internal work
+    bool mSuppressAutoSaveDialog = false;
 
     Ui::MainWindow2* ui = nullptr;
 };

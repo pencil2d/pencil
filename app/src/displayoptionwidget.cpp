@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 #include "preferencemanager.h"
 #include "viewmanager.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
@@ -45,8 +46,6 @@ void DisplayOptionWidget::initUI()
     updateUI();
     makeConnections();
 
-    delete ui->innerWidget->layout();
-
     FlowLayout *layout = new FlowLayout;
     layout->setAlignment(Qt::AlignHCenter);
     layout->addWidget(ui->mirrorButton);
@@ -58,7 +57,8 @@ void DisplayOptionWidget::initUI()
     layout->addWidget(ui->overlayGoldenRatioButton);
     layout->addWidget(ui->overlaySafeAreaButton);
 
-    ui->innerWidget->setLayout(layout);
+    delete ui->scrollAreaWidgetContents->layout();
+    ui->scrollAreaWidgetContents->setLayout(layout);
 
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
@@ -101,6 +101,10 @@ void DisplayOptionWidget::makeConnections()
 void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
+
+    bool canEnableVectorButtons = editor()->layers()->currentLayer()->type() == Layer::VECTOR;
+    ui->thinLinesButton->setEnabled(canEnableVectorButtons);
+    ui->outLinesButton->setEnabled(canEnableVectorButtons);
 
     QSignalBlocker b1(ui->thinLinesButton);
     ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));

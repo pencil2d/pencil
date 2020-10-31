@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -44,40 +44,40 @@ class BackupBitmapElement : public BackupElement
 {
     Q_OBJECT
 public:
-    BackupBitmapElement(BitmapImage* bi) { bitmapImage = bi->copy(); }
+    explicit BackupBitmapElement(BitmapImage* bi) { bitmapImage = bi->copy(); }
 
     int layer = 0;
     int frame = 0;
     BitmapImage bitmapImage;
-    int type() { return BackupElement::BITMAP_MODIF; }
-    void restore(Editor*);
+    int type() override { return BackupElement::BITMAP_MODIF; }
+    void restore(Editor*) override;
 };
 
 class BackupVectorElement : public BackupElement
 {
     Q_OBJECT
 public:
-    BackupVectorElement(VectorImage* vi) { vectorImage = *vi; }
+    explicit BackupVectorElement(VectorImage* vi) { vectorImage = *vi; }
     int layer = 0;
     int frame = 0;
     VectorImage vectorImage;
 
-    int type() { return BackupElement::VECTOR_MODIF; }
-    void restore(Editor*);
+    int type() override { return BackupElement::VECTOR_MODIF; }
+    void restore(Editor*) override;
 };
 
 class BackupSoundElement : public BackupElement
 {
     Q_OBJECT
 public:
-    BackupSoundElement(SoundClip* sound) { clip = *sound; }
+    explicit BackupSoundElement(SoundClip* sound) { clip = *sound; }
     int layer = 0;
     int frame = 0;
     SoundClip clip;
     QString fileName;
 
-    int type() { return BackupElement::SOUND_MODIF; }
-    void restore( Editor* );
+    int type() override { return BackupElement::SOUND_MODIF; }
+    void restore( Editor* ) override;
 };
 
 #endif // BACKUPELEMENT_H

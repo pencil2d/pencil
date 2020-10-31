@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -17,18 +17,14 @@ GNU General Public License for more details.
 
 #include "editor.h"
 
-#include <memory>
-#include <iostream>
 #include <QApplication>
 #include <QClipboard>
 #include <QTimer>
 #include <QImageReader>
-#include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
 
 #include "object.h"
-#include "objectdata.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "soundclip.h"
@@ -50,8 +46,6 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "util.h"
 #include "movieexporter.h"
-
-#define MIN(a,b) ((a)>(b)?(b):(a))
 
 
 Editor::Editor(QObject* parent) : QObject(parent)
@@ -117,6 +111,7 @@ int Editor::fps()
 void Editor::setFps(int fps)
 {
     mPreferenceManager->set(SETTING::FPS, fps);
+    emit fpsChanged(fps);
 }
 
 void Editor::makeConnections()
@@ -124,6 +119,8 @@ void Editor::makeConnections()
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged);
     connect(mSelectionManager, &SelectionManager::selectionChanged, this, &Editor::notifyCopyPasteActionChanged);
+    // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
+    connect(mLayerManager, &LayerManager::layerDeleted, this, &Editor::sanitizeBackupElementsAfterLayerDeletion);
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
@@ -250,7 +247,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
             {
                 BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
                 element->layer = backupLayer;
-                element->frame = backupFrame;
+                element->frame = bitmapImage->pos();
                 element->undoText = undoText;
                 element->somethingSelected = select()->somethingSelected();
                 element->mySelection = select()->mySelectionRect();
@@ -268,7 +265,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
             {
                 BackupVectorElement* element = new BackupVectorElement(vectorImage);
                 element->layer = backupLayer;
-                element->frame = backupFrame;
+                element->frame = vectorImage->pos();
                 element->undoText = undoText;
                 element->somethingSelected = select()->somethingSelected();
                 element->mySelection = select()->mySelectionRect();
@@ -309,6 +306,66 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
     updateAutoSaveCounter();
 
     emit updateBackup();
+}
+
+void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
+{
+    for (int i = 0; i < mBackupList.size(); i++)
+    {
+        BackupElement *backupElement = mBackupList[i];
+        BackupBitmapElement *bitmapElement;
+        BackupVectorElement *vectorElement;
+        BackupSoundElement *soundElement;
+        switch (backupElement->type())
+        {
+        case BackupElement::BITMAP_MODIF:
+            bitmapElement = qobject_cast<BackupBitmapElement*>(backupElement);
+            Q_ASSERT(bitmapElement);
+            if (bitmapElement->layer > layerIndex)
+            {
+                bitmapElement->layer--;
+                continue;
+            }
+            else if (bitmapElement->layer != layerIndex)
+            {
+                continue;
+            }
+            break;
+        case BackupElement::VECTOR_MODIF:
+            vectorElement = qobject_cast<BackupVectorElement*>(backupElement);
+            Q_ASSERT(vectorElement);
+            if (vectorElement->layer > layerIndex)
+            {
+                vectorElement->layer--;
+                continue;
+            }
+            else if (vectorElement->layer != layerIndex)
+            {
+                continue;
+            }
+            break;
+        case BackupElement::SOUND_MODIF:
+            soundElement = qobject_cast<BackupSoundElement*>(backupElement);
+            Q_ASSERT(soundElement);
+            if (soundElement->layer > layerIndex)
+            {
+                soundElement->layer--;
+                continue;
+            }
+            else if (soundElement->layer != layerIndex)
+            {
+                continue;
+            }
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        if (i <= mBackupIndex) {
+            mBackupIndex--;
+        }
+        mBackupList.removeAt(i);
+        i--;
+    }
 }
 
 void Editor::restoreKey()
@@ -358,78 +415,6 @@ void Editor::restoreKey()
                 //Q_ASSERT(st.ok());
             }
         }
-    }
-}
-
-void BackupBitmapElement::restore(Editor* editor)
-{
-    Layer* layer = editor->object()->getLayer(this->layer);
-    auto selectMan = editor->select();
-    selectMan->setSelection(mySelection, true);
-    selectMan->setTransformedSelectionRect(myTransformedSelection);
-    selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
-    selectMan->setRotation(rotationAngle);
-    selectMan->setSomethingSelected(somethingSelected);
-
-    editor->updateFrame(this->frame);
-    editor->scrubTo(this->frame);
-
-    if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
-    {
-        editor->restoreKey();
-    }
-    else
-    {
-        if (layer != nullptr)
-        {
-            if (layer->type() == Layer::BITMAP)
-            {
-                auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
-                *pLayerBitmap->getLastBitmapImageAtFrame(this->frame, 0) = this->bitmapImage;  // restore the image
-            }
-        }
-    }
-}
-
-void BackupVectorElement::restore(Editor* editor)
-{
-    Layer* layer = editor->object()->getLayer(this->layer);
-    auto selectMan = editor->select();
-    selectMan->setSelection(mySelection, false);
-    selectMan->setTransformedSelectionRect(myTransformedSelection);
-    selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
-    selectMan->setRotation(rotationAngle);
-    selectMan->setSomethingSelected(somethingSelected);
-
-    editor->updateFrameAndVector(this->frame);
-    editor->scrubTo(this->frame);
-    if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
-    {
-        editor->restoreKey();
-    }
-    else
-    {
-        if (layer != nullptr)
-        {
-            if (layer->type() == Layer::VECTOR)
-            {
-                auto pVectorImage = static_cast<LayerVector*>(layer);
-                *pVectorImage->getLastVectorImageAtFrame(this->frame, 0) = this->vectorImage;  // restore the image
-            }
-        }
-    }
-}
-
-void BackupSoundElement::restore(Editor* editor)
-{
-    Layer* layer = editor->object()->getLayer(this->layer);
-    editor->updateFrame(this->frame);
-    editor->scrubTo(this->frame);
-
-    // TODO: soundclip won't restore if overlapping on first frame
-    if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
-    {
-        editor->restoreKey();
     }
 }
 
@@ -888,7 +873,7 @@ void Editor::decreaseLayerVisibilityIndex()
     emit updateTimeLine();
 }
 
-void Editor::toogleOnionSkinType()
+void Editor::toggleOnionSkinType()
 {
     QString onionSkinState = mPreferenceManager->getString(SETTING::ONION_TYPE);
     QString newState;

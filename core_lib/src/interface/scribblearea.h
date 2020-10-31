@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -73,7 +73,6 @@ public:
     void cancelTransformedSelection();
 
     bool isLayerPaintable() const;
-    bool allowSmudging();
 
     QVector<QPoint> calcSelectionCenterPoints();
 
@@ -89,6 +88,7 @@ public:
 
     void updateCurrentFrame();
     void updateFrame(int frame);
+    void updateOnionSkinsAround(int frame);
     void updateAllFrames();
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frameNumber);
@@ -111,6 +111,13 @@ public:
     bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
     bool isTemporaryTool() const { return mInstantTool; }
 
+    /** Check if the content of the canvas depends on the active layer.
+      *
+      * Currently layers are only affected by Onion skins are displayed only for the active layer, and the opacity of all layers
+      * is affected when relative layer visiblity is active.
+      *
+      * @return True if the active layer could potentially influence the content of the canvas. False otherwise.
+      */
     bool isAffectedByActiveLayer() const;
 
     void keyEvent(QKeyEvent* event);
@@ -208,7 +215,7 @@ private:
     bool mMakeInvisible = false;
     bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;
-    bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
+    bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
 
 private:
@@ -238,7 +245,7 @@ private:
     SelectionPainter mSelectionPainter;
 
     // Pixmap Cache keys
-    std::vector<QPixmapCache::Key> mPixmapCacheKeys;
+    QMap<unsigned int, QPixmapCache::Key> mPixmapCacheKeys;
 
     // debug
     QLoggingCategory mLog{ "ScribbleArea" };
