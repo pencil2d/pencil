@@ -79,7 +79,7 @@ public:
     int getCurrentFrame() { return mCurrentFrame; }
 
     bool movingFrames() { return mMovingFrames; }
-    int getMouseXPos() { return mMouseX; }
+    int getMouseX() { return mMouseX; }
     int getLastMouseX() { return mMouseLastX; }
     int mousePressPosX() { return mMousePressX; }
 

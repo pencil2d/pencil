@@ -774,14 +774,13 @@ bool Layer::canMoveSelectedFramesToOffset(int offset) const
     for (int i = 0; i < newByPositions.count(); i++)
     {
         newByPositions[i] = newByPositions[i] + offset;
-    }
 
-    for (it = mKeyFrames.cbegin(); it != mKeyFrames.cend(); ++it) {
-
-        if (newByPositions.contains(it->first)) {
+        qDebug() << "to pos: " << newByPositions;
+        if (getKeyFrameAt(newByPositions[i]) != nullptr && !mSelectedFrames_byPosition.contains(newByPositions[i])) {
             return false;
         }
     }
+
     return true;
 }
 
