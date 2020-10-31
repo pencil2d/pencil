@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 #include "bitmapimage.h"
 
+#include <QPainterPath>
 #include <cmath>
 #include <QDebug>
 #include <QtMath>

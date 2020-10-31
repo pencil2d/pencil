@@ -508,6 +508,8 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
     int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
+    mCurrentLayerNumber = layerNumber;
+
     mMousePressX = event->pos().x();
     mFromLayer = mToLayer = layerNumber;
 
@@ -661,7 +663,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
         if (mMouseLastX != -1 || mMouseDeltaX != mPrevousDeltaX) {
             mMouseX = event->pos().x();
             mPrevousDeltaX = mMouseDeltaX;
-            mMouseDeltaX = mMouseLastX - mMouseX;
+            mMouseDeltaX = mMousePressX - mMouseX;
 
             qDebug() << "delta X: " << mMouseDeltaX;
 
@@ -732,7 +734,8 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     int layerNumber = getLayerNumber(event->pos().y());
     if (mType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton && layerNumber != -1 && layerNumber < mEditor->object()->getLayerCount())
     {
-        Layer *currentLayer = mEditor->object()->getLayer(layerNumber);
+        // We should affect the current layer based on what's selected, not where the mouse currently is.
+        Layer *currentLayer = mEditor->object()->getLayer(mCurrentLayerNumber);
 
         if (mMovingFrames) {
 

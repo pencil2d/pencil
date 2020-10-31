@@ -77,6 +77,7 @@ public:
     void paintFrameGutter(QPainter& painter);
     bool didDetatchLayer();
     int getCurrentFrame() { return mCurrentFrame; }
+    int getCurrentLayerNumber() { return mCurrentLayerNumber; }
 
     bool movingFrames() { return mMovingFrames; }
     int getMouseX() { return mMouseX; }
@@ -134,6 +135,7 @@ private:
     int mEndY   = 0;
 
     int mCurrentFrame = 0;
+    int mCurrentLayerNumber = 0;
 
     int mFromLayer = 0;
     int mToLayer   = 1;

@@ -17,6 +17,8 @@ GNU General Public License for more details.
 
 #include "beziercurve.h"
 
+#include <QPainterPath>
+
 #include <cmath>
 #include <QList>
 #include "object.h"

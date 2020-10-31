@@ -203,8 +203,6 @@ bool Layer::addKeyFrameAfter(int position, KeyFrame* pKeyFrame)
 
     for (auto it = mKeyFrames.begin(); mKeyFrames.end()!=it; ++it) {
 
-        qDebug() << it->first;
-        qDebug() << it->second;
         if (it->first < position) {
             break;
         }
@@ -218,7 +216,6 @@ bool Layer::addKeyFrameAfter(int position, KeyFrame* pKeyFrame)
 //            KeyFrame* key2 = createKeyFrame(newPos, mObject);
             auto newIt = mKeyFrames.insert(std::make_pair(newPos, std::move(key)));
 
-            qDebug() << newIt.second;
         } else {
             mKeyFrames[newPos] = std::move(key);
         }
@@ -416,7 +413,6 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
         int recHeight = height - 4;
 
         KeyFrame* key = pair.second;
-        qDebug() << "mkeyFrames-key: " << pair.first;
         if (key->length() > 1)
         {
             // This is especially for sound clip.
@@ -453,7 +449,7 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
 
         int framePos = key->pos();
         int direction = 0;
-        if (cells->getLastMouseX() > cells->getMouseXPos())
+        if (cells->mousePressPosX() > cells->getMouseX())
         {
 //            qDebug() << "moving right";
              direction = 1;
@@ -468,22 +464,19 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
         int recWidth = frameSize - 2;
         int recHeight = height - 4;
 
-        int translatedFramePos = cells->getMouseXPos()-cells->getFrameX(framePos);
+        int translatedFramePos = cells->getMouseX()-cells->getFrameX(framePos);
         int posUnderCursor = cells->getFrameNumber(cells->mousePressPosX());
         int offset = framePos - posUnderCursor;
 
-        qDebug() << "offset: " << offset;
 
         int newFrameX = cells->getFrameX(framePos)+(offset*frameSize)+translatedFramePos;
 //        int newFramePos = cells->getFrameNumber(newFrameX);
 
-        int movingFromStart = cells->getFrameNumber(cells->getMouseXPos()) - framePos;
+        int movingFromStart = cells->getFrameNumber(cells->getMouseX()) - framePos;
 
 //        qDebug() << "moving from: " << key->pos();
 //        qDebug() << "moved to: " << newFramePos;
 
-        qDebug() << "offset from start + offset: " << movingFromStart + offset;
-        qDebug() << "offset from start: " << movingFromStart;
 
         if (key->length() > 1)
         {
@@ -769,6 +762,8 @@ void Layer::updateSelectionLists(int oldPos, int newPos)
 bool Layer::canMoveSelectedFramesToOffset(int offset) const
 {
     QList<int> newByPositions = mSelectedFrames_byPosition;
+
+    qDebug() << "from pos: " << mSelectedFrames_byPosition;
 
     std::map<int, KeyFrame*, std::greater<int>>::const_iterator it;
     for (int i = 0; i < newByPositions.count(); i++)
