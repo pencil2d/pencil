@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,16 +18,14 @@ GNU General Public License for more details.
 #ifndef STROKEMANAGER_H
 #define STROKEMANAGER_H
 
+#include <ctime>
 #include <QQueue>
 #include <QPointF>
 #include <QList>
-#include <QPoint>
-#include <time.h>
-#include <QTabletEvent>
 #include <QTimer>
-#include <QTime>
+#include <QElapsedTimer>
 #include "object.h"
-#include "assert.h"
+
 
 class PointerEvent;
 
@@ -45,7 +43,7 @@ public:
     float getPressure() { return mTabletPressure; }
     int getStabilizerLevel() { return mStabilizerLevel; }
     bool isTabletInUse() { return mTabletInUse; }
-    void setTabletinUse(bool inUse) { mTabletInUse = inUse; }
+    void setTabletInUse(bool inUse) { mTabletInUse = inUse; }
     bool isActive() { return mStrokeStarted; }
 
     QList<QPointF> interpolateStroke();
@@ -76,7 +74,7 @@ private:
 
     QTimer timer;
 
-    QTime mSingleshotTime;
+    QElapsedTimer mSingleshotTime;
     QPointF mCurrentPressPixel = { 0, 0 };
     QPointF mLastPressPixel2 = { 0, 0 };
     QPointF mLastPressPixel = { 0, 0 };

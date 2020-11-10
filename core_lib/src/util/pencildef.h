@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -72,6 +72,13 @@ enum StabilizationLevel
     STRONG
 };
 
+enum TimecodeTextLevel
+{
+    NOTEXT,
+    FRAMES, // FF
+    SMPTE,  // HH:MM:SS:FF
+    SFF     // S:FF
+};
 
 enum class LayerVisibility
 {
@@ -91,6 +98,9 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
     return vis = (vis == LayerVisibility::CURRENTONLY) ? LayerVisibility::ALL : static_cast<LayerVisibility>(static_cast<int>(vis)-1);
 }
 
+// Max frames that can be imported and loaded onto the timeline
+const static int MaxFramesBound = 9999;
+
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"
@@ -98,7 +108,8 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define CMD_SAVE_AS "CmdSaveAs"
 #define CMD_IMPORT_IMAGE "CmdImportImage"
 #define CMD_IMPORT_IMAGE_SEQ "CmdImportImageSequence"
-#define CMD_IMPORT_MOVIE "CmdImportMovie"
+#define CMD_IMPORT_MOVIE_VIDEO "CmdImportMovieVideo"
+#define CMD_IMPORT_MOVIE_AUDIO "CmdImportMovieAudio"
 #define CMD_IMPORT_PALETTE "CmdImportPalette"
 #define CMD_IMPORT_SOUND "CmdImportSound"
 #define CMD_EXPORT_IMAGE_SEQ "CmdExportImageSequence"
@@ -120,7 +131,9 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define CMD_ZOOM_OUT "CmdZoomOut"
 #define CMD_ROTATE_CLOCK "CmdRotateClockwise"
 #define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClockwise"
+#define CMD_RESET_ROTATION "CmdResetRotation"
 #define CMD_RESET_ZOOM_ROTATE "CmdResetZoomRotate"
+#define CMD_CENTER_VIEW "CmdCenterView"
 #define CMD_ZOOM_400 "CmdZoom400"
 #define CMD_ZOOM_300 "CmdZoom300"
 #define CMD_ZOOM_200 "CmdZoom200"
@@ -211,6 +224,8 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
 #define SETTING_ASK_FOR_PRESET      "AskForPreset"
+#define SETTING_LOAD_MOST_RECENT    "LoadMostRecent"
+#define SETTING_LOAD_DEFAULT_PRESET "LoadDefaultPreset"
 #define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
@@ -227,7 +242,7 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define SETTING_ONION_BLUE       "OnionBlue"
 #define SETTING_ONION_RED        "OnionRed"
 
-#define SETTING_FRAME_POOL_SIZE "FramePoolSize"
+#define SETTING_FRAME_POOL_SIZE  "FramePoolSizeInMB"
 #define SETTING_GRID_SIZE_W      "GridSizeW"
 #define SETTING_GRID_SIZE_H      "GridSizeH"
 #define SETTING_OVERLAY_CENTER   "OverlayCenter"
@@ -239,6 +254,7 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define SETTING_ACTION_SAFE_ON   "ActionSafeOn"
 #define SETTING_ACTION_SAFE      "ActionSafe"
 #define SETTING_OVERLAY_SAFE_HELPER_TEXT_ON "OverlaySafeHelperTextOn"
+#define SETTING_TIMECODE_TEXT    "TimecodeText"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
@@ -249,6 +265,8 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 #define SETTING_FLIP_ROLL_MSEC          "FlipRoll"
 #define SETTING_FLIP_ROLL_DRAWINGS      "FlipRollDrawings"
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
+#define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
+#define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -53,13 +53,14 @@ public:
     QString error();
 
     void cancel() { mCanceled = true; }
+
+    static Status executeFFmpeg(const QString& cmd, const QStringList& args, std::function<bool(int)> progress);
 private:
     Status assembleAudio(const Object* obj, QString ffmpegPath, std::function<void(float)> progress);
     Status generateMovie(const Object *obj, QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);
     Status generateGif(const Object *obj, QString ffmpeg, QString strOut, std::function<void(float)>  progress);
 
-    Status executeFFMpeg(QString strCmd, std::function<void(float)> progress);
-    Status executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<bool(QProcess&,int)> writeFrame);
+    Status executeFFMpegPipe(const QString& cmd, const QStringList& args, std::function<void(float)> progress, std::function<bool(QProcess&,int)> writeFrame);
     Status checkInputParameters(const ExportMovieDesc&);
 
 private:

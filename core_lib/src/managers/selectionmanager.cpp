@@ -1,3 +1,19 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #include "selectionmanager.h"
 #include "editor.h"
 
@@ -202,6 +218,8 @@ QPointF SelectionManager::whichAnchorPoint(QPointF currentPoint)
 
 void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement)
 {
+    offsetX = qRound(offsetX);
+    offsetY = qRound(offsetY);
     QRectF& transformedSelection = mTransformedSelection;
 
     switch (mMoveMode)
@@ -236,7 +254,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     {
         mTempTransformedSelection = transformedSelection;
         QPointF anchorPoint = transformedSelection.center();
-        qreal rotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
+        qreal rotatedAngle = qRadiansToDegrees(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
         if (rotationIncrement > 0) {
             mRotatedAngle = constrainRotationToAngle(rotatedAngle, rotationIncrement);
         } else {
@@ -254,9 +272,13 @@ int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const 
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
 
-void SelectionManager::setSelection(QRectF rect)
+void SelectionManager::setSelection(QRectF rect, bool roundPixels)
 {
     resetSelectionTransformProperties();
+    if (roundPixels)
+    {
+        rect = QRect(rect.topLeft().toPoint(), rect.bottomRight().toPoint() - QPoint(1,1));
+    }
     mSelection = rect;
     mTransformedSelection = rect;
     mTempTransformedSelection = rect;
@@ -333,6 +355,15 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
+    if (flipVertical)
+    {
+        editor()->backup(tr("Flip selection vertically"));
+    }
+    else
+    {
+        editor()->backup(tr("Flip selection horizontally"));
+    }
+
     qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
     qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
     QVector<QPointF> centerPoints = calcSelectionCenterPoints();
@@ -371,5 +402,7 @@ void SelectionManager::resetSelectionProperties()
 
     mSomethingSelected = false;
     vectorSelection.clear();
+
+    emit selectionChanged();
 }
 

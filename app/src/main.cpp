@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "layercamera.h"
 #include "platformhandler.h"
-
+#include "log.h"
 
 void installTranslator(PencilApplication& app)
 {
@@ -40,6 +40,7 @@ void installTranslator(PencilApplication& app)
     {
         strUserLocale = QLocale::system().name();
     }
+    QLocale::setDefault(QLocale(strUserLocale));
 
     strUserLocale.replace("-", "_");
     QTranslator* qtTranslator = new QTranslator(&app);
@@ -219,6 +220,7 @@ int handleArguments(PencilApplication& app)
 
     // Now that (almost) all possible user errors are handled, the actual program can be initialized
     MainWindow2 mainWindow;
+    QObject::connect(&app, &PencilApplication::lostFocus, &mainWindow, &MainWindow2::appLostFocus);
     QObject::connect(&app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openFile);
     app.emitOpenFileRequest();
 
@@ -314,17 +316,16 @@ int handleArguments(PencilApplication& app)
 
 int main(int argc, char* argv[])
 {
-
     // iss #940
     // Force dot separator on numbers because some localizations
     // uses comma as separator.
     std::setlocale(LC_NUMERIC, "en_US.UTF-8");
+
     Q_INIT_RESOURCE(core_lib);
 
+    PlatformHandler::initialise();
+
     QSettings settings(PENCIL2D, PENCIL2D);
-#ifdef Q_OS_MACOS
-    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-#endif
     if (settings.value("EnableHighDpiScaling", "true").toBool())
     {
         // Enable auto screen scaling on high dpi display, for example, a 4k monitor
@@ -332,6 +333,8 @@ int main(int argc, char* argv[])
         // Only work in Windows & X11
         PencilApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     }
+
+    initCategoryLogging();
 
     PencilApplication app(argc, argv);
 

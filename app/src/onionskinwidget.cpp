@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -77,22 +77,28 @@ void OnionSkinWidget::makeConnections()
     connect(ui->onionSkinMode, &QCheckBox::stateChanged, this, &OnionSkinWidget::onionSkinModeChange);
     connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &OnionSkinWidget::playbackStateChanged);
 
+    PreferenceManager* prefs = editor()->preference();
+    connect(prefs, &PreferenceManager::optionChanged, this, &OnionSkinWidget::updateUI);
+
 }
 
 void OnionSkinWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
 
-    SignalBlocker b1(ui->onionPrevButton);
+    QSignalBlocker b1(ui->onionPrevButton);
     ui->onionPrevButton->setChecked(prefs->isOn(SETTING::PREV_ONION));
 
-    SignalBlocker b2(ui->onionNextButton);
+    QSignalBlocker b2(ui->onionNextButton);
     ui->onionNextButton->setChecked(prefs->isOn(SETTING::NEXT_ONION));
 
-    SignalBlocker b3(ui->onionBlueButton);
+    QSignalBlocker b3(ui->onionBlueButton);
     ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
 
-    SignalBlocker b4(ui->onionRedButton);
+    ui->onionRedButton->setEnabled(ui->onionPrevButton->isChecked());
+    ui->onionBlueButton->setEnabled(ui->onionNextButton->isChecked());
+
+    QSignalBlocker b4(ui->onionRedButton);
     ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));
 
     ui->onionMaxOpacityBox->setValue(prefs->getInt(SETTING::ONION_MAX_OPACITY));
@@ -100,10 +106,10 @@ void OnionSkinWidget::updateUI()
     ui->onionPrevFramesNumBox->setValue(prefs->getInt(SETTING::ONION_PREV_FRAMES_NUM));
     ui->onionNextFramesNumBox->setValue(prefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
 
-    SignalBlocker b5(ui->onionSkinMode);
+    QSignalBlocker b5(ui->onionSkinMode);
     ui->onionSkinMode->setChecked(prefs->getString(SETTING::ONION_TYPE) == "absolute");
 
-    SignalBlocker b6(ui->onionWhilePlayback);
+    QSignalBlocker b6(ui->onionWhilePlayback);
     ui->onionWhilePlayback->setChecked(prefs->getInt(SETTING::ONION_WHILE_PLAYBACK));
 
 }

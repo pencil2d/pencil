@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -140,7 +140,6 @@ void ToolBoxWidget::initUI()
     connect(ui->brushButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn);
     connect(ui->smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
 
-    delete ui->toolGroup->layout();
     FlowLayout* flowlayout = new FlowLayout;
 
     flowlayout->addWidget(ui->clearButton);
@@ -155,7 +154,9 @@ void ToolBoxWidget::initUI()
     flowlayout->addWidget(ui->eyedropperButton);
     flowlayout->addWidget(ui->brushButton);
     flowlayout->addWidget(ui->smudgeButton);
-    ui->toolGroup->setLayout(flowlayout);
+
+    delete ui->scrollAreaWidgetContents_2->layout();
+    ui->scrollAreaWidgetContents_2->setLayout(flowlayout);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     restoreGeometry(settings.value("ToolBoxGeom").toByteArray());

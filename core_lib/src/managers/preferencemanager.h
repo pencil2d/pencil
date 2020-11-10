@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -60,6 +60,8 @@ enum class SETTING
     FLIP_ROLL_MSEC,
     FLIP_ROLL_DRAWINGS,
     FLIP_INBETWEEN_MSEC,
+    SOUND_SCRUB_ACTIVE,
+    SOUND_SCRUB_MSEC,
     LAYER_VISIBILITY,
     LAYER_VISIBILITY_THRESHOLD,
     GRID_SIZE_W,
@@ -71,6 +73,7 @@ enum class SETTING
     OVERLAY_SAFE_HELPER_TEXT_ON,
     ACTION_SAFE_ON,
     ACTION_SAFE,
+    TIMECODE_TEXT,
     TITLE_SAFE_ON,
     TITLE_SAFE,
     QUICK_SIZING,
@@ -81,6 +84,8 @@ enum class SETTING
     FRAME_POOL_SIZE,
     ROTATION_INCREMENT,
     ASK_FOR_PRESET,
+    LOAD_MOST_RECENT,
+    LOAD_DEFAULT_PRESET,
     DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };
@@ -119,7 +124,7 @@ public:
     int     getInt(SETTING option);
     float getFloat(SETTING option);
 
-Q_SIGNALS:
+signals:
     void optionChanged(SETTING e);
 
 private:

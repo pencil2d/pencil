@@ -1,3 +1,19 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #include "colorslider.h"
 
 #include <QWidget>
@@ -6,12 +22,11 @@
 #include <QStyleOption>
 #include <QPixmapCache>
 #include <QPainter>
-#include <QSlider>
 
 
 ColorSlider::ColorSlider(QWidget* parent) : QWidget(parent)
 {
-
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
 ColorSlider::~ColorSlider()
@@ -19,17 +34,18 @@ ColorSlider::~ColorSlider()
 
 }
 
-void ColorSlider::init(ColorType type, QColor color, qreal min, qreal max)
+void ColorSlider::init(ColorSpecType specType, ColorType type, QColor color, qreal min, qreal max)
 {
-    init(type, color, min, max, QSize(this->size()));
+    init(specType, type, color, min, max, QSize(this->size()));
 }
 
-void ColorSlider::init(ColorType type, QColor color, qreal min, qreal max, QSize size)
+void ColorSlider::init(ColorSpecType specType, ColorType type, QColor color, qreal min, qreal max, QSize size)
 {
     mMin = min;
     mMax = max;
     mColor = color;
     mColorType = type;
+    mSpecType = specType;
 
     drawColorBox(color, size);
 }
@@ -221,6 +237,11 @@ void ColorSlider::drawColorBox(QColor color, QSize size)
                             mBoxPixmapSource.width(),
                             Qt::SizeMode::AbsoluteSize);
     painter.end();
+}
+
+QSize ColorSlider::sizeHint() const
+{
+    return {-1, 10};
 }
 
 void ColorSlider::mouseMoveEvent(QMouseEvent* event)

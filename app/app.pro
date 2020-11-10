@@ -12,7 +12,7 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt
+CONFIG += qt precompile_header
 
 DESTDIR = ../bin
 
@@ -37,7 +37,10 @@ INCLUDEPATH += \
     ../core_lib/src/managers \
     ../core_lib/src/external
 
+PRECOMPILED_HEADER = src/app-pch.h
+
 HEADERS += \
+    src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/mainwindow2.h \
@@ -48,13 +51,17 @@ HEADERS += \
     src/timeline2.h \
     src/actioncommands.h \
     src/preferencesdialog.h \
+    src/filespage.h \
+    src/generalpage.h \
     src/shortcutspage.h \
+    src/timelinepage.h \
+    src/toolspage.h \
     src/preview.h \
     src/colorbox.h \
     src/colorinspector.h \
     src/colorpalettewidget.h \
     src/colorwheel.h \
-    src/filedialogex.h \
+    src/filedialog.h \
     src/displayoptionwidget.h \
     src/pencilapplication.h \
     src/exportmoviedialog.h \
@@ -70,7 +77,7 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/presetdialog.h    
+    src/presetdialog.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -84,13 +91,17 @@ SOURCES += \
     src/timeline2.cpp \
     src/actioncommands.cpp \
     src/preferencesdialog.cpp \
+    src/filespage.cpp \
+    src/generalpage.cpp \
     src/shortcutspage.cpp \
+    src/timelinepage.cpp \
+    src/toolspage.cpp \
     src/preview.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
-    src/filedialogex.cpp \
+    src/filedialog.cpp \
     src/displayoptionwidget.cpp \
     src/pencilapplication.cpp \
     src/exportmoviedialog.cpp \
@@ -105,7 +116,8 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
-    src/presetdialog.cpp
+    src/presetdialog.cpp \
+    src/app_util.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
@@ -155,16 +167,13 @@ macx {
     QMAKE_BUNDLE_DATA += FILE_ICONS
 
     QMAKE_TARGET_BUNDLE_PREFIX += org.pencil2d
-
-    LIBS += -framework AppKit
 }
 
 win32 {
-    CONFIG -= flat
     RC_FILE = data/pencil2d.rc
 }
 
-linux {
+unix:!macx {
     target.path = $${PREFIX}/bin
 
     bashcompletion.files = data/pencil2d
@@ -173,29 +182,52 @@ linux {
     zshcompletion.files = data/_pencil2d
     zshcompletion.path = $${PREFIX}/share/zsh/site-functions
 
-    mimepackage.files = data/pencil2d.xml
+    metainfo.files = data/org.pencil2d.Pencil2D.metainfo.xml
+    metainfo.path = $${PREFIX}/share/metainfo
+
+    mimepackage.files = data/org.pencil2d.Pencil2D.xml
     mimepackage.path = $${PREFIX}/share/mime/packages
 
-    desktopentry.files = data/pencil2d.desktop
+    desktopentry.files = data/org.pencil2d.Pencil2D.desktop
     desktopentry.path = $${PREFIX}/share/applications
 
-    icon.files = data/pencil2d.png
+    icon.files = data/org.pencil2d.Pencil2D.png
     icon.path = $${PREFIX}/share/icons/hicolor/256x256/apps
 
-    INSTALLS += bashcompletion zshcompletion target mimepackage desktopentry icon
+    INSTALLS += bashcompletion zshcompletion target metainfo mimepackage desktopentry icon
 }
 
-
-
 # --- core_lib ---
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -lcore_lib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core_lib/debug/ -lcore_lib
-else:unix: LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
 
 INCLUDEPATH += $$PWD/../core_lib/src
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/libcore_lib.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/libcore_lib.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/release/core_lib.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core_lib/debug/core_lib.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+CONFIG(debug,debug|release) BUILDTYPE = debug
+CONFIG(release,debug|release) BUILDTYPE = release
+
+win32-msvc*{
+  LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
+}
+
+
+# From 5.14, MinGW windows builds are not build with debug-release flag
+versionAtLeast(QT_VERSION, 5.14) {
+
+    win32-g++{
+      LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+    }
+
+} else {
+
+    win32-g++{
+      LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
+    }
+}
+
+# --- mac os and linux
+unix {
+  LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+}

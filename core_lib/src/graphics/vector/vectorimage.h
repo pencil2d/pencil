@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #define VECTORIMAGE_H
 
 #include <QTransform>
-#include <QStringList>
 
 #include "bezierarea.h"
 #include "beziercurve.h"
@@ -36,6 +35,7 @@ public:
     VectorImage();
     VectorImage(const VectorImage&);
     virtual ~VectorImage();
+    VectorImage& operator=(const VectorImage& a);
 
     VectorImage* clone() override;
 
@@ -82,10 +82,12 @@ public:
 
     void paste(VectorImage&);
 
-    QColor getColour(int i);
-    int  getColourNumber(QPointF point);
-    bool usesColour(int index);
-    void removeColour(int index);
+    QColor getColor(int i);
+    int  getColorNumber(QPointF point);
+    bool usesColor(int index);
+    void removeColor(int index);
+    int getCurvesColor(int curve);
+    bool isCurveVisible(int curve);
     void moveColor(int start, int end);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
@@ -96,16 +98,16 @@ public:
     void setSelectionTransformation(QTransform transform);
     void applySelectionTransformation();
     void applySelectionTransformation(QTransform transform);
-    void applyColourToSelectedCurve(int colourNumber);
-    void applyColourToSelectedArea(int colourNumber);
+    void applyColorToSelectedCurve(int colorNumber);
+    void applyColorToSelectedArea(int colorNumber);
     void applyWidthToSelection(qreal width);
     void applyFeatherToSelection(qreal feather);
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void fillContour(QList<QPointF> contourPath, int colour);
-    void fillSelectedPath(int colour);
-    //    void fill(QPointF point, int colour, float tolerance);
+    void fillContour(QList<QPointF> contourPath, int color);
+    void fillSelectedPath(int color);
+    //    void fill(QPointF point, int color, float tolerance);
     void addArea(BezierArea bezierArea);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);

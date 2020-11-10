@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 #include "preferencemanager.h"
 #include "viewmanager.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
@@ -45,8 +46,6 @@ void DisplayOptionWidget::initUI()
     updateUI();
     makeConnections();
 
-    delete ui->innerWidget->layout();
-
     FlowLayout *layout = new FlowLayout;
     layout->setAlignment(Qt::AlignHCenter);
     layout->addWidget(ui->mirrorButton);
@@ -58,7 +57,8 @@ void DisplayOptionWidget::initUI()
     layout->addWidget(ui->overlayGoldenRatioButton);
     layout->addWidget(ui->overlaySafeAreaButton);
 
-    ui->innerWidget->setLayout(layout);
+    delete ui->scrollAreaWidgetContents->layout();
+    ui->scrollAreaWidgetContents->setLayout(layout);
 
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
@@ -79,7 +79,7 @@ void DisplayOptionWidget::initUI()
 }
 
 void DisplayOptionWidget::makeConnections()
-{    
+{
     connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
     connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
     connect(ui->overlayCenterButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayCenter);
@@ -102,37 +102,37 @@ void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
 
-    SignalBlocker b1(ui->thinLinesButton);
+    bool canEnableVectorButtons = editor()->layers()->currentLayer()->type() == Layer::VECTOR;
+    ui->thinLinesButton->setEnabled(canEnableVectorButtons);
+    ui->outLinesButton->setEnabled(canEnableVectorButtons);
+
+    QSignalBlocker b1(ui->thinLinesButton);
     ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));
 
-    SignalBlocker b2(ui->outLinesButton);
+    QSignalBlocker b2(ui->outLinesButton);
     ui->outLinesButton->setChecked(prefs->isOn(SETTING::OUTLINES));
 
-    SignalBlocker b9(ui->overlayCenterButton);
+    QSignalBlocker b9(ui->overlayCenterButton);
     ui->overlayCenterButton->setChecked(prefs->isOn(SETTING::OVERLAY_CENTER));
 
-    SignalBlocker b10(ui->overlayThirdsButton);
+    QSignalBlocker b10(ui->overlayThirdsButton);
     ui->overlayThirdsButton->setChecked(prefs->isOn(SETTING::OVERLAY_THIRDS));
 
-    SignalBlocker b11(ui->overlayGoldenRatioButton);
+    QSignalBlocker b11(ui->overlayGoldenRatioButton);
     ui->overlayGoldenRatioButton->setChecked(prefs->isOn(SETTING::OVERLAY_GOLDEN));
 
-    SignalBlocker b12(ui->overlaySafeAreaButton);
+    QSignalBlocker b12(ui->overlaySafeAreaButton);
     ui->overlaySafeAreaButton->setChecked(prefs->isOn(SETTING::OVERLAY_SAFE));
 
-    if (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON))
-    {
-        ui->overlaySafeAreaButton->setEnabled(true);
-    } else {
-        ui->overlaySafeAreaButton->setEnabled(false);
-    }
+    bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
+    ui->overlaySafeAreaButton->setEnabled(enableSafeArea);
 
-    ViewManager* view = editor()->view();
+    const ViewManager* view = editor()->view();
 
-    SignalBlocker b3(ui->mirrorButton);
+    QSignalBlocker b3(ui->mirrorButton);
     ui->mirrorButton->setChecked(view->isFlipHorizontal());
 
-    SignalBlocker b4(ui->mirrorVButton);
+    QSignalBlocker b4(ui->mirrorVButton);
     ui->mirrorVButton->setChecked(view->isFlipVertical());
 }
 

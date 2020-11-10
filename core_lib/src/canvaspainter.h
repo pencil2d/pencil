@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -58,19 +58,17 @@ struct CanvasPainterOptions
     bool  bOutlines = false;
     bool  bIsOnionAbsolute = false;
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
-    float fLayerVisibilityThreshold;
+    float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
 
-class CanvasPainter : public QObject
+class CanvasPainter
 {
-    Q_OBJECT
-
 public:
-    explicit CanvasPainter(QObject* parent = nullptr);
+    explicit CanvasPainter();
     virtual ~CanvasPainter();
 
     void setCanvas(QPixmap* canvas);
@@ -92,8 +90,8 @@ private:
     /**
      * CanvasPainter::initializePainter
      * Enriches the painter with a context and sets it's initial matrix.
-     * @param The in/out painter
-     * @param The paint device ie. a pixmap
+     * @param painter The in/out painter
+     * @param pixmap The paint device ie. a pixmap
      */
     void initializePainter(QPainter& painter, QPixmap& pixmap);
 
@@ -104,9 +102,9 @@ private:
     void paintBackground();
     void paintOnionSkin(QPainter& painter);
 
-    void renderPostLayers(QPixmap *pixmap);
-    void renderCurLayer(QPixmap *pixmap);
-    void renderPreLayers(QPixmap *pixmap);
+    void renderPostLayers(QPixmap* pixmap);
+    void renderCurLayer(QPixmap* pixmap);
+    void renderPreLayers(QPixmap* pixmap);
 
     void paintCurrentFrame(QPainter& painter, int startLayer, int endLayer);
 
@@ -125,6 +123,7 @@ private:
 
     /** Calculate layer opacity based on current layer offset */
     qreal calculateRelativeOpacityForLayer(int layerIndex) const;
+
 private:
     CanvasPainterOptions mOptions;
 
@@ -148,12 +147,10 @@ private:
     QRect mSelection;
     QTransform mSelectionTransform;
 
-    QLoggingCategory mLog;
-
-    // Caches specificially for when drawing on the canvas
+    // Caches specifically for when drawing on the canvas
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
 
-    constexpr static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
+    const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };
 
 #endif // CANVASRENDERER_H

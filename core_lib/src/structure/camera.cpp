@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -126,6 +126,12 @@ void Camera::scale(qreal scaleValue)
 
     mNeedUpdateView = true;
     modification();
+}
+
+void Camera::scaleWithOffset(qreal scaleValue, QPointF offset)
+{
+    mTranslate = (mTranslate + offset) * mScale / scaleValue - offset;
+    scale(scaleValue);
 }
 
 bool Camera::operator==(const Camera& rhs) const
