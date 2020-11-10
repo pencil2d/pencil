@@ -22,9 +22,6 @@ GNU General Public License for more details.
 #include "object.h"
 #include "timelinecells.h"
 
-#include "insertbehaviour.h"
-
-
 // Used to sort the selected frames list
 bool sortAsc(int left, int right)
 {
@@ -189,40 +186,6 @@ bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
 
     pKeyFrame->setPos(position);
     mKeyFrames.insert(std::make_pair(position, pKeyFrame));
-
-    return true;
-}
-
-bool Layer::addKeyFrameAfter(int position, KeyFrame* pKeyFrame)
-{
-    Q_ASSERT(position > 0);
-//    auto posIt = mKeyFrames.find(position);
-
-//    std::map<int, KeyFrame*, std::greater<int>>::iterator it = mKeyFrames.begin();
-//    for (it=mKeyFrames.begin(); it!=mKeyFrames.end(); ++it)
-
-    for (auto it = mKeyFrames.begin(); mKeyFrames.end()!=it; ++it) {
-
-        if (it->first < position) {
-            break;
-        }
-
-
-        KeyFrame* key = it->second;
-        int newPos = key->pos()+1;
-        key->setPos(newPos);
-
-        if (mKeyFrames.find(newPos) == mKeyFrames.end()) {
-//            KeyFrame* key2 = createKeyFrame(newPos, mObject);
-            auto newIt = mKeyFrames.insert(std::make_pair(newPos, std::move(key)));
-
-        } else {
-            mKeyFrames[newPos] = std::move(key);
-        }
-    }
-
-    pKeyFrame->setPos(position);
-    mKeyFrames[position] = std::move(pKeyFrame);
 
     return true;
 }
@@ -402,15 +365,13 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
 {
     painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
-    QList<KeyFrame*> movingFrames;
+    int recTop = y + 1;
+    int recWidth = frameSize - 2;
+    int recHeight = height - 4;
     for (auto pair : mKeyFrames)
     {
-        int framePos = pair.first;
-
-        int recLeft = cells->getFrameX(framePos) - frameSize + 2;
-        int recTop = y + 1;
-        int recWidth = frameSize - 2;
-        int recHeight = height - 4;
+        const int& framePos = pair.first;
+        const int& recLeft = cells->getFrameX(framePos) - frameSize + 2;
 
         KeyFrame* key = pair.second;
         if (key->length() > 1)
@@ -436,24 +397,14 @@ void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells
         }
     }
 
-    paintSelectedFrames(painter, cells, y, height, frameSize);
+    paintSelectedFrames(painter, cells, recWidth, recTop, recHeight, frameSize);
 }
 
-void Layer::paintSelectedFrames(QPainter& painter, TimeLineCells* cells, int y, int height, int frameSize)
+void Layer::paintSelectedFrames(QPainter& painter, TimeLineCells* cells, int recWidth, int recTop, int recHeight, int frameSize)
 {
+    int mouseX = cells->getMouseX();
+    int posUnderCursor = cells->getFrameNumber(cells->mousePressPosX());
     for (int framePos : mSelectedFrames_byPosition) {
-        int recTop = y + 1;
-        int recWidth = frameSize - 2;
-        int recHeight = height - 4;
-
-        int translatedFramePos = cells->getMouseX()-cells->getFrameX(framePos);
-        int posUnderCursor = cells->getFrameNumber(cells->mousePressPosX());
-        int offset = framePos - posUnderCursor;
-
-
-        int newFrameX = cells->getFrameX(framePos)+(offset*frameSize)+translatedFramePos;
-//        int newFramePos = cells->getFrameNumber(newFrameX);
-        int currentFrameX = cells->getFrameX(framePos) - frameSize + 2;
 
         KeyFrame* key = getKeyFrameAt(framePos);
         if (key->length() > 1)
@@ -468,9 +419,15 @@ void Layer::paintSelectedFrames(QPainter& painter, TimeLineCells* cells, int y, 
             painter.setBrush(QColor(60, 60, 60));
         }
 
-        if (cells->movingFrames()) {
+        int frameX = cells->getFrameX(framePos);
+        if (cells->currentlyMovingFrames()) {
+            int translatedFramePos = mouseX-cells->getFrameX(framePos);
+            int offset = framePos - posUnderCursor;
+
+            int newFrameX = frameX+(offset*frameSize)+translatedFramePos;
             painter.drawRect(newFrameX, recTop, recWidth, recHeight);
         } else {
+            int currentFrameX = frameX - recWidth;
             painter.drawRect(currentFrameX, recTop, recWidth, recHeight);
         }
     }
@@ -667,92 +624,15 @@ void Layer::deselectAll()
     }
 }
 
-bool Layer::moveFrame(int oldPos, int newPos, InsertBehaviour behaviour)
-{
-    KeyFrame* copiedFrame = getKeyFrameAt(oldPos);
-
-    qDebug() << "new potential pos:" << newPos;
-    qDebug() << "old pos:" << oldPos;
-
-    bool offsetDir = 0;
-//    if (newPos > oldPos) {
-//        offsetDir = 1;
-//    } else {
-//        offsetDir = -1;
-//    }
-
-    if (oldPos == newPos) {
-        return false;
-    }
-
-    if (copiedFrame != nullptr) {
-        copiedFrame->clone();
-
-        if (!keyExists(newPos)) {
-            // TODO: should only be able to move if all selected frames can be moved... otherwise don't move
-            mKeyFrames.erase(oldPos);
-            copiedFrame->setPos(newPos);
-
-            qDebug() << "new pos is: " << newPos;
-            mKeyFrames.emplace(newPos+offsetDir, copiedFrame);
-
-            updateSelectionLists(oldPos, newPos);
-        } else {
-            mKeyFrames.erase(oldPos);
-
-//            if (behaviour == InsertBehaviour::INBETWEEN) {
-
-//                if (keyExists(newPos)) {
-//                   newPos++;
-//                }
-                copiedFrame->setPos(newPos+offsetDir);
-
-//                std::map<int, KeyFrame*, std::greater<int>>::iterator it = mKeyFrames.begin();
-                qDebug() << "new pos is: " << newPos+offsetDir;
-                addKeyFrameAfter(newPos+offsetDir, copiedFrame);
-                updateSelectionLists(oldPos, newPos);
-//            }
-//            while (keyExists(newPos)) {
-//                qDebug() << "would overwrite frame: " << newPos;
-//                newPos++;
-//            }
-        }
-    }
-    return true;
-}
-
-void Layer::updateSelectionLists(int oldPos, int newPos)
-{
-    // Update selection lists
-    for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
-    {
-        if (mSelectedFrames_byPosition[i] == oldPos) {
-            mSelectedFrames_byPosition[i] = newPos;
-            break;
-        }
-    }
-    for (int i = 0; i < mSelectedFrames_byLast.count(); i++)
-    {
-        if (mSelectedFrames_byLast[i] == oldPos) {
-            mSelectedFrames_byLast[i] = newPos;
-            break;
-        }
-    }
-}
-
 bool Layer::canMoveSelectedFramesToOffset(int offset) const
 {
     QList<int> newByPositions = mSelectedFrames_byPosition;
-
-    qDebug() << "from pos: " << mSelectedFrames_byPosition;
 
     std::map<int, KeyFrame*, std::greater<int>>::const_iterator it;
     for (int i = 0; i < newByPositions.count(); i++)
     {
         newByPositions[i] = newByPositions[i] + offset;
-
-        qDebug() << "to pos: " << newByPositions;
-        if (getKeyFrameAt(newByPositions[i]) != nullptr && !mSelectedFrames_byPosition.contains(newByPositions[i])) {
+        if (keyExists(newByPositions[i]) && !mSelectedFrames_byPosition.contains(newByPositions[i])) {
             return false;
         }
     }

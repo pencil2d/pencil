@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
+#include <QtMath>
 
 #include "object.h"
 #include "editor.h"
@@ -28,8 +29,6 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "preferencemanager.h"
 #include "toolmanager.h"
-
-#include <QDebug>
 
 
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
@@ -86,8 +85,12 @@ void TimeLineCells::loadSetting(SETTING setting)
 
 int TimeLineCells::getFrameNumber(int x)
 {
-    int frameNumber = mFrameOffset + 1 + (x - mOffsetX) / mFrameSize;
-    return frameNumber;
+    return mFrameOffset + 1 + (x - mOffsetX) / mFrameSize;
+}
+
+float TimeLineCells::getFrameNumberF(int x) const
+{
+    return static_cast<float>(mFrameOffset + 1) + static_cast<float>(x - mOffsetX) / static_cast<float>(mFrameSize);
 }
 
 int TimeLineCells::getFrameX(int frameNumber)
@@ -133,19 +136,6 @@ int TimeLineCells::getLayerNumber(int y)
         layerNumber = -1;
     }
     return layerNumber;
-}
-
-void TimeLineCells::clearMovedFrames()
-{
-    mFramesToMove.clear();
-}
-
-void TimeLineCells::addFramesToBeMoved(int oldPos, int offset)
-{
-    MoveFrameContainer movingContainer;
-    movingContainer.oldPos = oldPos;
-    movingContainer.offset = offset;
-    mFramesToMove << movingContainer;
 }
 
 int TimeLineCells::getInbetweenLayerNumber(int y) {
@@ -364,21 +354,6 @@ void TimeLineCells::paintLayerGutter(QPainter& painter)
     }
 }
 
-void TimeLineCells::paintFrameGutter(QPainter& painter)
-{
-
-    // TODO: write gutter painting for moving frames...
-//    painter.setPen(Qt::black);
-//    if (getMouseMoveY() > mLayerDetatchThreshold)
-//    {
-//        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+mLayerHeight, width(), 2);
-//    }
-//    else
-//    {
-//        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY)), width(), 2);
-//    }
-}
-
 void TimeLineCells::paintOnionSkin(QPainter& painter)
 {
     Layer* layer = mEditor->layers()->currentLayer();
@@ -497,11 +472,6 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
     updateContent();
     event->accept();
     emit lengthChanged(getFrameLength());
-}
-
-bool TimeLineCells::mouseButtonDown()
-{
-    return primaryButton != Qt::NoButton;
 }
 
 void TimeLineCells::mousePressEvent(QMouseEvent* event)
@@ -651,6 +621,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
+    mMouseX = event->pos().x();
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
         mEndY = event->pos().y();
@@ -658,26 +629,10 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-
-        mMouseLastX = mMouseX;
-        if (mMouseLastX != -1 || mMouseDeltaX != mPrevousDeltaX) {
-            mMouseX = event->pos().x();
-            mPrevousDeltaX = mMouseDeltaX;
-            mMouseDeltaX = mMousePressX - mMouseX;
-
-            qDebug() << "delta X: " << mMouseDeltaX;
-
-            if (mMouseDeltaX > 0) {
-                mDragDirection = MOUSE_DRAG_DIRECTION::Left;
-            } else if (mMouseDeltaX < 0) {
-                mDragDirection = MOUSE_DRAG_DIRECTION::Right;
-            }
-        }
-
         int frameNumber = getFrameNumber(event->pos().x());
+
         if (primaryButton == Qt::MidButton)
         {
-            // qMin( max_frame_offset, qMax ( min_frame_offset, draw_frame_offset ) )
             mFrameOffset = qMin(qMax(0, mFrameLength - width() / getFrameSize()), qMax(0, mFrameOffset + mLastFrameNumber - frameNumber));
             update();
             emit offsetChanged(mFrameOffset);
@@ -739,10 +694,10 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
         if (mMovingFrames) {
 
+            // New offset is first added after 50% of the frame has been crossed
+            frameNumber = qRound(getFrameNumberF(event->pos().x()));
             int posUnderCursor = getFrameNumber(mousePressPosX());
             int offset = frameNumber - posUnderCursor;
-
-            qDebug() << "new offset: " << offset;
             currentLayer->moveSelectedFrames(offset);
         }
 

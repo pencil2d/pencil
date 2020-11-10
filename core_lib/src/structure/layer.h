@@ -26,8 +26,6 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 #include "pencildef.h"
 
-#include "insertbehaviour.h"
-
 class QMouseEvent;
 class KeyFrame;
 class Object;
@@ -85,7 +83,6 @@ public:
 
     int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
 
-    bool addKeyFrameAfter(int position, KeyFrame* pKeyFrame);
     bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
@@ -120,7 +117,6 @@ public:
      * @return true if selected frames can be moved otherwise false
      */
     bool canMoveSelectedFramesToOffset(int offset) const;
-    bool moveFrame(int oldPos, int newPos, InsertBehaviour behaviour);
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
@@ -128,7 +124,7 @@ public:
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
     void paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
-    void paintSelectedFrames(QPainter& painter, TimeLineCells* cells, int y, int height, int frameSize) ;
+    void paintSelectedFrames(QPainter& painter, TimeLineCells* cells, int recWidth, int recTop, int recHeight, int frameSize);
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
     void mouseDoubleClick(QMouseEvent*, int frameNumber);
@@ -142,9 +138,6 @@ protected:
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
-
-    void updateSelectionLists(int oldPos, int newPos);
-
 
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;
