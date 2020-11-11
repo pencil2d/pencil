@@ -722,8 +722,10 @@ void CanvasPainter::renderGrid(QPainter& painter)
 {
     if (mOptions.bGrid)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintGrid(painter);
+        painter.restore();
     }
 }
 
