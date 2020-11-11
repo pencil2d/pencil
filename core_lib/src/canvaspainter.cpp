@@ -733,24 +733,33 @@ void CanvasPainter::renderOverlays(QPainter& painter)
 {
     if (mOptions.bCenter)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayCenter(painter);
+        painter.restore();
     }
     if (mOptions.bThirds)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayThirds(painter);
+        painter.restore();
     }
     if (mOptions.bGoldenRatio)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayGolden(painter);
+        painter.restore();
     }
     if (mOptions.bSafeArea)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlaySafeAreas(painter);
+        painter.restore();
     }
+
 }
 
 void CanvasPainter::paintCameraBorder(QPainter& painter)
