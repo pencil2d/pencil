@@ -860,6 +860,11 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     {
         Layer *currentLayer = mEditor->object()->getLayer(layerNumber);
 
+        if (mMovingFrames) {
+            emit framesMoved();
+
+            mMovingFrames = false;
+        }
         if (!mTimeLine->scrubbing && !mMovingFrames && !mClickSelecting && !mBoxSelecting)
         {
             // De-selecting if we didn't move, scrub nor select anything
@@ -887,6 +892,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
+
     emit mouseMovedY(0);
     mTimeLine->updateContent();
 }

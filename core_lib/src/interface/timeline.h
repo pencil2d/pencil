@@ -52,6 +52,7 @@ public:
     int getRangeUpper();
 
     void onObjectLoaded();
+    void framesMoved();
 
 signals:
     void modification();
@@ -70,6 +71,7 @@ signals:
     void onionPrevClick();
     void onionNextClick();
     void playButtonTriggered();
+    void notifyFramesMoved();
 
 public:
     bool scrubbing = false;
