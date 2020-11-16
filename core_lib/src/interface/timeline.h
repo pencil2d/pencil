@@ -52,7 +52,6 @@ public:
     int getRangeUpper();
 
     void onObjectLoaded();
-    void framesMoved();
 
 signals:
     void modification();

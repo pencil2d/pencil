@@ -221,7 +221,7 @@ void TimeLine::initUI()
     connect(mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY);
     connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
     connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
-    connect(mTracks, &TimeLineCells::framesMoved, this, &TimeLine::framesMoved);
+    connect(mTracks, &TimeLineCells::framesMoved, this, &TimeLine::notifyFramesMoved);
 
     connect(editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame);
 
@@ -230,10 +230,6 @@ void TimeLine::initUI()
     mNumLayers = layer->count();
 
     scrubbing = false;
-}
-
-void TimeLine::framesMoved() {
-    emit notifyFramesMoved();
 }
 
 void TimeLine::updateUI()
