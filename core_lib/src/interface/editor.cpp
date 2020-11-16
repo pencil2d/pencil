@@ -1118,6 +1118,7 @@ void Editor::removeKey()
     scrubBackward();
     layers()->notifyAnimationLengthChanged();
     emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+    emit currentFrameRemoved(mFrame);
 }
 
 void Editor::scrubNextKeyFrame()
