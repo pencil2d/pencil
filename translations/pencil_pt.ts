@@ -1442,7 +1442,7 @@ Por favor, confirme a seleção e tente novamente.</translation>
         <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
 The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
         <translation>Selecione uma imagem que combine com o seguinte parâmetro: MyFile000.png, eg. Joe001.png 
-O importador procurará por imagens que contenham o mesmo critério. Poderá ver os resultados na caixa de pré-visualização em baixo.</translation>
+O suporte procurará por imagens que contenham o mesmo critério. Poderá ver os resultados na caixa de pré-visualização em baixo.</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="171"/>
