@@ -5193,7 +5193,7 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="114"/>
         <source>Restore Default Shortcuts</source>
-        <translation>Restaurar Atajos Predeterminados</translation>
+        <translation>Restaurar Atajos Estándares</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="44"/>
