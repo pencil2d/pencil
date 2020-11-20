@@ -632,7 +632,7 @@ Por favor, confirme a seleção e tente novamente.</translation>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="1207"/>
         <source>Peg bar not found at %1, %2</source>
-        <translation>Régua de fixação não encontrada em %1, %2</translation>
+        <translation>Marca-de-referencia não encontrada em %1, %2 </translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="857"/>
@@ -1442,7 +1442,7 @@ Por favor, confirme a seleção e tente novamente.</translation>
         <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
 The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
         <translation>Selecione uma imagem que combine com o seguinte parâmetro: MyFile000.png, eg. Joe001.png 
-O importador procurará por imagens que contenham o mesmo critério. Poderá ver os resultados na caixa de pré-visualização em baixo.</translation>
+O suporte procurará por imagens que contenham o mesmo critério. Poderá ver os resultados na caixa de pré-visualização em baixo.</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="171"/>
@@ -2133,7 +2133,7 @@ Leia as instruções e volte a tentar</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1016"/>
         <source>Peg bar Alignment</source>
-        <translation>Alinhamento da Régua de fixação</translation>
+        <translation>Alinhamento da marca-de-referência</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1021"/>
@@ -2743,12 +2743,12 @@ A(s) cor(es) nas pinceladas será alterada consequentemente!
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="14"/>
         <source>Peg bar Alignment</source>
-        <translation>Alinhamento da Régua de fixação</translation>
+        <translation>Alinhamento da marca-de-referência</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="30"/>
         <source>Peg Bar Alignment:</source>
-        <translation>Alinhamento da Régua de fixação:</translation>
+        <translation>Alinhamento da Marca-de-Referência:</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="46"/>
