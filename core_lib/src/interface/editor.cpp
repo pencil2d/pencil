@@ -1051,6 +1051,13 @@ void Editor::scrubBackward()
     }
 }
 
+void Editor::notifyFrameMoved()
+{
+    // The important part here is that the cache is updated, which happens as a result of the updateFrame method.
+    // and onionskin cache is updated too
+    mScribbleArea->updateFrame(mFrame);
+}
+
 KeyFrame* Editor::addNewKey()
 {
     return addKeyFrame(layers()->currentLayerIndex(), currentFrame());

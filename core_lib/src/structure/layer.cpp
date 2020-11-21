@@ -213,72 +213,46 @@ bool Layer::removeKeyFrame(int position)
     return true;
 }
 
-bool Layer::moveKeyFrameForward(int position)
+bool Layer::moveKeyFrame(int position, int offset)
 {
-    return swapKeyFrames(position, position + 1);
-}
+    bool moved = false;
+    if (position == 1 && offset < 0) { return false; }
 
-bool Layer::moveKeyFrameBackward(int position)
-{
-    if (position != 1)
-    {
-        return swapKeyFrames(position, position - 1);
+    if (swapKeyFrames(position, position + offset)) {
+        moved = true;
+    } else {
+        setFrameSelected(position, true);
+        if (moveSelectedFrames(offset)) {
+            moved = true;
+        }
+        setFrameSelected(position + offset, false);
     }
-    return true;
+    return moved;
 }
 
-bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, need to refresh the swapped cels
+// Current behaviour, need to refresh the swapped cels
+bool Layer::swapKeyFrames(int position1, int position2)
 {
-    bool keyPosition1 = false;
-    bool keyPosition2 = false;
     KeyFrame* pFirstFrame = nullptr;
     KeyFrame* pSecondFrame = nullptr;
 
-    if (keyExists(position1))
+    if (mKeyFrames.count(position1) != 1 || mKeyFrames.count(position2) != 1)
     {
-        auto firstFrame = mKeyFrames.find(position1);
-        pFirstFrame = firstFrame->second;
-
-        mKeyFrames.erase(position1);
-
-        keyPosition1 = true;
+        return false;
     }
 
-    if (keyExists(position2))
-    {
-        auto secondFrame = mKeyFrames.find(position2);
-        pSecondFrame = secondFrame->second;
+    // Both keys exist
+    pFirstFrame = mKeyFrames[position1];
+    pSecondFrame = mKeyFrames[position2];
 
-        mKeyFrames.erase(position2);
+    mKeyFrames[position1] = pSecondFrame;
+    mKeyFrames[position2] = pFirstFrame;
 
-        keyPosition2 = true;
-    }
+    pSecondFrame->setPos(position1);
+    pFirstFrame->setPos(position2);
 
-    if (keyPosition2)
-    {
-        pSecondFrame->setPos(position1);
-        mKeyFrames.insert(std::make_pair(position1, pSecondFrame));
-    }
-    else if (position1 == 1)
-    {
-        addNewKeyFrameAt(position1);
-    }
-
-    if (keyPosition1)
-    {
-        pFirstFrame->setPos(position2);
-        mKeyFrames.insert(std::make_pair(position2, pFirstFrame));
-    }
-    else if (position2 == 1)
-    {
-        addNewKeyFrameAt(position2);
-    }
-
-    if (pFirstFrame)
-        pFirstFrame->modification();
-
-    if (pSecondFrame)
-        pSecondFrame->modification();
+    pFirstFrame->modification();
+    pSecondFrame->modification();
 
     return true;
 }
@@ -501,12 +475,6 @@ bool Layer::moveSelectedFrames(int offset)
                         isBetween = false;
                 }
 
-                if (fromPos == 1)
-                {
-                    // If the first frame is moving, we need to create a new first frame
-                    //addNewKeyFrameAt(1);
-                }
-
                 // Update the position of the selected frame
                 selectedFrame->setPos(toPos);
                 mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
@@ -523,6 +491,7 @@ bool Layer::moveSelectedFrames(int offset)
         {
             mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
         }
+
         return true;
     }
     return false;

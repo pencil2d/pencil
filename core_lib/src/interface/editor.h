@@ -96,6 +96,7 @@ public:
     void setCurrentLayerIndex(int i);
 
     void scrubTo(int frameNumber);
+    void notifyFrameMoved();
 
 
     /**

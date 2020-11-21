@@ -90,8 +90,7 @@ public:
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);
-    bool moveKeyFrameForward(int position);
-    bool moveKeyFrameBackward(int position);
+    bool moveKeyFrame(int position, int offset);
     bool loadKey(KeyFrame*);
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
@@ -110,6 +109,8 @@ public:
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
     void deselectAll();
+
+    QList<int> getSelectedFrames() const { return mSelectedFrames_byPosition; }
 
     bool moveSelectedFrames(int offset);
 
