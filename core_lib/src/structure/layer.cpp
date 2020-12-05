@@ -69,14 +69,6 @@ void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action) const
     }
 }
 
-void Layer::foreachSelectedKeyFrame(std::function<void(KeyFrame*)> action)
-{
-    for (auto pair : mKeyFrames)
-    {
-        if (pair.second->isSelected()) action(pair.second);
-    }
-}
-
 bool Layer::keyExists(int position) const
 {
     return (mKeyFrames.find(position) != mKeyFrames.end());

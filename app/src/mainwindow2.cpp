@@ -399,10 +399,6 @@ void MainWindow2::createMenus()
     connect(ui->actionLockWindows, &QAction::toggled, this, &MainWindow2::lockWidgets);
     bindPreferenceSetting(ui->actionLockWindows, prefs, SETTING::LAYOUT_LOCK);
 
-    ui->actionCopy->setEnabled(false);
-    ui->actionCut->setEnabled(false);
-    ui->actionPaste->setEnabled(false);
-
     //--- Help Menu ---
     connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
     connect(ui->actionQuick_Guide, &QAction::triggered, mCommands, &ActionCommands::quickGuide);
@@ -445,12 +441,6 @@ void MainWindow2::enablePaste()
 void MainWindow2::disablePaste()
 {
     ui->actionPaste->setEnabled(false);
-}
-
-void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
-{
-    QSignalBlocker b(action);
-    action->setChecked(bChecked);
 }
 
 void MainWindow2::setOpacity(int opacity)

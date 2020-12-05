@@ -345,10 +345,12 @@ void TimeLineCells::paintTrack(QPainter& painter, const Layer* layer,
 {
     const QPalette palette = QApplication::palette();
     QColor col;
+    // Color each track according to the layer type
     if (layer->type() == Layer::BITMAP) col = QColor(51, 155, 252);
     if (layer->type() == Layer::VECTOR) col = QColor(70, 205, 123);
     if (layer->type() == Layer::SOUND) col = QColor(255, 141, 112);
     if (layer->type() == Layer::CAMERA) col = QColor(253, 202, 92);
+    // Dim invisible layers
     if (!layer->visible()) col.setAlpha(64);
 
     painter.save();
@@ -358,7 +360,7 @@ void TimeLineCells::paintTrack(QPainter& painter, const Layer* layer,
 
     if (!layer->visible()) return;
 
-    // changes the appearance if selected
+    // Changes the appearance if selected
     if (selected)
     {
         paintSelection(painter, x, y, width, height);
@@ -395,17 +397,19 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
 
         if (key->length() > 1)
         {
-            // This is especially for sound clip.
-            // Sound clip is the only type of KeyFrame that has variant frame length.
+            // This is especially for sound clips.
+            // Sound clips are the only type of KeyFrame with variable frame length.
             recWidth = frameSize * key->length() - 2;
         }
 
+        // Paint the frame border
         if (selected && key->pos() == getCurrentFrame()) {
             painter.setPen(Qt::white);
         } else {
             painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         }
 
+        // Paint the frame contents
         if (key->isSelected())
         {
             painter.setBrush(QColor(60, 60, 60));
@@ -414,7 +418,6 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         {
             painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
         }
-
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
     });
 
@@ -449,7 +452,7 @@ void TimeLineCells::paintLabel(QPainter& painter, const Layer* layer,
         painter.setBrush(palette.color(QPalette::Base));
     }
     painter.setPen(Qt::NoPen);
-    painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
+    painter.drawRect(x, y - 1, width, height); // empty rectangle by default
 
     if (!layer->visible())
     {
@@ -503,8 +506,6 @@ void TimeLineCells::paintLabel(QPainter& painter, const Layer* layer,
 void TimeLineCells::paintSelection(QPainter& painter, int x, int y, int width, int height) const
 {
     QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-    QSettings settings(PENCIL2D, PENCIL2D);
-    QString style = settings.value("style").toString();
     linearGrad.setColorAt(0, QColor(0, 0, 0, 255));
     linearGrad.setColorAt(1, QColor(255, 255, 255, 0));
     painter.save();
@@ -953,24 +954,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
         {
-            if (layer->type() == Layer::CAMERA)
-            {
-                editLayerProperties(layer);
-            }
-            else
-            {
-                QRegExp regex("([\\xFFEF-\\xFFFF])+");
-
-                bool ok;
-                QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
-                                                     tr("Layer name:"), QLineEdit::Normal,
-                                                     layer->name(), &ok);
-                if (ok && !text.isEmpty())
-                {
-                    text.replace(regex, "");
-                    mEditor->layers()->renameLayer(layer, text);
-                }
-            }
+            editLayerProperties(layer);
         }
     }
     QWidget::mouseDoubleClickEvent(event);

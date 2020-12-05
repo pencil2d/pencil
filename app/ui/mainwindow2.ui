@@ -397,6 +397,9 @@
    </property>
   </action>
   <action name="actionCut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
@@ -406,6 +409,9 @@
    </property>
   </action>
   <action name="actionCopy">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
@@ -415,6 +421,9 @@
    </property>
   </action>
   <action name="actionPaste">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
@@ -650,15 +659,6 @@
   <action name="actionRemove_EmptyFrame">
    <property name="text">
     <string>Decrease Frame Exposure</string>
-   </property>
-  </action>
-  <action name="actionInsert_Frame">
-   <property name="icon">
-    <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
-   </property>
-   <property name="text">
-    <string>Insert Frame</string>
    </property>
   </action>
   <action name="actionMove">
@@ -1124,27 +1124,12 @@
   </action>
   <action name="actionReverse_selected_frames">
    <property name="text">
-    <string>Reverse selected Frames</string>
-   </property>
-  </action>
-  <action name="actionCopy_Frames">
-   <property name="text">
-    <string>Copy selected Frames</string>
-   </property>
-  </action>
-  <action name="actionCut_Selected_Frames">
-   <property name="text">
-    <string>Cut selected Frames</string>
+    <string>Reverse Selected Frames</string>
    </property>
   </action>
   <action name="actionRemove_selected_frames">
    <property name="text">
-    <string>Remove selected Frames</string>
-   </property>
-  </action>
-  <action name="actionPaste_selected_frames">
-   <property name="text">
-    <string>Paste selected Frames</string>
+    <string>Remove Selected Frames</string>
    </property>
   </action>
   <action name="actionOpen_Temporary_Directory">
