@@ -232,7 +232,7 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
                 break;
             }
             default:
-                return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
+                return (type == SELECT) ? QCursor(QPixmap(":icons/cross.png"), 10, 10) : Qt::ArrowCursor;
                 break;
         }
         cursorPainter.end();

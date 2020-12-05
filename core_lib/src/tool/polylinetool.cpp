@@ -98,7 +98,7 @@ bool PolylineTool::isActive()
 
 QCursor PolylineTool::cursor()
 {
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
 void PolylineTool::clearToolData()
