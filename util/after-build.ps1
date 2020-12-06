@@ -74,6 +74,18 @@ Rename-Item -Path "./Pencil2D.zip" -NewName $zipFileName
 echo ">>> Zip ok?"
 Test-Path $zipFileName
 
+echo ">>> Creating installer"
+$vcRedistFileName = switch ($platform) {
+  "x86" {"vc_redist.x86.exe"; break}
+  "amd64" {"vc_redist.x64.exe"; break}
+}
+Move-Item -Path ".\Pencil2D\$vcRedistFileName"
+$bits = switch ($platform) {
+  "x86" {"32"; break}
+  "amd64" {"64"; break}
+}
+& "makensis" @("/DNIGHTLY_BUILD", "/DBITS=$bits", "/DVERSION=$today", "/DVCREDIST=..\..\build\$vcRedistFileName", "/DINSTALLFILES=..\..\build\Pencil2D", "..\util\installer\InstallerMain.nsi")
+
 cd $PSScriptRoot
 
 if ($upload -ne "yes") {
@@ -91,7 +103,9 @@ $GDriveFolderId = switch($platform) {
 }
 
 $fullPath = Convert-Path "..\build\$zipFileName"
+$fullInstallerPath = Convert-Path "..\util\installer\pencil2d-$arch-$today-install.exe"
 
 & $python3 @("nightly-build-upload.py", $GDriveFolderId, $fullPath)
+& $python3 @("nightly-build-upload.py", $GDriveFolderId, $fullInstallerPath)
 
 echo ">>> Done!"

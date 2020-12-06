@@ -34,7 +34,7 @@ install:
   - "%PYTHON3% -m pip install --upgrade google-api-python-client"
   - "%PYTHON3%  -V"
   - set QTDIR=C:\Qt\%qt%
-  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin
+  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin;%ProgramFiles(x86)%\NSIS
 
 before_build:
   - echo %PLATFORM_%

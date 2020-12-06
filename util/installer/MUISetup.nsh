@@ -1,0 +1,32 @@
+Var StartMenuFolder
+
+!define MUI_ABORTWARNING
+!define MUI_ICON img\icon.ico
+!define MUI_UNICON img\icon.ico
+!define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_BITMAP img\headerimage.bmp
+!define MUI_WELCOMEFINISHPAGE_BITMAP img\welcomefinishpage.bmp
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP img\unwelcomefinishpage.bmp
+!define MUI_FINISHPAGE_NOAUTOCLOSE
+!define MUI_UNFINISHPAGE_NOAUTOCLOSE
+!define MUI_CUSTOMFUNCTION_GUIINIT onGUIInit
+
+!insertmacro MUI_PAGE_WELCOME
+!define MUI_LICENSEPAGE_CHECKBOX
+!insertmacro MUI_PAGE_LICENSE "..\..\LICENSE.TXT"
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE onMultiUserPageLeave
+!insertmacro MULTIUSER_PAGE_INSTALLMODE
+!insertmacro MUI_PAGE_DIRECTORY
+!define MUI_STARTMENUPAGE_REGISTRY_ROOT "SHCTX"
+!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${REGNAME}"
+!define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "StartMenuFolder"
+!insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
+!insertmacro MUI_PAGE_INSTFILES
+!define MUI_FINISHPAGE_RUN "$INSTDIR\${PROGRAMBIN}"
+!define MUI_FINISHPAGE_NOREBOOTSUPPORT
+!insertmacro MUI_PAGE_FINISH
+
+!insertmacro MUI_UNPAGE_WELCOME
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
