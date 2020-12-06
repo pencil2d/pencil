@@ -715,51 +715,55 @@ void ActionCommands::removeSelected()
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
 
-    if (ret == QMessageBox::Ok)
+    if (ret != QMessageBox::Ok)
     {
-        if (selectedCount == 0 && currentLayer->keyExists(currentPosition))
-        {
-            currentLayer->removeKeyFrame(currentPosition);
-        }
-        else
-        {
-            for (int pos : currentLayer->selectedKeyFramesPositions()) {
-                currentLayer->removeKeyFrame(pos);
-            }
-        }
-
-        currentLayer->deselectAll();
-        mEditor->layers()->notifyLayerChanged(currentLayer);
-
-        if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
+        return;
     }
+
+    if (selectedCount == 0 && currentLayer->keyExists(currentPosition))
+    {
+        currentLayer->removeKeyFrame(currentPosition);
+    }
+    else
+    {
+        for (int pos : currentLayer->selectedKeyFramesPositions()) {
+            currentLayer->removeKeyFrame(pos);
+        }
+    }
+
+    currentLayer->deselectAll();
+    mEditor->layers()->notifyLayerChanged(currentLayer);
+
+    if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
 }
 
 void ActionCommands::reverseSelected()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int selectedCount = currentLayer->selectedKeyFrameCount();
-    if (selectedCount > 1)
+    if (selectedCount <= 1)
     {
-        QList<int> selectedIndexes = currentLayer->selectedKeyFramesPositions();
-        int count = selectedIndexes.count()-1;
+        return;
+    }
 
-        QList<int> swappedValues;
-        for (int pos : selectedIndexes) {
-            int oldPos = pos;
-            int newPos = selectedIndexes[count];
+    QList<int> selectedIndexes = currentLayer->selectedKeyFramesPositions();
+    int count = selectedIndexes.count()-1;
 
-            if (!swappedValues.contains(oldPos) && !swappedValues.contains(newPos)) {
-                currentLayer->swapKeyFrames(oldPos, newPos);
-                swappedValues << newPos;
-            }
-            count--;
+    QList<int> swappedValues;
+    for (int pos : selectedIndexes) {
+        int oldPos = pos;
+        int newPos = selectedIndexes[count];
+
+        if (!swappedValues.contains(oldPos) && !swappedValues.contains(newPos)) {
+            currentLayer->swapKeyFrames(oldPos, newPos);
+            swappedValues << newPos;
         }
-        mEditor->layers()->notifyLayerChanged(currentLayer);
+        count--;
+    }
+    mEditor->layers()->notifyLayerChanged(currentLayer);
 
-        if (currentLayer->type() == Layer::CAMERA) {
-            mEditor->view()->updateViewTransforms();
-        }
+    if (currentLayer->type() == Layer::CAMERA) {
+        mEditor->view()->updateViewTransforms();
     }
 };
 

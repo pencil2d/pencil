@@ -104,7 +104,6 @@ public:
     bool getVisibility() const { return mVisible; }
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
-    void foreachSelectedKeyFrame(std::function<void(KeyFrame*)>);
 
     void setModified(int position, bool isModified);
 
@@ -115,15 +114,15 @@ public:
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
 
-    /** selectBatchOfSelectedFrames
-     *  Willl select all frames from the specified position till there is a blank frame
-     *  @param position, the current position
+    /**
+     *  Will select all frames from the specified position till there is a blank frame
+     *  @param position the current position
      */
     void selectBatchOfConnectedFrames(int position);
 
-    /** selectNextBatchOfSelectedFrames
-     *  Willl select all frames from the next keyframe position till there is a blank frame
-     *  @param position, the current position
+    /**
+     *  Will select all frames from the next keyframe position till there is a blank frame
+     *  @param position the current position
      */
     void selectNextBatchOfConnectedFrames(int position);
 

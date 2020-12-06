@@ -691,7 +691,6 @@ void Editor::pasteToTimeline()
     }
     currentLayer->deselectAll();
 
-    int count = 0;
     while (it != clipboardFrames.rend()) // insert frames & select them
     {
         int newPosition = currentFrame() + it->first;
@@ -706,7 +705,6 @@ void Editor::pasteToTimeline()
             currentLayer->addKeyFrame(newPosition, k);
         }
         currentLayer->setFrameSelected(newPosition, true);
-        count++;
         it++;
     }
 }
@@ -715,7 +713,7 @@ void Editor::paste()
 {
     Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
     if (currentLayer == nullptr) return;
-    
+
     if (clipboardState == ClipboardState::CANVAS)
     {
         pasteToCanvas();
@@ -724,8 +722,8 @@ void Editor::paste()
     {
         pasteToTimeline();
     }
-    
-    Q_EMIT layers()->currentLayerChanged(layers()->currentLayerIndex());
+
+    emit layers()->currentLayerChanged(layers()->currentLayerIndex());
     mScribbleArea->updateCurrentFrame();
 }
 
@@ -741,38 +739,23 @@ bool Editor::canCopy()
     bool somethingSelected = mSelectionManager->somethingSelected();
     bool framesSelected = layer->selectedKeyFrameCount() > 0;
 
-    bool canCopy = false;
     switch (layer->type())
     {
     case Layer::BITMAP:
     {
-        if (somethingSelected || framesSelected)
-        {
-            canCopy = true;
-        }
-        break;
+        return somethingSelected || framesSelected;
     }
     case Layer::VECTOR:
     {
-        if (clipboardVectorImage->isValid() || framesSelected)
-        {
-            canCopy = true;
-        }
-        break;
+        return clipboardVectorImage->isValid() || framesSelected;
     }
     case Layer::SOUND: case Layer::CAMERA:
     {
-        if (framesSelected)
-        {
-            canCopy = true;
-        }
-        break;
+        return framesSelected;
     }
     default:
-        canCopy = false;
-        break;
+        Q_UNREACHABLE();
     }
-    return canCopy;
 }
 
 bool Editor::canPaste()
@@ -783,39 +766,25 @@ bool Editor::canPaste()
 
     bool framesSelected = !clipboardFrames.empty();
 
-    bool canPaste = false;
-
     if (clipboardState != ClipboardState::CANVAS && clipboardState != ClipboardState::TIMELINE) { return false; }
 
     switch (layer->type())
     {
     case Layer::BITMAP:
     {
-        if (clipboardBitmapImage->image()->size().isValid() || framesSelected)
-        {
-            canPaste = true;
-        }
-        break;
+        return clipboardBitmapImage->image()->size().isValid() || framesSelected;
     }
     case Layer::VECTOR:
     {
-        if (clipboardVectorImage->isValid() || framesSelected)
-        {
-            canPaste = true;
-        }
-        break;
+        return clipboardVectorImage->isValid() || framesSelected;
     }
     case Layer::SOUND: case Layer::CAMERA:
     {
-        canPaste = framesSelected;
-        break;
+        return framesSelected;
     }
     default:
-        canPaste = false;
-        break;
+        Q_UNREACHABLE();
     }
-
-    return canPaste;
 }
 
 void Editor::flipSelection(bool flipVertical)

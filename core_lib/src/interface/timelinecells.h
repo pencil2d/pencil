@@ -52,8 +52,8 @@ public:
     int getFrameNumber(int x) const;
     int getFrameX(int frameNumber) const;
     int getMouseMoveY() const { return mMouseMoveY; }
-    int getOffsetX() const { return mOffsetX; }
-    int getOffsetY() const { return mOffsetY; }
+    static int getOffsetX() { return mOffsetX; }
+    static int getOffsetY() { return mOffsetY; }
     int getLayerHeight() const { return mLayerHeight; }
 
     int getMouseX() const { return mMouseX; }
