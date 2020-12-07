@@ -953,7 +953,7 @@ void MainWindow2::importGIF()
     progress.show();
 
     QString strImgFileLower = gifDialog->getFilePath();
-    bool importOK = strImgFileLower.endsWith(".gif");
+    bool importOK = strImgFileLower.toLower().endsWith(".gif");
 
     if (importOK)
     {
