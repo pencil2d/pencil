@@ -938,7 +938,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks && (layerNumber != -1) && (frameNumber > 0) && layerNumber < mEditor->object()->getLayerCount())
         {
-            if (event->button() == Qt::LeftButton && frameNumber == mCurrentFrame) {
+            if (event->button() == Qt::LeftButton) {
                 layer->setFrameSelected(frameNumber, false);
                 mEditor->scrubTo(frameNumber);
                 emit insertNewKeyFrame();
@@ -946,10 +946,6 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
                 // The release event will toggle the frame on again, so we make sure it gets
                 // deselected now instead.
                 layer->setFrameSelected(frameNumber, true);
-            } else {
-                // A new frame should not be created,
-                // unless we already stand where we intend to place it.
-                mEditor->scrubTo(frameNumber);
             }
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
