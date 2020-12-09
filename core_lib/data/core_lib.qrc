@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>icons/brush.png</file>
         <file>icons/bucketTool.png</file>
+        <file>icons/cross.png</file>
         <file>icons/eyedropper.png</file>
         <file>icons/liquify.png</file>
         <file>icons/onion_type.png</file>

@@ -75,7 +75,7 @@ QCursor BucketTool::cursor()
     }
     else
     {
-        return Qt::CrossCursor;
+        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
     }
 }
 

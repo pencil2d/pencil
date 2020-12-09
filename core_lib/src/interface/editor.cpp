@@ -900,17 +900,19 @@ Status Editor::setObject(Object* newObject)
 
     clearUndoStack();
     mObject.reset(newObject);
+    
     clipboardBitmapImage = new BitmapImage();
     clipboardVectorImage = new VectorImage();
-
-    for (BaseManager* m : mAllManagers)
-    {
-        m->load(mObject.get());
-    }
 
     clipboardVectorImage->setObject(newObject);
 
     updateObject();
+
+    // Make sure that object is fully loaded before calling managers.
+    for (BaseManager* m : mAllManagers)
+    {
+        m->load(mObject.get());
+    }
 
     if (mViewManager)
     {
