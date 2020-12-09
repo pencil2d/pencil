@@ -140,11 +140,9 @@ signals:
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
 
-    void enableCopyCut();
-    void disableCopyCut();
-
-    void enablePaste();
-    void disablePaste();
+    void updateCopyAction(bool enabled);
+    void updateCutAction(bool enabled);
+    void updatePasteAction(bool enabled);
 
 public: //slots
     void clearCurrentFrame();

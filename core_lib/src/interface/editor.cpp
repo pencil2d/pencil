@@ -634,7 +634,7 @@ void Editor::copy()
 
     if (clipboardData != nullptr) {
         if (clipboardData->text().contains(CANVAS_DATA) || clipboardData->text().contains(TIMELINE_DATA)) {
-            emit enablePaste();
+            emit updatePasteAction(true);
         }
     }
 }
@@ -860,17 +860,10 @@ void Editor::toggleOnionSkinType()
 
 void Editor::notifyCopyPasteActionChanged()
 {
-    if (canCopy()) {
-        emit enableCopyCut();
-    } else {
-        emit disableCopyCut();
-    }
-
-    if (canPaste()) {
-        emit enablePaste();
-    } else {
-        emit disablePaste();
-    }
+    bool canCopyState = canCopy();
+    emit updateCopyAction(canCopyState);
+    emit updateCutAction(canCopyState);
+    emit updatePasteAction(canPaste());
 }
 
 void Editor::addTemporaryDir(QTemporaryDir* const dir)

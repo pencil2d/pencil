@@ -71,12 +71,6 @@ public slots:
     void selectionChanged();
     void viewFlipped();
 
-    void enableCopyCut();
-    void disableCopyCut();
-
-    void enablePaste();
-    void disablePaste();
-
 public:
     void newDocument();
     void openDocument();

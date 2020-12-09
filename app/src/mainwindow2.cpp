@@ -421,28 +421,6 @@ void MainWindow2::createMenus()
     connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
-void MainWindow2::enableCopyCut()
-{
-    ui->actionCopy->setEnabled(true);
-    ui->actionCut->setEnabled(true);
-}
-
-void MainWindow2::disableCopyCut()
-{
-    ui->actionCopy->setEnabled(false);
-    ui->actionCut->setEnabled(false);
-}
-
-void MainWindow2::enablePaste()
-{
-    ui->actionPaste->setEnabled(true);
-}
-
-void MainWindow2::disablePaste()
-{
-    ui->actionPaste->setEnabled(false);
-}
-
 void MainWindow2::setOpacity(int opacity)
 {
     mEditor->preference()->set(SETTING::WINDOW_OPACITY, 100 - opacity);
@@ -1411,10 +1389,9 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
-    connect(editor, &Editor::enableCopyCut, this, &MainWindow2::enableCopyCut);
-    connect(editor, &Editor::enablePaste, this, &MainWindow2::enablePaste);
-    connect(editor, &Editor::disableCopyCut, this, &MainWindow2::disableCopyCut);
-    connect(editor, &Editor::disablePaste, this, &MainWindow2::disablePaste);
+    connect(editor, &Editor::updateCopyAction, ui->actionCopy, &QAction::setEnabled);
+    connect(editor, &Editor::updateCutAction, ui->actionCut, &QAction::setEnabled);
+    connect(editor, &Editor::updatePasteAction, ui->actionPaste, &QAction::setEnabled);
 
 }
 
