@@ -63,5 +63,5 @@ response = drive_service.files().list(q=filter120daysOld, spaces='drive').execut
 
 for f in response.get('files'):
   print('-------')
-  print('Deleting Name={}, ID={}').format(f.get('name'), f.get('id'))
+  print('Deleting Name={}, ID={}'.format(f.get('name'), f.get('id')))
   drive_service.files().delete(fileId=f.get('id')).execute()
