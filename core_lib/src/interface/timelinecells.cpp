@@ -410,7 +410,7 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         }
 
         // Paint the frame contents
-        if (key->isSelected())
+        if (selected && key->isSelected())
         {
             painter.setBrush(QColor(60, 60, 60));
         }
