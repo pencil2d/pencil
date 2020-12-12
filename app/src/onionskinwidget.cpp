@@ -17,19 +17,6 @@ GNU General Public License for more details.
 #include "onionskinwidget.h"
 #include "ui_onionskin.h"
 
-#include <QSettings>
-#include <QDebug>
-#include <QtMath>
-
-#include <QComboBox>
-#include <QMessageBox>
-#include <QToolButton>
-#include <QGridLayout>
-#include <QSlider>
-#include <QGroupBox>
-#include <QLabel>
-
-#include "spinslider.h"
 #include "preferencemanager.h"
 #include "editor.h"
 #include "util.h"
@@ -39,6 +26,10 @@ OnionSkinWidget::OnionSkinWidget(QWidget *parent) :
     ui(new Ui::OnionSkin)
 {
     ui->setupUi(this);
+    clearFocusOnFinished(ui->onionPrevFramesNumBox);
+    clearFocusOnFinished(ui->onionNextFramesNumBox);
+    clearFocusOnFinished(ui->onionMinOpacityBox);
+    clearFocusOnFinished(ui->onionMaxOpacityBox);
 }
 
 OnionSkinWidget::~OnionSkinWidget()
