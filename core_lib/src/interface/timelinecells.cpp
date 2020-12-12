@@ -689,7 +689,10 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             }
             else
             {
+                if (mEditor->currentLayerIndex() == layerNumber) { return; }
+
                 mEditor->layers()->setCurrentLayer(layerNumber);
+                mEditor->layers()->currentLayer()->deselectAll();
             }
         }
         if (layerNumber == -1)
