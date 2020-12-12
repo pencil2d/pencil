@@ -238,7 +238,8 @@ void ScribbleArea::updateOnionSkinsAround(int frameNumber)
             if (cacheKeyIter != mPixmapCacheKeys.end())
             {
                 QPixmapCache::remove(cacheKeyIter.value());
-                mPixmapCacheKeys.remove(cacheKeyIter.key());
+                unsigned int key = cacheKeyIter.key();
+                mPixmapCacheKeys.remove(key);
             }
         }
     }
@@ -256,7 +257,8 @@ void ScribbleArea::updateOnionSkinsAround(int frameNumber)
             if (cacheKeyIter != mPixmapCacheKeys.end())
             {
                 QPixmapCache::remove(cacheKeyIter.value());
-                mPixmapCacheKeys.remove(cacheKeyIter.key());
+                unsigned int key = cacheKeyIter.key();
+                mPixmapCacheKeys.remove(key);
             }
         }
     }
