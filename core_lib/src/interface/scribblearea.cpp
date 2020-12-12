@@ -1432,6 +1432,7 @@ void ScribbleArea::applyTransformedSelection()
             VectorImage* vectorImage = currentVectorImage(layer);
             if (vectorImage == nullptr) { return; }
             vectorImage->applySelectionTransformation();
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), false);
         }
 
         setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
