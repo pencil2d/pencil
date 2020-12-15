@@ -664,6 +664,7 @@ void ActionCommands::increaseFrameExposure() {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
 
+    currentLayer->deselectAll();
     if(currentPosition < currentLayer->getMaxKeyFramePosition())
     {
         currentLayer->selectNextBatchOfConnectedFrames(currentPosition);
@@ -679,6 +680,7 @@ void ActionCommands::decreaseFrameExposure() {
     int currentPosition = mEditor->currentFrame();
     int nextPos = currentLayer->getNextKeyFramePosition(currentPosition);
 
+    currentLayer->deselectAll();
     if (currentPosition < currentLayer->getMaxKeyFramePosition() &&
         currentLayer->getKeyFrameWhichCovers(currentPosition+1) == nullptr )
     {
@@ -694,6 +696,7 @@ Status ActionCommands::insertNewKey(){
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
 
+    currentLayer->deselectAll();
     if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition() && currentLayer->getKeyFrameWhichCovers(currentPosition) != nullptr)
     {
         currentLayer->selectBatchOfConnectedFrames(currentPosition + 1);
