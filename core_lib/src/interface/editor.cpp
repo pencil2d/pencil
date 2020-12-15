@@ -731,9 +731,6 @@ void Editor::toggleOnionSkinType()
     mPreferenceManager->set(SETTING::ONION_TYPE, newState);
 }
 
-{
-}
-
 void Editor::addTemporaryDir(QTemporaryDir* const dir)
 {
     mTemporaryDirs.append(dir);
