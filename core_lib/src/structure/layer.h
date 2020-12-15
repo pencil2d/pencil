@@ -68,7 +68,9 @@ public:
     bool visible() const { return mVisible; }
     void setVisible(bool b) { mVisible = b; }
 
-    QList<int> selectedKeyFramesPositions() { return mSelectedFrames_byPosition; }
+    /** Get selected keyframe positions sorted by position
+     */
+    QList<int> selectedKeyFramesPositions() const { return mSelectedFrames_byPosition; }
 
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressForward) = 0;

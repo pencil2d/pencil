@@ -732,10 +732,6 @@ void Editor::toggleOnionSkinType()
 }
 
 {
-    bool canCopyState = canCopy();
-    emit updateCopyAction(canCopyState);
-    emit updateCutAction(canCopyState);
-    emit updatePasteAction(canPaste());
 }
 
 void Editor::addTemporaryDir(QTemporaryDir* const dir)

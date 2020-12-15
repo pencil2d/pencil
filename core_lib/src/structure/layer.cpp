@@ -218,21 +218,8 @@ bool Layer::removeKeyFrame(int position)
 
 void Layer::removeFromSelectionList(int pos)
 {
-    int count = 0;
-    for (int selectedPos : mSelectedFrames_byLast) {
-        if (selectedPos == pos) {
-            mSelectedFrames_byLast.removeAt(count);
-        }
-        count++;
-    }
-
-    count = 0;
-    for (int selectedPos : mSelectedFrames_byPosition) {
-        if (selectedPos == pos) {
-            mSelectedFrames_byPosition.removeAt(count);
-        }
-        count++;
-    }
+    mSelectedFrames_byLast.removeAll(pos);
+    mSelectedFrames_byPosition.removeAll(pos);
 }
 
 bool Layer::moveKeyFrameForward(int position)
@@ -387,17 +374,8 @@ void Layer::setFrameSelected(int position, bool isSelected)
         }
         else if (!isSelected)
         {
-            // Remove the selected frame from the lists
-            int iLast = mSelectedFrames_byLast.indexOf(startPosition);
-
-            if (iLast < mSelectedFrames_byLast.count() && iLast > 0) {
-                mSelectedFrames_byLast.removeAt(iLast);
-            }
-
-            int iPos = mSelectedFrames_byPosition.indexOf(startPosition);
-            if (iPos < mSelectedFrames_byPosition.count() && iPos > 0) {
-                mSelectedFrames_byPosition.removeAt(iPos);
-            }
+            mSelectedFrames_byLast.removeOne(startPosition);
+            mSelectedFrames_byPosition.removeOne(startPosition);
         }
         keyFrame->setSelected(isSelected);
     }

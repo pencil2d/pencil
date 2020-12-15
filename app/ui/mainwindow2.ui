@@ -653,7 +653,10 @@
     <string>Increase Frame Exposure</string>
    </property>
    <property name="toolTip">
-    <string>Adds empty frame next to current frame, will push all frames in front of current frame</string>
+    <string>Increase Frame Exposure</string>
+   </property>
+   <property name="statusTip">
+    <string/>
    </property>
   </action>
   <action name="actionRemove_EmptyFrame">

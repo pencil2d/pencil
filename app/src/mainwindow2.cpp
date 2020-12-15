@@ -1451,8 +1451,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::animationLengthChanged, pTimeline, &TimeLine::extendLength);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
-    connect(mTimeLine, &TimeLine::selectionChanged, pEditor, &Editor::notifyCopyPasteActionChanged);
-    connect(pEditor->layers(), &LayerManager::currentLayerChanged, pEditor, &Editor::notifyCopyPasteActionChanged);
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);

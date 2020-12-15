@@ -78,7 +78,7 @@ void ClipboardManager::setFromSystemClipboard(const QClipboard *clipboard, Layer
 void ClipboardManager::copyBitmapImage(BitmapImage* bitmapImage, QRectF selectionRect)
 {
     resetStates();
-    if (bitmapImage == nullptr) { return; }
+    if (!bitmapImage->isLoaded()) { return; }
 
     else if (!selectionRect.isEmpty())
     {
@@ -112,9 +112,7 @@ void ClipboardManager::copySelectedFrames(const Layer* currentLayer) {
             keyframe->loadFile();
         }
 
-        if (keyframe != nullptr) {
-            mFrames.insert(std::make_pair(keyframe->pos(), keyframe->clone()));
-        }
+        mFrames.insert(std::make_pair(keyframe->pos(), keyframe->clone()));
     }
     mFramesType = currentLayer->type();
 }
@@ -126,7 +124,7 @@ bool ClipboardManager::canCopyFrames(const Layer* layer) const
 
 bool ClipboardManager::canCopyBitmapImage(BitmapImage* image) const
 {
-    return (image != nullptr && !image->bounds().isEmpty());
+    return (image->isLoaded() && !image->bounds().isEmpty());
 }
 
 bool ClipboardManager::canCopyVectorImage(const VectorImage* image) const
