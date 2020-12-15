@@ -49,7 +49,7 @@ Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
     return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-QTransform LayerCamera::getViewAtFrame(int frameNumber)
+QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 {
     if (keyFrameCount() == 0)
     {
@@ -155,7 +155,7 @@ QRect LayerCamera::getViewRect()
     return viewRect;
 }
 
-QSize LayerCamera::getViewSize()
+QSize LayerCamera::getViewSize() const
 {
     return viewRect.size();
 }

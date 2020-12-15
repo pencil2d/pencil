@@ -37,10 +37,10 @@ public:
 
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
-    QTransform getViewAtFrame(int frameNumber);
+    QTransform getViewAtFrame(int frameNumber) const;
 
     QRect getViewRect();
-    QSize getViewSize();
+    QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
 
 signals:

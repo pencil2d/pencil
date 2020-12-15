@@ -20,7 +20,6 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QObject>
-#include <QList>
 #include "pencilerror.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
@@ -108,17 +107,12 @@ public:
      */
     void setLayerVisibility(LayerVisibility visibility);
     LayerVisibility layerVisibility();
-    bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
-    bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
 
     qreal viewScaleInversed();
     void deselectAll();
     void selectAll();
 
     void clipboardChanged(const QClipboard* clipboard);
-
-
-    QString workingDir() const;
 
     // backup
     int mBackupIndex;
