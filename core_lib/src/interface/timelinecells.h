@@ -56,8 +56,8 @@ public:
     static int getOffsetY() { return mOffsetY; }
     int getLayerHeight() const { return mLayerHeight; }
 
-    int getMouseX() const { return mMouseX; }
-    int getMouseY() const { return mMouseY; }
+    int getFrameNumberAtMouseX() const { return mFramePosMouseX; }
+    int getLayerNumberAtMouseY() const { return mLayerPosMouseY; }
 
     int getFrameLength() const {return mFrameLength;}
     int getFrameSize() const { return mFrameSize; }
@@ -135,8 +135,8 @@ private:
     int mCurrentFrame = 0;
     int mLastScrubFrame = 0;
 
-    int mMouseX = 0;
-    int mMouseY = 0;
+    int mFramePosMouseX = 0;
+    int mLayerPosMouseY = 0;
 
     int mFromLayer = 0;
     int mToLayer   = 1;

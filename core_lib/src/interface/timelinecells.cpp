@@ -421,12 +421,12 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
     });
 
-    if (selected && getLayerNumber(getMouseY()) != -1
-            && getLayerNumber(getMouseY()) == getCurrentLayerIndex()) {
+    if (selected && getLayerNumberAtMouseY() != -1
+            && getLayerNumberAtMouseY() == getCurrentLayerIndex()) {
         // This aligns the frame with where the frame will be placed.
         int space = 2;
 
-        int recLeft = getFrameX(getFrameNumber(getMouseX())) + space - frameSize;
+        int recLeft = getFrameX(getFrameNumberAtMouseX()) + space - frameSize;
         int recTop = y + 1;
         int recWidth = frameSize - 2;
         int recHeight = height - 4;
@@ -808,9 +808,8 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
-
-    mMouseX = event->pos().x();
-    mMouseY = event->pos().y();
+    mFramePosMouseX = getFrameNumber(event->pos().x());
+    mLayerPosMouseY = getLayerNumber(event->pos().y());
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
         if (event->buttons() & Qt::LeftButton ) {
