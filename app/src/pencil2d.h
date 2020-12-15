@@ -67,6 +67,9 @@ signals:
      */
     void openFileRequested(QString filename);
 
+    /** Emitted when app focus changes */
+    void focusStateChange();
+
 private:
     /**
      * Sets up translators for the application locale configured by the user or the system locale.

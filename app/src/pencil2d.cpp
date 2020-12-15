@@ -85,7 +85,11 @@ Status Pencil2D::handleCommandLineOptions()
 
 bool Pencil2D::event(QEvent* event)
 {
-    if (event->type() == QEvent::FileOpen)
+    if(event->type() == QEvent::ApplicationStateChange && static_cast<QApplicationStateChangeEvent*>(event)->applicationState() == Qt::ApplicationInactive) {
+        emit focusStateChange();
+        return true;
+    }
+    else if (event->type() == QEvent::FileOpen)
     {
         auto fileOpenEvent = dynamic_cast<QFileOpenEvent*>(event);
         Q_ASSERT(fileOpenEvent);
@@ -121,6 +125,7 @@ void Pencil2D::prepareGuiStartup(const QString& inputPath)
 
     auto mainWindow = new MainWindow2;
     connect(this, &Pencil2D::openFileRequested, mainWindow, &MainWindow2::openFile);
+    connect(this, &Pencil2D::focusStateChange, mainWindow, &MainWindow2::onFocusStateChange);
     mainWindow->show();
 
     if (!inputPath.isEmpty())

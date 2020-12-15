@@ -103,6 +103,8 @@ public:
 signals:
     void updateRecentFilesList(bool b);
 
+    void onFocusStateChange();
+
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
