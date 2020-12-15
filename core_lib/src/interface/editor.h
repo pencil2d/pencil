@@ -43,6 +43,7 @@ class ViewManager;
 class PreferenceManager;
 class SelectionManager;
 class SoundManager;
+class ClipboardManager;
 class ScribbleArea;
 class TimeLine;
 class BackupElement;
@@ -63,18 +64,13 @@ class Editor : public QObject
         Q_PROPERTY(PreferenceManager* preference READ preference)
         Q_PROPERTY(SoundManager*    sound    READ sound)
         Q_PROPERTY(SelectionManager* select READ select)
+        Q_PROPERTY(ClipboardManager* clipboards READ clipboards)
 
 public:
     explicit Editor(QObject* parent = nullptr);
     ~Editor() override;
 
     bool init();
-
-    enum class ClipboardState {
-        CANVAS,
-        TIMELINE,
-        NONE,
-    };
 
     /************************************************************************/
     /* Managers                                                             */
@@ -87,6 +83,7 @@ public:
     PreferenceManager* preference() const { return mPreferenceManager; }
     SoundManager*      sound() const { return mSoundManager; }
     SelectionManager*  select() const { return mSelectionManager; }
+    ClipboardManager*  clipboards() const { return mClipboardManager; }
 
     Object* object() const { return mObject.get(); }
     Status setObject(Object* object);
@@ -118,6 +115,9 @@ public:
     void deselectAll();
     void selectAll();
 
+    void clipboardChanged(const QClipboard* clipboard);
+
+
     QString workingDir() const;
 
     // backup
@@ -140,9 +140,9 @@ signals:
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
 
-    void updateCopyAction(bool enabled);
-    void updateCutAction(bool enabled);
-    void updatePasteAction(bool enabled);
+    void canCopyChanged(bool enabled);
+    void canCutChanged(bool enabled);
+    void canPasteChanged(bool enabled);
 
 public: //slots
     void clearCurrentFrame();
@@ -163,7 +163,6 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
-    void notifyCopyPasteActionChanged();
     void notifyAnimationLengthChanged();
 
     void switchVisibilityOfLayer(int layerNumber);
@@ -187,13 +186,12 @@ public: //slots
     void redo();
 
     void copy();
+    void copyAndCut();
     void paste();
-    void cut();
 
-    bool canCopy();
-    bool canPaste();
+    bool canCopy() const;
+    bool canPaste() const;
 
-    void clipboardChanged();
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
@@ -223,13 +221,9 @@ private:
     bool importBitmapImage(QString, int space = 0);
     bool importVectorImage(QString);
 
-    void copyFromTimeline();
-    void copyFromCanvas();
-    void cutFromTimeline();
-    void cutFromCanvas();
-
-    void pasteToCanvas();
-    void pasteToTimeline();
+    void pasteToCanvas(BitmapImage* bitmapImage, int frameNumber);
+    void pasteToCanvas(VectorImage* vectorImage, int frameNumber);
+    void pasteToFrames();
 
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
@@ -247,6 +241,7 @@ private:
     PreferenceManager* mPreferenceManager = nullptr;
     SoundManager*      mSoundManager = nullptr;
     SelectionManager* mSelectionManager = nullptr;
+    ClipboardManager* mClipboardManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 
@@ -265,13 +260,6 @@ private:
     void updateAutoSaveCounter();
     int mLastModifiedFrame = -1;
     int mLastModifiedLayer = -1;
-
-    // Clipboard
-    ClipboardState clipboardState = ClipboardState::NONE;
-
-    BitmapImage* clipboardBitmapImage;
-    VectorImage* clipboardVectorImage;
-    std::map<int, KeyFrame*> clipboardFrames;
 };
 
 #endif

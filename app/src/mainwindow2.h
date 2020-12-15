@@ -109,6 +109,9 @@ protected:
     void closeEvent(QCloseEvent*) override;
     void showEvent(QShowEvent*) override;
 
+private slots:
+    void updateCopyCutPasteEnabled();
+    void fetchClipboard();
 private:
     void newObject() const;
     bool newObjectFromPresets(int presetIndex);

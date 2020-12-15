@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include <QStandardPaths>
 #include <QDateTime>
 #include <QLabel>
+#include <QClipboard>
 
 // core_lib headers
 #include "pencildef.h"
@@ -45,6 +46,7 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
+#include "clipboardmanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -271,7 +273,7 @@ void MainWindow2::createMenus()
     //--- Edit Menu ---
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
-    connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::cut);
+    connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
     connect(ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste);
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
@@ -1385,13 +1387,14 @@ void MainWindow2::openPalette()
 void MainWindow2::makeConnections(Editor* editor)
 {
     connect(this, &MainWindow2::appLostFocus, editor->getScribbleArea(), &ScribbleArea::setPrevTool);
+
     connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
-    connect(editor, &Editor::updateCopyAction, ui->actionCopy, &QAction::setEnabled);
-    connect(editor, &Editor::updateCutAction, ui->actionCut, &QAction::setEnabled);
-    connect(editor, &Editor::updatePasteAction, ui->actionPaste, &QAction::setEnabled);
+    connect(editor, &Editor::canCopyChanged, ui->actionCopy, &QAction::setEnabled);
+    connect(editor, &Editor::canCutChanged, ui->actionCut, &QAction::setEnabled);
+    connect(editor, &Editor::canPasteChanged, ui->actionPaste, &QAction::setEnabled);
 
 }
 
@@ -1435,8 +1438,14 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer);
     connect(pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer);
     connect(pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer);
-
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
+
+    // Clipboard state handling
+    connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &MainWindow2::fetchClipboard);
+    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
+    connect(pTimeline, &TimeLine::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
+    connect(this, &MainWindow2::appLostFocus, this, &MainWindow2::updateCopyCutPasteEnabled);
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
@@ -1479,6 +1488,22 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
 
     connect(pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor);
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
+}
+
+void MainWindow2::fetchClipboard()
+{
+    QClipboard* clipboard = QApplication::clipboard();
+    mEditor->clipboardChanged(clipboard);
+}
+
+void MainWindow2::updateCopyCutPasteEnabled()
+{
+    bool canCopy = mEditor->canCopy();
+    bool canPaste = mEditor->canPaste();
+
+    ui->actionCopy->setEnabled(canCopy);
+    ui->actionCut->setEnabled(canCopy);
+    ui->actionPaste->setEnabled(canPaste);
 }
 
 void MainWindow2::updateZoomLabel()

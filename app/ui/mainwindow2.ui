@@ -398,7 +398,7 @@
   </action>
   <action name="actionCut">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
@@ -410,7 +410,7 @@
   </action>
   <action name="actionCopy">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
@@ -422,7 +422,7 @@
   </action>
   <action name="actionPaste">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
