@@ -513,7 +513,8 @@ void Editor::copy()
     if (!canCopy) { return; }
 
     backup("Copy");
-    if (currentLayer->hasAnySelectedFrames()) {
+
+    if (currentLayer->hasAnySelectedFrames() && !select()->somethingSelected()) {
         clipboards()->copySelectedFrames(currentLayer);
     }
     else if (currentLayer->type() == Layer::BITMAP) {
@@ -572,6 +573,7 @@ void Editor::pasteToCanvas(BitmapImage* bitmapImage, int frameNumber)
     // TODO: currently we don't support placing an image without already pasting it on an already existing
     // image, this should be reworked such that a hovering selection could be shown, before applying it...
     select()->setSelection(bitmapImage->bounds());
+    mScribbleArea->paintTransformedSelection();
 }
 
 void Editor::pasteToCanvas(VectorImage* vectorImage, int frameNumber)
@@ -585,6 +587,7 @@ void Editor::pasteToCanvas(VectorImage* vectorImage, int frameNumber)
     VectorImage* canvasImage = static_cast<VectorImage*>(currentLayer->getLastKeyFrameAtPosition(frameNumber));
     canvasImage->paste(*vectorImage);
     select()->setSelection(vectorImage->getSelectionRect());
+    mScribbleArea->paintTransformedSelection();
 }
 
 void Editor::pasteToFrames()
