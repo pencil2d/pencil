@@ -936,19 +936,17 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
 
     // -- layer --
     Layer* layer = mEditor->object()->getLayer(layerNumber);
-    if (layer)
+    if (layer && event->buttons() & Qt::LeftButton)
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks && (layerNumber != -1) && (frameNumber > 0) && layerNumber < mEditor->object()->getLayerCount())
         {
-            if (event->button() == Qt::LeftButton) {
-                layer->setFrameSelected(frameNumber, false);
-                mEditor->scrubTo(frameNumber);
-                emit insertNewKeyFrame();
+            layer->setFrameSelected(frameNumber, false);
+            mEditor->scrubTo(frameNumber);
+            emit insertNewKeyFrame();
 
-                // The release event will toggle the frame on again, so we make sure it gets
-                // deselected now instead.
-                layer->setFrameSelected(frameNumber, true);
-            }
+            // The release event will toggle the frame on again, so we make sure it gets
+            // deselected now instead.
+            layer->setFrameSelected(frameNumber, true);
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
         {
