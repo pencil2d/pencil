@@ -652,12 +652,6 @@
    <property name="text">
     <string>Increase Frame Exposure</string>
    </property>
-   <property name="toolTip">
-    <string>Increase Frame Exposure</string>
-   </property>
-   <property name="statusTip">
-    <string/>
-   </property>
   </action>
   <action name="actionDecrease_Frame_Exposure">
    <property name="text">
