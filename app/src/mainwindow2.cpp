@@ -1442,7 +1442,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &MainWindow2::fetchClipboard);
     connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(pTimeline, &TimeLine::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
-    connect(this, &MainWindow2::onFocusStateChange, this, &MainWindow2::updateCopyCutPasteEnabled);
+    connect(this, &MainWindow2::windowActivated, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
@@ -1531,6 +1531,15 @@ void MainWindow2::importMovieVideo()
     mCommands->importMovieVideo();
 
     mSuppressAutoSaveDialog = false;
+}
+
+bool MainWindow2::event(QEvent* event)
+{
+    if(event->type() == QEvent::WindowActivate) {
+        emit windowActivated();
+        return true;
+    }
+    return QWidget::event(event);
 }
 
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)

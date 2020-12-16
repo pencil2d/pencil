@@ -58,7 +58,7 @@ private:
     /** This should be called before copying and updating the clipboard to ensure no previous state is saved */
     void resetStates();
 
-    Editor* mEditor;
+    Editor* mEditor = nullptr;
 
     QPoint mLastBitmapPosition;
     BitmapImage mBitmapImage;
@@ -66,7 +66,7 @@ private:
     std::map<int, KeyFrame*> mFrames;
     Layer::LAYER_TYPE mFramesType = Layer::LAYER_TYPE::UNDEFINED;
 
-    QClipboard* mClipboard;
+    QClipboard* mClipboard = nullptr;
 };
 
 #endif // CLIPBOARDMANAGER_H
