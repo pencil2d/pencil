@@ -197,8 +197,8 @@
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
     <addaction name="separator"/>
-    <addaction name="actionAdd_EmptyFrame"/>
-    <addaction name="actionRemove_EmptyFrame"/>
+    <addaction name="actionIncrease_Frame_Exposure"/>
+    <addaction name="actionDecrease_Frame_Exposure"/>
     <addaction name="separator"/>
     <addaction name="actionReverse_selected_frames"/>
     <addaction name="actionRemove_selected_frames"/>
@@ -648,7 +648,7 @@
     <string>Remove Frame</string>
    </property>
   </action>
-  <action name="actionAdd_EmptyFrame">
+  <action name="actionIncrease_Frame_Exposure">
    <property name="text">
     <string>Increase Frame Exposure</string>
    </property>
@@ -659,7 +659,7 @@
     <string/>
    </property>
   </action>
-  <action name="actionRemove_EmptyFrame">
+  <action name="actionDecrease_Frame_Exposure">
    <property name="text">
     <string>Decrease Frame Exposure</string>
    </property>

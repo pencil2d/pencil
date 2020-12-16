@@ -351,8 +351,8 @@ void MainWindow2::createMenus()
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::insertNewKey);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
-    connect(ui->actionAdd_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::increaseFrameExposure);
-    connect(ui->actionRemove_EmptyFrame, &QAction::triggered, mCommands, &ActionCommands::decreaseFrameExposure);
+    connect(ui->actionIncrease_Frame_Exposure, &QAction::triggered, mCommands, &ActionCommands::increaseFrameExposure);
+    connect(ui->actionDecrease_Frame_Exposure, &QAction::triggered, mCommands, &ActionCommands::decreaseFrameExposure);
     connect(ui->actionNext_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoNextFrame);
     connect(ui->actionPrevious_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevFrame);
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame);
@@ -1230,8 +1230,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionAdd_Frame->setShortcut(cmdKeySeq(CMD_ADD_FRAME));
     ui->actionDuplicate_Frame->setShortcut(cmdKeySeq(CMD_DUPLICATE_FRAME));
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
-    ui->actionAdd_EmptyFrame->setShortcut(cmdKeySeq(CMD_ADD_EMPTY));
-    ui->actionRemove_EmptyFrame->setShortcut(cmdKeySeq(CMD_REMOVE_EMPTY));
+    ui->actionIncrease_Frame_Exposure->setShortcut(cmdKeySeq(CMD_INCREASE_FRAME_EXPOSURE));
+    ui->actionDecrease_Frame_Exposure->setShortcut(cmdKeySeq(CMD_DECREASE_FRAME_EXPOSURE));
     ui->actionReverse_selected_frames->setShortcut(cmdKeySeq(CMD_REVERSE_FRAMES));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
