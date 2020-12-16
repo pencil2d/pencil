@@ -750,24 +750,20 @@ void ActionCommands::reverseSelected()
     }
 
     QList<int> selectedIndexes = currentLayer->selectedKeyFramesPositions();
-    int count = selectedIndexes.count()-1;
+    int swapEnd = selectedIndexes.count()-1;
 
-    QList<int> swappedValues;
-    for (int pos : selectedIndexes) {
-        int oldPos = pos;
-        int newPos = selectedIndexes[count];
-
-        if (!swappedValues.contains(oldPos) && !swappedValues.contains(newPos)) {
-            currentLayer->swapKeyFrames(oldPos, newPos);
-            swappedValues << newPos;
-        }
-        count--;
+    for (int swapBegin = 0; swapBegin < swapEnd; swapBegin++) {
+        int oldPos = selectedIndexes[swapBegin];
+        int newPos = selectedIndexes[swapEnd];
+        currentLayer->swapKeyFrames(oldPos, newPos);
+        swapEnd--;
     }
     mEditor->layers()->notifyLayerChanged(currentLayer);
 
     if (currentLayer->type() == Layer::CAMERA) {
         mEditor->view()->updateViewTransforms();
     }
+    mEditor->updateFrame(mEditor->currentFrame());
 };
 
 void ActionCommands::removeKey()
