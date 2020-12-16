@@ -78,7 +78,7 @@ void ClipboardManager::setFromSystemClipboard(const QClipboard *clipboard, Layer
 void ClipboardManager::copyBitmapImage(BitmapImage* bitmapImage, QRectF selectionRect)
 {
     resetStates();
-    if (!bitmapImage->isLoaded()) { return; }
+    if (bitmapImage == nullptr || !bitmapImage->isLoaded()) { return; }
 
     else if (!selectionRect.isEmpty())
     {
@@ -96,7 +96,7 @@ void ClipboardManager::copyBitmapImage(BitmapImage* bitmapImage, QRectF selectio
 void ClipboardManager::copyVectorImage(VectorImage* vectorImage)
 {
     resetStates();
-    if (!vectorImage->isValid()) { return; }
+    if (vectorImage == nullptr || !vectorImage->isValid()) { return; }
 
     // FIXME: handle vector selections, ie. independent strokes...
     mVectorImage = *vectorImage->clone();
@@ -107,6 +107,8 @@ void ClipboardManager::copySelectedFrames(const Layer* currentLayer) {
 
     for (int pos : currentLayer->selectedKeyFramesPositions()) {
         KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
+
+        Q_ASSERT(keyframe != nullptr);
 
         if (!keyframe->isLoaded()) {
             keyframe->loadFile();
@@ -119,17 +121,18 @@ void ClipboardManager::copySelectedFrames(const Layer* currentLayer) {
 
 bool ClipboardManager::canCopyFrames(const Layer* layer) const
 {
+    Q_ASSERT(layer != nullptr);
     return layer->hasAnySelectedFrames();
 }
 
-bool ClipboardManager::canCopyBitmapImage(BitmapImage* image) const
+bool ClipboardManager::canCopyBitmapImage(BitmapImage* bitmapImage) const
 {
-    return (image->isLoaded() && !image->bounds().isEmpty());
+    return bitmapImage != nullptr && bitmapImage->isLoaded() && !bitmapImage->bounds().isEmpty();
 }
 
-bool ClipboardManager::canCopyVectorImage(const VectorImage* image) const
+bool ClipboardManager::canCopyVectorImage(const VectorImage* vectorImage) const
 {
-    return image->isValid();
+    return vectorImage != nullptr && vectorImage->isValid();
 }
 
 void ClipboardManager::resetStates()

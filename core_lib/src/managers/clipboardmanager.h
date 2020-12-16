@@ -51,9 +51,9 @@ public:
 
 private:
 
-    bool canCopyBitmapImage(BitmapImage* image) const;
+    bool canCopyBitmapImage(BitmapImage* bitmapImage) const;
     bool canCopyFrames(const Layer* layer) const;
-    bool canCopyVectorImage(const VectorImage* image) const;
+    bool canCopyVectorImage(const VectorImage* vectorImage) const;
 
     /** This should be called before copying and updating the clipboard to ensure no previous state is saved */
     void resetStates();
