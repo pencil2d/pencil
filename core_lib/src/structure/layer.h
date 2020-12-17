@@ -115,6 +115,7 @@ public:
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
+    void setFramesSelected(QList<int> keyPositions);
 
     /**
      *  Will select all frames from the specified position till there is a blank frame

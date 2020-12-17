@@ -381,6 +381,13 @@ void Layer::setFrameSelected(int position, bool isSelected)
     }
 }
 
+void Layer::setFramesSelected(QList<int> keyPositions)
+{
+    for (int pos : keyPositions) {
+        setFrameSelected(pos, true);
+    }
+}
+
 void Layer::toggleFrameSelected(int position, bool allowMultiple)
 {
     bool wasSelected = isFrameSelected(position);
