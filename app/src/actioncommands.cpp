@@ -713,7 +713,7 @@ Status ActionCommands::insertNewKey(){
     return addNewKey();
 }
 
-void ActionCommands::removeSelected()
+void ActionCommands::removeSelectedFrames()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int selectedCount = currentLayer->selectedKeyFrameCount();
@@ -747,7 +747,7 @@ void ActionCommands::removeSelected()
     if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
 }
 
-void ActionCommands::reverseSelected()
+void ActionCommands::reverseSelectedFrames()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int selectedCount = currentLayer->selectedKeyFrameCount();

@@ -200,8 +200,8 @@
     <addaction name="actionIncrease_Frame_Exposure"/>
     <addaction name="actionDecrease_Frame_Exposure"/>
     <addaction name="separator"/>
-    <addaction name="actionReverse_selected_frames"/>
-    <addaction name="actionRemove_selected_frames"/>
+    <addaction name="actionReverse_Selected_Frames"/>
+    <addaction name="actionRemove_Selected_Frames"/>
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
@@ -1119,12 +1119,12 @@
     <string>Onion Skins</string>
    </property>
   </action>
-  <action name="actionReverse_selected_frames">
+  <action name="actionReverse_Selected_Frames">
    <property name="text">
     <string>Reverse Selected Frames</string>
    </property>
   </action>
-  <action name="actionRemove_selected_frames">
+  <action name="actionRemove_Selected_Frames">
    <property name="text">
     <string>Remove Selected Frames</string>
    </property>

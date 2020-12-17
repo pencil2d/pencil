@@ -68,8 +68,8 @@ public:
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
-    void removeSelected();
-    void reverseSelected();
+    void removeSelectedFrames();
+    void reverseSelectedFrames();
     void increaseFrameExposure();
     void decreaseFrameExposure();
 
