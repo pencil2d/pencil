@@ -976,6 +976,11 @@ void Editor::deselectAll()
     }
 
     select()->resetSelectionProperties();
+
+    if (layer->hasAnySelectedFrames()) {
+        layer->deselectAll();
+        emit updateTimeLine();
+    }
 }
 
 void Editor::updateFrame(int frameNumber)
