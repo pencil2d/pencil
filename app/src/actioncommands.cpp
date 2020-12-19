@@ -631,25 +631,12 @@ void ActionCommands::GotoPrevKeyFrame()
 
 Status ActionCommands::addNewKey()
 {
-    KeyFrame* key = mEditor->addNewKey();
-
-    SoundClip* clip = dynamic_cast<SoundClip*>(key);
-    if (clip)
-    {
-        QString strSoundFile = FileDialog::getOpenFileName(mParent, FileType::SOUND);
-
-        if (strSoundFile.isEmpty())
-        {
-            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
-            return Status::SAFE;
-        }
-        Status st = mEditor->sound()->loadSound(clip, strSoundFile);
-        if (!st.ok())
-        {
-            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
-            return Status::ERROR_LOAD_SOUND_FILE;
-        }
+    // Sound keyframes should not be empty, so we try to import a sound instead
+    if (mEditor->layers()->currentLayer()->type() == Layer::SOUND) {
+        return importSound();
     }
+
+    KeyFrame* key = mEditor->addNewKey();
 
     Camera* cam = dynamic_cast<Camera*>(key);
     if (cam)
