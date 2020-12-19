@@ -118,48 +118,10 @@ Status ActionCommands::importMovieVideo()
 
 Status ActionCommands::importMovieAudio()
 {
-    QString filePath = FileDialog::getOpenFileName(mParent, FileType::MOVIE);
-    if (filePath.isEmpty())
-    {
-        return Status::FAIL;
-    }
-
-    // Show a progress dialog, as this can take a while if you have lots of images.
-    QProgressDialog progressDialog(tr("Importing movie audio..."), tr("Abort"), 0, 100, mParent);
-    hideQuestionMark(progressDialog);
-    progressDialog.setWindowModality(Qt::WindowModal);
-    progressDialog.show();
-
-    MovieImporter importer(this);
-    importer.setCore(mEditor);
-
-    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
-
-    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
-        progressDialog.setValue(prog);
-        QApplication::processEvents();
-    }, [](QString progressMessage) {
-        Q_UNUSED(progressMessage)
-        // Not neeeded
-    }, []() {
-        return true;
-    });
-
-    if (!st.ok() && st != Status::CANCELED)
-    {
-        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
-        errorDialog.exec();
-    }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
-
-    progressDialog.setValue(100);
-    progressDialog.close();
-
-    return Status::OK;
+    return importSound(FileType::MOVIE);
 }
 
-Status ActionCommands::importSound()
+Status ActionCommands::importSound(FileType type)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr)
@@ -213,7 +175,7 @@ Status ActionCommands::importSound()
         return Status::SAFE;
     }
 
-    QString strSoundFile = FileDialog::getOpenFileName(mParent, FileType::SOUND);
+    QString strSoundFile = FileDialog::getOpenFileName(mParent, type);
 
     Status st = Status::FAIL;
 
@@ -635,7 +597,7 @@ Status ActionCommands::addNewKey()
 {
     // Sound keyframes should not be empty, so we try to import a sound instead
     if (mEditor->layers()->currentLayer()->type() == Layer::SOUND) {
-        return importSound();
+        return importSound(FileType::SOUND);
     }
 
     KeyFrame* key = mEditor->addNewKey();
