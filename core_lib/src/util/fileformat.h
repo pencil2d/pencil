@@ -14,8 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#ifndef PENCIL_FILE_FORMAT_H
-#define PENCIL_FILE_FORMAT_H
+#ifndef FILEFORMAT_H
+#define FILEFORMAT_H
 
 #include <QString>
 
@@ -78,5 +78,7 @@ bool removePFFTmpDirectory(const QString& dirName);
 QString uniqueString(int len);
 QString retrieveProjectNameFromTempPath(const QString& path);
 
+QString detectFormatByFileNameExtension(const QString& fileName);
+bool isMovieFormat(const QString& format);
 
-#endif
+#endif // FILEFORMAT_H

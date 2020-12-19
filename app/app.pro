@@ -63,7 +63,7 @@ HEADERS += \
     src/colorwheel.h \
     src/filedialog.h \
     src/displayoptionwidget.h \
-    src/pencilapplication.h \
+    src/pencil2d.h \
     src/exportmoviedialog.h \
     src/app_util.h \
     src/errordialog.h \
@@ -77,7 +77,9 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/presetdialog.h
+    src/presetdialog.h \
+    src/commandlineparser.h \
+    src/commandlineexporter.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -103,7 +105,7 @@ SOURCES += \
     src/colorwheel.cpp \
     src/filedialog.cpp \
     src/displayoptionwidget.cpp \
-    src/pencilapplication.cpp \
+    src/pencil2d.cpp \
     src/exportmoviedialog.cpp \
     src/errordialog.cpp \
     src/aboutdialog.cpp \
@@ -117,7 +119,9 @@ SOURCES += \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
     src/presetdialog.cpp \
-    src/app_util.cpp
+    src/app_util.cpp \
+    src/commandlineparser.cpp \
+    src/commandlineexporter.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \

@@ -67,7 +67,7 @@
          <item>
           <widget class="SpinSlider" name="sizeSlider">
            <property name="toolTip">
-            <string>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
+            <string>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
            </property>
           </widget>
          </item>
@@ -103,7 +103,7 @@
          <item>
           <widget class="SpinSlider" name="featherSlider">
            <property name="toolTip">
-            <string>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
+            <string>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
            </property>
           </widget>
          </item>
@@ -165,6 +165,12 @@
          </item>
          <item>
           <widget class="QSpinBox" name="toleranceSpinBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="maximum">
             <number>100</number>
            </property>
@@ -177,13 +183,19 @@
        </item>
        <item>
         <widget class="QCheckBox" name="useBezierBox">
+         <property name="toolTip">
+          <string>Use Bézier curves to create curved lines</string>
+         </property>
          <property name="text">
-          <string comment="Tool options">Bezier</string>
+          <string comment="Tool options">Bézier</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="usePressureBox">
+         <property name="toolTip">
+          <string>Vary strokes based on pressure when drawing on a tablet</string>
+         </property>
          <property name="text">
           <string comment="Tool options">Pressure</string>
          </property>
@@ -191,6 +203,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="useAABox">
+         <property name="toolTip">
+          <string>Use anti-aliasing to create smooth edges</string>
+         </property>
          <property name="text">
           <string comment="Brush AA">Anti-Aliasing</string>
          </property>
@@ -243,6 +258,9 @@
          </item>
          <item>
           <widget class="QComboBox" name="inpolLevelsCombo">
+           <property name="toolTip">
+            <string>Use stabilizer to interpolate strokes</string>
+           </property>
            <property name="currentText">
             <string comment="Stablizer level">None</string>
            </property>

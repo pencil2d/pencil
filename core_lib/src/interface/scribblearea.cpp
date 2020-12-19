@@ -248,7 +248,8 @@ void ScribbleArea::updateOnionSkinsAround(int frameNumber)
             if (cacheKeyIter != mPixmapCacheKeys.end())
             {
                 QPixmapCache::remove(cacheKeyIter.value());
-                mPixmapCacheKeys.remove(cacheKeyIter.key());
+                unsigned int key = cacheKeyIter.key();
+                mPixmapCacheKeys.remove(key);
             }
         }
     }
@@ -266,7 +267,8 @@ void ScribbleArea::updateOnionSkinsAround(int frameNumber)
             if (cacheKeyIter != mPixmapCacheKeys.end())
             {
                 QPixmapCache::remove(cacheKeyIter.value());
-                mPixmapCacheKeys.remove(cacheKeyIter.key());
+                unsigned int key = cacheKeyIter.key();
+                mPixmapCacheKeys.remove(key);
             }
         }
     }
@@ -317,6 +319,14 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
 void ScribbleArea::setAllDirty()
 {
     mCanvasPainter.resetLayerCache();
+}
+
+bool ScribbleArea::event(QEvent *event)
+{
+    if (event->type() == QEvent::WindowDeactivate) {
+        setPrevTool();
+    }
+    return QWidget::event(event);
 }
 
 /************************************************************************/
@@ -1440,6 +1450,7 @@ void ScribbleArea::applyTransformedSelection()
             VectorImage* vectorImage = currentVectorImage(layer);
             if (vectorImage == nullptr) { return; }
             vectorImage->applySelectionTransformation();
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), false);
         }
 
         setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());

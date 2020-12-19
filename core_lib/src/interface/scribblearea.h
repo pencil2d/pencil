@@ -150,6 +150,7 @@ public slots:
 
 
 protected:
+    bool event(QEvent *event) override;
     void tabletEvent(QTabletEvent*) override;
     void wheelEvent(QWheelEvent*) override;
     void mousePressEvent(QMouseEvent*) override;
