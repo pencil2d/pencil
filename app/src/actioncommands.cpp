@@ -203,6 +203,7 @@ Status ActionCommands::importSound()
 
     int currentFrame = mEditor->currentFrame();
 
+    // Adding key before getting file name just to make sure the keyframe can be insterted
     SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
 
     if (key == nullptr)
@@ -214,14 +215,13 @@ Status ActionCommands::importSound()
 
     QString strSoundFile = FileDialog::getOpenFileName(mParent, FileType::SOUND);
 
-    if (strSoundFile.isEmpty())
-    {
-        return Status::SAFE;
-    }
-
     Status st = Status::FAIL;
 
-    if (strSoundFile.endsWith(".wav"))
+    if (strSoundFile.isEmpty())
+    {
+        st = Status::CANCELED;
+    }
+    else if (strSoundFile.endsWith(".wav"))
     {
         st = mEditor->sound()->loadSound(key, strSoundFile);
     }
@@ -233,6 +233,8 @@ Status ActionCommands::importSound()
     if (!st.ok())
     {
         layer->removeKeyFrame(currentFrame);
+        mEditor->removeKey();
+        emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
     }
 
     return st;
