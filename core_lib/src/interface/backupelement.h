@@ -74,7 +74,7 @@ public:
     int layer = 0;
     int frame = 0;
     SoundClip clip;
-    QString fileName;
+    QString fileName, originalName;
 
     int type() override { return BackupElement::SOUND_MODIF; }
     void restore( Editor* ) override;
