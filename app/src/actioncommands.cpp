@@ -162,9 +162,6 @@ Status ActionCommands::importSound(FileType type)
     layer = mEditor->layers()->currentLayer();
     Q_ASSERT(layer->type() == Layer::SOUND);
 
-
-    int currentFrame = mEditor->currentFrame();
-
     // Adding key before getting file name just to make sure the keyframe can be insterted
     SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
 
@@ -194,7 +191,6 @@ Status ActionCommands::importSound(FileType type)
 
     if (!st.ok())
     {
-        layer->removeKeyFrame(currentFrame);
         mEditor->removeKey();
         emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
     }
