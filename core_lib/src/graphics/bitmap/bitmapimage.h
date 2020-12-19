@@ -31,11 +31,10 @@ public:
     BitmapImage(const QPoint& topLeft, const QImage& image);
     BitmapImage(const QPoint& topLeft, const QString& path);
 
-    ~BitmapImage();
+    ~BitmapImage() override;
     BitmapImage& operator=(const BitmapImage& a);
 
     BitmapImage* clone() override;
-    BitmapImage* clone(QRect rect);
     void loadFile() override;
     void unloadFile() override;
     bool isLoaded() override;
