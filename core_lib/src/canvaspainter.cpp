@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -722,8 +722,10 @@ void CanvasPainter::renderGrid(QPainter& painter)
 {
     if (mOptions.bGrid)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintGrid(painter);
+        painter.restore();
     }
 }
 
@@ -731,24 +733,33 @@ void CanvasPainter::renderOverlays(QPainter& painter)
 {
     if (mOptions.bCenter)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayCenter(painter);
+        painter.restore();
     }
     if (mOptions.bThirds)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayThirds(painter);
+        painter.restore();
     }
     if (mOptions.bGoldenRatio)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayGolden(painter);
+        painter.restore();
     }
     if (mOptions.bSafeArea)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlaySafeAreas(painter);
+        painter.restore();
     }
+
 }
 
 void CanvasPainter::paintCameraBorder(QPainter& painter)

@@ -1,6 +1,6 @@
 
-[![Build Status](https://travis-ci.org/pencil2d/pencil.svg?branch=master)](https://travis-ci.org/pencil2d/pencil)
-[![Build status](https://ci.appveyor.com/api/projects/status/65p3ccmohnkmim4x?svg=true)](https://ci.appveyor.com/project/chchwy/pencil2d)
+[![Build Status](https://travis-ci.com/pencil2d/pencil.svg?branch=master)](https://travis-ci.com/pencil2d/pencil)
+[![Build status](https://ci.appveyor.com/api/projects/status/hq8ry618wixilfmq/branch/master?svg=true)](https://ci.appveyor.com/project/chchwy/pencil2d/branch/master)
 
 # Pencil2D Animation
 

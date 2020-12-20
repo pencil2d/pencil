@@ -35,29 +35,33 @@ credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict, sco
 http = credentials.authorize(Http())
 drive_service = discovery.build('drive', 'v3', http=http)
 
+
+# delete the same day file if it exists
+filterSameDay = "name = '{}'".format(os.path.basename(file))
+response = drive_service.files().list(q=filterSameDay, spaces='drive').execute()
+
+#print(response.get('files'))
+for f in response.get('files'):
+  drive_service.files().delete(fileId=f.get('id')).execute()
+
 # upload nightly build
 file_metadata = { 'name' : os.path.basename(file), 'parents': [parent] }
-print(file_metadata)
+print("file_metadata:", file_metadata)
 
 media = MediaFileUpload(file)
 file = drive_service.files().create(body=file_metadata, media_body=media).execute()
 
-# delete files older than 90 days
+# delete files older than 120 days
 check_date = datetime.datetime.now() + datetime.timedelta(-120)
-filter = "name contains 'pencil2d'"
-filter += " and createdTime < '{}'".format(check_date.strftime("%Y-%m-%dT%H:%M:%S"))
+filter120daysOld = "name contains 'pencil2d'"
+filter120daysOld += " and createdTime < '{}'".format(check_date.strftime("%Y-%m-%dT%H:%M:%S"))
 
-print('filter=', filter)
-print('List files older than 120 days')
+print('filter=', filter120daysOld)
+print('Deleting files older than 120 days')
 
-response = drive_service.files().list(q=filter, spaces='drive').execute()
+response = drive_service.files().list(q=filter120daysOld, spaces='drive').execute()
 
 for f in response.get('files'):
-
-  s = f.get('name').split('.')[0]
-  s = s.split('-')
   print('-------')
-  print('Deleting...')
-  print("File ID:", f.get('id'))
-  print("File Name:", f.get('name'))
+  print('Deleting Name={}, ID={}'.format(f.get('name'), f.get('id')))
   drive_service.files().delete(fileId=f.get('id')).execute()

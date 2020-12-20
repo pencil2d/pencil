@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -148,17 +148,17 @@ QCursor PencilTool::cursor()
     {
         return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
     }
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
-void PencilTool::pointerPressEvent(PointerEvent*)
+void PencilTool::pointerPressEvent(PointerEvent *event)
 {
     mScribbleArea->setAllDirty();
 
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
-    startStroke();
+    startStroke(event->inputType());
 
     // note: why are we doing this on device press event?
     if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
@@ -169,7 +169,7 @@ void PencilTool::pointerPressEvent(PointerEvent*)
 
 void PencilTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
         drawStroke();
@@ -178,9 +178,9 @@ void PencilTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void PencilTool::pointerReleaseEvent(PointerEvent*)
+void PencilTool::pointerReleaseEvent(PointerEvent *event)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
+    if (event->inputType() != mCurrentInputType) return;
 
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)

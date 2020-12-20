@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -20,7 +20,6 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QObject>
-#include <QList>
 #include "pencilerror.h"
 #include "pencildef.h"
 
@@ -73,7 +72,7 @@ class Editor : public QObject
 
 public:
     explicit Editor(QObject* parent = nullptr);
-    virtual ~Editor();
+    ~Editor() override;
 
     bool init();
 
@@ -104,7 +103,7 @@ public:
     int fps();
     void setFps(int fps);
 
-    int  currentLayerIndex() { return mCurrentLayerIndex; }
+    int  currentLayerIndex() const { return mCurrentLayerIndex; }
     void setCurrentLayerIndex(int i);
 
     void scrubTo(int frameNumber);
@@ -117,14 +116,10 @@ public:
      */
     void setLayerVisibility(LayerVisibility visibility);
     LayerVisibility layerVisibility();
-    bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
-    bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
 
     qreal viewScaleInversed();
     void deselectAll();
     void selectAll();
-
-    QString workingDir() const;
 
 signals:
     void updateTimeLine();
@@ -134,6 +129,7 @@ signals:
 
     void changeThinLinesButton(bool);
     void currentFrameChanged(int n);
+    void fpsChanged(int fps);
 
     void needSave();
     void needDisplayInfo(const QString& title, const QString& body);
@@ -188,15 +184,15 @@ public: //slots
     void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
 
-    void toogleOnionSkinType();
+    void toggleOnionSkinType();
 
     void clearTemporary();
-    void addTemporaryDir(QTemporaryDir* const dir);
+    void addTemporaryDir(QTemporaryDir* dir);
 
     void settingUpdated(SETTING);
 
     void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
-    bool autoSaveNeverAskAgain() { return mAutosaveNeverAskAgain; }
+    bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
 
     void createNewBitmapLayer(const QString& name);
@@ -238,8 +234,6 @@ private:
     CanvasManager* mCanvasManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
-
-    bool mIsAltPressed = false;
 
     bool mIsAutosave = true;
     int mAutosaveNumber = 12;

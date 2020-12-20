@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -17,18 +17,15 @@ GNU General Public License for more details.
 
 #include "editor.h"
 
-#include <memory>
-#include <iostream>
 #include <QApplication>
 #include <QClipboard>
 #include <QTimer>
 #include <QImageReader>
-#include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QTemporaryDir>
 
 #include "object.h"
-#include "objectdata.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "camera.h"
@@ -53,9 +50,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "timeline.h"
 #include "util.h"
-#include "movieexporter.h"
-
-#define MIN(a,b) ((a)>(b)?(b):(a))
 
 
 static BitmapImage g_clipboardBitmapImage;
@@ -131,12 +125,15 @@ int Editor::fps()
 void Editor::setFps(int fps)
 {
     mPreferenceManager->set(SETTING::FPS, fps);
+    emit fpsChanged(fps);
 }
 
 void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged);
+    // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
+    connect(mLayerManager, &LayerManager::layerDeleted, this, &Editor::sanitizeBackupElementsAfterLayerDeletion);
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
@@ -347,7 +344,7 @@ void Editor::decreaseLayerVisibilityIndex()
     emit updateTimeLine();
 }
 
-void Editor::toogleOnionSkinType()
+void Editor::toggleOnionSkinType()
 {
     QString onionSkinState = mPreferenceManager->getString(SETTING::ONION_TYPE);
     QString newState;
@@ -390,14 +387,15 @@ Status Editor::setObject(Object* newObject)
 
     mObject.reset(newObject);
 
+    g_clipboardVectorImage.setObject(newObject);
+
+    updateObject();
+
+    // Make sure that object is fully loaded before calling managers.
     for (BaseManager* m : mAllManagers)
     {
         m->load(mObject.get());
     }
-
-    g_clipboardVectorImage.setObject(newObject);
-
-    updateObject();
 
     if (mViewManager)
     {
@@ -428,91 +426,6 @@ void Editor::updateObject()
     }
 
     emit updateLayerCount();
-}
-
-/* TODO: Export absolutely does not belong here, but due to the messed up project structure
- * there isn't really any better place atm. Once we do have a proper structure in place, this
- * should go somewhere else */
-bool Editor::exportSeqCLI(QString filePath, LayerCamera *cameraLayer, QString format, int width, int height, int startFrame, int endFrame, bool transparency, bool antialias)
-{
-    if (width < 0)
-    {
-        width = cameraLayer->getViewRect().width();
-    }
-    if (height < 0)
-    {
-        height = cameraLayer->getViewRect().height();
-    }
-    if (startFrame < 1)
-    {
-        startFrame = 1;
-    }
-    if (endFrame < -1)
-    {
-        endFrame = mLayerManager->animationLength();
-    }
-    if (endFrame < 0)
-    {
-        endFrame = mLayerManager->animationLength(false);
-    }
-
-    QSize exportSize = QSize(width, height);
-    mObject->exportFrames(startFrame,
-                          endFrame,
-                          cameraLayer,
-                          exportSize,
-                          filePath,
-                          format,
-                          transparency,
-                          false,
-                          "",
-                          antialias,
-                          nullptr,
-                          0);
-    return true;
-}
-
-bool Editor::exportMovieCLI(QString filePath, LayerCamera *cameraLayer, int width, int height, int startFrame, int endFrame)
-{
-    if (width < 0)
-    {
-        width = cameraLayer->getViewRect().width();
-    }
-    if (height < 0)
-    {
-        height = cameraLayer->getViewRect().height();
-    }
-    if (startFrame < 1)
-    {
-        startFrame = 1;
-    }
-    if (endFrame < -1)
-    {
-        endFrame = mLayerManager->animationLength();
-    }
-    if (endFrame < 0)
-    {
-        endFrame = mLayerManager->animationLength(false);
-    }
-
-    QSize exportSize = QSize(width, height);
-
-    ExportMovieDesc desc;
-    desc.strFileName = filePath;
-    desc.startFrame = startFrame;
-    desc.endFrame = endFrame;
-    desc.fps = playback()->fps();
-    desc.exportSize = exportSize;
-    desc.strCameraName = cameraLayer->name();
-
-    MovieExporter ex;
-    ex.run(object(), desc, [](float,float){}, [](float){}, [](QString){});
-    return true;
-}
-
-QString Editor::workingDir() const
-{
-    return mObject->workingDir();
 }
 
 bool Editor::importBitmapImage(QString filePath, int space)

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -99,7 +99,7 @@ bool PolylineTool::isActive()
 
 QCursor PolylineTool::cursor()
 {
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
 void PolylineTool::clearToolData()
@@ -273,5 +273,8 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         
         mEditor->backups()->bitmap(tr("Bitmap: Polyline"));
     }
+
+    mScribbleArea->setAllDirty();
+    mScribbleArea->clearBitmapBuffer();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

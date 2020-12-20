@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -87,6 +87,7 @@ void PreferenceManager::loadPrefs()
     set(SETTING::FPS,                      settings.value(SETTING_FPS,                    12).toInt());
     set(SETTING::FIELD_W,                  settings.value(SETTING_FIELD_W,                800).toInt());
     set(SETTING::FIELD_H,                  settings.value(SETTING_FIELD_H,                600).toInt());
+    set(SETTING::TIMECODE_TEXT,            settings.value(SETTING_TIMECODE_TEXT,          1).toInt());
 
     // Files
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              false).toBool());
@@ -282,6 +283,9 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::GRID_SIZE_W:
         settings.setValue(SETTING_GRID_SIZE_W, value);
+        break;
+    case SETTING::TIMECODE_TEXT:
+        settings.setValue(SETTING_TIMECODE_TEXT, value);
         break;
     case SETTING::GRID_SIZE_H:
         settings.setValue(SETTING_GRID_SIZE_H, value);

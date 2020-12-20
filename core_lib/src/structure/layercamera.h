@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -17,41 +17,17 @@ GNU General Public License for more details.
 #ifndef LAYERCAMERA_H
 #define LAYERCAMERA_H
 
-#include <QList>
-#include <QDialog>
+#include <QRect>
 #include "layer.h"
 
-class QLineEdit;
-class QSpinBox;
 class Camera;
-
-namespace Ui {
-    class CameraPropertiesDialog;
-}
-
-// TODO: move this to somewhere else
-class CameraPropertiesDialog : public QDialog
-{
-    Q_OBJECT
-public:
-    CameraPropertiesDialog(QString name, int width, int height);
-    ~CameraPropertiesDialog();
-    QString getName();
-    void setName(QString);
-    int getWidth();
-    void setWidth(int);
-    int getHeight();
-    void setHeight(int);
-private:
-    Ui::CameraPropertiesDialog* ui = nullptr;
-};
 
 class LayerCamera : public Layer
 {
     Q_OBJECT
 
 public:
-    LayerCamera(Object* object);
+    explicit LayerCamera(Object* object);
     LayerCamera(const int layerId, Object *object);
     ~LayerCamera() override;
 
@@ -63,10 +39,11 @@ public:
 
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
-    QTransform getViewAtFrame(int frameNumber);
+    QTransform getViewAtFrame(int frameNumber) const;
 
     QRect getViewRect();
-    QSize getViewSize();
+    QSize getViewSize() const;
+    void setViewRect(QRect newViewRect);
 
     void setViewRect(QRect newRect) {viewRect = newRect; }
 signals:

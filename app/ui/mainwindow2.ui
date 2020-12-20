@@ -157,6 +157,7 @@
      <addaction name="actionVisibilityAll"/>
     </widget>
     <addaction name="actionReset_View"/>
+    <addaction name="actionCenter_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
@@ -164,6 +165,7 @@
     <addaction name="separator"/>
     <addaction name="actionRotate_Clockwise"/>
     <addaction name="actionRotate_Anticlockwise"/>
+    <addaction name="actionReset_Rotation"/>
     <addaction name="separator"/>
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
@@ -205,17 +207,17 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionMove"/>
+    <addaction name="actionPencil"/>
+    <addaction name="actionEraser"/>
     <addaction name="actionSelect"/>
-    <addaction name="actionBrush"/>
-    <addaction name="actionPolyline"/>
-    <addaction name="actionSmudge"/>
+    <addaction name="actionMove"/>
     <addaction name="actionPen"/>
     <addaction name="actionHand"/>
-    <addaction name="actionPencil"/>
+    <addaction name="actionPolyline"/>
     <addaction name="actionBucket"/>
     <addaction name="actionEyedropper"/>
-    <addaction name="actionEraser"/>
+    <addaction name="actionBrush"/>
+    <addaction name="actionSmudge"/>
     <addaction name="separator"/>
     <addaction name="actionResetToolsDefault"/>
    </widget>
@@ -487,10 +489,13 @@
   </action>
   <action name="actionReset_View">
    <property name="text">
-    <string>Reset Zoom/Rotate</string>
+    <string>Reset</string>
    </property>
   </action>
   <action name="actionHorizontal_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
@@ -500,6 +505,9 @@
    </property>
   </action>
   <action name="actionVertical_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
@@ -1097,6 +1105,16 @@
    </property>
    <property name="text">
     <string>Lock Windows</string>
+   </property>
+  </action>
+  <action name="actionCenter_View">
+   <property name="text">
+    <string>Center</string>
+   </property>
+  </action>
+  <action name="actionReset_Rotation">
+   <property name="text">
+    <string>Reset Rotation</string>
    </property>
   </action>
  </widget>

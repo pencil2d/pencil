@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -232,7 +232,7 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
                 break;
             }
             default:
-                return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
+                return (type == SELECT) ? QCursor(QPixmap(":icons/cross.png"), 10, 10) : Qt::ArrowCursor;
                 break;
         }
         cursorPainter.end();

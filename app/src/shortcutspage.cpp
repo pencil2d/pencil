@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -345,9 +345,11 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_REDO, QObject::tr("Redo", "Shortcut")},
         {CMD_REMOVE_FRAME, QObject::tr("Remove Frame", "Shortcut")},
         {CMD_RESET_WINDOWS, QObject::tr("Reset Windows", "Shortcut")},
-        {CMD_RESET_ZOOM_ROTATE, QObject::tr("Reset Zoom/Rotate", "Shortcut")},
+        {CMD_RESET_ZOOM_ROTATE, QObject::tr("Reset View", "Shortcut")},
+        {CMD_CENTER_VIEW, QObject::tr("Center View", "Shortcut")},
         {CMD_ROTATE_ANTI_CLOCK, QObject::tr("Rotate Anticlockwise", "Shortcut")},
         {CMD_ROTATE_CLOCK, QObject::tr("Rotate Clockwise", "Shortcut")},
+        {CMD_RESET_ROTATION, QObject::tr("Reset Rotation", "Shortcut")},
         {CMD_SAVE_AS, QObject::tr("Save File As", "Shortcut")},
         {CMD_SAVE_FILE, QObject::tr("Save File", "Shortcut")},
         {CMD_SELECT_ALL, QObject::tr("Select All", "Shortcut")},

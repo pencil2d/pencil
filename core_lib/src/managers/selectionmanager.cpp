@@ -1,3 +1,19 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #include "selectionmanager.h"
 #include "editor.h"
 
@@ -45,18 +61,7 @@ void SelectionManager::resetSelectionTransformProperties()
 {
     mOffset = QPointF(0, 0);
     mRotatedAngle = 0;
-    mScaleX = 1;
-    mScaleY = 1;
     mSelectionTransform.reset();
-}
-
-/**
- * @brief SelectionManager::sync
- * Sync the selection properties
- */
-void SelectionManager::sync()
-{
-    setSelection(myTransformedSelectionRect());
 }
 
 void SelectionManager::updatePolygons()
@@ -262,14 +267,9 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     }
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const
+int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
-}
-
-bool SelectionManager::selectionMoved() const
-{
-    return !mSelectionTransform.isIdentity();
 }
 
 void SelectionManager::setSelection(QRectF rect, bool roundPixels)
@@ -296,21 +296,12 @@ void SelectionManager::calculateSelectionTransformation()
     mSelectionTransform.translate(centerPoints[0].x(), centerPoints[0].y());
     mSelectionTransform.rotate(mRotatedAngle);
 
-    if (mSelection.isValid())
+    if (mSelection.width() > 0 && mSelection.height() > 0) // can't divide by 0
     {
         qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
         qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
-
-        if (mScaleX < 0) {
-            scaleX = -scaleX;
-        }
-        if (mScaleY < 0) {
-            scaleY = -scaleY;
-        }
         mSelectionTransform.scale(scaleX, scaleY);
     }
-    mSelectionTransform.fromScale(mScaleX,mScaleY);
-
     mSelectionTransform.translate(-centerPoints[1].x(), -centerPoints[1].y());
 }
 
@@ -364,23 +355,32 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
+    if (flipVertical)
+    {
+        editor()->backup(tr("Flip selection vertically"));
+    }
+    else
+    {
+        editor()->backup(tr("Flip selection horizontally"));
+    }
+
+    qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
+    qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
     QVector<QPointF> centerPoints = calcSelectionCenterPoints();
 
     QTransform translate = QTransform::fromTranslate(centerPoints[0].x(), centerPoints[0].y());
     QTransform _translate = QTransform::fromTranslate(-centerPoints[1].x(), -centerPoints[1].y());
-
-    QTransform scale = QTransform::fromScale(-mScaleX, mScaleY);
+    QTransform scale = QTransform::fromScale(-scaleX, scaleY);
 
     if (flipVertical)
     {
-        scale = QTransform::fromScale(mScaleX, -mScaleY);
+        scale = QTransform::fromScale(scaleX, -scaleY);
     }
 
     // reset transformation for vector selections
     mSelectionTransform.reset();
     mSelectionTransform *= _translate * scale * translate;
-    mScaleX = scale.m11();
-    mScaleY = scale.m22();
+
     emit needPaintAndApply();
 }
 
@@ -401,18 +401,8 @@ void SelectionManager::resetSelectionProperties()
     mLastSelectionPolygonF = QPolygonF();
 
     mSomethingSelected = false;
-    mVectorSelection.clear();
+    vectorSelection.clear();
+
     emit selectionChanged();
-}
-
-void SelectionManager::addCurvesAndVerticesToVectorSelection(const QList<int> curves, const QList<VertexRef> vertices)
-{
-    mVectorSelection.add(curves);
-    mVectorSelection.add(vertices);
-}
-
-void SelectionManager::addCurvesToVectorSelection(const QList<int> curves)
-{
-    mVectorSelection.add(curves);
 }
 

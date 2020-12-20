@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -15,63 +15,10 @@ GNU General Public License for more details.
 
 */
 #include "layercamera.h"
-#include "ui_camerapropertiesdialog.h"
 
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QtDebug>
+#include <QSettings>
 #include "camera.h"
-#include <qsettings.h>
 #include "pencildef.h"
-
-CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) :
-    QDialog(),
-    ui(new Ui::CameraPropertiesDialog)
-{
-    ui->setupUi(this);
-
-    ui->nameBox->setText(name);
-    ui->widthBox->setValue(width);
-    ui->heightBox->setValue(height);
-}
-
-CameraPropertiesDialog::~CameraPropertiesDialog()
-{
-    delete ui;
-}
-
-QString CameraPropertiesDialog::getName()
-{
-    return ui->nameBox->text();
-}
-
-void CameraPropertiesDialog::setName(QString name)
-{
-    ui->nameBox->setText(name);
-}
-
-int CameraPropertiesDialog::getWidth()
-{
-    return ui->widthBox->value();
-}
-
-void CameraPropertiesDialog::setWidth(int width)
-{
-    ui->widthBox->setValue(width);
-}
-
-int CameraPropertiesDialog::getHeight()
-{
-    return ui->heightBox->value();
-}
-
-void CameraPropertiesDialog::setHeight(int height)
-{
-    ui->heightBox->setValue(height);
-}
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -98,7 +45,7 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
  */
 LayerCamera::LayerCamera(int id, Object* object) : Layer(object, Layer::CAMERA)
 {
-    setName(tr("Bitmap Layer"));
+    setName(tr("Camera Layer"));
     setId(id);
 }
 
@@ -122,7 +69,7 @@ Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
     return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-QTransform LayerCamera::getViewAtFrame(int frameNumber)
+QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 {
     if (keyFrameCount() == 0)
     {
@@ -228,9 +175,15 @@ QRect LayerCamera::getViewRect()
     return viewRect;
 }
 
-QSize LayerCamera::getViewSize()
+QSize LayerCamera::getViewSize() const
 {
     return viewRect.size();
+}
+
+void LayerCamera::setViewRect(QRect newViewRect)
+{
+    viewRect = newViewRect;
+    emit resolutionChanged();
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale)

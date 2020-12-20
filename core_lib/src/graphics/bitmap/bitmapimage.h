@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -68,8 +68,8 @@ public:
     void setPixel(QPoint p, QRgb color);
     void fillNonAlphaPixels(const QRgb color);
 
-    inline QRgb constScanLine(int x, int y) const;
-    inline void scanLine(int x, int y, QRgb color);
+    QRgb constScanLine(int x, int y) const;
+    void scanLine(int x, int y, QRgb color);
     void clear();
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
