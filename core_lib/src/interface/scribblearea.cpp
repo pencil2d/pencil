@@ -232,16 +232,6 @@ void ScribbleArea::updateAllFramesIfNeeded() {
     }
 }
 
-void ScribbleArea::updateSelectedFrames()
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    auto selectedFrames = layer->getSelectedFrames();
-
-    for (const int framePos : selectedFrames) {
-        updateFrame(framePos);
-    }
-}
-
 void ScribbleArea::updateOnionSkinsAround(int frameNumber)
 {
     if (frameNumber < 0) { return; }
