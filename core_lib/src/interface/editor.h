@@ -95,8 +95,6 @@ public:
     void setCurrentLayerIndex(int i);
 
     void scrubTo(int frameNumber);
-    void notifyFrameMoved();
-
 
     /**
      * @brief The visiblity value should match any of the VISIBILITY enum values
@@ -122,7 +120,6 @@ signals:
 
     void changeThinLinesButton(bool);
     void currentFrameChanged(int n);
-    void currentFrameRemoved(int n);
     void fpsChanged(int fps);
 
     void needSave();

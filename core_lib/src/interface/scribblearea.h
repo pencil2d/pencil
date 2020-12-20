@@ -50,7 +50,7 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-        friend class MoveTool;
+    friend class MoveTool;
     friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
@@ -196,6 +196,11 @@ public:
     QPixmap mTransCursImg;
 
 private:
+
+    /** Update cache for dirty keyframes
+     */
+    void updateDirtyFrames();
+
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);

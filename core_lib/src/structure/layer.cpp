@@ -199,6 +199,8 @@ bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
     pKeyFrame->setPos(position);
     mKeyFrames.insert(std::make_pair(position, pKeyFrame));
 
+    markFrameAsDirty(position);
+
     return true;
 }
 
@@ -208,6 +210,7 @@ bool Layer::removeKeyFrame(int position)
     if (frame)
     {
         mKeyFrames.erase(frame->pos());
+        markFrameAsDirty(position);
         delete frame;
     }
     return true;
@@ -253,6 +256,9 @@ bool Layer::swapKeyFrames(int position1, int position2)
 
     pFirstFrame->modification();
     pSecondFrame->modification();
+
+    markFrameAsDirty(position1);
+    markFrameAsDirty(position2);
 
     return true;
 }
@@ -448,6 +454,7 @@ bool Layer::moveSelectedFrames(int offset)
             if (selectedFrame != nullptr)
             {
                 mKeyFrames.erase(fromPos);
+                markFrameAsDirty(fromPos);
 
                 // Slide back every frame between fromPos to toPos
                 // to avoid having 2 frames in the same position
@@ -463,9 +470,11 @@ bool Layer::moveSelectedFrames(int offset)
                     if (frame != nullptr)
                     {
                         mKeyFrames.erase(framePosition);
+                        markFrameAsDirty(framePosition);
 
                         frame->setPos(targetPosition);
                         mKeyFrames.insert(std::make_pair(targetPosition, frame));
+                        markFrameAsDirty(targetPosition);
                     }
 
                     targetPosition = targetPosition - step;
@@ -478,6 +487,7 @@ bool Layer::moveSelectedFrames(int offset)
                 // Update the position of the selected frame
                 selectedFrame->setPos(toPos);
                 mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
+                markFrameAsDirty(toPos);
             }
             indexInSelection = indexInSelection + step;
         }

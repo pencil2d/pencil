@@ -119,6 +119,19 @@ public:
 
     bool isPaintable() const;
 
+    /** Returns a list of dirty frame positions */
+    QList<int> dirtyFrames() const { return mDirtyFrames; }
+
+    /** Mark the frame position as dirty.
+     *  Any operation causing the frame to be modified, added, updated or removed, should call this.
+     *  The mark is cleared on the next frame update operation.
+    */
+    void markFrameAsDirty(int frameNumber) { mDirtyFrames << frameNumber; }
+
+    /** Clear the list of dirty keyframes */
+    void clearDirtyFrames() { mDirtyFrames.clear(); }
+
+
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
@@ -138,6 +151,9 @@ private:
     //
     QList<int> mSelectedFrames_byLast; // Used to handle selection range (based on last selected
     QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
+
+    // Used for canvas cashing.
+    QList<int> mDirtyFrames;
 };
 
 #endif

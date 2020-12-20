@@ -823,15 +823,10 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             // If it is the case, we move the selected frames in the layer
                             mMovingFrames = true;
 
-                            // First we notify that cache should be updated for the current frames
-                            emit framesMoved();
                             int offset = frameNumber - mLastFrameNumber;
                             currentLayer->moveSelectedFrames(offset);
                             mEditor->layers()->notifyAnimationLengthChanged();
                             mEditor->updateCurrentFrame();
-
-                            // Frames has been moved, time to notify so the cache can be updated again
-                            emit framesMoved();
                         }
                         else if (mCanBoxSelect)
                         {

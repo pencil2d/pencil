@@ -1402,11 +1402,8 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
     connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateCurrentFrame);
-    connect(editor, &Editor::currentFrameRemoved, scribbleArea, &ScribbleArea::updateFrame);
 
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
-
-    connect(mTimeLine, &TimeLine::notifyFramesMoved, scribbleArea, &ScribbleArea::updateSelectedFrames);
 }
 
 void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)

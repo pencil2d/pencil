@@ -713,11 +713,9 @@ void ActionCommands::moveFrameForward()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        mEditor->notifyFrameMoved();
         if (layer->moveKeyFrame(mEditor->currentFrame(), 1))
         {
             mEditor->scrubForward();
-            mEditor->notifyFrameMoved();
         }
     }
 
@@ -729,11 +727,9 @@ void ActionCommands::moveFrameBackward()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        mEditor->notifyFrameMoved();
         if (layer->moveKeyFrame(mEditor->currentFrame(), -1))
         {
             mEditor->scrubBackward();
-            mEditor->notifyFrameMoved();
         }
     }
 }

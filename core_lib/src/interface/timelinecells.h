@@ -70,7 +70,6 @@ signals:
     void mouseMovedY(int);
     void lengthChanged(int);
     void offsetChanged(int);
-    void framesMoved();
 
 public slots:
     void updateContent();

@@ -175,6 +175,7 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 
 void ScribbleArea::updateCurrentFrame()
 {
+    updateDirtyFrames();
     if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA) {
         updateFrame(mEditor->currentFrame());
     } else {
@@ -185,6 +186,8 @@ void ScribbleArea::updateCurrentFrame()
 void ScribbleArea::updateFrame(int frame)
 {
     Q_ASSERT(frame >= 0);
+
+    updateDirtyFrames();
 
     int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
     if (frameNumber < 0) { return; }
@@ -200,6 +203,24 @@ void ScribbleArea::updateFrame(int frame)
     updateOnionSkinsAround(frame);
 
     update();
+}
+
+void ScribbleArea::updateDirtyFrames()
+{
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    for (int pos : mEditor->layers()->currentLayer()->dirtyFrames()) {
+
+        auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(pos));
+        if (cacheKeyIter != mPixmapCacheKeys.end())
+        {
+            QPixmapCache::remove(cacheKeyIter.value());
+            unsigned int key = cacheKeyIter.key();
+            mPixmapCacheKeys.remove(key);
+        }
+
+        updateOnionSkinsAround(pos);
+    }
+    currentLayer->clearDirtyFrames();
 }
 
 void ScribbleArea::updateAllFramesIfNeeded() {
