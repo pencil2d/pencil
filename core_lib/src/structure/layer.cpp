@@ -218,18 +218,20 @@ bool Layer::removeKeyFrame(int position)
 
 bool Layer::moveKeyFrame(int position, int offset)
 {
-    bool moved = false;
-    if (position == 1 && offset < 0) { return false; }
+    int newPos = position + offset;
+    if (position == 1 && newPos < 0) { return false; }
 
-    if (swapKeyFrames(position, position + offset)) {
-        moved = true;
-    } else {
-        setFrameSelected(position, true);
-        if (moveSelectedFrames(offset)) {
-            moved = true;
-        }
-        setFrameSelected(position + offset, false);
+    if (swapKeyFrames(position, newPos)) {
+        return true;
     }
+
+    setFrameSelected(position, true);
+    bool moved = false;
+    if (moveSelectedFrames(offset)) {
+        moved = true;
+    }
+    setFrameSelected(position + offset, false);
+
     return moved;
 }
 
