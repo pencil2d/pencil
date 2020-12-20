@@ -92,7 +92,6 @@ public:
      */
     void updateAllFramesIfNeeded();
     void updateFrame(int frame);
-    void updateOnionSkinsAround(int frame);
 
     void updateAllFrames();
     void updateAllVectorLayersAtCurrentFrame();
@@ -196,9 +195,11 @@ public:
 
 private:
 
-    /** Update cache for dirty keyframes
-     */
+    /** Update cache for dirty keyframes */
     void updateDirtyFrames();
+
+    /** Update onion skin cache around frame */
+    void updateOnionSkinsCacheAround(int frame);
 
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);

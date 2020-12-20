@@ -200,7 +200,7 @@ void ScribbleArea::updateFrame(int frame)
         mPixmapCacheKeys.remove(key);
     }
 
-    updateOnionSkinsAround(frame);
+    updateOnionSkinsCacheAround(frame);
 
     update();
 }
@@ -218,7 +218,7 @@ void ScribbleArea::updateDirtyFrames()
             mPixmapCacheKeys.remove(key);
         }
 
-        updateOnionSkinsAround(pos);
+        updateOnionSkinsCacheAround(pos);
     }
     currentLayer->clearDirtyFrames();
 }
@@ -232,7 +232,7 @@ void ScribbleArea::updateAllFramesIfNeeded() {
     }
 }
 
-void ScribbleArea::updateOnionSkinsAround(int frameNumber)
+void ScribbleArea::updateOnionSkinsCacheAround(int frameNumber)
 {
     if (frameNumber < 0) { return; }
 
