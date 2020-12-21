@@ -195,11 +195,11 @@ public:
 
 private:
 
-    /** Update cache for dirty keyframes */
-    void updateDirtyFrames();
+    /** remove cache for dirty keyframes */
+    void removeCacheForDirtyFrames();
 
-    /** Update onion skin cache around frame */
-    void updateOnionSkinsCacheAround(int frame);
+    /** remove onion skin cache around frame */
+    void removeOnionSkinsCacheAround(int frame);
 
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);

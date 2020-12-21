@@ -175,7 +175,7 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 
 void ScribbleArea::updateCurrentFrame()
 {
-    updateDirtyFrames();
+    removeCacheForDirtyFrames();
     if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA) {
         updateFrame(mEditor->currentFrame());
     } else {
@@ -187,7 +187,7 @@ void ScribbleArea::updateFrame(int frame)
 {
     Q_ASSERT(frame >= 0);
 
-    updateDirtyFrames();
+    removeCacheForDirtyFrames();
 
     int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
     if (frameNumber < 0) { return; }
@@ -200,12 +200,12 @@ void ScribbleArea::updateFrame(int frame)
         mPixmapCacheKeys.remove(key);
     }
 
-    updateOnionSkinsCacheAround(frame);
+    removeOnionSkinsCacheAround(frame);
 
     update();
 }
 
-void ScribbleArea::updateDirtyFrames()
+void ScribbleArea::removeCacheForDirtyFrames()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     for (int pos : mEditor->layers()->currentLayer()->dirtyFrames()) {
@@ -218,7 +218,7 @@ void ScribbleArea::updateDirtyFrames()
             mPixmapCacheKeys.remove(key);
         }
 
-        updateOnionSkinsCacheAround(pos);
+        removeOnionSkinsCacheAround(pos);
     }
     currentLayer->clearDirtyFrames();
 }
@@ -232,7 +232,7 @@ void ScribbleArea::updateAllFramesIfNeeded() {
     }
 }
 
-void ScribbleArea::updateOnionSkinsCacheAround(int frameNumber)
+void ScribbleArea::removeOnionSkinsCacheAround(int frameNumber)
 {
     if (frameNumber < 0) { return; }
 

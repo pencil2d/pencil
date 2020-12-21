@@ -152,7 +152,7 @@ private:
     QList<int> mSelectedFrames_byLast; // Used to handle selection range (based on last selected
     QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
 
-    // Used for canvas cashing.
+    // Used for clearing cache for modified frames.
     QList<int> mDirtyFrames;
 };
 
