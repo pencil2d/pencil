@@ -116,11 +116,6 @@ Status ActionCommands::importMovieVideo()
     return Status::OK;
 }
 
-Status ActionCommands::importMovieAudio()
-{
-    return importSound(FileType::MOVIE);
-}
-
 Status ActionCommands::importSound(FileType type)
 {
     Layer* layer = mEditor->layers()->currentLayer();

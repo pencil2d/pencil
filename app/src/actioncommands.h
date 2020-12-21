@@ -38,7 +38,6 @@ public:
 
     // file
     Status importMovieVideo();
-    Status importMovieAudio();
     Status importSound(FileType type);
     Status exportMovie(bool isGif = false);
     Status exportImageSequence();
