@@ -263,7 +263,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
 
     connect(ui->actionImport_Sound, &QAction::triggered, [=] { mCommands->importSound(FileType::SOUND); });
-    connect(ui->actionImport_MovieAudio, &QAction::triggered, mCommands, &ActionCommands::importMovieAudio);
+    connect(ui->actionImport_MovieAudio, &QAction::triggered, [=] { mCommands->importSound(FileType::MOVIE); });
 
     connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
