@@ -15,14 +15,13 @@ QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 CONFIG += qt precompile_header
 
 DESTDIR = ../bin
+MOC_DIR = .moc
+OBJECTS_DIR = .obj
+UI_DIR = .ui
 
 RESOURCES += \
     data/app.qrc \
     ../translations/translations.qrc
-
-MOC_DIR = .moc
-OBJECTS_DIR = .obj
-UI_DIR = .ui
 
 INCLUDEPATH += \
     src \
@@ -151,8 +150,6 @@ FORMS += \
     ui/toolboxwidget.ui \
     ui/presetdialog.ui
 
-
-
 GIT {
     DEFINES += GIT_EXISTS \
     "GIT_CURRENT_SHA1=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ rev-parse HEAD)" \
@@ -208,26 +205,14 @@ INCLUDEPATH += $$PWD/../core_lib/src
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release
 
-win32-msvc*{
-  LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
-  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
+win32-msvc* {
+    LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
 }
 
-
-# From 5.14, MinGW windows builds are not build with debug-release flag
-versionAtLeast(QT_VERSION, 5.14) {
-
-    win32-g++{
-      LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
-      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
-    }
-
-} else {
-
-    win32-g++{
-      LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
-      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
-    }
+win32-g++{
+    LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
 }
 
 # --- mac os and linux
