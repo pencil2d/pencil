@@ -219,7 +219,7 @@ bool Layer::removeKeyFrame(int position)
 bool Layer::moveKeyFrame(int position, int offset)
 {
     int newPos = position + offset;
-    if (position == 1 && newPos < 0) { return false; }
+    if (newPos < 1) { return false; }
 
     if (swapKeyFrames(position, newPos)) {
         return true;
@@ -230,7 +230,7 @@ bool Layer::moveKeyFrame(int position, int offset)
     if (moveSelectedFrames(offset)) {
         moved = true;
     }
-    setFrameSelected(position + offset, false);
+    setFrameSelected(newPos, false);
 
     return moved;
 }
