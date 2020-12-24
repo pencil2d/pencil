@@ -175,10 +175,10 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 
 void ScribbleArea::updateCurrentFrame()
 {
-    removeCacheForDirtyFrames();
     if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA) {
         updateFrame(mEditor->currentFrame());
     } else {
+        removeCacheForDirtyFrames();
         update();
     }
 }
