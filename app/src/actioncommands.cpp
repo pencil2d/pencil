@@ -713,15 +713,9 @@ void ActionCommands::moveFrameForward()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        auto selectedFrames = layer->getSelectedFrames();
-        layer->deselectAll();
         if (layer->moveKeyFrame(mEditor->currentFrame(), 1))
         {
             mEditor->scrubForward();
-        }
-
-        for (int pos : selectedFrames) {
-            layer->setFrameSelected(pos, true);
         }
     }
 
@@ -733,15 +727,9 @@ void ActionCommands::moveFrameBackward()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        auto selectedFrames = layer->getSelectedFrames();
-        layer->deselectAll();
         if (layer->moveKeyFrame(mEditor->currentFrame(), -1))
         {
             mEditor->scrubBackward();
-        }
-
-        for (int pos : selectedFrames) {
-            layer->setFrameSelected(pos, true);
         }
     }
 }

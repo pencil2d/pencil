@@ -221,6 +221,11 @@ bool Layer::moveKeyFrame(int position, int offset)
     int newPos = position + offset;
     if (newPos < 1) { return false; }
 
+    auto listOfFramesLast = mSelectedFrames_byLast;
+    auto listOfFramesPos = mSelectedFrames_byPosition;
+    mSelectedFrames_byLast.clear();
+    mSelectedFrames_byPosition.clear();
+
     if (swapKeyFrames(position, newPos)) {
         return true;
     }
@@ -231,6 +236,9 @@ bool Layer::moveKeyFrame(int position, int offset)
         moved = true;
     }
     setFrameSelected(newPos, false);
+
+    mSelectedFrames_byLast = listOfFramesLast;
+    mSelectedFrames_byPosition = listOfFramesPos;
 
     return moved;
 }
