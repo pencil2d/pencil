@@ -50,7 +50,7 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-        friend class MoveTool;
+    friend class MoveTool;
     friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
@@ -92,7 +92,7 @@ public:
      */
     void updateAllFramesIfNeeded();
     void updateFrame(int frame);
-    void updateOnionSkinsAround(int frame);
+
     void updateAllFrames();
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frameNumber);
@@ -194,6 +194,13 @@ public:
     QPixmap mTransCursImg;
 
 private:
+
+    /** remove cache for dirty keyframes */
+    void removeCacheForDirtyFrames();
+
+    /** remove onion skin cache around frame */
+    void removeOnionSkinsCacheAround(int frame);
+
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);

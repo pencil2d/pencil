@@ -96,7 +96,6 @@ public:
 
     void scrubTo(int frameNumber);
 
-
     /**
      * @brief The visiblity value should match any of the VISIBILITY enum values
      */

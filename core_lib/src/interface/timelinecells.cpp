@@ -887,6 +887,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
+
     emit mouseMovedY(0);
     mTimeLine->updateContent();
 }

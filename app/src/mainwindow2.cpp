@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -110,7 +110,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->scribbleArea->init();
 
     mEditor->setScribbleArea(ui->scribbleArea);
-    makeConnections(mEditor, ui->scribbleArea);
 
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
@@ -220,6 +219,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget( Qt::RightDockWidgetArea, mPreview );
     */
 
+    makeConnections(mEditor, ui->scribbleArea);
     makeConnections(mEditor);
     makeConnections(mEditor, mTimeLine);
     makeConnections(mEditor, mColorBox);
