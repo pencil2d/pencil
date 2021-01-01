@@ -766,7 +766,8 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
 
     mEditor->view()->setCanvasSize(size());
 
-    invalidateAllCache();
+    invalidateCacheForFrame(mEditor->currentFrame());
+    invalidateLayerPixmapCache();
 }
 
 void ScribbleArea::showLayerNotVisibleWarning()
