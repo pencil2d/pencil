@@ -229,7 +229,7 @@ void ScribbleArea::invalidateOnionSkinsCacheAround(int frameNumber)
 
         for(int i = 1; i <= mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM); i++)
         {
-            onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, isOnionAbsolute);
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isOnionAbsolute);
             if (onionFrameNumber < 0) break;
 
             invalidateCacheForFrame(onionFrameNumber);
@@ -242,7 +242,7 @@ void ScribbleArea::invalidateOnionSkinsCacheAround(int frameNumber)
 
         for(int i = 1; i <= mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM); i++)
         {
-            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isOnionAbsolute);
+            onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, isOnionAbsolute);
             if (onionFrameNumber < 0) break;
 
             invalidateCacheForFrame(onionFrameNumber);
@@ -765,6 +765,7 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
     mCanvas.fill(Qt::transparent);
 
     mEditor->view()->setCanvasSize(size());
+
     invalidateAllCache();
 }
 
