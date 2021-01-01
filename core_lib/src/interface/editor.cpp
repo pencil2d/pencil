@@ -164,7 +164,7 @@ void Editor::settingUpdated(SETTING setting)
         mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
         break;
     case SETTING::ONION_TYPE:
-        mScribbleArea->onOnionSkinChanged();
+        mScribbleArea->onOnionSkinTypeChanged();
         emit updateTimeLine();
         break;
     case SETTING::FRAME_POOL_SIZE:
@@ -923,10 +923,8 @@ void Editor::setCurrentLayerIndex(int i)
 void Editor::scrubTo(int frame)
 {
     if (frame < 1) { frame = 1; }
-    int oldFrame = mFrame;
     mFrame = frame;
 
-    emit scrubbed(oldFrame);
     emit scrubbed(frame);
 
     // FIXME: should not emit Timeline update here.

@@ -86,11 +86,14 @@ public:
     QRectF getCameraRect();
     QPointF getCentralPoint();
 
-    /** Update current frame, calls update() behind the scene */
+    /** Update current frame.
+     *  calls update() behind the scene and update cache if necessary */
     void updateCurrentFrame();
+    /** Update frame.
+     * calls update() behind the scene and update cache if necessary */
     void updateFrame(int frame);
 
-    /** Frame was scrubbed, update relevant cache */
+    /** Frame scrubbed, update relevant cache */
     void onScrubbed(int frameNumber);
 
     /** Playstate changed, update relevant cache */
@@ -103,8 +106,7 @@ public:
     void onFrameModified(int frameNumber);
 
     /** Current frame modified, invalidate current frame cache if any.
-     * Convenient function that does the same as onFrameModified
-    */
+     * Convenient function that does the same as onFrameModified */
     void onCurrentFrameModified();
 
     /** Layer changed, invalidate all cache */
@@ -113,8 +115,9 @@ public:
     /** Selection was changed, keep cache */
     void onSelectionChanged();
 
-    /** Onion skin changed, invalidate all cache */
-    void onOnionSkinChanged();
+    /** Onion skin type changed, all frames will be affected.
+     * All cache will be invalidated */
+    void onOnionSkinTypeChanged();
 
     /** Object updated, invalidate all cache */
     void onObjectChanged();
@@ -207,16 +210,20 @@ public:
 
 private:
 
-    /** Invalidate the layer pixmap cache */
+    /** Invalidate the layer pixmap cache.
+     * Call this in most situations where the layer rendering order is affected
+     * Peviously known as setAllDirty, now only called on frame modifications
+    */
     void invalidateLayerPixmapCache();
 
     /** Invalidate cache for the given frame */
     void invalidateCacheForFrame(int frameNumber);
 
-    /** Invalidate all cache */
+    /** Invalidate all cache.
+     * call this if you're certain that the change you've made affects all frames */
     void invalidateAllCache();
 
-    /** invalidate cache for dirty keyframes */
+    /** invalidate cache for dirty keyframes. */
     void invalidateCacheForDirtyFrames();
 
     /** invalidate onion skin cache around frame */

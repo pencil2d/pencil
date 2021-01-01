@@ -112,6 +112,8 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_NEXT_FRAMES_NUM:
     case SETTING::ONION_MIN_OPACITY:
     case SETTING::ONION_MAX_OPACITY:
+        invalidateAllCache();
+        break;
     case SETTING::ANTIALIAS:
     case SETTING::GRID:
     case SETTING::GRID_SIZE_W:
@@ -132,7 +134,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::INVISIBLE_LINES:
     case SETTING::OUTLINES:
     case SETTING::ONION_TYPE:
-        invalidateAllCache();
+        invalidateLayerPixmapCache();
         break;
     case SETTING::QUICK_SIZING:
         mQuickSizing = mPrefs->isOn(SETTING::QUICK_SIZING);
@@ -160,13 +162,13 @@ void ScribbleArea::updateToolCursor()
 void ScribbleArea::setCurveSmoothing(int newSmoothingLevel)
 {
     mCurveSmoothingLevel = newSmoothingLevel / 20.0;
-    invalidateAllCache();
+    invalidateLayerPixmapCache();
 }
 
 void ScribbleArea::setEffect(SETTING e, bool isOn)
 {
     mPrefs->set(e, isOn);
-    invalidateAllCache();
+    invalidateLayerPixmapCache();
 }
 
 /************************************************************************************/
@@ -268,15 +270,18 @@ void ScribbleArea::invalidateCacheForFrame(int frameNumber)
     }
 }
 
+void ScribbleArea::invalidateLayerPixmapCache()
+{
+    mCanvasPainter.resetLayerCache();
+    update();
+}
+
 void ScribbleArea::onPlayStateChanged()
 {
-    bool stoppedPlaying = !mEditor->playback()->isPlaying();
     int currentFrame = mEditor->currentFrame();
-    if (stoppedPlaying &&
-       (mPrefs->isOn(SETTING::PREV_ONION) ||
-        mPrefs->isOn(SETTING::NEXT_ONION))) {
-        invalidateOnionSkinsCacheAround(currentFrame);
-        invalidateCacheForFrame(currentFrame);
+    if (mPrefs->isOn(SETTING::PREV_ONION) ||
+        mPrefs->isOn(SETTING::NEXT_ONION)) {
+        invalidateLayerPixmapCache();
     }
 
     updateFrame(currentFrame);
@@ -286,7 +291,7 @@ void ScribbleArea::onScrubbed(int frameNumber)
 {
     invalidateCacheForDirtyFrames();
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateOnionSkinsCacheAround(frameNumber);
+        invalidateLayerPixmapCache();
     }
     updateFrame(frameNumber);
 }
@@ -308,18 +313,13 @@ void ScribbleArea::onFrameModified(int frameNumber)
 
 void ScribbleArea::onViewChanged()
 {
-    invalidateAllCache();
+    invalidateLayerPixmapCache();
     updateCurrentFrame();
 }
 
 void ScribbleArea::onLayerChanged()
 {
-    if (mPrefs->isOn(SETTING::PREV_ONION) ||
-        mPrefs->isOn(SETTING::NEXT_ONION) ||
-        getLayerVisibility() != LayerVisibility::ALL)
-    {
-        invalidateAllCache();
-    }
+    invalidateLayerPixmapCache();
     updateCurrentFrame();
 }
 
@@ -328,7 +328,7 @@ void ScribbleArea::onSelectionChanged()
     updateCurrentFrame();
 }
 
-void ScribbleArea::onOnionSkinChanged()
+void ScribbleArea::onOnionSkinTypeChanged()
 {
     invalidateAllCache();
     updateCurrentFrame();
@@ -348,11 +348,6 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     layer->setModified(frameNumber, true);
 
     onFrameModified(frameNumber);
-}
-
-void ScribbleArea::invalidateLayerPixmapCache()
-{
-    mCanvasPainter.resetLayerCache();
 }
 
 bool ScribbleArea::event(QEvent *event)
@@ -1035,6 +1030,10 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                 drawCanvas(mEditor->currentFrame(), event->rect());
                 mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
                 //qDebug() << "Repaint canvas!";
+            } else {
+                // Current frame cache may be valid but we may still have to draw other frames eg. onion skin from cache.
+                prepCanvas(mEditor->currentFrame(), event->rect());
+                mCanvasPainter.paintCached();
             }
         }
     }
