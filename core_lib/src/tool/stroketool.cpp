@@ -98,6 +98,8 @@ void StrokeTool::endStroke()
     mStrokePressures.clear();
 
     enableCoalescing();
+
+    mScribbleArea->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
 }
 
 void StrokeTool::drawStroke()

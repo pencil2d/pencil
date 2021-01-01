@@ -164,7 +164,7 @@ void Editor::settingUpdated(SETTING setting)
         mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
         break;
     case SETTING::ONION_TYPE:
-        mScribbleArea->updateAllFrames();
+        mScribbleArea->onOnionSkinTypeChanged();
         emit updateTimeLine();
         break;
     case SETTING::FRAME_POOL_SIZE:
@@ -590,7 +590,7 @@ void Editor::paste()
             select()->setSelection(vectorImage->getSelectionRect(), false);
         }
     }
-    mScribbleArea->updateCurrentFrame();
+    emit frameModified(mFrame);
 }
 
 void Editor::flipSelection(bool flipVertical)
@@ -712,10 +712,7 @@ void Editor::updateObject()
     mAutosaveCounter = 0;
     mAutosaveNeverAskAgain = false;
 
-    if (mScribbleArea)
-    {
-        mScribbleArea->updateAllFrames();
-    }
+    emit objectChanged();
 
     if (mPreferenceManager)
     {
@@ -907,11 +904,6 @@ void Editor::updateFrame(int frameNumber)
     mScribbleArea->updateFrame(frameNumber);
 }
 
-void Editor::updateFrameAndVector(int frameNumber)
-{
-    mScribbleArea->updateAllVectorLayersAt(frameNumber);
-}
-
 void Editor::updateCurrentFrame()
 {
     mScribbleArea->updateCurrentFrame();
@@ -931,11 +923,9 @@ void Editor::setCurrentLayerIndex(int i)
 void Editor::scrubTo(int frame)
 {
     if (frame < 1) { frame = 1; }
-    int oldFrame = mFrame;
     mFrame = frame;
 
-    emit currentFrameChanged(oldFrame);
-    emit currentFrameChanged(frame);
+    emit scrubbed(frame);
 
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
@@ -1059,7 +1049,7 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
 {
     Layer* layer = mObject->getLayer(layerNumber);
     if (layer != nullptr) layer->switchVisibility();
-    mScribbleArea->updateAllFrames();
+    mScribbleArea->onLayerChanged();
 
     emit updateTimeLine();
 }
@@ -1076,7 +1066,7 @@ void Editor::swapLayers(int i, int j)
         layers()->setCurrentLayer(j - 1);
     }
     emit updateTimeLine();
-    mScribbleArea->updateAllFrames();
+    mScribbleArea->onLayerChanged();
 }
 
 Status Editor::pegBarAlignment(QStringList layers)
