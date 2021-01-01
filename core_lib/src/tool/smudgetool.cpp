@@ -145,7 +145,6 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
     {
         if (layer->type() == Layer::BITMAP)
         {
-            mScribbleArea->setAllDirty();
             startStroke(event->inputType());
             mLastBrushPoint = getCurrentPoint();
         }
@@ -231,7 +230,6 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
         }
     }
     mScribbleArea->update();
-    mScribbleArea->setAllDirty();
 }
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
@@ -249,7 +247,6 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
         {
             drawStroke();
             mScribbleArea->paintBitmapBuffer();
-            mScribbleArea->setAllDirty();
             mScribbleArea->clearBitmapBuffer();
             endStroke();
         }

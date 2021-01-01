@@ -86,19 +86,41 @@ public:
     QRectF getCameraRect();
     QPointF getCentralPoint();
 
+    /** Update current frame, calls update() behind the scene */
     void updateCurrentFrame();
-
-    /** Check if the cache should be invalidated for all frames since the last paint operation
-     */
-    void updateAllFramesIfNeeded();
     void updateFrame(int frame);
 
-    void updateAllFrames();
-    void updateAllVectorLayersAtCurrentFrame();
-    void updateAllVectorLayersAt(int frameNumber);
+    /** Frame was scrubbed, update relevant cache */
+    void onScrubbed(int frameNumber);
 
+    /** Playstate changed, update relevant cache */
+    void onPlayStateChanged();
+
+    /** View updated, invalidate all cache */
+    void onViewChanged();
+
+    /** Frame modified, invalidate cache for frame if any */
+    void onFrameModified(int frameNumber);
+
+    /** Current frame modified, invalidate current frame cache if any.
+     * Convenient function that does the same as onFrameModified
+    */
+    void onCurrentFrameModified();
+
+    /** Layer changed, invalidate all cache */
+    void onLayerChanged();
+
+    /** Selection was changed, keep cache */
+    void onSelectionChanged();
+
+    /** Onion skin changed, invalidate all cache */
+    void onOnionSkinChanged();
+
+    /** Object updated, invalidate all cache */
+    void onObjectChanged();
+
+    /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
-    void setAllDirty();
 
     void flipSelection(bool flipVertical);
 
@@ -115,20 +137,10 @@ public:
     bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
     bool isTemporaryTool() const { return mInstantTool; }
 
-    /** Check if the content of the canvas depends on the active layer.
-      *
-      * Currently layers are only affected by Onion skins are displayed only for the active layer, and the opacity of all layers
-      * is affected when relative layer visiblity is active.
-      *
-      * @return True if the active layer could potentially influence the content of the canvas. False otherwise.
-      */
-    bool isAffectedByActiveLayer() const;
-
     void keyEvent(QKeyEvent* event);
     void keyEventForSelection(QKeyEvent* event);
 
 signals:
-    void modification(int);
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
 
@@ -195,11 +207,20 @@ public:
 
 private:
 
-    /** remove cache for dirty keyframes */
-    void removeCacheForDirtyFrames();
+    /** Invalidate the layer pixmap cache */
+    void invalidateLayerPixmapCache();
 
-    /** remove onion skin cache around frame */
-    void removeOnionSkinsCacheAround(int frame);
+    /** Invalidate cache for the given frame */
+    void invalidateCacheForFrame(int frameNumber);
+
+    /** Invalidate all cache */
+    void invalidateAllCache();
+
+    /** invalidate cache for dirty keyframes */
+    void invalidateCacheForDirtyFrames();
+
+    /** invalidate onion skin cache around frame */
+    void invalidateOnionSkinsCacheAround(int frame);
 
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
@@ -219,6 +240,7 @@ private:
 
     Editor* mEditor = nullptr;
 
+
     bool mIsSimplified = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
@@ -229,6 +251,8 @@ private:
     qreal mCurveSmoothingLevel = 0.0;
     bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
+
+    bool mCurrentCacheInvalid = false;
 
 private:
     bool mKeyboardInUse = false;
