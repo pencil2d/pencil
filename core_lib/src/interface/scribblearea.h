@@ -214,8 +214,8 @@ public:
 private:
 
     /** Invalidate the layer pixmap cache.
-     * Call this in most situations where the layer rendering order is affected
-     * Peviously known as setAllDirty, now only called on frame modifications
+     * Call this in most situations where the layer rendering order is affected.
+     * Peviously known as setAllDirty.
     */
     void invalidateLayerPixmapCache();
 
