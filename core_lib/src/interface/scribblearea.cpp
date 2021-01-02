@@ -319,30 +319,26 @@ void ScribbleArea::onFrameModified(int frameNumber)
 void ScribbleArea::onViewChanged()
 {
     invalidateLayerPixmapCache();
-    updateCurrentFrame();
 }
 
 void ScribbleArea::onLayerChanged()
 {
     invalidateLayerPixmapCache();
-    updateCurrentFrame();
 }
 
 void ScribbleArea::onSelectionChanged()
 {
-    updateCurrentFrame();
+    update();
 }
 
 void ScribbleArea::onOnionSkinTypeChanged()
 {
     invalidateLayerPixmapCache();
-    updateCurrentFrame();
 }
 
 void ScribbleArea::onObjectChanged()
 {
     invalidateAllCache();
-    updateCurrentFrame();
 }
 
 void ScribbleArea::setModified(int layerNumber, int frameNumber)
