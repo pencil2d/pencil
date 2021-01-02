@@ -1668,7 +1668,7 @@ void ScribbleArea::deleteSelection()
             Q_CHECK_PTR(bitmapImage);
             bitmapImage->clear(selectMan->mySelectionRect());
         }
-        invalidateAllCache();
+        setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
     }
 }
 

@@ -102,7 +102,7 @@ public:
     /** Playstate changed, update relevant cache */
     void onPlayStateChanged();
 
-    /** View updated, invalidate all cache */
+    /** View updated, invalidate relevant cache */
     void onViewChanged();
 
     /** Frame modified, invalidate cache for frame if any */
@@ -112,7 +112,7 @@ public:
      * Convenient function that does the same as onFrameModified */
     void onCurrentFrameModified();
 
-    /** Layer changed, invalidate all cache */
+    /** Layer changed, invalidate relevant cache */
     void onLayerChanged();
 
     /** Selection was changed, keep cache */
