@@ -121,6 +121,9 @@ signals:
     /** This should be emitted after the object has been changed */
     void objectChanged();
 
+    /** This should be emitted after moving one or more frames */
+    void framesMoved();
+
     void updateTimeLine();
     void updateLayerCount();
     void updateBackup();

@@ -96,6 +96,9 @@ public:
     /** Frame scrubbed, update relevant cache */
     void onScrubbed(int frameNumber);
 
+    /** Frames moved, update cache for those frames */
+    void onFramesMoved();
+
     /** Playstate changed, update relevant cache */
     void onPlayStateChanged();
 

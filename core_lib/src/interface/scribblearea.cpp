@@ -189,10 +189,7 @@ void ScribbleArea::updateFrame(int frame)
         if (frameNumber < 0) { return; }
 
         invalidateCacheForFrame(frameNumber);
-        invalidateCacheForDirtyFrames();
         mCurrentCacheInvalid = false;
-    } else {
-        invalidateCacheForDirtyFrames();
     }
 
     update();
@@ -289,11 +286,19 @@ void ScribbleArea::onPlayStateChanged()
 
 void ScribbleArea::onScrubbed(int frameNumber)
 {
-    invalidateCacheForDirtyFrames();
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
         invalidateLayerPixmapCache();
     }
     updateFrame(frameNumber);
+}
+
+void ScribbleArea::onFramesMoved()
+{
+    invalidateCacheForDirtyFrames();
+    if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
+        invalidateLayerPixmapCache();
+    }
+    update();
 }
 
 void ScribbleArea::onCurrentFrameModified()
