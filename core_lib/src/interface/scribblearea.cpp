@@ -335,7 +335,7 @@ void ScribbleArea::onSelectionChanged()
 
 void ScribbleArea::onOnionSkinTypeChanged()
 {
-    invalidateAllCache();
+    invalidateLayerPixmapCache();
     updateCurrentFrame();
 }
 
@@ -1569,21 +1569,24 @@ void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
 {
     mLayerVisibility = visibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
-    invalidateAllCache();
+
+    invalidateLayerPixmapCache();
 }
 
 void ScribbleArea::increaseLayerVisibilityIndex()
 {
     ++mLayerVisibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
-    invalidateAllCache();
+
+    invalidateLayerPixmapCache();
 }
 
 void ScribbleArea::decreaseLayerVisibilityIndex()
 {
     --mLayerVisibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
-    invalidateAllCache();
+
+    invalidateLayerPixmapCache();
 }
 
 /************************************************************************************/
