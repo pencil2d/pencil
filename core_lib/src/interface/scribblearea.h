@@ -93,13 +93,13 @@ public:
      * calls update() behind the scene and update cache if necessary */
     void updateFrame(int frame);
 
-    /** Frame scrubbed, update relevant cache */
+    /** Frame scrubbed, invalidate relevant cache */
     void onScrubbed(int frameNumber);
 
-    /** Frames moved, update cache for those frames */
+    /** Frames moved, invalidate cache for affected frames */
     void onFramesMoved();
 
-    /** Playstate changed, update relevant cache */
+    /** Playstate changed, invalidate relevant cache */
     void onPlayStateChanged();
 
     /** View updated, invalidate relevant cache */
