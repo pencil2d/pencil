@@ -1730,8 +1730,7 @@ void ScribbleArea::paletteColorChanged(QColor color)
         }
     }
 
-    mCurrentCacheInvalid = true;
-    updateCurrentFrame();
+    invalidateAllCache();
 }
 
 void ScribbleArea::floodFillError(int errorType)
