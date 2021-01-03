@@ -512,7 +512,7 @@ void Editor::copy()
 
     if (!canCopy) { return; }
 
-    backup("Copy");
+    backup(tr("Copy"));
 
     if (currentLayer->hasAnySelectedFrames() && !select()->somethingSelected()) {
         clipboards()->copySelectedFrames(currentLayer);
