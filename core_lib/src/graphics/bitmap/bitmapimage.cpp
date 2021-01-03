@@ -84,7 +84,7 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
     return *this;
 }
 
-BitmapImage* BitmapImage::clone()
+BitmapImage* BitmapImage::clone() const
 {
     return new BitmapImage(*this);
 }
@@ -107,7 +107,7 @@ void BitmapImage::unloadFile()
     }
 }
 
-bool BitmapImage::isLoaded()
+bool BitmapImage::isLoaded() const
 {
     return (mImage != nullptr);
 }

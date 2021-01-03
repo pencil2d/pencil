@@ -43,7 +43,7 @@ SoundClip& SoundClip::operator=(const SoundClip& a) {
     return *this;
 }
 
-SoundClip* SoundClip::clone()
+SoundClip* SoundClip::clone() const
 {
     return new SoundClip(*this);
 }

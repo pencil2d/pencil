@@ -13,22 +13,22 @@ class ClipboardManager: QObject
 {
     Q_OBJECT
 public:
-    ClipboardManager(Editor* editor);
-    ~ClipboardManager();
+    explicit ClipboardManager(Editor* editor);
+    ~ClipboardManager() override;
 
     /** Update latest locally stored clipboard if needed
      * @param layer
-     * @return true the clipboard has been updated otherwhise false
+     * @return true if the clipboard has been updated, otherwise false
      */
     bool updateIfNeeded(const Layer* layer);
 
     bool canCopy(int keyPos, const Layer* layer) const;
-    bool canPaste(const Layer* layer);
+    bool canPaste(const Layer* layer) const;
 
-    void setFromSystemClipboard(const QClipboard* clipboard, Layer* layer);
+    void setFromSystemClipboard(const QClipboard* clipboard, const Layer* layer);
 
     /** Copy bitmap image to clipboard and save its latest position
-     *  Additionally only a part of the image will be copied if a rect is given
+     *  Additionally only a part of the image will be copied if a non-empty rect is given
      * @param image
      * @param selectionRect
      */
@@ -38,7 +38,7 @@ public:
      *  this operation does not yet support partial selections
      * @param vectorImage
      */
-    void copyVectorImage(VectorImage* vectorImage);
+    void copyVectorImage(const VectorImage* vectorImage);
 
     /** Copy selected keyframes of any given layer and remember its type.
      * @param currentLayer

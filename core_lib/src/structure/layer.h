@@ -90,7 +90,7 @@ public:
 
     int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
     int selectedKeyFrameCount() const { return mSelectedFrames_byPosition.count(); }
-    bool hasAnySelectedFrames() const { return mSelectedFrames_byLast.count() > 0 && mSelectedFrames_byPosition.count() > 0; }
+    bool hasAnySelectedFrames() const { return !mSelectedFrames_byLast.empty() && !mSelectedFrames_byPosition.empty(); }
 
     bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);
