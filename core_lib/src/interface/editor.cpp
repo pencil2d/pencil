@@ -516,15 +516,22 @@ void Editor::copy()
 
     if (currentLayer->hasAnySelectedFrames() && !select()->somethingSelected()) {
         clipboards()->copySelectedFrames(currentLayer);
+        return;
     }
-    else if (currentLayer->type() == Layer::BITMAP) {
+
+    if (currentLayer->type() == Layer::BITMAP) {
         BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getLastKeyFrameAtPosition(currentFrame()));
         clipboards()->copyBitmapImage(bitmapImage, select()->mySelectionRect());
+        return;
     }
-    else if (currentLayer->type() == Layer::VECTOR) {
+
+    if (currentLayer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<VectorImage*>(currentLayer->getLastKeyFrameAtPosition(currentFrame()));
         clipboards()->copyVectorImage(vectorImage);
+        return;
     }
+
+    Q_UNREACHABLE();
 }
 
 void Editor::copyAndCut()
@@ -539,8 +546,10 @@ void Editor::copyAndCut()
         }
         layers()->currentLayerChanged(currentLayerIndex());
         emit updateTimeLine();
+        return;
     }
-    else if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
+
+    if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
         mScribbleArea->deleteSelection();
         deselectAll();
     }
@@ -550,7 +559,7 @@ void Editor::pasteToCanvas(BitmapImage* bitmapImage, int frameNumber)
 {
     Layer* currentLayer = layers()->currentLayer();
 
-    if (currentLayer->type() != Layer::BITMAP) { return; }
+    Q_ASSERT(currentLayer->type() == Layer::BITMAP);
 
     if (select()->somethingSelected())
     {
@@ -578,9 +587,9 @@ void Editor::pasteToCanvas(BitmapImage* bitmapImage, int frameNumber)
 
 void Editor::pasteToCanvas(VectorImage* vectorImage, int frameNumber)
 {
-    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+    Layer* currentLayer = layers()->currentLayer();
 
-    if (currentLayer->type() != Layer::VECTOR) { return; }
+    Q_ASSERT(currentLayer->type() == Layer::VECTOR);
 
     deselectAll();
     mScribbleArea->handleDrawingOnEmptyFrame();
@@ -594,17 +603,14 @@ void Editor::pasteToFrames()
 {
     auto clipboardFrames = clipboards()->getClipboardFrames();
     Q_ASSERT(!clipboardFrames.empty());
-    Layer* currentLayer = mObject->getLayer(layers()->currentLayerIndex());
+    Layer* currentLayer = layers()->currentLayer();
 
     currentLayer->deselectAll();
 
-    int offset = 0;
-    int prevPos = clipboardFrames.cbegin()->first;
+    int newPositionOffset = mFrame - clipboardFrames.cbegin()->first;
     for (auto it = clipboardFrames.cbegin(); it != clipboardFrames.cend(); ++it)
     {
-        offset += qAbs(it->first - prevPos);
-        prevPos = it->first;
-        int newPosition = mFrame + offset;
+        int newPosition = it->first + newPositionOffset;
 
         KeyFrame* keyFrameNewPos = currentLayer->getKeyFrameWhichCovers(newPosition);
 
@@ -615,18 +621,16 @@ void Editor::pasteToFrames()
             currentLayer->moveSelectedFrames(1);
         }
 
-        // It's a bug if the keyframe is nullpr at this point...
+        // It's a bug if the keyframe is nullptr at this point...
         Q_ASSERT(it->second != nullptr);
 
+        // TODO: undo/redo implementation
+        KeyFrame* keyClone = it->second->clone();
+        currentLayer->addKeyFrame(newPosition, keyClone);
         if (currentLayer->type() == Layer::SOUND)
         {
-            SoundClip* key = static_cast<SoundClip*>(it->second)->clone();
-            currentLayer->addKeyFrame(newPosition, key);
-            sound()->loadSound(key, key->fileName());
-        } else {
-            // TODO: undo/redo implementation
-            KeyFrame* keyClone = it->second->clone();
-            currentLayer->addKeyFrame(newPosition, keyClone);
+            auto soundClip = static_cast<SoundClip*>(keyClone);
+            sound()->loadSound(soundClip, soundClip->fileName());
         }
         currentLayer->deselectAll();
     }
@@ -674,7 +678,6 @@ bool Editor::canPaste() const
 void Editor::flipSelection(bool flipVertical)
 {
     mScribbleArea->flipSelection(flipVertical);
-
 }
 
 void Editor::clipboardChanged(const QClipboard* clipboard)

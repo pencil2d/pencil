@@ -21,16 +21,16 @@ GNU General Public License for more details.
 #include <memory>
 #include <QObject>
 #include "pencilerror.h"
-#include "vectorimage.h"
-#include "bitmapimage.h"
 #include "pencildef.h"
 
-
+class QClipboard;
 class QDragEnterEvent;
 class QDropEvent;
 class QTemporaryDir;
 class Object;
 class KeyFrame;
+class BitmapImage;
+class VectorImage;
 class LayerCamera;
 class MainWindow2;
 class BaseManager;

@@ -53,7 +53,7 @@ VectorImage& VectorImage::operator=(const VectorImage& a) {
     return *this;
 }
 
-VectorImage* VectorImage::clone()
+VectorImage* VectorImage::clone() const
 {
     return new VectorImage(*this);
 }

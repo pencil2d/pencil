@@ -664,39 +664,40 @@ void ActionCommands::increaseFrameExposure() {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
 
-    auto selectedFramess = currentLayer->selectedKeyFramesPositions();
-    currentLayer->deselectAll();
     if(currentPosition < currentLayer->getMaxKeyFramePosition())
     {
+        auto selectedFrames = currentLayer->selectedKeyFramesPositions();
+
+        currentLayer->deselectAll();
         currentLayer->selectNextBatchOfConnectedFrames(currentPosition);
         currentLayer->moveSelectedFrames(1);
         currentLayer->deselectAll();
         mEditor->updateTimeLine();
         mEditor->updateCurrentFrame();
-    }
 
-    currentLayer->setFramesSelected(selectedFramess);
+        currentLayer->setFramesSelected(selectedFrames);
+    }
 }
 
 void ActionCommands::decreaseFrameExposure() {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
-    int nextPos = currentLayer->getNextKeyFramePosition(currentPosition);
 
-    auto selectedFramess = currentLayer->selectedKeyFramesPositions();
-
-    currentLayer->deselectAll();
     if (currentPosition < currentLayer->getMaxKeyFramePosition() &&
         currentLayer->getKeyFrameWhichCovers(currentPosition+1) == nullptr )
     {
+        int nextPos = currentLayer->getNextKeyFramePosition(currentPosition);
+        auto selectedFrames = currentLayer->selectedKeyFramesPositions();
+
+        currentLayer->deselectAll();
         currentLayer->setFrameSelected(nextPos, true);
         currentLayer->moveSelectedFrames(-1);
         currentLayer->deselectAll();
         mEditor->updateTimeLine();
         mEditor->updateCurrentFrame();
-    }
 
-    currentLayer->setFramesSelected(selectedFramess);
+        currentLayer->setFramesSelected(selectedFrames);
+    }
 }
 
 Status ActionCommands::insertNewKey(){
@@ -757,13 +758,11 @@ void ActionCommands::reverseSelectedFrames()
     }
 
     QList<int> selectedIndexes = currentLayer->selectedKeyFramesPositions();
-    int swapEnd = selectedIndexes.count()-1;
 
-    for (int swapBegin = 0; swapBegin < swapEnd; swapBegin++) {
+    for (int swapBegin = 0, swapEnd = selectedIndexes.count()-1; swapBegin < swapEnd; swapBegin++, swapEnd--) {
         int oldPos = selectedIndexes[swapBegin];
         int newPos = selectedIndexes[swapEnd];
         currentLayer->swapKeyFrames(oldPos, newPos);
-        swapEnd--;
     }
     mEditor->layers()->notifyLayerChanged(currentLayer);
 

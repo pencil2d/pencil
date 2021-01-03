@@ -34,10 +34,10 @@ public:
     ~BitmapImage() override;
     BitmapImage& operator=(const BitmapImage& a);
 
-    BitmapImage* clone() override;
+    BitmapImage* clone() const override;
     void loadFile() override;
     void unloadFile() override;
-    bool isLoaded() override;
+    bool isLoaded() const override;
     quint64 memoryUsage() override;
 
     void paintImage(QPainter& painter);
