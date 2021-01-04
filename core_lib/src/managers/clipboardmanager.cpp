@@ -50,31 +50,6 @@ bool ClipboardManager::updateIfNeeded(const Layer* layer)
     return true;
 }
 
-bool ClipboardManager::canCopy(int keyPos, const Layer* layer) const
-{
-    KeyFrame* keyframe = layer->getLastKeyFrameAtPosition(keyPos);
-
-    switch (layer->type())
-    {
-    case Layer::SOUND:
-    case Layer::CAMERA:
-        return canCopyFrames(layer);
-    case Layer::BITMAP:
-        return canCopyBitmapImage(static_cast<BitmapImage*>(keyframe)) || canCopyFrames(layer);
-    case Layer::VECTOR:
-        return canCopyVectorImage(static_cast<VectorImage*>(keyframe)) || canCopyFrames(layer);
-    default:
-        Q_UNREACHABLE();
-    }
-}
-
-bool ClipboardManager::canPaste(const Layer* layer) const
-{
-    return (layer->type() == mFramesType && !mFrames.empty()) ||
-           (layer->type() == Layer::BITMAP && mBitmapImage.isLoaded()) ||
-           (layer->type() == Layer::VECTOR && mVectorImage.isValid());
-}
-
 void ClipboardManager::setFromSystemClipboard(const QClipboard *clipboard, const Layer* layer)
 {
     QImage image = clipboard->image(QClipboard::Clipboard);
@@ -124,22 +99,6 @@ void ClipboardManager::copySelectedFrames(const Layer* currentLayer) {
         mFrames.insert(std::make_pair(keyframe->pos(), keyframe->clone()));
     }
     mFramesType = currentLayer->type();
-}
-
-bool ClipboardManager::canCopyFrames(const Layer* layer) const
-{
-    Q_ASSERT(layer != nullptr);
-    return layer->hasAnySelectedFrames();
-}
-
-bool ClipboardManager::canCopyBitmapImage(BitmapImage* bitmapImage) const
-{
-    return bitmapImage != nullptr && bitmapImage->isLoaded() && !bitmapImage->bounds().isEmpty();
-}
-
-bool ClipboardManager::canCopyVectorImage(const VectorImage* vectorImage) const
-{
-    return vectorImage != nullptr && vectorImage->isValid();
 }
 
 void ClipboardManager::resetStates()

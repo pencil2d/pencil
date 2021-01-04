@@ -47,6 +47,7 @@ class ScribbleArea;
 class TimeLine;
 class BackupElement;
 class ActiveFramePool;
+class Layer;
 
 enum class SETTING;
 
@@ -217,6 +218,13 @@ private:
     void pasteToCanvas(BitmapImage* bitmapImage, int frameNumber);
     void pasteToCanvas(VectorImage* vectorImage, int frameNumber);
     void pasteToFrames();
+
+    bool canCopy(int keyPos, const Layer* layer) const;
+    bool canPaste(const Layer* layer) const;
+
+    bool canCopyBitmapImage(BitmapImage* bitmapImage) const;
+    bool canCopyFrames(const Layer* layer) const;
+    bool canCopyVectorImage(const VectorImage* vectorImage) const;
 
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;

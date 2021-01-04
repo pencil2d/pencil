@@ -510,9 +510,7 @@ void Editor::copy()
 
     Q_ASSERT(currentLayer != nullptr);
 
-    bool canCopy = clipboards()->canCopy(mFrame, currentLayer);
-
-    if (!canCopy) { return; }
+    if (!canCopy(mFrame, currentLayer)) { return; }
 
     backup(tr("Copy"));
 
@@ -644,7 +642,7 @@ void Editor::paste()
 
     Q_ASSERT(currentLayer != nullptr);
 
-    if (!clipboards()->canPaste(currentLayer)) { return; }
+    if (!canPaste(currentLayer)) { return; }
 
     if (clipboards()->getClipboardFrames().empty()) {
 
@@ -670,12 +668,12 @@ void Editor::paste()
 
 bool Editor::canCopy() const
 {
-    return clipboards()->canCopy(mFrame, layers()->currentLayer());
+    return canCopy(mFrame, layers()->currentLayer());
 }
 
 bool Editor::canPaste() const
 {
-    return clipboards()->canPaste(layers()->currentLayer());
+    return canPaste(layers()->currentLayer());
 }
 
 void Editor::flipSelection(bool flipVertical)
@@ -689,12 +687,12 @@ void Editor::clipboardChanged(const QClipboard* clipboard)
 
     clipboards()->setFromSystemClipboard(clipboard, layer);
 
-    bool canCopy = clipboards()->canCopy(mFrame, layer);
-    bool canPaste = clipboards()->canPaste(layer);
+    bool canCopyState = canCopy(mFrame, layer);
+    bool canPasteState = canPaste(layer);
 
-    emit canCopyChanged(canCopy);
-    emit canCutChanged(canCopy);
-    emit canPasteChanged(canPaste);
+    emit canCopyChanged(canCopyState);
+    emit canCutChanged(canCopyState);
+    emit canPasteChanged(canPasteState);
 }
 
 void Editor::setLayerVisibility(LayerVisibility visibility) {
@@ -1223,4 +1221,47 @@ void Editor::prepareSave()
 void Editor::clearCurrentFrame()
 {
     mScribbleArea->clearImage();
+}
+
+bool Editor::canCopy(int keyPos, const Layer* layer) const
+{
+    KeyFrame* keyframe = layer->getLastKeyFrameAtPosition(keyPos);
+
+    switch (layer->type())
+    {
+    case Layer::SOUND:
+    case Layer::CAMERA:
+        return canCopyFrames(layer);
+    case Layer::BITMAP:
+        return canCopyBitmapImage(static_cast<BitmapImage*>(keyframe)) || canCopyFrames(layer);
+    case Layer::VECTOR:
+        return canCopyVectorImage(static_cast<VectorImage*>(keyframe)) || canCopyFrames(layer);
+    default:
+        Q_UNREACHABLE();
+    }
+}
+
+bool Editor::canPaste(const Layer* layer) const
+{
+    auto clipboardMan = clipboards();
+    auto layerType = layer->type();
+    return (layerType == clipboardMan->framesTypeChanged(layer) && !clipboardMan->anyFramesInClipbord()) ||
+           (layerType == Layer::BITMAP && clipboardMan->getBitmapClipboard().isLoaded()) ||
+           (layerType == Layer::VECTOR && clipboardMan->getVectorClipboard().isValid());
+}
+
+bool Editor::canCopyFrames(const Layer* layer) const
+{
+    Q_ASSERT(layer != nullptr);
+    return layer->hasAnySelectedFrames();
+}
+
+bool Editor::canCopyBitmapImage(BitmapImage* bitmapImage) const
+{
+    return bitmapImage != nullptr && bitmapImage->isLoaded() && !bitmapImage->bounds().isEmpty();
+}
+
+bool Editor::canCopyVectorImage(const VectorImage* vectorImage) const
+{
+    return vectorImage != nullptr && vectorImage->isValid();
 }

@@ -45,9 +45,6 @@ public:
      */
     bool updateIfNeeded(const Layer* layer);
 
-    bool canCopy(int keyPos, const Layer* layer) const;
-    bool canPaste(const Layer* layer) const;
-
     void setFromSystemClipboard(const QClipboard* clipboard, const Layer* layer);
 
     /** Copy bitmap image to clipboard and save its latest position
@@ -72,11 +69,10 @@ public:
     VectorImage getVectorClipboard() const { return mVectorImage; }
     std::map<int, KeyFrame*> getClipboardFrames() { return mFrames; }
 
-private:
+    bool framesTypeChanged(const Layer* layer) const { return layer->type() != mFramesType; }
+    bool anyFramesInClipbord() const { return !mFrames.empty(); }
 
-    bool canCopyBitmapImage(BitmapImage* bitmapImage) const;
-    bool canCopyFrames(const Layer* layer) const;
-    bool canCopyVectorImage(const VectorImage* vectorImage) const;
+private:
 
     /** This should be called before copying and updating the clipboard to ensure no previous state is saved */
     void resetStates();
