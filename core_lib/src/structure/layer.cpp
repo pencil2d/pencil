@@ -219,6 +219,12 @@ bool Layer::removeKeyFrame(int position)
     return true;
 }
 
+void Layer::removeFromSelectionList(int position)
+{
+    mSelectedFrames_byLast.removeAll(position);
+    mSelectedFrames_byPosition.removeAll(position);
+}
+
 bool Layer::moveKeyFrame(int position, int offset)
 {
     int newPos = position + offset;
