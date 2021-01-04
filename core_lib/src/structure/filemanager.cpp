@@ -45,7 +45,7 @@ FileManager::FileManager(QObject* parent) : QObject(parent)
     srand(static_cast<uint>(time(nullptr)));
 }
 
-Object* FileManager::load(QString sFileName)
+Object* FileManager::load(const QString& sFileName)
 {
     DebugDetails dd;
     dd << QString("File name: ").append(sFileName);
@@ -203,7 +203,7 @@ bool FileManager::isOldForamt(const QString& fileName) const
     return !(MiniZ::isZip(fileName));
 }
 
-Status FileManager::save(const Object* object, QString sFileName)
+Status FileManager::save(const Object* object, const QString& sFileName)
 {
     DebugDetails dd;
     dd << __FUNCTION__;
@@ -211,8 +211,14 @@ Status FileManager::save(const Object* object, QString sFileName)
 
     if (object == nullptr)
     {
-        dd << "object parameter is null";
+        dd << "Object parameter is null";
         return Status(Status::INVALID_ARGUMENT, dd);
+    }
+    if (sFileName.isEmpty()) {
+        dd << "File name is empty";
+        return Status(Status::INVALID_ARGUMENT, dd,
+                      tr("Invalid Save Path"),
+                      tr("The path is empty."));
     }
 
     const int totalCount = object->totalKeyFrameCount();

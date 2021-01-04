@@ -39,12 +39,6 @@ PresetDialog::~PresetDialog()
     delete ui;
 }
 
-QString PresetDialog::getPreset()
-{
-    int index = getPresetIndex();
-    return PresetDialog::getPresetPath(index);
-}
-
 int PresetDialog::getPresetIndex()
 {
     bool ok = true;
