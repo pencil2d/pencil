@@ -33,7 +33,7 @@ GNU General Public License for more details.
     QObject::tr("Pencil2D Project") + " (*.pclx);;" + QObject::tr("Legacy Pencil2D Project") + " (*.pcl)"
 
 #define PFF_MOVIE_EXT \
-    QObject::tr("Movie formats") + "*.avi *.mpg *.mpeg *.mov *.mp4 *.mkv *.ogv *.swf *.flv *.webm *.wmv);;" \
+    QObject::tr("Movie formats") + "(*.avi *.mpg *.mpeg *.mov *.mp4 *.mkv *.ogv *.swf *.flv *.webm *.wmv);;" \
         "AVI(*.avi);;MPEG(*.mpg *.mpeg);;MOV(*.mov);;MP4(*.mp4);;MKV(*.mkv);;OGV(*.ogv)" \
         ";;SWF(*.swf);;FLV(*.flv);;WEBM(*.webm);;WMV(*.wmv)"
 
