@@ -178,6 +178,7 @@ void ScribbleArea::updateCurrentFrame()
     if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA) {
         updateFrame(mEditor->currentFrame());
     } else {
+        removeCacheForDirtyFrames();
         update();
     }
 }
@@ -185,6 +186,8 @@ void ScribbleArea::updateCurrentFrame()
 void ScribbleArea::updateFrame(int frame)
 {
     Q_ASSERT(frame >= 0);
+
+    removeCacheForDirtyFrames();
 
     int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
     if (frameNumber < 0) { return; }
@@ -197,9 +200,27 @@ void ScribbleArea::updateFrame(int frame)
         mPixmapCacheKeys.remove(key);
     }
 
-    updateOnionSkinsAround(frame);
+    removeOnionSkinsCacheAround(frame);
 
     update();
+}
+
+void ScribbleArea::removeCacheForDirtyFrames()
+{
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    for (int pos : mEditor->layers()->currentLayer()->dirtyFrames()) {
+
+        auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(pos));
+        if (cacheKeyIter != mPixmapCacheKeys.end())
+        {
+            QPixmapCache::remove(cacheKeyIter.value());
+            unsigned int key = cacheKeyIter.key();
+            mPixmapCacheKeys.remove(key);
+        }
+
+        removeOnionSkinsCacheAround(pos);
+    }
+    currentLayer->clearDirtyFrames();
 }
 
 void ScribbleArea::updateAllFramesIfNeeded() {
@@ -211,7 +232,7 @@ void ScribbleArea::updateAllFramesIfNeeded() {
     }
 }
 
-void ScribbleArea::updateOnionSkinsAround(int frameNumber)
+void ScribbleArea::removeOnionSkinsCacheAround(int frameNumber)
 {
     if (frameNumber < 0) { return; }
 

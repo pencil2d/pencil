@@ -186,16 +186,16 @@ TEST_CASE("Layer::firstKeyFramePosition()")
 {
     Object* obj = new Object;
     
-    SECTION("Key at 1")
+    SECTION("At least one key")
     {        
         Layer* layer = obj->addNewBitmapLayer();
         REQUIRE(layer->firstKeyFramePosition() == 1);
         
         layer->addNewKeyFrameAt(99);
-        REQUIRE(layer->firstKeyFramePosition() == 1);
+        REQUIRE(layer->firstKeyFramePosition() != 0);
 
-        layer->moveKeyFrameForward(1);
-        REQUIRE(layer->firstKeyFramePosition() == 1); // always has a key at 1
+        layer->moveKeyFrame(1, 1);
+        REQUIRE(layer->firstKeyFramePosition() != 0); // one keyframe has to exist
     }
 
     delete obj;

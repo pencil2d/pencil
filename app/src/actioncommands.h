@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include "pencilerror.h"
+#include "filetype.h"
 
 class Editor;
 class QWidget;
@@ -37,8 +38,7 @@ public:
 
     // file
     Status importMovieVideo();
-    Status importMovieAudio();
-    Status importSound();
+    Status importSound(FileType type);
     Status exportMovie(bool isGif = false);
     Status exportImageSequence();
     Status exportImage();

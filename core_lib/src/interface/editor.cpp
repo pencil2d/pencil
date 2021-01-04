@@ -296,6 +296,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
                     element->frame = backupFrame;
                     element->undoText = undoText;
                     element->fileName = clip->fileName();
+                    element->originalName = clip->soundClipName();
                     mBackupList.append(element);
                     mBackupIndex++;
                 }
@@ -401,18 +402,17 @@ void Editor::restoreKey()
         frame = lastBackupSoundElement->frame;
 
         strSoundFile = lastBackupSoundElement->fileName;
+        if (strSoundFile.isEmpty()) return;
         KeyFrame* key = addKeyFrame(layerIndex, frame);
         SoundClip* clip = dynamic_cast<SoundClip*>(key);
         if (clip)
         {
-            if (strSoundFile.isEmpty())
+            Status st = sound()->loadSound(clip, lastBackupSoundElement->fileName);
+            clip->setSoundClipName(lastBackupSoundElement->originalName);
+            if (!st.ok())
             {
-                return;
-            }
-            else
-            {
-                //Status st = sound()->pasteSound(clip, strSoundFile);
-                //Q_ASSERT(st.ok());
+                removeKey();
+                emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
             }
         }
     }
@@ -445,6 +445,7 @@ void Editor::undo()
             }
         }
 
+        qDebug() << "Undo" << mBackupIndex;
         mBackupList[mBackupIndex]->restore(this);
         mBackupIndex--;
         mScribbleArea->cancelTransformedSelection();

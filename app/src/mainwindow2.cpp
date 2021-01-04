@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -111,7 +111,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->scribbleArea->init();
 
     mEditor->setScribbleArea(ui->scribbleArea);
-    makeConnections(mEditor, ui->scribbleArea);
 
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
@@ -221,6 +220,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget( Qt::RightDockWidgetArea, mPreview );
     */
 
+    makeConnections(mEditor, ui->scribbleArea);
     makeConnections(mEditor);
     makeConnections(mEditor, mTimeLine);
     makeConnections(mEditor, mColorBox);
@@ -263,8 +263,8 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
 
-    connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
-    connect(ui->actionImport_MovieAudio, &QAction::triggered, mCommands, &ActionCommands::importMovieAudio);
+    connect(ui->actionImport_Sound, &QAction::triggered, [=] { mCommands->importSound(FileType::SOUND); });
+    connect(ui->actionImport_MovieAudio, &QAction::triggered, [=] { mCommands->importSound(FileType::MOVIE); });
 
     connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
