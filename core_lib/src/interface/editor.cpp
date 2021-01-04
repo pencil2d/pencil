@@ -644,11 +644,11 @@ void Editor::paste()
 
     Q_ASSERT(currentLayer != nullptr);
 
+    if (!clipboards()->canPaste(currentLayer)) { return; }
+
     if (clipboards()->getClipboardFrames().empty()) {
 
-        if (clipboards()->canPaste(currentLayer)) {
-            backup(tr("Paste"));
-        }
+        backup(tr("Paste"));
 
         clipboards()->updateIfNeeded(currentLayer);
 
@@ -660,6 +660,7 @@ void Editor::paste()
             pasteToCanvas(&clipboardVectorImage, mFrame);
         }
     } else {
+        // TODO: implement undo/redo
         pasteToFrames();
     }
 
