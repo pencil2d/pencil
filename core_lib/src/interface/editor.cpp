@@ -83,7 +83,8 @@ bool Editor::init()
         mViewManager,
         mPreferenceManager,
         mSoundManager,
-        mSelectionManager
+        mSelectionManager,
+        mClipboardManager
     };
 
     for (BaseManager* pManager : mAllManagers)

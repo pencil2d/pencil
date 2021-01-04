@@ -17,6 +17,8 @@ GNU General Public License for more details.
 #ifndef CLIPBOARDMANAGER_H
 #define CLIPBOARDMANAGER_H
 
+#include "basemanager.h"
+
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "layer.h"
@@ -25,12 +27,17 @@ class Editor;
 class QClipboard;
 class KeyFrame;
 
-class ClipboardManager: QObject
+class ClipboardManager: public BaseManager
 {
     Q_OBJECT
 public:
     explicit ClipboardManager(Editor* editor);
     ~ClipboardManager() override;
+
+    bool init() override { return true; }
+    Status load(Object*) override { return Status::OK; }
+    Status save(Object*) override { return Status::OK; }
+    void workingLayerChanged(Layer*) override { }
 
     /** Update latest locally stored clipboard if needed
      * @param layer
@@ -73,8 +80,6 @@ private:
 
     /** This should be called before copying and updating the clipboard to ensure no previous state is saved */
     void resetStates();
-
-    Editor* mEditor = nullptr;
 
     QPoint mLastBitmapPosition;
     BitmapImage mBitmapImage;
