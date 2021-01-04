@@ -62,9 +62,9 @@ void ClipboardManager::setFromSystemClipboard(const QClipboard *clipboard, const
 void ClipboardManager::copyBitmapImage(BitmapImage* bitmapImage, QRectF selectionRect)
 {
     resetStates();
-    if (bitmapImage == nullptr || !bitmapImage->isLoaded()) { return; }
+    Q_ASSERT(bitmapImage != nullptr && bitmapImage->isLoaded());
 
-    else if (!selectionRect.isEmpty())
+    if (!selectionRect.isEmpty())
     {
         mBitmapImage = bitmapImage->copy(selectionRect.toRect());
     }
