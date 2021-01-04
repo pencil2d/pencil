@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "ui_presetdialog.h"
 #include "app_util.h"
 
-#include <QFile>
 #include <QStandardPaths>
 #include <QDir>
 #include <QSettings>
@@ -70,10 +69,7 @@ QString PresetDialog::getPresetPath(int index)
     QDir dataDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
     if (dataDir.cd("presets"))
     {
-        if (dataDir.exists(filename))
-        {
-            return dataDir.filePath(filename);
-        }
+        return dataDir.filePath(filename);
     }
     return QString();
 }
