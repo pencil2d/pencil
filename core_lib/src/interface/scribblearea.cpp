@@ -63,7 +63,7 @@ bool ScribbleArea::init()
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
 
-    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::onSelectionChanged);
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::updateCurrentFrame);
     connect(mEditor->select(), &SelectionManager::needPaintAndApply, this, &ScribbleArea::applySelectionChanges);
     connect(mEditor->select(), &SelectionManager::needDeleteSelection, this, &ScribbleArea::deleteSelection);
 
@@ -112,8 +112,6 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_NEXT_FRAMES_NUM:
     case SETTING::ONION_MIN_OPACITY:
     case SETTING::ONION_MAX_OPACITY:
-        invalidateAllCache();
-        break;
     case SETTING::ANTIALIAS:
     case SETTING::GRID:
     case SETTING::GRID_SIZE_W:
@@ -134,14 +132,14 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::INVISIBLE_LINES:
     case SETTING::OUTLINES:
     case SETTING::ONION_TYPE:
-        invalidateLayerPixmapCache();
+        updateAllFrames();
         break;
     case SETTING::QUICK_SIZING:
         mQuickSizing = mPrefs->isOn(SETTING::QUICK_SIZING);
         break;
     case SETTING::MULTILAYER_ONION:
         mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
-        invalidateAllCache();
+        updateAllFrames();
         break;
     case SETTING::LAYER_VISIBILITY_THRESHOLD:
     case SETTING::LAYER_VISIBILITY:
@@ -157,18 +155,19 @@ void ScribbleArea::updateToolCursor()
 {
     setCursor(currentTool()->cursor());
     updateCanvasCursor();
+    updateAllFrames();
 }
 
 void ScribbleArea::setCurveSmoothing(int newSmoothingLevel)
 {
     mCurveSmoothingLevel = newSmoothingLevel / 20.0;
-    invalidateLayerPixmapCache();
+    updateAllFrames();
 }
 
 void ScribbleArea::setEffect(SETTING e, bool isOn)
 {
     mPrefs->set(e, isOn);
-    invalidateLayerPixmapCache();
+    updateAllFrames();
 }
 
 /************************************************************************************/
@@ -176,37 +175,64 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 
 void ScribbleArea::updateCurrentFrame()
 {
-    updateFrame(mEditor->currentFrame());
+    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA) {
+        updateFrame(mEditor->currentFrame());
+    } else {
+        removeCacheForDirtyFrames();
+        update();
+    }
 }
 
 void ScribbleArea::updateFrame(int frame)
 {
     Q_ASSERT(frame >= 0);
 
-    if (mCurrentCacheInvalid) {
+    removeCacheForDirtyFrames();
 
-        int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
-        if (frameNumber < 0) { return; }
+    int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
+    if (frameNumber < 0) { return; }
 
-        invalidateCacheForFrame(frameNumber);
-        mCurrentCacheInvalid = false;
+    auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(frameNumber));
+    if (cacheKeyIter != mPixmapCacheKeys.end())
+    {
+        QPixmapCache::remove(cacheKeyIter.value());
+        unsigned int key = cacheKeyIter.key();
+        mPixmapCacheKeys.remove(key);
     }
+
+    removeOnionSkinsCacheAround(frame);
 
     update();
 }
 
-void ScribbleArea::invalidateCacheForDirtyFrames()
+void ScribbleArea::removeCacheForDirtyFrames()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     for (int pos : mEditor->layers()->currentLayer()->dirtyFrames()) {
 
-        invalidateCacheForFrame(pos);
-        invalidateOnionSkinsCacheAround(pos);
+        auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(pos));
+        if (cacheKeyIter != mPixmapCacheKeys.end())
+        {
+            QPixmapCache::remove(cacheKeyIter.value());
+            unsigned int key = cacheKeyIter.key();
+            mPixmapCacheKeys.remove(key);
+        }
+
+        removeOnionSkinsCacheAround(pos);
     }
     currentLayer->clearDirtyFrames();
 }
 
-void ScribbleArea::invalidateOnionSkinsCacheAround(int frameNumber)
+void ScribbleArea::updateAllFramesIfNeeded() {
+
+    // Changing the current layer will only change the frame (as viewed by the user) under the following circumstances
+    if(isAffectedByActiveLayer())
+    {
+        updateAllFrames();
+    }
+}
+
+void ScribbleArea::removeOnionSkinsCacheAround(int frameNumber)
 {
     if (frameNumber < 0) { return; }
 
@@ -226,10 +252,16 @@ void ScribbleArea::invalidateOnionSkinsCacheAround(int frameNumber)
 
         for(int i = 1; i <= mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM); i++)
         {
-            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isOnionAbsolute);
+            onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, isOnionAbsolute);
             if (onionFrameNumber < 0) break;
 
-            invalidateCacheForFrame(onionFrameNumber);
+            auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(onionFrameNumber));
+            if (cacheKeyIter != mPixmapCacheKeys.end())
+            {
+                QPixmapCache::remove(cacheKeyIter.value());
+                unsigned int key = cacheKeyIter.key();
+                mPixmapCacheKeys.remove(key);
+            }
         }
     }
 
@@ -239,116 +271,65 @@ void ScribbleArea::invalidateOnionSkinsCacheAround(int frameNumber)
 
         for(int i = 1; i <= mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM); i++)
         {
-            onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, isOnionAbsolute);
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isOnionAbsolute);
             if (onionFrameNumber < 0) break;
 
-            invalidateCacheForFrame(onionFrameNumber);
+            auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(onionFrameNumber));
+            if (cacheKeyIter != mPixmapCacheKeys.end())
+            {
+                QPixmapCache::remove(cacheKeyIter.value());
+                unsigned int key = cacheKeyIter.key();
+                mPixmapCacheKeys.remove(key);
+            }
         }
     }
 }
 
-void ScribbleArea::invalidateAllCache()
+void ScribbleArea::updateAllFrames()
 {
     QPixmapCache::clear();
     mPixmapCacheKeys.clear();
-    invalidateLayerPixmapCache();
+    setAllDirty();
 
     update();
 }
 
-void ScribbleArea::invalidateCacheForFrame(int frameNumber)
+void ScribbleArea::updateAllVectorLayersAtCurrentFrame()
 {
-    auto cacheKeyIter = mPixmapCacheKeys.find(static_cast<unsigned int>(frameNumber));
-    if (cacheKeyIter != mPixmapCacheKeys.end())
+    updateAllVectorLayersAt(mEditor->currentFrame());
+}
+
+void ScribbleArea::updateAllVectorLayersAt(int frameNumber)
+{
+    for (int i = 0; i < mEditor->object()->getLayerCount(); i++)
     {
-        QPixmapCache::remove(cacheKeyIter.value());
-        unsigned int key = cacheKeyIter.key();
-        mPixmapCacheKeys.remove(key);
-    }
-}
-
-void ScribbleArea::invalidateLayerPixmapCache()
-{
-    mCanvasPainter.resetLayerCache();
-    update();
-}
-
-void ScribbleArea::onPlayStateChanged()
-{
-    int currentFrame = mEditor->currentFrame();
-    if (mPrefs->isOn(SETTING::PREV_ONION) ||
-        mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateLayerPixmapCache();
-    }
-
-    updateFrame(currentFrame);
-}
-
-void ScribbleArea::onScrubbed(int frameNumber)
-{
-    if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateLayerPixmapCache();
+        Layer* layer = mEditor->object()->getLayer(i);
+        if (layer->type() == Layer::VECTOR)
+        {
+            VectorImage* vectorImage = currentVectorImage(layer);
+            if (vectorImage != nullptr)
+            {
+                vectorImage->modification();
+            }
+        }
     }
     updateFrame(frameNumber);
-}
-
-void ScribbleArea::onFramesMoved()
-{
-    invalidateCacheForDirtyFrames();
-    if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateLayerPixmapCache();
-    }
-    update();
-}
-
-void ScribbleArea::onCurrentFrameModified()
-{
-    onFrameModified(mEditor->currentFrame());
-}
-
-void ScribbleArea::onFrameModified(int frameNumber)
-{
-    mCurrentCacheInvalid = true;
-
-    if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateLayerPixmapCache();
-    }
-    updateFrame(frameNumber);
-}
-
-void ScribbleArea::onViewChanged()
-{
-    invalidateLayerPixmapCache();
-}
-
-void ScribbleArea::onLayerChanged()
-{
-    invalidateLayerPixmapCache();
-}
-
-void ScribbleArea::onSelectionChanged()
-{
-    update();
-}
-
-void ScribbleArea::onOnionSkinTypeChanged()
-{
-    invalidateLayerPixmapCache();
-}
-
-void ScribbleArea::onObjectChanged()
-{
-    invalidateAllCache();
 }
 
 void ScribbleArea::setModified(int layerNumber, int frameNumber)
 {
     Layer* layer = mEditor->object()->getLayer(layerNumber);
-    if (layer == nullptr) { return; }
+    if (layer)
+    {
+        layer->setModified(frameNumber, true);
+        emit modification(layerNumber);
+        updateFrame(frameNumber);
+    }
+}
 
-    layer->setModified(frameNumber, true);
-
-    onFrameModified(frameNumber);
+void ScribbleArea::setAllDirty()
+{
+    mCanvasPainter.resetLayerCache();
 }
 
 bool ScribbleArea::event(QEvent *event)
@@ -766,9 +747,7 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
     mCanvas.fill(Qt::transparent);
 
     mEditor->view()->setCanvasSize(size());
-
-    invalidateCacheForFrame(mEditor->currentFrame());
-    invalidateLayerPixmapCache();
+    updateAllFrames();
 }
 
 void ScribbleArea::showLayerNotVisibleWarning()
@@ -1031,12 +1010,9 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             if (cacheKeyIter == mPixmapCacheKeys.end() || !QPixmapCache::find(cacheKeyIter.value(), &mCanvas))
             {
                 drawCanvas(mEditor->currentFrame(), event->rect());
+
                 mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
                 //qDebug() << "Repaint canvas!";
-            } else {
-                // Current frame cache may be valid but we may still have to draw other frames eg. onion skin from cache.
-                prepCanvas(mEditor->currentFrame(), event->rect());
-                mCanvasPainter.paintCached();
             }
         }
     }
@@ -1428,7 +1404,7 @@ void ScribbleArea::paintTransformedSelection()
         }
         setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     }
-    updateCurrentFrame();
+    update();
 }
 
 void ScribbleArea::applySelectionChanges()
@@ -1491,7 +1467,7 @@ void ScribbleArea::applyTransformedSelection()
         setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     }
 
-    update();
+    updateCurrentFrame();
 }
 
 void ScribbleArea::cancelTransformedSelection()
@@ -1565,24 +1541,21 @@ void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
 {
     mLayerVisibility = visibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
-
-    invalidateLayerPixmapCache();
+    updateAllFrames();
 }
 
 void ScribbleArea::increaseLayerVisibilityIndex()
 {
     ++mLayerVisibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
-
-    invalidateLayerPixmapCache();
+    updateAllFrames();
 }
 
 void ScribbleArea::decreaseLayerVisibilityIndex()
 {
     --mLayerVisibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
-
-    invalidateLayerPixmapCache();
+    updateAllFrames();
 }
 
 /************************************************************************************/
@@ -1667,7 +1640,7 @@ void ScribbleArea::deleteSelection()
             Q_CHECK_PTR(bitmapImage);
             bitmapImage->clear(selectMan->mySelectionRect());
         }
-        setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
+        updateAllFrames();
     }
 }
 
@@ -1715,21 +1688,7 @@ void ScribbleArea::setPrevTool()
 void ScribbleArea::paletteColorChanged(QColor color)
 {
     Q_UNUSED(color)
-
-    for (int i = 0; i < mEditor->layers()->count(); i++)
-    {
-        Layer* layer = mEditor->layers()->getLayer(i);
-        if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(mEditor->currentFrame());
-            if (vectorImage != nullptr)
-            {
-                vectorImage->modification();
-            }
-        }
-    }
-
-    invalidateAllCache();
+    updateAllVectorLayersAtCurrentFrame();
 }
 
 void ScribbleArea::floodFillError(int errorType)
@@ -1748,4 +1707,11 @@ void ScribbleArea::floodFillError(int errorType)
     if (errorType == 3) { error = tr("Could not find the root index.", "Bucket tool fill error message"); }
     QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok);
     mEditor->deselectAll();
+}
+
+bool ScribbleArea::isAffectedByActiveLayer() const
+{
+    return mPrefs->isOn(SETTING::PREV_ONION) ||
+            mPrefs->isOn(SETTING::NEXT_ONION) ||
+            getLayerVisibility() != LayerVisibility::ALL;
 }

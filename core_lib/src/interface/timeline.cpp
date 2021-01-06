@@ -208,7 +208,7 @@ void TimeLine::initUI()
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::updateLength);
     connect(mTimeControls, &TimeControls::playButtonTriggered, this, &TimeLine::playButtonTriggered);
-    connect(editor(), &Editor::scrubbed, mTimeControls, &TimeControls::updateTimecodeLabel);
+    connect(editor(), &Editor::currentFrameChanged, mTimeControls, &TimeControls::updateTimecodeLabel);
     connect(mTimeControls, &TimeControls::fpsChanged, mTimeControls, &TimeControls::setFps);
     connect(this, &TimeLine::fpsChanged, mTimeControls, &TimeControls::setFps);
 
@@ -222,7 +222,7 @@ void TimeLine::initUI()
     connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
     connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
 
-    connect(editor(), &Editor::scrubbed, this, &TimeLine::updateFrame);
+    connect(editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame);
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);

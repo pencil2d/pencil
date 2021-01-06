@@ -139,13 +139,14 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
 
     Layer* layer = mEditor->layers()->currentLayer();
     auto selectMan = mEditor->select();
-    if (layer == nullptr) { return; }
+    if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
     {
-        startStroke(event->inputType());
         if (layer->type() == Layer::BITMAP)
         {
+            mScribbleArea->setAllDirty();
+            startStroke(event->inputType());
             mLastBrushPoint = getCurrentPoint();
         }
         else if (layer->type() == Layer::VECTOR)
@@ -192,7 +193,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) { return; }
+    if (layer == NULL) { return; }
 
     if (layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR)
     {
@@ -229,7 +230,8 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
             selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
         }
     }
-    mEditor->updateCurrentFrame();
+    mScribbleArea->update();
+    mScribbleArea->setAllDirty();
 }
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
@@ -237,7 +239,7 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) { return; }
+    if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
     {
@@ -247,6 +249,7 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
         {
             drawStroke();
             mScribbleArea->paintBitmapBuffer();
+            mScribbleArea->setAllDirty();
             mScribbleArea->clearBitmapBuffer();
             endStroke();
         }

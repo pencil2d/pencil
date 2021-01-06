@@ -52,10 +52,8 @@ void SelectTool::beginSelection()
     selectMan->calculateSelectionTransformation();
 
     // paint and apply the transformation
-    if (selectMan->transformHasBeenModified()) {
-        mScribbleArea->paintTransformedSelection();
-        mScribbleArea->applyTransformedSelection();
-    }
+    mScribbleArea->paintTransformedSelection();
+    mScribbleArea->applyTransformedSelection();
     mMoveMode = selectMan->validateMoveMode(getLastPoint());
 
     if (selectMan->somethingSelected() && mMoveMode != MoveMode::NONE) // there is something selected
@@ -74,7 +72,7 @@ void SelectTool::beginSelection()
     {
         selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     }
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->update();
 }
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
@@ -148,6 +146,7 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
+//    mScribbleArea->setAllDirty();
 }
 
 bool SelectTool::maybeDeselect()

@@ -118,6 +118,8 @@ QCursor PenTool::cursor()
 
 void PenTool::pointerPressEvent(PointerEvent *event)
 {
+    mScribbleArea->setAllDirty();
+
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
@@ -261,6 +263,7 @@ void PenTool::drawStroke()
 void PenTool::paintBitmapStroke()
 {
     mScribbleArea->paintBitmapBuffer();
+    mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
 }
 
@@ -294,4 +297,5 @@ void PenTool::paintVectorStroke(Layer* layer)
     vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+    mScribbleArea->setAllDirty();
 }

@@ -34,10 +34,8 @@ void BackupBitmapElement::restore(Editor* editor)
     selectMan->setRotation(rotationAngle);
     selectMan->setSomethingSelected(somethingSelected);
 
-    if (editor->currentFrame() != this->frame) {
-        editor->scrubTo(this->frame);
-    }
-    editor->frameModified(this->frame);
+    editor->updateFrame(this->frame);
+    editor->scrubTo(this->frame);
 
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
@@ -66,23 +64,8 @@ void BackupVectorElement::restore(Editor* editor)
     selectMan->setRotation(rotationAngle);
     selectMan->setSomethingSelected(somethingSelected);
 
-    for (int i = 0; i < editor->object()->getLayerCount(); i++)
-    {
-        Layer* layer = editor->object()->getLayer(i);
-        if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(this->frame);
-            if (vectorImage != nullptr)
-            {
-                vectorImage->modification();
-            }
-        }
-    }
-
-    if (editor->currentFrame() != this->frame) {
-        editor->scrubTo(this->frame);
-    }
-    editor->frameModified(this->frame);
+    editor->updateFrameAndVector(this->frame);
+    editor->scrubTo(this->frame);
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
         editor->restoreKey();
@@ -103,10 +86,8 @@ void BackupVectorElement::restore(Editor* editor)
 void BackupSoundElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->getLayer(this->layer);
-    if (editor->currentFrame() != this->frame) {
-        editor->scrubTo(this->frame);
-    }
-    editor->frameModified(this->frame);
+    editor->updateFrame(this->frame);
+    editor->scrubTo(this->frame);
 
     // TODO: soundclip won't restore if overlapping on first frame
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)

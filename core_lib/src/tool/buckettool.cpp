@@ -109,6 +109,10 @@ void BucketTool::setTolerance(const int tolerance)
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
     startStroke(event->inputType());
+    if (event->button() == Qt::LeftButton)
+    {
+        mScribbleArea->setAllDirty();
+    }
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
@@ -176,6 +180,7 @@ void BucketTool::paintBitmap(Layer* layer)
                            properties.tolerance);
 
     mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
+    mScribbleArea->setAllDirty();
 }
 
 void BucketTool::paintVector(Layer* layer)
@@ -197,6 +202,7 @@ void BucketTool::paintVector(Layer* layer)
     applyChanges();
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+    mScribbleArea->setAllDirty();
 }
 
 void BucketTool::applyChanges()

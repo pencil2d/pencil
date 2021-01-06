@@ -830,7 +830,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             int offset = frameNumber - mLastFrameNumber;
                             currentLayer->moveSelectedFrames(offset);
                             mEditor->layers()->notifyAnimationLengthChanged();
-                            mEditor->framesMoved();
+                            mEditor->updateCurrentFrame();
                         }
                         else if (mCanBoxSelect)
                         {
