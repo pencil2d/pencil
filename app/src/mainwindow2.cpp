@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -1046,12 +1046,14 @@ void MainWindow2::resetAndDockAllSubWidgets()
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 }
 
-void MainWindow2::newObject() const
+void MainWindow2::newObject()
 {
     auto object = new Object();
     object->init();
     object->createDefaultLayers();
     mEditor->setObject(object);
+
+    setWindowTitle(PENCIL_WINDOW_TITLE);
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
