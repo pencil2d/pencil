@@ -39,9 +39,7 @@ bool ClipboardManager::updateIfNeeded(const Layer* layer)
     QImage clipboardImage = mClipboard->image(QClipboard::Mode::Clipboard);
     if (clipboardImage.isNull()) { return false; }
 
-    // Clipboard updated while app was not in focus, update
-    // We intentionally do not update position here.
-    mBitmapImage = BitmapImage(QPoint(), clipboardImage);
+    mBitmapImage = BitmapImage(mLastBitmapPosition, clipboardImage);
     return true;
 }
 
