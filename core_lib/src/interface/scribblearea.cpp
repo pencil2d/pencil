@@ -1017,12 +1017,12 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     if (!currentTool()->isActive())
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
-        int curIndex = mEditor->currentFrame();
-        int frameNumber = mEditor->layers()->lastFrameAtFrame(curIndex);
+        const int currentFrame = mEditor->currentFrame();
+        const int frameNumber = mEditor->layers()->lastFrameAtFrame(currentFrame);
 
         if (frameNumber < 0)
         {
-            drawCanvas(curIndex, event->rect());
+            drawCanvas(currentFrame, event->rect());
         }
         else
         {
