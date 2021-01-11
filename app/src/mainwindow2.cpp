@@ -343,7 +343,7 @@ void MainWindow2::createMenus()
     connect(pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, mTimeLine, &TimeLine::setRangeState);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState);
-    connect(pPlaybackManager, &PlaybackManager::playStateChanged, mEditor, &Editor::updateCurrentFrame);
+    connect(pPlaybackManager, &PlaybackManager::playStateChanged, ui->scribbleArea, &ScribbleArea::onPlayStateChanged);
     connect(ui->actionFlip_inbetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipInBetween);
     connect(ui->actionFlip_rolling, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
 
@@ -1400,12 +1400,15 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFramesIfNeeded);
-    connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
-    connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateCurrentFrame);
 
-    connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::onLayerChanged);
+    connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::onLayerChanged);
+    connect(editor, &Editor::scrubbed, scribbleArea, &ScribbleArea::onScrubbed);
+    connect(editor, &Editor::frameModified, scribbleArea, &ScribbleArea::onFrameModified);
+    connect(editor, &Editor::framesMoved, scribbleArea, &ScribbleArea::onFramesMoved);
+    connect(editor, &Editor::objectChanged, scribbleArea, &ScribbleArea::onObjectChanged);
+    connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::onViewChanged);
 }
 
 void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
