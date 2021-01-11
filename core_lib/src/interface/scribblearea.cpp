@@ -134,7 +134,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::INVISIBLE_LINES:
     case SETTING::OUTLINES:
     case SETTING::ONION_TYPE:
-        invalidateLayerPixmapCache();
+        invalidateAllCache();
         break;
     case SETTING::QUICK_SIZING:
         mQuickSizing = mPrefs->isOn(SETTING::QUICK_SIZING);
@@ -316,12 +316,12 @@ void ScribbleArea::onFrameModified(int frameNumber)
 
 void ScribbleArea::onViewChanged()
 {
-    invalidateLayerPixmapCache();
+    invalidateAllCache();
 }
 
 void ScribbleArea::onLayerChanged()
 {
-    invalidateLayerPixmapCache();
+    invalidateAllCache();
 }
 
 void ScribbleArea::onSelectionChanged()
@@ -331,7 +331,7 @@ void ScribbleArea::onSelectionChanged()
 
 void ScribbleArea::onOnionSkinTypeChanged()
 {
-    invalidateLayerPixmapCache();
+    invalidateAllCache();
 }
 
 void ScribbleArea::onObjectChanged()
@@ -1564,7 +1564,7 @@ void ScribbleArea::setLayerVisibility(LayerVisibility visibility)
     mLayerVisibility = visibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
 
-    invalidateLayerPixmapCache();
+    invalidateAllCache();
 }
 
 void ScribbleArea::increaseLayerVisibilityIndex()
@@ -1572,7 +1572,7 @@ void ScribbleArea::increaseLayerVisibilityIndex()
     ++mLayerVisibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
 
-    invalidateLayerPixmapCache();
+    invalidateAllCache();
 }
 
 void ScribbleArea::decreaseLayerVisibilityIndex()
@@ -1580,7 +1580,7 @@ void ScribbleArea::decreaseLayerVisibilityIndex()
     --mLayerVisibility;
     mPrefs->set(SETTING::LAYER_VISIBILITY, static_cast<int>(mLayerVisibility));
 
-    invalidateLayerPixmapCache();
+    invalidateAllCache();
 }
 
 /************************************************************************************/
