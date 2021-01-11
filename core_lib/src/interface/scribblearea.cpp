@@ -183,15 +183,13 @@ void ScribbleArea::updateFrame(int frame)
 {
     Q_ASSERT(frame >= 0);
 
-    if (mCurrentCacheInvalid) {
+    if (mCurrentCacheInvalid)
+	{
+        if (frame < 0) { return; }
 
-        int frameNumber = mEditor->layers()->lastFrameAtFrame(frame);
-        if (frameNumber < 0) { return; }
-
-        invalidateCacheForFrame(frameNumber);
+        invalidateCacheForFrame(frame);
         mCurrentCacheInvalid = false;
     }
-
     update();
 }
 
@@ -1031,12 +1029,12 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             if (cacheKeyIter == mPixmapCacheKeys.end() || !QPixmapCache::find(cacheKeyIter.value(), &mCanvas))
             {
                 drawCanvas(mEditor->currentFrame(), event->rect());
-                mPixmapCacheKeys[static_cast<unsigned>(frameNumber)] = QPixmapCache::insert(mCanvas);
+                mPixmapCacheKeys[static_cast<unsigned>(currentFrame)] = QPixmapCache::insert(mCanvas);
                 //qDebug() << "Repaint canvas!";
-            } else {
-                // Current frame cache may be valid but we may still have to draw other frames eg. onion skin from cache.
-                prepCanvas(mEditor->currentFrame(), event->rect());
-                mCanvasPainter.paintCached();
+            }
+            else
+            {
+                // Simply use the cached canvas from PixmapCache
             }
         }
     }
