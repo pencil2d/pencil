@@ -262,8 +262,6 @@ private:
     bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
 
-    bool mCurrentCacheInvalid = false;
-
 private:
     bool mKeyboardInUse = false;
     bool mMouseInUse = false;

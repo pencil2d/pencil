@@ -182,14 +182,6 @@ void ScribbleArea::updateCurrentFrame()
 void ScribbleArea::updateFrame(int frame)
 {
     Q_ASSERT(frame >= 0);
-
-    if (mCurrentCacheInvalid)
-	{
-        if (frame < 0) { return; }
-
-        invalidateCacheForFrame(frame);
-        mCurrentCacheInvalid = false;
-    }
     update();
 }
 
@@ -304,11 +296,10 @@ void ScribbleArea::onCurrentFrameModified()
 
 void ScribbleArea::onFrameModified(int frameNumber)
 {
-    mCurrentCacheInvalid = true;
-
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
         invalidateLayerPixmapCache();
     }
+    invalidateCacheForFrame(frameNumber);
     updateFrame(frameNumber);
 }
 
