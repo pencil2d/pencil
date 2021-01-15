@@ -996,6 +996,7 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
     if (ok)
     {
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
+        emit frameModified(frameIndex);
         layers()->notifyAnimationLengthChanged();
     }
     return layer->getKeyFrameAt(frameIndex);
