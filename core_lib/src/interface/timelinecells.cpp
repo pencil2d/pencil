@@ -432,7 +432,10 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         int recWidth = frameSize - 2;
         int recHeight = height - 4;
 
-        painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
+        // Don't fill
+        painter.setBrush(QColor(255, 255, 255, 0));
+
+        // paint border
         painter.setPen(QColor(255,255,255,100));
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
     }
