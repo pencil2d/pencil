@@ -77,6 +77,12 @@ void BitmapImage::setImage(QImage* img)
 
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
+    if (this == &a)
+    {
+        return *this; // a self-assignment
+    }
+
+    KeyFrame::operator=(a);
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
     mImage.reset(new QImage(*a.mImage));
