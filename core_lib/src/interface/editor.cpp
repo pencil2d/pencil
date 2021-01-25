@@ -535,7 +535,7 @@ void Editor::copy()
         }
         else
         {
-            g_clipboardBitmapImage = bitmapImage->copy();  // copy the whole image
+            g_clipboardBitmapImage = *bitmapImage;  // copy the whole image
         }
         clipboardBitmapOk = true;
         if (g_clipboardBitmapImage.image() != nullptr)

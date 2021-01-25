@@ -49,8 +49,8 @@ void BackupBitmapElement::restore(Editor* editor)
         {
             if (layer->type() == Layer::BITMAP)
             {
-                auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
-                *pLayerBitmap->getLastBitmapImageAtFrame(this->frame, 0) = this->bitmapImage;  // restore the image
+                auto bitmapLayer = static_cast<LayerBitmap*>(layer);
+                *bitmapLayer->getLastBitmapImageAtFrame(this->frame, 0) = bitmapImage;  // restore the image
             }
         }
     }

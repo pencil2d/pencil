@@ -44,7 +44,7 @@ class BackupBitmapElement : public BackupElement
 {
     Q_OBJECT
 public:
-    explicit BackupBitmapElement(BitmapImage* bi) { bitmapImage = bi->copy(); }
+    explicit BackupBitmapElement(BitmapImage* bi) { bitmapImage = *bi; }
 
     int layer = 0;
     int frame = 0;
