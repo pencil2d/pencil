@@ -663,8 +663,10 @@ void Editor::addTemporaryDir(QTemporaryDir* const dir)
 
 void Editor::clearTemporary()
 {
-    while(!mTemporaryDirs.isEmpty()) {
-        mTemporaryDirs.takeFirst()->remove();
+    while(!mTemporaryDirs.isEmpty())
+    {
+        QTemporaryDir* t = mTemporaryDirs.takeLast();
+        delete t;
     }
 }
 
