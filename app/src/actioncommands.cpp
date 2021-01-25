@@ -231,12 +231,8 @@ Status ActionCommands::exportGif()
 
 Status ActionCommands::exportMovie(bool isGif)
 {
-    ExportMovieDialog* dialog = nullptr;
-    if (isGif) {
-        dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, FileType::GIF);
-    } else {
-        dialog = new ExportMovieDialog(mParent);
-    }
+    FileType fileType = (isGif) ? FileType::GIF : FileType::MOVIE;
+    ExportMovieDialog* dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, fileType);
     OnScopeExit(dialog->deleteLater());
 
     dialog->init();
