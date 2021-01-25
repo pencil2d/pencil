@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QProcess>
 #include <QtMath>
 #include <QTime>
+#include <QFileInfo>
 
 #include "movieexporter.h"
 #include "layermanager.h"
@@ -351,13 +352,12 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<bo
     if(mCanceled) return Status::CANCELED;
     progress(90);
 
-    SoundClip* key = nullptr;
-
     Q_ASSERT(!layer->keyExists(currentFrame));
 
-    key = new SoundClip();
+    SoundClip* key = new SoundClip;
     layer->addKeyFrame(currentFrame, key);
 
+    key->setSoundClipName(QFileInfo(filePath).fileName()); // keep the original file name
     Status st = mEditor->sound()->loadSound(key, audioPath);
 
     if (!st.ok())

@@ -137,7 +137,10 @@ Status SoundManager::loadSound(SoundClip* soundClip, QString strSoundFile)
     Q_ASSERT(!strCopyFile.isEmpty());
 
     soundClip->init(strCopyFile);
-    soundClip->setSoundClipName(QFileInfo(strSoundFile).fileName());
+    if (soundClip->soundClipName().isEmpty())
+    {
+        soundClip->setSoundClipName(QFileInfo(strSoundFile).fileName());
+    }
 
     Status st = createMediaPlayer(soundClip);
     if (!st.ok())
