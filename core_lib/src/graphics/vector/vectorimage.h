@@ -34,7 +34,7 @@ class VectorImage : public KeyFrame
 public:
     VectorImage();
     VectorImage(const VectorImage&);
-    virtual ~VectorImage();
+    ~VectorImage() override;
     VectorImage& operator=(const VectorImage& a);
 
     VectorImage* clone() override;

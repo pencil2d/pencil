@@ -31,7 +31,7 @@ class ActionCommands : public QObject
     Q_OBJECT
 
 public:
-    explicit ActionCommands(QWidget* parent = nullptr);
+    explicit ActionCommands(QWidget* parent);
     virtual ~ActionCommands();
 
     void setCore(Editor* e) { mEditor = e; }
