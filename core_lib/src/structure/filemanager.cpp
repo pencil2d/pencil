@@ -620,6 +620,11 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXml, Q
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
 
+    // save Pencil2D version
+    QDomElement versionElem = xmlDoc.createElement("version");
+    versionElem.appendChild(xmlDoc.createTextNode(QString(APP_VERSION)));
+    root.appendChild(versionElem);
+
     dd << "Writing main xml file...";
 
     const int indentSize = 2;
