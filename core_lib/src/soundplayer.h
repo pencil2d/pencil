@@ -32,8 +32,8 @@ public:
     SoundPlayer();
     ~SoundPlayer() override;
 
-    void init( SoundClip* );
-    void onKeyFrameDestroy( KeyFrame* ) override;
+    void init(SoundClip*);
+    void onKeyFrameDestroy(KeyFrame*) override;
     bool isValid();
 
     void play();
@@ -43,11 +43,11 @@ public:
     int64_t duration();
     SoundClip* clip() { return mSoundClip; }
 
-    void setMediaPlayerPosition( qint64 pos );
+    void setMediaPlayerPosition(qint64 pos);
 
 signals:
-    void corruptedSoundFile( SoundClip* );
-    void durationChanged( SoundPlayer*, int64_t duration );
+    void corruptedSoundFile(SoundClip*);
+    void durationChanged(SoundPlayer*, int64_t duration);
 
 private:
     void makeConnections();
