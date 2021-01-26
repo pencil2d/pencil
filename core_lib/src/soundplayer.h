@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QObject>
+#include <QBuffer>
 #include "pencilerror.h"
 #include "keyframe.h"
 
@@ -54,6 +55,7 @@ private:
 
     SoundClip* mSoundClip = nullptr;
     QMediaPlayer* mMediaPlayer = nullptr;
+    QBuffer mBuffer;
 };
 
 #endif // SOUNDPLAYER_H
