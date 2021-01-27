@@ -53,6 +53,12 @@ Pencil2D::Pencil2D(int& argc, char** argv) :
     installTranslators();
 }
 
+Pencil2D::~Pencil2D()
+{
+    // with a std::unique_ptr member variable,
+    // you need a non-default destructor to avoid compilation error.
+}
+
 Status Pencil2D::handleCommandLineOptions()
 {
     CommandLineParser parser;
@@ -67,8 +73,8 @@ Status Pencil2D::handleCommandLineOptions()
         return Status::OK;
     }
 
-    auto mainWindow = new MainWindow2;
-    CommandLineExporter exporter(mainWindow);
+    mainWindow.reset(new MainWindow2);
+    CommandLineExporter exporter(mainWindow.get());
     if (exporter.process(inputPath,
                          outputPaths,
                          parser.camera(),
@@ -119,8 +125,8 @@ void Pencil2D::prepareGuiStartup(const QString& inputPath)
 {
     PlatformHandler::configurePlatformSpecificSettings();
 
-    auto mainWindow = new MainWindow2;
-    connect(this, &Pencil2D::openFileRequested, mainWindow, &MainWindow2::openFile);
+    mainWindow.reset(new MainWindow2);
+    connect(this, &Pencil2D::openFileRequested, mainWindow.get(), &MainWindow2::openFile);
     mainWindow->show();
 
     if (!inputPath.isEmpty())
