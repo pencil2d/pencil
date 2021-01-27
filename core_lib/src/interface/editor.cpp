@@ -666,6 +666,7 @@ void Editor::clearTemporary()
     while(!mTemporaryDirs.isEmpty())
     {
         QTemporaryDir* t = mTemporaryDirs.takeLast();
+        t->remove();
         delete t;
     }
 }
