@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <ctime>
 #include <QDir>
+#include <QVersionNumber>
 #include "pencildef.h"
 #include "qminiz.h"
 #include "fileformat.h"
@@ -184,6 +185,19 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
         {
             ObjectData* projectData = loadProjectData(element);
             object->setData(projectData);
+        }
+        else if (element.tagName() == "version")
+        {
+            QVersionNumber fileVersion = QVersionNumber::fromString(element.text());
+            QVersionNumber appVersion = QVersionNumber::fromString(APP_VERSION);
+
+            if (!fileVersion.isNull())
+            {
+                if (appVersion < fileVersion)
+                {
+                    qWarning() << "You are opening a newer project file in an older version of Pencil2D!";
+                }
+            }
         }
         else
         {
