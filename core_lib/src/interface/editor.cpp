@@ -372,7 +372,7 @@ void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
         {
             mBackupIndex--;
         }
-        mBackupList.removeAt(i);
+        delete mBackupList.takeAt(i);
         i--;
     }
 }
