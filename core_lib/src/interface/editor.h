@@ -96,7 +96,7 @@ public:
     void scrubTo(int frameNumber);
 
     /**
-     * @brief The visiblity value should match any of the VISIBILITY enum values
+     * @brief The visibility value should match any of the VISIBILITY enum values
      */
     void setLayerVisibility(LayerVisibility visibility);
     LayerVisibility layerVisibility();
@@ -220,7 +220,7 @@ private:
     bool importVectorImage(QString);
 
     // the object to be edited by the editor
-    std::shared_ptr<Object> mObject = nullptr;
+    std::unique_ptr<Object> mObject;
 
     int mFrame = 1; // current frame number.
     int mCurrentLayerIndex = 0; // the current layer to be edited/displayed

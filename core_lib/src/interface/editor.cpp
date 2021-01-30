@@ -244,10 +244,11 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
     {
         if (layer->type() == Layer::BITMAP)
         {
-            BitmapImage* bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(backupFrame, 0);
-            if (currentFrame() == 1) {
+            BitmapImage* bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(backupFrame));
+            if (currentFrame() == 1)
+            {
                 int previous = layer->getPreviousKeyFramePosition(backupFrame);
-                bitmapImage = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(previous);
+                bitmapImage = static_cast<BitmapImage*>(layer->getKeyFrameAt(previous));
             }
             if (bitmapImage != nullptr)
             {
@@ -266,7 +267,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(backupFrame, 0);
+            VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
             if (vectorImage != nullptr)
             {
                 BackupVectorElement* element = new BackupVectorElement(vectorImage);
@@ -367,7 +368,8 @@ void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
         default:
             Q_UNREACHABLE();
         }
-        if (i <= mBackupIndex) {
+        if (i <= mBackupIndex)
+        {
             mBackupIndex--;
         }
         mBackupList.removeAt(i);
@@ -460,8 +462,9 @@ void Editor::undo()
         if (layer == nullptr) { return; }
 
         select()->resetSelectionTransform();
-        if (layer->type() == Layer::VECTOR) {
-            VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(mFrame);
+        if (layer->type() == Layer::VECTOR)
+        {
+            VectorImage *vectorImage = static_cast<VectorImage*>(layer->getKeyFrameAt(mFrame));
             vectorImage->calculateSelectionRect();
             select()->setSelection(vectorImage->getSelectionRect(), false);
         }
@@ -544,7 +547,7 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
         if (vectorImage == nullptr) { return; }
         g_clipboardVectorImage = *vectorImage;  // copy the image
     }
@@ -573,9 +576,8 @@ void Editor::paste()
                     tobePasted.transform(selection, true);
                 }
             }
-            auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
             mScribbleArea->handleDrawingOnEmptyFrame();
-            BitmapImage *bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+            BitmapImage *bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
             Q_CHECK_PTR(bitmapImage);
             bitmapImage->paste(&tobePasted); // paste the clipboard
         }
@@ -584,7 +586,7 @@ void Editor::paste()
             backup(tr("Paste"));
             deselectAll();
             mScribbleArea->handleDrawingOnEmptyFrame();
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
             Q_CHECK_PTR(vectorImage);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             select()->setSelection(vectorImage->getSelectionRect(), false);
@@ -738,8 +740,9 @@ bool Editor::importBitmapImage(QString filePath, int space)
         return false;
     }
 
-    const QPoint pos = QPoint(static_cast<int>(view()->getImportView().dx()),
-                              static_cast<int>(view()->getImportView().dy())) - QPoint(img.width() / 2, img.height() / 2);
+    const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
+                     view()->getImportView().dy() - (img.height() / 2));
+
     while (reader.read(&img))
     {
         if (!layer->keyExists(currentFrame()))
@@ -774,11 +777,11 @@ bool Editor::importVectorImage(QString filePath)
 
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
 
-    VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
+    VectorImage* vectorImage = layer->getVectorImageAtFrame(currentFrame());
     if (vectorImage == nullptr)
     {
         addNewKey();
-        vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
+        vectorImage = layer->getVectorImageAtFrame(currentFrame());
     }
 
     VectorImage importedVectorImage;
@@ -868,14 +871,14 @@ void Editor::selectAll()
     {
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
         // as the drawing area is not limited
-        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mFrame);
+        BitmapImage *bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (bitmapImage == nullptr) { return; }
 
         rect = bitmapImage->bounds();
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (vectorImage != nullptr)
         {
             vectorImage->selectAll();
@@ -892,7 +895,7 @@ void Editor::deselectAll()
 
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (vectorImage != nullptr)
         {
             vectorImage->deselectAll();
@@ -984,8 +987,9 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
     // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
     while (layer->keyExists(frameIndex))
     {
-        if (layer->type() == Layer::SOUND && static_cast<SoundClip*>(layer->getKeyFrameAt(frameIndex))->fileName().isEmpty()
-                && layer->removeKeyFrame(frameIndex))
+        if (layer->type() == Layer::SOUND
+            && layer->getKeyFrameAt(frameIndex)->fileName().isEmpty()
+            && layer->removeKeyFrame(frameIndex))
         {
             break;
         }
