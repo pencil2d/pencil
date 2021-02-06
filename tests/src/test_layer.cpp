@@ -185,12 +185,12 @@ TEST_CASE("Test Layer::keyExists()", "[Layer]")
 TEST_CASE("Layer::firstKeyFramePosition()")
 {
     Object* obj = new Object;
-    
+
     SECTION("At least one key")
-    {        
+    {
         Layer* layer = obj->addNewBitmapLayer();
         REQUIRE(layer->firstKeyFramePosition() == 1);
-        
+
         layer->addNewKeyFrameAt(99);
         REQUIRE(layer->firstKeyFramePosition() != 0);
 
@@ -341,3 +341,95 @@ TEST_CASE("Layer::getPreviousFrameNumber()")
     }
     delete obj;
 }
+
+TEST_CASE("Layer::increaseFrameExposure")
+{
+    Object* obj = new Object;
+    SECTION("Increase exposure linear")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(1);
+        layer->addNewKeyFrameAt(2);
+        layer->addNewKeyFrameAt(3);
+
+        layer->addNewKeyFrameAt(5);
+        layer->addNewKeyFrameAt(6);
+
+        layer->setFrameSelected(1, true);
+        layer->setFrameSelected(2, true);
+        layer->setFrameSelected(3, true);
+
+        layer->increaseExposureOfSelection(1);
+
+        REQUIRE(layer->selectedKeyFrameCount() == 3);
+        REQUIRE(layer->isFrameSelected(1));
+        REQUIRE(layer->isFrameSelected(3));
+        REQUIRE(layer->isFrameSelected(5));
+
+        // Check that the frames that was in front of the last element in the selection
+        // has also been moved
+        REQUIRE(layer->keyExists(8));
+        REQUIRE(layer->keyExists(9));
+    }
+
+    SECTION("Increase exposure irregular spacing")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(15);
+        layer->addNewKeyFrameAt(18);
+        layer->addNewKeyFrameAt(20);
+
+        layer->addNewKeyFrameAt(21);
+        layer->addNewKeyFrameAt(24);
+
+        layer->setFrameSelected(24, true);
+        layer->setFrameSelected(21, true);
+        layer->setFrameSelected(18, true);
+        layer->setFrameSelected(15, true);
+        layer->setFrameSelected(20, true);
+
+        layer->increaseExposureOfSelection(2);
+
+        REQUIRE(layer->selectedKeyFrameCount() == 5);
+        REQUIRE(layer->isFrameSelected(15));
+        REQUIRE(layer->isFrameSelected(20));
+        REQUIRE(layer->isFrameSelected(24));
+        REQUIRE(layer->isFrameSelected(27));
+        REQUIRE(layer->isFrameSelected(32));
+
+        REQUIRE(layer->selectedKeyFramesByLast().at(0) == 24);
+        REQUIRE(layer->selectedKeyFramesByLast().at(1) == 15);
+        REQUIRE(layer->selectedKeyFramesByLast().at(2) == 20);
+        REQUIRE(layer->selectedKeyFramesByLast().at(3) == 27);
+        REQUIRE(layer->selectedKeyFramesByLast().at(4) == 32);
+    }
+
+    SECTION("Increase exposure frames in between")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(19);
+        layer->addNewKeyFrameAt(20);
+        layer->addNewKeyFrameAt(21);
+        layer->addNewKeyFrameAt(22);
+        layer->addNewKeyFrameAt(23);
+
+        layer->setFrameSelected(19, true);
+        layer->setFrameSelected(21, true);
+        layer->setFrameSelected(23, true);
+
+        layer->increaseExposureOfSelection(2);
+
+        REQUIRE(layer->selectedKeyFrameCount() == 3);
+        REQUIRE(layer->isFrameSelected(19));
+        REQUIRE(layer->isFrameSelected(23));
+        REQUIRE(layer->isFrameSelected(27));
+
+        REQUIRE(layer->selectedKeyFramesByLast().at(0) == 27);
+        REQUIRE(layer->selectedKeyFramesByLast().at(1) == 23);
+        REQUIRE(layer->selectedKeyFramesByLast().at(2) == 19);
+    }
+    delete obj;
+}
+
+
+//TEST_CASE("Layer::")

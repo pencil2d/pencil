@@ -373,7 +373,8 @@ void Layer::setFrameSelected(int position, bool isSelected)
 
 void Layer::setFramesSelected(QList<int> keyPositions)
 {
-    for (int pos : keyPositions) {
+    for (int i = keyPositions.count()-1; i >= 0; i--) {
+        int pos = keyPositions[i];
         setFrameSelected(pos, true);
     }
 }
@@ -418,11 +419,14 @@ void Layer::extendSelectionTo(int position)
     }
 }
 
-void Layer::selectBatchOfConnectedFrames(int position)
+bool Layer::newSelectionOfConnectedFrames(int position)
 {
+
     // Deselect all before extending to make sure we don't get already
     // selected frames
     deselectAll();
+
+    if (!keyExists(position)) { return false; }
 
     setFrameSelected(position, true);
 
@@ -432,11 +436,13 @@ void Layer::selectBatchOfConnectedFrames(int position)
     }
 
     extendSelectionTo(position);
+
+    return true;
 }
 
-void Layer::selectNextBatchOfConnectedFrames(int position)
+bool Layer::newSelectionOfConnectedFramesFromNextKeyFramePosition(int position)
 {
-    selectBatchOfConnectedFrames(getNextKeyFramePosition(position));
+    return newSelectionOfConnectedFrames(getNextKeyFramePosition(position));
 }
 
 void Layer::selectAllFramesAfter(int position)
@@ -466,6 +472,96 @@ void Layer::deselectAll()
     {
         pair.second->setSelected(false);
     }
+}
+
+void Layer::increaseExposureOfSelection(int offset)
+{
+    auto selectedFramesByLast = mSelectedFrames_byLast;
+    auto selectedFramesByPos = mSelectedFrames_byPosition;
+
+    int addSpaceBetweenFrames = offset;
+
+    if (selectedFramesByLast.isEmpty()) { return; }
+
+    const int max = selectedFramesByPos.count()-1;
+    const int posForIndex = selectedFramesByPos[max];
+    const int nextPos = getNextKeyFramePosition(selectedFramesByPos[max]);
+
+    // When exposing the frame in front of the right most element in the selection.
+    if (posForIndex != nextPos) {
+        selectedFramesByPos.append(nextPos);
+    }
+
+    auto initialLastList = selectedFramesByLast;
+    auto initialPosList = selectedFramesByPos;
+
+    auto offsetList = QList<int>();
+    for (int offset = 0; offset < selectedFramesByPos.count(); offset++)
+    {
+        int pos = selectedFramesByPos[offset];
+        int nextKeyPos = getNextKeyFramePosition(pos);
+
+        if (pos >= getMaxKeyFramePosition()) {
+            offsetList << (pos - 1) - getPreviousKeyFramePosition(pos) + addSpaceBetweenFrames;
+        } else { // first frame doesn't move so only the space that's required
+            offsetList << nextKeyPos - (pos + 1) + addSpaceBetweenFrames;
+        }
+    }
+
+    for (int i = 0; i < selectedFramesByPos.count(); i++) {
+        const int itPos = selectedFramesByPos[i];
+        const int nextIndex = i + 1;
+        const int spaceBetween = getNextKeyFramePosition(itPos) - (itPos + 1);
+
+        // Current element is last, ignore for now..
+        if (itPos >= getMaxKeyFramePosition()) { continue; }
+
+        if (spaceBetween < 0) { continue; }
+
+        // Index safety
+        if (nextIndex < 0 || nextIndex >= selectedFramesByPos.count()) {
+            continue;
+        }
+
+        // Move frame forward until the spacing the correct
+        // Remember to update selection indexes for further editing
+        while (getNextKeyFramePosition(itPos) - (itPos + 1) < offsetList[i]) {
+
+            const int nextFramePos = getNextKeyFramePosition(itPos);
+
+            // Only set the indexes if any of the next found frames
+            const bool withinBoundary = nextIndex > 0 && nextIndex < selectedFramesByPos.count();
+            if (!withinBoundary) { continue; }
+
+            newSelectionOfConnectedFrames(nextFramePos);
+            moveSelectedFrames(1);
+        }
+
+        // Update selection indexes
+        for (int ii = 0; ii < selectedFramesByPos.count(); ii++) {
+
+            int indexForSelection = nextIndex+ii;
+            const bool withinBoundary = nextIndex+ii > 0 && nextIndex+ii < selectedFramesByPos.count();
+            if (!withinBoundary) {
+                indexForSelection = selectedFramesByPos.count() - 1;
+            }
+
+            int posFrame = initialPosList[indexForSelection];
+            int indexForLastFrame = initialLastList.indexOf(posFrame);
+
+            selectedFramesByPos[indexForSelection] = selectedFramesByPos[indexForSelection] + addSpaceBetweenFrames;
+
+            if (indexForLastFrame != -1 && indexForSelection < selectedFramesByLast.count() && withinBoundary) {
+                selectedFramesByLast[indexForLastFrame] = selectedFramesByLast[indexForLastFrame] + addSpaceBetweenFrames;
+            }
+        }
+    }
+
+    deselectAll();
+
+    // Reselect frames again based on last selection list to ensure selection behaviour
+    // works correctly
+    setFramesSelected(selectedFramesByLast);
 }
 
 bool Layer::moveSelectedFrames(int offset)

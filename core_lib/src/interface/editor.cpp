@@ -159,7 +159,7 @@ void Editor::settingUpdated(SETTING setting)
         mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
         break;
     case SETTING::ONION_TYPE:
-        mScribbleArea->updateAllFrames();
+        mScribbleArea->onOnionSkinTypeChanged();
         emit updateTimeLine();
         break;
     case SETTING::FRAME_POOL_SIZE:
@@ -617,7 +617,7 @@ void Editor::pasteToFrames()
         if (keyFrameNewPos != nullptr) {
 
             // Select and move any frames that may come into contact with the new position
-            currentLayer->selectBatchOfConnectedFrames(newPosition);
+            currentLayer->newSelectionOfConnectedFrames(newPosition);
             currentLayer->moveSelectedFrames(1);
         }
 
@@ -662,8 +662,7 @@ void Editor::paste()
         pasteToFrames();
     }
 
-    emit layers()->currentLayerChanged(layers()->currentLayerIndex());
-    mScribbleArea->updateFrame(mFrame);
+    emit frameModified(mFrame);
 }
 
 bool Editor::canCopy() const
@@ -745,8 +744,11 @@ void Editor::addTemporaryDir(QTemporaryDir* const dir)
 
 void Editor::clearTemporary()
 {
-    while(!mTemporaryDirs.isEmpty()) {
-        mTemporaryDirs.takeFirst()->remove();
+    while(!mTemporaryDirs.isEmpty())
+    {
+        QTemporaryDir* t = mTemporaryDirs.takeLast();
+        t->remove();
+        delete t;
     }
 }
 
@@ -792,10 +794,7 @@ void Editor::updateObject()
     mAutosaveCounter = 0;
     mAutosaveNeverAskAgain = false;
 
-    if (mScribbleArea)
-    {
-        mScribbleArea->updateAllFrames();
-    }
+    emit objectChanged();
 
     if (mPreferenceManager)
     {
@@ -992,11 +991,6 @@ void Editor::updateFrame(int frameNumber)
     mScribbleArea->updateFrame(frameNumber);
 }
 
-void Editor::updateFrameAndVector(int frameNumber)
-{
-    mScribbleArea->updateAllVectorLayersAt(frameNumber);
-}
-
 void Editor::updateCurrentFrame()
 {
     mScribbleArea->updateCurrentFrame();
@@ -1016,11 +1010,9 @@ void Editor::setCurrentLayerIndex(int i)
 void Editor::scrubTo(int frame)
 {
     if (frame < 1) { frame = 1; }
-    int oldFrame = mFrame;
     mFrame = frame;
 
-    emit currentFrameChanged(oldFrame);
-    emit currentFrameChanged(frame);
+    emit scrubbed(frame);
 
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
@@ -1091,6 +1083,7 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
     if (ok)
     {
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
+        emit frameModified(frameIndex);
         layers()->notifyAnimationLengthChanged();
     }
     return layer->getKeyFrameAt(frameIndex);
@@ -1144,7 +1137,7 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
 {
     Layer* layer = mObject->getLayer(layerNumber);
     if (layer != nullptr) layer->switchVisibility();
-    mScribbleArea->updateAllFrames();
+    mScribbleArea->onLayerChanged();
 
     emit updateTimeLine();
 }
@@ -1161,7 +1154,7 @@ void Editor::swapLayers(int i, int j)
         layers()->setCurrentLayer(j - 1);
     }
     emit updateTimeLine();
-    mScribbleArea->updateAllFrames();
+    mScribbleArea->onLayerChanged();
 }
 
 Status Editor::pegBarAlignment(QStringList layers)

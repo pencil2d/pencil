@@ -35,7 +35,6 @@ public:
 
     static QString getPresetPath(int index);
 
-    QString getPreset();
     int getPresetIndex();
     bool shouldAlwaysUse();
 

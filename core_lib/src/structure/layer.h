@@ -68,9 +68,11 @@ public:
     bool visible() const { return mVisible; }
     void setVisible(bool b) { mVisible = b; }
 
-    /** Get selected keyframe positions sorted by position
-     */
+    /** Get selected keyframe positions sorted by position */
     QList<int> selectedKeyFramesPositions() const { return mSelectedFrames_byPosition; }
+
+    /** Get selected keyframe positions based on the order they were selected */
+    QList<int> selectedKeyFramesByLast() const { return mSelectedFrames_byLast; }
 
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressForward) = 0;
@@ -116,17 +118,28 @@ public:
     void selectAllFramesAfter(int position);
     void setFramesSelected(QList<int> keyPositions);
 
-    /**
-     *  Will select all frames from the specified position till there is a blank frame
+    /** Make a selection from specified position until a blank spot appears
+     *  The search is only looking forward
+     *  eg. |123| 4 5
+     *       ^
+     *    pos/search from
      *  @param position the current position
      */
-    void selectBatchOfConnectedFrames(int position);
+    bool newSelectionOfConnectedFrames(int position);
 
-    /**
-     *  Will select all frames from the next keyframe position till there is a blank frame
+    /** Make a selection from the next keyframe position until a blank spot appears
+     *  The search is only looking forward
+     *  eg. [x]        |23| 4 5
+     *       ^          ^
+     *     pos| blank |search from
      *  @param position the current position
      */
-    void selectNextBatchOfConnectedFrames(int position);
+    bool newSelectionOfConnectedFramesFromNextKeyFramePosition(int position);
+
+    /** Increase or add exposure for selected frames
+     * @param offset - should be above 0.
+     */
+    void increaseExposureOfSelection(int offset);
 
     void deselectAll();
 

@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QObject>
+#include <QBuffer>
 #include "pencilerror.h"
 #include "keyframe.h"
 
@@ -32,8 +33,8 @@ public:
     SoundPlayer();
     ~SoundPlayer() override;
 
-    void init( SoundClip* );
-    void onKeyFrameDestroy( KeyFrame* ) override;
+    void init(SoundClip*);
+    void onKeyFrameDestroy(KeyFrame*) override;
     bool isValid();
 
     void play();
@@ -43,17 +44,18 @@ public:
     int64_t duration();
     SoundClip* clip() { return mSoundClip; }
 
-    void setMediaPlayerPosition( qint64 pos );
+    void setMediaPlayerPosition(qint64 pos);
 
 signals:
-    void corruptedSoundFile( SoundClip* );
-    void durationChanged( SoundPlayer*, int64_t duration );
+    void corruptedSoundFile(SoundClip*);
+    void durationChanged(SoundPlayer*, int64_t duration);
 
 private:
     void makeConnections();
 
     SoundClip* mSoundClip = nullptr;
     QMediaPlayer* mMediaPlayer = nullptr;
+    QBuffer mBuffer;
 };
 
 #endif // SOUNDPLAYER_H

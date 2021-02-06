@@ -231,13 +231,9 @@ Status ActionCommands::exportGif()
 
 Status ActionCommands::exportMovie(bool isGif)
 {
-    ExportMovieDialog* dialog = nullptr;
-    if (isGif) {
-        dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, FileType::GIF);
-    } else {
-        dialog = new ExportMovieDialog(mParent);
-    }
-    OnScopeExit(dialog->deleteLater())
+    FileType fileType = (isGif) ? FileType::GIF : FileType::MOVIE;
+    ExportMovieDialog* dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, fileType);
+    OnScopeExit(dialog->deleteLater());
 
     dialog->init();
 
@@ -604,21 +600,10 @@ Status ActionCommands::addNewKey()
 
 void ActionCommands::increaseFrameExposure() {
     Layer* currentLayer = mEditor->layers()->currentLayer();
-    int currentPosition = mEditor->currentFrame();
 
-    if(currentPosition < currentLayer->getMaxKeyFramePosition())
-    {
-        auto selectedFrames = currentLayer->selectedKeyFramesPositions();
-
-        currentLayer->deselectAll();
-        currentLayer->selectNextBatchOfConnectedFrames(currentPosition);
-        currentLayer->moveSelectedFrames(1);
-        currentLayer->deselectAll();
-        mEditor->updateTimeLine();
-        mEditor->updateCurrentFrame();
-
-        currentLayer->setFramesSelected(selectedFrames);
-    }
+    currentLayer->increaseExposureOfSelection(1);
+    mEditor->updateTimeLine();
+    mEditor->framesMoved();
 }
 
 void ActionCommands::decreaseFrameExposure() {
@@ -635,8 +620,8 @@ void ActionCommands::decreaseFrameExposure() {
         currentLayer->setFrameSelected(nextPos, true);
         currentLayer->moveSelectedFrames(-1);
         currentLayer->deselectAll();
-        mEditor->updateTimeLine();
-        mEditor->updateCurrentFrame();
+    mEditor->updateTimeLine();
+    mEditor->framesMoved();
 
         currentLayer->setFramesSelected(selectedFrames);
     }
@@ -646,10 +631,9 @@ Status ActionCommands::insertNewKey(){
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
 
-    currentLayer->deselectAll();
     if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition() && currentLayer->getKeyFrameWhichCovers(currentPosition) != nullptr)
     {
-        currentLayer->selectBatchOfConnectedFrames(currentPosition + 1);
+        currentLayer->newSelectionOfConnectedFrames(currentPosition + 1);
         currentLayer->moveSelectedFrames(1);
         currentLayer->deselectAll();
     }
@@ -775,6 +759,7 @@ void ActionCommands::moveFrameForward()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    mEditor->framesMoved();
 }
 
 void ActionCommands::moveFrameBackward()
@@ -787,6 +772,7 @@ void ActionCommands::moveFrameBackward()
             mEditor->scrubBackward();
         }
     }
+    mEditor->framesMoved();
 }
 
 Status ActionCommands::addNewBitmapLayer()

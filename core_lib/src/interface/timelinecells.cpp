@@ -358,7 +358,11 @@ void TimeLineCells::paintTrack(QPainter& painter, const Layer* layer,
     painter.setPen(QPen(QBrush(palette.color(QPalette::Mid)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.drawRect(x, y - 1, width, height);
 
-    if (!layer->visible()) return;
+    if (!layer->visible())
+    {
+        painter.restore();
+        return;
+    }
 
     // Changes the appearance if selected
     if (selected)
@@ -861,7 +865,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                                 int offset = frameNumber - mLastFrameNumber;
                                 currentLayer->moveSelectedFrames(offset);
                                 mEditor->layers()->notifyAnimationLengthChanged();
-                                mEditor->updateCurrentFrame();
+                                mEditor->framesMoved();
                             }
                             else if (mCanBoxSelect)
                             {
