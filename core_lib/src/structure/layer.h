@@ -131,6 +131,10 @@ public:
      */
     void addExposureToSelectedFrames(int offset);
 
+    /** Reverse order of selected frames
+     * @return true if all frames were successfully reversed, otherwise will return false. */
+    bool reverseOrderOfSelection();
+
     void deselectAll();
 
     bool moveSelectedFrames(int offset);

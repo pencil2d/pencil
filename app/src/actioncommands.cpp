@@ -681,19 +681,12 @@ void ActionCommands::reverseSelectedFrames()
         return;
     }
 
-    QList<int> selectedIndexes = currentLayer->selectedKeyFramesPositions();
-
-    for (int swapBegin = 0, swapEnd = selectedIndexes.count()-1; swapBegin < swapEnd; swapBegin++, swapEnd--) {
-        int oldPos = selectedIndexes[swapBegin];
-        int newPos = selectedIndexes[swapEnd];
-        currentLayer->swapKeyFrames(oldPos, newPos);
-    }
-    mEditor->layers()->notifyLayerChanged(currentLayer);
+    currentLayer->reverseOrderOfSelection();
 
     if (currentLayer->type() == Layer::CAMERA) {
         mEditor->view()->updateViewTransforms();
     }
-    mEditor->updateFrame(mEditor->currentFrame());
+    mEditor->framesMoved();
 };
 
 void ActionCommands::removeKey()

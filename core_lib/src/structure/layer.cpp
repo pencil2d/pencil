@@ -552,6 +552,20 @@ void Layer::addExposureToSelectedFrames(int offset)
     }
 }
 
+bool Layer::reverseOrderOfSelection()
+{
+    QList<int> selectedIndexes = mSelectedFrames_byPosition;
+
+    if (selectedIndexes.isEmpty()) { return false; }
+
+    for (int swapBegin = 0, swapEnd = selectedIndexes.count()-1; swapBegin < swapEnd; swapBegin++, swapEnd--) {
+        int oldPos = selectedIndexes[swapBegin];
+        int newPos = selectedIndexes[swapEnd];
+        Q_ASSERT(swapKeyFrames(oldPos, newPos));
+    }
+    return true;
+}
+
 bool Layer::moveSelectedFrames(int offset)
 {
     if (offset != 0 && mSelectedFrames_byPosition.count() > 0)

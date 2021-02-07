@@ -431,5 +431,57 @@ TEST_CASE("Layer::increaseFrameExposure")
     delete obj;
 }
 
+TEST_CASE("layer::reverseOrderOfSelection()") {
+    Object* obj = new Object;
+
+    SECTION("No frames selected") {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(6);
+        layer->addNewKeyFrameAt(9);
+        layer->addNewKeyFrameAt(13);
+        layer->addNewKeyFrameAt(15);
+        layer->addNewKeyFrameAt(18);
+
+        REQUIRE(layer->reverseOrderOfSelection() == false);
+    }
+
+    SECTION("Reverse selection") {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(6);
+        layer->addNewKeyFrameAt(9);
+        layer->addNewKeyFrameAt(13);
+        layer->addNewKeyFrameAt(15);
+        layer->addNewKeyFrameAt(18);
+
+        auto frame1 = layer->getKeyFrameAt(6);
+        auto frame2 = layer->getKeyFrameAt(9);
+        auto frame3 = layer->getKeyFrameAt(13);
+        auto frame4 = layer->getKeyFrameAt(15);
+        auto frame5 = layer->getKeyFrameAt(18);
+
+        layer->setFrameSelected(6, true);
+        layer->setFrameSelected(9, true);
+        layer->setFrameSelected(13, true);
+        layer->setFrameSelected(15, true);
+        layer->setFrameSelected(18, true);
+
+        REQUIRE(layer->reverseOrderOfSelection());
+
+        // Check that the content has been swapped properly
+        REQUIRE(layer->getKeyFrameAt(18) == frame1);
+        REQUIRE(layer->getKeyFrameAt(15) == frame2);
+        REQUIRE(layer->getKeyFrameAt(13) == frame3);
+        REQUIRE(layer->getKeyFrameAt(9) == frame4);
+        REQUIRE(layer->getKeyFrameAt(6) == frame5);
+
+        REQUIRE(layer->getKeyFrameAt(6) != frame1);
+        REQUIRE(layer->getKeyFrameAt(9) != frame2);
+        REQUIRE(layer->getKeyFrameAt(13) == frame3);
+        REQUIRE(layer->getKeyFrameAt(15) != frame4);
+        REQUIRE(layer->getKeyFrameAt(18) != frame5);
+    }
+    delete obj;
+}
+
 
 //TEST_CASE("Layer::")
