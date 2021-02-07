@@ -598,10 +598,10 @@ Status ActionCommands::addNewKey()
     return Status::OK;
 }
 
-void ActionCommands::increaseFrameExposure() {
+void ActionCommands::addExposureToSelectedFrames() {
     Layer* currentLayer = mEditor->layers()->currentLayer();
 
-    currentLayer->increaseExposureOfSelection(1);
+    currentLayer->addExposureToSelectedFrames(1);
     mEditor->updateTimeLine();
     mEditor->framesMoved();
 }

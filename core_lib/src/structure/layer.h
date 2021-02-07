@@ -126,10 +126,10 @@ public:
      */
     bool newSelectionOfConnectedFrames(int position);
 
-    /** Increase or add exposure for selected frames
+    /** add exposure to selected frames
      * @param offset - should be above 0.
      */
-    void increaseExposureOfSelection(int offset);
+    void addExposureToSelectedFrames(int offset);
 
     void deselectAll();
 

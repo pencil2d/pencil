@@ -70,7 +70,7 @@ public:
     void moveFrameBackward();
     void removeSelectedFrames();
     void reverseSelectedFrames();
-    void increaseFrameExposure();
+    void addExposureToSelectedFrames();
     void decreaseFrameExposure();
 
     // Layer

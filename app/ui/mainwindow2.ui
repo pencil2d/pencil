@@ -184,6 +184,16 @@
     <property name="title">
      <string>Animation</string>
     </property>
+    <widget class="QMenu" name="menuTimeline_Selection">
+     <property name="title">
+      <string>Timeline Selection</string>
+     </property>
+     <addaction name="actionAdd_Frame_Exposure"/>
+     <addaction name="actionSubtract_Frame_Exposure"/>
+     <addaction name="separator"/>
+     <addaction name="actionReverse_Frames_Order"/>
+     <addaction name="actionRemove_Frames"/>
+    </widget>
     <addaction name="actionPlay"/>
     <addaction name="actionLoop"/>
     <addaction name="actionLoopControl"/>
@@ -197,17 +207,15 @@
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
     <addaction name="separator"/>
-    <addaction name="actionIncrease_Frame_Exposure"/>
-    <addaction name="actionDecrease_Frame_Exposure"/>
     <addaction name="separator"/>
-    <addaction name="actionReverse_Selected_Frames"/>
-    <addaction name="actionRemove_Selected_Frames"/>
     <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
     <addaction name="separator"/>
     <addaction name="actionFlip_inbetween"/>
     <addaction name="actionFlip_rolling"/>
+    <addaction name="separator"/>
+    <addaction name="menuTimeline_Selection"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -646,11 +654,6 @@
    </property>
    <property name="text">
     <string>Remove Frame</string>
-   </property>
-  </action>
-  <action name="actionIncrease_Frame_Exposure">
-   <property name="text">
-    <string>Increase Frame Exposure</string>
    </property>
   </action>
   <action name="actionDecrease_Frame_Exposure">
@@ -1150,6 +1153,26 @@
   <action name="actionReset_Rotation">
    <property name="text">
     <string>Reset Rotation</string>
+   </property>
+  </action>
+  <action name="actionAdd_Frame_Exposure">
+   <property name="text">
+    <string>Add Exposure</string>
+   </property>
+  </action>
+  <action name="actionSubtract_Frame_Exposure">
+   <property name="text">
+    <string>Subtract Exposure</string>
+   </property>
+  </action>
+  <action name="actionReverse_Frames_Order">
+   <property name="text">
+    <string>Reverse Frames Order</string>
+   </property>
+  </action>
+  <action name="actionRemove_Frames">
+   <property name="text">
+    <string>Remove Frames</string>
    </property>
   </action>
  </widget>

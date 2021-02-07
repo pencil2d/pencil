@@ -359,7 +359,7 @@ TEST_CASE("Layer::increaseFrameExposure")
         layer->setFrameSelected(2, true);
         layer->setFrameSelected(3, true);
 
-        layer->increaseExposureOfSelection(1);
+        layer->addExposureToSelectedFrames(1);
 
         REQUIRE(layer->selectedKeyFrameCount() == 3);
         REQUIRE(layer->isFrameSelected(1));
@@ -388,7 +388,7 @@ TEST_CASE("Layer::increaseFrameExposure")
         layer->setFrameSelected(15, true);
         layer->setFrameSelected(20, true);
 
-        layer->increaseExposureOfSelection(2);
+        layer->addExposureToSelectedFrames(2);
 
         REQUIRE(layer->selectedKeyFrameCount() == 5);
         REQUIRE(layer->isFrameSelected(15));
@@ -417,7 +417,7 @@ TEST_CASE("Layer::increaseFrameExposure")
         layer->setFrameSelected(21, true);
         layer->setFrameSelected(23, true);
 
-        layer->increaseExposureOfSelection(2);
+        layer->addExposureToSelectedFrames(2);
 
         REQUIRE(layer->selectedKeyFrameCount() == 3);
         REQUIRE(layer->isFrameSelected(19));

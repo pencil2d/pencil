@@ -460,7 +460,7 @@ void Layer::deselectAll()
     }
 }
 
-void Layer::increaseExposureOfSelection(int offset)
+void Layer::addExposureToSelectedFrames(int offset)
 {
     auto selectedFramesByLast = mSelectedFrames_byLast;
     auto selectedFramesByPos = mSelectedFrames_byPosition;
