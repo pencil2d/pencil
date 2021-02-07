@@ -116,7 +116,6 @@ public:
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
-    void setFramesSelected(QList<int> keyPositions);
 
     /** Make a selection from specified position until a blank spot appears
      *  The search is only looking forward
@@ -126,15 +125,6 @@ public:
      *  @param position the current position
      */
     bool newSelectionOfConnectedFrames(int position);
-
-    /** Make a selection from the next keyframe position until a blank spot appears
-     *  The search is only looking forward
-     *  eg. [x]        |23| 4 5
-     *       ^          ^
-     *     pos| blank |search from
-     *  @param position the current position
-     */
-    bool newSelectionOfConnectedFramesFromNextKeyFramePosition(int position);
 
     /** Increase or add exposure for selected frames
      * @param offset - should be above 0.
@@ -168,7 +158,6 @@ protected:
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
-
     void removeFromSelectionList(int pos);
 
     LAYER_TYPE meType = UNDEFINED;

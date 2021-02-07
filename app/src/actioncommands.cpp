@@ -607,24 +607,22 @@ void ActionCommands::increaseFrameExposure() {
 }
 
 void ActionCommands::decreaseFrameExposure() {
-    Layer* currentLayer = mEditor->layers()->currentLayer();
-    int currentPosition = mEditor->currentFrame();
+//    Layer* currentLayer = mEditor->layers()->currentLayer();
+//    int currentPosition = mEditor->currentFrame();
 
-    if (currentPosition < currentLayer->getMaxKeyFramePosition() &&
-        currentLayer->getKeyFrameWhichCovers(currentPosition+1) == nullptr )
-    {
-        int nextPos = currentLayer->getNextKeyFramePosition(currentPosition);
-        auto selectedFrames = currentLayer->selectedKeyFramesPositions();
+//    if (currentPosition < currentLayer->getMaxKeyFramePosition() &&
+//        currentLayer->getKeyFrameWhichCovers(currentPosition+1) == nullptr )
+//    {
+//        int nextPos = currentLayer->getNextKeyFramePosition(currentPosition);
+//        auto selectedFrames = currentLayer->selectedKeyFramesPositions();
 
-        currentLayer->deselectAll();
-        currentLayer->setFrameSelected(nextPos, true);
-        currentLayer->moveSelectedFrames(-1);
-        currentLayer->deselectAll();
-    mEditor->updateTimeLine();
-    mEditor->framesMoved();
-
-        currentLayer->setFramesSelected(selectedFrames);
-    }
+//        currentLayer->deselectAll();
+//        currentLayer->setFrameSelected(nextPos, true);
+//        currentLayer->moveSelectedFrames(-1);
+//        currentLayer->deselectAll();
+//        mEditor->updateTimeLine();
+//        mEditor->framesMoved();
+//    }
 }
 
 Status ActionCommands::insertNewKey(){
