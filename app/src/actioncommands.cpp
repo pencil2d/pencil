@@ -637,8 +637,8 @@ Status ActionCommands::insertKeyFrameAtCurrentPosition()
 void ActionCommands::removeSelectedFrames()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
-    int selectedCount = currentLayer->selectedKeyFrameCount();
-    int currentPosition = mEditor->currentFrame();
+
+    if (!currentLayer->hasAnySelectedFrames()) { return; }
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Remove selected frames", "Windows title of remove selected frames pop-up."),
@@ -651,21 +651,12 @@ void ActionCommands::removeSelectedFrames()
         return;
     }
 
-    if (selectedCount == 0 && currentLayer->keyExists(currentPosition))
-    {
-        currentLayer->removeKeyFrame(currentPosition);
-    }
-    else
-    {
-        for (int pos : currentLayer->selectedKeyFramesPositions()) {
-            currentLayer->removeKeyFrame(pos);
-        }
+    for (int pos : currentLayer->selectedKeyFramesPositions()) {
+        currentLayer->removeKeyFrame(pos);
     }
 
     currentLayer->deselectAll();
     mEditor->layers()->notifyLayerChanged(currentLayer);
-
-    if (currentLayer->keyFrameCount() == 0) currentLayer->addNewKeyFrameAt(1);
 }
 
 void ActionCommands::reverseSelectedFrames()

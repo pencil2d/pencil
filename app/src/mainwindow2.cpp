@@ -361,7 +361,7 @@ void MainWindow2::createMenus()
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
 
     connect(ui->actionReverse_Frames_Order, &QAction::triggered, mCommands, &ActionCommands::reverseSelectedFrames);
-    connect(ui->actionRemove_Selected_Frames, &QAction::triggered, mCommands, &ActionCommands::removeSelectedFrames);
+    connect(ui->actionRemove_Frames, &QAction::triggered, mCommands, &ActionCommands::removeSelectedFrames);
 
     //--- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
@@ -1234,7 +1234,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionAdd_Frame_Exposure->setShortcut(cmdKeySeq(CMD_SELECTION_ADD_FRAME_EXPOSURE));
     ui->actionSubtract_Frame_Exposure->setShortcut(cmdKeySeq(CMD_SELECTION_SUBTRACT_FRAME_EXPOSURE));
     ui->actionReverse_Frames_Order->setShortcut(cmdKeySeq(CMD_REVERSE_SELECTED_FRAMES));
-    ui->actionRemove_Selected_Frames->setShortcut(cmdKeySeq(CMD_REMOVE_SELECTED_FRAMES));
+    ui->actionRemove_Frames->setShortcut(cmdKeySeq(CMD_REMOVE_SELECTED_FRAMES));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
     ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
