@@ -348,7 +348,7 @@ void MainWindow2::createMenus()
     connect(ui->actionFlip_inbetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipInBetween);
     connect(ui->actionFlip_rolling, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
 
-    connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::insertNewKey);
+    connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::insertKeyFrameAtCurrentPosition);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
     connect(ui->actionAdd_Frame_Exposure, &QAction::triggered, mCommands, &ActionCommands::addExposureToSelectedFrames);
     connect(ui->actionSubtract_Frame_Exposure, &QAction::triggered, mCommands, &ActionCommands::decreaseFrameExposure);
@@ -1434,7 +1434,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::fpsChanged, pPlaybackManager, &PlaybackManager::setFps);
     connect(pTimeline, &TimeLine::fpsChanged, pEditor, &Editor::setFps);
 
-    connect(pTimeline, &TimeLine::insertKeyClick, mCommands, &ActionCommands::insertNewKey);
+    connect(pTimeline, &TimeLine::insertKeyClick, mCommands, &ActionCommands::insertKeyFrameAtCurrentPosition);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
 
     connect(pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer);

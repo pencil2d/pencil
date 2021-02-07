@@ -94,6 +94,11 @@ public:
     int selectedKeyFrameCount() const { return mSelectedFrames_byPosition.count(); }
     bool hasAnySelectedFrames() const { return !mSelectedFrames_byLast.empty() && !mSelectedFrames_byPosition.empty(); }
 
+    /** Will insert an empty frame (exposure) after the given position
+        @param position The frame to add exposure to
+    */
+    bool insertExposureAt(int position);
+
     bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);

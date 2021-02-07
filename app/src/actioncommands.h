@@ -63,7 +63,9 @@ public:
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     Status addNewKey();
-    Status insertNewKey();
+
+    /** Will insert a keyframe at the current position and push connected frames to the right */
+    Status insertKeyFrameAtCurrentPosition();
     void removeKey();
     void duplicateKey();
     void moveFrameForward();

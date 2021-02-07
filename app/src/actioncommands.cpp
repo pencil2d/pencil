@@ -625,16 +625,12 @@ void ActionCommands::decreaseFrameExposure() {
 //    }
 }
 
-Status ActionCommands::insertNewKey(){
+Status ActionCommands::insertKeyFrameAtCurrentPosition()
+{
     Layer* currentLayer = mEditor->layers()->currentLayer();
     int currentPosition = mEditor->currentFrame();
 
-    if(mEditor->currentFrame() < currentLayer->getMaxKeyFramePosition() && currentLayer->getKeyFrameWhichCovers(currentPosition) != nullptr)
-    {
-        currentLayer->newSelectionOfConnectedFrames(currentPosition + 1);
-        currentLayer->moveSelectedFrames(1);
-        currentLayer->deselectAll();
-    }
+    currentLayer->insertExposureAt(currentPosition);
     return addNewKey();
 }
 

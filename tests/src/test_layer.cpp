@@ -483,5 +483,36 @@ TEST_CASE("layer::reverseOrderOfSelection()") {
     delete obj;
 }
 
+TEST_CASE("layer::insertExposureAt(int position)") {
+    Object* obj = new Object;
+
+    SECTION("Add exposure to frame 3") {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(3);
+        layer->addNewKeyFrameAt(4);
+        layer->addNewKeyFrameAt(5);
+
+        layer->insertExposureAt(3);
+
+        // Check that frames has been moved
+        REQUIRE(layer->keyExists(3));
+        REQUIRE(layer->keyExists(5));
+        REQUIRE(layer->keyExists(6));
+
+        // Check that newly exposed frame position doesn't contain a frame
+        REQUIRE(layer->keyExists(4) == false);
+    }
+
+    SECTION("invalid frame") {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(3);
+        layer->addNewKeyFrameAt(4);
+        layer->addNewKeyFrameAt(5);
+
+        REQUIRE(layer->insertExposureAt(-1) == false);
+    }
+    delete obj;
+}
+
 
 //TEST_CASE("Layer::")
