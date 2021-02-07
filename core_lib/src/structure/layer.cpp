@@ -206,13 +206,13 @@ bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
 
 bool Layer::insertExposureAt(int position)
 {
-    if(position < 1 || position > getMaxKeyFramePosition())
+    if(position < 1 || position > getMaxKeyFramePosition() || !getKeyFrameAt(position))
     {
         return false;
     }
 
     newSelectionOfConnectedFrames(position + 1);
-    Q_ASSERT(moveSelectedFrames(1));
+    moveSelectedFrames(1);
     deselectAll();
 
     return true;

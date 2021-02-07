@@ -511,6 +511,17 @@ TEST_CASE("layer::insertExposureAt(int position)") {
 
         REQUIRE(layer->insertExposureAt(-1) == false);
     }
+
+
+    SECTION("Insert next to frame") {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(3);
+        layer->addNewKeyFrameAt(4);
+
+        REQUIRE(layer->insertExposureAt(2) == false);
+        REQUIRE(layer->keyExists(3));
+        REQUIRE(layer->keyExists(4));
+    }
     delete obj;
 }
 
