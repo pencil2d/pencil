@@ -131,10 +131,10 @@ public:
      */
     bool newSelectionOfConnectedFrames(int position);
 
-    /** add exposure to selected frames
-     * @param offset - should be above 0.
-     */
-    void addExposureToSelectedFrames(int offset);
+    /** Add or subtract exposure from selected frames
+     * @param offset Any value above 0 for adding exposure and any value below 0 to subtract exposure
+    */
+    void setExposureForSelectedFrames(int offset);
 
     /** Reverse order of selected frames
      * @return true if all frames were successfully reversed, otherwise will return false. */

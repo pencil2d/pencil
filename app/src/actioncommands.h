@@ -73,7 +73,7 @@ public:
     void removeSelectedFrames();
     void reverseSelectedFrames();
     void addExposureToSelectedFrames();
-    void decreaseFrameExposure();
+    void subtractExposureFromSelectedFrames();
 
     // Layer
     Status addNewBitmapLayer();

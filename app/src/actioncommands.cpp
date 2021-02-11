@@ -601,28 +601,17 @@ Status ActionCommands::addNewKey()
 void ActionCommands::addExposureToSelectedFrames() {
     Layer* currentLayer = mEditor->layers()->currentLayer();
 
-    currentLayer->addExposureToSelectedFrames(1);
+    currentLayer->setExposureForSelectedFrames(1);
     mEditor->updateTimeLine();
     mEditor->framesMoved();
 }
 
-void ActionCommands::decreaseFrameExposure() {
-//    Layer* currentLayer = mEditor->layers()->currentLayer();
-//    int currentPosition = mEditor->currentFrame();
+void ActionCommands::subtractExposureFromSelectedFrames() {
+    Layer* currentLayer = mEditor->layers()->currentLayer();
 
-//    if (currentPosition < currentLayer->getMaxKeyFramePosition() &&
-//        currentLayer->getKeyFrameWhichCovers(currentPosition+1) == nullptr )
-//    {
-//        int nextPos = currentLayer->getNextKeyFramePosition(currentPosition);
-//        auto selectedFrames = currentLayer->selectedKeyFramesPositions();
-
-//        currentLayer->deselectAll();
-//        currentLayer->setFrameSelected(nextPos, true);
-//        currentLayer->moveSelectedFrames(-1);
-//        currentLayer->deselectAll();
-//        mEditor->updateTimeLine();
-//        mEditor->framesMoved();
-//    }
+    currentLayer->setExposureForSelectedFrames(-1);
+    mEditor->updateTimeLine();
+    mEditor->framesMoved();
 }
 
 Status ActionCommands::insertKeyFrameAtCurrentPosition()

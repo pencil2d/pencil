@@ -474,7 +474,7 @@ void Layer::deselectAll()
     }
 }
 
-void Layer::addExposureToSelectedFrames(int offset)
+void Layer::setExposureForSelectedFrames(int offset)
 {
     auto selectedFramesByLast = mSelectedFrames_byLast;
     auto selectedFramesByPos = mSelectedFrames_byPosition;
@@ -496,6 +496,8 @@ void Layer::addExposureToSelectedFrames(int offset)
     auto initialPosList = selectedFramesByPos;
 
     auto offsetList = QList<int>();
+
+    // Create an offset list to have reference of how many frames should be moved
     for (int offset = 0; offset < selectedFramesByPos.count(); offset++)
     {
         int pos = selectedFramesByPos[offset];
@@ -508,51 +510,47 @@ void Layer::addExposureToSelectedFrames(int offset)
         }
     }
 
+    // Either positive or negative
+    int offsetDirection = offset > 0 ? 1 : -1;
+
     for (int i = 0; i < selectedFramesByPos.count(); i++) {
         const int itPos = selectedFramesByPos[i];
         const int nextIndex = i + 1;
-        const int spaceBetween = getNextKeyFramePosition(itPos) - (itPos + 1);
-
-        // Current element is last, ignore for now..
-        if (itPos >= getMaxKeyFramePosition()) { continue; }
-
-        if (spaceBetween < 0) { continue; }
+        const int positionInFront = itPos + 1;
 
         // Index safety
         if (nextIndex < 0 || nextIndex >= selectedFramesByPos.count()) {
             continue;
         }
 
-        // Move frame forward until the spacing the correct
-        while (getNextKeyFramePosition(itPos) - (itPos + 1) < offsetList[i]) {
+        // Offset above 0 will move frames forward
+        // Offset below 0 will move a frame backwards
+        while ((offset > 0 && getNextKeyFramePosition(itPos) - positionInFront < offsetList[i]) ||
+               (getNextKeyFramePosition(itPos) - positionInFront > offsetList[i] && getNextKeyFramePosition(itPos) - positionInFront > 0)) {
 
-            newSelectionOfConnectedFrames(getNextKeyFramePosition(itPos));
-            moveSelectedFrames(1);
-        }
+           newSelectionOfConnectedFrames(getNextKeyFramePosition(itPos));
 
-        // Update selection indexes
-        for (int ii = 0; ii < selectedFramesByPos.count(); ii++) {
+           for (int selIndex = 0; selIndex < mSelectedFrames_byPosition.count(); selIndex++) {
 
-            int indexForSelection = nextIndex+ii;
+               if (nextIndex+selIndex >= selectedFramesByPos.count()) { break; }
 
-            const bool withinLowerBound = indexForSelection >= 0;
-            const bool withinUpperBound = indexForSelection < selectedFramesByPos.count();
-            const bool withinBoundary = withinLowerBound && withinUpperBound;
+               int pos = selectedFramesByPos[nextIndex+selIndex];
 
-            if (!withinUpperBound) {
-                indexForSelection = selectedFramesByPos.count() - 1;
-            }
+               if (!mSelectedFrames_byPosition.contains(pos)) { continue; }
 
-            Q_ASSERT(withinLowerBound);
+               selectedFramesByPos[nextIndex+selIndex] = pos + offsetDirection;
 
-            int posFrame = initialPosList[indexForSelection];
-            int indexForLastFrame = initialLastList.indexOf(posFrame);
+               // To make the sure we get the correct index for last selection list
+               // use the initial list where values doesn't affect the index.
+               int initialPos = initialPosList[nextIndex+selIndex];
+               int indexOfLast = initialLastList.indexOf(initialPos);
+               if (indexOfLast == -1 || nextIndex+selIndex >= selectedFramesByLast.count()) {
+                   continue;
+               }
+               selectedFramesByLast[indexOfLast] = selectedFramesByLast[indexOfLast] + offsetDirection;
+           }
 
-            selectedFramesByPos[indexForSelection] = selectedFramesByPos[indexForSelection] + addSpaceBetweenFrames;
-
-            if (indexForLastFrame != -1 && withinBoundary) {
-                selectedFramesByLast[indexForLastFrame] = selectedFramesByLast[indexForLastFrame] + addSpaceBetweenFrames;
-            }
+           moveSelectedFrames(offsetDirection);
         }
     }
 
