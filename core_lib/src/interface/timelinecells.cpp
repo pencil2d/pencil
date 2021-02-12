@@ -635,18 +635,32 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             scrubColor.setAlpha(160);
             painter.setBrush(scrubColor);
             painter.setPen(Qt::NoPen);
-            //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
+
+            int currentFrameStartX = getFrameX(mEditor->currentFrame() - 1);
+            int currentFrameEndX = getFrameX(mEditor->currentFrame());
             QRect scrubRect;
-            scrubRect.setTopLeft(QPoint(getFrameX(mEditor->currentFrame() - 1), 0));
-            scrubRect.setBottomRight(QPoint(getFrameX(mEditor->currentFrame()), height()));
+            scrubRect.setTopLeft(QPoint(currentFrameStartX, 0));
+            scrubRect.setBottomRight(QPoint(currentFrameEndX, height()));
+            bool mouseUnderScrubber = mEditor->currentFrame() == mFramePosMouseX;
             if (mbShortScrub)
             {
-                scrubRect.setBottomRight(QPoint(getFrameX(mEditor->currentFrame()), 19));
+                scrubRect.setBottomRight(QPoint(currentFrameEndX, 19));
+            }
+            painter.save();
+            if (mouseUnderScrubber) {
+                QRect smallScrub = QRect(QPoint(currentFrameStartX, 0), QPoint(currentFrameEndX,19));
+                QPen pen = scrubColor;
+                pen.setWidth(2);
+                painter.setPen(pen);
+                painter.drawRect(smallScrub);
+                painter.setBrush(Qt::NoBrush);
             }
             painter.drawRect(scrubRect);
+            painter.restore();
+
             painter.setPen(palette.color(QPalette::HighlightedText));
             int incr = (mEditor->currentFrame() < 10) ? 4 : 0;
-            painter.drawText(QPoint(getFrameX(mEditor->currentFrame() - 1) + incr, 15),
+            painter.drawText(QPoint(currentFrameStartX + incr, 15),
                              QString::number(mEditor->currentFrame()));
         }
     }
@@ -722,7 +736,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         }
         else
         {
-            if (frameNumber == mEditor->currentFrame() && (!mbShortScrub || (mbShortScrub && mStartY < 20)))
+            if (frameNumber == mEditor->currentFrame() && mStartY < 20)
             {
                 if (mEditor->playback()->isPlaying())
                 {
