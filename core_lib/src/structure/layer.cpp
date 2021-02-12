@@ -246,24 +246,54 @@ bool Layer::moveKeyFrame(int position, int offset)
 
     auto listOfFramesLast = mSelectedFrames_byLast;
     auto listOfFramesPos = mSelectedFrames_byPosition;
-    mSelectedFrames_byLast.clear();
-    mSelectedFrames_byPosition.clear();
+    bool frameSelected = isFrameSelected(position);
 
     if (swapKeyFrames(position, newPos)) {
+
+        auto oldPosIndex = mSelectedFrames_byPosition.indexOf(position);
+        auto newPosIndex = mSelectedFrames_byPosition.indexOf(newPos);
+
+        auto oldLastIndex = mSelectedFrames_byLast.indexOf(position);
+        auto newLastndex = mSelectedFrames_byLast.indexOf(newPos);
+
+
+        // Old position is selected
+        if (oldPosIndex != -1) {
+            mSelectedFrames_byPosition[oldPosIndex] = newPos;
+            mSelectedFrames_byLast[oldLastIndex] = newPos;
+        }
+
+        // Old position is selected
+        if (newPosIndex != -1) {
+            mSelectedFrames_byPosition[newPosIndex] = position;
+            mSelectedFrames_byLast[newLastndex] = position;
+        }
         return true;
     }
 
+    mSelectedFrames_byLast.clear();
+    mSelectedFrames_byPosition.clear();
+
     setFrameSelected(position, true);
-    bool moved = false;
-    if (moveSelectedFrames(offset)) {
-        moved = true;
+
+    // If the move fails, assume we can't move at all and revert to old selection
+    if (!moveSelectedFrames(offset)) {
+        mSelectedFrames_byLast = listOfFramesLast;
+        mSelectedFrames_byPosition = listOfFramesPos;
+        return false;
     }
-    setFrameSelected(newPos, false);
+
+    // Remove old position from selection list
+    listOfFramesLast.removeOne(position);
+    listOfFramesPos.removeOne(position);
 
     mSelectedFrames_byLast = listOfFramesLast;
     mSelectedFrames_byPosition = listOfFramesPos;
 
-    return moved;
+    // If the frame was selected prior to moving, make sure it's still selected.
+    setFrameSelected(newPos, frameSelected);
+
+    return true;
 }
 
 // Current behaviour, need to refresh the swapped cels
@@ -284,8 +314,8 @@ bool Layer::swapKeyFrames(int position1, int position2)
     mKeyFrames[position1] = pSecondFrame;
     mKeyFrames[position2] = pFirstFrame;
 
-    pSecondFrame->setPos(position1);
     pFirstFrame->setPos(position2);
+    pSecondFrame->setPos(position1);
 
     pFirstFrame->modification();
     pSecondFrame->modification();
@@ -352,11 +382,13 @@ void Layer::setModified(int position, bool modified)
 bool Layer::isFrameSelected(int position) const
 {
     KeyFrame* keyFrame = getKeyFrameWhichCovers(position);
-    if (keyFrame)
-    {
-        return mSelectedFrames_byLast.contains(keyFrame->pos());
+    if (keyFrame == nullptr) { return false; }
+
+    int frameFound = mSelectedFrames_byLast.contains(keyFrame->pos());
+    if (frameFound) {
+        Q_ASSERT(keyFrame->isSelected());
     }
-    return false;
+    return frameFound;
 }
 
 void Layer::setFrameSelected(int position, bool isSelected)
@@ -573,7 +605,8 @@ bool Layer::reverseOrderOfSelection()
     for (int swapBegin = 0, swapEnd = selectedIndexes.count()-1; swapBegin < swapEnd; swapBegin++, swapEnd--) {
         int oldPos = selectedIndexes[swapBegin];
         int newPos = selectedIndexes[swapEnd];
-        Q_ASSERT(swapKeyFrames(oldPos, newPos));
+        bool canSwap = swapKeyFrames(oldPos, newPos);
+        Q_ASSERT(canSwap);
     }
     return true;
 }

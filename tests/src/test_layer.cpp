@@ -20,9 +20,9 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 #include "layersound.h"
+#include "bitmapimage.h"
 #include "object.h"
 #include "util.h"
-
 
 TEST_CASE("LayerType")
 {
@@ -342,6 +342,113 @@ TEST_CASE("Layer::getPreviousFrameNumber()")
     delete obj;
 }
 
+TEST_CASE("Layer::moveKeyFrame(int position, int offset)")
+{
+    Object* obj = new Object;
+    SECTION("move one to the left")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(1);
+        layer->addNewKeyFrameAt(2);
+        layer->addNewKeyFrameAt(3);
+
+        layer->setFrameSelected(2, true);
+        layer->setFrameSelected(3, true);
+
+        KeyFrame* frame1 = layer->getKeyFrameAt(2);
+        KeyFrame* frame2 = layer->getKeyFrameAt(3);
+
+        layer->moveKeyFrame(2, 1);
+
+        // Confirm that both frames are still selected.
+        REQUIRE(layer->getKeyFrameAt(2)->isSelected());
+        REQUIRE(layer->getKeyFrameAt(3)->isSelected());
+
+        // Verify that poiners has been swapped
+        REQUIRE(frame1 == layer->getKeyFrameAt(3));
+        REQUIRE(frame2 == layer->getKeyFrameAt(2));
+    }
+
+    SECTION("move non selected frame")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(1);
+        layer->addNewKeyFrameAt(2);
+        layer->addNewKeyFrameAt(3);
+
+        layer->setFrameSelected(2, false);
+        layer->setFrameSelected(3, true);
+
+        layer->moveKeyFrame(2, 1);
+
+        // Confirm that both frames are still selected.
+        REQUIRE(layer->getKeyFrameAt(2)->isSelected());
+        REQUIRE_FALSE(layer->getKeyFrameAt(3)->isSelected());
+    }
+
+    SECTION("move non selected frame across multiple selected frames")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(4);
+        layer->addNewKeyFrameAt(5);
+        layer->addNewKeyFrameAt(6);
+        layer->addNewKeyFrameAt(7);
+        layer->addNewKeyFrameAt(8);
+
+        layer->setFrameSelected(4, false);
+        layer->setFrameSelected(5, true);
+        layer->setFrameSelected(6, true);
+        layer->setFrameSelected(7, true);
+        layer->setFrameSelected(8, true);
+
+        layer->moveKeyFrame(4, 1);
+        layer->moveKeyFrame(5, 1);
+        layer->moveKeyFrame(6, 1);
+        layer->moveKeyFrame(7, 1);
+        layer->moveKeyFrame(8, 1);
+
+        // Confirm that both frames are still selected.
+        REQUIRE(layer->getKeyFrameAt(4)->isSelected());
+        REQUIRE(layer->getKeyFrameAt(5)->isSelected());
+        REQUIRE(layer->getKeyFrameAt(6)->isSelected());
+        REQUIRE(layer->getKeyFrameAt(7)->isSelected());
+        REQUIRE_FALSE(layer->getKeyFrameAt(9)->isSelected());
+    }
+
+    SECTION("move selected frame across multiple not selected frames")
+    {
+        Layer* layer = obj->addNewBitmapLayer();
+        layer->addNewKeyFrameAt(4);
+        layer->addNewKeyFrameAt(5);
+        layer->addNewKeyFrameAt(6);
+        layer->addNewKeyFrameAt(7);
+        layer->addNewKeyFrameAt(8);
+
+        layer->setFrameSelected(4, false);
+        layer->setFrameSelected(5, false);
+        layer->setFrameSelected(6, true);
+        layer->setFrameSelected(7, false);
+        layer->setFrameSelected(8, false);
+
+        layer->moveKeyFrame(6, 1);
+        layer->moveKeyFrame(7, 1);
+        layer->moveKeyFrame(8, -1);
+        layer->moveKeyFrame(7, -1);
+        layer->moveKeyFrame(6, -1);
+        layer->moveKeyFrame(5, -1);
+        layer->moveKeyFrame(4, -1);
+
+        // Confirm that both frames are still selected.
+        REQUIRE(layer->getKeyFrameAt(3)->isSelected());
+        REQUIRE_FALSE(layer->getKeyFrameAt(5)->isSelected());
+        REQUIRE_FALSE(layer->getKeyFrameAt(6)->isSelected());
+        REQUIRE_FALSE(layer->getKeyFrameAt(7)->isSelected());
+        REQUIRE_FALSE(layer->getKeyFrameAt(8)->isSelected());
+    }
+
+    delete obj;
+}
+
 TEST_CASE("Layer::setExposureForSelectedFrames")
 {
     Object* obj = new Object;
@@ -487,40 +594,47 @@ TEST_CASE("layer::reverseOrderOfSelection()") {
         REQUIRE(layer->reverseOrderOfSelection() == false);
     }
 
+    /// Primitive check against keyframe content
+    /// should probably check and verify the content of each layer type
     SECTION("Reverse selection") {
-        Layer* layer = obj->addNewBitmapLayer();
-        layer->addNewKeyFrameAt(6);
-        layer->addNewKeyFrameAt(9);
-        layer->addNewKeyFrameAt(13);
-        layer->addNewKeyFrameAt(15);
-        layer->addNewKeyFrameAt(18);
+        LayerBitmap* layer = obj->addNewBitmapLayer();
 
-        auto frame1 = layer->getKeyFrameAt(6);
-        auto frame2 = layer->getKeyFrameAt(9);
-        auto frame3 = layer->getKeyFrameAt(13);
-        auto frame4 = layer->getKeyFrameAt(15);
-        auto frame5 = layer->getKeyFrameAt(18);
+        BitmapImage* image1 = new BitmapImage(QRect(0,0,10,10), QColor(255,255,0));
+        BitmapImage* image2 = new BitmapImage(QRect(0,0,10,10), QColor(100,255,0));
+        BitmapImage* image3 = new BitmapImage(QRect(0,0,10,10), QColor(255,0,0));
+        BitmapImage* image4 = new BitmapImage(QRect(0,0,10,10), QColor(255,255,255));
+        layer->addKeyFrame(6, image1);
+        layer->addKeyFrame(9, image2);
+        layer->addKeyFrame(13, image3);
+        layer->addKeyFrame(15, image4);
 
         layer->setFrameSelected(6, true);
         layer->setFrameSelected(9, true);
         layer->setFrameSelected(13, true);
         layer->setFrameSelected(15, true);
-        layer->setFrameSelected(18, true);
 
-        REQUIRE(layer->reverseOrderOfSelection());
+        CHECK(layer->reverseOrderOfSelection());
 
-        // Check that the content has been swapped properly
-        REQUIRE(layer->getKeyFrameAt(18) == frame1);
-        REQUIRE(layer->getKeyFrameAt(15) == frame2);
-        REQUIRE(layer->getKeyFrameAt(13) == frame3);
-        REQUIRE(layer->getKeyFrameAt(9) == frame4);
-        REQUIRE(layer->getKeyFrameAt(6) == frame5);
+//        // Check that the content has been swapped properly
+        bool test1 = layer->getBitmapImageAtFrame(15)->image() == image1->image();
+        bool test2 = layer->getBitmapImageAtFrame(13)->image() == image2->image();
+        bool test3 = layer->getBitmapImageAtFrame(9)->image() == image3->image();
+        bool test4 = layer->getBitmapImageAtFrame(6)->image() == image4->image();
 
-        REQUIRE(layer->getKeyFrameAt(6) != frame1);
-        REQUIRE(layer->getKeyFrameAt(9) != frame2);
-        REQUIRE(layer->getKeyFrameAt(13) == frame3);
-        REQUIRE(layer->getKeyFrameAt(15) != frame4);
-        REQUIRE(layer->getKeyFrameAt(18) != frame5);
+        bool test5 = layer->getBitmapImageAtFrame(6)->image() == image1->image();
+        bool test6 = layer->getBitmapImageAtFrame(9)->image() == image2->image();
+        bool test7 = layer->getBitmapImageAtFrame(13)->image() == image3->image();
+        bool test8 = layer->getBitmapImageAtFrame(15)->image() == image4->image();
+
+        REQUIRE(test1);
+        REQUIRE(test2);
+        REQUIRE(test3);
+        REQUIRE(test4);
+
+        REQUIRE_FALSE(test5);
+        REQUIRE_FALSE(test6);
+        REQUIRE_FALSE(test7);
+        REQUIRE_FALSE(test8);
     }
     delete obj;
 }
