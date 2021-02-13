@@ -242,6 +242,7 @@ void ScribbleArea::invalidateAllCache()
     QPixmapCache::clear();
     mPixmapCacheKeys.clear();
     invalidateLayerPixmapCache();
+    mEditor->layers()->currentLayer()->clearDirtyFrames();
 
     update();
 }
@@ -300,8 +301,6 @@ void ScribbleArea::onFrameModified(int frameNumber)
         invalidateOnionSkinsCacheAround(frameNumber);
         invalidateLayerPixmapCache();
     }
-    // We can't assume that the current frame is in the dirty frame list here
-    // therefore the extra invalidation step
     invalidateCacheForFrame(frameNumber);
     updateFrame(frameNumber);
 }
