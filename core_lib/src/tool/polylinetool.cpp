@@ -128,7 +128,6 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
                 }
             }
             mPoints << getCurrentPoint();
-            mScribbleArea->setAllDirty();
         }
     }
 }
@@ -274,7 +273,6 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         mEditor->backups()->bitmap(tr("Bitmap: Polyline"));
     }
 
-    mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

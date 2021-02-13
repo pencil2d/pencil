@@ -73,8 +73,10 @@ void SelectTool::beginSelection()
     selectMan->calculateSelectionTransformation();
 
     // paint and apply the transformation
-    mScribbleArea->paintTransformedSelection();
-    mScribbleArea->applyTransformedSelection();
+    if (selectMan->transformHasBeenModified()) {
+        mScribbleArea->paintTransformedSelection();
+        mScribbleArea->applyTransformedSelection();
+    }
     mMoveMode = selectMan->validateMoveMode(getLastPoint());
 
     if (selectMan->somethingSelected() && mMoveMode != MoveMode::NONE) // there is something selected
@@ -104,7 +106,7 @@ void SelectTool::beginSelection()
         selectMan->setSelection(QRectF(currentPoint.x(), currentPoint.y(),1,1));
         mMoveMode = MoveMode::NONE;
     }
-    mScribbleArea->update();
+    mScribbleArea->updateCurrentFrame();
 }
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
@@ -192,7 +194,6 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
-    //mScribbleArea->setAllDirty();
 }
 
 bool SelectTool::maybeDeselect()
@@ -235,14 +236,13 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 
     if (mMoveMode != MoveMode::NONE)
     {
-        QPointF currentPoint = getCurrentPoint();
         if (editor()->layers()->currentLayer()->type() == Layer::BITMAP) {
             offset = QPointF(offset).toPoint();
-            currentPoint = currentPoint.toPoint();
-            auto selectMan = mEditor->select();
-
-            selectMan->adjustSelection(currentPoint, offset.x(), offset.y(), selectMan->myRotation(), 0);
         }
+
+        auto selectMan = mEditor->select();
+
+        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), selectMan->myRotation(), 0);
     }
     else
     {

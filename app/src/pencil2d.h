@@ -19,8 +19,10 @@ GNU General Public License for more details.
 #define PENCIL2D_H
 
 #include <QApplication>
-
+#include <memory>
 #include "pencilerror.h"
+
+class MainWindow2;
 
 /**
  * A pointer to the unique @ref Pencil2D instance.
@@ -43,6 +45,7 @@ public:
      * @param argv Values of the arguments
      */
     explicit Pencil2D(int &argc, char **argv);
+    ~Pencil2D() override;
 
     /**
      * Parses supplied command line arguments and performs the appropriate actions,
@@ -78,6 +81,8 @@ private:
      * @param inputPath Path of a file to be opened on startup.
      */
     void prepareGuiStartup(const QString &inputPath);
+
+    std::unique_ptr<MainWindow2> mainWindow;
 };
 
 #endif // PENCIL2D_H

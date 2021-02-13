@@ -58,8 +58,8 @@ private:
 
     QString mOriginalSoundClipName;
 
-    // Duration in seconds. This is stored to update the length of the
-    // frame when the FPS changes.
+    // Duration in seconds.
+    // This is stored to update the length of the frame when the FPS changes.
     int64_t mDuration = 0;
 };
 

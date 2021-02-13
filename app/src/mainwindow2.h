@@ -110,7 +110,7 @@ protected:
     void showEvent(QShowEvent*) override;
 
 private:
-    void newObject() const;
+    void newObject();
     bool newObjectFromPresets(int presetIndex);
     bool openObject(const QString& strFilename);
     bool saveObject(QString strFileName);

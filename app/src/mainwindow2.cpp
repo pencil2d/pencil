@@ -116,7 +116,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->scribbleArea->init();
 
     mEditor->setScribbleArea(ui->scribbleArea);
-    makeConnections(mEditor, ui->scribbleArea);
 
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
@@ -248,6 +247,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget( Qt::RightDockWidgetArea, mPreview );
     */
 
+    makeConnections(mEditor, ui->scribbleArea);
     makeConnections(mEditor);
     makeConnections(mEditor, mTimeLine);
     makeConnections(mEditor, mColorBox);
@@ -290,8 +290,8 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
     connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
 
-    connect(ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound);
-    connect(ui->actionImport_MovieAudio, &QAction::triggered, mCommands, &ActionCommands::importMovieAudio);
+    connect(ui->actionImport_Sound, &QAction::triggered, [=] { mCommands->importSound(FileType::SOUND); });
+    connect(ui->actionImport_MovieAudio, &QAction::triggered, [=] { mCommands->importSound(FileType::MOVIE); });
 
     connect(ui->actionImport_Append_Palette, &QAction::triggered, this, &MainWindow2::importPalette);
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
@@ -369,7 +369,7 @@ void MainWindow2::createMenus()
     connect(pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, mTimeLine, &TimeLine::setRangeState);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying);
     connect(pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState);
-    connect(pPlaybackManager, &PlaybackManager::playStateChanged, mEditor, &Editor::updateCurrentFrame);
+    connect(pPlaybackManager, &PlaybackManager::playStateChanged, ui->scribbleArea, &ScribbleArea::onPlayStateChanged);
     connect(ui->actionFlip_inbetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipInBetween);
     connect(ui->actionFlip_rolling, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
 
@@ -1088,6 +1088,7 @@ void MainWindow2::newObject() const
     mEditor->backups()->undoStack()->clear();
 
     updateSaveState();
+    setWindowTitle(PENCIL_WINDOW_TITLE);
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
@@ -1408,12 +1409,15 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFramesIfNeeded);
-    connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::updateAllFrames);
 
-    connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateCurrentFrame);
 
-    connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::onLayerChanged);
+    connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::onLayerChanged);
+    connect(editor, &Editor::scrubbed, scribbleArea, &ScribbleArea::onScrubbed);
+    connect(editor, &Editor::frameModified, scribbleArea, &ScribbleArea::onFrameModified);
+    connect(editor, &Editor::framesMoved, scribbleArea, &ScribbleArea::onFramesMoved);
+    connect(editor, &Editor::objectChanged, scribbleArea, &ScribbleArea::onObjectChanged);
+    connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::onViewChanged);
 }
 
 void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)

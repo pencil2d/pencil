@@ -27,7 +27,7 @@ $libssl = switch ($platform) {
 }
 
 [string]$ffmpegFileName = "ffmpeg-$arch.zip"
-[string]$ffmpegUrl = "https://github.com/pencil2d/pencil2d-ffmpeg/releases/download/v4.4.1/$ffmpegFileName"
+[string]$ffmpegUrl = "https://github.com/pencil2d/pencil2d-ffmpeg/releases/download/v4.1.1/$ffmpegFileName"
 
 
 echo $PSScriptRoot

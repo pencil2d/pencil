@@ -19,6 +19,8 @@ MOC_DIR = .moc
 OBJECTS_DIR = .obj
 DESTDIR = bin
 
+RESOURCES += data/tests.qrc
+
 INCLUDEPATH += \
     ../core_lib/src/graphics \
     ../core_lib/src/graphics/bitmap \
@@ -44,8 +46,6 @@ SOURCES += \
     src/test_viewmanager.cpp \
     src/test_backupmanager.cpp
 
-RESOURCES += data/tests.qrc
-
 # --- core_lib ---
 
 INCLUDEPATH += $$PWD/../core_lib/src
@@ -53,30 +53,18 @@ INCLUDEPATH += $$PWD/../core_lib/src
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release
 
-win32-msvc*{
-  LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
-  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
+win32-msvc* {
+    LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
 }
 
-
-# From 5.14, MinGW windows builds are not build with debug-release flag
-versionAtLeast(QT_VERSION, 5.14) {
-
-  win32-g++{
-    LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
-    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
-  }
-
-} else {
-
-  win32-g++{
+win32-g++ {
     LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
     PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
-  }
 }
 
 # --- mac os and linux
 unix {
-  LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
-  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
+    LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
 }

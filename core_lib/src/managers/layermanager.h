@@ -92,6 +92,8 @@ public:
     int lastKeyFrameIndex();
 
     int animationLength(bool includeSounds = true);
+
+    /** This should be emitted whenever the animation length frames, eg. adding, removing, duplicating */
     void notifyAnimationLengthChanged();
 
     QString nameSuggestLayer(const QString& name);

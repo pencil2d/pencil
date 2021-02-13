@@ -991,8 +991,12 @@ int Object::totalKeyFrameCount() const
 
 void Object::updateActiveFrames(int frame) const
 {
-    int beginFrame = std::max(frame - 3, 1);
-    int endFrame = frame + 4;
+    const int beginFrame = std::max(frame - 3, 1);
+    const int endFrame = frame + 4;
+
+    const int minFrameCount = getLayerCount() * (endFrame - beginFrame);
+    mActiveFramePool->setMinFrameCount(minFrameCount);
+
     for (int i = 0; i < getLayerCount(); ++i)
     {
         Layer* layer = getLayer(i);

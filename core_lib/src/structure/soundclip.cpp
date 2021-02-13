@@ -36,10 +36,15 @@ SoundClip::~SoundClip()
     //QFile::remove( fileName() );
 }
 
-SoundClip& SoundClip::operator=(const SoundClip& a) {
-    if (this != &a) {
-        mOriginalSoundClipName = a.mOriginalSoundClipName;
+SoundClip& SoundClip::operator=(const SoundClip& a)
+{
+    if (this == &a)
+    {
+        return *this; // a self-assignment
     }
+
+    KeyFrame::operator=(a);
+    mOriginalSoundClipName = a.mOriginalSoundClipName;
     return *this;
 }
 

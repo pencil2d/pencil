@@ -53,7 +53,6 @@ class ActiveFramePool;
 
 enum class SETTING;
 
-
 class Editor : public QObject
 {
     Q_OBJECT
@@ -110,9 +109,8 @@ public:
     void scrubTo(Layer* layer, const int frameIndex);
     void scrubTo(const int layerId, const int frameIndex);
 
-
     /**
-     * @brief The visiblity value should match any of the VISIBILITY enum values
+     * @brief The visibility value should match any of the VISIBILITY enum values
      */
     void setLayerVisibility(LayerVisibility visibility);
     LayerVisibility layerVisibility();
@@ -122,13 +120,25 @@ public:
     void selectAll();
 
 signals:
+
+    /** This should be emitted after scrubbing */
+    void scrubbed(int frameNumber);
+
+    /** This should be emitted after modifying the frame content */
+    void frameModified(int frameNumber);
+
+    /** This should be emitted after the object has been changed */
+    void objectChanged();
+
+    /** This should be emitted after moving one or more frames */
+    void framesMoved();
+
     void updateTimeLine();
     void updateLayerCount();
 
     void objectLoaded();
 
     void changeThinLinesButton(bool);
-    void currentFrameChanged(int n);
     void fpsChanged(int fps);
 
     void needSave();
@@ -136,6 +146,18 @@ signals:
     void needDisplayInfoNoTitle(const QString& body);
 
 public: //slots
+
+    /** Will call update() and update the canvas
+     * Only call this directly If you need the cache to be intact and require the frame to be repainted
+     * Convenient method that does the same as updateFrame but for the current frame
+    */
+    void updateCurrentFrame();
+
+    /** Will call update() and update the canvas
+     * Only call this directly If you need the cache to be intact and require the frame to be repainted
+    */
+    void updateFrame(int frameNumber);
+
     void clearCurrentFrame();
 
     void cut();
@@ -144,11 +166,7 @@ public: //slots
     void deselectAllAndCancelTransform();
     bool importImage(QString filePath, bool isSequence);
     bool importGIF(QString filePath, int numOfImages = 0);
-    void updateFrame(int frameNumber);
     void restoreKey();
-
-    void updateFrameAndVector(int frameNumber);
-    void updateCurrentFrame();
 
     void scrubNextKeyFrame();
     void scrubPreviousKeyFrame();
@@ -214,7 +232,7 @@ private:
     bool importVectorImage(QString, bool);
 
     // the object to be edited by the editor
-    std::shared_ptr<Object> mObject = nullptr;
+    std::unique_ptr<Object> mObject;
 
     int mFrame = 1; // current frame number.
     int mCurrentLayerIndex = 0; // the current layer to be edited/displayed

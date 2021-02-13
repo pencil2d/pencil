@@ -43,13 +43,18 @@ VectorImage::~VectorImage()
 }
 
 VectorImage& VectorImage::operator=(const VectorImage& a) {
-    if (this != &a) {
-        deselectAll();
-        mObject = a.mObject;
-        mCurves = a.mCurves;
-        mArea = a.mArea;
-        modification();
+
+    if (this == &a)
+    {
+        return *this; // a self-assignment
     }
+
+    deselectAll();
+    KeyFrame::operator=(a);
+    mObject = a.mObject;
+    mCurves = a.mCurves;
+    mArea = a.mArea;
+    modification();
     return *this;
 }
 

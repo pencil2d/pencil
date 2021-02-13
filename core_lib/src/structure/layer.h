@@ -90,9 +90,7 @@ public:
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);
-    bool swapKeyFrames(const QList<int> oldFrameIndexes, const QList<int> newFrameIndexes);
-    bool moveKeyFrameForward(const int frameIndex);
-    bool moveKeyFrameBackward(const int frameIndex);
+    bool moveKeyFrame(int position, int offset);
     bool loadKey(KeyFrame*);
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
@@ -100,7 +98,7 @@ public:
     KeyFrame *getKeyFrameWhichCovers(int frameNumber) const;
     bool getVisibility() const { return mVisible; }
 
-    std::map<int, KeyFrame*, std::greater<int>> getKeysInLayer() { return mKeyFrames; }
+    std::map<int, KeyFrame*, std::greater<int>> keyframes() const { return mKeyFrames; }
     void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
 
     void setModified(int position, bool isModified);
@@ -132,6 +130,18 @@ public:
 
     bool isPaintable() const;
 
+    /** Returns a list of dirty frame positions */
+    QList<int> dirtyFrames() const { return mDirtyFrames; }
+
+    /** Mark the frame position as dirty.
+     *  Any operation causing the frame to be modified, added, updated or removed, should call this.
+     *  The mark is cleared on the next frame update operation.
+    */
+    void markFrameAsDirty(int frameNumber) { mDirtyFrames << frameNumber; }
+
+    /** Clear the list of dirty keyframes */
+    void clearDirtyFrames() { mDirtyFrames.clear(); }
+
     QString description() const {
         switch(meType)
         {
@@ -150,8 +160,6 @@ protected:
 
 private:
 
-    void updateSelectedFrames(const int offset);
-
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;
     int        mId = 0;
@@ -166,6 +174,9 @@ private:
     //
     QList<int> mSelectedFrames_byLast; // Used to handle selection range (based on last selected
     QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
+
+    // Used for clearing cache for modified frames.
+    QList<int> mDirtyFrames;
 };
 
 #endif

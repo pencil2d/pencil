@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <ctime>
 #include <QDir>
+#include <QVersionNumber>
 #include "pencildef.h"
 #include "qminiz.h"
 #include "fileformat.h"
@@ -45,7 +46,7 @@ FileManager::FileManager(QObject* parent) : QObject(parent)
     srand(static_cast<uint>(time(nullptr)));
 }
 
-Object* FileManager::load(QString sFileName)
+Object* FileManager::load(const QString& sFileName)
 {
     DebugDetails dd;
     dd << QString("File name: ").append(sFileName);
@@ -185,6 +186,19 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
             ObjectData* projectData = loadProjectData(element);
             object->setData(projectData);
         }
+        else if (element.tagName() == "version")
+        {
+            QVersionNumber fileVersion = QVersionNumber::fromString(element.text());
+            QVersionNumber appVersion = QVersionNumber::fromString(APP_VERSION);
+
+            if (!fileVersion.isNull())
+            {
+                if (appVersion < fileVersion)
+                {
+                    qWarning() << "You are opening a newer project file in an older version of Pencil2D!";
+                }
+            }
+        }
         else
         {
             Q_ASSERT(false);
@@ -203,7 +217,7 @@ bool FileManager::isOldForamt(const QString& fileName) const
     return !(MiniZ::isZip(fileName));
 }
 
-Status FileManager::save(const Object* object, QString sFileName)
+Status FileManager::save(const Object* object, const QString& sFileName)
 {
     DebugDetails dd;
     dd << __FUNCTION__;
@@ -211,8 +225,14 @@ Status FileManager::save(const Object* object, QString sFileName)
 
     if (object == nullptr)
     {
-        dd << "object parameter is null";
+        dd << "Object parameter is null";
         return Status(Status::INVALID_ARGUMENT, dd);
+    }
+    if (sFileName.isEmpty()) {
+        dd << "File name is empty";
+        return Status(Status::INVALID_ARGUMENT, dd,
+                      tr("Invalid Save Path"),
+                      tr("The path is empty."));
     }
 
     const int totalCount = object->totalKeyFrameCount();
@@ -613,6 +633,11 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXml, Q
     // save object
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
+
+    // save Pencil2D version
+    QDomElement versionElem = xmlDoc.createElement("version");
+    versionElem.appendChild(xmlDoc.createTextNode(QString(APP_VERSION)));
+    root.appendChild(versionElem);
 
     dd << "Writing main xml file...";
 

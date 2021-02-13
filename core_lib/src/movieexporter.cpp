@@ -177,7 +177,10 @@ Status MovieExporter::assembleAudio(const Object* obj,
     {
         layer->foreachKeyFrame([&allSoundClips](KeyFrame* key)
         {
-            allSoundClips.push_back(static_cast<SoundClip*>(key));
+            if (!key->fileName().isEmpty())
+            {
+                allSoundClips.push_back(static_cast<SoundClip*>(key));
+            }
         });
     }
 

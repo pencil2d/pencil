@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "ui_presetdialog.h"
 #include "app_util.h"
 
-#include <QFile>
 #include <QStandardPaths>
 #include <QDir>
 #include <QSettings>
@@ -38,12 +37,6 @@ PresetDialog::PresetDialog(PreferenceManager* preferences, QWidget* parent) :
 PresetDialog::~PresetDialog()
 {
     delete ui;
-}
-
-QString PresetDialog::getPreset()
-{
-    int index = getPresetIndex();
-    return PresetDialog::getPresetPath(index);
 }
 
 int PresetDialog::getPresetIndex()
@@ -70,10 +63,7 @@ QString PresetDialog::getPresetPath(int index)
     QDir dataDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
     if (dataDir.cd("presets"))
     {
-        if (dataDir.exists(filename))
-        {
-            return dataDir.filePath(filename);
-        }
+        return dataDir.filePath(filename);
     }
     return QString();
 }

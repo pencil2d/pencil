@@ -118,50 +118,7 @@ Status ActionCommands::importMovieVideo()
     return Status::OK;
 }
 
-Status ActionCommands::importMovieAudio()
-{
-    QString filePath = FileDialog::getOpenFileName(mParent, FileType::MOVIE);
-    if (filePath.isEmpty())
-    {
-        return Status::FAIL;
-    }
-
-    // Show a progress dialog, as this can take a while if you have lots of images.
-    QProgressDialog progressDialog(tr("Importing movie audio..."), tr("Abort"), 0, 100, mParent);
-    hideQuestionMark(progressDialog);
-    progressDialog.setWindowModality(Qt::WindowModal);
-    progressDialog.show();
-
-    MovieImporter importer(this);
-    importer.setCore(mEditor);
-
-    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
-
-    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
-        progressDialog.setValue(prog);
-        QApplication::processEvents();
-    }, [](QString progressMessage) {
-        Q_UNUSED(progressMessage)
-        // Not neeeded
-    }, []() {
-        return true;
-    });
-
-    if (!st.ok() && st != Status::CANCELED)
-    {
-        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
-        errorDialog.exec();
-    }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
-
-    progressDialog.setValue(100);
-    progressDialog.close();
-
-    return Status::OK;
-}
-
-Status ActionCommands::importSound()
+Status ActionCommands::importSound(FileType type)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr)
@@ -204,9 +161,7 @@ Status ActionCommands::importSound()
     layer = mEditor->layers()->currentLayer();
     Q_ASSERT(layer->type() == Layer::SOUND);
 
-
-    int currentFrame = mEditor->currentFrame();
-
+    // Adding key before getting file name just to make sure the keyframe can be insterted
     SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
 
     if (key == nullptr)
@@ -217,17 +172,15 @@ Status ActionCommands::importSound()
     }
 
     mEditor->backups()->saveStates();
-    FileDialog fileDialog(mParent);
-    QString strSoundFile = fileDialog.openFile(FileType::SOUND);
-
-    if (strSoundFile.isEmpty())
-    {
-        return Status::SAFE;
-    }
+    QString strSoundFile = FileDialog::getOpenFileName(mParent, type);
 
     Status st = Status::FAIL;
 
-    if (strSoundFile.endsWith(".wav"))
+    if (strSoundFile.isEmpty())
+    {
+        st = Status::CANCELED;
+    }
+    else if (strSoundFile.endsWith(".wav"))
     {
         st = mEditor->sound()->loadSound(key, strSoundFile);
     }
@@ -235,11 +188,13 @@ Status ActionCommands::importSound()
     {
         st = convertSoundToWav(strSoundFile);
     }
-    mEditor->backups()->keyAdded();
 
     if (!st.ok())
     {
-        layer->removeKeyFrame(currentFrame);
+        mEditor->removeKey();
+        emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
+    } else {
+        mEditor->backups()->keyAdded();
     }
 
     return st;
@@ -283,12 +238,8 @@ Status ActionCommands::exportGif()
 
 Status ActionCommands::exportMovie(bool isGif)
 {
-    ExportMovieDialog* dialog = nullptr;
-    if (isGif) {
-        dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, FileType::GIF);
-    } else {
-        dialog = new ExportMovieDialog(mParent);
-    }
+    FileType fileType = (isGif) ? FileType::GIF : FileType::MOVIE;
+    ExportMovieDialog* dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, fileType);
     OnScopeExit(dialog->deleteLater());
 
     dialog->init();
@@ -722,26 +673,13 @@ Status ActionCommands::addNewKey()
 {
     BackupManager* backups = mEditor->backups();
 
-    KeyFrame* key = mEditor->addNewKey();
-
     backups->saveStates();
-    SoundClip* clip = dynamic_cast<SoundClip*>(key);
-    if (clip)
-    {
-        QString strSoundFile = FileDialog::getOpenFileName(mParent, FileType::SOUND);
-
-        if (strSoundFile.isEmpty())
-        {
-            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
-            return Status::SAFE;
-        }
-        Status st = mEditor->sound()->loadSound(clip, strSoundFile);
-        if (!st.ok())
-        {
-            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
-            return Status::ERROR_LOAD_SOUND_FILE;
-        }
+    // Sound keyframes should not be empty, so we try to import a sound instead
+    if (mEditor->layers()->currentLayer()->type() == Layer::SOUND) {
+        return importSound(FileType::SOUND);
     }
+
+    KeyFrame* key = mEditor->addNewKey();
 
     Camera* cam = dynamic_cast<Camera*>(key);
     if (cam)
@@ -750,7 +688,6 @@ Status ActionCommands::addNewKey()
     }
 
     backups->keyAdded();
-    mEditor->layers()->notifyAnimationLengthChanged();
 
     return Status::OK;
 }
@@ -759,13 +696,14 @@ void ActionCommands::removeKey()
 {
     BackupManager* backups = mEditor->backups();
 
-    Layer* layer = mEditor->layers()->currentLayer();
-
     backups->saveStates();
-
-    // sound layer can as the only layer type, have no keyframes...
+    // Add a new keyframe at the beginning if there are none, 
+    // unless it is a sound layer which can't have empty keyframes but can be an empty layer
+    Layer* layer = mEditor->layers()->currentLayer();
+        // sound layer can as the only layer type, have no keyframes...
     if (layer->keyFrameCount() == 1 && layer->type() != Layer::SOUND) {
         mEditor->clearCurrentFrame();
+        // TODO: ability to undo clear
     } else {
         mEditor->removeCurrentKey();
         backups->keyRemoved();
@@ -820,15 +758,10 @@ void ActionCommands::moveFrameForward()
     if (layer)
     {
         auto backupMan = mEditor->backups();
-        if (!layer->getSelectedFrameIndexes().isEmpty())
-        {
-            layer->deselectAll();
-            backupMan->frameDeselected(QList<int>({frameIndex}), frameIndex);
-        }
-
         backupMan->saveStates();
-        if (layer->moveKeyFrameForward(frameIndex))
+        if (layer->moveKeyFrame(mEditor->currentFrame(), 1))
         {
+            // TODO: check if frame moved backup logic supports selections...
             backupMan->frameMoved(1);
         }
 
@@ -836,6 +769,7 @@ void ActionCommands::moveFrameForward()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    mEditor->framesMoved();
 }
 
 void ActionCommands::moveFrameBackward()
@@ -844,21 +778,15 @@ void ActionCommands::moveFrameBackward()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        auto backupMan = mEditor->backups();
-        if (!layer->getSelectedFrameIndexes().isEmpty())
-        {
-            layer->deselectAll();
-            backupMan->frameDeselected(QList<int>({frameIndex}), frameIndex);
-        }
-
         backupMan->saveStates();
-        if (layer->moveKeyFrameBackward(frameIndex))
+        if (layer->moveKeyFrame(mEditor->currentFrame(), -1))
         {
             backupMan->frameMoved(-1);
         }
 
         mEditor->scrubTo(frameIndex-1);
     }
+    mEditor->framesMoved();
 }
 
 Status ActionCommands::addNewBitmapLayer()

@@ -199,6 +199,8 @@ bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
     pKeyFrame->setPos(position);
     mKeyFrames.insert(std::make_pair(position, pKeyFrame));
 
+    markFrameAsDirty(position);
+
     return true;
 }
 
@@ -208,106 +210,65 @@ bool Layer::removeKeyFrame(int position)
     if (frame)
     {
         mKeyFrames.erase(frame->pos());
+        markFrameAsDirty(position);
         delete frame;
     }
     return true;
 }
 
-bool Layer::moveKeyFrameForward(int position)
+bool Layer::moveKeyFrame(int position, int offset)
 {
-    return swapKeyFrames(position, position + 1);
-}
+    int newPos = position + offset;
+    if (newPos < 1) { return false; }
 
-bool Layer::moveKeyFrameBackward(int position)
-{
-    if (position != 1)
-    {
-        int newPos = position - 1;
-        return swapKeyFrames(position, newPos);
+    auto listOfFramesLast = mSelectedFrames_byLast;
+    auto listOfFramesPos = mSelectedFrames_byPosition;
+    mSelectedFrames_byLast.clear();
+    mSelectedFrames_byPosition.clear();
+
+    if (swapKeyFrames(position, newPos)) {
+        return true;
     }
-    return false;
-}
 
-void Layer::moveFrame(const int oldPosition, const int newPosition)
-{
-    KeyFrame* keyframe = mKeyFrames.at(oldPosition);
-    keyframe->setPos(newPosition);
-    mKeyFrames.insert(std::make_pair(newPosition, keyframe));
-    mKeyFrames.erase(oldPosition);
-}
-
-bool Layer::swapKeyFrames(const QList<int> oldFrameIndexes, const QList<int> newFrameIndexes)
-{
-    bool swapped = false;
-    for (int i = 0; i < oldFrameIndexes.count(); i++) {
-
-        Q_ASSERT(oldFrameIndexes != newFrameIndexes);
-        int oldFrame = oldFrameIndexes[i];
-        int newFrame = newFrameIndexes[i];
-        swapped = swapKeyFrames(oldFrame, newFrame);
+    setFrameSelected(position, true);
+    bool moved = false;
+    if (moveSelectedFrames(offset)) {
+        moved = true;
     }
-    return swapped;
+    setFrameSelected(newPos, false);
+
+    mSelectedFrames_byLast = listOfFramesLast;
+    mSelectedFrames_byPosition = listOfFramesPos;
+
+    return moved;
 }
 
-bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, need to refresh the swapped cels
+// Current behaviour, need to refresh the swapped cels
+bool Layer::swapKeyFrames(int position1, int position2)
 {
-    bool keyPosition1 = false;
-    bool keyPosition2 = false;
     KeyFrame* pFirstFrame = nullptr;
     KeyFrame* pSecondFrame = nullptr;
 
-    bool exists = false;
-    if (keyExists(position1))
+    if (mKeyFrames.count(position1) != 1 || mKeyFrames.count(position2) != 1)
     {
-        auto firstFrame = mKeyFrames.find(position1);
-        pFirstFrame = firstFrame->second;
-
-        mKeyFrames.erase(position1);
-
-        keyPosition1 = true;
-        exists = true;
-    }
-
-    if (keyExists(position2))
-    {
-        auto secondFrame = mKeyFrames.find(position2);
-        pSecondFrame = secondFrame->second;
-
-        mKeyFrames.erase(position2);
-
-        keyPosition2 = true;
-        exists = true;
-    }
-
-    if (!exists) {
         return false;
     }
 
-    if (keyPosition2)
-    {
-        pSecondFrame->setPos(position1);
-        mKeyFrames.insert(std::make_pair(position1, pSecondFrame));
-    }
-    else if (position1 == 1)
-    {
-        addNewKeyFrameAt(position1);
-    }
+    // Both keys exist
+    pFirstFrame = mKeyFrames[position1];
+    pSecondFrame = mKeyFrames[position2];
 
-    if (keyPosition1)
-    {
-        pFirstFrame->setPos(position2);
-        mKeyFrames.insert(std::make_pair(position2, pFirstFrame));
-    }
-    else if (position2 == 1)
-    {
-        addNewKeyFrameAt(position2);
-    }
+    mKeyFrames[position1] = pSecondFrame;
+    mKeyFrames[position2] = pFirstFrame;
 
-    if (pFirstFrame)
-        pFirstFrame->modification();
+    pSecondFrame->setPos(position1);
+    pFirstFrame->setPos(position2);
 
-    if (pSecondFrame)
-        pSecondFrame->modification();
+    pFirstFrame->modification();
+    pSecondFrame->modification();
+
+    markFrameAsDirty(position1);
+    markFrameAsDirty(position2);
 
     return true;
 }
@@ -556,6 +517,7 @@ bool Layer::offsetSelectedFrames(int offset)
             if (selectedFrame != nullptr)
             {
                 mKeyFrames.erase(fromPos);
+                markFrameAsDirty(fromPos);
 
                 // Slide back every frame between fromPos to toPos
                 // to avoid having 2 frames in the same position
@@ -571,9 +533,11 @@ bool Layer::offsetSelectedFrames(int offset)
                     if (frame != nullptr)
                     {
                         mKeyFrames.erase(framePosition);
+                        markFrameAsDirty(framePosition);
 
                         frame->setPos(targetPosition);
                         mKeyFrames.insert(std::make_pair(targetPosition, frame));
+                        markFrameAsDirty(targetPosition);
                     }
 
                     targetPosition = targetPosition - step;
@@ -583,35 +547,27 @@ bool Layer::offsetSelectedFrames(int offset)
                         isBetween = false;
                 }
 
-                if (fromPos == 1)
-                {
-                    // If the first frame is moving, we need to create a new first frame
-                    //addNewKeyFrameAt(1);
-                }
-
                 // Update the position of the selected frame
                 selectedFrame->setPos(toPos);
                 mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
+                markFrameAsDirty(toPos);
             }
             indexInSelection = indexInSelection + step;
         }
-        updateSelectedFrames(offset);
+        
+        // Update selection lists
+        for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
+        {
+            mSelectedFrames_byPosition[i] = mSelectedFrames_byPosition[i] + offset;
+        }
+        for (int i = 0; i < mSelectedFrames_byLast.count(); i++)
+        {
+            mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
+        }
+
         return true;
     }
     return false;
-}
-
-void Layer::updateSelectedFrames(const int offset)
-{
-    // Update selection lists
-    for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
-    {
-        mSelectedFrames_byPosition[i] = mSelectedFrames_byPosition[i] + offset;
-    }
-    for (int i = 0; i < mSelectedFrames_byLast.count(); i++)
-    {
-        mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
-    }
 }
 
 bool Layer::isPaintable() const

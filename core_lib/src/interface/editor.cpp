@@ -172,7 +172,7 @@ void Editor::settingUpdated(SETTING setting)
         mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
         break;
     case SETTING::ONION_TYPE:
-        mScribbleArea->updateAllFrames();
+        mScribbleArea->onOnionSkinTypeChanged();
         emit updateTimeLine();
         break;
     case SETTING::FRAME_POOL_SIZE:
@@ -224,7 +224,7 @@ void Editor::copy()
         }
         else
         {
-            g_clipboardBitmapImage = bitmapImage->copy();  // copy the whole image
+            g_clipboardBitmapImage = *bitmapImage;  // copy the whole image
         }
         clipboardBitmapOk = true;
         if (g_clipboardBitmapImage.image() != nullptr)
@@ -233,7 +233,7 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
         if (vectorImage == nullptr) { return; }
         g_clipboardVectorImage = *vectorImage;  // copy the image
     }
@@ -263,9 +263,8 @@ void Editor::paste()
                     tobePasted.transform(selection, true);
                 }
             }
-            auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
             mScribbleArea->handleDrawingOnEmptyFrame();
-            BitmapImage *bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+            BitmapImage *bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
             Q_CHECK_PTR(bitmapImage);
             bitmapImage->paste(&tobePasted); // paste the clipboard
 
@@ -275,14 +274,14 @@ void Editor::paste()
         {
             deselectAll();
             mScribbleArea->handleDrawingOnEmptyFrame();
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
             Q_CHECK_PTR(vectorImage);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             select()->setSelection(vectorImage->getSelectionRect());
             backups()->vector(tr("Vector: Paste"));
         }
     }
-    mScribbleArea->updateCurrentFrame();
+    emit frameModified(mFrame);
 }
 
 void Editor::flipSelection(bool flipVertical)
@@ -367,8 +366,11 @@ void Editor::addTemporaryDir(QTemporaryDir* const dir)
 
 void Editor::clearTemporary()
 {
-    while(!mTemporaryDirs.isEmpty()) {
-        mTemporaryDirs.takeFirst()->remove();
+    while(!mTemporaryDirs.isEmpty())
+    {
+        QTemporaryDir* t = mTemporaryDirs.takeLast();
+        t->remove();
+        delete t;
     }
 }
 
@@ -415,10 +417,7 @@ void Editor::updateObject()
     mAutosaveCounter = 0;
     mAutosaveNeverAskAgain = false;
 
-    if (mScribbleArea)
-    {
-        mScribbleArea->updateAllFrames();
-    }
+    emit objectChanged();
 
     if (mPreferenceManager)
     {
@@ -452,8 +451,8 @@ bool Editor::importBitmapImage(QString filePath, int space)
         canvasKeyFrames.insert(std::make_pair(map.first, map.second->clone()));
     }
 
-    const QPoint pos = QPoint(static_cast<int>(view()->getImportView().dx()),
-                              static_cast<int>(view()->getImportView().dy())) - QPoint(img.width() / 2, img.height() / 2);
+    const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
+                     view()->getImportView().dy() - (img.height() / 2));
 
     std::map<int, KeyFrame*, std::less<int>> importedKeyFrames;
     while (reader.read(&img))
@@ -501,11 +500,11 @@ bool Editor::importVectorImage(QString filePath, bool /*isSequence*/)
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
 
     backups()->saveStates();
-    VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
+    VectorImage* vectorImage = layer->getVectorImageAtFrame(currentFrame());
     if (vectorImage == nullptr)
     {
         addNewKey();
-        vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
+        vectorImage = layer->getVectorImageAtFrame(currentFrame());
     }
 
     VectorImage importedVectorImage;
@@ -606,14 +605,14 @@ void Editor::selectAll()
     {
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
         // as the drawing area is not limited
-        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mFrame);
+        BitmapImage *bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (bitmapImage == nullptr) { return; }
 
         rect = bitmapImage->bounds();
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (vectorImage != nullptr)
         {
             vectorImage->selectAll();
@@ -631,7 +630,7 @@ void Editor::deselectAll()
 
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (vectorImage != nullptr)
         {
             vectorImage->deselectAll();
@@ -645,11 +644,6 @@ void Editor::deselectAll()
 void Editor::updateFrame(int frameNumber)
 {
     emit needPaintAtFrame(frameNumber);
-}
-
-void Editor::updateFrameAndVector(int frameNumber)
-{
-    mScribbleArea->updateAllVectorLayersAt(frameNumber);
 }
 
 void Editor::updateCurrentFrame()
@@ -683,11 +677,9 @@ void Editor::scrubTo(Layer* layer, const int frameIndex)
 void Editor::scrubTo(int frame)
 {
     if (frame < 1) { frame = 1; }
-    int oldFrame = mFrame;
     mFrame = frame;
 
-    emit currentFrameChanged(oldFrame);
-    emit currentFrameChanged(frame);
+    emit scrubbed(frame);
 
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
@@ -755,8 +747,9 @@ KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex, bool ignoreKeyExis
     // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
     while (layer->keyExists(frameIndex))
     {
-        if (layer->type() == Layer::SOUND && static_cast<SoundClip*>(layer->getKeyFrameAt(frameIndex))->fileName().isEmpty()
-                && layer->removeKeyFrame(frameIndex))
+        if (layer->type() == Layer::SOUND
+            && layer->getKeyFrameAt(frameIndex)->fileName().isEmpty()
+            && layer->removeKeyFrame(frameIndex))
         {
             break;
         }
@@ -770,6 +763,7 @@ KeyFrame* Editor::addKeyFrame(int layerIndex, int frameIndex, bool ignoreKeyExis
     if (ok)
     {
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
+        emit frameModified(frameIndex);
         layers()->notifyAnimationLengthChanged();
     }
 
@@ -960,7 +954,7 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
 {
     Layer* layer = mObject->getLayer(layerNumber);
     if (layer != nullptr) layer->switchVisibility();
-    mScribbleArea->updateAllFrames();
+    mScribbleArea->onLayerChanged();
 
     emit updateTimeLine();
 }
@@ -983,7 +977,7 @@ void Editor::moveLayers(const int& fromIndex, const int& toIndex)
             mObject->swapLayers(i, i - 1);
     }
     emit updateTimeLine();
-    mScribbleArea->updateAllFrames();
+    mScribbleArea->onLayerChanged();
 }
 
 Status Editor::pegBarAlignment(QStringList layers)

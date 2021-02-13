@@ -77,6 +77,12 @@ void BitmapImage::setImage(QImage* img)
 
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
+    if (this == &a)
+    {
+        return *this; // a self-assignment
+    }
+
+    KeyFrame::operator=(a);
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
     mImage.reset(new QImage(*a.mImage));
@@ -149,7 +155,7 @@ BitmapImage BitmapImage::copy(QRect rectangle)
     if (rectangle.isEmpty() || mBounds.isEmpty()) return BitmapImage();
 
     QRect intersection2 = rectangle.translated(-mBounds.topLeft());
-    BitmapImage result = BitmapImage(rectangle.topLeft(), image()->copy(intersection2));
+    BitmapImage result(rectangle.topLeft(), image()->copy(intersection2));
     return result;
 }
 
