@@ -103,7 +103,9 @@ private:
                     int x, int y, int width, int height,
                     bool selected, int frameSize) const;
 
+    void paintTicks(QPainter& painter, const QPalette& palette) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
+    void paintGhostOfFrameAtPosition(QPainter& painter, int recTop, int recHeight, int recWidth, bool selected) const;
     void paintLabel(QPainter& painter, const Layer* layer,
                     int x, int y, int width, int height,
                     bool selected, LayerVisibility layerVisibility) const;

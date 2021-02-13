@@ -230,6 +230,7 @@ void TimeLineCells::drawContent()
             }
         }
     }
+
     if (didDetachLayer())
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks)
@@ -274,10 +275,12 @@ void TimeLineCells::drawContent()
         }
     }
 
-    // --- draw top
+    // --- draw track bar background
     painter.setPen(Qt::NoPen);
     painter.setBrush(palette.color(QPalette::Base));
     painter.drawRect(QRect(0, 0, width() - 1, mOffsetY - 1));
+
+    // --- draw bottom line splitter for track bar
     painter.setPen(palette.color(QPalette::Mid));
     painter.drawLine(0, mOffsetY - 2, width() - 1, mOffsetY - 2);
 
@@ -305,36 +308,43 @@ void TimeLineCells::drawContent()
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-        // --- draw ticks
-        painter.setPen(palette.color(QPalette::Text));
-        painter.setBrush(palette.brush(QPalette::Text));
-        int fps = mEditor->playback()->fps();
-        for (int i = mFrameOffset; i < mFrameOffset + (width() - mOffsetX) / mFrameSize; i++)
+        paintTicks(painter, palette);
+    }
+}
+
+void TimeLineCells::paintTicks(QPainter& painter, const QPalette& palette) const
+{
+    painter.setPen(palette.color(QPalette::Text));
+    painter.setBrush(palette.brush(QPalette::Text));
+    int fps = mEditor->playback()->fps();
+    for (int i = mFrameOffset; i < mFrameOffset + (width() - mOffsetX) / mFrameSize; i++)
+    {
+        // line x pos + some offset
+        const int lineX = getFrameX(i) + 1;
+        if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
         {
-            if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
-            {
-                painter.setPen(Qt::NoPen);
-                painter.setBrush(palette.color(QPalette::Highlight));
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(palette.color(QPalette::Highlight));
 
-                painter.drawRect(getFrameX(i), 1, mFrameSize + 1, 2);
+            painter.drawRect(lineX, 1, mFrameSize + 1, 2);
 
-                painter.setPen(palette.color(QPalette::Text));
-                painter.setBrush(palette.brush(QPalette::Text));
-            }
+            painter.setPen(palette.color(QPalette::Text));
+            painter.setBrush(palette.brush(QPalette::Text));
+        }
 
-            if (i%fps == 0 || i%fps == fps / 2)
-            {
-                painter.drawLine(getFrameX(i), 1, getFrameX(i), 5);
-            }
-            else
-            {
-                painter.drawLine(getFrameX(i), 1, getFrameX(i), 3);
-            }
-            if (i == 0 || i % fps == fps - 1)
-            {
-                int incr = (i < 9) ? 4 : 0; // poor man’s text centering
-                painter.drawText(QPoint(getFrameX(i) + incr, 15), QString::number(i + 1));
-            }
+        // Draw large tick at fps mark
+        if (i % fps == 0 || i % fps == fps / 2)
+        {
+            painter.drawLine(lineX, 1, lineX, 5);
+        }
+        else // draw small tick
+        {
+            painter.drawLine(lineX, 1, lineX, 3);
+        }
+        if (i == 0 || i % fps == fps - 1)
+        {
+            int incr = (i < 9) ? 4 : 0; // poor man’s text centering
+            painter.drawText(QPoint(lineX + incr, 15), QString::number(i + 1));
         }
     }
 }
@@ -390,14 +400,14 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
 {
     painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
+    int recTop = y + 1;
+    int recHeight = height - 4;
+    int recWidth = frameSize - 2;
     layer->foreachKeyFrame([&](KeyFrame* key)
     {
         int framePos = key->pos();
 
         int recLeft = getFrameX(framePos) - frameSize + 2;
-        int recTop = y + 1;
-        int recWidth = frameSize - 2;
-        int recHeight = height - 4;
 
         if (key->length() > 1)
         {
@@ -425,23 +435,25 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
     });
 
+    paintGhostOfFrameAtPosition(painter, recTop, recHeight, recWidth, selected);
+}
+
+void TimeLineCells::paintGhostOfFrameAtPosition(QPainter& painter, int recTop, int recHeight, int recWidth, bool selected) const
+{
     int layerNumberMouseY = getLayerNumberAtMouseY();
-    if (selected && layerNumberMouseY != -1
-            && layerNumberMouseY == getCurrentLayerIndex()) {
-        // This aligns the frame with where the frame will be placed.
-        int space = 2;
+    if (selected && layerNumberMouseY != -1 && layerNumberMouseY == getCurrentLayerIndex()) {
+        int recLeft = getFrameX(getFrameNumberAtMouseX()) - recWidth;
 
-        int recLeft = getFrameX(getFrameNumberAtMouseX()) + space - frameSize;
-        int recTop = y + 1;
-        int recWidth = frameSize - 2;
-        int recHeight = height - 4;
-
+        painter.save();
+        const QPalette palette = QApplication::palette();
         // Don't fill
-        painter.setBrush(QColor(255, 255, 255, 0));
-
+        painter.setBrush(Qt::NoBrush);
         // paint border
-        painter.setPen(QColor(255,255,255,100));
+        QColor penColor = palette.color(QPalette::WindowText);
+        penColor.setAlpha(127);
+        painter.setPen(penColor);
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
+        painter.restore();
     }
 }
 
@@ -527,6 +539,7 @@ void TimeLineCells::paintSelection(QPainter& painter, int x, int y, int width, i
 void TimeLineCells::paintLayerGutter(QPainter& painter)
 {
     painter.setPen(QApplication::palette().color(QPalette::Mid));
+
     if (getMouseMoveY() > mLayerDetachThreshold)
     {
         painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+mLayerHeight, width(), 2);
@@ -636,7 +649,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             painter.setBrush(scrubColor);
             painter.setPen(Qt::NoPen);
 
-            int currentFrameStartX = getFrameX(mEditor->currentFrame() - 1);
+            int currentFrameStartX = getFrameX(mEditor->currentFrame() - 1) + 1;
             int currentFrameEndX = getFrameX(mEditor->currentFrame());
             QRect scrubRect;
             scrubRect.setTopLeft(QPoint(currentFrameStartX, 0));
