@@ -121,8 +121,7 @@ public:
     QList<int> dirtyFrames() const { return mDirtyFrames; }
 
     /** Mark the frame position as dirty.
-     *  Any operation causing the frame to be modified, added, updated or removed, should call this.
-     *  The mark is cleared on the next paint buffer operation. */
+     *  Any operation causing the frame to be modified, added, updated or removed, should call this. */
     void markFrameAsDirty(const int frameNumber) { mDirtyFrames << frameNumber; }
 
     /** Clear the list of dirty keyframes */
