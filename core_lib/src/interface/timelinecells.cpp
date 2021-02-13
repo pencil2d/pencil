@@ -186,9 +186,6 @@ void TimeLineCells::drawContent()
         }
     }
 
-    mCurrentFrame = mEditor->currentFrame();
-    mLayerIndex = mEditor->currentLayerIndex();
-
     QPainter painter(mCache);
 
     const Object* object = mEditor->object();
@@ -417,7 +414,7 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         }
 
         // Paint the frame border
-        if (selected && key->pos() == getCurrentFrame()) {
+        if (selected && key->pos() == mEditor->currentFrame()) {
             painter.setPen(Qt::white);
         } else {
             painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -441,7 +438,7 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
 void TimeLineCells::paintGhostOfFrameAtPosition(QPainter& painter, int recTop, int recHeight, int recWidth, bool selected) const
 {
     int layerNumberMouseY = getLayerNumberAtMouseY();
-    if (selected && layerNumberMouseY != -1 && layerNumberMouseY == getCurrentLayerIndex()) {
+    if (selected && layerNumberMouseY != -1 && layerNumberMouseY == mEditor->currentLayerIndex()) {
         int recLeft = getFrameX(getFrameNumberAtMouseX()) - recWidth;
 
         painter.save();
@@ -536,7 +533,7 @@ void TimeLineCells::paintSelection(QPainter& painter, int x, int y, int width, i
     painter.restore();
 }
 
-void TimeLineCells::paintLayerGutter(QPainter& painter)
+void TimeLineCells::paintLayerGutter(QPainter& painter) const
 {
     painter.setPen(QApplication::palette().color(QPalette::Mid));
 
@@ -550,7 +547,7 @@ void TimeLineCells::paintLayerGutter(QPainter& painter)
     }
 }
 
-void TimeLineCells::paintOnionSkin(QPainter& painter)
+void TimeLineCells::paintOnionSkin(QPainter& painter) const
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) { return; }

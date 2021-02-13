@@ -61,8 +61,6 @@ public:
 
     int getFrameLength() const {return mFrameLength;}
     int getFrameSize() const { return mFrameSize; }
-    int getCurrentFrame() const { return mCurrentFrame; }
-    int getCurrentLayerIndex() const { return mLayerIndex; }
 
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
@@ -87,7 +85,6 @@ public slots:
 protected:
     void trackScrubber();
     void drawContent();
-    void paintOnionSkin(QPainter& painter);
     void paintEvent(QPaintEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
@@ -110,7 +107,8 @@ private:
                     int x, int y, int width, int height,
                     bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
-    void paintLayerGutter(QPainter& painter);
+    void paintLayerGutter(QPainter& painter) const;
+    void paintOnionSkin(QPainter& painter) const;
 
     void editLayerProperties(Layer* layer) const;
     void editLayerProperties(LayerCamera *layer) const;
@@ -133,8 +131,6 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
-    int mLayerIndex = 0;
-    int mCurrentFrame = 0;
     int mLastScrubFrame = 0;
 
     int mFramePosMouseX = 0;
