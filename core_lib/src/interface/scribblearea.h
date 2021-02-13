@@ -97,7 +97,7 @@ public:
     void onScrubbed(int frameNumber);
 
     /** Frames moved, invalidate cache for affected frames */
-    void onFramesMoved();
+    void onFramesModified();
 
     /** Playstate changed, invalidate relevant cache */
     void onPlayStateChanged();

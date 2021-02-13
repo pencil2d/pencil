@@ -188,7 +188,7 @@ void ScribbleArea::updateFrame(int frame)
 void ScribbleArea::invalidateCacheForDirtyFrames()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
-    for (int pos : mEditor->layers()->currentLayer()->dirtyFrames()) {
+    for (int pos : currentLayer->dirtyFrames()) {
 
         invalidateCacheForFrame(pos);
         invalidateOnionSkinsCacheAround(pos);
@@ -280,7 +280,7 @@ void ScribbleArea::onScrubbed(int frameNumber)
     updateFrame(frameNumber);
 }
 
-void ScribbleArea::onFramesMoved()
+void ScribbleArea::onFramesModified()
 {
     invalidateCacheForDirtyFrames();
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
@@ -297,8 +297,11 @@ void ScribbleArea::onCurrentFrameModified()
 void ScribbleArea::onFrameModified(int frameNumber)
 {
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
+        invalidateOnionSkinsCacheAround(frameNumber);
         invalidateLayerPixmapCache();
     }
+    // We can't assume that the current frame is in the dirty frame list here
+    // therefore the extra invalidation step
     invalidateCacheForFrame(frameNumber);
     updateFrame(frameNumber);
 }
