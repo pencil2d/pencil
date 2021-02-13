@@ -119,10 +119,7 @@ public:
 
     void deselectAll();
 
-    void moveFrame(const int oldPosition, const int newPosition);
-    void moveFrames(const QList<int> oldIndexes, const QList<int> newIndexes);
-
-    bool offsetSelectedFrames(int offset);
+    bool moveSelectedFrames(int offset);
     QList<int> getSelectedFrameIndexes() { return mSelectedFrames_byPosition; }
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);

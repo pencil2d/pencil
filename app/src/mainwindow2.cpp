@@ -348,8 +348,8 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom50,  &QAction::triggered, this, [this]{ mCommands->zoomTo(0.5f); });
     connect(ui->actionZoom33,  &QAction::triggered, this, [this]{ mCommands->zoomTo(0.33f); });
     connect(ui->actionZoom25,  &QAction::triggered, this, [this]{ mCommands->zoomTo(0.25f); });
-    connect(ui->actionHorizontal_Flip, &QAction::triggered, mEditor->view(), &ViewManager::flipHorizontal);
-    connect(ui->actionVertical_Flip, &QAction::triggered, mEditor->view(), &ViewManager::flipVertical);
+    connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleViewX);
+    connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleViewY);
     connect(mEditor->view(), &ViewManager::viewFlipped, this, &MainWindow2::viewFlipped);
 
     PreferenceManager* prefs = mEditor->preference();
@@ -1077,7 +1077,7 @@ void MainWindow2::resetAndDockAllSubWidgets()
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 }
 
-void MainWindow2::newObject() const
+void MainWindow2::newObject()
 {
     auto object = new Object();
     object->init();

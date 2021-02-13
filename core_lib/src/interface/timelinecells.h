@@ -150,7 +150,7 @@ private:
 
     int mNumOfFramesOffset = 0;
 
-    const static int mLayerDetatchThreshold = 5;
+    const static int mLayerDetachThreshold = 5;
 };
 
 #endif // TIMELINECELLS_H

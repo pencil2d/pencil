@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QSettings>
 
+#include "timeline.h"
 #include "camerapropertiesdialog.h"
 #include "editor.h"
 #include "keyframe.h"
@@ -861,7 +862,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             int offset = frameNumber - mLastFrameNumber;
 
                             mNumOfFramesOffset += offset;
-                            currentLayer->offsetSelectedFrames(offset);
+                            currentLayer->moveSelectedFrames(offset);
                             mEditor->layers()->notifyAnimationLengthChanged();
                             mEditor->framesMoved();
                         }

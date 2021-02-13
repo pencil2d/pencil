@@ -132,8 +132,6 @@ void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged);
-    // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
-    connect(mLayerManager, &LayerManager::layerDeleted, this, &Editor::sanitizeBackupElementsAfterLayerDeletion);
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
@@ -444,15 +442,14 @@ bool Editor::importBitmapImage(QString filePath, int space)
 
     std::map<int, KeyFrame*, std::greater<int>> canvasKeyFrames;
 
-    for(auto map : layer->getKeysInLayer())
-    {
+    layer->foreachKeyFrame([&canvasKeyFrames] (KeyFrame* key) {
         // make sure file is loaded when trying to get bitmap from layer...
-        map.second->loadFile();
-        canvasKeyFrames.insert(std::make_pair(map.first, map.second->clone()));
-    }
+        key->loadFile();
+        canvasKeyFrames.insert(std::make_pair(key->pos(), key->clone()));
+    });
 
-    const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
-                     view()->getImportView().dy() - (img.height() / 2));
+    const QPoint pos(qRound(view()->getImportView().dx() - (img.width() / 2)),
+                     qRound(view()->getImportView().dy() - (img.height() / 2)));
 
     std::map<int, KeyFrame*, std::less<int>> importedKeyFrames;
     while (reader.read(&img))
@@ -617,7 +614,6 @@ void Editor::selectAll()
         {
             vectorImage->selectAll();
             rect = vectorImage->getSelectionRect();
-            select()->addCurvesToVectorSelection(vectorImage->getSelectedCurveNumbers());
         }
     }
     select()->setSelection(rect, false);

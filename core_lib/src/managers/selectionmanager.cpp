@@ -267,11 +267,6 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     }
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
-{
-    return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
-}
-
 void SelectionManager::setSelection(QRectF rect, bool roundPixels)
 {
     resetSelectionTransformProperties();
@@ -323,6 +318,16 @@ QVector<QPointF> SelectionManager::calcSelectionCenterPoints()
 }
 
 
+int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
+{
+    return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
+}
+
+bool SelectionManager::selectionMoved() const
+{
+    return !mSelectionTransform.isIdentity();
+}
+
 QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 {
     qreal factor = mTransformedSelection.width() / mTransformedSelection.height();
@@ -355,15 +360,6 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
-    if (flipVertical)
-    {
-        editor()->backup(tr("Flip selection vertically"));
-    }
-    else
-    {
-        editor()->backup(tr("Flip selection horizontally"));
-    }
-
     qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
     qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
     QVector<QPointF> centerPoints = calcSelectionCenterPoints();
@@ -401,7 +397,6 @@ void SelectionManager::resetSelectionProperties()
     mLastSelectionPolygonF = QPolygonF();
 
     mSomethingSelected = false;
-    vectorSelection.clear();
 
     emit selectionChanged();
 }

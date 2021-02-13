@@ -58,6 +58,7 @@ GNU General Public License for more details.
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
 #include "errordialog.h"
+#include "camerapropertiesdialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -191,7 +192,7 @@ Status ActionCommands::importSound(FileType type)
 
     if (!st.ok())
     {
-        mEditor->removeKey();
+        mEditor->removeCurrentKey();
         emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
     } else {
         mEditor->backups()->keyAdded();
@@ -616,7 +617,7 @@ void ActionCommands::rotateCounterClockwise()
     }
 }
 
-void ActionCommands::toggleMirror()
+void ActionCommands::toggleViewX()
 {
     BackupManager* backup = mEditor->backups();
 
@@ -626,7 +627,7 @@ void ActionCommands::toggleMirror()
     backup->flipView(flipX, DIRECTION::HORIZONTAL);
 }
 
-void ActionCommands::toggleMirrorV()
+void ActionCommands::toggleViewY()
 {
     BackupManager* backup = mEditor->backups();
 
@@ -778,6 +779,7 @@ void ActionCommands::moveFrameBackward()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
+        auto backupMan = mEditor->backups();
         backupMan->saveStates();
         if (layer->moveKeyFrame(mEditor->currentFrame(), -1))
         {
@@ -872,14 +874,14 @@ Status ActionCommands::deleteCurrentLayer()
 
     backups->saveStates();
     std::map<int, KeyFrame*, std::greater<int>> keyFrames;
-    for(auto map : layer->getKeysInLayer())
+    layer->foreachKeyFrame([&keyFrames] (KeyFrame* key)
     {
-        keyFrames.insert(std::make_pair(map.first, map.second->clone()));
-    }
+        keyFrames.insert(std::make_pair(key->pos(), key->clone()));
+    });
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(strLayerName),
+                                   tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(layerName),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)

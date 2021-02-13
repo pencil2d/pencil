@@ -224,7 +224,6 @@ void SelectTool::keepSelection()
         VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         if (vectorImage == nullptr) { return; }
         selectMan->setSelection(vectorImage->getSelectionRect());
-        selectMan->addCurvesToVectorSelection(vectorImage->getSelectedCurveNumbers());
     }
 
     mEditor->backups()->selection();

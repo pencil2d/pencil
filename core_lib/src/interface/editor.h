@@ -182,8 +182,6 @@ public: //slots
     KeyFrame* addKeyFrameToLayer(Layer* layer, const int layerIndex, int frameIndex, const bool ignoreKeyExists);
     void addKeyContaining(int layerId, int frameIndex, KeyFrame* key);
 
-
-    void removeKey();
     void removeCurrentKey();
     void removeKeyAt(int layerIndex, int frameIndex);
     void removeKeyAtLayerId(int layerId, int frameIndex);

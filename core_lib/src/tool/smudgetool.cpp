@@ -180,9 +180,6 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
                     mNumberOfCurvesSelected = 0;
                 }
 
-                selectMan->addCurvesAndVerticesToVectorSelection(selectMan->closestCurves(),
-                                                                 selectMan->closestVertices());
-
                 vectorImage->setSelected(selectMan->closestCurves(), selectMan->closestVertices(), true);
 
                 if (!mDeselection || mNumberOfCurvesSelected != mPreviousNumberOfCurvesSelected) {

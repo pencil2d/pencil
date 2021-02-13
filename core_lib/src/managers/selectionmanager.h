@@ -46,7 +46,6 @@ public:
 
     void updatePolygons();
     void updateTransformedSelection() { mTransformedSelection = mTempTransformedSelection; }
-    void sync();
 
     QRectF mappedSelection();
 
@@ -81,8 +80,6 @@ public:
 
     const VectorSelection vectorSelection() { return mVectorSelection; }
     void setVectorSelection(const VectorSelection& vectorSelection) { mVectorSelection = vectorSelection; }
-    void addCurvesAndVerticesToVectorSelection(const QList<int> curves, const QList<VertexRef> vertices);
-    void addCurvesToVectorSelection(const QList<int> curves);
 
     QTransform selectionTransform() { return mSelectionTransform; }
     void setSelectionTransform(QTransform transform) { mSelectionTransform = transform; }
@@ -125,14 +122,13 @@ public:
 
     bool selectionMoved() const;
 
-
 signals:
     void selectionChanged();
     void needPaintAndApply();
     void needDeleteSelection();
 
 private:
-    int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
+    int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
 
     VectorSelection mVectorSelection;
     QRectF mSelection;

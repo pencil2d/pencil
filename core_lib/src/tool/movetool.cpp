@@ -136,7 +136,6 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
 
     if (layer->type() == Layer::VECTOR) {
         applyTransformation();
-        selectMan->sync();
     }
 
     selectMan->updatePolygons();
@@ -274,7 +273,6 @@ void MoveTool::setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers 
 
         vectorImage->setSelected(selectedCurves, true);
         selectMan->setSelection(vectorImage->getSelectionRect());
-        selectMan->addCurvesToVectorSelection(selectedCurves);
     }
 }
 

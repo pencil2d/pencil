@@ -64,7 +64,6 @@ signals:
     void newVectorLayer();
     void newSoundLayer();
     void newCameraLayer();
-
     void deleteCurrentLayer();
 
     void soundClick( bool );

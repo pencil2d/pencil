@@ -44,8 +44,6 @@ public:
     QRect getViewRect();
     QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
-
-    void setViewRect(QRect newRect) {viewRect = newRect; }
 signals:
     void resolutionChanged();
 

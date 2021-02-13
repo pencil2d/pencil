@@ -191,7 +191,8 @@ void PencilTool::pointerReleaseEvent(PointerEvent *event)
     }
 
     mEditor->backups()->saveStates();
-    if ( layer->type() == Layer::BITMAP )
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::BITMAP )
     {
        paintBitmapStroke();
        mEditor->backups()->bitmap(tr("Bitmap: Pencil"));

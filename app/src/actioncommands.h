@@ -57,6 +57,8 @@ public:
     void resetView();
     void rotateClockwise();
     void rotateCounterClockwise();
+    void toggleViewX();
+    void toggleViewY();
 
     // Animation
     void PlayStop();

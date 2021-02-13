@@ -1192,7 +1192,7 @@ void MoveFramesElement::applyToSingle(Layer* layer, const int oldFrameIndex, con
 void MoveFramesElement::applyToMulti(Layer* layer, const int offset, const QList<int> selectedFrameIndexes)
 {
     layer->setFramesSelected(selectedFrameIndexes);
-    layer->offsetSelectedFrames(offset);
+    layer->moveSelectedFrames(offset);
     layer->deselectAll();
 }
 

@@ -488,7 +488,7 @@ void Layer::deselectAll()
     }
 }
 
-bool Layer::offsetSelectedFrames(int offset)
+bool Layer::moveSelectedFrames(int offset)
 {
     if (offset != 0 && mSelectedFrames_byPosition.count() > 0)
     {
@@ -554,7 +554,7 @@ bool Layer::offsetSelectedFrames(int offset)
             }
             indexInSelection = indexInSelection + step;
         }
-        
+
         // Update selection lists
         for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
         {

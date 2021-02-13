@@ -284,27 +284,6 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     }
 }
 
-void TimeLine::deleteCurrentLayer()
-{
-    LayerManager* layerMgr = editor()->layers();
-    QString strLayerName = layerMgr->currentLayer()->name();
-
-    int ret = QMessageBox::warning(this,
-                                   tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(strLayerName),
-                                   QMessageBox::Ok | QMessageBox::Cancel,
-                                   QMessageBox::Ok);
-    if (ret == QMessageBox::Ok)
-    {
-        Status st = layerMgr->deleteLayer(editor()->currentLayerIndex());
-        if (st == Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER)
-        {
-            QMessageBox::information(this, "",
-                                     tr("Please keep at least one camera layer in project"));
-        }
-    }
-}
-
 void TimeLine::updateFrame(int frameNumber)
 {
     Q_ASSERT(mTracks);
