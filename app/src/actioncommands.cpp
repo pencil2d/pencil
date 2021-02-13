@@ -659,7 +659,7 @@ void ActionCommands::moveFrameForward()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
-    mEditor->framesMoved();
+    mEditor->framesModified();
 }
 
 void ActionCommands::moveFrameBackward()
@@ -672,7 +672,7 @@ void ActionCommands::moveFrameBackward()
             mEditor->scrubBackward();
         }
     }
-    mEditor->framesMoved();
+    mEditor->framesModified();
 }
 
 Status ActionCommands::addNewBitmapLayer()
