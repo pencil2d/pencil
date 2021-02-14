@@ -560,7 +560,7 @@ void Layer::setExposureForSelectedFrames(int offset)
         while ((offset > 0 && getNextKeyFramePosition(itPos) - positionInFront < offsetList[i]) ||
                (getNextKeyFramePosition(itPos) - positionInFront > offsetList[i] && getNextKeyFramePosition(itPos) - positionInFront > 0)) {
 
-           newSelectionOfConnectedFrames(getNextKeyFramePosition(itPos));
+           selectAllFramesAfter(getNextKeyFramePosition(itPos));
 
            for (int selIndex = 0; selIndex < mSelectedFrames_byPosition.count(); selIndex++) {
 

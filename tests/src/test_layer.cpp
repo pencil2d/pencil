@@ -527,10 +527,13 @@ TEST_CASE("Layer::setExposureForSelectedFrames")
 
         REQUIRE(layer->selectedKeyFrameCount() == 2);
         REQUIRE(layer->isFrameSelected(19));
-        REQUIRE(layer->isFrameSelected(25));
+        REQUIRE(layer->isFrameSelected(26));
 
-        REQUIRE(layer->selectedKeyFramesByLast().at(0) == 25);
+        REQUIRE(layer->selectedKeyFramesByLast().at(0) == 26);
         REQUIRE(layer->selectedKeyFramesByLast().at(1) == 19);
+
+        REQUIRE(layer->keyExists(31));
+        REQUIRE(layer->keyExists(34));
     }
 
     SECTION("Subtract exposure: linear")
@@ -573,9 +576,10 @@ TEST_CASE("Layer::setExposureForSelectedFrames")
 
         REQUIRE(layer->selectedKeyFrameCount() == 2);
         REQUIRE(layer->isFrameSelected(6));
-        REQUIRE(layer->isFrameSelected(23));
+        REQUIRE(layer->isFrameSelected(22));
+
         REQUIRE(layer->keyExists(8));
-        REQUIRE(layer->keyExists(22));
+        REQUIRE(layer->keyExists(21));
     }
     delete obj;
 }
