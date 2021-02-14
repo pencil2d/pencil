@@ -48,8 +48,7 @@ public:
 
     int getLayerNumber(int y);
     int getInbetweenLayerNumber(int y);
-    int getLayerY(int layerNumber);
-    float getFrameNumberF(int x) const;
+    int getLayerY(int layerNumber) const;
     int getFrameNumber(int x) const;
     int getFrameX(int frameNumber) const;
     int getMouseMoveY() const { return mMouseMoveY; }
@@ -67,11 +66,6 @@ public:
     bool didDetachLayer() const;
     int getCurrentFrame() const { return mCurrentFrame; }
     int getCurrentLayerNumber() { return mCurrentLayerNumber; }
-
-    bool currentlyMovingFrames() const { return mMovingFrames; }
-    int getMouseX() const { return mMouseX; }
-    int mousePressPosX() const { return mMousePressX; }
-
 
 signals:
     void mouseMovedY(int);
@@ -102,7 +96,7 @@ private slots:
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, const Layer* layer, QColor trackCol, int y, int height, bool selected, int frameSize) const;
-    void paintSelectedFrames(QPainter& painter, const Layer* layer, int recWidth, int recTop, int recHeight, int frameSize) const;
+    void paintSelectedFrames(QPainter& painter, const Layer* layer, int layerIndex) const;
     void paintLabel(QPainter& painter, const Layer* layer, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
 
@@ -150,7 +144,7 @@ private:
 
     bool mClickSelecting = false;
 
-    int mMouseX = 0;
+    int mMouseMoveX = 0;
     int mMousePressX = 0;
 
     const static int mOffsetX = 0;

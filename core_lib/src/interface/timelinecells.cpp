@@ -24,6 +24,8 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QSettings>
 
+#include <QDebug>
+
 #include "camerapropertiesdialog.h"
 #include "editor.h"
 #include "keyframe.h"
@@ -91,11 +93,6 @@ int TimeLineCells::getFrameNumber(int x) const
     return mFrameOffset + 1 + (x - mOffsetX) / mFrameSize;
 }
 
-float TimeLineCells::getFrameNumberF(int x) const
-{
-    return static_cast<float>(mFrameOffset + 1) + static_cast<float>(x - mOffsetX) / static_cast<float>(mFrameSize);
-}
-
 int TimeLineCells::getFrameX(int frameNumber) const
 {
     int x = mOffsetX + (frameNumber - mFrameOffset) * mFrameSize;
@@ -155,7 +152,7 @@ int TimeLineCells::getInbetweenLayerNumber(int y) {
     return layerNumber;
 }
 
-int TimeLineCells::getLayerY(int layerNumber)
+int TimeLineCells::getLayerY(int layerNumber) const
 {
     return mOffsetY + (mEditor->object()->getLayerCount() - 1 - layerNumber - mLayerOffset)*mLayerHeight;
 }
@@ -339,6 +336,12 @@ void TimeLineCells::drawContent()
                 painter.drawText(QPoint(getFrameX(i) + incr, 15), QString::number(i + 1));
             }
         }
+
+        for (int i = 0; i < object->getLayerCount(); i++) {
+
+            Layer* layer = object->getLayer(i);
+            paintSelectedFrames(painter, layer, i);
+        }
     }
 }
 
@@ -423,41 +426,45 @@ void TimeLineCells::paintFrames(QPainter& painter, const Layer* layer, QColor tr
             painter.drawRect(recLeft, recTop, recWidth, recHeight);
         }
     });
-
-    paintSelectedFrames(painter, layer, recWidth, recTop, recHeight, frameSize);
 }
 
-void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, int recWidth, int recTop, int recHeight, int frameSize) const
+void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, const int layerIndex) const
 {
-    int mouseX = getMouseX();
-    int posUnderCursor = getFrameNumber(mousePressPosX());
+    int mouseX = mMouseMoveX;
+    int posUnderCursor = getFrameNumber(mMousePressX);
+    int frameSize = mFrameSize;
+    int recWidth = frameSize - 2;
+    int recHeight = mLayerHeight - 4;
+    int recTop = getLayerY(layerIndex) + 1;
+
+    painter.save();
     for (int framePos : layer->getSelectedFramesByPos()) {
 
         KeyFrame* key = layer->getKeyFrameAt(framePos);
         if (key->length() > 1)
         {
-            // This is especially for sound clip.
-            // Sound clip is the only type of KeyFrame that has variant frame length.
+            // This is a special case for sound clip.
+            // Sound clip is the only type of KeyFrame that has variable frame length.
             recWidth = frameSize * key->length() - 2;
         }
 
-        if (key->isSelected())
-        {
-            painter.setBrush(QColor(60, 60, 60));
-        }
+        painter.setBrush(QColor(60, 60, 60));
+        painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
         int frameX = getFrameX(framePos);
-        if (currentlyMovingFrames()) {
-            int translatedFramePos = mouseX-getFrameX(framePos);
+        if (mMovingFrames) {
             int offset = framePos - posUnderCursor;
+            int newFrameX = getFrameX(getFrameNumber(getFrameX(offset)+mouseX))-recWidth;
 
-            int newFrameX = frameX+(offset*frameSize)+translatedFramePos;
-            painter.drawRect(newFrameX, recTop, recWidth, recHeight);
+            // Paint as frames are hovering
+            painter.drawRect(newFrameX, recTop-4, recWidth, recHeight);
+
         } else {
             int currentFrameX = frameX - recWidth;
             painter.drawRect(currentFrameX, recTop, recWidth, recHeight);
         }
     }
+    painter.restore();
 }
 
 void TimeLineCells::paintLabel(QPainter& painter, const Layer* layer,
@@ -632,15 +639,15 @@ void TimeLineCells::paintEvent(QPaintEvent*)
 
     if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-        if (!isPlaying)
-        {
-            paintOnionSkin(painter);
-        }
 
         if (mPrevFrame != mEditor->currentFrame()  || mEditor->playback()->isPlaying())
         {
             mPrevFrame = mEditor->currentFrame();
             trackScrubber();
+        }
+
+        if (!isPlaying) {
+            paintOnionSkin(painter);
         }
 
         // --- draw the position of the current frame
@@ -650,7 +657,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             scrubColor.setAlpha(160);
             painter.setBrush(scrubColor);
             painter.setPen(Qt::NoPen);
-            //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
+
             QRect scrubRect;
             scrubRect.setTopLeft(QPoint(getFrameX(mEditor->currentFrame() - 1), 0));
             scrubRect.setBottomRight(QPoint(getFrameX(mEditor->currentFrame()), height()));
@@ -827,7 +834,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
-    mMouseX = event->pos().x();
+    mMouseMoveX = event->pos().x();
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
         mEndY = event->pos().y();
@@ -860,26 +867,23 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                 {
                     Layer *currentLayer = mEditor->object()->getLayer(mStartLayerNumber);
 
-                    // Did we move to another frame ?
-                    if (frameNumber != mLastFrameNumber)
-                    {
-                        // Check if the frame we clicked was selected
-                        if (mCanMoveFrame) {
+                    // Check if the frame we clicked was selected
+                    if (mCanMoveFrame) {
 
-                            // If it is the case, we move the selected frames in the layer
-                            mMovingFrames = true;
-                        }
-                        else if (mCanBoxSelect)
-                        {
-                            // Otherwise, we do a box select
-                            mBoxSelecting = true;
-
-                            currentLayer->deselectAll();
-                            currentLayer->setFrameSelected(mStartFrameNumber, true);
-                            currentLayer->extendSelectionTo(frameNumber);
-                        }
-                        mLastFrameNumber = frameNumber;
+                        // If it is the case, we move the selected frames in the layer
+                        mMovingFrames = true;
+                        qDebug() << "mMovingFrames: " << mMovingFrames;
                     }
+                    else if (mCanBoxSelect)
+                    {
+                        // Otherwise, we do a box select
+                        mBoxSelecting = true;
+
+                        currentLayer->deselectAll();
+                        currentLayer->setFrameSelected(mStartFrameNumber, true);
+                        currentLayer->extendSelectionTo(frameNumber);
+                    }
+                    mLastFrameNumber = frameNumber;
                 }
             }
         }
@@ -896,26 +900,27 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     mTimeLine->scrubbing = false;
 
     int frameNumber = getFrameNumber(event->pos().x());
-    if (frameNumber < 1) frameNumber = -1;
+    if (frameNumber < 1) frameNumber = 1;
     int layerNumber = getLayerNumber(event->pos().y());
-    if (mType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton && layerNumber != -1 && layerNumber < mEditor->object()->getLayerCount())
+    if (mType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton)
     {
         // We should affect the current layer based on what's selected, not where the mouse currently is.
-        Layer *currentLayer = mEditor->object()->getLayer(mCurrentLayerNumber);
+        Layer *currentLayer = mEditor->layers()->getLayer(mCurrentLayerNumber);
+        if (currentLayer == nullptr) { return; }
 
         if (mMovingFrames) {
 
             // New offset is first added after 50% of the frame has been crossed
-            frameNumber = qRound(getFrameNumberF(event->pos().x()));
-            int posUnderCursor = getFrameNumber(mousePressPosX());
+            int frameNumber = getFrameNumber(event->pos().x());
+            int posUnderCursor = getFrameNumber(mMousePressX);
             int offset = frameNumber - posUnderCursor;
+
             currentLayer->moveSelectedFrames(offset);
 
             mEditor->layers()->notifyAnimationLengthChanged();
             mEditor->framesMoved();
         }
-
-        if (!mTimeLine->scrubbing && !mMovingFrames && !mClickSelecting && !mBoxSelecting)
+        else if (!mTimeLine->scrubbing && !mMovingFrames && !mClickSelecting && !mBoxSelecting)
         {
             // De-selecting if we didn't move, scrub nor select anything
             bool multipleSelection = (event->modifiers() == Qt::ControlModifier);
