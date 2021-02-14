@@ -44,7 +44,7 @@ class BackupBitmapElement : public BackupElement
 {
     Q_OBJECT
 public:
-    explicit BackupBitmapElement(BitmapImage* bi) { bitmapImage = bi->copy(); }
+    explicit BackupBitmapElement(BitmapImage* bi) { bitmapImage = *bi; }
 
     int layer = 0;
     int frame = 0;
@@ -74,7 +74,7 @@ public:
     int layer = 0;
     int frame = 0;
     SoundClip clip;
-    QString fileName;
+    QString fileName, originalName;
 
     int type() override { return BackupElement::SOUND_MODIF; }
     void restore( Editor* ) override;

@@ -30,7 +30,7 @@ class ImportLayersDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ImportLayersDialog(QWidget *parent = nullptr);
+    explicit ImportLayersDialog(QWidget* parent);
     ~ImportLayersDialog();
 
     void setCore(Editor *editor);

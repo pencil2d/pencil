@@ -44,10 +44,9 @@ public:
     explicit ColorSlider(QWidget* parent);
     ~ColorSlider() override;
 
-    void init(ColorSpecType specType, ColorType type, QColor color, qreal min, qreal max);
-    void init(ColorSpecType specType, ColorType type, QColor color, qreal min, qreal max, QSize size);
+    void init(ColorSpecType specType, ColorType type, const QColor &color, qreal min, qreal max);
 
-    QLinearGradient setColorSpec(QColor color);
+    QLinearGradient setColorSpec(const QColor &color);
 
     QColor color() { return mColor; }
 
@@ -73,7 +72,6 @@ public:
 
 protected:
     void paintEvent(QPaintEvent* event) override;
-    void resizeEvent(QResizeEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
 
@@ -82,10 +80,10 @@ signals:
 
 private:
 
-    void drawColorBox(QColor color, QSize size);
-    void drawPicker(QColor color);
-    QLinearGradient hsvGradient(QColor color);
-    QLinearGradient rgbGradient(QColor color);
+    void drawColorBox(const QColor &color, QSize size);
+    void drawPicker(const QColor &color);
+    QLinearGradient hsvGradient(const QColor &color);
+    QLinearGradient rgbGradient(const QColor &color);
 
     void colorPicked(QPoint point);
 
@@ -97,8 +95,6 @@ private:
 
     ColorType mColorType = ColorType::HUE;
     ColorSpecType mSpecType = ColorSpecType::RGB;
-
-    QSize mSize = QSize(0,0);
 
     QLinearGradient mGradient;
 };

@@ -14,8 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#ifndef PENCIL_FILE_FORMAT_H
-#define PENCIL_FILE_FORMAT_H
+#ifndef FILEFORMAT_H
+#define FILEFORMAT_H
 
 #include <QString>
 
@@ -33,7 +33,7 @@ GNU General Public License for more details.
     QObject::tr("Pencil2D Project") + " (*.pclx);;" + QObject::tr("Legacy Pencil2D Project") + " (*.pcl)"
 
 #define PFF_MOVIE_EXT \
-    QObject::tr("Movie formats") + "*.avi *.mpg *.mpeg *.mov *.mp4 *.mkv *.ogv *.swf *.flv *.webm *.wmv);;" \
+    QObject::tr("Movie formats") + "(*.avi *.mpg *.mpeg *.mov *.mp4 *.mkv *.ogv *.swf *.flv *.webm *.wmv);;" \
         "AVI(*.avi);;MPEG(*.mpg *.mpeg);;MOV(*.mov);;MP4(*.mp4);;MKV(*.mkv);;OGV(*.ogv)" \
         ";;SWF(*.swf);;FLV(*.flv);;WEBM(*.webm);;WMV(*.wmv)"
 
@@ -78,5 +78,7 @@ bool removePFFTmpDirectory(const QString& dirName);
 QString uniqueString(int len);
 QString retrieveProjectNameFromTempPath(const QString& path);
 
+QString detectFormatByFileNameExtension(const QString& fileName);
+bool isMovieFormat(const QString& format);
 
-#endif
+#endif // FILEFORMAT_H

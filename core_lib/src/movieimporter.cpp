@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QProcess>
 #include <QtMath>
 #include <QTime>
+#include <QFileInfo>
 
 #include "movieexporter.h"
 #include "layermanager.h"
@@ -319,8 +320,8 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<bo
     if (layer->type() != Layer::SOUND)
     {
         status = Status::FAIL;
-        status.setTitle(QObject::tr("Sound only"));
-        status.setDescription(QObject::tr("You need to be on a sound layer to import the audio"));
+        status.setTitle(tr("Sound only"));
+        status.setDescription(tr("You need to be on a sound layer to import the audio"));
         return status;
     }
 
@@ -332,8 +333,8 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<bo
         if (!key->fileName().isEmpty())
         {
             status = Status::FAIL;
-            status.setTitle(QObject::tr("Move to an empty frame"));
-            status.setDescription(QObject::tr("A frame already exists on frame: ") + QString::number(currentFrame) + tr(" Move the scrubber to a empty position on the timeline and try again"));
+            status.setTitle(tr("Move to an empty frame"));
+            status.setDescription(tr("A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again").arg(currentFrame));
             return status;
         }
         layer->removeKeyFrame(currentFrame);
@@ -341,7 +342,7 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<bo
 
     QString audioPath = QDir(mTempDir->path()).filePath("audio.wav");
 
-    QStringList args = {"-i", filePath, audioPath};
+    QStringList args{ "-i", filePath, audioPath };
 
     status = MovieExporter::executeFFmpeg(ffmpegLocation(), args, [&progress, this] (int frame) {
         Q_UNUSED(frame)
@@ -351,13 +352,12 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<bo
     if(mCanceled) return Status::CANCELED;
     progress(90);
 
-    SoundClip* key = nullptr;
-
     Q_ASSERT(!layer->keyExists(currentFrame));
 
-    key = new SoundClip();
+    SoundClip* key = new SoundClip;
     layer->addKeyFrame(currentFrame, key);
 
+    key->setSoundClipName(QFileInfo(filePath).fileName()); // keep the original file name
     Status st = mEditor->sound()->loadSound(key, audioPath);
 
     if (!st.ok())

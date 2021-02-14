@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include "pencilerror.h"
+#include "filetype.h"
 
 class Editor;
 class QWidget;
@@ -30,15 +31,14 @@ class ActionCommands : public QObject
     Q_OBJECT
 
 public:
-    explicit ActionCommands(QWidget* parent = nullptr);
+    explicit ActionCommands(QWidget* parent);
     virtual ~ActionCommands();
 
     void setCore(Editor* e) { mEditor = e; }
 
     // file
     Status importMovieVideo();
-    Status importMovieAudio();
-    Status importSound();
+    Status importSound(FileType type);
     Status exportMovie(bool isGif = false);
     Status exportImageSequence();
     Status exportImage();

@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QImageReader>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QTemporaryDir>
 
 #include "object.h"
 #include "vectorimage.h"
@@ -45,7 +46,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "timeline.h"
 #include "util.h"
-#include "movieexporter.h"
 
 
 static BitmapImage g_clipboardBitmapImage;
@@ -164,7 +164,7 @@ void Editor::settingUpdated(SETTING setting)
         mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
         break;
     case SETTING::ONION_TYPE:
-        mScribbleArea->updateAllFrames();
+        mScribbleArea->onOnionSkinTypeChanged();
         emit updateTimeLine();
         break;
     case SETTING::FRAME_POOL_SIZE:
@@ -244,10 +244,11 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
     {
         if (layer->type() == Layer::BITMAP)
         {
-            BitmapImage* bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(backupFrame, 0);
-            if (currentFrame() == 1) {
+            BitmapImage* bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(backupFrame));
+            if (currentFrame() == 1)
+            {
                 int previous = layer->getPreviousKeyFramePosition(backupFrame);
-                bitmapImage = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(previous);
+                bitmapImage = static_cast<BitmapImage*>(layer->getKeyFrameAt(previous));
             }
             if (bitmapImage != nullptr)
             {
@@ -266,7 +267,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(backupFrame, 0);
+            VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
             if (vectorImage != nullptr)
             {
                 BackupVectorElement* element = new BackupVectorElement(vectorImage);
@@ -302,6 +303,7 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
                     element->frame = backupFrame;
                     element->undoText = undoText;
                     element->fileName = clip->fileName();
+                    element->originalName = clip->soundClipName();
                     mBackupList.append(element);
                     mBackupIndex++;
                 }
@@ -366,10 +368,11 @@ void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
         default:
             Q_UNREACHABLE();
         }
-        if (i <= mBackupIndex) {
+        if (i <= mBackupIndex)
+        {
             mBackupIndex--;
         }
-        mBackupList.removeAt(i);
+        delete mBackupList.takeAt(i);
         i--;
     }
 }
@@ -407,18 +410,17 @@ void Editor::restoreKey()
         frame = lastBackupSoundElement->frame;
 
         strSoundFile = lastBackupSoundElement->fileName;
+        if (strSoundFile.isEmpty()) return;
         KeyFrame* key = addKeyFrame(layerIndex, frame);
         SoundClip* clip = dynamic_cast<SoundClip*>(key);
         if (clip)
         {
-            if (strSoundFile.isEmpty())
+            Status st = sound()->loadSound(clip, lastBackupSoundElement->fileName);
+            clip->setSoundClipName(lastBackupSoundElement->originalName);
+            if (!st.ok())
             {
-                return;
-            }
-            else
-            {
-                //Status st = sound()->pasteSound(clip, strSoundFile);
-                //Q_ASSERT(st.ok());
+                removeKey();
+                emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
             }
         }
     }
@@ -451,6 +453,7 @@ void Editor::undo()
             }
         }
 
+        qDebug() << "Undo" << mBackupIndex;
         mBackupList[mBackupIndex]->restore(this);
         mBackupIndex--;
         mScribbleArea->cancelTransformedSelection();
@@ -459,8 +462,9 @@ void Editor::undo()
         if (layer == nullptr) { return; }
 
         select()->resetSelectionTransform();
-        if (layer->type() == Layer::VECTOR) {
-            VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(mFrame);
+        if (layer->type() == Layer::VECTOR)
+        {
+            VectorImage *vectorImage = static_cast<VectorImage*>(layer->getKeyFrameAt(mFrame));
             vectorImage->calculateSelectionRect();
             select()->setSelection(vectorImage->getSelectionRect(), false);
         }
@@ -534,7 +538,7 @@ void Editor::copy()
         }
         else
         {
-            g_clipboardBitmapImage = bitmapImage->copy();  // copy the whole image
+            g_clipboardBitmapImage = *bitmapImage;  // copy the whole image
         }
         clipboardBitmapOk = true;
         if (g_clipboardBitmapImage.image() != nullptr)
@@ -543,7 +547,7 @@ void Editor::copy()
     if (layer->type() == Layer::VECTOR)
     {
         clipboardVectorOk = true;
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
         if (vectorImage == nullptr) { return; }
         g_clipboardVectorImage = *vectorImage;  // copy the image
     }
@@ -572,9 +576,8 @@ void Editor::paste()
                     tobePasted.transform(selection, true);
                 }
             }
-            auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
             mScribbleArea->handleDrawingOnEmptyFrame();
-            BitmapImage *bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame(currentFrame(), 0);
+            BitmapImage *bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
             Q_CHECK_PTR(bitmapImage);
             bitmapImage->paste(&tobePasted); // paste the clipboard
         }
@@ -583,13 +586,13 @@ void Editor::paste()
             backup(tr("Paste"));
             deselectAll();
             mScribbleArea->handleDrawingOnEmptyFrame();
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(currentFrame()));
             Q_CHECK_PTR(vectorImage);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             select()->setSelection(vectorImage->getSelectionRect(), false);
         }
     }
-    mScribbleArea->updateCurrentFrame();
+    emit frameModified(mFrame);
 }
 
 void Editor::flipSelection(bool flipVertical)
@@ -662,8 +665,11 @@ void Editor::addTemporaryDir(QTemporaryDir* const dir)
 
 void Editor::clearTemporary()
 {
-    while(!mTemporaryDirs.isEmpty()) {
-        mTemporaryDirs.takeFirst()->remove();
+    while(!mTemporaryDirs.isEmpty())
+    {
+        QTemporaryDir* t = mTemporaryDirs.takeLast();
+        t->remove();
+        delete t;
     }
 }
 
@@ -683,14 +689,15 @@ Status Editor::setObject(Object* newObject)
     clearUndoStack();
     mObject.reset(newObject);
 
+    g_clipboardVectorImage.setObject(newObject);
+
+    updateObject();
+
+    // Make sure that object is fully loaded before calling managers.
     for (BaseManager* m : mAllManagers)
     {
         m->load(mObject.get());
     }
-
-    g_clipboardVectorImage.setObject(newObject);
-
-    updateObject();
 
     if (mViewManager)
     {
@@ -710,10 +717,7 @@ void Editor::updateObject()
     mAutosaveCounter = 0;
     mAutosaveNeverAskAgain = false;
 
-    if (mScribbleArea)
-    {
-        mScribbleArea->updateAllFrames();
-    }
+    emit objectChanged();
 
     if (mPreferenceManager)
     {
@@ -721,91 +725,6 @@ void Editor::updateObject()
     }
 
     emit updateLayerCount();
-}
-
-/* TODO: Export absolutely does not belong here, but due to the messed up project structure
- * there isn't really any better place atm. Once we do have a proper structure in place, this
- * should go somewhere else */
-bool Editor::exportSeqCLI(QString filePath, LayerCamera *cameraLayer, QString format, int width, int height, int startFrame, int endFrame, bool transparency, bool antialias)
-{
-    if (width < 0)
-    {
-        width = cameraLayer->getViewRect().width();
-    }
-    if (height < 0)
-    {
-        height = cameraLayer->getViewRect().height();
-    }
-    if (startFrame < 1)
-    {
-        startFrame = 1;
-    }
-    if (endFrame < -1)
-    {
-        endFrame = mLayerManager->animationLength();
-    }
-    if (endFrame < 0)
-    {
-        endFrame = mLayerManager->animationLength(false);
-    }
-
-    QSize exportSize = QSize(width, height);
-    mObject->exportFrames(startFrame,
-                          endFrame,
-                          cameraLayer,
-                          exportSize,
-                          filePath,
-                          format,
-                          transparency,
-                          false,
-                          "",
-                          antialias,
-                          nullptr,
-                          0);
-    return true;
-}
-
-bool Editor::exportMovieCLI(QString filePath, LayerCamera *cameraLayer, int width, int height, int startFrame, int endFrame)
-{
-    if (width < 0)
-    {
-        width = cameraLayer->getViewRect().width();
-    }
-    if (height < 0)
-    {
-        height = cameraLayer->getViewRect().height();
-    }
-    if (startFrame < 1)
-    {
-        startFrame = 1;
-    }
-    if (endFrame < -1)
-    {
-        endFrame = mLayerManager->animationLength();
-    }
-    if (endFrame < 0)
-    {
-        endFrame = mLayerManager->animationLength(false);
-    }
-
-    QSize exportSize = QSize(width, height);
-
-    ExportMovieDesc desc;
-    desc.strFileName = filePath;
-    desc.startFrame = startFrame;
-    desc.endFrame = endFrame;
-    desc.fps = playback()->fps();
-    desc.exportSize = exportSize;
-    desc.strCameraName = cameraLayer->name();
-
-    MovieExporter ex;
-    ex.run(object(), desc, [](float,float){}, [](float){}, [](QString){});
-    return true;
-}
-
-QString Editor::workingDir() const
-{
-    return mObject->workingDir();
 }
 
 bool Editor::importBitmapImage(QString filePath, int space)
@@ -821,8 +740,9 @@ bool Editor::importBitmapImage(QString filePath, int space)
         return false;
     }
 
-    const QPoint pos = QPoint(static_cast<int>(view()->getImportView().dx()),
-                              static_cast<int>(view()->getImportView().dy())) - QPoint(img.width() / 2, img.height() / 2);
+    const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
+                     view()->getImportView().dy() - (img.height() / 2));
+
     while (reader.read(&img))
     {
         if (!layer->keyExists(currentFrame()))
@@ -857,11 +777,11 @@ bool Editor::importVectorImage(QString filePath)
 
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
 
-    VectorImage* vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
+    VectorImage* vectorImage = layer->getVectorImageAtFrame(currentFrame());
     if (vectorImage == nullptr)
     {
         addNewKey();
-        vectorImage = (static_cast<LayerVector*>(layer))->getVectorImageAtFrame(currentFrame());
+        vectorImage = layer->getVectorImageAtFrame(currentFrame());
     }
 
     VectorImage importedVectorImage;
@@ -951,14 +871,14 @@ void Editor::selectAll()
     {
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
         // as the drawing area is not limited
-        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mFrame);
+        BitmapImage *bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (bitmapImage == nullptr) { return; }
 
         rect = bitmapImage->bounds();
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (vectorImage != nullptr)
         {
             vectorImage->selectAll();
@@ -975,7 +895,7 @@ void Editor::deselectAll()
 
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mFrame,0);
+        VectorImage *vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
         if (vectorImage != nullptr)
         {
             vectorImage->deselectAll();
@@ -988,11 +908,6 @@ void Editor::deselectAll()
 void Editor::updateFrame(int frameNumber)
 {
     mScribbleArea->updateFrame(frameNumber);
-}
-
-void Editor::updateFrameAndVector(int frameNumber)
-{
-    mScribbleArea->updateAllVectorLayersAt(frameNumber);
 }
 
 void Editor::updateCurrentFrame()
@@ -1014,11 +929,9 @@ void Editor::setCurrentLayerIndex(int i)
 void Editor::scrubTo(int frame)
 {
     if (frame < 1) { frame = 1; }
-    int oldFrame = mFrame;
     mFrame = frame;
 
-    emit currentFrameChanged(oldFrame);
-    emit currentFrameChanged(frame);
+    emit scrubbed(frame);
 
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
@@ -1074,8 +987,9 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
     // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
     while (layer->keyExists(frameIndex))
     {
-        if (layer->type() == Layer::SOUND && static_cast<SoundClip*>(layer->getKeyFrameAt(frameIndex))->fileName().isEmpty()
-                && layer->removeKeyFrame(frameIndex))
+        if (layer->type() == Layer::SOUND
+            && layer->getKeyFrameAt(frameIndex)->fileName().isEmpty()
+            && layer->removeKeyFrame(frameIndex))
         {
             break;
         }
@@ -1089,6 +1003,7 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
     if (ok)
     {
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
+        emit frameModified(frameIndex);
         layers()->notifyAnimationLengthChanged();
     }
     return layer->getKeyFrameAt(frameIndex);
@@ -1142,7 +1057,7 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
 {
     Layer* layer = mObject->getLayer(layerNumber);
     if (layer != nullptr) layer->switchVisibility();
-    mScribbleArea->updateAllFrames();
+    mScribbleArea->onLayerChanged();
 
     emit updateTimeLine();
 }
@@ -1159,7 +1074,7 @@ void Editor::swapLayers(int i, int j)
         layers()->setCurrentLayer(j - 1);
     }
     emit updateTimeLine();
-    mScribbleArea->updateAllFrames();
+    mScribbleArea->onLayerChanged();
 }
 
 Status Editor::pegBarAlignment(QStringList layers)

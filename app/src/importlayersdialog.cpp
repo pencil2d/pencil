@@ -99,15 +99,12 @@ void ImportLayersDialog::importLayers()
             if (mImportLayer->type() == Layer::SOUND)
             {
                 LayerSound* layerSound = static_cast<LayerSound*>(mImportLayer);
-                int count = 0;
-                while (count < layerSound->getNextKeyFramePosition(count))
+                layerSound->foreachKeyFrame([this](KeyFrame* key)
                 {
-                    int newKeyPos = layerSound->getNextKeyFramePosition(count);
-                    SoundClip* clip = new SoundClip;
-                    clip = layerSound->getSoundClipWhichCovers(newKeyPos);
+                    SoundClip* clip = dynamic_cast<SoundClip*>(key);
                     Status st = mEditor->sound()->loadSound(clip, clip->fileName());
-                    count = newKeyPos;
-                }
+                    Q_ASSERT(st.ok());
+                });
             }
         }
     }

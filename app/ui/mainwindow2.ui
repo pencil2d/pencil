@@ -207,17 +207,17 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionMove"/>
+    <addaction name="actionPencil"/>
+    <addaction name="actionEraser"/>
     <addaction name="actionSelect"/>
-    <addaction name="actionBrush"/>
-    <addaction name="actionPolyline"/>
-    <addaction name="actionSmudge"/>
+    <addaction name="actionMove"/>
     <addaction name="actionPen"/>
     <addaction name="actionHand"/>
-    <addaction name="actionPencil"/>
+    <addaction name="actionPolyline"/>
     <addaction name="actionBucket"/>
     <addaction name="actionEyedropper"/>
-    <addaction name="actionEraser"/>
+    <addaction name="actionBrush"/>
+    <addaction name="actionSmudge"/>
     <addaction name="separator"/>
     <addaction name="actionResetToolsDefault"/>
    </widget>

@@ -20,7 +20,6 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QObject>
-#include <QList>
 #include "pencilerror.h"
 #include "pencildef.h"
 
@@ -47,7 +46,6 @@ class BackupElement;
 class ActiveFramePool;
 
 enum class SETTING;
-
 
 class Editor : public QObject
 {
@@ -97,20 +95,15 @@ public:
 
     void scrubTo(int frameNumber);
 
-
     /**
-     * @brief The visiblity value should match any of the VISIBILITY enum values
+     * @brief The visibility value should match any of the VISIBILITY enum values
      */
     void setLayerVisibility(LayerVisibility visibility);
     LayerVisibility layerVisibility();
-    bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
-    bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
 
     qreal viewScaleInversed();
     void deselectAll();
     void selectAll();
-
-    QString workingDir() const;
 
     // backup
     int mBackupIndex;
@@ -118,6 +111,19 @@ public:
     QList<BackupElement*> mBackupList;
 
 signals:
+
+    /** This should be emitted after scrubbing */
+    void scrubbed(int frameNumber);
+
+    /** This should be emitted after modifying the frame content */
+    void frameModified(int frameNumber);
+
+    /** This should be emitted after the object has been changed */
+    void objectChanged();
+
+    /** This should be emitted after moving one or more frames */
+    void framesMoved();
+
     void updateTimeLine();
     void updateLayerCount();
     void updateBackup();
@@ -125,7 +131,6 @@ signals:
     void objectLoaded();
 
     void changeThinLinesButton(bool);
-    void currentFrameChanged(int n);
     void fpsChanged(int fps);
 
     void needSave();
@@ -133,17 +138,25 @@ signals:
     void needDisplayInfoNoTitle(const QString& body);
 
 public: //slots
+
+    /** Will call update() and update the canvas
+     * Only call this directly If you need the cache to be intact and require the frame to be repainted
+     * Convenient method that does the same as updateFrame but for the current frame
+    */
+    void updateCurrentFrame();
+
+    /** Will call update() and update the canvas
+     * Only call this directly If you need the cache to be intact and require the frame to be repainted
+    */
+    void updateFrame(int frameNumber);
+
     void clearCurrentFrame();
 
     void cut();
 
     bool importImage(QString filePath);
     bool importGIF(QString filePath, int numOfImages = 0);
-    void updateFrame(int frameNumber);
     void restoreKey();
-
-    void updateFrameAndVector(int frameNumber);
-    void updateCurrentFrame();
 
     void scrubNextKeyFrame();
     void scrubPreviousKeyFrame();
@@ -207,7 +220,7 @@ private:
     bool importVectorImage(QString);
 
     // the object to be edited by the editor
-    std::shared_ptr<Object> mObject = nullptr;
+    std::unique_ptr<Object> mObject;
 
     int mFrame = 1; // current frame number.
     int mCurrentLayerIndex = 0; // the current layer to be edited/displayed

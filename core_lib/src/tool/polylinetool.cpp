@@ -98,7 +98,7 @@ bool PolylineTool::isActive()
 
 QCursor PolylineTool::cursor()
 {
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
 void PolylineTool::clearToolData()
@@ -127,7 +127,6 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
                 }
             }
             mPoints << getCurrentPoint();
-            mScribbleArea->setAllDirty();
         }
     }
 }
@@ -270,7 +269,6 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         bitmapImage->paste(mScribbleArea->mBufferImg);
     }
 
-    mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

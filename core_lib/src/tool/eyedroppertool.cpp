@@ -53,7 +53,7 @@ QCursor EyedropperTool::cursor()
     }
     else
     {
-        return Qt::CrossCursor;
+        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
     }
 }
 

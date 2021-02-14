@@ -102,7 +102,6 @@ public:
 
 signals:
     void updateRecentFilesList(bool b);
-    void appLostFocus();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
@@ -110,7 +109,7 @@ protected:
     void showEvent(QShowEvent*) override;
 
 private:
-    void newObject() const;
+    void newObject();
     bool newObjectFromPresets(int presetIndex);
     bool openObject(const QString& strFilename);
     bool saveObject(QString strFileName);
