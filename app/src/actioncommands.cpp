@@ -603,7 +603,7 @@ void ActionCommands::addExposureToSelectedFrames() {
 
     currentLayer->setExposureForSelectedFrames(1);
     mEditor->updateTimeLine();
-    mEditor->framesMoved();
+    mEditor->framesModified();
 }
 
 void ActionCommands::subtractExposureFromSelectedFrames() {
@@ -611,7 +611,7 @@ void ActionCommands::subtractExposureFromSelectedFrames() {
 
     currentLayer->setExposureForSelectedFrames(-1);
     mEditor->updateTimeLine();
-    mEditor->framesMoved();
+    mEditor->framesModified();
 }
 
 Status ActionCommands::insertKeyFrameAtCurrentPosition()
@@ -662,7 +662,7 @@ void ActionCommands::reverseSelectedFrames()
     if (currentLayer->type() == Layer::CAMERA) {
         mEditor->view()->updateViewTransforms();
     }
-    mEditor->framesMoved();
+    mEditor->framesModified();
 };
 
 void ActionCommands::removeKey()
@@ -726,7 +726,7 @@ void ActionCommands::moveFrameForward()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
-    mEditor->framesMoved();
+    mEditor->framesModified();
 }
 
 void ActionCommands::moveFrameBackward()
@@ -739,7 +739,7 @@ void ActionCommands::moveFrameBackward()
             mEditor->scrubBackward();
         }
     }
-    mEditor->framesMoved();
+    mEditor->framesModified();
 }
 
 Status ActionCommands::addNewBitmapLayer()

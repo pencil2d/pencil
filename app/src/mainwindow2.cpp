@@ -1420,7 +1420,7 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::onLayerChanged);
     connect(editor, &Editor::scrubbed, scribbleArea, &ScribbleArea::onScrubbed);
     connect(editor, &Editor::frameModified, scribbleArea, &ScribbleArea::onFrameModified);
-    connect(editor, &Editor::framesMoved, scribbleArea, &ScribbleArea::onFramesMoved);
+    connect(editor, &Editor::framesModified, scribbleArea, &ScribbleArea::onFramesModified);
     connect(editor, &Editor::objectChanged, scribbleArea, &ScribbleArea::onObjectChanged);
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::onViewChanged);
 }
