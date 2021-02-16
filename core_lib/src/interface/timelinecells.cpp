@@ -878,7 +878,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 
                         // If it is the case, we move the selected frames in the layer
                         mMovingFrames = true;
-                        qDebug() << "mMovingFrames: " << mMovingFrames;
                     }
                     else if (mCanBoxSelect)
                     {
@@ -924,7 +923,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             currentLayer->moveSelectedFrames(offset);
 
             mEditor->layers()->notifyAnimationLengthChanged();
-            mEditor->framesMoved();
+            mEditor->framesModified();
         }
         else if (!mTimeLine->scrubbing && !mMovingFrames && !mClickSelecting && !mBoxSelecting)
         {
