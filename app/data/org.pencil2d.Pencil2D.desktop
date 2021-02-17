@@ -22,6 +22,9 @@ Keywords=picture;drawing;vector;bitmap;cartoon;animation;
 
 
 # Translations
+
+
+# Translations
 Name[ar]=بنسل2دي
 GenericName[ar]=برنامج تحريك الرسومات
 Comment[ar]=أنشئ رسومات متحركة  كلاسيكية بإستخدام الصور النقطية و المتجهة
@@ -46,6 +49,7 @@ Comment[el]=Δημιουργήστε παραδοσιακά, ζωγραφισμ�
 Name[es]=Pencil2D
 GenericName[es]=Programa de Animación
 Comment[es]=Crea animaciones tradicionales hechas a mano usando mapas de bits o vectores gráficos
+Icon[es]=org.pencil2d.Pencil2D
 Name[et]=Pencil2D
 GenericName[et]=Animeerimistarkvara
 Comment[et]=Loo traditsioonilisi käsitsijoonistatud animatsioone kasutades nii raster- kui vektorgraafikat.
@@ -56,21 +60,31 @@ Icon[fr]=org.pencil2d.Pencil2D
 Name[he]=Pencil2D
 GenericName[he]=תוכנת הנפשה
 Comment[he]=צרו הנפשה מסורתית מצויירת ביד באמצעות כלי מפת ביטים וכלים וקטוריים
+Name[id]=Pensil2d
+GenericName[id]=Animasi Perangkat Lunak
+Icon[id]=org.pencil2d.Pencil2D
 Name[it]=Pencil2D
 GenericName[it]=Software di animazione
 Comment[it]=Crea dell'animazione tradizionale disegnata a mano usando sia la grafica bitmap che quella vettoriale
 Name[hu_HU]=Pencil2D
 GenericName[hu_HU]=Animációs Szoftver
 Comment[hu_HU]=A Pencil2D egy animáció készítő/rajzoló szoftver Mac OS X, Windows és Linux rendszerekre. Hagyományos, kézzel rajzolt animációk készítésére alkalmas. Bitkép és vagy vektorgrafika használatával.
+Icon[ms]=org.pencil2d.Pencil2D
+Name[nb]=Pencil2D
+GenericName[nb]=Animasjonsprogramvare
+Comment[nb]=Lag tradisjonell håndtegnet animasjon ved hjelp av både bitmap og vektorgrafikk
+Icon[nb]=org.pencil2d.Pencil2D
 Name[kab]=Pencil2D
 GenericName[kab]=Aseɣẓan n usemwwiwel
 Comment[kab]=Snulfu-d asemwwiwel amansay yettusunɣen s ufus s wudlifen bitmap akked wudlifen imawayen
+Icon[kab]=org.pencil2d.Pencil2D
 Name[pl]=Pencil2D
 GenericName[pl]=Oprogramowanie do tworzenia animacji
 Comment[pl]=Twórz tradycyjne ręcznie rysowane animacje używając zarówno bitmap, jak i grafiki wektorowej
 Name[pt]=Pencil2D
 GenericName[pt]=Programa de Animação
 Comment[pt]=Cria animações tradicionais feitas a mão utilizando bitmaps e vectores gráficos 
+Icon[pt]=org.pencil2d.Pencil2D
 Name[pt_BR]=Pencil2D
 GenericName[pt_BR]=Software de animação
 Comment[pt_BR]=Crie animações tradicionais feitas à mão usando gráficos de bitmap e vetoriais.
@@ -105,3 +119,4 @@ Name[zh_TW]=Pencil2D
 GenericName[zh_TW]=動畫軟體
 Comment[zh_TW]=以點陣圖跟向量圖兩種方式創作傳統手繪動畫
 Icon[zh_TW]=org.pencil2d.Pencil2D
+Icon[fil]=org.pencil2d.Pencil2D
