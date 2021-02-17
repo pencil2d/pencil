@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <functional>
 #include <memory>
 #include <QObject>
 #include "pencilerror.h"
