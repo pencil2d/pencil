@@ -79,6 +79,7 @@ public:
     SelectionManager*  select() const { return mSelectionManager; }
 
     Object* object() const { return mObject.get(); }
+    Status openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged);
     Status setObject(Object* object);
     void updateObject();
     void prepareSave();

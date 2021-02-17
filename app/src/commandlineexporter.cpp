@@ -29,8 +29,8 @@ GNU General Public License for more details.
 
 #include "commandlineexporter.h"
 
-CommandLineExporter::CommandLineExporter(MainWindow2 *mainWindow) :
-    mMainWindow(mainWindow),
+CommandLineExporter::CommandLineExporter(Editor *editor) :
+    mEditor(editor),
     mOut(stdout, QIODevice::WriteOnly),
     mErr(stderr, QIODevice::WriteOnly)
 {
@@ -46,28 +46,16 @@ bool CommandLineExporter::process(const QString &inputPath,
                                   int endFrame,
                                   bool transparency)
 {
-    LayerManager *layerManager = mMainWindow->mEditor->layers();
+    LayerManager *layerManager = mEditor->layers();
 
-    if (inputPath.isEmpty())
+    Status s = mEditor->openObject(inputPath, [](int){}, [](int){});
+    if (!s.ok())
     {
-        // Need a file to export
-        mErr << tr("Error: No input file specified.") << endl;
+        mErr << endl << endl << s.title() << endl << endl;
+        mErr << s.description() << endl << endl;
+        mErr << s.details().str() << endl << endl;
         return false;
     }
-    QFileInfo inputFileInfo(inputPath);
-    if (!inputFileInfo.exists())
-    {
-        mErr << tr("Error: the input file at '%1' does not exist", "Command line error").arg(inputPath) << endl;
-        return false;
-    }
-    if (!inputFileInfo.isFile())
-    {
-        mErr << tr("Error: the input path '%1' is not a file", "Command line error").arg(inputPath) << endl;
-        return false;
-    }
-    Q_ASSERT(!outputPaths.empty());
-
-    mMainWindow->openFile(inputPath);
 
     LayerCamera *cameraLayer = nullptr;
     if (!camera.isEmpty())
@@ -100,6 +88,7 @@ bool CommandLineExporter::process(const QString &inputPath,
         endFrame = layerManager->animationLength(endFrame < -1);
     }
 
+    Q_ASSERT(!outputPaths.empty());
     for (const QString& outputPath : outputPaths)
     {
         // Detect format
@@ -140,12 +129,12 @@ void CommandLineExporter::exportMovie(const QString &outputPath,
     desc.strFileName = outputPath;
     desc.startFrame = startFrame;
     desc.endFrame = endFrame;
-    desc.fps = mMainWindow->mEditor->playback()->fps();
+    desc.fps = mEditor->playback()->fps();
     desc.exportSize = exportSize;
     desc.strCameraName = cameraLayer->name();
 
     MovieExporter ex;
-    ex.run(mMainWindow->mEditor->object(), desc, [](float, float){}, [](float){}, [](const QString &){});
+    ex.run(mEditor->object(), desc, [](float, float){}, [](float){}, [](const QString &){});
     mOut << tr("Done.", "Command line task done") << endl;
 }
 
@@ -158,17 +147,17 @@ void CommandLineExporter::exportImageSequence(const QString &outputPath,
                                               bool transparency)
 {
     mOut << tr("Exporting image sequence...", "Command line task progress") << endl;
-    mMainWindow->mEditor->object()->exportFrames(startFrame,
-                                                 endFrame,
-                                                 cameraLayer,
-                                                 exportSize,
-                                                 outputPath,
-                                                 format,
-                                                 transparency,
-                                                 false,
-                                                 "",
-                                                 true,
-                                                 nullptr,
-                                                 0);
+    mEditor->object()->exportFrames(startFrame,
+                                    endFrame,
+                                    cameraLayer,
+                                    exportSize,
+                                    outputPath,
+                                    format,
+                                    transparency,
+                                    false,
+                                    "",
+                                    true,
+                                    nullptr,
+                                    0);
     mOut << tr("Done.", "Command line task done") << endl;
 }

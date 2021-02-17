@@ -109,8 +109,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
 
-    mEditor->setScribbleArea(ui->scribbleArea);
-
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
 
@@ -563,38 +561,46 @@ void MainWindow2::openFile(const QString& filename)
 
 bool MainWindow2::openObject(const QString& strFilePath)
 {
-    // Check for potential issues with the file
-    QFileInfo fileInfo(strFilePath);
-    if (fileInfo.isDir())
+    QProgressDialog progress(tr("Opening document..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
+    Status s = mEditor->openObject(strFilePath, [&progress](int p)
     {
-        ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("The file you have selected is a directory, so we are unable to open it. "
-                                   "If you are are trying to open a project that uses the old structure, "
-                                   "please open the file ending with .pcl, not the data folder."),
-                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+        progress.setValue(p);
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    }, [&progress](int max)
+    {
+        progress.setRange(0, max);
+    });
+
+    if (!s.ok())
+    {
+        ErrorDialog errorDialog(s.title(), s.description(), s.details().str());
         errorDialog.exec();
+        emptyDocumentWhenErrorOccurred();
         return false;
     }
-    if (!fileInfo.exists())
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(LAST_PCLX_PATH, mEditor->object()->filePath());
+
+    // Add to recent file list, but only if we are
+    if (!mEditor->object()->filePath().isEmpty())
     {
-        ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("The file you have selected does not exist, so we are unable to open it. "
-                                   "Please make sure that you've entered the correct path and that the file is accessible and try again."),
-                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
-        errorDialog.exec();
-        return false;
+        mRecentFileMenu->addRecentFile(mEditor->object()->filePath());
+        mRecentFileMenu->saveToDisk();
     }
-    if (!fileInfo.isReadable())
-    {
-        ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("This program does not have permission to read the file you have selected. "
-                                   "Please check that you have read permissions for this file and try again."),
-                                QString("Raw file path: %1\nResolved file path: %2\nPermissions: 0x%3") \
-                                .arg(strFilePath, fileInfo.absoluteFilePath(), QString::number(fileInfo.permissions(), 16)));
-        errorDialog.exec();
-        return false;
-    }
-    if (!fileInfo.isWritable())
+
+    setWindowTitle(mEditor->object()->filePath().prepend("[*]"));
+    setWindowModified(false);
+
+    progress.setValue(progress.maximum());
+
+    updateSaveState();
+
+    if (!QFileInfo(strFilePath).isWritable())
     {
         QMessageBox::warning(this, tr("Warning"),
                              tr("This program does not currently have permission to write to the file you have selected. "
@@ -603,78 +609,6 @@ bool MainWindow2::openObject(const QString& strFilePath)
                              QMessageBox::Ok);
     }
 
-    QProgressDialog progress(tr("Opening document..."), tr("Abort"), 0, 100, this);
-
-    // Don't show progress bar if running without a GUI (aka. when rendering from command line)
-    if (isVisible())
-    {
-        hideQuestionMark(progress);
-        progress.setWindowModality(Qt::WindowModal);
-        progress.show();
-    }
-
-
-    FileManager fm(this);
-    connect(&fm, &FileManager::progressChanged, [&progress](int p)
-    {
-        progress.setValue(p);
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-    });
-    connect(&fm, &FileManager::progressRangeChanged, [&progress](int max)
-    {
-        progress.setRange(0, max + 3);
-    });
-
-    QString fullPath = fileInfo.absoluteFilePath();
-
-    Object* object = fm.load(fullPath);
-
-    if (!fm.error().ok())
-    {
-        Status error = fm.error();
-        DebugDetails dd;
-        dd << QString("Raw file path: ").append(strFilePath)
-           << QString("Resolved file path: ").append(fileInfo.absoluteFilePath());
-        dd.collect(error.details());
-        ErrorDialog errorDialog(error.title(), error.description(), dd.str());
-        errorDialog.exec();
-        emptyDocumentWhenErrorOccurred();
-        return false;
-    }
-
-    if (object == nullptr)
-    {
-        ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
-                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fullPath));
-        errorDialog.exec();
-        emptyDocumentWhenErrorOccurred();
-        return false;
-    }
-
-    mEditor->setObject(object);
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(LAST_PCLX_PATH, object->filePath());
-
-    // Add to recent file list, but only if we are
-    if (!object->filePath().isEmpty())
-    {
-        mRecentFileMenu->addRecentFile(object->filePath());
-        mRecentFileMenu->saveToDisk();
-    }
-
-    setWindowTitle(object->filePath().prepend("[*]"));
-    setWindowModified(false);
-
-    progress.setValue(progress.value() + 1);
-
-    mEditor->layers()->notifyAnimationLengthChanged();
-    mEditor->setFps(mEditor->playback()->fps());
-
-    progress.setValue(progress.maximum());
-
-    updateSaveState();
     return true;
 }
 
