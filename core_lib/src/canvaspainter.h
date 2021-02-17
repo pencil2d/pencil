@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define CANVASPAINTER_H
 
 #include <memory>
+#include <QCoreApplication>
 #include <QObject>
 #include <QTransform>
 #include <QPainter>
@@ -67,6 +68,7 @@ struct CanvasPainterOptions
 
 class CanvasPainter
 {
+    Q_DECLARE_TR_FUNCTIONS(CanvasPainter)
 public:
     explicit CanvasPainter();
     virtual ~CanvasPainter();

@@ -25,7 +25,7 @@ GNU General Public License for more details.
 ColorRef::ColorRef()
 {
     color = Qt::green;
-    name = QObject::tr("Green");
+    name = tr("Green");
 }
 
 ColorRef::ColorRef(QColor theColor, QString theName)
@@ -118,6 +118,6 @@ QString ColorRef::getDefaultColorName(const QColor c)
             }
         }
     }
-    return nameDict[minLoc];
+    return tr(nameDict[minLoc]);
 }
 
