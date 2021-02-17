@@ -243,7 +243,6 @@ void MainWindow2::createMenus()
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow2::close);
 
     //--- Export Menu ---
-    //connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
     connect(ui->actionExport_Image, &QAction::triggered, mCommands, &ActionCommands::exportImage);
     connect(ui->actionExport_ImageSeq, &QAction::triggered, mCommands, &ActionCommands::exportImageSequence);
     connect(ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie);

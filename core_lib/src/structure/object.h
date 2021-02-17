@@ -37,27 +37,13 @@ class ObjectData;
 class ActiveFramePool;
 
 
-struct ExportMovieParameters
-{
-    int startFrame;
-    int endFrame;
-    QTransform view;
-    Layer* currentLayer;
-    QSize exportSize;
-    QString filePath;
-    int fps;
-    int exportFps;
-    QString exportFormat;
-};
-
-
 class Object : public QObject
 {
     Q_OBJECT
 
 public:
-    Object(QObject* parent = nullptr);
-    virtual ~Object();
+    explicit Object(QObject* parent = nullptr);
+    ~Object() override;
 
     void init();
     void createWorkingDir();
@@ -66,41 +52,40 @@ public:
     void createDefaultLayers();
 
     QString filePath() const { return mFilePath; }
-    void    setFilePath(QString strFileName) { mFilePath = strFileName; }
+    void    setFilePath(const QString& strFileName) { mFilePath = strFileName; }
 
     QString workingDir() const { return mWorkingDirPath; }
 
     QString dataDir() const { return mDataDirPath; }
-    void    setDataDir(QString dirPath) { mDataDirPath = dirPath; }
+    void    setDataDir(const QString& dirPath) { mDataDirPath = dirPath; }
 
     QString mainXMLFile() const { return mMainXMLFile; }
-    void    setMainXMLFile(QString file) { mMainXMLFile = file; }
+    void    setMainXMLFile(const QString& file) { mMainXMLFile = file; }
 
     QDomElement saveXML(QDomDocument& doc) const;
-    bool loadXML(QDomElement element, ProgressCallback progressForward);
+    bool loadXML(const QDomElement& element, ProgressCallback progressForward);
 
     void paintImage(QPainter& painter, int frameNumber, bool background, bool antialiasing) const;
 
-    QString copyFileToDataFolder(QString strFilePath);
+    QString copyFileToDataFolder(const QString& strFilePath);
 
     // Color palette
     ColorRef getColor(int index) const;
-    void setColor(int index, QColor newColor);
-    void setColorRef(int index, ColorRef newColorRef);
-    void addColor(QColor);
+    void setColor(int index, const QColor& newColor);
+    void setColorRef(int index, const ColorRef& newColorRef);
     void movePaletteColor(int start, int end);
     void moveVectorColor(int start, int end);
 
-    void addColor(ColorRef newColor) { mPalette.append(newColor); }
-    void addColorAtIndex(int index, ColorRef newColor);
+    void addColor(const ColorRef& newColor) { mPalette.append(newColor); }
+    void addColorAtIndex(int index, const ColorRef& newColor);
     void removeColor(int index);
-    bool isColorInUse(int index);
-    void renameColor(int i, QString text);
+    bool isColorInUse(int index) const;
+    void renameColor(int i, const QString& text);
     int getColorCount() { return mPalette.size(); }
-    bool importPalette(QString filePath);
+    bool importPalette(const QString& filePath);
     void importPaletteGPL(QFile& file);
     void importPalettePencil(QFile& file);
-    void openPalette(QString filePath);
+    void openPalette(const QString& filePath);
 
     bool exportPalette(const QString& filePath) const;
     void exportPaletteGPL(QFile& file) const;
@@ -116,7 +101,7 @@ public:
 
     int  getLayerCount() const;
     Layer* getLayer(int i) const;
-    Layer* findLayerByName(QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
+    Layer* findLayerByName(const QString& strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
     Layer* takeLayer(int layerId); // Note: transfer ownership of the layer
 
     bool swapLayers(int i, int j);
@@ -140,11 +125,11 @@ public:
     // these functions need to be moved to somewhere...
     bool exportFrames(int frameStart, int frameEnd, const LayerCamera* cameraLayer, QSize exportSize, QString filePath, QString format,
                       bool transparency, bool exportKeyframesOnly, const QString& layerName, bool antialiasing, QProgressDialog* progress, int progressMax) const;
-    bool exportX(int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing);
-    bool exportIm(int frameStart, QTransform view, QSize cameraSize, QSize exportSize, QString filePath, QString format, bool antialiasing, bool transparency) const;
+
+    bool exportIm(int frameStart, const QTransform& view, QSize cameraSize, QSize exportSize, const QString& filePath, const QString& format, bool antialiasing, bool transparency) const;
 
     void modification() { modified = true; }
-    bool isModified() { return modified; }
+    bool isModified() const { return modified; }
     void setModified(bool b) { modified = b; }
 
     int getUniqueLayerID();
@@ -158,7 +143,6 @@ public:
 
 signals:
     void layerViewChanged();
-    void paletteImported();
 
 private:
     int getMaxLayerID();
