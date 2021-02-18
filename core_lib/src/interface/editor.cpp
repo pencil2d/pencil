@@ -679,11 +679,11 @@ Status Editor::openObject(const QString& strFilePath, const std::function<void(i
 {
     // Check for potential issues with the file
     QFileInfo fileInfo(strFilePath);
+    DebugDetails dd;
+    dd << QString("Raw file path: %1").arg(strFilePath);
+    dd << QString("Resolved file path: %1").arg(fileInfo.absoluteFilePath());
     if (fileInfo.isDir())
     {
-        DebugDetails dd;
-        dd << QString("Raw file path: %1").arg(strFilePath);
-        dd << QString("Resolved file path: %1").arg(fileInfo.absoluteFilePath());
         return Status(Status::ERROR_FILE_CANNOT_OPEN,
                       dd,
                       tr("Could not open file"),
@@ -693,9 +693,6 @@ Status Editor::openObject(const QString& strFilePath, const std::function<void(i
     }
     if (!fileInfo.exists())
     {
-        DebugDetails dd;
-        dd << QString("Raw file path: %1").arg(strFilePath);
-        dd << QString("Resolved file path: %1").arg(fileInfo.absoluteFilePath());
         return Status(Status::FILE_NOT_FOUND,
                       dd,
                       tr("Could not open file"),
@@ -705,8 +702,6 @@ Status Editor::openObject(const QString& strFilePath, const std::function<void(i
     if (!fileInfo.isReadable())
     {
         DebugDetails dd;
-        dd << QString("Raw file path: %1").arg(strFilePath);
-        dd << QString("Resolved file path: %1").arg(fileInfo.absoluteFilePath());
         dd << QString("Permissions: 0x%1").arg(QString::number(fileInfo.permissions(), 16));
         return Status(Status::ERROR_FILE_CANNOT_OPEN,
                       dd,
@@ -730,21 +725,16 @@ Status Editor::openObject(const QString& strFilePath, const std::function<void(i
 
     Object* object = fm.load(fullPath);
 
-    if (!fm.error().ok())
+    Status fmStatus = fm.error();
+    if (!fmStatus.ok())
     {
-        Status error = fm.error();
-        DebugDetails dd;
-        dd << QString("Raw file path: ").append(strFilePath)
-           << QString("Resolved file path: ").append(fullPath);
-        dd.collect(error.details());
-        return Status(error.code(), dd, error.title(), error.description());
+        dd.collect(fmStatus.details());
+        fmStatus.setDetails(dd);
+        return fmStatus;
     }
 
     if (object == nullptr)
     {
-        DebugDetails dd;
-        dd << QString("Raw file path: %1").arg(strFilePath);
-        dd << QString("Resolved file path: %1").arg(fullPath);
         return Status(Status::ERROR_FILE_CANNOT_OPEN,
                       dd,
                       tr("Could not open file"),
