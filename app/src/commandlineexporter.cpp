@@ -48,6 +48,12 @@ bool CommandLineExporter::process(const QString &inputPath,
 {
     LayerManager *layerManager = mEditor->layers();
 
+    if(inputPath.isEmpty())
+    {
+        mErr << tr("Error: No input file specified. An input project file argument is required when output path(s) are specified.") << endl;
+        return false;
+    }
+
     Status s = mEditor->openObject(inputPath, [](int){}, [](int){});
     if (!s.ok())
     {
