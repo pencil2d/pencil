@@ -19,9 +19,12 @@ GNU General Public License for more details.
 
 // predefinedsetmodel.h
 #include <QAbstractTableModel>
+#include <QCoreApplication>
 
 struct PredefinedKeySet
 {
+    Q_DECLARE_TR_FUNCTIONS(PredefinedKeySet)
+public:
     int size() const { return mKeyframeIndexes.size(); }
     void insert(const int& keyFrameIndex, const QString& filePath)
     {
@@ -59,9 +62,9 @@ struct PredefinedKeySet
         switch(index)
         {
             case 0:
-            return QObject::tr("Files");
+            return tr("Files");
             case 1:
-            return QObject::tr("KeyFrame Pos");
+            return tr("KeyFrame Pos");
             default:
             return "";
         }

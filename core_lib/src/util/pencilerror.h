@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #ifndef PENCILERROR_H
 #define PENCILERROR_H
 
+#include <QCoreApplication>
 #include <QStringList>
 
 class DebugDetails
@@ -38,6 +39,7 @@ private:
 
 class Status
 {
+    Q_DECLARE_TR_FUNCTIONS(Status)
 public:
     enum ErrorCode
     {

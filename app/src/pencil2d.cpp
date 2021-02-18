@@ -73,8 +73,9 @@ Status Pencil2D::handleCommandLineOptions()
         return Status::OK;
     }
 
+    // Can't construct the editor directly, need to make a main window instead because... reasons
     mainWindow.reset(new MainWindow2);
-    CommandLineExporter exporter(mainWindow.get());
+    CommandLineExporter exporter(mainWindow->mEditor);
     if (exporter.process(inputPath,
                          outputPaths,
                          parser.camera(),

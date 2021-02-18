@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QImageReader>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QSettings>
 #include <QTemporaryDir>
 
 #include "object.h"
@@ -35,6 +36,7 @@ GNU General Public License for more details.
 #include "backupelement.h"
 
 #include "colormanager.h"
+#include "filemanager.h"
 #include "toolmanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
@@ -753,6 +755,92 @@ void Editor::clearTemporary()
         t->remove();
         delete t;
     }
+}
+
+Status Editor::openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged)
+{
+    // Check for potential issues with the file
+    QFileInfo fileInfo(strFilePath);
+    if (fileInfo.isDir())
+    {
+        DebugDetails dd;
+        dd << QString("Raw file path: %1").arg(strFilePath);
+        dd << QString("Resolved file path: %1").arg(fileInfo.absoluteFilePath());
+        return Status(Status::ERROR_FILE_CANNOT_OPEN,
+                      dd,
+                      tr("Could not open file"),
+                      tr("The file you have selected is a directory, so we are unable to open it. "
+                         "If you are are trying to open a project that uses the old structure, "
+                         "please open the file ending with .pcl, not the data folder."));
+    }
+    if (!fileInfo.exists())
+    {
+        DebugDetails dd;
+        dd << QString("Raw file path: %1").arg(strFilePath);
+        dd << QString("Resolved file path: %1").arg(fileInfo.absoluteFilePath());
+        return Status(Status::FILE_NOT_FOUND,
+                      dd,
+                      tr("Could not open file"),
+                      tr("The file you have selected does not exist, so we are unable to open it. "
+                         "Please make sure that you've entered the correct path and that the file is accessible and try again."));
+    }
+    if (!fileInfo.isReadable())
+    {
+        DebugDetails dd;
+        dd << QString("Raw file path: %1").arg(strFilePath);
+        dd << QString("Resolved file path: %1").arg(fileInfo.absoluteFilePath());
+        dd << QString("Permissions: 0x%1").arg(QString::number(fileInfo.permissions(), 16));
+        return Status(Status::ERROR_FILE_CANNOT_OPEN,
+                      dd,
+                      tr("Could not open file"),
+                      tr("This program does not have permission to read the file you have selected. "
+                         "Please check that you have read permissions for this file and try again."));
+    }
+
+    int progress = 0;
+    FileManager fm(this);
+    connect(&fm, &FileManager::progressChanged, [&progress, &progressChanged](int p)
+    {
+        progressChanged(progress = p);
+    });
+    connect(&fm, &FileManager::progressRangeChanged, [&progressRangeChanged](int max)
+    {
+        progressRangeChanged(max + 3);
+    });
+
+    QString fullPath = fileInfo.absoluteFilePath();
+
+    Object* object = fm.load(fullPath);
+
+    if (!fm.error().ok())
+    {
+        Status error = fm.error();
+        DebugDetails dd;
+        dd << QString("Raw file path: ").append(strFilePath)
+           << QString("Resolved file path: ").append(fullPath);
+        dd.collect(error.details());
+        return Status(error.code(), dd, error.title(), error.description());
+    }
+
+    if (object == nullptr)
+    {
+        DebugDetails dd;
+        dd << QString("Raw file path: %1").arg(strFilePath);
+        dd << QString("Resolved file path: %1").arg(fullPath);
+        return Status(Status::ERROR_FILE_CANNOT_OPEN,
+                      dd,
+                      tr("Could not open file"),
+                      tr("An unknown error occurred while trying to load the file and we are not able to load your file."));
+    }
+
+    setObject(object);
+
+    progressChanged(progress + 1);
+
+    layers()->notifyAnimationLengthChanged();
+    setFps(playback()->fps());
+
+    return Status::OK;
 }
 
 Status Editor::setObject(Object* newObject)

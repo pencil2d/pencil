@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <functional>
 #include <memory>
 #include <QObject>
 #include "pencilerror.h"
@@ -85,6 +86,7 @@ public:
     ClipboardManager*  clipboards() const { return mClipboardManager; }
 
     Object* object() const { return mObject.get(); }
+    Status openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged);
     Status setObject(Object* object);
     void updateObject();
     void prepareSave();
