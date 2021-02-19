@@ -150,7 +150,6 @@ void TimeLine::initUI()
     timelineButtons->addSeparator();
     timelineButtons->addWidget(zoomLabel);
     timelineButtons->addWidget(zoomSlider);
-    timelineButtons->addSeparator();
     timelineButtons->setFixedHeight(30);
 
     // --------- Time controls ---------
@@ -199,7 +198,7 @@ void TimeLine::initUI()
 
     connect(splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength);
 
-    connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::addKeyClick);
+    connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::insertKeyClick);
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
@@ -221,8 +220,11 @@ void TimeLine::initUI()
     connect(mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY);
     connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
     connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
+    connect(mTracks, &TimeLineCells::selectionChanged, this, &TimeLine::selectionChanged);
+    connect(mTracks, &TimeLineCells::insertNewKeyFrame, this, &TimeLine::insertKeyClick);
 
     connect(editor(), &Editor::scrubbed, this, &TimeLine::updateFrame);
+    connect(editor(), &Editor::frameModified, this, &TimeLine::updateContent);
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);

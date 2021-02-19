@@ -439,7 +439,7 @@ Status ActionCommands::exportImage()
 {
     // Options
     auto dialog = new ExportImageDialog(mParent, FileType::IMAGE);
-    OnScopeExit(dialog->deleteLater());
+    OnScopeExit(dialog->deleteLater())
 
     dialog->init();
 
@@ -597,6 +597,73 @@ Status ActionCommands::addNewKey()
 
     return Status::OK;
 }
+
+void ActionCommands::addExposureToSelectedFrames() {
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+
+    currentLayer->setExposureForSelectedFrames(1);
+    mEditor->updateTimeLine();
+    mEditor->framesModified();
+}
+
+void ActionCommands::subtractExposureFromSelectedFrames() {
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+
+    currentLayer->setExposureForSelectedFrames(-1);
+    mEditor->updateTimeLine();
+    mEditor->framesModified();
+}
+
+Status ActionCommands::insertKeyFrameAtCurrentPosition()
+{
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    int currentPosition = mEditor->currentFrame();
+
+    currentLayer->insertExposureAt(currentPosition);
+    return addNewKey();
+}
+
+void ActionCommands::removeSelectedFrames()
+{
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+
+    if (!currentLayer->hasAnySelectedFrames()) { return; }
+
+    int ret = QMessageBox::warning(mParent,
+                                   tr("Remove selected frames", "Windows title of remove selected frames pop-up."),
+                                   tr("Are you sure you want to remove the selected frames? This action is irreversible currently!"),
+                                   QMessageBox::Ok | QMessageBox::Cancel,
+                                   QMessageBox::Ok);
+
+    if (ret != QMessageBox::Ok)
+    {
+        return;
+    }
+
+    for (int pos : currentLayer->selectedKeyFramesPositions()) {
+        currentLayer->removeKeyFrame(pos);
+    }
+
+    currentLayer->deselectAll();
+    mEditor->layers()->notifyLayerChanged(currentLayer);
+}
+
+void ActionCommands::reverseSelectedFrames()
+{
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    int selectedCount = currentLayer->selectedKeyFrameCount();
+    if (selectedCount <= 1)
+    {
+        return;
+    }
+
+    currentLayer->reverseOrderOfSelection();
+
+    if (currentLayer->type() == Layer::CAMERA) {
+        mEditor->view()->updateViewTransforms();
+    }
+    mEditor->framesModified();
+};
 
 void ActionCommands::removeKey()
 {

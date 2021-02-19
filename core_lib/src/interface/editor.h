@@ -24,12 +24,14 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 #include "pencildef.h"
 
-
+class QClipboard;
 class QDragEnterEvent;
 class QDropEvent;
 class QTemporaryDir;
 class Object;
 class KeyFrame;
+class BitmapImage;
+class VectorImage;
 class LayerCamera;
 class MainWindow2;
 class BaseManager;
@@ -41,10 +43,12 @@ class ViewManager;
 class PreferenceManager;
 class SelectionManager;
 class SoundManager;
+class ClipboardManager;
 class ScribbleArea;
 class TimeLine;
 class BackupElement;
 class ActiveFramePool;
+class Layer;
 
 enum class SETTING;
 
@@ -60,6 +64,7 @@ class Editor : public QObject
         Q_PROPERTY(PreferenceManager* preference READ preference)
         Q_PROPERTY(SoundManager*    sound    READ sound)
         Q_PROPERTY(SelectionManager* select READ select)
+        Q_PROPERTY(ClipboardManager* clipboards READ clipboards)
 
 public:
     explicit Editor(QObject* parent = nullptr);
@@ -78,6 +83,7 @@ public:
     PreferenceManager* preference() const { return mPreferenceManager; }
     SoundManager*      sound() const { return mSoundManager; }
     SelectionManager*  select() const { return mSelectionManager; }
+    ClipboardManager*  clipboards() const { return mClipboardManager; }
 
     Object* object() const { return mObject.get(); }
     Status openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged);
@@ -106,6 +112,8 @@ public:
     qreal viewScaleInversed();
     void deselectAll();
     void selectAll();
+
+    void clipboardChanged(const QClipboard* clipboard);
 
     // backup
     int mBackupIndex;
@@ -139,6 +147,10 @@ signals:
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
 
+    void canCopyChanged(bool enabled);
+    void canCutChanged(bool enabled);
+    void canPasteChanged(bool enabled);
+
 public: //slots
 
     /** Will call update() and update the canvas
@@ -154,8 +166,6 @@ public: //slots
 
     void clearCurrentFrame();
 
-    void cut();
-
     bool importImage(QString filePath);
     bool importGIF(QString filePath, int numOfImages = 0);
     void restoreKey();
@@ -169,6 +179,7 @@ public: //slots
     void removeKey();
 
     void notifyAnimationLengthChanged();
+
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
     Status pegBarAlignment(QStringList layers);
@@ -188,10 +199,14 @@ public: //slots
     void sanitizeBackupElementsAfterLayerDeletion(int layerIndex);
     void undo();
     void redo();
-    void copy();
 
+    void copy();
+    void copyAndCut();
     void paste();
-    void clipboardChanged();
+
+    bool canCopy() const;
+    bool canPaste() const;
+
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
@@ -221,6 +236,17 @@ private:
     bool importBitmapImage(QString, int space = 0);
     bool importVectorImage(QString);
 
+    void pasteToCanvas(BitmapImage* bitmapImage, int frameNumber);
+    void pasteToCanvas(VectorImage* vectorImage, int frameNumber);
+    void pasteToFrames();
+
+    bool canCopy(int keyPos, const Layer* layer) const;
+    bool canPaste(const Layer* layer) const;
+
+    bool canCopyBitmapImage(BitmapImage* bitmapImage) const;
+    bool canCopyFrames(const Layer* layer) const;
+    bool canCopyVectorImage(const VectorImage* vectorImage) const;
+
     // the object to be edited by the editor
     std::unique_ptr<Object> mObject;
 
@@ -237,6 +263,7 @@ private:
     PreferenceManager* mPreferenceManager = nullptr;
     SoundManager*      mSoundManager = nullptr;
     SelectionManager* mSelectionManager = nullptr;
+    ClipboardManager* mClipboardManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 
@@ -255,11 +282,6 @@ private:
     void updateAutoSaveCounter();
     int mLastModifiedFrame = -1;
     int mLastModifiedLayer = -1;
-
-    // clipboard
-    bool clipboardBitmapOk = true;
-    bool clipboardVectorOk = true;
-    bool clipboardSoundClipOk = true;
 };
 
 #endif

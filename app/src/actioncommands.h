@@ -63,10 +63,17 @@ public:
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     Status addNewKey();
+
+    /** Will insert a keyframe at the current position and push connected frames to the right */
+    Status insertKeyFrameAtCurrentPosition();
     void removeKey();
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
+    void removeSelectedFrames();
+    void reverseSelectedFrames();
+    void addExposureToSelectedFrames();
+    void subtractExposureFromSelectedFrames();
 
     // Layer
     Status addNewBitmapLayer();

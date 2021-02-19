@@ -103,11 +103,18 @@ public:
 signals:
     void updateRecentFilesList(bool b);
 
+    /** Emitted when window regains focus */
+    void windowActivated();
+
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
     void showEvent(QShowEvent*) override;
+    bool event(QEvent*) override;
 
+private slots:
+    void updateCopyCutPasteEnabled();
+    void fetchClipboard();
 private:
     void newObject();
     bool newObjectFromPresets(int presetIndex);

@@ -92,3 +92,35 @@ TEST_CASE("LayerManager::deleteLayer()")
     }
     delete editor;
 }
+
+TEST_CASE("Layer::setCurrentLayer(index)") {
+    Object* object = new Object;
+    Editor* editor = new Editor;
+    editor->setObject(object);
+
+    SECTION("Deselect previous layer") {
+        LayerManager* layerMgr = new LayerManager(editor);
+        layerMgr->init();
+
+        layerMgr->createBitmapLayer("Bitmap1");
+        layerMgr->createBitmapLayer("Bitmap2");
+        layerMgr->setCurrentLayer(0);
+
+        Layer* currentLayer = layerMgr->currentLayer();
+        currentLayer->addNewKeyFrameAt(1);
+        currentLayer->addNewKeyFrameAt(2);
+
+        currentLayer->setFrameSelected(1, true);
+        currentLayer->setFrameSelected(2, true);
+
+        REQUIRE(currentLayer->selectedKeyFrameCount() == 2);
+
+        layerMgr->setCurrentLayer(1);
+
+        // Make sure that previous layer has deselected all frames
+        REQUIRE(layerMgr->getLayer(0)->selectedKeyFrameCount() == 0);
+        REQUIRE(layerMgr->getLayer(1)->selectedKeyFrameCount() == 0);
+
+    }
+    delete editor;
+}
