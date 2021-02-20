@@ -45,13 +45,13 @@ void ColorSlider::init(ColorSpecType specType, ColorType type, const QColor &col
 
 void ColorSlider::paintEvent(QPaintEvent *)
 {
-    QPainter painter(this);
-
     drawColorBox(mColor, size());
 
+    QPainter painter(this);
     painter.drawPixmap(0, 0, mBoxPixmapSource);
-    drawPicker(mColor);
     painter.end();
+
+    drawPicker(mColor);
 }
 
 QLinearGradient ColorSlider::setColorSpec(const QColor &color)
