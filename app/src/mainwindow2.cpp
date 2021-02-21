@@ -795,7 +795,7 @@ void MainWindow2::importImageSequence()
     OnScopeExit(delete imageSeqDialog)
     imageSeqDialog->setCore(mEditor);
 
-    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
+    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor->layers(), &LayerManager::notifyAnimationLengthChanged);
 
     imageSeqDialog->exec();
     if (imageSeqDialog->result() == QDialog::Rejected)
@@ -824,7 +824,7 @@ void MainWindow2::importPredefinedImageSet()
     OnScopeExit(delete imageSeqDialog)
     imageSeqDialog->setCore(mEditor);
 
-    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
+    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor->layers(), &LayerManager::notifyAnimationLengthChanged);
 
     mSuppressAutoSaveDialog = true;
     imageSeqDialog->exec();

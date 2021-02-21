@@ -128,6 +128,11 @@ QTransform ViewManager::getViewInverse() const
     return mViewCanvasInverse;
 }
 
+qreal ViewManager::getViewScaleInverse() const
+{
+    return mViewCanvasInverse.m11();
+}
+
 void ViewManager::updateViewTransforms()
 {
     if (mCameraLayer)
