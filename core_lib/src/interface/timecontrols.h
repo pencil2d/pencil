@@ -69,7 +69,6 @@ private:
     void playbackRangeClicked(bool bChecked);
     void loopStartValueChanged(int);
     void loopEndValueChanged(int);
-    void updateSoundIcon(bool soundEnabled);
     void updateSoundScrubIcon(bool soundScrubEnabled);
 
     void noTimecodeText();
