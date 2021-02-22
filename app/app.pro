@@ -12,16 +12,16 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt precompile_header
+CONFIG += qt precompile_header lrelease embed_translations
 
 DESTDIR = ../bin
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 
-RESOURCES += \
-    data/app.qrc \
-    ../translations/translations.qrc
+RESOURCES += data/app.qrc
+
+EXTRA_TRANSLATIONS += $$fromfile(../pencil2d.pro, TRANSLATIONS)
 
 INCLUDEPATH += \
     src \
