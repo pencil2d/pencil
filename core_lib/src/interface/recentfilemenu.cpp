@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include <QDebug>
 
 
-RecentFileMenu::RecentFileMenu(QString title, QWidget *parent) :
+RecentFileMenu::RecentFileMenu(const QString& title, QWidget *parent) :
     QMenu(title, parent)
 {
     mClearSeparator = new QAction(this);
@@ -40,7 +40,7 @@ RecentFileMenu::~RecentFileMenu()
     delete mEmptyAction;
 }
 
-void RecentFileMenu::clear()
+void RecentFileMenu::clearRecentFiles()
 {
     for (const QString& filename : mRecentFiles)
     {
@@ -55,7 +55,7 @@ void RecentFileMenu::clear()
 
 void RecentFileMenu::setRecentFiles(const QStringList& filenames)
 {
-    clear();
+    clearRecentFiles();
 
     // Iterate in reverse because items are prepended to the list when first added
     for (auto filename = filenames.crbegin(); filename != filenames.crend(); filename++)
@@ -73,7 +73,7 @@ bool RecentFileMenu::loadFromDisk()
     QVariant recent = settings.value("RecentFiles");
     if (recent.isNull())
     {
-        clear();
+        clearRecentFiles();
         return false;
     }
     QStringList recentFileList = recent.toStringList();
@@ -88,7 +88,7 @@ bool RecentFileMenu::saveToDisk()
     return true;
 }
 
-void RecentFileMenu::addRecentFile(QString filename)
+void RecentFileMenu::addRecentFile(const QString& filename)
 {
     if (mRecentFiles.contains(filename))
     {
@@ -116,7 +116,7 @@ void RecentFileMenu::addRecentFile(QString filename)
         addAction(mClearAction);
         QObject::connect(mClearAction, &QAction::triggered, [this]
         {
-            clear();
+            clearRecentFiles();
             saveToDisk();
         });
     }
@@ -127,7 +127,7 @@ void RecentFileMenu::addRecentFile(QString filename)
     }
 }
 
-void RecentFileMenu::removeRecentFile(QString filename)
+void RecentFileMenu::removeRecentFile(const QString& filename)
 {
     if (mRecentFiles.contains(filename))
     {

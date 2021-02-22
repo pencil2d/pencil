@@ -429,20 +429,6 @@ void MainWindow2::updateSaveState()
     ui->statusBar->updateModifiedStatus(hasUnsavedChanges);
 }
 
-void MainWindow2::clearRecentFilesList()
-{
-    QStringList recentFilesList = mRecentFileMenu->getRecentFiles();
-    if (!recentFilesList.isEmpty())
-    {
-        mRecentFileMenu->clear();
-        mRecentFileMenu->saveToDisk();
-        QMessageBox::information(this, nullptr,
-                                 tr("\n\n You have successfully cleared the list"),
-                                 QMessageBox::Ok);
-    }
-    getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
-}
-
 void MainWindow2::openPegAlignDialog()
 {
     if (mPegAlign != nullptr)

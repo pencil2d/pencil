@@ -66,7 +66,6 @@ public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
-    void clearRecentFilesList();
     void openPegAlignDialog();
     void openLayerOpacityDialog();
     void currentLayerChanged();
@@ -97,13 +96,8 @@ public:
 
     void openFile(const QString& filename);
 
-    PreferencesDialog* getPrefDialog() { return mPrefDialog; }
-
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
-
-signals:
-    void updateRecentFilesList(bool b);
 
 protected:
     void tabletEvent(QTabletEvent*) override;
