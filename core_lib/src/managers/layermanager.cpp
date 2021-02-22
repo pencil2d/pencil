@@ -79,13 +79,13 @@ Layer* LayerManager::currentLayer()
 
 Layer* LayerManager::currentLayer(int incr)
 {
-    Q_ASSERT(object() != NULL);
+    Q_ASSERT(object() != nullptr);
     return object()->getLayer(editor()->currentLayerIndex() + incr);
 }
 
 Layer* LayerManager::getLayer(int index)
 {
-    Q_ASSERT(object() != NULL);
+    Q_ASSERT(object() != nullptr);
     return object()->getLayer(index);
 }
 
