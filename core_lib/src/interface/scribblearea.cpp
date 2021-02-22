@@ -325,7 +325,7 @@ void ScribbleArea::onOnionSkinTypeChanged()
     invalidateAllCache();
 }
 
-void ScribbleArea::onObjectChanged()
+void ScribbleArea::onObjectLoaded()
 {
     invalidateAllCache();
 }
