@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "selectionmanager.h"
 
+#include <pegbaraligner.h>
+
 PegBarAlignmentDialog::PegBarAlignmentDialog(Editor *editor, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PegBarAlignmentDialog)
@@ -147,7 +149,7 @@ void PegBarAlignmentDialog::alignPegs()
         return;
     }
 
-    Status result = mEditor->pegBarAlignment(bitmaplayers);
+    Status result = PegbarAligner(mEditor).align(bitmaplayers);
     if (!result.ok())
     {
         QMessageBox::information(this, "Pencil2D",

@@ -675,54 +675,6 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
-PegbarResult BitmapImage::findLeft(QRectF rect, int grayValue)
-{
-    PegbarResult result;
-    result.value = -1;
-    result.errorcode = Status::FAIL;
-    int left = static_cast<int>(rect.left());
-    int right = static_cast<int>(rect.right());
-    int top = static_cast<int>(rect.top());
-    int bottom = static_cast<int>(rect.bottom());
-    for (int x = left; x <= right; x++)
-    {
-        for (int y = top; y <= bottom; y++)
-        {
-            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
-            {
-                result.value = x;
-                result.errorcode = Status::OK;
-                return result;
-            }
-        }
-    }
-    return result;
-}
-
-PegbarResult BitmapImage::findTop(QRectF rect, int grayValue)
-{
-    PegbarResult result;
-    result.value = -1;
-    result.errorcode = Status::FAIL;
-    int left = static_cast<int>(rect.left());
-    int right = static_cast<int>(rect.right());
-    int top = static_cast<int>(rect.top());
-    int bottom = static_cast<int>(rect.bottom());
-    for (int y = top; y <= bottom; y++)
-    {
-        for (int x = left; x <= right; x++)
-        {
-            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
-            {
-                result.value = y;
-                result.errorcode = Status::OK;
-                return result;
-            }
-        }
-    }
-    return result;
-}
-
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (mImage && !mImage->isNull())

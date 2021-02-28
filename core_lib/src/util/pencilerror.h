@@ -91,17 +91,13 @@ public:
     bool operator==(ErrorCode code) const;
     bool operator!=(ErrorCode code) const;
 
+    virtual void updateStatus(const ErrorCode code) { mCode = code; }
+
 private:
     ErrorCode mCode = OK;
     QString mTitle;
     QString mDescription;
     DebugDetails mDetails;
-};
-
-struct PegbarResult
-{
-    int value = 0;
-    Status::ErrorCode errorcode = Status::OK;
 };
 
 #ifndef STATUS_CHECK

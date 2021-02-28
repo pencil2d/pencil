@@ -1065,52 +1065,6 @@ void Editor::swapLayers(int i, int j)
     mScribbleArea->onLayerChanged();
 }
 
-Status Editor::pegBarAlignment(const QStringList& layers)
-{
-    PegbarResult retLeft;
-    PegbarResult retRight;
-
-    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(mLayerManager->currentLayer());
-    BitmapImage* img = layerBitmap->getBitmapImageAtFrame(currentFrame());
-    QRectF rect = select()->mySelectionRect();
-    retLeft = img->findLeft(rect, 121);
-    retRight = img->findTop(rect, 121);
-    if (STATUS_FAILED(retLeft.errorcode) || STATUS_FAILED(retRight.errorcode))
-    {
-        return Status(Status::FAIL, "", tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar error message"));
-    }
-    const int peg_x = retLeft.value;
-    const int peg_y = retRight.value;
-
-    // move other layers
-    for (int i = 0; i < layers.count(); i++)
-    {
-        layerBitmap = static_cast<LayerBitmap*>(mLayerManager->findLayerByName(layers.at(i)));
-        for (int k = layerBitmap->firstKeyFramePosition(); k <= layerBitmap->getMaxKeyFramePosition(); k++)
-        {
-            if (layerBitmap->keyExists(k))
-            {
-                img = layerBitmap->getBitmapImageAtFrame(k);
-                retLeft = img->findLeft(rect, 121);
-                const QString errorDescription = tr("Peg bar not found at %1, %2").arg(layerBitmap->name()).arg(k);
-                if (STATUS_FAILED(retLeft.errorcode))
-                {
-                    return Status(retLeft.errorcode, "", errorDescription);
-                }
-                retRight = img->findTop(rect, 121);
-                if (STATUS_FAILED(retRight.errorcode))
-                {
-                    return Status(retRight.errorcode, "", errorDescription);
-                }
-                img->moveTopLeft(QPoint(img->left() + (peg_x - retLeft.value), img->top() + (peg_y - retRight.value)));
-            }
-        }
-    }
-    deselectAll();
-
-    return retLeft.errorcode;
-}
-
 void Editor::prepareSave()
 {
     for (auto mgr : mAllManagers)
