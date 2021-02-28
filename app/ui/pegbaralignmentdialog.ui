@@ -40,21 +40,21 @@
      <item>
       <widget class="QLabel" name="labSelectCenterPegs">
        <property name="text">
-        <string>1) Create or drag existing selection.</string>
+        <string>1) A selection should exist</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>2) Make sure all pegs are within the selection</string>
+        <string>2) The selection should contain all pegs</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="labSelectLayers">
        <property name="text">
-        <string>3) Select at least one layer to align. (Bitmaps only!)</string>
+        <string>3) At least one layer should be selected (Bitmaps only!)</string>
        </property>
       </widget>
      </item>
