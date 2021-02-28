@@ -823,19 +823,22 @@ bool Editor::importBitmapImage(QString filePath, int space)
 
     while (reader.read(&img))
     {
-        if (!layer->keyExists(currentFrame()))
+        int frameNumber = mFrame;
+        if (!layer->keyExists(frameNumber))
         {
             addNewKey();
         }
-        BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(currentFrame());
+        BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(frameNumber);
         BitmapImage importedBitmapImage(pos, img);
         bitmapImage->paste(&importedBitmapImage);
+        frameModified(bitmapImage->pos());
 
         if (space > 1) {
-            scrubTo(currentFrame() + space);
+            frameNumber += space;
         } else {
-            scrubTo(currentFrame() + 1);
+            frameNumber += 1;
         }
+        scrubTo(frameNumber);
 
         backup(tr("Import Image"));
 
@@ -868,6 +871,7 @@ bool Editor::importVectorImage(QString filePath)
     {
         importedVectorImage.selectAll();
         vectorImage->paste(importedVectorImage);
+        frameModified(importedVectorImage.pos());
 
         backup(tr("Import Image"));
     }
