@@ -109,6 +109,7 @@ Status ActionCommands::importMovieVideo()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    mEditor->framesModified();
 
     progressDialog.setValue(100);
     progressDialog.close();
