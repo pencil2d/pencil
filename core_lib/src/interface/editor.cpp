@@ -394,6 +394,7 @@ void Editor::restoreKey()
         layer = object()->getLayer(layerIndex);
         addKeyFrame(layerIndex, frame);
         dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(&lastBackupBitmapElement->bitmapImage);
+        frameModified(frame);
     }
     if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
     {
@@ -403,6 +404,7 @@ void Editor::restoreKey()
         layer = object()->getLayer(layerIndex);
         addKeyFrame(layerIndex, frame);
         dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(lastBackupVectorElement->vectorImage);
+        frameModified(frame);
     }
     if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
     {
