@@ -422,6 +422,7 @@ void ViewManager::onCurrentFrameChanged()
     if (mCameraLayer)
     {
         updateViewTransforms();
+        emit viewChanged();
     }
 }
 
