@@ -166,6 +166,48 @@ void ToolBoxWidget::updateUI()
 {
 }
 
+void ToolBoxWidget::onToolSetActive(ToolType toolType)
+{
+    deselectAllTools();
+    switch (toolType) {
+    case ToolType::BRUSH:
+        ui->brushButton->setChecked(true);
+        break;
+    case ToolType::PEN:
+        ui->penButton->setChecked(true);
+        break;
+    case ToolType::PENCIL:
+        ui->pencilButton->setChecked(true);
+        break;
+    case ToolType::SELECT:
+        ui->selectButton->setChecked(true);
+        break;
+    case ToolType::HAND:
+        ui->handButton->setChecked(true);
+        break;
+    case ToolType::MOVE:
+        ui->moveButton->setChecked(true);
+        break;
+    case ToolType::ERASER:
+        ui->eraserButton->setChecked(true);
+        break;
+    case ToolType::POLYLINE:
+        ui->polylineButton->setChecked(true);
+        break;
+    case ToolType::SMUDGE:
+        ui->smudgeButton->setChecked(true);
+        break;
+    case ToolType::BUCKET:
+        ui->bucketButton->setChecked(true);
+        break;
+    case ToolType::EYEDROPPER:
+        ui->eyedropperButton->setChecked(true);
+        break;
+    default:
+        break;
+    }
+}
+
 void ToolBoxWidget::pencilOn()
 {
     if (!leavingTool(ui->pencilButton)) { return; }

@@ -450,9 +450,6 @@ void MainWindow2::openPegAlignDialog()
 
     mPegAlign = new PegBarAlignmentDialog(mEditor, this);
     mPegAlign->setAttribute(Qt::WA_DeleteOnClose);
-    mPegAlign->updatePegRegLayers();
-    mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
-    mPegAlign->setRefKey(mEditor->currentFrame());
 
     Qt::WindowFlags flags = mPegAlign->windowFlags();
     flags |= Qt::WindowStaysOnTopHint;
@@ -591,6 +588,8 @@ bool MainWindow2::openObject(const QString& strFilePath)
         mRecentFileMenu->addRecentFile(mEditor->object()->filePath());
         mRecentFileMenu->saveToDisk();
     }
+
+    closeDialogs();
 
     setWindowTitle(mEditor->object()->filePath().prepend("[*]"));
     setWindowModified(false);
@@ -986,6 +985,8 @@ void MainWindow2::newObject()
     object->createDefaultLayers();
     mEditor->setObject(object);
 
+    closeDialogs();
+
     setWindowTitle(PENCIL_WINDOW_TITLE);
 }
 
@@ -1061,6 +1062,15 @@ bool MainWindow2::tryLoadPreset()
     });
     presetDialog->open();
     return true;
+}
+
+void MainWindow2::closeDialogs()
+{
+    for (auto widget : this->children()) {
+        if (QDialog* object = qobject_cast<QDialog*>(widget)) {
+            object->close();
+        }
+    }
 }
 
 void MainWindow2::readSettings()
@@ -1332,6 +1342,7 @@ void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
+    connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxWidget::onToolSetActive);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
 
 

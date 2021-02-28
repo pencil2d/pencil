@@ -113,6 +113,7 @@ private:
     bool newObjectFromPresets(int presetIndex);
     bool openObject(const QString& strFilename);
     bool saveObject(QString strFileName);
+    void closeDialogs();
 
     void createDockWidgets();
     void createMenus();

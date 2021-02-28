@@ -19,20 +19,10 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="QLabel" name="labHeader">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Peg Bar Alignment:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="bottomMargin">
+      <number>2</number>
+     </property>
      <item>
       <widget class="QLabel" name="labSelectHeader">
        <property name="font">
@@ -50,14 +40,14 @@
      <item>
       <widget class="QLabel" name="labSelectCenterPegs">
        <property name="text">
-        <string>1) Select a reference area around center pegs.</string>
+        <string>1) Create or drag existing selection.</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labSelectRefKeyframe">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>2) Select one reference keyframe from timeline.</string>
+        <string>2) Make sure all pegs are within the selection</string>
        </property>
       </widget>
      </item>
@@ -76,6 +66,21 @@
       <string>Layer selection</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>2</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
+      </property>
       <item>
        <widget class="QListWidget" name="lwLayers">
         <property name="selectionMode">
@@ -151,7 +156,7 @@
      <item>
       <widget class="QPushButton" name="btnAlign">
        <property name="text">
-        <string>Align Peg Bars</string>
+        <string>Align</string>
        </property>
        <property name="default">
         <bool>true</bool>

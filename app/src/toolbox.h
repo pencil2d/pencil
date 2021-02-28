@@ -44,6 +44,9 @@ public:
     void updateUI() override;
 
 public slots:
+
+
+    void onToolSetActive(ToolType toolType);
     void pencilOn();
     void eraserOn();
     void selectOn();
