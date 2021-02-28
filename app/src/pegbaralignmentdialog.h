@@ -21,8 +21,6 @@ GNU General Public License for more details.
 #include <QStringList>
 #include "editor.h"
 
-class PegbarAligner;
-
 namespace Ui {
 class PegBarAlignmentDialog;
 }

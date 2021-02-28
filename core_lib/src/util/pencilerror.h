@@ -25,7 +25,6 @@ class DebugDetails
 {
 public:
     DebugDetails();
-    ~DebugDetails();
 
     void collect(const DebugDetails& d);
     QString str();
@@ -91,7 +90,7 @@ public:
     bool operator==(ErrorCode code) const;
     bool operator!=(ErrorCode code) const;
 
-    virtual void updateStatus(const ErrorCode code) { mCode = code; }
+    void updateStatus(const ErrorCode code) { mCode = code; }
 
 private:
     ErrorCode mCode = OK;
