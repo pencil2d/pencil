@@ -107,11 +107,12 @@ void TimeControls::initUI()
     mJumpToStartButton = new QPushButton(this);
 
     mLoopIcon = QIcon(":icons/controls/loop.png");
-    mSoundIcon = QIcon(":icons/controls/sound.png");
-    if (mEditor->preference()->isOn(SETTING::SOUND_SCRUB_ACTIVE))
-        mSoundScrubIcon = QIcon(":icons/controls/soundscrub.png");
-    else
-        mSoundScrubIcon = QIcon(":icons/controls/soundscrub-disabled.png");
+    mSoundIcon = QIcon();
+    mSoundIcon.addFile(":icons/controls/sound.png", QSize(), QIcon::Normal, QIcon::On);
+    mSoundIcon.addFile(":icons/controls/sound-disabled.png", QSize(), QIcon::Normal, QIcon::Off);
+    mSoundScrubIcon = QIcon();
+    mSoundScrubIcon.addFile(":icons/controls/soundscrub.png", QSize(), QIcon::Normal, QIcon::On);
+    mSoundScrubIcon.addFile(":icons/controls/soundscrub-disabled.png", QSize(), QIcon::Normal, QIcon::Off);
     mJumpToEndIcon = QIcon(":icons/controls/endplay.png");
     mJumpToStartIcon = QIcon(":icons/controls/startplay.png");
     mStartIcon = QIcon(":icons/controls/play.png");
@@ -217,7 +218,6 @@ void TimeControls::makeConnections()
     connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled);
 
     connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::soundToggled);
-    connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon);
 
     connect(mSoundScrubButton, &QPushButton::clicked, this, &TimeControls::soundScrubToggled);
     connect(mSoundScrubButton, &QPushButton::clicked, this, &TimeControls::updateSoundScrubIcon);
@@ -306,29 +306,15 @@ void TimeControls::loopEndValueChanged(int i)
     mTimeline->updateLength();
 }
 
-void TimeControls::updateSoundIcon(bool soundEnabled)
-{
-    if (soundEnabled)
-    {
-        mSoundButton->setIcon(QIcon(":icons/controls/sound.png"));
-    }
-    else
-    {
-        mSoundButton->setIcon(QIcon(":icons/controls/sound-disabled.png"));
-    }
-}
-
 void TimeControls::updateSoundScrubIcon(bool soundScrubEnabled)
 {
     if (soundScrubEnabled)
     {
-        mSoundScrubButton->setIcon(QIcon(":icons/controls/soundscrub.png"));
         mEditor->playback()->setSoundScrubActive(true);
         mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, true);
     }
     else
     {
-        mSoundScrubButton->setIcon(QIcon(":icons/controls/soundscrub-disabled.png"));
         mEditor->playback()->setSoundScrubActive(false);
         mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, false);
     }

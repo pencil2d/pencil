@@ -116,7 +116,7 @@ void Pencil2D::installTranslators()
     }
 
     std::unique_ptr<QTranslator> pencil2DTranslator(new QTranslator(this));
-    if (pencil2DTranslator->load(locale, "pencil", "_", ":/qm/"))
+    if (pencil2DTranslator->load(locale, "pencil", "_", ":/i18n/"))
     {
         installTranslator(pencil2DTranslator.release());
     }

@@ -218,7 +218,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/overlay_godenratio.png</normaloff>:/icons/overlay_godenratio.png</iconset>
+            <normaloff>:/icons/overlay_goldenratio.png</normaloff>:/icons/overlay_goldenratio.png</iconset>
           </property>
           <property name="iconSize">
            <size>

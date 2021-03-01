@@ -94,10 +94,6 @@ public:
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
 
-    // peg bar alignment
-    PegbarResult findLeft(QRectF rect, int grayValue);
-    PegbarResult findTop(QRectF rect, int grayValue);
-
 
     QRect& bounds() { autoCrop(); return mBounds; }
 

@@ -123,7 +123,7 @@ public:
     void onOnionSkinTypeChanged();
 
     /** Object updated, invalidate all cache */
-    void onObjectChanged();
+    void onObjectLoaded();
 
     /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);

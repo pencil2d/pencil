@@ -25,7 +25,6 @@ class DebugDetails
 {
 public:
     DebugDetails();
-    ~DebugDetails();
 
     void collect(const DebugDetails& d);
     QString str();
@@ -96,12 +95,6 @@ private:
     QString mTitle;
     QString mDescription;
     DebugDetails mDetails;
-};
-
-struct PegbarResult
-{
-    int value = 0;
-    Status::ErrorCode errorcode = Status::OK;
 };
 
 #ifndef STATUS_CHECK
