@@ -427,8 +427,10 @@ void ViewManager::onCurrentFrameChanged()
     if (mCameraLayer)
     {
         updateViewTransforms();
-        emit viewChanged();
     }
+
+    // emit changes either way because of potential camera interpolation changes
+    emit viewChanged();
 }
 
 void ViewManager::resetView()
