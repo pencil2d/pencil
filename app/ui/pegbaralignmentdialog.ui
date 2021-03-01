@@ -45,9 +45,27 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="labelSelectAllFrames">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
        <property name="text">
-        <string>2) The selection should contain all pegs</string>
+        <string>2) The selection be large enough to contain the center pegs of all frames</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <property name="indent">
+        <number>-1</number>
        </property>
       </widget>
      </item>
@@ -55,6 +73,9 @@
       <widget class="QLabel" name="labSelectLayers">
        <property name="text">
         <string>3) At least one layer should be selected (Bitmaps only!)</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

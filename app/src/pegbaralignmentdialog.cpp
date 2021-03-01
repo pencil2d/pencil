@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "selectionmanager.h"
 #include "toolmanager.h"
+#include "scribblearea.h"
 
 #include <pegbaraligner.h>
 
@@ -40,9 +41,8 @@ PegBarAlignmentDialog::PegBarAlignmentDialog(Editor *editor, QWidget *parent) :
     connect(mEditor->layers(), &LayerManager::layerCountChanged, this, &PegBarAlignmentDialog::updatePegRegLayers);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &PegBarAlignmentDialog::updatePegRegDialog);
     connect(mEditor, &Editor::scrubbed, this, &PegBarAlignmentDialog::updatePegRegDialog);
+    connect(mEditor, &Editor::framesModified, this, &PegBarAlignmentDialog::updatePegRegDialog);
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &PegBarAlignmentDialog::updatePegRegDialog);
-
-    updatePegRegLayers();
 
     ui->btnAlign->setEnabled(false);
     mLayernames.clear();
@@ -50,14 +50,15 @@ PegBarAlignmentDialog::PegBarAlignmentDialog(Editor *editor, QWidget *parent) :
     mEditor->tools()->setCurrentTool(SELECT);
 
     if (!mEditor->select()->somethingSelected()) {
-        mEditor->select()->setSelection(QRect(0,0,200,100));
+        QPoint centralPoint = mEditor->getScribbleArea()->getCentralPoint().toPoint();
+        mEditor->select()->setSelection(QRect(centralPoint.x()-100,centralPoint.y()-50,200,100));
     }
+    updatePegRegLayers();
 }
 
 PegBarAlignmentDialog::~PegBarAlignmentDialog()
 {
     delete ui;
-    mEditor->select()->resetSelectionProperties();
 }
 
 void PegBarAlignmentDialog::setLayerList(QStringList layerList)
@@ -135,8 +136,14 @@ void PegBarAlignmentDialog::updatePegRegDialog()
     // is the reference key valid?
     KeyFrame* key = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
 
+    if (key == nullptr) {
+        updateRefKeyLabel("-");
+        setReferenceSelected(false);
+        return;
+    }
+
     bool isReferenceSelected = (currentLayer->type() == Layer::BITMAP &&
-                                currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
+                                key->pos());
     setReferenceSelected(isReferenceSelected);
 
     // has minimum one layer been selected?
@@ -158,7 +165,8 @@ void PegBarAlignmentDialog::alignPegs()
         return;
     }
 
-    Status result = PegBarAligner(mEditor).align(bitmaplayers);
+
+    Status result = PegBarAligner(mEditor, mEditor->select()->mySelectionRect().toAlignedRect()).align(bitmaplayers);
     if (!result.ok())
     {
         QMessageBox::information(this, "Pencil2D",
@@ -166,6 +174,8 @@ void PegBarAlignmentDialog::alignPegs()
                                  QMessageBox::Ok);
         return;
     }
+
+    mEditor->deselectAll();
     done(QDialog::Accepted);
 }
 
