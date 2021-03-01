@@ -364,7 +364,7 @@ void Editor::restoreKey()
         layer = object()->getLayer(layerIndex);
         addKeyFrame(layerIndex, frame);
         dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(&lastBackupBitmapElement->bitmapImage);
-        frameModified(frame);
+        emit frameModified(frame);
     }
     if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
     {
@@ -374,7 +374,7 @@ void Editor::restoreKey()
         layer = object()->getLayer(layerIndex);
         addKeyFrame(layerIndex, frame);
         dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(lastBackupVectorElement->vectorImage);
-        frameModified(frame);
+        emit frameModified(frame);
     }
     if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
     {
@@ -776,7 +776,7 @@ bool Editor::importBitmapImage(const QString& filePath, int space)
         BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(frameNumber);
         BitmapImage importedBitmapImage(pos, img);
         bitmapImage->paste(&importedBitmapImage);
-        frameModified(bitmapImage->pos());
+        emit frameModified(bitmapImage->pos());
 
         if (space > 1) {
             frameNumber += space;
@@ -816,7 +816,7 @@ bool Editor::importVectorImage(const QString& filePath)
     {
         importedVectorImage.selectAll();
         vectorImage->paste(importedVectorImage);
-        frameModified(importedVectorImage.pos());
+        emit frameModified(importedVectorImage.pos());
 
         backup(tr("Import Image"));
     }

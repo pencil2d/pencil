@@ -109,7 +109,7 @@ Status ActionCommands::importMovieVideo()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 
     progressDialog.setValue(100);
     progressDialog.close();
@@ -660,7 +660,7 @@ void ActionCommands::moveFrameForward()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 }
 
 void ActionCommands::moveFrameBackward()
@@ -673,7 +673,7 @@ void ActionCommands::moveFrameBackward()
             mEditor->scrubBackward();
         }
     }
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 }
 
 Status ActionCommands::addNewBitmapLayer()
