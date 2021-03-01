@@ -9,30 +9,27 @@
 #include <layermanager.h>
 #include <selectionmanager.h>
 
-PegStatus::PegStatus(ErrorCode code)
-    : Status(code)
+PegStatus::PegStatus(ErrorCode code, QPoint point)
+    : Status(code), point(point)
 {
 }
 
-PegbarAligner::PegbarAligner(Editor* editor) :
-    mEditor(editor),
-    mGrayThreshold(121)
+PegBarAligner::PegBarAligner(Editor* editor) :
+    mEditor(editor)
 {
     mPegSearchRect = mEditor->select()->mySelectionRect().toAlignedRect();
 }
 
 
-Status PegbarAligner::align(const QStringList layers)
+Status PegBarAligner::align(const QStringList& layers)
 {
-    PegStatus result = Status::OK;
-
-    LayerBitmap* layerbitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
-    BitmapImage* img = layerbitmap->getBitmapImageAtFrame(mEditor->currentFrame());
-    result = findPoint(*img);
+    LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+    BitmapImage* img = layerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
+    PegStatus result = findPoint(*img);
 
     if (!result.ok())
     {
-        return Status(Status::FAIL, "", QObject::tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar error message"));
+        return Status(Status::FAIL, "", tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar error message"));
     }
 
     const int pegX = result.point.x();
@@ -40,18 +37,18 @@ Status PegbarAligner::align(const QStringList layers)
 
     for (int i = 0; i < layers.count(); i++)
     {
-        layerbitmap = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(layers.at(i)));
-        for (int k = layerbitmap->firstKeyFramePosition(); k <= layerbitmap->getMaxKeyFramePosition(); k++)
+        layerBitmap = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(layers.at(i)));
+        for (int k = layerBitmap->firstKeyFramePosition(); k <= layerBitmap->getMaxKeyFramePosition(); k++)
         {
-            if (!layerbitmap->keyExists(k)) { continue; }
+            if (!layerBitmap->keyExists(k)) { continue; }
 
-            img = layerbitmap->getBitmapImageAtFrame(k);
+            img = layerBitmap->getBitmapImageAtFrame(k);
             img->enableAutoCrop(false);
 
             result = findPoint(*img);
             if (!result.ok())
             {
-                const QString errorDescription = QObject::tr("Peg bar not found at %1, %2").arg(layerbitmap->name()).arg(k);
+                const QString errorDescription = tr("Peg bar not found at %1, %2").arg(layerBitmap->name()).arg(k);
                 return Status(result.code(), "", errorDescription);
             }
             img->moveTopLeft(QPoint(img->left() + (pegX - result.point.x()), img->top() + (pegY - result.point.y())));
@@ -66,9 +63,9 @@ Status PegbarAligner::align(const QStringList layers)
 }
 
 
-PegStatus PegbarAligner::findPoint(const BitmapImage& image) const
+PegStatus PegBarAligner::findPoint(const BitmapImage& image) const
 {
-    PegStatus result = Status::FAIL;
+    QPoint point;
     const int left = mPegSearchRect.left();
     const int right = mPegSearchRect.right();
     const int top = mPegSearchRect.top();
@@ -77,7 +74,7 @@ PegStatus PegbarAligner::findPoint(const BitmapImage& image) const
 
     bool foundX = false;
 
-    for (int x = left; x <= right; x++)
+    for (int x = left; x <= right && !foundX; x++)
     {
         for (int y = top; y <= bottom; y++)
         {
@@ -85,16 +82,15 @@ PegStatus PegbarAligner::findPoint(const BitmapImage& image) const
             if (qAlpha(scan) == 255 && qGray(scan) < grayValue)
             {
                 foundX = true;
-                result.point.setX(x);
+                point.setX(x);
 
                 break;
             }
         }
-        if (foundX) { break; }
     }
 
     bool foundY = false;
-    for (int y = top; y <= bottom; y++)
+    for (int y = top; y <= bottom && !foundY; y++)
     {
         for (int x = left; x <= right; x++)
         {
@@ -102,16 +98,15 @@ PegStatus PegbarAligner::findPoint(const BitmapImage& image) const
             if (qAlpha(scan) == 255 && qGray(scan) < grayValue)
             {
                 foundY = true;
-                result.point.setY(y);
+                point.setY(y);
 
                 break;
             }
         }
-        if (foundY) { break; }
     }
 
     if (foundX && foundY) {
-        result.updateStatus(Status::OK);
+        return PegStatus(Status::OK, point);
     }
-    return result;
+    return Status::FAIL;
 }

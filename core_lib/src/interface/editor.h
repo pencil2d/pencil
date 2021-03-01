@@ -163,7 +163,6 @@ public: //slots
 
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
-    Status pegBarAlignment(const QStringList& layers);
 
     void backup(const QString& undoText);
     void backup(int layerNumber, int frameNumber, const QString& undoText);
