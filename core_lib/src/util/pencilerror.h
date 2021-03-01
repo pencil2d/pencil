@@ -90,8 +90,6 @@ public:
     bool operator==(ErrorCode code) const;
     bool operator!=(ErrorCode code) const;
 
-    void updateStatus(const ErrorCode code) { mCode = code; }
-
 private:
     ErrorCode mCode = OK;
     QString mTitle;

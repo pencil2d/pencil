@@ -12,23 +12,24 @@ class Editor;
 class PegStatus : public Status
 {
 public:
-    PegStatus(const ErrorCode code);
+    PegStatus(ErrorCode code, QPoint point = {});
     QPoint point;
 };
 
-class PegbarAligner
+class PegBarAligner
 {
+    Q_DECLARE_TR_FUNCTIONS(PegBarAligner)
 public:
-    PegbarAligner(Editor* editor);
+    PegBarAligner(Editor* editor);
 
-    Status align(QStringList layers);
+    Status align(const QStringList& layers);
 
 private:
     PegStatus findPoint(const BitmapImage& image) const;
 
     Editor* mEditor = nullptr;
 
-    const int mGrayThreshold;
+    const int mGrayThreshold = 121;
     QRect mPegSearchRect;
 };
 

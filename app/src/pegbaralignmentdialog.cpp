@@ -158,7 +158,7 @@ void PegBarAlignmentDialog::alignPegs()
         return;
     }
 
-    Status result = PegbarAligner(mEditor).align(bitmaplayers);
+    Status result = PegBarAligner(mEditor).align(bitmaplayers);
     if (!result.ok())
     {
         QMessageBox::information(this, "Pencil2D",

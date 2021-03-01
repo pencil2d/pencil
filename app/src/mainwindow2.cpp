@@ -1066,10 +1066,8 @@ bool MainWindow2::tryLoadPreset()
 
 void MainWindow2::closeDialogs()
 {
-    for (auto widget : this->children()) {
-        if (QDialog* object = qobject_cast<QDialog*>(widget)) {
-            object->close();
-        }
+    for (auto dialog : findChildren<QDialog*>(QString(), Qt::FindDirectChildrenOnly)) {
+        dialog->close();
     }
 }
 
