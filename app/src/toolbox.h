@@ -65,7 +65,7 @@ signals:
 
 private:
     void deselectAllTools();
-    bool leavingTool(QToolButton*);
+    bool toolOn(ToolType toolType, QToolButton* toolButton);
 
     Ui::ToolBoxWidget* ui = nullptr;
 };
