@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include "camera.h"
 #include "pencildef.h"
+#include <QDebug>
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -102,6 +103,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)
 {
+    qDebug() << "in interpolation";
     if (keyFrameCount() == 0)
         return;
 
@@ -135,6 +137,10 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     // linear interpolation
     double c2 = (frameNumber - frame1) / (frame2 - frame1);
 
+    // calculate sin interpolation (easeIn-easeOut)
+    double degree = 180*c2;
+    qDebug() << "Degrees; " << degree;
+
     auto lerp = [](double f1, double f2, double ratio) -> double
     {
         return f1 * (1.0 - ratio) + f2 * ratio;
@@ -148,6 +154,7 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     cam->translate(dx, dy);
     cam->rotate(r);
     cam->scale(s);
+
 }
 
 QRect LayerCamera::getViewRect()
@@ -186,7 +193,9 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
 {
     Camera* c = new Camera;
     c->setPos(position);
+    qDebug() << "Before interpolation";
     linearInterpolateTransform(c);
+    qDebug() << "After  interpolation";
     return c;
 }
 
