@@ -19,6 +19,8 @@ GNU General Public License for more details.
 #include <QSettings>
 #include "camera.h"
 #include "pencildef.h"
+#include <QPainterPath>
+#include <QEasingCurve>
 #include <QDebug>
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
@@ -83,6 +85,24 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
 
+    // BEGIN Davids calculations
+    QPainterPath path;
+    QEasingCurve easing(QEasingCurve::InOutQuad);
+    QPointF beginPoint = camera1->translation();
+    QPointF endPoint = camera2->translation();
+    path.moveTo(beginPoint);
+    path.lineTo(endPoint);
+
+    qreal duration = static_cast<qreal>(frame2 - frame1);
+    qreal percent = easing.valueForProgress((frameNumber - frame1)/duration);
+
+    qDebug() << "Frame: " << frameNumber << ", pos: " << path.pointAtPercent(percent) <<
+                " " << QPointF(beginPoint.x() + path.pointAtPercent(percent).x(),
+                               beginPoint.y() + path.pointAtPercent(percent).y());
+
+    // END David calculations
+
+
     // linear interpolation
     qreal c2 = (frameNumber - frame1) / (frame2 - frame1);
     qreal c1 = 1.0 - c2;
@@ -96,8 +116,8 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
                       interpolation(camera1->view.m12(), camera2->view.m12()),
                       interpolation(camera1->view.m21(), camera2->view.m21()),
                       interpolation(camera1->view.m22(), camera2->view.m22()),
-                      interpolation(camera1->view.dx(), camera2->view.dx()),
-                      interpolation(camera1->view.dy(), camera2->view.dy()));
+                      path.pointAtPercent(percent).x(),
+                      path.pointAtPercent(percent).y());
 
 }
 
