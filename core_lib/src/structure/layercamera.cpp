@@ -19,6 +19,8 @@ GNU General Public License for more details.
 #include <QSettings>
 #include "camera.h"
 #include "pencildef.h"
+#include <QPainterPath>
+#include <QEasingCurve>
 #include <QDebug>
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
@@ -58,7 +60,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     }
 
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
-
+    // qDebug() << "POS: " << camera1->pos();
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
 
@@ -83,6 +85,31 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
 
+    // BEGIN calculations -----------------------------------------------
+    QEasingCurve easing(QEasingCurve::InOutQuad);
+    qreal duration = static_cast<qreal>(frame2 - frame1);  // duration > 0
+    qreal percent = easing.valueForProgress((frameNumber - frame1)/duration);
+/*
+    // scaling
+    if (camera1->scaling() != camera2->scaling())
+    {
+        QPainterPath scal;
+        scal.moveTo(camera1->scaling(), 0);
+        scal.lineTo(camera2->scaling(), 0);
+        qDebug() << "Frame: " << frameNumber << " x: " << scal.pointAtPercent(percent).x();
+        returnCam->scale(scal.pointAtPercent(percent).x());
+    }
+*/
+
+    // translation
+    QPainterPath trans;
+    trans.moveTo(camera1->translation());
+    trans.lineTo(camera2->translation());
+
+//    qDebug() << "Frame: " << frameNumber << ", pos: " << path.pointAtPercent(percent) << ", % " << percent;
+
+    // END calculations --------------------------------------------------
+
     // linear interpolation
     qreal c2 = (frameNumber - frame1) / (frame2 - frame1);
     qreal c1 = 1.0 - c2;
@@ -91,19 +118,19 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     {
         return f1 * c1 + f2 * c2;
     };
+    qDebug() << frameNumber << " " << percent << "%. Cam1: " << camera1->translation() << ", Cam2: " << camera2->translation() << " AKTUEL: " << trans.pointAtPercent(percent);
 
     return QTransform(interpolation(camera1->view.m11(), camera2->view.m11()),
                       interpolation(camera1->view.m12(), camera2->view.m12()),
                       interpolation(camera1->view.m21(), camera2->view.m21()),
                       interpolation(camera1->view.m22(), camera2->view.m22()),
-                      interpolation(camera1->view.dx(), camera2->view.dx()),
-                      interpolation(camera1->view.dy(), camera2->view.dy()));
+                      trans.pointAtPercent(percent).x(),
+                      trans.pointAtPercent(percent).y());
 
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)
 {
-    qDebug() << "in interpolation";
     if (keyFrameCount() == 0)
         return;
 
@@ -137,10 +164,6 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     // linear interpolation
     double c2 = (frameNumber - frame1) / (frame2 - frame1);
 
-    // calculate sin interpolation (easeIn-easeOut)
-    double degree = 180*c2;
-    qDebug() << "Degrees; " << degree;
-
     auto lerp = [](double f1, double f2, double ratio) -> double
     {
         return f1 * (1.0 - ratio) + f2 * ratio;
@@ -154,7 +177,6 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     cam->translate(dx, dy);
     cam->rotate(r);
     cam->scale(s);
-
 }
 
 QRect LayerCamera::getViewRect()
@@ -193,9 +215,7 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
 {
     Camera* c = new Camera;
     c->setPos(position);
-    qDebug() << "Before interpolation";
     linearInterpolateTransform(c);
-    qDebug() << "After  interpolation";
     return c;
 }
 
