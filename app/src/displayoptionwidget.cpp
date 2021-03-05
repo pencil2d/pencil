@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "viewmanager.h"
 #include "overlaymanager.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
@@ -50,8 +51,6 @@ void DisplayOptionWidget::initUI()
     anglePreferences();
     makeConnections();
 
-    delete ui->innerWidget->layout();
-
     FlowLayout *layout = new FlowLayout;
     layout->setAlignment(Qt::AlignHCenter);
     layout->addWidget(ui->mirrorButton);
@@ -67,7 +66,8 @@ void DisplayOptionWidget::initUI()
     layout->addWidget(ui->overlayPerspective3Button);
     layout->addWidget(ui->overlayChooseAngle);
 
-    ui->innerWidget->setLayout(layout);
+    delete ui->scrollAreaWidgetContents->layout();
+    ui->scrollAreaWidgetContents->setLayout(layout);
 
     prepareOverlayManager();
 
@@ -94,7 +94,7 @@ void DisplayOptionWidget::initUI()
 }
 
 void DisplayOptionWidget::makeConnections()
-{    
+{
     connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
     connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
     connect(ui->overlayCenterButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayCenter);
@@ -171,6 +171,10 @@ void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
 
+    bool canEnableVectorButtons = editor()->layers()->currentLayer()->type() == Layer::VECTOR;
+    ui->thinLinesButton->setEnabled(canEnableVectorButtons);
+    ui->outLinesButton->setEnabled(canEnableVectorButtons);
+
     QSignalBlocker b1(ui->thinLinesButton);
     ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));
 
@@ -203,8 +207,10 @@ void DisplayOptionWidget::updateUI()
     } else {
         ui->overlaySafeAreaButton->setEnabled(false);
     }
+    bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
+    ui->overlaySafeAreaButton->setEnabled(enableSafeArea);
 
-    ViewManager* view = editor()->view();
+    const ViewManager* view = editor()->view();
 
     QSignalBlocker b3(ui->mirrorButton);
     ui->mirrorButton->setChecked(view->isFlipHorizontal());

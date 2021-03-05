@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -22,10 +22,6 @@ GNU General Public License for more details.
 #include "pencildef.h"
 
 DebugDetails::DebugDetails()
-{
-}
-
-DebugDetails::~DebugDetails()
 {
 }
 
@@ -60,14 +56,14 @@ void DebugDetails::appendSystemInfo()
     if (mDetails.empty() || mDetails.last() == "end")
         return;
 
-#if QT_VERSION >= 0x050400
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     mDetails << "System Info";
 #if defined(PENCIL2D_RELEASE_BUILD)
-    mDetails << "Pencil version: " APP_VERSION " (stable)";
+    mDetails << "Pencil2D version: " APP_VERSION " (stable)";
 #elif defined(PENCIL2D_NIGHTLY_BUILD)
-    mDetails << "Pencil version: " APP_VERSION " (nightly)";
+    mDetails << "Pencil2D version: " APP_VERSION " (nightly)";
 #else
-    mDetails << "Pencil version: " APP_VERSION " (dev)";
+    mDetails << "Pencil2D version: " APP_VERSION " (dev)";
 #endif
 
 #if defined(GIT_EXISTS)
@@ -93,17 +89,24 @@ Status::Status(Status::ErrorCode eCode, const DebugDetails& detailsList, QString
 {
 }
 
+Status::Status(const ErrorCode code, const QString& title, const QString& description)
+    : mCode(code)
+    , mTitle(title)
+    , mDescription(description)
+{
+}
+
 QString Status::msg()
 {
     static std::map<ErrorCode, QString> msgMap =
     {
         // error messages.
-        { OK,                    QObject::tr("Everything ok.") },
-        { FAIL,                  QObject::tr("Ooops, Something went wrong.") },
-        { FILE_NOT_FOUND,        QObject::tr("File doesn't exist.") },
-        { ERROR_FILE_CANNOT_OPEN,    QObject::tr("Cannot open file.") },
-        { ERROR_INVALID_XML_FILE,    QObject::tr("The file is not a valid xml document.") },
-        { ERROR_INVALID_PENCIL_FILE, QObject::tr("The file is not valid pencil document.") },
+        { OK,                    tr("Everything ok.") },
+        { FAIL,                  tr("Ooops, Something went wrong.") },
+        { FILE_NOT_FOUND,        tr("File doesn't exist.") },
+        { ERROR_FILE_CANNOT_OPEN,    tr("Cannot open file.") },
+        { ERROR_INVALID_XML_FILE,    tr("The file is not a valid xml document.") },
+        { ERROR_INVALID_PENCIL_FILE, tr("The file is not valid pencil document.") },
     };
 
     auto it = msgMap.find(mCode);

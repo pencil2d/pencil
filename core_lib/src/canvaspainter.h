@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define CANVASPAINTER_H
 
 #include <memory>
+#include <QCoreApplication>
 #include <QObject>
 #include <QTransform>
 #include <QPainter>
@@ -49,7 +50,7 @@ struct CanvasPainterOptions
     bool  bOutlines = false;
     bool  bIsOnionAbsolute = false;
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
-    float fLayerVisibilityThreshold;
+    float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
@@ -58,6 +59,7 @@ struct CanvasPainterOptions
 
 class CanvasPainter
 {
+    Q_DECLARE_TR_FUNCTIONS(CanvasPainter)
 public:
     explicit CanvasPainter();
     virtual ~CanvasPainter();
@@ -80,8 +82,8 @@ private:
     /**
      * CanvasPainter::initializePainter
      * Enriches the painter with a context and sets it's initial matrix.
-     * @param The in/out painter
-     * @param The paint device ie. a pixmap
+     * @param painter The in/out painter
+     * @param pixmap The paint device ie. a pixmap
      */
     void initializePainter(QPainter& painter, QPixmap& pixmap);
 
@@ -110,7 +112,6 @@ private:
     /** Calculate layer opacity based on current layer offset */
     qreal calculateRelativeOpacityForLayer(int layerIndex) const;
 
-    void savePaintResult(QString layerName, int frameNum);
 private:
     CanvasPainterOptions mOptions;
 

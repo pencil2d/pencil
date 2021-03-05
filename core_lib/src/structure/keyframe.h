@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -56,6 +56,8 @@ public:
     virtual void loadFile() {}
     virtual void unloadFile() {}
     virtual bool isLoaded() { return true; }
+
+    virtual quint64 memoryUsage() { return 0; }
 
 private:
     int mFrame = -1;

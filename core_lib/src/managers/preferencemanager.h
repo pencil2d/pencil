@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -77,6 +77,7 @@ enum class SETTING
     OVERLAY_SAFE_HELPER_TEXT_ON,
     ACTION_SAFE_ON,
     ACTION_SAFE,
+    TIMECODE_TEXT,
     TITLE_SAFE_ON,
     TITLE_SAFE,
     QUICK_SIZING,
@@ -87,6 +88,8 @@ enum class SETTING
     FRAME_POOL_SIZE,
     ROTATION_INCREMENT,
     ASK_FOR_PRESET,
+    LOAD_MOST_RECENT,
+    LOAD_DEFAULT_PRESET,
     DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };
@@ -125,7 +128,7 @@ public:
     int     getInt(SETTING option);
     float getFloat(SETTING option);
 
-Q_SIGNALS:
+signals:
     void optionChanged(SETTING e);
 
 private:

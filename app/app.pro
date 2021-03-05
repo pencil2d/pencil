@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) { error( Could not find the common.pri file! ) }
+! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml multimedia svg network
 
@@ -12,17 +12,16 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt precompile_header
+CONFIG += qt precompile_header lrelease embed_translations
 
 DESTDIR = ../bin
-
-RESOURCES += \
-    data/app.qrc \
-    ../translations/translations.qrc
-
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 UI_DIR = .ui
+
+RESOURCES += data/app.qrc
+
+EXTRA_TRANSLATIONS += $$fromfile(../pencil2d.pro, TRANSLATIONS)
 
 INCLUDEPATH += \
     src \
@@ -51,15 +50,19 @@ HEADERS += \
     src/timeline2.h \
     src/actioncommands.h \
     src/preferencesdialog.h \
+    src/filespage.h \
+    src/generalpage.h \
     src/shortcutspage.h \
+    src/timelinepage.h \
+    src/toolspage.h \
     src/preview.h \
     src/colorbox.h \
     src/colorinspector.h \
     src/colorpalettewidget.h \
     src/colorwheel.h \
-    src/filedialogex.h \
+    src/filedialog.h \
     src/displayoptionwidget.h \
-    src/pencilapplication.h \
+    src/pencil2d.h \
     src/exportmoviedialog.h \
     src/app_util.h \
     src/errordialog.h \
@@ -73,7 +76,9 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/presetdialog.h    
+    src/presetdialog.h \
+    src/commandlineparser.h \
+    src/commandlineexporter.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -87,15 +92,19 @@ SOURCES += \
     src/timeline2.cpp \
     src/actioncommands.cpp \
     src/preferencesdialog.cpp \
+    src/filespage.cpp \
+    src/generalpage.cpp \
     src/shortcutspage.cpp \
+    src/timelinepage.cpp \
+    src/toolspage.cpp \
     src/preview.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
-    src/filedialogex.cpp \
+    src/filedialog.cpp \
     src/displayoptionwidget.cpp \
-    src/pencilapplication.cpp \
+    src/pencil2d.cpp \
     src/exportmoviedialog.cpp \
     src/errordialog.cpp \
     src/aboutdialog.cpp \
@@ -108,7 +117,10 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
-    src/presetdialog.cpp
+    src/presetdialog.cpp \
+    src/app_util.cpp \
+    src/commandlineparser.cpp \
+    src/commandlineexporter.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
@@ -138,8 +150,6 @@ FORMS += \
     ui/toolboxwidget.ui \
     ui/presetdialog.ui
 
-
-
 GIT {
     DEFINES += GIT_EXISTS \
     "GIT_CURRENT_SHA1=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ rev-parse HEAD)" \
@@ -161,7 +171,6 @@ macx {
 }
 
 win32 {
-    CONFIG -= flat
     RC_FILE = data/pencil2d.rc
 }
 
@@ -196,26 +205,14 @@ INCLUDEPATH += $$PWD/../core_lib/src
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release
 
-win32-msvc*{
-  LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
-  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
+win32-msvc* {
+    LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
 }
 
-
-# From 5.14, MinGW windows builds are not build with debug-release flag
-versionAtLeast(QT_VERSION, 5.14) {
-
-    win32-g++{
-      LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
-      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
-    }
-
-} else {
-
-    win32-g++{
-      LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
-      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
-    }
+win32-g++{
+    LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
 }
 
 # --- mac os and linux

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) { error( Could not find the common.pri file! ) }
+! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml xmlpatterns multimedia svg
 
@@ -40,6 +40,7 @@ HEADERS +=  \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
     src/interface/backupelement.h \
+    src/interface/camerapropertiesdialog.h \
     src/interface/editor.h \
     src/interface/flowlayout.h \
     src/interface/recentfilemenu.h \
@@ -68,6 +69,7 @@ HEADERS +=  \
     src/structure/layercamera.h \
     src/structure/layersound.h \
     src/structure/layervector.h \
+    src/structure/pegbaraligner.h \
     src/structure/soundclip.h \
     src/structure/object.h \
     src/structure/objectdata.h \
@@ -105,7 +107,6 @@ HEADERS +=  \
     src/qminiz.h \
     src/activeframepool.h \
     src/external/platformhandler.h \
-    src/external/macosx/macosxnative.h \
     src/selectionpainter.h
 
 
@@ -116,6 +117,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/vectorimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
+    src/interface/backupelement.cpp \
+    src/interface/camerapropertiesdialog.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
     src/interface/recentfilemenu.cpp \
@@ -145,6 +148,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/structure/layersound.cpp \
     src/structure/layervector.cpp \
     src/structure/object.cpp \
+    src/structure/pegbaraligner.cpp \
     src/structure/soundclip.cpp \
     src/structure/objectdata.cpp \
     src/structure/filemanager.cpp \
@@ -181,14 +185,13 @@ FORMS += \
     ui/camerapropertiesdialog.ui
 
 win32 {
-    CONFIG -= flat
-
     INCLUDEPATH += src/external/win32
     SOURCES += src/external/win32/win32.cpp
 }
 
 macx {
     INCLUDEPATH += src/external/macosx
+    HEADERS += src/external/macosx/macosxnative.h
     SOURCES += src/external/macosx/macosx.cpp
     OBJECTIVE_SOURCES += src/external/macosx/macosxnative.mm
 }

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ GNU General Public License for more details.
 
 #include "movieimporter.h"
 #include "movieexporter.h"
-#include "filedialogex.h"
+#include "filedialog.h"
 #include "exportmoviedialog.h"
 #include "exportimagedialog.h"
 #include "aboutdialog.h"
@@ -67,8 +67,7 @@ ActionCommands::~ActionCommands() {}
 
 Status ActionCommands::importMovieVideo()
 {
-    FileDialog fileDialog(mParent);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
+    QString filePath = FileDialog::getOpenFileName(mParent, FileType::MOVIE);
     if (filePath.isEmpty())
     {
         return Status::FAIL;
@@ -110,6 +109,7 @@ Status ActionCommands::importMovieVideo()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    emit mEditor->framesModified();
 
     progressDialog.setValue(100);
     progressDialog.close();
@@ -117,51 +117,7 @@ Status ActionCommands::importMovieVideo()
     return Status::OK;
 }
 
-Status ActionCommands::importMovieAudio()
-{
-    FileDialog fileDialog(mParent);
-    QString filePath = fileDialog.openFile(FileType::MOVIE);
-    if (filePath.isEmpty())
-    {
-        return Status::FAIL;
-    }
-
-    // Show a progress dialog, as this can take a while if you have lots of images.
-    QProgressDialog progressDialog(tr("Importing movie audio..."), tr("Abort"), 0, 100, mParent);
-    hideQuestionMark(progressDialog);
-    progressDialog.setWindowModality(Qt::WindowModal);
-    progressDialog.show();
-
-    MovieImporter importer(this);
-    importer.setCore(mEditor);
-
-    connect(&progressDialog, &QProgressDialog::canceled, &importer, &MovieImporter::cancel);
-
-    Status st = importer.run(filePath, mEditor->playback()->fps(), FileType::SOUND, [&progressDialog](int prog) {
-        progressDialog.setValue(prog);
-        QApplication::processEvents();
-    }, [](QString progressMessage) {
-        Q_UNUSED(progressMessage)
-        // Not neeeded
-    }, []() {
-        return true;
-    });
-
-    if (!st.ok() && st != Status::CANCELED)
-    {
-        ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
-        errorDialog.exec();
-    }
-
-    mEditor->layers()->notifyAnimationLengthChanged();
-
-    progressDialog.setValue(100);
-    progressDialog.close();
-
-    return Status::OK;
-}
-
-Status ActionCommands::importSound()
+Status ActionCommands::importSound(FileType type)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr)
@@ -187,7 +143,7 @@ Status ActionCommands::importSound()
         bool ok = false;
         QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties", "Dialog title on creating a sound layer"),
                                                      tr("Layer name:"), QLineEdit::Normal,
-                                                     tr("Sound Layer", "Default name on creating a sound layer"), &ok);
+                                                     mEditor->layers()->nameSuggestLayer(tr("Sound Layer", "Default name on creating a sound layer")), &ok);
         if (ok && !strLayerName.isEmpty())
         {
             Layer* newLayer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -195,17 +151,14 @@ Status ActionCommands::importSound()
         }
         else
         {
-            Q_ASSERT(false);
-            return Status::FAIL;
+            return Status::SAFE;
         }
     }
 
     layer = mEditor->layers()->currentLayer();
     Q_ASSERT(layer->type() == Layer::SOUND);
 
-
-    int currentFrame = mEditor->currentFrame();
-
+    // Adding key before getting file name just to make sure the keyframe can be insterted
     SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
 
     if (key == nullptr)
@@ -215,17 +168,15 @@ Status ActionCommands::importSound()
         return Status::SAFE;
     }
 
-    FileDialog fileDialog(mParent);
-    QString strSoundFile = fileDialog.openFile(FileType::SOUND);
-
-    if (strSoundFile.isEmpty())
-    {
-        return Status::SAFE;
-    }
+    QString strSoundFile = FileDialog::getOpenFileName(mParent, type);
 
     Status st = Status::FAIL;
 
-    if (strSoundFile.endsWith(".wav"))
+    if (strSoundFile.isEmpty())
+    {
+        st = Status::CANCELED;
+    }
+    else if (strSoundFile.endsWith(".wav"))
     {
         st = mEditor->sound()->loadSound(key, strSoundFile);
     }
@@ -236,7 +187,8 @@ Status ActionCommands::importSound()
 
     if (!st.ok())
     {
-        layer->removeKeyFrame(currentFrame);
+        mEditor->removeKey();
+        emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
     }
 
     return st;
@@ -280,12 +232,8 @@ Status ActionCommands::exportGif()
 
 Status ActionCommands::exportMovie(bool isGif)
 {
-    ExportMovieDialog* dialog = nullptr;
-    if (isGif) {
-        dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, FileType::GIF);
-    } else {
-        dialog = new ExportMovieDialog(mParent);
-    }
+    FileType fileType = (isGif) ? FileType::GIF : FileType::MOVIE;
+    ExportMovieDialog* dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, fileType);
     OnScopeExit(dialog->deleteLater());
 
     dialog->init();
@@ -600,27 +548,6 @@ void ActionCommands::rotateCounterClockwise()
     mEditor->view()->rotate(currentRotation - 15.f);
 }
 
-void ActionCommands::toggleMirror()
-{
-    bool flipX = mEditor->view()->isFlipHorizontal();
-    mEditor->view()->flipHorizontal(!flipX);
-}
-
-void ActionCommands::toggleMirrorV()
-{
-    bool flipY = mEditor->view()->isFlipVertical();
-    mEditor->view()->flipVertical(!flipY);
-}
-
-void ActionCommands::showGrid(bool bShow)
-{
-    auto prefs = mEditor->preference();
-    if (bShow)
-        prefs->turnOn(SETTING::GRID);
-    else
-        prefs->turnOff(SETTING::GRID);
-}
-
 void ActionCommands::PlayStop()
 {
     PlaybackManager* playback = mEditor->playback();
@@ -656,26 +583,12 @@ void ActionCommands::GotoPrevKeyFrame()
 
 Status ActionCommands::addNewKey()
 {
-    KeyFrame* key = mEditor->addNewKey();
-
-    SoundClip* clip = dynamic_cast<SoundClip*>(key);
-    if (clip)
-    {
-        FileDialog fileDialog(mParent);
-        QString strSoundFile = fileDialog.openFile(FileType::SOUND);
-
-        if (strSoundFile.isEmpty())
-        {
-            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
-            return Status::SAFE;
-        }
-        Status st = mEditor->sound()->loadSound(clip, strSoundFile);
-        if (!st.ok())
-        {
-            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
-            return Status::ERROR_LOAD_SOUND_FILE;
-        }
+    // Sound keyframes should not be empty, so we try to import a sound instead
+    if (mEditor->layers()->currentLayer()->type() == Layer::SOUND) {
+        return importSound(FileType::SOUND);
     }
+
+    KeyFrame* key = mEditor->addNewKey();
 
     Camera* cam = dynamic_cast<Camera*>(key);
     if (cam)
@@ -690,8 +603,9 @@ void ActionCommands::removeKey()
 {
     mEditor->removeKey();
 
+    // Add a new keyframe at the beginning if there are none, unless it is a sound layer which can't have empty keyframes but can be an empty layer
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->keyFrameCount() == 0)
+    if (layer->keyFrameCount() == 0 && layer->type() != Layer::SOUND)
     {
         layer->addNewKeyFrameAt(1);
     }
@@ -739,13 +653,14 @@ void ActionCommands::moveFrameForward()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        if (layer->moveKeyFrameForward(mEditor->currentFrame()))
+        if (layer->moveKeyFrame(mEditor->currentFrame(), 1))
         {
             mEditor->scrubForward();
         }
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    emit mEditor->framesModified();
 }
 
 void ActionCommands::moveFrameBackward()
@@ -753,11 +668,12 @@ void ActionCommands::moveFrameBackward()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer)
     {
-        if (layer->moveKeyFrameBackward(mEditor->currentFrame()))
+        if (layer->moveKeyFrame(mEditor->currentFrame(), -1))
         {
             mEditor->scrubBackward();
         }
     }
+    emit mEditor->framesModified();
 }
 
 Status ActionCommands::addNewBitmapLayer()
@@ -820,7 +736,7 @@ Status ActionCommands::deleteCurrentLayer()
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: %1?").arg(strLayerName),
+                                   tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(strLayerName),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)

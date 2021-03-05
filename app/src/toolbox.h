@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -44,6 +44,7 @@ public:
     void updateUI() override;
 
 public slots:
+    void onToolSetActive(ToolType toolType);
     void pencilOn();
     void eraserOn();
     void selectOn();
@@ -64,7 +65,7 @@ signals:
 
 private:
     void deselectAllTools();
-    bool leavingTool(QToolButton*);
+    bool toolOn(ToolType toolType, QToolButton* toolButton);
 
     Ui::ToolBoxWidget* ui = nullptr;
 };
