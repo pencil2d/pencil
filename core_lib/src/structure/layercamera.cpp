@@ -60,7 +60,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     }
 
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
-    // qDebug() << "POS: " << camera1->pos();
+
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
 
@@ -85,48 +85,21 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
 
-    // BEGIN calculations -----------------------------------------------
-    QEasingCurve easing(QEasingCurve::InOutQuad);
-    qreal duration = static_cast<qreal>(frame2 - frame1);  // duration > 0
+    QEasingCurve easing(QEasingCurve::InOutQuart);
+    qreal duration = static_cast<qreal>(frame2 - frame1);
     qreal percent = easing.valueForProgress((frameNumber - frame1)/duration);
-/*
-    // scaling
-    if (camera1->scaling() != camera2->scaling())
-    {
-        QPainterPath scal;
-        scal.moveTo(camera1->scaling(), 0);
-        scal.lineTo(camera2->scaling(), 0);
-        qDebug() << "Frame: " << frameNumber << " x: " << scal.pointAtPercent(percent).x();
-        returnCam->scale(scal.pointAtPercent(percent).x());
-    }
-*/
-
-    // translation
-    QPainterPath trans;
-    trans.moveTo(camera1->translation());
-    trans.lineTo(camera2->translation());
-
-//    qDebug() << "Frame: " << frameNumber << ", pos: " << path.pointAtPercent(percent) << ", % " << percent;
-
-    // END calculations --------------------------------------------------
-
-    // linear interpolation
-    qreal c2 = (frameNumber - frame1) / (frame2 - frame1);
-    qreal c1 = 1.0 - c2;
 
     auto interpolation = [=](double f1, double f2) -> double
     {
-        return f1 * c1 + f2 * c2;
+        return f1 * (1.0 - percent) + f2 * percent;
     };
-    qDebug() << frameNumber << " " << percent << "%. Cam1: " << camera1->translation() << ", Cam2: " << camera2->translation() << " AKTUEL: " << trans.pointAtPercent(percent);
 
     return QTransform(interpolation(camera1->view.m11(), camera2->view.m11()),
                       interpolation(camera1->view.m12(), camera2->view.m12()),
                       interpolation(camera1->view.m21(), camera2->view.m21()),
                       interpolation(camera1->view.m22(), camera2->view.m22()),
-                      trans.pointAtPercent(percent).x(),
-                      trans.pointAtPercent(percent).y());
-
+                      interpolation(camera1->view.m31(), camera2->view.m31()),
+                      interpolation(camera1->view.m32(), camera2->view.m32()));
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)
@@ -161,18 +134,20 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
 
-    // linear interpolation
-    double c2 = (frameNumber - frame1) / (frame2 - frame1);
+    // interpolation
+    QEasingCurve easing(QEasingCurve::InOutQuart);
+    qreal duration = static_cast<qreal>(frame2 - frame1);
+    qreal percent = easing.valueForProgress((frameNumber - frame1)/duration);
 
-    auto lerp = [](double f1, double f2, double ratio) -> double
+    auto lerp = [](double f1, double f2, double percent) -> double
     {
-        return f1 * (1.0 - ratio) + f2 * ratio;
+        return f1 * (1.0 - percent) + f2 * percent;
     };
 
-    double dx = lerp(camera1->translation().x(), camera2->translation().x(), c2);
-    double dy = lerp(camera1->translation().y(), camera2->translation().y(), c2);
-    double r = lerp(camera1->rotation(), camera2->rotation(), c2);
-    double s = lerp(camera1->scaling(), camera2->scaling(), c2);
+    double dx = lerp(camera1->translation().x(), camera2->translation().x(), percent);
+    double dy = lerp(camera1->translation().y(), camera2->translation().y(), percent);
+    double r = lerp(camera1->rotation(), camera2->rotation(), percent);
+    double s = lerp(camera1->scaling(), camera2->scaling(), percent);
 
     cam->translate(dx, dy);
     cam->rotate(r);

@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QTransform>
 #include "keyframe.h"
 
+class QEasingCurve;
 
 class Camera : public KeyFrame
 {
@@ -56,6 +57,7 @@ private:
     qreal mRotate = 0.;
     qreal mScale = 1.;
     bool mNeedUpdateView = true;
+
 };
 
 #endif // CAMERA_H
