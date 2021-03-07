@@ -317,6 +317,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     BitmapImage paintToImage;
     paintToImage.paste(paintedImage);
 
+    painter.setOpacity(paintedImage->getOpacity() - (1.0-painter.opacity()));
     if (isCurrentFrame)
     {
         paintToImage.paste(mBuffer, mOptions.cmBufferBlendMode);
@@ -350,7 +351,6 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
     }
 
     painter.setWorldMatrixEnabled(true);
-    painter.setOpacity(paintedImage->getOpacity());
     prescale(&paintToImage);
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 
@@ -444,10 +444,8 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
 
     // Don't transform the image here as we used the viewTransform in the image output
     painter.setWorldMatrixEnabled(false);
-    painter.setOpacity(vectorImage->getOpacity());
 
-    // Paint image as is
-    rasterizedVectorImage.paintImage(painter);
+    painter.setOpacity(vectorImage->getOpacity() - (1.0-painter.opacity()));
     if (isCurrentFrame)
     {
         // Paste buffer onto image to see stroke in realtime
