@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -46,7 +46,7 @@ ViewManager::~ViewManager() {
 
 bool ViewManager::init()
 {
-    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
+    connect(editor(), &Editor::scrubbed, this, &ViewManager::onCurrentFrameChanged);
     return true;
 }
 
@@ -78,54 +78,59 @@ void ViewManager::workingLayerChanged(Layer* layer)
     }
 }
 
-QPointF ViewManager::mapCanvasToScreen(QPointF p)
+QPointF ViewManager::mapCanvasToScreen(QPointF p) const
 {
     return mViewCanvas.map(p);
 }
 
-QPointF ViewManager::mapScreenToCanvas(QPointF p)
+QPointF ViewManager::mapScreenToCanvas(QPointF p) const
 {
     return mViewCanvasInverse.map(p);
 }
 
-QPainterPath ViewManager::mapCanvasToScreen(const QPainterPath& path)
+QPainterPath ViewManager::mapCanvasToScreen(const QPainterPath& path) const
 {
     return mViewCanvas.map(path);
 }
 
-QRectF ViewManager::mapCanvasToScreen(const QRectF& rect)
+QRectF ViewManager::mapCanvasToScreen(const QRectF& rect) const
 {
     return mViewCanvas.mapRect(rect);
 }
 
-QRectF ViewManager::mapScreenToCanvas(const QRectF& rect)
+QRectF ViewManager::mapScreenToCanvas(const QRectF& rect) const
 {
     return mViewCanvasInverse.mapRect(rect);
 }
 
-QPolygonF ViewManager::mapPolygonToScreen(const QPolygonF &polygon)
+QPolygonF ViewManager::mapPolygonToScreen(const QPolygonF &polygon) const
 {
     return mViewCanvas.map(polygon);
 }
 
-QPolygonF ViewManager::mapPolygonToCanvas(const QPolygonF &polygon)
+QPolygonF ViewManager::mapPolygonToCanvas(const QPolygonF &polygon) const
 {
     return mViewCanvasInverse.map(polygon);
 }
 
-QPainterPath ViewManager::mapScreenToCanvas(const QPainterPath& path)
+QPainterPath ViewManager::mapScreenToCanvas(const QPainterPath& path) const
 {
     return mViewCanvasInverse.map(path);
 }
 
-QTransform ViewManager::getView()
+QTransform ViewManager::getView() const
 {
     return mViewCanvas;
 }
 
-QTransform ViewManager::getViewInverse()
+QTransform ViewManager::getViewInverse() const
 {
     return mViewCanvasInverse;
+}
+
+qreal ViewManager::getViewScaleInverse() const
+{
+    return mViewCanvasInverse.m11();
 }
 
 void ViewManager::updateViewTransforms()
@@ -158,7 +163,7 @@ void ViewManager::updateViewTransforms()
     mViewCanvasInverse = mViewCanvas.inverted();
 }
 
-QPointF ViewManager::translation()
+QPointF ViewManager::translation() const
 {
     if (mCurrentCamera)
     {
@@ -174,13 +179,18 @@ void ViewManager::translate(float dx, float dy)
         mCurrentCamera->translate(static_cast<qreal>(dx), static_cast<qreal>(dy));
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
 void ViewManager::translate(QPointF offset)
 {
     translate(static_cast<float>(offset.x()), static_cast<float>(offset.y()));
+}
+
+void ViewManager::centerView()
+{
+    translate(0, 0);
 }
 
 float ViewManager::rotation()
@@ -199,8 +209,13 @@ void ViewManager::rotate(float degree)
         mCurrentCamera->rotate(static_cast<qreal>(degree));
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
+}
+
+void ViewManager::resetRotation()
+{
+    rotate(0);
 }
 
 qreal ViewManager::scaling()
@@ -291,7 +306,7 @@ void ViewManager::scale(qreal scaleValue)
         mCurrentCamera->scale(scaleValue);
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -311,7 +326,7 @@ void ViewManager::scaleWithOffset(qreal scaleValue, QPointF offset)
         mCurrentCamera->scaleWithOffset(scaleValue, offset);
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -322,8 +337,8 @@ void ViewManager::flipHorizontal(bool b)
         mIsFlipHorizontal = b;
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
-        Q_EMIT viewFlipped();
+        emit viewChanged();
+        emit viewFlipped();
     }
 }
 
@@ -334,8 +349,8 @@ void ViewManager::flipVertical(bool b)
         mIsFlipVertical = b;
         updateViewTransforms();
 
-        Q_EMIT viewChanged();
-        Q_EMIT viewFlipped();
+        emit viewChanged();
+        emit viewFlipped();
     }
 }
 
@@ -345,7 +360,7 @@ void ViewManager::setOverlayCenter(bool b)
     {
         mOverlayCenter = b;
         updateViewTransforms();
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -355,7 +370,7 @@ void ViewManager::setOverlayThirds(bool b)
     {
         mOverlayThirds = b;
         updateViewTransforms();
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -365,7 +380,7 @@ void ViewManager::setOverlayGoldenRatio(bool b)
     {
         mOverlayGoldenRatio = b;
         updateViewTransforms();
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -375,7 +390,7 @@ void ViewManager::setOverlaySafeAreas(bool b)
     {
         mOverlaySafeAreas = b;
         updateViewTransforms();
-        Q_EMIT viewChanged();
+        emit viewChanged();
     }
 }
 
@@ -385,7 +400,7 @@ void ViewManager::setCanvasSize(QSize size)
     mCentre = QTransform::fromTranslate(mCanvasSize.width() / 2., mCanvasSize.height() / 2.);
 
     updateViewTransforms();
-    Q_EMIT viewChanged();
+    emit viewChanged();
 }
 
 void ViewManager::setCameraLayer(Layer* layer)
@@ -421,7 +436,7 @@ void ViewManager::resetView()
     {
         mCurrentCamera->reset();
         updateViewTransforms();
-        Q_EMIT viewChanged();
-        Q_EMIT viewFlipped();
+        emit viewChanged();
+        emit viewFlipped();
     }
 }

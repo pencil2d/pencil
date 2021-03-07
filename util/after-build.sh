@@ -107,18 +107,6 @@ upload_pr() {
   msg "Upload complete"
 }
 
-deploy_docs() {
-  cd "${TRAVIS_BUILD_DIR}/util/docs"
-
-  msg "Updating online documentation..."
-  for i in core svg xmlpatterns; do
-    curl -fsSLO "https://doc.qt.io/qt-5/qt${i}.tags"
-  done
-
-  ./documentation-deploy.sh
-  msg "Documentation updated"
-}
-
 "package_${TRAVIS_OS_NAME}"
 
 if [ "${TRAVIS_BRANCH}" = "master" ] || [ "${TRAVIS_BRANCH}" = "release" ] || [ "${FORCE_NIGHTLY_UPLOAD}" = "yes" ]; then
@@ -127,8 +115,4 @@ fi
 
 if [ "${TRAVIS_PULL_REQUEST_SLUG}" = "pencil2d/pencil" ]; then
   upload_pr
-fi
-
-if [ "${TRAVIS_BRANCH}" = "master" ] && [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-  deploy_docs
 fi

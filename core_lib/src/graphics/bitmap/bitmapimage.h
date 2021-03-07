@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -38,6 +38,7 @@ public:
     void loadFile() override;
     void unloadFile() override;
     bool isLoaded() override;
+    quint64 memoryUsage() override;
 
     void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);
@@ -67,8 +68,8 @@ public:
     void setPixel(QPoint p, QRgb color);
     void fillNonAlphaPixels(const QRgb color);
 
-    inline QRgb constScanLine(int x, int y) const;
-    inline void scanLine(int x, int y, QRgb color);
+    QRgb constScanLine(int x, int y) const;
+    void scanLine(int x, int y, QRgb color);
     void clear();
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
@@ -92,10 +93,6 @@ public:
     int width() { autoCrop(); return mBounds.width(); }
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
-
-    // peg bar alignment
-    Status::StatusInt findLeft(QRectF rect, int grayValue);
-    Status::StatusInt findTop(QRectF rect, int grayValue);
 
 
     QRect& bounds() { autoCrop(); return mBounds; }
@@ -126,8 +123,8 @@ protected:
     void setCompositionModeBounds(QRect sourceBounds, bool isSourceMinBounds, QPainter::CompositionMode cm);
 
 private:
-    std::shared_ptr< QImage > mImage;
-    QRect   mBounds;
+    std::unique_ptr<QImage> mImage;
+    QRect mBounds;
 
     /** @see isMinimallyBounded() */
     bool mMinBound = true;

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -65,9 +65,9 @@ void LayerSound::updateFrameLengths(int fps)
     });
 }
 
-QDomElement LayerSound::createDomElement(QDomDocument& doc)
+QDomElement LayerSound::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerElem = this->createBaseDomElement(doc);
+    QDomElement layerElem = createBaseDomElement(doc);
 
     foreachKeyFrame([&doc, &layerElem](KeyFrame* pKeyFrame)
     {

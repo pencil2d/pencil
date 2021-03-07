@@ -410,9 +410,4 @@
  </tabstops>
  <resources/>
  <connections/>
- <slots>
-  <slot>frameSizeChange(int)</slot>
-  <slot>lengthSizeChange(QString)</slot>
-  <slot>scrubChange(int)</slot>
- </slots>
 </ui>

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -15,27 +15,31 @@ GNU General Public License for more details.
 
 */
 
-#ifndef PENCILAPPLICATION_H
-#define PENCILAPPLICATION_H
+#ifndef TOOLSPAGE_H
+#define TOOLSPAGE_H
 
-#include <QApplication>
+class PreferenceManager;
 
-class PencilApplication : public QApplication
+namespace Ui {
+class ToolsPage;
+}
+
+class ToolsPage : public QWidget
 {
-    Q_OBJECT
-
+Q_OBJECT
 public:
-    PencilApplication(int &argc, char **argv);
+    ToolsPage();
+    ~ToolsPage() override;
+    void setManager(PreferenceManager* p) { mManager = p; }
 
-    bool event(QEvent* event) override;
-    void emitOpenFileRequest();
-
-signals:
-    void openFileRequested(QString filename);
-    void lostFocus();
-
+public slots:
+    void updateValues();
+    void quickSizingChange(int);
+    void setRotationIncrement(int);
+    void rotationIncrementChange(int);
 private:
-    QString mStartPath;
+    Ui::ToolsPage* ui = nullptr;
+    PreferenceManager* mManager = nullptr;
 };
 
-#endif // PENCILAPPLICATION_H
+#endif // TOOLSPAGE_H

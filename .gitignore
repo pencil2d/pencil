@@ -72,5 +72,6 @@ ipch
 *.rc
 *.tlog
 
-tests/tests
-bin/*
+/tests/tests
+/bin/*
+/tests/bin

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -45,8 +45,6 @@ void CanvasPainter::setViewTransform(const QTransform view, const QTransform vie
     if (mViewTransform != view || mViewInverse != viewInverse) {
         mViewTransform = view;
         mViewInverse = viewInverse;
-
-        resetLayerCache();
     }
 }
 
@@ -420,18 +418,12 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
         return;
     }
 
-    QImage* pImage = new QImage(mCanvas->size(), QImage::Format_ARGB32_Premultiplied);
-    vectorImage->outputImage(pImage, mViewTransform, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
+    QImage* strokeImage = new QImage(mCanvas->size(), QImage::Format_ARGB32_Premultiplied);
+    vectorImage->outputImage(strokeImage, mViewTransform, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
 
-    //painter.drawImage( QPoint( 0, 0 ), *pImage );
-    // Go through a Bitmap image to paint the onion skin color
-    BitmapImage tempBitmapImage;
-    tempBitmapImage.setImage(pImage);
-
-    if (isCurrentFrame)
-    {
-        tempBitmapImage.paste(mBuffer, mOptions.cmBufferBlendMode);
-    }
+    // Go through a Bitmap image to paint the onion skin colour
+    BitmapImage rasterizedVectorImage;
+    rasterizedVectorImage.setImage(strokeImage);
 
     if (colorize)
     {
@@ -445,14 +437,26 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
         {
             colorBrush = QBrush(Qt::blue);
         }
-        tempBitmapImage.drawRect(pImage->rect(),
+        rasterizedVectorImage.drawRect(strokeImage->rect(),
                                  Qt::NoPen, colorBrush,
                                  QPainter::CompositionMode_SourceIn, false);
     }
 
-    painter.setWorldMatrixEnabled(false); // Don't transform the image here as we used the viewTransform in the image output
+    // Don't transform the image here as we used the viewTransform in the image output
+    painter.setWorldMatrixEnabled(false);
     painter.setOpacity(vectorImage->getOpacity());
-    tempBitmapImage.paintImage(painter);
+
+    // Paint image as is
+    rasterizedVectorImage.paintImage(painter);
+    if (isCurrentFrame)
+    {
+        // Paste buffer onto image to see stroke in realtime
+        rasterizedVectorImage.paste(mBuffer, mOptions.cmBufferBlendMode);
+    }
+
+    // Paint buffer pasted on top of vector image:
+    // fixes polyline not being rendered properly
+    rasterizedVectorImage.paintImage(painter);
 }
 
 void CanvasPainter::paintTransformedSelection(QPainter& painter)
@@ -693,7 +697,7 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter& painter)
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(safeAction.x(), safeAction.y() - 1, QObject::tr("Safe Action area %1 %").arg(action));
+            painter.drawText(safeAction.x(), safeAction.y() - 1, tr("Safe Action area %1 %").arg(action));
         }
     }
     if (mOptions.bTitleSafe)
@@ -707,7 +711,7 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter& painter)
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(safeTitle.x(), safeTitle.y() - 1, QObject::tr("Safe Title area %1 %").arg(title));
+            painter.drawText(safeTitle.x(), safeTitle.y() - 1, tr("Safe Title area %1 %").arg(title));
         }
     }
 
@@ -719,8 +723,10 @@ void CanvasPainter::renderGrid(QPainter& painter)
 {
     if (mOptions.bGrid)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintGrid(painter);
+        painter.restore();
     }
 }
 
@@ -728,24 +734,33 @@ void CanvasPainter::renderOverlays(QPainter& painter)
 {
     if (mOptions.bCenter)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayCenter(painter);
+        painter.restore();
     }
     if (mOptions.bThirds)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayThirds(painter);
+        painter.restore();
     }
     if (mOptions.bGoldenRatio)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlayGolden(painter);
+        painter.restore();
     }
     if (mOptions.bSafeArea)
     {
+        painter.save();
         painter.setWorldTransform(mViewTransform);
         paintOverlaySafeAreas(painter);
+        painter.restore();
     }
+
 }
 
 void CanvasPainter::paintCameraBorder(QPainter& painter)

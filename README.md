@@ -1,6 +1,6 @@
 
-[![Build Status](https://travis-ci.org/pencil2d/pencil.svg?branch=master)](https://travis-ci.org/pencil2d/pencil)
-[![Build status](https://ci.appveyor.com/api/projects/status/65p3ccmohnkmim4x?svg=true)](https://ci.appveyor.com/project/chchwy/pencil2d)
+[![Build Status](https://travis-ci.com/pencil2d/pencil.svg?branch=master)](https://travis-ci.com/pencil2d/pencil)
+[![Build status](https://ci.appveyor.com/api/projects/status/hq8ry618wixilfmq/branch/master?svg=true)](https://ci.appveyor.com/project/chchwy/pencil2d/branch/master)
 
 # Pencil2D Animation
 
@@ -10,21 +10,13 @@ Pencil2D Website: <https://www.pencil2d.org/>
 
 ## Download ###
 
-### Pencil2D 0.6.5 (31 July 2020)
+### Pencil2D 0.6.6 (17 Feb 2021)
 
-[What's new?](https://www.pencil2d.org/2020/07/pencil2d-0.6.5-release.html)
+You can download Pencil2D from the [Official Website][p2d-download] or [Github releases][gh-release]
 
-| Windows          | Mac                | Linux             |
-| :--------------: | :----------------: | :---------------: |
-| [64-bit][w64]    | [10.12+][mac]      | [64-bit][l64]     |
-| [32-bit][w32]    | [10.7-10.11][macl] | [32-bit][l32]     |
+[p2d-download]: https://www.pencil2d.org/download/
+[gh-release]: https://github.com/pencil2d/pencil/releases
 
-[w64]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-win64-0.6.5.zip
-[w32]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-win32-0.6.5.zip
-[mac]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-mac-0.6.5.zip
-[macl]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-mac-legacy-0.6.5.zip
-[l64]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2d-linux-amd64-0.6.5.AppImage
-[l32]: https://github.com/pencil2d/pencil/releases/download/v0.6.5/pencil2D-linux-i386-0.6.5.AppImage
 
 ### Nightly Builds
 
@@ -41,11 +33,11 @@ We currently do not offer legacy mac or 32-bit linux nightly builds. If you have
 [6]: https://goo.gl/WrAVu9
 [7]: https://goo.gl/9TzYRV
 
-## Links
+## Contributing
 
 * [Issue Tracker](https://github.com/pencil2d/pencil/issues) - Report bugs or request features.
-* [Transifex](https://www.transifex.com/pencil2d/) - You can help translate Pencil2D, too.
 * [Developer Guide](https://github.com/pencil2d/pencil/wiki) - Learn how to compile Pencil2D yourself.
+* [Transifex](https://www.transifex.com/pencil2d/) - You can help translate Pencil2D, too.
 
 ## Source Code
 
