@@ -18,6 +18,8 @@ GNU General Public License for more details.
 #ifndef VIEWMANAGER_H
 #define VIEWMANAGER_H
 
+#include <QPainterPath>
+
 #include <QTransform>
 #include "basemanager.h"
 

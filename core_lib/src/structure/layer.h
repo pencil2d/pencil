@@ -35,7 +35,6 @@ class Status;
 
 #define ProgressCallback std::function<void()>
 
-
 class Layer : public QObject
 {
     Q_OBJECT
@@ -112,6 +111,16 @@ public:
 
     bool moveSelectedFrames(int offset);
 
+    /** Predetermins whether the frames can be moves to a new position depending on the offset
+     * offset should be start press position - current position
+     *
+     * @param offset
+     * @return true if selected frames can be moved otherwise false
+     */
+    bool canMoveSelectedFramesToOffset(int offset) const;
+
+    QList<int> getSelectedFramesByPos() const { return mSelectedFrames_byPosition; }
+
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
 
@@ -133,6 +142,7 @@ protected:
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
+
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;
     int        mId = 0;
