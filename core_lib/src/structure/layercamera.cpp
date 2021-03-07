@@ -85,9 +85,8 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
 
-    QEasingCurve easing(QEasingCurve::InOutQuart);
-    qreal duration = static_cast<qreal>(frame2 - frame1);
-    qreal percent = easing.valueForProgress((frameNumber - frame1)/duration);
+    // interpolation
+    qreal percent = getInterpolationPercent(camera2->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto interpolation = [=](double f1, double f2) -> double
     {
@@ -135,9 +134,7 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     double frame2 = camera2->pos();
 
     // interpolation
-    QEasingCurve easing(QEasingCurve::InOutQuart);
-    qreal duration = static_cast<qreal>(frame2 - frame1);
-    qreal percent = easing.valueForProgress((frameNumber - frame1)/duration);
+    qreal percent = getInterpolationPercent(camera2->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto lerp = [](double f1, double f2, double percent) -> double
     {
@@ -152,6 +149,36 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     cam->translate(dx, dy);
     cam->rotate(r);
     cam->scale(s);
+}
+
+qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent) const
+{
+    QEasingCurve easing;
+
+    switch (type) {
+    case CameraEasingType::LINEAR : easing = QEasingCurve::Linear; break;
+    case CameraEasingType::INQUAD : easing = QEasingCurve::InQuad; break;
+    case CameraEasingType::OUTQUAD : easing = QEasingCurve::OutQuad; break;
+    case CameraEasingType::INOUTQUAD : easing = QEasingCurve::InOutQuad; break;
+    case CameraEasingType::OUTINQUAD : easing = QEasingCurve::OutInQuad; break;
+    case CameraEasingType::INCUBIC : easing = QEasingCurve::InCubic; break;
+    case CameraEasingType::OUTCUBIC : easing = QEasingCurve::OutCubic; break;
+    case CameraEasingType::INOUTCUBIC : easing = QEasingCurve::InOutCubic; break;
+    case CameraEasingType::OUTINCUBIC : easing = QEasingCurve::OutInCubic; break;
+    case CameraEasingType::INQUART : easing = QEasingCurve::InQuart; break;
+    case CameraEasingType::OUTQUART : easing = QEasingCurve::OutQuart; break;
+    case CameraEasingType::INOUTQUART : easing = QEasingCurve::InOutQuart; break;
+    case CameraEasingType::OUTINQUART : easing = QEasingCurve::OutInQuart; break;
+    case CameraEasingType::INQUINT : easing = QEasingCurve::InQuint; break;
+    case CameraEasingType::OUTQUINT : easing = QEasingCurve::OutQuint; break;
+    case CameraEasingType::INOUTQUINT : easing = QEasingCurve::InOutQuint; break;
+    case CameraEasingType::OUTINQUINT : easing = QEasingCurve::OutInQuint; break;
+    case CameraEasingType::INCIRC : easing = QEasingCurve::InCirc; break;
+    case CameraEasingType::OUTCIRC : easing = QEasingCurve::OutCirc; break;
+    case CameraEasingType::INOUTCIRC : easing = QEasingCurve::InOutCirc; break;
+    case CameraEasingType::OUTINCIRC: easing = QEasingCurve::OutInCirc; break;
+    }
+    return easing.valueForProgress(percent);
 }
 
 QRect LayerCamera::getViewRect()

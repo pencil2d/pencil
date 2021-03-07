@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QRect>
 #include "layer.h"
+#include "cameraeasingtype.h"
 
 class Camera;
 
@@ -52,6 +53,7 @@ protected:
 
 private:
     void linearInterpolateTransform(Camera*);
+    qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
 
     int mFieldW = 800;
     int mFieldH = 600;
