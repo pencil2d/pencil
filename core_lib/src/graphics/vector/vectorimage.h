@@ -149,7 +149,7 @@ public:
     QSize getSize() { return mSize; }
 
     void setOpacity(qreal opacity) { mOpacity = opacity; }
-    qreal getOpacity() { return mOpacity; }
+    qreal getOpacity() const { return mOpacity; }
 
 private:
     void addPoint(int curveNumber, int vertexNumber, qreal fraction);

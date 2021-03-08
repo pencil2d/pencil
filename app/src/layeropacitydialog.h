@@ -7,10 +7,16 @@
 class QTimer;
 class LayerManager;
 class PlaybackManager;
+class Layer;
 
 namespace Ui {
 class LayerOpacityDialog;
 }
+
+enum class OpacityFadeType {
+    IN,
+    OUT
+};
 
 class LayerOpacityDialog : public QDialog
 {
@@ -21,37 +27,38 @@ public:
     ~LayerOpacityDialog();
 
     void setCore(Editor* editor);
-    void init();
-    void initBitmap();
-    void initVector();
+    void initUI();
 
 private slots:
     void opacitySliderChanged(int value);
     void opacitySpinboxChanged(double value);
-    void allLayerOpacity();
-    void selectedKeyframesOpacity();
     void fadeInPressed();
     void fadeOutPressed();
 
-    void newFileLoaded();
-    void currentLayerChanged(int index);
-    void currentFrameChanged(int frame);
-    void selectedFramesChanged();
-    void playStateChanged(bool isPlaying);
-
-signals:
-    void closedialog();
+    void onObjectLoaded();
+    void onCurrentLayerChanged(int index);
+    void onCurrentFrameChanged(int frame);
+    void onSelectedFramesChanged();
+    void onPlayStateChanged(bool isPlaying);
 
 private:
 
-    void updateSlider();
+    void fade(OpacityFadeType fadeType);
+    void setEnabled(bool enabled);
+    qreal getOpacityForKeyFrame(Layer* layer, const KeyFrame* keyframe) const;
+    void setOpacityForKeyFrame(Layer* layer, KeyFrame* keyframe, qreal opacity);
+
+    /** setOpacityForKeyFrames
+     *  @param[in] opacity a value between 0 and 1
+     *  @param[in] startPos Keyframe pos
+     *  @param[in] endPos Keyframe pos, should always be higher than statPos
+     * */
+    void setOpacityForKeyFrames(qreal opacity, int startPos, int endPos);
+    void updateValues(qreal opacity);
     void opacityValueChanged();
-    void setOpacityCurrentKeyframe();
-    void setOpacitySelectedKeyframes();
-    void setOpacityLayer();
-    void enableDialog();
-    void disableDialog();
-    void closeClicked();
+    void setOpacityForCurrentKeyframe();
+    void setOpacityForSelectedKeyframes();
+    void setOpacityForLayer();
 
     Ui::LayerOpacityDialog *ui;
 
@@ -59,8 +66,11 @@ private:
     LayerManager* mLayerManager = nullptr;
     PlaybackManager* mPlayBack = nullptr;
 
-    bool mOpacityChanges = false;
     bool mPlayerIsPlaying = false;
+
+    qreal mMultiplier = 500.0;
+    qreal mSpinBoxMultiplier = 0.2;
+    int mMinSelectedFrames = 3;
 };
 
 #endif // LAYEROPACITYDIALOG_H

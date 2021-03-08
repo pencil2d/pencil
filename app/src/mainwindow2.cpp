@@ -476,7 +476,7 @@ void MainWindow2::openLayerOpacityDialog()
     mLayerOpacityDialog = new LayerOpacityDialog(this);
     mLayerOpacityDialog->setAttribute(Qt::WA_DeleteOnClose);
     mLayerOpacityDialog->setCore(mEditor);
-    mLayerOpacityDialog->init();
+    mLayerOpacityDialog->initUI();
     mLayerOpacityDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
     mLayerOpacityDialog->show();
 

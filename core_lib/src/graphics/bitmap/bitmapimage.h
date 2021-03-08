@@ -110,7 +110,7 @@ public:
     bool isMinimallyBounded() const { return mMinBound; }
     void enableAutoCrop(bool b) { mEnableAutoCrop = b; }
     void setOpacity(qreal opacity) { mOpacity = opacity; }
-    qreal getOpacity() { return mOpacity; }
+    qreal getOpacity() const { return mOpacity; }
 
     Status writeFile(const QString& filename);
 
