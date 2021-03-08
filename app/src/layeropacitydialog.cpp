@@ -107,22 +107,6 @@ void LayerOpacityDialog::opacitySpinboxChanged(double value)
     opacityValueChanged();
 }
 
-void LayerOpacityDialog::setOpacityForKeyFrames(qreal opacity, int startPos, int endPos)
-{
-    Layer* currentLayer = mLayerManager->currentLayer();
-    if (currentLayer == nullptr) { return; }
-
-    if (currentLayer->type() != Layer::BITMAP && currentLayer->type() != Layer::VECTOR) { return; }
-
-    for (int i = startPos; i <= endPos; i++)
-    {
-        KeyFrame* keyframe = currentLayer->getLastKeyFrameAtPosition(i);
-        if (keyframe == nullptr) { continue; }
-
-        setOpacityForKeyFrame(currentLayer, keyframe, opacity);
-    }
-}
-
 void LayerOpacityDialog::fade(OpacityFadeType fadeType)
 {
     QSignalBlocker b1(ui->chooseOpacitySlider);
@@ -317,7 +301,14 @@ void LayerOpacityDialog::setOpacityForSelectedKeyframes()
     if (frames.isEmpty()) { return; }
 
     qreal opacity = static_cast<qreal>(ui->chooseOpacitySlider->value()) / mMultiplier;
-    setOpacityForKeyFrames(opacity, frames.first(), frames.last());
+
+    for (int pos : frames)
+    {
+        KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
+        Q_ASSERT(keyframe);
+
+        setOpacityForKeyFrame(currentLayer, keyframe, opacity);
+    }
 
     emit mEditor->framesModified();
 }
@@ -328,7 +319,12 @@ void LayerOpacityDialog::setOpacityForLayer()
     if (currentLayer == nullptr) { return; }
 
     qreal opacity = static_cast<qreal>(ui->chooseOpacitySlider->value()) / mMultiplier;
-    setOpacityForKeyFrames(opacity, currentLayer->firstKeyFramePosition(), currentLayer->getMaxKeyFramePosition());
+
+    currentLayer->foreachKeyFrame([this, currentLayer, opacity](KeyFrame* keyframe) {
+        Q_ASSERT(keyframe);
+
+        setOpacityForKeyFrame(currentLayer, keyframe, opacity);
+    });
 
     emit mEditor->framesModified();
 }

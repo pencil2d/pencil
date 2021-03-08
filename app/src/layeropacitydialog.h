@@ -49,12 +49,6 @@ private:
     qreal getOpacityForKeyFrame(Layer* layer, const KeyFrame* keyframe) const;
     void setOpacityForKeyFrame(Layer* layer, KeyFrame* keyframe, qreal opacity);
 
-    /** setOpacityForKeyFrames
-     *  @param[in] opacity a value between 0 and 1
-     *  @param[in] startPos Keyframe pos
-     *  @param[in] endPos Keyframe pos, should always be higher than statPos
-     * */
-    void setOpacityForKeyFrames(qreal opacity, int startPos, int endPos);
     void updateValues(qreal opacity);
     void setOpacityForCurrentKeyframe();
     void setOpacityForSelectedKeyframes();
