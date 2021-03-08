@@ -241,7 +241,7 @@
     <addaction name="separator"/>
     <addaction name="menuChange_line_color"/>
     <addaction name="separator"/>
-    <addaction name="actionChangeLayerOpacity_Bitmap"/>
+    <addaction name="actionChangeLayerOpacity"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1095,11 +1095,11 @@
     <string>Onion Skins</string>
    </property>
   </action>
-  <action name="actionChangeLayerOpacity_Bitmap">
+  <action name="actionChangeLayerOpacity">
    <property name="text">
     <string>Layer / Keyframe opacity</string>
-    </property>
-   </action>
+   </property>
+  </action>
   <action name="actionOpen_Temporary_Directory">
    <property name="text">
     <string>Open Temporary Directory</string>
