@@ -201,8 +201,9 @@ void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();
                 qreal opacity = 1.0;
-                if (imageElement.hasAttribute("opacity"))
+                if (imageElement.hasAttribute("opacity")) {
                     opacity = imageElement.attribute("opacity").toDouble();
+                }
                 loadImageAtFrame(path, QPoint(x, y), position, opacity);
 
                 progressStep();
