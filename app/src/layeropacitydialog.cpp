@@ -309,7 +309,7 @@ void LayerOpacityDialog::setOpacityForSelectedKeyframes()
     if (frames.isEmpty()) { return; }
 
     qreal opacity = static_cast<qreal>(ui->chooseOpacitySlider->value()) / mMultiplier;
-    setOpacityForKeyFrames(opacity, 0, frames.count());
+    setOpacityForKeyFrames(opacity, frames.first(), frames.last());
 
     emit mEditor->framesModified();
 }

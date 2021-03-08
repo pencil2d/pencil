@@ -96,7 +96,7 @@
       <item>
        <widget class="QRadioButton" name="rbSelectedKeyframes">
         <property name="text">
-         <string>Selected keyframe</string>
+         <string>Selected keyframe(s)</string>
         </property>
        </widget>
       </item>
