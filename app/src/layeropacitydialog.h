@@ -40,6 +40,7 @@ private slots:
     void onCurrentFrameChanged(int frame);
     void onSelectedFramesChanged();
     void onPlayStateChanged(bool isPlaying);
+    void opacityValueChanged();
 
 private:
 
@@ -55,7 +56,6 @@ private:
      * */
     void setOpacityForKeyFrames(qreal opacity, int startPos, int endPos);
     void updateValues(qreal opacity);
-    void opacityValueChanged();
     void setOpacityForCurrentKeyframe();
     void setOpacityForSelectedKeyframes();
     void setOpacityForLayer();

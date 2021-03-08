@@ -37,6 +37,9 @@ void LayerOpacityDialog::initUI()
     connect(ui->btnFadeIn, &QPushButton::pressed, this, &LayerOpacityDialog::fadeInPressed);
     connect(ui->btnFadeOut, &QPushButton::pressed, this, &LayerOpacityDialog::fadeOutPressed);
     connect(ui->btnClose, &QPushButton::pressed, this, &LayerOpacityDialog::close);
+    connect(ui->rbSelectedKeyframes, &QRadioButton::toggled, this, &LayerOpacityDialog::onSelectedFramesChanged);
+    connect(ui->rbActiveKeyframe, &QRadioButton::toggled, this, &LayerOpacityDialog::onSelectedFramesChanged);
+    connect(ui->rbActiveLayer, &QRadioButton::toggled, this, &LayerOpacityDialog::onSelectedFramesChanged);
     connect(this, &QDialog::finished, this, &LayerOpacityDialog::close);
 
     connect(mEditor, &Editor::objectLoaded, this, &LayerOpacityDialog::onObjectLoaded);
@@ -228,18 +231,23 @@ void LayerOpacityDialog::onSelectedFramesChanged()
     if (currentLayer == nullptr) { return; }
 
     QList<int> frames = currentLayer->getSelectedFrameList();
-    KeyFrame* keyframe = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
 
-    if (!frames.isEmpty() && keyframe)
+    if (frames.isEmpty())
     {
-        ui->rbSelectedKeyframes->setEnabled(true);
+        bool radioChecked = ui->rbSelectedKeyframes->isChecked();
+        ui->chooseOpacitySlider->setEnabled(!radioChecked);
+        ui->chooseOpacitySpinBox->setEnabled(!radioChecked);
+        ui->rbSelectedKeyframes->setEnabled(false);
     }
     else
     {
-        ui->rbSelectedKeyframes->setEnabled(false);
+        ui->rbSelectedKeyframes->setEnabled(true);
+        ui->chooseOpacitySlider->setEnabled(true);
+        ui->chooseOpacitySpinBox->setEnabled(true);
     }
 
-    if (frames.count() > 2 && keyframe) {
+    if (frames.count() >= mMinSelectedFrames)
+    {
         ui->groupBoxFade->setEnabled(true);
     }
     else
