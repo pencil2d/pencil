@@ -314,7 +314,9 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     {
         QMenu* menu = new QMenu();
 
-        QMenu* headline = menu->addMenu(tr("Camera interpolation:"));
+        int frameNumber = mEditor->layers()->currentLayer()->getListOfSelectedFrames().first();
+        int prevFrame = mEditor->layers()->currentLayer()->getPreviousKeyFramePosition(frameNumber - 1);
+        QMenu* headline = menu->addMenu(tr("Interpolation frame %1 to %2").arg( QString::number(prevFrame), QString::number(frameNumber)));
 
         QMenu* subQuad  = headline->addMenu(tr("Slow"));
         QMenu* subCubic = headline->addMenu(tr("Normal"));

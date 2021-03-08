@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include "camera.h"
 #include "pencildef.h"
 #include "cameraeasingtype.h"
-#include <QPainterPath>
 #include <QEasingCurve>
 
 
