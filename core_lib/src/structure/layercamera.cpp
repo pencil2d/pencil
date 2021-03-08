@@ -36,14 +36,6 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
         mFieldH = 600;
     }
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
-/*
-    // to make sure it works for older .pclx files
-    for (int i = firstKeyFramePosition(); i <= getMaxKeyFramePosition(); i = getNextKeyFramePosition(i))
-    {
-        Camera* cam = getCameraAtFrame(i);
-        cam->setEasingType(cam->getEasingType());
-    }
-*/
 }
 
 LayerCamera::~LayerCamera()
