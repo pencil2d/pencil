@@ -66,6 +66,8 @@ public:
     bool didDetachLayer() const;
     int getCurrentFrame() const { return mCurrentFrame; }
 
+    void showCameraMenu(QPoint pos);
+
 signals:
     void mouseMovedY(int);
     void lengthChanged(int);
@@ -91,6 +93,31 @@ protected:
 
 private slots:
     void loadSetting(SETTING setting);
+
+    // setting camera interpolations
+    Camera* getCam(int frame);
+    void setLinear();
+    void setQuadIn();
+    void setQuadOut();
+    void setQuadInOut();
+    void setQuadOutIn();
+    void setCubicIn();
+    void setCubicOut();
+    void setCubicInOut();
+    void setCubicOutIn();
+    void setQuartIn();
+    void setQuartOut();
+    void setQuartInOut();
+    void setQuartOutIn();
+    void setQuintIn();
+    void setQuintOut();
+    void setQuintInOut();
+    void setQuintOutIn();
+    void setCircIn();
+    void setCircOut();
+    void setCircInOut();
+    void setCircOutIn();
+
 
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;

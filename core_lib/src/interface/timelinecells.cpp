@@ -22,10 +22,12 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QPainter>
 #include <QSettings>
-
+#include <QMenu>
 #include "camerapropertiesdialog.h"
 #include "editor.h"
 #include "keyframe.h"
+#include "camera.h"
+#include "cameraeasingtype.h"
 #include "layermanager.h"
 #include "object.h"
 #include "playbackmanager.h"
@@ -83,6 +85,137 @@ void TimeLineCells::loadSetting(SETTING setting)
         break;
     }
     updateContent();
+}
+
+Camera *TimeLineCells::getCam(int frame)
+{
+    return static_cast<Camera*>(mEditor->layers()->currentLayer()->getKeyFrameAt(frame));
+}
+
+void TimeLineCells::setLinear()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::LINEAR);
+}
+
+void TimeLineCells::setQuadIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INQUAD);
+}
+
+void TimeLineCells::setQuadOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTQUAD);
+}
+
+void TimeLineCells::setQuadInOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INOUTQUAD);
+}
+
+void TimeLineCells::setQuadOutIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTINQUAD);
+}
+
+void TimeLineCells::setCubicIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INCUBIC);
+}
+
+void TimeLineCells::setCubicOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTCUBIC);
+}
+
+void TimeLineCells::setCubicInOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INOUTCUBIC);
+}
+
+void TimeLineCells::setCubicOutIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTINCUBIC);
+}
+
+void TimeLineCells::setQuartIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INQUART);
+}
+
+void TimeLineCells::setQuartOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTQUART);
+}
+
+void TimeLineCells::setQuartInOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INOUTQUART);
+}
+
+void TimeLineCells::setQuartOutIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTINQUART);
+}
+
+void TimeLineCells::setQuintIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INQUINT);
+}
+
+void TimeLineCells::setQuintOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTQUINT);
+}
+
+void TimeLineCells::setQuintInOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INOUTQUINT);
+}
+
+void TimeLineCells::setQuintOutIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTINQUINT);
+}
+
+void TimeLineCells::setCircIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INCIRC);
+}
+
+void TimeLineCells::setCircOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTCIRC);
+}
+
+void TimeLineCells::setCircInOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INOUTCIRC);
+}
+
+void TimeLineCells::setCircOutIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTINCIRC);
 }
 
 int TimeLineCells::getFrameNumber(int x) const
@@ -169,6 +302,50 @@ void TimeLineCells::updateContent()
 
 bool TimeLineCells::didDetachLayer() const {
     return abs(getMouseMoveY()) > mLayerDetachThreshold;
+}
+
+void TimeLineCells::showCameraMenu(QPoint pos)
+{
+    pos = this->mapToGlobal(pos);
+
+    // only show mwnu if on camera layer, and exactly one keyframe is selected
+    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
+            mEditor->layers()->currentLayer()->getListOfSelectedFrames().size() == 1)
+    {
+        QMenu* menu = new QMenu();
+
+        QMenu* headline = menu->addMenu(tr("Camera interpolation:"));
+
+        QMenu* subQuad  = headline->addMenu(tr("Slow"));
+        QMenu* subCubic = headline->addMenu(tr("Normal"));
+        QMenu* subQuart = headline->addMenu(tr("Faster"));
+        QMenu* subQuint = headline->addMenu(tr("Fastest"));
+        QMenu* subOther = headline->addMenu(tr("Other"));
+
+        subQuad->addAction(tr("Slow Ease-in"), this, &TimeLineCells::setQuadIn, 0);
+        subQuad->addAction(tr("Slow Ease-out"), this, &TimeLineCells::setQuadOut, 0);
+        subQuad->addAction(tr("Slow Ease-in - Ease-out"), this, &TimeLineCells::setQuadInOut, 0);
+        subQuad->addAction(tr("Slow Ease-out - Ease-in"), this, &TimeLineCells::setQuadOutIn, 0);
+        subCubic->addAction(tr("Normal Ease-in"), this, &TimeLineCells::setCubicIn, 0);
+        subCubic->addAction(tr("Normal Ease-out"), this, &TimeLineCells::setCubicOut, 0);
+        subCubic->addAction(tr("Normal Ease-in - Ease-out"), this, &TimeLineCells::setCubicInOut, 0);
+        subCubic->addAction(tr("Normal Ease-out - Ease-in"), this, &TimeLineCells::setCubicOutIn, 0);
+        subQuart->addAction(tr("Faster Ease-in"), this, &TimeLineCells::setQuartIn, 0);
+        subQuart->addAction(tr("Faster Ease-out"), this, &TimeLineCells::setQuartOut, 0);
+        subQuart->addAction(tr("Faster Ease-in - Ease-out"), this, &TimeLineCells::setQuartInOut, 0);
+        subQuart->addAction(tr("Faster Ease-out - Ease-in"), this, &TimeLineCells::setQuartOutIn, 0);
+        subQuint->addAction(tr("Fastest Ease-in"), this, &TimeLineCells::setQuintIn, 0);
+        subQuint->addAction(tr("Fastest Ease-out"), this, &TimeLineCells::setQuintOut, 0);
+        subQuint->addAction(tr("Fastest Ease-in - Ease-out"), this, &TimeLineCells::setQuintInOut, 0);
+        subQuint->addAction(tr("Fastest Ease-out - Ease-in"), this, &TimeLineCells::setQuintOutIn, 0);
+        subOther->addAction(tr("Linear"), this, &TimeLineCells::setLinear, 0);
+        subOther->addAction(tr("Circle-based  Ease-in"), this, &TimeLineCells::setCircIn, 0);
+        subOther->addAction(tr("Circle-based  Ease-out"), this, &TimeLineCells::setCircOut, 0);
+        subOther->addAction(tr("Circle-based  Ease-in - Ease-out"), this, &TimeLineCells::setCircInOut, 0);
+        subOther->addAction(tr("Circle-based  Ease-out - Ease-in"), this, &TimeLineCells::setCircOutIn, 0);
+
+        menu->exec(pos);
+    }
 }
 
 void TimeLineCells::drawContent()
@@ -754,6 +931,10 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                     {
                         // We clicked on a selected frame, we can move it
                         mCanMoveFrame = true;
+                        if (event->button() == Qt::RightButton)
+                        {
+                            showCameraMenu(event->pos());
+                        }
                     }
 
                     mTimeLine->updateContent();

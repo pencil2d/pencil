@@ -19,9 +19,10 @@ GNU General Public License for more details.
 #include <QSettings>
 #include "camera.h"
 #include "pencildef.h"
+#include "cameraeasingtype.h"
 #include <QPainterPath>
 #include <QEasingCurve>
-#include <QDebug>
+
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -36,6 +37,14 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
         mFieldH = 600;
     }
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
+/*
+    // to make sure it works for older .pclx files
+    for (int i = firstKeyFramePosition(); i <= getMaxKeyFramePosition(); i = getNextKeyFramePosition(i))
+    {
+        Camera* cam = getCameraAtFrame(i);
+        cam->setEasingType(cam->getEasingType());
+    }
+*/
 }
 
 LayerCamera::~LayerCamera()
@@ -60,9 +69,11 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     }
 
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
+    camera1->setEasingType(camera1->getEasingType());
 
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
+    camera2->setEasingType(camera2->getEasingType());
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -108,9 +119,11 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
 
     int frameNumber = cam->pos();
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
+    camera1->setEasingType(camera1->getEasingType());
 
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
+    camera2->setEasingType(camera2->getEasingType());
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -156,27 +169,27 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     QEasingCurve easing;
 
     switch (type) {
-    case CameraEasingType::LINEAR : easing = QEasingCurve::Linear; break;
-    case CameraEasingType::INQUAD : easing = QEasingCurve::InQuad; break;
-    case CameraEasingType::OUTQUAD : easing = QEasingCurve::OutQuad; break;
-    case CameraEasingType::INOUTQUAD : easing = QEasingCurve::InOutQuad; break;
-    case CameraEasingType::OUTINQUAD : easing = QEasingCurve::OutInQuad; break;
-    case CameraEasingType::INCUBIC : easing = QEasingCurve::InCubic; break;
-    case CameraEasingType::OUTCUBIC : easing = QEasingCurve::OutCubic; break;
-    case CameraEasingType::INOUTCUBIC : easing = QEasingCurve::InOutCubic; break;
-    case CameraEasingType::OUTINCUBIC : easing = QEasingCurve::OutInCubic; break;
-    case CameraEasingType::INQUART : easing = QEasingCurve::InQuart; break;
-    case CameraEasingType::OUTQUART : easing = QEasingCurve::OutQuart; break;
-    case CameraEasingType::INOUTQUART : easing = QEasingCurve::InOutQuart; break;
-    case CameraEasingType::OUTINQUART : easing = QEasingCurve::OutInQuart; break;
-    case CameraEasingType::INQUINT : easing = QEasingCurve::InQuint; break;
-    case CameraEasingType::OUTQUINT : easing = QEasingCurve::OutQuint; break;
-    case CameraEasingType::INOUTQUINT : easing = QEasingCurve::InOutQuint; break;
-    case CameraEasingType::OUTINQUINT : easing = QEasingCurve::OutInQuint; break;
-    case CameraEasingType::INCIRC : easing = QEasingCurve::InCirc; break;
-    case CameraEasingType::OUTCIRC : easing = QEasingCurve::OutCirc; break;
-    case CameraEasingType::INOUTCIRC : easing = QEasingCurve::InOutCirc; break;
-    case CameraEasingType::OUTINCIRC: easing = QEasingCurve::OutInCirc; break;
+    case CameraEasingType::LINEAR : easing.setType(QEasingCurve::Linear); break;
+    case CameraEasingType::INQUAD : easing.setType(QEasingCurve::InQuad); break;
+    case CameraEasingType::OUTQUAD : easing.setType(QEasingCurve::OutQuad); break;
+    case CameraEasingType::INOUTQUAD : easing.setType(QEasingCurve::InOutQuad); break;
+    case CameraEasingType::OUTINQUAD : easing.setType(QEasingCurve::OutInQuad); break;
+    case CameraEasingType::INCUBIC : easing.setType(QEasingCurve::InCubic); break;
+    case CameraEasingType::OUTCUBIC : easing.setType(QEasingCurve::OutCubic); break;
+    case CameraEasingType::INOUTCUBIC : easing.setType(QEasingCurve::InOutCubic); break;
+    case CameraEasingType::OUTINCUBIC : easing.setType(QEasingCurve::OutInCubic); break;
+    case CameraEasingType::INQUART : easing.setType(QEasingCurve::InQuart); break;
+    case CameraEasingType::OUTQUART : easing.setType(QEasingCurve::OutQuart); break;
+    case CameraEasingType::INOUTQUART : easing.setType(QEasingCurve::InOutQuart); break;
+    case CameraEasingType::OUTINQUART : easing.setType(QEasingCurve::OutInQuart); break;
+    case CameraEasingType::INQUINT : easing.setType(QEasingCurve::InQuint); break;
+    case CameraEasingType::OUTQUINT : easing.setType(QEasingCurve::OutQuint); break;
+    case CameraEasingType::INOUTQUINT : easing.setType(QEasingCurve::InOutQuint); break;
+    case CameraEasingType::OUTINQUINT : easing.setType(QEasingCurve::OutInQuint); break;
+    case CameraEasingType::INCIRC : easing.setType(QEasingCurve::InCirc); break;
+    case CameraEasingType::OUTCIRC : easing.setType(QEasingCurve::OutCirc); break;
+    case CameraEasingType::INOUTCIRC : easing.setType(QEasingCurve::InOutCirc); break;
+    case CameraEasingType::OUTINCIRC: easing.setType(QEasingCurve::OutInCirc); break;
     }
     return easing.valueForProgress(percent);
 }
@@ -197,13 +210,13 @@ void LayerCamera::setViewRect(QRect newViewRect)
     emit resolutionChanged();
 }
 
-void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale)
+void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, int easing)
 {
     if (keyExists(frameNumber))
     {
         removeKeyFrame(frameNumber);
     }
-    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
+    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale, easing);
     camera->setPos(frameNumber);
     loadKey(camera);
 }
@@ -237,6 +250,7 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
                         keyTag.setAttribute("s", camera->scaling());
                         keyTag.setAttribute("dx", camera->translation().x());
                         keyTag.setAttribute("dy", camera->translation().y());
+                        keyTag.setAttribute("easing", static_cast<int>(camera->getEasingType()));
                         layerElem.appendChild(keyTag);
                     });
 
@@ -268,8 +282,9 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 qreal scale = imageElement.attribute("s", "1").toDouble();
                 qreal dx = imageElement.attribute("dx", "0").toDouble();
                 qreal dy = imageElement.attribute("dy", "0").toDouble();
+                int easing = imageElement.attribute("easing", "0").toInt();
 
-                loadImageAtFrame(frame, dx, dy, rotate, scale);
+                loadImageAtFrame(frame, dx, dy, rotate, scale, easing);
             }
         }
         imageTag = imageTag.nextSibling();

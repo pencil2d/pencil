@@ -31,7 +31,7 @@ public:
     explicit LayerCamera(Object* object);
     ~LayerCamera() override;
 
-    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, int easing);
 
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -43,6 +43,8 @@ public:
     QRect getViewRect();
     QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
+
+    void showContextMenu(QPoint point);
 
 signals:
     void resolutionChanged();
