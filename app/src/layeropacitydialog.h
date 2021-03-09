@@ -44,8 +44,8 @@ private slots:
 
 private:
 
+    void setCanAdjust(bool enabled);
     void fade(OpacityFadeType fadeType);
-    void setEnabled(bool enabled);
     qreal getOpacityForKeyFrame(Layer* layer, const KeyFrame* keyframe) const;
     void setOpacityForKeyFrame(Layer* layer, KeyFrame* keyframe, qreal opacity);
 

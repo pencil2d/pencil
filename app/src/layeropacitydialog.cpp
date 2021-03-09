@@ -179,13 +179,12 @@ void LayerOpacityDialog::onCurrentLayerChanged(int index)
     ui->labLayerInfo->setText(tr("Layer: %1").arg(layer->name()));
 
     if (layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR) {
-        setEnabled(false);
+        setCanAdjust(false);
         return;
     }
 
-    setEnabled(true);
+    setCanAdjust(true);
     onCurrentFrameChanged(mEditor->currentFrame());
-    onSelectedFramesChanged();
 }
 
 void LayerOpacityDialog::onCurrentFrameChanged(int frame)
@@ -200,13 +199,14 @@ void LayerOpacityDialog::onCurrentFrameChanged(int frame)
     KeyFrame* keyframe = currentLayer->getLastKeyFrameAtPosition(frame);
     if (keyframe)
     {
-        setEnabled(true);
+        setCanAdjust(true);
         updateValues(getOpacityForKeyFrame(currentLayer, keyframe));
     }
     else
     {
-        setEnabled(false);
+        setCanAdjust(false);
     }
+    onSelectedFramesChanged();
 }
 
 void LayerOpacityDialog::onSelectedFramesChanged()
@@ -243,14 +243,11 @@ void LayerOpacityDialog::onSelectedFramesChanged()
 void LayerOpacityDialog::onPlayStateChanged(bool isPlaying)
 {
     mPlayerIsPlaying = isPlaying;
-    if (!mPlayerIsPlaying)
-    {
-        setEnabled(true);
+
+    if (!mPlayerIsPlaying) {
         onCurrentFrameChanged(mEditor->currentFrame());
-    }
-    else
-    {
-        setEnabled(false);
+    } else {
+        setCanAdjust(false);
     }
 }
 
@@ -329,7 +326,7 @@ void LayerOpacityDialog::setOpacityForLayer()
     emit mEditor->framesModified();
 }
 
-void LayerOpacityDialog::setEnabled(bool enabled)
+void LayerOpacityDialog::setCanAdjust(bool enabled)
 {
     ui->groupBoxOpacity->setEnabled(enabled);
     ui->groupBoxFade->setEnabled(enabled);
