@@ -96,6 +96,7 @@ private slots:
 
     // setting camera interpolations
     Camera* getCam(int frame);
+    void setHold();
     void setLinear();
     void setQuadIn();
     void setQuadOut();
@@ -113,6 +114,14 @@ private slots:
     void setQuintOut();
     void setQuintInOut();
     void setQuintOutIn();
+    void setSineIn();
+    void setSineOut();
+    void setSineInOut();
+    void setSineOutIn();
+    void setExpoIn();
+    void setExpoOut();
+    void setExpoInOut();
+    void setExpoOutIn();
     void setCircIn();
     void setCircOut();
     void setCircInOut();

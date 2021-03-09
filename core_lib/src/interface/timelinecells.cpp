@@ -34,7 +34,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "toolmanager.h"
-
+#include <QDebug>
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
     mTimeLine = parent;
@@ -90,6 +90,20 @@ void TimeLineCells::loadSetting(SETTING setting)
 Camera *TimeLineCells::getCam(int frame)
 {
     return static_cast<Camera*>(mEditor->layers()->currentLayer()->getKeyFrameAt(frame));
+}
+
+void TimeLineCells::setHold()
+{
+    int frame = mEditor->layers()->currentLayer()->getListOfSelectedFrames().first();
+    Camera* cam = getCam(frame);
+    Camera* prev = getCam(mEditor->layers()->currentLayer()->getPreviousKeyFramePosition(frame - 1));
+    cam->translate(prev->translation());
+    cam->rotate(prev->rotation());
+    cam->scale(prev->scaling());
+    cam->updateViewTransform();
+    cam->modification();
+    mEditor->scrubTo(mEditor->currentFrame());
+    cam->setEasingType(CameraEasingType::LINEAR);
 }
 
 void TimeLineCells::setLinear()
@@ -192,6 +206,54 @@ void TimeLineCells::setQuintOutIn()
 {
     Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
     cam->setEasingType(CameraEasingType::OUTINQUINT);
+}
+
+void TimeLineCells::setSineIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INSINE);
+}
+
+void TimeLineCells::setSineOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTSINE);
+}
+
+void TimeLineCells::setSineInOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INOUTSINE);
+}
+
+void TimeLineCells::setSineOutIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTINSINE);
+}
+
+void TimeLineCells::setExpoIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INEXPO);
+}
+
+void TimeLineCells::setExpoOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTEXPO);
+}
+
+void TimeLineCells::setExpoInOut()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::INOUTEXPO);
+}
+
+void TimeLineCells::setExpoOutIn()
+{
+    Camera* cam = getCam(mEditor->layers()->currentLayer()->getListOfSelectedFrames().first());
+    cam->setEasingType(CameraEasingType::OUTINEXPO);
 }
 
 void TimeLineCells::setCircIn()
@@ -320,8 +382,12 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 
         QMenu* subQuad  = headline->addMenu(tr("Slow"));
         QMenu* subCubic = headline->addMenu(tr("Normal"));
-        QMenu* subQuart = headline->addMenu(tr("Faster"));
-        QMenu* subQuint = headline->addMenu(tr("Fastest"));
+        QMenu* subQuart = headline->addMenu(tr("Fast"));
+        QMenu* subQuint = headline->addMenu(tr("Faster"));
+        headline->addSeparator();
+        QMenu* subSine  = headline->addMenu(tr("Sine-based"));
+        QMenu* subExpo  = headline->addMenu(tr("Exponential"));
+        QMenu* subCirc  = headline->addMenu(tr("Circle-based"));
         QMenu* subOther = headline->addMenu(tr("Other"));
 
         subQuad->addAction(tr("Slow Ease-in"), this, &TimeLineCells::setQuadIn, 0);
@@ -332,19 +398,28 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         subCubic->addAction(tr("Normal Ease-out"), this, &TimeLineCells::setCubicOut, 0);
         subCubic->addAction(tr("Normal Ease-in - Ease-out"), this, &TimeLineCells::setCubicInOut, 0);
         subCubic->addAction(tr("Normal Ease-out - Ease-in"), this, &TimeLineCells::setCubicOutIn, 0);
-        subQuart->addAction(tr("Faster Ease-in"), this, &TimeLineCells::setQuartIn, 0);
-        subQuart->addAction(tr("Faster Ease-out"), this, &TimeLineCells::setQuartOut, 0);
-        subQuart->addAction(tr("Faster Ease-in - Ease-out"), this, &TimeLineCells::setQuartInOut, 0);
-        subQuart->addAction(tr("Faster Ease-out - Ease-in"), this, &TimeLineCells::setQuartOutIn, 0);
-        subQuint->addAction(tr("Fastest Ease-in"), this, &TimeLineCells::setQuintIn, 0);
-        subQuint->addAction(tr("Fastest Ease-out"), this, &TimeLineCells::setQuintOut, 0);
-        subQuint->addAction(tr("Fastest Ease-in - Ease-out"), this, &TimeLineCells::setQuintInOut, 0);
-        subQuint->addAction(tr("Fastest Ease-out - Ease-in"), this, &TimeLineCells::setQuintOutIn, 0);
-        subOther->addAction(tr("Linear"), this, &TimeLineCells::setLinear, 0);
-        subOther->addAction(tr("Circle-based  Ease-in"), this, &TimeLineCells::setCircIn, 0);
-        subOther->addAction(tr("Circle-based  Ease-out"), this, &TimeLineCells::setCircOut, 0);
-        subOther->addAction(tr("Circle-based  Ease-in - Ease-out"), this, &TimeLineCells::setCircInOut, 0);
-        subOther->addAction(tr("Circle-based  Ease-out - Ease-in"), this, &TimeLineCells::setCircOutIn, 0);
+        subQuart->addAction(tr("Fast Ease-in"), this, &TimeLineCells::setQuartIn, 0);
+        subQuart->addAction(tr("Fast Ease-out"), this, &TimeLineCells::setQuartOut, 0);
+        subQuart->addAction(tr("Fast Ease-in - Ease-out"), this, &TimeLineCells::setQuartInOut, 0);
+        subQuart->addAction(tr("Fast Ease-out - Ease-in"), this, &TimeLineCells::setQuartOutIn, 0);
+        subQuint->addAction(tr("Faster Ease-in"), this, &TimeLineCells::setQuintIn, 0);
+        subQuint->addAction(tr("Faster Ease-out"), this, &TimeLineCells::setQuintOut, 0);
+        subQuint->addAction(tr("Faster Ease-in - Ease-out"), this, &TimeLineCells::setQuintInOut, 0);
+        subQuint->addAction(tr("Faster Ease-out - Ease-in"), this, &TimeLineCells::setQuintOutIn, 0);
+        subSine->addAction(tr("Sine-based Ease-in"), this, &TimeLineCells::setSineIn, 0);
+        subSine->addAction(tr("Sine-based  Ease-out"), this, &TimeLineCells::setSineOut, 0);
+        subSine->addAction(tr("Sine-based  Ease-in - Ease-out"), this, &TimeLineCells::setSineInOut, 0);
+        subSine->addAction(tr("Sine-based  Ease-out - Ease-in"), this, &TimeLineCells::setSineOutIn, 0);
+        subExpo->addAction(tr("Exponential Ease-in"), this, &TimeLineCells::setExpoIn, 0);
+        subExpo->addAction(tr("Exponential Ease-out"), this, &TimeLineCells::setExpoOut, 0);
+        subExpo->addAction(tr("Exponential Ease-in - Ease-out"), this, &TimeLineCells::setExpoInOut, 0);
+        subExpo->addAction(tr("Exponential Ease-out - Ease-in"), this, &TimeLineCells::setExpoOutIn, 0);
+        subCirc->addAction(tr("Circle-based  Ease-in"), this, &TimeLineCells::setCircIn, 0);
+        subCirc->addAction(tr("Circle-based  Ease-out"), this, &TimeLineCells::setCircOut, 0);
+        subCirc->addAction(tr("Circle-based  Ease-in - Ease-out"), this, &TimeLineCells::setCircInOut, 0);
+        subCirc->addAction(tr("Circle-based  Ease-out - Ease-in"), this, &TimeLineCells::setCircOutIn, 0);
+        subOther->addAction(tr("Hold/No interpolation"), this, &TimeLineCells::setHold, 0);
+        subOther->addAction(tr("Linear interpolation"), this, &TimeLineCells::setLinear, 0);
 
         menu->exec(pos);
     }

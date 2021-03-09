@@ -177,10 +177,19 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     case CameraEasingType::OUTQUINT : easing.setType(QEasingCurve::OutQuint); break;
     case CameraEasingType::INOUTQUINT : easing.setType(QEasingCurve::InOutQuint); break;
     case CameraEasingType::OUTINQUINT : easing.setType(QEasingCurve::OutInQuint); break;
+    case CameraEasingType::INSINE : easing.setType(QEasingCurve::InSine); break;
+    case CameraEasingType::OUTSINE : easing.setType(QEasingCurve::OutSine); break;
+    case CameraEasingType::INOUTSINE : easing.setType(QEasingCurve::InOutSine); break;
+    case CameraEasingType::OUTINSINE: easing.setType(QEasingCurve::OutInSine); break;
+    case CameraEasingType::INEXPO : easing.setType(QEasingCurve::InExpo); break;
+    case CameraEasingType::OUTEXPO : easing.setType(QEasingCurve::OutExpo); break;
+    case CameraEasingType::INOUTEXPO : easing.setType(QEasingCurve::InOutExpo); break;
+    case CameraEasingType::OUTINEXPO: easing.setType(QEasingCurve::OutInExpo); break;
     case CameraEasingType::INCIRC : easing.setType(QEasingCurve::InCirc); break;
     case CameraEasingType::OUTCIRC : easing.setType(QEasingCurve::OutCirc); break;
     case CameraEasingType::INOUTCIRC : easing.setType(QEasingCurve::InOutCirc); break;
     case CameraEasingType::OUTINCIRC: easing.setType(QEasingCurve::OutInCirc); break;
+    default: easing.setType(QEasingCurve::Linear); break;
     }
     return easing.valueForProgress(percent);
 }
