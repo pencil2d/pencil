@@ -37,9 +37,10 @@ void LayerOpacityDialog::initUI()
     connect(ui->btnFadeIn, &QPushButton::pressed, this, &LayerOpacityDialog::fadeInPressed);
     connect(ui->btnFadeOut, &QPushButton::pressed, this, &LayerOpacityDialog::fadeOutPressed);
     connect(ui->btnClose, &QPushButton::pressed, this, &LayerOpacityDialog::close);
-    connect(ui->rbSelectedKeyframes, &QRadioButton::toggled, this, &LayerOpacityDialog::onSelectedFramesChanged);
-    connect(ui->rbActiveKeyframe, &QRadioButton::toggled, this, &LayerOpacityDialog::onSelectedFramesChanged);
-    connect(ui->rbActiveLayer, &QRadioButton::toggled, this, &LayerOpacityDialog::onSelectedFramesChanged);
+    connect(ui->rbActiveKeyframe, &QRadioButton::toggled, this, &LayerOpacityDialog::updateUI);
+    connect(ui->rbSelectedKeyframes, &QRadioButton::toggled, this, &LayerOpacityDialog::updateUI);
+    connect(ui->rbActiveLayer, &QRadioButton::toggled, this, &LayerOpacityDialog::updateUI);
+
     connect(this, &QDialog::finished, this, &LayerOpacityDialog::close);
 
     connect(mEditor, &Editor::objectLoaded, this, &LayerOpacityDialog::onObjectLoaded);
@@ -49,6 +50,31 @@ void LayerOpacityDialog::initUI()
     connect(mLayerManager->currentLayer(), &Layer::selectedFramesChanged, this, &LayerOpacityDialog::onSelectedFramesChanged);
 
     onObjectLoaded();
+}
+
+void LayerOpacityDialog::updateUI()
+{
+    Layer* currentLayer = mLayerManager->currentLayer();
+    if (currentLayer == nullptr) { return; }
+
+    ui->labLayerInfo->setText(tr("Layer: %1").arg(currentLayer->name()));
+    if (currentLayer->type() != Layer::BITMAP && currentLayer->type() != Layer::VECTOR) {
+        setCanAdjust(false, false);
+        return;
+    }
+
+    bool canAdjust = false;
+    if (ui->rbActiveKeyframe->isChecked()) {
+        KeyFrame* keyframe = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
+        canAdjust = keyframe != nullptr;
+    } else if (ui->rbSelectedKeyframes->isChecked()) {
+        canAdjust = !currentLayer->getSelectedFrameList().isEmpty();
+    } else if (ui->rbActiveLayer->isChecked()) {
+        canAdjust = true;
+    }
+
+    ui->chooseOpacitySlider->setEnabled(canAdjust);
+    ui->chooseOpacitySpinBox->setEnabled(canAdjust);
 }
 
 void LayerOpacityDialog::onObjectLoaded()
@@ -63,10 +89,10 @@ void LayerOpacityDialog::onObjectLoaded()
     if (keyframe) {
         updateValues(getOpacityForKeyFrame(currentLayer, keyframe));
     } else {
-        updateValues(0);
+        updateValues(100);
     }
 
-    onCurrentLayerChanged(mLayerManager->currentLayerIndex());
+    updateUI();
 }
 
 qreal LayerOpacityDialog::getOpacityForKeyFrame(Layer* layer, const KeyFrame* keyframe) const
@@ -171,20 +197,10 @@ void LayerOpacityDialog::fadeOutPressed()
     fade(OpacityFadeType::OUT);
 }
 
-void LayerOpacityDialog::onCurrentLayerChanged(int index)
+void LayerOpacityDialog::onCurrentLayerChanged(int)
 {
-    Layer* layer = mLayerManager->getLayer(index);
-    Q_ASSERT(layer);
-
-    ui->labLayerInfo->setText(tr("Layer: %1").arg(layer->name()));
-
-    if (layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR) {
-        setCanAdjust(false);
-        return;
-    }
-
-    setCanAdjust(true);
     onCurrentFrameChanged(mEditor->currentFrame());
+    updateUI();
 }
 
 void LayerOpacityDialog::onCurrentFrameChanged(int frame)
@@ -194,19 +210,16 @@ void LayerOpacityDialog::onCurrentFrameChanged(int frame)
     Layer* currentLayer = mLayerManager->currentLayer();
     if (currentLayer == nullptr) { return; }
 
-    if (currentLayer->type() != Layer::BITMAP && currentLayer->type() != Layer::VECTOR) { return; }
+    if (currentLayer->type() != Layer::BITMAP && currentLayer->type() != Layer::VECTOR) {
+        setCanAdjust(false, false);
+        return;
+    }
 
     KeyFrame* keyframe = currentLayer->getLastKeyFrameAtPosition(frame);
-    if (keyframe)
-    {
-        setCanAdjust(true);
+    if (keyframe) {
         updateValues(getOpacityForKeyFrame(currentLayer, keyframe));
     }
-    else
-    {
-        setCanAdjust(false);
-    }
-    onSelectedFramesChanged();
+    updateUI();
 }
 
 void LayerOpacityDialog::onSelectedFramesChanged()
@@ -216,28 +229,8 @@ void LayerOpacityDialog::onSelectedFramesChanged()
 
     QList<int> frames = currentLayer->getSelectedFrameList();
 
-    if (frames.isEmpty())
-    {
-        bool radioChecked = ui->rbSelectedKeyframes->isChecked();
-        ui->chooseOpacitySlider->setEnabled(!radioChecked);
-        ui->chooseOpacitySpinBox->setEnabled(!radioChecked);
-        ui->rbSelectedKeyframes->setEnabled(false);
-    }
-    else
-    {
-        ui->rbSelectedKeyframes->setEnabled(true);
-        ui->chooseOpacitySlider->setEnabled(true);
-        ui->chooseOpacitySpinBox->setEnabled(true);
-    }
-
-    if (frames.count() >= mMinSelectedFrames)
-    {
-        ui->groupBoxFade->setEnabled(true);
-    }
-    else
-    {
-        ui->groupBoxFade->setEnabled(false);
-    }
+    ui->groupBoxFade->setEnabled(frames.count() >= mMinSelectedFrames);
+    updateUI();
 }
 
 void LayerOpacityDialog::onPlayStateChanged(bool isPlaying)
@@ -246,9 +239,8 @@ void LayerOpacityDialog::onPlayStateChanged(bool isPlaying)
 
     if (!mPlayerIsPlaying) {
         onCurrentFrameChanged(mEditor->currentFrame());
-    } else {
-        setCanAdjust(false);
     }
+    updateUI();
 }
 
 void LayerOpacityDialog::updateValues(qreal opacity)
@@ -326,11 +318,9 @@ void LayerOpacityDialog::setOpacityForLayer()
     emit mEditor->framesModified();
 }
 
-void LayerOpacityDialog::setCanAdjust(bool enabled)
+void LayerOpacityDialog::setCanAdjust(bool opacity, bool fade)
 {
-    ui->groupBoxOpacity->setEnabled(enabled);
-    ui->groupBoxFade->setEnabled(enabled);
-    ui->chooseOpacitySlider->setEnabled(enabled);
-    ui->chooseOpacitySpinBox->setEnabled(enabled);
-    ui->btnClose->setEnabled(enabled);
+    ui->groupBoxFade->setEnabled(fade);
+    ui->chooseOpacitySlider->setEnabled(opacity);
+    ui->chooseOpacitySpinBox->setEnabled(opacity);
 }

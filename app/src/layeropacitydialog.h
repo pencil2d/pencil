@@ -28,6 +28,7 @@ public:
 
     void setCore(Editor* editor);
     void initUI();
+    void updateUI();
 
 private slots:
     void opacitySliderChanged(int value);
@@ -44,7 +45,7 @@ private slots:
 
 private:
 
-    void setCanAdjust(bool enabled);
+    void setCanAdjust(bool opacity, bool fade);
     void fade(OpacityFadeType fadeType);
     qreal getOpacityForKeyFrame(Layer* layer, const KeyFrame* keyframe) const;
     void setOpacityForKeyFrame(Layer* layer, KeyFrame* keyframe, qreal opacity);
