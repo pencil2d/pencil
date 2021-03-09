@@ -36,6 +36,7 @@ VectorImage::VectorImage(const VectorImage& v2) : KeyFrame(v2)
     mObject = v2.mObject;
     mCurves = v2.mCurves;
     mArea = v2.mArea;
+    mOpacity = v2.mOpacity;
 }
 
 VectorImage::~VectorImage()
@@ -54,6 +55,7 @@ VectorImage& VectorImage::operator=(const VectorImage& a) {
     mObject = a.mObject;
     mCurves = a.mCurves;
     mArea = a.mArea;
+    mOpacity = a.mOpacity;
     modification();
     return *this;
 }
