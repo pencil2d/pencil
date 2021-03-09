@@ -11,7 +11,7 @@
 
 
 LayerOpacityDialog::LayerOpacityDialog(QWidget *parent) :
-    QDialog(parent),
+    QDialog(parent, Qt::Tool),
     ui(new Ui::LayerOpacityDialog)
 {
     ui->setupUi(this);
