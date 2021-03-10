@@ -69,6 +69,7 @@ GNU General Public License for more details.
 #include "importimageseqdialog.h"
 #include "importlayersdialog.h"
 #include "importpositiondialog.h"
+#include "layeropacitydialog.h"
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
@@ -288,6 +289,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
     connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
+    connect(ui->actionChangeLayerOpacity, &QAction::triggered, this, &MainWindow2::openLayerOpacityDialog);
 
     QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
     auto visibilityGroup = new QActionGroup(this);
@@ -459,6 +461,28 @@ void MainWindow2::openPegAlignDialog()
     connect(mPegAlign, &PegBarAlignmentDialog::finished, [=]
     {
         mPegAlign = nullptr;
+    });
+}
+
+void MainWindow2::openLayerOpacityDialog()
+{
+    if (mLayerOpacityDialog != nullptr)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Dialog is already open!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+    mLayerOpacityDialog = new LayerOpacityDialog(this);
+    mLayerOpacityDialog->setAttribute(Qt::WA_DeleteOnClose);
+    mLayerOpacityDialog->setCore(mEditor);
+    mLayerOpacityDialog->initUI();
+    mLayerOpacityDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mLayerOpacityDialog->show();
+
+    connect(mLayerOpacityDialog, &LayerOpacityDialog::finished, [=]
+    {
+        mLayerOpacityDialog = nullptr;
     });
 }
 

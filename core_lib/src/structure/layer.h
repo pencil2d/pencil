@@ -127,6 +127,10 @@ public:
     /** Clear the list of dirty keyframes */
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
+    QList<int> getSelectedFrameList() { return mSelectedFrames_byPosition; }
+
+signals:
+    void selectedFramesChanged();
 
 protected:
     void setId(int LayerId) { mId = LayerId; }

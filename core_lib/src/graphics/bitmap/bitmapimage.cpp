@@ -34,6 +34,7 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
     mEnableAutoCrop = a.mEnableAutoCrop;
+    mOpacity = a.mOpacity;
     mImage.reset(new QImage(*a.mImage));
 }
 
@@ -85,6 +86,7 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
     KeyFrame::operator=(a);
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
+    mOpacity = a.mOpacity;
     mImage.reset(new QImage(*a.mImage));
     modification();
     return *this;
