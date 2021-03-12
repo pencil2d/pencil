@@ -908,6 +908,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                     }
                     else
                     {
+                        // If selected they can also be interpolated
+                        if (event->button() == Qt::RightButton)
+                        {
+                            showCameraMenu(event->pos());
+                        }
                         // We clicked on a selected frame, we can move it
                         mCanMoveFrame = true;
                     }
