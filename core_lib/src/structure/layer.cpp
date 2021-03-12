@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 #include "layer.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QSettings>
 #include <QPainter>
@@ -31,15 +32,15 @@ bool sortAsc(int left, int right)
     return left < right;
 }
 
-Layer::Layer(Object* pObject, LAYER_TYPE eType) : QObject(pObject)
+Layer::Layer(Object* object, LAYER_TYPE eType) : QObject(object)
 {
     Q_ASSERT(eType != UNDEFINED);
 
-    mObject = pObject;
+    mObject = object;
     meType = eType;
     mName = QString(tr("Undefined Layer"));
 
-    mId = pObject->getUniqueLayerID();
+    mId = object->getUniqueLayerID();
 }
 
 Layer::~Layer()
@@ -52,7 +53,15 @@ Layer::~Layer()
     mKeyFrames.clear();
 }
 
-void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action)
+void Layer::setObject(Object* obj)
+{
+    Q_ASSERT(obj);
+    mObject = obj;
+    setParent(mObject);
+    mId = mObject->getUniqueLayerID();
+}
+
+void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action) const
 {
     for (auto pair : mKeyFrames)
     {
@@ -190,6 +199,8 @@ bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
     pKeyFrame->setPos(position);
     mKeyFrames.insert(std::make_pair(position, pKeyFrame));
 
+    markFrameAsDirty(position);
+
     return true;
 }
 
@@ -199,77 +210,65 @@ bool Layer::removeKeyFrame(int position)
     if (frame)
     {
         mKeyFrames.erase(frame->pos());
+        markFrameAsDirty(position);
         delete frame;
     }
     return true;
 }
 
-bool Layer::moveKeyFrameForward(int position)
+bool Layer::moveKeyFrame(int position, int offset)
 {
-    return swapKeyFrames(position, position + 1);
-}
+    int newPos = position + offset;
+    if (newPos < 1) { return false; }
 
-bool Layer::moveKeyFrameBackward(int position)
-{
-    if (position != 1)
-    {
-        return swapKeyFrames(position, position - 1);
+    auto listOfFramesLast = mSelectedFrames_byLast;
+    auto listOfFramesPos = mSelectedFrames_byPosition;
+    mSelectedFrames_byLast.clear();
+    mSelectedFrames_byPosition.clear();
+
+    if (swapKeyFrames(position, newPos)) {
+        return true;
     }
-    return true;
+
+    setFrameSelected(position, true);
+    bool moved = false;
+    if (moveSelectedFrames(offset)) {
+        moved = true;
+    }
+    setFrameSelected(newPos, false);
+
+    mSelectedFrames_byLast = listOfFramesLast;
+    mSelectedFrames_byPosition = listOfFramesPos;
+
+    return moved;
 }
 
-bool Layer::swapKeyFrames(int position1, int position2) //Current behaviour, need to refresh the swapped cels
+// Current behaviour, need to refresh the swapped cels
+bool Layer::swapKeyFrames(int position1, int position2)
 {
-    bool keyPosition1 = false;
-    bool keyPosition2 = false;
     KeyFrame* pFirstFrame = nullptr;
     KeyFrame* pSecondFrame = nullptr;
 
-    if (keyExists(position1))
+    if (mKeyFrames.count(position1) != 1 || mKeyFrames.count(position2) != 1)
     {
-        auto firstFrame = mKeyFrames.find(position1);
-        pFirstFrame = firstFrame->second;
-
-        mKeyFrames.erase(position1);
-
-        keyPosition1 = true;
+        return false;
     }
 
-    if (keyExists(position2))
-    {
-        auto secondFrame = mKeyFrames.find(position2);
-        pSecondFrame = secondFrame->second;
+    // Both keys exist
+    pFirstFrame = mKeyFrames[position1];
+    pSecondFrame = mKeyFrames[position2];
 
-        mKeyFrames.erase(position2);
+    mKeyFrames[position1] = pSecondFrame;
+    mKeyFrames[position2] = pFirstFrame;
 
-        keyPosition2 = true;
-    }
+    pSecondFrame->setPos(position1);
+    pFirstFrame->setPos(position2);
 
-    if (keyPosition2)
-    {
-        pSecondFrame->setPos(position1);
-        mKeyFrames.insert(std::make_pair(position1, pSecondFrame));
-    }
-    else if (position1 == 1)
-    {
-        addNewKeyFrameAt(position1);
-    }
+    pFirstFrame->modification();
+    pSecondFrame->modification();
 
-    if (keyPosition1)
-    {
-        pFirstFrame->setPos(position2);
-        mKeyFrames.insert(std::make_pair(position2, pFirstFrame));
-    }
-    else if (position2 == 1)
-    {
-        addNewKeyFrameAt(position2);
-    }
-
-    if (pFirstFrame)
-        pFirstFrame->modification();
-
-    if (pSecondFrame)
-        pSecondFrame->modification();
+    markFrameAsDirty(position1);
+    markFrameAsDirty(position2);
 
     return true;
 }
@@ -316,165 +315,6 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
         return Status(Status::FAIL, dd);
     }
     return Status::OK;
-}
-
-void Layer::paintTrack(QPainter& painter, TimeLineCells* cells,
-                       int x, int y, int width, int height,
-                       bool selected, int frameSize)
-{
-    if (mVisible)
-    {
-        QColor col;
-        if (type() == BITMAP) col = QColor(51, 155, 252);
-        if (type() == VECTOR) col = QColor(70, 205, 123);
-        if (type() == SOUND) col = QColor(255, 141, 112);
-        if (type() == CAMERA) col = QColor(253, 202, 92);
-
-        painter.save();
-        painter.setBrush(col);
-        painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(x, y - 1, width, height);
-
-        // changes the apparence if selected
-        if (selected)
-        {
-            paintSelection(painter, x, y, width, height);
-        }
-        else
-        {
-            painter.save();
-            QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-            linearGrad.setColorAt(0, QColor(255,255,255,150));
-            linearGrad.setColorAt(1, QColor(0,0,0,0));
-            painter.setCompositionMode(QPainter::CompositionMode_Overlay);
-            painter.setBrush(linearGrad);
-            painter.drawRect(x, y - 1, width, height);
-            painter.restore();
-        }
-
-        paintFrames(painter, col, cells, y, height, selected, frameSize);
-
-        painter.restore();
-    }
-    else
-    {
-        painter.setBrush(Qt::gray);
-        painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
-    }
-}
-
-void Layer::paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize)
-{
-    painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-
-    for (auto pair : mKeyFrames)
-    {
-        int framePos = pair.first;
-
-        int recLeft = cells->getFrameX(framePos) - frameSize + 2;
-        int recTop = y + 1;
-        int recWidth = frameSize - 2;
-        int recHeight = height - 4;
-
-        KeyFrame* key = pair.second;
-        if (key->length() > 1)
-        {
-            // This is especially for sound clip.
-            // Sound clip is the only type of KeyFrame that has variant frame length.
-            recWidth = frameSize * key->length() - 2;
-        }
-
-        if (selected && key->pos() == cells->getCurrentFrame()) {
-            painter.setPen(Qt::white);
-        } else {
-            painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        }
-
-        if (pair.second->isSelected())
-        {
-            painter.setBrush(QColor(60, 60, 60));
-        }
-        else if (selected)
-        {
-            painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
-        }
-
-        painter.drawRect(recLeft, recTop, recWidth, recHeight);
-    }
-}
-
-void Layer::paintLabel(QPainter& painter, TimeLineCells* cells,
-                       int x, int y, int width, int height,
-                       bool selected, LayerVisibility layerVisibility)
-{
-    Q_UNUSED(cells)
-    painter.setBrush(Qt::lightGray);
-    painter.setPen(QPen(QBrush(QColor(100, 100, 100)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.drawRect(x, y - 1, width, height); // empty rectangle  by default
-
-
-    if (selected)
-    {
-        paintSelection(painter, x, y, width, height);
-    } else {
-        painter.save();
-        QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-        linearGrad.setColorAt(0, QColor(255,255,255,150));
-        linearGrad.setColorAt(1, QColor(0,0,0,0));
-        painter.setCompositionMode(QPainter::CompositionMode_Overlay);
-        painter.setBrush(linearGrad);
-        painter.drawRect(x, y - 1, width, height);
-        painter.restore();
-    }
-
-    if (mVisible)
-    {
-        if ((layerVisibility == LayerVisibility::ALL) || selected) painter.setBrush(Qt::black);
-        else if (layerVisibility == LayerVisibility::CURRENTONLY) painter.setBrush(Qt::NoBrush);
-        else if (layerVisibility == LayerVisibility::RELATED) painter.setBrush(Qt::darkGray);
-    }
-    else
-    {
-        painter.setBrush(Qt::NoBrush);
-    }
-    painter.setPen(Qt::black);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawEllipse(x + 6, y + 4, 9, 9);
-    painter.setRenderHint(QPainter::Antialiasing, false);
-
-    if (type() == BITMAP) painter.drawPixmap(QPoint(20, y + 2), QPixmap(":/icons/layer-bitmap.png"));
-    if (type() == VECTOR) painter.drawPixmap(QPoint(20, y + 2), QPixmap(":/icons/layer-vector.png"));
-    if (type() == SOUND) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-sound.png"));
-    if (type() == CAMERA) painter.drawPixmap(QPoint(21, y + 2), QPixmap(":/icons/layer-camera.png"));
-
-    painter.setPen(Qt::black);
-    painter.drawText(QPoint(45, y + (2 * height) / 3), mName);
-}
-
-void Layer::paintSelection(QPainter& painter, int x, int y, int width, int height)
-{
-    QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-    QSettings settings(PENCIL2D, PENCIL2D);
-    QString style = settings.value("style").toString();
-    linearGrad.setColorAt(0, QColor(0, 0, 0, 255));
-    linearGrad.setColorAt(1, QColor(255, 255, 255, 0));
-    painter.save();
-    painter.setCompositionMode(QPainter::CompositionMode_Overlay);
-    painter.setBrush(linearGrad);
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(x, y, width, height - 1);
-    painter.restore();
-}
-
-void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
-{
-    Q_UNUSED(event)
-    Q_UNUSED(frameNumber)
-}
-
-void Layer::editProperties()
-{
 }
 
 void Layer::setModified(int position, bool modified)
@@ -538,6 +378,7 @@ void Layer::setFrameSelected(int position, bool isSelected)
             mSelectedFrames_byPosition.removeAt(iPos);
         }
         keyFrame->setSelected(isSelected);
+        emit selectedFramesChanged();
     }
 }
 
@@ -603,6 +444,7 @@ void Layer::deselectAll()
 {
     mSelectedFrames_byLast.clear();
     mSelectedFrames_byPosition.clear();
+    emit selectedFramesChanged();
 
     for (auto pair : mKeyFrames)
     {
@@ -639,6 +481,7 @@ bool Layer::moveSelectedFrames(int offset)
             if (selectedFrame != nullptr)
             {
                 mKeyFrames.erase(fromPos);
+                markFrameAsDirty(fromPos);
 
                 // Slide back every frame between fromPos to toPos
                 // to avoid having 2 frames in the same position
@@ -654,9 +497,11 @@ bool Layer::moveSelectedFrames(int offset)
                     if (frame != nullptr)
                     {
                         mKeyFrames.erase(framePosition);
+                        markFrameAsDirty(framePosition);
 
                         frame->setPos(targetPosition);
                         mKeyFrames.insert(std::make_pair(targetPosition, frame));
+                        markFrameAsDirty(targetPosition);
                     }
 
                     targetPosition = targetPosition - step;
@@ -666,18 +511,14 @@ bool Layer::moveSelectedFrames(int offset)
                         isBetween = false;
                 }
 
-                if (fromPos == 1)
-                {
-                    // If the first frame is moving, we need to create a new first frame
-                    //addNewKeyFrameAt(1);
-                }
-
                 // Update the position of the selected frame
                 selectedFrame->setPos(toPos);
                 mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
+                markFrameAsDirty(toPos);
             }
             indexInSelection = indexInSelection + step;
         }
+        emit selectedFramesChanged();
 
         // Update selection lists
         for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
@@ -688,6 +529,7 @@ bool Layer::moveSelectedFrames(int offset)
         {
             mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
         }
+
         return true;
     }
     return false;
@@ -716,7 +558,7 @@ KeyFrame* Layer::getKeyFrameWhichCovers(int frameNumber) const
     return nullptr;
 }
 
-QDomElement Layer::createBaseDomElement(QDomDocument& doc)
+QDomElement Layer::createBaseDomElement(QDomDocument& doc) const
 {
     QDomElement layerTag = doc.createElement("layer");
     layerTag.setAttribute("id", id());

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -91,5 +91,14 @@ QString ffmpegLocation()
         return ffmpegPath;
     }
     return QStandardPaths::findExecutable("ffmpeg"); // ffmpeg is a standalone project.
+#endif
+}
+
+quint64 imageSize(const QImage& img)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    return img.sizeInBytes();
+#else
+    return img.byteCount();
 #endif
 }

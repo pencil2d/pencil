@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -15,63 +15,10 @@ GNU General Public License for more details.
 
 */
 #include "layercamera.h"
-#include "ui_camerapropertiesdialog.h"
 
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QtDebug>
+#include <QSettings>
 #include "camera.h"
-#include <qsettings.h>
 #include "pencildef.h"
-
-CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) :
-    QDialog(),
-    ui(new Ui::CameraPropertiesDialog)
-{
-    ui->setupUi(this);
-
-    ui->nameBox->setText(name);
-    ui->widthBox->setValue(width);
-    ui->heightBox->setValue(height);
-}
-
-CameraPropertiesDialog::~CameraPropertiesDialog()
-{
-    delete ui;
-}
-
-QString CameraPropertiesDialog::getName()
-{
-    return ui->nameBox->text();
-}
-
-void CameraPropertiesDialog::setName(QString name)
-{
-    ui->nameBox->setText(name);
-}
-
-int CameraPropertiesDialog::getWidth()
-{
-    return ui->widthBox->value();
-}
-
-void CameraPropertiesDialog::setWidth(int width)
-{
-    ui->widthBox->setValue(width);
-}
-
-int CameraPropertiesDialog::getHeight()
-{
-    return ui->heightBox->value();
-}
-
-void CameraPropertiesDialog::setHeight(int height)
-{
-    ui->heightBox->setValue(height);
-}
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -86,7 +33,6 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
         mFieldH = 600;
     }
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
-    dialog = nullptr;
 }
 
 LayerCamera::~LayerCamera()
@@ -103,7 +49,7 @@ Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
     return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-QTransform LayerCamera::getViewAtFrame(int frameNumber)
+QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 {
     if (keyFrameCount() == 0)
     {
@@ -209,9 +155,15 @@ QRect LayerCamera::getViewRect()
     return viewRect;
 }
 
-QSize LayerCamera::getViewSize()
+QSize LayerCamera::getViewSize() const
 {
     return viewRect.size();
+}
+
+void LayerCamera::setViewRect(QRect newViewRect)
+{
+    viewRect = newViewRect;
+    emit resolutionChanged();
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale)
@@ -238,31 +190,9 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
     return c;
 }
 
-void LayerCamera::editProperties()
+QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
 {
-    if (dialog == nullptr)
-    {
-        dialog = new CameraPropertiesDialog(name(), viewRect.width(), viewRect.height());
-    }
-    dialog->setName(name());
-    dialog->setWidth(viewRect.width());
-    dialog->setHeight(viewRect.height());
-    int result = dialog->exec();
-    if (result == QDialog::Accepted)
-    {
-        setName(dialog->getName());
-        QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue(SETTING_FIELD_W, dialog->getWidth());
-        settings.setValue(SETTING_FIELD_H, dialog->getHeight());
-        viewRect = QRect(-dialog->getWidth() / 2, -dialog->getHeight() / 2, dialog->getWidth(), dialog->getHeight());
-
-        emit resolutionChanged();
-    }
-}
-
-QDomElement LayerCamera::createDomElement(QDomDocument& doc)
-{
-    QDomElement layerElem = this->createBaseDomElement(doc);
+    QDomElement layerElem = createBaseDomElement(doc);
     layerElem.setAttribute("width", viewRect.width());
     layerElem.setAttribute("height", viewRect.height());
 

@@ -1,3 +1,19 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #ifndef PEGBARALIGNMENTDIALOG_H
 #define PEGBARALIGNMENTDIALOG_H
 
@@ -14,44 +30,32 @@ class PegBarAlignmentDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PegBarAlignmentDialog(Editor* editor, QWidget *parent = nullptr);
+    explicit PegBarAlignmentDialog(Editor* editor, QWidget* parent = nullptr);
     ~PegBarAlignmentDialog();
 
+public slots:
+    void updateAlignButton();
+
+private:
+    void updatePegRegLayers();
+    void updatePegRegDialog();
+    void alignPegs();
     void setLayerList(QStringList layerList);
+    void updateRefKeyLabel(QString text);
+
     QStringList getLayerList();
-    int getRefKey() {return refkey; }
-    QString getRefLayer() {return refLayer; }
-    void setLabRefKey();
 
     void setAreaSelected(bool b);
     void setReferenceSelected(bool b);
     void setLayerSelected(bool b);
+    void closeClicked();
 
-    void updatePegRegLayers();
-    void updatePegRegDialog();
-    void alignPegs();
-
-public slots:
-    void setBtnAlignEnabled();
-    void setRefLayer(QString s);
-    void setRefKey(int i);
-
-signals:
-    void closedialog();
-
-private:
-    Ui::PegBarAlignmentDialog *ui;
+    Ui::PegBarAlignmentDialog* ui;
     QStringList mLayernames;
     Editor* mEditor = nullptr;
-    bool areaSelected = false;
-    bool referenceSelected = false;
-    bool layerSelected = false;
-
-    void closeClicked();
-    void alignClicked();
-    void layerListUpdate();
-    QString refLayer = "";
-    int refkey = 0;
+    bool mAreaSelected = false;
+    bool mReferenceSelected = false;
+    bool mLayerSelected = false;
 };
 
 #endif // PEGBARALIGNMENTDIALOG_H

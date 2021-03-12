@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -75,7 +75,7 @@ QCursor BucketTool::cursor()
     }
     else
     {
-        return Qt::CrossCursor;
+        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
     }
 }
 
@@ -108,17 +108,12 @@ void BucketTool::setTolerance(const int tolerance)
 
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
-    startStroke();
-    if (event->button() == Qt::LeftButton)
-    {
-        mScribbleArea->setAllDirty();
-    }
-    startStroke();
+    startStroke(event->inputType());
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if (layer->type() == Layer::VECTOR)
@@ -130,6 +125,8 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
 
 void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     Layer* layer = editor()->layers()->currentLayer();
     if (layer == nullptr) { return; }
 
@@ -179,7 +176,6 @@ void BucketTool::paintBitmap(Layer* layer)
                            properties.tolerance);
 
     mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
-    mScribbleArea->setAllDirty();
 }
 
 void BucketTool::paintVector(Layer* layer)
@@ -201,7 +197,6 @@ void BucketTool::paintVector(Layer* layer)
     applyChanges();
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-    mScribbleArea->setAllDirty();
 }
 
 void BucketTool::applyChanges()

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -52,8 +52,10 @@ void SelectTool::beginSelection()
     selectMan->calculateSelectionTransformation();
 
     // paint and apply the transformation
-    mScribbleArea->paintTransformedSelection();
-    mScribbleArea->applyTransformedSelection();
+    if (selectMan->transformHasBeenModified()) {
+        mScribbleArea->paintTransformedSelection();
+        mScribbleArea->applyTransformedSelection();
+    }
     mMoveMode = selectMan->validateMoveMode(getLastPoint());
 
     if (selectMan->somethingSelected() && mMoveMode != MoveMode::NONE) // there is something selected
@@ -72,7 +74,7 @@ void SelectTool::beginSelection()
     {
         selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     }
-    mScribbleArea->update();
+    mScribbleArea->updateCurrentFrame();
 }
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
@@ -146,7 +148,6 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
-//    mScribbleArea->setAllDirty();
 }
 
 bool SelectTool::maybeDeselect()

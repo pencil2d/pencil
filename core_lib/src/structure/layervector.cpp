@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -76,7 +76,7 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 }
 
 Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
-{    
+{
     QString theFileName = fileName(keyFrame);
     QString strFilePath = QDir(path).filePath(theFileName);
 
@@ -114,7 +114,7 @@ KeyFrame* LayerVector::createKeyFrame(int position, Object* obj)
     return v;
 }
 
-QString LayerVector::fileName(KeyFrame* key)
+QString LayerVector::fileName(KeyFrame* key) const
 {
     return QString::asprintf("%03d.%03d.vec", id(), key->pos());
 }
@@ -130,15 +130,17 @@ bool LayerVector::needSaveFrame(KeyFrame* key, const QString& strSavePath)
     return false;
 }
 
-QDomElement LayerVector::createDomElement(QDomDocument& doc)
+QDomElement LayerVector::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerElem = this->createBaseDomElement(doc);
+    QDomElement layerElem = createBaseDomElement(doc);
 
     foreachKeyFrame([&](KeyFrame* keyframe)
     {
         QDomElement imageTag = doc.createElement("image");
         imageTag.setAttribute("frame", keyframe->pos());
         imageTag.setAttribute("src", fileName(keyframe));
+        VectorImage* image = getVectorImageAtFrame(keyframe->pos());
+        imageTag.setAttribute("opacity", image->getOpacity());
         layerElem.appendChild(imageTag);
 
         Q_ASSERT(QFileInfo(keyframe->fileName()).fileName() == fileName(keyframe));
@@ -159,20 +161,25 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
         {
             if (imageElement.tagName() == "image")
             {
+                int position;
                 if (!imageElement.attribute("src").isNull())
                 {
                     QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
                     QFileInfo fi(path);
                     if (!fi.exists()) path = imageElement.attribute("src");
-                    int position = imageElement.attribute("frame").toInt();
+                    position = imageElement.attribute("frame").toInt();
                     loadImageAtFrame(path, position);
                 }
                 else
                 {
-                    int frame = imageElement.attribute("frame").toInt();
-                    addNewKeyFrameAt(frame);
-                    getVectorImageAtFrame(frame)->loadDomElement(imageElement);
+                    position = imageElement.attribute("frame").toInt();
+                    addNewKeyFrameAt(position);
+                    getVectorImageAtFrame(position)->loadDomElement(imageElement);
                 }
+                if (imageElement.hasAttribute("opacity"))
+                    getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity").toDouble());
+                else
+                    getVectorImageAtFrame(position)->setOpacity(1.0);
                 progressStep();
             }
         }

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "predefinedsetmodel.h"
+#include "layermanager.h"
 #include "viewmanager.h"
 
 #include <QProgressDialog>
@@ -47,6 +48,8 @@ ImportImageSeqDialog::ImportImageSeqDialog(QWidget* parent, Mode mode, FileType 
     } else {
         setupLayout();
     }
+
+    getDialogButtonBox()->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(false);
 }
 
 void ImportImageSeqDialog::setupLayout()
@@ -61,6 +64,7 @@ void ImportImageSeqDialog::setupLayout()
     }
 
     connect(uiOptionsBox->spaceSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ImportImageSeqDialog::setSpace);
+    connect(this, &ImportImageSeqDialog::filePathsChanged, this, &ImportImageSeqDialog::validateFiles);
 }
 
 void ImportImageSeqDialog::setupPredefinedLayout()
@@ -312,7 +316,7 @@ void ImportImageSeqDialog::importPredefinedSet()
     int imagesImportedSoFar = 0;
     progress.setMaximum(totalImagesToImport);
 
-    mEditor->createNewBitmapLayer(keySet.layerName());
+    mEditor->layers()->createBitmapLayer(keySet.layerName());
 
     for (int i = 0; i < keySet.size(); i++)
     {
@@ -363,5 +367,34 @@ Status ImportImageSeqDialog::validateKeySet(const PredefinedKeySet& keySet, cons
         status.setDescription(QString(tr("The following file did not meet the criteria: \n%1 \n\nRead the instructions and try again")).arg(failedPathsString));
     }
 
+    return status;
+}
+
+Status ImportImageSeqDialog::validateFiles(const QStringList &filepaths)
+{
+    QString failedPathsString = "";
+
+    Status status = Status::OK;
+
+    if (filepaths.isEmpty()) { status = Status::FAIL; }
+
+    for (int i = 0; i < filepaths.count(); i++)
+    {
+        QFileInfo file = filepaths.at(i);
+        if (!file.exists())
+            failedPathsString += filepaths.at(i) + "\n";
+    }
+
+    if (!failedPathsString.isEmpty())
+    {
+        status = Status::FAIL;
+        status.setTitle(tr("Invalid path"));
+        status.setDescription(QString(tr("The following file(-s) did not meet the criteria: \n%1")).arg(failedPathsString));
+    }
+
+    if (status == Status::OK)
+    {
+        getDialogButtonBox()->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(true);
+    }
     return status;
 }

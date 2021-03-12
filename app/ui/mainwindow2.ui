@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -157,6 +157,7 @@
      <addaction name="actionVisibilityAll"/>
     </widget>
     <addaction name="actionReset_View"/>
+    <addaction name="actionCenter_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
@@ -164,6 +165,7 @@
     <addaction name="separator"/>
     <addaction name="actionRotate_Clockwise"/>
     <addaction name="actionRotate_Anticlockwise"/>
+    <addaction name="actionReset_Rotation"/>
     <addaction name="separator"/>
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
@@ -205,17 +207,17 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionMove"/>
+    <addaction name="actionPencil"/>
+    <addaction name="actionEraser"/>
     <addaction name="actionSelect"/>
-    <addaction name="actionBrush"/>
-    <addaction name="actionPolyline"/>
-    <addaction name="actionSmudge"/>
+    <addaction name="actionMove"/>
     <addaction name="actionPen"/>
     <addaction name="actionHand"/>
-    <addaction name="actionPencil"/>
+    <addaction name="actionPolyline"/>
     <addaction name="actionBucket"/>
     <addaction name="actionEyedropper"/>
-    <addaction name="actionEraser"/>
+    <addaction name="actionBrush"/>
+    <addaction name="actionSmudge"/>
     <addaction name="separator"/>
     <addaction name="actionResetToolsDefault"/>
    </widget>
@@ -239,6 +241,7 @@
     <addaction name="separator"/>
     <addaction name="menuChange_line_color"/>
     <addaction name="separator"/>
+    <addaction name="actionChangeLayerOpacity"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -261,7 +264,9 @@
     <property name="title">
      <string>Windows</string>
     </property>
-    <addaction name="actionReset_Windows"/>
+    <addaction name="actionResetWindows"/>
+    <addaction name="actionLockWindows"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -450,7 +455,7 @@
     <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
-  <action name="actionReset_Windows">
+  <action name="actionResetWindows">
    <property name="text">
     <string>Reset Windows</string>
    </property>
@@ -485,10 +490,13 @@
   </action>
   <action name="actionReset_View">
    <property name="text">
-    <string>Reset Zoom/Rotate</string>
+    <string>Reset</string>
    </property>
   </action>
   <action name="actionHorizontal_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
@@ -498,6 +506,9 @@
    </property>
   </action>
   <action name="actionVertical_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
@@ -1046,20 +1057,29 @@
   </action>
   <action name="actionImportLayers_from_pclx">
    <property name="text">
-    <string>Layers from PCLX...</string>
+    <string>Layers from Project file...</string>
    </property>
   </action>
   <action name="actionVisibilityCurrentLayerOnly">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Current layer only</string>
    </property>
   </action>
   <action name="actionVisibilityRelative">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Relative</string>
    </property>
   </action>
   <action name="actionVisibilityAll">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>All layers</string>
    </property>
@@ -1075,9 +1095,32 @@
     <string>Onion Skins</string>
    </property>
   </action>
+  <action name="actionChangeLayerOpacity">
+   <property name="text">
+    <string>Layer / Keyframe opacity</string>
+   </property>
+  </action>
   <action name="actionOpen_Temporary_Directory">
    <property name="text">
     <string>Open Temporary Directory</string>
+   </property>
+  </action>
+  <action name="actionLockWindows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock Windows</string>
+   </property>
+  </action>
+  <action name="actionCenter_View">
+   <property name="text">
+    <string>Center</string>
+   </property>
+  </action>
+  <action name="actionReset_Rotation">
+   <property name="text">
+    <string>Reset Rotation</string>
    </property>
   </action>
  </widget>

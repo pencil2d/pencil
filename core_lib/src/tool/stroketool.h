@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define STROKETOOL_H
 
 #include "basetool.h"
+#include "pointerevent.h"
 
 #include <QList>
 #include <QPointF>
@@ -30,8 +31,8 @@ class StrokeTool : public BaseTool
 
 public:
     explicit StrokeTool(QObject* parent);
-    
-    void startStroke();
+
+    void startStroke(PointerEvent::InputType inputType);
     void drawStroke();
     void endStroke();
 
@@ -46,6 +47,8 @@ protected:
 
     qreal mCurrentWidth    = 0.0;
     qreal mCurrentPressure = 0.5;
+
+    PointerEvent::InputType mCurrentInputType = PointerEvent::Unknown;
 
     /// Whether to enable the "drawing on empty frame" preference.
     /// If true, then the user preference is honored.

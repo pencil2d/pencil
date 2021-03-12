@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -29,15 +29,14 @@ class ImportImageSeqOptions;
 class ImportImageSeqPreviewGroupBox;
 }
 
-struct PredefinedKeySetParams {
-    int dot;
-    int digits;
+struct PredefinedKeySetParams
+{
+    int dot = 0;
+    int digits = 0;
     QStringList filenames;
     QStringList absolutePaths;
     QString folderPath;
     QString prefix;
-
-    Status pathsValid() const;
 };
 
 enum ImportCriteria { Arbitrary, PredefinedSet };
@@ -81,6 +80,7 @@ private:
     void setupLayout();
     void setupPredefinedLayout();
     Status validateKeySet(const PredefinedKeySet& keySet, const QStringList& filepaths);
+    Status validateFiles(const QStringList& filepaths);
 
     Ui::ImportImageSeqOptions *uiOptionsBox;
     Ui::ImportImageSeqPreviewGroupBox *uiGroupBoxPreview;

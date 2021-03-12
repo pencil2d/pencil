@@ -1,8 +1,8 @@
 ﻿/*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPixmap>
 #include <QBitmap>
+#include <QtMath>
 #include "pointerevent.h"
 
 #include "vectorimage.h"
@@ -30,7 +31,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layermanager.h"
 #include "scribblearea.h"
-
+#include "util.h"
 
 EyedropperTool::EyedropperTool(QObject* parent) : BaseTool(parent)
 {
@@ -52,7 +53,7 @@ QCursor EyedropperTool::cursor()
     }
     else
     {
-        return Qt::CrossCursor;
+        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
     }
 }
 
@@ -65,7 +66,10 @@ QCursor EyedropperTool::cursor(const QColor color)
 
     QPainter painter(&pixmap);
     painter.drawPixmap(0, 0, icon);
-    painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+
+    painter.setBrush(Qt::white);
+    painter.drawRect(17, 17, 13, 13);
+    painter.setPen(QPen(Qt::white, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.setBrush(color);
     painter.drawRect(16, 16, 15, 15);
     painter.end();
@@ -111,7 +115,6 @@ void EyedropperTool::pointerReleaseEvent(PointerEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        //qDebug() << "was left button or tablet button";
         updateFrontColor();
 
         // reset cursor
@@ -144,28 +147,33 @@ void EyedropperTool::updateFrontColor()
 QColor EyedropperTool::getBitmapColor(LayerBitmap* layer)
 {
     BitmapImage* targetImage = layer->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-    if (targetImage == nullptr || !targetImage->contains(getLastPoint())) return QColor();
+    if (targetImage == nullptr || !targetImage->contains(getCurrentPoint())) return QColor();
 
     QColor pickedColour;
-    pickedColour.setRgba(qUnpremultiply(targetImage->pixel(getLastPoint().x(), getLastPoint().y())));
+    const QRgb pixelColor = targetImage->constScanLine(qFloor(getCurrentPoint().x()),
+                                                       qFloor(getCurrentPoint().y()));
+    pickedColour.setRgba(pixelColor);
+
     if (pickedColour.alpha() <= 0) pickedColour = QColor();
     return pickedColour;
 }
 
 int EyedropperTool::getVectorColor(LayerVector* layer)
 {
-    VectorImage* vectorImage = layer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    auto vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
     if (vectorImage == nullptr) return -1;
 
     // Check curves
     const qreal toleranceDistance = 10.0;
-    QList<int> closestCurve = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
-    if(!closestCurve.isEmpty())
+    const QList<int> closestCurves = vectorImage->getCurvesCloseTo(getCurrentPoint(), toleranceDistance);
+    const QList<int> visibleClosestCurves = filter(closestCurves, [vectorImage](int i) { return vectorImage->isCurveVisible(i); });
+
+    if (!visibleClosestCurves.isEmpty())
     {
-        return vectorImage->getCurvesColor(closestCurve.last());
+        return vectorImage->getCurvesColor(visibleClosestCurves.last());
     }
 
     // Check fills
-    int colorNumber = vectorImage->getColorNumber(getLastPoint());
+    int colorNumber = vectorImage->getColorNumber(getCurrentPoint());
     return colorNumber;
 }

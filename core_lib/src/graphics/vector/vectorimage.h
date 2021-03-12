@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ class VectorImage : public KeyFrame
 public:
     VectorImage();
     VectorImage(const VectorImage&);
-    virtual ~VectorImage();
+    ~VectorImage() override;
     VectorImage& operator=(const VectorImage& a);
 
     VectorImage* clone() override;
@@ -87,6 +87,7 @@ public:
     bool usesColor(int index);
     void removeColor(int index);
     int getCurvesColor(int curve);
+    bool isCurveVisible(int curve);
     void moveColor(int start, int end);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
@@ -147,6 +148,9 @@ public:
 
     QSize getSize() { return mSize; }
 
+    void setOpacity(qreal opacity) { mOpacity = opacity; }
+    qreal getOpacity() const { return mOpacity; }
+
 private:
     void addPoint(int curveNumber, int vertexNumber, qreal fraction);
 
@@ -163,6 +167,7 @@ private:
     QRectF mSelectionRect;
     QTransform mSelectionTransformation;
     QSize mSize;
+    qreal mOpacity = 1.0;
 };
 
 #endif

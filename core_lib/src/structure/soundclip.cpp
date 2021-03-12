@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -36,10 +36,15 @@ SoundClip::~SoundClip()
     //QFile::remove( fileName() );
 }
 
-SoundClip& SoundClip::operator=(const SoundClip& a) {
-    if (this != &a) {
-        mOriginalSoundClipName = a.mOriginalSoundClipName;
+SoundClip& SoundClip::operator=(const SoundClip& a)
+{
+    if (this == &a)
+    {
+        return *this; // a self-assignment
     }
+
+    KeyFrame::operator=(a);
+    mOriginalSoundClipName = a.mOriginalSoundClipName;
     return *this;
 }
 

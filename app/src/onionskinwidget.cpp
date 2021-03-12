@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,19 +17,6 @@ GNU General Public License for more details.
 #include "onionskinwidget.h"
 #include "ui_onionskin.h"
 
-#include <QSettings>
-#include <QDebug>
-#include <QtMath>
-
-#include <QComboBox>
-#include <QMessageBox>
-#include <QToolButton>
-#include <QGridLayout>
-#include <QSlider>
-#include <QGroupBox>
-#include <QLabel>
-
-#include "spinslider.h"
 #include "preferencemanager.h"
 #include "editor.h"
 #include "util.h"
@@ -39,6 +26,10 @@ OnionSkinWidget::OnionSkinWidget(QWidget *parent) :
     ui(new Ui::OnionSkin)
 {
     ui->setupUi(this);
+    clearFocusOnFinished(ui->onionPrevFramesNumBox);
+    clearFocusOnFinished(ui->onionNextFramesNumBox);
+    clearFocusOnFinished(ui->onionMinOpacityBox);
+    clearFocusOnFinished(ui->onionMaxOpacityBox);
 }
 
 OnionSkinWidget::~OnionSkinWidget()
@@ -94,6 +85,9 @@ void OnionSkinWidget::updateUI()
 
     QSignalBlocker b3(ui->onionBlueButton);
     ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
+
+    ui->onionRedButton->setEnabled(ui->onionPrevButton->isChecked());
+    ui->onionBlueButton->setEnabled(ui->onionNextButton->isChecked());
 
     QSignalBlocker b4(ui->onionRedButton);
     ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));

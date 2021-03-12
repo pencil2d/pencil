@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ TEST_CASE("FileManager invalid operations")
         FileManager fm;
         Object* pObj = fm.load(strBadXMLPath);
 
-        REQUIRE(pObj == NULL);
+        REQUIRE(pObj == nullptr);
         REQUIRE(fm.error().code() == Status::ERROR_INVALID_XML_FILE);
     }
 
@@ -82,7 +82,7 @@ TEST_CASE("FileManager invalid operations")
         FileManager fm;
         Object* pObj = fm.load(strBadXMLPath);
 
-        REQUIRE(pObj == NULL);
+        REQUIRE(pObj == nullptr);
         REQUIRE(fm.error().code() == Status::ERROR_INVALID_PENCIL_FILE);
     }
 }
@@ -213,10 +213,89 @@ TEST_CASE("FileManager Loading XML Tests")
     }
 }
 
-TEST_CASE("FileManager Load-a-zip Test")
+// Turn a Qt resource file into an actual file on disk
+QString QtResourceToFile(QString rscPath, QString filename, QTemporaryDir& tempDir)
 {
-    SECTION("Load a PCLX zip file")
+    QFile fin(rscPath);
+    if (!fin.open(QFile::ReadOnly))
     {
+        qWarning() << __FUNCTION__ << "Cannot open" << rscPath;
+        return "";
+    }
+    QByteArray content = fin.readAll();
+    fin.close();
+
+    QString filePathOnDisk = tempDir.filePath(filename);
+    QFile fout(filePathOnDisk);
+    if (!fout.open(QFile::WriteOnly))
+    {
+        qWarning() << __FUNCTION__ << "Cannot write to" << filePathOnDisk;
+    }
+    fout.write(content);
+    fout.close();
+    return filePathOnDisk;
+}
+
+TEST_CASE("FileManager Load PCLX")
+{
+    SECTION("Empty PCLX")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(QtResourceToFile(":/empty.pclx", "empty.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Chinese Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(QtResourceToFile(":/cjk-test.pclx", "許功蓋.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Japanese Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(QtResourceToFile(":/cjk-test.pclx", "構わない.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
+    }
+
+    SECTION("Korean Filename")
+    {
+        QTemporaryDir tempDir;
+
+        FileManager fm;
+        Object* o = fm.load(QtResourceToFile(":/cjk-test.pclx", "대박이야.pclx", tempDir));
+        REQUIRE(o != nullptr);
+        if (o)
+        {
+            // file has 2 bitmap layers, 1 vector layers and 1 cam layers
+            REQUIRE(o->getLayerCount() == 4);
+        }
+        delete o;
     }
 }
 
@@ -274,7 +353,7 @@ TEST_CASE("FileManager File-saving")
         o1->createDefaultLayers();
 
         LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
-        for (int i = 100; i < 150; ++i) 
+        for (int i = 100; i < 150; ++i)
         {
             layer->addNewKeyFrameAt(i);
             auto bitmap = layer->getBitmapImageAtFrame(i);
@@ -302,7 +381,7 @@ TEST_CASE("FileManager File-saving")
         fm.save(o2, animationPath);
         delete o2;
 
-        // 4. Check no lost frames 
+        // 4. Check no lost frames
         Object* o3 = fm.load(animationPath);
         layer = dynamic_cast<LayerBitmap*>(o3->getLayer(2));
         for (int i = 2; i < 150; ++i)
@@ -349,7 +428,7 @@ TEST_CASE("Empty Sound Frames")
             REQUIRE(newObj->getLayer(0)->type() == 4);
             REQUIRE(newObj->getLayer(0)->id() == 5);
             REQUIRE(newObj->getLayer(0)->name() == "GoodLayer");
-            REQUIRE(newObj->getLayer(0)->getVisibility() == 1);
+            REQUIRE(newObj->getLayer(0)->getVisibility() == true);
             REQUIRE(newObj->getLayer(0)->getKeyFrameAt(1) == nullptr);
 
             delete newObj;

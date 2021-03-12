@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -139,14 +139,13 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
 
     Layer* layer = mEditor->layers()->currentLayer();
     auto selectMan = mEditor->select();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
 
     if (event->button() == Qt::LeftButton)
     {
+        startStroke(event->inputType());
         if (layer->type() == Layer::BITMAP)
         {
-            mScribbleArea->setAllDirty();
-            startStroke();
             mLastBrushPoint = getCurrentPoint();
         }
         else if (layer->type() == Layer::VECTOR)
@@ -190,8 +189,10 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
 
 void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
 
     if (layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR)
     {
@@ -228,14 +229,15 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
             selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
         }
     }
-    mScribbleArea->update();
-    mScribbleArea->setAllDirty();
+    mEditor->updateCurrentFrame();
 }
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == NULL) { return; }
+    if (layer == nullptr) { return; }
 
     if (event->button() == Qt::LeftButton)
     {
@@ -244,7 +246,8 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
         if (layer->type() == Layer::BITMAP)
         {
             drawStroke();
-            mScribbleArea->setAllDirty();
+            mScribbleArea->paintBitmapBuffer();
+            mScribbleArea->clearBitmapBuffer();
             endStroke();
         }
         else if (layer->type() == Layer::VECTOR)
@@ -272,8 +275,9 @@ void SmudgeTool::drawStroke()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) { return; }
 
-    BitmapImage *targetImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-    if (targetImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
+    BitmapImage *sourceImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+    if (sourceImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
+    BitmapImage targetImage = sourceImage->copy();
     StrokeTool::drawStroke();
     QList<QPointF> p = strokeManager()->interpolateStroke();
 
@@ -304,9 +308,10 @@ void SmudgeTool::drawStroke()
         QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
+            targetImage.paste(mScribbleArea->mBufferImg);
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            mScribbleArea->liquifyBrush(targetImage,
+            mScribbleArea->liquifyBrush(&targetImage,
                                         sourcePoint,
                                         targetPoint,
                                         brushWidth,
@@ -332,9 +337,10 @@ void SmudgeTool::drawStroke()
         QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
+            targetImage.paste(mScribbleArea->mBufferImg);
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            mScribbleArea->blurBrush(targetImage,
+            mScribbleArea->blurBrush(&targetImage,
                                      sourcePoint,
                                      targetPoint,
                                      brushWidth,

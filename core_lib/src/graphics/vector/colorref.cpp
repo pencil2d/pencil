@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ GNU General Public License for more details.
 ColorRef::ColorRef()
 {
     color = Qt::green;
-    name = QObject::tr("Green");
+    name = tr("Green");
 }
 
 ColorRef::ColorRef(QColor theColor, QString theName)
@@ -118,6 +118,6 @@ QString ColorRef::getDefaultColorName(const QColor c)
             }
         }
     }
-    return nameDict[minLoc];
+    return tr(nameDict[minLoc]);
 }
 
