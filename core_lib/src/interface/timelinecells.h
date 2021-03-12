@@ -31,6 +31,7 @@ class QResizeEvent;
 class Editor;
 class PreferenceManager;
 class QMenu;
+class QAction;
 enum class SETTING;
 
 enum class TIMELINE_CELL_TYPE
@@ -97,8 +98,8 @@ private slots:
 
     // setting camera interpolations
     Camera* getCam(int frame);
-    void setHold();
-    void setCameraEasing(CameraEasingType type);
+    void setHold(int frame);
+    void setCameraEasing(CameraEasingType type, int frame);
 
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
@@ -154,6 +155,8 @@ private:
     const static int mLayerDetachThreshold = 5;
 
     QMenu* mEasingMenu = nullptr;
+    QMenu* mHeadline = nullptr;
+    QAction* mHoldAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H
