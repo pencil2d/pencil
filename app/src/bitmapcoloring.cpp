@@ -1,7 +1,7 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2021 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -394,15 +394,22 @@ void BitmapColoring::blendLines()
 // protected functions
 void BitmapColoring::prepareLines()
 {
+    // Method selector can be 0, 1 or 2.  0 = No method selected
+    if (ui->cbMethodSelector->currentIndex() < 1)
+    {
+        return;
+    }
     LayerBitmap* colorLayer = nullptr;
     bool black;
     ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
+    // Method selector 1 = Coloring on same layer
     if (ui->cbMethodSelector->currentIndex() == 1)
-    {           // if coloring is on same layer...
+    {
         colorLayer = mLayerBitmap;
     }
-    else if (ui->cbMethodSelector->currentIndex() == 2)
-    {           // if coloring is on separate layer...
+    // Method selector 2 = Coloring on separate layer
+    else
+    {
         if (!mLayerBitmap->getHasColorLayer())
         {
             mAnimLayer = mEditor->currentLayerIndex(); // necessary since new layer becomes currentlayer
@@ -417,6 +424,7 @@ void BitmapColoring::prepareLines()
             colorLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(mLayerBitmap->name() + "_C"));
         }
     }
+    Q_ASSERT(colorLayer);
 
     if (ui->cbMethodSelector->currentIndex() == 2)
     {
