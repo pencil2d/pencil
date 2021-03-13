@@ -233,6 +233,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="labApplyTo">
+         <property name="text">
+          <string>Apply to:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QRadioButton" name="rbCurrentKeyframe">
          <property name="text">
           <string>Current Keyframe</string>

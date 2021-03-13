@@ -73,7 +73,6 @@ public slots:
     void clearRecentFilesList();
     void openPegAlignDialog();
     void openLayerOpacityDialog();
-//    void closePegAlignDialog();
     void openAddTranspToPaperDialog();
     void currentLayerChanged();
     void selectionChanged();

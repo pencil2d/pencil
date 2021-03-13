@@ -311,7 +311,6 @@ void BitmapColoring::fillSpotAreas()
                 mProgress.setValue(keysThinned++);
                 mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
                 mBitmapImage->setSpotArea(ui->sbSpotAreas->value());
-                qDebug() << "Frame: " << i << ", Spot area: " << ui->sbSpotAreas->value();
                 mBitmapImage->fillSpotAreas(mBitmapImage);
                 mBitmapImage->modification();
                 count++;
@@ -415,7 +414,6 @@ void BitmapColoring::blendLines()
     QString orgName = mLayerBitmap->name();
     if (ui->cbMethodSelector->currentIndex() == 2)
         orgName.chop(2);
-    qDebug() << "artlayer: " << orgName;
     LayerBitmap* artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(orgName));
     if (artLayer == nullptr) { return; }
 
