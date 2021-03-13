@@ -30,7 +30,7 @@ class BitmapImage : public KeyFrame
 public:
     const QRgb transp = qRgba(0, 0, 0, 0);
     const QRgb rosa = qRgba(255,230,230,255);
-    const QRgb blackline = qRgba(1, 0, 0, 255);
+    const QRgb blackline = qRgba(1, 1, 1, 255);
     const QRgb redline = qRgba(254,0,0,255);
     const QRgb greenline = qRgba(0,254,0,255);
     const QRgb blueline = qRgba(0,0,254,255);
@@ -111,12 +111,13 @@ public:
     // coloring methods
     int getThreshold() { return mThreshold; }
     int getSpotArea() { return mSpotArea; }
-    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
-    void traceLine(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
-    void fillSpotAreas(BitmapImage* bitmapimage);
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    void traceLine(BitmapImage* bitmapimage, bool blackEnabled, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    void eraseRedGreenBlueLines(BitmapImage* img);
+    void fillSpotAreas(BitmapImage* img);
     void toThinLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);
     void blendLines(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
-    int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* bitmapimage);
+    int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* img);
 
     /** Determines if the BitmapImage is minimally bounded.
      *
@@ -155,9 +156,12 @@ private:
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
 
-    int mThreshold = 200;
-    const int mLowThreshold = 30; // threshold for images to be given transparency
     int mSpotArea = 6;
+    int mThreshold = 200;
+    const int mLowThreshold = 30;   // threshold for images to be given transparency
+    const int COLORDIFF = 5; // difference in color values to decide color
+    const int GRAYSCALEDIFF = 15; // difference in grasycale values to decide color
+    const int TRANSP_THRESHOLD = 60;// threshold when tracing black for two layer coloring
 
     const int RED_FACTOR = 20;
     qreal mOpacity = 1.0;

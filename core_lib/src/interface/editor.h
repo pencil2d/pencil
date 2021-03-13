@@ -127,10 +127,16 @@ signals:
     void objectLoaded();
 
     void fpsChanged(int fps);
+    void changeThinLinesButton(bool);
+    void currentFrameChanged(int n);
+    void scrubbedTo(int frame);
 
     void needSave();
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
+
+    // Something was updated on the current frame, notify receivers
+    void currentFrameUpdated();
 
 public: //slots
 
@@ -161,6 +167,8 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
+    void notifyCurrentFrameUpdated();
+    void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
 

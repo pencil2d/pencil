@@ -886,6 +886,11 @@ void Editor::selectAll() const
     select()->setSelection(rect, false);
 }
 
+void Editor::notifyCurrentFrameUpdated()
+{
+    emit currentFrameUpdated();
+}
+
 void Editor::deselectAll() const
 {
     Layer* layer = layers()->currentLayer();
@@ -939,6 +944,7 @@ void Editor::scrubTo(int frame)
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
     mObject->updateActiveFrames(frame);
+    Q_EMIT scrubbedTo(frame);
 }
 
 void Editor::scrubForward()

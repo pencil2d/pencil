@@ -283,7 +283,8 @@ void MainWindow2::createMenus()
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
-    connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
+    connect(ui->actionPeg_bar_Alignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
+    connect(ui->actionAdd_Transparency_to_paper, &QAction::triggered, this, &MainWindow2::openAddTranspToPaperDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
@@ -492,6 +493,27 @@ void MainWindow2::openLayerOpacityDialog()
     {
         mLayerOpacityDialog = nullptr;
     });
+}
+
+void MainWindow2::openAddTranspToPaperDialog()
+{
+    if (mAddTranspToPaper == nullptr)
+    {
+        mAddTranspToPaper = new AddTransparencyToPaperDialog();
+        mAddTranspToPaper->setCore(mEditor);
+        mAddTranspToPaper->initUI();
+        mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
+        mAddTranspToPaper->show();
+
+        connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, [=] {
+            mAddTranspToPaper->deleteLater();
+            mAddTranspToPaper = nullptr;
+        });
+
+    } else {
+        mAddTranspToPaper->raise();
+    }
+
 }
 
 void MainWindow2::currentLayerChanged()
