@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "vectorimage.h"
 #include "util.h"
-
+#include <QDebug>
 
 CanvasPainter::CanvasPainter()
 {
@@ -803,6 +803,47 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
         rg2 = camTransform.inverted().map(rg2);
+
+        if (!mOptions.isPlaying)
+        {
+            painter.save();
+            if (!cameraLayer->keyExists(mFrameNumber))
+            {
+                int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
+                int next = cameraLayer->getNextKeyFramePosition(mFrameNumber);
+                QTransform prevView = cameraLayer->getViewAtFrame(previous);
+                QTransform nextView = cameraLayer->getViewAtFrame(next);
+                painter.setCompositionMode(QPainter::RasterOp_NotDestination);
+                painter.drawLine(-prevView.dx() / prevView.m11() , -prevView.dy() / prevView.m11(),
+                                 -nextView.dx() / nextView.m11() , -nextView.dy() / nextView.m11());
+                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                painter.setPen(Qt::red);
+                painter.setBrush(Qt::red);
+                QTransform dots;
+                for (int i = previous; i <= next; i++)
+                {
+                    dots = cameraLayer->getViewAtFrame(i);
+                    painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
+                                        -dots.dy() / dots.m11() - DOT_WIDTH/2,
+                                        DOT_WIDTH, DOT_WIDTH);
+                }
+                painter.setBrush(Qt::white);
+                dots = cameraLayer->getViewAtFrame(mFrameNumber);
+                painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
+                                    -dots.dy() / dots.m11() - DOT_WIDTH/2,
+                                    DOT_WIDTH, DOT_WIDTH);
+            }
+            else
+            {
+                QTransform dots = cameraLayer->getViewAtFrame(mFrameNumber);
+                painter.setPen(Qt::red);
+                painter.setBrush(Qt::red);
+                painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
+                                    -dots.dy() / dots.m11() - DOT_WIDTH/2,
+                                    DOT_WIDTH, DOT_WIDTH);
+            }
+            painter.restore();
+        }
     }
 
     painter.setOpacity(1.0);

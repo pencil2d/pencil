@@ -153,6 +153,7 @@ private:
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
 
     const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
+    const int DOT_WIDTH = 4;
 };
 
 #endif // CANVASRENDERER_H
