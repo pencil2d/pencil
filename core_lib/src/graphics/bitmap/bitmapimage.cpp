@@ -699,7 +699,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
             {
                 img->scanLine(x, y, transp);
             }   // IF Red line
-            else if(qRed(rgba) -40 > qGreen(rgba) && qRed(rgba) > qBlue(rgba))
+            else if(qRed(rgba) - RED_FACTOR > qGreen(rgba) && qRed(rgba) > qBlue(rgba))
             {
                 if (red)
                 {
@@ -710,7 +710,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
                     img->scanLine(x, y, transp);
                 }
             }   // IF Blue line
-            else if(qBlue(rgba) -40 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
+            else if(qBlue(rgba) - RED_FACTOR > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
             {
                 if (blue)
                 {
@@ -721,7 +721,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *bitmapimage, bool black
                     img->scanLine(x, y, transp);
                 }
             }   // IF Green line
-            else if(qGreen(rgba) -40 > qRed(rgba) &&  qGreen(rgba) > qBlue(rgba))
+            else if(qGreen(rgba) - RED_FACTOR > qRed(rgba) &&  qGreen(rgba) > qBlue(rgba))
             {
                 if (green)
                 {
@@ -758,21 +758,21 @@ void BitmapImage::traceLine(BitmapImage* bitmapimage, bool black, bool red, bool
             rgba = img->constScanLine(x, y);
             if (qAlpha(img->constScanLine(x, y)) > 0)
             {
-                if(qRed(rgba) - 50 > qGreen(rgba))
+                if(qRed(rgba) - RED_FACTOR > qGreen(rgba))
                 {
                     if(red)
                         img->scanLine(x, y, redline);
                     else
                         img->scanLine(x, y, transp);
                 }
-                else if(qBlue(rgba) - 50 > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
+                else if(qBlue(rgba) - RED_FACTOR > qRed(rgba) && qBlue(rgba) > qGreen(rgba))
                 {
                     if(blue)
                         img->scanLine(x, y, blueline);
                     else
                         img->scanLine(x, y, transp);
                 }
-                else if(qGreen(rgba) - 50 > qRed(rgba) && qGreen(rgba) > qBlue(rgba))
+                else if(qGreen(rgba) - RED_FACTOR > qRed(rgba) && qGreen(rgba) > qBlue(rgba))
                 {
                     if(green)
                         img->scanLine(x, y, greenline);
@@ -1128,55 +1128,7 @@ int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, Bitma
     img->modification();
     return pixels;
 }
-/*
-Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
-{
-    Status::StatusInt retValues;
-    retValues.value = -1;
-    retValues.errorcode = Status::FAIL;
-    int left = static_cast<int>(rect.left());
-    int right = static_cast<int>(rect.right());
-    int top = static_cast<int>(rect.top());
-    int bottom = static_cast<int>(rect.bottom());
-    for (int x = left; x <= right; x++)
-    {
-        for (int y = top; y <= bottom; y++)
-        {
-            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
-            {
-                retValues.value = x;
-                retValues.errorcode = Status::OK;
-                return retValues;
-            }
-        }
-    }
-    return retValues;
-}
 
-Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
-{
-    Status::StatusInt retValues;
-    retValues.value = -1;
-    retValues.errorcode = Status::FAIL;
-    int left = static_cast<int>(rect.left());
-    int right = static_cast<int>(rect.right());
-    int top = static_cast<int>(rect.top());
-    int bottom = static_cast<int>(rect.bottom());
-    for (int y = top; y <= bottom; y++)
-    {
-        for (int x = left; x <= right; x++)
-        {
-            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
-            {
-                retValues.value = y;
-                retValues.errorcode = Status::OK;
-                return retValues;
-            }
-        }
-    }
-    return retValues;
-}
-*/
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (mImage && !mImage->isNull())

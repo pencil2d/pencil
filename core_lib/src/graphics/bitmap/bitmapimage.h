@@ -159,6 +159,7 @@ private:
     const int mLowThreshold = 30; // threshold for images to be given transparency
     int mSpotArea = 6;
 
+    const int RED_FACTOR = 20;
     qreal mOpacity = 1.0;
 };
 
