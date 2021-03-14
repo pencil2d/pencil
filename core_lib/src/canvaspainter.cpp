@@ -804,7 +804,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
         rg2 = camTransform.inverted().map(rg2);
 
-        if (cameraLayer->getShowPath()) // && !mOptions.isPlaying)
+        if (cameraLayer->getShowPath() && !mOptions.isPlaying)
         {
             painter.save();
             painter.setWorldMatrixEnabled(!isCameraMode);
