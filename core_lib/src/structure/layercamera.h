@@ -45,6 +45,8 @@ public:
     void setViewRect(QRect newViewRect);
 
     void showContextMenu(QPoint point);
+    void setShowPath(bool showPath) { mShowPath = showPath; }
+    bool getShowPath() { return mShowPath; }
 
 signals:
     void resolutionChanged();
@@ -60,6 +62,7 @@ private:
     int mFieldW = 800;
     int mFieldH = 600;
     QRect viewRect;
+    bool mShowPath = false;
 };
 
 #endif

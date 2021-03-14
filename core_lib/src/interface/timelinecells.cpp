@@ -1093,7 +1093,8 @@ void TimeLineCells::editLayerProperties(LayerCamera *layer) const
 {
     QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
-    CameraPropertiesDialog dialog(layer->name(), layer->getViewRect().width(), layer->getViewRect().height());
+    CameraPropertiesDialog dialog(layer->name(), layer->getViewRect().width(),
+                                  layer->getViewRect().height(), layer->getShowPath());
     if (dialog.exec() != QDialog::Accepted)
     {
         return;
@@ -1108,6 +1109,7 @@ void TimeLineCells::editLayerProperties(LayerCamera *layer) const
     settings.setValue(SETTING_FIELD_W, dialog.getWidth());
     settings.setValue(SETTING_FIELD_H, dialog.getHeight());
     layer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
+    layer->setShowPath(dialog.getShowPath());
 }
 
 void TimeLineCells::editLayerName(Layer* layer) const

@@ -804,9 +804,10 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
         rg2 = camTransform.inverted().map(rg2);
 
-        if (!mOptions.isPlaying)
+        if (cameraLayer->getShowPath()) // && !mOptions.isPlaying)
         {
             painter.save();
+            painter.setWorldMatrixEnabled(!isCameraMode);
             if (!cameraLayer->keyExists(mFrameNumber))
             {
                 int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
@@ -837,7 +838,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
             {
                 QTransform dots = cameraLayer->getViewAtFrame(mFrameNumber);
                 painter.setPen(Qt::red);
-                painter.setBrush(Qt::red);
+                painter.setBrush(Qt::white);
                 painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
                                     -dots.dy() / dots.m11() - DOT_WIDTH/2,
                                     DOT_WIDTH, DOT_WIDTH);

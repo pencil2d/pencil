@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>246</width>
-    <height>120</height>
+    <height>132</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Camera Properties</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <layout class="QHBoxLayout" name="nameLayout">
      <item>
       <widget class="QLabel" name="nameLabel">
@@ -28,17 +28,7 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
+   <item>
     <layout class="QHBoxLayout" name="sizeLayout">
      <item>
       <widget class="QLabel" name="sizeLabel">
@@ -68,6 +58,23 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxShowPath">
+     <property name="text">
+      <string>Show camera path</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
