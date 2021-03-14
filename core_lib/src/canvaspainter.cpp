@@ -782,155 +782,18 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     if (cameraLayer == nullptr) { return; }
 
     painter.save();
+    painter.setWorldMatrixEnabled(true);
 
     QRectF viewRect = painter.viewport();
-    QRect boundingRect;
-
     QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
-    QRect curRect = cameraLayer->getViewRect();
-    QPoint topLeft = (curRect.topLeft() / camTransform.m11());
-    QPoint bottomRight = (curRect.bottomRight() / camTransform.m11());
-    mCameraRect = QRect(topLeft, bottomRight);
+    QTransform center = QTransform::fromTranslate(-camTransform.dx(), -camTransform.dy());
+    QRect camRect = cameraLayer->getViewRect();
+    mCameraRect = camTransform.mapRect(QRect(camRect.topLeft() / camTransform.m11(), camRect.bottomRight() / camTransform.m11()));
+    mCameraRect = center.mapRect(mCameraRect);
 
-    QRegion rg2(mCameraRect);
-    painter.setWorldMatrixEnabled(true);
-    QTransform viewInverse = mViewTransform.inverted();
-    boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
-
-//    QTransform camTransform = cameraLayer->getRawViewAtFrame(mFrameNumber);
-//    QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
-
-//    qDebug() << "BEF Cam rect: " << mCameraRect;
-
-//    mCameraRect = camTransform.mapRect(mCameraRect);
-//    qDebug() << "AFT Cam rect: " << mCameraRect;
-    rg2 = camTransform.inverted().map(rg2);
-
-    painter.setOpacity(1.0);
-
-    if (isCameraMode)
-    {
-        painter.drawRect(mCameraRect);
-        int radius = 8;
-        int width = radius / 2;
-
-        painter.setPen(QColor(0, 0, 0, 80));
-        painter.setBrush(Qt::NoBrush);
-        painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-        const QRectF topLeftCorner = QRectF(mCameraRect.left() - width,
-                                            mCameraRect.top() - width,
-                                            radius, radius);
-        painter.drawRect(topLeftCorner);
-
-        const QRectF topRightCorner = QRectF(mCameraRect.right() - width,
-                                             mCameraRect.top() - width,
-                                             radius, radius);
-        painter.drawRect(topRightCorner);
-
-        const QRectF bottomLeftCorner = QRectF(mCameraRect.left() - width,
-                                               mCameraRect.bottom() - width,
-                                               radius, radius);
-        painter.drawRect(bottomLeftCorner);
-
-        const QRectF bottomRightCorner = QRectF(mCameraRect.right() - width,
-                                                mCameraRect.bottom() - width,
-                                                radius, radius);
-        painter.drawRect(bottomRightCorner);
-
-        const QRectF rightSideCircle= QRectF(mCameraRect.right() - width,
-                                             mCameraRect.y() + mCameraRect.height() / 2 - width,
-                                             radius, radius);
-        painter.drawEllipse(rightSideCircle);
-    }
-
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(0, 0, 0, 80));
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-
-    QRegion rg1(boundingRect);
-    QRegion rg3 = rg1.subtracted(rg2);
-
-    painter.setClipRegion(rg3);
-    painter.drawRect(boundingRect);
-
-    painter.restore();
-
-/*
-    LayerCamera* cameraLayer = nullptr;
-    bool isCameraMode = false;
-
-    // Find the first visible camera layers
-    for (int i = 0; i < mObject->getLayerCount(); ++i)
-    {
-        Layer* layer = mObject->getLayer(i);
-        if (layer->type() == Layer::CAMERA && layer->visible())
-        {
-            cameraLayer = static_cast<LayerCamera*>(layer);
-            isCameraMode = (i == mCurrentLayerIndex);
-            break;
-        }
-    }
-
-    if (cameraLayer == nullptr) { return; }
-
-    QRectF viewRect = painter.viewport();
-    QRect boundingRect;
-
-    QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
-    QRect curRect = cameraLayer->getViewRect();
-    QPoint topLeft = (curRect.topLeft() / camTransform.m11());
-    QPoint bottomRight = (curRect.bottomRight() / camTransform.m11());
-    mCameraRect = QRect(topLeft, bottomRight);
-
-    QRegion rg2(mCameraRect);
-    painter.setWorldMatrixEnabled(true);
-    QTransform viewInverse = mViewTransform.inverted();
-    boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
-    mCameraRect = camTransform.inverted().mapRect(mCameraRect);
-    rg2 = camTransform.inverted().map(rg2);
-
-    painter.setOpacity(1.0);
-
-    if (isCameraMode)
-    {
-        painter.drawRect(mCameraRect);
-        int radius = 8;
-        int width = radius / 2;
-
-        painter.setPen(QColor(0,0,0,80));
-        painter.setBrush(Qt::NoBrush);
-        painter.setCompositionMode(QPainter::RasterOp_NotDestination);
-
-        const QRectF topLeftCorner = QRectF(mCameraRect.left() - width,
-                                            mCameraRect.top() - width,
-                                            radius, radius);
-        painter.drawRect(topLeftCorner);
-
-        const QRectF topRightCorner = QRectF(mCameraRect.right() - width,
-                                            mCameraRect.top() - width,
-                                            radius, radius);
-        painter.drawRect(topRightCorner);
-
-        const QRectF bottomLeftCorner = QRectF(mCameraRect.left() - width,
-                                            mCameraRect.bottom() - width,
-                                            radius, radius);
-        painter.drawRect(bottomLeftCorner);
-
-        const QRectF bottomRightCorner = QRectF(mCameraRect.right() - width,
-                                            mCameraRect.bottom() - width,
-                                            radius, radius);
-        painter.drawRect(bottomRightCorner);
-
-        const QRectF rightSideCircle = QRectF(mCameraRect.right() - width,
-                                            mCameraRect.y() + mCameraRect.height() / 2 - width,
-                                            radius, radius);
-        painter.drawEllipse(rightSideCircle);
-    }
-
+    // Draw camera path
     if (cameraLayer->getShowPath() && !mOptions.isPlaying)
     {
-        painter.save();
-        painter.setWorldMatrixEnabled(!isCameraMode);
         if (!cameraLayer->keyExists(mFrameNumber))
         {
             int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
@@ -967,19 +830,66 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                 -dots.dy() / dots.m11() - DOT_WIDTH/2,
                                 DOT_WIDTH, DOT_WIDTH);
         }
-        painter.restore();
     }
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
+    painter.setOpacity(1.0);
+    painter.setWorldMatrixEnabled(true);
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(0, 0, 0, 80));
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+    QRegion rg2(mCameraRect);
+    QTransform viewInverse = mViewTransform.inverted();
+    QRect boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
+
+    rg2 = camTransform.inverted().map(rg2);
 
     QRegion rg1(boundingRect);
     QRegion rg3 = rg1.subtracted(rg2);
 
     painter.setClipRegion(rg3);
     painter.drawRect(boundingRect);
-*/
+
+    // Draw rectangle
+    if (isCameraMode)
+    {
+        painter.setWorldMatrixEnabled(true);
+        painter.setPen(QColor(0, 0, 0, 80));
+        painter.setBrush(Qt::NoBrush);
+        painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
+        mCameraRect = camTransform.inverted().mapRect(mCameraRect);
+        painter.drawRect(mCameraRect);
+        int radius = 8;
+        int width = radius / 2;
+
+        const QRectF topLeftCorner = QRectF(mCameraRect.left() - width,
+                                            mCameraRect.top() - width,
+                                            radius, radius);
+        painter.drawRect(topLeftCorner);
+
+        const QRectF topRightCorner = QRectF(mCameraRect.right() - width,
+                                             mCameraRect.top() - width,
+                                             radius, radius);
+        painter.drawRect(topRightCorner);
+
+        const QRectF bottomLeftCorner = QRectF(mCameraRect.left() - width,
+                                               mCameraRect.bottom() - width,
+                                               radius, radius);
+        painter.drawRect(bottomLeftCorner);
+
+        const QRectF bottomRightCorner = QRectF(mCameraRect.right() - width,
+                                                mCameraRect.bottom() - width,
+                                                radius, radius);
+        painter.drawRect(bottomRightCorner);
+
+        const QRectF rightSideCircle= QRectF(mCameraRect.right() - width,
+                                             mCameraRect.y() + mCameraRect.height() / 2 - width,
+                                             radius, radius);
+        painter.drawEllipse(rightSideCircle);
+    }
+
+    painter.restore();
+
     /*
     painter.setClipping(false);
 
