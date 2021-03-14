@@ -206,7 +206,7 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
     {
         mEditor->setIsDoingRepeatColoring(true);
         int count = mEditor->getAutoSaveCounter();
-        QProgressDialog* mProgress = new QProgressDialog(tr("Thinning lines in bitmaps..."), tr("Abort"), 0, 100, this);
+        QProgressDialog* mProgress = new QProgressDialog(tr("Tracing scanned drawings..."), tr("Abort"), 0, 100, this);
         mProgress->setWindowModality(Qt::WindowModal);
         mProgress->show();
         mProgress->setMaximum(layer->keyFrameCount());

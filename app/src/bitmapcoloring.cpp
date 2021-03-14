@@ -28,7 +28,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     BaseDockWidget(parent)
 {
     QWidget* innerWidget = new QWidget;
-    setWindowTitle(tr("Anime Coloring"));
+    setWindowTitle(tr("Advanced Coloring"));
 
     ui = new Ui::BitmapColoringWidget;
     ui->setupUi(innerWidget);
