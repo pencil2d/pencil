@@ -791,9 +791,12 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     mCameraRect = camTransform.mapRect(QRect(camRect.topLeft() / camTransform.m11(), camRect.bottomRight() / camTransform.m11()));
     mCameraRect = center.mapRect(mCameraRect);
 
+    QRect rg2Rect = mCameraRect;
+
     // Draw camera path
     if (cameraLayer->getShowPath() && !mOptions.isPlaying)
     {
+        QTransform dots;
         if (!cameraLayer->keyExists(mFrameNumber))
         {
             int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
@@ -806,7 +809,6 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
             painter.setPen(Qt::red);
             painter.setBrush(Qt::red);
-            QTransform dots;
             for (int i = previous; i <= next; i++)
             {
                 dots = cameraLayer->getViewAtFrame(i);
@@ -814,41 +816,14 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                     -dots.dy() / dots.m11() - DOT_WIDTH/2,
                                     DOT_WIDTH, DOT_WIDTH);
             }
-            painter.setBrush(Qt::white);
-            dots = cameraLayer->getViewAtFrame(mFrameNumber);
-            painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
-                                -dots.dy() / dots.m11() - DOT_WIDTH/2,
-                                DOT_WIDTH, DOT_WIDTH);
         }
-        else
-        {
-            QTransform dots = cameraLayer->getViewAtFrame(mFrameNumber);
-            painter.setPen(Qt::red);
-            painter.setBrush(Qt::white);
-            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-            painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
-                                -dots.dy() / dots.m11() - DOT_WIDTH/2,
-                                DOT_WIDTH, DOT_WIDTH);
-        }
+        painter.setPen(Qt::red);
+        painter.setBrush(Qt::white);
+        dots = cameraLayer->getViewAtFrame(mFrameNumber);
+        painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
+                            -dots.dy() / dots.m11() - DOT_WIDTH/2,
+                            DOT_WIDTH, DOT_WIDTH);
     }
-
-    painter.setOpacity(1.0);
-    painter.setWorldMatrixEnabled(true);
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(0, 0, 0, 80));
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-
-    QRegion rg2(mCameraRect);
-    QTransform viewInverse = mViewTransform.inverted();
-    QRect boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
-
-    rg2 = camTransform.inverted().map(rg2);
-
-    QRegion rg1(boundingRect);
-    QRegion rg3 = rg1.subtracted(rg2);
-
-    painter.setClipRegion(rg3);
-    painter.drawRect(boundingRect);
 
     // Draw rectangle
     if (isCameraMode)
@@ -856,7 +831,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.setWorldMatrixEnabled(true);
         painter.setPen(QColor(0, 0, 0, 80));
         painter.setBrush(Qt::NoBrush);
-        painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
+        painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
         painter.drawRect(mCameraRect);
         int radius = 8;
@@ -887,6 +862,26 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                              radius, radius);
         painter.drawEllipse(rightSideCircle);
     }
+
+    painter.setOpacity(1.0);
+    painter.setWorldMatrixEnabled(true);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(QColor(0, 0, 0, 80));
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+    QRegion rg2(rg2Rect);
+    QTransform viewInverse = mViewTransform.inverted();
+    QRect boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
+
+    rg2 = camTransform.inverted().map(rg2);
+
+    QRegion rg1(boundingRect);
+    QRegion rg3 = rg1.subtracted(rg2);
+
+    painter.setClipRegion(rg3);
+    painter.drawRect(boundingRect);
+
+
 
     painter.restore();
 

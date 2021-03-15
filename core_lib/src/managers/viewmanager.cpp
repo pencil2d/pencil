@@ -135,24 +135,10 @@ qreal ViewManager::getViewScaleInverse() const
 
 void ViewManager::updateViewTransforms()
 {
-    if (mCameraLayer)
-    {
-        int frame = editor()->currentFrame();
-        mCurrentCamera = mCameraLayer->getCameraAtFrame(frame);
-        if (mCurrentCamera)
-        {
-            mCurrentCamera->updateViewTransform();
-        }
-        mView = mCameraLayer->getViewAtFrame(frame);
-    }
-    else
-    {
-        mCurrentCamera = mDefaultEditorCamera;
-        mCurrentCamera->updateViewTransform();
+    mCurrentCamera = mDefaultEditorCamera;
+    mCurrentCamera->updateViewTransform();
 
-        mView = mCurrentCamera->getView();
-    }
-
+    mView = mCurrentCamera->getView();
     mViewInverse = mView.inverted();
 
     float flipX = mIsFlipHorizontal ? -1.f : 1.f;
@@ -328,6 +314,7 @@ void ViewManager::scaleWithOffset(qreal scaleValue, QPointF offset)
 
         emit viewChanged();
     }
+
 }
 
 void ViewManager::flipHorizontal(bool b)
