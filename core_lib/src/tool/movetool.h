@@ -57,6 +57,7 @@ private:
     void createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void storeClosestVectorCurve(Layer* layer);
+    void transformCamera();
 
     void setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
     void setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);

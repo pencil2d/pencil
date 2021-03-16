@@ -796,6 +796,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     // Draw camera path
     if (cameraLayer->getShowPath() && !mOptions.isPlaying)
     {
+        painter.save();
         QTransform dots;
         if (!cameraLayer->keyExists(mFrameNumber))
         {
@@ -823,34 +824,25 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
                             -dots.dy() / dots.m11() - DOT_WIDTH/2,
                             DOT_WIDTH, DOT_WIDTH);
+        painter.restore();
     }
 
     // Draw rectangle
     if (isCameraMode)
     {
+        painter.save();
         painter.setWorldMatrixEnabled(true);
         painter.setPen(QColor(0, 0, 0, 80));
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
+        painter.drawLine(mCameraRect.center().x() - 5, mCameraRect.center().y(),
+                         mCameraRect.center().x() + 5, mCameraRect.center().y());
+        painter.drawLine(mCameraRect.center().x(), mCameraRect.center().y() -5,
+                         mCameraRect.center().x(), mCameraRect.center().y() + 5);
         painter.drawRect(mCameraRect);
         int radius = 8;
         int width = radius / 2;
-
-        const QRectF topLeftCorner = QRectF(mCameraRect.left() - width,
-                                            mCameraRect.top() - width,
-                                            radius, radius);
-        painter.drawRect(topLeftCorner);
-
-        const QRectF topRightCorner = QRectF(mCameraRect.right() - width,
-                                             mCameraRect.top() - width,
-                                             radius, radius);
-        painter.drawRect(topRightCorner);
-
-        const QRectF bottomLeftCorner = QRectF(mCameraRect.left() - width,
-                                               mCameraRect.bottom() - width,
-                                               radius, radius);
-        painter.drawRect(bottomLeftCorner);
 
         const QRectF bottomRightCorner = QRectF(mCameraRect.right() - width,
                                                 mCameraRect.bottom() - width,
@@ -861,6 +853,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                              mCameraRect.y() + mCameraRect.height() / 2 - width,
                                              radius, radius);
         painter.drawEllipse(rightSideCircle);
+        painter.restore();
     }
 
     painter.setOpacity(1.0);

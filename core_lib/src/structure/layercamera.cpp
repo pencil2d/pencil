@@ -103,26 +103,14 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
                       interpolation(camera1->view.m32(), camera2->view.m32()));
 }
 
-MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance, qreal zoom)
+MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance)
 {
     QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
-    if (QLineF(point, curRect.topLeft()).length() < tolerance * zoom)
-    {
-        return MoveMode::TOPLEFT;
-    }
-    else if (QLineF(point, curRect.topRight()).length() < tolerance * zoom)
-    {
-        return MoveMode::TOPRIGHT;
-    }
-    else if (QLineF(point, curRect.bottomLeft()).length() < tolerance * zoom)
-    {
-        return MoveMode::BOTTOMLEFT;
-    }
-    else if (QLineF(point, curRect.bottomRight()).length() < tolerance * zoom)
+    if (QLineF(point, curRect.bottomRight()).length() < tolerance)
     {
         return MoveMode::BOTTOMRIGHT;
     }
-    else if (QLineF(point, QPointF(curRect.right(), curRect.y() + curRect.height() / 2)).length() < tolerance * zoom)
+    else if (QLineF(point, QPointF(curRect.right(), curRect.y() + curRect.height() / 2)).length() < tolerance)
     {
         return MoveMode::ROTATION;
     }
@@ -131,6 +119,34 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
         return MoveMode::CENTER;
     }
     return MoveMode::NONE;
+}
+
+void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNumber)
+{
+    QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
+    QLineF curRectLine(curRect.center(), QPointF(curRect.right(), curRect.center().y()));
+    QLineF newLine(curRect.center(), QPointF(curRect.right() - (point.x() - mOffsetPoint.x()), curRect.center().y()));
+    Camera* curCam = getCameraAtFrame(frameNumber);
+    switch (mode)
+    {
+    case MoveMode::CENTER:
+        curCam->translate(curCam->translation() - (point - mOffsetPoint));
+        break;
+    case MoveMode::BOTTOMRIGHT:
+        if (curRectLine.length() < 2)
+        {
+            curCam->scale(1.f);
+        }
+        else
+        {
+            curCam->scale(curCam->scaling() * (newLine.length() / curRectLine.length()));
+        }
+        break;
+    default:
+        break;
+    }
+    setOffsetPoint(point);
+    curCam->updateViewTransform();
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)

@@ -63,12 +63,14 @@ QCursor MoveTool::cursor()
         mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
-    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::CAMERA &&
+        layer->keyExists(mEditor->currentFrame()))
     {
-//        qDebug() << "pos: " << getCurrentPoint();
-        LayerCamera* cam = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-        mode = cam->getMoveModeForCamera(mEditor->currentFrame(), getCurrentPoint(),
-                                         mEditor->select()->selectionTolerance(), mEditor->view()->scaling());
+        LayerCamera* cam = static_cast<LayerCamera*>(layer);
+        mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
+                                         getCurrentPoint(),
+                                         mEditor->select()->selectionTolerance() * mEditor->view()->scaling());
         mCamMoveMode = mode;
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
@@ -92,6 +94,14 @@ void MoveTool::updateSettings(const SETTING setting)
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
 {
+    if (mCurrentLayer->type() == Layer::CAMERA &&
+             mCurrentLayer->keyExists(mEditor->currentFrame()))
+    {
+        LayerCamera* camera = static_cast<LayerCamera*>(mCurrentLayer);
+        camera->setOffsetPoint(getCurrentPoint());
+        return;
+    }
+
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
 
@@ -117,7 +127,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
                  mCurrentLayer->keyExists(mEditor->currentFrame()))
         {
-            qDebug() << "pos2: " << event->pos();
+            transformCamera();
         }
     }
     else
@@ -136,6 +146,15 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
+    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
+             mCurrentLayer->keyExists(mEditor->currentFrame()))
+    {
+        transformCamera();
+        mEditor->view()->updateViewTransforms();
+        mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
+        return;
+    }
+
     auto selectMan = mEditor->select();
     if (!selectMan->somethingSelected())
         return;
@@ -303,6 +322,13 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
     if (pVecImg == nullptr) { return; }
     selectMan->setCurves(pVecImg->getCurvesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
+}
+
+void MoveTool::transformCamera()
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
+    layer->transformCameraView(mCamMoveMode,getCurrentPoint(), mEditor->currentFrame());
+    mScribbleArea->invalidateLayerPixmapCache();
 }
 
 void MoveTool::setAnchorToLastPoint()
