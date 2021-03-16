@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "cameraeasingtype.h"
 #include <QEasingCurve>
-
+#include <QDebug>
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -101,6 +101,36 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
                       interpolation(camera1->view.m22(), camera2->view.m22()),
                       interpolation(camera1->view.m31(), camera2->view.m31()),
                       interpolation(camera1->view.m32(), camera2->view.m32()));
+}
+
+MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance, qreal zoom)
+{
+    QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
+    if (QLineF(point, curRect.topLeft()).length() < tolerance * zoom)
+    {
+        return MoveMode::TOPLEFT;
+    }
+    else if (QLineF(point, curRect.topRight()).length() < tolerance * zoom)
+    {
+        return MoveMode::TOPRIGHT;
+    }
+    else if (QLineF(point, curRect.bottomLeft()).length() < tolerance * zoom)
+    {
+        return MoveMode::BOTTOMLEFT;
+    }
+    else if (QLineF(point, curRect.bottomRight()).length() < tolerance * zoom)
+    {
+        return MoveMode::BOTTOMRIGHT;
+    }
+    else if (QLineF(point, QPointF(curRect.right(), curRect.y() + curRect.height() / 2)).length() < tolerance * zoom)
+    {
+        return MoveMode::ROTATION;
+    }
+    else if (curRect.contains(point.toPoint()))
+    {
+        return MoveMode::CENTER;
+    }
+    return MoveMode::NONE;
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)

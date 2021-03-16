@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QRect>
 #include "layer.h"
+#include "movemode.h"
 #include "cameraeasingtype.h"
 
 class Camera;
@@ -39,6 +40,7 @@ public:
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
     QTransform getViewAtFrame(int frameNumber) const;
+    MoveMode getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance, qreal zoom);
 
     QRect getViewRect();
     QSize getViewSize() const;

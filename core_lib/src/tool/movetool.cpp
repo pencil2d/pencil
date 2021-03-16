@@ -29,9 +29,10 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
+#include "layercamera.h"
 #include "mathutils.h"
 #include "vectorimage.h"
-
+#include <QDebug>
 
 MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
@@ -56,7 +57,21 @@ void MoveTool::loadSettings()
 
 QCursor MoveTool::cursor()
 {
-    MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
+    MoveMode mode = MoveMode::NONE;
+    if (mEditor->select()->somethingSelected())
+    {
+        mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
+        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
+    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
+    {
+//        qDebug() << "pos: " << getCurrentPoint();
+        LayerCamera* cam = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+        mode = cam->getMoveModeForCamera(mEditor->currentFrame(), getCurrentPoint(),
+                                         mEditor->select()->selectionTolerance(), mEditor->view()->scaling());
+        mCamMoveMode = mode;
+        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
 
@@ -95,7 +110,15 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
-        transformSelection(event->modifiers(), mCurrentLayer);
+        if (mEditor->select()->somethingSelected())
+        {
+            transformSelection(event->modifiers(), mCurrentLayer);
+        }
+        else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
+                 mCurrentLayer->keyExists(mEditor->currentFrame()))
+        {
+            qDebug() << "pos2: " << event->pos();
+        }
     }
     else
     {
@@ -379,6 +402,8 @@ Layer* MoveTool::currentPaintableLayer()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr)
         return nullptr;
+    if (layer->type() == Layer::CAMERA)
+        return layer;   // ONLY for movetool!
     if (!layer->isPaintable())
         return nullptr;
     return layer;
