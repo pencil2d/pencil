@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "camera.h"
 #include "pencildef.h"
 #include "cameraeasingtype.h"
+#include "mathutils.h"
 #include <QEasingCurve>
 #include <QDebug>
 
@@ -110,10 +111,6 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
     {
         return MoveMode::BOTTOMRIGHT;
     }
-    else if (QLineF(point, QPointF(curRect.right(), curRect.y() + curRect.height() / 2)).length() < tolerance)
-    {
-        return MoveMode::ROTATION;
-    }
     else if (curRect.contains(point.toPoint()))
     {
         return MoveMode::CENTER;
@@ -135,7 +132,7 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     case MoveMode::BOTTOMRIGHT:
         if (curRectLine.length() < 2)
         {
-            curCam->scale(1.f);
+            curCam->reset();
         }
         else
         {

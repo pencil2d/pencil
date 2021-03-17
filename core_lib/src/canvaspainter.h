@@ -120,6 +120,7 @@ private:
     void paintOverlayGolden(QPainter& painter);
     void paintOverlaySafeAreas(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
+    void updateCamRect(QRect rect) { mCameraRect = rect; }
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
 
