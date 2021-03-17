@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "camera.h"
 #include "pencildef.h"
 #include "cameraeasingtype.h"
+#include "mathutils.h"
 #include <QEasingCurve>
 #include <QDebug>
 
@@ -126,6 +127,7 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
     QLineF curRectLine(curRect.center(), QPointF(curRect.right(), curRect.center().y()));
     QLineF newLine(curRect.center(), QPointF(curRect.right() - (point.x() - mOffsetPoint.x()), curRect.center().y()));
+    qreal degree;
     Camera* curCam = getCameraAtFrame(frameNumber);
     switch (mode)
     {
@@ -135,12 +137,19 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     case MoveMode::BOTTOMRIGHT:
         if (curRectLine.length() < 2)
         {
-            curCam->scale(1.f);
+            curCam->reset();
         }
         else
         {
             curCam->scale(curCam->scaling() * (newLine.length() / curRectLine.length()));
         }
+        break;
+    case MoveMode::ROTATION:
+        degree = qRadiansToDegrees(MathUtils::getDifferenceAngle(curRect.center(), point));
+        qDebug() << "Curcenter: " << curRect.center() << " Point: " << point << " Degree:" << degree;
+        curCam->translate(curRect.topLeft() - curRect.center());
+        curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
+        curCam->translate(curRect.bottomRight() - curRect.center());
         break;
     default:
         break;

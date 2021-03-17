@@ -786,11 +786,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
 
     QRectF viewRect = painter.viewport();
     QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
-    QTransform center = QTransform::fromTranslate(-camTransform.dx(), -camTransform.dy());
-    QRect camRect = cameraLayer->getViewRect();
-    mCameraRect = camTransform.mapRect(QRect(camRect.topLeft() / camTransform.m11(), camRect.bottomRight() / camTransform.m11()));
-    mCameraRect = center.mapRect(mCameraRect);
-
+    mCameraRect = cameraLayer->getViewRect();
     QRect rg2Rect = mCameraRect;
 
     // Draw camera path
@@ -836,6 +832,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
+        qDebug() << "camrecr: " << mCameraRect;
         painter.drawLine(mCameraRect.center().x() - 5, mCameraRect.center().y(),
                          mCameraRect.center().x() + 5, mCameraRect.center().y());
         painter.drawLine(mCameraRect.center().x(), mCameraRect.center().y() -5,
