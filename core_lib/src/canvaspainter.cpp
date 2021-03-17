@@ -832,12 +832,18 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         mCameraRect = camTransform.inverted().mapRect(mCameraRect);
-        qDebug() << "camrecr: " << mCameraRect;
+        qDebug() << "camrect: " << mCameraRect;
+
         painter.drawLine(mCameraRect.center().x() - 5, mCameraRect.center().y(),
                          mCameraRect.center().x() + 5, mCameraRect.center().y());
         painter.drawLine(mCameraRect.center().x(), mCameraRect.center().y() -5,
                          mCameraRect.center().x(), mCameraRect.center().y() + 5);
-        painter.drawRect(mCameraRect);
+        painter.drawLine(mCameraRect.topLeft(), mCameraRect.topRight());
+        painter.drawLine(mCameraRect.topRight(), mCameraRect.bottomRight());
+        painter.drawLine(mCameraRect.bottomRight(), mCameraRect.bottomLeft());
+        painter.drawLine(mCameraRect.bottomLeft(), mCameraRect.topLeft());
+
+        // painter.drawRect(mCameraRect);
         int radius = 8;
         int width = radius / 2;
 

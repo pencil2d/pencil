@@ -145,11 +145,12 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
         }
         break;
     case MoveMode::ROTATION:
+//        degree = qRadiansToDegrees(MathUtils::getDifferenceAngle(curRect.center(), point));
         degree = qRadiansToDegrees(MathUtils::getDifferenceAngle(curRect.center(), point));
         qDebug() << "Curcenter: " << curRect.center() << " Point: " << point << " Degree:" << degree;
-        curCam->translate(curRect.topLeft() - curRect.center());
+        curCam->translate(curRect.center());
         curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
-        curCam->translate(curRect.bottomRight() - curRect.center());
+        curCam->translate(-curRect.center());
         break;
     default:
         break;
