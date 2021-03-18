@@ -577,6 +577,8 @@ void CanvasPainter::paintGrid(QPainter& painter)
 void CanvasPainter::paintOverlayCenter(QPainter& painter)
 {
     QRect rect = getCameraRect();
+    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
+        rect = mCamTransform.inverted().mapRect(rect);
 
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -604,6 +606,9 @@ void CanvasPainter::paintOverlayCenter(QPainter& painter)
 void CanvasPainter::paintOverlayThirds(QPainter& painter)
 {
     QRect rect = getCameraRect();
+    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
+        rect = mCamTransform.inverted().mapRect(rect);
+
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
 
@@ -631,6 +636,9 @@ void CanvasPainter::paintOverlayThirds(QPainter& painter)
 void CanvasPainter::paintOverlayGolden(QPainter& painter)
 {
     QRect rect = getCameraRect();
+    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
+        rect = mCamTransform.inverted().mapRect(rect);
+
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
 
@@ -658,6 +666,8 @@ void CanvasPainter::paintOverlayGolden(QPainter& painter)
 void CanvasPainter::paintOverlaySafeAreas(QPainter& painter)
 {
     QRect rect = getCameraRect();
+    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
+        rect = mCamTransform.inverted().mapRect(rect);
 
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -719,6 +729,7 @@ void CanvasPainter::renderGrid(QPainter& painter)
 
 void CanvasPainter::renderOverlays(QPainter& painter)
 {
+
     if (mOptions.bCenter)
     {
         painter.save();
@@ -773,7 +784,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     painter.setWorldMatrixEnabled(true);
 
     QRectF viewRect = painter.viewport();
-    QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
+    mCamTransform = cameraLayer->getViewAtFrame(mFrameNumber);
     mCameraRect = cameraLayer->getViewRect();
     QRect rg2Rect = mCameraRect;
 
@@ -819,7 +830,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.setPen(QColor(0, 0, 0, 80));
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
-        mCameraRect = camTransform.inverted().mapRect(mCameraRect);
+        mCameraRect = mCamTransform.inverted().mapRect(mCameraRect);
         painter.drawLine(mCameraRect.center().x() - 5, mCameraRect.center().y(),
                          mCameraRect.center().x() + 5, mCameraRect.center().y());
         painter.drawLine(mCameraRect.center().x(), mCameraRect.center().y() -5,
@@ -846,7 +857,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     QTransform viewInverse = mViewTransform.inverted();
     QRect boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
 
-    rg2 = camTransform.inverted().map(rg2);
+    rg2 = mCamTransform.inverted().map(rg2);
 
     QRegion rg1(boundingRect);
     QRegion rg3 = rg1.subtracted(rg2);

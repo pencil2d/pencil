@@ -136,6 +136,7 @@ private:
     QTransform mViewInverse;
 
     QRect mCameraRect;
+    QTransform mCamTransform = QTransform();
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
