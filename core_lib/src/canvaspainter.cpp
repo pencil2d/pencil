@@ -788,38 +788,40 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     QRectF viewRect = painter.viewport();
     mCamTransform = cameraLayer->getViewAtFrame(mFrameNumber);
     mCameraRect = cameraLayer->getViewRect();
-//    QRect rg2Rect = mCameraRect;
 
     // Draw camera path
     if (cameraLayer->getShowPath() && !mOptions.isPlaying)
     {
         painter.save();
-        QTransform dots;
+        QPolygon dots;
         if (!cameraLayer->keyExists(mFrameNumber))
         {
             int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
             int next = cameraLayer->getNextKeyFramePosition(mFrameNumber);
-            QTransform prevView = cameraLayer->getViewAtFrame(previous);
-            QTransform nextView = cameraLayer->getViewAtFrame(next);
+            QPolygon prevView = cameraLayer->getViewAtFrame(previous).inverted().mapToPolygon(mCameraRect);
+            QPolygon nextView = cameraLayer->getViewAtFrame(next).inverted().mapToPolygon(mCameraRect);
             painter.setCompositionMode(QPainter::RasterOp_NotDestination);
-            painter.drawLine(-prevView.dx() / prevView.m11() , -prevView.dy() / prevView.m11(),
-                             -nextView.dx() / nextView.m11() , -nextView.dy() / nextView.m11());
+            painter.drawLine(QPoint(QLineF(prevView.at(0), prevView.at(2)).pointAt(0.5).toPoint()),
+                             QPoint(QLineF(nextView.at(0), nextView.at(2)).pointAt(0.5).toPoint()));
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
             painter.setPen(Qt::red);
             painter.setBrush(Qt::red);
             for (int i = previous; i <= next; i++)
             {
-                dots = cameraLayer->getViewAtFrame(i);
-                painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
-                                    -dots.dy() / dots.m11() - DOT_WIDTH/2,
+                QTransform transform = cameraLayer->getViewAtFrame(i);
+                dots = transform.inverted().mapToPolygon(mCameraRect);
+                QPoint center = QLineF(dots.at(0), dots.at(2)).pointAt(0.5).toPoint();
+                painter.drawEllipse(center.x() - DOT_WIDTH/2,
+                                    center.y() - DOT_WIDTH/2,
                                     DOT_WIDTH, DOT_WIDTH);
             }
         }
         painter.setPen(Qt::red);
         painter.setBrush(Qt::white);
-        dots = cameraLayer->getViewAtFrame(mFrameNumber);
-        painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
-                            -dots.dy() / dots.m11() - DOT_WIDTH/2,
+        dots = cameraLayer->getViewAtFrame(mFrameNumber).inverted().mapToPolygon(mCameraRect);
+        QPoint center = QLineF(dots.at(0), dots.at(2)).pointAt(0.5).toPoint();
+        painter.drawEllipse(center.x() - DOT_WIDTH/2,
+                            center.y() - DOT_WIDTH/2,
                             DOT_WIDTH, DOT_WIDTH);
         painter.restore();
     }
@@ -876,9 +878,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     painter.drawRect(boundingRect);
 
     painter.restore();
-    updateCamRect(mCameraRect);
 
-    mCameraRect = mCamTransform.inverted().mapRect(mCameraRect);
     /*
     painter.setClipping(false);
 
