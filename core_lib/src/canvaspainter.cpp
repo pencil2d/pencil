@@ -625,10 +625,12 @@ void CanvasPainter::paintOverlayThirds(QPainter& painter)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
+    painter.setWorldTransform(mViewTransform.rotate(-mCamRotation));
     painter.drawLine(rect.x(), rect.y() + (rect.height() / 3), rect.right(), rect.y() + (rect.height() / 3));
     painter.drawLine(rect.x(), rect.y() + (rect.height() * 2 / 3), rect.x() + rect.width(), rect.y() + (rect.height() * 2 / 3));
     painter.drawLine(rect.x() + rect.width() / 3, rect.y(), rect.x() + rect.width() / 3, rect.y() + rect.height());
     painter.drawLine(rect.x() + rect.width() * 2 / 3, rect.y(), rect.x() + rect.width() * 2 / 3, rect.y() + rect.height());
+    painter.setWorldTransform(mViewTransform.rotate(mCamRotation));
 
     painter.setRenderHints(previous_renderhints);
     painter.restore();
@@ -786,6 +788,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
 
     QRectF viewRect = painter.viewport();
     QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
+//    QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
     mCameraRect = cameraLayer->getViewRect();
     QRect rg2Rect = mCameraRect;
 
@@ -823,7 +826,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.restore();
     }
 
-    // Draw rectangle
+    // Draw polygon
     if (isCameraMode)
     {
         painter.save();
@@ -831,29 +834,26 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.setPen(QColor(0, 0, 0, 80));
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
-        mCameraRect = camTransform.inverted().mapRect(mCameraRect);
-        qDebug() << "camrect: " << mCameraRect;
+        QPolygon camPolygon = camTransform.inverted().mapToPolygon(mCameraRect);
+        QPoint center = QLineF(camPolygon.at(0), camPolygon.at(2)).pointAt(0.5).toPoint();
 
-        painter.drawLine(mCameraRect.center().x() - 5, mCameraRect.center().y(),
-                         mCameraRect.center().x() + 5, mCameraRect.center().y());
-        painter.drawLine(mCameraRect.center().x(), mCameraRect.center().y() -5,
-                         mCameraRect.center().x(), mCameraRect.center().y() + 5);
-        painter.drawLine(mCameraRect.topLeft(), mCameraRect.topRight());
-        painter.drawLine(mCameraRect.topRight(), mCameraRect.bottomRight());
-        painter.drawLine(mCameraRect.bottomRight(), mCameraRect.bottomLeft());
-        painter.drawLine(mCameraRect.bottomLeft(), mCameraRect.topLeft());
+        painter.drawLine(center.x() - 5, center.y(),
+                         center.x() + 5, center.y());
+        painter.drawLine(center.x(), center.y() -5,
+                         center.x(), center.y() + 5);
 
-        // painter.drawRect(mCameraRect);
+        painter.drawPolygon(camPolygon);
         int radius = 8;
         int width = radius / 2;
 
-        const QRectF bottomRightCorner = QRectF(mCameraRect.right() - width,
-                                                mCameraRect.bottom() - width,
+        const QRectF bottomRightCorner = QRectF(camPolygon.at(2).x() - width,
+                                                camPolygon.at(2).y() - width,
                                                 radius, radius);
         painter.drawRect(bottomRightCorner);
 
-        const QRectF rightSideCircle= QRectF(mCameraRect.right() - width,
-                                             mCameraRect.y() + mCameraRect.height() / 2 - width,
+        QPoint rotatePoint = QPoint(camPolygon.at(1) + (camPolygon.at(2) - camPolygon.at(1)) / 2);
+        const QRectF rightSideCircle= QRectF(rotatePoint.x() - width,
+                                             rotatePoint.y() - width,
                                              radius, radius);
         painter.drawEllipse(rightSideCircle);
         painter.restore();
@@ -877,10 +877,9 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     painter.setClipRegion(rg3);
     painter.drawRect(boundingRect);
 
-
-
     painter.restore();
 
+    mCameraRect = camTransform.inverted().mapRect(mCameraRect);
     /*
     painter.setClipping(false);
 

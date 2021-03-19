@@ -106,12 +106,14 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 
 MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance)
 {
+    QTransform curCam = getViewAtFrame(frameNumber);
+    QPolygon camPoly = curCam.inverted().mapToPolygon(viewRect);
     QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
-    if (QLineF(point, curRect.bottomRight()).length() < tolerance)
+    if (QLineF(point, camPoly.at(2)).length() < tolerance)
     {
         return MoveMode::BOTTOMRIGHT;
     }
-    else if (QLineF(point, QPointF(curRect.right(), curRect.y() + curRect.height() / 2)).length() < tolerance)
+    else if (QLineF(point, QPoint(camPoly.at(1) + (camPoly.at(2) - camPoly.at(1)) / 2)).length() < tolerance)
     {
         return MoveMode::ROTATION;
     }
@@ -124,6 +126,8 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
 
 void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNumber)
 {
+    QPolygon curPoly = getViewAtFrame(frameNumber).inverted().mapToPolygon(viewRect);
+    QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5f).toPoint();
     QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
     QLineF curRectLine(curRect.center(), QPointF(curRect.right(), curRect.center().y()));
     QLineF newLine(curRect.center(), QPointF(curRect.right() - (point.x() - mOffsetPoint.x()), curRect.center().y()));
@@ -134,23 +138,28 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     case MoveMode::CENTER:
         curCam->translate(curCam->translation() - (point - mOffsetPoint));
         break;
+    case MoveMode::TOPLEFT:
+    case MoveMode::TOPRIGHT:
+    case MoveMode::BOTTOMLEFT:
     case MoveMode::BOTTOMRIGHT:
-        if (curRectLine.length() < 2)
+        if (QLineF(curCenter, point).length() < 2)
         {
             curCam->reset();
         }
         else
         {
             curCam->scale(curCam->scaling() * (newLine.length() / curRectLine.length()));
+//            curCam->scale(curCam->scaling() * (QLineF(curCenter, QPointF(curPoly.at(0).x() - (point.x() - mOffsetPoint.x()), curCenter.y()))).length() / QLineF(curCenter, curPoly.at(0)).length());
         }
         break;
     case MoveMode::ROTATION:
-//        degree = qRadiansToDegrees(MathUtils::getDifferenceAngle(curRect.center(), point));
-        degree = qRadiansToDegrees(MathUtils::getDifferenceAngle(curRect.center(), point));
-        qDebug() << "Curcenter: " << curRect.center() << " Point: " << point << " Degree:" << degree;
-        curCam->translate(curRect.center());
+        degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(curCenter, point));
+//        curCam->translate(curRect.center());
+        curCam->translate(curCenter);
         curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
-        curCam->translate(-curRect.center());
+        curCam->translate(-curCenter);
+
+//        curCam->translate(-curRect.center());
         break;
     default:
         break;

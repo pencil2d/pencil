@@ -135,6 +135,7 @@ private:
     QTransform mViewInverse;
 
     QRect mCameraRect;
+    qreal mCamRotation = 0.f;
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
