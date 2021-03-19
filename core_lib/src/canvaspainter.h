@@ -120,6 +120,7 @@ private:
     void paintOverlayGolden(QPainter& painter);
     void paintOverlaySafeAreas(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
+    void updateCamRect(QRect rect) { mCameraRect = rect; }
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
 
@@ -136,6 +137,7 @@ private:
 
     QRect mCameraRect;
     qreal mCamRotation = 0.f;
+    QTransform mCamTransform = QTransform();
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;

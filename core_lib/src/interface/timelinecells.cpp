@@ -143,6 +143,34 @@ void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
     }
 }
 
+void TimeLineCells::setCameraReset(int type, int frameNumber)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+    Q_ASSERT(layer->type() == Layer::CAMERA);
+    Camera* camera = static_cast<Camera*>(layer->getKeyFrameAt(frameNumber));
+
+    switch (type)
+    {
+    case 1:
+        camera->reset();
+        break;
+    case 2:
+        camera->translate(camera->translation() - camera->translation());
+        break;
+    case 3:
+        camera->scale(camera->scaling() / camera->scaling());
+        break;
+    case 4:
+        camera->rotate(camera->rotation() - camera->rotation());
+        break;
+    default:
+        break;
+    }
+    camera->updateViewTransform();
+    camera->modification();
+    mEditor->scrubTo(mEditor->currentFrame());
+}
+
 int TimeLineCells::getFrameNumber(int x) const
 {
     int frameNumber = mFrameOffset + 1 + (x - mOffsetX) / mFrameSize;
@@ -247,20 +275,20 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     if (mEasingMenu == nullptr)
     {
         mEasingMenu = new QMenu();
-        mHeadline = new QMenu();
+        mInterpolationMenu = new QMenu();
+        mCameraFieldMenu = new QMenu();
         mHoldAction = new QAction();
 
-        mHeadline = mEasingMenu->addMenu(tr("Interpolation frame %1 to %2").arg( QString::number(prevFrame), QString::number(frameNumber)));
-
-        QMenu* subQuad  = mHeadline->addMenu(tr("Slow"));
-        QMenu* subCubic = mHeadline->addMenu(tr("Normal"));
-        QMenu* subQuart = mHeadline->addMenu(tr("Fast"));
-        QMenu* subQuint = mHeadline->addMenu(tr("Faster"));
-        mHeadline->addSeparator();
-        QMenu* subSine  = mHeadline->addMenu(tr("Sine-based"));
-        QMenu* subExpo  = mHeadline->addMenu(tr("Exponential"));
-        QMenu* subCirc  = mHeadline->addMenu(tr("Circle-based"));
-        QMenu* subOther = mHeadline->addMenu(tr("Other"));
+        mInterpolationMenu = mEasingMenu->addMenu(tr("Interpolation frame %1 to %2").arg( QString::number(prevFrame), QString::number(frameNumber)));
+        QMenu* subQuad  = mInterpolationMenu->addMenu(tr("Slow"));
+        QMenu* subCubic = mInterpolationMenu->addMenu(tr("Normal"));
+        QMenu* subQuart = mInterpolationMenu->addMenu(tr("Fast"));
+        QMenu* subQuint = mInterpolationMenu->addMenu(tr("Faster"));
+        mInterpolationMenu->addSeparator();
+        QMenu* subSine  = mInterpolationMenu->addMenu(tr("Sine-based"));
+        QMenu* subExpo  = mInterpolationMenu->addMenu(tr("Exponential"));
+        QMenu* subCirc  = mInterpolationMenu->addMenu(tr("Circle-based"));
+        QMenu* subOther = mInterpolationMenu->addMenu(tr("Other"));
 
         subQuad->addAction(tr("Slow ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUAD, frameNumber); });
         subQuad->addAction(tr("Slow Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUAD, frameNumber); });
@@ -293,27 +321,44 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mHoldAction = subOther->addAction(tr("Hold from frame %1").arg(QString::number(prevFrame)), [=] { this->setHold(frameNumber); });
         subOther->addAction(mHoldAction);
         subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
+
+        mCameraFieldMenu = mEasingMenu->addMenu(tr("Camera field"));
+        mCameraFieldMenu->addAction(tr("Reset entire camera field"), [=] { this->setCameraReset(1, frameNumber); });
+        mCameraFieldMenu->addSeparator();
+        mCameraFieldMenu->addAction(tr("Reset camera position to center (0,0)"), [=] { this->setCameraReset(2, frameNumber); });
+        mCameraFieldMenu->addAction(tr("Reset camera scaling to 1:1"), [=] { this->setCameraReset(3, frameNumber); });
+        mCameraFieldMenu->addAction(tr("Reset camera rotation to 0"), [=] { this->setCameraReset(4, frameNumber); });
     }
 
     if (!curLayer->getListOfSelectedFrames().empty())
     {
         if (curLayer->getListOfSelectedFrames().size() > 1)
         {
-            mHeadline->setTitle(tr("Interpolate to selected"));
-            mHoldAction->setText(tr("Hold to selected"));
+            QList<int> frameList = curLayer->getListOfSelectedFrames();
+            QString s = "";
+            for (int pos:frameList)
+            {
+                s = (s + (" %1,")).arg(QString::number(pos));
+            }
+            s.chop(1);
+            mInterpolationMenu->setTitle(tr("Interpolate to frames %1").arg(s));
+            mHoldAction->setText(tr("Hold to frames %1").arg(s));
+            mCameraFieldMenu->setTitle(tr("Camera fields to frames %1").arg(s));
         }
         else
         {
             frameNumber = curLayer->getListOfSelectedFrames().first();
             prevFrame = curLayer->getPreviousKeyFramePosition(frameNumber);
-            mHeadline->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(prevFrame), QString::number(frameNumber)));
+            mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(prevFrame), QString::number(frameNumber)));
             mHoldAction->setText(tr("Hold from frame %1").arg(QString::number(prevFrame)));
+            mCameraFieldMenu->setTitle(tr("Camera field, frame %1").arg(QString::number(frameNumber)));
         }
     }
     else if(curLayer->keyExists(frameNumber))
     {
-        mHeadline->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(prevFrame), QString::number(frameNumber)));
+        mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(prevFrame), QString::number(frameNumber)));
         mHoldAction->setText(tr("Hold from frame %1").arg(QString::number(prevFrame)));
+        mCameraFieldMenu->setTitle(tr("Camera field, frame %1").arg(QString::number(frameNumber)));
     }
     else
     {
