@@ -34,7 +34,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "toolmanager.h"
-
+#include <QDebug>
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
     mTimeLine = parent;
@@ -155,13 +155,13 @@ void TimeLineCells::setCameraReset(int type, int frameNumber)
         camera->reset();
         break;
     case 2:
-        camera->translate(camera->translation() - camera->translation());
+        camera->translate(QPoint(0,0));
         break;
     case 3:
-        camera->scale(camera->scaling() / camera->scaling());
+        camera->scale(1.0);
         break;
     case 4:
-        camera->rotate(camera->rotation() - camera->rotation());
+        camera->rotate(0.0);
         break;
     default:
         break;
@@ -366,6 +366,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     }
 
     mEasingMenu->exec(pos);
+    updateContent();
 }
 
 void TimeLineCells::drawContent()

@@ -109,6 +109,10 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
     QTransform curCam = getViewAtFrame(frameNumber);
     QPolygon camPoly = curCam.inverted().mapToPolygon(viewRect);
     QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
+    if (QLineF(point, camPoly.at(1)).length() < tolerance)
+    {
+        return MoveMode::TOPRIGHT;
+    }
     if (QLineF(point, camPoly.at(2)).length() < tolerance)
     {
         return MoveMode::BOTTOMRIGHT;
@@ -128,9 +132,8 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
 {
     QPolygon curPoly = getViewAtFrame(frameNumber).inverted().mapToPolygon(viewRect);
     QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5f).toPoint();
-    QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
-    QLineF curRectLine(curRect.center(), QPointF(curRect.right(), curRect.center().y()));
-    QLineF newLine(curRect.center(), QPointF(curRect.right() - (point.x() - mOffsetPoint.x()), curRect.center().y()));
+    QLineF lineOld;
+    QLineF lineNew(curCenter, point);
     qreal degree;
     Camera* curCam = getCameraAtFrame(frameNumber);
     switch (mode)
@@ -138,15 +141,13 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     case MoveMode::CENTER:
         curCam->translate(curCam->translation() - (point - mOffsetPoint));
         break;
+    case MoveMode::TOPRIGHT:
+        lineOld = QLineF(curCenter, curPoly.at(1));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
     case MoveMode::BOTTOMRIGHT:
-        if (QLineF(curCenter, point).length() < 2)
-        {
-            curCam->reset();
-        }
-        else
-        {
-            curCam->scale(curCam->scaling() * (newLine.length() / curRectLine.length()));
-        }
+        lineOld = QLineF(curCenter, curPoly.at(2));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
     case MoveMode::ROTATION:
         degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(curCenter, point));
@@ -159,6 +160,7 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     }
     setOffsetPoint(point);
     curCam->updateViewTransform();
+    curCam->modification();
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)
