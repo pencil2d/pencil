@@ -100,6 +100,7 @@ private slots:
     Camera* getCam(int frame);
     void setHold(int frame);
     void setCameraEasing(CameraEasingType type, int frame);
+    void setCameraReset(int type, int frameNumber);
 
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
@@ -155,7 +156,8 @@ private:
     const static int mLayerDetachThreshold = 5;
 
     QMenu* mEasingMenu = nullptr;
-    QMenu* mHeadline = nullptr;
+    QMenu* mInterpolationMenu = nullptr;
+    QMenu* mCameraFieldMenu = nullptr;
     QAction* mHoldAction = nullptr;
 };
 
