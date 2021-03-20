@@ -88,7 +88,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double frame2 = camera2->pos();
 
     // interpolation
-    qreal percent = getInterpolationPercent(camera2->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto interpolation = [=](double f1, double f2) -> double
     {
@@ -138,7 +138,7 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     double frame2 = camera2->pos();
 
     // interpolation
-    qreal percent = getInterpolationPercent(camera2->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto lerp = [](double f1, double f2, double percent) -> double
     {
