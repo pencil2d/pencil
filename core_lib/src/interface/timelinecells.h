@@ -155,7 +155,7 @@ private:
     const static int mLayerDetachThreshold = 5;
 
     QMenu* mEasingMenu = nullptr;
-    QMenu* mHeadline = nullptr;
+    QMenu* mInterpolationMenu = nullptr;
     QAction* mHoldAction = nullptr;
 };
 
