@@ -100,7 +100,7 @@ private slots:
     Camera* getCam(int frame);
     void setHold(int frame);
     void setCameraEasing(CameraEasingType type, int frame);
-    void setCameraReset(int type, int frameNumber);
+    void setCameraReset(CameraFieldOption type, int frameNumber);
 
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;

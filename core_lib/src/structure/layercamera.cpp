@@ -108,7 +108,6 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
 {
     QTransform curCam = getViewAtFrame(frameNumber);
     QPolygon camPoly = curCam.inverted().mapToPolygon(viewRect);
-    QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
     if (QLineF(point, camPoly.at(1)).length() < tolerance)
     {
         return MoveMode::TOPRIGHT;
@@ -121,7 +120,7 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
     {
         return MoveMode::ROTATION;
     }
-    else if (curRect.contains(point.toPoint()))
+    else if (camPoly.containsPoint(point.toPoint(), Qt::FillRule::OddEvenFill))
     {
         return MoveMode::CENTER;
     }

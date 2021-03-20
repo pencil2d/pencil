@@ -62,4 +62,15 @@ enum class CameraEasingType {
     OUTINBOUNCE
 };
 
+enum class CameraFieldOption {
+    RESET_FIELD,
+    RESET_TRANSITION,
+    RESET_SCALING,
+    RESET_ROTATION,
+    RESET_HORIZONTAL,
+    RESET_VERTICAL,
+    HOLD_FRAME,
+    SHOW_CAMERA_PATH
+};
+
 #endif // CAMERAEASINGTYPE_H
