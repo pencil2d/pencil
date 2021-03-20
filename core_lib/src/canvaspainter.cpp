@@ -576,10 +576,6 @@ void CanvasPainter::paintGrid(QPainter& painter)
 
 void CanvasPainter::paintOverlayCenter(QPainter& painter)
 {
-    QRect rect = getCameraRect();
-    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
-        rect = mCamTransform.inverted().mapRect(rect);
-
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
 
@@ -594,21 +590,21 @@ void CanvasPainter::paintOverlayCenter(QPainter& painter)
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    QPoint offsetX(OVERLAY_SAFE_CENTER_CROSS_SIZE, 0), offsetY(0, OVERLAY_SAFE_CENTER_CROSS_SIZE);
-    painter.drawLine(rect.center(), rect.center() - offsetX);
-    painter.drawLine(rect.center(), rect.center() + offsetX);
-    painter.drawLine(rect.center(), rect.center() - offsetY);
-    painter.drawLine(rect.center(), rect.center() + offsetY);
+    QPolygon poly = mCamTransform.inverted().mapToPolygon(mCameraRect);
+    QPoint centerTop = QLineF(poly.at(0), poly.at(1)).pointAt(0.5).toPoint();
+    QPoint centerBottom = QLineF(poly.at(2), poly.at(3)).pointAt(0.5).toPoint();
+    QPoint centerLeft = QLineF(poly.at(0), poly.at(3)).pointAt(0.5).toPoint();
+    QPoint centerRight = QLineF(poly.at(1), poly.at(2)).pointAt(0.5).toPoint();
+    painter.drawLine(QLineF(centerTop, centerBottom).pointAt(0.4).toPoint(),
+                     QLineF(centerTop, centerBottom).pointAt(0.6).toPoint());
+    painter.drawLine(QLineF(centerLeft, centerRight).pointAt(0.4).toPoint(),
+                     QLineF(centerLeft, centerRight).pointAt(0.6).toPoint());
 
     painter.restore();
 }
 
 void CanvasPainter::paintOverlayThirds(QPainter& painter)
 {
-    QRect rect = getCameraRect();
-    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
-        rect = mCamTransform.inverted().mapRect(rect);
-
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
 
@@ -624,12 +620,15 @@ void CanvasPainter::paintOverlayThirds(QPainter& painter)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    painter.setWorldTransform(mViewTransform.rotate(-mCamRotation));
-    painter.drawLine(rect.x(), rect.y() + (rect.height() / 3), rect.right(), rect.y() + (rect.height() / 3));
-    painter.drawLine(rect.x(), rect.y() + (rect.height() * 2 / 3), rect.x() + rect.width(), rect.y() + (rect.height() * 2 / 3));
-    painter.drawLine(rect.x() + rect.width() / 3, rect.y(), rect.x() + rect.width() / 3, rect.y() + rect.height());
-    painter.drawLine(rect.x() + rect.width() * 2 / 3, rect.y(), rect.x() + rect.width() * 2 / 3, rect.y() + rect.height());
-    painter.setWorldTransform(mViewTransform.rotate(mCamRotation));
+    QPolygon poly = mCamTransform.inverted().mapToPolygon(mCameraRect);
+    QLineF topLine(poly.at(0), poly.at(1));
+    QLineF bottomLine(poly.at(3), poly.at(2));
+    QLineF leftLine(poly.at(0), poly.at(3));
+    QLineF rightLine(poly.at(1), poly.at(2));
+    painter.drawLine(topLine.pointAt(0.333).toPoint(), bottomLine.pointAt(0.333));
+    painter.drawLine(topLine.pointAt(0.667).toPoint(), bottomLine.pointAt(0.667));
+    painter.drawLine(leftLine.pointAt(0.333).toPoint(), rightLine.pointAt(0.333));
+    painter.drawLine(leftLine.pointAt(0.667).toPoint(), rightLine.pointAt(0.667));
 
     painter.setRenderHints(previous_renderhints);
     painter.restore();
@@ -656,10 +655,15 @@ void CanvasPainter::paintOverlayGolden(QPainter& painter)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.38)), rect.right(), static_cast<int>(rect.y() + (rect.height() * 0.38)));
-    painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.62)), rect.x() + rect.width(), static_cast<int>(rect.y() + (rect.height() * 0.62)));
-    painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.38), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.38), rect.bottom());
-    painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.62), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.62), rect.bottom());
+    QPolygon poly = mCamTransform.inverted().mapToPolygon(mCameraRect);
+    QLineF topLine(poly.at(0), poly.at(1));
+    QLineF bottomLine(poly.at(3), poly.at(2));
+    QLineF leftLine(poly.at(0), poly.at(3));
+    QLineF rightLine(poly.at(1), poly.at(2));
+    painter.drawLine(topLine.pointAt(0.382).toPoint(), bottomLine.pointAt(0.382));
+    painter.drawLine(topLine.pointAt(0.618).toPoint(), bottomLine.pointAt(0.618));
+    painter.drawLine(leftLine.pointAt(0.382).toPoint(), rightLine.pointAt(0.382));
+    painter.drawLine(leftLine.pointAt(0.618).toPoint(), rightLine.pointAt(0.618));
 
     painter.setRenderHints(previous_renderhints);
     painter.restore();
@@ -685,32 +689,42 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter& painter)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::TextAntialiasing, true);
 
+    QPolygon poly = mCamTransform.inverted().mapToPolygon(mCameraRect);
+    QLineF topLeftCrossLine(poly.at(0), poly.at(2));
+    QLineF bottomLeftCrossLine(poly.at(3), poly.at(1));
+
     if (mOptions.bActionSafe)
     {
         int action = mOptions.nActionSafe;
-        QRect safeAction = QRect(rect.x() + rect.width() * action / 200,
-                                 rect.y() + rect.height() * action / 200,
-                                 rect.width() * (100 - action) / 100,
-                                 rect.height() * (100 - action) / 100);
-        painter.drawRect(safeAction);
+        painter.drawLine(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((100 - (action / 2.0)) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((action / 2.0) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((100 - (action / 2.0)) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((100 - (action / 2.0)) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((100 - (action / 2.0)) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((action / 2.0) / 100).toPoint());
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(safeAction.x(), safeAction.y() - 1, tr("Safe Action area %1 %").arg(action));
+            painter.drawText(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(), tr("Safe Action area %1 %").arg(action));
         }
     }
     if (mOptions.bTitleSafe)
     {
         int title = mOptions.nTitleSafe;
-        QRect safeTitle = QRect(rect.x() + rect.width() * title / 200,
-                                rect.y() + rect.height() * title / 200,
-                                rect.width() * (100 - title) / 100,
-                                rect.height() * (100 - title) / 100);
-        painter.drawRect(safeTitle);
+        painter.drawLine(topLeftCrossLine.pointAt((title / 2.0) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((100 - (title / 2.0)) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((title / 2.0) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((title / 2.0) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((100 - (title / 2.0)) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((100 - (title / 2.0)) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((100 - (title / 2.0)) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((title / 2.0) / 100).toPoint());
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(safeTitle.x(), safeTitle.y() - 1, tr("Safe Title area %1 %").arg(title));
+            painter.drawText(bottomLeftCrossLine.pointAt((title / 2.0) / 100), tr("Safe Title area %1 %").arg(title));
         }
     }
 
