@@ -158,7 +158,6 @@ private:
     QMenu* mEasingMenu = nullptr;
     QMenu* mInterpolationMenu = nullptr;
     QMenu* mCameraFieldMenu = nullptr;
-    QAction* mHoldAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H

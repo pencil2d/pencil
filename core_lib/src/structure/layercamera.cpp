@@ -89,7 +89,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double frame2 = camera2->pos();
 
     // interpolation
-    qreal percent = getInterpolationPercent(camera2->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto interpolation = [=](double f1, double f2) -> double
     {
@@ -197,7 +197,7 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     double frame2 = camera2->pos();
 
     // interpolation
-    qreal percent = getInterpolationPercent(camera2->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto lerp = [](double f1, double f2, double percent) -> double
     {
@@ -248,8 +248,12 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     case CameraEasingType::OUTCIRC : easing.setType(QEasingCurve::OutCirc); break;
     case CameraEasingType::INOUTCIRC : easing.setType(QEasingCurve::InOutCirc); break;
     case CameraEasingType::OUTINCIRC: easing.setType(QEasingCurve::OutInCirc); break;
+    case CameraEasingType::OUTELASTIC: easing.setType(QEasingCurve::OutElastic); break;
+    case CameraEasingType::OUTBACK: easing.setType(QEasingCurve::OutBack); break;
+    case CameraEasingType::OUTBOUNCE: easing.setType(QEasingCurve::OutBounce); break;
     default: easing.setType(QEasingCurve::Linear); break;
     }
+    qDebug() << "type: " << easing.type();
     return easing.valueForProgress(percent);
 }
 

@@ -98,7 +98,7 @@ void TimeLineCells::setHold(int frame)
     QList<int> frames = curLayer->getListOfSelectedFrames();
     if (!frames.empty())
     {
-        for (int pos:frames)
+        for (int pos:qAsConst(frames))
         {
             Camera* cam = getCam(pos);
             Camera* next = getCam(curLayer->getNextKeyFramePosition(pos));
@@ -130,7 +130,7 @@ void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
     QList<int> frames = mEditor->layers()->currentLayer()->getListOfSelectedFrames();
     if (!frames.empty())
     {
-        for (int pos:frames)
+        for (int pos:qAsConst(frames))
         {
             Camera* cam = getCam(pos);
             cam->setEasingType(type);
@@ -147,8 +147,8 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
-    Camera* camera = static_cast<Camera*>(layer->getCameraAtFrame(frameNumber));
-    Camera* copyCamera = static_cast<Camera*>(layer->getCameraAtFrame(frameNumber));
+    Camera* camera = getCam(frameNumber);
+    Camera* copyCamera = (getCam(frameNumber));
     int nextFrame = layer->getNextKeyFramePosition(frameNumber);
 
     switch (type)
@@ -166,18 +166,16 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
         camera->rotate(0.0);
         break;
     case CameraFieldOption::RESET_HORIZONTAL:
-        camera = layer->getCameraAtFrame(nextFrame);
+        camera = getCam(nextFrame);
         camera->translate(camera->translation().x(), copyCamera->translation().y());
         break;
     case CameraFieldOption::RESET_VERTICAL:
-        camera = layer->getCameraAtFrame(nextFrame);
+        camera = getCam(nextFrame);
         camera->translate(copyCamera->translation().x(), camera->translation().y());
         break;
     case CameraFieldOption::HOLD_FRAME:
-        camera = layer->getCameraAtFrame(nextFrame);
+        camera = getCam(nextFrame);
         camera->translate(copyCamera->translation());
-        camera->scale(copyCamera->scaling());
-        camera->rotate(copyCamera->rotation());
         break;
     default:
         break;
@@ -292,7 +290,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     {
         mEasingMenu = new QMenu();
         mInterpolationMenu = new QMenu();
-        mHoldAction = new QAction();
 
         mInterpolationMenu = mEasingMenu->addMenu(tr("Interpolation frame %1 to %2").arg( QString::number(frameNumber), QString::number(nextFrame)));
 
@@ -310,7 +307,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         subSine->addAction(tr("Slow  Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTSINE, frameNumber); });
         subSine->addAction(tr("Slow  Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTSINE, frameNumber); });
         subSine->addAction(tr("Slow  Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINSINE, frameNumber); });
-        subQuad->addAction(tr("Normal ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUAD, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUAD, frameNumber); });
         subQuad->addAction(tr("Normal Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUAD, frameNumber); });
         subQuad->addAction(tr("Normal Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUAD, frameNumber); });
         subQuad->addAction(tr("Normal Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUAD, frameNumber); });
@@ -334,9 +331,11 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         subCirc->addAction(tr("Circle-based  Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTCIRC, frameNumber); });
         subCirc->addAction(tr("Circle-based  Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCIRC, frameNumber); });
         subCirc->addAction(tr("Circle-based  Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
-        mHoldAction = subOther->addAction(tr("Hold to frame %1").arg(QString::number(nextFrame)), [=] { this->setHold(frameNumber); });
-        subOther->addAction(mHoldAction);
         subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
+        subOther->addSeparator();
+        subOther->addAction(tr("Elastic (outElastic)"), [=] { this->setCameraEasing(CameraEasingType::OUTELASTIC, frameNumber); });
+        subOther->addAction(tr("Overshoot (outBack)"), [=] { this->setCameraEasing(CameraEasingType::OUTBACK, frameNumber); });
+        subOther->addAction(tr("Bounce (outBounce)"), [=] { this->setCameraEasing(CameraEasingType::OUTBOUNCE, frameNumber); });
 
         mCameraFieldMenu = mEasingMenu->addMenu(tr("Camera field"));
         mCameraFieldMenu->addAction(tr("Reset camera field"), [=] { this->setCameraReset(CameraFieldOption::RESET_FIELD, frameNumber); });
@@ -345,10 +344,10 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mCameraFieldMenu->addAction(tr("Reset camera scaling to 1:1"), [=] { this->setCameraReset(CameraFieldOption::RESET_SCALING, frameNumber); });
         mCameraFieldMenu->addAction(tr("Reset camera rotation to 0"), [=] { this->setCameraReset(CameraFieldOption::RESET_ROTATION, frameNumber); });
         mCameraFieldMenu->addSeparator();
-        mCameraFieldMenu->addAction(tr("Reset %1 horizontally").arg(QString::number(nextFrame)), [=] { this->setCameraReset(CameraFieldOption::RESET_HORIZONTAL, frameNumber); });
-        mCameraFieldMenu->addAction(tr("Reset %1 vertically").arg(QString::number(nextFrame)), [=] { this->setCameraReset(CameraFieldOption::RESET_VERTICAL, frameNumber); });
+        mCameraFieldMenu->addAction(tr("Align next horizontally"), [=] { this->setCameraReset(CameraFieldOption::RESET_HORIZONTAL, frameNumber); });
+        mCameraFieldMenu->addAction(tr("Align next vertically"), [=] { this->setCameraReset(CameraFieldOption::RESET_VERTICAL, frameNumber); });
         mCameraFieldMenu->addSeparator();
-        mCameraFieldMenu->addAction(tr("Hold to %1").arg(QString::number(nextFrame)), [=] { this->setCameraReset(CameraFieldOption::HOLD_FRAME, frameNumber); });
+        mCameraFieldMenu->addAction(tr("Hold to next"), [=] { this->setCameraReset(CameraFieldOption::HOLD_FRAME, frameNumber); });
     }
 
     if (!curLayer->getListOfSelectedFrames().empty())
@@ -357,24 +356,21 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         {
             QList<int> frameList = curLayer->getListOfSelectedFrames();
             QString s = "";
-            for (int pos:frameList)
+            for (int pos:qAsConst(frameList))
             {
                 s = (s + (" %1,")).arg(QString::number(pos));
             }
             s.chop(1);
             mInterpolationMenu->setTitle(tr("Interpolate to frames %1").arg(s));
-            mHoldAction->setText(tr("Hold to frames %1").arg(s));
         }
         else
         {
             mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
-            mHoldAction->setText(tr("Hold to frame %1").arg(QString::number(nextFrame)));
         }
     }
     else if(curLayer->keyExists(frameNumber))
     {
         mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
-        mHoldAction->setText(tr("Hold to frame %1").arg(QString::number(nextFrame)));
     }
     else
     {
