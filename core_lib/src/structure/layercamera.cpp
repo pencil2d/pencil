@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include "cameraeasingtype.h"
 #include "mathutils.h"
 #include <QEasingCurve>
-#include <QDebug>
+
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {

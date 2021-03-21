@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "vectorimage.h"
 #include "util.h"
-#include <QDebug>
+
 
 CanvasPainter::CanvasPainter()
 {
