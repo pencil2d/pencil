@@ -111,6 +111,7 @@ void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
     }
     camera->updateViewTransform();
     camera->modification();
+    mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }
 
@@ -155,6 +156,7 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     }
     camera->updateViewTransform();
     camera->modification();
+    mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }
 
@@ -168,6 +170,7 @@ void TimeLineCells::toggleShowCameraPath()
     else
         layer->setShowPath(true);
 
+    mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }
 
@@ -195,6 +198,7 @@ void TimeLineCells::setDotColor(DotColor color)
         break;
     }
 
+    mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }
 
@@ -405,6 +409,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mShowPathAction->setText(tr("Hide Camera Path"));
 
     mEasingMenu->exec(pos);
+    mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }
 
