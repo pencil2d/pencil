@@ -576,10 +576,6 @@ void CanvasPainter::paintGrid(QPainter& painter)
 
 void CanvasPainter::paintOverlayCenter(QPainter& painter)
 {
-    QRect rect = getCameraRect();
-    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
-        rect = mCamTransform.inverted().mapRect(rect);
-
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
 
@@ -594,21 +590,21 @@ void CanvasPainter::paintOverlayCenter(QPainter& painter)
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    QPoint offsetX(OVERLAY_SAFE_CENTER_CROSS_SIZE, 0), offsetY(0, OVERLAY_SAFE_CENTER_CROSS_SIZE);
-    painter.drawLine(rect.center(), rect.center() - offsetX);
-    painter.drawLine(rect.center(), rect.center() + offsetX);
-    painter.drawLine(rect.center(), rect.center() - offsetY);
-    painter.drawLine(rect.center(), rect.center() + offsetY);
+    QPolygon poly = mCamTransform.inverted().mapToPolygon(mCameraRect);
+    QPoint centerTop = QLineF(poly.at(0), poly.at(1)).pointAt(0.5).toPoint();
+    QPoint centerBottom = QLineF(poly.at(2), poly.at(3)).pointAt(0.5).toPoint();
+    QPoint centerLeft = QLineF(poly.at(0), poly.at(3)).pointAt(0.5).toPoint();
+    QPoint centerRight = QLineF(poly.at(1), poly.at(2)).pointAt(0.5).toPoint();
+    painter.drawLine(QLineF(centerTop, centerBottom).pointAt(0.4).toPoint(),
+                     QLineF(centerTop, centerBottom).pointAt(0.6).toPoint());
+    painter.drawLine(QLineF(centerLeft, centerRight).pointAt(0.4).toPoint(),
+                     QLineF(centerLeft, centerRight).pointAt(0.6).toPoint());
 
     painter.restore();
 }
 
 void CanvasPainter::paintOverlayThirds(QPainter& painter)
 {
-    QRect rect = getCameraRect();
-    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
-        rect = mCamTransform.inverted().mapRect(rect);
-
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
 
@@ -624,10 +620,15 @@ void CanvasPainter::paintOverlayThirds(QPainter& painter)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    painter.drawLine(rect.x(), rect.y() + (rect.height() / 3), rect.right(), rect.y() + (rect.height() / 3));
-    painter.drawLine(rect.x(), rect.y() + (rect.height() * 2 / 3), rect.x() + rect.width(), rect.y() + (rect.height() * 2 / 3));
-    painter.drawLine(rect.x() + rect.width() / 3, rect.y(), rect.x() + rect.width() / 3, rect.y() + rect.height());
-    painter.drawLine(rect.x() + rect.width() * 2 / 3, rect.y(), rect.x() + rect.width() * 2 / 3, rect.y() + rect.height());
+    QPolygon poly = mCamTransform.inverted().mapToPolygon(mCameraRect);
+    QLineF topLine(poly.at(0), poly.at(1));
+    QLineF bottomLine(poly.at(3), poly.at(2));
+    QLineF leftLine(poly.at(0), poly.at(3));
+    QLineF rightLine(poly.at(1), poly.at(2));
+    painter.drawLine(topLine.pointAt(0.333).toPoint(), bottomLine.pointAt(0.333));
+    painter.drawLine(topLine.pointAt(0.667).toPoint(), bottomLine.pointAt(0.667));
+    painter.drawLine(leftLine.pointAt(0.333).toPoint(), rightLine.pointAt(0.333));
+    painter.drawLine(leftLine.pointAt(0.667).toPoint(), rightLine.pointAt(0.667));
 
     painter.setRenderHints(previous_renderhints);
     painter.restore();
@@ -654,10 +655,15 @@ void CanvasPainter::paintOverlayGolden(QPainter& painter)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.38)), rect.right(), static_cast<int>(rect.y() + (rect.height() * 0.38)));
-    painter.drawLine(rect.x(), static_cast<int>(rect.y() + (rect.height() * 0.62)), rect.x() + rect.width(), static_cast<int>(rect.y() + (rect.height() * 0.62)));
-    painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.38), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.38), rect.bottom());
-    painter.drawLine(static_cast<int>(rect.x() + rect.width() * 0.62), rect.y(), static_cast<int>(rect.x() + rect.width() * 0.62), rect.bottom());
+    QPolygon poly = mCamTransform.inverted().mapToPolygon(mCameraRect);
+    QLineF topLine(poly.at(0), poly.at(1));
+    QLineF bottomLine(poly.at(3), poly.at(2));
+    QLineF leftLine(poly.at(0), poly.at(3));
+    QLineF rightLine(poly.at(1), poly.at(2));
+    painter.drawLine(topLine.pointAt(0.382).toPoint(), bottomLine.pointAt(0.382));
+    painter.drawLine(topLine.pointAt(0.618).toPoint(), bottomLine.pointAt(0.618));
+    painter.drawLine(leftLine.pointAt(0.382).toPoint(), rightLine.pointAt(0.382));
+    painter.drawLine(leftLine.pointAt(0.618).toPoint(), rightLine.pointAt(0.618));
 
     painter.setRenderHints(previous_renderhints);
     painter.restore();
@@ -683,32 +689,42 @@ void CanvasPainter::paintOverlaySafeAreas(QPainter& painter)
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::TextAntialiasing, true);
 
+    QPolygon poly = mCamTransform.inverted().mapToPolygon(mCameraRect);
+    QLineF topLeftCrossLine(poly.at(0), poly.at(2));
+    QLineF bottomLeftCrossLine(poly.at(3), poly.at(1));
+
     if (mOptions.bActionSafe)
     {
         int action = mOptions.nActionSafe;
-        QRect safeAction = QRect(rect.x() + rect.width() * action / 200,
-                                 rect.y() + rect.height() * action / 200,
-                                 rect.width() * (100 - action) / 100,
-                                 rect.height() * (100 - action) / 100);
-        painter.drawRect(safeAction);
+        painter.drawLine(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((100 - (action / 2.0)) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((action / 2.0) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((100 - (action / 2.0)) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((100 - (action / 2.0)) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((100 - (action / 2.0)) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((action / 2.0) / 100).toPoint());
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(safeAction.x(), safeAction.y() - 1, tr("Safe Action area %1 %").arg(action));
+            painter.drawText(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(), tr("Safe Action area %1 %").arg(action));
         }
     }
     if (mOptions.bTitleSafe)
     {
         int title = mOptions.nTitleSafe;
-        QRect safeTitle = QRect(rect.x() + rect.width() * title / 200,
-                                rect.y() + rect.height() * title / 200,
-                                rect.width() * (100 - title) / 100,
-                                rect.height() * (100 - title) / 100);
-        painter.drawRect(safeTitle);
+        painter.drawLine(topLeftCrossLine.pointAt((title / 2.0) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((100 - (title / 2.0)) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((title / 2.0) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((title / 2.0) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((100 - (title / 2.0)) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((100 - (title / 2.0)) / 100).toPoint());
+        painter.drawLine(topLeftCrossLine.pointAt((100 - (title / 2.0)) / 100.0).toPoint(),
+                         bottomLeftCrossLine.pointAt((title / 2.0) / 100).toPoint());
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(safeTitle.x(), safeTitle.y() - 1, tr("Safe Title area %1 %").arg(title));
+            painter.drawText(bottomLeftCrossLine.pointAt((title / 2.0) / 100), tr("Safe Title area %1 %").arg(title));
         }
     }
 
@@ -786,43 +802,43 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     QRectF viewRect = painter.viewport();
     mCamTransform = cameraLayer->getViewAtFrame(mFrameNumber);
     mCameraRect = cameraLayer->getViewRect();
-    QRect rg2Rect = mCameraRect;
 
     // Draw camera path
     if (cameraLayer->getShowPath() && !mOptions.isPlaying)
     {
         painter.save();
-        QTransform dots;
+        DOT_COLOR = cameraLayer->getDotColor();
+        QPolygon dots;
         if (!cameraLayer->keyExists(mFrameNumber))
         {
             int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
             int next = cameraLayer->getNextKeyFramePosition(mFrameNumber);
-            QTransform prevView = cameraLayer->getViewAtFrame(previous);
-            QTransform nextView = cameraLayer->getViewAtFrame(next);
-            painter.setCompositionMode(QPainter::RasterOp_NotDestination);
-            painter.drawLine(-prevView.dx() / prevView.m11() , -prevView.dy() / prevView.m11(),
-                             -nextView.dx() / nextView.m11() , -nextView.dy() / nextView.m11());
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-            painter.setPen(Qt::red);
-            painter.setBrush(Qt::red);
+            painter.setPen(DOT_COLOR);
+            painter.setBrush(DOT_COLOR);
             for (int i = previous; i <= next; i++)
             {
-                dots = cameraLayer->getViewAtFrame(i);
-                painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
-                                    -dots.dy() / dots.m11() - DOT_WIDTH/2,
+                QTransform transform = cameraLayer->getViewAtFrame(i);
+                dots = transform.inverted().mapToPolygon(mCameraRect);
+                QPoint center = QLineF(dots.at(0), dots.at(2)).pointAt(0.5).toPoint();
+                painter.drawEllipse(center.x() - DOT_WIDTH/2,
+                                    center.y() - DOT_WIDTH/2,
                                     DOT_WIDTH, DOT_WIDTH);
             }
         }
-        painter.setPen(Qt::red);
-        painter.setBrush(Qt::white);
-        dots = cameraLayer->getViewAtFrame(mFrameNumber);
-        painter.drawEllipse(-dots.dx() / dots.m11() - DOT_WIDTH/2,
-                            -dots.dy() / dots.m11() - DOT_WIDTH/2,
+        if (DOT_COLOR != Qt::white)
+            painter.setBrush(Qt::white);
+        else
+            painter.setBrush(Qt::black);
+        dots = cameraLayer->getViewAtFrame(mFrameNumber).inverted().mapToPolygon(mCameraRect);
+        QPoint center = QLineF(dots.at(0), dots.at(2)).pointAt(0.5).toPoint();
+        painter.drawEllipse(center.x() - DOT_WIDTH/2,
+                            center.y() - DOT_WIDTH/2,
                             DOT_WIDTH, DOT_WIDTH);
         painter.restore();
     }
 
-    // Draw rectangle
+    // Draw polygon
     if (isCameraMode)
     {
         painter.save();
@@ -830,20 +846,32 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.setPen(QColor(0, 0, 0, 80));
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
-        mCameraRect = mCamTransform.inverted().mapRect(mCameraRect);
-        painter.drawLine(mCameraRect.center().x() - 5, mCameraRect.center().y(),
-                         mCameraRect.center().x() + 5, mCameraRect.center().y());
-        painter.drawLine(mCameraRect.center().x(), mCameraRect.center().y() -5,
-                         mCameraRect.center().x(), mCameraRect.center().y() + 5);
-        painter.drawRect(mCameraRect);
+        QPolygon camPolygon = mCamTransform.inverted().mapToPolygon(mCameraRect);
+        QPoint center = QLineF(camPolygon.at(0), camPolygon.at(2)).pointAt(0.5).toPoint();
+
+        painter.drawLine(center.x() - 5, center.y(),
+                         center.x() + 5, center.y());
+        painter.drawLine(center.x(), center.y() -5,
+                         center.x(), center.y() + 5);
+
+        painter.drawPolygon(camPolygon);
         int radius = 8;
         int width = radius / 2;
+        const QRectF topRightCorner = QRectF(camPolygon.at(1).x() - width,
+                                                camPolygon.at(1).y() - width,
+                                                radius, radius);
+        painter.drawRect(topRightCorner);
 
-        const QRectF bottomRightCorner = QRectF(mCameraRect.right() - width,
-                                                mCameraRect.bottom() - width,
+        const QRectF bottomRightCorner = QRectF(camPolygon.at(2).x() - width,
+                                                camPolygon.at(2).y() - width,
                                                 radius, radius);
         painter.drawRect(bottomRightCorner);
 
+        QPoint rotatePoint = QLineF(camPolygon.at(1), camPolygon.at(2)).pointAt(0.5).toPoint();
+        const QRectF rightSideCircle= QRectF(rotatePoint.x() - width,
+                                             rotatePoint.y() - width,
+                                             radius, radius);
+        painter.drawEllipse(rightSideCircle);
         painter.restore();
     }
 
@@ -853,7 +881,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     painter.setBrush(QColor(0, 0, 0, 80));
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    QRegion rg2(rg2Rect);
+    QRegion rg2(mCameraRect);
     QTransform viewInverse = mViewTransform.inverted();
     QRect boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
 
@@ -865,10 +893,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     painter.setClipRegion(rg3);
     painter.drawRect(boundingRect);
 
-
-
     painter.restore();
-    updateCamRect(mCameraRect);
 
     /*
     painter.setClipping(false);
@@ -882,6 +907,16 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     painter.setBrush( Qt::NoBrush );
     painter.drawRect( mCameraRect.adjusted( -1, -1, 1, 1) );
     */
+}
+
+void CanvasPainter::getDotColor()
+{
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    if (layer->type() != Layer::CAMERA)
+        return;
+
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
+    DOT_COLOR = cameraLayer->getDotColor();
 }
 
 QRect CanvasPainter::getCameraRect()

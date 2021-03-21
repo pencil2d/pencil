@@ -120,6 +120,7 @@ private:
     void paintOverlayGolden(QPainter& painter);
     void paintOverlaySafeAreas(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
+    void getDotColor();
     void updateCamRect(QRect rect) { mCameraRect = rect; }
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
@@ -136,6 +137,7 @@ private:
     QTransform mViewInverse;
 
     QRect mCameraRect;
+    qreal mCamRotation = 0.f;
     QTransform mCamTransform = QTransform();
 
     int mCurrentLayerIndex = 0;
@@ -156,6 +158,7 @@ private:
 
     const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
     const int DOT_WIDTH = 4;
+    QColor DOT_COLOR = Qt::red;
 };
 
 #endif // CANVASRENDERER_H

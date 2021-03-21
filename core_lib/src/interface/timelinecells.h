@@ -98,9 +98,10 @@ private slots:
 
     // setting camera interpolations
     Camera* getCam(int frame);
-    void setHold(int frame);
     void setCameraEasing(CameraEasingType type, int frame);
-    void setCameraReset(int type, int frameNumber);
+    void setCameraReset(CameraFieldOption type, int frameNumber);
+    void toggleShowCameraPath();
+    void setDotColor(DotColor color);
 
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
@@ -158,7 +159,8 @@ private:
     QMenu* mEasingMenu = nullptr;
     QMenu* mInterpolationMenu = nullptr;
     QMenu* mCameraFieldMenu = nullptr;
-    QAction* mHoldAction = nullptr;
+    QMenu* mShowCameraPathMenu = nullptr;
+    QAction* mShowPathAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H

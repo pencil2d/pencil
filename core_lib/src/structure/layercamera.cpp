@@ -89,7 +89,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double frame2 = camera2->pos();
 
     // interpolation
-    qreal percent = getInterpolationPercent(camera2->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto interpolation = [=](double f1, double f2) -> double
     {
@@ -106,12 +106,21 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 
 MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance)
 {
-    QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
-    if (QLineF(point, curRect.bottomRight()).length() < tolerance)
+    QTransform curCam = getViewAtFrame(frameNumber);
+    QPolygon camPoly = curCam.inverted().mapToPolygon(viewRect);
+    if (QLineF(point, camPoly.at(1)).length() < tolerance)
+    {
+        return MoveMode::TOPRIGHT;
+    }
+    if (QLineF(point, camPoly.at(2)).length() < tolerance)
     {
         return MoveMode::BOTTOMRIGHT;
     }
-    else if (curRect.contains(point.toPoint()))
+    else if (QLineF(point, QPoint(camPoly.at(1) + (camPoly.at(2) - camPoly.at(1)) / 2)).length() < tolerance)
+    {
+        return MoveMode::ROTATION;
+    }
+    else if (camPoly.containsPoint(point.toPoint(), Qt::FillRule::OddEvenFill))
     {
         return MoveMode::CENTER;
     }
@@ -120,30 +129,37 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
 
 void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNumber)
 {
-    QRect curRect = getViewAtFrame(frameNumber).inverted().mapRect(viewRect);
-    QLineF curRectLine(curRect.center(), QPointF(curRect.right(), curRect.center().y()));
-    QLineF newLine(curRect.center(), QPointF(curRect.right() - (point.x() - mOffsetPoint.x()), curRect.center().y()));
+    QPolygon curPoly = getViewAtFrame(frameNumber).inverted().mapToPolygon(viewRect);
+    QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5f).toPoint();
+    QLineF lineOld;
+    QLineF lineNew(curCenter, point);
+    qreal degree;
     Camera* curCam = getCameraAtFrame(frameNumber);
     switch (mode)
     {
     case MoveMode::CENTER:
         curCam->translate(curCam->translation() - (point - mOffsetPoint));
         break;
+    case MoveMode::TOPRIGHT:
+        lineOld = QLineF(curCenter, curPoly.at(1));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
     case MoveMode::BOTTOMRIGHT:
-        if (curRectLine.length() < 2)
-        {
-            curCam->reset();
-        }
-        else
-        {
-            curCam->scale(curCam->scaling() * (newLine.length() / curRectLine.length()));
-        }
+        lineOld = QLineF(curCenter, curPoly.at(2));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
+    case MoveMode::ROTATION:
+        degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(curCenter, point));
+        curCam->translate(curCenter);
+        curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
+        curCam->translate(-curCenter);
         break;
     default:
         break;
     }
     setOffsetPoint(point);
     curCam->updateViewTransform();
+    curCam->modification();
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)
@@ -181,7 +197,7 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     double frame2 = camera2->pos();
 
     // interpolation
-    qreal percent = getInterpolationPercent(camera2->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto lerp = [](double f1, double f2, double percent) -> double
     {
@@ -232,6 +248,9 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     case CameraEasingType::OUTCIRC : easing.setType(QEasingCurve::OutCirc); break;
     case CameraEasingType::INOUTCIRC : easing.setType(QEasingCurve::InOutCirc); break;
     case CameraEasingType::OUTINCIRC: easing.setType(QEasingCurve::OutInCirc); break;
+    case CameraEasingType::OUTELASTIC: easing.setType(QEasingCurve::OutElastic); break;
+    case CameraEasingType::OUTBACK: easing.setType(QEasingCurve::OutBack); break;
+    case CameraEasingType::OUTBOUNCE: easing.setType(QEasingCurve::OutBounce); break;
     default: easing.setType(QEasingCurve::Linear); break;
     }
     return easing.valueForProgress(percent);

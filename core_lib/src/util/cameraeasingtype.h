@@ -62,4 +62,23 @@ enum class CameraEasingType {
     OUTINBOUNCE
 };
 
+enum class CameraFieldOption {
+    RESET_FIELD,
+    RESET_TRANSITION,
+    RESET_SCALING,
+    RESET_ROTATION,
+    ALIGN_HORIZONTAL,
+    ALIGN_VERTICAL,
+    HOLD_FRAME,
+    SHOW_CAMERA_PATH
+};
+
+enum class DotColor {
+    RED_DOT,
+    BLUE_DOT,
+    GREEN_DOT,
+    BLACK_DOT,
+    WHITE_DOT
+};
+
 #endif // CAMERAEASINGTYPE_H

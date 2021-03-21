@@ -152,3 +152,4 @@ bool Camera::operator==(const Camera& rhs) const
 
     return b;
 }
+

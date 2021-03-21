@@ -327,7 +327,7 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
 void MoveTool::transformCamera()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
-    layer->transformCameraView(mCamMoveMode,getCurrentPoint(), mEditor->currentFrame());
+    layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mEditor->currentFrame());
     mScribbleArea->invalidateLayerPixmapCache();
 }
 

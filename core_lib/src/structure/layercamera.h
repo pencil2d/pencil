@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define LAYERCAMERA_H
 
 #include <QRect>
+#include <QColor>
 #include "layer.h"
 #include "movemode.h"
 #include "cameraeasingtype.h"
@@ -51,6 +52,8 @@ public:
     void showContextMenu(QPoint point);
     void setShowPath(bool showPath) { mShowPath = showPath; }
     bool getShowPath() { return mShowPath; }
+    void setDotColor(QColor color) { dotColor = color ; }
+    QColor const getDotColor() { return dotColor; }
 
 signals:
     void resolutionChanged();
@@ -68,6 +71,7 @@ private:
     int mFieldH = 600;
     QRect viewRect;
     bool mShowPath = false;
+    QColor dotColor = Qt::red;
 };
 
 #endif

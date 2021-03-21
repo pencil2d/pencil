@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>246</width>
-    <height>132</height>
+    <height>105</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -58,13 +58,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxShowPath">
-     <property name="text">
-      <string>Show camera path</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
