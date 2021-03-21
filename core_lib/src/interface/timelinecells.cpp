@@ -34,7 +34,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "toolmanager.h"
-#include <QDebug>
+
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
     mTimeLine = parent;
@@ -84,6 +84,7 @@ void TimeLineCells::loadSetting(SETTING setting)
     default:
         break;
     }
+
     updateContent();
 }
 
@@ -112,7 +113,6 @@ void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
     camera->updateViewTransform();
     camera->modification();
     updateContent();
-//    mEditor->scrubTo(frame);
 }
 
 void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
@@ -157,8 +157,6 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     camera->updateViewTransform();
     camera->modification();
     updateContent();
-
-//    mEditor->scrubTo(frameNumber);
 }
 
 void TimeLineCells::toggleShowCameraPath()
@@ -170,6 +168,8 @@ void TimeLineCells::toggleShowCameraPath()
         layer->setShowPath(false);
     else
         layer->setShowPath(true);
+
+    updateContent();
 }
 
 void TimeLineCells::setDotColor(DotColor color)
@@ -385,27 +385,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
             }
             s.chop(1);
             mInterpolationMenu->setTitle(tr("Interpolate to frames %1").arg(s));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
         else
         {

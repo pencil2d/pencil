@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "vectorimage.h"
 #include "util.h"
-#include <QDebug>
+
 
 CanvasPainter::CanvasPainter()
 {
@@ -826,7 +826,10 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                     DOT_WIDTH, DOT_WIDTH);
             }
         }
-        painter.setBrush(Qt::white);
+        if (DOT_COLOR != Qt::white)
+            painter.setBrush(Qt::white);
+        else
+            painter.setBrush(Qt::black);
         dots = cameraLayer->getViewAtFrame(mFrameNumber).inverted().mapToPolygon(mCameraRect);
         QPoint center = QLineF(dots.at(0), dots.at(2)).pointAt(0.5).toPoint();
         painter.drawEllipse(center.x() - DOT_WIDTH/2,
