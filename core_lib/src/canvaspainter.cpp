@@ -807,19 +807,15 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     if (cameraLayer->getShowPath() && !mOptions.isPlaying)
     {
         painter.save();
+        DOT_COLOR = cameraLayer->getDotColor();
         QPolygon dots;
         if (!cameraLayer->keyExists(mFrameNumber))
         {
             int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
             int next = cameraLayer->getNextKeyFramePosition(mFrameNumber);
-            QPolygon prevView = cameraLayer->getViewAtFrame(previous).inverted().mapToPolygon(mCameraRect);
-            QPolygon nextView = cameraLayer->getViewAtFrame(next).inverted().mapToPolygon(mCameraRect);
-            painter.setCompositionMode(QPainter::RasterOp_NotDestination);
-            painter.drawLine(QPoint(QLineF(prevView.at(0), prevView.at(2)).pointAt(0.5).toPoint()),
-                             QPoint(QLineF(nextView.at(0), nextView.at(2)).pointAt(0.5).toPoint()));
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-            painter.setPen(Qt::red);
-            painter.setBrush(Qt::red);
+            painter.setPen(DOT_COLOR);
+            painter.setBrush(DOT_COLOR);
             for (int i = previous; i <= next; i++)
             {
                 QTransform transform = cameraLayer->getViewAtFrame(i);
@@ -830,7 +826,6 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                     DOT_WIDTH, DOT_WIDTH);
             }
         }
-        painter.setPen(Qt::red);
         painter.setBrush(Qt::white);
         dots = cameraLayer->getViewAtFrame(mFrameNumber).inverted().mapToPolygon(mCameraRect);
         QPoint center = QLineF(dots.at(0), dots.at(2)).pointAt(0.5).toPoint();
@@ -909,6 +904,16 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     painter.setBrush( Qt::NoBrush );
     painter.drawRect( mCameraRect.adjusted( -1, -1, 1, 1) );
     */
+}
+
+void CanvasPainter::getDotColor()
+{
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    if (layer->type() != Layer::CAMERA)
+        return;
+
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
+    DOT_COLOR = cameraLayer->getDotColor();
 }
 
 QRect CanvasPainter::getCameraRect()

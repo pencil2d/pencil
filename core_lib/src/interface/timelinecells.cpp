@@ -92,60 +92,31 @@ Camera *TimeLineCells::getCam(int frame)
     return static_cast<Camera*>(mEditor->layers()->currentLayer()->getKeyFrameAt(frame));
 }
 
-void TimeLineCells::setHold(int frame)
-{
-    Layer* curLayer = mEditor->layers()->currentLayer();
-    QList<int> frames = curLayer->getListOfSelectedFrames();
-    if (!frames.empty())
-    {
-        for (int pos:qAsConst(frames))
-        {
-            Camera* cam = getCam(pos);
-            Camera* next = getCam(curLayer->getNextKeyFramePosition(pos));
-            next->translate(cam->translation());
-            next->rotate(cam->rotation());
-            next->scale(cam->scaling());
-            next->updateViewTransform();
-            next->modification();
-            mEditor->scrubTo(mEditor->currentFrame());
-            cam->setEasingType(CameraEasingType::LINEAR);
-        }
-    }
-    else
-    {
-        Camera* cam = getCam(frame);
-        Camera* next = getCam(curLayer->getNextKeyFramePosition(frame));
-        next->translate(cam->translation());
-        next->rotate(cam->rotation());
-        next->scale(cam->scaling());
-        next->updateViewTransform();
-        next->modification();
-        mEditor->scrubTo(mEditor->currentFrame());
-        cam->setEasingType(CameraEasingType::LINEAR);
-    }
-}
-
 void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
 {
     QList<int> frames = mEditor->layers()->currentLayer()->getListOfSelectedFrames();
+    Camera* camera;
     if (!frames.empty())
     {
         for (int pos:qAsConst(frames))
         {
-            Camera* cam = getCam(pos);
-            cam->setEasingType(type);
+            camera = getCam(pos);
+            camera->setEasingType(type);
         }
     }
     else
     {
-        Camera* cam = getCam(frame);
-        cam->setEasingType(type);
+        camera = getCam(frame);
+        camera->setEasingType(type);
     }
+    camera->updateViewTransform();
+    camera->modification();
+    updateContent();
+//    mEditor->scrubTo(frame);
 }
 
 void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
 {
-    qDebug() << "frame " << frameNumber;
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA && layer->keyExists(frameNumber));
     Camera* camera = getCam(frameNumber);
@@ -185,18 +156,47 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     }
     camera->updateViewTransform();
     camera->modification();
-    mEditor->scrubTo(frameNumber);
+    updateContent();
+
+//    mEditor->scrubTo(frameNumber);
 }
 
-void TimeLineCells::toggleShowCameraPath(int frameNumber)
+void TimeLineCells::toggleShowCameraPath()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-    Q_ASSERT(layer->type() == Layer::CAMERA && layer->keyExists(frameNumber));
+    Q_ASSERT(layer->type() == Layer::CAMERA);
 
     if (layer->getShowPath())
         layer->setShowPath(false);
     else
         layer->setShowPath(true);
+}
+
+void TimeLineCells::setDotColor(DotColor color)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+    Q_ASSERT(layer->type() == Layer::CAMERA);
+
+    switch (color)
+    {
+    case DotColor::RED_DOT:
+        layer->setDotColor(Qt::red);
+        break;
+    case DotColor::GREEN_DOT:
+        layer->setDotColor(Qt::green);
+        break;
+    case DotColor::BLUE_DOT:
+        layer->setDotColor(Qt::blue);
+        break;
+    case DotColor::BLACK_DOT:
+        layer->setDotColor(Qt::black);
+        break;
+    case DotColor::WHITE_DOT:
+        layer->setDotColor(Qt::white);
+        break;
+    }
+
+    updateContent();
 }
 
 int TimeLineCells::getFrameNumber(int x) const
@@ -305,7 +305,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     {
         mEasingMenu = new QMenu();
         mInterpolationMenu = new QMenu();
-        mShowPathAction = mEasingMenu->addAction(tr("Toggle show camera path"), [=] { this->toggleShowCameraPath(frameNumber); });
         mInterpolationMenu = mEasingMenu->addMenu(tr("Interpolation frame %1 to %2").arg( QString::number(frameNumber), QString::number(nextFrame)));
 
         QMenu* subSine  = mInterpolationMenu->addMenu(tr("Slow"));
@@ -363,6 +362,15 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mCameraFieldMenu->addAction(tr("Align next vertically"), [=] { this->setCameraReset(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
         mCameraFieldMenu->addSeparator();
         mCameraFieldMenu->addAction(tr("Hold to next"), [=] { this->setCameraReset(CameraFieldOption::HOLD_FRAME, frameNumber); });
+
+        mShowCameraPathMenu = mEasingMenu->addMenu(tr("Show camera path"));
+        mShowPathAction = mShowCameraPathMenu->addAction(tr("Toggle show camera path"), [=] { this->toggleShowCameraPath(); });
+        mShowCameraPathMenu->addSeparator();
+        mShowCameraPathMenu->addAction(tr("Dot color: Red"), [=] { this->setDotColor(DotColor::RED_DOT); });
+        mShowCameraPathMenu->addAction(tr("Dot color: Green"), [=] { this->setDotColor(DotColor::GREEN_DOT); });
+        mShowCameraPathMenu->addAction(tr("Dot color: Blue"), [=] { this->setDotColor(DotColor::BLUE_DOT); });
+        mShowCameraPathMenu->addAction(tr("Dot color: Black"), [=] { this->setDotColor(DotColor::BLACK_DOT); });
+        mShowCameraPathMenu->addAction(tr("Dot color: White"), [=] { this->setDotColor(DotColor::WHITE_DOT); });
     }
 
     if (!curLayer->getListOfSelectedFrames().empty())
@@ -377,6 +385,27 @@ void TimeLineCells::showCameraMenu(QPoint pos)
             }
             s.chop(1);
             mInterpolationMenu->setTitle(tr("Interpolate to frames %1").arg(s));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
         else
         {
