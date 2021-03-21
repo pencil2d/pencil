@@ -101,6 +101,7 @@ private slots:
     void setHold(int frame);
     void setCameraEasing(CameraEasingType type, int frame);
     void setCameraReset(CameraFieldOption type, int frameNumber);
+    void toggleShowCameraPath(int frameNumber);
 
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
@@ -158,6 +159,7 @@ private:
     QMenu* mEasingMenu = nullptr;
     QMenu* mInterpolationMenu = nullptr;
     QMenu* mCameraFieldMenu = nullptr;
+    QAction* mShowPathAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H

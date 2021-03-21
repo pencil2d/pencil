@@ -36,8 +36,6 @@ public:
     void setWidth(int);
     int getHeight();
     void setHeight(int);
-    bool getShowPath();
-    void setShowPath(bool show);
 
 private:
     Ui::CameraPropertiesDialog* ui = nullptr;

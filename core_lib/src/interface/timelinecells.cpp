@@ -145,8 +145,9 @@ void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
 
 void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
 {
+    qDebug() << "frame " << frameNumber;
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-    Q_ASSERT(layer->type() == Layer::CAMERA);
+    Q_ASSERT(layer->type() == Layer::CAMERA && layer->keyExists(frameNumber));
     Camera* camera = getCam(frameNumber);
     Camera* copyCamera = (getCam(frameNumber));
     int nextFrame = layer->getNextKeyFramePosition(frameNumber);
@@ -165,24 +166,37 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     case CameraFieldOption::RESET_ROTATION:
         camera->rotate(0.0);
         break;
-    case CameraFieldOption::RESET_HORIZONTAL:
+    case CameraFieldOption::ALIGN_HORIZONTAL:
         camera = getCam(nextFrame);
         camera->translate(camera->translation().x(), copyCamera->translation().y());
         break;
-    case CameraFieldOption::RESET_VERTICAL:
+    case CameraFieldOption::ALIGN_VERTICAL:
         camera = getCam(nextFrame);
         camera->translate(copyCamera->translation().x(), camera->translation().y());
         break;
     case CameraFieldOption::HOLD_FRAME:
         camera = getCam(nextFrame);
         camera->translate(copyCamera->translation());
+        camera->scale(copyCamera->scaling());
+        camera->rotate(copyCamera->rotation());
         break;
     default:
         break;
     }
     camera->updateViewTransform();
     camera->modification();
-    mEditor->scrubTo(mEditor->currentFrame());
+    mEditor->scrubTo(frameNumber);
+}
+
+void TimeLineCells::toggleShowCameraPath(int frameNumber)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+    Q_ASSERT(layer->type() == Layer::CAMERA && layer->keyExists(frameNumber));
+
+    if (layer->getShowPath())
+        layer->setShowPath(false);
+    else
+        layer->setShowPath(true);
 }
 
 int TimeLineCells::getFrameNumber(int x) const
@@ -284,13 +298,14 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         return;
     }
 
+    LayerCamera* layer = static_cast<LayerCamera*>(curLayer);
     int nextFrame = curLayer->getNextKeyFramePosition(frameNumber);
 
     if (mEasingMenu == nullptr)
     {
         mEasingMenu = new QMenu();
         mInterpolationMenu = new QMenu();
-
+        mShowPathAction = mEasingMenu->addAction(tr("Toggle show camera path"), [=] { this->toggleShowCameraPath(frameNumber); });
         mInterpolationMenu = mEasingMenu->addMenu(tr("Interpolation frame %1 to %2").arg( QString::number(frameNumber), QString::number(nextFrame)));
 
         QMenu* subSine  = mInterpolationMenu->addMenu(tr("Slow"));
@@ -344,8 +359,8 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mCameraFieldMenu->addAction(tr("Reset camera scaling to 1:1"), [=] { this->setCameraReset(CameraFieldOption::RESET_SCALING, frameNumber); });
         mCameraFieldMenu->addAction(tr("Reset camera rotation to 0"), [=] { this->setCameraReset(CameraFieldOption::RESET_ROTATION, frameNumber); });
         mCameraFieldMenu->addSeparator();
-        mCameraFieldMenu->addAction(tr("Align next horizontally"), [=] { this->setCameraReset(CameraFieldOption::RESET_HORIZONTAL, frameNumber); });
-        mCameraFieldMenu->addAction(tr("Align next vertically"), [=] { this->setCameraReset(CameraFieldOption::RESET_VERTICAL, frameNumber); });
+        mCameraFieldMenu->addAction(tr("Align next horizontally"), [=] { this->setCameraReset(CameraFieldOption::ALIGN_HORIZONTAL, frameNumber); });
+        mCameraFieldMenu->addAction(tr("Align next vertically"), [=] { this->setCameraReset(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
         mCameraFieldMenu->addSeparator();
         mCameraFieldMenu->addAction(tr("Hold to next"), [=] { this->setCameraReset(CameraFieldOption::HOLD_FRAME, frameNumber); });
     }
@@ -376,6 +391,11 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     {
         return;
     }
+
+    if (layer->getShowPath() == false)
+        mShowPathAction->setText(tr("Show Camera Path"));
+    else
+        mShowPathAction->setText(tr("Hide Camera Path"));
 
     mEasingMenu->exec(pos);
     updateContent();
@@ -1167,7 +1187,6 @@ void TimeLineCells::editLayerProperties(LayerCamera *layer) const
     settings.setValue(SETTING_FIELD_W, dialog.getWidth());
     settings.setValue(SETTING_FIELD_H, dialog.getHeight());
     layer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
-    layer->setShowPath(dialog.getShowPath());
 }
 
 void TimeLineCells::editLayerName(Layer* layer) const

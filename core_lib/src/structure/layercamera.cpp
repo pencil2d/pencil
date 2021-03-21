@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include "cameraeasingtype.h"
 #include "mathutils.h"
 #include <QEasingCurve>
-#include <QDebug>
+
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -253,7 +253,6 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     case CameraEasingType::OUTBOUNCE: easing.setType(QEasingCurve::OutBounce); break;
     default: easing.setType(QEasingCurve::Linear); break;
     }
-    qDebug() << "type: " << easing.type();
     return easing.valueForProgress(percent);
 }
 

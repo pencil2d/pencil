@@ -27,8 +27,6 @@ CameraPropertiesDialog::CameraPropertiesDialog(const QString& name, int width, i
     ui->nameBox->setText(name);
     ui->widthBox->setValue(width);
     ui->heightBox->setValue(height);
-    ui->checkBoxShowPath->setChecked(showPath);
-
 }
 
 CameraPropertiesDialog::~CameraPropertiesDialog()
@@ -64,14 +62,4 @@ int CameraPropertiesDialog::getHeight()
 void CameraPropertiesDialog::setHeight(int height)
 {
     ui->heightBox->setValue(height);
-}
-
-bool CameraPropertiesDialog::getShowPath()
-{
-    return ui->checkBoxShowPath->isChecked();
-}
-
-void CameraPropertiesDialog::setShowPath(bool showPath)
-{
-    ui->checkBoxShowPath->setChecked(showPath);
 }
