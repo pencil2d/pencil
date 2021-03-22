@@ -277,46 +277,46 @@ QString LayerCamera::getInterpolationText(int frame)
 {
     Camera* camera = getCameraAtFrame(frame);
     CameraEasingType type = camera->getEasingType();
-    QLabel* label = new QLabel(); // to get a translatable string...
+    QString retString = "";
 
     switch (type)
     {
-    case CameraEasingType::LINEAR: label->setText(tr("Linear")); break;
-    case CameraEasingType::INSINE: label->setText(tr("Slow Ease-in")); break;
-    case CameraEasingType::OUTSINE: label->setText(tr("Slow  Ease-out")); break;
-    case CameraEasingType::INOUTSINE: label->setText(tr("Slow  Ease-in - Ease-out")); break;
-    case CameraEasingType::OUTINSINE: label->setText(tr("Slow  Ease-out - Ease-in")); break;
-    case CameraEasingType::INQUAD: label->setText(tr("Normal Ease-in")); break;
-    case CameraEasingType::OUTQUAD: label->setText(tr("Normal Ease-out")); break;
-    case CameraEasingType::INOUTQUAD: label->setText(tr("Normal Ease-in - Ease-out")); break;
-    case CameraEasingType::OUTINQUAD: label->setText(tr("Normal Ease-out - Ease-in")); break;
-    case CameraEasingType::INCUBIC: label->setText(tr("Quick Ease-in")); break;
-    case CameraEasingType::OUTCUBIC: label->setText(tr("Quick Ease-out")); break;
-    case CameraEasingType::INOUTCUBIC: label->setText(tr("Quick Ease-in - Ease-out")); break;
-    case CameraEasingType::OUTINCUBIC: label->setText(tr("Quick Ease-out - Ease-in")); break;
-    case CameraEasingType::INQUART: label->setText(tr("Fast Ease-in")); break;
-    case CameraEasingType::OUTQUART: label->setText(tr("Fast Ease-out")); break;
-    case CameraEasingType::INOUTQUART: label->setText(tr("Fast Ease-in - Ease-out")); break;
-    case CameraEasingType::OUTINQUART: label->setText(tr("Fast Ease-out - Ease-in")); break;
-    case CameraEasingType::INQUINT: label->setText(tr("Faster Ease-in")); break;
-    case CameraEasingType::OUTQUINT: label->setText(tr("Faster Ease-out")); break;
-    case CameraEasingType::INOUTQUINT: label->setText(tr("Faster Ease-in - Ease-out")); break;
-    case CameraEasingType::OUTINQUINT: label->setText(tr("Faster Ease-out - Ease-in")); break;
-    case CameraEasingType::INEXPO: label->setText(tr("Fastest Ease-in")); break;
-    case CameraEasingType::OUTEXPO: label->setText(tr("Fastest Ease-out")); break;
-    case CameraEasingType::INOUTEXPO: label->setText(tr("Fastest Ease-in - Ease-out")); break;
-    case CameraEasingType::OUTINEXPO: label->setText(tr("Fastest Ease-out - Ease-in")); break;
-    case CameraEasingType::INCIRC: label->setText(tr("Circle-based  Ease-in")); break;
-    case CameraEasingType::OUTCIRC: label->setText(tr("Circle-based  Ease-out")); break;
-    case CameraEasingType::INOUTCIRC: label->setText(tr("Circle-based  Ease-in - Ease-out")); break;
-    case CameraEasingType::OUTINCIRC: label->setText(tr("Circle-based  Ease-out - Ease-in")); break;
-    case CameraEasingType::OUTELASTIC: label->setText(tr("Elastic (outElastic)")); break;
-    case CameraEasingType::OUTBACK: label->setText(tr("Overshoot (outBack)")); break;
-    case CameraEasingType::OUTBOUNCE: label->setText(tr("Bounce (outBounce)")); break;
-    default: label->setText(""); break;
+    case CameraEasingType::LINEAR: retString= tr("Linear"); break;
+    case CameraEasingType::INSINE: retString= tr("Slow Ease-in"); break;
+    case CameraEasingType::OUTSINE: retString= tr("Slow  Ease-out"); break;
+    case CameraEasingType::INOUTSINE: retString= tr("Slow  Ease-in - Ease-out"); break;
+    case CameraEasingType::OUTINSINE: retString= tr("Slow  Ease-out - Ease-in"); break;
+    case CameraEasingType::INQUAD: retString= tr("Normal Ease-in"); break;
+    case CameraEasingType::OUTQUAD: retString= tr("Normal Ease-out"); break;
+    case CameraEasingType::INOUTQUAD: retString= tr("Normal Ease-in - Ease-out"); break;
+    case CameraEasingType::OUTINQUAD: retString= tr("Normal Ease-out - Ease-in"); break;
+    case CameraEasingType::INCUBIC: retString= tr("Quick Ease-in"); break;
+    case CameraEasingType::OUTCUBIC: retString= tr("Quick Ease-out"); break;
+    case CameraEasingType::INOUTCUBIC: retString= tr("Quick Ease-in - Ease-out"); break;
+    case CameraEasingType::OUTINCUBIC: retString= tr("Quick Ease-out - Ease-in"); break;
+    case CameraEasingType::INQUART: retString= tr("Fast Ease-in"); break;
+    case CameraEasingType::OUTQUART: retString= tr("Fast Ease-out"); break;
+    case CameraEasingType::INOUTQUART: retString= tr("Fast Ease-in - Ease-out"); break;
+    case CameraEasingType::OUTINQUART: retString= tr("Fast Ease-out - Ease-in"); break;
+    case CameraEasingType::INQUINT: retString= tr("Faster Ease-in"); break;
+    case CameraEasingType::OUTQUINT: retString= tr("Faster Ease-out"); break;
+    case CameraEasingType::INOUTQUINT: retString= tr("Faster Ease-in - Ease-out"); break;
+    case CameraEasingType::OUTINQUINT: retString= tr("Faster Ease-out - Ease-in"); break;
+    case CameraEasingType::INEXPO: retString= tr("Fastest Ease-in"); break;
+    case CameraEasingType::OUTEXPO: retString= tr("Fastest Ease-out"); break;
+    case CameraEasingType::INOUTEXPO: retString= tr("Fastest Ease-in - Ease-out"); break;
+    case CameraEasingType::OUTINEXPO: retString= tr("Fastest Ease-out - Ease-in"); break;
+    case CameraEasingType::INCIRC: retString= tr("Circle-based  Ease-in"); break;
+    case CameraEasingType::OUTCIRC: retString= tr("LineCircle-based  Ease-outar"); break;
+    case CameraEasingType::INOUTCIRC: retString= tr("Circle-based  Ease-in - Ease-out"); break;
+    case CameraEasingType::OUTINCIRC: retString= tr("Circle-based  Ease-out - Ease-in"); break;
+    case CameraEasingType::OUTELASTIC: retString= tr("Elastic (outElastic)"); break;
+    case CameraEasingType::OUTBACK: retString= tr("Overshoot (outBack)"); break;
+    case CameraEasingType::OUTBOUNCE: retString= tr("Bounce (outBounce)"); break;
+    default: retString= tr("Linear"); break;
     }
 
-    return label->text();
+    return retString;
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, int easing)
