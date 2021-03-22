@@ -156,11 +156,6 @@ private:
     const static int mOffsetY = 20;
     const static int mLayerDetachThreshold = 5;
 
-    QMenu* mEasingMenu = nullptr;
-    QMenu* mInterpolationMenu = nullptr;
-    QMenu* mCameraFieldMenu = nullptr;
-    QMenu* mShowCameraPathMenu = nullptr;
-    QAction* mShowPathAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H
