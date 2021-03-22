@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "cameraeasingtype.h"
 #include "mathutils.h"
 #include <QEasingCurve>
+#include <QLabel>
 
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
@@ -103,6 +104,26 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
                       interpolation(camera1->view.m31(), camera2->view.m31()),
                       interpolation(camera1->view.m32(), camera2->view.m32()));
 }
+
+/*
+    // interpolation
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+
+    auto lerp = [](double f1, double f2, double percent) -> double
+    {
+        return f1 * (1.0 - percent) + f2 * percent;
+    };
+
+    double dx = lerp(camera1->translation().x(), camera2->translation().x(), percent);
+    double dy = lerp(camera1->translation().y(), camera2->translation().y(), percent);
+    double r = lerp(camera1->rotation(), camera2->rotation(), percent);
+    double s = lerp(camera1->scaling(), camera2->scaling(), percent);
+
+    cam->translate(dx, dy);
+    cam->rotate(r);
+    cam->scale(s);
+
+*/
 
 MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance)
 {
@@ -270,6 +291,52 @@ void LayerCamera::setViewRect(QRect newViewRect)
 {
     viewRect = newViewRect;
     emit resolutionChanged();
+}
+
+QString LayerCamera::getInterpolationText(int frame)
+{
+    Camera* camera = getCameraAtFrame(frame);
+    CameraEasingType type = camera->getEasingType();
+    QLabel* label = new QLabel(); // to get a translatable string...
+
+    switch (type)
+    {
+    case CameraEasingType::LINEAR: label->setText(tr("Linear")); break;
+    case CameraEasingType::INSINE: label->setText(tr("Slow Ease-in")); break;
+    case CameraEasingType::OUTSINE: label->setText(tr("Slow  Ease-out")); break;
+    case CameraEasingType::INOUTSINE: label->setText(tr("Slow  Ease-in - Ease-out")); break;
+    case CameraEasingType::OUTINSINE: label->setText(tr("Slow  Ease-out - Ease-in")); break;
+    case CameraEasingType::INQUAD: label->setText(tr("Normal Ease-in")); break;
+    case CameraEasingType::OUTQUAD: label->setText(tr("Normal Ease-out")); break;
+    case CameraEasingType::INOUTQUAD: label->setText(tr("Normal Ease-in - Ease-out")); break;
+    case CameraEasingType::OUTINQUAD: label->setText(tr("Normal Ease-out - Ease-in")); break;
+    case CameraEasingType::INCUBIC: label->setText(tr("Quick Ease-in")); break;
+    case CameraEasingType::OUTCUBIC: label->setText(tr("Quick Ease-out")); break;
+    case CameraEasingType::INOUTCUBIC: label->setText(tr("Quick Ease-in - Ease-out")); break;
+    case CameraEasingType::OUTINCUBIC: label->setText(tr("Quick Ease-out - Ease-in")); break;
+    case CameraEasingType::INQUART: label->setText(tr("Fast Ease-in")); break;
+    case CameraEasingType::OUTQUART: label->setText(tr("Fast Ease-out")); break;
+    case CameraEasingType::INOUTQUART: label->setText(tr("Fast Ease-in - Ease-out")); break;
+    case CameraEasingType::OUTINQUART: label->setText(tr("Fast Ease-out - Ease-in")); break;
+    case CameraEasingType::INQUINT: label->setText(tr("Faster Ease-in")); break;
+    case CameraEasingType::OUTQUINT: label->setText(tr("Faster Ease-out")); break;
+    case CameraEasingType::INOUTQUINT: label->setText(tr("Faster Ease-in - Ease-out")); break;
+    case CameraEasingType::OUTINQUINT: label->setText(tr("Faster Ease-out - Ease-in")); break;
+    case CameraEasingType::INEXPO: label->setText(tr("Fastest Ease-in")); break;
+    case CameraEasingType::OUTEXPO: label->setText(tr("Fastest Ease-out")); break;
+    case CameraEasingType::INOUTEXPO: label->setText(tr("Fastest Ease-in - Ease-out")); break;
+    case CameraEasingType::OUTINEXPO: label->setText(tr("Fastest Ease-out - Ease-in")); break;
+    case CameraEasingType::INCIRC: label->setText(tr("Circle-based  Ease-in")); break;
+    case CameraEasingType::OUTCIRC: label->setText(tr("Circle-based  Ease-out")); break;
+    case CameraEasingType::INOUTCIRC: label->setText(tr("Circle-based  Ease-in - Ease-out")); break;
+    case CameraEasingType::OUTINCIRC: label->setText(tr("Circle-based  Ease-out - Ease-in")); break;
+    case CameraEasingType::OUTELASTIC: label->setText(tr("Elastic (outElastic)")); break;
+    case CameraEasingType::OUTBACK: label->setText(tr("Overshoot (outBack)")); break;
+    case CameraEasingType::OUTBOUNCE: label->setText(tr("Bounce (outBounce)")); break;
+    default: label->setText(""); break;
+    }
+
+    return label->text();
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, int easing)

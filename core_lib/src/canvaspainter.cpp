@@ -809,9 +809,10 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.save();
         DOT_COLOR = cameraLayer->getDotColor();
         QPolygon dots;
+        int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
+        Q_ASSERT(cameraLayer->keyExists(previous));
         if (!cameraLayer->keyExists(mFrameNumber))
         {
-            int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
             int next = cameraLayer->getNextKeyFramePosition(mFrameNumber);
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
             painter.setPen(DOT_COLOR);
@@ -832,25 +833,37 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.drawEllipse(center.x() - DOT_WIDTH/2,
                             center.y() - DOT_WIDTH/2,
                             DOT_WIDTH, DOT_WIDTH);
+        if (!cameraLayer->keyExists(mFrameNumber))
+        {
+            painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
+            painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(previous));
+        }
         painter.restore();
     }
 
-    // Draw polygon
+    // Draw Field polygon
     if (isCameraMode)
     {
         painter.save();
         painter.setWorldMatrixEnabled(true);
+        QPolygon camPolygon = mCamTransform.inverted().mapToPolygon(mCameraRect);
+        // if the current view is narrower than the camera field
+        if (mCameraRect.width() > QLineF(camPolygon.at(0), camPolygon.at(1)).length())
+        {
+            painter.setPen(Qt::red);
+            painter.setBrush(Qt::red);
+            painter.drawEllipse(camPolygon.at(0).x() - 10, camPolygon.at(0).y() - 10, 20, 20);
+        }
+        // if the camera field is rotated more that 90 degrees clock- or counter-clock-wise
+        if (camPolygon.at(0).x() > camPolygon.at(1).x())
+        {
+            painter.setPen(Qt::blue);
+            painter.setBrush(Qt::blue);
+            painter.drawEllipse(camPolygon.at(3).x() - 10, camPolygon.at(3).y() - 10, 20, 20);
+        }
         painter.setPen(QColor(0, 0, 0, 80));
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
-        QPolygon camPolygon = mCamTransform.inverted().mapToPolygon(mCameraRect);
-        QPoint center = QLineF(camPolygon.at(0), camPolygon.at(2)).pointAt(0.5).toPoint();
-
-        painter.drawLine(center.x() - 5, center.y(),
-                         center.x() + 5, center.y());
-        painter.drawLine(center.x(), center.y() -5,
-                         center.x(), center.y() + 5);
-
         painter.drawPolygon(camPolygon);
         int radius = 8;
         int width = radius / 2;

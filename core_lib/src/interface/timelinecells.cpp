@@ -308,7 +308,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     {
         mEasingMenu = new QMenu();
         mInterpolationMenu = new QMenu();
-        mInterpolationMenu = mEasingMenu->addMenu(tr("Interpolation frame %1 to %2").arg( QString::number(frameNumber), QString::number(nextFrame)));
+        mInterpolationMenu = mEasingMenu->addMenu(tr("Camera interpolation frame %1 to %2").arg( QString::number(frameNumber), QString::number(nextFrame)));
 
         QMenu* subSine  = mInterpolationMenu->addMenu(tr("Slow"));
         QMenu* subQuad  = mInterpolationMenu->addMenu(tr("Normal"));
@@ -366,7 +366,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mCameraFieldMenu->addSeparator();
         mCameraFieldMenu->addAction(tr("Hold to next"), [=] { this->setCameraReset(CameraFieldOption::HOLD_FRAME, frameNumber); });
 
-        mShowCameraPathMenu = mEasingMenu->addMenu(tr("Show camera path"));
+        mShowCameraPathMenu = mEasingMenu->addMenu(tr("Camera path"));
         mShowPathAction = mShowCameraPathMenu->addAction(tr("Toggle show camera path"), [=] { this->toggleShowCameraPath(); });
         mShowCameraPathMenu->addSeparator();
         mShowCameraPathMenu->addAction(tr("Dot color: Red"), [=] { this->setDotColor(DotColor::RED_DOT); });
@@ -387,16 +387,16 @@ void TimeLineCells::showCameraMenu(QPoint pos)
                 s = (s + (" %1,")).arg(QString::number(pos));
             }
             s.chop(1);
-            mInterpolationMenu->setTitle(tr("Interpolate to frames %1").arg(s));
+            mInterpolationMenu->setTitle(tr("Camera interpolations to frames %1").arg(s));
         }
         else
         {
-            mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
+            mInterpolationMenu->setTitle(tr("Camera interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
         }
     }
     else if(curLayer->keyExists(frameNumber))
     {
-        mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
+        mInterpolationMenu->setTitle(tr("Camera interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
     }
     else
     {

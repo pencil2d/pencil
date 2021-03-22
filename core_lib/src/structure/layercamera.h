@@ -54,6 +54,7 @@ public:
     bool getShowPath() { return mShowPath; }
     void setDotColor(QColor color) { dotColor = color ; }
     QColor const getDotColor() { return dotColor; }
+    QString getInterpolationText(int frame);
 
 signals:
     void resolutionChanged();
