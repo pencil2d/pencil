@@ -928,28 +928,35 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                     // Check if we are clicking on a non selected frame
                     else if (!currentLayer->isFrameSelected(frameNumber))
                     {
-                        // If it is the case, we select it
+                        // If it is the case, we select it if it is the left button...
                         mCanBoxSelect = true;
                         mClickSelecting = true;
+                        if (event->button() == Qt::LeftButton)
+                        {
+
+                            if (event->modifiers() == Qt::ControlModifier)
+                            {
+                                // Add/remove from already selected
+                                currentLayer->toggleFrameSelected(frameNumber, true);
+                            }
+                            else if (event->modifiers() == Qt::ShiftModifier)
+                            {
+                                // Select a range from the last selected
+                                currentLayer->extendSelectionTo(frameNumber);
+                            }
+                            else if (event->button() == Qt::LeftButton)
+                            {
+                                // Only select if left button clicked
+                                currentLayer->toggleFrameSelected(frameNumber, false);
+                            }
+                        }
+
+                        // ... or we show the camera context menu, if it is the right button
                         if (event->button() == Qt::RightButton)
                         {
                             showCameraMenu(event->pos());
                         }
 
-                        if (event->modifiers() == Qt::ControlModifier)
-                        {
-                            // Add/remove from already selected
-                            currentLayer->toggleFrameSelected(frameNumber, true);
-                        }
-                        else if (event->modifiers() == Qt::ShiftModifier)
-                        {
-                            // Select a range from the last selected
-                            currentLayer->extendSelectionTo(frameNumber);
-                        }
-                        else
-                        {
-                            currentLayer->toggleFrameSelected(frameNumber, false);
-                        }
                     }
                     else
                     {
