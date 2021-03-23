@@ -355,7 +355,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     if (layer->getShowPath() == false)
         cameraPathMenu->addAction(tr("Show camera path"), [=] { this->toggleShowCameraPath(); });
     else
-        cameraPathMenu->addAction(tr("Hide show camera path"), [=] { this->toggleShowCameraPath(); });
+        cameraPathMenu->addAction(tr("Hide  camera path"), [=] { this->toggleShowCameraPath(); });
     cameraPathMenu->addSeparator();
     cameraPathMenu->addAction(tr("Dot color: Red"), [=] { this->setDotColor(DotColor::RED_DOT); });
     cameraPathMenu->addAction(tr("Dot color: Green"), [=] { this->setDotColor(DotColor::GREEN_DOT); });

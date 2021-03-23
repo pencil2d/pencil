@@ -851,24 +851,27 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.setWorldMatrixEnabled(true);
         QPolygon camPolygon = mCamTransform.inverted().mapToPolygon(mCameraRect);
         // if the current view is narrower than the camera field
+        int silentW = mCameraRect.width() / 40; // width of circle is 2.5 % of output size
         if (mCameraRect.width() > QLineF(camPolygon.at(0), camPolygon.at(1)).length())
         {
             painter.setPen(Qt::red);
             painter.setBrush(Qt::red);
-            painter.drawEllipse(camPolygon.at(0).x() - 10, camPolygon.at(0).y() - 10, 20, 20);
+            painter.drawEllipse(camPolygon.at(0).x() - silentW/2, camPolygon.at(0).y() - silentW/2, silentW, silentW);
         }
         // if the camera field is rotated more that 90 degrees clock- or counter-clock-wise
         if (camPolygon.at(0).x() > camPolygon.at(1).x())
         {
             painter.setPen(Qt::blue);
             painter.setBrush(Qt::blue);
-            painter.drawEllipse(camPolygon.at(3).x() - 10, camPolygon.at(3).y() - 10, 20, 20);
+            painter.drawEllipse(camPolygon.at(0).x() - silentW/4, camPolygon.at(0).y() - silentW/4, silentW/2, silentW/2);
         }
         painter.setPen(QColor(0, 0, 0, 80));
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         painter.drawPolygon(camPolygon);
-        int radius = 8;
+
+        painter.setBrush(Qt::black);
+        int radius = silentW / 2;
         int width = radius / 2;
         const QRectF topRightCorner = QRectF(camPolygon.at(1).x() - width,
                                                 camPolygon.at(1).y() - width,
