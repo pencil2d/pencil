@@ -33,7 +33,7 @@ public:
     explicit LayerCamera(Object* object);
     ~LayerCamera() override;
 
-    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, int easing);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, int easing, QPointF midPoint);
 
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -66,11 +66,14 @@ protected:
 private:
     void linearInterpolateTransform(Camera*);
     qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
+    void initCameraPath(int frame);
+    void setMidPoint(int frame);
     QPointF mOffsetPoint = QPointF();
 
     int mFieldW = 800;
     int mFieldH = 600;
     QRect viewRect;
+
     bool mShowPath = false;
     QColor dotColor = Qt::red;
 };
