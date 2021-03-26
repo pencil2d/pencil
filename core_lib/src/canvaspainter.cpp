@@ -814,6 +814,11 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         if (!cameraLayer->keyExists(mFrameNumber))
         {
             int next = cameraLayer->getNextKeyFramePosition(mFrameNumber);
+            QPoint center = -cameraLayer->getPathMidPont(previous);
+            painter.setBrush(Qt::white);
+            painter.drawRect(center.x() - DOT_WIDTH/2,
+                                center.y() - DOT_WIDTH/2,
+                                DOT_WIDTH, DOT_WIDTH);
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
             painter.setPen(DOT_COLOR);
             painter.setBrush(DOT_COLOR);
@@ -826,6 +831,8 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                     center.y() - DOT_WIDTH/2,
                                     DOT_WIDTH, DOT_WIDTH);
             }
+            painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
+            painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(previous));
         }
         if (DOT_COLOR != Qt::white)
             painter.setBrush(Qt::white);
@@ -836,11 +843,6 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.drawEllipse(center.x() - DOT_WIDTH/2,
                             center.y() - DOT_WIDTH/2,
                             DOT_WIDTH, DOT_WIDTH);
-        if (!cameraLayer->keyExists(mFrameNumber))
-        {
-            painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-            painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(previous));
-        }
         painter.restore();
     }
 

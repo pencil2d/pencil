@@ -101,6 +101,7 @@ private slots:
     void setCameraEasing(CameraEasingType type, int frame);
     void setCameraReset(CameraFieldOption type, int frameNumber);
     void toggleShowCameraPath();
+    void resetCameraPath(int frameNumber);
     void setDotColor(DotColor color);
 
 private:

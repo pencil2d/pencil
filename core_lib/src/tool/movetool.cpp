@@ -33,7 +33,7 @@ GNU General Public License for more details.
 #include "mathutils.h"
 #include "vectorimage.h"
 #include <QDebug>
-
+#include "camera.h"
 MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
 }
@@ -64,8 +64,7 @@ QCursor MoveTool::cursor()
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::CAMERA &&
-        layer->keyExists(mEditor->currentFrame()))
+    if (layer->type() == Layer::CAMERA && layer->keyExists(mEditor->currentFrame()))
     {
         LayerCamera* cam = static_cast<LayerCamera*>(layer);
         mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
@@ -74,6 +73,17 @@ QCursor MoveTool::cursor()
         mCamMoveMode = mode;
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
+    else if (layer->type() == Layer::CAMERA)
+    {
+        LayerCamera* cam = static_cast<LayerCamera*>(layer);
+        mode = cam->getMoveModeForCameraPath(mEditor->currentFrame(),
+                                             -getCurrentPoint(),
+                                             mEditor->select()->selectionTolerance() * mEditor->view()->scaling());
+        mCamPathMoveMode = mode;
+        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
+
+
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
 
@@ -129,6 +139,11 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         {
             transformCamera();
         }
+        else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
+                 mCamPathMoveMode == MoveMode::MIDDLE)
+        {
+            transformCameraPath();
+        }
     }
     else
     {
@@ -150,6 +165,14 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
              mCurrentLayer->keyExists(mEditor->currentFrame()))
     {
         transformCamera();
+        mEditor->view()->updateViewTransforms();
+        mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
+        return;
+    }
+    else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
+             mCamPathMoveMode == MoveMode::MIDDLE)
+    {
+        transformCameraPath();
         mEditor->view()->updateViewTransforms();
         mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
         return;
@@ -328,6 +351,13 @@ void MoveTool::transformCamera()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
     layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mEditor->currentFrame());
+    mScribbleArea->invalidateLayerPixmapCache();
+}
+
+void MoveTool::transformCameraPath()
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
+    layer->dragCameraPath(mCamPathMoveMode, getCurrentPoint(), mEditor->currentFrame());
     mScribbleArea->invalidateLayerPixmapCache();
 }
 

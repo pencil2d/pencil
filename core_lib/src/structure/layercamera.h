@@ -42,7 +42,10 @@ public:
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
     QTransform getViewAtFrame(int frameNumber) const;
     MoveMode getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance);
+    MoveMode getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance);
+
     void transformCameraView(MoveMode mode, QPointF point, int frameNumber);
+    void dragCameraPath(MoveMode mode, QPointF point, int frameNumber);
     void setOffsetPoint(QPointF offset) { mOffsetPoint = offset; }
 
     QRect getViewRect();
@@ -52,6 +55,7 @@ public:
     void showContextMenu(QPoint point);
     void setShowPath(bool showPath) { mShowPath = showPath; }
     bool getShowPath() { return mShowPath; }
+    QPoint getPathMidPont(int frame);
     void setDotColor(QColor color) { dotColor = color ; }
     QColor const getDotColor() { return dotColor; }
     QString getInterpolationText(int frame);

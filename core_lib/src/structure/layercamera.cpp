@@ -23,7 +23,8 @@ GNU General Public License for more details.
 #include "mathutils.h"
 #include <QEasingCurve>
 #include <QPainterPath>
-#include <QDebug>
+
+
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
     setName(tr("Camera Layer"));
@@ -135,6 +136,20 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
     return MoveMode::NONE;
 }
 
+MoveMode LayerCamera::getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance)
+{
+    Camera* camera = static_cast<Camera*>(getKeyFrameAt(getPreviousKeyFramePosition(frameNumber)));
+    Q_ASSERT(camera);
+
+    QPainterPath path = camera->getCameraPath();
+
+    if (QLineF(path.pointAtPercent(0.5), point).length() < tolerance)
+    {
+        return MoveMode::MIDDLE;
+    }
+    return MoveMode::NONE;
+}
+
 void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNumber)
 {
     QPolygon curPoly = getViewAtFrame(frameNumber).inverted().mapToPolygon(viewRect);
@@ -168,6 +183,31 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     setOffsetPoint(point);
     curCam->updateViewTransform();
     curCam->modification();
+}
+
+void LayerCamera::dragCameraPath(MoveMode mode, QPointF point, int frameNumber)
+{
+    Camera* camera1 = getCameraAtFrame(getPreviousKeyFramePosition(frameNumber));
+    Q_ASSERT(camera1);
+    Camera* camera2 = getCameraAtFrame(getNextKeyFramePosition(frameNumber));
+    Q_ASSERT(camera2);
+
+    QPointF start = camera1->getCameraPath().pointAtPercent(0);
+    QPointF middle = -mOffsetPoint;
+    QPointF end = camera1->getCameraPath().pointAtPercent(1);
+    QPainterPath path(start);
+     switch (mode)
+    {
+    case MoveMode::MIDDLE:
+        path.cubicTo(middle - (point - mOffsetPoint), middle - (point - mOffsetPoint), end);
+        camera1->setCameraPath(path);
+        camera1->updateViewTransform();
+        camera1->modification();
+        break;
+    default:
+        break;
+    }
+    setOffsetPoint(point);
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)
@@ -274,17 +314,15 @@ void LayerCamera::initCameraPath(int frame)
     QPainterPath path(initCamera->translation());
     path.cubicTo(initCamera->getPathMidPoint(), initCamera->getPathMidPoint(), nextCamera->translation());
     initCamera->setCameraPath(path);
-    qDebug() << "init path: " << initCamera->getCameraPath();
 }
 
-// Only for old files missing midPoint information
+// Only to be used for old files, missing midPoint information
 void LayerCamera::setMidPoint(int frame)
 {
     Q_ASSERT(keyExists(frame));
 
     Camera* initCamera = static_cast<Camera*>(getKeyFrameAt(frame));
     int next = getNextKeyFramePosition(frame);
-    qDebug() << frame << " * " <<next;
     if (frame == next || next == 0)
     {
         initCamera->setPathMidPoint(initCamera->translation());
@@ -310,6 +348,16 @@ void LayerCamera::setViewRect(QRect newViewRect)
 {
     viewRect = newViewRect;
     emit resolutionChanged();
+}
+
+QPoint LayerCamera::getPathMidPont(int frame)
+{
+    Q_ASSERT(keyExists(frame));
+
+    Camera* camera = getCameraAtFrame(frame);
+    QPainterPath path = camera->getCameraPath();
+
+    return path.pointAtPercent(0.5).toPoint();
 }
 
 QString LayerCamera::getInterpolationText(int frame)

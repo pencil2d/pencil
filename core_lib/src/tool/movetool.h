@@ -58,6 +58,7 @@ private:
     void transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void storeClosestVectorCurve(Layer* layer);
     void transformCamera();
+    void transformCameraPath();
 
     void setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
     void setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
@@ -67,6 +68,7 @@ private:
     Layer* currentPaintableLayer();
 
     MoveMode mCamMoveMode = MoveMode::NONE;
+    MoveMode mCamPathMoveMode = MoveMode::NONE;
 
     QPointF anchorOriginPoint;
     Layer* mCurrentLayer = nullptr;

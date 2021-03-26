@@ -161,6 +161,23 @@ void TimeLineCells::toggleShowCameraPath()
     updateContent();
 }
 
+void TimeLineCells::resetCameraPath(int frameNumber)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+    Q_ASSERT(layer->type() == Layer::CAMERA);
+
+    Camera* camera = static_cast<Camera*>(layer->getKeyFrameAt(frameNumber));
+    QPointF start = camera->getCameraPath().pointAtPercent(0);
+    QPointF end = camera->getCameraPath().pointAtPercent(1);
+    QPointF midPoint = QLineF(start, end).pointAt(0.5);
+    QPainterPath path(start);
+    path.cubicTo(midPoint, midPoint, end);
+    camera->setCameraPath(path);
+
+    mEditor->scrubTo(mEditor->currentFrame());
+    updateContent();
+}
+
 void TimeLineCells::setDotColor(DotColor color)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
@@ -362,6 +379,8 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     cameraPathMenu->addAction(tr("Dot color: Blue"), [=] { this->setDotColor(DotColor::BLUE_DOT); });
     cameraPathMenu->addAction(tr("Dot color: Black"), [=] { this->setDotColor(DotColor::BLACK_DOT); });
     cameraPathMenu->addAction(tr("Dot color: White"), [=] { this->setDotColor(DotColor::WHITE_DOT); });
+    cameraPathMenu->addSeparator();
+    cameraPathMenu->addAction(tr("Reset camera path"), [=] { this->resetCameraPath(frameNumber); });
 
     cameraMenu->exec(pos);
     mEditor->scrubTo(mEditor->currentFrame());
