@@ -816,9 +816,9 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
             int next = cameraLayer->getNextKeyFramePosition(mFrameNumber);
             QPoint center = -cameraLayer->getPathMidPont(previous);
             painter.setBrush(Qt::white);
-            painter.drawRect(center.x() - DOT_WIDTH/2,
-                                center.y() - DOT_WIDTH/2,
-                                DOT_WIDTH, DOT_WIDTH);
+            painter.drawRect(center.x() - HANDLE_WIDTH/2,
+                                center.y() - HANDLE_WIDTH/2,
+                                HANDLE_WIDTH, HANDLE_WIDTH);
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
             painter.setPen(DOT_COLOR);
             painter.setBrush(DOT_COLOR);
