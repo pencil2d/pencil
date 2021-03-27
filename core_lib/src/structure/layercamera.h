@@ -59,6 +59,7 @@ public:
     void setDotColor(QColor color) { dotColor = color ; }
     QColor const getDotColor() { return dotColor; }
     QString getInterpolationText(int frame);
+    void updateCameraPath(int frame);
 
 signals:
     void resolutionChanged();

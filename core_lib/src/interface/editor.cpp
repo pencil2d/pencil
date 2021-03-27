@@ -1023,6 +1023,11 @@ void Editor::removeKey()
 
     deselectAll();
     layer->removeKeyFrame(currentFrame());
+    if (layer->type() == Layer::CAMERA)
+    {
+        LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
+        camLayer->updateCameraPath(currentFrame());
+    }
 
     scrubBackward();
     layers()->notifyAnimationLengthChanged();

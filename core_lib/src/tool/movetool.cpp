@@ -32,8 +32,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "mathutils.h"
 #include "vectorimage.h"
-#include <QDebug>
-#include "camera.h"
+
 MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
 }
