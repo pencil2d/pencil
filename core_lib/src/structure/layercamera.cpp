@@ -61,9 +61,14 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
         return QTransform();
     }
 
+    // IMO: There should always be a keyframe on frame 1 on the Camera layer! (David)
+    if (frameNumber < firstKeyFramePosition())
+    {
+        frameNumber = firstKeyFramePosition();
+    }
+
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
     camera1->setEasingType(camera1->getEasingType());
-
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
     camera2->setEasingType(camera2->getEasingType());
@@ -345,13 +350,15 @@ void LayerCamera::updateCameraPath(int frame)
         camera = getCameraAtFrame(getNextKeyFramePosition(frame));
     }
 
-    Camera* camPrevious = static_cast<Camera*>(getCameraAtFrame(getPreviousKeyFramePosition(frame)));
-    // update camera path from previous frame
-    QPainterPath path(camPrevious->translation());
-    QPoint midPoint = QLineF(camPrevious->translation(), camera->translation()).pointAt(0.5).toPoint();
-    path.cubicTo(midPoint, midPoint, camera->translation());
-    camPrevious->setCameraPath(path);
-
+    if (getPreviousKeyFramePosition(frame) != frame)
+    {
+        Camera* camPrevious = static_cast<Camera*>(getCameraAtFrame(getPreviousKeyFramePosition(frame)));
+        // update camera path from previous frame
+        QPainterPath path(camPrevious->translation());
+        QPoint midPoint = QLineF(camPrevious->translation(), camera->translation()).pointAt(0.5).toPoint();
+        path.cubicTo(midPoint, midPoint, camera->translation());
+        camPrevious->setCameraPath(path);
+    }
 }
 
 // Only to be used for old files, missing midPoint information
