@@ -48,6 +48,7 @@ void OnionSkinWidget::initUI()
     // flow layout to reduce the minimum width
     FlowLayout *opacityLayout = new FlowLayout;
     opacityLayout->setAlignment(Qt::AlignHCenter);
+    opacityLayout->setContentsMargins(0, 6, 0, 6);
     ui->opacityGroup->layout()->removeWidget(ui->minOpacityGroup);
     ui->opacityGroup->layout()->removeWidget(ui->maxOpacityGroup);
     opacityLayout->addWidget(ui->minOpacityGroup);

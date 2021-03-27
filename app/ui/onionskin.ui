@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>255</width>
-    <height>401</height>
+    <width>213</width>
+    <height>382</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -76,8 +76,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>255</width>
-         <height>380</height>
+         <width>213</width>
+         <height>361</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -108,8 +108,14 @@
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
            </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
            <property name="topMargin">
             <number>6</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
            </property>
            <property name="bottomMargin">
             <number>6</number>
@@ -212,8 +218,14 @@
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
            </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
            <property name="topMargin">
             <number>6</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
            </property>
            <property name="bottomMargin">
             <number>6</number>
@@ -323,10 +335,16 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <property name="spacing">
-            <number>10</number>
+            <number>6</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
            </property>
            <property name="topMargin">
             <number>6</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
            </property>
            <property name="bottomMargin">
             <number>6</number>
@@ -470,6 +488,12 @@
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
          </spacer>
         </item>
