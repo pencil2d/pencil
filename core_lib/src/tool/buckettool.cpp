@@ -47,6 +47,7 @@ void BucketTool::loadSettings()
 {
     mPropertyEnabled[TOLERANCE] = true;
     mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[FILL_MODE] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -54,6 +55,7 @@ void BucketTool::loadSettings()
     properties.feather = 10;
     properties.stabilizerLevel = StabilizationLevel::NONE;
     properties.useAA = DISABLED;
+    properties.fillMode = settings.value("fillMode", 0).toInt();
     properties.tolerance = settings.value("tolerance", 32.0).toDouble();
 }
 
@@ -61,6 +63,7 @@ void BucketTool::resetToDefault()
 {
     setWidth(4.0);
     setTolerance(32.0);
+    setFillMode(0);
 }
 
 QCursor BucketTool::cursor()
@@ -79,6 +82,17 @@ QCursor BucketTool::cursor()
     }
 }
 
+void BucketTool::setTolerance(const int tolerance)
+{
+    // Set current property
+    properties.tolerance = tolerance;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("tolerance", tolerance);
+    settings.sync();
+}
+
 /**
  * @brief BrushTool::setWidth
  * @param width
@@ -95,14 +109,14 @@ void BucketTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void BucketTool::setTolerance(const int tolerance)
+void BucketTool::setFillMode(int mode)
 {
     // Set current property
-    properties.tolerance = tolerance;
+    properties.fillMode = mode;
 
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("tolerance", tolerance);
+    settings.setValue("fillMode", mode);
     settings.sync();
 }
 
@@ -173,7 +187,8 @@ void BucketTool::paintBitmap(Layer* layer)
                            cameraRect,
                            point,
                            qPremultiply(mEditor->color()->frontColor().rgba()),
-                           properties.tolerance);
+                           properties.tolerance,
+                           properties.fillMode);
 
     mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
 }
