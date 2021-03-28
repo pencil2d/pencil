@@ -55,7 +55,7 @@ public:
     void showContextMenu(QPoint point);
     void setShowPath(bool showPath) { mShowPath = showPath; }
     bool getShowPath() { return mShowPath; }
-    QPoint getPathMidPont(int frame);
+    QPointF getPathMidPont(int frame);
     void setDotColor(QColor color) { dotColor = color ; }
     QColor const getDotColor() { return dotColor; }
     QString getInterpolationText(int frame);

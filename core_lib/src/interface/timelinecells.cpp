@@ -143,6 +143,7 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     }
     camera->updateViewTransform();
     camera->modification();
+    mEditor->backup(mEditor->currentLayerIndex(), frameNumber, tr("Camera Field"));
     mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }

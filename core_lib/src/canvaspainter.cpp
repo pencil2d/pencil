@@ -803,39 +803,42 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     mCamTransform = cameraLayer->getViewAtFrame(mFrameNumber);
     mCameraRect = cameraLayer->getViewRect();
 
-    // Draw camera path
+    // Draw camera paths
     if (cameraLayer->getShowPath() && !mOptions.isPlaying)
     {
         painter.save();
         DOT_COLOR = cameraLayer->getDotColor();
-        int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
-        Q_ASSERT(cameraLayer->keyExists(previous));
-        if (!cameraLayer->keyExists(mFrameNumber))
+        int max = cameraLayer->getMaxKeyFramePosition();
+        for (int frame = 1; frame <= max; frame++)
         {
-            int next = cameraLayer->getNextKeyFramePosition(mFrameNumber);
-            QPoint center = -cameraLayer->getPathMidPont(previous);
-            painter.setBrush(Qt::white);
-            painter.drawRect(center.x() - HANDLE_WIDTH/2,
-                                center.y() - HANDLE_WIDTH/2,
-                                HANDLE_WIDTH, HANDLE_WIDTH);
-            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-            painter.setPen(DOT_COLOR);
-            painter.setBrush(DOT_COLOR);
-            for (int i = previous; i <= next; i++)
+            if (cameraLayer->keyExists(frame))
             {
-                QTransform transform = cameraLayer->getViewAtFrame(i);
-                QPointF center = transform.inverted().map(QRectF(mCameraRect).center());
+                QPointF center = -cameraLayer->getPathMidPont(frame);
+                painter.setBrush(Qt::white);
+                painter.drawRect(center.x() - HANDLE_WIDTH/2,
+                                 center.y() - HANDLE_WIDTH/2,
+                                 HANDLE_WIDTH, HANDLE_WIDTH);
+                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                painter.setPen(DOT_COLOR);
+                painter.setBrush(DOT_COLOR);
+                int next = cameraLayer->getNextKeyFramePosition(frame);
+                for (int j = frame; j <= next ; j++)
+                {
+                    QTransform transform = cameraLayer->getViewAtFrame(j);
+                    QPointF center = transform.inverted().map(QRectF(mCameraRect).center());
+                    painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
+                }
+                painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
+                painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(frame));
+
+                if (DOT_COLOR != Qt::white)
+                    painter.setBrush(Qt::white);
+                else
+                    painter.setBrush(Qt::black);
+                center = cameraLayer->getViewAtFrame(frame).inverted().map(QRectF(mCameraRect).center());
                 painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
             }
-            painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-            painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(previous));
         }
-        if (DOT_COLOR != Qt::white)
-            painter.setBrush(Qt::white);
-        else
-            painter.setBrush(Qt::black);
-        QPointF center = cameraLayer->getViewAtFrame(mFrameNumber).inverted().map(QRectF(mCameraRect).center());
-        painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
         painter.restore();
     }
 
@@ -844,29 +847,25 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     {
         painter.save();
         painter.setWorldMatrixEnabled(true);
-        QPolygon camPolygon = mCamTransform.inverted().mapToPolygon(mCameraRect);
+        QPolygonF camPolygon = mCamTransform.inverted().mapToPolygon(mCameraRect);
         // if the current view is narrower than the camera field
-        int silentW = mCameraRect.width() / 40; // width of circle is 2.5 % of output size
+        painter.setBrush(Qt::NoBrush);
         if (mCameraRect.width() > QLineF(camPolygon.at(0), camPolygon.at(1)).length())
         {
             painter.setPen(Qt::red);
-            painter.setBrush(Qt::red);
-            painter.drawEllipse(camPolygon.at(0).x() - silentW/2, camPolygon.at(0).y() - silentW/2, silentW, silentW);
+            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         }
-        // if the camera field is rotated more that 90 degrees clock- or counter-clock-wise
-        if (camPolygon.at(0).x() > camPolygon.at(1).x())
+        else
         {
-            painter.setPen(Qt::blue);
-            painter.setBrush(Qt::blue);
-            painter.drawEllipse(camPolygon.at(0).x() - silentW/4, camPolygon.at(0).y() - silentW/4, silentW/2, silentW/2);
+            painter.setPen(QColor(0, 0, 0, 80));
+            painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         }
-        painter.setPen(QColor(0, 0, 0, 80));
-        painter.setBrush(Qt::NoBrush);
-        painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         painter.drawPolygon(camPolygon);
 
         painter.setBrush(Qt::black);
-        int radius = silentW / 2;
+        painter.setCompositionMode(QPainter::RasterOp_NotDestination);
+        int handleW = mCameraRect.width() / 40; // width of handles is 2.5 % of output size
+        int radius = handleW / 2;
         int width = radius / 2;
         const QRectF topRightCorner = QRectF(camPolygon.at(1).x() - width,
                                                 camPolygon.at(1).y() - width,
@@ -877,8 +876,17 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                                 camPolygon.at(2).y() - width,
                                                 radius, radius);
         painter.drawRect(bottomRightCorner);
+        const QRectF topLeftCorner = QRectF(camPolygon.at(0).x() - width,
+                                                camPolygon.at(0).y() - width,
+                                                radius, radius);
+        painter.drawRect(topLeftCorner);
 
-        QPoint rotatePoint = QLineF(camPolygon.at(1), camPolygon.at(2)).pointAt(0.5).toPoint();
+        const QRectF bottomLeftCorner = QRectF(camPolygon.at(3).x() - width,
+                                                camPolygon.at(3).y() - width,
+                                                radius, radius);
+        painter.drawRect(bottomLeftCorner);
+
+        QPointF rotatePoint = QLineF(camPolygon.at(1), camPolygon.at(2)).pointAt(0.5);
         const QRectF rightSideCircle= QRectF(rotatePoint.x() - width,
                                              rotatePoint.y() - width,
                                              radius, radius);

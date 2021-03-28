@@ -122,6 +122,10 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
 {
     QTransform curCam = getViewAtFrame(frameNumber);
     QPolygon camPoly = curCam.inverted().mapToPolygon(viewRect);
+    if (QLineF(point, camPoly.at(0)).length() < tolerance)
+    {
+        return MoveMode::TOPLEFT;
+    }
     if (QLineF(point, camPoly.at(1)).length() < tolerance)
     {
         return MoveMode::TOPRIGHT;
@@ -129,6 +133,10 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
     if (QLineF(point, camPoly.at(2)).length() < tolerance)
     {
         return MoveMode::BOTTOMRIGHT;
+    }
+    if (QLineF(point, camPoly.at(3)).length() < tolerance)
+    {
+        return MoveMode::BOTTOMLEFT;
     }
     else if (QLineF(point, QPoint(camPoly.at(1) + (camPoly.at(2) - camPoly.at(1)) / 2)).length() < tolerance)
     {
@@ -168,12 +176,20 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     case MoveMode::CENTER:
         curCam->translate(curCam->translation() - (point - mOffsetPoint));
         break;
+    case MoveMode::TOPLEFT:
+        lineOld = QLineF(curCenter, curPoly.at(0));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
     case MoveMode::TOPRIGHT:
         lineOld = QLineF(curCenter, curPoly.at(1));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
     case MoveMode::BOTTOMRIGHT:
         lineOld = QLineF(curCenter, curPoly.at(2));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
+    case MoveMode::BOTTOMLEFT:
+        lineOld = QLineF(curCenter, curPoly.at(3));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
     case MoveMode::ROTATION:
@@ -395,14 +411,14 @@ void LayerCamera::setViewRect(QRect newViewRect)
     emit resolutionChanged();
 }
 
-QPoint LayerCamera::getPathMidPont(int frame)
+QPointF LayerCamera::getPathMidPont(int frame)
 {
     Q_ASSERT(keyExists(frame));
 
     Camera* camera = getCameraAtFrame(frame);
     QPainterPath path = camera->getCameraPath();
 
-    return path.pointAtPercent(0.5).toPoint();
+    return path.pointAtPercent(0.5);
 }
 
 QString LayerCamera::getInterpolationText(int frame)
