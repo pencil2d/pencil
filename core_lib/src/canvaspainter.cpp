@@ -808,7 +808,6 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     {
         painter.save();
         DOT_COLOR = cameraLayer->getDotColor();
-        QPolygon dots;
         int previous = cameraLayer->getPreviousKeyFramePosition(mFrameNumber);
         Q_ASSERT(cameraLayer->keyExists(previous));
         if (!cameraLayer->keyExists(mFrameNumber))
@@ -825,11 +824,8 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
             for (int i = previous; i <= next; i++)
             {
                 QTransform transform = cameraLayer->getViewAtFrame(i);
-                dots = transform.inverted().mapToPolygon(mCameraRect);
-                QPoint center = QLineF(dots.at(0), dots.at(2)).pointAt(0.5).toPoint();
-                painter.drawEllipse(center.x() - DOT_WIDTH/2,
-                                    center.y() - DOT_WIDTH/2,
-                                    DOT_WIDTH, DOT_WIDTH);
+                QPointF center = transform.inverted().map(QRectF(mCameraRect).center());
+                painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
             }
             painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
             painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(previous));
@@ -838,11 +834,8 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
             painter.setBrush(Qt::white);
         else
             painter.setBrush(Qt::black);
-        dots = cameraLayer->getViewAtFrame(mFrameNumber).inverted().mapToPolygon(mCameraRect);
-        QPoint center = QLineF(dots.at(0), dots.at(2)).pointAt(0.5).toPoint();
-        painter.drawEllipse(center.x() - DOT_WIDTH/2,
-                            center.y() - DOT_WIDTH/2,
-                            DOT_WIDTH, DOT_WIDTH);
+        QPointF center = cameraLayer->getViewAtFrame(mFrameNumber).inverted().map(QRectF(mCameraRect).center());
+        painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
         painter.restore();
     }
 
