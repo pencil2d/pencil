@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -111,10 +109,6 @@
         <translation>Zavádíte spoustu snímků. Toto může chvíli trvat. Opravdu chcete pokračovat?</translation>
     </message>
     <message>
-        <source>Importing movie audio...</source>
-        <translation type="vanished">Zavádí se zvuk obrazového záznamu...</translation>
-    </message>
-    <message>
         <location filename="../app/src/actioncommands.cpp" line="198"/>
         <source>Importing sound...</source>
         <translation>Zavádí se zvuk...</translation>
@@ -175,11 +169,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="738"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete layer: %1?</source>
-        <translation type="vanished">Opravdu chcete smazat vrstvu: %1?</translation>
+        <translation>Opravdu chcete smazat vrstvu: %1? Toto nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="747"/>
@@ -315,13 +305,13 @@
         <location filename="../app/src/checkupdatesdialog.cpp" line="131"/>
         <source>Network response is empty</source>
         <comment>error msg of check-for-update</comment>
-        <translation type="unfinished"></translation>
+        <translation>Síťová odpověď je prázdná</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="140"/>
         <source>Couldn&apos;t retrieve the version information</source>
         <comment>error msg of check-for-update</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se získat informaci o verzi</translation>
     </message>
     <message>
         <location filename="../app/src/checkupdatesdialog.cpp" line="176"/>
@@ -363,29 +353,29 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="52"/>
         <source>H</source>
-        <translation type="unfinished"></translation>
+        <translation>H</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="59"/>
         <source>S</source>
-        <translation type="unfinished"></translation>
+        <translation>S</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="66"/>
         <source>V</source>
-        <translation type="unfinished"></translation>
+        <translation>V</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="92"/>
         <source>°</source>
-        <translation type="unfinished"></translation>
+        <translation> °</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="102"/>
         <location filename="../app/ui/colorinspector.ui" line="112"/>
         <location filename="../app/ui/colorinspector.ui" line="122"/>
         <source>%</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="133"/>
@@ -563,7 +553,7 @@
     <message>
         <location filename="../app/src/colorwheel.cpp" line="30"/>
         <source>Color Wheel</source>
-        <comment>Color Wheel&apos;s window title</comment>
+        <comment>Color Wheel's window title</comment>
         <translation>Kolo barev</translation>
     </message>
 </context>
@@ -572,55 +562,55 @@
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="54"/>
         <source>Error: No input file specified.</source>
-        <translation type="unfinished">Chyba: Nestanoven vstupní soubor.</translation>
+        <translation>Chyba: Nestanoven vstupní soubor.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="60"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
-        <translation type="unfinished">Chyba: Vstupní soubor v &apos;%1&apos; neexistuje</translation>
+        <translation>Chyba: Vstupní soubor v &apos;%1&apos; neexistuje</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="65"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation type="unfinished">Chyba: Vstupní cesta &apos;%1&apos; není soubor</translation>
+        <translation>Chyba: Vstupní cesta &apos;%1&apos; není soubor</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="78"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation type="unfinished">Varování: Daná kamerová vrstva %1 nebyla nalezena. Přehlíží se.</translation>
+        <translation>Varování: Daná kamerová vrstva %1 nebyla nalezena. Přehlíží se.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="109"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished">Varování: Výstupní formát není stanoven nebo není podporován. Používá se PNG.</translation>
+        <translation>Varování: Výstupní formát není stanoven nebo není podporován. Používá se PNG.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="134"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished">Varování: Průhlednost není v současnosti v souborech s obrazovým záznamem podporována.</translation>
+        <translation>Varování: Průhlednost není v současnosti v souborech s obrazovým záznamem podporována.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="137"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished">Vyvádí se obrazový záznam...</translation>
+        <translation>Vyvádí se obrazový záznam...</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="149"/>
         <location filename="../app/src/commandlineexporter.cpp" line="173"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished">Hotovo.</translation>
+        <translation>Hotovo.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="160"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished">Vyvádí se řada obrázků...</translation>
+        <translation>Vyvádí se obrázková řada...</translation>
     </message>
 </context>
 <context>
@@ -628,101 +618,101 @@
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="24"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation type="unfinished">Pencil2D je animační/kreslicí program pro operační systémy Mac OS X, Windows a Linux. Dovolí vám tvořit tradiční ručně kreslenou animaci pomocí bitmapové i vektorové grafiky</translation>
+        <translation>Pencil2D je animační/kreslicí program pro operační systémy Mac OS X, Windows a Linux. Dovolí vám tvořit tradiční ručně kreslenou animaci pomocí bitmapové i vektorové grafiky</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="28"/>
         <source>Path to the input pencil file.</source>
-        <translation type="unfinished">Cesta k výstupnímu souboru Pencilu.</translation>
+        <translation>Cesta ke vstupnímu souboru Pencilu.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="31"/>
         <location filename="../app/src/commandlineparser.cpp" line="37"/>
         <source>Render the file to &lt;output_path&gt;</source>
-        <translation type="unfinished">Zpracovat soubor do &lt;output_path&gt;</translation>
+        <translation>Zpracovat soubor do &lt;output_path&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="32"/>
         <location filename="../app/src/commandlineparser.cpp" line="38"/>
         <source>output_path</source>
-        <translation type="unfinished">výstupní_cesta</translation>
+        <translation>výstupní_cesta</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="45"/>
         <source>Name of the camera layer to use</source>
-        <translation type="unfinished">Název vrstvy s kamerou, která se má použít</translation>
+        <translation>Název vrstvy s kamerou, která se má použít</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="46"/>
         <source>layer_name</source>
-        <translation type="unfinished">název_vrstvy</translation>
+        <translation>název_vrstvy</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="50"/>
         <source>Width of the output frames</source>
-        <translation type="unfinished">Šířka výstupních snímků</translation>
+        <translation>Šířka výstupních snímků</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="51"/>
         <location filename="../app/src/commandlineparser.cpp" line="56"/>
         <source>integer</source>
-        <translation type="unfinished">Celé číslo</translation>
+        <translation>Celé číslo</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="55"/>
         <source>Height of the output frames</source>
-        <translation type="unfinished">Výška výstupních snímků</translation>
+        <translation>Výška výstupních snímků</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="60"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished">První snímek, který chcete zahrnout do vyvedeného filmu</translation>
+        <translation>První snímek, který chcete zahrnout do vyvedeného obrazového záznamu</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="61"/>
         <location filename="../app/src/commandlineparser.cpp" line="68"/>
         <source>frame</source>
-        <translation type="unfinished">snímek</translation>
+        <translation>snímek</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="65"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="unfinished">Poslední snímek, který chcete zahrnout do vyvedeného obrazového záznamu. Také může být poslední nebo poslední-zvuk pro automatické použití posledního snímku obsahujícího animaci nebo zvuk, v tomto pořadí</translation>
+        <translation>Poslední snímek, který chcete zahrnout do vyvedeného obrazového záznamu. Také může být poslední nebo poslední-zvuk pro automatické použití posledního snímku obsahujícího animaci nebo zvuk, v tomto pořadí</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="72"/>
         <source>Render transparency when possible</source>
-        <translation type="unfinished">Vykreslovat průhlednost, když je to možné</translation>
+        <translation>Vykreslovat průhlednost, když je to možné</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="99"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished">Varování: Hodnota pro šířku %1 není celé číslo. Přehlíží se.</translation>
+        <translation>Varování: Hodnota pro šířku %1 není celé číslo. Přehlíží se.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="110"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished">Varování: Hodnota pro výšku %1 není celé číslo. Přehlíží se.</translation>
+        <translation>Varování: Hodnota pro výšku %1 není celé číslo. Přehlíží se.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="121"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished">Varování: Začáteční hodnota %1 není celé číslo. Přehlíží se.</translation>
+        <translation>Varování: Začáteční hodnota %1 není celé číslo. Přehlíží se.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="126"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation type="unfinished">Varování: Začáteční hodnota musí být alespoň %1. Přehlíží se.</translation>
+        <translation>Varování: Začáteční hodnota musí být alespoň %1. Přehlíží se.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="147"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="unfinished">Varování: Koncová hodnota %1 není celé číslo, poslední nebo poslední-zvuk. Přehlíží se.</translation>
+        <translation>Varování: Koncová hodnota %1 není celé číslo, poslední nebo poslední-zvuk. Přehlíží se.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="153"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation type="unfinished">Varování: Koncová hodnota %1 je menší než začáteční %2. Přehlíží se.</translation>
+        <translation>Varování: Koncová hodnota %1 je menší než začáteční hodnota %2. Přehlíží se.</translation>
     </message>
 </context>
 <context>
@@ -816,7 +806,8 @@
         <source>Peg hole not found!
 Check selection, and please try again.</source>
         <comment>PegBar error message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Děrování nenalezeno.
+Prověřte výběr a zkuste to, prosím, znovu.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="1107"/>
@@ -1177,7 +1168,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="235"/>
         <source>The path is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cesta je prázdná.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="250"/>
@@ -1223,17 +1214,17 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="926"/>
         <source>Bitmap Layer</source>
-        <translation type="unfinished">Bitmapová vrstva</translation>
+        <translation>Bitmapová vrstva</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="928"/>
         <source>Vector Layer</source>
-        <translation type="unfinished">Vektorová vrstva</translation>
+        <translation>Vektorová vrstva</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="930"/>
         <source>Sound Layer</source>
-        <translation type="unfinished">Zvuková vrstva</translation>
+        <translation>Zvuková vrstva</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="340"/>
@@ -1278,12 +1269,12 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/filespage.ui" line="71"/>
         <source>Load default preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Nahrát výchozí přednastavení</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="81"/>
         <source>Load last active file</source>
-        <translation type="unfinished"></translation>
+        <translation>Nahrát poslední činný soubor</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="91"/>
@@ -1304,13 +1295,9 @@ Check selection, and please try again.</source>
         <translation>Počet změn před automatickým uložením:</translation>
     </message>
     <message>
-        <source>&lt;br&gt;&lt;br&gt;Error: your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please include the following details in your issue:</source>
-        <translation type="vanished">&lt;br&gt;&lt;br&gt;Chyba: váš soubor se pravděpodobně neuložil úspěšně. Pokud se domníváte, že tato chyba je problém s Pencil2D, vytvořte, prosím, nový problém na:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Uveďte, prosím, následující údaje:</translation>
-    </message>
-    <message>
         <location filename="../app/src/filespage.cpp" line="96"/>
         <source>&lt;br&gt;&lt;br&gt;Error: your preset may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please include the following details in your issue:</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br&gt;&lt;br&gt;Chyba: vaše přednastavení se pravděpodobně neuložilo úspěšně. Pokud se domníváte, že tato chyba je problém s Pencil2D, vytvořte, prosím, nový problém na:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Uveďte, prosím, následující údaje:</translation>
     </message>
 </context>
 <context>
@@ -1344,7 +1331,7 @@ Check selection, and please try again.</source>
         <location filename="../app/ui/generalpage.ui" line="60"/>
         <source>[System-Language]</source>
         <comment>First item of the language list</comment>
-        <translation>[systémový jazyk]</translation>
+        <translation>[jazyk systému]</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="174"/>
@@ -1393,12 +1380,12 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/generalpage.ui" line="431"/>
         <source>Memory Cache Budget</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozpočet vyrovnávací paměti paměti</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="462"/>
         <source>MB</source>
-        <translation type="unfinished"></translation>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="77"/>
@@ -1423,7 +1410,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/generalpage.ui" line="120"/>
         <source>Dotted Cursor</source>
-        <translation>Tečkovaný ukazatel</translation>
+        <translation>Tečkované ukazovátko</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
@@ -1690,7 +1677,8 @@ Přečtěte si pokyny a zkuste to znovu</translation>
         <location filename="../app/src/importimageseqdialog.cpp" line="391"/>
         <source>The following file(-s) did not meet the criteria: 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Následující soubor nesplnil hlediska: 
+%1</translation>
     </message>
 </context>
 <context>
@@ -1719,7 +1707,7 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="22"/>
         <source>1. Select Project file:</source>
-        <translation type="unfinished"></translation>
+        <translation>1. Vyberte soubor s projektem:</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="42"/>
@@ -2038,18 +2026,14 @@ Přečtěte si pokyny a zkuste to znovu</translation>
         <translation>Otočit po směru hodinových ručiček</translation>
     </message>
     <message>
-        <source>Reset Zoom/Rotate</source>
-        <translation type="vanished">Vrátit na výchozí zvětšení/otočení</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="504"/>
         <source>Horizontal Flip</source>
-        <translation>Vodorovné převrácení</translation>
+        <translation>Převrátit vodorovně</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="516"/>
         <source>Vertical Flip</source>
-        <translation>Svislé převrácení</translation>
+        <translation>Převrátit svisle</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="524"/>
@@ -2263,7 +2247,7 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="959"/>
         <source>Pencil2D Discord</source>
-        <translation>Neshoda Pencil2D</translation>
+        <translation>Discord Pencil2D</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="964"/>
@@ -2303,12 +2287,12 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="999"/>
         <source>Flip In-Between</source>
-        <translation>Obrátit v mezeře</translation>
+        <translation>Listování mezi</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1004"/>
         <source>Flip Rolling</source>
-        <translation>Obrátit běh</translation>
+        <translation>Listování rolováním</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1009"/>
@@ -2365,7 +2349,7 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1059"/>
         <source>Layers from Project file...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vrstvy ze souboru s projektem...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1083"/>
@@ -2386,12 +2370,12 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1112"/>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Střed</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1117"/>
         <source>Reset Rotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit výchozí otočení</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="312"/>
@@ -2416,7 +2400,7 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="492"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit výchozí</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="823"/>
@@ -2457,12 +2441,12 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="901"/>
         <source>Flip X</source>
-        <translation>Převrátit X</translation>
+        <translation>Převrátit vodorovně</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="906"/>
         <source>Flip Y</source>
-        <translation>Převrátit Y</translation>
+        <translation>Převrátit svisle</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="911"/>
@@ -2629,24 +2613,13 @@ Chcete ji uložit nyní?</translation>
         <location filename="../app/src/mainwindow2.cpp" line="1357"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Opening palette, will replace the old palette.
-Color(s) in strokes will be altered by this action!
-</source>
-        <translation type="vanished">Otevření palety nahradí starou paletu.
-Touto činností se změní barva(y) v tazích!
-</translation>
+        <translation>Otevření palety nahradí starou paletu.
+Touto činností se změní barva(y) v tazích!</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1359"/>
         <source>Open Palette</source>
         <translation>Otevřít paletu</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Zrušit</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1477"/>
@@ -2661,37 +2634,37 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1525"/>
         <source>Restore Project?</source>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit projekt?</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1526"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
-        <translation type="unfinished"></translation>
+        <translation>Pencil2D se nezavřel správně. Chcete projekt obnovit?</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1531"/>
         <source>Restore project</source>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit projekt</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1565"/>
         <source>Recovery Failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se obnovit.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1566"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
-        <translation type="unfinished"></translation>
+        <translation>Promiňte! Pencil2D nemůže obnovit váš projekt</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1575"/>
         <source>Recovery Succeeded!</source>
-        <translation type="unfinished"></translation>
+        <translation>Podařilo se obnovit.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1576"/>
         <source>Please save your work immediately to prevent loss of data</source>
-        <translation type="unfinished"></translation>
+        <translation>Okamžitě, prosím, uložte svou práci, abyste zabránili ztrátě dat</translation>
     </message>
 </context>
 <context>
@@ -2733,31 +2706,27 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="308"/>
         <source>Was unable to find internal files, import unsuccessful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nebyly nalezeny vnitřní soubory, zavedení bylo neúspěšné.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="323"/>
         <source>Sound only</source>
-        <translation type="unfinished">Pouze zvuk</translation>
+        <translation>Pouze zvuk</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="324"/>
         <source>You need to be on a sound layer to import the audio</source>
-        <translation type="unfinished">Pro zavedení zvuku musíte být na zvukové vrstvě</translation>
+        <translation>Pro zavedení zvuku musíte být na zvukové vrstvě</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="336"/>
         <source>Move to an empty frame</source>
-        <translation type="unfinished">Přesunout na prázdné políčko snímku:</translation>
+        <translation>Přesunout na prázdné políčko snímku</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="337"/>
         <source>A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> Move the scrubber to a empty position on the timeline and try again</source>
-        <translation type="vanished">Přesuňte běhoun (přehrávání proměnlivou rychlostí) do prázdné polohy na časové ose a zkuste to znovu</translation>
+        <translation>Snímek již existuje na snímku: %1. Přesuňte běhoun (přehrávání proměnlivou rychlostí) do prázdné polohy na časové ose a zkuste to znovu</translation>
     </message>
 </context>
 <context>
@@ -2860,32 +2829,32 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="664"/>
         <source>Pale Orange Yellow</source>
-        <translation type="unfinished">Bledá oranžová žlutá</translation>
+        <translation>Bledá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="665"/>
         <source>Pale Grayish Orange Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Bledá šedivá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="666"/>
         <source>Orange Yellow </source>
-        <translation type="unfinished"></translation>
+        <translation>Oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="667"/>
         <source>Grayish Orange Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Šedivá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="668"/>
         <source>Light Orange Yellow</source>
-        <translation type="unfinished">Světlá oranžová žlutá</translation>
+        <translation>Světlá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="669"/>
         <source>Light Grayish Orange Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Světlá šedivá oranžová žlutá</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="366"/>
@@ -2946,23 +2915,23 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/ui/onionskin.ui" line="331"/>
         <source>Distributed opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozložená neprůhlednost</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="355"/>
         <source>Min</source>
-        <translation type="unfinished"></translation>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="377"/>
         <location filename="../app/ui/onionskin.ui" line="418"/>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation>  %</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="396"/>
         <source>Max</source>
-        <translation type="unfinished"></translation>
+        <translation>Max</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="433"/>
@@ -3036,7 +3005,7 @@ Touto činností se změní barva(y) v tazích!
         <location filename="../app/src/pegbaralignmentdialog.cpp" line="145"/>
         <source>No layers selected!</source>
         <comment>PegBar Dialog error message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nevybrány žádné vrstvy!</translation>
     </message>
 </context>
 <context>
@@ -3069,7 +3038,7 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/ui/preferencesdialog.ui" line="125"/>
         <source>Shortcuts</source>
-        <translation>Klávesové zkratky</translation>
+        <translation>Zkratky</translation>
     </message>
 </context>
 <context>
@@ -4518,140 +4487,21 @@ Touto činností se změní barva(y) v tazích!
         <translation>Nepodařilo se spustit podpůrnou vrstvu obrazového záznamu. Zkuste to, prosím, znovu.</translation>
     </message>
     <message>
-        <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation type="vanished">Pencil2D je animační/kreslicí program pro operační systémy Mac OS X, Windows a Linux. Dovolí vám tvořit tradiční ručně kreslenou animaci pomocí bitmapové i vektorové grafiky</translation>
-    </message>
-    <message>
-        <source>Path to the input pencil file.</source>
-        <translation type="vanished">Cesta k výstupnímu souboru Pencilu.</translation>
-    </message>
-    <message>
-        <source>Render the file to &lt;output_path&gt;</source>
-        <translation type="vanished">Zpracovat soubor do &lt;output_path&gt;</translation>
-    </message>
-    <message>
-        <source>output_path</source>
-        <translation type="vanished">výstupní_cesta</translation>
-    </message>
-    <message>
-        <source>Name of the camera layer to use</source>
-        <translation type="vanished">Název vrstvy s kamerou, která se má použít</translation>
-    </message>
-    <message>
-        <source>layer_name</source>
-        <translation type="vanished">název_vrstvy</translation>
-    </message>
-    <message>
-        <source>Width of the output frames</source>
-        <translation type="vanished">Šířka výstupních snímků</translation>
-    </message>
-    <message>
-        <source>integer</source>
-        <translation type="vanished">Celé číslo</translation>
-    </message>
-    <message>
-        <source>Height of the output frames</source>
-        <translation type="vanished">Výška výstupních snímků</translation>
-    </message>
-    <message>
-        <source>The first frame you want to include in the exported movie</source>
-        <translation type="vanished">První snímek, který chcete zahrnout do vyvedeného filmu</translation>
-    </message>
-    <message>
-        <source>frame</source>
-        <translation type="vanished">snímek</translation>
-    </message>
-    <message>
-        <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="vanished">Poslední snímek, který chcete zahrnout do vyvedeného obrazového záznamu. Také může být poslední nebo poslední-zvuk pro automatické použití posledního snímku obsahujícího animaci nebo zvuk, v tomto pořadí</translation>
-    </message>
-    <message>
-        <source>Render transparency when possible</source>
-        <translation type="vanished">Vykreslovat průhlednost, když je to možné</translation>
-    </message>
-    <message>
-        <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation type="vanished">Varování: Hodnota pro šířku %1 není celé číslo. Přehlíží se.</translation>
-    </message>
-    <message>
-        <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation type="vanished">Varování: Hodnota pro výšku %1 není celé číslo. Přehlíží se.</translation>
-    </message>
-    <message>
-        <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation type="vanished">Varování: Začáteční hodnota %1 není celé číslo. Přehlíží se.</translation>
-    </message>
-    <message>
-        <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation type="vanished">Varování: Začáteční hodnota musí být alespoň %1. Přehlíží se.</translation>
-    </message>
-    <message>
-        <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="vanished">Varování: Koncová hodnota %1 není celé číslo, poslední nebo poslední-zvuk. Přehlíží se.</translation>
-    </message>
-    <message>
-        <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation type="vanished">Varování: Koncová hodnota %1 je menší než začáteční %2. Přehlíží se.</translation>
-    </message>
-    <message>
-        <source>Error: No input file specified.</source>
-        <translation type="vanished">Chyba: Nestanoven vstupní soubor.</translation>
-    </message>
-    <message>
-        <source>Error: the input file at &apos;%1&apos; does not exist</source>
-        <comment>Command line error</comment>
-        <translation type="vanished">Chyba: Vstupní soubor v &apos;%1&apos; neexistuje</translation>
-    </message>
-    <message>
-        <source>Error: the input path &apos;%1&apos; is not a file</source>
-        <comment>Command line error</comment>
-        <translation type="vanished">Chyba: Vstupní cesta &apos;%1&apos; není soubor</translation>
-    </message>
-    <message>
-        <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation type="vanished">Varování: Daná kamerová vrstva %1 nebyla nalezena. Přehlíží se.</translation>
-    </message>
-    <message>
-        <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
-        <comment>Command line warning</comment>
-        <translation type="vanished">Varování: Výstupní formát není stanoven nebo není podporován. Používá se PNG.</translation>
-    </message>
-    <message>
-        <source>Warning: Transparency is not currently supported in movie files</source>
-        <comment>Command line warning</comment>
-        <translation type="vanished">Varování: Průhlednost není v současnosti v souborech s obrazovým záznamem podporována.</translation>
-    </message>
-    <message>
-        <source>Exporting movie...</source>
-        <comment>Command line task progress</comment>
-        <translation type="vanished">Vyvádí se obrazový záznam...</translation>
-    </message>
-    <message>
-        <source>Done.</source>
-        <comment>Command line task done</comment>
-        <translation type="vanished">Hotovo.</translation>
-    </message>
-    <message>
-        <source>Exporting image sequence...</source>
-        <comment>Command line task progress</comment>
-        <translation type="vanished">Vyvádí se řada obrázků...</translation>
-    </message>
-    <message>
         <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Pencil2D formats</source>
-        <translation type="unfinished"></translation>
+        <translation>Formáty Pencil2D</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <location filename="../core_lib/src/util/fileformat.h" line="33"/>
         <source>Pencil2D Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Projekt Pencil2D</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <location filename="../core_lib/src/util/fileformat.h" line="33"/>
         <source>Legacy Pencil2D Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Starší verze projektu Pencil2D</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="36"/>
@@ -4677,7 +4527,7 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="47"/>
         <source>Pencil2D Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Paleta Pencil2D</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="50"/>
@@ -4735,22 +4585,6 @@ Touto činností se změní barva(y) v tazích!
         <location filename="../core_lib/src/movieimporter.cpp" line="192"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
         <translation>Filmový záběr je příliš dlouhý. Pencil2D může pojmout pouze % 1 snímků, ale tento film by vystoupal až na asi %2 snímků. Zkraťte, prosím, svůj obrazový záznam a zkuste to znovu.</translation>
-    </message>
-    <message>
-        <source>Sound only</source>
-        <translation type="vanished">Pouze zvuk</translation>
-    </message>
-    <message>
-        <source>You need to be on a sound layer to import the audio</source>
-        <translation type="vanished">Pro zavedení zvuku musíte být na zvukové vrstvě</translation>
-    </message>
-    <message>
-        <source>Move to an empty frame</source>
-        <translation type="vanished">Přesunout na prázdné políčko snímku:</translation>
-    </message>
-    <message>
-        <source>A frame already exists on frame: </source>
-        <translation type="vanished">Již existuje snímek na snímku:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="379"/>
@@ -4854,19 +4688,19 @@ Touto činností se změní barva(y) v tazích!
         <location filename="../app/src/shortcutspage.cpp" line="315"/>
         <source>Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation>Vodorovné převrácení</translation>
+        <translation>Převrátit vodorovně</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="316"/>
         <source>Flip In-Between</source>
         <comment>Shortcut</comment>
-        <translation>Obrátit v mezeře</translation>
+        <translation>Listovat mezi nimi</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="317"/>
         <source>Flip Rolling</source>
         <comment>Shortcut</comment>
-        <translation>Obrátit běh</translation>
+        <translation>Listovat rolováním</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="318"/>
@@ -5028,7 +4862,7 @@ Touto činností se změní barva(y) v tazích!
         <location filename="../app/src/shortcutspage.cpp" line="344"/>
         <source>Preview</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished">Náhled</translation>
+        <translation>Náhled</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="345"/>
@@ -5052,18 +4886,13 @@ Touto činností se změní barva(y) v tazích!
         <location filename="../app/src/shortcutspage.cpp" line="348"/>
         <source>Reset View</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit výchozí zobrazení</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="349"/>
         <source>Center View</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reset Zoom/Rotate</source>
-        <comment>Shortcut</comment>
-        <translation type="vanished">Obnovit výchozí zvětšení/otočení</translation>
+        <translation>Vystředit pohled</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="350"/>
@@ -5081,7 +4910,7 @@ Touto činností se změní barva(y) v tazích!
         <location filename="../app/src/shortcutspage.cpp" line="352"/>
         <source>Reset Rotation</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit výchozí otočení</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="353"/>
@@ -5278,12 +5107,12 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../core_lib/src/canvaspainter.cpp" line="699"/>
         <source>Safe Action area %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>Oblast bezpečné činnosti %1 %</translation>
     </message>
     <message>
         <location filename="../core_lib/src/canvaspainter.cpp" line="713"/>
         <source>Safe Title area %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>Oblast bezpečného názvu %1 %</translation>
     </message>
 </context>
 <context>
@@ -5375,12 +5204,12 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../core_lib/src/managers/selectionmanager.cpp" line="360"/>
         <source>Flip selection vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>Převrátit výběr svisle</translation>
     </message>
     <message>
         <location filename="../core_lib/src/managers/selectionmanager.cpp" line="364"/>
         <source>Flip selection horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation>Převrátit výběr vodorovně</translation>
     </message>
 </context>
 <context>
@@ -5489,40 +5318,40 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="55"/>
         <source>No text</source>
-        <translation type="unfinished"></translation>
+        <translation>Žádný text</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="56"/>
         <source>Frames</source>
-        <translation type="unfinished"></translation>
+        <translation>Snímky</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="57"/>
         <source>SMPTE Timecode</source>
-        <translation type="unfinished"></translation>
+        <translation>Časový kód SMPTE</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="58"/>
         <source>SFF Timecode</source>
-        <translation type="unfinished"></translation>
+        <translation>Časový kód SFF</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="70"/>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="351"/>
         <source>Actual frame number</source>
-        <translation type="unfinished"></translation>
+        <translation>Skutečné číslo snímku</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="73"/>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="369"/>
         <source>Timecode format MM:SS:FF</source>
-        <translation type="unfinished"></translation>
+        <translation>Formát časového kódu MM:SS:FF</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="76"/>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="360"/>
         <source>Timecode format S:FF</source>
-        <translation type="unfinished"></translation>
+        <translation>Formát časového kódu S:FF</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
@@ -5580,7 +5409,7 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="398"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1</translation>
     </message>
 </context>
 <context>
@@ -5671,11 +5500,7 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="293"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete layer: %1?</source>
-        <translation type="vanished">Opravdu chcete smazat vrstvu: %1?</translation>
+        <translation>Opravdu chcete smazat vrstvu: %1? Toto nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="302"/>
@@ -5811,7 +5636,7 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/ui/timelinepage.ui" line="148"/>
         <source>Flip and Roll</source>
-        <translation>Obrátit a běžet</translation>
+        <translation>Převrátit a rolovat</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="156"/>
@@ -5821,12 +5646,12 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/ui/timelinepage.ui" line="208"/>
         <source>Msecs per drawing in flip inbetween</source>
-        <translation>Milisekund na kresbu v Obrátit v mezeře</translation>
+        <translation>Milisekund na kresbu v listování mezi nimi</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="257"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation>Milisekund na kresbu v Obrátit a běžet</translation>
+        <translation>Milisekund na kresbu v listování rolí</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>
@@ -5966,13 +5791,9 @@ Touto činností se změní barva(y) v tazích!
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <source>Brush</source>
-        <translation type="vanished">Štětec</translation>
-    </message>
-    <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="53"/>
         <source>Feather</source>
-        <translation>Pero</translation>
+        <translation>Stopa</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="57"/>
@@ -6005,22 +5826,14 @@ Touto činností se změní barva(y) v tazích!
         <translation>Formulář</translation>
     </message>
     <message>
-        <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="vanished">Nastavit tloušťku pera &lt;br&gt;&lt;b&gt;[SHIFT]+táhnutí&lt;/b&gt;&lt;br&gt;pro rychlé nastavení</translation>
-    </message>
-    <message>
-        <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="vanished">Nastavit stopu pera &lt;br&gt;&lt;b&gt;[SHIFT]+táhnutí&lt;/b&gt;&lt;br&gt;pro rychlé nastavení</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Enable or disable feathering</source>
-        <translation>Vypnout nebo zapnout rozplývání barvy</translation>
+        <translation>Vypnout nebo zapnout stopu</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="143"/>
         <source>Use Feather</source>
-        <translation>Použít pero</translation>
+        <translation>Použít stopu</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="150"/>
@@ -6031,11 +5844,6 @@ Touto činností se změní barva(y) v tazích!
         <location filename="../app/ui/tooloptions.ui" line="153"/>
         <source>Fill Contour</source>
         <translation>Vyplnit obrys</translation>
-    </message>
-    <message>
-        <source>Bezier</source>
-        <comment>Tool options</comment>
-        <translation type="vanished">Bézier</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="200"/>
@@ -6058,7 +5866,7 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/ui/tooloptions.ui" line="262"/>
         <source>Use stabilizer to interpolate strokes</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít stabilizátor k interpolaci tahů</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="265"/>
@@ -6098,12 +5906,12 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/ui/tooloptions.ui" line="70"/>
         <source>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit tloušťku tahu &lt;br&gt;&lt;b&gt;[SHIFT]+táhnutí&lt;/b&gt;&lt;br&gt;pro rychlé nastavení</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="106"/>
         <source>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit stopu tahu &lt;br&gt;&lt;b&gt;[SHIFT]+táhnutí&lt;/b&gt;&lt;br&gt;pro rychlé nastavení</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="162"/>
@@ -6113,23 +5921,23 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/ui/tooloptions.ui" line="187"/>
         <source>Use Bézier curves to create curved lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít Bézierovy křivky k vytvoření zakřivených čar</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="190"/>
         <source>Bézier</source>
         <comment>Tool options</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bézier</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="197"/>
         <source>Vary strokes based on pressure when drawing on a tablet</source>
-        <translation type="unfinished"></translation>
+        <translation>Při kreslení na tabletu se různé tahy liší podle tlaku</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="207"/>
         <source>Use anti-aliasing to create smooth edges</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít vyhlazování na vytvoření hladkých okrajů</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="227"/>
@@ -6173,7 +5981,7 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/ui/toolspage.ui" line="66"/>
         <source>Rotation snap increment</source>
-        <translation>Přírůstek otočení</translation>
+        <translation>Přírůstek na otočení</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="89"/>
@@ -6183,7 +5991,7 @@ Touto činností se změní barva(y) v tazích!
     <message>
         <location filename="../app/src/toolspage.cpp" line="64"/>
         <source>%1 degrees</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 stupňů</translation>
     </message>
 </context>
 </TS>
