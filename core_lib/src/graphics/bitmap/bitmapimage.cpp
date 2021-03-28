@@ -794,7 +794,8 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
                             QRgb newColor,
-                            int tolerance)
+                            int tolerance,
+                            int fillMode)
 {
     // If the point we are supposed to fill is outside the image and camera bounds, do nothing
     if(!cameraRect.united(targetImage->bounds()).contains(point))
@@ -807,6 +808,15 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
 
     QRgb oldColor = targetImage->pixel(point);
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
+
+    QRgb fillColor = newColor;
+    if (fillMode == 1)
+    {
+        QColor tempColor;
+        tempColor.setRgba(newColor);
+        tempColor.setAlphaF(1);
+        fillColor = tempColor.rgba();
+    }
 
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
@@ -844,11 +854,11 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         spanLeft = spanRight = false;
         while (xTemp <= targetImage->mBounds.right() &&
                compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data()) &&
-               newPlacedColor != newColor)
+               newPlacedColor != fillColor)
         {
 
             // Set pixel color
-            replaceImage->scanLine(xTemp, point.y(), newColor);
+            replaceImage->scanLine(xTemp, point.y(), fillColor);
 
             if (!spanLeft && (point.y() > targetImage->mBounds.top()) &&
                 compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
@@ -876,7 +886,28 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         }
     }
 
-    targetImage->paste(replaceImage);
+    switch(fillMode)
+    {
+    default:
+    case 0:
+        targetImage->paste(replaceImage);
+        break;
+    case 1:
+        BitmapImage fullOpacity(*replaceImage);
+        if (qAlpha(newColor) == 0xFF)
+        {
+            targetImage->paste(replaceImage);
+        }
+        else
+        {
+            targetImage->paste(replaceImage, QPainter::CompositionMode_DestinationOut);
+            BitmapImage properColor(targetImage->mBounds, QColor::fromRgba(newColor));
+            properColor.paste(replaceImage, QPainter::CompositionMode_DestinationIn);
+            targetImage->paste(&properColor);
+        }
+        break;
+    }
+
     targetImage->modification();
     delete replaceImage;
 }

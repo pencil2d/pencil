@@ -41,6 +41,7 @@ public:
 
     void setTolerance(const int tolerance) override;
     void setWidth(const qreal width) override;
+    void setFillMode(int mode) override;
 
     void paintBitmap(Layer* layer);
     void paintVector(Layer* layer);
