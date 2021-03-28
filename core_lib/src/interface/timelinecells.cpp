@@ -353,8 +353,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     subCirc->addAction(tr("Circle-based  Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
     subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
     subOther->addSeparator();
-    subOther->addAction(tr("Elastic (outElastic)"), [=] { this->setCameraEasing(CameraEasingType::OUTELASTIC, frameNumber); });
-    subOther->addAction(tr("Overshoot (outBack)"), [=] { this->setCameraEasing(CameraEasingType::OUTBACK, frameNumber); });
     subOther->addAction(tr("Bounce (outBounce)"), [=] { this->setCameraEasing(CameraEasingType::OUTBOUNCE, frameNumber); });
 
     QMenu* cameraFieldMenu = cameraMenu->addMenu(tr("Camera field"));

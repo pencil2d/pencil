@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include "mathutils.h"
 #include <QEasingCurve>
 #include <QPainterPath>
-
+#include <QDebug>
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -329,8 +329,6 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     case CameraEasingType::OUTCIRC : easing.setType(QEasingCurve::OutCirc); break;
     case CameraEasingType::INOUTCIRC : easing.setType(QEasingCurve::InOutCirc); break;
     case CameraEasingType::OUTINCIRC: easing.setType(QEasingCurve::OutInCirc); break;
-    case CameraEasingType::OUTELASTIC: easing.setType(QEasingCurve::OutElastic); break;
-    case CameraEasingType::OUTBACK: easing.setType(QEasingCurve::OutBack); break;
     case CameraEasingType::OUTBOUNCE: easing.setType(QEasingCurve::OutBounce); break;
     default: easing.setType(QEasingCurve::Linear); break;
     }
