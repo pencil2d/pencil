@@ -55,6 +55,7 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
+#include "layeropacitydialog.h"
 #include "errordialog.h"
 
 

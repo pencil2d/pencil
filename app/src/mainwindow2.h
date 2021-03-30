@@ -41,6 +41,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class LayerOpacityDialog;
 class QLabel;
 class PegBarAlignmentDialog;
 enum class SETTING;
@@ -67,6 +68,7 @@ public slots:
     void updateSaveState();
     void clearRecentFilesList();
     void openPegAlignDialog();
+    void openLayerOpacityDialog();
     void currentLayerChanged();
     void selectionChanged();
     void viewFlipped();
@@ -164,6 +166,7 @@ private:
     BackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
+    LayerOpacityDialog* mLayerOpacityDialog = nullptr;
 
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;

@@ -1,6 +1,4 @@
-
-[![Build Status](https://travis-ci.com/pencil2d/pencil.svg?branch=master)](https://travis-ci.com/pencil2d/pencil)
-[![Build status](https://ci.appveyor.com/api/projects/status/hq8ry618wixilfmq/branch/master?svg=true)](https://ci.appveyor.com/project/chchwy/pencil2d/branch/master)
+[![Build & Tests](https://github.com/pencil2d/pencil/actions/workflows/ci.yml/badge.svg)](https://github.com/pencil2d/pencil/actions/workflows/ci.yml)
 
 # Pencil2D Animation
 
