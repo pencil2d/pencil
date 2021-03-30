@@ -108,7 +108,7 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA && layer->keyExists(frameNumber));
     Camera* camera = getCam(frameNumber);
-    Camera* copyCamera = (getCam(frameNumber));
+    Camera* copyCamera = getCam(frameNumber);
     int nextFrame = layer->getNextKeyFramePosition(frameNumber);
     switch (type)
     {
@@ -127,23 +127,25 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     case CameraFieldOption::ALIGN_HORIZONTAL:
         camera = getCam(nextFrame);
         camera->translate(camera->translation().x(), copyCamera->translation().y());
+        layer->updateCameraPath(nextFrame);
         break;
     case CameraFieldOption::ALIGN_VERTICAL:
         camera = getCam(nextFrame);
         camera->translate(copyCamera->translation().x(), camera->translation().y());
+        layer->updateCameraPath(nextFrame);
         break;
     case CameraFieldOption::HOLD_FRAME:
         camera = getCam(nextFrame);
         camera->translate(copyCamera->translation());
         camera->scale(copyCamera->scaling());
         camera->rotate(copyCamera->rotation());
+        layer->updateCameraPath(nextFrame);
         break;
     default:
         break;
     }
     camera->updateViewTransform();
     camera->modification();
-    mEditor->backup(mEditor->currentLayerIndex(), frameNumber, tr("Camera Field"));
     mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }

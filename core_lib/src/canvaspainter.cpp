@@ -814,11 +814,19 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
             if (cameraLayer->keyExists(frame))
             {
                 QPointF center = -cameraLayer->getPathMidPont(frame);
+
+                // draw movemode in text
+                painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
+                painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(frame));
+
+                // draw move handle
+                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
                 painter.setBrush(Qt::white);
                 painter.drawRect(center.x() - HANDLE_WIDTH/2,
                                  center.y() - HANDLE_WIDTH/2,
                                  HANDLE_WIDTH, HANDLE_WIDTH);
-                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+                // draw dots
                 painter.setPen(DOT_COLOR);
                 painter.setBrush(DOT_COLOR);
                 int next = cameraLayer->getNextKeyFramePosition(frame);
@@ -828,9 +836,8 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                     QPointF center = transform.inverted().map(QRectF(mCameraRect).center());
                     painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
                 }
-                painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-                painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(frame));
 
+                // highligth current dot
                 if (DOT_COLOR != Qt::white)
                     painter.setBrush(Qt::white);
                 else
