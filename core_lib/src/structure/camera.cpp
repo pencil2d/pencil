@@ -19,16 +19,8 @@ GNU General Public License for more details.
 Camera::Camera()
 {
 }
-// this is kept, since it is used by 'tests'
-Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
-{
-    Q_ASSERT(scaling > 0);
-    mTranslate = translation;
-    mRotate = rotation;
-    mScale = scaling;
-    updateViewTransform();
-}
 
+// new cameras should have Rotation 0.0, Scaling 1.0, and Easing 0 = LINEAR
 Camera::Camera(QPointF translation, qreal rotation, qreal scaling, int easing)
 {
     Q_ASSERT(scaling > 0);

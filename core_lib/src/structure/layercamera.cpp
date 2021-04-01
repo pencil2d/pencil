@@ -40,7 +40,7 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
 
     mFrameList = getKeyList();
-    connect(this, &LayerCamera::selectedFramesChanged, this, &LayerCamera::updateCameraPaths);
+    connect(this, &LayerCamera::selectedFramesChanged, this, &LayerCamera::updateAllCameraPaths);
 }
 
 LayerCamera::~LayerCamera()
@@ -391,7 +391,7 @@ void LayerCamera::updateCameraPath(int frame)
     }
 }
 
-void LayerCamera::updateCameraPaths()
+void LayerCamera::updateAllCameraPaths()
 {
     QList<int> newList = getKeyList();
     if (mFrameList != newList)
