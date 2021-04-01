@@ -363,32 +363,41 @@ void LayerCamera::initCameraPath(int frame)
 
 void LayerCamera::updateCameraPath(int frame)
 {
-    Camera* camera;
-    Camera* nextCamera;
+    Camera* camera = getCameraAtFrame(frame);
     if (keyExists(frame))
     {
-        camera = getCameraAtFrame(frame);
-        nextCamera = getCameraAtFrame(getNextKeyFramePosition(frame));
-        // update camera path to next frame
-        QPainterPath pathNew(camera->translation());
-        QPoint midPoint = QLineF(camera->translation(), nextCamera->translation()).pointAt(0.5).toPoint();
-        pathNew.cubicTo(midPoint, midPoint, nextCamera->translation());
-        camera->setCameraPath(pathNew);
+        updateExistingCameraPath(frame);
     }
     else
     {
         camera = getCameraAtFrame(getNextKeyFramePosition(frame));
     }
 
+    // update camera path from previous frame?
     if (getPreviousKeyFramePosition(frame) != frame)
     {
         Camera* camPrevious = static_cast<Camera*>(getCameraAtFrame(getPreviousKeyFramePosition(frame)));
-        // update camera path from previous frame
         QPainterPath path(camPrevious->translation());
-        QPoint midPoint = QLineF(camPrevious->translation(), camera->translation()).pointAt(0.5).toPoint();
+        QPointF midPoint = QLineF(camPrevious->translation(), camera->translation()).pointAt(0.5);
         path.cubicTo(midPoint, midPoint, camera->translation());
         camPrevious->setCameraPath(path);
     }
+}
+
+void LayerCamera::updateExistingCameraPath(int frame)
+{
+    Q_ASSERT(keyExists(frame));
+
+    Camera* camera;
+    camera = getCameraAtFrame(frame);
+
+    Camera* nextCamera;
+    nextCamera = getCameraAtFrame(getNextKeyFramePosition(frame));
+
+    QPainterPath pathNew(camera->translation());
+    QPointF midPoint = QLineF(camera->translation(), nextCamera->translation()).pointAt(0.5);
+    pathNew.cubicTo(midPoint, midPoint, nextCamera->translation());
+    camera->setCameraPath(pathNew);
 }
 
 void LayerCamera::updateAllCameraPaths()
@@ -398,7 +407,7 @@ void LayerCamera::updateAllCameraPaths()
     {
         for (int i = 0; i < newList.size(); i++)
         {
-            updateCameraPath(newList.at(i));
+            updateExistingCameraPath(newList.at(i));
         }
     }
     mFrameList = newList;

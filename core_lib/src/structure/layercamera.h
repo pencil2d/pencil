@@ -60,6 +60,7 @@ public:
     QColor const getDotColor() { return dotColor; }
     QString getInterpolationText(int frame);
     void updateCameraPath(int frame);
+    void updateExistingCameraPath(int frame);
     void updateAllCameraPaths();
 
 signals:
