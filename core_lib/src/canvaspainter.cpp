@@ -841,7 +841,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                     painter.setBrush(Qt::white);
                 else
                     painter.setBrush(Qt::black);
-                center = cameraLayer->getViewAtFrame(frame).inverted().map(QRectF(mCameraRect).center());
+                center = cameraLayer->getViewAtFrame(mFrameNumber).inverted().map(QRectF(mCameraRect).center());
                 painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
             }
         }

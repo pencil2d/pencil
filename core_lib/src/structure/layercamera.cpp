@@ -38,6 +38,9 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
         mFieldH = 600;
     }
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
+
+    mFrameList = getKeyList();
+    connect(this, &LayerCamera::selectedFramesChanged, this, &LayerCamera::updateCameraPaths);
 }
 
 LayerCamera::~LayerCamera()
@@ -68,10 +71,12 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     }
 
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
-    camera1->setEasingType(camera1->getEasingType());
+    if (camera1)
+        camera1->setEasingType(camera1->getEasingType());
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
-    camera2->setEasingType(camera2->getEasingType());
+    if (camera2)
+        camera2->setEasingType(camera2->getEasingType());
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -237,11 +242,14 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
 
     int frameNumber = cam->pos();
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
-    camera1->setEasingType(camera1->getEasingType());
+    if (camera1)
+        camera1->setEasingType(camera1->getEasingType());
 
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
-    camera2->setEasingType(camera2->getEasingType());
+    if (camera2)
+        camera2->setEasingType(camera2->getEasingType());
+
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -249,7 +257,13 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     }
     else if (camera1 == nullptr && camera2 != nullptr)
     {
-        return cam->assign(*camera2);
+        cam->assign(*camera2);
+        QPainterPath path(camera2->translation());
+        QPointF midPoint = QLineF(cam->translation(), camera2->translation()).pointAt(0.5);
+        path.cubicTo(midPoint, midPoint, camera2->translation());
+        cam->setCameraPath(path);
+        cam->setEasingType(CameraEasingType::LINEAR);
+        return;
     }
     else if (camera2 == nullptr && camera1 != nullptr)
     {
@@ -350,13 +364,15 @@ void LayerCamera::initCameraPath(int frame)
 void LayerCamera::updateCameraPath(int frame)
 {
     Camera* camera;
+    Camera* nextCamera;
     if (keyExists(frame))
     {
         camera = getCameraAtFrame(frame);
+        nextCamera = getCameraAtFrame(getNextKeyFramePosition(frame));
         // update camera path to next frame
         QPainterPath pathNew(camera->translation());
-        QPoint midPoint = QLineF(camera->translation(), camera->getCameraPath().pointAtPercent(1.0)).pointAt(0.5).toPoint();
-        pathNew.cubicTo(midPoint, midPoint, camera->getCameraPath().pointAtPercent(1.0));
+        QPoint midPoint = QLineF(camera->translation(), nextCamera->translation()).pointAt(0.5).toPoint();
+        pathNew.cubicTo(midPoint, midPoint, nextCamera->translation());
         camera->setCameraPath(pathNew);
     }
     else
@@ -373,6 +389,19 @@ void LayerCamera::updateCameraPath(int frame)
         path.cubicTo(midPoint, midPoint, camera->translation());
         camPrevious->setCameraPath(path);
     }
+}
+
+void LayerCamera::updateCameraPaths()
+{
+    QList<int> newList = getKeyList();
+    if (mFrameList != newList)
+    {
+        for (int i = 0; i < newList.size(); i++)
+        {
+            updateCameraPath(newList.at(i));
+        }
+    }
+    mFrameList = newList;
 }
 
 // Only to be used for old files, missing midPoint information

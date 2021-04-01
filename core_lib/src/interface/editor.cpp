@@ -1026,7 +1026,8 @@ void Editor::removeKey()
     if (layer->type() == Layer::CAMERA)
     {
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
-        camLayer->updateCameraPath(currentFrame());
+        int curFrame = camLayer->getNextKeyFramePosition(currentFrame());
+        camLayer->updateCameraPath(curFrame);
     }
 
     scrubBackward();

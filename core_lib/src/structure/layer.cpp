@@ -161,6 +161,18 @@ int Layer::getNextFrameNumber(int position, bool isAbsolute) const
     return nextNumber;
 }
 
+QList<int> Layer::getKeyList()
+{
+    QList<int> list;
+    list.clear();
+    for (int i = firstKeyFramePosition(); i < getMaxKeyFramePosition(); i = getNextKeyFramePosition(i))
+    {
+        list.append(i);
+    }
+    list.append(getMaxKeyFramePosition());
+    return list;
+}
+
 int Layer::firstKeyFramePosition() const
 {
     if (!mKeyFrames.empty())
