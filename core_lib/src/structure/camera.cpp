@@ -20,14 +20,13 @@ Camera::Camera()
 {
 }
 
-// new cameras should have Rotation 0.0, Scaling 1.0, and Easing 0 = LINEAR
-Camera::Camera(QPointF translation, qreal rotation, qreal scaling, int easing)
+Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
 {
     Q_ASSERT(scaling > 0);
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;
-    mEasingType = static_cast<CameraEasingType>(easing);
+    mEasingType = static_cast<CameraEasingType>(CameraEasingType::LINEAR);
     updateViewTransform();
 }
 

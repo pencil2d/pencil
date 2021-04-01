@@ -349,6 +349,46 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     return easing.valueForProgress(percent);
 }
 
+CameraEasingType LayerCamera::getCameraEasingType(int type)
+{
+    CameraEasingType retType = CameraEasingType::LINEAR;
+
+    switch (type) {
+    case 0 : retType = CameraEasingType::LINEAR; break;
+    case 1 : retType = CameraEasingType::INQUAD; break;
+    case 2 : retType = CameraEasingType::OUTQUAD; break;
+    case 3 : retType = CameraEasingType::INOUTQUAD; break;
+    case 4 : retType = CameraEasingType::OUTINQUAD; break;
+    case 5 : retType = CameraEasingType::INCUBIC; break;
+    case 6 : retType = CameraEasingType::OUTCUBIC; break;
+    case 7 : retType = CameraEasingType::INOUTCUBIC; break;
+    case 8 : retType = CameraEasingType::OUTINCUBIC; break;
+    case 9 : retType = CameraEasingType::INQUART; break;
+    case 10: retType = CameraEasingType::OUTQUART; break;
+    case 11: retType = CameraEasingType::INOUTQUART; break;
+    case 12: retType = CameraEasingType::OUTINQUART; break;
+    case 13: retType = CameraEasingType::INQUINT; break;
+    case 14: retType = CameraEasingType::OUTQUINT; break;
+    case 15: retType = CameraEasingType::INOUTQUINT; break;
+    case 16: retType = CameraEasingType::OUTINQUINT; break;
+    case 17: retType = CameraEasingType::INSINE; break;
+    case 18: retType = CameraEasingType::OUTSINE; break;
+    case 19: retType = CameraEasingType::INOUTSINE; break;
+    case 20: retType = CameraEasingType::OUTINSINE; break;
+    case 21: retType = CameraEasingType::INEXPO; break;
+    case 22: retType = CameraEasingType::OUTEXPO; break;
+    case 23: retType = CameraEasingType::INOUTEXPO; break;
+    case 24: retType = CameraEasingType::OUTINEXPO; break;
+    case 25: retType = CameraEasingType::INCIRC; break;
+    case 26: retType = CameraEasingType::OUTCIRC; break;
+    case 27: retType = CameraEasingType::INOUTCIRC; break;
+    case 28: retType = CameraEasingType::OUTINCIRC; break;
+    case 38: retType = CameraEasingType::OUTBOUNCE; break;
+    default: retType = CameraEasingType::LINEAR; break;
+    }
+    return retType;
+}
+
 void LayerCamera::initCameraPath(int frame)
 {
     Q_ASSERT(keyExists(frame));
@@ -509,8 +549,9 @@ void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal ro
     {
         removeKeyFrame(frameNumber);
     }
-    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale, easing);
+    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
     camera->setPos(frameNumber);
+    camera->setEasingType(getCameraEasingType(easing));
     camera->setPathMidPoint(midPoint);
     loadKey(camera);
 }
@@ -524,6 +565,7 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
 {
     Camera* c = new Camera;
     c->setPos(position);
+    c->setEasingType(CameraEasingType::LINEAR);
     linearInterpolateTransform(c);
     return c;
 }

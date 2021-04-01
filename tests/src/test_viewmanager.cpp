@@ -249,7 +249,7 @@ TEST_CASE("ViewManager: working with camera layers")
         // a default key at frame 0
         // 2nd key at frame 10
         LayerCamera* layerCam = editor->object()->addNewCameraLayer();
-        layerCam->addKeyFrame(10, new Camera(QPointF(100, 0), 0, 1, 0));
+        layerCam->addKeyFrame(10, new Camera(QPointF(100, 0), 0, 1));
 
         v.setCameraLayer(layerCam);
         editor->scrubTo(10);
