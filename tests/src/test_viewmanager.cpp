@@ -276,7 +276,7 @@ TEST_CASE("ViewManager: working with camera layers")
         auto cam = layerCam->getCameraAtFrame(1);
         cam->translate(100, 0);
 
-        layerCam->addKeyFrame(5, new Camera(QPoint(200, 0), 0, 2.0, 0));
+        layerCam->addKeyFrame(5, new Camera(QPoint(200, 0), 0, 2.0));
 
         v.setCameraLayer(layerCam);
         v.setCameraLayer(nullptr);

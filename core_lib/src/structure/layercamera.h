@@ -59,6 +59,7 @@ public:
     void setDotColor(QColor color) { dotColor = color ; }
     QColor const getDotColor() { return dotColor; }
     QString getInterpolationText(int frame);
+
     void updateCameraPath(int frame);
     void updateExistingCameraPath(int frame);
     void updateAllCameraPaths();
@@ -73,6 +74,7 @@ protected:
 private:
     void linearInterpolateTransform(Camera*);
     qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
+    CameraEasingType getCameraEasingType(int type);
     void initCameraPath(int frame);
     void setMidPoint(int frame);
     QPointF mOffsetPoint = QPointF();
