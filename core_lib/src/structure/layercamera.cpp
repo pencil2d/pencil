@@ -471,6 +471,25 @@ void LayerCamera::setMidPoint(int frame)
     }
 }
 
+void LayerCamera::initEasingData(int frame, CameraEasingType type)
+{
+    Q_ASSERT(keyExists(frame));
+
+    Camera* initCamera = static_cast<Camera*>(getKeyFrameAt(frame));
+    initCamera->setEasingType(type);
+    int next = getNextKeyFramePosition(frame);
+
+    if (frame == next || next == 0)
+    {
+        initCamera->setPathMidPoint(initCamera->translation());
+    }
+    else
+    {
+        Camera* nextCamera = static_cast<Camera*>(getKeyFrameAt(next));
+        initCamera->setPathMidPoint(QLineF(initCamera->translation(), nextCamera->translation()).pointAt(0.5));
+    }
+}
+
 QRect LayerCamera::getViewRect()
 {
     return viewRect;
@@ -628,7 +647,7 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 loadImageAtFrame(frame, dx, dy, rotate, scale, easing, QPointF(midx, midy));
                 if (midx == 1234567890)
                 {
-                    setMidPoint(frame);
+                    initEasingData(frame, getCameraEasingType(easing));
                 }
                 initCameraPath(frame);
             }

@@ -77,6 +77,7 @@ private:
     CameraEasingType getCameraEasingType(int type);
     void initCameraPath(int frame);
     void setMidPoint(int frame);
+    void initEasingData(int frame, CameraEasingType type);
     QPointF mOffsetPoint = QPointF();
 
     int mFieldW = 800;

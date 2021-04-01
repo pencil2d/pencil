@@ -26,7 +26,6 @@ Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;
-    mEasingType = static_cast<CameraEasingType>(CameraEasingType::LINEAR);
     updateViewTransform();
 }
 
