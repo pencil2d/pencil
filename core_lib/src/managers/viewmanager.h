@@ -119,6 +119,10 @@ private:
     QTransform mCentre;
     QTransform mImportView;
 
+    QPointF mTranslation = QPointF();
+    qreal mScaling = 1.0;
+    qreal mRotation = 0.0;
+
     Camera* mDefaultEditorCamera = nullptr;
     Camera* mCurrentCamera = nullptr;
 
