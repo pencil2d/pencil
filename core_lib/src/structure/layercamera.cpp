@@ -41,6 +41,7 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 
     mFrameList = getKeyList();
     connect(this, &LayerCamera::selectedFramesChanged, this, &LayerCamera::updateAllCameraPaths);
+    connect(this, &LayerCamera::keyframeDeleted, this, &LayerCamera::updateAllCameraPaths);
 }
 
 LayerCamera::~LayerCamera()

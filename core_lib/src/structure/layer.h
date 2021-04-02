@@ -133,6 +133,7 @@ public:
 
 signals:
     void selectedFramesChanged();
+    void keyframeDeleted();
 
 protected:
     void setId(int LayerId) { mId = LayerId; }
