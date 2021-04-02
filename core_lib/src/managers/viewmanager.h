@@ -21,10 +21,6 @@ GNU General Public License for more details.
 #include <QTransform>
 #include "basemanager.h"
 
-class Layer;
-class LayerCamera;
-class Camera;
-
 
 class ViewManager : public BaseManager
 {
@@ -37,7 +33,6 @@ public:
     bool init() override;
     Status load(Object*) override;
     Status save(Object*) override;
-    void workingLayerChanged(Layer* layer) override;
 
     QTransform getView() const;
     QTransform getViewInverse() const;
@@ -94,7 +89,6 @@ public:
 
 
     void setCanvasSize(QSize size);
-    void setCameraLayer(Layer* layer);
 
     QTransform getImportView() { return mImportView; }
     void setImportView(const QTransform& newView) { mImportView = newView; }
@@ -123,9 +117,6 @@ private:
     qreal mScaling = 1.0;
     qreal mRotation = 0.0;
 
-    Camera* mDefaultEditorCamera = nullptr;
-    Camera* mCurrentCamera = nullptr;
-
     QSize mCanvasSize = { 1, 1 };
 
     bool mIsFlipHorizontal = false;
@@ -136,8 +127,6 @@ private:
     bool mOverlaySafeAreas = false;
 
     bool mImportFollowsCamera = false;
-
-    LayerCamera* mCameraLayer = nullptr;
 };
 
 #endif // VIEWMANAGER_H

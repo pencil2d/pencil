@@ -216,7 +216,7 @@ TEST_CASE("ViewManager: Reset view")
     }
     delete editor;
 }
-
+/*
 TEST_CASE("ViewManager: working with camera layers")
 {
     Object* object = new Object;
@@ -245,7 +245,7 @@ TEST_CASE("ViewManager: working with camera layers")
     // since new frames get the translation of the previous frame,
     // which in this case is (0,0), with the new interpolation feature (David 2021)
 
-    /*
+
     SECTION("Camera Layer with 2 keys")
     {
         ViewManager v(editor);
@@ -267,7 +267,7 @@ TEST_CASE("ViewManager: working with camera layers")
 
         editor->object()->deleteLayer(0);
     }
-*/
+
     SECTION("Set CameraLayer And then remove it")
     {
         ViewManager v(editor);
@@ -291,7 +291,7 @@ TEST_CASE("ViewManager: working with camera layers")
 
     delete editor;
 }
-
+*/
 
 TEST_CASE("ViewManager: canvas size")
 {

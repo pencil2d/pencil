@@ -19,8 +19,6 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "editor.h"
 #include "object.h"
-#include "camera.h"
-#include "layercamera.h"
 
 const static qreal mMinScale = 0.01;
 const static qreal mMaxScale = 100.0;
@@ -36,12 +34,9 @@ const std::vector<qreal> gZoomLevels
 
 ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
 {
-    mDefaultEditorCamera = new Camera;
-    mCurrentCamera = mDefaultEditorCamera;
 }
 
 ViewManager::~ViewManager() {
-    delete mDefaultEditorCamera;
 }
 
 bool ViewManager::init()
@@ -52,9 +47,6 @@ bool ViewManager::init()
 
 Status ViewManager::load(Object*)
 {
-    mCameraLayer = nullptr;
-    mCurrentCamera = mDefaultEditorCamera;
-    mCurrentCamera->reset();
     updateViewTransforms();
 
     return Status::OK;
@@ -64,18 +56,6 @@ Status ViewManager::save(Object* o)
 {
     o->data()->setCurrentView(mView);
     return Status::OK;
-}
-
-void ViewManager::workingLayerChanged(Layer* layer)
-{
-    if (layer->type() == Layer::CAMERA)
-    {
-        setCameraLayer(layer);
-    }
-    else
-    {
-        setCameraLayer(nullptr);
-    }
 }
 
 QPointF ViewManager::mapCanvasToScreen(QPointF p) const
@@ -162,7 +142,6 @@ QPointF ViewManager::translation() const
 
 void ViewManager::translate(float dx, float dy)
 {
-    mCurrentCamera->translate(static_cast<qreal>(dx), static_cast<qreal>(dy));
     mTranslation = QPointF(dx, dy);
     updateViewTransforms();
 
@@ -204,32 +183,12 @@ qreal ViewManager::scaling()
 
 void ViewManager::scaleUp()
 {
-    for (size_t i = 0; i < gZoomLevels.size(); i++)
-    {
-        if (gZoomLevels[i] > mScaling)
-        {
-            scale(gZoomLevels[i]);
-        }
-        else
-        {
-            scale(mScaling * 1.18);
-        }
-    }
+    scale(mScaling * 1.25);
 }
 
 void ViewManager::scaleDown()
 {
-    for (int i = static_cast<int>(gZoomLevels.size()) - 1; i >= 0; --i)
-    {
-        if (gZoomLevels[static_cast<unsigned>(i)] < mScaling)
-        {
-            scale(gZoomLevels[static_cast<unsigned>(i)]);
-        }
-        else
-        {
-            scale(mScaling * 0.8333);
-        }
-    }
+    scale(mScaling * 0.8);
 }
 
 void ViewManager::scale100()
@@ -373,25 +332,6 @@ void ViewManager::setCanvasSize(QSize size)
 
     updateViewTransforms();
     emit viewChanged();
-}
-
-void ViewManager::setCameraLayer(Layer* layer)
-{
-    if (layer != nullptr)
-    {
-        if (layer->type() != Layer::CAMERA)
-        {
-            Q_ASSERT(false && "Only camera layers allowed pls");
-            return;
-        }
-        mCameraLayer = static_cast<LayerCamera*>(layer);
-    }
-    else
-    {
-        mCameraLayer = nullptr;
-    }
-
-    updateViewTransforms();
 }
 
 void ViewManager::onCurrentFrameChanged()
