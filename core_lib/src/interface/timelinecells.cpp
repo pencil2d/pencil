@@ -87,58 +87,45 @@ void TimeLineCells::loadSetting(SETTING setting)
     updateContent();
 }
 
-Camera *TimeLineCells::getCam(int frame)
-{
-    return static_cast<Camera*>(mEditor->layers()->currentLayer()->getKeyFrameAt(frame));
-}
-
 void TimeLineCells::setHold(int frame)
 {
-    Layer* curLayer = mEditor->layers()->currentLayer();
+    LayerCamera* curLayer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
     QList<int> frames = curLayer->getListOfSelectedFrames();
     if (!frames.empty())
     {
         for (int pos:frames)
         {
-            Camera* cam = getCam(pos);
-            Camera* next = getCam(curLayer->getNextKeyFramePosition(pos));
-            next->translate(cam->translation());
-            next->rotate(cam->rotation());
-            next->scale(cam->scaling());
-            next->updateViewTransform();
-            next->modification();
-            mEditor->scrubTo(mEditor->currentFrame());
+            Camera* cam = curLayer->getCameraAtFrame(pos);
+            Camera* next = curLayer->getCameraAtFrame(curLayer->getNextKeyFramePosition(pos));
+            next->assign(*cam);
             cam->setEasingType(CameraEasingType::LINEAR);
         }
     }
     else
     {
-        Camera* cam = getCam(frame);
-        Camera* next = getCam(curLayer->getNextKeyFramePosition(frame));
-        next->translate(cam->translation());
-        next->rotate(cam->rotation());
-        next->scale(cam->scaling());
-        next->updateViewTransform();
-        next->modification();
-        mEditor->scrubTo(mEditor->currentFrame());
+        Camera* cam = curLayer->getCameraAtFrame(frame);
+        Camera* next = curLayer->getCameraAtFrame(curLayer->getNextKeyFramePosition(frame));
+        next->assign(*cam);
         cam->setEasingType(CameraEasingType::LINEAR);
     }
+    updateContent();
 }
 
 void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
 {
-    QList<int> frames = mEditor->layers()->currentLayer()->getListOfSelectedFrames();
+    LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+    QList<int> frames = layer->getListOfSelectedFrames();
     if (!frames.empty())
     {
         for (int pos:frames)
         {
-            Camera* cam = getCam(pos);
+            Camera* cam = layer->getCameraAtFrame(pos);
             cam->setEasingType(type);
         }
     }
     else
     {
-        Camera* cam = getCam(frame);
+        Camera* cam = layer->getCameraAtFrame(frame);
         cam->setEasingType(type);
     }
 }
@@ -244,88 +231,111 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 
     int nextFrame = curLayer->getNextKeyFramePosition(frameNumber);
 
+    QString interpolateAt = tr("Interpolate frames at: %1");
+    QString interpolateFrom = tr("Interpolate frames from: %1 to %2");
+    QString clearMovementDesc = tr("Clear interpolation on: %1");
+
     if (mEasingMenu == nullptr)
     {
-        mEasingMenu = new QMenu();
-        mInterpolationMenu = new QMenu();
-        mHoldAction = new QAction();
+        mEasingMenu = new QMenu(this);
+        mInterpolationMenu = new QMenu(mEasingMenu);
+        mHoldAction = new QAction(mEasingMenu);
 
-        mInterpolationMenu = mEasingMenu->addMenu(tr("Interpolation frame %1 to %2").arg( QString::number(frameNumber), QString::number(nextFrame)));
+        QString easeInDesc = tr("Ease-in");
+        QString easeOutDesc = tr("Ease-out");
+        QString slowDesc = tr("Slow");
+        QString normalDesc = tr("Normal");
+        QString quickDesc = tr("Quick");
+        QString fastDesc = tr("Fast");
+        QString fasterDesc = tr("Faster");
+        QString fastestDesc = tr("Fastest");
+        QString circleDesc = tr("Circle-based");
+        QString otherDesc = tr("Other");
+        QString linearDesc = tr("Linear interpolation");
 
-        QMenu* subSine  = mInterpolationMenu->addMenu(tr("Slow"));
-        QMenu* subQuad  = mInterpolationMenu->addMenu(tr("Normal"));
-        QMenu* subCubic = mInterpolationMenu->addMenu(tr("Quick"));
-        QMenu* subQuart = mInterpolationMenu->addMenu(tr("Fast"));
-        QMenu* subQuint = mInterpolationMenu->addMenu(tr("Faster"));
-        QMenu* subExpo  = mInterpolationMenu->addMenu(tr("Fastest"));
+        mInterpolationMenu = mEasingMenu->addMenu(interpolateFrom.arg(QString::number(frameNumber), QString::number(nextFrame)));
+
+        QMenu* subSine  = mInterpolationMenu->addMenu(slowDesc);
+        QMenu* subQuad  = mInterpolationMenu->addMenu(normalDesc);
+        QMenu* subCubic = mInterpolationMenu->addMenu(quickDesc);
+        QMenu* subQuart = mInterpolationMenu->addMenu(fastDesc);
+        QMenu* subQuint = mInterpolationMenu->addMenu(fasterDesc);
+        QMenu* subExpo  = mInterpolationMenu->addMenu(fastestDesc);
         mInterpolationMenu->addSeparator();
-        QMenu* subCirc  = mInterpolationMenu->addMenu(tr("Circle-based"));
-        QMenu* subOther = mInterpolationMenu->addMenu(tr("Other"));
+        QMenu* subCirc  = mInterpolationMenu->addMenu(circleDesc);
+        QMenu* subOther = mInterpolationMenu->addMenu(otherDesc);
 
-        subSine->addAction(tr("Slow Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INSINE, frameNumber); });
-        subSine->addAction(tr("Slow  Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTSINE, frameNumber); });
-        subSine->addAction(tr("Slow  Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTSINE, frameNumber); });
-        subSine->addAction(tr("Slow  Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINSINE, frameNumber); });
-        subQuad->addAction(tr("Normal ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUAD, frameNumber); });
-        subQuad->addAction(tr("Normal Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUAD, frameNumber); });
-        subQuad->addAction(tr("Normal Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUAD, frameNumber); });
-        subQuad->addAction(tr("Normal Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUAD, frameNumber); });
-        subCubic->addAction(tr("Quick Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INCUBIC, frameNumber); });
-        subCubic->addAction(tr("Quick Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTCUBIC, frameNumber); });
-        subCubic->addAction(tr("Quick Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCUBIC, frameNumber); });
-        subCubic->addAction(tr("Quick Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCUBIC, frameNumber); });
-        subQuart->addAction(tr("Fast Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUART, frameNumber); });
-        subQuart->addAction(tr("Fast Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUART, frameNumber); });
-        subQuart->addAction(tr("Fast Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUART, frameNumber); });
-        subQuart->addAction(tr("Fast Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUART, frameNumber); });
-        subQuint->addAction(tr("Faster Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUINT, frameNumber); });
-        subQuint->addAction(tr("Faster Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUINT, frameNumber); });
-        subQuint->addAction(tr("Faster Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUINT, frameNumber); });
-        subQuint->addAction(tr("Faster Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUINT, frameNumber); });
-        subExpo->addAction(tr("Fastest Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INEXPO, frameNumber); });
-        subExpo->addAction(tr("Fastest Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTEXPO, frameNumber); });
-        subExpo->addAction(tr("Fastest Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTEXPO, frameNumber); });
-        subExpo->addAction(tr("Fastest Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINEXPO, frameNumber); });
-        subCirc->addAction(tr("Circle-based  Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INCIRC, frameNumber); });
-        subCirc->addAction(tr("Circle-based  Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTCIRC, frameNumber); });
-        subCirc->addAction(tr("Circle-based  Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCIRC, frameNumber); });
-        subCirc->addAction(tr("Circle-based  Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
-        mHoldAction = subOther->addAction(tr("Hold to frame %1").arg(QString::number(nextFrame)), [=] { this->setHold(frameNumber); });
+        QString descOne = QString("%1 %2");
+        QString descTwo = QString("%1 %2 - %3");
+
+        subSine->addAction(descOne.arg(slowDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INSINE, frameNumber); });
+        subSine->addAction(descOne.arg(slowDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTSINE, frameNumber); });
+        subSine->addAction(descTwo.arg(slowDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTSINE, frameNumber); });
+        subSine->addAction(descTwo.arg(slowDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINSINE, frameNumber); });
+
+        subQuad->addAction(descOne.arg(normalDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INQUAD, frameNumber); });
+        subQuad->addAction(descOne.arg(normalDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTQUAD, frameNumber); });
+        subQuad->addAction(descTwo.arg(normalDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTQUAD, frameNumber); });
+        subQuad->addAction(descTwo.arg(normalDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINQUAD, frameNumber); });
+
+        subCubic->addAction(descOne.arg(quickDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INCUBIC, frameNumber); });
+        subCubic->addAction(descOne.arg(quickDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTCUBIC, frameNumber); });
+        subCubic->addAction(descTwo.arg(quickDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTCUBIC, frameNumber); });
+        subCubic->addAction(descTwo.arg(quickDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINCUBIC, frameNumber); });
+
+        subQuart->addAction(descOne.arg(fastDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INQUART, frameNumber); });
+        subQuart->addAction(descOne.arg(fastDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTQUART, frameNumber); });
+        subQuart->addAction(descTwo.arg(fastDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTQUART, frameNumber); });
+        subQuart->addAction(descTwo.arg(fastDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINQUART, frameNumber); });
+
+        subQuint->addAction(descOne.arg(fasterDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INQUINT, frameNumber); });
+        subQuint->addAction(descOne.arg(fasterDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTQUINT, frameNumber); });
+        subQuint->addAction(descTwo.arg(fasterDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTQUINT, frameNumber); });
+        subQuint->addAction(descTwo.arg(fasterDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINQUINT, frameNumber); });
+
+        subExpo->addAction(descOne.arg(fastestDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INEXPO, frameNumber); });
+        subExpo->addAction(descOne.arg(fastestDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTEXPO, frameNumber); });
+        subExpo->addAction(descTwo.arg(fastestDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTEXPO, frameNumber); });
+        subExpo->addAction(descTwo.arg(fastestDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINEXPO, frameNumber); });
+
+        subCirc->addAction(descOne.arg(circleDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INCIRC, frameNumber); });
+        subCirc->addAction(descOne.arg(circleDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTCIRC, frameNumber); });
+        subCirc->addAction(descTwo.arg(circleDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTCIRC, frameNumber); });
+        subCirc->addAction(descTwo.arg(circleDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
+
+        mHoldAction = subOther->addAction(clearMovementDesc.arg(QString::number(nextFrame)), [=] { this->setHold(frameNumber); });
         subOther->addAction(mHoldAction);
-        subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
+        subOther->addAction(linearDesc, [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
     }
 
-    if (!curLayer->getListOfSelectedFrames().empty())
-    {
-        if (curLayer->getListOfSelectedFrames().size() > 1)
-        {
-            QList<int> frameList = curLayer->getListOfSelectedFrames();
-            QString s = "";
-            for (int pos:frameList)
-            {
-                s = (s + (" %1,")).arg(QString::number(pos));
-            }
-            s.chop(1);
-            mInterpolationMenu->setTitle(tr("Interpolate to frames %1").arg(s));
-            mHoldAction->setText(tr("Hold to frames %1").arg(s));
-        }
-        else
-        {
-            mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
-            mHoldAction->setText(tr("Hold to frame %1").arg(QString::number(nextFrame)));
-        }
-    }
-    else if(curLayer->keyExists(frameNumber))
-    {
-        mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
-        mHoldAction->setText(tr("Hold to frames %1").arg(QString::number(nextFrame)));
-    }
-    else
-    {
+    if (curLayer->getListOfSelectedFrames().empty() && !curLayer->keyExists(frameNumber)) {
         return;
     }
 
-    mEasingMenu->exec(pos);
+    if (curLayer->getListOfSelectedFrames().size() > 1)
+    {
+        QList<int> frameList = curLayer->getListOfSelectedFrames();
+        QString keyNumbers = "";
+        for (int pos:frameList)
+        {
+            keyNumbers += " " + QString::number(pos) + ",";
+        }
+        // Remove last comma
+        keyNumbers.chop(1);
+        mInterpolationMenu->setTitle(interpolateAt.arg(keyNumbers));
+        mHoldAction->setText(clearMovementDesc.arg(keyNumbers));
+    }
+    else if(curLayer->keyExists(frameNumber))
+    {
+        QString keyPosString = QString::number(nextFrame);
+        if (frameNumber == nextFrame) {
+            keyPosString = "-";
+        }
+        mInterpolationMenu->setTitle(interpolateFrom.arg(QString::number(frameNumber), keyPosString));
+        mHoldAction->setText(clearMovementDesc.arg(QString::number(nextFrame)));
+    }
+
+    mEasingMenu->popup(pos);
 }
 
 void TimeLineCells::drawContent()
@@ -906,7 +916,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                             // Select a range from the last selected
                             currentLayer->extendSelectionTo(frameNumber);
                         }
-                        else if (event->button() == Qt::LeftButton)
+                        else
                         {
                             currentLayer->toggleFrameSelected(frameNumber, false);
                         }

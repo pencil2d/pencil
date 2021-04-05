@@ -88,6 +88,7 @@ HEADERS +=  \
     src/tool/stroketool.h \
     src/util/blitrect.h \
     src/util/cameraeasingtype.h \
+    src/util/camerafieldoption.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
     src/util/filetype.h \
