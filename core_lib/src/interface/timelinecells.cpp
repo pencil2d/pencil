@@ -906,7 +906,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                             // Select a range from the last selected
                             currentLayer->extendSelectionTo(frameNumber);
                         }
-                        else
+                        else if (event->button() == Qt::LeftButton)
                         {
                             currentLayer->toggleFrameSelected(frameNumber, false);
                         }
