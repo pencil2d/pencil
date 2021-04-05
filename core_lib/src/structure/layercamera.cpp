@@ -227,6 +227,7 @@ void LayerCamera::dragCameraPath(MoveMode mode, QPointF point, int frameNumber)
     case MoveMode::MIDDLE:
         path.cubicTo(middle - (point - mOffsetPoint), middle - (point - mOffsetPoint), end);
         camera1->setCameraPath(path);
+        camera1->setPathMidPoint(middle - (point - mOffsetPoint));
         camera1->updateViewTransform();
         camera1->modification();
         break;
@@ -418,8 +419,8 @@ void LayerCamera::updateCameraPath(int frame)
     if (getPreviousKeyFramePosition(frame) != frame)
     {
         Camera* camPrevious = static_cast<Camera*>(getCameraAtFrame(getPreviousKeyFramePosition(frame)));
+        QPointF midPoint = camPrevious->getPathMidPoint();
         QPainterPath path(camPrevious->translation());
-        QPointF midPoint = QLineF(camPrevious->translation(), camera->translation()).pointAt(0.5);
         path.cubicTo(midPoint, midPoint, camera->translation());
         camPrevious->setCameraPath(path);
     }
@@ -432,13 +433,11 @@ void LayerCamera::updateExistingCameraPath(int frame)
     Camera* camera;
     camera = getCameraAtFrame(frame);
 
-    Camera* nextCamera;
-    nextCamera = getCameraAtFrame(getNextKeyFramePosition(frame));
-
+    QPointF midp = camera->getPathMidPoint();
     QPainterPath pathNew(camera->translation());
-    QPointF midPoint = QLineF(camera->translation(), nextCamera->translation()).pointAt(0.5);
-    pathNew.cubicTo(midPoint, midPoint, nextCamera->translation());
+    pathNew.cubicTo(midp, midp, camera->getCameraPath().pointAtPercent(1.0));
     camera->setCameraPath(pathNew);
+
 }
 
 void LayerCamera::updateAllCameraPaths()
