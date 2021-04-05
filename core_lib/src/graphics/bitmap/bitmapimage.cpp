@@ -686,8 +686,6 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, b
 {
     Q_ASSERT(img != nullptr);
 
-    img->enableAutoCrop(false);
-
     QRgb rgba = img->constScanLine(img->left(), img->top());
     if (qAlpha(rgba) == 0)
         return img;
@@ -744,7 +742,7 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, b
             }
             else
             {   // okay, so it is in grayscale graduation area
-                if(grayValue >= mLowThreshold && grayValue < mThreshold)
+                if( grayValue >= mLowThreshold && grayValue < mThreshold)
                 {
                     qreal factor = qreal(mThreshold - grayValue) / qreal(mThreshold - mLowThreshold);
                     img->scanLine(x , y, qRgba(0, 0, 0, static_cast<int>(mThreshold * factor)));
@@ -754,6 +752,63 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, b
                     img->scanLine(x , y, blackline);
                 }
             }
+        }
+    }
+    img->modification();
+    return img;
+}
+
+BitmapImage* BitmapImage::prepDrawing(BitmapImage* img, bool redEnabled, bool greenEnabled, bool blueEnabled)
+{
+    Q_ASSERT(img != nullptr);
+
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            QRgb rgba = img->constScanLine(x, y);
+            if (qAlpha(rgba) > 0)
+            {
+                int redValue = qRed(rgba);
+                int greenValue = qGreen(rgba);
+                int blueValue = qBlue(rgba);
+
+                if(redValue > greenValue + COLORDIFF && redValue > blueValue + COLORDIFF)
+                {   // IF Red line
+                    if (redEnabled)
+                    {
+                        img->scanLine(x, y, redline);
+                    }
+                    else
+                    {
+                        img->scanLine(x, y, transp);
+                    }
+                }
+
+                else if(greenValue > redValue + COLORDIFF && greenValue > blueValue + COLORDIFF)
+                {   // IF Green line
+                    if (greenEnabled)
+                    {
+                        img->scanLine(x, y, greenline);
+                    }
+                    else
+                    {
+                        img->scanLine(x, y, transp);
+                    }
+                }
+                else if(blueValue > redValue + COLORDIFF && blueValue > greenValue + COLORDIFF)
+                {   // IF Blue line
+                    if (blueEnabled)
+                    {
+                        img->scanLine(x, y, blueline);
+                    }
+                    else
+                    {
+                        img->scanLine(x, y, transp);
+                    }
+                }
+            }
+
         }
     }
     img->modification();
@@ -850,7 +905,6 @@ void BitmapImage::fillSpotAreas(BitmapImage *img)
                 int areaSize = fillWithColor(QPoint(x, y), transp, rosa, img);
                 if (areaSize <= mSpotArea)
                 {   // replace rosa with last color
-                    qDebug() << "Fill spot area " << areaSize <<  " with:  " << qRed(previous) << " " << qGreen(previous) << " " << qBlue(previous) << " " << qAlpha(previous);
                     fillWithColor(points.last(), rosa, previous, img);
                     points.removeLast();
                 }

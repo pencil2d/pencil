@@ -112,6 +112,7 @@ public:
     int getThreshold() { return mThreshold; }
     int getSpotArea() { return mSpotArea; }
     BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    BitmapImage* prepDrawing(BitmapImage* img, bool redEnabled, bool greenEnabled, bool blueEnabled);
     void traceLine(BitmapImage* bitmapimage, bool blackEnabled, bool redEnabled, bool greenEnabled, bool blueEnabled);
     void eraseRedGreenBlueLines(BitmapImage* img);
     void fillSpotAreas(BitmapImage* img);

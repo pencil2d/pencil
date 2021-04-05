@@ -52,11 +52,13 @@ public slots:
     void blendLines();
 
 protected:
+    void prepareAndTraceLines();
     void prepareLines();
     void trace();
     void thin();
     void blend(LayerBitmap* artLayer);
     void nonValidBitmap(int frame);
+    void updateTraceButtons();
 
 private:
     Ui::BitmapColoringWidget* ui = nullptr;
@@ -67,6 +69,9 @@ private:
     bool mSelectAreas = false;
     int mAnimLayer = 0; // Animation layer index
     int mColLayer = 0;  // Coloring layer index
+    bool mRedChecked = false;
+    bool mGreenChecked = false;
+    bool mBlueChecked = false;
 
 };
 

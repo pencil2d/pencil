@@ -52,6 +52,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
 
     // Prepare
     connect(ui->tabWidget, &QTabWidget::tabBarClicked, this, &BitmapColoring::tabWidgetClicked);
+    connect(ui->btnPrepareLines, &QPushButton::clicked, this, &BitmapColoring::prepareAndTraceLines);
     connect(ui->btnApplyTrace, &QPushButton::clicked, this, &BitmapColoring::traceLines);
     // Thin
     connect(ui->sbSpotAreas, QOverload<int>::of(&QSpinBox::valueChanged), this, &BitmapColoring::setSpotArea);
@@ -60,8 +61,8 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->btnApplyThin, &QPushButton::clicked, this, &BitmapColoring::thinLines);
     // Finish
     connect(ui->btnApplyBlend, &QPushButton::clicked, this, &BitmapColoring::blendLines);
+    updateTraceButtons();
 
-    updateUI();
 }
 
 BitmapColoring::~BitmapColoring()
@@ -123,7 +124,13 @@ void BitmapColoring::checkRedBoxes()
     {
         ui->cb2ThinRed->setChecked(ui->cb2TraceRed->isChecked());
         ui->cb2BlendRed->setChecked(ui->cb2TraceRed->isChecked());
+        mRedChecked = true;
     }
+    else
+    {
+        mRedChecked = false;
+    }
+    updateTraceButtons();
 }
 
 void BitmapColoring::checkGreenBoxes()
@@ -132,7 +139,13 @@ void BitmapColoring::checkGreenBoxes()
     {
         ui->cb2ThinGreen->setChecked(ui->cb2TraceGreen->isChecked());
         ui->cb2BlendGreen->setChecked(ui->cb2TraceGreen->isChecked());
+        mGreenChecked = true;
     }
+    else
+    {
+        mGreenChecked = false;
+    }
+    updateTraceButtons();
 }
 
 void BitmapColoring::checkBlueBoxes()
@@ -141,7 +154,13 @@ void BitmapColoring::checkBlueBoxes()
     {
         ui->cb2ThinBlue->setChecked(ui->cb2TraceBlue->isChecked());
         ui->cb2BlendBlue->setChecked(ui->cb2TraceBlue->isChecked());
+        mBlueChecked = true;
     }
+    else
+    {
+        mBlueChecked = false;
+    }
+    updateTraceButtons();
 }
 
 void BitmapColoring::checkAllKeyframesBoxes()
@@ -251,6 +270,7 @@ void BitmapColoring::traceLines()
     else if (mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
         trace();
+        qDebug() << "TRACE one " << mEditor->currentFrame();
     }
     mEditor->deselectAll();
     if (ui->cb3TraceAllKeyframes->isChecked())
@@ -383,15 +403,14 @@ void BitmapColoring::thinLines()
         mProgress.close();
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
-    }
-    ui->cbSpotAreas->setChecked(false);
-    if (ui->cbThinAllKeyframes->isChecked())
-    {
+
         ui->tabWidget->setCurrentIndex(2);
         QMessageBox msgBox;
         msgBox.setText(tr("Ready for coloring!"));
         msgBox.exec();
     }
+
+    mEditor->scrubTo(mEditor->currentFrame());
 }
 
 // public Blend functions
@@ -412,10 +431,18 @@ void BitmapColoring::blendLines()
     if (mLayerBitmap == nullptr) { return; }
 
     QString orgName = mLayerBitmap->name();
-    if (ui->cbMethodSelector->currentIndex() == 2)
-        orgName.chop(2);
-    LayerBitmap* artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(orgName));
+    LayerBitmap* artLayer = nullptr;
+    orgName.chop(2);
+    QString artLayerName = orgName + "_L";
+    artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(artLayerName));
+    if (!artLayer)
+    {
+        artLayerName.chop(2);
+        artLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(artLayerName));
+    }
     if (artLayer == nullptr) { return; }
+
+    artLayer->setVisible(false);
 
     if (!ui->cb3BlendAllKeyframes->isChecked() && mLayerBitmap->keyExists(mEditor->currentFrame()))
     {
@@ -451,12 +478,102 @@ void BitmapColoring::blendLines()
         progress.close();
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
+
         ui->tabWidget->setCurrentIndex(0);
         resetColoringDock();
         QMessageBox msgBox;
         msgBox.setText(tr("Coloring finished!\nDialog reset..."));
         msgBox.exec();
     }
+    mEditor->scrubTo(mEditor->currentFrame());
+}
+
+/*
+ * If drawings are made in Pencil2D, we need to:
+ * - Preserve the originals by...
+ * - ...making a copy of the originals, and...
+ * - ...making a color layer
+ * (unless copy and color layer already exists)
+*/
+void BitmapColoring::prepareAndTraceLines()
+{
+    bool black;
+    ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
+
+    LayerManager* lMgr = mEditor->layers();
+    LayerBitmap* sourceLayer = mLayerBitmap;
+    QString orgName = mLayerBitmap->name();
+    LayerBitmap* artLayer = nullptr;
+    LayerBitmap* colorLayer = nullptr;
+
+    if (!lMgr->findLayerByName(orgName + "_L"))
+    {
+        artLayer = lMgr->createBitmapLayer(orgName + "_L");
+        colorLayer = lMgr->createBitmapLayer(orgName + "_C");
+    }
+    else
+    {
+        artLayer = static_cast<LayerBitmap*>(lMgr->findLayerByName(orgName + "_L"));
+        colorLayer = static_cast<LayerBitmap*>(lMgr->findLayerByName(orgName + "_C"));
+    }
+    Q_ASSERT(artLayer && colorLayer);
+
+    artLayer->setHasColorLayer(true);
+    colorLayer->setIsColorLayer(true);
+
+    if (ui->cb3TraceAllKeyframes->isChecked())
+    {
+        for (int i = sourceLayer->firstKeyFramePosition(); i <= sourceLayer->getMaxKeyFramePosition(); i++ )
+        {
+            if (sourceLayer->keyExists(i))
+            {
+                mEditor->scrubTo(i);
+                lMgr->setCurrentLayer(sourceLayer);
+                sourceLayer->copyFrame(sourceLayer, artLayer, i);
+                BitmapImage* image = artLayer->getBitmapImageAtFrame(i);
+                image->prepDrawing(image,
+                                   mRedChecked,
+                                   mGreenChecked,
+                                   mBlueChecked);
+                artLayer->copyFrame(artLayer, colorLayer, i);
+                BitmapImage* colorImage = colorLayer->getBitmapImageAtFrame(i);
+                colorImage->traceLine(colorImage,
+                                      black,
+                                      mRedChecked,
+                                      mGreenChecked,
+                                      mBlueChecked);
+            }
+        }
+        ui->tabWidget->setCurrentIndex(1);
+        QMessageBox msgBox;
+        msgBox.setText(tr("Ready for thinning lines!"));
+        msgBox.exec();
+    }
+    else
+    {
+        int i = mEditor->currentFrame();
+
+        if (sourceLayer->keyExists(i))
+        {
+            lMgr->setCurrentLayer(sourceLayer);
+            sourceLayer->copyFrame(sourceLayer, artLayer, i);
+            BitmapImage* image = artLayer->getBitmapImageAtFrame(i);
+            image->prepDrawing(image,
+                               mRedChecked,
+                               mGreenChecked,
+                               mBlueChecked);
+            artLayer->copyFrame(artLayer, colorLayer, i);
+            BitmapImage* colorImage = colorLayer->getBitmapImageAtFrame(i);
+            colorImage->traceLine(colorImage,
+                                  black,
+                                  mRedChecked,
+                                  mGreenChecked,
+                                  mBlueChecked);
+        }
+    }
+    lMgr->setCurrentLayer(colorLayer);
+
+    mEditor->scrubTo(mEditor->currentFrame());
 }
 
 // protected functions
@@ -467,6 +584,7 @@ void BitmapColoring::prepareLines()
     {
         return;
     }
+    LayerManager* lMgr = mEditor->layers();
     LayerBitmap* colorLayer = nullptr;
     bool black;
     ui->cbMethodSelector->currentIndex() == 1 ? black = false: black = true;
@@ -478,18 +596,22 @@ void BitmapColoring::prepareLines()
     // Method selector 2 = Coloring on separate layer
     else
     {
+        QString orgName = mLayerBitmap->name();
+        // is it a copy or is it a prepared scanned drawing?
+        if (orgName.endsWith("_L"))
+            orgName.chop(2);
         if (!mLayerBitmap->getHasColorLayer())
         {
             mAnimLayer = mEditor->currentLayerIndex(); // necessary since new layer becomes currentlayer
-            colorLayer = mEditor->layers()->createBitmapLayer(mLayerBitmap->name() + "_C");
+            colorLayer = lMgr->createBitmapLayer(orgName + "_C");
             mColLayer = mEditor->object()->getLayerCount() - 1;
-            mEditor->layers()->setCurrentLayer(mAnimLayer);
+            lMgr->setCurrentLayer(mAnimLayer);
             mLayerBitmap->setHasColorLayer(true);
             colorLayer->setIsColorLayer(true);
         }
         else
         {
-            colorLayer = static_cast<LayerBitmap*>(mEditor->layers()->findLayerByName(mLayerBitmap->name() + "_C"));
+            colorLayer = static_cast<LayerBitmap*>(lMgr->findLayerByName(orgName + "_C"));
         }
     }
     Q_ASSERT(colorLayer);
@@ -506,10 +628,10 @@ void BitmapColoring::prepareLines()
     }
 
     mBitmapImage->traceLine(colorLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
-                                                                          black,
-                                                                          ui->cb2TraceRed->isChecked(),
-                                                                          ui->cb2TraceGreen->isChecked(),
-                                                                          ui->cb2TraceBlue->isChecked());
+                            black,
+                            mRedChecked,
+                            mGreenChecked,
+                            mBlueChecked);
 }
 
 void BitmapColoring::trace()
@@ -589,4 +711,18 @@ void BitmapColoring::nonValidBitmap(int frame)
     QMessageBox msgBox;
     msgBox.setText(tr("Frame %1 is not valid!\nAborting frame...").arg(frame));
     msgBox.exec();
+}
+
+void BitmapColoring::updateTraceButtons()
+{
+    if (ui->cb2TraceRed->isChecked() || ui->cb2TraceGreen->isChecked() || ui->cb2TraceBlue->isChecked())
+    {
+        ui->btnPrepareLines->setEnabled(true);
+        ui->btnApplyTrace->setEnabled(false);
+    }
+    else
+    {
+        ui->btnPrepareLines->setEnabled(false);
+        ui->btnApplyTrace->setEnabled(true);
+    }
 }
