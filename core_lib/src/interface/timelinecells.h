@@ -96,8 +96,6 @@ protected:
 private slots:
     void loadSetting(SETTING setting);
 
-    // setting camera interpolations
-    Camera* getCam(int frame);
     void setHold(int frame);
     void setCameraEasing(CameraEasingType type, int frame);
 

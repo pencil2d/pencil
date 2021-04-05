@@ -87,58 +87,45 @@ void TimeLineCells::loadSetting(SETTING setting)
     updateContent();
 }
 
-Camera *TimeLineCells::getCam(int frame)
-{
-    return static_cast<Camera*>(mEditor->layers()->currentLayer()->getKeyFrameAt(frame));
-}
-
 void TimeLineCells::setHold(int frame)
 {
-    Layer* curLayer = mEditor->layers()->currentLayer();
+    LayerCamera* curLayer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
     QList<int> frames = curLayer->getListOfSelectedFrames();
     if (!frames.empty())
     {
         for (int pos:frames)
         {
-            Camera* cam = getCam(pos);
-            Camera* next = getCam(curLayer->getNextKeyFramePosition(pos));
-            next->translate(cam->translation());
-            next->rotate(cam->rotation());
-            next->scale(cam->scaling());
-            next->updateViewTransform();
-            next->modification();
-            mEditor->scrubTo(mEditor->currentFrame());
+            Camera* cam = curLayer->getCameraAtFrame(pos);
+            Camera* next = curLayer->getCameraAtFrame(curLayer->getNextKeyFramePosition(pos));
+            next->assign(*cam);
             cam->setEasingType(CameraEasingType::LINEAR);
         }
     }
     else
     {
-        Camera* cam = getCam(frame);
-        Camera* next = getCam(curLayer->getNextKeyFramePosition(frame));
-        next->translate(cam->translation());
-        next->rotate(cam->rotation());
-        next->scale(cam->scaling());
-        next->updateViewTransform();
-        next->modification();
-        mEditor->scrubTo(mEditor->currentFrame());
+        Camera* cam = curLayer->getCameraAtFrame(frame);
+        Camera* next = curLayer->getCameraAtFrame(curLayer->getNextKeyFramePosition(frame));
+        next->assign(*cam);
         cam->setEasingType(CameraEasingType::LINEAR);
     }
+    updateContent();
 }
 
 void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
 {
-    QList<int> frames = mEditor->layers()->currentLayer()->getListOfSelectedFrames();
+    LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+    QList<int> frames = layer->getListOfSelectedFrames();
     if (!frames.empty())
     {
         for (int pos:frames)
         {
-            Camera* cam = getCam(pos);
+            Camera* cam = layer->getCameraAtFrame(pos);
             cam->setEasingType(type);
         }
     }
     else
     {
-        Camera* cam = getCam(frame);
+        Camera* cam = layer->getCameraAtFrame(frame);
         cam->setEasingType(type);
     }
 }
@@ -295,34 +282,31 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
     }
 
-    if (!curLayer->getListOfSelectedFrames().empty())
+    if (curLayer->getListOfSelectedFrames().empty() && !curLayer->keyExists(frameNumber)) {
+        return;
+    }
+
+    if (curLayer->getListOfSelectedFrames().size() > 1)
     {
-        if (curLayer->getListOfSelectedFrames().size() > 1)
+        QList<int> frameList = curLayer->getListOfSelectedFrames();
+        QString s = "";
+        for (int pos:frameList)
         {
-            QList<int> frameList = curLayer->getListOfSelectedFrames();
-            QString s = "";
-            for (int pos:frameList)
-            {
-                s = (s + (" %1,")).arg(QString::number(pos));
-            }
-            s.chop(1);
-            mInterpolationMenu->setTitle(tr("Interpolate to frames %1").arg(s));
-            mHoldAction->setText(tr("Hold to frames %1").arg(s));
+            s += " " + QString::number(pos) + ",";
         }
-        else
-        {
-            mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
-            mHoldAction->setText(tr("Hold to frame %1").arg(QString::number(nextFrame)));
-        }
+        // Remove last comma
+        s.chop(1);
+        mInterpolationMenu->setTitle(tr("Interpolate to frames %1").arg(s));
+        mHoldAction->setText(tr("Hold to frames %1").arg(s));
     }
     else if(curLayer->keyExists(frameNumber))
     {
-        mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), QString::number(nextFrame)));
+        QString keyPosString = QString::number(nextFrame);
+        if (frameNumber == nextFrame) {
+            keyPosString = "-";
+        }
+        mInterpolationMenu->setTitle(tr("Interpolation frame %1 to %2").arg(QString::number(frameNumber), keyPosString));
         mHoldAction->setText(tr("Hold to frames %1").arg(QString::number(nextFrame)));
-    }
-    else
-    {
-        return;
     }
 
     mEasingMenu->exec(pos);
