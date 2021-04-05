@@ -335,7 +335,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mHoldAction->setText(clearMovementDesc.arg(QString::number(nextFrame)));
     }
 
-    mEasingMenu->exec(pos);
+    mEasingMenu->popup(pos);
 }
 
 void TimeLineCells::drawContent()
@@ -916,7 +916,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                             // Select a range from the last selected
                             currentLayer->extendSelectionTo(frameNumber);
                         }
-                        else if (event->button() == Qt::LeftButton)
+                        else
                         {
                             currentLayer->toggleFrameSelected(frameNumber, false);
                         }
