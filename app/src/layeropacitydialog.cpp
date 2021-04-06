@@ -33,7 +33,8 @@ void LayerOpacityDialog::initUI()
 {
 
     connect(ui->chooseOpacitySlider, &QSlider::valueChanged, this, &LayerOpacityDialog::opacitySliderChanged);
-    connect(ui->chooseOpacitySpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LayerOpacityDialog::opacitySpinboxChanged);
+    auto spinboxValueChanged = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
+    connect(ui->chooseOpacitySpinBox, spinboxValueChanged, this, &LayerOpacityDialog::opacitySpinboxChanged);
     connect(ui->btnFadeIn, &QPushButton::pressed, this, &LayerOpacityDialog::fadeInPressed);
     connect(ui->btnFadeOut, &QPushButton::pressed, this, &LayerOpacityDialog::fadeOutPressed);
     connect(ui->btnClose, &QPushButton::pressed, this, &LayerOpacityDialog::close);
