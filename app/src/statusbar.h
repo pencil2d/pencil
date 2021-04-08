@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 
 class Editor;
+class ElidedLabel;
 class QComboBox;
 class QLabel;
 class QSlider;
@@ -86,7 +87,7 @@ private:
     /** Label used to display the icon of the current tool */
     QLabel *mToolIcon = nullptr;
     /** Label used to display a short help text for the current tool */
-    QLabel *mToolLabel = nullptr;
+    ElidedLabel *mToolLabel = nullptr;
     /** Label indicating that the current file contains unsaved changes */
     QLabel *mModifiedLabel = nullptr;
     /** Combo box for choosing pre-defined or custom zoom levels */

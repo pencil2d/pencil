@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QLineEdit>
 
 #include "editor.h"
+#include "elidedlabel.h"
 #include "layermanager.h"
 #include "scribblearea.h"
 #include "toolmanager.h"
@@ -33,8 +34,8 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
 
     mToolIcon = new QLabel(this);
     addWidget(mToolIcon);
-    mToolLabel = new QLabel(this);
-    addWidget(mToolLabel);
+    mToolLabel = new ElidedLabel(this);
+    addWidget(mToolLabel, 1);
 
     mModifiedLabel = new QLabel(this);
     mModifiedLabel->setPixmap(QPixmap(":/icons/save.png"));

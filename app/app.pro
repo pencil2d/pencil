@@ -80,7 +80,8 @@ HEADERS += \
     src/presetdialog.h \
     src/commandlineparser.h \
     src/commandlineexporter.h \
-    src/statusbar.h
+    src/statusbar.h \
+    src/elidedlabel.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -124,7 +125,8 @@ SOURCES += \
     src/app_util.cpp \
     src/commandlineparser.cpp \
     src/commandlineexporter.cpp \
-    src/statusbar.cpp
+    src/statusbar.cpp \
+    src/elidedlabel.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
