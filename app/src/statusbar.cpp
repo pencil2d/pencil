@@ -48,7 +48,7 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
     mZoomBox->setMaxCount(mZoomBox->count() + 1);
     mZoomBox->setEditable(true);
     mZoomBox->lineEdit()->setAlignment(Qt::AlignRight);
-    connect(mZoomBox, QOverload<const QString &>::of(&QComboBox::activated), [this](const QString &currentText)
+    connect(mZoomBox, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated), [this](const QString &currentText)
     {
         if (mZoomBox->count() == mZoomBox->maxCount())
         {
