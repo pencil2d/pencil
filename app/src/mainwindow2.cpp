@@ -424,8 +424,9 @@ void MainWindow2::setOpacity(int opacity)
 
 void MainWindow2::updateSaveState()
 {
-    setWindowModified(mEditor->currentBackup() != mBackupAtSave);
-    ui->statusBar->updateModifiedStatus(mEditor->currentBackup() != mBackupAtSave);
+    const bool hasUnsavedChanges = mEditor->currentBackup() != mBackupAtSave;
+    setWindowModified(hasUnsavedChanges);
+    ui->statusBar->updateModifiedStatus(hasUnsavedChanges);
 }
 
 void MainWindow2::clearRecentFilesList()

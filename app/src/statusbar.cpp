@@ -150,9 +150,11 @@ void StatusBar::updateModifiedStatus(bool modified)
     if (modified)
     {
         mModifiedLabel->setToolTip(tr("This file has unsaved changes"));
-        return;
     }
-    mModifiedLabel->setToolTip(tr("This file has no unsaved changes"));
+    else
+    {
+        mModifiedLabel->setToolTip(tr("This file has no unsaved changes"));
+    }
 }
 
 void StatusBar::updateZoomStatus()

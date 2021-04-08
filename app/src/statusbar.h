@@ -39,7 +39,7 @@ public:
      *
      * @param parent The parent object of the status bar
      */
-    explicit StatusBar(QWidget *parent);
+    explicit StatusBar(QWidget *parent = nullptr);
 
     /**
      * Associates an Editor instance with the status bar.
