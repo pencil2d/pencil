@@ -808,10 +808,19 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
         painter.save();
         DOT_COLOR = cameraLayer->getDotColor();
         int max = cameraLayer->getMaxKeyFramePosition();
+        bool activepath = false;
         for (int frame = 1; frame <= max; frame++)
         {
             if (cameraLayer->keyExists(frame))
             {
+                int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
+                if (nextFrame == frame)
+                    break;
+
+                if (frame < mFrameNumber && mFrameNumber < nextFrame)
+                {
+                    activepath = true;
+                }
                 QPointF center = -cameraLayer->getPathMidPont(frame);
 
                 // draw movemode in text
@@ -827,7 +836,10 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
 
                 // draw dots
                 painter.setPen(DOT_COLOR);
-                painter.setBrush(DOT_COLOR);
+                if (!activepath)
+                    painter.setBrush(DOT_COLOR);
+                else
+                    painter.setBrush(Qt::NoBrush);
                 int next = cameraLayer->getNextKeyFramePosition(frame);
                 for (int j = frame; j <= next ; j++)
                 {
@@ -843,6 +855,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                     painter.setBrush(Qt::black);
                 center = cameraLayer->getViewAtFrame(mFrameNumber).inverted().map(QRectF(mCameraRect).center());
                 painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
+                activepath = false;
             }
         }
         painter.restore();
