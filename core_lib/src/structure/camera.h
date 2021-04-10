@@ -25,7 +25,6 @@ class Camera : public KeyFrame
 {
 public:
     explicit Camera();
-    explicit Camera(QPointF translation, qreal rotation, qreal scaling);
     explicit Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type);
     explicit Camera(const Camera&);
     ~Camera() override;
