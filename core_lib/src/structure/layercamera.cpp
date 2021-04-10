@@ -17,10 +17,11 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 #include <QSettings>
+#include <QEasingCurve>
+
 #include "camera.h"
 #include "pencildef.h"
 #include "cameraeasingtype.h"
-#include <QEasingCurve>
 
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
@@ -210,13 +211,13 @@ void LayerCamera::setViewRect(QRect newViewRect)
     emit resolutionChanged();
 }
 
-void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, int easing)
+void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType type)
 {
     if (keyExists(frameNumber))
     {
         removeKeyFrame(frameNumber);
     }
-    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale, easing);
+    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale, type);
     camera->setPos(frameNumber);
     loadKey(camera);
 }
@@ -282,9 +283,9 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 qreal scale = imageElement.attribute("s", "1").toDouble();
                 qreal dx = imageElement.attribute("dx", "0").toDouble();
                 qreal dy = imageElement.attribute("dy", "0").toDouble();
-                int easing = imageElement.attribute("easing", "0").toInt();
+                CameraEasingType type = static_cast<CameraEasingType>(imageElement.attribute("easing", "0").toInt());
 
-                loadImageAtFrame(frame, dx, dy, rotate, scale, easing);
+                loadImageAtFrame(frame, dx, dy, rotate, scale, type);
             }
         }
         imageTag = imageTag.nextSibling();

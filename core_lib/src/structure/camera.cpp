@@ -29,13 +29,13 @@ Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
     updateViewTransform();
 }
 
-Camera::Camera(QPointF translation, qreal rotation, qreal scaling, int easing)
+Camera::Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type)
 {
     Q_ASSERT(scaling > 0);
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;
-    mEasingType = static_cast<CameraEasingType>(easing);
+    mEasingType = static_cast<CameraEasingType>(type);
     updateViewTransform();
 }
 
