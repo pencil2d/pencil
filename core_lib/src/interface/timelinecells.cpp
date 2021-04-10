@@ -241,71 +241,48 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mInterpolationMenu = new QMenu(mEasingMenu);
         mHoldAction = new QAction(mEasingMenu);
 
-        QString easeInDesc = tr("Ease-in");
-        QString easeOutDesc = tr("Ease-out");
-        QString slowDesc = tr("Slow");
-        QString normalDesc = tr("Normal");
-        QString quickDesc = tr("Quick");
-        QString fastDesc = tr("Fast");
-        QString fasterDesc = tr("Faster");
-        QString fastestDesc = tr("Fastest");
-        QString circleDesc = tr("Circle-based");
-        QString otherDesc = tr("Other");
-        QString linearDesc = tr("Linear interpolation");
+        QMenu* subSine  = mInterpolationMenu->addMenu(tr("Slow"));
+        QMenu* subQuad  = mInterpolationMenu->addMenu(tr("Normal"));
+        QMenu* subCubic = mInterpolationMenu->addMenu(tr("Quick"));
+        QMenu* subQuart = mInterpolationMenu->addMenu(tr("Fast"));
+        QMenu* subQuint = mInterpolationMenu->addMenu(tr("Faster"));
+        QMenu* subExpo  = mInterpolationMenu->addMenu(tr("Fastest"));
 
-        mInterpolationMenu = mEasingMenu->addMenu(interpolateFrom.arg(QString::number(frameNumber), QString::number(nextFrame)));
-
-        QMenu* subSine  = mInterpolationMenu->addMenu(slowDesc);
-        QMenu* subQuad  = mInterpolationMenu->addMenu(normalDesc);
-        QMenu* subCubic = mInterpolationMenu->addMenu(quickDesc);
-        QMenu* subQuart = mInterpolationMenu->addMenu(fastDesc);
-        QMenu* subQuint = mInterpolationMenu->addMenu(fasterDesc);
-        QMenu* subExpo  = mInterpolationMenu->addMenu(fastestDesc);
         mInterpolationMenu->addSeparator();
-        QMenu* subCirc  = mInterpolationMenu->addMenu(circleDesc);
-        QMenu* subOther = mInterpolationMenu->addMenu(otherDesc);
+        QMenu* subCirc  = mInterpolationMenu->addMenu(tr("Circle-based"));
+        QMenu* subOther = mInterpolationMenu->addMenu(tr("Other"));
 
-        QString descOne = QString("%1 %2");
-        QString descTwo = QString("%1 %2 - %3");
-
-        subSine->addAction(descOne.arg(slowDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INSINE, frameNumber); });
-        subSine->addAction(descOne.arg(slowDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTSINE, frameNumber); });
-        subSine->addAction(descTwo.arg(slowDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTSINE, frameNumber); });
-        subSine->addAction(descTwo.arg(slowDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINSINE, frameNumber); });
-
-        subQuad->addAction(descOne.arg(normalDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INQUAD, frameNumber); });
-        subQuad->addAction(descOne.arg(normalDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTQUAD, frameNumber); });
-        subQuad->addAction(descTwo.arg(normalDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTQUAD, frameNumber); });
-        subQuad->addAction(descTwo.arg(normalDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINQUAD, frameNumber); });
-
-        subCubic->addAction(descOne.arg(quickDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INCUBIC, frameNumber); });
-        subCubic->addAction(descOne.arg(quickDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTCUBIC, frameNumber); });
-        subCubic->addAction(descTwo.arg(quickDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTCUBIC, frameNumber); });
-        subCubic->addAction(descTwo.arg(quickDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINCUBIC, frameNumber); });
-
-        subQuart->addAction(descOne.arg(fastDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INQUART, frameNumber); });
-        subQuart->addAction(descOne.arg(fastDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTQUART, frameNumber); });
-        subQuart->addAction(descTwo.arg(fastDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTQUART, frameNumber); });
-        subQuart->addAction(descTwo.arg(fastDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINQUART, frameNumber); });
-
-        subQuint->addAction(descOne.arg(fasterDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INQUINT, frameNumber); });
-        subQuint->addAction(descOne.arg(fasterDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTQUINT, frameNumber); });
-        subQuint->addAction(descTwo.arg(fasterDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTQUINT, frameNumber); });
-        subQuint->addAction(descTwo.arg(fasterDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINQUINT, frameNumber); });
-
-        subExpo->addAction(descOne.arg(fastestDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INEXPO, frameNumber); });
-        subExpo->addAction(descOne.arg(fastestDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTEXPO, frameNumber); });
-        subExpo->addAction(descTwo.arg(fastestDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTEXPO, frameNumber); });
-        subExpo->addAction(descTwo.arg(fastestDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINEXPO, frameNumber); });
-
-        subCirc->addAction(descOne.arg(circleDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::INCIRC, frameNumber); });
-        subCirc->addAction(descOne.arg(circleDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::OUTCIRC, frameNumber); });
-        subCirc->addAction(descTwo.arg(circleDesc).arg(easeInDesc).arg(easeOutDesc), [=] { this->setCameraEasing(CameraEasingType::INOUTCIRC, frameNumber); });
-        subCirc->addAction(descTwo.arg(circleDesc).arg(easeOutDesc).arg(easeInDesc), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
-
-        mHoldAction = subOther->addAction(clearMovementDesc.arg(QString::number(nextFrame)), [=] { this->setHold(frameNumber); });
+        subSine->addAction(tr("Slow Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INSINE, frameNumber); });
+        subSine->addAction(tr("Slow Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTSINE, frameNumber); });
+        subSine->addAction(tr("Slow Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTSINE, frameNumber); });
+        subSine->addAction(tr("Slow Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINSINE, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUAD, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUAD, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUAD, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUAD, frameNumber); });
+        subCubic->addAction(tr("Quick Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INCUBIC, frameNumber); });
+        subCubic->addAction(tr("Quick Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTCUBIC, frameNumber); });
+        subCubic->addAction(tr("Quick Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCUBIC, frameNumber); });
+        subCubic->addAction(tr("Quick Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCUBIC, frameNumber); });
+        subQuart->addAction(tr("Fast Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUART, frameNumber); });
+        subQuart->addAction(tr("Fast Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUART, frameNumber); });
+        subQuart->addAction(tr("Fast Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUART, frameNumber); });
+        subQuart->addAction(tr("Fast Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUART, frameNumber); });
+        subQuint->addAction(tr("Faster Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUINT, frameNumber); });
+        subQuint->addAction(tr("Faster Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUINT, frameNumber); });
+        subQuint->addAction(tr("Faster Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUINT, frameNumber); });
+        subQuint->addAction(tr("Faster Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUINT, frameNumber); });
+        subExpo->addAction(tr("Fastest Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INEXPO, frameNumber); });
+        subExpo->addAction(tr("Fastest Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTEXPO, frameNumber); });
+        subExpo->addAction(tr("Fastest Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTEXPO, frameNumber); });
+        subExpo->addAction(tr("Fastest Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINEXPO, frameNumber); });
+        subCirc->addAction(tr("Circle-based Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INCIRC, frameNumber); });
+        subCirc->addAction(tr("Circle-based Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTCIRC, frameNumber); });
+        subCirc->addAction(tr("Circle-based Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCIRC, frameNumber); });
+        subCirc->addAction(tr("Circle-based Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
+        mHoldAction = subOther->addAction(tr("Hold to frame %1").arg(QString::number(nextFrame)), [=] { this->setHold(frameNumber); });
         subOther->addAction(mHoldAction);
-        subOther->addAction(linearDesc, [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
+        subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
     }
 
     if (curLayer->getListOfSelectedFrames().empty() && !curLayer->keyExists(frameNumber)) {
