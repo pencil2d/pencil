@@ -222,6 +222,8 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
             cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
             break;
         }
+        case MoveMode::ROTATIONLEFT:
+        case MoveMode::ROTATIONRIGHT:
         case MoveMode::ROTATION:
         {
             cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));

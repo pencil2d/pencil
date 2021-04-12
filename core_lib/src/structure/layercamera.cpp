@@ -146,7 +146,11 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
     }
     else if (QLineF(point, QPoint(camPoly.at(1) + (camPoly.at(2) - camPoly.at(1)) / 2)).length() < tolerance)
     {
-        return MoveMode::ROTATION;
+        return MoveMode::ROTATIONRIGHT;
+    }
+    else if (QLineF(point, QPoint(camPoly.at(0) + (camPoly.at(3) - camPoly.at(0)) / 2)).length() < tolerance)
+    {
+        return MoveMode::ROTATIONLEFT;
     }
     else if (camPoly.containsPoint(point.toPoint(), Qt::FillRule::OddEvenFill))
     {
@@ -198,7 +202,13 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
         lineOld = QLineF(curCenter, curPoly.at(3));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
-    case MoveMode::ROTATION:
+    case MoveMode::ROTATIONRIGHT:
+        degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(curCenter, point));
+        curCam->translate(curCenter);
+        curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
+        curCam->translate(-curCenter);
+        break;
+    case MoveMode::ROTATIONLEFT:
         degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(curCenter, point));
         curCam->translate(curCenter);
         curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));

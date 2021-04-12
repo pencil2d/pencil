@@ -905,11 +905,17 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                                 radius, radius);
         painter.drawRect(bottomLeftCorner);
 
-        QPointF rotatePoint = QLineF(camPolygon.at(1), camPolygon.at(2)).pointAt(0.5);
-        const QRectF rightSideCircle= QRectF(rotatePoint.x() - width,
-                                             rotatePoint.y() - width,
+        QPointF rotatePointR = QLineF(camPolygon.at(1), camPolygon.at(2)).pointAt(0.5);
+        const QRectF rightSideCircle= QRectF(rotatePointR.x() - width,
+                                             rotatePointR.y() - width,
                                              radius, radius);
         painter.drawEllipse(rightSideCircle);
+
+        QPointF rotatePointL = QLineF(camPolygon.at(0), camPolygon.at(3)).pointAt(0.5);
+        const QRectF leftSideCircle= QRectF(rotatePointL.x() - width,
+                                             rotatePointL.y() - width,
+                                             radius, radius);
+        painter.drawEllipse(leftSideCircle);
         painter.restore();
     }
 
