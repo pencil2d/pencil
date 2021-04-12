@@ -41,7 +41,7 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 
     mFrameList = getKeyList();
     connect(this, &LayerCamera::selectedFramesChanged, this, &LayerCamera::updateAllCameraPaths);
-    connect(this, &LayerCamera::keyframeDeleted, this, &LayerCamera::updateAllCameraPaths);
+    connect(this, &LayerCamera::keyframeDeleted, this, &LayerCamera::updateOnDeleteFrame);
 }
 
 LayerCamera::~LayerCamera()
@@ -423,6 +423,21 @@ void LayerCamera::updateCameraPath(int frame)
         QPainterPath path(camPrevious->translation());
         path.cubicTo(midPoint, midPoint, camera->translation());
         camPrevious->setCameraPath(path);
+    }
+}
+
+void LayerCamera::updateOnDeleteFrame(int frame)
+{
+    int prev = getPreviousKeyFramePosition(frame);
+    int next = getNextKeyFramePosition(frame);
+    if (prev < frame && frame < next)
+    {
+        Camera* camPrev = getCameraAtFrame(prev);
+        Camera* camNext = getCameraAtFrame(next);
+        QPainterPath path(camPrev->translation());
+        QPointF midPoint = QLineF(camPrev->translation(), camNext->translation()).pointAt(0.5);
+        path.cubicTo(midPoint, midPoint, camNext->translation());
+        camPrev->setCameraPath(path);
     }
 }
 

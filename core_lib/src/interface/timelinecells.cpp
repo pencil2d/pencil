@@ -358,7 +358,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     subOther->addAction(tr("Bounce (outBounce)"), [=] { this->setCameraEasing(CameraEasingType::OUTBOUNCE, frameNumber); });
 
     QMenu* cameraFieldMenu = cameraMenu->addMenu(tr("Camera field"));
-    cameraFieldMenu->addAction(tr("Reset camera field"), [=] { this->setCameraReset(CameraFieldOption::RESET_FIELD, frameNumber); });
+    cameraFieldMenu->addAction(tr("Reset camera field to default"), [=] { this->setCameraReset(CameraFieldOption::RESET_FIELD, frameNumber); });
     cameraFieldMenu->addSeparator();
     cameraFieldMenu->addAction(tr("Reset camera position to center (0,0)"), [=] { this->setCameraReset(CameraFieldOption::RESET_TRANSITION, frameNumber); });
     cameraFieldMenu->addAction(tr("Reset camera scaling to 1:1"), [=] { this->setCameraReset(CameraFieldOption::RESET_SCALING, frameNumber); });

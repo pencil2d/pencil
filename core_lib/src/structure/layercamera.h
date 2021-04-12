@@ -61,6 +61,7 @@ public:
     QString getInterpolationText(int frame);
 
     void updateCameraPath(int frame);
+    void updateOnDeleteFrame(int frame);
     void updateExistingCameraPath(int frame);
     void updateAllCameraPaths();
 

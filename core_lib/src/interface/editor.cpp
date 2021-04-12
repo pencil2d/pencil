@@ -1024,7 +1024,7 @@ void Editor::removeKey()
     deselectAll();
     layer->removeKeyFrame(currentFrame());
     if (layer->type() == Layer::CAMERA)
-        emit layer->keyframeDeleted();
+        emit layer->keyframeDeleted(currentFrame());
     scrubBackward();
     layers()->notifyAnimationLengthChanged();
     emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
