@@ -144,10 +144,9 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     default:
         break;
     }
+    layer->updateAllCameraPaths();
     camera->updateViewTransform();
     camera->modification();
-    mEditor->scrubTo(mEditor->currentFrame());
-    updateContent();
 }
 
 void TimeLineCells::toggleShowCameraPath()
