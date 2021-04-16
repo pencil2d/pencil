@@ -33,7 +33,7 @@ public:
     explicit LayerCamera(Object* object);
     ~LayerCamera() override;
 
-    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, int easing, QPointF midPoint);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing);
 
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -42,10 +42,8 @@ public:
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
     QTransform getViewAtFrame(int frameNumber) const;
     MoveMode getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance);
-    MoveMode getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance);
 
     void transformCameraView(MoveMode mode, QPointF point, int frameNumber);
-    void dragCameraPath(MoveMode mode, QPointF point, int frameNumber);
     void setOffsetPoint(QPointF offset) { mOffsetPoint = offset; }
 
     QRect getViewRect();
@@ -53,17 +51,12 @@ public:
     void setViewRect(QRect newViewRect);
 
     void showContextMenu(QPoint point);
-    void setShowPath(bool showPath) { mShowPath = showPath; }
-    bool getShowPath() { return mShowPath; }
-    QPointF getPathMidPont(int frame);
     void setDotColor(QColor color) { dotColor = color ; }
     QColor const getDotColor() { return dotColor; }
     QString getInterpolationText(int frame);
+    QPointF getPathMidPoint(int frame);
 
-    void updateCameraPath(int frame);
     void updateOnDeleteFrame(int frame);
-    void updateExistingCameraPath(int frame);
-    void updateAllCameraPaths();
 
 signals:
     void resolutionChanged();
@@ -76,9 +69,8 @@ private:
     void linearInterpolateTransform(Camera*);
     qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
     CameraEasingType getCameraEasingType(int type);
-    void initCameraPath(int frame);
-    void setMidPoint(int frame);
     void initEasingData(int frame, CameraEasingType type);
+    void initPath(Camera* camera, QPointF p1, QPointF p2, QPointF pEnd);
     QPointF mOffsetPoint = QPointF();
 
     int mFieldW = 800;

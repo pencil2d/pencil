@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #include "camerapropertiesdialog.h"
 #include "ui_camerapropertiesdialog.h"
 
-CameraPropertiesDialog::CameraPropertiesDialog(const QString& name, int width, int height, bool showPath) :
+CameraPropertiesDialog::CameraPropertiesDialog(const QString& name, int width, int height) :
     QDialog(),
     ui(new Ui::CameraPropertiesDialog)
 {

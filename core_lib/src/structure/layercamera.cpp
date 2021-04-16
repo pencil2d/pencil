@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include "cameraeasingtype.h"
 #include "mathutils.h"
 #include <QEasingCurve>
-#include <QPainterPath>
 #include <QDebug>
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
@@ -40,7 +39,6 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
 
     mFrameList = getKeyList();
-    connect(this, &LayerCamera::selectedFramesChanged, this, &LayerCamera::updateAllCameraPaths);
     connect(this, &LayerCamera::keyframeDeleted, this, &LayerCamera::updateOnDeleteFrame);
 }
 
@@ -102,17 +100,14 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 
     // interpolation
     Camera* cam = camera1->clone();
-    cam->setCameraPath(camera1->getCameraPath());
     cam->setEasingType(camera1->getEasingType());
-    QPainterPath path = cam->getCameraPath();
     qreal percent = getInterpolationPercent(cam->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
-
     auto lerp = [](double f1, double f2, double percent) -> double
     {
         return f1 * (1.0 - percent) + f2 * percent;
     };
-    double dx = path.pointAtPercent(percent).x();
-    double dy = path.pointAtPercent(percent).y();
+    double dx = lerp(camera1->translation().x(), camera2->translation().x(), percent);
+    double dy = lerp(camera1->translation().y(), camera2->translation().y(), percent);
     double r = lerp(camera1->rotation(), camera2->rotation(), percent);
     double s = lerp(camera1->scaling(), camera2->scaling(), percent);
 
@@ -159,20 +154,6 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
     return MoveMode::NONE;
 }
 
-MoveMode LayerCamera::getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance)
-{
-    Camera* camera = static_cast<Camera*>(getKeyFrameAt(getPreviousKeyFramePosition(frameNumber)));
-    Q_ASSERT(camera);
-
-    QPainterPath path = camera->getCameraPath();
-
-    if (QLineF(path.pointAtPercent(0.5), point).length() < tolerance)
-    {
-        return MoveMode::MIDDLE;
-    }
-    return MoveMode::NONE;
-}
-
 void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNumber)
 {
     QPolygon curPoly = getViewAtFrame(frameNumber).inverted().mapToPolygon(viewRect);
@@ -203,8 +184,13 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
     case MoveMode::ROTATIONRIGHT:
-    case MoveMode::ROTATIONLEFT:
         degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(curCenter, point));
+        curCam->translate(curCenter);
+        curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
+        curCam->translate(-curCenter);
+        break;
+    case MoveMode::ROTATIONLEFT:
+        degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(point, curCenter));
         curCam->translate(curCenter);
         curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
         curCam->translate(-curCenter);
@@ -212,34 +198,9 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     default:
         break;
     }
-    updateCameraPath(frameNumber);
     setOffsetPoint(point);
     curCam->updateViewTransform();
     curCam->modification();
-}
-
-void LayerCamera::dragCameraPath(MoveMode mode, QPointF point, int frameNumber)
-{
-    Camera* camera1 = getCameraAtFrame(getPreviousKeyFramePosition(frameNumber));
-    Q_ASSERT(camera1);
-
-    QPointF start = camera1->getCameraPath().pointAtPercent(0);
-    QPointF middle = -mOffsetPoint;
-    QPointF end = camera1->getCameraPath().pointAtPercent(1);
-    QPainterPath path(start);
-     switch (mode)
-    {
-    case MoveMode::MIDDLE:
-        path.cubicTo(middle - (point - mOffsetPoint), middle - (point - mOffsetPoint), end);
-        camera1->setCameraPath(path);
-        camera1->setPathMidPoint(middle - (point - mOffsetPoint));
-        camera1->updateViewTransform();
-        camera1->modification();
-        break;
-    default:
-        break;
-    }
-    setOffsetPoint(point);
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)
@@ -262,16 +223,12 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     {
         return; // do nothing
     }
+
     else if (camera1 == nullptr && camera2 != nullptr)
     {
-        cam->assign(*camera2);
-        QPainterPath path(camera2->translation());
-        QPointF midPoint = QLineF(cam->translation(), camera2->translation()).pointAt(0.5);
-        path.cubicTo(midPoint, midPoint, camera2->translation());
-        cam->setCameraPath(path);
-        cam->setEasingType(CameraEasingType::LINEAR);
-        return;
+        return cam->assign(*camera2);
     }
+
     else if (camera2 == nullptr && camera1 != nullptr)
     {
         return cam->assign(*camera1);
@@ -293,8 +250,8 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
         return f1 * (1.0 - percent) + f2 * percent;
     };
 
-    double dx = camera1->getCameraPath().pointAtPercent(percent).toPoint().x();
-    double dy = camera1->getCameraPath().pointAtPercent(percent).toPoint().y();
+    double dx = lerp(camera1->translation().x(), camera2->translation().x(), percent);
+    double dy = lerp(camera1->translation().y(), camera2->translation().y(), percent);
     double r = lerp(camera1->rotation(), camera2->rotation(), percent);
     double s = lerp(camera1->scaling(), camera2->scaling(), percent);
 
@@ -302,18 +259,8 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     cam->rotate(r);
     cam->scale(s);
 
-    // set path for new camera
-    QPainterPath path(cam->translation());
-    QPointF midPoint = QLineF(cam->translation(), camera2->translation()).pointAt(0.5);
-    path.cubicTo(midPoint, midPoint, camera2->translation());
-    cam->setCameraPath(path);
+    // set easingtype for new camera
     cam->setEasingType(CameraEasingType::LINEAR);
-
-    // recalculate path for camera1
-    QPainterPath path1(camera1->translation());
-    QPointF midPoint1 = QLineF(camera1->translation(), cam->translation()).pointAt(0.5);
-    path1.cubicTo(midPoint1, midPoint1, cam->translation());
-    camera1->setCameraPath(path1);
 }
 
 qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent) const
@@ -350,6 +297,7 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     case CameraEasingType::OUTCIRC : easing.setType(QEasingCurve::OutCirc); break;
     case CameraEasingType::INOUTCIRC : easing.setType(QEasingCurve::InOutCirc); break;
     case CameraEasingType::OUTINCIRC: easing.setType(QEasingCurve::OutInCirc); break;
+    case CameraEasingType::OUTBACK: easing.setType(QEasingCurve::OutBack); break;
     case CameraEasingType::OUTBOUNCE: easing.setType(QEasingCurve::OutBounce); break;
     default: easing.setType(QEasingCurve::Linear); break;
     }
@@ -390,45 +338,11 @@ CameraEasingType LayerCamera::getCameraEasingType(int type)
     case 26: retType = CameraEasingType::OUTCIRC; break;
     case 27: retType = CameraEasingType::INOUTCIRC; break;
     case 28: retType = CameraEasingType::OUTINCIRC; break;
+    case 34: retType = CameraEasingType::OUTBACK; break;
     case 38: retType = CameraEasingType::OUTBOUNCE; break;
     default: retType = CameraEasingType::LINEAR; break;
     }
     return retType;
-}
-
-void LayerCamera::initCameraPath(int frame)
-{
-    Q_ASSERT(keyExists(frame));
-
-    Camera* initCamera = static_cast<Camera*>(getKeyFrameAt(frame));
-    int next = getNextKeyFramePosition(frame);
-    Camera* nextCamera = static_cast<Camera*>(getKeyFrameAt(next));
-    QPainterPath path(initCamera->translation());
-    path.cubicTo(initCamera->getPathMidPoint(), initCamera->getPathMidPoint(), nextCamera->translation());
-    initCamera->setCameraPath(path);
-}
-
-void LayerCamera::updateCameraPath(int frame)
-{
-    Camera* camera = getCameraAtFrame(frame);
-    if (keyExists(frame))
-    {
-        updateExistingCameraPath(frame);
-    }
-    else
-    {
-        camera = getCameraAtFrame(getNextKeyFramePosition(frame));
-    }
-
-    // update camera path from previous frame?
-    if (getPreviousKeyFramePosition(frame) != frame)
-    {
-        Camera* camPrevious = static_cast<Camera*>(getCameraAtFrame(getPreviousKeyFramePosition(frame)));
-        QPointF midPoint = camPrevious->getPathMidPoint();
-        QPainterPath path(camPrevious->translation());
-        path.cubicTo(midPoint, midPoint, camera->translation());
-        camPrevious->setCameraPath(path);
-    }
 }
 
 void LayerCamera::updateOnDeleteFrame(int frame)
@@ -437,59 +351,10 @@ void LayerCamera::updateOnDeleteFrame(int frame)
     int next = getNextKeyFramePosition(frame);
     if (prev < frame && frame < next)
     {
-        Camera* camPrev = getCameraAtFrame(prev);
-        Camera* camNext = getCameraAtFrame(next);
-        QPainterPath path(camPrev->translation());
-        QPointF midPoint = QLineF(camPrev->translation(), camNext->translation()).pointAt(0.5);
-        path.cubicTo(midPoint, midPoint, camNext->translation());
-        camPrev->setCameraPath(path);
+        // TODO
     }
 }
 
-void LayerCamera::updateExistingCameraPath(int frame)
-{
-    Q_ASSERT(keyExists(frame));
-
-    Camera* camera = getCameraAtFrame(frame);
-    Camera* camNext = getCameraAtFrame(getNextKeyFramePosition(frame));
-
-    QPointF midp = camera->getPathMidPoint();
-    QPainterPath pathNew(camera->translation());
-    pathNew.cubicTo(midp, midp, camNext->translation());
-    camera->setCameraPath(pathNew);
-
-}
-
-void LayerCamera::updateAllCameraPaths()
-{
-    QList<int> newList = getKeyList();
-    if (mFrameList != newList)
-    {
-        for (int i = 0; i < newList.size(); i++)
-        {
-            updateExistingCameraPath(newList.at(i));
-        }
-    }
-    mFrameList = newList;
-}
-
-// Only to be used for old files, missing midPoint information
-void LayerCamera::setMidPoint(int frame)
-{
-    Q_ASSERT(keyExists(frame));
-
-    Camera* initCamera = static_cast<Camera*>(getKeyFrameAt(frame));
-    int next = getNextKeyFramePosition(frame);
-    if (frame == next || next == 0)
-    {
-        initCamera->setPathMidPoint(initCamera->translation());
-    }
-    else
-    {
-        Camera* nextCamera = static_cast<Camera*>(getKeyFrameAt(next));
-        initCamera->setPathMidPoint(QLineF(initCamera->translation(), nextCamera->translation()).pointAt(0.5));
-    }
-}
 
 void LayerCamera::initEasingData(int frame, CameraEasingType type)
 {
@@ -497,17 +362,12 @@ void LayerCamera::initEasingData(int frame, CameraEasingType type)
 
     Camera* initCamera = static_cast<Camera*>(getKeyFrameAt(frame));
     initCamera->setEasingType(type);
-    int next = getNextKeyFramePosition(frame);
+    // TODO
+}
 
-    if (frame == next || next == 0)
-    {
-        initCamera->setPathMidPoint(initCamera->translation());
-    }
-    else
-    {
-        Camera* nextCamera = static_cast<Camera*>(getKeyFrameAt(next));
-        initCamera->setPathMidPoint(QLineF(initCamera->translation(), nextCamera->translation()).pointAt(0.5));
-    }
+void LayerCamera::initPath(Camera *camera, QPointF p1, QPointF p2, QPointF pEnd)
+{
+    QEasingCurve curve(QEasingCurve::BezierSpline);
 }
 
 QRect LayerCamera::getViewRect()
@@ -526,15 +386,6 @@ void LayerCamera::setViewRect(QRect newViewRect)
     emit resolutionChanged();
 }
 
-QPointF LayerCamera::getPathMidPont(int frame)
-{
-    Q_ASSERT(keyExists(frame));
-
-    Camera* camera = getCameraAtFrame(frame);
-    QPainterPath path = camera->getCameraPath();
-
-    return path.pointAtPercent(0.5);
-}
 
 QString LayerCamera::getInterpolationText(int frame)
 {
@@ -582,7 +433,17 @@ QString LayerCamera::getInterpolationText(int frame)
     return retString;
 }
 
-void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, int easing, QPointF midPoint)
+QPointF LayerCamera::getPathMidPoint(int frame)
+{
+    Camera* camera = getLastCameraAtFrame(frame, 1);
+    Q_ASSERT(camera);
+
+//    Camera* camera = getCameraAtFrame(frame);
+    Camera* nextCamera = getCameraAtFrame(getNextKeyFramePosition(frame));
+    return QLineF(camera->translation(), nextCamera->translation()).pointAt(0.5);
+}
+
+void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing)
 {
     if (keyExists(frameNumber))
     {
@@ -590,8 +451,7 @@ void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal ro
     }
     Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
     camera->setPos(frameNumber);
-    camera->setEasingType(getCameraEasingType(easing));
-    camera->setPathMidPoint(midPoint);
+    camera->setEasingType(easing);
     loadKey(camera);
 }
 
@@ -625,9 +485,6 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
                         keyTag.setAttribute("s", camera->scaling());
                         keyTag.setAttribute("dx", camera->translation().x());
                         keyTag.setAttribute("dy", camera->translation().y());
-                        QPointF point = camera->getCameraPath().pointAtPercent(0.5);
-                        keyTag.setAttribute("midx", point.x());
-                        keyTag.setAttribute("midy", point.y());
                         keyTag.setAttribute("easing", static_cast<int>(camera->getEasingType()));
                         layerElem.appendChild(keyTag);
                     });
@@ -660,16 +517,9 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 qreal scale = imageElement.attribute("s", "1").toDouble();
                 qreal dx = imageElement.attribute("dx", "0").toDouble();
                 qreal dy = imageElement.attribute("dy", "0").toDouble();
-                qreal midx = imageElement.attribute("midx", "1234567890").toDouble();
-                qreal midy = imageElement.attribute("midy", "1234567890").toDouble();
-                int easing = imageElement.attribute("easing", "0").toInt();
+                CameraEasingType easing = static_cast<CameraEasingType>(imageElement.attribute("easing", "0").toInt());
 
-                loadImageAtFrame(frame, dx, dy, rotate, scale, easing, QPointF(midx, midy));
-                if (midx == 1234567890)
-                {
-                    initEasingData(frame, getCameraEasingType(easing));
-                }
-                initCameraPath(frame);
+                loadImageAtFrame(frame, dx, dy, rotate, scale, easing);
             }
         }
         imageTag = imageTag.nextSibling();

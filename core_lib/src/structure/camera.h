@@ -55,12 +55,6 @@ public:
     void setEasingType(CameraEasingType type) { mEasingType = type; }
     CameraEasingType getEasingType() { return mEasingType; }
 
-    void setCameraPath(QPainterPath path) { mCameraPath = path; }
-    QPainterPath getCameraPath() { return mCameraPath; }
-
-    void setPathMidPoint(QPointF point) { mPathMidPoint = point; }
-    QPointF getPathMidPoint() { return mPathMidPoint; }
-
 private:
     QPointF mTranslate;
     qreal mRotate = 0.;
@@ -68,8 +62,6 @@ private:
     bool mNeedUpdateView = true;
 
     CameraEasingType mEasingType = CameraEasingType::LINEAR;
-    QPainterPath mCameraPath;
-    QPointF mPathMidPoint = QPointF();
 };
 
 #endif // CAMERA_H

@@ -34,7 +34,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "toolmanager.h"
-
+#include <QDebug>
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
     mTimeLine = parent;
@@ -101,6 +101,7 @@ void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
     camera->modification();
     mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
+    qDebug() << frame << " easing " << static_cast<int>(type);
 }
 
 void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
@@ -127,24 +128,20 @@ void TimeLineCells::setCameraReset(CameraFieldOption type, int frameNumber)
     case CameraFieldOption::ALIGN_HORIZONTAL:
         camera = getCam(nextFrame);
         camera->translate(camera->translation().x(), copyCamera->translation().y());
-        layer->updateCameraPath(nextFrame);
         break;
     case CameraFieldOption::ALIGN_VERTICAL:
         camera = getCam(nextFrame);
         camera->translate(copyCamera->translation().x(), camera->translation().y());
-        layer->updateCameraPath(nextFrame);
         break;
     case CameraFieldOption::HOLD_FRAME:
         camera = getCam(nextFrame);
         camera->translate(copyCamera->translation());
         camera->scale(copyCamera->scaling());
         camera->rotate(copyCamera->rotation());
-        layer->updateCameraPath(nextFrame);
         break;
     default:
         break;
     }
-    layer->updateAllCameraPaths();
     camera->updateViewTransform();
     camera->modification();
 }
@@ -154,11 +151,7 @@ void TimeLineCells::toggleShowCameraPath()
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
-    if (layer->getShowPath())
-        layer->setShowPath(false);
-    else
-        layer->setShowPath(true);
-
+    // TODO
     mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }
@@ -169,13 +162,7 @@ void TimeLineCells::resetCameraPath(int frameNumber)
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     Camera* camera = static_cast<Camera*>(layer->getKeyFrameAt(frameNumber));
-    QPointF start = camera->getCameraPath().pointAtPercent(0);
-    QPointF end = camera->getCameraPath().pointAtPercent(1);
-    QPointF midPoint = QLineF(start, end).pointAt(0.5);
-    QPainterPath path(start);
-    path.cubicTo(midPoint, midPoint, end);
-    camera->setCameraPath(path);
-
+// TODO
     mEditor->scrubTo(mEditor->currentFrame());
     updateContent();
 }
@@ -354,6 +341,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     subCirc->addAction(tr("Circle-based  Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
     subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
     subOther->addSeparator();
+    subOther->addAction(tr("Overshoot (outBack)"), [=] { this->setCameraEasing(CameraEasingType::OUTBACK, frameNumber); });
     subOther->addAction(tr("Bounce (outBounce)"), [=] { this->setCameraEasing(CameraEasingType::OUTBOUNCE, frameNumber); });
 
     QMenu* cameraFieldMenu = cameraMenu->addMenu(tr("Camera field"));
@@ -369,7 +357,8 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     cameraFieldMenu->addAction(tr("Hold to keyframe %1").arg(QString::number(nextFrame)), [=] { this->setCameraReset(CameraFieldOption::HOLD_FRAME, frameNumber); });
 
     QMenu* cameraPathMenu = cameraMenu->addMenu(tr("Camera path"));
-    if (layer->getShowPath() == false)
+
+    if (false) // TODO
         cameraPathMenu->addAction(tr("Show camera path"), [=] { this->toggleShowCameraPath(); });
     else
         cameraPathMenu->addAction(tr("Hide  camera path"), [=] { this->toggleShowCameraPath(); });
@@ -1165,7 +1154,7 @@ void TimeLineCells::editLayerProperties(LayerCamera *layer) const
     QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
     CameraPropertiesDialog dialog(layer->name(), layer->getViewRect().width(),
-                                  layer->getViewRect().height(), layer->getShowPath());
+                                  layer->getViewRect().height());
     if (dialog.exec() != QDialog::Accepted)
     {
         return;

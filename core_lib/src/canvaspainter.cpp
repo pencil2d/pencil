@@ -803,7 +803,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     mCameraRect = cameraLayer->getViewRect();
 
     // Draw camera paths
-    if (cameraLayer->getShowPath() && !mOptions.isPlaying)
+    if (/* cameraLayer->getShowPath() */ !mOptions.isPlaying)
     {
         painter.save();
         DOT_COLOR = cameraLayer->getDotColor();
@@ -821,8 +821,8 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                 {
                     activepath = true;
                 }
-                QPointF center = -cameraLayer->getPathMidPont(frame);
-
+//                QPointF center = -cameraLayer->getPathMidPont(frame);
+                QPointF center = -cameraLayer->getPathMidPoint(mFrameNumber); // TODO
                 // draw movemode in text
                 painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
                 painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(frame));
