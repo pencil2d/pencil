@@ -142,7 +142,6 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
 
 void ToolOptionWidget::setVisibility(BaseTool* tool)
 {
-
     if (tool->type() == BUCKET) {
         disableAllOptions();
         if (mBucketOptionsWidget == nullptr) {
@@ -167,8 +166,6 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
-//    ui->toleranceSlider->setVisible(tool->isPropertyEnabled(TOLERANCE));
-//    ui->toleranceSpinBox->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
@@ -191,15 +188,8 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
             ui->brushSpinBox->setVisible(false);
             ui->usePressureBox->setVisible(false);
             break;
-        case BUCKET:
-            ui->sizeSlider->setLabel(tr("Stroke Thickness"));
-//            ui->toleranceSlider->setVisible(false);
-//            ui->toleranceSpinBox->setVisible(false);
-            break;
         default:
             ui->sizeSlider->setLabel(tr("Width"));
-//            ui->toleranceSlider->setVisible(false);
-//            ui->toleranceSpinBox->setVisible(false);
             ui->useAABox->setVisible(false);
             break;
         }
