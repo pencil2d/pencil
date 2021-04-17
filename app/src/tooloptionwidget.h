@@ -33,6 +33,7 @@ class QDoubleSpinBox;
 class QGroupBox;
 class Editor;
 class BaseTool;
+class BucketOptionsWidget;
 
 
 class ToolOptionWidget : public BaseDockWidget
@@ -46,6 +47,8 @@ public:
     void updateUI() override;
 
     void makeConnectionToEditor(Editor* editor);
+
+    BucketOptionsWidget* toolBucketOptionsWidget() const;
 
 public slots:
     void onToolPropertyChanged(ToolType, ToolPropertyType);
@@ -62,7 +65,6 @@ private:
     void setVectorMergeEnabled(int);
     void setAA(int);
     void setStabilizerLevel(int);
-    void setTolerance(int);
     void setFillContour(int);
     void setBezier(bool);
 
@@ -71,6 +73,8 @@ private:
 
 private:
     Ui::ToolOptions* ui = nullptr;
+
+    BucketOptionsWidget* mBucketOptionsWidget = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

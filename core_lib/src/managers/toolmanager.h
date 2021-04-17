@@ -68,6 +68,9 @@ public slots:
     void setAA(int);
     void setStabilizerLevel(int);
     void setTolerance(int);
+    void setBucketColorToleranceEnabled(bool enabled);
+    void setBucketFillExpandEnabled(bool enabled);
+    void setBucketFillExpand(int);
     void setUseFillContour(bool);
 
 private:

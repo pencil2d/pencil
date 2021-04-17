@@ -54,7 +54,11 @@ void BucketTool::loadSettings()
     properties.feather = 10;
     properties.stabilizerLevel = StabilizationLevel::NONE;
     properties.useAA = DISABLED;
-    properties.tolerance = settings.value("tolerance", 32.0).toDouble();
+    properties.tolerance = settings.value(SETTING_BUCKET_TOLERANCE, 32.0).toDouble();
+    properties.toleranceEnabled = settings.value(SETTING_BUCKET_TOLERANCE_ON, false).toBool();
+
+    properties.bucketFillExpand = settings.value(SETTING_BUCKET_FILL_EXPAND, 2.0).toInt();
+    properties.bucketFillExpandEnabled = settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool();
 }
 
 void BucketTool::resetToDefault()
@@ -102,7 +106,37 @@ void BucketTool::setTolerance(const int tolerance)
 
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("tolerance", tolerance);
+    settings.setValue(SETTING_BUCKET_TOLERANCE, tolerance);
+    settings.sync();
+}
+
+void BucketTool::setToleranceEnabled(const bool enabled)
+{
+    properties.toleranceEnabled = enabled;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_TOLERANCE_ON, enabled);
+    settings.sync();
+}
+
+void BucketTool::setFillExpandEnabled(const bool enabled)
+{
+    properties.bucketFillExpandEnabled = enabled;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_FILL_EXPAND_ON, enabled);
+    settings.sync();
+}
+
+void BucketTool::setFillExpand(const int fillExpandValue)
+{
+    properties.bucketFillExpand = fillExpandValue;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_FILL_EXPAND, fillExpandValue);
     settings.sync();
 }
 
@@ -172,19 +206,21 @@ void BucketTool::paintBitmap(Layer* layer)
     QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
 
+    int tolerance = properties.toleranceEnabled ? static_cast<int>(properties.tolerance) : 0;
+
     BitmapImage::floodFill(&replaceImage,
                            targetImage,
                            cameraRect,
                            point,
                            qPremultiply(mEditor->color()->frontColor().rgba()),
-                           properties.tolerance);
+                           tolerance);
 
-//    if (properties.useExpandFill) {
-//        BitmapImage::expandFill(&replaceImage,
-//                                targetImage,
-//                                qPremultiply(mEditor->color()->frontColor().rgba()),
-//                                properties.expandFillSize);
-//    }
+    if (properties.bucketFillExpandEnabled) {
+        BitmapImage::expandFill(&replaceImage,
+                                targetImage,
+                                qPremultiply(mEditor->color()->frontColor().rgba()),
+                                properties.bucketFillExpand);
+    }
 
     mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
 }

@@ -39,6 +39,7 @@ INCLUDEPATH += \
 PRECOMPILED_HEADER = src/app-pch.h
 
 HEADERS += \
+    bucketoptionswidget.h \
     src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
@@ -81,6 +82,7 @@ HEADERS += \
     src/commandlineexporter.h
 
 SOURCES += \
+    bucketoptionswidget.cpp \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/main.cpp \
@@ -123,6 +125,7 @@ SOURCES += \
     src/commandlineexporter.cpp
 
 FORMS += \
+    bucketoptionswidget.ui \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \

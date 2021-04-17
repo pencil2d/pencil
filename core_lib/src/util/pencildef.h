@@ -57,6 +57,9 @@ enum ToolPropertyType
     ANTI_ALIASING,
     STABILIZATION,
     TOLERANCE,
+    USETOLERANCE,
+    BUCKETFILLEXPAND,
+    USEBUCKETFILLEXPAND,
     FILLCONTOUR
 };
 
@@ -267,6 +270,12 @@ const static int MaxFramesBound = 9999;
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
 #define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
 #define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
+
+// Ideally this should also BucketTolerance eg.. but for compatibility sake, i'm not changing it now
+#define SETTING_BUCKET_TOLERANCE "Tolerance"
+#define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
+#define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"
+#define SETTING_BUCKET_FILL_EXPAND_ON "BucketFillExpandEnabled"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

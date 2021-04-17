@@ -209,6 +209,24 @@ void ToolManager::setTolerance(int newTolerance)
     emit toolPropertyChanged(currentTool()->type(), TOLERANCE);
 }
 
+void ToolManager::setBucketColorToleranceEnabled(bool enabled)
+{
+    currentTool()->setToleranceEnabled(enabled);
+    emit toolPropertyChanged(currentTool()->type(), USETOLERANCE);
+}
+
+void ToolManager::setBucketFillExpandEnabled(bool expandValue)
+{
+    currentTool()->setFillExpandEnabled(expandValue);
+    emit toolPropertyChanged(currentTool()->type(), USEBUCKETFILLEXPAND);
+}
+
+void ToolManager::setBucketFillExpand(int expandValue)
+{
+    currentTool()->setFillExpand(expandValue);
+    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLEXPAND);
+}
+
 void ToolManager::setUseFillContour(bool useFillContour)
 {
     currentTool()->setUseFillContour(useFillContour);
