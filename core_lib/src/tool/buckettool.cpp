@@ -167,13 +167,24 @@ void BucketTool::paintBitmap(Layer* layer)
     BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
     if (targetImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
 
+    BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
+
     QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
-    BitmapImage::floodFill(targetImage,
+
+    BitmapImage::floodFill(&replaceImage,
+                           targetImage,
                            cameraRect,
                            point,
                            qPremultiply(mEditor->color()->frontColor().rgba()),
                            properties.tolerance);
+
+//    if (properties.useExpandFill) {
+//        BitmapImage::expandFill(&replaceImage,
+//                                targetImage,
+//                                qPremultiply(mEditor->color()->frontColor().rgba()),
+//                                properties.expandFillSize);
+//    }
 
     mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
 }
