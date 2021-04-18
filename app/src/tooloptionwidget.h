@@ -48,8 +48,6 @@ public:
 
     void makeConnectionToEditor(Editor* editor);
 
-    BucketOptionsWidget* toolBucketOptionsWidget() const;
-
 public slots:
     void onToolPropertyChanged(ToolType, ToolPropertyType);
     void onToolChanged(ToolType);

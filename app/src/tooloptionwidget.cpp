@@ -335,8 +335,3 @@ void ToolOptionWidget::disableAllOptions()
     ui->fillContourBox->hide();
     ui->stabilizerLabel->hide();
 }
-
-BucketOptionsWidget* ToolOptionWidget::toolBucketOptionsWidget() const
-{
-    return mBucketOptionsWidget;
-}
