@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QFile>
 #include <QPainterPath>
-#include <QElapsedTimer>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -875,6 +874,12 @@ void BitmapImage::floodFill(BitmapImage* replaceImage,
     }
 }
 
+/** Fills the target image with a given color in a radius of the expansion value
+ *
+ * @param targetImage
+ * @param newColor
+ * @param expand
+ */
 void BitmapImage::expandFill(BitmapImage* targetImage, QRgb newColor, int expand)
 {
     QList<QPoint> expandPoints;
@@ -882,8 +887,6 @@ void BitmapImage::expandFill(BitmapImage* targetImage, QRgb newColor, int expand
     QRect expandRect = QRect(targetImage->topLeft() - QPoint(expand, expand), targetImage->bottomRight() + QPoint(expand, expand));
     targetImage->extend(expandRect);
 
-    QElapsedTimer timer;
-    timer.start();
     auto twoDVectorList = manhattanDistance(targetImage, newColor);
 
     for (int y = 0; y < expandRect.height(); y++)
@@ -897,6 +900,23 @@ void BitmapImage::expandFill(BitmapImage* targetImage, QRgb newColor, int expand
     }
 }
 
+/** Finds all pixels closest to the input color and returns the result as a 2D array
+ *  matching the size of the image
+ *
+ * An example:
+ *
+ * 0 is where the color was found
+ * 1 is the distance from the nearest pixel of that color
+ *
+ * 111111
+ * 100001
+ * 100001
+ * 111111
+ *
+ * @param bitmapImage: Image to search
+ * @param searchColor: Color to find
+ * @return Return a 2D array of pixels closes to the inputColor
+ */
 QVector<QVector<int>> BitmapImage::manhattanDistance(BitmapImage* bitmapImage, QRgb& searchColor) {
 
     // Allocate with size of image size
