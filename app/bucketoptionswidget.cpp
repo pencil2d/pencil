@@ -42,13 +42,18 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget *parent) :
     QSettings settings(PENCIL2D, PENCIL2D);
 
     ui->colorToleranceCheckbox->setChecked(settings.value(SETTING_BUCKET_TOLERANCE_ON, true).toBool());
-
     ui->expandCheckbox->setChecked(settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool());
 
     ui->expandSpinBox->setMaximum(MAX_EXPAND);
     ui->strokeThicknessSpinBox->setMaximum(MAX_STROKE_THICKNESS);
     ui->colorToleranceSpinbox->setMaximum(MAX_COLOR_TOLERANCE);
     ui->strokeThicknessSpinBox->setMinimum(1);
+
+    ui->fillToLayerComboBox->addItem(tr("Current layer"), 0);
+    ui->fillToLayerComboBox->addItem(tr("Layer below"), 1);
+
+    ui->referenceLayerComboBox->addItem(tr("Current layer"), 0);
+    ui->referenceLayerComboBox->addItem(tr("All layers"), 1);
 
     connect(ui->colorToleranceSlider, &SpinSlider::valueChanged, mEditor->tools(), &ToolManager::setTolerance);
     connect(ui->colorToleranceSpinbox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), mEditor->tools(), &ToolManager::setTolerance);
@@ -64,10 +69,15 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget *parent) :
     connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &BucketOptionsWidget::onPropertyChanged);
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &BucketOptionsWidget::onLayerChanged);
 
+    connect(ui->fillToLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setBucketFillToLayer);
+    connect(ui->referenceLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setBucketFillReferenceMode);
+
     ui->expandSlider->setValue(settings.value(SETTING_BUCKET_FILL_EXPAND, 2).toInt());
     ui->expandSpinBox->setValue(settings.value(SETTING_BUCKET_FILL_EXPAND, 2).toInt());
     ui->colorToleranceSlider->setValue(settings.value(SETTING_BUCKET_TOLERANCE, 50).toInt());
     ui->colorToleranceSpinbox->setValue(settings.value(SETTING_BUCKET_TOLERANCE, 50).toInt());
+    ui->fillToLayerComboBox->setCurrentIndex(settings.value(SETTING_BUCKET_FILL_TO_LAYER_MODE, 0).toInt());
+    ui->referenceLayerComboBox->setCurrentIndex(settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt());
 
     clearFocusOnFinished(ui->colorToleranceSpinbox);
     clearFocusOnFinished(ui->expandSpinBox);
@@ -93,6 +103,8 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->expandCheckbox->hide();
         ui->expandSlider->hide();
         ui->expandSpinBox->hide();
+        ui->referenceLayerComboBox->hide();
+        ui->referenceLayerDescLabel->hide();
     } else {
         ui->strokeThicknessSlider->hide();
         ui->strokeThicknessSpinBox->hide();
@@ -105,6 +117,8 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->expandCheckbox->show();
         ui->expandSlider->show();
         ui->expandSpinBox->show();
+        ui->referenceLayerComboBox->show();
+        ui->referenceLayerDescLabel->show();
     }
 }
 
@@ -113,21 +127,22 @@ void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyT
     const Properties& p = mEditor->tools()->currentTool()->properties;
     switch (propertyType)
     {
-    case ToolPropertyType::TOLERANCE: {
+    case ToolPropertyType::TOLERANCE:
          setColorTolerance(static_cast<int>(p.tolerance)); break;
-    }
-    case ToolPropertyType::USETOLERANCE: {
-         setColorToleranceEnabled(static_cast<int>(p.toleranceEnabled)); break;
-    }
-    case ToolPropertyType::WIDTH: {
+    case ToolPropertyType::USETOLERANCE:
+         setColorToleranceEnabled(p.toleranceEnabled); break;
+    case ToolPropertyType::WIDTH:
          setStrokeWidth(static_cast<int>(p.width)); break;
-    }
-    case ToolPropertyType::BUCKETFILLEXPAND: {
+    case ToolPropertyType::BUCKETFILLEXPAND:
          setFillExpand(static_cast<int>(p.bucketFillExpand)); break;
-    }
     case ToolPropertyType::USEBUCKETFILLEXPAND:
-        setFillExpandEnabled(static_cast<int>(p.bucketFillExpandEnabled)); break;
+        setFillExpandEnabled(p.bucketFillExpandEnabled); break;
+    case ToolPropertyType::BUCKETFILLLAYERMODE:
+        setFillToLayerMode(p.bucketFillToLayerMode); break;
+    case ToolPropertyType::BUCKETFILLLAYERREFERENCEMODE:
+        setFillReferenceMode(p.bucketFillReferenceMode); break;
     default:
+        Q_ASSERT(true);
         break;
     }
 }
@@ -171,6 +186,18 @@ void BucketOptionsWidget::setFillExpand(int value)
 
     QSignalBlocker b2(ui->expandSpinBox);
     ui->expandSpinBox->setValue(value);
+}
+
+void BucketOptionsWidget::setFillToLayerMode(int layerMode)
+{
+    QSignalBlocker b(ui->fillToLayerComboBox);
+    ui->fillToLayerComboBox->setCurrentIndex(layerMode);
+}
+
+void BucketOptionsWidget::setFillReferenceMode(int referenceMode)
+{
+    QSignalBlocker b(ui->referenceLayerComboBox);
+    ui->referenceLayerComboBox->setCurrentIndex(referenceMode);
 }
 
 void BucketOptionsWidget::setStrokeWidth(qreal value)

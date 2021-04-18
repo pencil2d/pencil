@@ -873,34 +873,28 @@ void BitmapImage::floodFill(BitmapImage* replaceImage,
             xTemp++;
         }
     }
-
-    targetImage->paste(replaceImage);
-    targetImage->modification();
 }
 
-void BitmapImage::expandFill(BitmapImage* replaceImage, BitmapImage *targetImage, QRgb newColor, int expand)
+void BitmapImage::expandFill(BitmapImage* targetImage, QRgb newColor, int expand)
 {
     QList<QPoint> expandPoints;
 
-    QRect expandRect = QRect(replaceImage->topLeft() - QPoint(expand, expand), replaceImage->bottomRight() + QPoint(expand, expand));
-    replaceImage->extend(expandRect);
+    QRect expandRect = QRect(targetImage->topLeft() - QPoint(expand, expand), targetImage->bottomRight() + QPoint(expand, expand));
+    targetImage->extend(expandRect);
 
     QElapsedTimer timer;
     timer.start();
-    auto twoDVectorList = manhattanDistance(replaceImage, newColor);
+    auto twoDVectorList = manhattanDistance(targetImage, newColor);
 
     for (int y = 0; y < expandRect.height(); y++)
     {
         for (int x = 0; x < expandRect.width(); x++)
         {
             if (twoDVectorList[y][x] <= expand && twoDVectorList[y][x] != 0) {
-                *(reinterpret_cast<QRgb*>(replaceImage->image()->scanLine(y)) + x) = newColor;
+                *(reinterpret_cast<QRgb*>(targetImage->image()->scanLine(y)) + x) = newColor;
             }
         }
     }
-
-    targetImage->paste(replaceImage, QPainter::CompositionMode_DestinationOver);
-    targetImage->modification();
 }
 
 QVector<QVector<int>> BitmapImage::manhattanDistance(BitmapImage* bitmapImage, QRgb& searchColor) {

@@ -59,12 +59,19 @@ void BucketTool::loadSettings()
 
     properties.bucketFillExpand = settings.value(SETTING_BUCKET_FILL_EXPAND, 2.0).toInt();
     properties.bucketFillExpandEnabled = settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool();
+    properties.bucketFillToLayerMode = settings.value(SETTING_BUCKET_FILL_TO_LAYER_MODE, 0).toInt();
+    properties.bucketFillReferenceMode = settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt();
 }
 
 void BucketTool::resetToDefault()
 {
     setWidth(4.0);
     setTolerance(32.0);
+    setFillExpand(2);
+    setFillExpandEnabled(true);
+    setFillToLayer(0);
+    setToleranceEnabled(false);
+    setFillReferenceMode(0);
 }
 
 QCursor BucketTool::cursor()
@@ -140,6 +147,26 @@ void BucketTool::setFillExpand(const int fillExpandValue)
     settings.sync();
 }
 
+void BucketTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_FILL_TO_LAYER_MODE, layerMode);
+    settings.sync();
+}
+
+void BucketTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_FILL_REFERENCE_MODE, referenceMode);
+    settings.sync();
+}
+
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
     startStroke(event->inputType());
@@ -166,7 +193,10 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
-        mEditor->backup(typeName());
+        // Backup of bitmap image is more complicated now and has therefore been moved to bitmap code
+        if (layer->type() != Layer::BITMAP) {
+            mEditor->backup(typeName());
+        }
 
         switch (layer->type())
         {
@@ -195,34 +225,82 @@ bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
 
 void BucketTool::paintBitmap(Layer* layer)
 {
-    Layer* targetLayer = layer; // by default
-    int layerNumber = editor()->layers()->currentLayerIndex(); // by default
-
-    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
-    if (targetImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
-
-    BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
+    Layer* referenceLayer = layer; // by default
+    Layer* targetLayer = layer;
 
     QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
-
     int tolerance = properties.toleranceEnabled ? static_cast<int>(properties.tolerance) : 0;
 
+    int targetLayerIndex = mEditor->currentLayerIndex();
+    if (properties.bucketFillToLayerMode == 1) {
+
+        for (int i = mEditor->currentLayerIndex(); i >= 0; i--) {
+            Layer* searchlayer = mEditor->layers()->getLayer(i);
+
+            if (searchlayer == nullptr) { Q_ASSERT(true); }
+
+            if (targetLayer != searchlayer && searchlayer->type() == Layer::BITMAP) {
+                targetLayer = searchlayer;
+                targetLayerIndex = i;
+                break;
+            }
+        }
+    }
+
+    mEditor->backup(targetLayerIndex, mEditor->currentFrame(), typeName());
+
+    if (targetLayer == nullptr || targetLayer->type() != Layer::BITMAP) {
+        Q_ASSERT(true);
+        return;
+    }
+
+    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
+
+    if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
+
+    BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
+    BitmapImage referenceImage = *static_cast<LayerBitmap*>(referenceLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
+    if (properties.bucketFillReferenceMode == 1) // All layers
+    {
+        referenceImage = flattenBitmapLayersToImage(&replaceImage);
+    }
+
+    QRgb multipliedColor = qPremultiply(mEditor->color()->frontColor().rgba());
+
     BitmapImage::floodFill(&replaceImage,
-                           targetImage,
+                           &referenceImage,
                            cameraRect,
                            point,
-                           qPremultiply(mEditor->color()->frontColor().rgba()),
+                           multipliedColor,
                            tolerance);
 
     if (properties.bucketFillExpandEnabled) {
         BitmapImage::expandFill(&replaceImage,
-                                targetImage,
-                                qPremultiply(mEditor->color()->frontColor().rgba()),
+                                multipliedColor,
                                 properties.bucketFillExpand);
     }
 
-    mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
+    targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOver);
+    targetImage->modification();
+
+    mScribbleArea->setModified(targetLayerIndex, mEditor->currentFrame());
+}
+
+BitmapImage BucketTool::flattenBitmapLayersToImage(BitmapImage* boundsImage)
+{
+    BitmapImage flattenImage = BitmapImage(boundsImage->bounds(), Qt::transparent);
+    int currentFrame = editor()->currentFrame();
+    auto layerMan = mEditor->layers();
+    for (int i = 0; i < layerMan->count(); i++) {
+        Layer* layer = layerMan->getLayer(i);
+
+        if (layer && layer->type() == Layer::BITMAP) {
+            BitmapImage* image = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(currentFrame);
+            flattenImage.paste(image);
+        }
+    }
+    return flattenImage;
 }
 
 void BucketTool::paintVector(Layer* layer)

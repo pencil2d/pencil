@@ -463,6 +463,16 @@ void BaseTool::setFillExpand(const int fillExpandValue)
     properties.bucketFillExpand = fillExpandValue;
 }
 
+void BaseTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+}
+
+void BaseTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+}
+
 void BaseTool::setFillExpandEnabled(const bool enabled)
 {
     properties.bucketFillExpandEnabled = enabled;

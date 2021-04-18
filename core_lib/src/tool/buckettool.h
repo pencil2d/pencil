@@ -20,6 +20,8 @@ GNU General Public License for more details.
 
 #include "stroketool.h"
 
+#include "bitmapimage.h"
+
 class Layer;
 class VectorImage;
 
@@ -44,6 +46,8 @@ public:
     void setWidth(const qreal width) override;
     void setFillExpand(const int fillExpandValue) override;
     void setFillExpandEnabled(const bool enabled) override;
+    void setFillToLayer(int layerIndex) override;
+    void setFillReferenceMode(int referenceMode) override;
 
     void paintBitmap(Layer* layer);
     void paintVector(Layer* layer);
@@ -52,6 +56,8 @@ public:
     void applyChanges();
 
 private:
+
+    BitmapImage flattenBitmapLayersToImage(BitmapImage* boundsImage);
 
     VectorImage* vectorImage = nullptr;
 };

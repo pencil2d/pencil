@@ -40,13 +40,15 @@ public:
     void setFillExpandEnabled(bool enabled);
     void setFillExpand(int value);
     void setColorTolerance(int tolerance);
+    void setFillReferenceMode(int referenceMode);
+    void setFillToLayerMode(int layerMode);
 
     void onPropertyChanged(ToolType, const ToolPropertyType propertyType);
     void onLayerChanged(int);
 
 private:
-
     void updatePropertyVisibility();
+
     Ui::BucketOptionsWidget *ui;
     Editor* mEditor = nullptr;
 

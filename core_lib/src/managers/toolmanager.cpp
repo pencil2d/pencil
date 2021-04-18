@@ -227,6 +227,18 @@ void ToolManager::setBucketFillExpand(int expandValue)
     emit toolPropertyChanged(currentTool()->type(), BUCKETFILLEXPAND);
 }
 
+void ToolManager::setBucketFillToLayer(int layerIndex)
+{
+    currentTool()->setFillToLayer(layerIndex);
+    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERMODE);
+}
+
+void ToolManager::setBucketFillReferenceMode(int referenceMode)
+{
+    currentTool()->setFillReferenceMode(referenceMode);
+    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERREFERENCEMODE);
+}
+
 void ToolManager::setUseFillContour(bool useFillContour)
 {
     currentTool()->setUseFillContour(useFillContour);

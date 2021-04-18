@@ -76,7 +76,7 @@ public:
 
     static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
     static void floodFill(BitmapImage* replaceImage, BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb newColor, int tolerance);
-    static void expandFill(BitmapImage* replaceImage, BitmapImage* targetImage, QRgb newColor, int expand);
+    static void expandFill(BitmapImage* targetImage, QRgb newColor, int expand);
     static QVector<QVector<int> > manhattanDistance(BitmapImage* image, QRgb& searchColor);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
