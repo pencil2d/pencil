@@ -87,6 +87,11 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget *parent) :
     updatePropertyVisibility();
 }
 
+BucketOptionsWidget::~BucketOptionsWidget()
+{
+    delete ui;
+}
+
 void BucketOptionsWidget::updatePropertyVisibility()
 {
     Layer* layer = mEditor->layers()->currentLayer();
@@ -152,12 +157,6 @@ void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyT
 void BucketOptionsWidget::onLayerChanged(int)
 {
     updatePropertyVisibility();
-}
-
-
-BucketOptionsWidget::~BucketOptionsWidget()
-{
-    delete ui;
 }
 
 void BucketOptionsWidget::setColorTolerance(int tolerance)
