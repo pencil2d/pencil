@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "movemode.h"
 #include "cameraeasingtype.h"
+#include "beziercurve.h"
 
 class Camera;
 
@@ -33,7 +34,7 @@ public:
     explicit LayerCamera(Object* object);
     ~LayerCamera() override;
 
-    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, QPointF midPoint);
 
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -42,6 +43,7 @@ public:
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
     QTransform getViewAtFrame(int frameNumber) const;
     MoveMode getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance);
+    MoveMode getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance);
 
     void transformCameraView(MoveMode mode, QPointF point, int frameNumber);
     void setOffsetPoint(QPointF offset) { mOffsetPoint = offset; }
@@ -50,11 +52,23 @@ public:
     QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
 
+    // Functions for camera path
     void showContextMenu(QPoint point);
+    void toggleShowCameraPath();
+    void setShowCameraPath(bool show) { mShowPath = show; }
+    bool getShowCameraPath() { return mShowPath; }
+    void setCameraEasing(CameraEasingType type, int frame);
+    void setCameraReset(CameraFieldOption type, int frame);
+    void setDotColor(DotColor color);
+
     void setDotColor(QColor color) { dotColor = color ; }
     QColor const getDotColor() { return dotColor; }
     QString getInterpolationText(int frame);
     QPointF getPathMidPoint(int frame);
+    QPointF getPathStartPoint(int frame);
+    QList<QPointF> getBezierPoints(int frame);
+    void resetPath(int frame);
+    void dragCameraPath(MoveMode mode, QPointF point, int frame);
 
     void updateOnDeleteFrame(int frame);
 
@@ -69,8 +83,8 @@ private:
     void linearInterpolateTransform(Camera*);
     qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
     CameraEasingType getCameraEasingType(int type);
-    void initEasingData(int frame, CameraEasingType type);
-    void initPath(Camera* camera, QPointF p1, QPointF p2, QPointF pEnd);
+    QPointF getBezierPoint(QPointF first, QPointF last, QPointF midpoint, qreal percent) const;
+
     QPointF mOffsetPoint = QPointF();
 
     int mFieldW = 800;

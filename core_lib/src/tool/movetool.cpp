@@ -75,10 +75,12 @@ QCursor MoveTool::cursor()
     else if (layer->type() == Layer::CAMERA)
     {
         LayerCamera* cam = static_cast<LayerCamera*>(layer);
-        // TODO
+        mode = cam->getMoveModeForCameraPath(mEditor->currentFrame(),
+                                             getCurrentPoint(),
+                                             mEditor->select()->selectionTolerance() * mEditor->view()->scaling());
+        mCamPathMoveMode = mode;
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
-
 
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
@@ -353,7 +355,7 @@ void MoveTool::transformCamera()
 void MoveTool::transformCameraPath()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
-    // TODO
+    layer->dragCameraPath(mCamPathMoveMode, getCurrentPoint(), mEditor->currentFrame());
     mScribbleArea->invalidateLayerPixmapCache();
 }
 

@@ -51,7 +51,7 @@ enum class CameraEasingType {
     INELASTIC,
     OUTELASTIC,
     INOUTELASTIC,
-    UOTINELASTIC,
+    OUTINELASTIC,
     INBACK,
     OUTBACK,
     INOUTBACK,

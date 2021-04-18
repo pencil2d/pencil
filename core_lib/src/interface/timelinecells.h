@@ -96,14 +96,6 @@ protected:
 private slots:
     void loadSetting(SETTING setting);
 
-    // setting camera interpolations
-    Camera* getCam(int frame);
-    void setCameraEasing(CameraEasingType type, int frame);
-    void setCameraReset(CameraFieldOption type, int frameNumber);
-    void toggleShowCameraPath();
-    void resetCameraPath(int frameNumber);
-    void setDotColor(DotColor color);
-
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, const Layer* layer, QColor trackCol, int y, int height, bool selected, int frameSize) const;

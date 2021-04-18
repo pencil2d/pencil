@@ -803,12 +803,13 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     mCameraRect = cameraLayer->getViewRect();
 
     // Draw camera paths
-    if (/* cameraLayer->getShowPath() */ !mOptions.isPlaying)
+    if (cameraLayer->getShowCameraPath() && !mOptions.isPlaying)
     {
         painter.save();
         DOT_COLOR = cameraLayer->getDotColor();
         int max = cameraLayer->getMaxKeyFramePosition();
         bool activepath = false;
+        QString pathType = "";
         for (int frame = 1; frame <= max; frame++)
         {
             if (cameraLayer->keyExists(frame))
@@ -821,21 +822,33 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                 {
                     activepath = true;
                 }
-//                QPointF center = -cameraLayer->getPathMidPont(frame);
-                QPointF center = -cameraLayer->getPathMidPoint(mFrameNumber); // TODO
-                // draw movemode in text
-                painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-                painter.drawText(center - QPoint(0, 10), cameraLayer->getInterpolationText(frame));
 
-                // draw move handle
-                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-                painter.setBrush(Qt::white);
-                painter.drawRect(center.x() - HANDLE_WIDTH/2,
-                                 center.y() - HANDLE_WIDTH/2,
-                                 HANDLE_WIDTH, HANDLE_WIDTH);
+                QPointF center = cameraLayer->getPathMidPoint(mFrameNumber);
+
+                if (activepath)
+                {
+                    // if active path, draw movemode in text
+                    pathType = cameraLayer->getInterpolationText(frame);
+                    painter.setPen(DOT_COLOR);
+                    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                    painter.drawText(center - QPoint(0, 10), pathType);
+
+                    // if active path, draw bezier help lines for active path
+                    QList<QPointF> points = cameraLayer->getBezierPoints(mFrameNumber);
+                    if (points.size() == 3)
+                    {
+                        painter.drawLine(points.at(0), points.at(1));
+                        painter.drawLine(points.at(1), points.at(2));
+                    }
+
+                    // if active path, draw move handle
+                    painter.setBrush(Qt::white);
+                    painter.drawRect(center.x() - HANDLE_WIDTH/2,
+                                     center.y() - HANDLE_WIDTH/2,
+                                     HANDLE_WIDTH, HANDLE_WIDTH);
+                }
 
                 // draw dots
-                painter.setPen(DOT_COLOR);
                 if (!activepath)
                     painter.setBrush(DOT_COLOR);
                 else
@@ -856,6 +869,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                 center = cameraLayer->getViewAtFrame(mFrameNumber).inverted().map(QRectF(mCameraRect).center());
                 painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
                 activepath = false;
+                pathType = "";
             }
         }
         painter.restore();

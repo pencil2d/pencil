@@ -158,7 +158,7 @@ private:
 
     const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
     const int DOT_WIDTH = 4;
-    const int HANDLE_WIDTH = 6;
+    const int HANDLE_WIDTH = 8;
     QColor DOT_COLOR = Qt::red;
 };
 
