@@ -51,9 +51,11 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget *parent) :
 
     ui->fillToLayerComboBox->addItem(tr("Current layer"), 0);
     ui->fillToLayerComboBox->addItem(tr("Layer below"), 1);
+    ui->fillToLayerComboBox->setToolTip(tr("Fill to the current layer or the layer below"));
 
     ui->referenceLayerComboBox->addItem(tr("Current layer"), 0);
     ui->referenceLayerComboBox->addItem(tr("All layers"), 1);
+    ui->referenceLayerComboBox->setToolTip(tr("Refers to the layer that used to flood fill from"));
 
     connect(ui->colorToleranceSlider, &SpinSlider::valueChanged, mEditor->tools(), &ToolManager::setTolerance);
     connect(ui->colorToleranceSpinbox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), mEditor->tools(), &ToolManager::setTolerance);
