@@ -893,8 +893,15 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
             painter.setPen(QColor(0, 0, 0, 80));
             painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         }
-        painter.drawPolygon(camPolygon);
+//        painter.drawPolygon(camPolygon);
+        painter.drawLine(camPolygon.at(3), camPolygon.at(0));
+        painter.drawLine(camPolygon.at(0), camPolygon.at(1));
+        painter.drawLine(camPolygon.at(1), camPolygon.at(2));
+        painter.setPen(Qt::blue);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.drawLine(camPolygon.at(3), camPolygon.at(2));
 
+        painter.setPen(Qt::white);
         painter.setBrush(Qt::black);
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
         int handleW = mCameraRect.width() / 40; // width of handles is 2.5 % of output size
@@ -930,6 +937,7 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                                              rotatePointL.y() - width,
                                              radius, radius);
         painter.drawEllipse(leftSideCircle);
+
         painter.restore();
     }
 

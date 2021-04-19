@@ -130,15 +130,15 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
     {
         return MoveMode::TOPLEFT;
     }
-    if (QLineF(point, camPoly.at(1)).length() < tolerance)
+    else if (QLineF(point, camPoly.at(1)).length() < tolerance)
     {
         return MoveMode::TOPRIGHT;
     }
-    if (QLineF(point, camPoly.at(2)).length() < tolerance)
+    else if (QLineF(point, camPoly.at(2)).length() < tolerance)
     {
         return MoveMode::BOTTOMRIGHT;
     }
-    if (QLineF(point, camPoly.at(3)).length() < tolerance)
+    else if (QLineF(point, camPoly.at(3)).length() < tolerance)
     {
         return MoveMode::BOTTOMLEFT;
     }
@@ -431,14 +431,6 @@ void LayerCamera::setViewRect(QRect newViewRect)
     emit resolutionChanged();
 }
 
-void LayerCamera::toggleShowCameraPath()
-{
-    if (!getShowCameraPath())
-        setShowCameraPath(true);
-    else
-        setShowCameraPath(false);
-}
-
 void LayerCamera::setCameraEasing(CameraEasingType type, int frame)
 {
     Q_ASSERT(keyExists(frame));
@@ -617,6 +609,7 @@ void LayerCamera::resetPath(int frame)
     Camera* cam1 = getCameraAtFrame(frame);
     Camera* cam2 = getCameraAtFrame(nextFrame);
     cam1->setPathMidPoint(QLineF(-cam1->translation(), -cam2->translation()).pointAt(0.5));
+    cam1->modification();
 }
 
 void LayerCamera::dragCameraPath(MoveMode mode, QPointF point, int frame)

@@ -73,12 +73,4 @@ enum class CameraFieldOption {
     SHOW_CAMERA_PATH
 };
 
-enum class DotColor {
-    RED_DOT,
-    BLUE_DOT,
-    GREEN_DOT,
-    BLACK_DOT,
-    WHITE_DOT
-};
-
 #endif // CAMERAEASINGTYPE_H

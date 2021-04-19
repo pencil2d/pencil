@@ -54,15 +54,14 @@ public:
 
     // Functions for camera path
     void showContextMenu(QPoint point);
-    void toggleShowCameraPath();
     void setShowCameraPath(bool show) { mShowPath = show; }
     bool getShowCameraPath() { return mShowPath; }
     void setCameraEasing(CameraEasingType type, int frame);
     void setCameraReset(CameraFieldOption type, int frame);
     void setDotColor(DotColor color);
-
     void setDotColor(QColor color) { dotColor = color ; }
     QColor const getDotColor() { return dotColor; }
+
     QString getInterpolationText(int frame);
     QPointF getPathMidPoint(int frame);
     QPointF getPathStartPoint(int frame);

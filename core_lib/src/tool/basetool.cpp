@@ -465,3 +465,18 @@ void BaseTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;
 }
+
+void BaseTool::setShowCameraPath(const bool showCameraPath)
+{
+    properties.showCameraPath = showCameraPath;
+}
+
+void BaseTool::setPathDotColor(const int pathDotColor)
+{
+    properties.pathDotColor = pathDotColor;
+}
+
+void BaseTool::resetCameraPath(const bool resetCameraPath)
+{
+    properties.resetCameraPath = resetCameraPath;
+}

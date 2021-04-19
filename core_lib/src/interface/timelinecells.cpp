@@ -249,9 +249,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     subBounc->addAction(tr("Bounce Ease-in - Ease-out"), [=] { layer->setCameraEasing(CameraEasingType::INOUTBOUNCE, frameNumber); });
     subBounc->addAction(tr("Bounce Ease-out - Ease-in"), [=] { layer->setCameraEasing(CameraEasingType::OUTINBOUNCE, frameNumber); });
     subOther->addAction(tr("Linear interpolation"), [=] { layer->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
-    subOther->addSeparator();
-    subOther->addAction(tr("Overshoot (outBack)"), [=] { layer->setCameraEasing(CameraEasingType::OUTBACK, frameNumber); });
-    subOther->addAction(tr("Bounce (outBounce)"), [=] { layer->setCameraEasing(CameraEasingType::OUTBOUNCE, frameNumber); });
 
     QMenu* cameraFieldMenu = cameraMenu->addMenu(tr("Camera field"));
     cameraFieldMenu->addAction(tr("Reset camera field to default"), [=] { layer->setCameraReset(CameraFieldOption::RESET_FIELD, frameNumber); });
@@ -264,21 +261,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     cameraFieldMenu->addAction(tr("Align keyframe %1 vertically").arg(QString::number(nextFrame)), [=] { layer->setCameraReset(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
     cameraFieldMenu->addSeparator();
     cameraFieldMenu->addAction(tr("Hold to keyframe %1").arg(QString::number(nextFrame)), [=] { layer->setCameraReset(CameraFieldOption::HOLD_FRAME, frameNumber); });
-
-    QMenu* cameraPathMenu = cameraMenu->addMenu(tr("Camera path"));
-
-    if (!layer->getShowCameraPath())
-        cameraPathMenu->addAction(tr("Show camera path"), [=] { layer->toggleShowCameraPath(); });
-    else
-        cameraPathMenu->addAction(tr("Hide  camera path"), [=] { layer->toggleShowCameraPath(); });
-    cameraPathMenu->addSeparator();
-    cameraPathMenu->addAction(tr("Dot color: Red"), [=] { layer->setDotColor(DotColor::RED_DOT); });
-    cameraPathMenu->addAction(tr("Dot color: Green"), [=] { layer->setDotColor(DotColor::GREEN_DOT); });
-    cameraPathMenu->addAction(tr("Dot color: Blue"), [=] { layer->setDotColor(DotColor::BLUE_DOT); });
-    cameraPathMenu->addAction(tr("Dot color: Black"), [=] { layer->setDotColor(DotColor::BLACK_DOT); });
-    cameraPathMenu->addAction(tr("Dot color: White"), [=] { layer->setDotColor(DotColor::WHITE_DOT); });
-    cameraPathMenu->addSeparator();
-    cameraPathMenu->addAction(tr("Reset camera path"), [=] { layer->resetPath(frameNumber); });
 
     cameraMenu->exec(pos);
     mEditor->scrubTo(mEditor->currentFrame());
