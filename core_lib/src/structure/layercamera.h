@@ -66,6 +66,7 @@ public:
     QString getInterpolationText(int frame);
     QPointF getPathMidPoint(int frame);
     QPointF getPathStartPoint(int frame);
+    bool hasSameTranslation(int first, int last);
     QList<QPointF> getBezierPoints(int frame);
     void resetPath(int frame);
     void dragCameraPath(MoveMode mode, QPointF point, int frame);

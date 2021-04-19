@@ -824,13 +824,13 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
                 }
 
                 QPointF center = cameraLayer->getPathMidPoint(mFrameNumber);
+                painter.setPen(DOT_COLOR);
+                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-                if (activepath)
+                if (activepath && !cameraLayer->hasSameTranslation(frame, nextFrame))
                 {
                     // if active path, draw movemode in text
                     pathType = cameraLayer->getInterpolationText(frame);
-                    painter.setPen(DOT_COLOR);
-                    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
                     painter.drawText(center - QPoint(0, 10), pathType);
 
                     // if active path, draw bezier help lines for active path

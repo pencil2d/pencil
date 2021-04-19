@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "cameraeasingtype.h"
 #include "mathutils.h"
-
+#include <QDebug>
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -159,7 +159,12 @@ MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal
 
 MoveMode LayerCamera::getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance)
 {
-    Camera* camera = static_cast<Camera*>(getKeyFrameAt(getPreviousKeyFramePosition(frameNumber)));
+    int prev = getPreviousKeyFramePosition(frameNumber);
+    int next = getNextKeyFramePosition(frameNumber);
+    if (hasSameTranslation(prev, next))
+        return MoveMode::NONE;
+
+    Camera* camera = getCameraAtFrame(prev);
     Q_ASSERT(camera);
 
     if (QLineF(camera->getPathMidPoint(), point).length() < tolerance)
@@ -574,6 +579,15 @@ QPointF LayerCamera::getPathStartPoint(int frame)
     Q_ASSERT(camera);
 
     return camera->translation();
+}
+
+bool LayerCamera::hasSameTranslation(int first, int last)
+{
+    Camera* camera1 = getCameraAtFrame(first);
+    Camera* camera2 = getCameraAtFrame(last);
+    Q_ASSERT(camera1 && camera2);
+
+    return camera1->translation() == camera2->translation();
 }
 
 QList<QPointF> LayerCamera::getBezierPoints(int frame)
