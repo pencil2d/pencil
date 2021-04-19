@@ -181,6 +181,7 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     QLineF lineNew(curCenter, point);
     qreal degree;
     Camera* curCam = getCameraAtFrame(frameNumber);
+    QPointF mid = curCam->getPathMidPoint();
     switch (mode)
     {
     case MoveMode::CENTER:
@@ -209,12 +210,16 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
         curCam->translate(curCenter);
         curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
         curCam->translate(-curCenter);
+        // since rotations can move midpoint slightly
+        curCam->setPathMidPoint(mid);
         break;
     case MoveMode::ROTATIONLEFT:
         degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(point, curCenter));
         curCam->translate(curCenter);
         curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
         curCam->translate(-curCenter);
+        // since rotations can move midpoint slightly
+        curCam->setPathMidPoint(mid);
         break;
     default:
         break;
