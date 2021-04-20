@@ -39,7 +39,6 @@ INCLUDEPATH += \
 PRECOMPILED_HEADER = src/app-pch.h
 
 HEADERS += \
-    bucketoptionswidget.h \
     src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
@@ -70,6 +69,7 @@ HEADERS += \
     src/aboutdialog.h \
     src/toolbox.h \
     src/tooloptionwidget.h \
+    src/bucketoptionswidget.h \
     src/importexportdialog.h \
     src/exportimagedialog.h \
     src/importimageseqdialog.h \
@@ -82,7 +82,6 @@ HEADERS += \
     src/commandlineexporter.h
 
 SOURCES += \
-    bucketoptionswidget.cpp \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/main.cpp \
@@ -112,6 +111,7 @@ SOURCES += \
     src/aboutdialog.cpp \
     src/toolbox.cpp \
     src/tooloptionwidget.cpp \
+    src/bucketoptionswidget.cpp \
     src/importexportdialog.cpp \
     src/exportimagedialog.cpp \
     src/importimageseqdialog.cpp \
@@ -125,7 +125,6 @@ SOURCES += \
     src/commandlineexporter.cpp
 
 FORMS += \
-    bucketoptionswidget.ui \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \
@@ -143,6 +142,7 @@ FORMS += \
     ui/exportimageoptions.ui \
     ui/importimageseqoptions.ui \
     ui/tooloptions.ui \
+    ui/bucketoptionswidget.ui \
     ui/aboutdialog.ui \
     ui/doubleprogressdialog.ui \
     ui/preferencesdialog.ui \
