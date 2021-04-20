@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) { error( Could not find the common.pri file! ) }
+! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml xmlpatterns multimedia svg
 
@@ -87,6 +87,8 @@ HEADERS +=  \
     src/tool/strokemanager.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
+    src/util/cameraeasingtype.h \
+    src/util/camerafieldoption.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
     src/util/filetype.h \

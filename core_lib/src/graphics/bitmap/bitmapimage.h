@@ -111,6 +111,8 @@ public:
      */
     bool isMinimallyBounded() const { return mMinBound; }
     void enableAutoCrop(bool b) { mEnableAutoCrop = b; }
+    void setOpacity(qreal opacity) { mOpacity = opacity; }
+    qreal getOpacity() const { return mOpacity; }
 
     Status writeFile(const QString& filename);
 
@@ -129,6 +131,7 @@ private:
     /** @see isMinimallyBounded() */
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
+    qreal mOpacity = 1.0;
 };
 
 #endif

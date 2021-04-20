@@ -55,6 +55,7 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
+#include "layeropacitydialog.h"
 #include "errordialog.h"
 
 
@@ -109,6 +110,7 @@ Status ActionCommands::importMovieVideo()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    emit mEditor->framesModified();
 
     progressDialog.setValue(100);
     progressDialog.close();
@@ -659,7 +661,7 @@ void ActionCommands::moveFrameForward()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 }
 
 void ActionCommands::moveFrameBackward()
@@ -672,7 +674,7 @@ void ActionCommands::moveFrameBackward()
             mEditor->scrubBackward();
         }
     }
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 }
 
 Status ActionCommands::addNewBitmapLayer()
