@@ -231,11 +231,13 @@ void BucketTool::paintBitmap(Layer* layer)
     QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
     int tolerance = properties.toleranceEnabled ? static_cast<int>(properties.tolerance) : 0;
-
     int targetLayerIndex = mEditor->currentLayerIndex();
+    int currentFrameIndex = mEditor->currentFrame();
+
     if (properties.bucketFillToLayerMode == 1) {
 
-        for (int i = mEditor->currentLayerIndex(); i >= 0; i--) {
+        bool foundLayerBelow = false;
+        for (int i = targetLayerIndex; i >= 0; i--) {
             Layer* searchlayer = mEditor->layers()->getLayer(i);
 
             if (searchlayer == nullptr) { Q_ASSERT(true); }
@@ -243,24 +245,29 @@ void BucketTool::paintBitmap(Layer* layer)
             if (targetLayer != searchlayer && searchlayer->type() == Layer::BITMAP) {
                 targetLayer = searchlayer;
                 targetLayerIndex = i;
+                foundLayerBelow = true;
                 break;
             }
         }
+
+        if (foundLayerBelow && targetLayer->addNewKeyFrameAt(currentFrameIndex)) {
+            emit mEditor->updateTimeLine();
+        }
     }
 
-    mEditor->backup(targetLayerIndex, mEditor->currentFrame(), typeName());
+    mEditor->backup(targetLayerIndex, currentFrameIndex, typeName());
 
     if (targetLayer == nullptr || targetLayer->type() != Layer::BITMAP) {
         Q_ASSERT(true);
         return;
     }
 
-    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
+    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
 
     if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
 
     BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
-    BitmapImage referenceImage = *static_cast<LayerBitmap*>(referenceLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
+    BitmapImage referenceImage = *static_cast<LayerBitmap*>(referenceLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
     if (properties.bucketFillReferenceMode == 1) // All layers
     {
         referenceImage = flattenBitmapLayersToImage(&replaceImage);
@@ -284,7 +291,7 @@ void BucketTool::paintBitmap(Layer* layer)
     targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOver);
     targetImage->modification();
 
-    mScribbleArea->setModified(targetLayerIndex, mEditor->currentFrame());
+    mScribbleArea->setModified(targetLayerIndex, currentFrameIndex);
 }
 
 BitmapImage BucketTool::flattenBitmapLayersToImage(BitmapImage* boundsImage)
