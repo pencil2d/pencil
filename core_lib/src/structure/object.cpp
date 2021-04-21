@@ -249,6 +249,18 @@ Layer* Object::getLayer(int i) const
     return mLayers.at(i);
 }
 
+Layer* Object::findLayerById(int layerId) const
+{
+    for(Layer* layer : mLayers)
+    {
+        if (layer->id() == layerId)
+        {
+            return layer;
+        }
+    }
+    return nullptr;
+}
+
 Layer* Object::findLayerByName(const QString& strName, Layer::LAYER_TYPE type) const
 {
     bool bCheckType = (type != Layer::UNDEFINED);
