@@ -236,7 +236,10 @@ bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
                 mBackupList.append(element);
                 mBackupIndex++;
             }
-            else { return false; }
+            else
+            {
+                return false;
+            }
         }
         else if (layer->type() == Layer::VECTOR)
         {
@@ -255,7 +258,10 @@ bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
                 mBackupList.append(element);
                 mBackupIndex++;
             }
-            else { return false; }
+            else
+            {
+                return false;
+            }
         }
         else if (layer->type() == Layer::SOUND)
         {
@@ -282,7 +288,10 @@ bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
                     mBackupIndex++;
                 }
             }
-            else { return false; }
+            else
+            {
+                return false;
+            }
         }
     }
 
@@ -415,21 +424,24 @@ void Editor::undo()
             if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
             {
                 BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
-                if (backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp")) {
+                if (backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp"))
+                {
                     mBackupIndex--;
                 }
             }
             if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
             {
                 BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
-                if (backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp")) {
+                if (backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp"))
+                {
                     mBackupIndex--;
                 }
             }
             if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
             {
                 BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
-                if (backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp")) {
+                if (backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp"))
+                {
                     mBackupIndex--;
                 }
             }
