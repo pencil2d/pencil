@@ -790,17 +790,16 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
 
 // Flood fill
 // ----- http://lodev.org/cgtutor/floodfill.html
-void BitmapImage::floodFill(BitmapImage* targetImage,
+BitmapImage* BitmapImage::floodFill(BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
-                            QRgb newColor,
-                            int tolerance,
-                            int fillMode)
+                            QRgb fillColor,
+                            int tolerance)
 {
     // If the point we are supposed to fill is outside the image and camera bounds, do nothing
     if(!cameraRect.united(targetImage->bounds()).contains(point))
     {
-        return;
+        return nullptr;
     }
 
     // Square tolerance for use with compareColor
@@ -808,15 +807,6 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
 
     QRgb oldColor = targetImage->pixel(point);
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
-
-    QRgb fillColor = newColor;
-    if (fillMode == 1)
-    {
-        QColor tempColor;
-        tempColor.setRgba(newColor);
-        tempColor.setAlphaF(1);
-        fillColor = tempColor.rgba();
-    }
 
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
@@ -886,28 +876,5 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         }
     }
 
-    switch(fillMode)
-    {
-    default:
-    case 0:
-        targetImage->paste(replaceImage);
-        break;
-    case 1:
-        BitmapImage fullOpacity(*replaceImage);
-        if (qAlpha(newColor) == 0xFF)
-        {
-            targetImage->paste(replaceImage);
-        }
-        else
-        {
-            targetImage->paste(replaceImage, QPainter::CompositionMode_DestinationOut);
-            BitmapImage properColor(targetImage->mBounds, QColor::fromRgba(newColor));
-            properColor.paste(replaceImage, QPainter::CompositionMode_DestinationIn);
-            targetImage->paste(&properColor);
-        }
-        break;
-    }
-
-    targetImage->modification();
-    delete replaceImage;
+    return replaceImage;
 }
