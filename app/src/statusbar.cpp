@@ -35,6 +35,7 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
     mToolIcon = new QLabel(this);
     addWidget(mToolIcon);
     mToolLabel = new ElidedLabel(this);
+    mToolLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     addWidget(mToolLabel, 1);
 
     mModifiedLabel = new QLabel(this);
