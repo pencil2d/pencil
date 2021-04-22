@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <QPixmap>
 #include <QPainter>
+#include <QPointer>
 #include <QtMath>
 #include <QSettings>
 #include "pointerevent.h"
@@ -183,12 +184,49 @@ void BucketTool::paintBitmap(Layer* layer)
 
     QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
-    BitmapImage::floodFill(targetImage,
-                           cameraRect,
-                           point,
-                           qPremultiply(mEditor->color()->frontColor().rgba()),
-                           properties.tolerance,
-                           properties.fillMode);
+
+    QRgb fillColor = qPremultiply(mEditor->color()->frontColor().rgba());
+    QRgb origColor = fillColor;
+    if (properties.fillMode == 1)
+    {
+        QColor tempColor;
+        tempColor.setRgba(fillColor);
+        tempColor.setAlphaF(1);
+        fillColor = tempColor.rgba();
+    }
+
+    std::unique_ptr<BitmapImage> fillImage(
+                BitmapImage::floodFill(targetImage,
+                                       cameraRect,
+                                       point,
+                                       fillColor,
+                                       properties.tolerance));
+
+    if (fillImage == nullptr)
+    {
+        return;
+    }
+
+    switch(properties.fillMode)
+    {
+    default:
+    case 0:
+        targetImage->paste(fillImage.get());
+        break;
+    case 1:
+        if (qAlpha(origColor) == 0xFF)
+        {
+            targetImage->paste(fillImage.get());
+        }
+        else
+        {
+            targetImage->paste(fillImage.get(), QPainter::CompositionMode_DestinationOut);
+            BitmapImage properColor(targetImage->bounds(), QColor::fromRgba(origColor));
+            properColor.paste(fillImage.get(), QPainter::CompositionMode_DestinationIn);
+            targetImage->paste(&properColor);
+        }
+        break;
+    }
 
     mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
 }
