@@ -187,7 +187,14 @@ void BucketTool::paintBitmap(Layer* layer)
 
     QRgb fillColor = qPremultiply(mEditor->color()->frontColor().rgba());
     QRgb origColor = fillColor;
-    if (properties.fillMode == 1)
+    if (properties.fillMode == 0)
+    {
+        if (qAlpha(fillColor) == 0)
+        {
+            return;
+        }
+    }
+    else if (properties.fillMode == 1)
     {
         QColor tempColor;
         tempColor.setRgba(fillColor);
