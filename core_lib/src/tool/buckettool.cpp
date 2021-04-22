@@ -191,11 +191,16 @@ void BucketTool::paintBitmap(Layer* layer)
     {
         if (qAlpha(fillColor) == 0)
         {
+            // Filling in overlay mode with a fully transparent color has no
+            // effect, so we can skip it in this case
             return;
         }
     }
     else if (properties.fillMode == 1)
     {
+        // Pass a fully opaque version of the new color to floodFill
+        // This is required so we can fully mask out the existing data before
+        // writing the new color.
         QColor tempColor;
         tempColor.setRgba(fillColor);
         tempColor.setAlphaF(1);
@@ -211,25 +216,32 @@ void BucketTool::paintBitmap(Layer* layer)
 
     if (fillImage == nullptr)
     {
+        // Nothing was filled for whatever reason
         return;
     }
 
     switch(properties.fillMode)
     {
     default:
-    case 0:
+    case 0: // Overlay mode
+        // Write fill image on top of target image
         targetImage->paste(fillImage.get());
         break;
-    case 1:
+    case 1: // Replace mode
         if (qAlpha(origColor) == 0xFF)
         {
+            // When the new color is fully opaque, replace mode
+            // behaves exactly like overlay mode, and origColor == fillColor
             targetImage->paste(fillImage.get());
         }
         else
         {
+            // Clearly all pixels in the to-be-filled region from the target image
             targetImage->paste(fillImage.get(), QPainter::CompositionMode_DestinationOut);
+            // Reduce the opacity of the fill to match the new color
             BitmapImage properColor(targetImage->bounds(), QColor::fromRgba(origColor));
             properColor.paste(fillImage.get(), QPainter::CompositionMode_DestinationIn);
+            // Write reduced-opacity fill image on top of target image
             targetImage->paste(&properColor);
         }
         break;
