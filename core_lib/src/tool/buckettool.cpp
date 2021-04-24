@@ -257,7 +257,7 @@ void BucketTool::paintBitmap(Layer* layer)
 
             if (searchlayer == nullptr) { Q_ASSERT(true); }
 
-            if (targetLayer != searchlayer && searchlayer->type() == Layer::BITMAP) {
+            if (targetLayer != searchlayer && searchlayer->type() == Layer::BITMAP && searchlayer->visible()) {
                 targetLayer = searchlayer;
                 targetLayerIndex = i;
                 foundLayerBelow = true;
@@ -361,7 +361,7 @@ BitmapImage BucketTool::flattenBitmapLayersToImage(BitmapImage* boundsImage)
     for (int i = 0; i < layerMan->count(); i++) {
         Layer* layer = layerMan->getLayer(i);
 
-        if (layer && layer->type() == Layer::BITMAP) {
+        if (layer && layer->type() == Layer::BITMAP && layer->visible()) {
             BitmapImage* image = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(currentFrame);
             flattenImage.paste(image);
         }
