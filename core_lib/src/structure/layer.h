@@ -100,7 +100,7 @@ public:
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
 
-    void setModified(int position, bool isModified);
+    void setModified(int position, bool isModified) const;
 
     // Handle selection
     bool isFrameSelected(int position) const;

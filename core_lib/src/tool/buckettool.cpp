@@ -242,32 +242,18 @@ void BucketTool::paintBitmap(Layer* layer)
 {
     Layer* referenceLayer = layer; // by default
     Layer* targetLayer = layer;
+    QRgb multipliedColor = qPremultiply(mEditor->color()->frontColor().rgba());
 
-    QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
-    QRect cameraRect = mScribbleArea->getCameraRect().toRect();
-    int tolerance = properties.toleranceEnabled ? static_cast<int>(properties.tolerance) : 0;
-    int targetLayerIndex = mEditor->currentLayerIndex();
-    int currentFrameIndex = mEditor->currentFrame();
+    const QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
+    const QRect cameraRect = mScribbleArea->getCameraRect().toRect();
+    const int tolerance = properties.toleranceEnabled ? static_cast<int>(properties.tolerance) : 0;
+    const int targetLayerIndex = mEditor->currentLayerIndex();
+    const int currentFrameIndex = mEditor->currentFrame();
+    const QRgb origColor = multipliedColor;
 
     if (properties.bucketFillToLayerMode == 1) {
 
-        bool foundLayerBelow = false;
-        for (int i = targetLayerIndex; i >= 0; i--) {
-            Layer* searchlayer = mEditor->layers()->getLayer(i);
-
-            if (searchlayer == nullptr) { Q_ASSERT(true); }
-
-            if (targetLayer != searchlayer && searchlayer->type() == Layer::BITMAP && searchlayer->visible()) {
-                targetLayer = searchlayer;
-                targetLayerIndex = i;
-                foundLayerBelow = true;
-                break;
-            }
-        }
-
-        if (foundLayerBelow && targetLayer->addNewKeyFrameAt(currentFrameIndex)) {
-            emit mEditor->updateTimeLine();
-        }
+        targetLayer = findBitmapLayerBelow(targetLayer, targetLayerIndex);
     }
 
     mEditor->backup(targetLayerIndex, currentFrameIndex, typeName());
@@ -288,25 +274,22 @@ void BucketTool::paintBitmap(Layer* layer)
         referenceImage = flattenBitmapLayersToImage(&replaceImage);
     }
 
-    QRgb multipliedColor = qPremultiply(mEditor->color()->frontColor().rgba());
-    QRgb origColor = multipliedColor;
-
     if (properties.fillMode == 0 && qAlpha(multipliedColor) == 0)
-     {
-         // Filling in overlay mode with a fully transparent color has no
-         // effect, so we can skip it in this case
-         return;
-     }
-     else if (properties.fillMode == 1)
-     {
-         // Pass a fully opaque version of the new color to floodFill
-         // This is required so we can fully mask out the existing data before
-         // writing the new color.
-         QColor tempColor;
-         tempColor.setRgba(multipliedColor);
-         tempColor.setAlphaF(1);
-         multipliedColor = tempColor.rgba();
-     }
+    {
+        // Filling in overlay mode with a fully transparent color has no
+        // effect, so we can skip it in this case
+        return;
+    }
+    else if (properties.fillMode == 1)
+    {
+        // Pass a fully opaque version of the new color to floodFill
+        // This is required so we can fully mask out the existing data before
+        // writing the new color.
+        QColor tempColor;
+        tempColor.setRgba(multipliedColor);
+        tempColor.setAlphaF(1);
+        multipliedColor = tempColor.rgba();
+    }
 
     BitmapImage::floodFill(&replaceImage,
                            &referenceImage,
@@ -321,36 +304,24 @@ void BucketTool::paintBitmap(Layer* layer)
                                 properties.bucketFillExpand);
     }
 
-    switch(properties.fillMode)
+    if (properties.fillMode == 0 || qAlpha(origColor) == 255)
     {
-    default:
-    case 0: // Overlay mode
-        // Write fill image on top of target image
         targetImage->paste(&replaceImage);
-        break;
-    case 1: // Replace mode
-        if (qAlpha(origColor) == 255)
-        {
-            // When the new color is fully opaque, replace mode
-            // behaves exactly like overlay mode, and origColor == fillColor
-            targetImage->paste(&replaceImage);
-        }
-        else
-        {
-            // Clearly all pixels in the to-be-filled region from the target image
-            targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOut);
-            // Reduce the opacity of the fill to match the new color
-            BitmapImage properColor(replaceImage.bounds(), QColor::fromRgba(origColor));
-            properColor.paste(&replaceImage, QPainter::CompositionMode_DestinationIn);
-            // Write reduced-opacity fill image on top of target image
-            targetImage->paste(&properColor);
-        }
-        break;
+    }
+    else
+    {
+        // fill mode replace
+        targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOut);
+        // Reduce the opacity of the fill to match the new color
+        BitmapImage properColor(replaceImage.bounds(), QColor::fromRgba(origColor));
+        properColor.paste(&replaceImage, QPainter::CompositionMode_DestinationIn);
+        // Write reduced-opacity fill image on top of target image
+        targetImage->paste(&properColor);
     }
 
     targetImage->modification();
 
-    mScribbleArea->setModified(targetLayerIndex, currentFrameIndex);
+    mScribbleArea->setModified(layer, currentFrameIndex);
 }
 
 BitmapImage BucketTool::flattenBitmapLayersToImage(BitmapImage* boundsImage)
@@ -367,6 +338,28 @@ BitmapImage BucketTool::flattenBitmapLayersToImage(BitmapImage* boundsImage)
         }
     }
     return flattenImage;
+}
+
+Layer* BucketTool::findBitmapLayerBelow(Layer* layer, int layerIndex)
+{
+    Layer* targetLayer = layer;
+    bool foundLayerBelow = false;
+    for (int i = layerIndex; i >= 0; i--) {
+        Layer* searchlayer = mEditor->layers()->getLayer(i);
+
+        if (searchlayer == nullptr) { Q_ASSERT(true); }
+
+        if (targetLayer != searchlayer && searchlayer->type() == Layer::BITMAP && searchlayer->visible()) {
+            targetLayer = searchlayer;
+            foundLayerBelow = true;
+            break;
+        }
+    }
+
+    if (foundLayerBelow && targetLayer->addNewKeyFrameAt(mEditor->currentFrame())) {
+        emit mEditor->updateTimeLine();
+    }
+    return targetLayer;
 }
 
 void BucketTool::paintVector(Layer* layer)

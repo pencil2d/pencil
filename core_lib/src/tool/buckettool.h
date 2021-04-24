@@ -58,6 +58,7 @@ public:
 
 private:
 
+    Layer* findBitmapLayerBelow(Layer* layer, int layerIndex);
     BitmapImage flattenBitmapLayersToImage(BitmapImage* boundsImage);
 
     VectorImage* vectorImage = nullptr;

@@ -330,14 +330,21 @@ void ScribbleArea::onObjectLoaded()
     invalidateAllCache();
 }
 
-void ScribbleArea::setModified(int layerNumber, int frameNumber)
+void ScribbleArea::setModified(const Layer* layer, int frameNumber)
 {
-    Layer* layer = mEditor->object()->getLayer(layerNumber);
     if (layer == nullptr) { return; }
 
     layer->setModified(frameNumber, true);
 
     onFrameModified(frameNumber);
+}
+
+void ScribbleArea::setModified(int layerNumber, int frameNumber)
+{
+    Layer* layer = mEditor->object()->getLayer(layerNumber);
+    if (layer == nullptr) { return; }
+
+    setModified(layer, frameNumber);
 }
 
 bool ScribbleArea::event(QEvent *event)
