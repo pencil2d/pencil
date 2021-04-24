@@ -910,10 +910,10 @@ void BitmapImage::expandFill(BitmapImage* targetImage, QRgb newColor, int expand
  * 0 is where the color was found
  * 1 is the distance from the nearest pixel of that color
  *
- * 111111
+ * 211112
  * 100001
  * 100001
- * 111111
+ * 211112
  *
  * @param bitmapImage: Image to search
  * @param searchColor: Color to find
