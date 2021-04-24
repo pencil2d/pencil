@@ -340,7 +340,7 @@ void BucketTool::paintBitmap(Layer* layer)
             // Clearly all pixels in the to-be-filled region from the target image
             targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOut);
             // Reduce the opacity of the fill to match the new color
-            BitmapImage properColor(targetImage->bounds(), QColor::fromRgba(origColor));
+            BitmapImage properColor(replaceImage.bounds(), QColor::fromRgba(origColor));
             properColor.paste(&replaceImage, QPainter::CompositionMode_DestinationIn);
             // Write reduced-opacity fill image on top of target image
             targetImage->paste(&properColor);
