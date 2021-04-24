@@ -48,6 +48,7 @@ public:
     void setFillExpandEnabled(const bool enabled) override;
     void setFillToLayer(int layerIndex) override;
     void setFillReferenceMode(int referenceMode) override;
+    void setFillMode(int mode) override;
 
     void paintBitmap(Layer* layer);
     void paintVector(Layer* layer);

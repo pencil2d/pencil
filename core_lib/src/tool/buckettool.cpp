@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <QPixmap>
 #include <QPainter>
+#include <QPointer>
 #include <QtMath>
 #include <QSettings>
 #include "pointerevent.h"
@@ -47,6 +48,7 @@ void BucketTool::loadSettings()
 {
     mPropertyEnabled[TOLERANCE] = true;
     mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[FILL_MODE] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -61,12 +63,14 @@ void BucketTool::loadSettings()
     properties.bucketFillExpandEnabled = settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool();
     properties.bucketFillToLayerMode = settings.value(SETTING_BUCKET_FILL_TO_LAYER_MODE, 0).toInt();
     properties.bucketFillReferenceMode = settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt();
+    properties.fillMode = settings.value(SETTING_FILL_MODE, 0).toInt();
 }
 
 void BucketTool::resetToDefault()
 {
     setWidth(4.0);
     setTolerance(32.0);
+    setFillMode(0);
     setFillExpand(2);
     setFillExpandEnabled(true);
     setFillToLayer(0);
@@ -90,6 +94,17 @@ QCursor BucketTool::cursor()
     }
 }
 
+void BucketTool::setTolerance(const int tolerance)
+{
+    // Set current property
+    properties.tolerance = tolerance;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_TOLERANCE, tolerance);
+    settings.sync();
+}
+
 /**
  * @brief BrushTool::setWidth
  * @param width
@@ -106,14 +121,14 @@ void BucketTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void BucketTool::setTolerance(const int tolerance)
+void BucketTool::setFillMode(int mode)
 {
     // Set current property
-    properties.tolerance = tolerance;
+    properties.fillMode = mode;
 
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_BUCKET_TOLERANCE, tolerance);
+    settings.setValue(SETTING_FILL_MODE, mode);
     settings.sync();
 }
 
@@ -274,6 +289,24 @@ void BucketTool::paintBitmap(Layer* layer)
     }
 
     QRgb multipliedColor = qPremultiply(mEditor->color()->frontColor().rgba());
+    QRgb origColor = multipliedColor;
+
+    if (properties.fillMode == 0 && qAlpha(multipliedColor) == 0)
+     {
+         // Filling in overlay mode with a fully transparent color has no
+         // effect, so we can skip it in this case
+         return;
+     }
+     else if (properties.fillMode == 1)
+     {
+         // Pass a fully opaque version of the new color to floodFill
+         // This is required so we can fully mask out the existing data before
+         // writing the new color.
+         QColor tempColor;
+         tempColor.setRgba(multipliedColor);
+         tempColor.setAlphaF(1);
+         multipliedColor = tempColor.rgba();
+     }
 
     BitmapImage::floodFill(&replaceImage,
                            &referenceImage,
@@ -288,7 +321,33 @@ void BucketTool::paintBitmap(Layer* layer)
                                 properties.bucketFillExpand);
     }
 
-    targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOver);
+    switch(properties.fillMode)
+    {
+    default:
+    case 0: // Overlay mode
+        // Write fill image on top of target image
+        targetImage->paste(&replaceImage);
+        break;
+    case 1: // Replace mode
+        if (qAlpha(origColor) == 255)
+        {
+            // When the new color is fully opaque, replace mode
+            // behaves exactly like overlay mode, and origColor == fillColor
+            targetImage->paste(&replaceImage);
+        }
+        else
+        {
+            // Clearly all pixels in the to-be-filled region from the target image
+            targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOut);
+            // Reduce the opacity of the fill to match the new color
+            BitmapImage properColor(targetImage->bounds(), QColor::fromRgba(origColor));
+            properColor.paste(&replaceImage, QPainter::CompositionMode_DestinationIn);
+            // Write reduced-opacity fill image on top of target image
+            targetImage->paste(&properColor);
+        }
+        break;
+    }
+
     targetImage->modification();
 
     mScribbleArea->setModified(targetLayerIndex, currentFrameIndex);

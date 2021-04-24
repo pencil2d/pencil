@@ -194,6 +194,12 @@ void ToolManager::setAA(int usingAA)
     emit toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
 }
 
+void ToolManager::setFillMode(int mode)
+{
+    currentTool()->setFillMode(mode);
+    emit toolPropertyChanged(currentTool()->type(), FILL_MODE);
+}
+
 void ToolManager::setStabilizerLevel(int level)
 {
     currentTool()->setStabilizerLevel(level);

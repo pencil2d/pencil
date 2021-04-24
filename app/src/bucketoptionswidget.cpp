@@ -57,6 +57,10 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget *parent) :
     ui->referenceLayerComboBox->addItem(tr("All layers"), 1);
     ui->referenceLayerComboBox->setToolTip(tr("Refers to the layer that used to flood fill from"));
 
+    ui->transparencyComboBox->addItem(tr("Overlay"), 0);
+    ui->transparencyComboBox->addItem(tr("Replace"), 1);
+    ui->transparencyComboBox->setToolTip(tr("Defines how the fill will behave when the new color is not opaque"));
+
     connect(ui->colorToleranceSlider, &SpinSlider::valueChanged, mEditor->tools(), &ToolManager::setTolerance);
     connect(ui->colorToleranceSpinbox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), mEditor->tools(), &ToolManager::setTolerance);
     connect(ui->colorToleranceCheckbox, &QCheckBox::toggled, mEditor->tools(), &ToolManager::setBucketColorToleranceEnabled);
@@ -73,6 +77,7 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget *parent) :
 
     connect(ui->fillToLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setBucketFillToLayer);
     connect(ui->referenceLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setBucketFillReferenceMode);
+    connect(ui->transparencyComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setFillMode);
 
     ui->expandSlider->setValue(settings.value(SETTING_BUCKET_FILL_EXPAND, 2).toInt());
     ui->expandSpinBox->setValue(settings.value(SETTING_BUCKET_FILL_EXPAND, 2).toInt());
@@ -80,6 +85,7 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget *parent) :
     ui->colorToleranceSpinbox->setValue(settings.value(SETTING_BUCKET_TOLERANCE, 50).toInt());
     ui->fillToLayerComboBox->setCurrentIndex(settings.value(SETTING_BUCKET_FILL_TO_LAYER_MODE, 0).toInt());
     ui->referenceLayerComboBox->setCurrentIndex(settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt());
+    ui->transparencyComboBox->setCurrentIndex(settings.value(SETTING_FILL_MODE, 0).toInt());
 
     clearFocusOnFinished(ui->colorToleranceSpinbox);
     clearFocusOnFinished(ui->expandSpinBox);
@@ -112,6 +118,8 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->expandSpinBox->hide();
         ui->referenceLayerComboBox->hide();
         ui->referenceLayerDescLabel->hide();
+        ui->transparencyComboBox->hide();
+        ui->transparencyLabel->hide();
     } else {
         ui->strokeThicknessSlider->hide();
         ui->strokeThicknessSpinBox->hide();
@@ -126,6 +134,8 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->expandSpinBox->show();
         ui->referenceLayerComboBox->show();
         ui->referenceLayerDescLabel->show();
+        ui->transparencyComboBox->show();
+        ui->transparencyLabel->show();
     }
 }
 
@@ -148,6 +158,8 @@ void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyT
         setFillToLayerMode(p.bucketFillToLayerMode); break;
     case ToolPropertyType::BUCKETFILLLAYERREFERENCEMODE:
         setFillReferenceMode(p.bucketFillReferenceMode); break;
+    case ToolPropertyType::FILL_MODE:
+        setFillMode(p.fillMode); break;
     default:
         Q_ASSERT(true);
         break;
@@ -172,6 +184,12 @@ void BucketOptionsWidget::setColorToleranceEnabled(bool enabled)
 {
     QSignalBlocker b(ui->colorToleranceCheckbox);
     ui->colorToleranceCheckbox->setChecked(enabled);
+}
+
+void BucketOptionsWidget::setFillMode(int mode)
+{
+    QSignalBlocker b(ui->transparencyComboBox);
+    ui->transparencyComboBox->setCurrentIndex(mode);
 }
 
 void BucketOptionsWidget::setFillExpandEnabled(bool enabled)

@@ -794,7 +794,7 @@ void BitmapImage::floodFill(BitmapImage* replaceImage,
                             BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
-                            QRgb newColor,
+                            QRgb fillColor,
                             int tolerance)
 {
     // If the point we are supposed to fill is outside the image and camera bounds, do nothing
@@ -843,11 +843,11 @@ void BitmapImage::floodFill(BitmapImage* replaceImage,
         spanLeft = spanRight = false;
         while (xTemp <= targetImage->mBounds.right() &&
                compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data()) &&
-               newPlacedColor != newColor)
+               newPlacedColor != fillColor)
         {
 
             // Set pixel color
-            replaceImage->scanLine(xTemp, point.y(), newColor);
+            replaceImage->scanLine(xTemp, point.y(), fillColor);
 
             if (!spanLeft && (point.y() > targetImage->mBounds.top()) &&
                 compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {

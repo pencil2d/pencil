@@ -55,6 +55,7 @@ enum ToolPropertyType
     USEFEATHER,
     VECTORMERGE,
     ANTI_ALIASING,
+    FILL_MODE,
     STABILIZATION,
     TOLERANCE,
     USETOLERANCE,
@@ -280,6 +281,8 @@ const static int MaxFramesBound = 9999;
 #define SETTING_BUCKET_FILL_EXPAND_ON "BucketFillExpandEnabled"
 #define SETTING_BUCKET_FILL_TO_LAYER_MODE "BucketFillToLayerMode"
 #define SETTING_BUCKET_FILL_REFERENCE_MODE "BucketFillReferenceMode"
+
+#define SETTING_FILL_MODE "FillMode"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

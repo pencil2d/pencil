@@ -105,6 +105,8 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(ui->vectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled);
     connect(ui->useAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA);
 
+    connect(ui->fillMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setFillMode);
+
     connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
@@ -136,8 +138,8 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case USEBUCKETFILLEXPAND: break;
     case BUCKETFILLLAYERMODE: break;
     case BUCKETFILLLAYERREFERENCEMODE: break;
+    case FILL_MODE: break;
     default:
-
         Q_ASSERT(false);
         break;
     }
@@ -331,6 +333,7 @@ void ToolOptionWidget::disableAllOptions()
     ui->preserveAlphaBox->hide();
     ui->vectorMergeBox->hide();
     ui->useAABox->hide();
+    ui->fillModeGroup->hide();
     ui->inpolLevelsCombo->hide();
     ui->fillContourBox->hide();
     ui->stabilizerLabel->hide();
