@@ -43,14 +43,26 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
     updateModifiedStatus(false);
     addPermanentWidget(mModifiedLabel);
 
+    QLocale locale;
     mZoomBox = new QComboBox(this);
     mZoomBox->addItems(QStringList()
-                           << "10000.0%" << "6400.0%" << "1600.0%" << "800.0%" << "400.0%" << "200.0%"
-                           << "100.0%" << "75.0%" << "50.0%" << "33.0%" << "25.0%" << "12.0%" << "1.0%");
+                           << locale.toString(10000., 'f', 1) + locale.percent()
+                           << locale.toString(6400., 'f', 1) + locale.percent()
+                           << locale.toString(1600., 'f', 1) + locale.percent()
+                           << locale.toString(800., 'f', 1) + locale.percent()
+                           << locale.toString(400., 'f', 1) + locale.percent()
+                           << locale.toString(200., 'f', 1) + locale.percent()
+                           << locale.toString(100., 'f', 1) + locale.percent()
+                           << locale.toString(75., 'f', 1) + locale.percent()
+                           << locale.toString(50., 'f', 1) + locale.percent()
+                           << locale.toString(33., 'f', 1) + locale.percent()
+                           << locale.toString(25., 'f', 1) + locale.percent()
+                           << locale.toString(12., 'f', 1) + locale.percent()
+                           << locale.toString(1., 'f', 1) + locale.percent());
     mZoomBox->setMaxCount(mZoomBox->count() + 1);
     mZoomBox->setEditable(true);
     mZoomBox->lineEdit()->setAlignment(Qt::AlignRight);
-    connect(mZoomBox, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated), [this](const QString &currentText)
+    connect(mZoomBox, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated), [=](const QString &currentText)
     {
         if (mZoomBox->count() == mZoomBox->maxCount())
         {
@@ -58,7 +70,7 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
             // insertPolicy is unsuitable as it prevents entering custom values at all
             mZoomBox->removeItem(mZoomBox->maxCount() - 1);
         }
-        emit zoomChanged(QString(currentText).remove('%').toDouble() / 100);
+        emit zoomChanged(locale.toDouble(QString(currentText).remove(locale.percent())) / 100);
     });
     addPermanentWidget(mZoomBox);
 
@@ -163,8 +175,9 @@ void StatusBar::updateZoomStatus()
 {
     Q_ASSERT(mEditor);
 
+    QLocale locale;
     QSignalBlocker b1(mZoomBox);
-    mZoomBox->setCurrentText(QString("%0%").arg(mEditor->view()->scaling() * 100, 0, 'f', 1));
+    mZoomBox->setCurrentText(locale.toString(mEditor->view()->scaling() * 100, 'f', 1) + locale.percent());
 
     QSignalBlocker b2(mZoomSlider);
     mZoomSlider->setValue(static_cast<int>(std::round(std::log10(mEditor->view()->scaling()) * 10)));
