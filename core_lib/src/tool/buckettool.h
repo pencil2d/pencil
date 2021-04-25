@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "stroketool.h"
 
 #include "bitmapimage.h"
+#include "bitmapbucket.h"
 
 class Layer;
 class VectorImage;
@@ -58,17 +59,8 @@ public:
 
 private:
 
-    std::pair<Layer*, int> findBitmapLayerBelow(Layer* layer, int layerIndex);
-    BitmapImage flattenBitmapLayersToImage();
-
+    BitmapBucket mBitmapBucket;
     VectorImage* vectorImage = nullptr;
-    BitmapImage mFlattenedImage;
-
-    Layer* mTargetFillToLayer = nullptr;
-    int mTargetFillToLayerIndex = -1;
-
-    QRgb mUsedColor;
-    QRgb mReferenceColor;
 
     bool mFilledOnMove = false;
 };

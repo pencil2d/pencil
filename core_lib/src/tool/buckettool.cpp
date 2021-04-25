@@ -190,29 +190,11 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
     if (targetLayer->type() != Layer::BITMAP) { return; }
 
-    mUsedColor = mEditor->color()->frontColor().rgba();
-    mTargetFillToLayerIndex = mEditor->currentLayerIndex();
-
-    BitmapImage referenceImage = *static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-
-    if (properties.bucketFillToLayerMode == 1) {
-
-        auto result = findBitmapLayerBelow(targetLayer, mEditor->currentLayerIndex());
-        targetLayer = result.first;
-        mTargetFillToLayerIndex = result.second;
-    }
-
-    if (properties.bucketFillReferenceMode == 1) // All layers
-    {
-        referenceImage = flattenBitmapLayersToImage();
-    }
-
-    if (!referenceImage.isLoaded()) { return; }
-
-    QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
-    mReferenceColor = mFlattenedImage.constScanLine(point.x(), point.y());
-    mFlattenedImage = referenceImage;
-    mTargetFillToLayer = targetLayer;
+    mBitmapBucket = BitmapBucket(mEditor,
+                                 mEditor->color()->frontColor(),
+                                 mScribbleArea->getCameraRect(),
+                                 getCurrentPoint(),
+                                 properties);
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
@@ -268,160 +250,16 @@ bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
     return BaseTool::startAdjusting(modifiers, argStep);
 }
 
-void BucketTool::paintBitmap(Layer* layer)
+void BucketTool::paintBitmap(Layer*)
 {
-    Layer* targetLayer = layer;
-    int targetLayerIndex = mEditor->currentLayerIndex();
-    QRgb multipliedColor = qPremultiply(mEditor->color()->frontColor().rgba());
-
-    const QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
-    const QRect cameraRect = mScribbleArea->getCameraRect().toRect();
-    const int tolerance = properties.toleranceEnabled ? static_cast<int>(properties.tolerance) : 0;
-    const int currentFrameIndex = mEditor->currentFrame();
-    const QRgb origColor = multipliedColor;
-
-    if (properties.fillMode == 0 && qAlpha(multipliedColor) == 0)
+    mBitmapBucket.paint(getCurrentPoint(), [this](BucketState progress, int layerIndex, int frameIndex)
     {
-        // Filling in overlay mode with a fully transparent color has no
-        // effect, so we can skip it in this case
-        return;
-    }
-
-    if (targetLayer == nullptr || targetLayer->type() != Layer::BITMAP) {
-        Q_ASSERT(true);
-        return;
-    }
-
-    if (properties.bucketFillToLayerMode == 1)
-    {
-        targetLayer = mTargetFillToLayer;
-        targetLayerIndex = mTargetFillToLayerIndex;
-    }
-
-    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
-
-    if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
-
-    BitmapImage referenceImage = *targetImage;
-
-    if (properties.bucketFillReferenceMode == 1) // All layers
-    {
-        referenceImage = mFlattenedImage;
-
-        // If the target image has been modified during move, we need to update the flattened reference image
-        // but we know that only the target image could have been modified here, so no need to
-        // look through all layers again, just paste the current target image.
-        if (targetImage->isModified()) {
-            referenceImage.paste(targetImage);
+        if (progress == BucketState::WillFill) {
+            mEditor->backup(layerIndex, frameIndex, typeName());
+        } else if (progress == BucketState::DidFill) {
+            mScribbleArea->setModified(layerIndex, frameIndex);
         }
-    }
-
-    QRgb pixelColor = referenceImage.constScanLine(point.x(), point.y());
-
-    if (properties.fillMode == 2 && pixelColor != 0)
-    {
-        // don't try to fill because we won't be able to see it anyway...
-        return;
-    }
-
-    if (mReferenceColor != pixelColor || mUsedColor == pixelColor)
-    {
-        // Don't try to fill if the pixel color is not the same as the existing image color
-        // and make sure the used color is the pixel color
-        // ensures that fill dragging works optimally.
-        return;
-    }
-
-    if (properties.fillMode == 1)
-    {
-        // Pass a fully opaque version of the new color to floodFill
-        // This is required so we can fully mask out the existing data before
-        // writing the new color.
-        QColor tempColor;
-        tempColor.setRgba(multipliedColor);
-        tempColor.setAlphaF(1);
-        multipliedColor = tempColor.rgba();
-    }
-
-    mEditor->backup(targetLayerIndex, currentFrameIndex, typeName());
-
-    BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
-
-    BitmapImage::floodFill(&replaceImage,
-                           &referenceImage,
-                           cameraRect,
-                           point,
-                           multipliedColor,
-                           tolerance);
-
-    if (properties.bucketFillExpandEnabled)
-    {
-        BitmapImage::expandFill(&replaceImage,
-                                multipliedColor,
-                                properties.bucketFillExpand);
-    }
-
-    if (properties.fillMode == 0)
-    {
-        targetImage->paste(&replaceImage);
-    }
-    else if (properties.fillMode == 2) {
-        targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOver);
-    }
-    else
-    {
-        // fill mode replace
-        targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOut);
-        // Reduce the opacity of the fill to match the new color
-        BitmapImage properColor(replaceImage.bounds(), QColor::fromRgba(origColor));
-        properColor.paste(&replaceImage, QPainter::CompositionMode_DestinationIn);
-        // Write reduced-opacity fill image on top of target image
-        targetImage->paste(&properColor);
-    }
-
-    targetImage->modification();
-
-    mScribbleArea->setModified(layer, currentFrameIndex);
-}
-
-BitmapImage BucketTool::flattenBitmapLayersToImage()
-{
-    BitmapImage flattenImage = BitmapImage();
-    int currentFrame = editor()->currentFrame();
-    auto layerMan = mEditor->layers();
-    for (int i = 0; i < layerMan->count(); i++) {
-        Layer* layer = layerMan->getLayer(i);
-
-        if (layer && layer->type() == Layer::BITMAP && layer->visible()) {
-            BitmapImage* image = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(currentFrame);
-            flattenImage.paste(image);
-        }
-    }
-    return flattenImage;
-}
-
-std::pair<Layer*, int> BucketTool::findBitmapLayerBelow(Layer* layer, int layerIndex)
-{
-    Layer* targetLayer = layer;
-    bool foundLayerBelow = false;
-    int layerBelowIndex = layerIndex;
-    for (int i = layerIndex-1; i >= 0; i--) {
-        Layer* searchlayer = mEditor->layers()->getLayer(i);
-
-        if (searchlayer == nullptr) { Q_ASSERT(true); }
-
-        if (searchlayer->type() == Layer::BITMAP && searchlayer->visible()) {
-            targetLayer = searchlayer;
-            foundLayerBelow = true;
-            layerBelowIndex = i;
-            break;
-        }
-    }
-
-    if (foundLayerBelow && targetLayer->addNewKeyFrameAt(mEditor->currentFrame())) {
-        emit mEditor->updateTimeLine();
-    }
-    return std::make_pair(targetLayer, layerBelowIndex);
+    });
 }
 
 void BucketTool::paintVector(Layer* layer)
