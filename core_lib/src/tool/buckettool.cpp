@@ -242,18 +242,20 @@ void BucketTool::paintBitmap(Layer* layer)
 {
     Layer* referenceLayer = layer; // by default
     Layer* targetLayer = layer;
+    int targetLayerIndex = mEditor->currentLayerIndex();
     QRgb multipliedColor = qPremultiply(mEditor->color()->frontColor().rgba());
 
     const QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     const QRect cameraRect = mScribbleArea->getCameraRect().toRect();
     const int tolerance = properties.toleranceEnabled ? static_cast<int>(properties.tolerance) : 0;
-    const int targetLayerIndex = mEditor->currentLayerIndex();
     const int currentFrameIndex = mEditor->currentFrame();
     const QRgb origColor = multipliedColor;
 
     if (properties.bucketFillToLayerMode == 1) {
 
-        targetLayer = findBitmapLayerBelow(targetLayer, targetLayerIndex);
+        auto result = findBitmapLayerBelow(targetLayer, targetLayerIndex);
+        targetLayer = result.first;
+        targetLayerIndex = result.second;
     }
 
     mEditor->backup(targetLayerIndex, currentFrameIndex, typeName());
@@ -269,6 +271,7 @@ void BucketTool::paintBitmap(Layer* layer)
 
     BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
     BitmapImage referenceImage = *static_cast<LayerBitmap*>(referenceLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
+
     if (properties.bucketFillReferenceMode == 1) // All layers
     {
         referenceImage = flattenBitmapLayersToImage(&replaceImage);
@@ -345,18 +348,20 @@ BitmapImage BucketTool::flattenBitmapLayersToImage(BitmapImage* boundsImage)
     return flattenImage;
 }
 
-Layer* BucketTool::findBitmapLayerBelow(Layer* layer, int layerIndex)
+std::pair<Layer*, int> BucketTool::findBitmapLayerBelow(Layer* layer, int layerIndex)
 {
     Layer* targetLayer = layer;
     bool foundLayerBelow = false;
-    for (int i = layerIndex; i >= 0; i--) {
+    int layerBelowIndex = layerIndex;
+    for (int i = layerIndex-1; i >= 0; i--) {
         Layer* searchlayer = mEditor->layers()->getLayer(i);
 
         if (searchlayer == nullptr) { Q_ASSERT(true); }
 
-        if (targetLayer != searchlayer && searchlayer->type() == Layer::BITMAP && searchlayer->visible()) {
+        if (searchlayer->type() == Layer::BITMAP && searchlayer->visible()) {
             targetLayer = searchlayer;
             foundLayerBelow = true;
+            layerBelowIndex = i;
             break;
         }
     }
@@ -364,7 +369,7 @@ Layer* BucketTool::findBitmapLayerBelow(Layer* layer, int layerIndex)
     if (foundLayerBelow && targetLayer->addNewKeyFrameAt(mEditor->currentFrame())) {
         emit mEditor->updateTimeLine();
     }
-    return targetLayer;
+    return std::make_pair(targetLayer, layerBelowIndex);
 }
 
 void BucketTool::paintVector(Layer* layer)
