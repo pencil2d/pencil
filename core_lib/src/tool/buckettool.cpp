@@ -304,9 +304,14 @@ void BucketTool::paintBitmap(Layer* layer)
                                 properties.bucketFillExpand);
     }
 
-    if (properties.fillMode == 0 || qAlpha(origColor) == 255)
+    // TODO: blend modes
+    // replace, overlay, behind
+    if (properties.fillMode == 0)
     {
         targetImage->paste(&replaceImage);
+    }
+    else if (properties.fillMode == 2) {
+        targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOver);
     }
     else
     {
