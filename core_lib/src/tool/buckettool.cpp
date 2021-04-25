@@ -185,6 +185,34 @@ void BucketTool::setFillReferenceMode(int referenceMode)
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
     startStroke(event->inputType());
+
+    Layer* targetLayer = mEditor->layers()->currentLayer();
+
+    if (targetLayer->type() != Layer::BITMAP) { return; }
+
+    mUsedColor = mEditor->color()->frontColor().rgba();
+    mTargetFillToLayerIndex = mEditor->currentLayerIndex();
+
+    BitmapImage referenceImage = *static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+
+    if (properties.bucketFillToLayerMode == 1) {
+
+        auto result = findBitmapLayerBelow(targetLayer, mEditor->currentLayerIndex());
+        targetLayer = result.first;
+        mTargetFillToLayerIndex = result.second;
+    }
+
+    if (properties.bucketFillReferenceMode == 1) // All layers
+    {
+        referenceImage = flattenBitmapLayersToImage();
+    }
+
+    if (!referenceImage.isLoaded()) { return; }
+
+    QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
+    mReferenceColor = mFlattenedImage.constScanLine(point.x(), point.y());
+    mFlattenedImage = referenceImage;
+    mTargetFillToLayer = targetLayer;
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
@@ -195,6 +223,11 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
         if (layer->type() == Layer::VECTOR)
         {
             drawStroke();
+        }
+
+        if (layer->type() == Layer::BITMAP) {
+            paintBitmap(layer);
+            mFilledOnMove = true;
         }
     }
 }
@@ -209,18 +242,15 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
     if (event->button() == Qt::LeftButton)
     {
         // Backup of bitmap image is more complicated now and has therefore been moved to bitmap code
-        if (layer->type() != Layer::BITMAP) {
+        if (layer->type() == Layer::VECTOR) {
             mEditor->backup(typeName());
-        }
-
-        switch (layer->type())
-        {
-        case Layer::BITMAP: paintBitmap(layer); break;
-        case Layer::VECTOR: paintVector(layer); break;
-        default:
-            break;
+            paintVector(layer);
+        } else if (layer->type() == Layer::BITMAP && !mFilledOnMove) {
+            paintBitmap(layer);
         }
     }
+    mFilledOnMove = false;
+
     endStroke();
 }
 
@@ -240,7 +270,6 @@ bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
 
 void BucketTool::paintBitmap(Layer* layer)
 {
-    Layer* referenceLayer = layer; // by default
     Layer* targetLayer = layer;
     int targetLayerIndex = mEditor->currentLayerIndex();
     QRgb multipliedColor = qPremultiply(mEditor->color()->frontColor().rgba());
@@ -251,39 +280,59 @@ void BucketTool::paintBitmap(Layer* layer)
     const int currentFrameIndex = mEditor->currentFrame();
     const QRgb origColor = multipliedColor;
 
-    if (properties.bucketFillToLayerMode == 1) {
-
-        auto result = findBitmapLayerBelow(targetLayer, targetLayerIndex);
-        targetLayer = result.first;
-        targetLayerIndex = result.second;
-    }
-
-    mEditor->backup(targetLayerIndex, currentFrameIndex, typeName());
-
-    if (targetLayer == nullptr || targetLayer->type() != Layer::BITMAP) {
-        Q_ASSERT(true);
-        return;
-    }
-
-    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
-
-    if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
-
-    BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
-    BitmapImage referenceImage = *static_cast<LayerBitmap*>(referenceLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
-
-    if (properties.bucketFillReferenceMode == 1) // All layers
-    {
-        referenceImage = flattenBitmapLayersToImage(&replaceImage);
-    }
-
     if (properties.fillMode == 0 && qAlpha(multipliedColor) == 0)
     {
         // Filling in overlay mode with a fully transparent color has no
         // effect, so we can skip it in this case
         return;
     }
-    else if (properties.fillMode == 1)
+
+    if (targetLayer == nullptr || targetLayer->type() != Layer::BITMAP) {
+        Q_ASSERT(true);
+        return;
+    }
+
+    if (properties.bucketFillToLayerMode == 1)
+    {
+        targetLayer = mTargetFillToLayer;
+        targetLayerIndex = mTargetFillToLayerIndex;
+    }
+
+    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
+
+    if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
+
+    BitmapImage referenceImage = *targetImage;
+
+    if (properties.bucketFillReferenceMode == 1) // All layers
+    {
+        referenceImage = mFlattenedImage;
+
+        // If the target image has been modified during move, we need to update the flattened reference image
+        // but we know that only the target image could have been modified here, so no need to
+        // look through all layers again, just paste the current target image.
+        if (targetImage->isModified()) {
+            referenceImage.paste(targetImage);
+        }
+    }
+
+    QRgb pixelColor = referenceImage.constScanLine(point.x(), point.y());
+
+    if (properties.fillMode == 2 && pixelColor != 0)
+    {
+        // don't try to fill because we won't be able to see it anyway...
+        return;
+    }
+
+    if (mReferenceColor != pixelColor || mUsedColor == pixelColor)
+    {
+        // Don't try to fill if the pixel color is not the same as the existing image color
+        // and make sure the used color is the pixel color
+        // ensures that fill dragging works optimally.
+        return;
+    }
+
+    if (properties.fillMode == 1)
     {
         // Pass a fully opaque version of the new color to floodFill
         // This is required so we can fully mask out the existing data before
@@ -294,6 +343,10 @@ void BucketTool::paintBitmap(Layer* layer)
         multipliedColor = tempColor.rgba();
     }
 
+    mEditor->backup(targetLayerIndex, currentFrameIndex, typeName());
+
+    BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
+
     BitmapImage::floodFill(&replaceImage,
                            &referenceImage,
                            cameraRect,
@@ -301,14 +354,13 @@ void BucketTool::paintBitmap(Layer* layer)
                            multipliedColor,
                            tolerance);
 
-    if (properties.bucketFillExpandEnabled) {
+    if (properties.bucketFillExpandEnabled)
+    {
         BitmapImage::expandFill(&replaceImage,
                                 multipliedColor,
                                 properties.bucketFillExpand);
     }
 
-    // TODO: blend modes
-    // replace, overlay, behind
     if (properties.fillMode == 0)
     {
         targetImage->paste(&replaceImage);
@@ -332,9 +384,9 @@ void BucketTool::paintBitmap(Layer* layer)
     mScribbleArea->setModified(layer, currentFrameIndex);
 }
 
-BitmapImage BucketTool::flattenBitmapLayersToImage(BitmapImage* boundsImage)
+BitmapImage BucketTool::flattenBitmapLayersToImage()
 {
-    BitmapImage flattenImage = BitmapImage(boundsImage->bounds(), Qt::transparent);
+    BitmapImage flattenImage = BitmapImage();
     int currentFrame = editor()->currentFrame();
     auto layerMan = mEditor->layers();
     for (int i = 0; i < layerMan->count(); i++) {

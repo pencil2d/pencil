@@ -59,9 +59,18 @@ public:
 private:
 
     std::pair<Layer*, int> findBitmapLayerBelow(Layer* layer, int layerIndex);
-    BitmapImage flattenBitmapLayersToImage(BitmapImage* boundsImage);
+    BitmapImage flattenBitmapLayersToImage();
 
     VectorImage* vectorImage = nullptr;
+    BitmapImage mFlattenedImage;
+
+    Layer* mTargetFillToLayer = nullptr;
+    int mTargetFillToLayerIndex = -1;
+
+    QRgb mUsedColor;
+    QRgb mReferenceColor;
+
+    bool mFilledOnMove = false;
 };
 
 #endif // BUCKETTOOL_H
