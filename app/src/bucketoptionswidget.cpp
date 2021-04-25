@@ -105,7 +105,8 @@ void BucketOptionsWidget::updatePropertyVisibility()
 
     Q_ASSERT(layer != nullptr);
 
-    if (layer->type() != Layer::BITMAP) {
+    switch (layer->type()) {
+    case Layer::VECTOR:
         ui->strokeThicknessSlider->show();
         ui->strokeThicknessSpinBox->show();
 
@@ -121,7 +122,8 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->referenceLayerDescLabel->hide();
         ui->blendModeComboBox->hide();
         ui->blendModeLabel->hide();
-    } else {
+        break;
+    case Layer::BITMAP:
         ui->strokeThicknessSlider->hide();
         ui->strokeThicknessSpinBox->hide();
 
@@ -137,6 +139,22 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->referenceLayerDescLabel->show();
         ui->blendModeComboBox->show();
         ui->blendModeLabel->show();
+        break;
+    default:
+        ui->strokeThicknessSlider->hide();
+        ui->strokeThicknessSpinBox->hide();
+        ui->fillToLayerComboBox->hide();
+        ui->fillToDescLabel->hide();
+        ui->colorToleranceCheckbox->hide();
+        ui->colorToleranceSlider->hide();
+        ui->colorToleranceSpinbox->hide();
+        ui->expandCheckbox->hide();
+        ui->expandSlider->hide();
+        ui->expandSpinBox->hide();
+        ui->referenceLayerComboBox->hide();
+        ui->referenceLayerDescLabel->hide();
+        ui->blendModeComboBox->hide();
+        ui->blendModeLabel->hide();
     }
 }
 
