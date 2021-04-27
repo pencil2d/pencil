@@ -60,17 +60,23 @@ BitmapBucket::BitmapBucket(Editor* editor,
         return;
     }
 
-    mFlattenedImage = *static_cast<LayerBitmap*>(initialLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
+    mReferenceImage = *static_cast<LayerBitmap*>(initialLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
     if (properties.bucketFillReferenceMode == 1) // All layers
     {
-        mFlattenedImage = flattenBitmapLayersToImage();
+        mReferenceImage = flattenBitmapLayersToImage();
     }
 
     const QPoint point = QPoint(qFloor(fillPoint.x()), qFloor(fillPoint.y()));
-    mReferenceColor = mFlattenedImage.constScanLine(point.x(), point.y());
+
+    if (properties.bucketFillReferenceMode == 1) {
+        mReferenceColor = mReferenceImage.constScanLine(point.x(), point.y());
+    } else {
+        BitmapImage* image = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
+        mReferenceColor = image->constScanLine(point.x(), point.y());
+    }
 }
 
-bool BitmapBucket::canUse(QPointF checkPoint) const
+bool BitmapBucket::shouldFill(QPointF checkPoint) const
 {
     const QPoint point = QPoint(qFloor(checkPoint.x()), qFloor(checkPoint.y()));
 
@@ -90,12 +96,12 @@ bool BitmapBucket::canUse(QPointF checkPoint) const
     // Can happen if the first frame is deleted while drawing
     if (targetImage == nullptr || !targetImage->isLoaded()) { return false; }
 
-    BitmapImage referenceImage = *targetImage;
+    BitmapImage referenceImage = mReferenceImage;
 
     QRgb preFill = 0;
     if (mProperties.bucketFillReferenceMode == 1) // All layers
     {
-        referenceImage = mFlattenedImage;
+        referenceImage = mReferenceImage;
 
         // If the target image has been modified during move, we need to update the flattened reference image
         // but we know that only the target image could have been modified here, so no need to
@@ -103,7 +109,9 @@ bool BitmapBucket::canUse(QPointF checkPoint) const
         // but because of alpha blending, we need to do an additional scanline
         // to get the color prior to pasting
         preFill = referenceImage.constScanLine(point.x(), point.y());
-        referenceImage.paste(targetImage);
+        if (targetImage->isModified()) {
+            referenceImage.paste(targetImage);
+        }
     }
 
     QRgb pixelColor = referenceImage.constScanLine(point.x(), point.y());
@@ -115,15 +123,36 @@ bool BitmapBucket::canUse(QPointF checkPoint) const
         return false;
     }
 
+
+    // Ensures that while dragging, only a pixel of either transparent or the same color as reference
+    // color will be filled.
+    if (mProperties.bucketFillReferenceMode == 1) {
+        if (mReferenceColor != pixelColor)
+        {
+            // Special case for filling with alpha
+            if ((mReferenceColor == targetPixelColor && targetPixelColor == preFill) || pixelColor == 0) {
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
     // Ensures that while dragging, only a pixel that is transparent or not the same color as target
     // will be be allowed to go through otherwise it will return false
-    if ((mReferenceColor != pixelColor) || mBucketColor == pixelColor)
-    {
-        // Special case for filling with alpha
-        if ((mReferenceColor == targetPixelColor && targetPixelColor == preFill) || pixelColor == 0) {
-            return true;
+    if (mProperties.bucketFillReferenceMode == 0) {
+        if (targetPixelColor != pixelColor)
+        {
+            if (mReferenceColor == targetPixelColor && mReferenceColor != 0 && targetPixelColor != 0) {
+                return true;
+            }
+            return false;
         }
-        return false;
+
+        // Avoid spilling when target and reference is same layer
+        if (mReferenceColor != targetPixelColor) {
+            return false;
+        }
     }
 
     return true;
@@ -141,7 +170,7 @@ void BitmapBucket::paint(QPointF updatedPoint, std::function<void(BucketState, i
     const int currentFrameIndex = mEditor->currentFrame();
     const QRgb origColor = multipliedColor;
 
-    if (!canUse(updatedPoint)) { return; }
+    if (!shouldFill(updatedPoint)) { return; }
 
     if (mProperties.bucketFillToLayerMode == 1)
     {
@@ -153,11 +182,11 @@ void BitmapBucket::paint(QPointF updatedPoint, std::function<void(BucketState, i
 
     if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
 
-    BitmapImage referenceImage = *targetImage;
+    BitmapImage referenceImage = mReferenceImage;
 
     if (mProperties.bucketFillReferenceMode == 1) // All layers
     {
-        referenceImage = mFlattenedImage;
+        referenceImage = mReferenceImage;
 
         // If the target image has been modified during move, we need to update the flattened reference image
         // but we know that only the target image could have been modified here, so no need to

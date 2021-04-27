@@ -44,6 +44,9 @@ public:
      */
     void paint(QPointF updatedPoint, std::function<void(BucketState, int, int)> progress);
 
+private:
+
+
     /** Based on the various factors dependant on which tool properties are set,
      *  the result will:
      *
@@ -53,16 +56,15 @@ public:
      * @param checkPoint
      * @return True if you are allowed to fill, otherwise false
      */
-    bool canUse(QPointF checkPoint) const;
+    bool shouldFill(QPointF checkPoint) const;
 
-private:
     std::pair<Layer*, int> findBitmapLayerBelow(Layer* layer, int layerIndex) const;
     BitmapImage flattenBitmapLayersToImage();
 
     Editor* mEditor = nullptr;
     Layer* mTargetFillToLayer = nullptr;
 
-    BitmapImage mFlattenedImage;
+    BitmapImage mReferenceImage;
     QRgb mBucketColor;
     QRgb mReferenceColor;
 
