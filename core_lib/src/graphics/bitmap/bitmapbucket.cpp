@@ -101,8 +101,6 @@ bool BitmapBucket::shouldFill(QPointF checkPoint) const
     QRgb preFill = 0;
     if (mProperties.bucketFillReferenceMode == 1) // All layers
     {
-        referenceImage = mReferenceImage;
-
         // If the target image has been modified during move, we need to update the flattened reference image
         // but we know that only the target image could have been modified here, so no need to
         // look through all layers again, just paste the current target image.
@@ -183,18 +181,6 @@ void BitmapBucket::paint(QPointF updatedPoint, std::function<void(BucketState, i
     if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
 
     BitmapImage referenceImage = mReferenceImage;
-
-    if (mProperties.bucketFillReferenceMode == 1) // All layers
-    {
-        referenceImage = mReferenceImage;
-
-        // If the target image has been modified during move, we need to update the flattened reference image
-        // but we know that only the target image could have been modified here, so no need to
-        // look through all layers again, just paste the current target image.
-        if (targetImage->isModified()) {
-            referenceImage.paste(targetImage);
-        }
-    }
 
     if (mProperties.fillMode == 1)
     {
