@@ -41,6 +41,7 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 
     mFrameList = getKeyList();
     connect(this, &LayerCamera::keyframeDeleted, this, &LayerCamera::updateOnDeleteFrame);
+    connect(this, &LayerCamera::keyframeAdded, this, &LayerCamera::updateOnAddFrame);
 }
 
 LayerCamera::~LayerCamera()
@@ -412,6 +413,22 @@ void LayerCamera::updateOnDeleteFrame(int frame)
     if (prev < frame)
         resetPath(prev);
     else if (prev == frame)
+        resetPath(frame);
+}
+
+void LayerCamera::updateOnAddFrame(int frame)
+{
+    int next = getNextKeyFramePosition(frame);
+    if (next == frame) // if frame is last keyframe
+        return;
+
+    int prev = getPreviousKeyFramePosition(frame);
+    if (prev < frame)
+    {
+        resetPath(prev);
+        resetPath(frame);
+    }
+    else
         resetPath(frame);
 }
 

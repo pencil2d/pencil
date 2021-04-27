@@ -71,6 +71,7 @@ public:
     void dragCameraPath(MoveMode mode, QPointF point, int frame);
 
     void updateOnDeleteFrame(int frame);
+    void updateOnAddFrame(int frame);
 
 signals:
     void resolutionChanged();
