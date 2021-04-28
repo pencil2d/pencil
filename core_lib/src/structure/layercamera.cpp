@@ -407,6 +407,14 @@ QPointF LayerCamera::getBezierPoint(QPointF first, QPointF last, QPointF midpoin
     return QLineF(line1.pointAt(percent), line2.pointAt(percent)).pointAt(percent);
 }
 
+qreal LayerCamera::getRealLineAngle(QLineF line)
+{
+    qreal angle = line.angle();
+    if (angle > 180)
+        angle -= 180;
+    return angle;
+}
+
 void LayerCamera::updateOnDeleteFrame(int frame)
 {
     int prev = getPreviousKeyFramePosition(frame);
@@ -419,17 +427,43 @@ void LayerCamera::updateOnDeleteFrame(int frame)
 void LayerCamera::updateOnAddFrame(int frame)
 {
     int next = getNextKeyFramePosition(frame);
-    if (next == frame) // if frame is last keyframe
-        return;
-
     int prev = getPreviousKeyFramePosition(frame);
-    if (prev < frame)
+
+    // if frame is last keyframe
+    if (next == frame)
     {
-        resetPath(prev);
-        resetPath(frame);
+        return;
+    }
+    // if inbetween frames
+    else if (prev < frame)
+    {
+        Camera* camPrev = static_cast<Camera*>(getKeyFrameAt(prev));
+        Camera* camFrame = static_cast<Camera*>(getKeyFrameAt(frame));
+        Camera* camNext = static_cast<Camera*>(getKeyFrameAt(next));
+        Q_ASSERT(camPrev && camFrame && camNext);
+
+        // get center point for new frame
+        QTransform transform =  getViewAtFrame(frame);
+        QPointF point = QPointF(transform.dx(), transform.dy());
+        QPointF midPoint = camPrev->getPathMidPoint();
+
+        // from prev to frame
+        QLineF toPoint(-camPrev->translation(), -point);
+        QLineF toMidpoint(-camPrev->translation(), midPoint);
+        toMidpoint.setLength(toPoint.length());
+        camPrev->setPathMidPoint(toMidpoint.pointAt(0.5));
+
+        // from frame to next
+        toPoint = QLineF(-camNext->translation(), -point);
+        toMidpoint = QLineF(-camNext->translation(), midPoint);
+        toMidpoint.setLength(toPoint.length());
+        camFrame->setPathMidPoint(toMidpoint.pointAt(0.5));
     }
     else
+    {
+        // if first frame
         resetPath(frame);
+    }
 }
 
 QRect LayerCamera::getViewRect()

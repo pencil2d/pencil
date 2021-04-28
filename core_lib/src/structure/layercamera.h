@@ -85,6 +85,7 @@ private:
     qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
     CameraEasingType getCameraEasingType(int type);
     QPointF getBezierPoint(QPointF first, QPointF last, QPointF midpoint, qreal percent) const;
+    qreal getRealLineAngle(QLineF line);
 
     QPointF mOffsetPoint = QPointF();
 
