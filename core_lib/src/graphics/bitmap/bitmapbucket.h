@@ -33,8 +33,8 @@ enum class BucketState {
 class BitmapBucket
 {
 public:
-    BitmapBucket();
-    BitmapBucket(Editor* editor, QColor color, QRectF maxFillRegion, QPointF fillPoint, Properties properties);
+    explicit BitmapBucket();
+    explicit BitmapBucket(Editor* editor, QColor color, QRectF maxFillRegion, QPointF fillPoint, Properties properties);
 
     /** Will paint at the given point, given that it makes sense.. canUse is always called prior to painting
      *

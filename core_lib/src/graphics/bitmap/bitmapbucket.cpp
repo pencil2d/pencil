@@ -60,7 +60,7 @@ BitmapBucket::BitmapBucket(Editor* editor,
         return;
     }
 
-    mReferenceImage = *static_cast<LayerBitmap*>(initialLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
+    mReferenceImage = static_cast<LayerBitmap*>(initialLayer)->getLastBitmapImageAtFrame(frameIndex, 0)->copy();
     if (properties.bucketFillReferenceMode == 1) // All layers
     {
         mReferenceImage = flattenBitmapLayersToImage();
