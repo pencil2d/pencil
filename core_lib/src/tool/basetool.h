@@ -47,6 +47,7 @@ public:
     bool  bezier_state = false;
     bool  useFeather = true;
     int   useAA = 0;
+    int   fillMode = 0;
     int   stabilizerLevel = 0;
     qreal tolerance = 0;
     bool  useFillContour = false;
@@ -116,6 +117,7 @@ public:
     virtual void setPreserveAlpha(const bool preserveAlpha);
     virtual void setVectorMergeEnabled(const bool vectorMergeEnabled);
     virtual void setAA(const int useAA);
+    virtual void setFillMode(const int mode);
     virtual void setStabilizerLevel(const int level);
     virtual void setTolerance(const int tolerance);
     virtual void setUseFillContour(const bool useFillContour);

@@ -27,6 +27,7 @@ class Camera : public KeyFrame
 public:
     explicit Camera();
     explicit Camera(QPointF translation, qreal rotation, qreal scaling);
+    explicit Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type);
     explicit Camera(const Camera&);
     ~Camera() override;
 
@@ -53,7 +54,7 @@ public:
     bool operator==(const Camera& rhs) const;
 
     void setEasingType(CameraEasingType type) { mEasingType = type; }
-    CameraEasingType getEasingType() { return mEasingType; }
+    CameraEasingType getEasingType() const { return mEasingType; }
 
     void setPathMidPoint(QPointF point) { mPathMidPoint = point; }
     QPointF getPathMidPoint() { return mPathMidPoint; }

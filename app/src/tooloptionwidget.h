@@ -61,6 +61,7 @@ private:
     void setPreserveAlpha(int);
     void setVectorMergeEnabled(int);
     void setAA(int);
+    void setFillMode(int);
     void setStabilizerLevel(int);
     void setTolerance(int);
     void setFillContour(int);

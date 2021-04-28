@@ -79,6 +79,7 @@ void ToolOptionWidget::updateUI()
     setPreserveAlpha(p.preserveAlpha);
     setVectorMergeEnabled(p.vectorMergeEnabled);
     setAA(p.useAA);
+    setFillMode(p.fillMode);
     setStabilizerLevel(p.stabilizerLevel);
     setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
@@ -109,6 +110,8 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->vectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled);
     connect(ui->useAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA);
+
+    connect(ui->fillMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setFillMode);
 
     connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
 
@@ -141,6 +144,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case PRESERVEALPHA: setPreserveAlpha(p.preserveAlpha); break;
     case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
     case ANTI_ALIASING: setAA(p.useAA); break;
+    case FILL_MODE: setFillMode(p.fillMode); break;
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case TOLERANCE: setTolerance(static_cast<int>(p.tolerance)); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
@@ -164,6 +168,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
     ui->preserveAlphaBox->setVisible(tool->isPropertyEnabled(PRESERVEALPHA));
     ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
+    ui->fillModeGroup->setVisible(tool->isPropertyEnabled(FILL_MODE));
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->toleranceSlider->setVisible(tool->isPropertyEnabled(TOLERANCE));
@@ -195,6 +200,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
             ui->sizeSlider->setLabel(tr("Stroke Thickness"));
             ui->toleranceSlider->setVisible(false);
             ui->toleranceSpinBox->setVisible(false);
+            ui->fillModeGroup->setVisible(false);
             break;
         default:
             ui->sizeSlider->setLabel(tr("Width"));
@@ -313,6 +319,11 @@ void ToolOptionWidget::setAA(int x)
     }
 }
 
+void ToolOptionWidget::setFillMode(int x)
+{
+    ui->fillMode->setCurrentIndex(qBound(0, x, ui->fillMode->count() - 1));
+}
+
 void ToolOptionWidget::setStabilizerLevel(int x)
 {
     ui->inpolLevelsCombo->setCurrentIndex(qBound(0, x, ui->inpolLevelsCombo->count() - 1));
@@ -380,6 +391,7 @@ void ToolOptionWidget::disableAllOptions()
     ui->preserveAlphaBox->hide();
     ui->vectorMergeBox->hide();
     ui->useAABox->hide();
+    ui->fillModeGroup->hide();
     ui->inpolLevelsCombo->hide();
     ui->toleranceSlider->hide();
     ui->toleranceSpinBox->hide();

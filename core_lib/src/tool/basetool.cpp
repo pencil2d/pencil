@@ -63,6 +63,7 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(PRESERVEALPHA, false);
     mPropertyEnabled.insert(BEZIER, false);
     mPropertyEnabled.insert(ANTI_ALIASING, false);
+    mPropertyEnabled.insert(FILL_MODE, false);
     mPropertyEnabled.insert(STABILIZATION, false);
 }
 
@@ -449,6 +450,11 @@ void BaseTool::setVectorMergeEnabled(const bool vectorMergeEnabled)
 void BaseTool::setAA(const int useAA)
 {
     properties.useAA = useAA;
+}
+
+void BaseTool::setFillMode(const int mode)
+{
+    properties.fillMode = mode;
 }
 
 void BaseTool::setStabilizerLevel(const int level)
