@@ -443,8 +443,7 @@ void LayerCamera::updateOnAddFrame(int frame)
         Q_ASSERT(camPrev && camFrame && camNext);
 
         // get center point for new frame
-        QTransform transform =  getViewAtFrame(frame);
-        QPointF point = QPointF(transform.dx(), transform.dy());
+        QPointF point = camFrame->translation();
         QPointF midPoint = camPrev->getPathMidPoint();
 
         // from prev to frame
@@ -452,12 +451,14 @@ void LayerCamera::updateOnAddFrame(int frame)
         QLineF toMidpoint(-camPrev->translation(), midPoint);
         toMidpoint.setLength(toPoint.length());
         camPrev->setPathMidPoint(toMidpoint.pointAt(0.5));
+        camPrev->modification();
 
         // from frame to next
         toPoint = QLineF(-camNext->translation(), -point);
         toMidpoint = QLineF(-camNext->translation(), midPoint);
         toMidpoint.setLength(toPoint.length());
         camFrame->setPathMidPoint(toMidpoint.pointAt(0.5));
+        camFrame->modification();
     }
     else
     {
