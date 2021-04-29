@@ -42,7 +42,7 @@ public:
      * @param progress - a function that returns the progress of the paint operation,
      * the layer and frame that was affected at the given point.
      */
-    void paint(QPointF updatedPoint, std::function<void(BucketState, int, int)> progress);
+    void paint(const QPointF updatedPoint, std::function<void(BucketState, int, int)> progress);
 
 private:
 
@@ -67,6 +67,7 @@ private:
     BitmapImage mReferenceImage;
     QRgb mBucketColor;
     QRgb mReferenceColor;
+    QRgb mAppliedColor;
 
     QPointF mBucketStartPoint;
     QRectF mMaxFillRegion;
@@ -74,6 +75,8 @@ private:
     int mTargetFillToLayerIndex = -1;
 
     Properties mProperties;
+
+    bool mFirstPaint = true;
 };
 
 #endif // BITMAPBUCKET_H
