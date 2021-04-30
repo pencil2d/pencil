@@ -61,7 +61,7 @@ TEST_CASE("BitmapBucket - Fill drag logic")
 
     Properties properties;
 
-    QDir dir(dir.currentPath());
+    QDir dir;
     QString resultsPath = dir.currentPath() + "/fill-drag-test/";
 
     dir.mkpath(resultsPath);
