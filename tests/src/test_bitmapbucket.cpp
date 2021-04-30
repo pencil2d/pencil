@@ -15,18 +15,28 @@
 
 #include "basetool.h"
 
-void dragAndFill(QPointF movePoint, Editor* editor, QRgb color, QRectF bounds, Properties properties) {
+void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRectF bounds, Properties properties) {
     int moveX = 0;
 
     BitmapBucket bucket = BitmapBucket(editor, color, bounds, movePoint, properties);
     QPointF movingPoint = movePoint;
-    while (moveX < 40) {
-        movingPoint.setX(movingPoint.x()+moveX);
-        bucket.paint(movingPoint, [] (BucketState, int, int ) {
-        });
 
+    int fillCount = 0;
+    while (moveX < 40) {
         moveX++;
+        movingPoint.setX(movingPoint.x()+1);
+
+        bucket.paint(movingPoint, [&fillCount] (BucketState state, int, int ) {
+
+            if (state == BucketState::DidFillTarget) {
+                fillCount++;
+            }
+        });
     }
+
+    // Make sure that only 4 fills has been applied
+    // otherwise we're spilling onto unwanted pixels
+    REQUIRE(fillCount == 4);
 }
 
 void verifyPixels(QPoint referencePoint, const BitmapImage* image, QRgb fillColor)
@@ -54,16 +64,16 @@ TEST_CASE("BitmapBucket - Fill drag logic")
     QDir dir(dir.currentPath());
     QString resultsPath = dir.currentPath() + "/fill-drag-test/";
 
-    dir.mkpath(dir.absolutePath() + resultsPath);
+    dir.mkpath(resultsPath);
 
     properties.bucketFillReferenceMode = 0;
     properties.bucketFillToLayerMode = 0;
     properties.bucketFillExpandEnabled = false;
+    properties.fillMode = 0;
 
-    QRgb fillColor = QColor(0, 255, 0, 255).rgba();
+    QColor fillColor = QColor(255,255,0,100);
 
     BitmapImage beforeFill = *static_cast<LayerBitmap*>(editor->layers()->currentLayer())->getBitmapImageAtFrame(1);
-    beforeFill.writeFile(resultsPath);
 
     QPoint pressPoint = beforeFill.bounds().topLeft();
 
@@ -78,10 +88,9 @@ TEST_CASE("BitmapBucket - Fill drag logic")
 
         BitmapImage* image = static_cast<LayerBitmap*>(editor->layers()->currentLayer())->getLastBitmapImageAtFrame(1);
 
-        qDebug() << QDir::currentPath();
         image->writeFile(resultsPath + "test1.png");
 
-        verifyPixels(pressPoint, image, fillColor);
+        verifyPixels(pressPoint, image, fillColor.rgba());
     }
 
     SECTION("FillTo: Layer below - reference: current layer")
@@ -95,7 +104,7 @@ TEST_CASE("BitmapBucket - Fill drag logic")
 
         image->writeFile(resultsPath + "test2.png");
 
-        verifyPixels(pressPoint, image, fillColor);
+        verifyPixels(pressPoint, image, qPremultiply(fillColor.rgba()));
     }
 
 
@@ -110,8 +119,7 @@ TEST_CASE("BitmapBucket - Fill drag logic")
 
         image->writeFile(resultsPath + "test3.png");
 
-
-        verifyPixels(pressPoint, image, fillColor);
+        verifyPixels(pressPoint, image, qPremultiply(fillColor.rgba()));
     }
 
     SECTION("FillTo: Current layer - reference: all layers")
@@ -125,6 +133,6 @@ TEST_CASE("BitmapBucket - Fill drag logic")
 
         image->writeFile(resultsPath + "test4.png");
 
-        verifyPixels(pressPoint, image, fillColor);
+        verifyPixels(pressPoint, image, fillColor.rgba());
     }
 }

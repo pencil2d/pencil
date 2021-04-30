@@ -254,9 +254,9 @@ void BucketTool::paintBitmap(Layer*)
 {
     mBitmapBucket.paint(getCurrentPoint(), [this](BucketState progress, int layerIndex, int frameIndex)
     {
-        if (progress == BucketState::WillFill) {
+        if (progress == BucketState::WillFillTarget) {
             mEditor->backup(layerIndex, frameIndex, typeName());
-        } else if (progress == BucketState::DidFill) {
+        } else if (progress == BucketState::DidFillTarget) {
             mScribbleArea->setModified(layerIndex, frameIndex);
         }
     });

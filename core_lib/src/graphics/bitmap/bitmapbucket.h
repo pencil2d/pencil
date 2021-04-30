@@ -26,8 +26,8 @@ class Layer;
 class Editor;
 
 enum class BucketState {
-    WillFill, // Before calling floodfill
-    DidFill, // After calling floddfill
+    WillFillTarget, // Before applying to target image
+    DidFillTarget, // After calling floddfill and applied to target
 };
 
 class BitmapBucket

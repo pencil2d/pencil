@@ -790,7 +790,7 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
 
 // Flood fill
 // ----- http://lodev.org/cgtutor/floodfill.html
-void BitmapImage::floodFill(BitmapImage* replaceImage,
+bool BitmapImage::floodFill(BitmapImage* replaceImage,
                             BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
@@ -800,7 +800,7 @@ void BitmapImage::floodFill(BitmapImage* replaceImage,
     // If the point we are supposed to fill is outside the image and camera bounds, do nothing
     if(!cameraRect.united(targetImage->bounds()).contains(point))
     {
-        return;
+        return false;
     }
 
     // Square tolerance for use with compareColor
@@ -874,6 +874,8 @@ void BitmapImage::floodFill(BitmapImage* replaceImage,
             xTemp++;
         }
     }
+
+    return true;
 }
 
 /** Fills the target image with a given color in a radius of the expansion value

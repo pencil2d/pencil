@@ -161,16 +161,20 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
         fillColor = tempColor.rgba();
     }
 
-    state(BucketState::WillFill, targetLayerIndex, currentFrameIndex);
-
     BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
 
-    BitmapImage::floodFill(&replaceImage,
+    bool didFloodFill = BitmapImage::floodFill(&replaceImage,
                            &referenceImage,
                            cameraRect,
                            point,
                            fillColor,
                            tolerance);
+
+    if (!didFloodFill) {
+        return;
+    }
+
+    state(BucketState::WillFillTarget, targetLayerIndex, currentFrameIndex);
 
     if (mProperties.bucketFillExpandEnabled)
     {
@@ -202,7 +206,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
 
     targetImage->modification();
 
-    state(BucketState::DidFill, targetLayerIndex, currentFrameIndex);
+    state(BucketState::DidFillTarget, targetLayerIndex, currentFrameIndex);
 }
 
 BitmapImage BitmapBucket::flattenBitmapLayersToImage()
