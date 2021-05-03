@@ -195,6 +195,11 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
                                  mScribbleArea->getCameraRect(),
                                  getCurrentPoint(),
                                  properties);
+
+    // Because we can change layer to on the fly but we do not act reactively on it
+    // it's neccesary to invalidate layer cache on press event, otherwise the cache
+    // will be drawn until a move event has been initiated.
+    mScribbleArea->invalidateLayerPixmapCache();
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
