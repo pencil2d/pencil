@@ -127,7 +127,7 @@ bool BitmapBucket::shouldFill(QPointF checkPoint) const
 void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketState, int, int)> state)
 {
     Layer* targetLayer = mTargetFillToLayer;
-    int targetLayerIndex = mEditor->currentLayerIndex();
+    int targetLayerIndex = mTargetFillToLayerIndex;
     QRgb fillColor = mBucketColor;
 
     const QPoint point = QPoint(qFloor(updatedPoint.x()), qFloor(updatedPoint.y()));
@@ -137,12 +137,6 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
     const QRgb origColor = fillColor;
 
     if (!shouldFill(updatedPoint)) { return; }
-
-    if (mProperties.bucketFillToLayerMode == 1)
-    {
-        targetLayer = mTargetFillToLayer;
-        targetLayerIndex = mTargetFillToLayerIndex;
-    }
 
     BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
 
