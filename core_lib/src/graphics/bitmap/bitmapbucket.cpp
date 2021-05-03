@@ -237,7 +237,8 @@ std::pair<Layer*, int> BitmapBucket::findBitmapLayerBelow(Layer* layer, int laye
         }
     }
 
-    if (foundLayerBelow && targetLayer->addNewKeyFrameAt(mEditor->currentFrame())) {
+    if (foundLayerBelow && !targetLayer->keyExists(mEditor->currentFrame())) {
+        targetLayer->addNewKeyFrameAt(mEditor->currentFrame());
         emit mEditor->updateTimeLine();
     }
     return std::make_pair(targetLayer, layerBelowIndex);
