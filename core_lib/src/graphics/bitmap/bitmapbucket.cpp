@@ -89,7 +89,7 @@ bool BitmapBucket::shouldFill(QPointF checkPoint) const
     }
 
     BitmapImage targetImage = *static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-    // Can happen if the first frame is deleted while drawing
+
     if (!targetImage.isLoaded()) { return false; }
 
     BitmapImage referenceImage = mReferenceImage;
