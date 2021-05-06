@@ -238,8 +238,8 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     if (mEasingMenu == nullptr)
     {
         mEasingMenu = new QMenu(this);
-        mInterpolationMenu = new QMenu(mEasingMenu);
-        mHoldAction = new QAction(mEasingMenu);
+
+        mInterpolationMenu = mEasingMenu->addMenu(interpolateFrom.arg(QString::number(frameNumber), QString::number(nextFrame)));
 
         QMenu* subSine  = mInterpolationMenu->addMenu(tr("Slow"));
         QMenu* subQuad  = mInterpolationMenu->addMenu(tr("Normal"));
@@ -281,7 +281,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         subCirc->addAction(tr("Circle-based Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCIRC, frameNumber); });
         subCirc->addAction(tr("Circle-based Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
         mHoldAction = subOther->addAction(tr("Hold to frame %1").arg(QString::number(nextFrame)), [=] { this->setHold(frameNumber); });
-        subOther->addAction(mHoldAction);
         subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
     }
 
