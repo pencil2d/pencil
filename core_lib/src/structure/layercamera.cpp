@@ -21,9 +21,8 @@ GNU General Public License for more details.
 
 #include "camera.h"
 #include "pencildef.h"
-#include "cameraeasingtype.h"
 #include "mathutils.h"
-#include <QDebug>
+
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {

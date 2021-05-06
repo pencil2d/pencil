@@ -781,17 +781,28 @@ void CanvasPainter::paintCameraBorder(QPainter& painter)
     LayerCamera* cameraLayer = nullptr;
     bool isCameraMode = false;
 
-    // Find the first visible camera layers
-    for (int i = 0; i < mObject->getLayerCount(); ++i)
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    if (layer->type() == Layer::CAMERA && layer->visible())
     {
-        Layer* layer = mObject->getLayer(i);
-        if (layer->type() == Layer::CAMERA && layer->visible())
+        cameraLayer = static_cast<LayerCamera*>(layer);
+        isCameraMode = true;
+    }
+    else
+    {
+        // Find the first visible camera layers
+        for (int i = 0; i < mObject->getLayerCount(); ++i)
         {
-            cameraLayer = static_cast<LayerCamera*>(layer);
-            isCameraMode = (i == mCurrentLayerIndex);
-            break;
+            layer = mObject->getLayer(i);
+            qDebug() << layer->name() << " index: " << i;
+            if (layer->type() == Layer::CAMERA && layer->visible())
+            {
+                cameraLayer = static_cast<LayerCamera*>(layer);
+                isCameraMode = (i == mCurrentLayerIndex);
+                break;
+            }
         }
     }
+
 
     if (cameraLayer == nullptr) { return; }
 

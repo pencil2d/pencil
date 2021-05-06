@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "movemode.h"
 #include "cameraeasingtype.h"
-#include "beziercurve.h"
 
 class Camera;
 
