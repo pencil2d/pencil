@@ -960,44 +960,42 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
     }
 
     int frameNumber = mEditor->currentFrame();
+    if (layer->getKeyFrameAt(frameNumber)) { return; }
+
+    // Drawing on an empty frame; take action based on preference.
+    int action = mPrefs->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
     auto previousKeyFrame = layer->getLastKeyFrameAtPosition(frameNumber);
-
-    if (layer->getKeyFrameAt(frameNumber) == nullptr)
+    switch (action)
     {
-        // Drawing on an empty frame; take action based on preference.
-        int action = mPrefs->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
-
-        switch (action)
-        {
-        case KEEP_DRAWING_ON_PREVIOUS_KEY:
-        {
-            if (previousKeyFrame == nullptr) {
-                mEditor->addNewKey();
-            }
-            break;
-        }
-        case DUPLICATE_PREVIOUS_KEY:
-        {
-            if (previousKeyFrame)
-            {
-                KeyFrame* dupKey = previousKeyFrame->clone();
-                layer->addKeyFrame(frameNumber, dupKey);
-                mEditor->scrubTo(frameNumber);
-                break;
-            }
-        }
-        // if the previous keyframe doesn't exist,
-        // an empty keyframe needs to be created, so
-        // fallthrough
-        case CREATE_NEW_KEY:
+    case KEEP_DRAWING_ON_PREVIOUS_KEY:
+    {
+        if (previousKeyFrame == nullptr) {
             mEditor->addNewKey();
-
-            // Refresh canvas
-            drawCanvas(frameNumber, mCanvas.rect());
-            break;
-        default:
+        } else {
+            onFrameModified(previousKeyFrame->pos());
+        }
+        break;
+    }
+    case DUPLICATE_PREVIOUS_KEY:
+    {
+        if (previousKeyFrame != nullptr) {
+            KeyFrame* dupKey = previousKeyFrame->clone();
+            layer->addKeyFrame(frameNumber, dupKey);
+            mEditor->scrubTo(frameNumber);
             break;
         }
+    }
+    // if the previous keyframe doesn't exist,
+    // an empty keyframe needs to be created, so
+    // fallthrough
+    case CREATE_NEW_KEY:
+        mEditor->addNewKey();
+
+        // Refresh canvas
+        drawCanvas(frameNumber, mCanvas.rect());
+        break;
+    default:
+        break;
     }
 }
 
