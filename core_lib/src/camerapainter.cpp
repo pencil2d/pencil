@@ -6,6 +6,7 @@
 
 #include "object.h"
 #include "layercamera.h"
+#include "keyframe.h"
 
 CameraPainter::CameraPainter()
 {
@@ -205,15 +206,13 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
 
     painter.save();
     QColor cameraDotColor = cameraLayer->getDotColor();
-    int max = cameraLayer->getMaxKeyFramePosition();
-    for (int frame = 1; frame <= max; frame++)
-    {
+    cameraLayer->foreachKeyFrame([this, &painter, &cameraLayer, &cameraDotColor] (KeyFrame* keyframe) {
         bool activepath = false;
-        if (!cameraLayer->keyExists(frame)) { continue; }
 
+        int frame = keyframe->pos();
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
         if (nextFrame == frame)
-            break;
+            return;
 
         if (frame < mFrameIndex && mFrameIndex < nextFrame)
         {
@@ -251,25 +250,33 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
         }
 
         // draw dots
-        if (!activepath)
+        if (!activepath) {
             painter.setBrush(cameraDotColor);
+        }
         else
-            painter.setBrush(Qt::NoBrush);
-        int next = cameraLayer->getNextKeyFramePosition(frame);
-        for (int j = frame; j <= next ; j++)
         {
-            QTransform transform = cameraLayer->getViewAtFrame(j);
+            painter.setBrush(Qt::NoBrush);
+        }
+
+        int next = cameraLayer->getNextKeyFramePosition(frame);
+        for (int frameInBetween = frame; frameInBetween <= next ; frameInBetween++)
+        {
+            QTransform transform = cameraLayer->getViewAtFrame(frameInBetween);
             QPointF center = mViewTransform.map(transform.inverted().map(QRectF(cameraLayer->getViewRect()).center()));
             painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
         }
 
         // highligth current dot
-        if (cameraDotColor != Qt::white)
+        if (cameraDotColor != Qt::white) {
             painter.setBrush(Qt::white);
+        }
         else
+        {
             painter.setBrush(Qt::black);
+        }
         center = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
         painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
-    }
-        painter.restore();
+    });
+
+    painter.restore();
 }
