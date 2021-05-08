@@ -752,8 +752,7 @@ void CanvasPainter::renderOverlays(QPainter& painter) const
         if (layer->type() == Layer::CAMERA && layer->visible())
         {
             LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
-            Camera* cam = static_cast<Camera*>(cameraLayer->getLastCameraAtFrame(mFrameNumber, 0));
-            cameraTransform = cam->getView();
+            cameraTransform = cameraLayer->getViewAtFrame(mFrameNumber);
             cameraRect = cameraLayer->getViewRect();
             break;
         }
