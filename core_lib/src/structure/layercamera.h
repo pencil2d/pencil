@@ -94,8 +94,6 @@ private:
 
     bool mShowPath = false;
     QColor dotColor = Qt::red;
-
-    QList<int> mFrameList;
 };
 
 #endif

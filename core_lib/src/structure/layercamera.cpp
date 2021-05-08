@@ -38,7 +38,6 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
     }
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
 
-    mFrameList = getKeyList();
     connect(this, &LayerCamera::keyframeDeleted, this, &LayerCamera::updateOnDeleteFrame);
     connect(this, &LayerCamera::keyframeAdded, this, &LayerCamera::updateOnAddFrame);
 }

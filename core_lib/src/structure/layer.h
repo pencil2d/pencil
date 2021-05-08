@@ -85,7 +85,6 @@ public:
     int  getNextFrameNumber(int position, bool isAbsolute) const;
 
     int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
-    QList<int> getKeyList();
 
     bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);

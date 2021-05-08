@@ -22,21 +22,16 @@ public:
     void resetCache();
 
 private:
-
     void initializePainter(QPainter& painter, QPixmap& pixmap) const;
     void paintCameraBorder(QPainter& painter) const;
     void paintCameraPath(QPainter& painter, LayerCamera* cameraLayer) const;
+    void paintCameraHandles(QPainter& painter, QTransform camTransform, QRect cameraRect) const;
 
     const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;
 
     std::unique_ptr<QPixmap> mCachedPaint = nullptr;
     QTransform mViewTransform;
-    QTransform mViewInverse;
-
-    QRect mCameraRect;
-    qreal mCamRotation = 0.;
-    QTransform mCamTransform = QTransform();
 
     const int DOT_WIDTH = 4;
     const int HANDLE_WIDTH = 8;
