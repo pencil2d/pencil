@@ -347,70 +347,11 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
     return easing.valueForProgress(percent);
 }
 
-CameraEasingType LayerCamera::getCameraEasingType(int type)
-{
-    CameraEasingType retType = CameraEasingType::LINEAR;
-
-    switch (type) {
-    case 0 : retType = CameraEasingType::LINEAR; break;
-    case 1 : retType = CameraEasingType::INQUAD; break;
-    case 2 : retType = CameraEasingType::OUTQUAD; break;
-    case 3 : retType = CameraEasingType::INOUTQUAD; break;
-    case 4 : retType = CameraEasingType::OUTINQUAD; break;
-    case 5 : retType = CameraEasingType::INCUBIC; break;
-    case 6 : retType = CameraEasingType::OUTCUBIC; break;
-    case 7 : retType = CameraEasingType::INOUTCUBIC; break;
-    case 8 : retType = CameraEasingType::OUTINCUBIC; break;
-    case 9 : retType = CameraEasingType::INQUART; break;
-    case 10: retType = CameraEasingType::OUTQUART; break;
-    case 11: retType = CameraEasingType::INOUTQUART; break;
-    case 12: retType = CameraEasingType::OUTINQUART; break;
-    case 13: retType = CameraEasingType::INQUINT; break;
-    case 14: retType = CameraEasingType::OUTQUINT; break;
-    case 15: retType = CameraEasingType::INOUTQUINT; break;
-    case 16: retType = CameraEasingType::OUTINQUINT; break;
-    case 17: retType = CameraEasingType::INSINE; break;
-    case 18: retType = CameraEasingType::OUTSINE; break;
-    case 19: retType = CameraEasingType::INOUTSINE; break;
-    case 20: retType = CameraEasingType::OUTINSINE; break;
-    case 21: retType = CameraEasingType::INEXPO; break;
-    case 22: retType = CameraEasingType::OUTEXPO; break;
-    case 23: retType = CameraEasingType::INOUTEXPO; break;
-    case 24: retType = CameraEasingType::OUTINEXPO; break;
-    case 25: retType = CameraEasingType::INCIRC; break;
-    case 26: retType = CameraEasingType::OUTCIRC; break;
-    case 27: retType = CameraEasingType::INOUTCIRC; break;
-    case 28: retType = CameraEasingType::OUTINCIRC; break;
-    case 29: retType = CameraEasingType::INELASTIC; break;
-    case 30: retType = CameraEasingType::OUTELASTIC; break;
-    case 31: retType = CameraEasingType::INOUTELASTIC; break;
-    case 32: retType = CameraEasingType::OUTINELASTIC; break;
-    case 33: retType = CameraEasingType::INBACK; break;
-    case 34: retType = CameraEasingType::OUTBACK; break;
-    case 35: retType = CameraEasingType::INOUTBACK; break;
-    case 36: retType = CameraEasingType::OUTINBACK; break;
-    case 37: retType = CameraEasingType::INBOUNCE; break;
-    case 38: retType = CameraEasingType::OUTBOUNCE; break;
-    case 39: retType = CameraEasingType::INOUTBOUNCE; break;
-    case 40: retType = CameraEasingType::OUTINBOUNCE; break;
-    default: retType = CameraEasingType::LINEAR; break;
-    }
-    return retType;
-}
-
 QPointF LayerCamera::getBezierPoint(QPointF first, QPointF last, QPointF midpoint, qreal percent) const
 {
     QLineF line1(first, midpoint);
     QLineF line2(midpoint, last);
     return QLineF(line1.pointAt(percent), line2.pointAt(percent)).pointAt(percent);
-}
-
-qreal LayerCamera::getRealLineAngle(QLineF line)
-{
-    qreal angle = line.angle();
-    if (angle > 180)
-        angle -= 180;
-    return angle;
 }
 
 void LayerCamera::updateOnDeleteFrame(int frame)
