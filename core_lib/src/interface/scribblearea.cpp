@@ -261,6 +261,7 @@ void ScribbleArea::invalidateCacheForFrame(int frameNumber)
 void ScribbleArea::invalidateLayerPixmapCache()
 {
     mCanvasPainter.resetLayerCache();
+    mCameraPainter.resetCache();
     update();
 }
 
@@ -1001,10 +1002,10 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
+    int currentFrame = mEditor->currentFrame();
     if (!currentTool()->isActive())
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
-        const int currentFrame = mEditor->currentFrame();
         const int frameNumber = mEditor->layers()->lastFrameAtFrame(currentFrame);
 
         if (frameNumber < 0)
@@ -1017,7 +1018,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
             if (cacheKeyIter == mPixmapCacheKeys.end() || !QPixmapCache::find(cacheKeyIter.value(), &mCanvas))
             {
-                drawCanvas(mEditor->currentFrame(), event->rect());
+                drawCanvas(currentFrame, event->rect());
                 mPixmapCacheKeys[static_cast<unsigned>(currentFrame)] = QPixmapCache::insert(mCanvas);
                 //qDebug() << "Repaint canvas!";
             }
@@ -1029,8 +1030,10 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     }
     else
     {
-        prepCanvas(mEditor->currentFrame(), event->rect());
+        prepCanvas(currentFrame, event->rect());
+        prepCameraPainter(currentFrame);
         mCanvasPainter.paintCached();
+        mCameraPainter.paintCached();
     }
 
     if (currentTool()->type() == MOVE)
@@ -1188,6 +1191,18 @@ VectorImage* ScribbleArea::currentVectorImage(Layer* layer) const
     return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 }
 
+void ScribbleArea::prepCameraPainter(int frame)
+{
+    Object* object = mEditor->object();
+
+    mCameraPainter.preparePainter(object,
+                                  mEditor->currentLayerIndex(),
+                                  frame,
+                                  mEditor->view()->getView(),
+                                  mEditor->playback()->isPlaying());
+    mCameraPainter.setCanvas(&mCanvas);
+}
+
 void ScribbleArea::prepCanvas(int frame, QRect rect)
 {
     Object* object = mEditor->object();
@@ -1238,7 +1253,9 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
 {
     mCanvas.fill(Qt::transparent);
     prepCanvas(frame, rect);
+    prepCameraPainter(frame);
     mCanvasPainter.paint();
+    mCameraPainter.paint();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset)

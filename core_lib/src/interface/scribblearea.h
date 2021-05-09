@@ -37,6 +37,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "strokemanager.h"
 #include "selectionpainter.h"
+#include "camerapainter.h"
 
 class Layer;
 class Editor;
@@ -232,6 +233,7 @@ private:
     /** invalidate onion skin cache around frame */
     void invalidateOnionSkinsCacheAround(int frame);
 
+    void prepCameraPainter(int frame);
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
@@ -287,6 +289,7 @@ private:
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
     SelectionPainter mSelectionPainter;
+    CameraPainter mCameraPainter;
 
     // Pixmap Cache keys
     QMap<unsigned int, QPixmapCache::Key> mPixmapCacheKeys;

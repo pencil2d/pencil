@@ -31,6 +31,7 @@ INCLUDEPATH += src \
 PRECOMPILED_HEADER = src/corelib-pch.h
 
 HEADERS +=  \
+    src/camerapainter.h \
     src/corelib-pch.h \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
@@ -111,6 +112,7 @@ HEADERS +=  \
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
+    src/camerapainter.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
     src/graphics/vector/colorref.cpp \

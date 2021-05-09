@@ -59,7 +59,7 @@ public:
     void setCameraReset(CameraFieldOption type, int frame);
     void setDotColor(DotColor color);
     void setDotColor(QColor color) { dotColor = color ; }
-    QColor const getDotColor() { return dotColor; }
+    QColor getDotColor() const { return dotColor; }
 
     QString getInterpolationText(int frame);
     QPointF getPathMidPoint(int frame);
@@ -94,8 +94,6 @@ private:
 
     bool mShowPath = false;
     QColor dotColor = Qt::red;
-
-    QList<int> mFrameList;
 };
 
 #endif

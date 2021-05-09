@@ -30,6 +30,7 @@ GNU General Public License for more details.
 class Object;
 class BitmapImage;
 class ViewManager;
+class LayerCamera;
 
 struct CanvasPainterOptions
 {
@@ -78,13 +79,13 @@ public:
     void setOptions(const CanvasPainterOptions& p) { mOptions = p; }
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
-    QRect getCameraRect();
+    QRect getCameraRect(); // TODO: rework this.. there should not be getter in painter classes!
 
     void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
     void paint();
     void paintCached();
-    void renderGrid(QPainter& painter);
-    void renderOverlays(QPainter& painter);
+    void renderGrid(QPainter& painter) const;
+    void renderOverlays(QPainter& painter) const;
     void resetLayerCache();
 
 private:
@@ -113,22 +114,20 @@ private:
     void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
     void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
 
-    void paintTransformedSelection(QPainter& painter);
-    void paintGrid(QPainter& painter);
-    void paintOverlayCenter(QPainter& painter);
-    void paintOverlayThirds(QPainter& painter);
-    void paintOverlayGolden(QPainter& painter);
-    void paintOverlaySafeAreas(QPainter& painter);
-    void paintCameraBorder(QPainter& painter);
-    void getDotColor();
-    void updateCamRect(QRect rect) { mCameraRect = rect; }
-    void paintAxis(QPainter& painter);
+    void paintTransformedSelection(QPainter& painter) const;
+    void paintGrid(QPainter& painter) const;
+    void paintOverlayCenter(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
+    void paintOverlayThirds(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
+    void paintOverlayGolden(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
+    void paintOverlaySafeAreas(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
+    void paintAxis(QPainter& painter) const;
     void prescale(BitmapImage* bitmapImage);
 
     /** Calculate layer opacity based on current layer offset */
     qreal calculateRelativeOpacityForLayer(int layerIndex) const;
 
 private:
+
     CanvasPainterOptions mOptions;
 
     const Object* mObject = nullptr;
@@ -136,15 +135,13 @@ private:
     QTransform mViewTransform;
     QTransform mViewInverse;
 
-    QRect mCameraRect;
-    qreal mCamRotation = 0.f;
-    QTransform mCamTransform = QTransform();
-
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
     BitmapImage* mBuffer = nullptr;
 
     QImage mScaledBitmap;
+
+    QRect mCameraRect;
 
     bool bMultiLayerOnionSkin = false;
 
@@ -157,9 +154,6 @@ private:
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
 
     const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
-    const int DOT_WIDTH = 4;
-    const int HANDLE_WIDTH = 8;
-    QColor DOT_COLOR = Qt::red;
 };
 
 #endif // CANVASRENDERER_H
