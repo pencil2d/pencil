@@ -597,7 +597,7 @@ QList<QPointF> LayerCamera::getBezierPoints(int frame)
 void LayerCamera::resetPath(int frame)
 {
     int nextFrame = getNextKeyFramePosition(frame);
-    Camera* cam1 = getCameraAtFrame(frame);
+    Camera* cam1 = getLastCameraAtFrame(frame, 0);
     Camera* cam2 = getCameraAtFrame(nextFrame);
     cam1->setPathMidPoint(QLineF(-cam1->translation(), -cam2->translation()).pointAt(0.5));
     cam1->modification();
