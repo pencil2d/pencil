@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QPixmap>
+#include <QPalette>
 
 #include "object.h"
 #include "layercamera.h"
@@ -13,13 +14,18 @@ CameraPainter::CameraPainter()
 
 }
 
-void CameraPainter::preparePainter(const Object* object, int layerIndex, int frameIndex, QTransform transform, bool isPlaying)
+void CameraPainter::preparePainter(const Object* object, int layerIndex, int frameIndex, QTransform transform, bool isPlaying, QPalette palette)
 {
     mObject = object;
     mCurrentLayerIndex = layerIndex;
     mFrameIndex = frameIndex;
     mViewTransform = transform;
     mIsPlaying = isPlaying;
+
+    mHighlightColor = palette.color(QPalette::Highlight);
+    mHighlightedTextColor = palette.color(QPalette::HighlightedText);
+    mButtonColor = palette.color(QPalette::ButtonText);
+    mTextColor = palette.color(QPalette::Text);
 }
 
 void CameraPainter::paint() const
@@ -162,7 +168,6 @@ void CameraPainter::paintCameraHandles(QPainter& painter, QTransform camTransfor
 
     painter.setPen(Qt::white);
     painter.setBrush(Qt::black);
-//        painter.setCompositionMode(QPainter::RasterOp_NotDestination);
     int handleW = 15;
     int radius = handleW / 2;
     int width = radius / 2;
@@ -206,6 +211,7 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
 
     painter.save();
     QColor cameraDotColor = cameraLayer->getDotColor();
+
     cameraLayer->foreachKeyFrame([this, &painter, &cameraLayer, &cameraDotColor] (KeyFrame* keyframe) {
         bool activepath = false;
 
@@ -220,12 +226,14 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
         }
 
         QPointF center = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
-        painter.setPen(cameraDotColor);
+        painter.setBrush(cameraDotColor);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.setRenderHint(QPainter::Antialiasing);
 
         if (activepath && !cameraLayer->hasSameTranslation(frame, nextFrame))
         {
             // if active path, draw movemode in text
+            painter.setPen(Qt::black);
             QString pathType = cameraLayer->getInterpolationText(frame);
             painter.drawText(center - QPoint(0, 10), pathType);
 
@@ -238,24 +246,40 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
             }
             if (mappedPoints.size() == 3)
             {
+                painter.save();
+                QPen pen (mHighlightColor, 0.5, Qt::PenStyle::DashLine);
+                painter.setPen(pen);
                 painter.drawLine(mappedPoints.at(0), mappedPoints.at(1));
                 painter.drawLine(mappedPoints.at(1), mappedPoints.at(2));
+                painter.restore();
             }
 
             // if active path, draw move handle
-            painter.setBrush(Qt::white);
-            painter.drawRect(center.x() - HANDLE_WIDTH/2,
-                             center.y() - HANDLE_WIDTH/2,
+            painter.save();
+            painter.setPen(mHighlightedTextColor);
+            painter.setBrush(mButtonColor);
+            painter.drawRect(static_cast<int>(center.x() - HANDLE_WIDTH/2),
+                             static_cast<int>(center.y() - HANDLE_WIDTH/2),
                              HANDLE_WIDTH, HANDLE_WIDTH);
+            painter.setPen(mTextColor);
+            painter.setBrush(Qt::NoBrush);
+            painter.drawRect(static_cast<int>(center.x() - HANDLE_WIDTH/2)-1,
+                             static_cast<int>(center.y() - HANDLE_WIDTH/2)-1,
+                             HANDLE_WIDTH+1, HANDLE_WIDTH+1);
+            painter.restore();
         }
 
         // draw dots
         if (!activepath) {
+            painter.setPen(mTextColor);
             painter.setBrush(cameraDotColor);
         }
         else
         {
-            painter.setBrush(Qt::NoBrush);
+            QColor color = cameraDotColor;
+            color.setAlphaF(0.2);
+            painter.setPen(Qt::black);
+            painter.setBrush(color);
         }
 
         int next = cameraLayer->getNextKeyFramePosition(frame);
@@ -268,7 +292,7 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
 
         // highligth current dot
         if (cameraDotColor != Qt::white) {
-            painter.setBrush(Qt::white);
+            painter.setBrush(cameraDotColor);
         }
         else
         {

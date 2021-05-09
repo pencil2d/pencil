@@ -1199,7 +1199,8 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   mEditor->currentLayerIndex(),
                                   frame,
                                   mEditor->view()->getView(),
-                                  mEditor->playback()->isPlaying());
+                                  mEditor->playback()->isPlaying(),
+                                  palette());
     mCameraPainter.setCanvas(&mCanvas);
 }
 

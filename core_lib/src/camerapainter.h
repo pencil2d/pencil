@@ -4,6 +4,7 @@
 #include <QRect>
 #include <QTransform>
 #include <QColor>
+#include <QPalette>
 
 class LayerCamera;
 class Object;
@@ -18,7 +19,7 @@ public:
     void paintCached();
 
     void setCanvas(QPixmap* canvas);
-    void preparePainter(const Object* object, int layerIndex, int frameIndex, QTransform transform, bool isPlaying);
+    void preparePainter(const Object* object, int layerIndex, int frameIndex, QTransform transform, bool isPlaying, const QPalette palette);
     void resetCache();
 
 private:
@@ -33,13 +34,18 @@ private:
     std::unique_ptr<QPixmap> mCachedPaint = nullptr;
     QTransform mViewTransform;
 
-    const int DOT_WIDTH = 4;
+    const int DOT_WIDTH = 6;
     const int HANDLE_WIDTH = 8;
 
     int mFrameIndex = 0;
     int mCurrentLayerIndex = 0;
 
     bool mIsPlaying = false;
+
+    QColor mHighlightColor;
+    QColor mHighlightedTextColor;
+    QColor mButtonColor;
+    QColor mTextColor;
 };
 
 #endif // CAMERAPAINTER_H
