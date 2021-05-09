@@ -112,13 +112,15 @@ void CameraPainter::paintCameraBorder(QPainter& painter) const
     QTransform camTransform = cameraLayer->getViewAtFrame(mFrameIndex);
     QRect cameraRect = cameraLayer->getViewRect();
 
-    // Draw camera paths
-    paintCameraPath(painter, cameraLayer);
-
     // Draw Field polygon
-    if (isCameraMode && cameraLayer->keyExists(mFrameIndex))
-    {
-        paintCameraHandles(painter, camTransform, cameraRect);
+
+    if (isCameraMode) {
+        // Draw camera paths
+        paintCameraPath(painter, cameraLayer);
+
+        if (cameraLayer->keyExists(mFrameIndex)) {
+            paintCameraHandles(painter, camTransform, cameraRect);
+        }
     }
 
     painter.setOpacity(1.0);
