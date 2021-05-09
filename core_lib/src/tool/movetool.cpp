@@ -32,6 +32,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "mathutils.h"
 #include "vectorimage.h"
+#include "pencilsettings.h"
 
 MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
@@ -44,15 +45,25 @@ ToolType MoveTool::type()
 
 void MoveTool::loadSettings()
 {
+    mPropertyEnabled[CAMERAPATH] = true;
     properties.width = -1;
     properties.feather = -1;
     properties.useFeather = false;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
-    mPropertyEnabled[CAMERAPATH] = true;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    properties.showCameraPath = settings.value(SETTING_CAMERA_SHOWPATH).toBool();
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MoveTool::updateTool);
+}
+
+void MoveTool::updateTool()
+{
+    setShowCameraPath(properties.showCameraPath);
 }
 
 QCursor MoveTool::cursor()
@@ -84,6 +95,38 @@ QCursor MoveTool::cursor()
     }
 
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+}
+
+void MoveTool::setShowCameraPath(const bool showCameraPath)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
+
+    if (layer->type() != Layer::CAMERA) { return; }
+    layer->setShowCameraPath(showCameraPath);
+
+    properties.showCameraPath = showCameraPath;
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    // Should we save a setting per layer?
+    settings.setValue(SETTING_CAMERA_SHOWPATH, showCameraPath);
+    settings.sync();
+}
+
+void MoveTool::setPathDotColor(const int pathDotColor)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
+    if (layer->type() != Layer::CAMERA) { return; }
+
+    DotColor color = static_cast<DotColor>(pathDotColor);
+    layer->setDotColor(color);
+}
+
+void MoveTool::resetCameraPath()
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
+    if (layer->type() != Layer::CAMERA) { return; }
+
+    layer->resetPath(mEditor->currentFrame());
 }
 
 void MoveTool::updateSettings(const SETTING setting)

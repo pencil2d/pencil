@@ -39,8 +39,13 @@ public:
     void pointerReleaseEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
 
+    void updateTool() override;
     bool leavingThisTool() override;
     bool switchingLayer() override;
+
+    void setShowCameraPath(const bool showCameraPath) override;
+    void resetCameraPath() override;
+    void setPathDotColor(const int pathDotColor) override;
 
 private:
     void cancelChanges();

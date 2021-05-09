@@ -61,6 +61,8 @@ bool ScribbleArea::init()
     mDoubleClickTimer = new QTimer(this);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
+    connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &ScribbleArea::onToolPropertyUpdated);
+
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
 
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::onSelectionChanged);
@@ -96,6 +98,18 @@ bool ScribbleArea::init()
     mPixmapCacheKeys.clear();
 
     return true;
+}
+
+void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
+{
+    switch (type)
+    {
+    case ToolPropertyType::CAMERAPATH:
+        onCurrentFrameModified();
+        break;
+    default:
+        break;
+    }
 }
 
 void ScribbleArea::settingUpdated(SETTING setting)
@@ -1199,7 +1213,8 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   mEditor->currentLayerIndex(),
                                   frame,
                                   mEditor->view()->getView(),
-                                  mEditor->playback()->isPlaying());
+                                  mEditor->playback()->isPlaying(),
+                                  palette());
     mCameraPainter.setCanvas(&mCanvas);
 }
 

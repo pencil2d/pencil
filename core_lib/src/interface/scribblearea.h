@@ -126,6 +126,10 @@ public:
     /** Object updated, invalidate all cache */
     void onObjectLoaded();
 
+    /** Tool property updated, invalidate cache and frame if needed */
+    void onToolPropertyUpdated(ToolType, ToolPropertyType);
+
+
     /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
 

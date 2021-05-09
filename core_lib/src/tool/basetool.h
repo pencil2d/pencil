@@ -53,7 +53,6 @@ public:
     bool  useFillContour = false;
     bool  showCameraPath = true;
     int   pathDotColor = 0;
-    bool  resetCameraPath = true;
 };
 
 const int ON = 1;
@@ -123,9 +122,9 @@ public:
     virtual void setUseFillContour(const bool useFillContour);
     virtual void setShowCameraPath(const bool showCameraPath);
     virtual void setPathDotColor(const int pathDotColor);
-    virtual void resetCameraPath(const bool resetCameraPath);
+    virtual void resetCameraPath();
 
-
+    virtual void updateTool() { }
     virtual bool leavingThisTool() { return true; }
     virtual bool switchingLayer() { return true; } // default state should be true
 
