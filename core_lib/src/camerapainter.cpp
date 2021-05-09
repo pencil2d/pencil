@@ -110,7 +110,7 @@ void CameraPainter::paintCameraBorder(QPainter& painter) const
     paintCameraPath(painter, cameraLayer);
 
     // Draw Field polygon
-    if (isCameraMode)
+    if (isCameraMode && cameraLayer->keyExists(mFrameIndex))
     {
         paintCameraHandles(painter, camTransform, cameraRect);
     }
@@ -214,7 +214,7 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
         if (nextFrame == frame)
             return;
 
-        if (frame < mFrameIndex && mFrameIndex < nextFrame)
+        if (mFrameIndex > frame && mFrameIndex < nextFrame)
         {
             activepath = true;
         }
