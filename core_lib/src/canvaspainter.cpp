@@ -746,15 +746,23 @@ void CanvasPainter::renderOverlays(QPainter& painter) const
     QTransform cameraTransform;
     QRect cameraRect;
     // Find the first visible camera layers
-    for (int i = 0; i < mObject->getLayerCount(); ++i)
+    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    if (layer->type() == Layer::CAMERA && layer->visible())
     {
-        Layer* layer = mObject->getLayer(i);
-        if (layer->type() == Layer::CAMERA && layer->visible())
+        LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
+        cameraTransform = cameraLayer->getViewAtFrame(mFrameNumber);
+        cameraRect = cameraLayer->getViewRect();
+    } else {
+        for (int i = 0; i < mObject->getLayerCount(); ++i)
         {
-            LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
-            cameraTransform = cameraLayer->getViewAtFrame(mFrameNumber);
-            cameraRect = cameraLayer->getViewRect();
-            break;
+            Layer* layer = mObject->getLayer(i);
+            if (layer->type() == Layer::CAMERA && layer->visible())
+            {
+                LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
+                cameraTransform = cameraLayer->getViewAtFrame(mFrameNumber);
+                cameraRect = cameraLayer->getViewRect();
+                break;
+            }
         }
     }
     if (mOptions.bCenter)
