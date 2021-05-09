@@ -24,9 +24,10 @@ public:
 
 private:
     void initializePainter(QPainter& painter, QPixmap& pixmap) const;
-    void paintCameraBorder(QPainter& painter) const;
+    void paintCameraVisuals(QPainter& painter) const;
+    void paintCameraBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
     void paintCameraPath(QPainter& painter, LayerCamera* cameraLayer) const;
-    void paintCameraHandles(QPainter& painter, QTransform camTransform, QRect cameraRect) const;
+    void paintCameraHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect) const;
 
     const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;

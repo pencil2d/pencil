@@ -32,7 +32,7 @@ void CameraPainter::paint() const
 {
     QPainter painter;
     initializePainter(painter, *mCanvas);
-    paintCameraBorder(painter);
+    paintCameraVisuals(painter);
 }
 
 void CameraPainter::paintCached()
@@ -48,7 +48,7 @@ void CameraPainter::paintCached()
         painter.setWorldMatrixEnabled(false);
         painter.drawPixmap(0, 0, *mCachedPaint.get());
     } else {
-        paintCameraBorder(tempPainter);
+        paintCameraVisuals(tempPainter);
         mCachedPaint.reset(new QPixmap(cachedPixmap));
 
         painter.setWorldMatrixEnabled(false);
@@ -75,7 +75,7 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
     painter.setWorldTransform(mViewTransform);
 }
 
-void CameraPainter::paintCameraBorder(QPainter& painter) const
+void CameraPainter::paintCameraVisuals(QPainter& painter) const
 {
     LayerCamera* cameraLayer = nullptr;
     bool isCameraMode = false;
@@ -92,7 +92,6 @@ void CameraPainter::paintCameraBorder(QPainter& painter) const
         for (int i = 0; i < mObject->getLayerCount(); ++i)
         {
             layer = mObject->getLayer(i);
-            qDebug() << layer->name() << " index: " << i;
             if (layer->type() == Layer::CAMERA && layer->visible())
             {
                 cameraLayer = static_cast<LayerCamera*>(layer);
@@ -108,7 +107,6 @@ void CameraPainter::paintCameraBorder(QPainter& painter) const
     painter.save();
     painter.setWorldMatrixEnabled(false);
 
-    QRectF viewRect = painter.viewport();
     QTransform camTransform = cameraLayer->getViewAtFrame(mFrameIndex);
     QRect cameraRect = cameraLayer->getViewRect();
 
@@ -123,13 +121,20 @@ void CameraPainter::paintCameraBorder(QPainter& painter) const
         }
     }
 
+    paintCameraBorder(painter, camTransform, cameraRect);
+}
+
+void CameraPainter::paintCameraBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
+{
+    QRectF viewRect = painter.viewport();
+
     painter.setOpacity(1.0);
     painter.setWorldMatrixEnabled(true);
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(0, 0, 0, 80));
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    QRegion rg2(cameraRect);
+    QRegion rg2(camRect);
     QTransform viewInverse = mViewTransform.inverted();
     QRect boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
 
@@ -144,7 +149,7 @@ void CameraPainter::paintCameraBorder(QPainter& painter) const
     painter.restore();
 }
 
-void CameraPainter::paintCameraHandles(QPainter& painter, QTransform camTransform, QRect cameraRect) const
+void CameraPainter::paintCameraHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect) const
 {
     painter.save();
     painter.setWorldMatrixEnabled(false);
