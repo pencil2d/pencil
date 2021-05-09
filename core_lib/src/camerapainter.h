@@ -45,7 +45,6 @@ private:
 
     QColor mHighlightColor;
     QColor mHighlightedTextColor;
-    QColor mButtonColor;
     QColor mTextColor;
 };
 
