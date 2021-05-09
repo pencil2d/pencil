@@ -224,33 +224,24 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
     QPen pen(Qt::black);
     pen.setWidth(2);
 
-    cameraLayer->foreachKeyFrame([this, &painter, &cameraLayer, &cameraDotColor, &pen] (KeyFrame* keyframe) {
-        bool activepath = false;
+    for (int i = cameraLayer->firstKeyFramePosition(); i <= cameraLayer->getMaxKeyFramePosition(); i = cameraLayer->getNextKeyFramePosition(i))
+    {
+        int nextFrame = cameraLayer->getNextKeyFramePosition(i);
 
-        int frame = keyframe->pos();
-        int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
-        if (nextFrame == frame)
-            return;
-
-        if (mFrameIndex > frame && mFrameIndex < nextFrame)
-        {
-            activepath = true;
-        }
-
-        QPointF center = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
+        QPointF center = mViewTransform.map(cameraLayer->getPathMidPoint(i + 1));
         painter.setBrush(cameraDotColor);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.setRenderHint(QPainter::Antialiasing);
 
-        if (activepath && !cameraLayer->hasSameTranslation(frame, nextFrame))
+        if (!cameraLayer->hasSameTranslation(i, nextFrame))
         {
-            // if active path, draw movemode in text
+            // draw movemode in text
             painter.setPen(Qt::black);
-            QString pathType = cameraLayer->getInterpolationText(frame);
+            QString pathType = cameraLayer->getInterpolationText(i);
             painter.drawText(center - QPoint(0, 10), pathType);
 
-            // if active path, draw bezier help lines for active path
-            QList<QPointF> points = cameraLayer->getBezierPoints(mFrameIndex);
+            // draw bezier help lines for active path
+            QList<QPointF> points = cameraLayer->getBezierPoints(i + 1);
 
             QList<QPointF> mappedPoints;
             for (QPointF point : points) {
@@ -266,7 +257,7 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
                 painter.restore();
             }
 
-            // if active path, draw move handle
+            // draw move handle
             painter.save();
             painter.setRenderHint(QPainter::Antialiasing, false);
             painter.setPen(mHighlightedTextColor);
@@ -282,20 +273,28 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
         painter.setPen(Qt::black);
         painter.setBrush(color);
 
-        int next = cameraLayer->getNextKeyFramePosition(frame);
-        for (int frameInBetween = frame; frameInBetween <= next ; frameInBetween++)
+        for (int frameInBetween = i; frameInBetween <= nextFrame ; frameInBetween++)
         {
             QTransform transform = cameraLayer->getViewAtFrame(frameInBetween);
             QPointF center = mViewTransform.map(transform.inverted().map(QRectF(cameraLayer->getViewRect()).center()));
             painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
-        }
 
-        // Highlight current dot
-        painter.setPen(pen);
-        painter.setBrush(cameraDotColor);
-        center = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
-        painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
-    });
+            if (frameInBetween == mFrameIndex)
+            {
+                // Highlight current dot
+                painter.setPen(pen);
+                painter.setBrush(cameraDotColor);
+                center = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
+                painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
+
+                color.setAlphaF(0.2);
+                painter.setPen(Qt::black);
+                painter.setBrush(color);
+            }
+        }
+        if (i == cameraLayer->getMaxKeyFramePosition())
+            break;
+    }
 
     painter.restore();
 }

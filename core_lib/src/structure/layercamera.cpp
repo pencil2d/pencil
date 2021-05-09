@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 #include <QSettings>
 #include <QEasingCurve>
-
+#include <QDebug>
 #include "camera.h"
 #include "pencildef.h"
 #include "mathutils.h"
@@ -168,7 +168,6 @@ MoveMode LayerCamera::getMoveModeForCameraPath(int frameNumber, QPointF point, q
 
     if (QLineF(camera->getPathMidPoint(), point).length() < tolerance)
         return MoveMode::MIDDLE;
-
     return MoveMode::NONE;
 }
 
