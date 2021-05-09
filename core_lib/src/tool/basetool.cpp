@@ -482,7 +482,6 @@ void BaseTool::setPathDotColor(const int pathDotColor)
     properties.pathDotColor = pathDotColor;
 }
 
-void BaseTool::resetCameraPath(const bool resetCameraPath)
+void BaseTool::resetCameraPath()
 {
-    properties.resetCameraPath = resetCameraPath;
 }

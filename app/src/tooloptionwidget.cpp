@@ -83,6 +83,7 @@ void ToolOptionWidget::updateUI()
     setStabilizerLevel(p.stabilizerLevel);
     setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
+    setShowCameraPath(p.showCameraPath);
 }
 
 void ToolOptionWidget::createUI()
@@ -121,10 +122,10 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
 
-    connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, this, &ToolOptionWidget::setShowCameraPath);
-    connect(ui->pathColorComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ToolOptionWidget::setPathDotColor);
-    connect(ui->btnResetPath, &QPushButton::clicked, this, &ToolOptionWidget::resetCameraPath);
 
+    connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowCameraPath);
+    connect(ui->pathColorComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), toolManager, &ToolManager::setCameraPathDotColor);
+    connect(ui->btnResetPath, &QPushButton::clicked, toolManager, &ToolManager::resetCameraPath);
 
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
@@ -357,25 +358,6 @@ void ToolOptionWidget::setShowCameraPath(bool showCameraPath)
 {
     QSignalBlocker b(ui->showCameraPathCheckBox);
     ui->showCameraPathCheckBox->setChecked(showCameraPath);
-
-    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    layer->setShowCameraPath(showCameraPath);
-    editor()->scrubTo(editor()->currentFrame());
-}
-
-void ToolOptionWidget::setPathDotColor(int num)
-{
-    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    DotColor color = static_cast<DotColor>(num);
-    layer->setDotColor(color);
-    editor()->scrubTo(editor()->currentFrame());
-}
-
-void ToolOptionWidget::resetCameraPath()
-{
-    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    layer->resetPath(layer->getPreviousKeyFramePosition(editor()->currentFrame()));
-    editor()->scrubTo(editor()->currentFrame());
 }
 
 void ToolOptionWidget::disableAllOptions()

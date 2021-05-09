@@ -94,6 +94,7 @@ void ToolManager::setCurrentTool(ToolType eToolType)
     }
 
     mCurrentTool = getTool(eToolType);
+    mCurrentTool->updateTool();
     emit toolChanged(eToolType);
 }
 
@@ -221,6 +222,23 @@ void ToolManager::setUseFillContour(bool useFillContour)
     emit toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
+void ToolManager::setShowCameraPath(bool enabled)
+{
+    currentTool()->setShowCameraPath(enabled);
+    emit toolPropertyChanged(currentTool()->type(), CAMERAPATH);
+}
+
+void ToolManager::resetCameraPath()
+{
+    currentTool()->resetCameraPath();
+    emit toolPropertyChanged(currentTool()->type(), CAMERAPATH);
+}
+
+void ToolManager::setCameraPathDotColor(int dotColorNum)
+{
+    currentTool()->setPathDotColor(dotColorNum);
+    emit toolPropertyChanged(currentTool()->type(), CAMERAPATH);
+}
 
 // Switches on/off two actions
 // eg. if x = true, then y = false
