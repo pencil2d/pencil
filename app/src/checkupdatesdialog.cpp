@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "checkupdatesdialog.h"
+#include <QDebug>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QHBoxLayout>
