@@ -87,7 +87,7 @@ QCursor MoveTool::cursor()
     else if (layer->type() == Layer::CAMERA)
     {
         LayerCamera* cam = static_cast<LayerCamera*>(layer);
-        for ( int i = cam->firstKeyFramePosition(); cam->getMaxKeyFramePosition(); i = cam->getNextKeyFramePosition(i))
+        for ( int i = cam->firstKeyFramePosition(); i <= cam->getMaxKeyFramePosition(); i = cam->getNextKeyFramePosition(i))
         {
             mode = cam->getMoveModeForCameraPath(i,
                                                  getCurrentPoint(),
@@ -95,8 +95,11 @@ QCursor MoveTool::cursor()
             mCamPathMoveMode = mode;
             if (mode != MoveMode::NONE)
             {
-                mDragPathFrame = i;
-                break;
+                if (!cam->hasSameTranslation(i, cam->getPreviousKeyFramePosition(i)))
+                {
+                    mDragPathFrame = i;
+                    break;
+                }
             }
             if (i == cam->getMaxKeyFramePosition())
                 break;
@@ -159,6 +162,7 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     if (mCurrentLayer->type() == Layer::CAMERA &&
              mCurrentLayer->keyExists(mEditor->currentFrame()))
     {
+        mDragPathFrame = mEditor->currentFrame();
         LayerCamera* camera = static_cast<LayerCamera*>(mCurrentLayer);
         camera->setOffsetPoint(getCurrentPoint());
         return;
@@ -217,6 +221,10 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
              mCurrentLayer->keyExists(mEditor->currentFrame()))
     {
         transformCamera();
+        if (mCamMoveMode == MoveMode::CENTER)
+        {
+            LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+        }
         mEditor->view()->updateViewTransforms();
         mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
         return;

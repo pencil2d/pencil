@@ -223,25 +223,25 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
 
     QPen pen(Qt::black);
     pen.setWidth(2);
-
-    for (int i = cameraLayer->firstKeyFramePosition(); i <= cameraLayer->getMaxKeyFramePosition(); i = cameraLayer->getNextKeyFramePosition(i))
+    cameraLayer->foreachKeyFrame([&] (KeyFrame* keyframe)
     {
-        int nextFrame = cameraLayer->getNextKeyFramePosition(i);
+        int frame = keyframe->pos();
+        int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
 
-        QPointF center = mViewTransform.map(cameraLayer->getPathMidPoint(i + 1));
+        QPointF center = mViewTransform.map(cameraLayer->getPathMidPoint(frame + 1));
         painter.setBrush(cameraDotColor);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.setRenderHint(QPainter::Antialiasing);
 
-        if (!cameraLayer->hasSameTranslation(i, nextFrame))
+        if (!cameraLayer->hasSameTranslation(frame, nextFrame))
         {
             // draw movemode in text
             painter.setPen(Qt::black);
-            QString pathType = cameraLayer->getInterpolationText(i);
+            QString pathType = cameraLayer->getInterpolationText(frame);
             painter.drawText(center - QPoint(0, 10), pathType);
 
             // draw bezier help lines for active path
-            QList<QPointF> points = cameraLayer->getBezierPoints(i + 1);
+            QList<QPointF> points = cameraLayer->getBezierPoints(frame + 1);
 
             QList<QPointF> mappedPoints;
             for (QPointF point : points) {
@@ -273,7 +273,7 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
         painter.setPen(Qt::black);
         painter.setBrush(color);
 
-        for (int frameInBetween = i; frameInBetween <= nextFrame ; frameInBetween++)
+        for (int frameInBetween = frame; frameInBetween <= nextFrame ; frameInBetween++)
         {
             QTransform transform = cameraLayer->getViewAtFrame(frameInBetween);
             QPointF center = mViewTransform.map(transform.inverted().map(QRectF(cameraLayer->getViewRect()).center()));
@@ -292,9 +292,7 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
                 painter.setBrush(color);
             }
         }
-        if (i == cameraLayer->getMaxKeyFramePosition())
-            break;
-    }
+    });
 
     painter.restore();
 }

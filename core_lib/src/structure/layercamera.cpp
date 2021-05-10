@@ -184,8 +184,6 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     {
     case MoveMode::CENTER:
         curCam->translate(curCam->translation() - (point - mOffsetPoint));
-        if (!curCam->getIsMidPointSet())
-            resetPath(frameNumber);
         break;
     case MoveMode::TOPLEFT:
         lineOld = QLineF(curCenter, curPoly.at(0));
@@ -465,6 +463,7 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
         camera->translate(copyCamera->translation());
         camera->scale(copyCamera->scaling());
         camera->rotate(copyCamera->rotation());
+        resetPath(frame);
         break;
     default:
         break;
