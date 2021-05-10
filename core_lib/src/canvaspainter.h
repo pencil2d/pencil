@@ -27,6 +27,8 @@ GNU General Public License for more details.
 
 #include "layer.h"
 
+#include "onionskinsubpainter.h"
+
 class Object;
 class BitmapImage;
 class ViewManager;
@@ -34,14 +36,6 @@ class LayerCamera;
 
 struct CanvasPainterOptions
 {
-    bool  bPrevOnionSkin = false;
-    bool  bNextOnionSkin = false;
-    int   nPrevOnionSkinCount = 3;
-    int   nNextOnionSkinCount = 3;
-    float fOnionSkinMaxOpacity = 0.5f;
-    float fOnionSkinMinOpacity = 0.1f;
-    bool  bColorizePrevOnion = false;
-    bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
     bool  bGrid = false;
     int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
@@ -58,13 +52,11 @@ struct CanvasPainterOptions
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
-    bool  bIsOnionAbsolute = false;
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
     float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
-    bool isPlaying = false;
-    bool onionWhilePlayback = false;
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
+    OnionSkinPainterOptions mOptionSkinOptions;
 };
 
 class CanvasPainter
@@ -76,6 +68,8 @@ public:
 
     void setCanvas(QPixmap* canvas);
     void setViewTransform(const QTransform view, const QTransform viewInverse);
+
+    void setOnionSkinOptions(const OnionSkinPainterOptions& onionSkinOptions) { mOnionSkinPaintOptions = onionSkinOptions;}
     void setOptions(const CanvasPainterOptions& p) { mOptions = p; }
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
@@ -152,6 +146,9 @@ private:
 
     // Caches specifically for when drawing on the canvas
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
+
+    OnionSkinSubPainter mOnionSkinSubPainter;
+    OnionSkinPainterOptions mOnionSkinPaintOptions;
 
     const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };

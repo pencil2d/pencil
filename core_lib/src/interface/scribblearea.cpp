@@ -31,6 +31,8 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 
+#include "onionskinpainteroptions.h"
+
 #include "colormanager.h"
 #include "toolmanager.h"
 #include "strokemanager.h"
@@ -1223,14 +1225,6 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     Object* object = mEditor->object();
 
     CanvasPainterOptions o;
-    o.bPrevOnionSkin = mPrefs->isOn(SETTING::PREV_ONION);
-    o.bNextOnionSkin = mPrefs->isOn(SETTING::NEXT_ONION);
-    o.bColorizePrevOnion = mPrefs->isOn(SETTING::ONION_RED);
-    o.bColorizeNextOnion = mPrefs->isOn(SETTING::ONION_BLUE);
-    o.nPrevOnionSkinCount = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
-    o.nNextOnionSkinCount = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
-    o.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
-    o.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     o.bAntiAlias = mPrefs->isOn(SETTING::ANTIALIAS);
     o.bGrid = mPrefs->isOn(SETTING::GRID);
     o.nGridSizeW = mPrefs->getInt(SETTING::GRID_SIZE_W);
@@ -1249,11 +1243,23 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
     o.eLayerVisibility = mLayerVisibility;
     o.fLayerVisibilityThreshold = mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD);
-    o.bIsOnionAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     o.scaling = mEditor->view()->scaling();
-    o.onionWhilePlayback = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
-    o.isPlaying = mEditor->playback()->isPlaying() ? true : false;
     o.cmBufferBlendMode = mEditor->tools()->currentTool()->type() == ToolType::ERASER ? QPainter::CompositionMode_DestinationOut : QPainter::CompositionMode_SourceOver;
+
+    OnionSkinPainterOptions onionSkinOptions;
+    onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
+    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    onionSkinOptions.isAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
+    onionSkinOptions.skinPrevFrames = mPrefs->isOn(SETTING::PREV_ONION);
+    onionSkinOptions.skinNextFrames = mPrefs->isOn(SETTING::NEXT_ONION);
+    onionSkinOptions.colorizePrevFrames = mPrefs->isOn(SETTING::ONION_RED);
+    onionSkinOptions.colorizeNextFrames = mPrefs->isOn(SETTING::ONION_BLUE);
+    onionSkinOptions.framesToSkinPrev = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    onionSkinOptions.framesToSkinNext = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    onionSkinOptions.maxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
+    onionSkinOptions.minOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
+
+    mCanvasPainter.setOnionSkinOptions(onionSkinOptions);
     mCanvasPainter.setOptions(o);
 
     mCanvasPainter.setCanvas(&mCanvas);

@@ -203,76 +203,26 @@ void CanvasPainter::paintBackground()
 
 void CanvasPainter::paintOnionSkin(QPainter& painter)
 {
-    if (!mOptions.onionWhilePlayback && mOptions.isPlaying) { return; }
-
     Layer* layer = mObject->getLayer(mCurrentLayerIndex);
 
-    if (layer->visible() == false)
-        return;
-
-    if (layer->keyFrameCount() == 0)
-        return;
-
-    qreal minOpacity = static_cast<qreal>(mOptions.fOnionSkinMinOpacity / 100);
-    qreal maxOpacity = static_cast<qreal>(mOptions.fOnionSkinMaxOpacity / 100);
-
-    if (mOptions.bPrevOnionSkin && mFrameNumber > 1)
-    {
-        // Paint onion skin before current frame.
-        qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
-        qreal opacity = maxOpacity;
-
-        int onionFrameNumber = mFrameNumber;
-        if (mOptions.bIsOnionAbsolute)
-        {
-            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber + 1, true);
-        }
-        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
-
-        int onionPosition = 0;
-
-        while (onionPosition < mOptions.nPrevOnionSkinCount && onionFrameNumber > 0)
-        {
-            painter.setOpacity(opacity);
-
+    mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPaintOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
+        if (state == OnionSkinPaintState::BEHIND) {
             switch (layer->type())
             {
-            case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOptions.bColorizePrevOnion, false, false); break; }
-            case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOptions.bColorizePrevOnion, false, false); break; }
+            case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizePrevFrames, false, false); break; }
+            case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizePrevFrames, false, false); break; }
             default: break;
             }
-            opacity = opacity - prevOpacityIncrement;
-
-            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
-            onionPosition++;
         }
-    }
-
-    if (mOptions.bNextOnionSkin)
-    {
-        // Paint onion skin after current frame.
-        qreal nextOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nNextOnionSkinCount;
-        qreal opacity = maxOpacity;
-
-        int onionFrameNumber = layer->getNextFrameNumber(mFrameNumber, mOptions.bIsOnionAbsolute);
-        int onionPosition = 0;
-
-        while (onionPosition < mOptions.nNextOnionSkinCount && onionFrameNumber > 0)
-        {
-            painter.setOpacity(opacity);
-
+        if (state == OnionSkinPaintState::INFRONT) {
             switch (layer->type())
             {
-            case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOptions.bColorizeNextOnion, false, false); break; }
-            case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOptions.bColorizeNextOnion, false, false); break; }
+            case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizeNextFrames, false, false); break; }
+            case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizeNextFrames, false, false); break; }
             default: break;
             }
-            opacity = opacity - nextOpacityIncrement;
-
-            onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
-            onionPosition++;
         }
-    }
+    });
 }
 
 void CanvasPainter::paintBitmapFrame(QPainter& painter,
