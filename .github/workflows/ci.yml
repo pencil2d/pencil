@@ -29,7 +29,7 @@ jobs:
           # XXX: --privileged is sort of a brute-force solution to get FUSE
           #      working inside Docker, however so far I haven’t been able to
           #      figure out precisely *which* privileges are needed.
-          container: { image: "ubuntu:14.04", options: --privileged }
+          container: { image: "ubuntu:16.04", options: --privileged }
           upload-parent: linux_x86_64_parent
         - name: macOS x86_64
           os: macos-10.15
@@ -56,10 +56,11 @@ jobs:
       # container image does not
       if: runner.os == 'Linux'
       run: |
-        sudo apt-get -yq install software-properties-common
-        sudo apt-add-repository -y ppa:git-core/ppa
-        sudo apt-get update -yq
-        sudo apt-get install -yq --no-install-suggests --no-install-recommends git
+        apt-get update -yq
+        apt-get -yq install software-properties-common
+        apt-add-repository -y ppa:git-core/ppa
+        apt-get update -yq
+        apt-get install -yq --no-install-suggests --no-install-recommends git
     - name: Check out repository
       uses: actions/checkout@v2
     - name: Install Qt (Windows)
