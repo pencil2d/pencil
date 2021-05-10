@@ -18,8 +18,8 @@ GNU General Public License for more details.
 #define ONIONSKINPAINTSTATE_H
 
 enum OnionSkinPaintState {
-    BEHIND,
-    INFRONT
+    PREV,
+    NEXT
 };
 
 #endif // ONIONSKINPAINTSTATE_H

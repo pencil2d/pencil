@@ -38,7 +38,7 @@ public:
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
-    Camera* getCameraAtFrame(int frameNumber);
+    Camera* getCameraAtFrame(int frameNumber) const;
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
     QTransform getViewAtFrame(int frameNumber) const;
     MoveMode getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance);
@@ -47,7 +47,7 @@ public:
     void transformCameraView(MoveMode mode, QPointF point, int frameNumber);
     void setOffsetPoint(QPointF offset) { mOffsetPoint = offset; }
 
-    QRect getViewRect();
+    QRect getViewRect() const;
     QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
 
@@ -61,11 +61,11 @@ public:
     void setDotColor(QColor color) { dotColor = color ; }
     QColor getDotColor() const { return dotColor; }
 
-    QString getInterpolationText(int frame);
-    QPointF getPathMidPoint(int frame);
-    QPointF getPathStartPoint(int frame);
-    bool hasSameTranslation(int first, int last);
-    QList<QPointF> getBezierPoints(int frame);
+    QString getInterpolationText(int frame) const;
+    QPointF getPathMidPoint(int frame) const;
+    QPointF getPathStartPoint(int frame) const;
+    bool hasSameTranslation(int first, int last) const;
+    QList<QPointF> getBezierPoints(int frame) const;
     void resetPath(int frame);
     void dragCameraPath(MoveMode mode, QPointF point, int frame);
 

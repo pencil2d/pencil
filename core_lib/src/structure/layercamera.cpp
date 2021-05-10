@@ -46,7 +46,7 @@ LayerCamera::~LayerCamera()
 {
 }
 
-Camera* LayerCamera::getCameraAtFrame(int frameNumber)
+Camera* LayerCamera::getCameraAtFrame(int frameNumber) const
 {
     return static_cast<Camera*>(getKeyFrameAt(frameNumber));
 }
@@ -406,7 +406,7 @@ void LayerCamera::updateOnAddFrame(int frame)
     }
 }
 
-QRect LayerCamera::getViewRect()
+QRect LayerCamera::getViewRect() const
 {
     return viewRect;
 }
@@ -496,7 +496,7 @@ void LayerCamera::setDotColor(DotColor color)
     }
 }
 
-QString LayerCamera::getInterpolationText(int frame)
+QString LayerCamera::getInterpolationText(int frame) const
 {
     Camera* camera = getCameraAtFrame(frame);
     Q_ASSERT(camera);
@@ -553,7 +553,7 @@ QString LayerCamera::getInterpolationText(int frame)
     return retString;
 }
 
-QPointF LayerCamera::getPathMidPoint(int frame)
+QPointF LayerCamera::getPathMidPoint(int frame) const
 {
     Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
     Q_ASSERT(camera);
@@ -561,7 +561,7 @@ QPointF LayerCamera::getPathMidPoint(int frame)
     return camera->getPathMidPoint();
 }
 
-QPointF LayerCamera::getPathStartPoint(int frame)
+QPointF LayerCamera::getPathStartPoint(int frame) const
 {
     Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
     Q_ASSERT(camera);
@@ -569,7 +569,7 @@ QPointF LayerCamera::getPathStartPoint(int frame)
     return camera->translation();
 }
 
-bool LayerCamera::hasSameTranslation(int first, int last)
+bool LayerCamera::hasSameTranslation(int first, int last) const
 {
     Camera* camera1 = getCameraAtFrame(first);
     Camera* camera2 = getCameraAtFrame(last);
@@ -578,7 +578,7 @@ bool LayerCamera::hasSameTranslation(int first, int last)
     return camera1->translation() == camera2->translation();
 }
 
-QList<QPointF> LayerCamera::getBezierPoints(int frame)
+QList<QPointF> LayerCamera::getBezierPoints(int frame) const
 {
     QList<QPointF> points;
     int prevFrame = getPreviousKeyFramePosition(frame);

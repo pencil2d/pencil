@@ -21,7 +21,7 @@ OnionSkinSubPainter::OnionSkinSubPainter()
 {
 }
 
-void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, OnionSkinPainterOptions& options, int frameIndex, const std::function<void(OnionSkinPaintState, int)>& state)
+void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, const OnionSkinPainterOptions& options, int frameIndex, const std::function<void(OnionSkinPaintState, int)>& state) const
 {
     if (!options.enabledWhilePlaying && options.isPlaying) { return; }
 
@@ -53,7 +53,7 @@ void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, OnionSkin
         {
             painter.setOpacity(opacity);
 
-            state(OnionSkinPaintState::BEHIND, onionFrameNumber);
+            state(OnionSkinPaintState::PREV, onionFrameNumber);
             opacity = opacity - prevOpacityIncrement;
 
             onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, options.isAbsolute);
@@ -74,7 +74,7 @@ void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, OnionSkin
         {
             painter.setOpacity(opacity);
 
-            state(OnionSkinPaintState::INFRONT, onionFrameNumber);
+            state(OnionSkinPaintState::NEXT, onionFrameNumber);
             opacity = opacity - nextOpacityIncrement;
 
             onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, options.isAbsolute);

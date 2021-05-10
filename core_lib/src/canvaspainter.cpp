@@ -206,7 +206,7 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
     Layer* layer = mObject->getLayer(mCurrentLayerIndex);
 
     mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPaintOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
-        if (state == OnionSkinPaintState::BEHIND) {
+        if (state == OnionSkinPaintState::PREV) {
             switch (layer->type())
             {
             case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizePrevFrames, false, false); break; }
@@ -214,7 +214,7 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
             default: break;
             }
         }
-        if (state == OnionSkinPaintState::INFRONT) {
+        if (state == OnionSkinPaintState::NEXT) {
             switch (layer->type())
             {
             case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizeNextFrames, false, false); break; }

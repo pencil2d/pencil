@@ -30,7 +30,7 @@ class OnionSkinSubPainter
 {
 public:
     OnionSkinSubPainter();
-    void paint(QPainter& painter, const Layer* layer, OnionSkinPainterOptions& options, int frameIndex, const std::function<void(OnionSkinPaintState, int)>& state);
+    void paint(QPainter& painter, const Layer* layer, const OnionSkinPainterOptions& options, int frameIndex, const std::function<void(OnionSkinPaintState, int)>& state) const;
 };
 
 #endif // ONIONSKINSUBPAINTER_H

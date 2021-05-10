@@ -175,7 +175,7 @@ void CameraPainter::paintCameraHandles(QPainter& painter, const QTransform& camT
 
     painter.setPen(mHighlightedTextColor);
     painter.setBrush(mHighlightColor);
-    int handleW = 15;
+    int handleW = 20;
     int radius = handleW / 2;
     int width = radius / 2;
 
@@ -224,63 +224,59 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
     QPen pen(Qt::black);
     pen.setWidth(2);
 
-    cameraLayer->foreachKeyFrame([this, &painter, &cameraLayer, &cameraDotColor, &pen] (KeyFrame* keyframe) {
+    QPolygon cameraViewPoly = cameraLayer->getViewRect();
+    QPen onionSkinPen;
+
+    QPointF cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
+    painter.setBrush(cameraDotColor);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    // Highlight current dot
+    painter.setPen(pen);
+    painter.setBrush(cameraDotColor);
+    cameraMidPoint = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
+    painter.drawEllipse(cameraMidPoint, DOT_WIDTH/2., DOT_WIDTH/2.);
+
+    cameraLayer->foreachKeyFrame([&] (KeyFrame* keyframe) {
         bool activepath = false;
 
         int frame = keyframe->pos();
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
-        if (nextFrame == frame)
-            return;
 
         if (mFrameIndex > frame && mFrameIndex < nextFrame)
         {
             activepath = true;
         }
 
-        QPointF center = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
-        painter.setBrush(cameraDotColor);
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-        painter.setRenderHint(QPainter::Antialiasing);
-
         if (activepath && !cameraLayer->hasSameTranslation(frame, nextFrame))
         {
-            // if active path, draw movemode in text
-            painter.setPen(Qt::black);
-            QString pathType = cameraLayer->getInterpolationText(frame);
-            painter.drawText(center - QPoint(0, 10), pathType);
-
-            // if active path, draw bezier help lines for active path
-            QList<QPointF> points = cameraLayer->getBezierPoints(mFrameIndex);
-
-            QList<QPointF> mappedPoints;
-            for (QPointF point : points) {
-                mappedPoints << mViewTransform.map(point);
-            }
-            if (mappedPoints.size() == 3)
-            {
-                painter.save();
-                QPen pen (mHighlightColor, 0.5, Qt::PenStyle::DashLine);
-                painter.setPen(pen);
-                painter.drawLine(mappedPoints.at(0), mappedPoints.at(1));
-                painter.drawLine(mappedPoints.at(1), mappedPoints.at(2));
-                painter.restore();
-            }
-
-            // if active path, draw move handle
-            painter.save();
-            painter.setRenderHint(QPainter::Antialiasing, false);
-            painter.setPen(mHighlightedTextColor);
-            painter.setBrush(mHighlightColor);
-            painter.drawRect(static_cast<int>(center.x() - HANDLE_WIDTH/2),
-                             static_cast<int>(center.y() - HANDLE_WIDTH/2),
-                             HANDLE_WIDTH, HANDLE_WIDTH);
-            painter.restore();
+            cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
+            paintActivePath(painter, cameraLayer, frame, cameraMidPoint);
         }
 
         QColor color = cameraDotColor;
         color.setAlphaF(0.2);
         painter.setPen(Qt::black);
         painter.setBrush(color);
+
+        painter.save();
+        painter.setBrush(Qt::NoBrush);
+
+        onionSkinPen.setStyle(Qt::PenStyle::DashLine);
+        mOnionSkinPainter.paint(painter, cameraLayer, mOnionSkinOptions, mFrameIndex, [&] (OnionSkinPaintState state, int onionSkinNumber) {
+            if (state == OnionSkinPaintState::PREV) {
+                onionSkinPen.setColor(Qt::red);
+                painter.setPen(onionSkinPen);
+                painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly)));
+            }
+            if (state == OnionSkinPaintState::NEXT) {
+                onionSkinPen.setColor(Qt::blue);
+                painter.setPen(onionSkinPen);
+                painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly)));
+            }
+        });
+        painter.restore();
 
         int next = cameraLayer->getNextKeyFramePosition(frame);
         for (int frameInBetween = frame; frameInBetween <= next ; frameInBetween++)
@@ -290,12 +286,48 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
             painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
         }
 
-        // Highlight current dot
-        painter.setPen(pen);
-        painter.setBrush(cameraDotColor);
-        center = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
-        painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
+        painter.setPen(Qt::black);
+        painter.setBrush(Qt::NoBrush);
+
+        painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(frame).inverted().map(cameraViewPoly)));
     });
 
+    painter.restore();
+}
+
+void CameraPainter::paintActivePath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& midPoint) const
+{
+    painter.save();
+    // if active path, draw movemode in text
+    painter.setPen(Qt::black);
+    QString pathType = cameraLayer->getInterpolationText(frameIndex);
+    painter.drawText(midPoint - QPoint(0, 10), pathType);
+
+    // if active path, draw bezier help lines for active path
+    QList<QPointF> points = cameraLayer->getBezierPoints(mFrameIndex);
+
+    QList<QPointF> mappedPoints;
+    for (QPointF point : points) {
+        mappedPoints << mViewTransform.map(point);
+    }
+    if (mappedPoints.size() == 3)
+    {
+        painter.save();
+        QPen pen (mHighlightColor, 0.5, Qt::PenStyle::DashLine);
+        painter.setPen(pen);
+        painter.drawLine(mappedPoints.at(0), mappedPoints.at(1));
+        painter.drawLine(mappedPoints.at(1), mappedPoints.at(2));
+        painter.restore();
+    }
+
+    // if active path, draw move handle
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter.setPen(mHighlightedTextColor);
+    painter.setBrush(mHighlightColor);
+    painter.drawRect(static_cast<int>(midPoint.x() - HANDLE_WIDTH/2),
+                     static_cast<int>(midPoint.y() - HANDLE_WIDTH/2),
+                     HANDLE_WIDTH, HANDLE_WIDTH);
+    painter.restore();
     painter.restore();
 }

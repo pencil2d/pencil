@@ -1217,6 +1217,23 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   mEditor->view()->getView(),
                                   mEditor->playback()->isPlaying(),
                                   palette());
+
+
+    // TODO: figure out a way to avoid duplicating paint options..
+    OnionSkinPainterOptions onionSkinOptions;
+    onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
+    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    onionSkinOptions.isAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
+    onionSkinOptions.skinPrevFrames = mPrefs->isOn(SETTING::PREV_ONION);
+    onionSkinOptions.skinNextFrames = mPrefs->isOn(SETTING::NEXT_ONION);
+    onionSkinOptions.colorizePrevFrames = mPrefs->isOn(SETTING::ONION_RED);
+    onionSkinOptions.colorizeNextFrames = mPrefs->isOn(SETTING::ONION_BLUE);
+    onionSkinOptions.framesToSkinPrev = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    onionSkinOptions.framesToSkinNext = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    onionSkinOptions.maxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
+    onionSkinOptions.minOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
+
+    mCameraPainter.setOnionSkinPaintOptions(onionSkinOptions);
     mCameraPainter.setCanvas(&mCanvas);
 }
 
