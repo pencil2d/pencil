@@ -669,7 +669,6 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
 
     if (event->buttons() & (Qt::RightButton | Qt::MiddleButton))
     {
-        getTool(HAND)->pointerReleaseEvent(event);
         mMouseRightButtonInUse = false;
         return;
     }
