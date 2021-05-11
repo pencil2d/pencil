@@ -221,9 +221,6 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
     painter.save();
     QColor cameraDotColor = cameraLayer->getDotColor();
 
-    QPen pen(Qt::black);
-    pen.setWidth(2);
-
     QPolygon cameraViewPoly = cameraLayer->getViewRect();
     QPen onionSkinPen;
 
@@ -233,26 +230,23 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
     painter.setRenderHint(QPainter::Antialiasing);
 
     // Highlight current dot
+    QPen pen(Qt::black);
+    pen.setWidth(2);
     painter.setPen(pen);
-    painter.setBrush(cameraDotColor);
     cameraMidPoint = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
     painter.drawEllipse(cameraMidPoint, DOT_WIDTH/2., DOT_WIDTH/2.);
 
+    bool keyExistsOnCurrentFrame = cameraLayer->keyExists(mFrameIndex);
+
     cameraLayer->foreachKeyFrame([&] (KeyFrame* keyframe) {
-        bool activepath = false;
 
         int frame = keyframe->pos();
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
 
-        if (mFrameIndex > frame && mFrameIndex < nextFrame)
+        if (!keyExistsOnCurrentFrame && !cameraLayer->hasSameTranslation(frame, nextFrame))
         {
-            activepath = true;
-        }
-
-        if (activepath && !cameraLayer->hasSameTranslation(frame, nextFrame))
-        {
-            cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
-            paintActivePath(painter, cameraLayer, frame, cameraMidPoint);
+            cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(frame + 1));
+            paintPath(painter, cameraLayer, frame, cameraMidPoint);
         }
 
         QColor color = cameraDotColor;
@@ -267,14 +261,13 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
         mOnionSkinPainter.paint(painter, cameraLayer, mOnionSkinOptions, mFrameIndex, [&] (OnionSkinPaintState state, int onionSkinNumber) {
             if (state == OnionSkinPaintState::PREV) {
                 onionSkinPen.setColor(Qt::red);
-                painter.setPen(onionSkinPen);
-                painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly)));
             }
             if (state == OnionSkinPaintState::NEXT) {
                 onionSkinPen.setColor(Qt::blue);
-                painter.setPen(onionSkinPen);
-                painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly)));
             }
+
+            painter.setPen(onionSkinPen);
+            painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly)));
         });
         painter.restore();
 
@@ -285,26 +278,21 @@ void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer)
             QPointF center = mViewTransform.map(transform.inverted().map(QRectF(cameraLayer->getViewRect()).center()));
             painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
         }
-
-        painter.setPen(Qt::black);
-        painter.setBrush(Qt::NoBrush);
-
-        painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(frame).inverted().map(cameraViewPoly)));
     });
 
     painter.restore();
 }
 
-void CameraPainter::paintActivePath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& midPoint) const
+void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& midPoint) const
 {
     painter.save();
-    // if active path, draw movemode in text
+    // draw movemode in text
     painter.setPen(Qt::black);
     QString pathType = cameraLayer->getInterpolationText(frameIndex);
     painter.drawText(midPoint - QPoint(0, 10), pathType);
 
     // if active path, draw bezier help lines for active path
-    QList<QPointF> points = cameraLayer->getBezierPoints(mFrameIndex);
+    QList<QPointF> points = cameraLayer->getBezierPoints(frameIndex + 1);
 
     QList<QPointF> mappedPoints;
     for (QPointF point : points) {

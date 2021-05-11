@@ -31,7 +31,7 @@ private:
     void paintCameraBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
     void paintCameraPath(QPainter& painter, LayerCamera* cameraLayer) const;
     void paintCameraHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect) const;
-    void paintActivePath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& midPoint) const;
+    void paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& midPoint) const;
 
     const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;
