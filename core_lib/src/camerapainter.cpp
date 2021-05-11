@@ -31,7 +31,7 @@ void CameraPainter::paint() const
 {
     QPainter painter;
     initializePainter(painter, *mCanvas);
-    paintCameraVisuals(painter);
+    paintVisuals(painter);
 }
 
 void CameraPainter::paintCached()
@@ -47,7 +47,7 @@ void CameraPainter::paintCached()
         painter.setWorldMatrixEnabled(false);
         painter.drawPixmap(0, 0, *mCachedPaint.get());
     } else {
-        paintCameraVisuals(tempPainter);
+        paintVisuals(tempPainter);
         mCachedPaint.reset(new QPixmap(cachedPixmap));
 
         painter.setWorldMatrixEnabled(false);
@@ -74,7 +74,7 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
     painter.setWorldTransform(mViewTransform);
 }
 
-void CameraPainter::paintCameraVisuals(QPainter& painter) const
+void CameraPainter::paintVisuals(QPainter& painter) const
 {
     LayerCamera* cameraLayer = nullptr;
     bool isCameraMode = false;
@@ -109,21 +109,18 @@ void CameraPainter::paintCameraVisuals(QPainter& painter) const
     QTransform camTransform = cameraLayer->getViewAtFrame(mFrameIndex);
     QRect cameraRect = cameraLayer->getViewRect();
 
-    // Draw Field polygon
-
     if (isCameraMode) {
-        // Draw camera paths
-        paintCameraPath(painter, cameraLayer);
+        paintInterpolations(painter, cameraLayer);
 
         if (cameraLayer->keyExists(mFrameIndex)) {
-            paintCameraHandles(painter, camTransform, cameraRect);
+            paintHandles(painter, camTransform, cameraRect);
         }
     }
 
-    paintCameraBorder(painter, camTransform, cameraRect);
+    paintBorder(painter, camTransform, cameraRect);
 }
 
-void CameraPainter::paintCameraBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
+void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
 {
     QRectF viewRect = painter.viewport();
 
@@ -148,7 +145,7 @@ void CameraPainter::paintCameraBorder(QPainter& painter, const QTransform& camTr
     painter.restore();
 }
 
-void CameraPainter::paintCameraHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect) const
+void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect) const
 {
     painter.save();
     painter.setWorldMatrixEnabled(false);
@@ -214,7 +211,7 @@ void CameraPainter::paintCameraHandles(QPainter& painter, const QTransform& camT
     painter.restore();
 }
 
-void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer) const
+void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLayer) const
 {
     if (mIsPlaying && !mOnionSkinOptions.enabledWhilePlaying) { return; }
 
