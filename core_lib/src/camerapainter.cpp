@@ -112,7 +112,7 @@ void CameraPainter::paintVisuals(QPainter& painter) const
     if (isCameraMode) {
         paintInterpolations(painter, cameraLayer);
 
-        if (cameraLayer->keyExists(mFrameIndex)) {
+        if (cameraLayer->keyExists(mFrameIndex) && !mIsPlaying) {
             paintHandles(painter, camTransform, cameraRect);
         }
     }
