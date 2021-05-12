@@ -63,6 +63,8 @@ public:
 
     QString getInterpolationText(int frame) const;
     QPointF getPathMidPoint(int frame) const;
+    bool getIsMidpointSet(int frame);
+    void setIsMidpointSet(int frame, bool b);
     QPointF getPathStartPoint(int frame) const;
     bool hasSameTranslation(int first, int last) const;
     QList<QPointF> getBezierPoints(int frame) const;
