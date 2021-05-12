@@ -61,6 +61,7 @@ HEADERS +=  \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
     src/movieimporter.h \
+    src/onionskinsubpainter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -94,6 +95,8 @@ HEADERS +=  \
     src/util/fileformat.h \
     src/util/filetype.h \
     src/util/mathutils.h \
+    src/util/onionskinpainteroptions.h \
+    src/util/onionskinpaintstate.h \
     src/util/pencildef.h \
     src/util/pencilerror.h \
     src/util/pencilsettings.h \
@@ -140,6 +143,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/viewmanager.cpp \
     src/managers/soundmanager.cpp \
     src/movieimporter.cpp \
+    src/onionskinsubpainter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \

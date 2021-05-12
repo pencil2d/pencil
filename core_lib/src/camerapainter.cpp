@@ -31,7 +31,7 @@ void CameraPainter::paint() const
 {
     QPainter painter;
     initializePainter(painter, *mCanvas);
-    paintCameraVisuals(painter);
+    paintVisuals(painter);
 }
 
 void CameraPainter::paintCached()
@@ -47,7 +47,7 @@ void CameraPainter::paintCached()
         painter.setWorldMatrixEnabled(false);
         painter.drawPixmap(0, 0, *mCachedPaint.get());
     } else {
-        paintCameraVisuals(tempPainter);
+        paintVisuals(tempPainter);
         mCachedPaint.reset(new QPixmap(cachedPixmap));
 
         painter.setWorldMatrixEnabled(false);
@@ -74,7 +74,7 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
     painter.setWorldTransform(mViewTransform);
 }
 
-void CameraPainter::paintCameraVisuals(QPainter& painter) const
+void CameraPainter::paintVisuals(QPainter& painter) const
 {
     LayerCamera* cameraLayer = nullptr;
     bool isCameraMode = false;
@@ -109,21 +109,18 @@ void CameraPainter::paintCameraVisuals(QPainter& painter) const
     QTransform camTransform = cameraLayer->getViewAtFrame(mFrameIndex);
     QRect cameraRect = cameraLayer->getViewRect();
 
-    // Draw Field polygon
-
     if (isCameraMode) {
-        // Draw camera paths
-        paintCameraPath(painter, cameraLayer);
+        paintInterpolations(painter, cameraLayer);
 
         if (cameraLayer->keyExists(mFrameIndex)) {
-            paintCameraHandles(painter, camTransform, cameraRect);
+            paintHandles(painter, camTransform, cameraRect);
         }
     }
 
-    paintCameraBorder(painter, camTransform, cameraRect);
+    paintBorder(painter, camTransform, cameraRect);
 }
 
-void CameraPainter::paintCameraBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
+void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
 {
     QRectF viewRect = painter.viewport();
 
@@ -148,7 +145,7 @@ void CameraPainter::paintCameraBorder(QPainter& painter, const QTransform& camTr
     painter.restore();
 }
 
-void CameraPainter::paintCameraHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect) const
+void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect) const
 {
     painter.save();
     painter.setWorldMatrixEnabled(false);
@@ -175,7 +172,7 @@ void CameraPainter::paintCameraHandles(QPainter& painter, const QTransform& camT
 
     painter.setPen(mHighlightedTextColor);
     painter.setBrush(mHighlightColor);
-    int handleW = 15;
+    int handleW = 20;
     int radius = handleW / 2;
     int width = radius / 2;
 
@@ -214,85 +211,116 @@ void CameraPainter::paintCameraHandles(QPainter& painter, const QTransform& camT
     painter.restore();
 }
 
-void CameraPainter::paintCameraPath(QPainter& painter, LayerCamera* cameraLayer) const
+void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLayer) const
 {
-    if (!cameraLayer->getShowCameraPath() || mIsPlaying) { return; }
+    if (mIsPlaying && !mOnionSkinOptions.enabledWhilePlaying) { return; }
 
     painter.save();
     QColor cameraDotColor = cameraLayer->getDotColor();
 
+    QPolygon cameraViewPoly = cameraLayer->getViewRect();
+    QPen onionSkinPen;
+
+    QPointF cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
+    painter.setBrush(cameraDotColor);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    // Highlight current dot
     QPen pen(Qt::black);
     pen.setWidth(2);
-    cameraLayer->foreachKeyFrame([&] (KeyFrame* keyframe)
-    {
+    painter.setPen(pen);
+    cameraMidPoint = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
+    painter.drawEllipse(cameraMidPoint, DOT_WIDTH/2., DOT_WIDTH/2.);
+
+    bool keyExistsOnCurrentFrame = cameraLayer->keyExists(mFrameIndex);
+
+    cameraLayer->foreachKeyFrame([&] (KeyFrame* keyframe) {
+
         int frame = keyframe->pos();
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
 
-        QPointF center = mViewTransform.map(cameraLayer->getPathMidPoint(frame + 1));
-        painter.setBrush(cameraDotColor);
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-        painter.setRenderHint(QPainter::Antialiasing);
+        if (cameraLayer->getShowCameraPath()) {
+            if (!keyExistsOnCurrentFrame && !cameraLayer->hasSameTranslation(frame, nextFrame))
+            {
+                cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(frame + 1));
+                paintPath(painter, cameraLayer, frame, cameraMidPoint);
+            }
 
-        if (!cameraLayer->hasSameTranslation(frame, nextFrame))
-        {
-            // draw movemode in text
+            QColor color = cameraDotColor;
+            color.setAlphaF(0.2);
             painter.setPen(Qt::black);
-            QString pathType = cameraLayer->getInterpolationText(frame);
-            painter.drawText(center - QPoint(0, 10), pathType);
+            painter.setBrush(color);
 
-            // draw bezier help lines for active path
-            QList<QPointF> points = cameraLayer->getBezierPoints(frame + 1);
-
-            QList<QPointF> mappedPoints;
-            for (QPointF point : points) {
-                mappedPoints << mViewTransform.map(point);
-            }
-            if (mappedPoints.size() == 3)
+            int next = cameraLayer->getNextKeyFramePosition(frame);
+            for (int frameInBetween = frame; frameInBetween <= next ; frameInBetween++)
             {
-                painter.save();
-                QPen pen (mHighlightColor, 0.5, Qt::PenStyle::DashLine);
-                painter.setPen(pen);
-                painter.drawLine(mappedPoints.at(0), mappedPoints.at(1));
-                painter.drawLine(mappedPoints.at(1), mappedPoints.at(2));
-                painter.restore();
-            }
-
-            // draw move handle
-            painter.save();
-            painter.setRenderHint(QPainter::Antialiasing, false);
-            painter.setPen(mHighlightedTextColor);
-            painter.setBrush(mHighlightColor);
-            painter.drawRect(static_cast<int>(center.x() - HANDLE_WIDTH/2),
-                             static_cast<int>(center.y() - HANDLE_WIDTH/2),
-                             HANDLE_WIDTH, HANDLE_WIDTH);
-            painter.restore();
-        }
-
-        QColor color = cameraDotColor;
-        color.setAlphaF(0.2);
-        painter.setPen(Qt::black);
-        painter.setBrush(color);
-
-        for (int frameInBetween = frame; frameInBetween <= nextFrame ; frameInBetween++)
-        {
-            QTransform transform = cameraLayer->getViewAtFrame(frameInBetween);
-            QPointF center = mViewTransform.map(transform.inverted().map(QRectF(cameraLayer->getViewRect()).center()));
-            painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
-
-            if (frameInBetween == mFrameIndex)
-            {
-                // Highlight current dot
-                painter.setPen(pen);
-                painter.setBrush(cameraDotColor);
-                center = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
+                QTransform transform = cameraLayer->getViewAtFrame(frameInBetween);
+                QPointF center = mViewTransform.map(transform.inverted().map(QRectF(cameraLayer->getViewRect()).center()));
                 painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
-
-                color.setAlphaF(0.2);
-                painter.setPen(Qt::black);
-                painter.setBrush(color);
             }
         }
+
+        painter.save();
+        painter.setBrush(Qt::NoBrush);
+
+        onionSkinPen.setStyle(Qt::PenStyle::DashLine);
+        int prevFrame = cameraLayer->getPreviousFrameNumber(mFrameIndex, true);
+        mOnionSkinPainter.paint(painter, cameraLayer, mOnionSkinOptions, mFrameIndex, [&] (OnionSkinPaintState state, int onionSkinNumber) {
+            if (state == OnionSkinPaintState::PREV) {
+                onionSkinPen.setColor(Qt::red);
+            }
+            if (state == OnionSkinPaintState::NEXT) {
+                onionSkinPen.setColor(Qt::blue);
+            }
+
+            painter.setPen(onionSkinPen);
+
+            // paint the "current" absolute frame
+            painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(prevFrame).inverted().map(cameraViewPoly)));
+
+            // paint normal onion skinning
+            painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly)));
+        });
+        painter.restore();
     });
 
+    painter.restore();
+}
+
+void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& midPoint) const
+{
+    painter.save();
+    // draw movemode in text
+    painter.setPen(Qt::black);
+    QString pathType = cameraLayer->getInterpolationText(frameIndex);
+    painter.drawText(midPoint - QPoint(0, 10), pathType);
+
+    // if active path, draw bezier help lines for active path
+    QList<QPointF> points = cameraLayer->getBezierPoints(frameIndex + 1);
+
+    QList<QPointF> mappedPoints;
+    for (QPointF point : points) {
+        mappedPoints << mViewTransform.map(point);
+    }
+    if (mappedPoints.size() == 3)
+    {
+        painter.save();
+        QPen pen (mHighlightColor, 0.5, Qt::PenStyle::DashLine);
+        painter.setPen(pen);
+        painter.drawLine(mappedPoints.at(0), mappedPoints.at(1));
+        painter.drawLine(mappedPoints.at(1), mappedPoints.at(2));
+        painter.restore();
+    }
+
+    // if active path, draw move handle
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter.setPen(mHighlightedTextColor);
+    painter.setBrush(mHighlightColor);
+    painter.drawRect(static_cast<int>(midPoint.x() - HANDLE_WIDTH/2),
+                     static_cast<int>(midPoint.y() - HANDLE_WIDTH/2),
+                     HANDLE_WIDTH, HANDLE_WIDTH);
+    painter.restore();
     painter.restore();
 }
