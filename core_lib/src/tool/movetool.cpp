@@ -139,7 +139,7 @@ void MoveTool::resetCameraPath()
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     if (layer->type() != Layer::CAMERA) { return; }
 
-    layer->resetPath(mEditor->currentFrame());
+    layer->centerMidPoint(mEditor->currentFrame());
 }
 
 void MoveTool::updateSettings(const SETTING setting)
@@ -411,14 +411,14 @@ void MoveTool::transformCamera()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
     layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mEditor->currentFrame());
-    mScribbleArea->invalidateLayerPixmapCache();
+    mEditor->frameModified(mEditor->currentFrame());
 }
 
 void MoveTool::transformCameraPath()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
     layer->dragCameraPath(mCamPathMoveMode, getCurrentPoint(), mDragPathFrame);
-    mScribbleArea->invalidateLayerPixmapCache();
+    mEditor->frameModified(mEditor->currentFrame());
 }
 
 void MoveTool::setAnchorToLastPoint()

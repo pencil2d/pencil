@@ -240,8 +240,8 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
         int frame = keyframe->pos();
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
 
-        if (cameraLayer->getShowCameraPath()) {
-            if (!keyExistsOnCurrentFrame && !cameraLayer->hasSameTranslation(frame, nextFrame))
+        if (cameraLayer->getShowCameraPath() && !cameraLayer->hasSameTranslation(frame, nextFrame)) {
+            if (!keyExistsOnCurrentFrame)
             {
                 cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(frame + 1));
                 paintPath(painter, cameraLayer, frame, cameraMidPoint);
