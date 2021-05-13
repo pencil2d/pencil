@@ -142,6 +142,18 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     painter.setClipRegion(rg3);
     painter.drawRect(boundingRect);
 
+    // paint top triangle
+    QPolygon cameraViewPoly = camTransform.inverted().mapToPolygon(camRect);
+    QPointF cameraMidPoint = camTransform.inverted().map(camRect.center());
+
+    QPen trianglePen(Qt::lightGray);
+    QLineF topLine(cameraViewPoly.at(0), cameraViewPoly.at(1));
+    QLineF centerLine(cameraMidPoint, topLine.pointAt(0.5));
+    QPointF points[3] = {centerLine.pointAt(1.1), topLine.pointAt(0.55), topLine.pointAt(0.45)};
+    painter.setPen(trianglePen);
+    painter.setBrush(Qt::lightGray);
+    painter.drawPolygon(points, 3);
+
     painter.restore();
 }
 
@@ -251,7 +263,10 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
             }
 
             QColor color = cameraDotColor;
-            color.setAlphaF(0.2);
+            if (mFrameIndex > frame && mFrameIndex < nextFrame)
+                color.setAlphaF(0.5);
+            else
+                color.setAlphaF(0.2);
             painter.setPen(Qt::black);
             painter.setBrush(color);
 
