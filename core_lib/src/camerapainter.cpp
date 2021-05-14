@@ -166,15 +166,15 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     // if the current view is narrower than the camera field
 
     painter.setBrush(Qt::NoBrush);
-    if (cameraRect.width() > QLineF(camPolygon.at(0), camPolygon.at(1)).length() / mViewScaling)
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    // Indicates that the quality of the output will be degraded
+    if (cameraRect.width()-1 > QLineF(camPolygon.at(0), camPolygon.at(1)).length() / mViewScaling)
     {
         painter.setPen(Qt::red);
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
     }
     else
     {
-        painter.setPen(QColor(0, 0, 0, 80));
-        painter.setCompositionMode(QPainter::RasterOp_NotDestination);
+        painter.setPen(QColor(0, 0, 0, 255));
     }
     painter.drawPolygon(camPolygon);
 
