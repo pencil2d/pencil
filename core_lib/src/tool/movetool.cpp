@@ -80,7 +80,7 @@ QCursor MoveTool::cursor()
         LayerCamera* cam = static_cast<LayerCamera*>(layer);
         mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
                                          getCurrentPoint(),
-                                         mEditor->select()->selectionTolerance() * mEditor->view()->scaling());
+                                         mEditor->select()->selectionTolerance());
         mCamMoveMode = mode;
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
@@ -91,7 +91,7 @@ QCursor MoveTool::cursor()
         {
             mode = cam->getMoveModeForCameraPath(i,
                                                  getCurrentPoint(),
-                                                 mEditor->select()->selectionTolerance() * mEditor->view()->scaling());
+                                                 mEditor->select()->selectionTolerance());
             mCamPathMoveMode = mode;
             if (mode != MoveMode::NONE)
             {
