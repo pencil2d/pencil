@@ -221,10 +221,6 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
              mCurrentLayer->keyExists(mEditor->currentFrame()))
     {
         transformCamera();
-        if (mCamMoveMode == MoveMode::CENTER)
-        {
-            LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-        }
         mEditor->view()->updateViewTransforms();
         mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
         return;
