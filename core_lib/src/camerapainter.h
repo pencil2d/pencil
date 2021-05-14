@@ -44,7 +44,7 @@ private:
     OnionSkinPainterOptions mOnionSkinOptions;
 
     const int DOT_WIDTH = 6;
-    const int HANDLE_WIDTH = 8;
+    const int HANDLE_WIDTH = 12;
 
     int mFrameIndex = 0;
     int mCurrentLayerIndex = 0;

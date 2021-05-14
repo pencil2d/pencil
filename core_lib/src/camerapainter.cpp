@@ -113,7 +113,7 @@ void CameraPainter::paintVisuals(QPainter& painter) const
     if (isCameraMode) {
         paintInterpolations(painter, cameraLayer);
 
-        if (cameraLayer->keyExists(mFrameIndex)) {
+        if (cameraLayer->keyExists(mFrameIndex) && !mIsPlaying) {
             paintHandles(painter, camTransform, cameraRect);
         }
     }
@@ -166,54 +166,53 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     // if the current view is narrower than the camera field
 
     painter.setBrush(Qt::NoBrush);
-    if (cameraRect.width() > QLineF(camPolygon.at(0), camPolygon.at(1)).length() / mViewScaling)
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    // Indicates that the quality of the output will be degraded
+    if (cameraRect.width()-1 > QLineF(camPolygon.at(0), camPolygon.at(1)).length() / mViewScaling)
     {
         painter.setPen(Qt::red);
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
     }
     else
     {
-        painter.setPen(QColor(0, 0, 0, 80));
-        painter.setCompositionMode(QPainter::RasterOp_NotDestination);
+        painter.setPen(QColor(0, 0, 0, 255));
     }
     painter.drawPolygon(camPolygon);
 
     painter.setPen(mHighlightedTextColor);
     painter.setBrush(mHighlightColor);
-    int handleW = 20;
+    int handleW = HANDLE_WIDTH;
     int radius = handleW / 2;
-    int width = radius / 2;
 
-    const QRectF topRightCorner = QRectF(camPolygon.at(1).x() - width,
-                                            camPolygon.at(1).y() - width,
-                                            radius, radius);
+    const QRectF topRightCorner = QRectF(camPolygon.at(1).x() - radius,
+                                            camPolygon.at(1).y() - radius,
+                                            handleW, handleW);
     painter.drawRect(topRightCorner);
 
-    const QRectF bottomRightCorner = QRectF(camPolygon.at(2).x() - width,
-                                            camPolygon.at(2).y() - width,
-                                            radius, radius);
+    const QRectF bottomRightCorner = QRectF(camPolygon.at(2).x() - radius,
+                                            camPolygon.at(2).y() - radius,
+                                            handleW, handleW);
     painter.drawRect(bottomRightCorner);
-    const QRectF topLeftCorner = QRectF(camPolygon.at(0).x() - width,
-                                            camPolygon.at(0).y() - width,
-                                            radius, radius);
+    const QRectF topLeftCorner = QRectF(camPolygon.at(0).x() - radius,
+                                            camPolygon.at(0).y() - radius,
+                                            handleW, handleW);
     painter.drawRect(topLeftCorner);
 
-    const QRectF bottomLeftCorner = QRectF(camPolygon.at(3).x() - width,
-                                            camPolygon.at(3).y() - width,
-                                            radius, radius);
+    const QRectF bottomLeftCorner = QRectF(camPolygon.at(3).x() - radius,
+                                            camPolygon.at(3).y() - radius,
+                                            handleW, handleW);
     painter.drawRect(bottomLeftCorner);
 
     QPointF rotatePointR = QLineF(camPolygon.at(1), camPolygon.at(2)).pointAt(0.5);
-    const QRectF rightSideCircle= QRectF(rotatePointR.x() - width,
-                                         rotatePointR.y() - width,
-                                         radius, radius);
+    const QRectF rightSideCircle= QRectF(rotatePointR.x() - radius,
+                                         rotatePointR.y() - radius,
+                                         handleW, handleW);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.drawEllipse(rightSideCircle);
 
     QPointF rotatePointL = QLineF(camPolygon.at(0), camPolygon.at(3)).pointAt(0.5);
-    const QRectF leftSideCircle= QRectF(rotatePointL.x() - width,
-                                         rotatePointL.y() - width,
-                                         radius, radius);
+    const QRectF leftSideCircle= QRectF(rotatePointL.x() - radius,
+                                         rotatePointL.y() - radius,
+                                         handleW, handleW);
     painter.drawEllipse(leftSideCircle);
 
     painter.restore();
@@ -247,12 +246,9 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
 
         int frame = keyframe->pos();
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
-        if (cameraLayer->hasSameTranslation(frame, nextFrame))
-            cameraLayer->resetPath(frame);
 
-        if (cameraLayer->getShowCameraPath())
-        {
-            if (!keyExistsOnCurrentFrame && !cameraLayer->hasSameTranslation(frame, nextFrame))
+        if (cameraLayer->getShowCameraPath() && !cameraLayer->hasSameTranslation(frame, nextFrame)) {
+            if (!keyExistsOnCurrentFrame)
             {
                 cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(frame + 1));
                 paintPath(painter, cameraLayer, frame, cameraMidPoint);

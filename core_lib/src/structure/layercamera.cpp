@@ -180,11 +180,18 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     qreal degree;
     Camera* curCam = getCameraAtFrame(frameNumber);
     QPointF mid = curCam->getPathMidPoint();
+
     switch (mode)
     {
-    case MoveMode::CENTER:
+    case MoveMode::CENTER: {
         curCam->translate(curCam->translation() - (point - mOffsetPoint));
+
+        int prevFrame = getPreviousKeyFramePosition(frameNumber);
+        if (!static_cast<Camera*>(getKeyFrameAt(prevFrame))->getIsMidPointSet()) {
+            centerMidPoint(frameNumber);
+        }
         break;
+    }
     case MoveMode::TOPLEFT:
         lineOld = QLineF(curCenter, curPoly.at(0));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
@@ -221,8 +228,6 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
         break;
     }
     setOffsetPoint(point);
-    if (!getIsMidpointSet(frameNumber))
-        resetPath(frameNumber);
     curCam->updateViewTransform();
     curCam->modification();
 }
@@ -253,17 +258,23 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
 
     else if (camera1 == nullptr && camera2 != nullptr)
     {
+        cam->setPathMidPoint(camera2->translation());
+        cam->setIsMidPointSet(false);
         return cam->assign(*camera2);
     }
 
     else if (camera2 == nullptr && camera1 != nullptr)
     {
+        cam->setPathMidPoint(camera1->translation());
+        cam->setIsMidPointSet(false);
         return cam->assign(*camera1);
     }
 
     if (camera1 == camera2)
     {
-        return cam->assign(*camera2);
+        cam->setPathMidPoint(-camera1->translation());
+        cam->setIsMidPointSet(false);
+        return cam->assign(*camera1);
     }
 
     double frame1 = camera1->pos();
@@ -351,9 +362,9 @@ void LayerCamera::updateOnDeleteFrame(int frame)
 {
     int prev = getPreviousKeyFramePosition(frame);
     if (prev < frame)
-        resetPath(prev);
+        centerMidPoint(prev);
     else if (prev == frame)
-        resetPath(frame);
+        centerMidPoint(frame);
 }
 
 void LayerCamera::updateOnAddFrame(int frame)
@@ -395,7 +406,7 @@ void LayerCamera::updateOnAddFrame(int frame)
     else
     {
         // if first frame
-        resetPath(frame);
+        centerMidPoint(frame);
     }
 }
 
@@ -459,7 +470,7 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
         camera->translate(copyCamera->translation());
         camera->scale(copyCamera->scaling());
         camera->rotate(copyCamera->rotation());
-        resetPath(frame);
+        centerMidPoint(frame);
         break;
     default:
         break;
@@ -552,33 +563,7 @@ QPointF LayerCamera::getPathMidPoint(int frame) const
     Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
     Q_ASSERT(camera);
 
-    if (camera->getIsMidPointSet())
-        return camera->getPathMidPoint();
-    return camera->translation();
-}
-
-bool LayerCamera::getIsMidpointSet(int frame)
-{
-    Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
-    Q_ASSERT(camera);
-
-    return camera->getIsMidPointSet();
-}
-
-void LayerCamera::setIsMidpointSet(int frame, bool b)
-{
-    Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
-    Q_ASSERT(camera);
-
-    camera->setIsMidPointSet(b);
-}
-
-QPointF LayerCamera::getPathStartPoint(int frame) const
-{
-    Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
-    Q_ASSERT(camera);
-
-    return camera->translation();
+    return camera->getPathMidPoint();
 }
 
 bool LayerCamera::hasSameTranslation(int first, int last) const
@@ -606,13 +591,14 @@ QList<QPointF> LayerCamera::getBezierPoints(int frame) const
     return points;
 }
 
-void LayerCamera::resetPath(int frame)
+void LayerCamera::centerMidPoint(int frame)
 {
-    int nextFrame = getNextKeyFramePosition(frame);
+    int prevFrame = getPreviousKeyFramePosition(frame);
     Camera* cam1 = getLastCameraAtFrame(frame, 0);
-    Camera* cam2 = getCameraAtFrame(nextFrame);
-    cam1->setPathMidPoint(QLineF(-cam1->translation(), -cam2->translation()).pointAt(0.5));
-    cam1->modification();
+    Camera* cam2 = getCameraAtFrame(prevFrame);
+
+    cam2->setPathMidPoint(QLineF(-cam2->translation(), -cam1->translation()).pointAt(0.5));
+    cam2->modification();
 }
 
 void LayerCamera::dragCameraPath(MoveMode mode, QPointF point, int frame)

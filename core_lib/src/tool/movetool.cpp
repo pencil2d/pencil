@@ -80,7 +80,7 @@ QCursor MoveTool::cursor()
         LayerCamera* cam = static_cast<LayerCamera*>(layer);
         mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
                                          getCurrentPoint(),
-                                         mEditor->select()->selectionTolerance() * mEditor->view()->scaling());
+                                         mEditor->select()->selectionTolerance());
         mCamMoveMode = mode;
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
@@ -91,7 +91,7 @@ QCursor MoveTool::cursor()
         {
             mode = cam->getMoveModeForCameraPath(i,
                                                  getCurrentPoint(),
-                                                 mEditor->select()->selectionTolerance() * mEditor->view()->scaling());
+                                                 mEditor->select()->selectionTolerance());
             mCamPathMoveMode = mode;
             if (mode != MoveMode::NONE)
             {
@@ -139,7 +139,7 @@ void MoveTool::resetCameraPath()
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     if (layer->type() != Layer::CAMERA) { return; }
 
-    layer->resetPath(mEditor->currentFrame());
+    layer->centerMidPoint(mEditor->currentFrame());
 }
 
 void MoveTool::updateSettings(const SETTING setting)
@@ -194,11 +194,6 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
                  mCurrentLayer->keyExists(mEditor->currentFrame()))
         {
             transformCamera();
-            LayerCamera*  layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-            if (!layer->getIsMidpointSet(mEditor->currentFrame()))
-            {
-                layer->resetPath(mEditor->currentFrame() - 1);
-            }
         }
         else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
                  mCamPathMoveMode == MoveMode::MIDDLE)
@@ -226,12 +221,6 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
              mCurrentLayer->keyExists(mEditor->currentFrame()))
     {
         transformCamera();
-        LayerCamera*  layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-        if (!layer->getIsMidpointSet(mEditor->currentFrame()))
-        {
-            layer->resetPath(mEditor->currentFrame() - 1);
-            layer->setIsMidpointSet(mEditor->currentFrame(), true);
-        }
         mEditor->view()->updateViewTransforms();
         mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
         return;
