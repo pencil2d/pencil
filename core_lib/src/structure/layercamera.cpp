@@ -221,8 +221,6 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
         break;
     }
     setOffsetPoint(point);
-    if (!getIsMidpointSet(frameNumber))
-        resetPath(frameNumber);
     curCam->updateViewTransform();
     curCam->modification();
 }
@@ -253,17 +251,23 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
 
     else if (camera1 == nullptr && camera2 != nullptr)
     {
+        cam->setPathMidPoint(camera2->translation());
+        cam->setIsMidPointSet(false);
         return cam->assign(*camera2);
     }
 
     else if (camera2 == nullptr && camera1 != nullptr)
     {
+        cam->setPathMidPoint(camera1->translation());
+        cam->setIsMidPointSet(false);
         return cam->assign(*camera1);
     }
 
     if (camera1 == camera2)
     {
-        return cam->assign(*camera2);
+        cam->setPathMidPoint(-camera1->translation());
+        cam->setIsMidPointSet(false);
+        return cam->assign(*camera1);
     }
 
     double frame1 = camera1->pos();
@@ -552,25 +556,7 @@ QPointF LayerCamera::getPathMidPoint(int frame) const
     Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
     Q_ASSERT(camera);
 
-    if (camera->getIsMidPointSet())
-        return camera->getPathMidPoint();
-    return camera->translation();
-}
-
-bool LayerCamera::getIsMidpointSet(int frame)
-{
-    Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
-    Q_ASSERT(camera);
-
-    return camera->getIsMidPointSet();
-}
-
-void LayerCamera::setIsMidpointSet(int frame, bool b)
-{
-    Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
-    Q_ASSERT(camera);
-
-    camera->setIsMidPointSet(b);
+    return camera->getPathMidPoint();
 }
 
 QPointF LayerCamera::getPathStartPoint(int frame) const
