@@ -147,12 +147,12 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     QPolygon cameraViewPoly = camTransform.inverted().mapToPolygon(camRect);
     QPointF cameraMidPoint = camTransform.inverted().map(camRect.center());
 
-    QPen trianglePen(Qt::lightGray);
+    QPen trianglePen(Qt::black);
     QLineF topLine(cameraViewPoly.at(0), cameraViewPoly.at(1));
     QLineF centerLine(cameraMidPoint, topLine.pointAt(0.5));
     QPointF points[3] = {centerLine.pointAt(1.1), topLine.pointAt(0.55), topLine.pointAt(0.45)};
     painter.setPen(trianglePen);
-    painter.setBrush(Qt::lightGray);
+    painter.setBrush(Qt::NoBrush);
     painter.drawPolygon(points, 3);
 
     painter.restore();
