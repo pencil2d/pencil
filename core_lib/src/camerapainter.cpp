@@ -20,6 +20,7 @@ void CameraPainter::preparePainter(const Object* object, int layerIndex, int fra
     mCurrentLayerIndex = layerIndex;
     mFrameIndex = frameIndex;
     mViewTransform = transform;
+    mViewScaling = transform.m11();
     mIsPlaying = isPlaying;
 
     mHighlightColor = palette.color(QPalette::Highlight);
@@ -165,7 +166,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     // if the current view is narrower than the camera field
 
     painter.setBrush(Qt::NoBrush);
-    if (cameraRect.width() > QLineF(camPolygon.at(0), camPolygon.at(1)).length())
+    if (cameraRect.width() > QLineF(camPolygon.at(0), camPolygon.at(1)).length() / mViewScaling)
     {
         painter.setPen(Qt::red);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
@@ -175,12 +176,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
         painter.setPen(QColor(0, 0, 0, 80));
         painter.setCompositionMode(QPainter::RasterOp_NotDestination);
     }
-    painter.drawLine(camPolygon.at(3), camPolygon.at(0));
-    painter.drawLine(camPolygon.at(0), camPolygon.at(1));
-    painter.drawLine(camPolygon.at(1), camPolygon.at(2));
-    painter.setPen(Qt::blue);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.drawLine(camPolygon.at(3), camPolygon.at(2));
+    painter.drawPolygon(camPolygon);
 
     painter.setPen(mHighlightedTextColor);
     painter.setBrush(mHighlightColor);

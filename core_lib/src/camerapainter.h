@@ -38,6 +38,7 @@ private:
 
     std::unique_ptr<QPixmap> mCachedPaint = nullptr;
     QTransform mViewTransform;
+    qreal mViewScaling = 1.0;
 
     OnionSkinSubPainter mOnionSkinPainter;
     OnionSkinPainterOptions mOnionSkinOptions;
