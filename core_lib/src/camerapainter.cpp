@@ -168,7 +168,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     painter.setBrush(Qt::NoBrush);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
     // Indicates that the quality of the output will be degraded
-    if (cameraRect.width()-1 > QLineF(camPolygon.at(0), camPolygon.at(1)).length() / mViewScaling)
+    if (cameraRect.width()-2 > QLineF(camPolygon.at(0), camPolygon.at(1)).length() / mViewScaling)
     {
         painter.setPen(Qt::red);
     }

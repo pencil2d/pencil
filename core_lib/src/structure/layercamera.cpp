@@ -601,21 +601,14 @@ void LayerCamera::centerMidPoint(int frame)
     cam2->modification();
 }
 
-void LayerCamera::dragCameraPath(MoveMode mode, QPointF point, int frame)
+void LayerCamera::updatePathAtFrame(QPointF point, int frame)
 {
     Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
     Q_ASSERT(camera);
 
-    switch (mode)
-    {
-    case MoveMode::MIDDLE:
-        camera->setPathMidPoint(point);
-        camera->setIsMidPointSet(true);
-        camera->modification();
-        break;
-    default:
-        break;
-    }
+    camera->setPathMidPoint(point);
+    camera->setIsMidPointSet(true);
+    camera->modification();
     setOffsetPoint(point);
 }
 
@@ -681,8 +674,8 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
 
 void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
-    Q_UNUSED(dataDirPath);
-    Q_UNUSED(progressStep);
+    Q_UNUSED(dataDirPath)
+    Q_UNUSED(progressStep)
 
     this->loadBaseDomElement(element);
 
