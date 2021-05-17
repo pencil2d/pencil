@@ -276,12 +276,8 @@ void ScribbleArea::invalidateCacheForFrame(int frameNumber)
 
 void ScribbleArea::invalidateLayerPixmapCache()
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::CAMERA) {
-        mCameraPainter.resetCache();
-    } else if (layer->type() & (Layer::BITMAP | Layer::VECTOR)) {
-        mCanvasPainter.resetLayerCache();
-    }
+    mCameraPainter.resetCache();
+    mCanvasPainter.resetLayerCache();
     update();
 }
 

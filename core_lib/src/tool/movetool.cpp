@@ -69,42 +69,44 @@ void MoveTool::updateTool()
 QCursor MoveTool::cursor()
 {
     MoveMode mode = MoveMode::NONE;
-    if (mEditor->select()->somethingSelected())
-    {
-        mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
-        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
-    }
+    QPointF currentPoint = getCurrentPoint();
+    qreal selectionTolerance = mEditor->select()->selectionTolerance();
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::CAMERA && layer->keyExists(mEditor->currentFrame()))
+
+    if (layer->type() == Layer::CAMERA)
     {
         LayerCamera* cam = static_cast<LayerCamera*>(layer);
-        mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
-                                         getCurrentPoint(),
-                                         mEditor->select()->selectionTolerance());
-        mCamMoveMode = mode;
-        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
-    }
-    else if (layer->type() == Layer::CAMERA)
-    {
-        LayerCamera* cam = static_cast<LayerCamera*>(layer);
-        for ( int i = cam->firstKeyFramePosition(); i <= cam->getMaxKeyFramePosition(); i = cam->getNextKeyFramePosition(i))
+        if (layer->keyExists(mEditor->currentFrame()))
         {
-            mode = cam->getMoveModeForCameraPath(i,
-                                                 getCurrentPoint(),
-                                                 mEditor->select()->selectionTolerance());
-            mCamPathMoveMode = mode;
-            if (mode != MoveMode::NONE)
+            mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
+                                             currentPoint,
+                                             selectionTolerance);
+            mCamMoveMode = mode;
+        } else {
+            int keyPos = cam->firstKeyFramePosition();
+            while (keyPos <= cam->getMaxKeyFramePosition())
             {
-                if (!cam->hasSameTranslation(i, cam->getPreviousKeyFramePosition(i)))
+                mode = cam->getMoveModeForCameraPath(keyPos,
+                                                     currentPoint,
+                                                     selectionTolerance);
+                mCamPathMoveMode = mode;
+                if (mode != MoveMode::NONE && !cam->hasSameTranslation(keyPos, cam->getPreviousKeyFramePosition(keyPos)))
                 {
-                    mDragPathFrame = i;
+                    mDragPathFrame = keyPos;
                     break;
                 }
+
+                if (keyPos == cam->getNextKeyFramePosition(keyPos)) {
+                    break;
+                }
+
+                keyPos = cam->getNextKeyFramePosition(keyPos);
             }
-            if (i == cam->getMaxKeyFramePosition())
-                break;
         }
-        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
+    else if (mEditor->select()->somethingSelected())
+    {
+        mode = mEditor->select()->getMoveModeForSelectionAnchor(currentPoint);
     }
 
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
@@ -160,7 +162,7 @@ void MoveTool::updateSettings(const SETTING setting)
 void MoveTool::pointerPressEvent(PointerEvent* event)
 {
     if (mCurrentLayer->type() == Layer::CAMERA &&
-             mCurrentLayer->keyExists(mEditor->currentFrame()))
+        mCurrentLayer->keyExists(mEditor->currentFrame()))
     {
         mDragPathFrame = mEditor->currentFrame();
         LayerCamera* camera = static_cast<LayerCamera*>(mCurrentLayer);
@@ -190,15 +192,15 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         {
             transformSelection(event->modifiers(), mCurrentLayer);
         }
-        else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
-                 mCurrentLayer->keyExists(mEditor->currentFrame()))
+        else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
         {
-            transformCamera();
-        }
-        else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
-                 mCamPathMoveMode == MoveMode::MIDDLE)
-        {
-            transformCameraPath();
+            if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
+                transformCamera();
+            }
+            else if (mCamPathMoveMode == MoveMode::MIDDLE)
+            {
+                transformCameraPath();
+            }
         }
     }
     else
@@ -217,20 +219,17 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
-    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
-             mCurrentLayer->keyExists(mEditor->currentFrame()))
+    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
     {
-        transformCamera();
-        mEditor->view()->updateViewTransforms();
-        mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
-        return;
-    }
-    else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA &&
-             mCamPathMoveMode == MoveMode::MIDDLE)
-    {
-        transformCameraPath();
-        mEditor->view()->updateViewTransforms();
-        mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
+        if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
+            transformCamera();
+            mEditor->view()->updateViewTransforms();
+            mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
+        } else if (mCamPathMoveMode == MoveMode::MIDDLE) {
+            transformCameraPath();
+            mEditor->view()->updateViewTransforms();
+            mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
+        }
         return;
     }
 
@@ -413,7 +412,7 @@ void MoveTool::transformCamera()
 void MoveTool::transformCameraPath()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
-    layer->dragCameraPath(mCamPathMoveMode, getCurrentPoint(), mDragPathFrame);
+    layer->updatePathAtFrame(getCurrentPoint(), mDragPathFrame);
     mScribbleArea->invalidateLayerPixmapCache();
 }
 
