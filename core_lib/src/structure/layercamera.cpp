@@ -188,7 +188,7 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
 
         int prevFrame = getPreviousKeyFramePosition(frameNumber);
         if (!static_cast<Camera*>(getKeyFrameAt(prevFrame))->getIsMidPointSet()) {
-            centerMidPoint(frameNumber);
+            centerMidPoint(frameNumber - 1);
         }
         break;
     }
@@ -363,7 +363,7 @@ void LayerCamera::updateOnDeleteFrame(int frame)
     int prev = getPreviousKeyFramePosition(frame);
     if (prev < frame)
         centerMidPoint(prev);
-    else if (prev == frame)
+    else
         centerMidPoint(frame);
 }
 
@@ -593,12 +593,13 @@ QList<QPointF> LayerCamera::getBezierPoints(int frame) const
 
 void LayerCamera::centerMidPoint(int frame)
 {
-    int prevFrame = getPreviousKeyFramePosition(frame);
-    Camera* cam1 = getLastCameraAtFrame(frame, 0);
-    Camera* cam2 = getCameraAtFrame(prevFrame);
-
-    cam2->setPathMidPoint(QLineF(-cam2->translation(), -cam1->translation()).pointAt(0.5));
-    cam2->modification();
+    if (!keyExists(frame))
+        frame = getPreviousKeyFramePosition(frame);
+    int nextFrame = getNextKeyFramePosition(frame);
+    Camera* cam1 = getCameraAtFrame(frame);
+    Camera* cam2 = getCameraAtFrame(nextFrame);
+    cam1->setPathMidPoint(QLineF(-cam1->translation(), -cam2->translation()).pointAt(0.5));
+    cam1->modification();
 }
 
 void LayerCamera::updatePathAtFrame(QPointF point, int frame)
