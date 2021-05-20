@@ -28,7 +28,15 @@ Pencil2D relies on the %Qt application framework so you must install it before y
 
 Pencil2D must be built with the %Qt 5 framework. To install %Qt 5, run this command:
 
-    sudo apt install qt5-default qt5-qmake libqt5xmlpatterns5-dev libqt5svg5-dev qtmultimedia5-dev
+    sudo apt install qt5-default qt5-qmake libqt5xmlpatterns5-dev libqt5svg5-dev qtmultimedia5-dev qttools5-dev-tools
+    
+###NOTE 
+
+For some cases installing via  `apt-get` may give `broken packages error`, in such case try installing using `aptitude`:
+    
+    sudo aptitude install qt5-default qt5-qmake libqt5xmlpatterns5-dev libqt5svg5-dev qtmultimedia5-dev qttools5-dev-tools
+
+-You may be required to downgrade some packages listed by `aptitude`.
 
 If you want to install %Qt Creator (recommended), then also run the following command:
 
