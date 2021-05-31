@@ -32,9 +32,10 @@ INCLUDEPATH += \
     ../core_lib/src/structure \
     ../core_lib/src/tool \
     ../core_lib/src/util \
-    ../core_lib/ui \
     ../core_lib/src/managers \
-    ../core_lib/src/external
+    ../core_lib/src/external \
+    ../core_lib/src \
+    ../core_lib/ui
 
 PRECOMPILED_HEADER = src/app-pch.h
 
@@ -203,7 +204,7 @@ unix:!macx {
 
 # --- core_lib ---
 
-INCLUDEPATH += $$PWD/../core_lib/src
+INCLUDEPATH += ../../core_lib/src
 
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release
