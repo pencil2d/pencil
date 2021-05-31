@@ -28,8 +28,8 @@ bool MiniZ::isZip(const QString& sZipFilePath)
     mz_zip_archive* mz = new mz_zip_archive;
     OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
-
-    mz_bool ok = mz_zip_reader_init_file(mz, sZipFilePath.toUtf8().data(), 0);
+    QByteArray utf8Bytes = sZipFilePath.toUtf8();
+    mz_bool ok = mz_zip_reader_init_file(mz, utf8Bytes.constData(), 0);
     if (!ok) return false;
 
     int num = mz_zip_reader_get_num_files(mz);

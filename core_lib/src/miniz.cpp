@@ -2986,7 +2986,7 @@ void tinfl_decompressor_free(tinfl_decompressor *pDecomp)
 #else
 #include <sys/stat.h>
 
-#if defined(_MSC_VER) || defined(__MINGW64__)
+#if defined(_MSC_VER) || defined(__MINGW64__) || defined(__MINGW32__)
 #include <codecvt>
 #include <string>
 #include <locale>
@@ -3026,21 +3026,21 @@ static FILE *mz_freopen(const char *pPath, const char *pMode, FILE *pStream)
 #define MZ_FFLUSH fflush
 #define MZ_FREOPEN mz_freopen
 #define MZ_DELETE_FILE remove
-#elif defined(__MINGW32__)
-#ifndef MINIZ_NO_TIME
-#include <sys/utime.h>
-#endif
-#define MZ_FOPEN(f, m) fopen(f, m)
-#define MZ_FCLOSE fclose
-#define MZ_FREAD fread
-#define MZ_FWRITE fwrite
-#define MZ_FTELL64 ftello64
-#define MZ_FSEEK64 fseeko64
-#define MZ_FILE_STAT_STRUCT _stat
-#define MZ_FILE_STAT _stat
-#define MZ_FFLUSH fflush
-#define MZ_FREOPEN(f, m, s) freopen(f, m, s)
-#define MZ_DELETE_FILE remove
+//#elif defined(__MINGW32__)
+//#ifndef MINIZ_NO_TIME
+//#include <sys/utime.h>
+//#endif
+//#define MZ_FOPEN(f, m) fopen(f, m)
+//#define MZ_FCLOSE fclose
+//#define MZ_FREAD fread
+//#define MZ_FWRITE fwrite
+//#define MZ_FTELL64 ftello64
+//#define MZ_FSEEK64 fseeko64
+//#define MZ_FILE_STAT_STRUCT _stat
+//#define MZ_FILE_STAT _stat
+//#define MZ_FFLUSH fflush
+//#define MZ_FREOPEN(f, m, s) freopen(f, m, s)
+//#define MZ_DELETE_FILE remove
 #elif defined(__TINYC__)
 #ifndef MINIZ_NO_TIME
 #include <sys/utime.h>
