@@ -31,6 +31,8 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 
+#include "onionskinpainteroptions.h"
+
 #include "colormanager.h"
 #include "toolmanager.h"
 #include "strokemanager.h"
@@ -61,6 +63,8 @@ bool ScribbleArea::init()
     mDoubleClickTimer = new QTimer(this);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
+    connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &ScribbleArea::onToolPropertyUpdated);
+
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
 
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::onSelectionChanged);
@@ -96,6 +100,18 @@ bool ScribbleArea::init()
     mPixmapCacheKeys.clear();
 
     return true;
+}
+
+void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
+{
+    switch (type)
+    {
+    case ToolPropertyType::CAMERAPATH:
+        onCurrentFrameModified();
+        break;
+    default:
+        break;
+    }
 }
 
 void ScribbleArea::settingUpdated(SETTING setting)
@@ -260,6 +276,7 @@ void ScribbleArea::invalidateCacheForFrame(int frameNumber)
 
 void ScribbleArea::invalidateLayerPixmapCache()
 {
+    mCameraPainter.resetCache();
     mCanvasPainter.resetLayerCache();
     update();
 }
@@ -1000,10 +1017,10 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
+    int currentFrame = mEditor->currentFrame();
     if (!currentTool()->isActive())
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
-        const int currentFrame = mEditor->currentFrame();
         const int frameNumber = mEditor->layers()->lastFrameAtFrame(currentFrame);
 
         if (frameNumber < 0)
@@ -1016,7 +1033,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
             if (cacheKeyIter == mPixmapCacheKeys.end() || !QPixmapCache::find(cacheKeyIter.value(), &mCanvas))
             {
-                drawCanvas(mEditor->currentFrame(), event->rect());
+                drawCanvas(currentFrame, event->rect());
                 mPixmapCacheKeys[static_cast<unsigned>(currentFrame)] = QPixmapCache::insert(mCanvas);
                 //qDebug() << "Repaint canvas!";
             }
@@ -1028,8 +1045,10 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     }
     else
     {
-        prepCanvas(mEditor->currentFrame(), event->rect());
+        prepCanvas(currentFrame, event->rect());
+        prepCameraPainter(currentFrame);
         mCanvasPainter.paintCached();
+        mCameraPainter.paintCached();
     }
 
     if (currentTool()->type() == MOVE)
@@ -1187,19 +1206,41 @@ VectorImage* ScribbleArea::currentVectorImage(Layer* layer) const
     return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 }
 
+void ScribbleArea::prepCameraPainter(int frame)
+{
+    Object* object = mEditor->object();
+
+    mCameraPainter.preparePainter(object,
+                                  mEditor->currentLayerIndex(),
+                                  frame,
+                                  mEditor->view()->getView(),
+                                  mEditor->playback()->isPlaying(),
+                                  palette());
+
+
+    // TODO: figure out a way to avoid duplicating paint options..
+    OnionSkinPainterOptions onionSkinOptions;
+    onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
+    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    onionSkinOptions.isAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
+    onionSkinOptions.skinPrevFrames = mPrefs->isOn(SETTING::PREV_ONION);
+    onionSkinOptions.skinNextFrames = mPrefs->isOn(SETTING::NEXT_ONION);
+    onionSkinOptions.colorizePrevFrames = mPrefs->isOn(SETTING::ONION_RED);
+    onionSkinOptions.colorizeNextFrames = mPrefs->isOn(SETTING::ONION_BLUE);
+    onionSkinOptions.framesToSkinPrev = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    onionSkinOptions.framesToSkinNext = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    onionSkinOptions.maxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
+    onionSkinOptions.minOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
+
+    mCameraPainter.setOnionSkinPaintOptions(onionSkinOptions);
+    mCameraPainter.setCanvas(&mCanvas);
+}
+
 void ScribbleArea::prepCanvas(int frame, QRect rect)
 {
     Object* object = mEditor->object();
 
     CanvasPainterOptions o;
-    o.bPrevOnionSkin = mPrefs->isOn(SETTING::PREV_ONION);
-    o.bNextOnionSkin = mPrefs->isOn(SETTING::NEXT_ONION);
-    o.bColorizePrevOnion = mPrefs->isOn(SETTING::ONION_RED);
-    o.bColorizeNextOnion = mPrefs->isOn(SETTING::ONION_BLUE);
-    o.nPrevOnionSkinCount = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
-    o.nNextOnionSkinCount = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
-    o.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
-    o.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     o.bAntiAlias = mPrefs->isOn(SETTING::ANTIALIAS);
     o.bGrid = mPrefs->isOn(SETTING::GRID);
     o.nGridSizeW = mPrefs->getInt(SETTING::GRID_SIZE_W);
@@ -1218,11 +1259,23 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
     o.eLayerVisibility = mLayerVisibility;
     o.fLayerVisibilityThreshold = mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD);
-    o.bIsOnionAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     o.scaling = mEditor->view()->scaling();
-    o.onionWhilePlayback = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
-    o.isPlaying = mEditor->playback()->isPlaying() ? true : false;
     o.cmBufferBlendMode = mEditor->tools()->currentTool()->type() == ToolType::ERASER ? QPainter::CompositionMode_DestinationOut : QPainter::CompositionMode_SourceOver;
+
+    OnionSkinPainterOptions onionSkinOptions;
+    onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
+    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    onionSkinOptions.isAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
+    onionSkinOptions.skinPrevFrames = mPrefs->isOn(SETTING::PREV_ONION);
+    onionSkinOptions.skinNextFrames = mPrefs->isOn(SETTING::NEXT_ONION);
+    onionSkinOptions.colorizePrevFrames = mPrefs->isOn(SETTING::ONION_RED);
+    onionSkinOptions.colorizeNextFrames = mPrefs->isOn(SETTING::ONION_BLUE);
+    onionSkinOptions.framesToSkinPrev = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    onionSkinOptions.framesToSkinNext = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    onionSkinOptions.maxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
+    onionSkinOptions.minOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
+
+    mCanvasPainter.setOnionSkinOptions(onionSkinOptions);
     mCanvasPainter.setOptions(o);
 
     mCanvasPainter.setCanvas(&mCanvas);
@@ -1237,7 +1290,9 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
 {
     mCanvas.fill(Qt::transparent);
     prepCanvas(frame, rect);
+    prepCameraPainter(frame);
     mCanvasPainter.paint();
+    mCameraPainter.paint();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset)

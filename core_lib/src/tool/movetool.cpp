@@ -29,9 +29,10 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
+#include "layercamera.h"
 #include "mathutils.h"
 #include "vectorimage.h"
-
+#include "pencilsettings.h"
 
 MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
@@ -44,20 +45,103 @@ ToolType MoveTool::type()
 
 void MoveTool::loadSettings()
 {
+    mPropertyEnabled[CAMERAPATH] = true;
     properties.width = -1;
     properties.feather = -1;
     properties.useFeather = false;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    properties.showCameraPath = settings.value(SETTING_CAMERA_SHOWPATH).toBool();
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MoveTool::updateTool);
+}
+
+void MoveTool::updateTool()
+{
+    setShowCameraPath(properties.showCameraPath);
 }
 
 QCursor MoveTool::cursor()
 {
-    MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
+    MoveMode mode = MoveMode::NONE;
+    QPointF currentPoint = getCurrentPoint();
+    qreal selectionTolerance = mEditor->select()->selectionTolerance();
+    Layer* layer = mEditor->layers()->currentLayer();
+
+    if (layer->type() == Layer::CAMERA)
+    {
+        LayerCamera* cam = static_cast<LayerCamera*>(layer);
+        if (layer->keyExists(mEditor->currentFrame()))
+        {
+            mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
+                                             currentPoint,
+                                             selectionTolerance);
+            mCamMoveMode = mode;
+        } else {
+            int keyPos = cam->firstKeyFramePosition();
+            while (keyPos <= cam->getMaxKeyFramePosition())
+            {
+                mode = cam->getMoveModeForCameraPath(keyPos,
+                                                     currentPoint,
+                                                     selectionTolerance);
+                mCamPathMoveMode = mode;
+                if (mode != MoveMode::NONE && !cam->hasSameTranslation(keyPos, cam->getPreviousKeyFramePosition(keyPos)))
+                {
+                    mDragPathFrame = keyPos;
+                    break;
+                }
+
+                if (keyPos == cam->getNextKeyFramePosition(keyPos)) {
+                    break;
+                }
+
+                keyPos = cam->getNextKeyFramePosition(keyPos);
+            }
+        }
+    }
+    else if (mEditor->select()->somethingSelected())
+    {
+        mode = mEditor->select()->getMoveModeForSelectionAnchor(currentPoint);
+    }
+
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+}
+
+void MoveTool::setShowCameraPath(const bool showCameraPath)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
+
+    if (layer->type() != Layer::CAMERA) { return; }
+    layer->setShowCameraPath(showCameraPath);
+
+    properties.showCameraPath = showCameraPath;
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    // Should we save a setting per layer?
+    settings.setValue(SETTING_CAMERA_SHOWPATH, showCameraPath);
+    settings.sync();
+}
+
+void MoveTool::setPathDotColor(const int pathDotColor)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
+    if (layer->type() != Layer::CAMERA) { return; }
+
+    DotColor color = static_cast<DotColor>(pathDotColor);
+    layer->setDotColor(color);
+}
+
+void MoveTool::resetCameraPath()
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
+    if (layer->type() != Layer::CAMERA) { return; }
+
+    layer->centerMidPoint(mEditor->currentFrame());
 }
 
 void MoveTool::updateSettings(const SETTING setting)
@@ -77,6 +161,15 @@ void MoveTool::updateSettings(const SETTING setting)
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
 {
+    if (mCurrentLayer->type() == Layer::CAMERA &&
+        mCurrentLayer->keyExists(mEditor->currentFrame()))
+    {
+        mDragPathFrame = mEditor->currentFrame();
+        LayerCamera* camera = static_cast<LayerCamera*>(mCurrentLayer);
+        camera->setOffsetPoint(getCurrentPoint());
+        return;
+    }
+
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
 
@@ -95,7 +188,20 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
-        transformSelection(event->modifiers(), mCurrentLayer);
+        if (mEditor->select()->somethingSelected())
+        {
+            transformSelection(event->modifiers(), mCurrentLayer);
+        }
+        else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
+        {
+            if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
+                transformCamera();
+            }
+            else if (mCamPathMoveMode == MoveMode::MIDDLE)
+            {
+                transformCameraPath();
+            }
+        }
     }
     else
     {
@@ -113,6 +219,20 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
+    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
+    {
+        if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
+            transformCamera();
+            mEditor->view()->updateViewTransforms();
+            mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
+        } else if (mCamPathMoveMode == MoveMode::MIDDLE) {
+            transformCameraPath();
+            mEditor->view()->updateViewTransforms();
+            mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
+        }
+        return;
+    }
+
     auto selectMan = mEditor->select();
     if (!selectMan->somethingSelected())
         return;
@@ -282,6 +402,20 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     selectMan->setCurves(pVecImg->getCurvesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
 }
 
+void MoveTool::transformCamera()
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
+    layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mEditor->currentFrame());
+    mScribbleArea->invalidateLayerPixmapCache();
+}
+
+void MoveTool::transformCameraPath()
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
+    layer->updatePathAtFrame(getCurrentPoint(), mDragPathFrame);
+    mScribbleArea->invalidateLayerPixmapCache();
+}
+
 void MoveTool::setAnchorToLastPoint()
 {
     anchorOriginPoint = getLastPoint();
@@ -379,6 +513,8 @@ Layer* MoveTool::currentPaintableLayer()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr)
         return nullptr;
+    if (layer->type() == Layer::CAMERA)
+        return layer;   // ONLY for movetool!
     if (!layer->isPaintable())
         return nullptr;
     return layer;

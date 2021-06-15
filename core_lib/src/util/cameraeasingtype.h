@@ -51,7 +51,7 @@ enum class CameraEasingType {
     INELASTIC,
     OUTELASTIC,
     INOUTELASTIC,
-    UOTINELASTIC,
+    OUTINELASTIC,
     INBACK,
     OUTBACK,
     INOUTBACK,
@@ -60,6 +60,17 @@ enum class CameraEasingType {
     OUTBOUNCE,
     INOUTBOUNCE,
     OUTINBOUNCE
+};
+
+enum class CameraFieldOption {
+    RESET_FIELD,
+    RESET_TRANSITION,
+    RESET_SCALING,
+    RESET_ROTATION,
+    ALIGN_HORIZONTAL,
+    ALIGN_VERTICAL,
+    HOLD_FRAME,
+    SHOW_CAMERA_PATH
 };
 
 #endif // CAMERAEASINGTYPE_H

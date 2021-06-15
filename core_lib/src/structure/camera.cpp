@@ -20,6 +20,15 @@ Camera::Camera()
 {
 }
 
+Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
+{
+    Q_ASSERT(scaling > 0);
+    mTranslate = translation;
+    mRotate = rotation;
+    mScale = scaling;
+    updateViewTransform();
+}
+
 Camera::Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type)
 {
     Q_ASSERT(scaling > 0);
@@ -144,3 +153,4 @@ bool Camera::operator==(const Camera& rhs) const
 
     return b;
 }
+

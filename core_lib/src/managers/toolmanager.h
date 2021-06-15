@@ -70,6 +70,9 @@ public slots:
     void setStabilizerLevel(int);
     void setTolerance(int);
     void setUseFillContour(bool);
+    void setShowCameraPath(bool);
+    void resetCameraPath();
+    void setCameraPathDotColor(int);
 
 private:
     BaseTool* mCurrentTool = nullptr;

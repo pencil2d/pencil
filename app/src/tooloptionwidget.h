@@ -66,6 +66,7 @@ private:
     void setTolerance(int);
     void setFillContour(int);
     void setBezier(bool);
+    void setShowCameraPath(bool);
 
     void disableAllOptions();
     void createUI();

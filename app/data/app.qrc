@@ -60,6 +60,7 @@
         <file>icons/overlay_third.png</file>
         <file>icons/controls/soundscrub.png</file>
         <file>icons/controls/soundscrub-disabled.png</file>
+        <file>icons/new/arrow-rotate.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

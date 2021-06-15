@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "util.h"
 #include "layer.h"
 #include "layermanager.h"
+#include "layercamera.h"
 #include "toolmanager.h"
 
 ToolOptionWidget::ToolOptionWidget(QWidget* parent) : BaseDockWidget(parent)
@@ -82,6 +83,7 @@ void ToolOptionWidget::updateUI()
     setStabilizerLevel(p.stabilizerLevel);
     setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
+    setShowCameraPath(p.showCameraPath);
 }
 
 void ToolOptionWidget::createUI()
@@ -120,6 +122,11 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
 
+
+    connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowCameraPath);
+    connect(ui->pathColorComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), toolManager, &ToolManager::setCameraPathDotColor);
+    connect(ui->btnResetPath, &QPushButton::clicked, toolManager, &ToolManager::resetCameraPath);
+
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
 }
@@ -143,6 +150,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case TOLERANCE: setTolerance(static_cast<int>(p.tolerance)); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case BEZIER: setBezier(p.bezier_state); break;
+    case CAMERAPATH: setShowCameraPath(p.showCameraPath); break;
     default:
         Q_ASSERT(false);
         break;
@@ -167,6 +175,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->toleranceSlider->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->toleranceSpinBox->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
+    ui->showCameraPathCheckBox->setVisible(tool->isPropertyEnabled(CAMERAPATH));
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
     auto propertyType = editor()->tools()->currentTool()->type();
@@ -212,6 +221,12 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
         case BUCKET:
             ui->brushSpinBox->setVisible(false);
             ui->sizeSlider->setVisible(false);
+            break;
+        case MOVE:
+            if (currentLayerType == Layer::CAMERA)
+                ui->cameraPathGroupBox->setVisible(true);
+            else
+                ui->cameraPathGroupBox->setVisible(false);
             break;
         default:
             ui->makeInvisibleBox->setVisible(false);
@@ -339,6 +354,12 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
+void ToolOptionWidget::setShowCameraPath(bool showCameraPath)
+{
+    QSignalBlocker b(ui->showCameraPathCheckBox);
+    ui->showCameraPathCheckBox->setChecked(showCameraPath);
+}
+
 void ToolOptionWidget::disableAllOptions()
 {
     ui->sizeSlider->hide();
@@ -357,4 +378,5 @@ void ToolOptionWidget::disableAllOptions()
     ui->toleranceSlider->hide();
     ui->toleranceSpinBox->hide();
     ui->fillContourBox->hide();
+    ui->cameraPathGroupBox->hide();
 }

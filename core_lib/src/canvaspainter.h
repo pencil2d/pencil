@@ -27,20 +27,15 @@ GNU General Public License for more details.
 
 #include "layer.h"
 
+#include "onionskinsubpainter.h"
+
 class Object;
 class BitmapImage;
 class ViewManager;
+class LayerCamera;
 
 struct CanvasPainterOptions
 {
-    bool  bPrevOnionSkin = false;
-    bool  bNextOnionSkin = false;
-    int   nPrevOnionSkinCount = 3;
-    int   nNextOnionSkinCount = 3;
-    float fOnionSkinMaxOpacity = 0.5f;
-    float fOnionSkinMinOpacity = 0.1f;
-    bool  bColorizePrevOnion = false;
-    bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
     bool  bGrid = false;
     int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
@@ -57,13 +52,11 @@ struct CanvasPainterOptions
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
-    bool  bIsOnionAbsolute = false;
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
     float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
-    bool isPlaying = false;
-    bool onionWhilePlayback = false;
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
+    OnionSkinPainterOptions mOptionSkinOptions;
 };
 
 class CanvasPainter
@@ -75,16 +68,18 @@ public:
 
     void setCanvas(QPixmap* canvas);
     void setViewTransform(const QTransform view, const QTransform viewInverse);
+
+    void setOnionSkinOptions(const OnionSkinPainterOptions& onionSkinOptions) { mOnionSkinPaintOptions = onionSkinOptions;}
     void setOptions(const CanvasPainterOptions& p) { mOptions = p; }
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
-    QRect getCameraRect();
+    QRect getCameraRect(); // TODO: rework this.. there should not be getter in painter classes!
 
     void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
     void paint();
     void paintCached();
-    void renderGrid(QPainter& painter);
-    void renderOverlays(QPainter& painter);
+    void renderGrid(QPainter& painter) const;
+    void renderOverlays(QPainter& painter) const;
     void resetLayerCache();
 
 private:
@@ -113,20 +108,20 @@ private:
     void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
     void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
 
-    void paintTransformedSelection(QPainter& painter);
-    void paintGrid(QPainter& painter);
-    void paintOverlayCenter(QPainter& painter);
-    void paintOverlayThirds(QPainter& painter);
-    void paintOverlayGolden(QPainter& painter);
-    void paintOverlaySafeAreas(QPainter& painter);
-    void paintCameraBorder(QPainter& painter);
-    void paintAxis(QPainter& painter);
+    void paintTransformedSelection(QPainter& painter) const;
+    void paintGrid(QPainter& painter) const;
+    void paintOverlayCenter(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
+    void paintOverlayThirds(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
+    void paintOverlayGolden(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
+    void paintOverlaySafeAreas(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
+    void paintAxis(QPainter& painter) const;
     void prescale(BitmapImage* bitmapImage);
 
     /** Calculate layer opacity based on current layer offset */
     qreal calculateRelativeOpacityForLayer(int layerIndex) const;
 
 private:
+
     CanvasPainterOptions mOptions;
 
     const Object* mObject = nullptr;
@@ -134,13 +129,13 @@ private:
     QTransform mViewTransform;
     QTransform mViewInverse;
 
-    QRect mCameraRect;
-
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
     BitmapImage* mBuffer = nullptr;
 
     QImage mScaledBitmap;
+
+    QRect mCameraRect;
 
     bool bMultiLayerOnionSkin = false;
 
@@ -151,6 +146,9 @@ private:
 
     // Caches specifically for when drawing on the canvas
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
+
+    OnionSkinSubPainter mOnionSkinSubPainter;
+    OnionSkinPainterOptions mOnionSkinPaintOptions;
 
     const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };

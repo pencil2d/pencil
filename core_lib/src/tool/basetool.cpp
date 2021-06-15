@@ -211,30 +211,38 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
 
         switch(mode)
         {
-            case MoveMode::MIDDLE:
-            {
-                if (type == SELECT) {
-                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-                } else {
-                    return Qt::ArrowCursor;
-                }
-                break;
+        case MoveMode::TOPLEFT:
+        case MoveMode::BOTTOMRIGHT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+            break;
+        }
+        case MoveMode::TOPRIGHT:
+        case MoveMode::BOTTOMLEFT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+            break;
+        }
+        case MoveMode::ROTATIONLEFT:
+        case MoveMode::ROTATIONRIGHT:
+        case MoveMode::ROTATION:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
+            break;
+        }
+        case MoveMode::MIDDLE:
+        case MoveMode::CENTER:
+        {
+            if (type == SELECT || type == MOVE) {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            } else {
+                return Qt::ArrowCursor;
             }
-            case MoveMode::TOPLEFT:
-            case MoveMode::BOTTOMRIGHT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-                break;
-            }
-            case MoveMode::TOPRIGHT:
-            case MoveMode::BOTTOMLEFT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-                break;
-            }
-            default:
-                return (type == SELECT) ? QCursor(QPixmap(":icons/cross.png"), 10, 10) : Qt::ArrowCursor;
-                break;
+            break;
+        }
+        default:
+            return (type == SELECT) ? QCursor(QPixmap(":icons/cross.png"), 10, 10) : Qt::ArrowCursor;
+            break;
         }
         cursorPainter.end();
     }
@@ -462,4 +470,18 @@ void BaseTool::setTolerance(const int tolerance)
 void BaseTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;
+}
+
+void BaseTool::setShowCameraPath(const bool showCameraPath)
+{
+    properties.showCameraPath = showCameraPath;
+}
+
+void BaseTool::setPathDotColor(const int pathDotColor)
+{
+    properties.pathDotColor = pathDotColor;
+}
+
+void BaseTool::resetCameraPath()
+{
 }

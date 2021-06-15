@@ -39,8 +39,13 @@ public:
     void pointerReleaseEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
 
+    void updateTool() override;
     bool leavingThisTool() override;
     bool switchingLayer() override;
+
+    void setShowCameraPath(const bool showCameraPath) override;
+    void resetCameraPath() override;
+    void setPathDotColor(const int pathDotColor) override;
 
 private:
     void cancelChanges();
@@ -57,6 +62,8 @@ private:
     void createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void storeClosestVectorCurve(Layer* layer);
+    void transformCamera();
+    void transformCameraPath();
 
     void setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
     void setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
@@ -65,10 +72,14 @@ private:
 
     Layer* currentPaintableLayer();
 
+    MoveMode mCamMoveMode = MoveMode::NONE;
+    MoveMode mCamPathMoveMode = MoveMode::NONE;
+
     QPointF anchorOriginPoint;
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;
     int mRotationIncrement = 0;
+    int mDragPathFrame = 1;
 };
 
 #endif

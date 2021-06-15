@@ -96,9 +96,6 @@ protected:
 private slots:
     void loadSetting(SETTING setting);
 
-    void setHold(int frame);
-    void setCameraEasing(CameraEasingType type, int frame);
-
 private:
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, const Layer* layer, QColor trackCol, int y, int height, bool selected, int frameSize) const;
@@ -152,9 +149,6 @@ private:
     const static int mOffsetY = 20;
     const static int mLayerDetachThreshold = 5;
 
-    QMenu* mEasingMenu = nullptr;
-    QMenu* mInterpolationMenu = nullptr;
-    QAction* mHoldAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H

@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define CAMERA_H
 
 #include <QTransform>
+#include <QPainterPath>
 #include "keyframe.h"
 #include "cameraeasingtype.h"
 
@@ -25,6 +26,7 @@ class Camera : public KeyFrame
 {
 public:
     explicit Camera();
+    explicit Camera(QPointF translation, qreal rotation, qreal scaling);
     explicit Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type);
     explicit Camera(const Camera&);
     ~Camera() override;
@@ -54,6 +56,12 @@ public:
     void setEasingType(CameraEasingType type) { mEasingType = type; }
     CameraEasingType getEasingType() const { return mEasingType; }
 
+    void setPathMidPoint(QPointF point) { mPathMidPoint = point; }
+    QPointF getPathMidPoint() { return mPathMidPoint; }
+    void setIsMidPointSet(bool b) { mMidPointSet = b; }
+    bool getIsMidPointSet() { return mMidPointSet; }
+
+
 private:
     QPointF mTranslate;
     qreal mRotate = 0.;
@@ -61,6 +69,8 @@ private:
     bool mNeedUpdateView = true;
 
     CameraEasingType mEasingType = CameraEasingType::LINEAR;
+    QPointF mPathMidPoint = QPointF();
+    bool mMidPointSet = false;
 };
 
 #endif // CAMERA_H
