@@ -411,8 +411,8 @@ void ScribbleArea::keyEventForSelection(QKeyEvent* event)
         mEditor->deselectAll();
         break;
     case Qt::Key_Escape:
-        mEditor->deselectAll();
         cancelTransformedSelection();
+        mEditor->deselectAll();
         break;
     case Qt::Key_Backspace:
         deleteSelection();
@@ -1502,6 +1502,9 @@ void ScribbleArea::cancelTransformedSelection()
         mEditor->select()->setSelection(selectMan->mySelectionRect(), false);
 
         selectMan->resetSelectionProperties();
+
+        setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+        updateCurrentFrame();
     }
 }
 
