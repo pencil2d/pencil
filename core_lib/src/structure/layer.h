@@ -120,7 +120,7 @@ public:
     void deselectAll();
 
     bool moveSelectedFrames(int offset);
-    QList<int> getSelectedFrameIndexes() { return mSelectedFrames_byPosition; }
+    QList<int> getSelectedFrameList() { return mSelectedFrames_byPosition; }
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
@@ -131,10 +131,8 @@ public:
     QList<int> dirtyFrames() const { return mDirtyFrames; }
 
     /** Mark the frame position as dirty.
-     *  Any operation causing the frame to be modified, added, updated or removed, should call this.
-     *  The mark is cleared on the next frame update operation.
-    */
-    void markFrameAsDirty(int frameNumber) { mDirtyFrames << frameNumber; }
+     *  Any operation causing the frame to be modified, added, updated or removed, should call this. */
+    void markFrameAsDirty(const int frameNumber) { mDirtyFrames << frameNumber; }
 
     /** Clear the list of dirty keyframes */
     void clearDirtyFrames() { mDirtyFrames.clear(); }
@@ -151,12 +149,14 @@ public:
         }
     }
 
+signals:
+    void selectedFramesChanged();
+
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
-
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;
     int        mId = 0;

@@ -34,6 +34,7 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
     mEnableAutoCrop = a.mEnableAutoCrop;
+    mOpacity = a.mOpacity;
     mImage.reset(new QImage(*a.mImage));
 }
 
@@ -85,6 +86,7 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
     KeyFrame::operator=(a);
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
+    mOpacity = a.mOpacity;
     mImage.reset(new QImage(*a.mImage));
     modification();
     return *this;
@@ -675,54 +677,6 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
-PegbarResult BitmapImage::findLeft(QRectF rect, int grayValue)
-{
-    PegbarResult result;
-    result.value = -1;
-    result.errorcode = Status::FAIL;
-    int left = static_cast<int>(rect.left());
-    int right = static_cast<int>(rect.right());
-    int top = static_cast<int>(rect.top());
-    int bottom = static_cast<int>(rect.bottom());
-    for (int x = left; x <= right; x++)
-    {
-        for (int y = top; y <= bottom; y++)
-        {
-            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
-            {
-                result.value = x;
-                result.errorcode = Status::OK;
-                return result;
-            }
-        }
-    }
-    return result;
-}
-
-PegbarResult BitmapImage::findTop(QRectF rect, int grayValue)
-{
-    PegbarResult result;
-    result.value = -1;
-    result.errorcode = Status::FAIL;
-    int left = static_cast<int>(rect.left());
-    int right = static_cast<int>(rect.right());
-    int top = static_cast<int>(rect.top());
-    int bottom = static_cast<int>(rect.bottom());
-    for (int y = top; y <= bottom; y++)
-    {
-        for (int x = left; x <= right; x++)
-        {
-            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
-            {
-                result.value = y;
-                result.errorcode = Status::OK;
-                return result;
-            }
-        }
-    }
-    return result;
-}
-
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (mImage && !mImage->isNull())
@@ -836,16 +790,16 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
 
 // Flood fill
 // ----- http://lodev.org/cgtutor/floodfill.html
-void BitmapImage::floodFill(BitmapImage* targetImage,
+BitmapImage* BitmapImage::floodFill(BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
-                            QRgb newColor,
+                            QRgb fillColor,
                             int tolerance)
 {
     // If the point we are supposed to fill is outside the image and camera bounds, do nothing
     if(!cameraRect.united(targetImage->bounds()).contains(point))
     {
-        return;
+        return nullptr;
     }
 
     // Square tolerance for use with compareColor
@@ -890,11 +844,11 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         spanLeft = spanRight = false;
         while (xTemp <= targetImage->mBounds.right() &&
                compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data()) &&
-               newPlacedColor != newColor)
+               newPlacedColor != fillColor)
         {
 
             // Set pixel color
-            replaceImage->scanLine(xTemp, point.y(), newColor);
+            replaceImage->scanLine(xTemp, point.y(), fillColor);
 
             if (!spanLeft && (point.y() > targetImage->mBounds.top()) &&
                 compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
@@ -922,7 +876,5 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         }
     }
 
-    targetImage->paste(replaceImage);
-    targetImage->modification();
-    delete replaceImage;
+    return replaceImage;
 }

@@ -41,6 +41,7 @@ public:
 
     QTransform getView() const;
     QTransform getViewInverse() const;
+    qreal getViewScaleInverse() const;
     void resetView();
 
     QPointF mapCanvasToScreen(QPointF p) const;

@@ -76,7 +76,7 @@ Status MovieExporter::run(const Object* obj,
 {
     majorProgress(0.f, 0.03f);
     minorProgress(0.f);
-    progressMessage(QObject::tr("Checking environment..."));
+    progressMessage(tr("Checking environment..."));
 
     clock_t t1 = clock();
 
@@ -110,24 +110,24 @@ Status MovieExporter::run(const Object* obj,
     if (desc.strFileName.endsWith("gif", Qt::CaseInsensitive))
     {
         majorProgress(0.03f, 1.f);
-        progressMessage(QObject::tr("Generating GIF..."));
+        progressMessage(tr("Generating GIF..."));
         minorProgress(0.f);
         STATUS_CHECK(generateGif(obj, ffmpegPath, desc.strFileName, minorProgress))
     }
     else
     {
         majorProgress(0.03f, 0.25f);
-        progressMessage(QObject::tr("Assembling audio..."));
+        progressMessage(tr("Assembling audio..."));
         minorProgress(0.f);
         STATUS_CHECK(assembleAudio(obj, ffmpegPath, minorProgress))
         minorProgress(1.f);
         majorProgress(0.25f, 1.f);
-        progressMessage(QObject::tr("Generating movie..."));
+        progressMessage(tr("Generating movie..."));
         STATUS_CHECK(generateMovie(obj, ffmpegPath, desc.strFileName, minorProgress))
     }
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
-    progressMessage(QObject::tr("Done"));
+    progressMessage(tr("Done"));
 
     clock_t t2 = clock() - t1;
     qDebug("MOVIE = %.1f sec", static_cast<double>(t2 / CLOCKS_PER_SEC));
@@ -563,8 +563,8 @@ Status MovieExporter::executeFFmpeg(const QString& cmd, const QStringList& args,
         if(ffmpeg.exitStatus() != QProcess::NormalExit || ffmpeg.exitCode() != 0)
         {
             status = Status::FAIL;
-            status.setTitle(QObject::tr("Something went wrong"));
-            status.setDescription(QObject::tr("Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists."));
+            status.setTitle(tr("Something went wrong"));
+            status.setDescription(tr("Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists."));
             dd << QString("Exit status: ").append(QProcess::NormalExit ? "NormalExit": "CrashExit")
                << QString("Exit code: %1").arg(ffmpeg.exitCode());
             status.setDetails(dd);
@@ -575,8 +575,8 @@ Status MovieExporter::executeFFmpeg(const QString& cmd, const QStringList& args,
     {
         qDebug() << "ERROR: Could not execute FFmpeg.";
         status = Status::FAIL;
-        status.setTitle(QObject::tr("Something went wrong"));
-        status.setDescription(QObject::tr("Couldn't start the video backend, please try again."));
+        status.setTitle(tr("Something went wrong"));
+        status.setDescription(tr("Couldn't start the video backend, please try again."));
         status.setDetails(dd);
     }
     return status;
@@ -700,8 +700,8 @@ Status MovieExporter::executeFFMpegPipe(const QString& cmd, const QStringList& a
         if(ffmpeg.exitStatus() != QProcess::NormalExit  || ffmpeg.exitCode() != 0)
         {
             status = Status::FAIL;
-            status.setTitle(QObject::tr("Something went wrong"));
-            status.setDescription(QObject::tr("Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists."));
+            status.setTitle(tr("Something went wrong"));
+            status.setDescription(tr("Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists."));
             dd << QString("Exit status: ").append(QProcess::NormalExit ? "NormalExit": "CrashExit")
                << QString("Exit code: %1").arg(ffmpeg.exitCode());
             status.setDetails(dd);
@@ -712,8 +712,8 @@ Status MovieExporter::executeFFMpegPipe(const QString& cmd, const QStringList& a
     {
         qDebug() << "ERROR: Could not execute FFmpeg.";
         status = Status::FAIL;
-        status.setTitle(QObject::tr("Something went wrong"));
-        status.setDescription(QObject::tr("Couldn't start the video backend, please try again."));
+        status.setTitle(tr("Something went wrong"));
+        status.setDescription(tr("Couldn't start the video backend, please try again."));
         status.setDetails(dd);
     }
 

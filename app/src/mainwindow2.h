@@ -41,6 +41,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class LayerOpacityDialog;
 class QLabel;
 class PegBarAlignmentDialog;
 class HistoryViewerWidget;
@@ -68,6 +69,7 @@ public slots:
     void updateSaveState();
     void clearRecentFilesList();
     void openPegAlignDialog();
+    void openLayerOpacityDialog();
     void currentLayerChanged();
     void selectionChanged();
     void viewFlipped();
@@ -114,6 +116,7 @@ private:
     bool newObjectFromPresets(int presetIndex);
     bool openObject(const QString& strFilename);
     bool saveObject(QString strFileName);
+    void closeDialogs();
 
     void createDockWidgets();
     void createMenus();
@@ -165,6 +168,7 @@ private:
     const BackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
+    LayerOpacityDialog* mLayerOpacityDialog = nullptr;
 
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;

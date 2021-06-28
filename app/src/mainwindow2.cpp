@@ -75,6 +75,7 @@ GNU General Public License for more details.
 #include "importimageseqdialog.h"
 #include "importlayersdialog.h"
 #include "importpositiondialog.h"
+#include "layeropacitydialog.h"
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
@@ -114,8 +115,6 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
-
-    mEditor->setScribbleArea(ui->scribbleArea);
 
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
@@ -273,7 +272,6 @@ void MainWindow2::createMenus()
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow2::close);
 
     //--- Export Menu ---
-    //connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
     connect(ui->actionExport_Image, &QAction::triggered, mCommands, &ActionCommands::exportImage);
     connect(ui->actionExport_ImageSeq, &QAction::triggered, mCommands, &ActionCommands::exportImageSequence);
     connect(ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie);
@@ -317,6 +315,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
     connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
+    connect(ui->actionChangeLayerOpacity, &QAction::triggered, this, &MainWindow2::openLayerOpacityDialog);
 
     QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
     auto visibilityGroup = new QActionGroup(this);
@@ -481,9 +480,6 @@ void MainWindow2::openPegAlignDialog()
 
     mPegAlign = new PegBarAlignmentDialog(mEditor, this);
     mPegAlign->setAttribute(Qt::WA_DeleteOnClose);
-    mPegAlign->updatePegRegLayers();
-    mPegAlign->setRefLayer(mEditor->layers()->currentLayer()->name());
-    mPegAlign->setRefKey(mEditor->currentFrame());
 
     Qt::WindowFlags flags = mPegAlign->windowFlags();
     flags |= Qt::WindowStaysOnTopHint;
@@ -493,6 +489,28 @@ void MainWindow2::openPegAlignDialog()
     connect(mPegAlign, &PegBarAlignmentDialog::finished, [=]
     {
         mPegAlign = nullptr;
+    });
+}
+
+void MainWindow2::openLayerOpacityDialog()
+{
+    if (mLayerOpacityDialog != nullptr)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Dialog is already open!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+    mLayerOpacityDialog = new LayerOpacityDialog(this);
+    mLayerOpacityDialog->setAttribute(Qt::WA_DeleteOnClose);
+    mLayerOpacityDialog->setCore(mEditor);
+    mLayerOpacityDialog->initUI();
+    mLayerOpacityDialog->setWindowFlags(mLayerOpacityDialog->windowFlags() | Qt::WindowStaysOnTopHint);
+    mLayerOpacityDialog->show();
+
+    connect(mLayerOpacityDialog, &LayerOpacityDialog::finished, [=]
+    {
+        mLayerOpacityDialog = nullptr;
     });
 }
 
@@ -591,38 +609,51 @@ void MainWindow2::openFile(const QString& filename)
 
 bool MainWindow2::openObject(const QString& strFilePath)
 {
-    // Check for potential issues with the file
-    QFileInfo fileInfo(strFilePath);
-    if (fileInfo.isDir())
+    QProgressDialog progress(tr("Opening document..."), tr("Abort"), 0, 100, this);
+    hideQuestionMark(progress);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
+    Status s = mEditor->openObject(strFilePath, [&progress](int p)
     {
-        ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("The file you have selected is a directory, so we are unable to open it. "
-                                   "If you are are trying to open a project that uses the old structure, "
-                                   "please open the file ending with .pcl, not the data folder."),
-                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
+        progress.setValue(p);
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    }, [&progress](int max)
+    {
+        progress.setRange(0, max);
+    });
+
+    if (!s.ok())
+    {
+        ErrorDialog errorDialog(s.title(), s.description(), s.details().str());
         errorDialog.exec();
+        emptyDocumentWhenErrorOccurred();
         return false;
     }
-    if (!fileInfo.exists())
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(LAST_PCLX_PATH, mEditor->object()->filePath());
+
+    // Add to recent file list, but only if we are
+    if (!mEditor->object()->filePath().isEmpty())
     {
-        ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("The file you have selected does not exist, so we are unable to open it. "
-                                   "Please make sure that you've entered the correct path and that the file is accessible and try again."),
-                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fileInfo.absoluteFilePath()));
-        errorDialog.exec();
-        return false;
+        mRecentFileMenu->addRecentFile(mEditor->object()->filePath());
+        mRecentFileMenu->saveToDisk();
     }
-    if (!fileInfo.isReadable())
-    {
-        ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("This program does not have permission to read the file you have selected. "
-                                   "Please check that you have read permissions for this file and try again."),
-                                QString("Raw file path: %1\nResolved file path: %2\nPermissions: 0x%3") \
-                                .arg(strFilePath, fileInfo.absoluteFilePath(), QString::number(fileInfo.permissions(), 16)));
-        errorDialog.exec();
-        return false;
-    }
-    if (!fileInfo.isWritable())
+
+    closeDialogs();
+
+    setWindowTitle(mEditor->object()->filePath().prepend("[*]"));
+    setWindowModified(false);
+
+    // clear backup stack
+    mEditor->backups()->undoStack()->clear();
+
+    progress.setValue(progress.maximum());
+
+    updateSaveState();
+
+    if (!QFileInfo(strFilePath).isWritable())
     {
         QMessageBox::warning(this, tr("Warning"),
                              tr("This program does not currently have permission to write to the file you have selected. "
@@ -631,81 +662,6 @@ bool MainWindow2::openObject(const QString& strFilePath)
                              QMessageBox::Ok);
     }
 
-    QProgressDialog progress(tr("Opening document..."), tr("Abort"), 0, 100, this);
-
-    // Don't show progress bar if running without a GUI (aka. when rendering from command line)
-    if (isVisible())
-    {
-        hideQuestionMark(progress);
-        progress.setWindowModality(Qt::WindowModal);
-        progress.show();
-    }
-
-
-    FileManager fm(this);
-    connect(&fm, &FileManager::progressChanged, [&progress](int p)
-    {
-        progress.setValue(p);
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-    });
-    connect(&fm, &FileManager::progressRangeChanged, [&progress](int max)
-    {
-        progress.setRange(0, max + 3);
-    });
-
-    QString fullPath = fileInfo.absoluteFilePath();
-
-    Object* object = fm.load(fullPath);
-
-    if (!fm.error().ok())
-    {
-        Status error = fm.error();
-        DebugDetails dd;
-        dd << QString("Raw file path: ").append(strFilePath)
-           << QString("Resolved file path: ").append(fileInfo.absoluteFilePath());
-        dd.collect(error.details());
-        ErrorDialog errorDialog(error.title(), error.description(), dd.str());
-        errorDialog.exec();
-        emptyDocumentWhenErrorOccurred();
-        return false;
-    }
-
-    if (object == nullptr)
-    {
-        ErrorDialog errorDialog(tr("Could not open file"),
-                                tr("An unknown error occurred while trying to load the file and we are not able to load your file."),
-                                QString("Raw file path: %1\nResolved file path: %2").arg(strFilePath, fullPath));
-        errorDialog.exec();
-        emptyDocumentWhenErrorOccurred();
-        return false;
-    }
-
-    mEditor->setObject(object);
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(LAST_PCLX_PATH, object->filePath());
-
-    // Add to recent file list, but only if we are
-    if (!object->filePath().isEmpty())
-    {
-        mRecentFileMenu->addRecentFile(object->filePath());
-        mRecentFileMenu->saveToDisk();
-    }
-
-    setWindowTitle(object->filePath().prepend("[*]"));
-    setWindowModified(false);
-
-    progress.setValue(progress.value() + 1);
-
-    mEditor->layers()->notifyAnimationLengthChanged();
-    mEditor->setFps(mEditor->playback()->fps());
-
-    // clear backup stack
-    mEditor->backups()->undoStack()->clear();
-
-    progress.setValue(progress.maximum());
-
-    updateSaveState();
     return true;
 }
 
@@ -893,7 +849,7 @@ void MainWindow2::importImageSequence()
     OnScopeExit(delete imageSeqDialog)
     imageSeqDialog->setCore(mEditor);
 
-    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
+    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor->layers(), &LayerManager::notifyAnimationLengthChanged);
 
     imageSeqDialog->exec();
     if (imageSeqDialog->result() == QDialog::Rejected)
@@ -922,7 +878,7 @@ void MainWindow2::importPredefinedImageSet()
     OnScopeExit(delete imageSeqDialog)
     imageSeqDialog->setCore(mEditor);
 
-    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor, &Editor::notifyAnimationLengthChanged);
+    connect(imageSeqDialog, &ImportImageSeqDialog::notifyAnimationLengthChanged, mEditor->layers(), &LayerManager::notifyAnimationLengthChanged);
 
     mSuppressAutoSaveDialog = true;
     imageSeqDialog->exec();
@@ -1168,6 +1124,13 @@ bool MainWindow2::tryLoadPreset()
     return true;
 }
 
+void MainWindow2::closeDialogs()
+{
+    for (auto dialog : findChildren<QDialog*>(QString(), Qt::FindDirectChildrenOnly)) {
+        dialog->close();
+    }
+}
+
 void MainWindow2::readSettings()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -1408,6 +1371,7 @@ void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
+    connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxWidget::onToolSetActive);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
 
 
@@ -1415,8 +1379,8 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::onLayerChanged);
     connect(editor, &Editor::scrubbed, scribbleArea, &ScribbleArea::onScrubbed);
     connect(editor, &Editor::frameModified, scribbleArea, &ScribbleArea::onFrameModified);
-    connect(editor, &Editor::framesMoved, scribbleArea, &ScribbleArea::onFramesMoved);
-    connect(editor, &Editor::objectChanged, scribbleArea, &ScribbleArea::onObjectChanged);
+    connect(editor, &Editor::framesModified, scribbleArea, &ScribbleArea::onFramesModified);
+    connect(editor, &Editor::objectLoaded, scribbleArea, &ScribbleArea::onObjectLoaded);
     connect(editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::onViewChanged);
 }
 
@@ -1485,7 +1449,7 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
 void MainWindow2::updateZoomLabel()
 {
     qreal zoom = mEditor->view()->scaling() * 100.f;
-    mZoomLabel->setText(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
+    mZoomLabel->setText(tr("Zoom: %1%").arg(zoom, 0, 'f', 1));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)
@@ -1543,7 +1507,7 @@ bool MainWindow2::tryRecoverUnsavedProject()
     msgBox->setWindowModality(Qt::ApplicationModal);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setIconPixmap(QPixmap(":/icons/logo.png"));
-    msgBox->setText(QString("<h4>%1</h4>%2").arg(caption).arg(text));
+    msgBox->setText(QString("<h4>%1</h4>%2").arg(caption, text));
     msgBox->setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
     msgBox->setStandardButtons(QMessageBox::Open | QMessageBox::Discard);
     msgBox->setProperty("RecoverPath", recoverPath);
@@ -1575,7 +1539,7 @@ void MainWindow2::startProjectRecovery(int result)
         Q_ASSERT(o == nullptr);
         const QString title = tr("Recovery Failed.");
         const QString text = tr("Sorry! Pencil2D is unable to restore your project");
-        QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
+        QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
         return;
     }
 
@@ -1589,5 +1553,5 @@ void MainWindow2::startProjectRecovery(int result)
 
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
-    QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
+    QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
 }

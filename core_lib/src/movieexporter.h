@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define MOVIEEXPORTER_H
 
 #include <functional>
+#include <QCoreApplication>
 #include <QString>
 #include <QSize>
 #include <QTemporaryDir>
@@ -41,6 +42,7 @@ struct ExportMovieDesc
 
 class MovieExporter
 {
+    Q_DECLARE_TR_FUNCTIONS(MovieExporter)
 public:
     MovieExporter();
     ~MovieExporter();

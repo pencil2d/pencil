@@ -477,7 +477,7 @@ void SelectionElement::undoSelection()
     editor()->deselectAll();
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
-        vectorImage->setSelected(oldVectorSelection.curves, oldVectorSelection.vertices, true);
+        vectorImage->setSelected(oldVectorSelection.curve, oldVectorSelection.vertex, true);
         selectMan->setSelection(vectorImage->getSelectionRect());
         selectMan->setVectorSelection(oldVectorSelection);
     }
@@ -500,7 +500,7 @@ void SelectionElement::undoDeselection()
     Layer* layer = editor()->layers()->findLayerById(layerId);
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
-        vectorImage->setSelected(oldVectorSelection.curves, oldVectorSelection.vertices, true);
+        vectorImage->setSelected(oldVectorSelection.curve, oldVectorSelection.vertex, true);
         selectMan->setVectorSelection(oldVectorSelection);
     }
 }
@@ -530,7 +530,7 @@ void SelectionElement::redoSelection()
     Layer* layer = editor()->layers()->findLayerById(layerId);
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
-        vectorImage->setSelected(newVectorSelection.curves, newVectorSelection.vertices, true);
+        vectorImage->setSelected(newVectorSelection.curve, newVectorSelection.vertex, true);
         selectMan->setSelection(vectorImage->getSelectionRect());
         selectMan->setVectorSelection(newVectorSelection);
     }
@@ -549,7 +549,7 @@ void SelectionElement::redoDeselection()
 
     if (layer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(frameIndex);
-        vectorImage->setSelected(newVectorSelection.curves, newVectorSelection.vertices, true);
+        vectorImage->setSelected(newVectorSelection.curve, newVectorSelection.vertex, true);
         selectMan->setVectorSelection(newVectorSelection);
     }
 
@@ -1136,7 +1136,7 @@ MoveFramesElement::MoveFramesElement(const int backupLayerId,
 
     layerId = backupLayerId;
     oldSelectedFrameIndexes = selectedFrameIndexes;
-    newSelectedFrameIndexes = editor->layers()->findLayerById(layerId)->getSelectedFrameIndexes();
+    newSelectedFrameIndexes = editor->layers()->findLayerById(layerId)->getSelectedFrameList();
 
     framesSelected = wasSelected;
     if (backupOffset < 0) {

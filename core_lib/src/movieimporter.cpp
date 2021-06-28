@@ -50,8 +50,8 @@ Status MovieImporter::estimateFrames(const QString &filePath, int fps, int *fram
     if (layer->type() != Layer::BITMAP)
     {
         status = Status::FAIL;
-        status.setTitle(QObject::tr("Bitmap only"));
-        status.setDescription(QObject::tr("You need to be on the bitmap layer to import a movie clip"));
+        status.setTitle(tr("Bitmap only"));
+        status.setDescription(tr("You need to be on the bitmap layer to import a movie clip"));
         return status;
     }
 
@@ -147,8 +147,8 @@ Status MovieImporter::estimateFrames(const QString &filePath, int fps, int *fram
     if (frames < 0)
     {
         status = Status::FAIL;
-        status.setTitle(QObject::tr("Loading video failed"));
-        status.setDescription(QObject::tr("Could not get duration from the specified video. Are you sure you are importing a valid video file?"));
+        status.setTitle(tr("Loading video failed"));
+        status.setDescription(tr("Could not get duration from the specified video. Are you sure you are importing a valid video file?"));
         status.setDetails(dd);
         return status;
     }
@@ -173,8 +173,8 @@ Status MovieImporter::run(const QString &filePath, int fps, FileType type,
     if (!mTempDir->isValid())
     {
         status = Status::FAIL;
-        status.setTitle(QObject::tr("Error creating folder"));
-        status.setDescription(QObject::tr("Unable to create a temporary folder, cannot import video."));
+        status.setTitle(tr("Error creating folder"));
+        status.setDescription(tr("Unable to create a temporary folder, cannot import video."));
         dd << QString("Path: ").append(mTempDir->path())
            << QString("Error: ").append(mTempDir->errorString());
         status.setDetails(dd);
@@ -188,8 +188,8 @@ Status MovieImporter::run(const QString &filePath, int fps, FileType type,
 
         if (mEditor->currentFrame() + frames > MaxFramesBound) {
             status = Status::FAIL;
-            status.setTitle(QObject::tr("Imported movie too big!"));
-            status.setDescription(QObject::tr("The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. "
+            status.setTitle(tr("Imported movie too big!"));
+            status.setDescription(tr("The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. "
                                               "Please make your video shorter and try again.")
                                               .arg(MaxFramesBound)
                                               .arg(mEditor->currentFrame() + frames));
@@ -240,8 +240,8 @@ Status MovieImporter::importMovieVideo(const QString &filePath, int fps, int fra
     if (layer->type() != Layer::BITMAP)
     {
         status = Status::FAIL;
-        status.setTitle(QObject::tr("Bitmap only"));
-        status.setDescription(QObject::tr("You need to be on the bitmap layer to import a movie clip"));
+        status.setTitle(tr("Bitmap only"));
+        status.setDescription(tr("You need to be on the bitmap layer to import a movie clip"));
         return status;
     }
 
@@ -376,8 +376,8 @@ Status MovieImporter::verifyFFmpegExists()
     if (!QFile::exists(ffmpegPath))
     {
         Status status = Status::ERROR_FFMPEG_NOT_FOUND;
-        status.setTitle(QObject::tr("FFmpeg Not Found"));
-        status.setDescription(QObject::tr("Please place the ffmpeg binary in plugins directory and try again"));
+        status.setTitle(tr("FFmpeg Not Found"));
+        status.setDescription(tr("Please place the ffmpeg binary in plugins directory and try again"));
         return status;
     }
     return Status::OK;

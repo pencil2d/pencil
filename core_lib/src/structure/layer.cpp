@@ -386,6 +386,7 @@ bool Layer::setFrameSelected(int position, bool isSelected)
             mSelectedFrames_byPosition.removeAt(iPos);
         }
         keyFrame->setSelected(isSelected);
+        emit selectedFramesChanged();
         return true;
     }
     return false;
@@ -400,15 +401,7 @@ bool Layer::toggleFrameSelected(int position, bool allowMultiple)
         deselectAll();
     }
 
-    bool success = setFrameSelected(position, !wasSelected);
-
-    result = !wasSelected;
-
-    if (success) {
-        return true;
-    } else {
-        return false;
-    }
+    return setFrameSelected(position, !wasSelected);
 }
 
 QList<int> Layer::selectionExtendedTo(int position)
@@ -481,6 +474,7 @@ void Layer::deselectAll()
 {
     mSelectedFrames_byLast.clear();
     mSelectedFrames_byPosition.clear();
+    emit selectedFramesChanged();
 
     for (auto pair : mKeyFrames)
     {
@@ -554,6 +548,7 @@ bool Layer::moveSelectedFrames(int offset)
             }
             indexInSelection = indexInSelection + step;
         }
+        emit selectedFramesChanged();
 
         // Update selection lists
         for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)

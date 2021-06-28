@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 #include "selectionmanager.h"
+#include "viewmanager.h"
 #include "editor.h"
 
 #include "layerbitmap.h"
@@ -108,7 +109,7 @@ void SelectionManager::clearVertices()
 
 qreal SelectionManager::selectionTolerance() const
 {
-    return qAbs(mSelectionTolerance * editor()->viewScaleInversed());
+    return qAbs(mSelectionTolerance * editor()->view()->getViewScaleInverse());
 }
 
 MoveMode SelectionManager::validateMoveMode(QPointF pos)

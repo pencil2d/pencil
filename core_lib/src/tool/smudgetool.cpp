@@ -172,7 +172,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
 
 
                 //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
-                mNumberOfCurvesSelected = selectMan->vectorSelection().curves.count();
+                mNumberOfCurvesSelected = selectMan->vectorSelection().curve.count();
                 if (event->modifiers() != Qt::ShiftModifier)
                 {
                     mScribbleArea->paintTransformedSelection();
@@ -232,7 +232,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
                 if (vectorImage == nullptr) { return; }
                 // transforms the selection
 
-                if (vectorImage->isSelected(selectMan->vectorSelection().vertices)) {
+                if (vectorImage->isSelected(selectMan->vectorSelection().vertex)) {
                     selectMan->setSelectionTransform(QTransform().translate(offsetFromPressPos().x(), offsetFromPressPos().y()));
                     vectorImage->setSelectionTransformation(selectMan->selectionTransform());
                     mTransformModified = true;
@@ -278,9 +278,9 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 
             auto selectMan = mEditor->select();
             selectMan->resetSelectionTransform();
-            for (int k = 0; k < selectMan->vectorSelection().curves.size(); k++)
+            for (int k = 0; k < selectMan->vectorSelection().curve.size(); k++)
             {
-                int curveNumber = selectMan->vectorSelection().curves.at(k);
+                int curveNumber = selectMan->vectorSelection().curve.at(k);
                 vectorImage->curve(curveNumber).smoothCurve();
             }
             mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());

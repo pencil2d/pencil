@@ -18,14 +18,13 @@ GNU General Public License for more details.
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <functional>
 #include <memory>
 #include <QObject>
 #include "pencilerror.h"
 #include "pencildef.h"
 
 
-class QDragEnterEvent;
-class QDropEvent;
 class QTemporaryDir;
 class Object;
 class KeyFrame;
@@ -91,6 +90,7 @@ public:
     CanvasManager*     canvas() const { return mCanvasManager; }
 
     Object* object() const { return mObject.get(); }
+    Status openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged);
     Status setObject(Object* object);
     void updateObject();
     void prepareSave();
@@ -98,7 +98,7 @@ public:
     void setScribbleArea(ScribbleArea* pScirbbleArea) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
-    int currentFrame();
+    int currentFrame() const;
     int fps();
     void setFps(int fps);
 
@@ -115,9 +115,8 @@ public:
     void setLayerVisibility(LayerVisibility visibility);
     LayerVisibility layerVisibility();
 
-    qreal viewScaleInversed();
-    void deselectAll();
-    void selectAll();
+    void deselectAll() const;
+    void selectAll() const;
 
 signals:
 
@@ -127,18 +126,14 @@ signals:
     /** This should be emitted after modifying the frame content */
     void frameModified(int frameNumber);
 
-    /** This should be emitted after the object has been changed */
-    void objectChanged();
-
-    /** This should be emitted after moving one or more frames */
-    void framesMoved();
+    /** This should be emitted after modifying multiple frames */
+    void framesModified();
 
     void updateTimeLine();
     void updateLayerCount();
 
     void objectLoaded();
 
-    void changeThinLinesButton(bool);
     void fpsChanged(int fps);
 
     void needSave();
@@ -164,8 +159,8 @@ public: //slots
 
     void deselectAllSelections();
     void deselectAllAndCancelTransform();
-    bool importImage(QString filePath, bool isSequence);
-    bool importGIF(QString filePath, int numOfImages = 0);
+    bool importImage(const QString& filePath, bool isSequence);
+    bool importGIF(const QString& filePath, int numOfImages = 0);
     void restoreKey();
 
     void scrubNextKeyFrame();
@@ -186,7 +181,7 @@ public: //slots
     void removeKeyAt(int layerIndex, int frameIndex);
     void removeKeyAtLayerId(int layerId, int frameIndex);
 
-    void notifyAnimationLengthChanged();
+    void swapLayers(int i, int j);
     void switchVisibilityOfLayer(int layerNumber);
     void showLayerNotVisibleWarning();
     void moveLayers(const int& fromIndex, const int& toIndex);
@@ -200,8 +195,6 @@ public: //slots
     void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
 
-    void toggleOnionSkinType();
-
     void clearTemporary();
     void addTemporaryDir(QTemporaryDir* dir);
 
@@ -211,23 +204,13 @@ public: //slots
     bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
 
-    void createNewBitmapLayer(const QString& name);
-    void createNewVectorLayer(const QString& name);
-    void createNewSoundLayer(const QString& name);
-    void createNewCameraLayer(const QString& name);
-
 signals:
-    void needPaint();
+    void needPaint() const;
     void needPaintAtFrame(int frameIndex);
 
-protected:
-    // Need to move to somewhere...
-    void dragEnterEvent(QDragEnterEvent*);
-    void dropEvent(QDropEvent*);
-
 private:
-    bool importBitmapImage(QString, int space);
-    bool importVectorImage(QString, bool);
+    bool importBitmapImage(const QString&, int space);
+    bool importVectorImage(const QString&, bool);
 
     // the object to be edited by the editor
     std::unique_ptr<Object> mObject;
@@ -262,7 +245,6 @@ private:
     // clipboard
     bool clipboardBitmapOk = true;
     bool clipboardVectorOk = true;
-    bool clipboardSoundClipOk = true;
 };
 
 #endif

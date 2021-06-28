@@ -555,7 +555,7 @@ void BackupManager::saveStates()
     mMoveMode = selectMan->getMoveMode();
     mVectorSelection = selectMan->vectorSelection();
 
-    mFrameIndexes = mLayer->getSelectedFrameIndexes();
+    mFrameIndexes = mLayer->getSelectedFrameList();
 
     mLayerName = mLayer->name();
     mLayerIndex = editor()->currentLayerIndex();

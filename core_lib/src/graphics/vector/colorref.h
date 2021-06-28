@@ -19,10 +19,12 @@ GNU General Public License for more details.
 #define COLORREF_H
 
 #include <QColor>
+#include <QCoreApplication>
 #include <QString>
 
 class ColorRef
 {
+    Q_DECLARE_TR_FUNCTIONS(ColorRef)
 public:
     ColorRef();
     ColorRef(QColor theColor, QString theName = QString());

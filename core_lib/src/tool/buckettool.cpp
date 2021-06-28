@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <QPixmap>
 #include <QPainter>
+#include <QPointer>
 #include <QtMath>
 #include <QSettings>
 #include "pointerevent.h"
@@ -50,6 +51,7 @@ void BucketTool::loadSettings()
 {
     mPropertyEnabled[TOLERANCE] = true;
     mPropertyEnabled[WIDTH] = true;
+    mPropertyEnabled[FILL_MODE] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -57,6 +59,7 @@ void BucketTool::loadSettings()
     properties.feather = 10;
     properties.stabilizerLevel = StabilizationLevel::NONE;
     properties.useAA = DISABLED;
+    properties.fillMode = settings.value("fillMode", 0).toInt();
     properties.tolerance = settings.value("tolerance", 32.0).toDouble();
 }
 
@@ -64,6 +67,7 @@ void BucketTool::resetToDefault()
 {
     setWidth(4.0);
     setTolerance(32.0);
+    setFillMode(0);
 }
 
 QCursor BucketTool::cursor()
@@ -82,6 +86,17 @@ QCursor BucketTool::cursor()
     }
 }
 
+void BucketTool::setTolerance(const int tolerance)
+{
+    // Set current property
+    properties.tolerance = tolerance;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("tolerance", tolerance);
+    settings.sync();
+}
+
 /**
  * @brief BrushTool::setWidth
  * @param width
@@ -98,14 +113,14 @@ void BucketTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void BucketTool::setTolerance(const int tolerance)
+void BucketTool::setFillMode(int mode)
 {
     // Set current property
-    properties.tolerance = tolerance;
+    properties.fillMode = mode;
 
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("tolerance", tolerance);
+    settings.setValue("fillMode", mode);
     settings.sync();
 }
 
@@ -173,11 +188,68 @@ void BucketTool::paintBitmap(Layer* layer)
 
     QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
     QRect cameraRect = mScribbleArea->getCameraRect().toRect();
-    BitmapImage::floodFill(targetImage,
-                           cameraRect,
-                           point,
-                           qPremultiply(mEditor->color()->frontColor().rgba()),
-                           properties.tolerance);
+
+    QRgb fillColor = qPremultiply(mEditor->color()->frontColor().rgba());
+    QRgb origColor = fillColor;
+    if (properties.fillMode == 0)
+    {
+        if (qAlpha(fillColor) == 0)
+        {
+            // Filling in overlay mode with a fully transparent color has no
+            // effect, so we can skip it in this case
+            return;
+        }
+    }
+    else if (properties.fillMode == 1)
+    {
+        // Pass a fully opaque version of the new color to floodFill
+        // This is required so we can fully mask out the existing data before
+        // writing the new color.
+        QColor tempColor;
+        tempColor.setRgba(fillColor);
+        tempColor.setAlphaF(1);
+        fillColor = tempColor.rgba();
+    }
+
+    std::unique_ptr<BitmapImage> fillImage(
+                BitmapImage::floodFill(targetImage,
+                                       cameraRect,
+                                       point,
+                                       fillColor,
+                                       properties.tolerance));
+
+    if (fillImage == nullptr)
+    {
+        // Nothing was filled for whatever reason
+        return;
+    }
+
+    switch(properties.fillMode)
+    {
+    default:
+    case 0: // Overlay mode
+        // Write fill image on top of target image
+        targetImage->paste(fillImage.get());
+        break;
+    case 1: // Replace mode
+        if (qAlpha(origColor) == 0xFF)
+        {
+            // When the new color is fully opaque, replace mode
+            // behaves exactly like overlay mode, and origColor == fillColor
+            targetImage->paste(fillImage.get());
+        }
+        else
+        {
+            // Clearly all pixels in the to-be-filled region from the target image
+            targetImage->paste(fillImage.get(), QPainter::CompositionMode_DestinationOut);
+            // Reduce the opacity of the fill to match the new color
+            BitmapImage properColor(targetImage->bounds(), QColor::fromRgba(origColor));
+            properColor.paste(fillImage.get(), QPainter::CompositionMode_DestinationIn);
+            // Write reduced-opacity fill image on top of target image
+            targetImage->paste(&properColor);
+        }
+        break;
+    }
 
     mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
 }

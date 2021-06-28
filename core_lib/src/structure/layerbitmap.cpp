@@ -65,11 +65,12 @@ void LayerBitmap::replaceLastBitmapAtFrame(const BitmapImage* replaceWithImage)
     *static_cast<BitmapImage*>(getLastKeyFrameAtPosition(replaceWithImage->pos())) = *replaceWithImage;
 }
 
-void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
+void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber, qreal opacity)
 {
     BitmapImage* pKeyFrame = new BitmapImage(topLeft, path);
     pKeyFrame->enableAutoCrop(true);
     pKeyFrame->setPos(frameNumber);
+    pKeyFrame->setOpacity(opacity);
     loadKey(pKeyFrame);
 }
 
@@ -199,6 +200,7 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc) const
         imageTag.setAttribute("src", fileName(pKeyFrame));
         imageTag.setAttribute("topLeftX", pImg->topLeft().x());
         imageTag.setAttribute("topLeftY", pImg->topLeft().y());
+        imageTag.setAttribute("opacity", pImg->getOpacity());
         layerElem.appendChild(imageTag);
 
         Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
@@ -225,7 +227,11 @@ void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath
                 int position = imageElement.attribute("frame").toInt();
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();
-                loadImageAtFrame(path, QPoint(x, y), position);
+                qreal opacity = 1.0;
+                if (imageElement.hasAttribute("opacity")) {
+                    opacity = imageElement.attribute("opacity").toDouble();
+                }
+                loadImageAtFrame(path, QPoint(x, y), position, opacity);
 
                 progressStep();
             }

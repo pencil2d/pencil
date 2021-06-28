@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "predefinedsetmodel.h"
+#include "layermanager.h"
 #include "viewmanager.h"
 
 #include <QProgressDialog>
@@ -315,7 +316,7 @@ void ImportImageSeqDialog::importPredefinedSet()
     int imagesImportedSoFar = 0;
     progress.setMaximum(totalImagesToImport);
 
-    mEditor->createNewBitmapLayer(keySet.layerName());
+    mEditor->layers()->createBitmapLayer(keySet.layerName());
 
     for (int i = 0; i < keySet.size(); i++)
     {

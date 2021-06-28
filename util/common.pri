@@ -1,5 +1,5 @@
 
-VERSION = 0.6.5
+VERSION = 0.6.6
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 PENCIL2D_NIGHTLY {
@@ -24,6 +24,12 @@ win32-msvc* {
         CONFIG += ltcg
         CONFIG += force_debug_info
     }
+}
+
+WIN_LEGACY {
+    QMAKE_CXXFLAGS -= /utf-8
+    QMAKE_LFLAGS += /SUBSYSTEM:CONSOLE,5.01
+    QMAKE_CXX += /D_USING_V110_SDK71_
 }
 
 macx {

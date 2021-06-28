@@ -145,6 +145,8 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc) const
         QDomElement imageTag = doc.createElement("image");
         imageTag.setAttribute("frame", keyframe->pos());
         imageTag.setAttribute("src", fileName(keyframe));
+        VectorImage* image = getVectorImageAtFrame(keyframe->pos());
+        imageTag.setAttribute("opacity", image->getOpacity());
         layerElem.appendChild(imageTag);
 
         Q_ASSERT(QFileInfo(keyframe->fileName()).fileName() == fileName(keyframe));
@@ -165,20 +167,25 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
         {
             if (imageElement.tagName() == "image")
             {
+                int position;
                 if (!imageElement.attribute("src").isNull())
                 {
                     QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
                     QFileInfo fi(path);
                     if (!fi.exists()) path = imageElement.attribute("src");
-                    int position = imageElement.attribute("frame").toInt();
+                    position = imageElement.attribute("frame").toInt();
                     loadImageAtFrame(path, position);
                 }
                 else
                 {
-                    int frame = imageElement.attribute("frame").toInt();
-                    addNewKeyFrameAt(frame);
-                    getVectorImageAtFrame(frame)->loadDomElement(imageElement);
+                    position = imageElement.attribute("frame").toInt();
+                    addNewKeyFrameAt(position);
+                    getVectorImageAtFrame(position)->loadDomElement(imageElement);
                 }
+                if (imageElement.hasAttribute("opacity"))
+                    getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity").toDouble());
+                else
+                    getVectorImageAtFrame(position)->setOpacity(1.0);
                 progressStep();
             }
         }

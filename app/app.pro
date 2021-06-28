@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) { error( Could not find the common.pri file! ) }
+! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml multimedia svg network
 
@@ -12,16 +12,16 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt precompile_header
+CONFIG += qt precompile_header lrelease embed_translations
 
 DESTDIR = ../bin
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 
-RESOURCES += \
-    data/app.qrc \
-    ../translations/translations.qrc
+RESOURCES += data/app.qrc
+
+EXTRA_TRANSLATIONS += $$fromfile(../pencil2d.pro, TRANSLATIONS)
 
 INCLUDEPATH += \
     src \
@@ -32,9 +32,10 @@ INCLUDEPATH += \
     ../core_lib/src/structure \
     ../core_lib/src/tool \
     ../core_lib/src/util \
-    ../core_lib/ui \
     ../core_lib/src/managers \
-    ../core_lib/src/external
+    ../core_lib/src/external \
+    ../core_lib/src \
+    ../core_lib/ui
 
 PRECOMPILED_HEADER = src/app-pch.h
 
@@ -42,6 +43,7 @@ HEADERS += \
     src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
+    src/layeropacitydialog.h \
     src/mainwindow2.h \
     src/onionskinwidget.h \
     src/predefinedsetmodel.h \
@@ -83,6 +85,7 @@ HEADERS += \
 SOURCES += \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
+    src/layeropacitydialog.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
     src/onionskinwidget.cpp \
@@ -126,6 +129,7 @@ FORMS += \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \
+    ui/layeropacitydialog.ui \
     ui/mainwindow2.ui \
     ui/onionskin.ui \
     ui/pegbaralignmentdialog.ui \
@@ -200,7 +204,7 @@ unix:!macx {
 
 # --- core_lib ---
 
-INCLUDEPATH += $$PWD/../core_lib/src
+INCLUDEPATH += ../../core_lib/src
 
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release

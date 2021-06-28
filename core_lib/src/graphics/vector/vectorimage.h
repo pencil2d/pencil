@@ -151,6 +151,9 @@ public:
 
     QSize getSize() { return mSize; }
 
+    void setOpacity(qreal opacity) { mOpacity = opacity; }
+    qreal getOpacity() const { return mOpacity; }
+
 private:
     void addPoint(int curveNumber, int vertexNumber, qreal fraction);
 
@@ -167,6 +170,7 @@ private:
     QRectF mSelectionRect;
     QTransform mSelectionTransformation;
     QSize mSize;
+    qreal mOpacity = 1.0;
 };
 
 #endif

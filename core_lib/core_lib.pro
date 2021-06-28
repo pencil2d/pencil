@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) { error( Could not find the common.pri file! ) }
+! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml xmlpatterns multimedia svg
 
@@ -72,6 +72,7 @@ HEADERS +=  \
     src/structure/layercamera.h \
     src/structure/layersound.h \
     src/structure/layervector.h \
+    src/structure/pegbaraligner.h \
     src/structure/soundclip.h \
     src/structure/object.h \
     src/structure/objectdata.h \
@@ -91,6 +92,8 @@ HEADERS +=  \
     src/tool/strokemanager.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
+    src/util/cameraeasingtype.h \
+    src/util/camerafieldoption.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
     src/util/filetype.h \
@@ -154,6 +157,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/structure/layersound.cpp \
     src/structure/layervector.cpp \
     src/structure/object.cpp \
+    src/structure/pegbaraligner.cpp \
     src/structure/soundclip.cpp \
     src/structure/objectdata.cpp \
     src/structure/filemanager.cpp \
