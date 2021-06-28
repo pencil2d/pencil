@@ -23,10 +23,15 @@ GNU General Public License for more details.
 #include "object.h"
 #include "soundclip.h"
 
-
 LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
 {
     setName(tr("Sound Layer"));
+}
+
+LayerSound::LayerSound(int layerId, Object* object) : Layer(object, Layer::SOUND)
+{
+    setName(tr("Sound Layer"));
+    setId(layerId);
 }
 
 LayerSound::~LayerSound()

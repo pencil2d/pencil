@@ -104,6 +104,8 @@ public:
 
     // Handle selection
     bool isFrameSelected(int position) const;
+
+    void setFramesSelected(QList<int> frameIndexes, const bool selected);
     void setFrameSelected(int position, bool isSelected);
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);

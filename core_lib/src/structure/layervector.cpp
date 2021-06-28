@@ -21,6 +21,11 @@ GNU General Public License for more details.
 #include <QFile>
 #include <QFileInfo>
 
+LayerVector::LayerVector(int layerId, Object* object) : Layer(object, Layer::VECTOR)
+{
+    setName(tr("Vector Layer"));
+    setId(layerId);
+}
 
 LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
 {
@@ -195,4 +200,17 @@ VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber) const
 VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increment) const
 {
     return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+}
+
+void LayerVector::replaceLastVectorAtFrame(const VectorImage *replaceWithVector)
+{
+    *static_cast<VectorImage*>(getLastKeyFrameAtPosition(replaceWithVector->pos())) = *replaceWithVector;
+}
+
+void LayerVector::putVectorImageIntoFrame(KeyFrame *keyframe, const int frameIndex)
+{
+    VectorImage* currentVectorImg = getVectorImageAtFrame(frameIndex);
+
+    VectorImage newVectorImg = *static_cast<VectorImage*>(keyframe);
+    static_cast<VectorImage*>(currentVectorImg)->paste(newVectorImg);
 }

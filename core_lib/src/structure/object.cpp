@@ -120,6 +120,41 @@ bool Object::loadXML(const QDomElement& docElem, ProgressCallback progressForwar
     return true;
 }
 
+LayerBitmap* Object::bitmapLayerContaining(const int layerId, const int layerIndex)
+{
+    LayerBitmap* layerBitmap = new LayerBitmap(layerId, this);
+    mLayers.insert(layerIndex, layerBitmap);
+
+    layerBitmap->addNewKeyFrameAt(1);
+    return layerBitmap;
+}
+
+LayerVector* Object::vectorLayerContaining(const int layerId, const int layerIndex)
+{
+    LayerVector* layerVector = new LayerVector(layerId, this);
+    mLayers.insert(layerIndex, layerVector);
+
+    layerVector->addNewKeyFrameAt(1);
+    return layerVector;
+}
+
+LayerSound* Object::addSoundLayerContaining(const int layerId, const int layerIndex)
+{
+    LayerSound* layerSound = new LayerSound(layerId, this);
+    mLayers.insert(layerIndex, layerSound);
+
+    return layerSound;
+}
+
+LayerCamera* Object::addCameraLayerContaining(const int layerId, const int layerIndex)
+{
+    LayerCamera* layerCamera = new LayerCamera(layerId, this);
+    mLayers.insert(layerIndex, layerCamera);
+
+    layerCamera->addNewKeyFrameAt(1);
+    return layerCamera;
+}
+
 LayerBitmap* Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap(this);
@@ -248,7 +283,24 @@ Layer* Object::getLayer(int i) const
     return mLayers.at(i);
 }
 
-Layer* Object::findLayerByName(const QString& strName, Layer::LAYER_TYPE type) const
+int Object::getLastLayerIndex() const
+{
+    return mLayers.indexOf(mLayers.last()); // begin is the highest layer position
+}
+
+Layer* Object::findLayerById(int layerId) const
+{
+    for(Layer* layer : mLayers)
+    {
+        if (layer->id() == layerId)
+        {
+            return layer;
+        }
+    }
+    return nullptr;
+}
+
+Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
 {
     bool bCheckType = (type != Layer::UNDEFINED);
     for (Layer* layer : mLayers)
@@ -310,6 +362,19 @@ void Object::deleteLayer(int i)
     if (i > -1 && i < mLayers.size())
     {
         delete mLayers.takeAt(i);
+    }
+}
+
+void Object::deleteLayerWithId(int layerId)
+{
+    for (int index = 0; index < mLayers.size(); index++)
+    {
+        if (mLayers.at(index)->id() == layerId)
+        {
+            disconnect(mLayers[index], nullptr, nullptr, nullptr);
+            delete mLayers.takeAt(index);
+            break;
+        }
     }
 }
 

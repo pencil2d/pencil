@@ -43,6 +43,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "soundmanager.h"
 #include "selectionmanager.h"
+#include "canvasmanager.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -201,280 +202,285 @@ void Editor::backup(const QString& undoText)
 
 bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
 {
-    while (mBackupList.size() - 1 > mBackupIndex && !mBackupList.empty())
-    {
-        delete mBackupList.takeLast();
-    }
-    while (mBackupList.size() > 19)   // we authorize only 20 levels of cancellation
-    {
-        delete mBackupList.takeFirst();
-        mBackupIndex--;
-    }
+    // TODO: remove me after integrating new backupmanager
+//    while (mBackupList.size() - 1 > mBackupIndex && !mBackupList.empty())
+//    {
+//        delete mBackupList.takeLast();
+//    }
+//    while (mBackupList.size() > 19)   // we authorize only 20 levels of cancellation
+//    {
+//        delete mBackupList.takeFirst();
+//        mBackupIndex--;
+//    }
 
-    Layer* layer = mObject->getLayer(backupLayer);
-    if (layer != nullptr)
-    {
-        if (layer->type() == Layer::BITMAP)
-        {
-            BitmapImage* bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(backupFrame));
-            if (currentFrame() == 1)
-            {
-                int previous = layer->getPreviousKeyFramePosition(backupFrame);
-                bitmapImage = static_cast<BitmapImage*>(layer->getKeyFrameAt(previous));
-            }
-            if (bitmapImage != nullptr)
-            {
-                BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
-                element->layer = backupLayer;
-                element->frame = bitmapImage->pos();
-                element->undoText = undoText;
-                element->somethingSelected = select()->somethingSelected();
-                element->mySelection = select()->mySelectionRect();
-                element->myTransformedSelection = select()->myTransformedSelectionRect();
-                element->myTempTransformedSelection = select()->myTempTransformedSelectionRect();
-                element->rotationAngle = select()->myRotation();
-                mBackupList.append(element);
-                mBackupIndex++;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
-            if (vectorImage != nullptr)
-            {
-                BackupVectorElement* element = new BackupVectorElement(vectorImage);
-                element->layer = backupLayer;
-                element->frame = vectorImage->pos();
-                element->undoText = undoText;
-                element->somethingSelected = select()->somethingSelected();
-                element->mySelection = select()->mySelectionRect();
-                element->myTransformedSelection = select()->myTransformedSelectionRect();
-                element->myTempTransformedSelection = select()->myTempTransformedSelectionRect();
-                element->rotationAngle = select()->myRotation();
-                mBackupList.append(element);
-                mBackupIndex++;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (layer->type() == Layer::SOUND)
-        {
-            int previous = layer->getPreviousKeyFramePosition(backupFrame);
-            KeyFrame* key = layer->getLastKeyFrameAtPosition(backupFrame);
+//    Layer* layer = mObject->getLayer(backupLayer);
+//    if (layer != nullptr)
+//    {
+//        if (layer->type() == Layer::BITMAP)
+//        {
+//            BitmapImage* bitmapImage = static_cast<BitmapImage*>(layer->getLastKeyFrameAtPosition(backupFrame));
+//            if (currentFrame() == 1)
+//            {
+//                int previous = layer->getPreviousKeyFramePosition(backupFrame);
+//                bitmapImage = static_cast<BitmapImage*>(layer->getKeyFrameAt(previous));
+//            }
+//            if (bitmapImage != nullptr)
+//            {
+//                BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
+//                element->layer = backupLayer;
+//                element->frame = bitmapImage->pos();
+//                element->undoText = undoText;
+//                element->somethingSelected = select()->somethingSelected();
+//                element->mySelection = select()->mySelectionRect();
+//                element->myTransformedSelection = select()->myTransformedSelectionRect();
+//                element->myTempTransformedSelection = select()->myTempTransformedSelectionRect();
+//                element->rotationAngle = select()->myRotation();
+//                mBackupList.append(element);
+//                mBackupIndex++;
+//            }
+//            else
+//            {
+//                return false;
+//            }
+//        }
+//        else if (layer->type() == Layer::VECTOR)
+//        {
+//            VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mFrame));
+//            if (vectorImage != nullptr)
+//            {
+//                BackupVectorElement* element = new BackupVectorElement(vectorImage);
+//                element->layer = backupLayer;
+//                element->frame = vectorImage->pos();
+//                element->undoText = undoText;
+//                element->somethingSelected = select()->somethingSelected();
+//                element->mySelection = select()->mySelectionRect();
+//                element->myTransformedSelection = select()->myTransformedSelectionRect();
+//                element->myTempTransformedSelection = select()->myTempTransformedSelectionRect();
+//                element->rotationAngle = select()->myRotation();
+//                mBackupList.append(element);
+//                mBackupIndex++;
+//            }
+//            else
+//            {
+//                return false;
+//            }
+//        }
+//        else if (layer->type() == Layer::SOUND)
+//        {
+//            int previous = layer->getPreviousKeyFramePosition(backupFrame);
+//            KeyFrame* key = layer->getLastKeyFrameAtPosition(backupFrame);
 
-            // in case tracks overlap, get previous frame
-            if (key == nullptr)
-            {
-                KeyFrame* previousKey = layer->getKeyFrameAt(previous);
-                key = previousKey;
-            }
-            if (key != nullptr) {
-                SoundClip* clip = static_cast<SoundClip*>(key);
-                if (clip)
-                {
-                    BackupSoundElement* element = new BackupSoundElement(clip);
-                    element->layer = backupLayer;
-                    element->frame = backupFrame;
-                    element->undoText = undoText;
-                    element->fileName = clip->fileName();
-                    element->originalName = clip->soundClipName();
-                    mBackupList.append(element);
-                    mBackupIndex++;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+//            // in case tracks overlap, get previous frame
+//            if (key == nullptr)
+//            {
+//                KeyFrame* previousKey = layer->getKeyFrameAt(previous);
+//                key = previousKey;
+//            }
+//            if (key != nullptr) {
+//                SoundClip* clip = static_cast<SoundClip*>(key);
+//                if (clip)
+//                {
+//                    BackupSoundElement* element = new BackupSoundElement(clip);
+//                    element->layer = backupLayer;
+//                    element->frame = backupFrame;
+//                    element->undoText = undoText;
+//                    element->fileName = clip->fileName();
+//                    element->originalName = clip->soundClipName();
+//                    mBackupList.append(element);
+//                    mBackupIndex++;
+//                }
+//            }
+//            else
+//            {
+//                return false;
+//            }
+//        }
+//    }
 
-    updateAutoSaveCounter();
+//    updateAutoSaveCounter();
 
-    emit updateBackup();
+//    emit updateBackup();
 
     return true;
 }
 
 void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
 {
-    for (int i = 0; i < mBackupList.size(); i++)
-    {
-        BackupElement *backupElement = mBackupList[i];
-        BackupBitmapElement *bitmapElement;
-        BackupVectorElement *vectorElement;
-        BackupSoundElement *soundElement;
-        switch (backupElement->type())
-        {
-        case BackupElement::BITMAP_MODIF:
-            bitmapElement = qobject_cast<BackupBitmapElement*>(backupElement);
-            Q_ASSERT(bitmapElement);
-            if (bitmapElement->layer > layerIndex)
-            {
-                bitmapElement->layer--;
-                continue;
-            }
-            else if (bitmapElement->layer != layerIndex)
-            {
-                continue;
-            }
-            break;
-        case BackupElement::VECTOR_MODIF:
-            vectorElement = qobject_cast<BackupVectorElement*>(backupElement);
-            Q_ASSERT(vectorElement);
-            if (vectorElement->layer > layerIndex)
-            {
-                vectorElement->layer--;
-                continue;
-            }
-            else if (vectorElement->layer != layerIndex)
-            {
-                continue;
-            }
-            break;
-        case BackupElement::SOUND_MODIF:
-            soundElement = qobject_cast<BackupSoundElement*>(backupElement);
-            Q_ASSERT(soundElement);
-            if (soundElement->layer > layerIndex)
-            {
-                soundElement->layer--;
-                continue;
-            }
-            else if (soundElement->layer != layerIndex)
-            {
-                continue;
-            }
-            break;
-        default:
-            Q_UNREACHABLE();
-        }
-        if (i <= mBackupIndex)
-        {
-            mBackupIndex--;
-        }
-        delete mBackupList.takeAt(i);
-        i--;
-    }
+    // TODO: to be removed when integrating new backupmanager
+//    for (int i = 0; i < mBackupList.size(); i++)
+//    {
+//        BackupElement *backupElement = mBackupList[i];
+//        BackupBitmapElement *bitmapElement;
+//        BackupVectorElement *vectorElement;
+//        BackupSoundElement *soundElement;
+//        switch (backupElement->type())
+//        {
+//        case BackupElement::BITMAP_MODIF:
+//            bitmapElement = qobject_cast<BackupBitmapElement*>(backupElement);
+//            Q_ASSERT(bitmapElement);
+//            if (bitmapElement->layer > layerIndex)
+//            {
+//                bitmapElement->layer--;
+//                continue;
+//            }
+//            else if (bitmapElement->layer != layerIndex)
+//            {
+//                continue;
+//            }
+//            break;
+//        case BackupElement::VECTOR_MODIF:
+//            vectorElement = qobject_cast<BackupVectorElement*>(backupElement);
+//            Q_ASSERT(vectorElement);
+//            if (vectorElement->layer > layerIndex)
+//            {
+//                vectorElement->layer--;
+//                continue;
+//            }
+//            else if (vectorElement->layer != layerIndex)
+//            {
+//                continue;
+//            }
+//            break;
+//        case BackupElement::SOUND_MODIF:
+//            soundElement = qobject_cast<BackupSoundElement*>(backupElement);
+//            Q_ASSERT(soundElement);
+//            if (soundElement->layer > layerIndex)
+//            {
+//                soundElement->layer--;
+//                continue;
+//            }
+//            else if (soundElement->layer != layerIndex)
+//            {
+//                continue;
+//            }
+//            break;
+//        default:
+//            Q_UNREACHABLE();
+//        }
+//        if (i <= mBackupIndex)
+//        {
+//            mBackupIndex--;
+//        }
+//        delete mBackupList.takeAt(i);
+//        i--;
+//    }
 }
 
 void Editor::restoreKey()
 {
-    BackupElement* lastBackupElement = mBackupList[mBackupIndex];
+    // TODO: to be removed when integrating new backupmanager
+//    BackupElement* lastBackupElement = mBackupList[mBackupIndex];
 
-    Layer* layer = nullptr;
-    int frame = 0;
-    int layerIndex = 0;
-    if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
-    {
-        BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
-        layerIndex = lastBackupBitmapElement->layer;
-        frame = lastBackupBitmapElement->frame;
-        layer = object()->getLayer(layerIndex);
-        addKeyFrame(layerIndex, frame);
-        dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(&lastBackupBitmapElement->bitmapImage);
-        emit frameModified(frame);
-    }
-    if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
-    {
-        BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
-        layerIndex = lastBackupVectorElement->layer;
-        frame = lastBackupVectorElement->frame;
-        layer = object()->getLayer(layerIndex);
-        addKeyFrame(layerIndex, frame);
-        dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(lastBackupVectorElement->vectorImage);
-        emit frameModified(frame);
-    }
-    if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
-    {
-        QString strSoundFile;
-        BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
-        layerIndex = lastBackupSoundElement->layer;
-        frame = lastBackupSoundElement->frame;
+//    Layer* layer = nullptr;
+//    int frame = 0;
+//    int layerIndex = 0;
+//    if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
+//    {
+//        BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
+//        layerIndex = lastBackupBitmapElement->layer;
+//        frame = lastBackupBitmapElement->frame;
+//        layer = object()->getLayer(layerIndex);
+//        addKeyFrame(layerIndex, frame);
+//        dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(&lastBackupBitmapElement->bitmapImage);
+//        emit frameModified(frame);
+//    }
+//    if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
+//    {
+//        BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
+//        layerIndex = lastBackupVectorElement->layer;
+//        frame = lastBackupVectorElement->frame;
+//        layer = object()->getLayer(layerIndex);
+//        addKeyFrame(layerIndex, frame);
+//        dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(lastBackupVectorElement->vectorImage);
+//        emit frameModified(frame);
+//    }
+//    if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
+//    {
+//        QString strSoundFile;
+//        BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
+//        layerIndex = lastBackupSoundElement->layer;
+//        frame = lastBackupSoundElement->frame;
 
-        strSoundFile = lastBackupSoundElement->fileName;
-        if (strSoundFile.isEmpty()) return;
-        KeyFrame* key = addKeyFrame(layerIndex, frame);
-        SoundClip* clip = dynamic_cast<SoundClip*>(key);
-        if (clip)
-        {
-            Status st = sound()->loadSound(clip, lastBackupSoundElement->fileName);
-            clip->setSoundClipName(lastBackupSoundElement->originalName);
-            if (!st.ok())
-            {
-                removeKey();
-                emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
-            }
-        }
-    }
+//        strSoundFile = lastBackupSoundElement->fileName;
+//        if (strSoundFile.isEmpty()) return;
+//        KeyFrame* key = addKeyFrame(layerIndex, frame);
+//        SoundClip* clip = dynamic_cast<SoundClip*>(key);
+//        if (clip)
+//        {
+//            Status st = sound()->loadSound(clip, lastBackupSoundElement->fileName);
+//            clip->setSoundClipName(lastBackupSoundElement->originalName);
+//            if (!st.ok())
+//            {
+//                removeKey();
+//                emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+//            }
+//        }
+//    }
 }
 
 void Editor::undo()
 {
-    if (!mBackupList.empty() && mBackupIndex > -1)
-    {
-        if (mBackupIndex == mBackupList.size() - 1)
-        {
-            BackupElement* lastBackupElement = mBackupList[mBackupIndex];
-            if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
-            {
-                BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
-                if (backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp"))
-                {
-                    mBackupIndex--;
-                }
-            }
-            if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
-            {
-                BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
-                if (backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp"))
-                {
-                    mBackupIndex--;
-                }
-            }
-            if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
-            {
-                BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
-                if (backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp"))
-                {
-                    mBackupIndex--;
-                }
-            }
-        }
+    // TODO: to be removed when integrating new backupmanager
+//    if (!mBackupList.empty() && mBackupIndex > -1)
+//    {
+//        if (mBackupIndex == mBackupList.size() - 1)
+//        {
+//            BackupElement* lastBackupElement = mBackupList[mBackupIndex];
+//            if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
+//            {
+//                BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
+//                if (backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp"))
+//                {
+//                    mBackupIndex--;
+//                }
+//            }
+//            if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
+//            {
+//                BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
+//                if (backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp"))
+//                {
+//                    mBackupIndex--;
+//                }
+//            }
+//            if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
+//            {
+//                BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
+//                if (backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp"))
+//                {
+//                    mBackupIndex--;
+//                }
+//            }
+//        }
 
-        qDebug() << "Undo" << mBackupIndex;
-        mBackupList[mBackupIndex]->restore(this);
-        mBackupIndex--;
-        mScribbleArea->cancelTransformedSelection();
+//        qDebug() << "Undo" << mBackupIndex;
+//        mBackupList[mBackupIndex]->restore(this);
+//        mBackupIndex--;
+//        mScribbleArea->cancelTransformedSelection();
 
-        Layer* layer = layers()->currentLayer();
-        if (layer == nullptr) { return; }
+//        Layer* layer = layers()->currentLayer();
+//        if (layer == nullptr) { return; }
 
-        select()->resetSelectionTransform();
-        if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage *vectorImage = static_cast<VectorImage*>(layer->getKeyFrameAt(mFrame));
-            vectorImage->calculateSelectionRect();
-            select()->setSelection(vectorImage->getSelectionRect(), false);
-        }
-        emit updateBackup();
-    }
+//        select()->resetSelectionTransform();
+//        if (layer->type() == Layer::VECTOR)
+//        {
+//            VectorImage *vectorImage = static_cast<VectorImage*>(layer->getKeyFrameAt(mFrame));
+//            vectorImage->calculateSelectionRect();
+//            select()->setSelection(vectorImage->getSelectionRect(), false);
+//        }
+//        emit updateBackup();
+//    }
 }
 
 void Editor::redo()
 {
-    if (!mBackupList.empty() && mBackupIndex < mBackupList.size() - 2)
-    {
-        mBackupIndex++;
+    // TODO: to be removed when integrating new backupmanager
+//    if (!mBackupList.empty() && mBackupIndex < mBackupList.size() - 2)
+//    {
+//        mBackupIndex++;
 
-        mBackupList[mBackupIndex + 1]->restore(this);
-        emit updateBackup();
-    }
+//        mBackupList[mBackupIndex + 1]->restore(this);
+//        emit updateBackup();
+//    }
 }
 
 void Editor::clearUndoStack()
@@ -880,6 +886,12 @@ bool Editor::importGIF(const QString& filePath, int numOfImages)
     return false;
 }
 
+void Editor::updateView()
+{
+    view()->updateViewTransforms();
+    emit needPaint();
+}
+
 void Editor::selectAll() const
 {
     Layer* layer = layers()->currentLayer();
@@ -944,6 +956,18 @@ void Editor::setCurrentLayerIndex(int i)
     }
 }
 
+void Editor::scrubTo(const int layerId, const int frameIndex)
+{
+    layers()->setCurrentLayerFromId(layerId);
+    scrubTo(frameIndex);
+}
+
+void Editor::scrubTo(Layer* layer, const int frameIndex)
+{
+    layers()->setCurrentLayer(layer);
+    scrubTo(frameIndex);
+}
+
 void Editor::scrubTo(int frame)
 {
     if (frame < 1) { frame = 1; }
@@ -980,6 +1004,68 @@ void Editor::scrubBackward()
         }
         scrubTo(previousFrame);
     }
+}
+
+KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists)
+{
+    Layer* layer = layers()->findLayerById(layerId);
+    int layerIndex = layers()->getLayerIndex(layer);
+    if (layer == nullptr)
+    {
+        Q_ASSERT(false);
+        return nullptr;
+    }
+
+    if (!ignoreKeyExists)
+    {
+        while (layer->keyExists(frameIndex) && frameIndex > 1)
+        {
+            frameIndex += 1;
+        }
+    }
+
+    bool ok = layer->addNewKeyFrameAt(frameIndex);
+    if (ok)
+    {
+        scrubTo(frameIndex); // currentFrameChanged() emit inside.
+    }
+
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
+
+    return layer->getKeyFrameAt(frameIndex);
+}
+
+KeyFrame* Editor::addKeyFrameToLayer(Layer* layer, const int layerIndex, int frameIndex, const bool ignoreKeyExists)
+{
+    if (layer == nullptr)
+    {
+        Q_ASSERT(false);
+        return nullptr;
+    }
+
+    if (!ignoreKeyExists)
+    {
+        while (layer->keyExists(frameIndex) && frameIndex > 1)
+        {
+            frameIndex += 1;
+        }
+    }
+
+    bool ok = layer->addNewKeyFrameAt(frameIndex);
+    if (ok)
+    {
+        scrubTo(frameIndex); // currentFrameChanged() emit inside.
+    }
+
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
+
+    return layer->getKeyFrameAt(frameIndex);
 }
 
 KeyFrame* Editor::addNewKey()
@@ -1021,6 +1107,29 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         layers()->notifyAnimationLengthChanged();
     }
     return layer->getKeyFrameAt(frameIndex);
+}
+
+void Editor::removeKeyAtLayerId(int layerId, int frameIndex)
+{
+    Layer* layer = layers()->findLayerById(layerId);
+    int layerIndex = layers()->getLayerIndex(layer);
+    if (!layer->keyExistsWhichCovers(frameIndex))
+    {
+        return;
+    }
+
+    layer->removeKeyFrame(frameIndex);
+
+    while (!layer->keyExists(frameIndex) && frameIndex > 1)
+    {
+        frameIndex -= 1;
+    }
+
+    scrubTo(frameIndex);
+    if (layerIndex != currentLayerIndex())
+    {
+        setCurrentLayerIndex(layerIndex);
+    }
 }
 
 void Editor::removeKey()

@@ -50,7 +50,10 @@ HEADERS +=  \
     src/interface/timelinecells.h \
     src/interface/basedockwidget.h \
     src/interface/backgroundwidget.h \
+    src/managers/backupmanager.h \
     src/managers/basemanager.h \
+    src/managers/canvasmanager.h \
+    src/managers/keyframemanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -90,6 +93,7 @@ HEADERS +=  \
     src/util/cameraeasingtype.h \
     src/util/camerafieldoption.h \
     src/util/colordictionary.h \
+    src/util/direction.h \
     src/util/fileformat.h \
     src/util/filetype.h \
     src/util/mathutils.h \
@@ -128,7 +132,10 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/timelinecells.cpp \
     src/interface/basedockwidget.cpp \
     src/interface/backgroundwidget.cpp \
+    src/managers/backupmanager.cpp \
     src/managers/basemanager.cpp \
+    src/managers/canvasmanager.cpp \
+    src/managers/keyframemanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \

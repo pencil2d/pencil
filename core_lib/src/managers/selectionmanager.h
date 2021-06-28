@@ -103,13 +103,17 @@ public:
     QPolygonF lastSelectionPolygonF() const { return mLastSelectionPolygonF; }
 
     void setSomethingSelected(bool selected) { mSomethingSelected = selected; }
+    void setScale(const qreal scaleX, const qreal scaleY) { mScaleX = scaleX; mScaleY = scaleY; }
 
     VectorSelection vectorSelection;
 
     const QRectF& mySelectionRect() { return mSelection; }
     const QRectF& myTempTransformedSelectionRect() { return mTempTransformedSelection; }
     const QRectF& myTransformedSelectionRect() { return mTransformedSelection; }
-    const qreal& myRotation() { return mRotatedAngle; }
+
+    qreal myRotation() const { return mRotatedAngle; }
+    qreal myScaleX() const { return mScaleX; }
+    qreal myScaleY() const { return mScaleY; }
 
     void setSelectionRect(const QRectF& rect) { mSelection = rect; }
     void setTempTransformedSelectionRect(const QRectF& rect) { mTempTransformedSelection = rect; }
@@ -129,6 +133,8 @@ private:
     QRectF mTempTransformedSelection;
     QRectF mTransformedSelection;
     qreal mRotatedAngle = 0.0;
+    qreal mScaleX = .0;
+    qreal mScaleY = .0;
 
     bool mSomethingSelected = false;
     QPolygonF mLastSelectionPolygonF;

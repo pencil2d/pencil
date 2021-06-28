@@ -63,7 +63,6 @@ public:
     Editor* mEditor = nullptr;
 
 public slots:
-    void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();

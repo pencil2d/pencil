@@ -42,7 +42,7 @@ Camera::~Camera()
 {
 }
 
-Camera* Camera::clone()
+Camera* Camera::clone() const
 {
     return new Camera(*this);
 }
