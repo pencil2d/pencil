@@ -908,6 +908,8 @@ void Editor::selectAll() const
 
 void Editor::deselectAll() const
 {
+    select()->resetSelectionProperties();
+
     Layer* layer = layers()->currentLayer();
     if (layer == nullptr) { return; }
 
@@ -919,8 +921,6 @@ void Editor::deselectAll() const
             vectorImage->deselectAll();
         }
     }
-
-    select()->resetSelectionProperties();
 }
 
 void Editor::updateFrame(int frameNumber)
