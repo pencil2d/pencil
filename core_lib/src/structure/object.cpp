@@ -179,11 +179,10 @@ void Object::createWorkingDir()
     QString strWorkingDir;
     do
     {
-        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/")
-            .arg(QDir::tempPath())
-            .arg(projectName)
-            .arg(PFF_TMP_DECOMPRESS_EXT)
-            .arg(uniqueString(8));
+        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/").arg(QDir::tempPath(),
+                                                             projectName,
+                                                             PFF_TMP_DECOMPRESS_EXT,
+                                                             uniqueString(8));
     }
     while(dir.exists(strWorkingDir));
 

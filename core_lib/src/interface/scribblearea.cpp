@@ -1732,6 +1732,6 @@ void ScribbleArea::floodFillError(int errorType)
     if (errorType == 1) { error = tr("Out of bound.", "Bucket tool fill error message"); }
     if (errorType == 2) { error = tr("Could not find a closed path.", "Bucket tool fill error message"); }
     if (errorType == 3) { error = tr("Could not find the root index.", "Bucket tool fill error message"); }
-    QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok);
+    QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message, error), QMessageBox::Ok, QMessageBox::Ok);
     mEditor->deselectAll();
 }

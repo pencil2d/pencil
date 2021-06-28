@@ -588,7 +588,7 @@ Status FileManager::writeKeyFrameFiles(const Object* object, const QString& data
     {
         Layer* layer = object->getLayer(i);
 
-        dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
+        dd << QString("Layer[%1] = [id=%2, type=%3, name=%4]").arg(i).arg(layer->id()).arg(layer->type()).arg(layer->name());
 
         Status st = layer->save(dataFolder, filesFlushed, [this] { progressForward(); });
         if (!st.ok())
@@ -922,11 +922,11 @@ QString FileManager::recoverLayerName(Layer::LAYER_TYPE type, int index)
     switch (type)
     {
     case Layer::BITMAP:
-        return QString("%1 %2").arg(tr("Bitmap Layer")).arg(index);
+        return tr("Bitmap Layer %1").arg(index);
     case Layer::VECTOR:
-        return QString("%1 %2").arg(tr("Vector Layer")).arg(index);
+        return tr("Vector Layer %1").arg(index);
     case Layer::SOUND:
-        return QString("%1 %2").arg(tr("Sound Layer")).arg(index);
+        return tr("Sound Layer %1").arg(index);
     default:
         Q_ASSERT(false);
     }

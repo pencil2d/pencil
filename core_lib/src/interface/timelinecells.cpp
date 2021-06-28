@@ -231,15 +231,14 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 
     int nextFrame = curLayer->getNextKeyFramePosition(frameNumber);
 
-    QString interpolateAt = tr("Interpolate frames at: %1");
-    QString interpolateFrom = tr("Interpolate frames from: %1 to %2");
-    QString clearMovementDesc = tr("Clear interpolation on: %1");
+    const QString interpolateFrom = tr("Interpolate frames from: %1 to %2");
+    const QString clearMovementDesc = tr("Clear interpolation on: %1");
 
     if (mEasingMenu == nullptr)
     {
         mEasingMenu = new QMenu(this);
 
-        mInterpolationMenu = mEasingMenu->addMenu(interpolateFrom.arg(QString::number(frameNumber), QString::number(nextFrame)));
+        mInterpolationMenu = mEasingMenu->addMenu(interpolateFrom.arg(frameNumber).arg(nextFrame));
 
         QMenu* subSine  = mInterpolationMenu->addMenu(tr("Slow"));
         QMenu* subQuad  = mInterpolationMenu->addMenu(tr("Normal"));
@@ -280,7 +279,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         subCirc->addAction(tr("Circle-based Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTCIRC, frameNumber); });
         subCirc->addAction(tr("Circle-based Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCIRC, frameNumber); });
         subCirc->addAction(tr("Circle-based Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
-        mHoldAction = subOther->addAction(tr("Hold to frame %1").arg(QString::number(nextFrame)), [=] { this->setHold(frameNumber); });
+        mHoldAction = subOther->addAction(tr("Hold to frame %1").arg(nextFrame), [=] { this->setHold(frameNumber); });
         subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
     }
 
@@ -298,7 +297,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         }
         // Remove last comma
         keyNumbers.chop(1);
-        mInterpolationMenu->setTitle(interpolateAt.arg(keyNumbers));
+        mInterpolationMenu->setTitle(tr("Interpolate frames at: %1").arg(keyNumbers));
         mHoldAction->setText(clearMovementDesc.arg(keyNumbers));
     }
     else if(curLayer->keyExists(frameNumber))
@@ -307,8 +306,8 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         if (frameNumber == nextFrame) {
             keyPosString = "-";
         }
-        mInterpolationMenu->setTitle(interpolateFrom.arg(QString::number(frameNumber), keyPosString));
-        mHoldAction->setText(clearMovementDesc.arg(QString::number(nextFrame)));
+        mInterpolationMenu->setTitle(interpolateFrom.arg(frameNumber).arg(keyPosString));
+        mHoldAction->setText(clearMovementDesc.arg(nextFrame));
     }
 
     mEasingMenu->popup(pos);

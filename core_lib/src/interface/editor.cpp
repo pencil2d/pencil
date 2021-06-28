@@ -673,7 +673,7 @@ Status Editor::openObject(const QString& strFilePath, const std::function<void(i
     }
     if (!fileInfo.isReadable())
     {
-        dd << QString("Permissions: 0x%1").arg(QString::number(fileInfo.permissions(), 16));
+        dd << QString("Permissions: 0x%1").arg(fileInfo.permissions(), 0, 16);
         return Status(Status::ERROR_FILE_CANNOT_OPEN,
                       dd,
                       tr("Could not open file"),

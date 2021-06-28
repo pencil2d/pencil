@@ -110,7 +110,7 @@ void CheckUpdatesDialog::nightlyBuildCheck()
 {
     mTitleLabel->setText(tr("<b>You are using a Pencil2D nightly build</b>"));
     mDetailLabel->setText(tr("Please go %1 here %2 to check new nightly builds.")
-                          .arg("<a href=\"https://www.pencil2d.org/download/#nightlybuild\">").arg("</a>"));
+                          .arg("<a href=\"https://www.pencil2d.org/download/#nightlybuild\">", "</a>"));
     mDetailLabel->setOpenExternalLinks(true);
     mProgressBar->setRange(0, 1);
     mProgressBar->setValue(1);
@@ -176,8 +176,7 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
     {
         mTitleLabel->setText(tr("<b>A new version of Pencil2D is available!</b>"));
         mDetailLabel->setText(tr("Pencil2D %1 is now available -- you have %2. Would you like to download it?")
-                              .arg(latestVersionString)
-                              .arg(APP_VERSION));
+                              .arg(latestVersionString, APP_VERSION));
         mProgressBar->hide();
         mDownloadButton->setEnabled(true);
     }

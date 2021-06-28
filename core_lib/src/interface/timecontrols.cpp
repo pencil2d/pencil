@@ -371,17 +371,17 @@ void TimeControls::updateTimecodeLabel(int frame)
     {
     case TimecodeTextLevel::SMPTE:
         mTimecodeLabel->setText(QString("%1:%2:%3")
-                                .arg(QString::number(frame / (60 * mFps) % 60).rightJustified(2,'0'))
-                                .arg(QString::number(frame / mFps % 60).rightJustified(2, '0'))
-                                .arg(QString::number(frame % mFps).rightJustified(2, '0')));
+                                .arg(frame / (60 * mFps) % 60, 2, 10, QLatin1Char('0'))
+                                .arg(frame / mFps % 60, 2, 10, QLatin1Char('0'))
+                                .arg(frame % mFps, 2, 10, QLatin1Char('0')));
         break;
     case TimecodeTextLevel::SFF:
         mTimecodeLabel->setText(QString("%1:%2")
-                                .arg(QString::number(frame / mFps))
-                                .arg(QString::number(frame % mFps).rightJustified(2, '0')));
+                                .arg(frame / mFps)
+                                .arg(frame % mFps, 2, 10, QLatin1Char('0')));
         break;
     case TimecodeTextLevel::FRAMES:
-        mTimecodeLabel->setText(tr("%1").arg(QString::number(frame).rightJustified(4, '0')));
+        mTimecodeLabel->setText(QString::number(frame).rightJustified(4, '0'));
         break;
     case TimecodeTextLevel::NOTEXT:
     default:
