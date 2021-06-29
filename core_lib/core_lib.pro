@@ -43,6 +43,7 @@ HEADERS +=  \
     src/interface/camerapropertiesdialog.h \
     src/interface/editor.h \
     src/interface/flowlayout.h \
+    src/interface/legacybackupelement.h \
     src/interface/recentfilemenu.h \
     src/interface/scribblearea.h \
     src/interface/timecontrols.h \
@@ -125,6 +126,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/camerapropertiesdialog.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
+    src/interface/legacybackupelement.cpp \
     src/interface/recentfilemenu.cpp \
     src/interface/scribblearea.cpp \
     src/interface/timecontrols.cpp \

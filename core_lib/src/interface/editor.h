@@ -47,6 +47,7 @@ class Layer;
 class CanvasManager;
 class BackupManager;
 class KeyFrameManager;
+class LegacyBackupElement;
 
 enum class SETTING;
 
@@ -120,8 +121,8 @@ public:
 
     // backup
     int mBackupIndex;
-    BackupElement* currentBackup();
-    QList<BackupElement*> mBackupList;
+    LegacyBackupElement* currentBackup();
+    QList<LegacyBackupElement*> mBackupList;
 
 signals:
 

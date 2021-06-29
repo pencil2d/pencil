@@ -50,6 +50,7 @@ GNU General Public License for more details.
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
 #include "backupelement.h"
+#include "legacybackupelement.h"
 
 // app headers
 #include "colorbox.h"
@@ -411,6 +412,7 @@ void MainWindow2::createMenus()
 
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
 
+    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
     connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
@@ -1249,6 +1251,35 @@ void MainWindow2::clearKeyboardShortcuts()
     for (QAction* action : actionList)
     {
         action->setShortcut(QKeySequence(0));
+    }
+}
+
+void MainWindow2::undoActSetText()
+{
+    if (mEditor->mBackupIndex < 0)
+    {
+        ui->actionUndo->setText(tr("Undo", "Menu item text"));
+        ui->actionUndo->setEnabled(false);
+    }
+    else
+    {
+        ui->actionUndo->setText(QString("%1   %2 %3").arg(tr("Undo", "Menu item text"))
+                                .arg(mEditor->mBackupIndex + 1)
+                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex)->undoText));
+        ui->actionUndo->setEnabled(true);
+    }
+
+    if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
+    {
+        ui->actionRedo->setText(QString("%1   %2 %3").arg(tr("Redo", "Menu item text"))
+                                .arg(mEditor->mBackupIndex + 2)
+                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
+        ui->actionRedo->setEnabled(true);
+    }
+    else
+    {
+        ui->actionRedo->setText(tr("Redo", "Menu item text"));
+        ui->actionRedo->setEnabled(false);
     }
 }
 

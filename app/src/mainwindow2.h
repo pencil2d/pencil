@@ -41,6 +41,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class LegacyBackupElement;
 class LayerOpacityDialog;
 class QLabel;
 class PegBarAlignmentDialog;
@@ -63,6 +64,7 @@ public:
     Editor* mEditor = nullptr;
 
 public slots:
+    void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
     void clearRecentFilesList();
@@ -162,7 +164,7 @@ private:
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
-    BackupElement* mBackupAtSave = nullptr;
+    LegacyBackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;
