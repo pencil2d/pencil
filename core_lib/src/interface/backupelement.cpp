@@ -1365,7 +1365,7 @@ void MoveFramesElement::applyToMulti(Layer* layer, const int offset, const QList
 //}
 
 FlipViewElement::FlipViewElement(const bool& backupFlipState,
-                                 const DIRECTION& backupFlipDirection,
+                                 const Direction& backupFlipDirection,
                                  Editor *editor,
                                  QUndoCommand *parent) : BackupElement(editor, parent)
 {
@@ -1374,7 +1374,7 @@ FlipViewElement::FlipViewElement(const bool& backupFlipState,
     isFlipped = backupFlipState;
     direction = backupFlipDirection;
 
-    if (direction == DIRECTION::HORIZONTAL)
+    if (direction == Direction::HORIZONTAL)
     {
         setText(QObject::tr("Flip View X"));
     }
@@ -1386,7 +1386,7 @@ FlipViewElement::FlipViewElement(const bool& backupFlipState,
 
 void FlipViewElement::undo()
 {
-    if (direction == DIRECTION::VERTICAL)
+    if (direction == Direction::VERTICAL)
     {
         editor()->view()->flipVertical(!isFlipped);
     }
@@ -1401,7 +1401,7 @@ void FlipViewElement::redo()
 
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    if (direction == DIRECTION::VERTICAL)
+    if (direction == Direction::VERTICAL)
     {
         editor()->view()->flipVertical(isFlipped);
     }

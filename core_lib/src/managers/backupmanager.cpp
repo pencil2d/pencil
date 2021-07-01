@@ -493,7 +493,7 @@ void BackupManager::framesMoved(const int offset,
     emit updateBackup();
 }
 
-void BackupManager::flipView(const bool& backupIsFlipped, const DIRECTION& backupFlipDirection)
+void BackupManager::flipView(const bool& backupIsFlipped, const Direction& backupFlipDirection)
 {
     FlipViewElement* element = new FlipViewElement(backupIsFlipped,
                                                    backupFlipDirection,
