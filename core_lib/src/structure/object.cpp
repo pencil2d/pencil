@@ -371,7 +371,6 @@ void Object::deleteLayerWithId(int layerId)
     {
         if (mLayers.at(index)->id() == layerId)
         {
-            disconnect(mLayers[index], nullptr, nullptr, nullptr);
             delete mLayers.takeAt(index);
             break;
         }
