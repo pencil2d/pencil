@@ -178,8 +178,9 @@ public: //slots
     KeyFrame* addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists);
     KeyFrame* addKeyFrameToLayer(Layer* layer, int frameIndex, const bool ignoreKeyExists);
     KeyFrame* addNewKey();
-    void removeKey();
     void removeKeyAtLayerId(int layerId, int frameIndex);
+    void removeKeyAtLayer(Layer* layer, int frameIndex, bool shouldBackup = false);
+    void removeKey();
 
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);

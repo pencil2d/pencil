@@ -1069,12 +1069,28 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
 void Editor::removeKeyAtLayerId(int layerId, int frameIndex)
 {
     Layer* layer = layers()->findLayerById(layerId);
-    int layerIndex = layers()->getLayerIndex(layer);
+    removeKeyAtLayer(layer, frameIndex);
+}
+
+void Editor::removeKeyAtLayer(Layer *layer, int frameIndex, bool shouldBackup)
+{
+    if (layer == nullptr)
+    {
+        Q_ASSERT(false);
+        return;
+    }
+
     if (!layer->keyExistsWhichCovers(frameIndex))
     {
         return;
     }
 
+    if (shouldBackup)
+    {
+        backup(tr("Remove frame"));
+    }
+
+    deselectAll();
     layer->removeKeyFrame(frameIndex);
 
     while (!layer->keyExists(frameIndex) && frameIndex > 1)
@@ -1082,37 +1098,20 @@ void Editor::removeKeyAtLayerId(int layerId, int frameIndex)
         frameIndex -= 1;
     }
 
-    scrubTo(frameIndex);
-    if (layerIndex != currentLayerIndex())
-    {
-        setCurrentLayerIndex(layerIndex);
-    }
+    scrubTo(layer, frameIndex);
+    emit frameModified(frameIndex);
+    layers()->notifyAnimationLengthChanged();
 }
 
 void Editor::removeKey()
 {
     Layer* layer = layers()->currentLayer();
-    Q_ASSERT(layer != nullptr);
-
     if (!layer->visible())
     {
         mScribbleArea->showLayerNotVisibleWarning();
         return;
     }
-
-    if (!layer->keyExistsWhichCovers(currentFrame()))
-    {
-        return;
-    }
-
-    backup(tr("Remove frame"));
-
-    deselectAll();
-    layer->removeKeyFrame(currentFrame());
-
-    scrubBackward();
-    layers()->notifyAnimationLengthChanged();
-    emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+    removeKeyAtLayer(layer, currentFrame(), true);
 }
 
 void Editor::scrubNextKeyFrame()
