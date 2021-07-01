@@ -190,14 +190,14 @@ void LayerManager::createBitmapLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const QString& strLayerName)
 {
     KeyFrame* keyframe = nullptr;
-    Layer* layer = createBitmapLayerAt(layerId, layerIndex, strLayerName);
+    LayerBitmap* layer = createBitmapLayerAt(layerId, layerIndex, strLayerName);
     for(auto& map : keyFrames)
     {
         keyframe = map.second;
         int frameIndex = keyframe->pos();
 
         editor()->addKeyFrameToLayerId(layerId, frameIndex, true);
-        static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(keyframe, frameIndex);
+        layer->putBitmapIntoFrame(keyframe, frameIndex);
     }
 }
 
@@ -207,14 +207,14 @@ void LayerManager::createVectorLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const QString& strLayerName)
 {
     KeyFrame* keyframe = nullptr;
-    Layer* layer = createVectorLayerAt(layerId, layerIndex, strLayerName);
+    LayerVector* layer = createVectorLayerAt(layerId, layerIndex, strLayerName);
     for(auto& map : keyFrames)
     {
         keyframe = map.second;
         int frameIndex = keyframe->pos();
 
         editor()->addKeyFrameToLayerId(layerId, frameIndex, true);
-        static_cast<LayerVector*>(layer)->putVectorImageIntoFrame(keyframe, frameIndex);
+        layer->putVectorImageIntoFrame(keyframe, frameIndex);
     }
 }
 
@@ -223,7 +223,7 @@ void LayerManager::createCameraLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const int layerIndex,
                                                         const QString& strLayerName)
 {
-    Layer* layer = createCameraLayerAt(layerId, layerIndex, strLayerName);
+    LayerCamera* layer = createCameraLayerAt(layerId, layerIndex, strLayerName);
 
     KeyFrame* keyframe = nullptr;
     for (auto map : keyFrames)
@@ -231,7 +231,7 @@ void LayerManager::createCameraLayerContainingKeyFrames(const std::map<int, KeyF
         keyframe = map.second;
         int frameIndex = map.second->pos();
         editor()->addKeyFrameToLayerId(layerId, frameIndex, true);
-        static_cast<LayerCamera*>(layer)->putCameraIntoFrame(keyframe, frameIndex);
+        layer->putCameraIntoFrame(keyframe, frameIndex);
     }
 }
 
