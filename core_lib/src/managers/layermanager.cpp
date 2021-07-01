@@ -432,8 +432,12 @@ Status LayerManager::deleteLayer(int index)
     return Status::OK;
 }
 
-Status LayerManager::deleteLayerWithId(int layerId, Layer::LAYER_TYPE layerType)
+Status LayerManager::deleteLayerWithId(int layerId)
 {
+    Layer* layer = object()->findLayerById(layerId);
+    if (layer == nullptr) return Status::SAFE;
+    Layer::LAYER_TYPE layerType = layer->type();
+
     if (layerType == Layer::CAMERA)
     {
         std::vector<LayerCamera*> camLayers = object()->getLayersByType<LayerCamera>();
@@ -510,7 +514,7 @@ void LayerManager::notifyAnimationLengthChanged()
     emit animationLengthChanged(animationLength(true));
 }
 
-int LayerManager::getIndex(Layer* layer) const
+int LayerManager::getIndex(const Layer* layer) const
 {
     const Object* o = object();
     for (int i = 0; i < o->getLayerCount(); ++i)

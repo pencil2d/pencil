@@ -937,7 +937,7 @@ void AddLayerElement::undo()
     qDebug() << "undo";
     qDebug() << "oldLayerId:" << oldLayerId;
     qDebug() << "newLayerId:" << newLayerId;
-    editor()->layers()->deleteLayerWithId(newLayerId, newLayerType);
+    editor()->layers()->deleteLayerWithId(newLayerId);
 
 }
 
@@ -1027,7 +1027,7 @@ void DeleteLayerElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    editor()->layers()->deleteLayerWithId(oldLayerId, oldLayerType);
+    editor()->layers()->deleteLayerWithId(oldLayerId);
 
 }
 
