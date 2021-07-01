@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include "backupmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
-#include "keyframemanager.h"
 #include "canvasmanager.h"
 
 #include "layersound.h"
@@ -482,7 +481,7 @@ void SelectionElement::undoSelection()
         selectMan->vectorSelection = oldVectorSelection;
     }
 
-    KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
+    KeyFrame* cKeyFrame = layer->getLastKeyFrameAtPosition(editor()->currentFrame());
     editor()->canvas()->applyTransformedSelection(layer,
                                                   cKeyFrame,
                                                   selectMan->selectionTransform(),
@@ -541,7 +540,7 @@ void SelectionElement::redoDeselection()
     auto selectMan = editor()->select();
 
     Layer* layer = editor()->layers()->findLayerById(layerId);
-    KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
+    KeyFrame* cKeyFrame = layer->getLastKeyFrameAtPosition(editor()->currentFrame());
     editor()->canvas()->applyTransformedSelection(layer,
                                                   cKeyFrame,
                                                   selectMan->selectionTransform(),
@@ -723,7 +722,7 @@ void TransformElement::apply(const BitmapImage* bitmapImage,
         {
             if (bitmapImage->isMinimallyBounded()) {
                 static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(bitmapImage);
-                KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
+                KeyFrame* cKeyFrame = layer->getLastKeyFrameAtPosition(editor()->currentFrame());
                 editor()->canvas()->paintTransformedSelection(layer,
                                                               cKeyFrame,
                                                               transform,
@@ -733,8 +732,9 @@ void TransformElement::apply(const BitmapImage* bitmapImage,
         }
         case Layer::VECTOR:
         {
-            static_cast<LayerVector*>(layer)->replaceLastVectorAtFrame(vectorImage);
-            VectorImage* vecImage = editor()->keyframes()->currentVectorImage(layer);
+            LayerVector* vlayer = static_cast<LayerVector*>(layer);
+            vlayer->replaceLastVectorAtFrame(vectorImage);
+            VectorImage* vecImage = vlayer->getLastVectorImageAtFrame(editor()->currentFrame(), 0);
             vecImage->setSelectionTransformation(transform);
             editor()->updateCurrentFrame();
             break;

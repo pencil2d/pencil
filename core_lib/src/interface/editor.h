@@ -46,7 +46,6 @@ class ActiveFramePool;
 class Layer;
 class CanvasManager;
 class BackupManager;
-class KeyFrameManager;
 class LegacyBackupElement;
 
 enum class SETTING;
@@ -65,7 +64,6 @@ class Editor : public QObject
         Q_PROPERTY(SelectionManager* select READ select)
         Q_PROPERTY(CanvasManager* canvas READ canvas)
         Q_PROPERTY(BackupManager* backups READ backups)
-        Q_PROPERTY(KeyFrameManager* keyframes READ keyframes)
 
 public:
     explicit Editor(QObject* parent = nullptr);
@@ -86,7 +84,6 @@ public:
     SelectionManager*  select() const { return mSelectionManager; }
     CanvasManager* canvas() const { return mCanvasManager; }
     BackupManager* backups() const { return mBackupManager; }
-    KeyFrameManager* keyframes() const { return mKeyFrameManager; }
 
     Object* object() const { return mObject.get(); }
     Status openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged);
@@ -239,7 +236,6 @@ private:
     SelectionManager* mSelectionManager = nullptr;
     CanvasManager* mCanvasManager = nullptr;
     BackupManager* mBackupManager = nullptr;
-    KeyFrameManager* mKeyFrameManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 
