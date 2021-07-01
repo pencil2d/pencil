@@ -90,21 +90,21 @@ public:
     LayerCamera* createCameraLayer(const QString& strLayerName);
     LayerSound*  createSoundLayer(const QString& strLayerName);
 
-    LayerBitmap* createBitmapLayerContaining(const int layerId,
-                                             const int layerIndex,
-                                             const QString& strLayerName);
+    LayerBitmap* createBitmapLayerAt(const int layerId,
+                                     const int layerIndex,
+                                     const QString& strLayerName);
 
-    LayerVector* createVectorLayerContaining(const int layerId,
-                                             const int layerIndex,
-                                             const QString& strLayerName);
+    LayerVector* createVectorLayerAt(const int layerId,
+                                     const int layerIndex,
+                                     const QString& strLayerName);
 
-    LayerCamera* createCameraLayerContaining(const int layerId,
-                                             const int layerIndex,
-                                             const QString& strLayerName);
+    LayerCamera* createCameraLayerAt(const int layerId,
+                                     const int layerIndex,
+                                     const QString& strLayerName);
 
-    LayerSound* createSoundLayerContaining(const int layerId,
-                                           const int layerIndex,
-                                           const QString& strLayerName);
+    LayerSound* createSoundLayerAt(const int layerId,
+                                   const int layerIndex,
+                                   const QString& strLayerName);
 
     // KeyFrame Management
     int lastFrameAtFrame(int frameIndex);

@@ -280,7 +280,7 @@ void BackupManager::restoreLayerKeys(const BackupElement* backupElement)
         }
         case Layer::SOUND:
         {
-            layer = layerMgr->createSoundLayerContaining(layerId,
+            layer = layerMgr->createSoundLayerAt(layerId,
                                                          layerIndex,
                                                           layerName);
             for (auto map : lastBackupLayerElem->oldLayerKeys)

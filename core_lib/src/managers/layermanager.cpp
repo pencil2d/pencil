@@ -190,7 +190,7 @@ void LayerManager::createBitmapLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const QString& strLayerName)
 {
     KeyFrame* keyframe = nullptr;
-    Layer* layer = createBitmapLayerContaining(layerId, layerIndex, strLayerName);
+    Layer* layer = createBitmapLayerAt(layerId, layerIndex, strLayerName);
     for(auto& map : keyFrames)
     {
         keyframe = map.second;
@@ -207,7 +207,7 @@ void LayerManager::createVectorLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const QString& strLayerName)
 {
     KeyFrame* keyframe = nullptr;
-    Layer* layer = createVectorLayerContaining(layerId, layerIndex, strLayerName);
+    Layer* layer = createVectorLayerAt(layerId, layerIndex, strLayerName);
     for(auto& map : keyFrames)
     {
         keyframe = map.second;
@@ -223,7 +223,7 @@ void LayerManager::createCameraLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const int layerIndex,
                                                         const QString& strLayerName)
 {
-    Layer* layer = createCameraLayerContaining(layerId, layerIndex, strLayerName);
+    Layer* layer = createCameraLayerAt(layerId, layerIndex, strLayerName);
 
     KeyFrame* keyframe = nullptr;
     for (auto map : keyFrames)
@@ -235,9 +235,9 @@ void LayerManager::createCameraLayerContainingKeyFrames(const std::map<int, KeyF
     }
 }
 
-LayerBitmap* LayerManager::createBitmapLayerContaining(const int layerId,
-                                                       const int layerIndex,
-                                                       const QString& strLayerName)
+LayerBitmap* LayerManager::createBitmapLayerAt(const int layerId,
+                                               const int layerIndex,
+                                               const QString& strLayerName)
 {
     LayerBitmap* newLayer = object()->bitmapLayerContaining(layerId, layerIndex);
     newLayer->setName( strLayerName );
@@ -253,9 +253,9 @@ LayerBitmap* LayerManager::createBitmapLayerContaining(const int layerId,
     return newLayer;
 }
 
-LayerVector* LayerManager::createVectorLayerContaining(const int layerId,
-                                                       const int layerIndex,
-                                                       const QString& strLayerName)
+LayerVector* LayerManager::createVectorLayerAt(const int layerId,
+                                               const int layerIndex,
+                                               const QString& strLayerName)
 {
     LayerVector* newLayer = object()->vectorLayerContaining(layerId, layerIndex);
     newLayer->setName( strLayerName );
@@ -271,7 +271,9 @@ LayerVector* LayerManager::createVectorLayerContaining(const int layerId,
     return newLayer;
 }
 
-LayerSound* LayerManager::createSoundLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName)
+LayerSound* LayerManager::createSoundLayerAt(const int layerId,
+                                             const int layerIndex,
+                                             const QString& strLayerName)
 {
     LayerSound* newLayer = object()->addSoundLayerContaining(layerId, layerIndex);
     newLayer->setName( strLayerName );
@@ -286,7 +288,9 @@ LayerSound* LayerManager::createSoundLayerContaining(const int layerId, const in
     return newLayer;
 }
 
-LayerCamera* LayerManager::createCameraLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName)
+LayerCamera* LayerManager::createCameraLayerAt(const int layerId,
+                                               const int layerIndex,
+                                               const QString& strLayerName)
 {
     LayerCamera* newLayer = object()->addCameraLayerContaining(layerId, layerIndex);
     newLayer->setName( strLayerName );
