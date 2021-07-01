@@ -769,14 +769,13 @@ void ImportBitmapElement::undo()
     }
 
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
-    int layerIndex = editor()->layers()->getLayerIndex(layer);
 
     // we've removed all keyframes + those that were overwritten
     // now re-add the old ones
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
     for (auto key : oldKeyFrames)
     {
-        editor()->addKeyFrameToLayer(layer, layerIndex, key.first, true);
+        editor()->addKeyFrameToLayer(layer, key.first, true);
         layerBitmap->putBitmapIntoFrame(key.second, key.second->pos());
     }
     editor()->updateCurrentFrame();
@@ -791,12 +790,11 @@ void ImportBitmapElement::redo()
     }
 
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
-    int layerIndex = editor()->layers()->getLayerIndex(layer);
 
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
     for (auto key : importedKeyFrames)
     {
-        editor()->addKeyFrameToLayer(layer, layerIndex, key.first, true);
+        editor()->addKeyFrameToLayer(layer, key.first, true);
         layerBitmap->putBitmapIntoFrame(key.second, key.second->pos());
     }
     editor()->updateCurrentFrame();

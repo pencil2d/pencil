@@ -176,7 +176,7 @@ public: //slots
     void scrubBackward();
 
     KeyFrame* addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists);
-    KeyFrame* addKeyFrameToLayer(Layer* layer, const int layerIndex, int frameIndex, const bool ignoreKeyExists);
+    KeyFrame* addKeyFrameToLayer(Layer* layer, int frameIndex, const bool ignoreKeyExists);
     KeyFrame* addNewKey();
     void removeKey();
     void removeKeyAtLayerId(int layerId, int frameIndex);
