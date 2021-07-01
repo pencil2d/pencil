@@ -39,19 +39,11 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
 }
 
-LayerCamera::LayerCamera(int layerId, Object* object) : Layer(object, Layer::CAMERA)
+/** Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerCamera::LayerCamera(int layerId, Object* object) : LayerCamera(object)
 {
-    setName(tr("Camera Layer"));
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    mFieldW = settings.value("FieldW").toInt();
-    mFieldH = settings.value("FieldH").toInt();
-    if (mFieldW < 2 || mFieldH < 2)
-    {
-        mFieldW = 800;
-        mFieldH = 600;
-    }
-    viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
     setId(layerId);
 }
 

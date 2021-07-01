@@ -23,20 +23,17 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 
 
-
+LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
+{
+    setName(tr("Bitmap Layer"));
+}
 
 /** Add a new layer with a given id
  * This should only be used to restore a layer with id
  */
-LayerBitmap::LayerBitmap(int id, Object* object) : Layer(object, Layer::BITMAP)
+LayerBitmap::LayerBitmap(int id, Object* object) : LayerBitmap(object)
 {
-    setName(tr("Bitmap Layer"));
     setId(id);
-}
-
-LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
-{
-    setName(tr("Bitmap Layer"));
 }
 
 LayerBitmap::~LayerBitmap()

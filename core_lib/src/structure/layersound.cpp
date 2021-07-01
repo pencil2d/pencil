@@ -23,14 +23,17 @@ GNU General Public License for more details.
 #include "object.h"
 #include "soundclip.h"
 
+
 LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
 {
     setName(tr("Sound Layer"));
 }
 
-LayerSound::LayerSound(int layerId, Object* object) : Layer(object, Layer::SOUND)
+/** Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerSound::LayerSound(int layerId, Object* object) : LayerSound(object)
 {
-    setName(tr("Sound Layer"));
     setId(layerId);
 }
 

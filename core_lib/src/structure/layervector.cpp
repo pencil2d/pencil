@@ -21,15 +21,18 @@ GNU General Public License for more details.
 #include <QFile>
 #include <QFileInfo>
 
-LayerVector::LayerVector(int layerId, Object* object) : Layer(object, Layer::VECTOR)
-{
-    setName(tr("Vector Layer"));
-    setId(layerId);
-}
 
 LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
 {
     setName(tr("Vector Layer"));
+}
+
+/** Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerVector::LayerVector(int layerId, Object* object) : LayerVector(object)
+{
+    setId(layerId);
 }
 
 LayerVector::~LayerVector()
