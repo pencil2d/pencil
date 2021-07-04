@@ -241,7 +241,7 @@ AddKeyFrameElement::AddKeyFrameElement(const int backupFrameIndex,
     newKey = layer->getLastKeyFrameAtPosition(oldFrameIndex)->clone();
     oldKeyFrames.insert(std::make_pair(oldFrameIndex, newKey));
 
-    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    bool isSequence = oldKeySpacing > 1;
 
     if (description.isEmpty() && !isSequence)
     {
@@ -272,7 +272,7 @@ void AddKeyFrameElement::undoSequence()
 void AddKeyFrameElement::undo()
 {
     qDebug() << "key remove triggered";
-    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    bool isSequence = oldKeySpacing > 1;
     if (isSequence)
     {
         undoSequence();
@@ -301,7 +301,7 @@ void AddKeyFrameElement::redo()
     qDebug() << "undo: newLayer" << newLayerIndex;
 
     if (isFirstRedo) { isFirstRedo = false; return; }
-    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    bool isSequence = oldKeySpacing > 1;
 
     if (newFrameIndex > 0)
     {
@@ -327,7 +327,7 @@ bool AddKeyFrameElement::mergeWith(const QUndoCommand *other)
     qDebug() << "state of frames:: new" << newKeyFrames;
     qDebug() << newKeyFrames;
 
-    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    bool isSequence = oldKeySpacing > 1;
 
     if (newKeyFrames.empty())
     {
