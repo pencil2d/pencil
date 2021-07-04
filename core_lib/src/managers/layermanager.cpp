@@ -239,7 +239,7 @@ LayerBitmap* LayerManager::createBitmapLayerAt(const int layerId,
                                                const int layerIndex,
                                                const QString& strLayerName)
 {
-    LayerBitmap* newLayer = object()->bitmapLayerContaining(layerId, layerIndex);
+    LayerBitmap* newLayer = object()->addBitmapLayerAt(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
     Q_EMIT layerCountChanged(count());
@@ -257,7 +257,7 @@ LayerVector* LayerManager::createVectorLayerAt(const int layerId,
                                                const int layerIndex,
                                                const QString& strLayerName)
 {
-    LayerVector* newLayer = object()->vectorLayerContaining(layerId, layerIndex);
+    LayerVector* newLayer = object()->addVectorLayerAt(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
     Q_EMIT layerCountChanged(count());
@@ -275,7 +275,7 @@ LayerSound* LayerManager::createSoundLayerAt(const int layerId,
                                              const int layerIndex,
                                              const QString& strLayerName)
 {
-    LayerSound* newLayer = object()->addSoundLayerContaining(layerId, layerIndex);
+    LayerSound* newLayer = object()->addSoundLayerAt(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
     if (currentLayerIndex() != editor()->object()->getLastLayerIndex())
@@ -292,7 +292,7 @@ LayerCamera* LayerManager::createCameraLayerAt(const int layerId,
                                                const int layerIndex,
                                                const QString& strLayerName)
 {
-    LayerCamera* newLayer = object()->addCameraLayerContaining(layerId, layerIndex);
+    LayerCamera* newLayer = object()->addCameraLayerAt(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
     if (currentLayerIndex() != editor()->object()->getLastLayerIndex())
